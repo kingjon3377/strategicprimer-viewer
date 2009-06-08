@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 import model.SPMap;
-import model.Tile;
 
 /**
  * A panel to display a map.
@@ -35,11 +34,10 @@ public class MapPanel extends JPanel {
 		setLayout(new GridLayout(map.rows(), 0));
 		for (int row = 0; row < map.rows(); row++) {
 			for (int col = 0; col < map.cols(); col++) {
-				Tile tile = map.getTile(row, col); 
-				if (tile == null) {
-					add(new NullGUITile(row, col)); 
+				if (map.getTile(row, col) == null) {
+					add(new NullGUITile(row, col)); // NOPMD
 				} else {
-					add(new GUITile(tile)); 
+					add(new GUITile(map.getTile(row, col))); // NOPMD 
 				}
 			}
 			LOGGER.fine("Added row ");

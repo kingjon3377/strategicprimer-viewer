@@ -110,7 +110,7 @@ public final class Tile implements Serializable {
 	 * The fortress(es) on the tile.
 	 * FIXME: Should this be a Set?
 	 */
-	private final List<Fortress> forts;  
+	private final ArrayList<Fortress> forts; // NOPMD
 	/**
 	 * FIXME: Should return a copy, not the real collection.
 	 * 
@@ -137,7 +137,7 @@ public final class Tile implements Serializable {
 	 * FIXME: Should this be a Set?
 	 * The units on the tile.
 	 */
-	private final List<Unit> units; 
+	private final ArrayList<Unit> units; //NOPMD 
 	/**
 	 * FIXME: Should return a copy, not the real collection.
 	 * @return the units on the tile

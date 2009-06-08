@@ -82,8 +82,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 		super();
 		setLayout(new BorderLayout());
 		add(new MapPanel(new XMLReader().getMap(filename)), BorderLayout.CENTER);
-		JButton quitButton = new JButton("Quit"); 
-													// 4:42 PM
+		final JButton quitButton = new JButton("Quit"); 
 		quitButton.addActionListener(this);
 		add(quitButton, BorderLayout.SOUTH);
 		addWindowListener(this);
@@ -182,7 +181,14 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Quit".equals(event.getActionCommand())) {
-			System.exit(0); 
+			quit(0);
 		}
+	}
+	/**
+	 * Quit. (Don't halt the VM from a non-static context.)
+	 * @param code The exit code.
+	 */
+	private static void quit(final int code) {
+		System.exit(code);
 	}
 }

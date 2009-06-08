@@ -15,11 +15,11 @@ public class Player implements Serializable {
 	/**
 	 * The player's number.
 	 */
-	private final transient int playerID;
+	private final int playerID;
 	/**
 	 * The player's code name.
 	 */
-	private final transient String playerName;
+	private final String playerName;
 	/**
 	 * Constructor.
 	 * @param idNum the player's number

@@ -2,7 +2,6 @@ package controller;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 import model.Fortress;
 import model.Player;
@@ -152,7 +151,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 				parseFort(atts);
 			} else if ("unit".equals(localName)) {
 				parseUnit(atts);
-			} else if ("player".equals(localName)) { 
+			} else if ("player".equals(localName)) {
 				// 4:38 PM
 				parsePlayer(atts);
 			}
@@ -248,7 +247,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	 * The mapping from descriptive strings to tile types. Used to make
 	 * multiple-return-points warnings go away.
 	 */
-	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<String,TileType>();
+	private static final HashMap<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>();// NOPMD
 
 	static {
 		TILE_TYPE_MAP.put("tundra", TileType.Tundra);

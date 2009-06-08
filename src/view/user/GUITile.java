@@ -2,7 +2,6 @@ package view.user;
 
 import java.net.URL;
 import java.util.EnumMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,26 +20,32 @@ import model.Tile.TileType;
  */
 public class GUITile extends JLabel {
 	/**
-	 * A buffer to avoid string concatenations.
-	 */
-	private final transient StringBuffer retval; 
-	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4047750632787337702L;
-
+	/**
+	 * The tile this GUI-tile represents
+	 */
+	private final Tile tile;
+	/**
+	 * @return the tile this GUI represents.
+	 */
+	public final Tile getTile() {
+		return tile;
+	}
+	
 	/**
 	 * Constructor.
 	 * 
-	 * @param tile
+	 * @param _tile
 	 *            the tile this will represent
 	 */
-	public GUITile(final Tile tile) {
+	public GUITile(final Tile _tile) {
 		super(new ImageIcon(ViewerFrame.getFrame().getToolkit().createImage(
-				getImageURL(tile.getType()))));
-		setToolTipText("Terrain: " + terrainText(tile.getType()) + anyForts(tile)
-				+ anyUnits(tile));
-		retval = new StringBuffer();
+				getImageURL(_tile.getType()))));
+		setToolTipText("Terrain: " + terrainText(_tile.getType()) + anyForts(_tile)
+				+ anyUnits(_tile));
+		tile = _tile;
 	}
 
 	/**
@@ -49,8 +54,8 @@ public class GUITile extends JLabel {
 	 * @return a String representation of the units on the tile, if any,
 	 *         preceded by a newline if there are any
 	 */
-	private String anyUnits(final Tile tile2) {
-		retval.setLength(0);
+	private static String anyUnits(final Tile tile2) {
+		final StringBuffer retval = new StringBuffer("");
 		if (tile2.getUnits().size() > 0) {
 			retval.append('\n');
 			for (Unit u : tile2.getUnits()) {
@@ -72,8 +77,8 @@ public class GUITile extends JLabel {
 	 * @return A string representation of any fortresses on the tile. If there
 	 *         are any, it is preceded by a newline.
 	 */
-	private String anyForts(final Tile tile2) {
-		retval.setLength(0);
+	private static String anyForts(final Tile tile2) {
+		final StringBuffer retval = new StringBuffer();
 		if (tile2.getForts().size() > 0) {
 			retval.append("\nForts belonging to players ");
 			for (Fortress f : tile2.getForts()) {
@@ -113,12 +118,12 @@ public class GUITile extends JLabel {
 	/**
 	 * The tile IMAGES.
 	 */
-	private static final Map<TileType, URL> IMAGES = new EnumMap<TileType, URL>(
+	private static final EnumMap<TileType, URL> IMAGES = new EnumMap<TileType, URL>(
 			TileType.class);
 	/**
 	 * Descriptions of the types.
 	 */
-	private static final Map<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
+	private static final EnumMap<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
 			TileType.class);
 	static {
 		addImageToMap(TileType.Plains, "plains");

@@ -3,8 +3,6 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
@@ -13,7 +11,7 @@ import java.util.Map;
  * @author kingjon
  * 
  */
-public class SPMap implements Serializable { 
+public class SPMap implements Serializable {
 	/**
 	 * 
 	 */
@@ -46,28 +44,28 @@ public class SPMap implements Serializable {
 	/**
 	 * The number of rows on the map.
 	 */
-	private int myRows; 
+	private int myRows;
 	/**
 	 * The number of columns on the map.
 	 */
-	private int myCols; 
+	private int myCols;
 
 	/**
 	 * The tiles on the map.
 	 */
-	private Map<Point, Tile> tiles; 
+	private HashMap<Point, Tile> tiles; // NOPMD
 	/**
 	 * The fortresses on the map.
 	 */
-	private final List<Fortress> forts; 
+	private final ArrayList<Fortress> forts; // NOPMD
 	/**
 	 * The units on the map.
 	 */
-	private final List<Unit> units; 
+	private final ArrayList<Unit> units; // NOPMD
 	/**
 	 * The players in the game.
 	 */
-	private final List<Player> players; 
+	private final ArrayList<Player> players; // NOPMD
 
 	/**
 	 * @return how many rows the map has.
@@ -135,11 +133,11 @@ public class SPMap implements Serializable {
 		/**
 		 * The first coordinate.
 		 */
-		private final int myRow; 
+		private final int myRow;
 		/**
 		 * The second coordinate.
 		 */
-		private final int myCol; 
+		private final int myCol;
 
 		/**
 		 * @return the first coordinate.
@@ -175,18 +173,7 @@ public class SPMap implements Serializable {
 		 */
 		@Override
 		public final boolean equals(final Object obj) {
-			return (obj instanceof Point && equals((Point) obj));
-		}
-
-		// ESCA-JAVA0132:
-		/**
-		 * @param point
-		 *            another point
-		 * @return whether this point equals it
-		 */
-		public final boolean equals(final Point point) { 
-															// 3/12/09 3:29 PM
-			return point.myRow == myRow && point.myCol == myCol;
+			return (obj instanceof Point && (((Point) obj).myRow == myRow && ((Point) obj).myCol == myCol));
 		}
 
 		/**
