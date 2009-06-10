@@ -105,7 +105,7 @@ public class GUITile extends JLabel {
 
 	/**
 	 * Produce an image representing the given tiletype (should probably use a
-	 * static Map?) FIXME: Actually implement.
+	 * static Map?) 
 	 * 
 	 * @param type
 	 *            the tile type

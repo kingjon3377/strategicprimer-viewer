@@ -24,10 +24,6 @@ import controller.XMLReader;
  */
 public final class ViewerFrame extends JFrame implements WindowListener, ActionListener {
 	/**
-	 * A logger to replace System.err usage
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
-	/**
 	 * Default width of the Frame.
 	 */
 	private static final int DEFAULT_WIDTH = 800;
@@ -55,9 +51,13 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 * Run the app.
 	 * 
 	 * @param args
-	 *            FIXME: args[0] should be the map filename.
+ 	 *            Command-line arguments: args[0] is the map filename, others
+ 	 *            are ignored. TODO: Add option handling.
+ 	 * 
 	 */
 	public static void main(final String[] args) {
+ 		final Logger LOGGER = Logger.getLogger(ViewerFrame.class
+ 				.getName());
 		try {
 			frame = new ViewerFrame(args[0]);
 			frame.setVisible(true);
@@ -97,8 +97,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 */
 	@Override
 	public void windowActivated(final WindowEvent event) {
-		// TODO Auto-generated method stub
-
+		repaint();
 	}
 
 	/**
@@ -120,8 +119,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 */
 	@Override
 	public void windowClosing(final WindowEvent event) {
-		// TODO Auto-generated method stub
-
+		// Do nothing
 	}
 
 	/**
@@ -132,8 +130,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 */
 	@Override
 	public void windowDeactivated(final WindowEvent event) {
-		// TODO Auto-generated method stub
-
+		// Do nothing
 	}
 
 	/**
@@ -144,8 +141,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 */
 	@Override
 	public void windowDeiconified(final WindowEvent event) {
-		// TODO Auto-generated method stub
-
+		repaint();
 	}
 
 	/**
@@ -156,8 +152,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 */
 	@Override
 	public void windowIconified(final WindowEvent event) {
-		// TODO Auto-generated method stub
-
+		// Do nothing
 	}
 
 	/**
@@ -168,8 +163,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 */
 	@Override
 	public void windowOpened(final WindowEvent event) {
-		// TODO Auto-generated method stub
-
+		repaint();
 	}
 
 	/**
