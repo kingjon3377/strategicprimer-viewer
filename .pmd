@@ -696,10 +696,6 @@
             <ruleset>Naming Rules</ruleset>
         </rule>
         <rule>
-            <name>AvoidFieldNameMatchingMethodName</name>
-            <ruleset>Naming Rules</ruleset>
-        </rule>
-        <rule>
             <name>AvoidFieldNameMatchingTypeName</name>
             <ruleset>Naming Rules</ruleset>
         </rule>
