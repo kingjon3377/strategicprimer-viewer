@@ -584,10 +584,6 @@
             <ruleset>Java Logging Rules</ruleset>
         </rule>
         <rule>
-            <name>SystemPrintln</name>
-            <ruleset>Java Logging Rules</ruleset>
-        </rule>
-        <rule>
             <name>MissingSerialVersionUID</name>
             <ruleset>JavaBean Rules</ruleset>
         </rule>
