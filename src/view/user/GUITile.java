@@ -8,8 +8,8 @@ import javax.swing.JLabel;
 
 import model.Fortress;
 import model.Tile;
+import model.TileType;
 import model.Unit;
-import model.Tile.TileType;
 
 /**
  * A GUI representation of a tile. Information about what's on the tile should

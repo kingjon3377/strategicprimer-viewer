@@ -1,14 +1,13 @@
 package controller;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 import model.Fortress;
 import model.Player;
 import model.SPMap;
 import model.Tile;
+import model.TileType;
 import model.Unit;
-import model.Tile.TileType;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -169,8 +168,8 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	private void parseTile(final Attributes atts) throws SAXException {
 		if (currentTile == null) {
 			currentTile = new Tile(Integer.parseInt(atts.getValue("row")),
-					Integer.parseInt(atts.getValue("column")), getTileType(atts
-							.getValue("type")));
+					Integer.parseInt(atts.getValue("column")), TileType
+							.getTileType(atts.getValue("type")));
 		} else {
 			throw new SAXException(new IllegalStateException(
 					"Cannot (at present) have one tile inside another"));
@@ -243,34 +242,4 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 		}
 	}
 
-	/**
-	 * The mapping from descriptive strings to tile types. Used to make
-	 * multiple-return-points warnings go away.
-	 */
-	private static final HashMap<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>();// NOPMD
-
-	static {
-		TILE_TYPE_MAP.put("tundra", TileType.Tundra);
-		TILE_TYPE_MAP.put("temperate_forest", TileType.TemperateForest);
-		TILE_TYPE_MAP.put("boreal_forest", TileType.BorealForest);
-		TILE_TYPE_MAP.put("ocean", TileType.Ocean);
-		TILE_TYPE_MAP.put("desert", TileType.Desert);
-		TILE_TYPE_MAP.put("plains", TileType.Plains);
-		TILE_TYPE_MAP.put("jungle", TileType.Jungle);
-		TILE_TYPE_MAP.put("mountain", TileType.Mountain);
-	}
-
-	/**
-	 * Parse a tile terrain type.
-	 * 
-	 * @param string
-	 *            A string describing the terrain
-	 * @return the terrain type
-	 */
-	private static TileType getTileType(final String string) {
-		if (TILE_TYPE_MAP.containsKey(string)) {
-			return TILE_TYPE_MAP.get(string);
-		} // else
-		throw new IllegalArgumentException("Unrecognized terrain type string");
-	}
 }

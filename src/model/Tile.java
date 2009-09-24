@@ -48,49 +48,6 @@ public final class Tile implements Serializable {
 		return col;
 	}
 	/**
-	 * Possible tile types.
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	public enum TileType { 
-		/**
-		 * Tundra.
-		 */
-		Tundra, 
-		/**
-		 * Desert.
-		 */
-		Desert, 
-		/**
-		 * Mountain.
-		 */
-		Mountain, 
-		/**
-		 * Boreal forest.
-		 */
-		BorealForest,
-		/**
-		 * Temperate forest.
-		 */
-		TemperateForest, 
-		/**
-		 * Ocean.
-		 */
-		Ocean, 
-		/**
-		 * Plains.
-		 */
-		Plains, 
-		/**
-		 * Jungle.
-		 */
-		Jungle,
-		/**
-		 * Not visible.
-		 */
-		NotVisible
-	}
-	/**
 	 * The tile type.
 	 */
 	private TileType type;

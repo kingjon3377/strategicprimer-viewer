@@ -1,7 +1,7 @@
 package view.user;
 
 import model.Tile;
-import model.Tile.TileType;
+import model.TileType;
 
 /**
  * A GUITile for when the map shouldn't show a tile at a location.
