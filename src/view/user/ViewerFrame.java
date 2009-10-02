@@ -1,6 +1,7 @@
 package view.user;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 import org.xml.sax.SAXException;
 
@@ -26,11 +28,11 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	/**
 	 * Default width of the Frame.
 	 */
-	private static final int DEFAULT_WIDTH = 800;
+	private static final int DEFAULT_WIDTH = 640;
 	/**
 	 * Default height of the Frame.
 	 */
-	private static final int DEFAULT_HEIGHT = 600;
+	private static final int DEFAULT_HEIGHT = 480;
 	/**
 	 * 
 	 */
@@ -81,12 +83,19 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	private ViewerFrame(final String filename) throws SAXException, IOException {
 		super();
 		setLayout(new BorderLayout());
-		add(new MapPanel(new XMLReader().getMap(filename)), BorderLayout.CENTER);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setIgnoreRepaint(false);
+		this.setPreferredSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		this.setMaximumSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+		this.setMinimumSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+		add(new JScrollPane(new MapPanel(new XMLReader().getMap(filename))), BorderLayout.CENTER);
 		final JButton quitButton = new JButton("Quit"); 
 		quitButton.addActionListener(this);
 		add(quitButton, BorderLayout.SOUTH);
 		addWindowListener(this);
-		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		pack();
+		repaint();
 	}
 
 	/**

@@ -33,7 +33,7 @@ public class MapPanel extends JPanel {
 				if (map.getTile(row, col) == null) {
 					add(new NullGUITile(row, col)); // NOPMD
 				} else {
-					add(new GUITile(map.getTile(row, col))); // NOPMD 
+					add(new GUITile(map.getTile(row, col))); // NOPMD
 				}
 			}
 			LOGGER.fine("Added row ");
