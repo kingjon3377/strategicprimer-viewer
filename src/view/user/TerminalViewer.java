@@ -14,7 +14,8 @@ import org.xml.sax.SAXException;
 import controller.XMLReader;
 
 /**
- * A CLI to create a text version of the map from the XML.
+ * A CLI to create a text version of the map from the XML, coloring a specified
+ * point red.
  * 
  * @author Jonathan Lovelace
  */
@@ -24,6 +25,54 @@ public class TerminalViewer {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(TerminalViewer.class
 			.getName());
+	/**
+	 * The text map
+	 */
+	private final char[][] textMap;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param map
+	 *            the map to create the view for
+	 * @param row
+	 *            the row of the point to highlight
+	 * @param col
+	 *            the column of the point to highlight
+	 */
+	public TerminalViewer(final SPMap map, final int row, final int col) {
+		textMap = new char[map.rows()][map.cols()];
+		createTextMap(map);
+		final StringBuilder sbuilder = new StringBuilder("");
+		for (int i = 0; i < map.rows(); i++) {
+			for (int j = 0; j < map.cols(); j++) {
+				if (i == row && j == col) {
+					sbuilder.append(ANSI.RED);
+					sbuilder.append(ANSI.BLINK);
+					sbuilder.append(textMap[i][j]);
+					sbuilder.append(ANSI.SANE);
+				} else {
+					sbuilder.append(textMap[i][j]);
+				}
+			}
+			sbuilder.append("\n");
+		}
+		System.out.print(sbuilder.toString());
+	}
+
+	/**
+	 * Create the text map
+	 * 
+	 * @param map
+	 *            The map the text map represents
+	 */
+	private void createTextMap(final SPMap map) {
+		for (int i = 0; i < map.rows(); i++) {
+			for (int j = 0; j < map.cols(); j++) {
+				textMap[i][j] = getTerrainChar(map.getTile(i, j).getType());
+			}
+		}
+	}
 
 	/**
 	 * The entry point for this driver
@@ -33,9 +82,9 @@ public class TerminalViewer {
 	 *            of the point you want to blink.
 	 */
 	public static void main(final String[] args) {
-		SPMap map;
 		try {
-			map = new XMLReader().getMap(args[0]);
+			new TerminalViewer(new XMLReader().getMap(args[0]), Integer
+					.parseInt(args[1]), Integer.parseInt(args[2]));
 		} catch (SAXException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
@@ -45,60 +94,31 @@ public class TerminalViewer {
 			System.exit(2);
 			return; // NOPMD;
 		}
-		char[][] textMap = new char[map.rows()][map.cols()];
-		for (int i = 0; i < map.rows(); i++) {
-			for (int j = 0; j < map.cols(); j++) {
-				textMap[i][j] = getTerrainChar(map.getTile(i, j).getType());
-			}
-		}
-		final StringBuilder sbuilder = new StringBuilder("");
-		final int row = Integer.parseInt(args[1]);
-		final int col = Integer.parseInt(args[2]);
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < map.cols(); j++) {
-				sbuilder.append(textMap[i][j]);
-			}
-			sbuilder.append("\n");
-		}
-		for (int j = 0; j < col; j++) {
-			sbuilder.append(textMap[row][j]);
-		}
-		sbuilder.append(ANSI.RED);
-		sbuilder.append(ANSI.BLINK);
-		sbuilder.append(textMap[row][col]);
-		sbuilder.append(ANSI.SANE);
-		for (int j = col + 1; j < map.cols(); j++) {
-			sbuilder.append(textMap[row][j]);
-		}
-		sbuilder.append("\n");
-		for (int i = row + 1; i < map.rows(); i++) {
-			for (int j = 0; j < map.cols(); j++) {
-				sbuilder.append(textMap[i][j]);
-			}
-			sbuilder.append("\n");
-		}
-		System.out.print(sbuilder.toString());
 	}
+
 	/**
 	 * A mapping from terrain types to their single-character representations.
 	 */
-	private static final Map<TileType,Character> CHAR_MAP = new EnumMap<TileType,Character>(TileType.class);
+	private static final Map<TileType, Character> CHAR_MAP = new EnumMap<TileType, Character>(
+			TileType.class);
 	/**
 	 * Set up the map.
 	 */
 	static {
-		CHAR_MAP.put(TileType.Tundra,'T');
-		CHAR_MAP.put(TileType.Desert,'D');
-		CHAR_MAP.put(TileType.Mountain,'M');
-		CHAR_MAP.put(TileType.BorealForest,'B');
-		CHAR_MAP.put(TileType.TemperateForest,'F');
-		CHAR_MAP.put(TileType.Ocean,'O');
-		CHAR_MAP.put(TileType.Plains,'P');
-		CHAR_MAP.put(TileType.Jungle,'J');
+		CHAR_MAP.put(TileType.Tundra, 'T');
+		CHAR_MAP.put(TileType.Desert, 'D');
+		CHAR_MAP.put(TileType.Mountain, 'M');
+		CHAR_MAP.put(TileType.BorealForest, 'B');
+		CHAR_MAP.put(TileType.TemperateForest, 'F');
+		CHAR_MAP.put(TileType.Ocean, 'O');
+		CHAR_MAP.put(TileType.Plains, 'P');
+		CHAR_MAP.put(TileType.Jungle, 'J');
 		CHAR_MAP.put(TileType.NotVisible, '_');
 	}
+
 	/**
-	 * @param type A terrain type
+	 * @param type
+	 *            A terrain type
 	 * @return The single character representing that terrain type.
 	 */
 	private static char getTerrainChar(final TileType type) {
