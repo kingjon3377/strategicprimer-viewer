@@ -36,18 +36,16 @@ public class AltTerminalViewer {
 	 *            the column of the point to highlight
 	 */
 	public AltTerminalViewer(final SPMap map, final int row, final int col) {
-		final StringBuilder sbuilder = new StringBuilder("");
 		for (int i = 0; i < map.rows(); i++) {
 			for (int j = 0; j < map.cols(); j++) {
 				if (i == row && j == col) {
-					sbuilder.append(ANSI.BLINK);
+					System.out.print(ANSI.BLINK);
 				}
-				sbuilder.append(getTerrainChar(map.getTile(i, j).getType()));
-				sbuilder.append(ANSI.SANE);
+				System.out.print(getTerrainChar(map.getTile(i, j).getType()));
+				System.out.print(ANSI.SANE);
 			}
-			sbuilder.append("\n");
+			System.out.println();
 		}
-		System.out.print(sbuilder.toString());
 	}
 
 	/**
@@ -81,14 +79,14 @@ public class AltTerminalViewer {
 	 * Set up the map.
 	 */
 	static {
-		CHAR_MAP.put(TileType.Tundra, ANSI.BACKGROUND_BLACK + ANSI.HIGH_INTENSITY + ANSI.WHITE + 'T');
+		CHAR_MAP.put(TileType.Tundra, ANSI.BACKGROUND_WHITE + ANSI.BLACK + 'T');
 		CHAR_MAP.put(TileType.Desert, ANSI.BACKGROUND_BLACK + ANSI.YELLOW + 'D');
 		CHAR_MAP.put(TileType.Mountain, ANSI.BACKGROUND_BLACK + ANSI.RED + 'M');
 		CHAR_MAP.put(TileType.BorealForest, ANSI.BACKGROUND_BLACK + ANSI.CYAN + 'B');
 		CHAR_MAP.put(TileType.TemperateForest, ANSI.BACKGROUND_BLACK + ANSI.GREEN + 'F');
 		CHAR_MAP.put(TileType.Ocean, ANSI.BACKGROUND_BLACK + ANSI.BLUE + 'O');
 		CHAR_MAP.put(TileType.Plains, ANSI.BACKGROUND_BLACK + ANSI.MAGENTA + 'P');
-		CHAR_MAP.put(TileType.Jungle, ANSI.BACKGROUND_WHITE + ANSI.BLACK + 'J');
+		CHAR_MAP.put(TileType.Jungle, ANSI.BACKGROUND_BLACK + ANSI.HIGH_INTENSITY + ANSI.WHITE + 'J');
 		CHAR_MAP.put(TileType.NotVisible, "" + '_');
 	}
 
