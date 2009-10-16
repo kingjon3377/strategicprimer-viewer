@@ -58,9 +58,11 @@ public class GUITile extends JLabel {
 		try {
 			super.setIcon(new ImageIcon(getImage(_tile.getType())));
 		} catch (IOException e) {
-			Logger.getLogger(GUITile.class
-					.getName()).log(Level.SEVERE, "I/O error loading image for tile ("
-					+ _tile.getRow() + "," + _tile.getCol() + ")", e);
+			Logger.getLogger(GUITile.class.getName()).log(
+					Level.SEVERE,
+					"I/O error loading image for tile ("
+							+ Integer.toString(_tile.getRow()) + ','
+							+ Integer.toString(_tile.getCol()) + ')', e);
 		}
 		setToolTipText("Terrain: " + terrainText(_tile.getType())
 				+ anyForts(_tile) + anyUnits(_tile));
@@ -157,13 +159,17 @@ public class GUITile extends JLabel {
 		DESCRIPTIONS.put(TileType.TemperateForest, "Temperate Forest");
 		DESCRIPTIONS.put(TileType.Tundra, "Tundra");
 	}
+
 	/**
 	 * Populate the filename cache
-	 * @param type A terrain type
-	 * @param tile The string to use as the base of the filename
+	 * 
+	 * @param type
+	 *            A terrain type
+	 * @param tile
+	 *            The string to use as the base of the filename
 	 */
 	private static void addStringToMap(final TileType type, final String tile) {
-		stringMap.put(type, "/" + tile + ".png");
+		stringMap.put(type, '/' + tile + ".png");
 	}
 
 	/**
@@ -179,8 +185,8 @@ public class GUITile extends JLabel {
 		} else {
 			final URL url = GUITile.class.getResource(stringMap.get(terr));
 			if (url == null) {
-				Logger.getLogger(GUITile.class
-						.getName()).severe("Couldn't find image for " + terr);
+				Logger.getLogger(GUITile.class.getName()).severe(
+						"Couldn't find image for " + terr);
 			}
 			return url == null ? null : Toolkit.getDefaultToolkit()
 					.createImage((ImageProducer) url.getContent());
