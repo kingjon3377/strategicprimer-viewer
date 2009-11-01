@@ -19,7 +19,7 @@ import controller.XMLReader;
  * 
  * @author Jonathan Lovelace
  */
-public class AltTerminalViewer {
+public final class AltTerminalViewer {
 	/**
 	 * Logger
 	 */
@@ -35,7 +35,7 @@ public class AltTerminalViewer {
 	 * @param col
 	 *            the column of the point to highlight
 	 */
-	public AltTerminalViewer(final SPMap map, final int row, final int col) {
+	private AltTerminalViewer(final SPMap map, final int row, final int col) {
 		for (int i = 0; i < map.rows(); i++) {
 			for (int j = 0; j < map.cols(); j++) {
 				if (i == row && j == col) {
@@ -87,7 +87,7 @@ public class AltTerminalViewer {
 		CHAR_MAP.put(TileType.Ocean, ANSI.BACKGROUND_BLACK + ANSI.BLUE + 'O');
 		CHAR_MAP.put(TileType.Plains, ANSI.BACKGROUND_BLACK + ANSI.MAGENTA + 'P');
 		CHAR_MAP.put(TileType.Jungle, ANSI.BACKGROUND_BLACK + ANSI.HIGH_INTENSITY + ANSI.WHITE + 'J');
-		CHAR_MAP.put(TileType.NotVisible, "" + '_');
+		CHAR_MAP.put(TileType.NotVisible, Character.toString('_'));
 	}
 
 	/**
@@ -96,6 +96,6 @@ public class AltTerminalViewer {
 	 * @return The single character representing that terrain type.
 	 */
 	private static String getTerrainChar(final TileType type) {
-		return CHAR_MAP.containsKey(type) ? CHAR_MAP.get(type) : "" + '_';
+		return CHAR_MAP.containsKey(type) ? CHAR_MAP.get(type) : Character.toString('_');
 	}
 }
