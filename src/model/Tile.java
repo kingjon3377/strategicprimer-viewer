@@ -26,6 +26,22 @@ public final class Tile implements Serializable {
 		type = _type;
 		forts = new ArrayList<Fortress>();
 		units = new ArrayList<Unit>();
+		event = -1;
+	}
+	/**
+	 * Constructor.
+	 * @param _row The row number
+	 * @param _col The column number
+	 * @param _type The tile type
+	 * @param newEvent the event on the tile
+	 */
+	public Tile(final int _row, final int _col, final TileType _type, final int newEvent) {
+		row = _row;
+		col = _col;
+		type = _type;
+		forts = new ArrayList<Fortress>();
+		units = new ArrayList<Unit>();
+		event = newEvent;
 	}
 	/**
 	 * The row number.
@@ -40,7 +56,11 @@ public final class Tile implements Serializable {
 	/**
 	 * The column number.
 	 */
-	private final int col; 
+	private final int col;
+	/**
+	 * The event on the tile, if any.
+	 */
+	private final int event;
 	/**
 	 * @return the column number
 	 */
@@ -115,6 +135,12 @@ public final class Tile implements Serializable {
 	 */
 	public void removeUnit(final Unit unit) {
 		units.remove(unit);
+	}
+	/**
+	 * @return the event on the tile
+	 */
+	public int getEvent() {
+		return event;
 	}
 }
 

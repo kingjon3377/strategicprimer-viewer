@@ -113,6 +113,17 @@ public class GUITile extends JLabel {
 	}
 
 	/**
+	 * @param tile
+	 *            a tile
+	 * @return A string saying what the event on the tile is, if there is one,
+	 *         or if not an empty string.
+	 */
+	private static String anyEvent(final Tile tile) {
+		return (tile == null || tile.getEvent() == -1 ? "" : "\nEvent: "
+				+ Integer.toString(tile.getEvent()));
+	}
+
+	/**
 	 * @param type
 	 *            a terrain type
 	 * @return a String representation of that terrain type

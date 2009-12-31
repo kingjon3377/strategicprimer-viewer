@@ -166,9 +166,15 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	 */
 	private void parseTile(final Attributes atts) throws SAXException {
 		if (currentTile == null) {
-			currentTile = new Tile(Integer.parseInt(atts.getValue("row")),
-					Integer.parseInt(atts.getValue("column")), TileType
-							.getTileType(atts.getValue("type")));
+			if (atts.getValue("event") == null) {
+				currentTile = new Tile(Integer.parseInt(atts.getValue("row")), Integer
+						.parseInt(atts.getValue("column")), TileType.getTileType(atts
+						.getValue("type")));
+			} else {
+				currentTile = new Tile(Integer.parseInt(atts.getValue("row")), Integer
+						.parseInt(atts.getValue("column")), TileType.getTileType(atts
+						.getValue("type")), Integer.parseInt(atts.getValue("event")));
+			}
 		} else {
 			throw new SAXException(new IllegalStateException(
 					"Cannot (at present) have one tile inside another"));
