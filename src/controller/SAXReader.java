@@ -130,12 +130,11 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	 */
 	@Override
 	public void startElement(final String namespaceURI, final String localName,
-			final String qualifiedName, final Attributes atts)
-			throws SAXException {
+			final String qualifiedName, final Attributes atts) throws SAXException {
 		if (currentMap == null) {
 			if ("map".equals(localName)) {
-				currentMap = new SPMap(Integer.parseInt(atts.getValue("rows")),
-						Integer.parseInt(atts.getValue("columns")));
+				currentMap = new SPMap(Integer.parseInt(atts.getValue("rows")), Integer
+						.parseInt(atts.getValue("columns")));
 			} else {
 				throw new SAXException(new IllegalStateException(
 						"Must start with a map tag!"));
