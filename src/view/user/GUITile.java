@@ -1,16 +1,14 @@
 package view.user;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.ImageProducer;
 import java.io.IOException;
-import java.net.URL;
 import java.util.EnumMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 import model.Fortress;
@@ -55,18 +53,29 @@ public class GUITile extends JLabel {
 	public GUITile(final Tile _tile) {
 		super();
 		setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
+		setToolTipText("Terrain: " + terrainText(_tile.getType()) + anyForts(_tile)
+				+ anyUnits(_tile) + anyEvent(_tile));
+		tile = _tile;
+	}
+
+	/**
+	 * Paint the tile
+	 * 
+	 * @param pen
+	 *            the graphics context
+	 */
+	@Override
+	public void paint(final Graphics pen) {
+		super.paint(pen);
 		try {
-			super.setIcon(new ImageIcon(getImage(_tile.getType())));
+			pen.drawImage(getImage(tile.getType()), 0, 0, getWidth(), getHeight(), this);
 		} catch (IOException e) {
 			Logger.getLogger(GUITile.class.getName()).log(
 					Level.SEVERE,
 					"I/O error loading image for tile ("
-							+ Integer.toString(_tile.getRow()) + ','
-							+ Integer.toString(_tile.getCol()) + ')', e);
+							+ Integer.toString(tile.getRow()) + ','
+							+ Integer.toString(tile.getCol()) + ')', e);
 		}
-		setToolTipText("Terrain: " + terrainText(_tile.getType())
-				+ anyForts(_tile) + anyUnits(_tile));
-		tile = _tile;
 	}
 
 	/**
@@ -191,16 +200,10 @@ public class GUITile extends JLabel {
 	 *             Thrown by a method used in producing the image
 	 */
 	private static Image getImage(final TileType terr) throws IOException {
-		if (imageMap.containsKey(terr)) {
-			return imageMap.get(terr); // NOPMD
-		} else {
-			final URL url = GUITile.class.getResource(stringMap.get(terr));
-			if (url == null) {
-				Logger.getLogger(GUITile.class.getName()).severe(
-						"Couldn't find image for " + terr);
-			}
-			return url == null ? null : Toolkit.getDefaultToolkit()
-					.createImage((ImageProducer) url.getContent());
+		if (!imageMap.containsKey(terr)) {
+			imageMap.put(terr, ImageIO.read(GUITile.class
+					.getResource(stringMap.get(terr))));
 		}
+		return imageMap.get(terr);
 	}
 }
