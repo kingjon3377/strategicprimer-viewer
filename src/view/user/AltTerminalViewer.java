@@ -35,6 +35,7 @@ public final class AltTerminalViewer {
 	 * @param col
 	 *            the column of the point to highlight
 	 */
+	// ESCA-JAVA0266:
 	private AltTerminalViewer(final SPMap map, final int row, final int col) {
 		for (int i = 0; i < map.rows(); i++) {
 			for (int j = 0; j < map.cols(); j++) {

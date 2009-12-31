@@ -57,6 +57,7 @@ public class TerminalViewer {
 			}
 			sbuilder.append("\n");
 		}
+		// ESCA-JAVA0266:
 		System.out.print(sbuilder.toString());
 	}
 
