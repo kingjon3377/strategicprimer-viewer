@@ -54,8 +54,8 @@ public class GUITile extends JLabel {
 	public GUITile(final Tile _tile) {
 		super();
 		setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-		setToolTipText("Terrain: " + terrainText(_tile.getType()) + anyForts(_tile)
-				+ anyUnits(_tile) + anyEvent(_tile));
+		setToolTipText("Terrain: " + terrainText(_tile.getType())
+				+ anyForts(_tile) + anyUnits(_tile) + anyEvent(_tile));
 		tile = _tile;
 	}
 
@@ -221,8 +221,8 @@ public class GUITile extends JLabel {
 	 */
 	private static Image getImage(final TileType terr) throws IOException {
 		if (!imageMap.containsKey(terr)) {
-			imageMap.put(terr, ImageIO.read(GUITile.class
-					.getResource(stringMap.get(terr))));
+			imageMap.put(terr, ImageIO.read(GUITile.class.getResource(stringMap
+					.get(terr))));
 		}
 		return imageMap.get(terr);
 	}
