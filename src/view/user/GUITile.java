@@ -1,5 +1,6 @@
 package view.user;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -67,14 +68,22 @@ public class GUITile extends JLabel {
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-		try {
-			pen.drawImage(getImage(tile.getType()), 0, 0, getWidth(), getHeight(), this);
-		} catch (IOException e) {
-			Logger.getLogger(GUITile.class.getName()).log(
-					Level.SEVERE,
-					"I/O error loading image for tile ("
-							+ Integer.toString(tile.getRow()) + ','
-							+ Integer.toString(tile.getCol()) + ')', e);
+		if (tile.getType().equals(TileType.Plains)) {
+			try {
+				pen.drawImage(getImage(tile.getType()), 0, 0, getWidth(),
+						getHeight(), this);
+			} catch (IOException e) {
+				Logger.getLogger(GUITile.class.getName()).log(
+						Level.SEVERE,
+						"I/O error loading image for tile ("
+								+ Integer.toString(tile.getRow()) + ','
+								+ Integer.toString(tile.getCol()) + ')', e);
+			}
+		} else {
+			final Color saveColor = pen.getColor();
+			pen.setColor(colorMap.get(tile.getType()));
+			pen.fillRect(0, 0, getWidth(), getHeight());
+			pen.setColor(saveColor);
 		}
 	}
 
@@ -154,6 +163,8 @@ public class GUITile extends JLabel {
 	 */
 	private static EnumMap<TileType, Image> imageMap = new EnumMap<TileType, Image>(
 			TileType.class);
+	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
+			TileType.class);
 	/**
 	 * A cache of terrain type image filenames
 	 */
@@ -178,6 +189,15 @@ public class GUITile extends JLabel {
 		DESCRIPTIONS.put(TileType.Plains, "Plains");
 		DESCRIPTIONS.put(TileType.TemperateForest, "Temperate Forest");
 		DESCRIPTIONS.put(TileType.Tundra, "Tundra");
+		colorMap.put(TileType.BorealForest, new Color(72,218,164));
+		colorMap.put(TileType.Desert, new Color(249,233,28));
+		colorMap.put(TileType.Jungle, new Color(229,46,46));
+		colorMap.put(TileType.Mountain, new Color(249,137,28));
+		colorMap.put(TileType.NotVisible, new Color(255,255,255));
+		colorMap.put(TileType.Ocean, new Color(0,0,255));
+		colorMap.put(TileType.Plains, new Color(0,117,0));
+		colorMap.put(TileType.TemperateForest, new Color(72,250,72));
+		colorMap.put(TileType.Tundra, new Color(153,153,153));
 	}
 
 	/**
