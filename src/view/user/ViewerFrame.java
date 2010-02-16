@@ -93,13 +93,13 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 		final JButton quitButton = new JButton("Quit"); 
 		quitButton.addActionListener(this);
 		add(quitButton, BorderLayout.SOUTH);
-//		add(new JScrollPane(new MapPanel(new XMLReader().getMap(filename))), BorderLayout.CENTER);
-		final MapComponent map = new MapComponent(new XMLReader().getMap(filename));
-		final JScrollPane scrollPane = new JScrollPane(map);
+		add(new JScrollPane(new MapPanel(new XMLReader().getMap(filename))), BorderLayout.CENTER);
+//		final MapComponent map = new MapComponent(new XMLReader().getMap(filename));
+//		final JScrollPane scrollPane = new JScrollPane(map);
 //		map.createImage();
-		scrollPane.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT - 5));
-		scrollPane.setPreferredSize(scrollPane.getMaximumSize());
-		add(scrollPane, BorderLayout.CENTER);
+//		scrollPane.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT - 5));
+//		scrollPane.setPreferredSize(scrollPane.getMaximumSize());
+//		add(scrollPane, BorderLayout.CENTER);
 		pack();
 		repaint();
 	}
