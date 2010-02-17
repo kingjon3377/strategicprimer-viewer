@@ -121,6 +121,9 @@ public class MapComponent extends JComponent {
 				pen.setColor(colorMap.get(tile.getType()));
 				pen.fillRect(col * TILE_SIZE, row
 						* TILE_SIZE, TILE_SIZE, TILE_SIZE);
+				pen.setColor(Color.BLACK);
+				pen.drawRect(col * TILE_SIZE, row
+						* TILE_SIZE, TILE_SIZE, TILE_SIZE);
 				pen.setColor(saveColor);
 	}
 
