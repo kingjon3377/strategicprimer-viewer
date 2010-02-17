@@ -143,21 +143,7 @@ public class GUITile extends JLabel {
 	
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);
-	/**
-	 * A cache of terrain type image filenames
-	 */
-	private static EnumMap<TileType, String> stringMap = new EnumMap<TileType, String>(
-			TileType.class);
 	static {
-		addStringToMap(TileType.Plains, "plains");
-		addStringToMap(TileType.Ocean, "ocean");
-		addStringToMap(TileType.TemperateForest, "tforest");
-		addStringToMap(TileType.BorealForest, "bforest");
-		addStringToMap(TileType.Desert, "desert");
-		addStringToMap(TileType.Jungle, "jungle");
-		addStringToMap(TileType.Mountain, "mountain");
-		addStringToMap(TileType.Tundra, "tundra");
-		addStringToMap(TileType.NotVisible, "notvisible");
 		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");
 		DESCRIPTIONS.put(TileType.Desert, "Desert");
 		DESCRIPTIONS.put(TileType.Jungle, "Jungle");
@@ -178,15 +164,4 @@ public class GUITile extends JLabel {
 		colorMap.put(TileType.Tundra, new Color(153,153,153));
 	}
 
-	/**
-	 * Populate the filename cache
-	 * 
-	 * @param type
-	 *            A terrain type
-	 * @param tile
-	 *            The string to use as the base of the filename
-	 */
-	private static void addStringToMap(final TileType type, final String tile) {
-		stringMap.put(type, '/' + tile + ".png");
-	}
 }
