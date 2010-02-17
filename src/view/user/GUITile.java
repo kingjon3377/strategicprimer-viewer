@@ -66,6 +66,8 @@ public class GUITile extends JLabel {
 			final Color saveColor = pen.getColor();
 			pen.setColor(colorMap.get(tile.getType()));
 			pen.fillRect(0, 0, getWidth(), getHeight());
+			pen.setColor(Color.BLACK);
+			pen.drawRect(0, 0, getWidth(), getHeight());
 			pen.setColor(saveColor);
 	}
 
