@@ -23,7 +23,7 @@ public class GUITile extends JLabel {
 	/**
 	 * The size of each GUI tile
 	 */
-	private static final int TILE_SIZE = 5;
+	private static final int TILE_SIZE = 10;
 	/**
 	 * 
 	 */
