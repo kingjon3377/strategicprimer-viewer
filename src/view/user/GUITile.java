@@ -49,6 +49,8 @@ public class GUITile extends JLabel {
 	public GUITile(final Tile _tile) {
 		super();
 		setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
+		setMinimumSize(getPreferredSize());
+		setMaximumSize(null);
 		setToolTipText("Terrain: " + terrainText(_tile.getType())
 				+ anyForts(_tile) + anyUnits(_tile) + anyEvent(_tile));
 		tile = _tile;
