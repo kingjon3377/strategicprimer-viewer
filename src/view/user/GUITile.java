@@ -65,12 +65,12 @@ public class GUITile extends JLabel {
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-			final Color saveColor = pen.getColor();
-			pen.setColor(colorMap.get(tile.getType()));
-			pen.fillRect(0, 0, getWidth(), getHeight());
-			pen.setColor(Color.BLACK);
-			pen.drawRect(0, 0, getWidth(), getHeight());
-			pen.setColor(saveColor);
+		final Color saveColor = pen.getColor();
+		pen.setColor(colorMap.get(tile.getType()));
+		pen.fillRect(0, 0, getWidth(), getHeight());
+		pen.setColor(Color.BLACK);
+		pen.drawRect(0, 0, getWidth(), getHeight());
+		pen.setColor(saveColor);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class GUITile extends JLabel {
 	 */
 	private static final EnumMap<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
 			TileType.class);
-	
+
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);
 	static {
@@ -157,15 +157,15 @@ public class GUITile extends JLabel {
 		DESCRIPTIONS.put(TileType.Plains, "Plains");
 		DESCRIPTIONS.put(TileType.TemperateForest, "Temperate Forest");
 		DESCRIPTIONS.put(TileType.Tundra, "Tundra");
-		colorMap.put(TileType.BorealForest, new Color(72,218,164));
-		colorMap.put(TileType.Desert, new Color(249,233,28));
-		colorMap.put(TileType.Jungle, new Color(229,46,46));
-		colorMap.put(TileType.Mountain, new Color(249,137,28));
-		colorMap.put(TileType.NotVisible, new Color(255,255,255));
-		colorMap.put(TileType.Ocean, new Color(0,0,255));
-		colorMap.put(TileType.Plains, new Color(0,117,0));
-		colorMap.put(TileType.TemperateForest, new Color(72,250,72));
-		colorMap.put(TileType.Tundra, new Color(153,153,153));
+		colorMap.put(TileType.BorealForest, new Color(72, 218, 164));
+		colorMap.put(TileType.Desert, new Color(249, 233, 28));
+		colorMap.put(TileType.Jungle, new Color(229, 46, 46));
+		colorMap.put(TileType.Mountain, new Color(249, 137, 28));
+		colorMap.put(TileType.NotVisible, new Color(255, 255, 255));
+		colorMap.put(TileType.Ocean, new Color(0, 0, 255));
+		colorMap.put(TileType.Plains, new Color(0, 117, 0));
+		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
+		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
 	}
 
 }

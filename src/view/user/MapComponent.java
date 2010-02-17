@@ -84,25 +84,30 @@ public class MapComponent extends JComponent {
 	 */
 	private final void drawMap(final Graphics pen) {
 		final Rectangle bounds = bounds(pen.getClipBounds());
-		final int minX = (int) (bounds.getMinX()
-				/ TILE_SIZE);
-		final int minY = (int) (bounds.getMinY()
-				/ TILE_SIZE);
-		final int maxX = Math.min((int) (bounds.getMaxX() / TILE_SIZE + 1), map.cols());
-		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1), map.rows());
+		final int minX = (int) (bounds.getMinX() / TILE_SIZE);
+		final int minY = (int) (bounds.getMinY() / TILE_SIZE);
+		final int maxX = Math.min((int) (bounds.getMaxX() / TILE_SIZE + 1), map
+				.cols());
+		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1), map
+				.rows());
 		for (int i = minY; i < maxY; i++) {
 			for (int j = minX; j < maxX; j++) {
 				paintTile(pen, map.getTile(i, j), i, j);
 			}
 		}
 	}
+
 	/**
-	 * @param rect a bounding rectangle
+	 * @param rect
+	 *            a bounding rectangle
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return rect == null ? new Rectangle(0, 0, map.cols() * TILE_SIZE, map.rows() * TILE_SIZE) : rect;
+		return rect == null ? new Rectangle(0, 0, map.cols() * TILE_SIZE, map
+				.rows()
+				* TILE_SIZE) : rect;
 	}
+
 	/**
 	 * Paint a tile.
 	 * 
@@ -117,28 +122,26 @@ public class MapComponent extends JComponent {
 	 */
 	private void paintTile(final Graphics pen, final Tile tile, final int row,
 			final int col) {
-				final Color saveColor = pen.getColor();
-				pen.setColor(colorMap.get(tile.getType()));
-				pen.fillRect(col * TILE_SIZE, row
-						* TILE_SIZE, TILE_SIZE, TILE_SIZE);
-				pen.setColor(Color.BLACK);
-				pen.drawRect(col * TILE_SIZE, row
-						* TILE_SIZE, TILE_SIZE, TILE_SIZE);
-				pen.setColor(saveColor);
+		final Color saveColor = pen.getColor();
+		pen.setColor(colorMap.get(tile.getType()));
+		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		pen.setColor(Color.BLACK);
+		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		pen.setColor(saveColor);
 	}
 
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);
 	static {
-		colorMap.put(TileType.BorealForest, new Color(72,218,164));
-		colorMap.put(TileType.Desert, new Color(249,233,28));
-		colorMap.put(TileType.Jungle, new Color(229,46,46));
-		colorMap.put(TileType.Mountain, new Color(249,137,28));
-		colorMap.put(TileType.NotVisible, new Color(255,255,255));
-		colorMap.put(TileType.Ocean, new Color(0,0,255));
-		colorMap.put(TileType.Plains, new Color(0,117,0));
-		colorMap.put(TileType.TemperateForest, new Color(72,250,72));
-		colorMap.put(TileType.Tundra, new Color(153,153,153));
+		colorMap.put(TileType.BorealForest, new Color(72, 218, 164));
+		colorMap.put(TileType.Desert, new Color(249, 233, 28));
+		colorMap.put(TileType.Jungle, new Color(229, 46, 46));
+		colorMap.put(TileType.Mountain, new Color(249, 137, 28));
+		colorMap.put(TileType.NotVisible, new Color(255, 255, 255));
+		colorMap.put(TileType.Ocean, new Color(0, 0, 255));
+		colorMap.put(TileType.Plains, new Color(0, 117, 0));
+		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
+		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
 	}
 
 }
