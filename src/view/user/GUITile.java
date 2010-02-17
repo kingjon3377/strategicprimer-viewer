@@ -70,9 +70,17 @@ public class GUITile extends JLabel {
 		pen.fillRect(0, 0, getWidth(), getHeight());
 		pen.setColor(Color.BLACK);
 		pen.drawRect(0, 0, getWidth(), getHeight());
+		if (!tile.getForts().isEmpty() && !tile.getType().equals(TileType.NotVisible)) {
+			pen.setColor(BROWN);
+			pen.fillRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+		} else if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
+			pen.setColor(PURPLE);
+			pen.fillOval(getWidth() / 2, getHeight() / 2, getWidth() / 4 , getHeight() / 4);
+		}
 		pen.setColor(saveColor);
 	}
-
+	private static final Color BROWN = new Color(160,82,45);
+	private static final Color PURPLE = new Color(148,0,211);
 	/**
 	 * @param tile2
 	 *            a tile

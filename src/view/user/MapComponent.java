@@ -127,8 +127,17 @@ public class MapComponent extends JComponent {
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
 		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		if (!tile.getForts().isEmpty() && !tile.getType().equals(TileType.NotVisible)) {
+			pen.setColor(BROWN);
+			pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE + TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
+		} else if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
+			pen.setColor(PURPLE);
+			pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4 , TILE_SIZE / 4);
+		}
 		pen.setColor(saveColor);
 	}
+	private static final Color BROWN = new Color(160,82,45);
+	private static final Color PURPLE = new Color(148,0,211);
 
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);
