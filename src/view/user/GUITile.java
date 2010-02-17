@@ -3,13 +3,8 @@ package view.user;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.IOException;
 import java.util.EnumMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 import model.Fortress;
@@ -68,23 +63,10 @@ public class GUITile extends JLabel {
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-		if (tile.getType().equals(TileType.Plains)) {
-			try {
-				pen.drawImage(getImage(tile.getType()), 0, 0, getWidth(),
-						getHeight(), this);
-			} catch (IOException e) {
-				Logger.getLogger(GUITile.class.getName()).log(
-						Level.SEVERE,
-						"I/O error loading image for tile ("
-								+ Integer.toString(tile.getRow()) + ','
-								+ Integer.toString(tile.getCol()) + ')', e);
-			}
-		} else {
 			final Color saveColor = pen.getColor();
 			pen.setColor(colorMap.get(tile.getType()));
 			pen.fillRect(0, 0, getWidth(), getHeight());
 			pen.setColor(saveColor);
-		}
 	}
 
 	/**
@@ -158,11 +140,7 @@ public class GUITile extends JLabel {
 	 */
 	private static final EnumMap<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
 			TileType.class);
-	/**
-	 * A cache of terrain type images
-	 */
-	private static EnumMap<TileType, Image> imageMap = new EnumMap<TileType, Image>(
-			TileType.class);
+	
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);
 	/**
@@ -210,20 +188,5 @@ public class GUITile extends JLabel {
 	 */
 	private static void addStringToMap(final TileType type, final String tile) {
 		stringMap.put(type, '/' + tile + ".png");
-	}
-
-	/**
-	 * @param terr
-	 *            a terrain type
-	 * @return an image representing that terrain
-	 * @throws IOException
-	 *             Thrown by a method used in producing the image
-	 */
-	private static Image getImage(final TileType terr) throws IOException {
-		if (!imageMap.containsKey(terr)) {
-			imageMap.put(terr, ImageIO.read(GUITile.class.getResource(stringMap
-					.get(terr))));
-		}
-		return imageMap.get(terr);
 	}
 }
