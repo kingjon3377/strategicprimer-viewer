@@ -32,7 +32,7 @@ public class MapComponent extends JComponent {
 	/**
 	 * An image of the map.
 	 */
-	private Image image;
+	private transient Image image;
 	/**
 	 * Tile size.
 	 */
@@ -120,19 +120,21 @@ public class MapComponent extends JComponent {
 	 * @param col
 	 *            which column this is
 	 */
-	private void paintTile(final Graphics pen, final Tile tile, final int row,
+	private static void paintTile(final Graphics pen, final Tile tile, final int row,
 			final int col) {
 		final Color saveColor = pen.getColor();
 		pen.setColor(colorMap.get(tile.getType()));
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
 		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		if (!tile.getForts().isEmpty() && !tile.getType().equals(TileType.NotVisible)) {
+		if (tile.getForts().isEmpty() || tile.getType().equals(TileType.NotVisible)) {
+			if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
+				pen.setColor(PURPLE);
+				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4 , TILE_SIZE / 4);
+			}
+		} else {
 			pen.setColor(BROWN);
 			pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE + TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
-		} else if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
-			pen.setColor(PURPLE);
-			pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4 , TILE_SIZE / 4);
 		}
 		pen.setColor(saveColor);
 	}
@@ -141,6 +143,7 @@ public class MapComponent extends JComponent {
 
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);
+	// ESCA-JAVA0076:
 	static {
 		colorMap.put(TileType.BorealForest, new Color(72, 218, 164));
 		colorMap.put(TileType.Desert, new Color(249, 233, 28));
