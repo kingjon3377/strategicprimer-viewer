@@ -62,10 +62,10 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
  		final Logger LOGGER = Logger.getLogger(ViewerFrame.class
  				.getName());
 		try {
+			String filename;
 			if (args.length > 0) {
-			frame = new ViewerFrame(args[0]);
+				filename = args[0];
 			} else {
-				String filename;
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileFilter(new MapFileFilter());
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -73,8 +73,8 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 				} else {
 					return;
 				}
-				frame = new ViewerFrame(filename);
 			}
+			frame = new ViewerFrame(filename);
 			frame.setVisible(true);
 		} catch (SAXException e) {
 			LOGGER.log(Level.SEVERE,"Error reading XML file:",e);
