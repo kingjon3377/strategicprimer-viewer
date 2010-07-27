@@ -67,6 +67,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 			} else {
 				String filename;
 				JFileChooser chooser = new JFileChooser();
+				chooser.setFileFilter(new MapFileFilter());
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					filename = chooser.getSelectedFile().getPath();
 				} else {
