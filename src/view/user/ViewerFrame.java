@@ -25,7 +25,8 @@ import controller.XMLReader;
  * @author Jonathan Lovelace
  * 
  */
-public final class ViewerFrame extends JFrame implements WindowListener, ActionListener {
+public final class ViewerFrame extends JFrame implements WindowListener,
+		ActionListener {
 	/**
 	 * Default width of the Frame.
 	 */
@@ -54,13 +55,12 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 * Run the app.
 	 * 
 	 * @param args
- 	 *            Command-line arguments: args[0] is the map filename, others
- 	 *            are ignored. TODO: Add option handling.
- 	 * 
+	 *            Command-line arguments: args[0] is the map filename, others
+	 *            are ignored. TODO: Add option handling.
+	 * 
 	 */
 	public static void main(final String[] args) {
- 		final Logger LOGGER = Logger.getLogger(ViewerFrame.class
- 				.getName());
+		final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
 		try {
 			String filename;
 			if (args.length > 0) {
@@ -77,9 +77,9 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 			frame = new ViewerFrame(filename);
 			frame.setVisible(true);
 		} catch (SAXException e) {
-			LOGGER.log(Level.SEVERE,"Error reading XML file:",e);
+			LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE,"Error reading XML file:",e);
+			LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
 		}
 	}
 
@@ -98,21 +98,24 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
-		this.setPreferredSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+		this.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		this.setMaximumSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
-		this.setMinimumSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+		this.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		this.setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		addWindowListener(this);
-		final JButton quitButton = new JButton("Quit"); 
+		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		add(quitButton, BorderLayout.SOUTH);
-		add(new JScrollPane(new MapPanel(new XMLReader().getMap(filename))), BorderLayout.CENTER);
-//		final MapComponent map = new MapComponent(new XMLReader().getMap(filename));
-//		final JScrollPane scrollPane = new JScrollPane(map);
-//		map.createImage();
-//		scrollPane.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT - 5));
-//		scrollPane.setPreferredSize(scrollPane.getMaximumSize());
-//		add(scrollPane, BorderLayout.CENTER);
+		add(new JScrollPane(new MapPanel(new XMLReader().getMap(filename))),
+				BorderLayout.CENTER);
+		// final MapComponent map = new MapComponent(new
+		// XMLReader().getMap(filename));
+		// final JScrollPane scrollPane = new JScrollPane(map);
+		// map.createImage();
+		// scrollPane.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT
+		// - 5));
+		// scrollPane.setPreferredSize(scrollPane.getMaximumSize());
+		// add(scrollPane, BorderLayout.CENTER);
 		pack();
 		repaint();
 	}
@@ -136,7 +139,7 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 	 */
 	@Override
 	public void windowClosed(final WindowEvent event) {
-		System.exit(0); 
+		System.exit(0);
 	}
 
 	/**
@@ -206,9 +209,12 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
 			quit(0);
 		}
 	}
+
 	/**
 	 * Quit. (Don't halt the VM from a non-static context.)
-	 * @param code The exit code.
+	 * 
+	 * @param code
+	 *            The exit code.
 	 */
 	private static void quit(final int code) {
 		System.exit(code);
