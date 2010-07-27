@@ -21,6 +21,10 @@ import model.Unit;
  */
 public class GUITile extends JLabel {
 	/**
+	 * Whether this is the currently selected tile.
+	 */
+	private boolean selected = false;
+	/**
 	 * The size of each GUI tile
 	 */
 	private static final int TILE_SIZE = 10;
@@ -70,6 +74,10 @@ public class GUITile extends JLabel {
 		pen.fillRect(0, 0, getWidth(), getHeight());
 		pen.setColor(Color.BLACK);
 		pen.drawRect(0, 0, getWidth(), getHeight());
+		if (selected) {
+			pen.drawRect(1, 1, getWidth() - 1, getHeight() - 1);
+			pen.drawRect(2, 2, getWidth() - 2, getHeight() - 2);
+		}
 		if (tile.getForts().isEmpty() || tile.getType().equals(TileType.NotVisible)) {
 			if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
 				pen.setColor(PURPLE);
@@ -178,5 +186,16 @@ public class GUITile extends JLabel {
 		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
 		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
 	}
-
+	/**
+	 * @return whether this is the currently selected tile
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
+	/**
+	 * @param sel whether this is the currently selected tile
+	 */
+	public void setSelected(final boolean sel) {
+		selected = sel;
+	}
 }

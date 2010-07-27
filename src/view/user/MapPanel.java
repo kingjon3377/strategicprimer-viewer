@@ -19,6 +19,10 @@ public class MapPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 4707498496341178052L;
 	/**
+	 * Selection listener.
+	 */
+	private final SelectionListener selListener;
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(MapPanel.class
@@ -32,6 +36,7 @@ public class MapPanel extends JPanel {
 	 */
 	public MapPanel(final SPMap map) {
 		super();
+		selListener = new SelectionListener();
 		loadMap(map);
 	}
 
@@ -44,14 +49,17 @@ public class MapPanel extends JPanel {
 	public final void loadMap(final SPMap map) {
 		if (map != null) {
 			removeAll();
+			GUITile currentTile;
 			setLayout(new GridLayout(map.rows(), 0));
 			for (int row = 0; row < map.rows(); row++) {
 				for (int col = 0; col < map.cols(); col++) {
 					if (map.getTile(row, col) == null) {
-						add(new NullGUITile(row, col)); // NOPMD
+						currentTile = new NullGUITile(row, col); // NOPMD
 					} else {
-						add(new GUITile(map.getTile(row, col))); // NOPMD
+						currentTile = new GUITile(map.getTile(row, col)); // NOPMD
 					}
+					currentTile.addMouseListener(selListener);
+					add(currentTile);
 				}
 				LOGGER.fine("Added row ");
 				LOGGER.fine(Integer.toString(row));
