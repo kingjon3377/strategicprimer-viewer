@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
@@ -61,7 +62,18 @@ public final class ViewerFrame extends JFrame implements WindowListener, ActionL
  		final Logger LOGGER = Logger.getLogger(ViewerFrame.class
  				.getName());
 		try {
+			if (args.length > 0) {
 			frame = new ViewerFrame(args[0]);
+			} else {
+				String filename;
+				JFileChooser chooser = new JFileChooser();
+				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					filename = chooser.getSelectedFile().getPath();
+				} else {
+					return;
+				}
+				frame = new ViewerFrame(filename);
+			}
 			frame.setVisible(true);
 		} catch (SAXException e) {
 			LOGGER.log(Level.SEVERE,"Error reading XML file:",e);
