@@ -26,7 +26,7 @@ public final class XMLReader implements Serializable {
 	/**
 	 * The event-handler that constructs the objects for us.
 	 */
-	private static final SAXReader READER = new SAXReader();
+	private final SAXReader reader = new SAXReader();
 
 	/**
 	 * 
@@ -37,7 +37,7 @@ public final class XMLReader implements Serializable {
 	 */
 	public XMLReader() throws SAXException {
 		parser = XMLReaderFactory.createXMLReader();
-		parser.setContentHandler(READER);
+		parser.setContentHandler(reader);
 	}
 
 	/**
@@ -51,6 +51,6 @@ public final class XMLReader implements Serializable {
 	 */
 	public SPMap getMap(final String filename) throws SAXException, IOException {
 		parser.parse(filename);
-		return READER.getMap();
+		return reader.getMap();
 	}
 }

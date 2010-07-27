@@ -1,4 +1,4 @@
-package view.user; 
+package view.user;
 
 import java.awt.GridLayout;
 import java.util.logging.Logger;
@@ -19,6 +19,12 @@ public class MapPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 4707498496341178052L;
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(MapPanel.class
+			.getName());
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param map
@@ -26,19 +32,31 @@ public class MapPanel extends JPanel {
 	 */
 	public MapPanel(final SPMap map) {
 		super();
-		final Logger LOGGER = Logger.getLogger(MapPanel.class.getName());
-		setLayout(new GridLayout(map.rows(), 0));
-		for (int row = 0; row < map.rows(); row++) {
-			for (int col = 0; col < map.cols(); col++) {
-				if (map.getTile(row, col) == null) {
-					add(new NullGUITile(row, col)); // NOPMD
-				} else {
-					add(new GUITile(map.getTile(row, col))); // NOPMD
+		loadMap(map);
+	}
+
+	/**
+	 * Load and draw a map
+	 * 
+	 * @param map
+	 *            the map to load
+	 */
+	public final void loadMap(final SPMap map) {
+		if (map != null) {
+			removeAll();
+			setLayout(new GridLayout(map.rows(), 0));
+			for (int row = 0; row < map.rows(); row++) {
+				for (int col = 0; col < map.cols(); col++) {
+					if (map.getTile(row, col) == null) {
+						add(new NullGUITile(row, col)); // NOPMD
+					} else {
+						add(new GUITile(map.getTile(row, col))); // NOPMD
+					}
 				}
+				LOGGER.fine("Added row ");
+				LOGGER.fine(Integer.toString(row));
+				LOGGER.fine("\n");
 			}
-			LOGGER.fine("Added row ");
-			LOGGER.fine(Integer.toString(row));
-			LOGGER.fine("\n");
 		}
 	}
 }

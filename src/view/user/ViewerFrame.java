@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.xml.sax.SAXException;
@@ -27,6 +28,10 @@ import controller.XMLReader;
  */
 public final class ViewerFrame extends JFrame implements WindowListener,
 		ActionListener {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
 	/**
 	 * Default width of the Frame.
 	 */
@@ -43,6 +48,10 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 * The quasi-Singleton.
 	 */
 	private static ViewerFrame frame;
+	/**
+	 * The map (view) itself.
+	 */
+	private final MapPanel mapPanel;
 
 	/**
 	 * @return the quasi-Singleton objects
@@ -60,7 +69,6 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 * 
 	 */
 	public static void main(final String[] args) {
-		final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
 		try {
 			String filename;
 			if (args.length > 0) {
@@ -103,11 +111,16 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		this.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		this.setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		addWindowListener(this);
+		final JPanel buttonPanel = new JPanel();
+		final JButton loadButton = new JButton("Load");
+		loadButton.addActionListener(this);
+		buttonPanel.add(loadButton);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
-		add(quitButton, BorderLayout.SOUTH);
-		add(new JScrollPane(new MapPanel(new XMLReader().getMap(filename))),
-				BorderLayout.CENTER);
+		buttonPanel.add(quitButton);
+		add(buttonPanel,BorderLayout.SOUTH);
+		mapPanel = new MapPanel(new XMLReader().getMap(filename));
+		add(new JScrollPane(mapPanel), BorderLayout.CENTER);
 		// final MapComponent map = new MapComponent(new
 		// XMLReader().getMap(filename));
 		// final JScrollPane scrollPane = new JScrollPane(map);
@@ -205,6 +218,21 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
+		if ("Load".equals(event.getActionCommand())) {
+			JFileChooser chooser = new JFileChooser();
+			chooser.setFileFilter(new MapFileFilter());
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				try {
+					mapPanel.loadMap(new XMLReader().getMap(chooser.getSelectedFile().getPath()));
+				} catch (SAXException e) {
+					LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
+				}
+			} else {
+				return;
+			}
+		}
 		if ("Quit".equals(event.getActionCommand())) {
 			quit(0);
 		}
