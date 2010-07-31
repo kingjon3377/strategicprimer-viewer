@@ -177,7 +177,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 			}
 		} else {
 			throw new SAXException(new IllegalStateException(
-					"Cannot (at present) have one tile inside another"));
+					"Cannot (at present) have one tile inside another: row " + atts.getValue("row") + ", col " + atts.getValue("column")));
 		}
 	}
 
