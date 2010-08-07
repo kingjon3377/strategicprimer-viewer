@@ -24,9 +24,9 @@ public final class MapFileFilter extends FileFilter {
 	@Override
 	public boolean accept(final File file) {
 		if (file.isDirectory()) {
-			return true;
+			return true; // NOPMD
 		} else {
-			String extension = getExtension(file);
+			final String extension = getExtension(file);
 			return extension != null
 					&& ("xml".equals(extension) || "map".equals(extension));
 		}

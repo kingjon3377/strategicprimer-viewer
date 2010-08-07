@@ -29,6 +29,10 @@ import controller.XMLReader;
 public final class ViewerFrame extends JFrame implements WindowListener,
 		ActionListener {
 	/**
+	 * An error message refactored from at least four uses.
+	 */
+	private static final String XML_ERROR_STRING = "Error reading XML file:";
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
@@ -70,11 +74,11 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 */
 	public static void main(final String[] args) {
 		try {
-			String filename;
+			String filename = "";
 			if (args.length > 0) {
 				filename = args[0];
 			} else {
-				JFileChooser chooser = new JFileChooser();
+				final JFileChooser chooser = new JFileChooser();
 				chooser.setFileFilter(new MapFileFilter());
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					filename = chooser.getSelectedFile().getPath();
@@ -85,9 +89,9 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 			frame = new ViewerFrame(filename);
 			frame.setVisible(true);
 		} catch (SAXException e) {
-			LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
+			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
+			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 		}
 	}
 
@@ -219,15 +223,15 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Load".equals(event.getActionCommand())) {
-			JFileChooser chooser = new JFileChooser();
+			final JFileChooser chooser = new JFileChooser();
 			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
 					mapPanel.loadMap(new XMLReader().getMap(chooser.getSelectedFile().getPath()));
 				} catch (SAXException e) {
-					LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 				} catch (IOException e) {
-					LOGGER.log(Level.SEVERE, "Error reading XML file:", e);
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 				}
 			} else {
 				return;

@@ -130,11 +130,12 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	 */
 	@Override
 	public void startElement(final String namespaceURI, final String localName,
-			final String qualifiedName, final Attributes atts) throws SAXException {
+			final String qualifiedName, final Attributes atts)
+			throws SAXException {
 		if (currentMap == null) {
 			if ("map".equals(localName)) {
-				currentMap = new SPMap(Integer.parseInt(atts.getValue("rows")), Integer
-						.parseInt(atts.getValue("columns")));
+				currentMap = new SPMap(Integer.parseInt(atts.getValue("rows")),
+						Integer.parseInt(atts.getValue("columns")));
 			} else {
 				throw new SAXException(new IllegalStateException(
 						"Must start with a map tag!"));
@@ -167,17 +168,20 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	private void parseTile(final Attributes atts) throws SAXException {
 		if (currentTile == null) {
 			if (atts.getValue("event") == null) {
-				currentTile = new Tile(Integer.parseInt(atts.getValue("row")), Integer
-						.parseInt(atts.getValue("column")), TileType.getTileType(atts
-						.getValue("type")));
+				currentTile = new Tile(Integer.parseInt(atts.getValue("row")),
+						Integer.parseInt(atts.getValue("column")), TileType
+								.getTileType(atts.getValue("type")));
 			} else {
-				currentTile = new Tile(Integer.parseInt(atts.getValue("row")), Integer
-						.parseInt(atts.getValue("column")), TileType.getTileType(atts
-						.getValue("type")), Integer.parseInt(atts.getValue("event")));
+				currentTile = new Tile(Integer.parseInt(atts.getValue("row")),
+						Integer.parseInt(atts.getValue("column")), TileType
+								.getTileType(atts.getValue("type")), Integer
+								.parseInt(atts.getValue("event")));
 			}
 		} else {
 			throw new SAXException(new IllegalStateException(
-					"Cannot (at present) have one tile inside another: row " + atts.getValue("row") + ", col " + atts.getValue("column")));
+					"Cannot (at present) have one tile inside another: row "
+							+ atts.getValue("row") + ", col "
+							+ atts.getValue("column")));
 		}
 	}
 
@@ -219,8 +223,8 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 				throw new SAXException(new IllegalStateException(
 						"Cannot have a unit not in a tile"));
 			}
-			currentUnit = new Unit(currentTile, Integer.parseInt(atts.getValue("owner")),
-					atts.getValue("type"));
+			currentUnit = new Unit(currentTile, Integer.parseInt(atts
+					.getValue("owner")), atts.getValue("type"));
 		} else {
 			throw new SAXException(new IllegalStateException(
 					"Cannot (currently) have a unit inside a unit"));
@@ -238,7 +242,8 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	 */
 	public void parsePlayer(final Attributes atts) throws SAXException {
 		if (currentPlayer == null) {
-			currentPlayer = new Player(Integer.parseInt(atts.getValue("number")), atts
+			currentPlayer = new Player(Integer
+					.parseInt(atts.getValue("number")), atts
 					.getValue("code_name"));
 		} else {
 			throw new SAXException(new IllegalStateException(

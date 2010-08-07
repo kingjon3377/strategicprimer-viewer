@@ -21,13 +21,7 @@ public class MapPanel extends JPanel {
 	/**
 	 * Selection listener.
 	 */
-	private final SelectionListener selListener;
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(MapPanel.class
-			.getName());
-
+	private final transient SelectionListener selListener;
 	/**
 	 * Constructor.
 	 * 
@@ -48,23 +42,31 @@ public class MapPanel extends JPanel {
 	 */
 	public final void loadMap(final SPMap map) {
 		if (map != null) {
+			final Logger LOGGER = Logger.getLogger(MapPanel.class
+					.getName());
 			removeAll();
-			GUITile currentTile;
 			setLayout(new GridLayout(map.rows(), 0));
 			for (int row = 0; row < map.rows(); row++) {
 				for (int col = 0; col < map.cols(); col++) {
 					if (map.getTile(row, col) == null) {
-						currentTile = new NullGUITile(row, col); // NOPMD
+						addTile(new NullGUITile(row, col)); // NOPMD
 					} else {
-						currentTile = new GUITile(map.getTile(row, col)); // NOPMD
+						addTile(new GUITile(map.getTile(row, col))); // NOPMD
 					}
-					currentTile.addMouseListener(selListener);
-					add(currentTile);
 				}
 				LOGGER.fine("Added row ");
 				LOGGER.fine(Integer.toString(row));
 				LOGGER.fine("\n");
 			}
 		}
+	}
+
+	/**
+	 * Set up a new GUI tile
+	 * @param tile the GUI tile to set up.
+	 */
+	private void addTile(final GUITile tile) {
+		tile.addMouseListener(selListener);
+		add(tile);
 	}
 }
