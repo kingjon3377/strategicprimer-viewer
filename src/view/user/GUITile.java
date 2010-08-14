@@ -75,8 +75,7 @@ public class GUITile extends JLabel {
 		pen.setColor(Color.BLACK);
 		pen.drawRect(0, 0, getWidth(), getHeight());
 		if (selected) {
-			pen.drawRect(1, 1, getWidth() - 1, getHeight() - 1);
-			pen.drawRect(2, 2, getWidth() - 2, getHeight() - 2);
+			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
 		}
 		if (tile.getForts().isEmpty() || tile.getType().equals(TileType.NotVisible)) {
 			if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
@@ -85,7 +84,7 @@ public class GUITile extends JLabel {
 			}
 		} else {
 			pen.setColor(BROWN);
-			pen.fillRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+			pen.fillRect(getWidth() / 4 + 1, getHeight() / 4 + 1, getWidth() / 2, getHeight() / 2);
 		}
 		pen.setColor(saveColor);
 	}
@@ -197,5 +196,6 @@ public class GUITile extends JLabel {
 	 */
 	public void setSelected(final boolean sel) {
 		selected = sel;
+		repaint();
 	}
 }
