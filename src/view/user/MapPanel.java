@@ -23,6 +23,10 @@ public class MapPanel extends JPanel {
 	 */
 	private final transient SelectionListener selListener;
 	/**
+	 * The map we represent. Saved only so we can export it.
+	 */
+	private SPMap map;
+	/**
 	 * Constructor.
 	 * 
 	 * @param map
@@ -58,6 +62,7 @@ public class MapPanel extends JPanel {
 				LOGGER.fine(Integer.toString(row));
 				LOGGER.fine("\n");
 			}
+			this.map = map;
 		}
 	}
 
@@ -68,5 +73,11 @@ public class MapPanel extends JPanel {
 	private void addTile(final GUITile tile) {
 		tile.addMouseListener(selListener);
 		add(tile);
+	}
+	/**
+	 * @return the map we represent
+	 */
+	public SPMap getMap() {
+		return map;
 	}
 }

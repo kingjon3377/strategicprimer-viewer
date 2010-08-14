@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import org.xml.sax.SAXException;
 
 import controller.XMLReader;
+import controller.XMLWriter;
 
 /**
  * The main driver class for the viewer app.
@@ -119,6 +120,9 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		final JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(this);
 		buttonPanel.add(loadButton);
+		final JButton saveButton = new JButton("Save As");
+		saveButton.addActionListener(this);
+		buttonPanel.add(saveButton);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		buttonPanel.add(quitButton);
@@ -235,6 +239,16 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 				}
 			} else {
 				return;
+			}
+		} else if ("Save As".equals(event.getActionCommand())) {
+			final JFileChooser chooser = new JFileChooser();
+			chooser.setFileFilter(new MapFileFilter());
+			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+				try {
+					new XMLWriter(chooser.getSelectedFile().getPath()).write(mapPanel.getMap());
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+				}
 			}
 		}
 		if ("Quit".equals(event.getActionCommand())) {
