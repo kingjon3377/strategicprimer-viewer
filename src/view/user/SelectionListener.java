@@ -18,6 +18,10 @@ public class SelectionListener implements MouseListener {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(SelectionListener.class.getName());
 	/**
+	 * The menu to change a tile's type.
+	 */
+	private static final TerrainChangingMenu MENU = new TerrainChangingMenu();
+	/**
 	 * Handle mouse clicks.
 	 * @param event the event to handle
 	 */
@@ -52,20 +56,26 @@ public class SelectionListener implements MouseListener {
 
 	/**
 	 * Ignored
-	 * @param event ignored
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mousePressed(final MouseEvent event) {
-		// Do nothing
+		if (event.isPopupTrigger()) {
+			MENU.setTile((GUITile) event.getComponent());
+			MENU.show(event.getComponent(), event.getX(), event.getY());
+		}
 	}
 
 	/**
 	 * Ignored
-	 * @param event ignored
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mouseReleased(final MouseEvent event) {
-		// Do nothing
+		if (event.isPopupTrigger()) {
+			MENU.setTile((GUITile) event.getComponent());
+			MENU.show(event.getComponent(), event.getX(), event.getY());
+		}
 	}
 
 }
