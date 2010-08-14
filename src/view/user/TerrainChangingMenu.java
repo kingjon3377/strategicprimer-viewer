@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import model.Tile;
 import model.TileType;
 
 /**
