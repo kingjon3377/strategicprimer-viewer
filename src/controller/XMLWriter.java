@@ -74,6 +74,7 @@ public class XMLWriter { // NOPMD
 			printRow(map, i);
 		}
 		writer.println("</map>");
+		writer.close();
 	}
 
 	/**
