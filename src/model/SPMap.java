@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
@@ -194,5 +195,11 @@ public class SPMap implements Serializable {
 	 */
 	public final Tile getTile(final int row, final int col) {
 		return tiles.get(new Point(row, col));
+	}
+	/**
+	 * @return the players in the map
+	 */
+	public List<Player> getPlayers() {
+		return new ArrayList<Player>(players);
 	}
 }
