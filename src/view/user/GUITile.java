@@ -77,19 +77,25 @@ public class GUITile extends JLabel {
 		if (selected) {
 			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
 		}
-		if (tile.getForts().isEmpty() || tile.getType().equals(TileType.NotVisible)) {
-			if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
+		if (tile.getForts().isEmpty()
+				|| tile.getType().equals(TileType.NotVisible)) {
+			if (!tile.getUnits().isEmpty()
+					&& !tile.getType().equals(TileType.NotVisible)) {
 				pen.setColor(PURPLE);
-				pen.fillOval(getWidth() / 2, getHeight() / 2, getWidth() / 4 , getHeight() / 4);
+				pen.fillOval(getWidth() / 2, getHeight() / 2, getWidth() / 4,
+						getHeight() / 4);
 			}
 		} else {
 			pen.setColor(BROWN);
-			pen.fillRect(getWidth() / 4 + 1, getHeight() / 4 + 1, getWidth() / 2, getHeight() / 2);
+			pen.fillRect(getWidth() / 4 + 1, getHeight() / 4 + 1,
+					getWidth() / 2, getHeight() / 2);
 		}
 		pen.setColor(saveColor);
 	}
-	private static final Color BROWN = new Color(160,82,45);
-	private static final Color PURPLE = new Color(148,0,211);
+
+	private static final Color BROWN = new Color(160, 82, 45);
+	private static final Color PURPLE = new Color(148, 0, 211);
+
 	/**
 	 * @param tile2
 	 *            a tile
@@ -185,14 +191,17 @@ public class GUITile extends JLabel {
 		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
 		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
 	}
+
 	/**
 	 * @return whether this is the currently selected tile
 	 */
 	public boolean isSelected() {
 		return selected;
 	}
+
 	/**
-	 * @param sel whether this is the currently selected tile
+	 * @param sel
+	 *            whether this is the currently selected tile
 	 */
 	public void setSelected(final boolean sel) {
 		selected = sel;
