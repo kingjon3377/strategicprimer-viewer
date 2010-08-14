@@ -18,6 +18,10 @@ public class Unit {
 	 */
 	private final String type; 
 	/**
+	 * The name of this unit
+	 */
+	private final String name;
+	/**
 	 * FIXME: We need some more members -- something about stats. What else?
 	 */
 	/**
@@ -25,11 +29,13 @@ public class Unit {
 	 * @param loc the tile the unit is on
 	 * @param _owner the player that owns the unit
 	 * @param _type the type of unit
+	 * @param _name the name of this unit
 	 */
-	public Unit(final Tile loc, final int _owner, final String _type) {
+	public Unit(final Tile loc, final int _owner, final String _type, final String _name) {
 		location = loc;
 		owner = _owner;
 		type = _type;
+		name = _name;
 	}
 	/**
 	 * @return the tile the unit is on
@@ -49,5 +55,11 @@ public class Unit {
 	 */
 	public final String getType() {
 		return type;
+	}
+	/**
+	 * @return the name of the unit
+	 */
+	public final String getName() {
+		return name;
 	}
 }

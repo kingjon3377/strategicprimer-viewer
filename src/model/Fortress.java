@@ -17,6 +17,10 @@ public class Fortress { // We need something about resources and buildings yet
 	 */
 	private final int owner; 
 	/**
+	 * The name of the fortress.
+	 */
+	private final String name;
+	/**
 	 * The tile the fortress is on.
 	 */
 	private final Tile tile; 
@@ -28,10 +32,12 @@ public class Fortress { // We need something about resources and buildings yet
 	 * Csontructor.
 	 * @param _tile the tile the fortress is on
 	 * @param _owner the player that owns the fortress
+	 * @param _name the name of the fortress
 	 */
-	public Fortress(final Tile _tile, final int _owner) {
+	public Fortress(final Tile _tile, final int _owner, final String _name) {
 		tile = _tile;
 		owner = _owner;
+		name = _name;
 		units = new ArrayList<Unit>();
 	}
 	/**
@@ -65,5 +71,11 @@ public class Fortress { // We need something about resources and buildings yet
 	 */
 	public final Tile getTile() {
 		return tile;
+	}
+	/**
+	 * @return the name of the fortress
+	 */
+	public final String getName() {
+		return name;
 	}
 }

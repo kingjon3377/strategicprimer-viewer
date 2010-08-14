@@ -201,7 +201,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 						"Cannot have a fortress not in a tile"));
 			}
 			currentFortress = new Fortress(currentTile, Integer.parseInt(atts
-					.getValue("owner")));
+					.getValue("owner")), atts.getValue("name"));
 		} else {
 			throw new SAXException(new IllegalStateException(
 					"Cannot have a fortress in a fortress"));
@@ -224,7 +224,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 						"Cannot have a unit not in a tile"));
 			}
 			currentUnit = new Unit(currentTile, Integer.parseInt(atts
-					.getValue("owner")), atts.getValue("type"));
+					.getValue("owner")), atts.getValue("type"), atts.getValue("name"));
 		} else {
 			throw new SAXException(new IllegalStateException(
 					"Cannot (currently) have a unit inside a unit"));
