@@ -1,6 +1,8 @@
 package view.user;
+
 /**
  * A collection of ANSI codes to change text color.
+ * 
  * @author some guy on the Internet (the code)
  * @author Jonathan Lovelace (the documentation)
  */
@@ -92,7 +94,7 @@ public final class ANSI {
 	/**
 	 * Make background blue
 	 */
- 	public static final String BACKGROUND_BLUE = "\u001B[44m";
+	public static final String BACKGROUND_BLUE = "\u001B[44m";
 	/**
 	 * Make background magenta
 	 */
@@ -105,6 +107,7 @@ public final class ANSI {
 	 * Make background white
 	 */
 	public static final String BACKGROUND_WHITE = "\u001B[47m";
+
 	/**
 	 * Do not instantiate this class.
 	 */
@@ -112,4 +115,3 @@ public final class ANSI {
 		// Do nohing
 	}
 }
- 

@@ -157,39 +157,30 @@ public final class Converter {
 		copyToBuffer();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				if (tooMuchHigher(
-						eBuffer[i][j],
-						eBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
-						eBuffer[mod(i - 1, rows)][j],
+				if (tooMuchHigher(eBuffer[i][j], eBuffer[mod(i - 1, rows)][mod(
+						j - 1, cols)], eBuffer[mod(i - 1, rows)][j],
 						eBuffer[mod(i - 1, rows)][(j + 1) % cols],
 						eBuffer[i][mod(j - 1, cols)])
-						|| tooMuchHigher(
-								eBuffer[i][j],
-								eBuffer[i][(j + 1) % cols],
-								eBuffer[(i + 1) % rows][mod(j - 1, cols)],
-								eBuffer[(i + 1) % rows][j], eBuffer[(i + 1)
-										% rows][(j + 1) % cols])) {
+						|| tooMuchHigher(eBuffer[i][j], eBuffer[i][(j + 1)
+								% cols], eBuffer[(i + 1) % rows][mod(j - 1,
+								cols)], eBuffer[(i + 1) % rows][j],
+								eBuffer[(i + 1) % rows][(j + 1) % cols])) {
 					elevations[i][j]--;
 					changes++; // NOPMD
 				}
-				if (tooMuchLower(
-						eBuffer[i][j],
-						eBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
-						eBuffer[mod(i - 1, rows)][j],
+				if (tooMuchLower(eBuffer[i][j], eBuffer[mod(i - 1, rows)][mod(
+						j - 1, cols)], eBuffer[mod(i - 1, rows)][j],
 						eBuffer[mod(i - 1, rows)][(j + 1) % cols],
 						eBuffer[i][mod(j - 1, cols)])
-						|| tooMuchLower(
-								eBuffer[i][j],
-								eBuffer[i][(j + 1) % cols],
-								eBuffer[(i + 1) % rows][mod(j - 1, cols)],
-								eBuffer[(i + 1) % rows][j], eBuffer[(i + 1)
-										% rows][(j + 1) % cols])) {
+						|| tooMuchLower(eBuffer[i][j], eBuffer[i][(j + 1)
+								% cols], eBuffer[(i + 1) % rows][mod(j - 1,
+								cols)], eBuffer[(i + 1) % rows][j],
+								eBuffer[(i + 1) % rows][(j + 1) % cols])) {
 					elevations[i][j]++;
 					changes++; // NOPMD
 				}
 				if (changes % 2063 < 5
-						&& !shouldChangeType(
-								tBuffer[i][j],
+						&& !shouldChangeType(tBuffer[i][j],
 								tBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
 								tBuffer[mod(i - 1, rows)][j],
 								tBuffer[mod(i - 1, rows)][(j + 1) % cols],
@@ -201,10 +192,9 @@ public final class Converter {
 								.equals(tBuffer[i][j])) {
 					newTypes[i][j] = shouldChangeType(tBuffer[i][j],
 							tBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
-							tBuffer[mod(i - 1, rows)][j],
-							tBuffer[mod(i - 1, rows)][(j + 1) % cols],
-							tBuffer[i][mod(j - 1, cols)],
-							tBuffer[i][(j + 1) % cols],
+							tBuffer[mod(i - 1, rows)][j], tBuffer[mod(i - 1,
+									rows)][(j + 1) % cols], tBuffer[i][mod(
+									j - 1, cols)], tBuffer[i][(j + 1) % cols],
 							tBuffer[(i + 1) % rows][mod(j - 1, cols)],
 							tBuffer[(i + 1) % rows][j],
 							tBuffer[(i + 1) % rows][(j + 1) % cols]);
@@ -324,7 +314,8 @@ public final class Converter {
 			while (changes != 0 && iterations < 100000) {
 				changes = conv.iterate();
 				iterations++;
-				LOGGER.info("iteration " + iterations + ", changes = " + changes);
+				LOGGER.info("iteration " + iterations + ", changes = "
+						+ changes);
 			}
 			conv.writeToFile("/home/kingjon/new_map.spmap");
 		} catch (SAXException e) {

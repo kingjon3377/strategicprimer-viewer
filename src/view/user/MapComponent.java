@@ -120,26 +120,31 @@ public class MapComponent extends JComponent {
 	 * @param col
 	 *            which column this is
 	 */
-	private static void paintTile(final Graphics pen, final Tile tile, final int row,
-			final int col) {
+	private static void paintTile(final Graphics pen, final Tile tile,
+			final int row, final int col) {
 		final Color saveColor = pen.getColor();
 		pen.setColor(colorMap.get(tile.getType()));
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
 		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		if (tile.getForts().isEmpty() || tile.getType().equals(TileType.NotVisible)) {
-			if (!tile.getUnits().isEmpty()&& !tile.getType().equals(TileType.NotVisible)) {
+		if (tile.getForts().isEmpty()
+				|| tile.getType().equals(TileType.NotVisible)) {
+			if (!tile.getUnits().isEmpty()
+					&& !tile.getType().equals(TileType.NotVisible)) {
 				pen.setColor(PURPLE);
-				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 4 , TILE_SIZE / 4);
+				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE
+						+ TILE_SIZE / 2, TILE_SIZE / 4, TILE_SIZE / 4);
 			}
 		} else {
 			pen.setColor(BROWN);
-			pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE + TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
+			pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE
+					+ TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
 		}
 		pen.setColor(saveColor);
 	}
-	private static final Color BROWN = new Color(160,82,45);
-	private static final Color PURPLE = new Color(148,0,211);
+
+	private static final Color BROWN = new Color(160, 82, 45);
+	private static final Color PURPLE = new Color(148, 0, 211);
 
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);

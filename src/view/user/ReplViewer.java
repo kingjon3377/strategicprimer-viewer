@@ -26,7 +26,8 @@ public final class ReplViewer {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ReplViewer.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ReplViewer.class
+			.getName());
 
 	/**
 	 * Constructor.
@@ -39,7 +40,8 @@ public final class ReplViewer {
 	 *            the column of the user's starting point
 	 */
 	private ReplViewer(final SPMap map, final int row, final int col) {
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(
+				System.in));
 		int iRow = row, iCol = col;
 		Tile tile = map.getTile(row, col);
 		printTile(tile);
@@ -115,8 +117,8 @@ public final class ReplViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ReplViewer(new XMLReader().getMap(args[0]), Integer.parseInt(args[1]),
-					Integer.parseInt(args[2]));
+			new ReplViewer(new XMLReader().getMap(args[0]), Integer
+					.parseInt(args[1]), Integer.parseInt(args[2]));
 		} catch (SAXException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);

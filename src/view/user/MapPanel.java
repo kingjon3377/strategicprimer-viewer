@@ -26,6 +26,7 @@ public class MapPanel extends JPanel {
 	 * The map we represent. Saved only so we can export it.
 	 */
 	private SPMap map;
+
 	/**
 	 * Constructor.
 	 * 
@@ -53,14 +54,16 @@ public class MapPanel extends JPanel {
 	 *            the last column to draw
 	 */
 	public final void loadMap(final SPMap _map, final int minRow,
-				final int maxRow, final int minCol, final int maxCol) {
+			final int maxRow, final int minCol, final int maxCol) {
 		if (_map != null) {
-			final Logger LOGGER = Logger.getLogger(MapPanel.class
-					.getName());
+			final Logger LOGGER = Logger.getLogger(MapPanel.class.getName());
 			removeAll();
-			setLayout(new GridLayout(Math.min(_map.rows(),Math.max(0, maxRow + 1 - minRow)), 0));
-			for (int row = Math.max(0, minRow); row < _map.rows() && row < maxRow + 1; row++) {
-				for (int col = Math.max(0, minCol) ; col < _map.cols() && col < maxCol + 1; col++) {
+			setLayout(new GridLayout(Math.min(_map.rows(), Math.max(0, maxRow
+					+ 1 - minRow)), 0));
+			for (int row = Math.max(0, minRow); row < _map.rows()
+					&& row < maxRow + 1; row++) {
+				for (int col = Math.max(0, minCol); col < _map.cols()
+						&& col < maxCol + 1; col++) {
 					if (_map.getTile(row, col) == null) {
 						addTile(new NullGUITile(row, col)); // NOPMD
 					} else {
@@ -87,12 +90,15 @@ public class MapPanel extends JPanel {
 
 	/**
 	 * Set up a new GUI tile
-	 * @param tile the GUI tile to set up.
+	 * 
+	 * @param tile
+	 *            the GUI tile to set up.
 	 */
 	private void addTile(final GUITile tile) {
 		tile.addMouseListener(selListener);
 		add(tile);
 	}
+
 	/**
 	 * @return the map we represent
 	 */

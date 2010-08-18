@@ -36,7 +36,8 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
+			.getName());
 	/**
 	 * Default width of the Frame.
 	 */
@@ -129,7 +130,7 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		buttonPanel.add(quitButton);
-		add(buttonPanel,BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.SOUTH);
 		add(new JScrollPane(mapPanel), BorderLayout.CENTER);
 		// final MapComponent map = new MapComponent(new
 		// XMLReader().getMap(filename));
@@ -233,7 +234,8 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
-					mapPanel.loadMap(new XMLReader().getMap(chooser.getSelectedFile().getPath()));
+					mapPanel.loadMap(new XMLReader().getMap(chooser
+							.getSelectedFile().getPath()));
 				} catch (SAXException e) {
 					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 				} catch (IOException e) {
@@ -247,7 +249,8 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
-					new XMLWriter(chooser.getSelectedFile().getPath()).write(mapPanel.getMap());
+					new XMLWriter(chooser.getSelectedFile().getPath())
+							.write(mapPanel.getMap());
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}

@@ -27,6 +27,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 			ITEM_MAP.put(type, new JMenuItem(type.toString())); // NOPMD
 		}
 	}
+
 	/**
 	 * Constructor
 	 */
@@ -37,18 +38,22 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 			item.addActionListener(this);
 		}
 	}
+
 	/**
 	 * The tile whose terrain we might change.
 	 */
 	private GUITile tile;
+
 	/**
-	 * @param newTile the tile whose terrain we might change
+	 * @param newTile
+	 *            the tile whose terrain we might change
 	 */
 	public void setTile(final GUITile newTile) {
 		tile = newTile;
 	}
+
 	/**
-	 * Handle Menu selections. 
+	 * Handle Menu selections.
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {

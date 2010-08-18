@@ -23,8 +23,9 @@ public final class AltTerminalViewer {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AltTerminalViewer.class
-			.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(AltTerminalViewer.class.getName());
+
 	/**
 	 * Constructor.
 	 * 
@@ -81,13 +82,18 @@ public final class AltTerminalViewer {
 	 */
 	static {
 		CHAR_MAP.put(TileType.Tundra, ANSI.BACKGROUND_WHITE + ANSI.BLACK + 'T');
-		CHAR_MAP.put(TileType.Desert, ANSI.BACKGROUND_BLACK + ANSI.YELLOW + 'D');
+		CHAR_MAP
+				.put(TileType.Desert, ANSI.BACKGROUND_BLACK + ANSI.YELLOW + 'D');
 		CHAR_MAP.put(TileType.Mountain, ANSI.BACKGROUND_BLACK + ANSI.RED + 'M');
-		CHAR_MAP.put(TileType.BorealForest, ANSI.BACKGROUND_BLACK + ANSI.CYAN + 'B');
-		CHAR_MAP.put(TileType.TemperateForest, ANSI.BACKGROUND_BLACK + ANSI.GREEN + 'F');
+		CHAR_MAP.put(TileType.BorealForest, ANSI.BACKGROUND_BLACK + ANSI.CYAN
+				+ 'B');
+		CHAR_MAP.put(TileType.TemperateForest, ANSI.BACKGROUND_BLACK
+				+ ANSI.GREEN + 'F');
 		CHAR_MAP.put(TileType.Ocean, ANSI.BACKGROUND_BLACK + ANSI.BLUE + 'O');
-		CHAR_MAP.put(TileType.Plains, ANSI.BACKGROUND_BLACK + ANSI.MAGENTA + 'P');
-		CHAR_MAP.put(TileType.Jungle, ANSI.BACKGROUND_BLACK + ANSI.HIGH_INTENSITY + ANSI.WHITE + 'J');
+		CHAR_MAP.put(TileType.Plains, ANSI.BACKGROUND_BLACK + ANSI.MAGENTA
+				+ 'P');
+		CHAR_MAP.put(TileType.Jungle, ANSI.BACKGROUND_BLACK
+				+ ANSI.HIGH_INTENSITY + ANSI.WHITE + 'J');
 		CHAR_MAP.put(TileType.NotVisible, Character.toString('_'));
 	}
 
@@ -97,6 +103,7 @@ public final class AltTerminalViewer {
 	 * @return The single character representing that terrain type.
 	 */
 	private static String getTerrainChar(final TileType type) {
-		return CHAR_MAP.containsKey(type) ? CHAR_MAP.get(type) : Character.toString('_');
+		return CHAR_MAP.containsKey(type) ? CHAR_MAP.get(type) : Character
+				.toString('_');
 	}
 }

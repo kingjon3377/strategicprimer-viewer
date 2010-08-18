@@ -196,6 +196,7 @@ public class SPMap implements Serializable {
 	public final Tile getTile(final int row, final int col) {
 		return tiles.get(new Point(row, col));
 	}
+
 	/**
 	 * @return the players in the map
 	 */

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 /**
  * A class to keep track of which tile is selected.
+ * 
  * @author Jonathan Lovelace
  */
 public class SelectionListener implements MouseListener {
@@ -16,14 +17,18 @@ public class SelectionListener implements MouseListener {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(SelectionListener.class.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(SelectionListener.class.getName());
 	/**
 	 * The menu to change a tile's type.
 	 */
 	private static final TerrainChangingMenu MENU = new TerrainChangingMenu();
+
 	/**
 	 * Handle mouse clicks.
-	 * @param event the event to handle
+	 * 
+	 * @param event
+	 *            the event to handle
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
@@ -36,9 +41,12 @@ public class SelectionListener implements MouseListener {
 			LOGGER.fine("Click");
 		}
 	}
+
 	/**
 	 * Ignored
-	 * @param event ignored
+	 * 
+	 * @param event
+	 *            ignored
 	 */
 	@Override
 	public void mouseEntered(final MouseEvent event) {
@@ -47,7 +55,9 @@ public class SelectionListener implements MouseListener {
 
 	/**
 	 * Ignored
-	 * @param event ignored
+	 * 
+	 * @param event
+	 *            ignored
 	 */
 	@Override
 	public void mouseExited(final MouseEvent event) {
@@ -56,7 +66,9 @@ public class SelectionListener implements MouseListener {
 
 	/**
 	 * Ignored
-	 * @param event the event to handle
+	 * 
+	 * @param event
+	 *            the event to handle
 	 */
 	@Override
 	public void mousePressed(final MouseEvent event) {
@@ -68,7 +80,9 @@ public class SelectionListener implements MouseListener {
 
 	/**
 	 * Ignored
-	 * @param event the event to handle
+	 * 
+	 * @param event
+	 *            the event to handle
 	 */
 	@Override
 	public void mouseReleased(final MouseEvent event) {

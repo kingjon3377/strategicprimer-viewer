@@ -31,16 +31,20 @@ public final class MapFileFilter extends FileFilter {
 					&& ("xml".equals(extension) || "map".equals(extension));
 		}
 	}
+
 	/**
-	 * @param file A file
+	 * @param file
+	 *            A file
 	 * @return The extension of that file
 	 */
 	public static String getExtension(final File file) {
 		final String name = file.getName();
 		final int dotPos = name.lastIndexOf('.');
 
-		return dotPos > 0 && dotPos < name.length() - 1 ? name.substring(dotPos + 1).toLowerCase() : "";
+		return dotPos > 0 && dotPos < name.length() - 1 ? name.substring(
+				dotPos + 1).toLowerCase() : "";
 	}
+
 	/**
 	 * @return A description of the filter.
 	 */
