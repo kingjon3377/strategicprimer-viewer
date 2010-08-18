@@ -7,12 +7,12 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.EnumMap;
 
-import model.Fortress;
-import model.Player;
-import model.SPMap;
-import model.Tile;
-import model.TileType;
-import model.Unit;
+import model.viewer.Fortress;
+import model.viewer.Player;
+import model.viewer.SPMap;
+import model.viewer.Tile;
+import model.viewer.TileType;
+import model.viewer.Unit;
 
 /**
  * A class to write a map to file.

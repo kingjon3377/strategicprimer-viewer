@@ -2,12 +2,12 @@ package controller;
 
 import java.io.Serializable;
 
-import model.Fortress;
-import model.Player;
-import model.SPMap;
-import model.Tile;
-import model.TileType;
-import model.Unit;
+import model.viewer.Fortress;
+import model.viewer.Player;
+import model.viewer.SPMap;
+import model.viewer.Tile;
+import model.viewer.TileType;
+import model.viewer.Unit;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -67,7 +67,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	/**
 	 * The player we're currently parsing.
 	 */
-	private transient model.Player currentPlayer;
+	private transient model.viewer.Player currentPlayer;
 
 	/**
 	 * Called when we're done parsing.

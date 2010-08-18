@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import model.TileType;
+import model.viewer.TileType;
 
 /**
  * A popup menu to let the user change a tile's terrain type.

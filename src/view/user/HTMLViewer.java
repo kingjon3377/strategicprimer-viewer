@@ -5,11 +5,11 @@ import java.util.EnumMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Fortress;
-import model.SPMap;
-import model.Tile;
-import model.TileType;
-import model.Unit;
+import model.viewer.Fortress;
+import model.viewer.SPMap;
+import model.viewer.Tile;
+import model.viewer.TileType;
+import model.viewer.Unit;
 
 import org.xml.sax.SAXException;
 

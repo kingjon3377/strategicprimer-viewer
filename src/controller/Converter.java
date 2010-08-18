@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.SPMap;
 import model.map.TileType;
+import model.viewer.SPMap;
 
 import org.xml.sax.SAXException;
 
@@ -114,12 +114,12 @@ public final class Converter {
 	 *            the old-style terrain type
 	 * @return the equivalent new-style tile type.
 	 */
-	private static TileType convertType(final model.TileType type) {
-		return type == model.TileType.Desert ? TileType.DESERT
-				: type == model.TileType.Jungle ? TileType.SWAMP
-						: type == model.TileType.NotVisible ? TileType.UNEXPLORED
-								: type == model.TileType.Ocean ? TileType.WATER
-										: type == model.TileType.Tundra ? TileType.ICE
+	private static TileType convertType(final model.viewer.TileType type) {
+		return type == model.viewer.TileType.Desert ? TileType.DESERT
+				: type == model.viewer.TileType.Jungle ? TileType.SWAMP
+						: type == model.viewer.TileType.NotVisible ? TileType.UNEXPLORED
+								: type == model.viewer.TileType.Ocean ? TileType.WATER
+										: type == model.viewer.TileType.Tundra ? TileType.ICE
 												: TileType.PLAINS;
 	}
 
@@ -136,12 +136,12 @@ public final class Converter {
 	 *            the old-style tile type.
 	 * @return an appropriate elevation.
 	 */
-	private static char convertElevation(final model.TileType type) {
-		return type == model.TileType.BorealForest
-				|| type == model.TileType.Tundra ? MEDIUM_HIGH
-				: type == model.TileType.Jungle ? MEDIUM_LOW
-						: type == model.TileType.Mountain ? HIGH
-								: type == model.TileType.Ocean ? LOW : MEDIUM;
+	private static char convertElevation(final model.viewer.TileType type) {
+		return type == model.viewer.TileType.BorealForest
+				|| type == model.viewer.TileType.Tundra ? MEDIUM_HIGH
+				: type == model.viewer.TileType.Jungle ? MEDIUM_LOW
+						: type == model.viewer.TileType.Mountain ? HIGH
+								: type == model.viewer.TileType.Ocean ? LOW : MEDIUM;
 	}
 
 	// private static final int MAX_ELEV_CHANGE = 3;

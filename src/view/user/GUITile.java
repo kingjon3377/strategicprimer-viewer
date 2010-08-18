@@ -7,10 +7,10 @@ import java.util.EnumMap;
 
 import javax.swing.JLabel;
 
-import model.Fortress;
-import model.Tile;
-import model.TileType;
-import model.Unit;
+import model.viewer.Fortress;
+import model.viewer.Tile;
+import model.viewer.TileType;
+import model.viewer.Unit;
 
 /**
  * A GUI representation of a tile. Information about what's on the tile should

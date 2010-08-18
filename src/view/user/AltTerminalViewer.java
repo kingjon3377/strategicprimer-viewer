@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.SPMap;
-import model.TileType;
+import model.viewer.SPMap;
+import model.viewer.TileType;
 
 import org.xml.sax.SAXException;
 

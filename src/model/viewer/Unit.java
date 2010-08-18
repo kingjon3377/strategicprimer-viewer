@@ -1,4 +1,4 @@
-package model;
+package model.viewer;
 
 /**
  * A unit on the map.

@@ -3,7 +3,7 @@ package controller;
 import java.io.IOException;
 import java.io.Serializable;
 
-import model.SPMap;
+import model.viewer.SPMap;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.XMLReaderFactory;

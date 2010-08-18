@@ -9,9 +9,9 @@ import java.util.EnumMap;
 
 import javax.swing.JComponent;
 
-import model.SPMap;
-import model.Tile;
-import model.TileType;
+import model.viewer.SPMap;
+import model.viewer.Tile;
+import model.viewer.TileType;
 
 /**
  * A component to display the map, even a large one, without the performance
