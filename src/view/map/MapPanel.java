@@ -1,4 +1,4 @@
-package view.user;
+package view.map;
 
 import java.awt.GridLayout;
 import java.util.logging.Logger;

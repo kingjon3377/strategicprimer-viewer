@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.user;
+package view.map;
 
 import java.io.File;
 

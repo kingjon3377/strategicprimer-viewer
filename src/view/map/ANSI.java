@@ -1,4 +1,4 @@
-package view.user;
+package view.map;
 
 /**
  * A collection of ANSI codes to change text color.

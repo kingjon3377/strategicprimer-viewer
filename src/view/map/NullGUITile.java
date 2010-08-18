@@ -1,4 +1,4 @@
-package view.user;
+package view.map;
 
 import model.viewer.Tile;
 import model.viewer.TileType;

@@ -1,4 +1,4 @@
-package view.user;
+package view.map;
 
 import java.awt.Color;
 import java.awt.Dimension;

@@ -1,4 +1,4 @@
-package view.user;
+package view.map;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

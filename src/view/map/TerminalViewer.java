@@ -1,4 +1,4 @@
-package view.user;
+package view.map;
 
 import java.io.IOException;
 import java.util.EnumMap;

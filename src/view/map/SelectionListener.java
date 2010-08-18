@@ -1,4 +1,4 @@
-package view.user;
+package view.map;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
