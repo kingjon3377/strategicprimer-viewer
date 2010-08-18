@@ -39,19 +39,28 @@ public class MapPanel extends JPanel {
 	}
 
 	/**
-	 * Load and draw a map
+	 * Load and draw a subset of a map.
 	 * 
 	 * @param _map
 	 *            the map to load
+	 * @param minRow
+	 *            the first row to draw
+	 * @param maxRow
+	 *            the last row to draw
+	 * @param minCol
+	 *            the first column to draw
+	 * @param maxCol
+	 *            the last column to draw
 	 */
-	public final void loadMap(final SPMap _map) {
+	public final void loadMap(final SPMap _map, final int minRow,
+				final int maxRow, final int minCol, final int maxCol) {
 		if (_map != null) {
 			final Logger LOGGER = Logger.getLogger(MapPanel.class
 					.getName());
 			removeAll();
-			setLayout(new GridLayout(_map.rows(), 0));
-			for (int row = 0; row < _map.rows(); row++) {
-				for (int col = 0; col < _map.cols(); col++) {
+			setLayout(new GridLayout(Math.min(_map.rows(),Math.max(0, maxRow + 1 - minRow)), 0));
+			for (int row = Math.max(0, minRow); row < _map.rows() && row < maxRow + 1; row++) {
+				for (int col = Math.max(0, minCol) ; col < _map.cols() && col < maxCol + 1; col++) {
 					if (_map.getTile(row, col) == null) {
 						addTile(new NullGUITile(row, col)); // NOPMD
 					} else {
@@ -64,6 +73,16 @@ public class MapPanel extends JPanel {
 			}
 			this.map = _map;
 		}
+	}
+
+	/**
+	 * Load and draw a map
+	 * 
+	 * @param _map
+	 *            the map to load
+	 */
+	public final void loadMap(final SPMap _map) {
+		loadMap(_map, 0, Integer.MAX_VALUE - 1, 0, Integer.MAX_VALUE - 1);
 	}
 
 	/**

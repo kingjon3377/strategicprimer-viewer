@@ -123,11 +123,13 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		final JButton saveButton = new JButton("Save As");
 		saveButton.addActionListener(this);
 		buttonPanel.add(saveButton);
+		mapPanel = new MapPanel(new XMLReader().getMap(filename));
+		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
+		buttonPanel.add(vrpanel);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		buttonPanel.add(quitButton);
 		add(buttonPanel,BorderLayout.SOUTH);
-		mapPanel = new MapPanel(new XMLReader().getMap(filename));
 		add(new JScrollPane(mapPanel), BorderLayout.CENTER);
 		// final MapComponent map = new MapComponent(new
 		// XMLReader().getMap(filename));
