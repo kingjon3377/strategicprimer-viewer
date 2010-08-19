@@ -71,30 +71,24 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Handle button presses.
+	 * 
+	 * @param evt
+	 *            the event to handle.
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent e) {
-		if ("Refresh".equals(e.getActionCommand())) {
-			int minRow = parse(minRowBox.getText());
-			if (minRow < 0 || minRow > mpanel.getMap().rows() - 1) {
-				minRowBox.setText("0");
-				minRow = 0;
-			}
-			int maxRow = parse(maxRowBox.getText());
-			if (maxRow < minRow || maxRow > mpanel.getMap().rows() - 1) {
-				maxRow = mpanel.getMap().rows() - 1;
-				maxRowBox.setText(Integer.toString(maxRow));
-			}
-			int minCol = parse(minColBox.getText());
-			if (minCol < 0 || minCol > mpanel.getMap().cols() - 1) {
-				minColBox.setText("0");
-				minCol = 0;
-			}
-			int maxCol = parse(maxColBox.getText());
-			if (maxCol < minCol || maxCol > mpanel.getMap().cols() - 1) {
-				maxCol = mpanel.getMap().cols() - 1;
-				maxColBox.setText(Integer.toString(maxCol));
-			}
+	public void actionPerformed(final ActionEvent evt) {
+		if ("Refresh".equals(evt.getActionCommand())) {
+			final int minRow = betweenMin(0, parse(minRowBox.getText()), mpanel
+					.getMap().rows() - 1);
+			minRowBox.setText(Integer.toString(minRow));
+			final int maxRow = betweenMax(minRow, parse(maxRowBox.getText()),
+					mpanel.getMap().rows() - 1);
+			maxRowBox.setText(Integer.toString(maxRow));
+			final int minCol = betweenMin(0, parse(minColBox.getText()), mpanel
+					.getMap().cols() - 1);
+			minColBox.setText(Integer.toString(minCol));
+			final int maxCol = betweenMax(minCol, parse(maxColBox.getText()),
+					mpanel.getMap().cols() - 1);
 			mpanel.loadMap(mpanel.getMap(), minRow, maxRow, minCol, maxCol);
 		}
 	}
@@ -112,5 +106,31 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 		} catch (final NumberFormatException except) {
 			return -1;
 		}
+	}
+
+	/**
+	 * @param min
+	 *            the bottom of a range
+	 * @param value
+	 *            the value to test
+	 * @param max
+	 *            the top of the range
+	 * @return value if it's in the range, or min otherwise.
+	 */
+	private static int betweenMin(final int min, final int value, final int max) {
+		return value < min || value > max ? min : value;
+	}
+
+	/**
+	 * @param min
+	 *            the bottom of a range
+	 * @param value
+	 *            the value to test
+	 * @param max
+	 *            the top of the range
+	 * @return value if it's in the range, or max otherwise.
+	 */
+	private static int betweenMax(final int min, final int value, final int max) {
+		return value < min || value > max ? max : value;
 	}
 }
