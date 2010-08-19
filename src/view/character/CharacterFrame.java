@@ -20,5 +20,7 @@ public class CharacterFrame extends JFrame {
 	public CharacterFrame() {
 		super();
 		add(new CharacterPanel());
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		pack();
 	}
 }
