@@ -8,6 +8,10 @@ import javax.swing.JFrame;
  */
 public class CharacterFrame extends JFrame {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = -1521685216194840568L;
+	/**
 	 * Driver entry point.
 	 * @param args ignored at this point
 	 */
