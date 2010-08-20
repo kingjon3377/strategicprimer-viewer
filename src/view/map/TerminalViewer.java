@@ -11,7 +11,7 @@ import model.viewer.TileType;
 
 import org.xml.sax.SAXException;
 
-import controller.XMLReader;
+import controller.map.XMLReader;
 
 /**
  * A CLI to create a text version of the map from the XML, coloring a specified

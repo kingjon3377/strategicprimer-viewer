@@ -1,4 +1,4 @@
-package controller;
+package controller.map;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

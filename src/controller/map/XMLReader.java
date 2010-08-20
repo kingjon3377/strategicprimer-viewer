@@ -1,4 +1,4 @@
-package controller;
+package controller.map;
 
 import java.io.IOException;
 import java.io.Serializable;

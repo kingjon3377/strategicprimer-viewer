@@ -13,7 +13,7 @@ import model.viewer.Unit;
 
 import org.xml.sax.SAXException;
 
-import controller.XMLReader;
+import controller.map.XMLReader;
 
 /**
  * A viewer to let the user explore the map without being overwhelmed by

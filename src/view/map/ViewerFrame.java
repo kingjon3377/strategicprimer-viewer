@@ -18,8 +18,8 @@ import javax.swing.JScrollPane;
 
 import org.xml.sax.SAXException;
 
-import controller.XMLReader;
-import controller.XMLWriter;
+import controller.map.XMLReader;
+import controller.map.XMLWriter;
 
 /**
  * The main driver class for the viewer app.

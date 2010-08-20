@@ -1,4 +1,4 @@
-package controller;
+package controller.map;
 
 import java.io.Serializable;
 
