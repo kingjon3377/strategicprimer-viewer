@@ -56,7 +56,7 @@ public final class CharacterPanel extends JPanel implements Applyable {
 			statLabels[stat.ordinal()] = new JLabel(stat.toString()); // NOPMD
 			add(statLabels[stat.ordinal()]);
 			if (IsAdmin.IS_ADMIN) {
-				statComps[stat.ordinal()] = new ChangeableComponent(new JTextField()); // NOPMD
+				statComps[stat.ordinal()] = new ChangeableComponent(new JTextField(3)); // NOPMD
 			} else {
 				statComps[stat.ordinal()] = new ChangeableComponent(new JLabel()); // NOPMD
 			}
@@ -172,5 +172,11 @@ public final class CharacterPanel extends JPanel implements Applyable {
 						.getStat(stat));
 			}
 		} 
+	}
+	/**
+	 * @return the character we're editing 
+	 */
+	public SPCharacter getCharacter() {
+		return character;
 	}
 }
