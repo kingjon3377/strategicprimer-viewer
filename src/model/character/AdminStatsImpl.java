@@ -39,13 +39,13 @@ public class AdminStatsImpl implements CharStats { // NOPMD
 	 */
 	@Override
 	public Attribute getStat(final Stat stat) {
-		return getStat(stats.get(stat));
+		return convertStat(stats.get(stat));
 	}
 	/**
 	 * @param value a stat value
 	 * @return a summary of it
 	 */
-	private static Attribute getStat(final int value) { // NOPMD
+	public static Attribute convertStat(final int value) { // NOPMD
 		if (value < 2) {
 			return Attribute.ExtremelyLow; // NOPMD
 		}

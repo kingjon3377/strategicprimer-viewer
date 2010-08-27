@@ -34,6 +34,19 @@ public class CharacterFrame extends JFrame {
 		pack();
 	}
 	/**
+	 * Constructor for opening a character. FIXME: This is a hack.
+	 * @param character the character we're opening
+	 */
+	protected CharacterFrame(final SPCharacter character) {
+		super();
+		add(panel = new CharacterPanel(character));
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		final JMenuBar menu = new JMenuBar();
+		menu.add(new FileMenu(this));
+		setJMenuBar(menu);
+		pack();
+	}
+	/**
 	 * The panel.
 	 */
 	private final CharacterPanel panel;
