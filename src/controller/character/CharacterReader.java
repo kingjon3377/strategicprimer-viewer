@@ -112,7 +112,7 @@ public class CharacterReader {
 			name = rest;
 		} else if (isStat(var.trim())) {
 			if (stats == null) {
-				createStats(IsAdmin.IS_ADMIN && isNumeric(rest.trim()));
+				createStats(isNumeric(rest.trim()) && IsAdmin.IS_ADMIN);
 			}
 			handleStat(var.trim(), rest.trim());
 		}
