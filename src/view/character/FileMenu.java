@@ -11,10 +11,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import view.util.IsAdmin;
-import controller.character.CharacterReader;
-import controller.character.CharacterWriter;
-
 /**
  * File menu for the character management program.
  * 
@@ -69,9 +65,8 @@ public class FileMenu extends JMenu implements ActionListener {
 		if ("Save As".equals(evt.getActionCommand())) {
 			if (FILE_CHOOSER.showSaveDialog(window) == JFileChooser.APPROVE_OPTION) {
 				try {
-					new CharacterWriter(FILE_CHOOSER.getSelectedFile()
-							.getPath()).write(window.getCharacter(),
-							!IsAdmin.IS_ADMIN);
+					window.save(FILE_CHOOSER.getSelectedFile()
+							.getPath());
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE, "I/O error while saving the map",
 							e);
@@ -80,9 +75,7 @@ public class FileMenu extends JMenu implements ActionListener {
 		} else if ("Open".equals(evt.getActionCommand())) {
 			if (FILE_CHOOSER.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
 				try {
-					new CharacterFrame(new CharacterReader(FILE_CHOOSER
-							.getSelectedFile().getPath()).getCharacter())
-							.setVisible(true);
+					window.open(FILE_CHOOSER.getSelectedFile().getPath());
 				} catch (final FileNotFoundException except) {
 					LOGGER.log(Level.WARNING,
 							"File not found while opening the map", except);
@@ -92,8 +85,7 @@ public class FileMenu extends JMenu implements ActionListener {
 				}
 			}
 		} else if ("Close".equals(evt.getActionCommand())) {
-			window.setVisible(false);
-			window.dispose();
+			window.close();
 		} 
 	}
 

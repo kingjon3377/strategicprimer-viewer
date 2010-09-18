@@ -1,15 +1,24 @@
 package view.character;
 
+import java.awt.Component;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JTabbedPane;
 
-import model.character.SPCharacter;
+import view.util.SaveableOpenable;
+import view.util.UICloseable;
+import controller.character.CharacterReader;
+
 /**
  * A window (and driver) for the character-management program.
  * @author Jonathan Lovelace
  *
  */
-public class CharacterFrame extends JFrame {
+public class CharacterFrame extends JFrame implements SaveableOpenable,
+		UICloseable {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -21,12 +30,19 @@ public class CharacterFrame extends JFrame {
 	public static void main(final String args[]) {
 		new CharacterFrame().setVisible(true);
 	}
+
+	/**
+	 * The panel manager
+	 */
+	private final JTabbedPane tabber;
+
 	/**
 	 * Constructor.
 	 */
 	public CharacterFrame() {
 		super();
-		add(panel = new CharacterPanel());
+		tabber = new JTabbedPane();
+		add(tabber);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		final JMenuBar menu = new JMenuBar();
 		menu.add(new FileMenu(this));
@@ -34,26 +50,45 @@ public class CharacterFrame extends JFrame {
 		pack();
 	}
 	/**
-	 * Constructor for opening a character. FIXME: This is a hack.
-	 * @param character the character we're opening
+	 * Open a character.
+	 * 
+	 * @param file
+	 *            the filename to load from
+	 * @throws IOException
+	 *             on I/O error loading
+	 * @throws FileNotFoundException
+	 *             if the file doesn't exist
 	 */
-	protected CharacterFrame(final SPCharacter character) {
-		super();
-		add(panel = new CharacterPanel(character));
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		final JMenuBar menu = new JMenuBar();
-		menu.add(new FileMenu(this));
-		setJMenuBar(menu);
-		pack();
+	@Override
+	public void open(final String file) throws FileNotFoundException,
+			IOException {
+		tabber.addTab("Character", new CharacterPanel(new CharacterReader(file)
+				.getCharacter()));
 	}
 	/**
-	 * The panel.
+	 * Save the current character.
+	 * 
+	 * @param file
+	 *            the filename to save to
+	 * @throws IOException
+	 *             on I/O error while saving
 	 */
-	private final CharacterPanel panel;
+	@Override
+	public void save(final String file) throws IOException {
+		final Component comp = tabber.getSelectedComponent();
+		if (comp instanceof SaveableOpenable) {
+			((SaveableOpenable) comp).save(file);
+		} else {
+			throw new IllegalStateException(
+					"Told to save when the current tab can't.");
+		}
+	}
+
 	/**
-	 * @return the character we're editing.
+	 * Close the current character.
 	 */
-	public SPCharacter getCharacter() {
-		return panel.getCharacter();
+	@Override
+	public void close() {
+		tabber.removeTabAt(tabber.getSelectedIndex());
 	}
 }

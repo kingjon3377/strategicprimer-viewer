@@ -2,6 +2,7 @@ package view.character;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,6 +17,8 @@ import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.ChangeableComponent;
 import view.util.IsAdmin;
+import view.util.SaveableOpenable;
+import controller.character.CharacterWriter;
 
 /**
  * A panel to allow the user to view or edit a Character.
@@ -23,7 +26,7 @@ import view.util.IsAdmin;
  * @author Jonathan Lovelace
  * 
  */
-public final class CharacterPanel extends JPanel implements Applyable {
+public final class CharacterPanel extends JPanel implements Applyable, SaveableOpenable {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -178,5 +181,22 @@ public final class CharacterPanel extends JPanel implements Applyable {
 	 */
 	public SPCharacter getCharacter() {
 		return character;
+	}
+	/**
+	 * Required by SaveableOpenable spec.
+	 * @param file ignored
+	 */
+	@Override
+	public void open(final String file) {
+		throw new IllegalStateException("Shouldn't get called");
+	}
+	/**
+	 * Save the character to file.
+	 * @param file the filename to save to
+	 * @throws IOException on I/O error while saving
+	 */
+	@Override
+	public void save(final String file) throws IOException {
+		new CharacterWriter(file).write(character, !IsAdmin.IS_ADMIN);
 	}
 }
