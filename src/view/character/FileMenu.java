@@ -38,10 +38,12 @@ public class FileMenu extends JMenu implements ActionListener {
 	public FileMenu(final CharacterFrame _window) {
 		super("File");
 		window = _window;
+		addMenuItem("New");
 		addMenuItem("Open");
 		addMenuItem("Save As");
 		addSeparator();
 		addMenuItem("Close");
+		addMenuItem("Quit");
 	}
 
 	/**
@@ -86,7 +88,12 @@ public class FileMenu extends JMenu implements ActionListener {
 			}
 		} else if ("Close".equals(evt.getActionCommand())) {
 			window.close();
-		} 
+		} else if ("Quit".equals(evt.getActionCommand())) {
+			// FIXME: ask to save unmodified characters, etc.
+			window.quit();
+		} else if ("New".equals(evt.getActionCommand())) {
+			window.newCharacter();
+		}
 	}
 
 	/**

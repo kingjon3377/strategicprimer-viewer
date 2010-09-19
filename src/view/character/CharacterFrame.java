@@ -91,4 +91,19 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	public void close() {
 		tabber.removeTabAt(tabber.getSelectedIndex());
 	}
+	
+	/**
+	 * Quit the application. FIXME: Ask to save unmodified files, etc.
+	 */
+	protected void quit() {
+		setVisible(false);
+		dispose();
+	}
+	
+	/**
+	 * Open a panel for a new character.
+	 */
+	public void newCharacter() {
+		tabber.addTab("Character", new CharacterPanel());
+	}
 }
