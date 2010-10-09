@@ -8,6 +8,7 @@ import java.io.Writer;
 
 import model.character.AdminStatsImpl;
 import model.character.CharStats;
+import model.character.JobLevels;
 import model.character.PlayerStatsImpl;
 import model.character.SPCharacter;
 
@@ -55,6 +56,7 @@ public class CharacterWriter {
 		writeHeader();
 		writeName(character);
 		writeStats(character, forPlayer);
+		writeJobs(character);
 		ostream.close();
 	}
 	/**
@@ -107,6 +109,18 @@ public class CharacterWriter {
 			ostream.print(stat);
 			ostream.print(':');
 			ostream.println(((AdminStatsImpl) character.getStats()).getStatValue(stat));
+		}
+	}
+	/**
+	 * Write the character's Jobs
+	 * @param character the character to write
+	 */
+	private void writeJobs(final SPCharacter character) {
+		for (JobLevels job : character.getJobs()) {
+			ostream.print("Job:");
+			ostream.print(job.getJob());
+			ostream.print(':');
+			ostream.print(job.getLevels());
 		}
 	}
 }

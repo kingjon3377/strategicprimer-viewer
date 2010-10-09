@@ -4,9 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.character.AdminStatsImpl;
 import model.character.CharStats;
+import model.character.JobLevels;
+import model.character.JobType;
 import model.character.PlayerStatsImpl;
 import model.character.SPCharacter;
 import view.util.IsAdmin;
@@ -110,6 +114,9 @@ public class CharacterReader {
 			handleLine(var, rest.substring(1));
 		} else if ("charname".equalsIgnoreCase(var)) {
 			name = rest;
+		} else if ("job".equalsIgnoreCase(var)) {
+			handleJob(rest.split(":")[0], rest.substring(rest
+					.indexOf(':')));
 		} else if (isStat(var.trim())) {
 			if (stats == null) {
 				createStats(isNumeric(rest.trim()) && IsAdmin.IS_ADMIN);
@@ -185,6 +192,35 @@ public class CharacterReader {
 		} catch (NumberFormatException except) {
 			stats.setStat(CharStats.Stat.valueOf(stat), CharStats.Attribute
 					.valueOf(value));
+		}
+	}
+	/**
+	 * Handle a Job. FIXME: validate input before calling this.
+	 * @param job the job
+	 * @param levels how many levels 
+	 */
+	private void handleJob(final String job, final String levels) {
+		if (isJob(job) && isNumeric(levels)) {
+			jobs.add(new JobLevels(JobType.valueOf(job), Integer.parseInt(levels)));
+		}
+	}
+	/**
+	 * The jobs the character has levels in.
+	 */
+	private final List<JobLevels> jobs = new ArrayList<JobLevels>();
+	/**
+	 * Is the string a Job? FIXME: Should load Job definitions from file rather than enumerating them.
+	 * 
+	 * @param str
+	 *            a string
+	 * @return whether it is a Job we know about.
+	 */
+	private static boolean isJob(final String str) {
+		try {
+			JobType.valueOf(str);
+			return true; // NOPMD
+		} catch (IllegalArgumentException except) {
+			return false;
 		}
 	}
 }
