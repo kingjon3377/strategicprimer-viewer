@@ -1,6 +1,8 @@
 package model.character;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import view.util.IsAdmin;
 
@@ -71,5 +73,29 @@ public class SPCharacter implements Serializable {
 	 */
 	public CharStats getStats() {
 		return stats;
+	}
+	/**
+	 * The character's levels in Jobs, if any
+	 */
+	private final List<JobLevels> jobs = new ArrayList<JobLevels>();
+	/**
+	 * @return the character's levels in Jobs, if any
+	 */
+	public List<JobLevels> getJobs() {
+		return new ArrayList<JobLevels>(jobs);
+	}
+	/**
+	 * Add a new job.
+	 * @param job the job to add
+	 */
+	public void addJob(final JobLevels job) {
+		jobs.add(job);
+	}
+	/**
+	 * Remove a job.
+	 * @param job the job to remove
+	 */
+	public void removeJob(final JobLevels job) {
+		jobs.remove(job);
 	}
 }
