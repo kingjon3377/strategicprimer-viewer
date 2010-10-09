@@ -1,6 +1,7 @@
 package view.character;
 
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ import model.character.SPCharacter;
 import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.ChangeableComponent;
+import view.util.ConstraintHelper;
 import view.util.IsAdmin;
 import view.util.SaveableOpenable;
 import controller.character.CharacterWriter;
@@ -48,25 +50,26 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 	 * No-value constructor.
 	 */
 	public CharacterPanel() {
-		super(new GridLayout(0, 2));
-		add(new JLabel("Name"));
-		add(nameField);
+		super(new GridBagLayout());
+		add(new JLabel("Name"), new ConstraintHelper(0, 0));
+		GridBagConstraints nameConstraints = new GridBagConstraints();
+		add(nameField, new ConstraintHelper(1, 0));
 		/**
 		 * Labels describing the statistics.
 		 */
 		final JLabel[] statLabels = new JLabel[CharStats.Stat.values().length];
 		for (CharStats.Stat stat : CharStats.Stat.values()) {
 			statLabels[stat.ordinal()] = new JLabel(stat.toString()); // NOPMD
-			add(statLabels[stat.ordinal()]);
+			add(statLabels[stat.ordinal()], new ConstraintHelper(0, stat.ordinal() + 1));
 			if (IsAdmin.IS_ADMIN) {
 				statComps[stat.ordinal()] = new ChangeableComponent(new JTextField(3)); // NOPMD
 			} else {
 				statComps[stat.ordinal()] = new ChangeableComponent(new JLabel()); // NOPMD
 			}
-			add(statComps[stat.ordinal()]);
+			add(statComps[stat.ordinal()], new ConstraintHelper(1, stat.ordinal() + 1));
 		}
-		add(applyButton);
-		add(revertButton);
+		add(applyButton, new ConstraintHelper(0, CharStats.Stat.values().length + 3));
+		add(revertButton, new ConstraintHelper(1, CharStats.Stat.values().length + 3));
 		applyButton.addActionListener(list);
 		revertButton.addActionListener(list);
 	}
