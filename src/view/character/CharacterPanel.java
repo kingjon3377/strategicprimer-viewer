@@ -45,7 +45,10 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 		character = chrc;
 		revert();
 	}
-
+	/**
+	 * A panel to put Jobs in.
+	 */
+	private JPanel jobsPanel;
 	/**
 	 * No-value constructor.
 	 */
@@ -68,6 +71,8 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 			}
 			add(statComps[stat.ordinal()], new ConstraintHelper(1, stat.ordinal() + 1));
 		}
+		jobsPanel = new JobsPanel(this);
+		add(jobsPanel, new ConstraintHelper(0, CharStats.Stat.values().length + 2, 2, 1));
 		add(applyButton, new ConstraintHelper(0, CharStats.Stat.values().length + 3));
 		add(revertButton, new ConstraintHelper(1, CharStats.Stat.values().length + 3));
 		applyButton.addActionListener(list);
@@ -201,5 +206,12 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 	@Override
 	public void save(final String file) throws IOException {
 		new CharacterWriter(file).write(character, !IsAdmin.IS_ADMIN);
+	}
+	/**
+	 * Remove a Job.
+	 * @param panel the panel holding the Job to remove
+	 */
+	protected void removeJob(final JobPanel panel) {
+		// FIXME: implement
 	}
 }
