@@ -1,6 +1,5 @@
 package view.character;
 
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -55,7 +54,7 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 	public CharacterPanel() {
 		super(new GridBagLayout());
 		add(new JLabel("Name"), new ConstraintHelper(0, 0));
-		GridBagConstraints nameConstraints = new GridBagConstraints();
+//		GridBagConstraints nameConstraints = new GridBagConstraints();
 		add(nameField, new ConstraintHelper(1, 0));
 		/**
 		 * Labels describing the statistics.
