@@ -109,6 +109,7 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 	/**
 	 * Apply changes from fields to object.
 	 */
+	@Override
 	public void apply() {
 		if (character == null) {
 			character = new SPCharacter(nameField.getText());
@@ -139,6 +140,7 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 	/**
 	 * Revert changes to fields.
 	 */
+	@Override
 	public void revert() {
 		if (character == null) {
 			nameField.setText("");
