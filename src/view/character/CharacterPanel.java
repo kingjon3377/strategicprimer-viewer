@@ -63,13 +63,13 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 		final JLabel[] statLabels = new JLabel[CharStats.Stat.values().length];
 		for (CharStats.Stat stat : CharStats.Stat.values()) {
 			statLabels[stat.ordinal()] = new JLabel(stat.toString()); // NOPMD
-			add(statLabels[stat.ordinal()], new ConstraintHelper(0, stat.ordinal() + 1));
+			add(statLabels[stat.ordinal()], new ConstraintHelper(0, stat.ordinal() + 1)); // NOPMD
 			if (IsAdmin.IS_ADMIN) {
 				statComps[stat.ordinal()] = new ChangeableComponent(new JTextField(3)); // NOPMD
 			} else {
 				statComps[stat.ordinal()] = new ChangeableComponent(new JLabel()); // NOPMD
 			}
-			add(statComps[stat.ordinal()], new ConstraintHelper(1, stat.ordinal() + 1));
+			add(statComps[stat.ordinal()], new ConstraintHelper(1, stat.ordinal() + 1)); // NOPMD
 		}
 		jobsPanel = new JobsPanel(this);
 		add(jobsPanel, new ConstraintHelper(0, CharStats.Stat.values().length + 2, 2, 1));
