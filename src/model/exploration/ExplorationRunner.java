@@ -21,14 +21,17 @@ public class ExplorationRunner {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ExplorationRunner.class.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(ExplorationRunner.class.getName());
+
 	/**
 	 * @param tile
 	 *            a tile
 	 * @return what the owner of a fortress on the tile knows
 	 */
 	public String defaultResults(final Tile tile) {
-		final StringBuilder sb = new StringBuilder("The primary rock type here is "); // NOPMD
+		final StringBuilder sb = new StringBuilder( // NOPMD
+				"The primary rock type here is ");
 		sb.append(getPrimaryRock(tile));
 		sb.append(".\n");
 		if (TileType.BorealForest.equals(tile.getType())
@@ -39,7 +42,7 @@ public class ExplorationRunner {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * FIXME: This should be read from file, not embedded in code. The primary
 	 * rock type of each quadrant.
@@ -58,43 +61,51 @@ public class ExplorationRunner {
 	static {
 		final TableLoader loader = new TableLoader();
 		// ESCA-JAVA0177:
-		// we have to use a temporary variable or the compiler will complain that the final variable might already be assigned
+		// we have to use a temporary variable or the compiler will complain
+		// that the final variable might already be assigned
 		QuadrantResult temp;
 		try {
 			temp = loader.loadQuadrantTable("tables/major_rock");
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error loading the primary rock table from file", e);
-			temp = new QuadrantResult(2, new LinkedList<String>(
-					Arrays.asList("builtin_rock1", "builtin_rock2",
-							"builtin_rock3", "builtin_rock4")));
+			LOGGER.log(Level.SEVERE,
+					"I/O error loading the primary rock table from file", e);
+			temp = new QuadrantResult(2, new LinkedList<String>(Arrays.asList(
+					"builtin_rock1", "builtin_rock2", "builtin_rock3",
+					"builtin_rock4")));
 		}
 		PRIMARY_ROCK = temp;
-		BOREAL_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(Arrays.asList("pine",
-				"fir", "larch", "spruce")));
-		TEMPERATE_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(Arrays.asList("oak",
-				"maple", "beech", "elm")));
+		BOREAL_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(
+				Arrays.asList("pine", "fir", "larch", "spruce")));
+		TEMPERATE_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(
+				Arrays.asList("oak", "maple", "beech", "elm")));
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param tile
+	 *            a tile
 	 * @return the main kind of rock on the tile
 	 */
 	// ESCA-JAVA0076:
 	public String getPrimaryRock(final Tile tile) {
 		return PRIMARY_ROCK.getQuadrantValue(tile.getRow(), tile.getCol());
 	}
+
 	/**
-	 * @param tile a forest tile
+	 * @param tile
+	 *            a forest tile
 	 * @return the main kind of tree on the tile
 	 */
 	// ESCA-JAVA0076:
 	public String getPrimaryTree(final Tile tile) {
 		if (TileType.BorealForest.equals(tile.getType())) {
-			return BOREAL_PRIMARY_TREE.getQuadrantValue(tile.getRow(), tile.getCol()); // NOPMD
+			return BOREAL_PRIMARY_TREE.getQuadrantValue(tile.getRow(), // NOPMD
+					tile.getCol());
 		} else if (TileType.TemperateForest.equals(tile.getType())) {
-			return TEMPERATE_PRIMARY_TREE.getQuadrantValue(tile.getRow(), tile.getCol());
+			return TEMPERATE_PRIMARY_TREE.getQuadrantValue(tile.getRow(),
+					tile.getCol());
 		} else {
-			throw new IllegalArgumentException("Only forests have primary trees");
+			throw new IllegalArgumentException(
+					"Only forests have primary trees");
 		}
 	}
 }
