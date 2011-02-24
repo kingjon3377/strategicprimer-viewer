@@ -45,18 +45,15 @@ public class ExplorationRunner {
 	}
 
 	/**
-	 * FIXME: This should be read from file, not embedded in code. The primary
-	 * rock type of each quadrant.
+	 * The primary rock type of each quadrant.
 	 */
 	private static final QuadrantResult PRIMARY_ROCK;
 	/**
-	 * FIXME: This should be read from file, not embedded in code. The primary
-	 * tree type of each boreal forest quadrant.
+	 * The primary tree type of each boreal forest quadrant.
 	 */
 	private static final QuadrantResult BOREAL_PRIMARY_TREE; // NOPMD
 	/**
-	 * FIXME: This should be read from file, not embedded in code. The primary
-	 * tree type of each temperate forest quadrant.
+	 * The primary tree type of each temperate forest quadrant.
 	 */
 	private static final QuadrantResult TEMPERATE_PRIMARY_TREE; // NOPMD
 	static {
