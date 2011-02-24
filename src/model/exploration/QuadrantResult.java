@@ -40,9 +40,12 @@ public class QuadrantResult {
 		final int cols = items.size() / rows;
 		final int rowstep = MAP_SIZE_ROWS / rows;
 		final int colstep = MAP_SIZE_COLS / cols;
+		final int rowRemain = MAP_SIZE_ROWS % rows;
+		final int colRemain = MAP_SIZE_COLS % cols;
 		quadrants = new HashMap<Pair<Integer, Integer>, String>();
-		for (int row = 0; row < MAP_SIZE_ROWS; row += rowstep) {
-			for (int col = 0; col < MAP_SIZE_COLS; col += colstep) {
+		for (int row = 0; row < MAP_SIZE_ROWS - rowRemain; row += rowstep) {
+			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
+				System.out.println("Adding " + items.get(0) + " at (" + row + ", " + col +").");
 				quadrants.put(Pair.of(row, col), items.remove(0));
 			}
 		}
