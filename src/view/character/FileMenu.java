@@ -64,27 +64,23 @@ public class FileMenu extends JMenu implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
-		if ("Save As".equals(evt.getActionCommand())) {
-			if (FILE_CHOOSER.showSaveDialog(window) == JFileChooser.APPROVE_OPTION) {
-				try {
-					window.save(FILE_CHOOSER.getSelectedFile()
-							.getPath());
-				} catch (IOException e) {
-					LOGGER.log(Level.SEVERE, "I/O error while saving the map",
-							e);
-				}
+		if ("Save As".equals(evt.getActionCommand())
+				&& FILE_CHOOSER.showSaveDialog(window) == JFileChooser.APPROVE_OPTION) {
+			try {
+				window.save(FILE_CHOOSER.getSelectedFile().getPath());
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "I/O error while saving the map", e);
 			}
-		} else if ("Open".equals(evt.getActionCommand())) {
-			if (FILE_CHOOSER.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
-				try {
-					window.open(FILE_CHOOSER.getSelectedFile().getPath());
-				} catch (final FileNotFoundException except) {
-					LOGGER.log(Level.WARNING,
-							"File not found while opening the map", except);
-				} catch (final IOException except) {
-					LOGGER.log(Level.SEVERE, "I/O error while opening the map",
-							except);
-				}
+		} else if ("Open".equals(evt.getActionCommand())
+				&& FILE_CHOOSER.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
+			try {
+				window.open(FILE_CHOOSER.getSelectedFile().getPath());
+			} catch (final FileNotFoundException except) {
+				LOGGER.log(Level.WARNING,
+						"File not found while opening the map", except);
+			} catch (final IOException except) {
+				LOGGER.log(Level.SEVERE, "I/O error while opening the map",
+						except);
 			}
 		} else if ("Close".equals(evt.getActionCommand())) {
 			window.close();
