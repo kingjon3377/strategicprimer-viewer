@@ -23,7 +23,7 @@ public class GUITile extends JLabel {
 	/**
 	 * Whether this is the currently selected tile.
 	 */
-	private boolean selected = false;
+	private boolean selected;
 	/**
 	 * The size of each GUI tile
 	 */

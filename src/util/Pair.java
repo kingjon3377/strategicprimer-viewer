@@ -133,6 +133,6 @@ public final class Pair<FIRST, SECOND> implements
 	 */
 	@Override
 	public String toString() {
-		return "(" + first + ", " + second + ')';
+		return '(' + first.toString() + ", " + second + ')';
 	}
 }

@@ -3,6 +3,7 @@ package view.map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +15,11 @@ import model.exploration.ExplorationRunner;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 
+/**
+ * A driver for running exploration results, etc., using the new model.
+ * 
+ * @author Jonathan Lovelace
+ */
 public final class ExplorationCLI {
 	/**
 	 * Logger
@@ -27,11 +33,17 @@ public final class ExplorationCLI {
 	 * @param map
 	 *            the map
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE")
 	private ExplorationCLI(final SPMap map) {
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				System.in));
+		// ESCA-JAVA0266:
+		final PrintStream ostream = System.out;
+		if (ostream == null) {
+			throw new IllegalStateException("System.out is null");
+		}
 		try {
-			System.out.print("Command: ");
+			ostream.print("Command: ");
 			String input = reader.readLine();
 			while (input != null && input.length() > 0) {
 				if (input.charAt(0) == 'q') {
@@ -41,7 +53,7 @@ public final class ExplorationCLI {
 				} else if (input.charAt(0) == 'f') {
 					fortressInfo(map, reader);
 				}
-				System.out.print("Command: ");
+				ostream.print("Command: ");
 				input = reader.readLine();
 			}
 			reader.close();
@@ -59,14 +71,15 @@ public final class ExplorationCLI {
 	 *            source of user input
 	 * @throws IOException
 	 *             on I/O error
-	 * @throws NumberFormatException
-	 *             on non-numeric answers to numeric questions
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_ALWAYS_NULL")
 	private void explore(final SPMap map, final BufferedReader reader)
-			throws NumberFormatException, IOException {
-		System.out.print("Row: ");
+			throws IOException {
+		// ESCA-JAVA0266:
+		final PrintStream ostream = System.out;
+		ostream.print("Row: ");
 		final int row = Integer.parseInt(reader.readLine());
-		System.out.print("Column: ");
+		ostream.print("Column: ");
 		final int col = Integer.parseInt(reader.readLine());
 		final Tile tile = map.getTile(row, col);
 		// TODO: add algorithm from tables
@@ -82,17 +95,17 @@ public final class ExplorationCLI {
 	 *            source of user input
 	 * @throws IOException
 	 *             on I/O error
-	 * @throws NumberFormatException
-	 *             on non-numeric answers to numeric questions
 	 */
-	private void fortressInfo(final SPMap map, final BufferedReader reader)
-			throws NumberFormatException, IOException {
-		System.out.print("Row: ");
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_ALWAYS_NULL")
+	private static void fortressInfo(final SPMap map,
+			final BufferedReader reader) throws IOException {
+		final PrintStream ostream = System.out;
+		ostream.print("Row: ");
 		final int row = Integer.parseInt(reader.readLine());
-		System.out.print("Column: ");
+		ostream.print("Column: ");
 		final int col = Integer.parseInt(reader.readLine());
 		final Tile tile = map.getTile(row, col);
-		System.out.print(new ExplorationRunner().defaultResults(tile));
+		ostream.print(new ExplorationRunner().defaultResults(tile));
 	}
 
 	/**

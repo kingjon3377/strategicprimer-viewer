@@ -13,7 +13,7 @@ public class SelectionListener implements MouseListener {
 	/**
 	 * The currently-selected tile.
 	 */
-	private GUITile selection = null;
+	private GUITile selection;
 	/**
 	 * Logger.
 	 */
