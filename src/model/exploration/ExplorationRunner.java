@@ -74,10 +74,24 @@ public class ExplorationRunner {
 					"builtin_rock4")));
 		}
 		PRIMARY_ROCK = temp;
-		BOREAL_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(
-				Arrays.asList("pine", "fir", "larch", "spruce")));
-		TEMPERATE_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(
-				Arrays.asList("oak", "maple", "beech", "elm")));
+		try {
+			temp = loader.loadQuadrantTable("tables/boreal_major_tree");
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE,
+					"I/O error loading the boreal forest primary tree table from file", e);
+			temp = new QuadrantResult(2, new LinkedList<String>(
+					Arrays.asList("btree1", "btree2", "btree3", "btree4")));
+		}
+		BOREAL_PRIMARY_TREE = temp;
+		try {
+			temp = loader.loadQuadrantTable("tables/temperate_major_tree");
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE,
+					"I/O error loading the temperate forest primary tree table from file", e);
+			temp = new QuadrantResult(2, new LinkedList<String>(
+					Arrays.asList("ttree1", "ttree2", "ttree3", "ttree4")));
+		}
+		TEMPERATE_PRIMARY_TREE = temp;
 	}
 
 	/**
