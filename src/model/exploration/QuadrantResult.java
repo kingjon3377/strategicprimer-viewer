@@ -35,7 +35,7 @@ public class QuadrantResult {
 	 */
 	public QuadrantResult(final int rows, final List<String> items) {
 		if (items.size() % rows != 0) {
-			throw new IllegalArgumentException("items won't divide evenly");
+			throw new IllegalArgumentException(Integer.toString(items.size()) + " items won't divide evenly into " + Integer.toString(rows));
 		}
 		final int cols = items.size() / rows;
 		final int rowstep = MAP_SIZE_ROWS / rows;
