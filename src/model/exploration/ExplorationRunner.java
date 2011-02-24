@@ -57,21 +57,13 @@ public class ExplorationRunner {
 	 */
 	private static final QuadrantResult TEMPERATE_PRIMARY_TREE; // NOPMD
 	static {
-		PRIMARY_ROCK = tryLoading(
-				"tables/major_rock",
-				2,
-				new LinkedList<String>(Arrays.asList("builtin_rock1",
-						"builtin_rock2", "builtin_rock3", "builtin_rock4")));
-		BOREAL_PRIMARY_TREE = tryLoading(
-				"tables/boreal_major_tree",
-				2,
-				new LinkedList<String>(Arrays.asList("btree1", "btree2",
-						"btree3", "btree4")));
-		TEMPERATE_PRIMARY_TREE = tryLoading(
-				"tables/temperate_major_tree",
-				2,
-				new LinkedList<String>(Arrays.asList("ttree1", "ttree2",
-						"ttree3", "ttree4")));
+		PRIMARY_ROCK = tryLoading("tables/major_rock", 2, Arrays.asList(
+				"builtin_rock1", "builtin_rock2", "builtin_rock3",
+				"builtin_rock4"));
+		BOREAL_PRIMARY_TREE = tryLoading("tables/boreal_major_tree", 2,
+				Arrays.asList("btree1", "btree2", "btree3", "btree4"));
+		TEMPERATE_PRIMARY_TREE = tryLoading("tables/temperate_major_tree", 2,
+				Arrays.asList("ttree1", "ttree2", "ttree3", "ttree4"));
 	}
 
 	/**
