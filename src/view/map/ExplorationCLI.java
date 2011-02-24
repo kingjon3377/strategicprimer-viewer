@@ -57,10 +57,13 @@ public final class ExplorationCLI {
 	 *            the map
 	 * @param reader
 	 *            source of user input
-	 * @throws IOException on I/O error
-	 * @throws NumberFormatException on non-numeric answers to numeric questions
+	 * @throws IOException
+	 *             on I/O error
+	 * @throws NumberFormatException
+	 *             on non-numeric answers to numeric questions
 	 */
-	private void explore(final SPMap map, final BufferedReader reader) throws NumberFormatException, IOException {
+	private void explore(final SPMap map, final BufferedReader reader)
+			throws NumberFormatException, IOException {
 		System.out.print("Row: ");
 		final int row = Integer.parseInt(reader.readLine());
 		System.out.print("Column: ");
@@ -68,17 +71,22 @@ public final class ExplorationCLI {
 		final Tile tile = map.getTile(row, col);
 		// TODO: add algorithm from tables
 	}
+
 	/**
-	 * Give the data the player automatically knows about a user-specified tile if he has a fortress on it.
+	 * Give the data the player automatically knows about a user-specified tile
+	 * if he has a fortress on it.
 	 * 
 	 * @param map
 	 *            the map
 	 * @param reader
 	 *            source of user input
-	 * @throws IOException on I/O error
-	 * @throws NumberFormatException on non-numeric answers to numeric questions
+	 * @throws IOException
+	 *             on I/O error
+	 * @throws NumberFormatException
+	 *             on non-numeric answers to numeric questions
 	 */
-	private void fortressInfo(final SPMap map, final BufferedReader reader) throws NumberFormatException, IOException {
+	private void fortressInfo(final SPMap map, final BufferedReader reader)
+			throws NumberFormatException, IOException {
 		System.out.print("Row: ");
 		final int row = Integer.parseInt(reader.readLine());
 		System.out.print("Column: ");
@@ -86,6 +94,7 @@ public final class ExplorationCLI {
 		final Tile tile = map.getTile(row, col);
 		System.out.print(new ExplorationRunner().defaultResults(tile));
 	}
+
 	/**
 	 * @param args
 	 *            command-line arguments
