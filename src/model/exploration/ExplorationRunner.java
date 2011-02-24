@@ -3,6 +3,7 @@ package model.exploration;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,39 +60,46 @@ public class ExplorationRunner {
 	 */
 	private static final QuadrantResult TEMPERATE_PRIMARY_TREE; // NOPMD
 	static {
-		final TableLoader loader = new TableLoader();
-		// ESCA-JAVA0177:
-		// we have to use a temporary variable or the compiler will complain
-		// that the final variable might already be assigned
-		QuadrantResult temp;
+		PRIMARY_ROCK = tryLoading(
+				"tables/major_rock",
+				2,
+				new LinkedList<String>(Arrays.asList("builtin_rock1",
+						"builtin_rock2", "builtin_rock3", "builtin_rock4")));
+		BOREAL_PRIMARY_TREE = tryLoading(
+				"tables/boreal_major_tree",
+				2,
+				new LinkedList<String>(Arrays.asList("btree1", "btree2",
+						"btree3", "btree4")));
+		TEMPERATE_PRIMARY_TREE = tryLoading(
+				"tables/temperate_major_tree",
+				2,
+				new LinkedList<String>(Arrays.asList("ttree1", "ttree2",
+						"ttree3", "ttree4")));
+	}
+
+	/**
+	 * Try to load a table from file, but log the error and use the given backup
+	 * if it fails.
+	 * 
+	 * @param filename
+	 *            the file to load from
+	 * @param defaultRows
+	 *            the number of rows to use if loading fails
+	 * @param defaultItems
+	 *            a list of items to use if loading fails
+	 * @return a valid table, from file if that works, using the default data if
+	 *         not.
+	 */
+	private static QuadrantResult tryLoading(final String filename,
+			final int defaultRows, final List<String> defaultItems) {
 		try {
-			temp = loader.loadQuadrantTable("tables/major_rock");
+			return new TableLoader().loadQuadrantTable(filename); // NOPMD
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE,
-					"I/O error loading the primary rock table from file", e);
-			temp = new QuadrantResult(2, new LinkedList<String>(Arrays.asList(
-					"builtin_rock1", "builtin_rock2", "builtin_rock3",
-					"builtin_rock4")));
+			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
+					+ filename, e);
+			return new QuadrantResult(defaultRows, new LinkedList<String>(
+					defaultItems));
 		}
-		PRIMARY_ROCK = temp;
-		try {
-			temp = loader.loadQuadrantTable("tables/boreal_major_tree");
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE,
-					"I/O error loading the boreal forest primary tree table from file", e);
-			temp = new QuadrantResult(2, new LinkedList<String>(
-					Arrays.asList("btree1", "btree2", "btree3", "btree4")));
-		}
-		BOREAL_PRIMARY_TREE = temp;
-		try {
-			temp = loader.loadQuadrantTable("tables/temperate_major_tree");
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE,
-					"I/O error loading the temperate forest primary tree table from file", e);
-			temp = new QuadrantResult(2, new LinkedList<String>(
-					Arrays.asList("ttree1", "ttree2", "ttree3", "ttree4")));
-		}
-		TEMPERATE_PRIMARY_TREE = temp;
 	}
 
 	/**
