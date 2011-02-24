@@ -45,7 +45,7 @@ public class QuadrantResult {
 		quadrants = new HashMap<Pair<Integer, Integer>, String>();
 		for (int row = 0; row < MAP_SIZE_ROWS - rowRemain; row += rowstep) {
 			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
-				System.out.println("Adding " + items.get(0) + " at (" + row + ", " + col +").");
+//				System.out.println("Adding " + items.get(0) + " at (" + row + ", " + col +").");
 				quadrants.put(Pair.of(row, col), items.remove(0));
 			}
 		}
