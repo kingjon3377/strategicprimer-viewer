@@ -1,10 +1,14 @@
 package model.exploration;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.viewer.Tile;
 import model.viewer.TileType;
+import controller.exploration.TableLoader;
 
 /**
  * A class to create exploration results. The initial implementation is a bit
@@ -14,6 +18,10 @@ import model.viewer.TileType;
  * 
  */
 public class ExplorationRunner {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(ExplorationRunner.class.getName());
 	/**
 	 * @param tile
 	 *            a tile
@@ -48,9 +56,19 @@ public class ExplorationRunner {
 	 */
 	private static final QuadrantResult TEMPERATE_PRIMARY_TREE; // NOPMD
 	static {
-		PRIMARY_ROCK = new QuadrantResult(3, new LinkedList<String>(Arrays.asList("basalt", "gabbro",
-				"sandstone", "limestone", "granite", "shale", "gneiss",
-				"chalk", "slate")));
+		final TableLoader loader = new TableLoader();
+		// ESCA-JAVA0177:
+		// we have to use a temporary variable or the compiler will complain that the final variable might already be assigned
+		QuadrantResult temp;
+		try {
+			temp = loader.loadQuadrantTable("tables/major_rock");
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error loading the primary rock table from file", e);
+			temp = new QuadrantResult(2, new LinkedList<String>(
+					Arrays.asList("builtin_rock1", "builtin_rock2",
+							"builtin_rock3", "builtin_rock4")));
+		}
+		PRIMARY_ROCK = temp;
 		BOREAL_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(Arrays.asList("pine",
 				"fir", "larch", "spruce")));
 		TEMPERATE_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(Arrays.asList("oak",
