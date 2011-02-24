@@ -1,5 +1,8 @@
 package model.exploration;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 import model.viewer.Tile;
 import model.viewer.TileType;
 
@@ -30,73 +33,48 @@ public class ExplorationRunner {
 	}
 	
 	/**
-	 * FIXME: This data should be read from file, not embedded in the program.
+	 * FIXME: This should be read from file, not embedded in code. The primary
+	 * rock type of each quadrant.
+	 */
+	private static final QuadrantResult PRIMARY_ROCK;
+	/**
+	 * FIXME: This should be read from file, not embedded in code. The primary
+	 * tree type of each boreal forest quadrant.
+	 */
+	private static final QuadrantResult BOREAL_PRIMARY_TREE; // NOPMD
+	/**
+	 * FIXME: This should be read from file, not embedded in code. The primary
+	 * tree type of each temperate forest quadrant.
+	 */
+	private static final QuadrantResult TEMPERATE_PRIMARY_TREE; // NOPMD
+	static {
+		PRIMARY_ROCK = new QuadrantResult(3, new LinkedList<String>(Arrays.asList("basalt", "gabbro",
+				"sandstone", "limestone", "granite", "shale", "gneiss",
+				"chalk", "slate")));
+		BOREAL_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(Arrays.asList("pine",
+				"fir", "larch", "spruce")));
+		TEMPERATE_PRIMARY_TREE = new QuadrantResult(2, new LinkedList<String>(Arrays.asList("oak",
+				"maple", "beech", "elm")));
+	}
+
+	/**
 	 * @param tile a tile
 	 * @return the main kind of rock on the tile
 	 */
 	// ESCA-JAVA0076:
 	public String getPrimaryRock(final Tile tile) {
-		if (tile.getRow() < 23) {
-			if (tile.getCol() < 29) {
-				return "gabbro"; // NOPMD
-			} else if (tile.getCol() < 58) {
-				return "basalt"; // NOPMD
-			} else {
-				return "sandstone"; // NOPMD
-			}
-		} else if (tile.getRow() < 46) {
-			if (tile.getCol() < 29) {
-				return "limestone"; // NOPMD
-			} else if (tile.getCol() < 58) {
-				return "granite"; // NOPMD
-			} else {
-				return "shale"; // NOPMD
-			}
-		} else {
-			if (tile.getCol() < 29) {
-				return "gneiss"; // NOPMD
-			} else if (tile.getCol() < 58) {
-				return "chalk"; // NOPMD
-			} else {
-				return "slate";
-			}
-		}
+		return PRIMARY_ROCK.getQuadrantValue(tile.getRow(), tile.getCol());
 	}
 	/**
-	 * FIXME: This data should be read from file, not embedded in the program.
 	 * @param tile a forest tile
 	 * @return the main kind of tree on the tile
 	 */
 	// ESCA-JAVA0076:
 	public String getPrimaryTree(final Tile tile) {
 		if (TileType.BorealForest.equals(tile.getType())) {
-			if (tile.getRow() < 35) {
-				if (tile.getCol() < 45) {
-					return "pine"; // NOPMD
-				} else {
-					return "fir"; // NOPMD
-				}
-			} else {
-				if (tile.getCol() < 45) {
-					return "larch"; // NOPMD
-				} else {
-					return "spruce"; // NOPMD
-				}
-			}
+			return BOREAL_PRIMARY_TREE.getQuadrantValue(tile.getRow(), tile.getCol()); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getType())) {
-			if (tile.getRow() < 35) {
-				if (tile.getCol() < 45) {
-					return "oak"; // NOPMD
-				} else {
-					return "maple"; // NOPMD
-				}
-			} else {
-				if (tile.getCol() < 45) {
-					return "beech"; // NOPMD
-				} else {
-					return "elm";
-				}
-			}
+			return TEMPERATE_PRIMARY_TREE.getQuadrantValue(tile.getRow(), tile.getCol());
 		} else {
 			throw new IllegalArgumentException("Only forests have primary trees");
 		}
