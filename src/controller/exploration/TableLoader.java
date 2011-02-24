@@ -36,6 +36,7 @@ public class TableLoader {
 		}
 		final int rows = Integer.parseInt(line);
 		final List<String> items = new LinkedList<String>();
+		line = reader.readLine();
 		while (line != null) {
 			items.add(line);
 			try {
