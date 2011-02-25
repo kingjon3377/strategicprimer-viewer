@@ -133,4 +133,18 @@ public class ExplorationRunner {
 			return list;
 		}
 	}
+	/**
+	 * Consult a table. (Look up the given tile if it's a quadrant table, roll
+	 * on it if it's a random-encounter table.) Note that the result may be the
+	 * name of another table, which should then be consulted.
+	 * 
+	 * @param table
+	 *            the name of the table to consult
+	 * @param tile
+	 *            the tile to refer to
+	 * @return the result of the consultation
+	 */
+	public String consultTable(final String table, final Tile tile) {
+		return TABLES.get(table).generateEvent(tile);
+	}
 }
