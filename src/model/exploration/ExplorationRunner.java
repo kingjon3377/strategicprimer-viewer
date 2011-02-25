@@ -47,15 +47,15 @@ public class ExplorationRunner {
 	/**
 	 * The primary rock type of each quadrant.
 	 */
-	private static final QuadrantResult PRIMARY_ROCK;
+	private static final QuadrantTable PRIMARY_ROCK;
 	/**
 	 * The primary tree type of each boreal forest quadrant.
 	 */
-	private static final QuadrantResult BOREAL_PRIMARY_TREE; // NOPMD
+	private static final QuadrantTable BOREAL_PRIMARY_TREE; // NOPMD
 	/**
 	 * The primary tree type of each temperate forest quadrant.
 	 */
-	private static final QuadrantResult TEMPERATE_PRIMARY_TREE; // NOPMD
+	private static final QuadrantTable TEMPERATE_PRIMARY_TREE; // NOPMD
 	static {
 		PRIMARY_ROCK = tryLoading("tables/major_rock", 2, Arrays.asList(
 				"builtin_rock1", "builtin_rock2", "builtin_rock3",
@@ -79,14 +79,14 @@ public class ExplorationRunner {
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
 	 */
-	private static QuadrantResult tryLoading(final String filename,
+	private static QuadrantTable tryLoading(final String filename,
 			final int defaultRows, final List<String> defaultItems) {
 		try {
 			return new TableLoader().loadQuadrantTable(filename); // NOPMD
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
 					+ filename, e);
-			return new QuadrantResult(defaultRows, new LinkedList<String>(
+			return new QuadrantTable(defaultRows, new LinkedList<String>(
 					defaultItems));
 		}
 	}

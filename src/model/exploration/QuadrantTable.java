@@ -12,7 +12,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  * 
  */
-public class QuadrantResult {
+public class QuadrantTable {
 	/**
 	 * The size of the map in rows. TODO: this should be dynamic.
 	 */
@@ -34,7 +34,7 @@ public class QuadrantResult {
 	 * @param items
 	 *            the items to allocate by quadrant
 	 */
-	public QuadrantResult(final int rows, final List<String> items) {
+	public QuadrantTable(final int rows, final List<String> items) {
 		if (items.size() % rows != 0) {
 			throw new IllegalArgumentException(Integer.toString(items.size())
 					+ " items won't divide evenly into "

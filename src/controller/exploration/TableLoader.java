@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.exploration.QuadrantResult;
+import model.exploration.QuadrantTable;
 import util.LoadFile;
 
 /**
@@ -26,7 +26,7 @@ public class TableLoader {
 	 *             on I/O error reading the number of rows
 	 * @return the table
 	 */
-	public QuadrantResult loadQuadrantTable(final String filename)
+	public QuadrantTable loadQuadrantTable(final String filename)
 			throws IOException {
 		final BufferedReader reader = new LoadFile().doLoadFile(filename);
 		String line = reader.readLine();
@@ -49,6 +49,6 @@ public class TableLoader {
 				break;
 			}
 		}
-		return new QuadrantResult(rows, items);
+		return new QuadrantTable(rows, items);
 	}
 }
