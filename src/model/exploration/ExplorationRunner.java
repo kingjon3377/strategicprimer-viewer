@@ -1,9 +1,12 @@
 package model.exploration;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,26 +46,27 @@ public class ExplorationRunner {
 		}
 		return sb.toString();
 	}
-
 	/**
-	 * The primary rock type of each quadrant.
+	 * The tables we know about.
 	 */
-	private static final QuadrantTable PRIMARY_ROCK;
+	private static final Map<String, EncounterTable> TABLES;
 	/**
-	 * The primary tree type of each boreal forest quadrant.
+	 * A list of tables to load.
 	 */
-	private static final QuadrantTable BOREAL_PRIMARY_TREE; // NOPMD
-	/**
-	 * The primary tree type of each temperate forest quadrant.
-	 */
-	private static final QuadrantTable TEMPERATE_PRIMARY_TREE; // NOPMD
+	private static final String[] TABLE_LIST = { "major_rock",
+			"boreal_major_tree", "temperate_major_tree" };
 	static {
-		PRIMARY_ROCK = tryLoading("tables/major_rock", 2, Arrays.asList(
+		TABLES = new HashMap<String, EncounterTable>();
+		for (String table : TABLE_LIST) {
+			TABLES.put(table,
+					tryLoading("tables/" + table, 2, createList(table, 4)));
+		}
+		tryLoading("tables/major_rock", 2, Arrays.asList(
 				"builtin_rock1", "builtin_rock2", "builtin_rock3",
 				"builtin_rock4"));
-		BOREAL_PRIMARY_TREE = tryLoading("tables/boreal_major_tree", 2,
+		tryLoading("tables/boreal_major_tree", 2,
 				Arrays.asList("btree1", "btree2", "btree3", "btree4"));
-		TEMPERATE_PRIMARY_TREE = tryLoading("tables/temperate_major_tree", 2,
+		tryLoading("tables/temperate_major_tree", 2,
 				Arrays.asList("ttree1", "ttree2", "ttree3", "ttree4"));
 	}
 
@@ -96,9 +100,8 @@ public class ExplorationRunner {
 	 *            a tile
 	 * @return the main kind of rock on the tile
 	 */
-	// ESCA-JAVA0076:
 	public String getPrimaryRock(final Tile tile) {
-		return PRIMARY_ROCK.generateEvent(tile);
+		return TABLES.get("major_rock").generateEvent(tile);
 	}
 
 	/**
@@ -106,15 +109,35 @@ public class ExplorationRunner {
 	 *            a forest tile
 	 * @return the main kind of tree on the tile
 	 */
-	// ESCA-JAVA0076:
 	public String getPrimaryTree(final Tile tile) {
 		if (TileType.BorealForest.equals(tile.getType())) {
-			return BOREAL_PRIMARY_TREE.generateEvent(tile); // NOPMD
+			return TABLES.get("boreal_major_tree").generateEvent(tile); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getType())) {
-			return TEMPERATE_PRIMARY_TREE.generateEvent(tile);
+			return TABLES.get("temperate_major_tree").generateEvent(tile);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
+		}
+	}
+
+	/**
+	 * Create a list of strings, each beginning with a specified stem and ending
+	 * with a sequential number.
+	 * 
+	 * @param stem
+	 *            the string to begin each item with
+	 * @param iterations
+	 *            how many items should be in the list
+	 * @return such a list
+	 */
+	private static List<String> createList(final String stem,
+			final int iterations) {
+		if (iterations == 0) {
+			return new ArrayList<String>(); // NOPMD
+		} else {
+			final List<String> list = createList(stem, iterations - 1);
+			list.add(stem + iterations);
+			return list;
 		}
 	}
 }
