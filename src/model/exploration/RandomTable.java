@@ -25,7 +25,7 @@ public class RandomTable implements EncounterTable {
 	public String generateEvent(final Tile tile) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		for (Pair<Integer, String> item : table) {
-			if (roll > item.first) {
+			if (roll >= item.first) {
 				return item.second; // NOPMD
 			}
 		}
