@@ -98,7 +98,7 @@ public class ExplorationRunner {
 	 */
 	// ESCA-JAVA0076:
 	public String getPrimaryRock(final Tile tile) {
-		return PRIMARY_ROCK.getQuadrantValue(tile.getRow(), tile.getCol());
+		return PRIMARY_ROCK.generateEvent(tile);
 	}
 
 	/**
@@ -109,11 +109,9 @@ public class ExplorationRunner {
 	// ESCA-JAVA0076:
 	public String getPrimaryTree(final Tile tile) {
 		if (TileType.BorealForest.equals(tile.getType())) {
-			return BOREAL_PRIMARY_TREE.getQuadrantValue(tile.getRow(), // NOPMD
-					tile.getCol());
+			return BOREAL_PRIMARY_TREE.generateEvent(tile); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getType())) {
-			return TEMPERATE_PRIMARY_TREE.getQuadrantValue(tile.getRow(),
-					tile.getCol());
+			return TEMPERATE_PRIMARY_TREE.generateEvent(tile);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
