@@ -26,7 +26,10 @@ public final class ExplorationCLI {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ExplorationCLI.class
 			.getName());
-
+	/**
+	 * The helper that actually runs the exploration
+	 */
+	private final ExplorationRunner runner = new ExplorationRunner();
 	/**
 	 * Constructor.
 	 * 
@@ -97,7 +100,7 @@ public final class ExplorationCLI {
 	 *             on I/O error
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_ALWAYS_NULL")
-	private static void fortressInfo(final SPMap map,
+	private void fortressInfo(final SPMap map,
 			final BufferedReader reader) throws IOException {
 		final PrintStream ostream = System.out;
 		ostream.print("Row: ");
@@ -105,7 +108,7 @@ public final class ExplorationCLI {
 		ostream.print("Column: ");
 		final int col = Integer.parseInt(reader.readLine());
 		final Tile tile = map.getTile(row, col);
-		ostream.print(new ExplorationRunner().defaultResults(tile));
+		ostream.print(runner.defaultResults(tile));
 	}
 
 	/**
