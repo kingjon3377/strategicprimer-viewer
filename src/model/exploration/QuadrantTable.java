@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.viewer.Tile;
+
 import util.Pair;
 
 /**
@@ -12,7 +14,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  * 
  */
-public class QuadrantTable {
+public class QuadrantTable implements EncounterTable {
 	/**
 	 * The size of the map in rows. TODO: this should be dynamic.
 	 */
@@ -74,5 +76,13 @@ public class QuadrantTable {
 			}
 		}
 		return bestValue;
+	}
+	/**
+	 * @param tile a tile
+	 * @return what the table has for that tile
+	 */
+	@Override
+	public String generateEvent(final Tile tile) {
+		return getQuadrantValue(tile.getRow(),tile.getCol());
 	}
 }
