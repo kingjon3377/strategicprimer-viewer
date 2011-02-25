@@ -61,13 +61,6 @@ public class ExplorationRunner {
 			TABLES.put(table,
 					tryLoading("tables/" + table, 2, createList(table, 4)));
 		}
-		tryLoading("tables/major_rock", 2, Arrays.asList(
-				"builtin_rock1", "builtin_rock2", "builtin_rock3",
-				"builtin_rock4"));
-		tryLoading("tables/boreal_major_tree", 2,
-				Arrays.asList("btree1", "btree2", "btree3", "btree4"));
-		tryLoading("tables/temperate_major_tree", 2,
-				Arrays.asList("ttree1", "ttree2", "ttree3", "ttree4"));
 	}
 
 	/**
