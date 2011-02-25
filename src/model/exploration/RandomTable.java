@@ -1,0 +1,50 @@
+package model.exploration;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import model.viewer.Tile;
+import util.Pair;
+import util.SingletonRandom;
+
+/**
+ * A table where the event is selected at random
+ * 
+ * @author Jonathan Lovelace
+ * 
+ */
+public class RandomTable implements EncounterTable {
+	/**
+	 * @param tile
+	 *            ignored
+	 * @return a random item from the table, or the last item in the table if
+	 *         the normal procedure fails.
+	 */
+	@Override
+	public String generateEvent(final Tile tile) {
+		final int roll = SingletonRandom.RANDOM.nextInt(100);
+		for (Pair<Integer, String> item : table) {
+			if (roll > item.first) {
+				return item.second; // NOPMD
+			}
+		}
+		return table.get(table.size() - 1).second;
+	}
+
+	/**
+	 * A list of items.
+	 */
+	private final List<Pair<Integer, String>> table;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param items
+	 *            the items in the table.
+	 */
+	public RandomTable(final List<Pair<Integer, String>> items) {
+		table = new ArrayList<Pair<Integer, String>>(items);
+		Collections.sort(table, Collections.reverseOrder());
+	}
+}
