@@ -85,7 +85,7 @@ public final class ExplorationCLI {
 		ostream.print("Column: ");
 		final int col = Integer.parseInt(reader.readLine());
 		final Tile tile = map.getTile(row, col);
-		// TODO: add algorithm from tables
+		ostream.print(runner.consultTable("major_rock", tile));
 	}
 
 	/**
