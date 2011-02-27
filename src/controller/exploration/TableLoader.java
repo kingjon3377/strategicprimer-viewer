@@ -49,6 +49,8 @@ public class TableLoader {
 				break;
 			}
 		}
+		reader.close();
 		return new QuadrantTable(rows, items);
 	}
 }
+
