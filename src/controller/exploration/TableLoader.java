@@ -1,14 +1,19 @@
 package controller.exploration;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.exploration.EncounterTable;
 import model.exploration.QuadrantTable;
+import model.exploration.RandomTable;
 import util.LoadFile;
+import util.Pair;
 
 /**
  * A class to load encounter tables from file.
@@ -17,18 +22,40 @@ import util.LoadFile;
  */
 public class TableLoader {
 	/**
-	 * Load a quadrant-based table from file. Format: number of rows, then all
-	 * the items, one per line.
+	 * Load a table from file. Format: first line specifies the kind of table
+	 * (quadrant or random; first letter is the only one checked). Quadrant
+	 * tables have number of rows on the next line, then all the items, one per
+	 * line. Random tables have lines of the form X: Description, where X is the
+	 * number at the bottom of the range of rolls the description applies to.
 	 * 
 	 * @param filename
 	 *            the file containing the table.
 	 * @throws IOException
-	 *             on I/O error reading the number of rows
+	 *             on I/O error 
 	 * @return the table
+	 * @throws FileNotFoundException when file not found
 	 */
-	public QuadrantTable loadQuadrantTable(final String filename)
-			throws IOException {
+	public EncounterTable loadTable(final String filename) throws FileNotFoundException, IOException {
 		final BufferedReader reader = new LoadFile().doLoadFile(filename);
+		final String line = reader.readLine();
+		if (line == null) {
+			throw new IOException("File doesn't start by specifying which kind of table.");
+		} else if (line.charAt(0) == 'Q' || line.charAt(0) == 'q') {
+			return loadQuadrantTable(reader); // NOPMD
+		} else if (line.charAt(0) == 'R' || line.charAt(0) == 'r') {
+			return loadRandomTable(reader);
+		} else {
+			throw new IllegalArgumentException("File specifies an unknown table type");
+		}
+	}
+	/**
+	 * Load a QuadrantTable from file.
+	 * @param reader the file descriptor
+	 * @return the quadrant table the file describes.
+	 * @throws IOException on I/O error reading the number of rows
+	 */
+	public QuadrantTable loadQuadrantTable(final BufferedReader reader)
+			throws IOException {
 		String line = reader.readLine();
 		if (line == null) {
 			throw new IOException(
@@ -51,6 +78,27 @@ public class TableLoader {
 		}
 		reader.close();
 		return new QuadrantTable(rows, items);
+	}
+	/**
+	 * Load a RandomTable from file.
+	 * @param reader the file descriptor
+	 * @return the random-table the file describes. 
+	 * @throws IOException on I/O error
+	 */
+	public RandomTable loadRandomTable(final BufferedReader reader) throws IOException {
+		String line = reader.readLine();
+		final List<Pair<Integer,String>> list = new ArrayList<Pair<Integer, String>>();
+		while (line != null) {
+			final String[] array = line.split(" ", 2);
+			if (array.length < 2) {
+				Logger.getLogger(TableLoader.class.getName()).severe("Line with no blanks, continuing ...");
+			} else {
+				list.add(Pair.of(Integer.parseInt(array[0]),array[1]));
+			}
+			line = reader.readLine();
+		}
+		reader.close();
+		return new RandomTable(list);
 	}
 }
 

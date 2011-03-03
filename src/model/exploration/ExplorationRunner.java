@@ -76,10 +76,10 @@ public class ExplorationRunner {
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
 	 */
-	private static QuadrantTable tryLoading(final String filename,
+	private static EncounterTable tryLoading(final String filename,
 			final int defaultRows, final List<String> defaultItems) {
 		try {
-			return new TableLoader().loadQuadrantTable(filename); // NOPMD
+			return new TableLoader().loadTable(filename); // NOPMD
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
 					+ filename, e);
