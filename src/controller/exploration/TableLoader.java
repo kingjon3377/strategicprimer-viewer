@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import model.exploration.EncounterTable;
 import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
+import model.exploration.TerrainTable;
+import model.viewer.TileType;
 import util.LoadFile;
 import util.Pair;
 
@@ -27,6 +29,8 @@ public class TableLoader {
 	 * tables have number of rows on the next line, then all the items, one per
 	 * line. Random tables have lines of the form X: Description, where X is the
 	 * number at the bottom of the range of rolls the description applies to.
+	 * Terrain tables have lines with each terrain type (as in the XML map
+	 * format) followed by a description or event.
 	 * 
 	 * @param filename
 	 *            the file containing the table.
@@ -44,6 +48,8 @@ public class TableLoader {
 			return loadQuadrantTable(reader); // NOPMD
 		} else if (line.charAt(0) == 'R' || line.charAt(0) == 'r') {
 			return loadRandomTable(reader);
+		} else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
+			return loadTerrainTable(reader);
 		} else {
 			throw new IllegalArgumentException("File specifies an unknown table type");
 		}
@@ -100,5 +106,31 @@ public class TableLoader {
 		reader.close();
 		return new RandomTable(list);
 	}
-}
 
+	/**
+	 * Load a TerrainTable from file.
+	 * 
+	 * @param reader
+	 *            the file descriptor
+	 * @return the terrain-table the file describes.
+	 * @throws IOException
+	 *             on I/O error.
+	 */
+	public TerrainTable loadTerrainTable(final BufferedReader reader)
+			throws IOException {
+		String line = reader.readLine();
+		final List<Pair<TileType, String>> list = new ArrayList<Pair<TileType, String>>();
+		while (line != null) {
+			final String[] array = line.split(" ", 2);
+			if (array.length < 2) {
+				Logger.getLogger(TableLoader.class.getName()).severe(
+						"Line with no blanks, continuing ...");
+			} else {
+				list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
+			}
+			line = reader.readLine();
+		}
+		reader.close();
+		return new TerrainTable(list);
+	}
+}
