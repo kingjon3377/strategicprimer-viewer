@@ -52,7 +52,7 @@ public class ExplorationRunner {
 	/**
 	 * A list of tables to load.
 	 */
-	private static final String[] TABLE_LIST = { "major_rock",
+	private static final String[] TABLE_LIST = { "major_rock", "minor_rock",
 			"boreal_major_tree", "temperate_major_tree" };
 	static {
 		TABLES = new HashMap<String, EncounterTable>();
