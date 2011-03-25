@@ -17,6 +17,10 @@ import controller.exploration.TableLoader;
  * A class to create exploration results. The initial implementation is a bit
  * hackish, and should be generalized and improved.
  * 
+ * FIXME: So that this could eventually run in a server environment, make
+ * everything here non-static, so we can have multiple instances with different
+ * data.
+ * 
  * @author Jonathan Lovelace
  * 
  */
