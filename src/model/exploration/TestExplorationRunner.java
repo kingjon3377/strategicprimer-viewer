@@ -59,6 +59,13 @@ public class TestExplorationRunner {
 		assertEquals(runner.consultTable("test_table_three", new Tile(0, 0, TileType.Tundra)), "test_three");
 	}
 
+	/**
+	 * Test the recursiveConsultTable method: the one method under test whose
+	 * correctness is nonobvious.
+	 * 
+	 * @todo Use a mock object rather than a real object for the Tile, and even
+	 *       for the Tables.
+	 */
 	@Test
 	public void testRecursiveConsultTable() {
 		runner.loadTable("test_table_one", new ConstantTable("( #test_table_two# )"));
