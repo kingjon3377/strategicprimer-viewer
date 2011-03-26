@@ -49,6 +49,7 @@ public class ExplorationRunner {
 		}
 		return sb.toString();
 	}
+
 	/**
 	 * The tables we know about.
 	 */
@@ -148,6 +149,7 @@ public class ExplorationRunner {
 			return list;
 		}
 	}
+
 	/**
 	 * Consult a table. (Look up the given tile if it's a quadrant table, roll
 	 * on it if it's a random-encounter table.) Note that the result may be the
@@ -162,12 +164,14 @@ public class ExplorationRunner {
 	public String consultTable(final String table, final Tile tile) {
 		return TABLES.get(table).generateEvent(tile);
 	}
+
 	/**
 	 * Consult a table, and if the result indicates recursion, perform it.
 	 * Recursion is indicated by hash-marks around the name of the table to
 	 * call; results are undefined if there are more than two hash marks in any
 	 * given string, or if either is at the beginning or the end of the string,
 	 * since we use String.split .
+	 * 
 	 * @param table
 	 *            the name of the table to consult
 	 * @param tile
@@ -181,7 +185,8 @@ public class ExplorationRunner {
 			if (split.length < 3) {
 				return split[0] + recursiveConsultTable(split[1], tile);
 			} else {
-				return split[0] + recursiveConsultTable(split[1], tile) + split[2];
+				return split[0] + recursiveConsultTable(split[1], tile)
+						+ split[2];
 			}
 		} else {
 			return result;
