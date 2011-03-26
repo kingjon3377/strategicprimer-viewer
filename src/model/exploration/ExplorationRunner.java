@@ -92,6 +92,18 @@ public class ExplorationRunner {
 	}
 
 	/**
+	 * Add a table. This is package-visibility so our test-case can use it.
+	 * 
+	 * @param name
+	 *            The name to add the table under
+	 * @param table
+	 *            the table.
+	 */
+	void loadTable(String name, final EncounterTable table) {
+		TABLES.put(name, table);
+	}
+
+	/**
 	 * @param tile
 	 *            a tile
 	 * @return the main kind of rock on the tile
