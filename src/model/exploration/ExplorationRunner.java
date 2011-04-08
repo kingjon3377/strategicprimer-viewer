@@ -61,6 +61,7 @@ public class ExplorationRunner {
 	 */
 	private final String[] defaultTableList = { "major_rock", "minor_rock",
 			"boreal_major_tree", "temperate_major_tree" };
+
 	/**
 	 * Loads the default set of tables.
 	 */
@@ -143,8 +144,7 @@ public class ExplorationRunner {
 	 *            how many items should be in the list
 	 * @return such a list
 	 */
-	private List<String> createList(final String stem,
-			final int iterations) {
+	private List<String> createList(final String stem, final int iterations) {
 		if (iterations == 0) {
 			return new ArrayList<String>(); // NOPMD
 		} else {
@@ -226,20 +226,25 @@ public class ExplorationRunner {
 		} else {
 			state.add(table);
 			if (tables.keySet().contains(table)) {
-			for (String value : tables.get(table).allEvents()) {
-				if (value.contains("#") && recursiveCheck(value.split("#", 3)[1], state)) {
-					return true; // NOPMD
+				for (String value : tables.get(table).allEvents()) {
+					if (value.contains("#")
+							&& recursiveCheck(value.split("#", 3)[1], state)) {
+						return true; // NOPMD
+					}
 				}
-			}
-			return false;
+				return false;
 			} else {
 				return true;
 			}
 		}
 	}
+
 	/**
-	 * Check whether any table contains recursive calls to a table that doesn't exist.
-	 * @return whether any table contains recursive calls to a nonexistent table.
+	 * Check whether any table contains recursive calls to a table that doesn't
+	 * exist.
+	 * 
+	 * @return whether any table contains recursive calls to a nonexistent
+	 *         table.
 	 */
 	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<String>();
@@ -250,5 +255,5 @@ public class ExplorationRunner {
 		}
 		return false;
 	}
-	
+
 }
