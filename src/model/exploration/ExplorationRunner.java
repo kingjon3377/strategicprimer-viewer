@@ -53,18 +53,18 @@ public class ExplorationRunner {
 	/**
 	 * The tables we know about.
 	 */
-	private final Map<String, EncounterTable> TABLES = new HashMap<String, EncounterTable>();
+	private final Map<String, EncounterTable> tables = new HashMap<String, EncounterTable>();
 	/**
 	 * A list of tables to load.
 	 */
-	private final String[] TABLE_LIST = { "major_rock", "minor_rock",
+	private final String[] defaultTableList = { "major_rock", "minor_rock",
 			"boreal_major_tree", "temperate_major_tree" };
 	/**
 	 * Loads the default set of tables.
 	 */
 	public void loadDefaultTables() {
-		for (String table : TABLE_LIST) {
-			TABLES.put(table,
+		for (String table : defaultTableList) {
+			tables.put(table,
 					tryLoading("tables/" + table, 2, createList(table, 4)));
 		}
 	}
@@ -103,7 +103,7 @@ public class ExplorationRunner {
 	 *            the table.
 	 */
 	void loadTable(String name, final EncounterTable table) {
-		TABLES.put(name, table);
+		tables.put(name, table);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class ExplorationRunner {
 	 * @return the main kind of rock on the tile
 	 */
 	public String getPrimaryRock(final Tile tile) {
-		return TABLES.get("major_rock").generateEvent(tile);
+		return tables.get("major_rock").generateEvent(tile);
 	}
 
 	/**
@@ -122,9 +122,9 @@ public class ExplorationRunner {
 	 */
 	public String getPrimaryTree(final Tile tile) {
 		if (TileType.BorealForest.equals(tile.getType())) {
-			return TABLES.get("boreal_major_tree").generateEvent(tile); // NOPMD
+			return tables.get("boreal_major_tree").generateEvent(tile); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getType())) {
-			return TABLES.get("temperate_major_tree").generateEvent(tile);
+			return tables.get("temperate_major_tree").generateEvent(tile);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
@@ -164,7 +164,7 @@ public class ExplorationRunner {
 	 * @return the result of the consultation
 	 */
 	public String consultTable(final String table, final Tile tile) {
-		return TABLES.get(table).generateEvent(tile);
+		return tables.get(table).generateEvent(tile);
 	}
 
 	/**
