@@ -53,13 +53,13 @@ public class ExplorationRunner {
 	/**
 	 * The tables we know about.
 	 */
-	private static final Map<String, EncounterTable> TABLES;
+	private final Map<String, EncounterTable> TABLES;
 	/**
 	 * A list of tables to load.
 	 */
-	private static final String[] TABLE_LIST = { "major_rock", "minor_rock",
+	private final String[] TABLE_LIST = { "major_rock", "minor_rock",
 			"boreal_major_tree", "temperate_major_tree" };
-	static {
+	public ExplorationRunner() {
 		TABLES = new HashMap<String, EncounterTable>();
 		for (String table : TABLE_LIST) {
 			TABLES.put(table,
@@ -80,7 +80,7 @@ public class ExplorationRunner {
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
 	 */
-	private static EncounterTable tryLoading(final String filename,
+	private EncounterTable tryLoading(final String filename,
 			final int defaultRows, final List<String> defaultItems) {
 		try {
 			return new TableLoader().loadTable(filename); // NOPMD
@@ -139,7 +139,7 @@ public class ExplorationRunner {
 	 *            how many items should be in the list
 	 * @return such a list
 	 */
-	private static List<String> createList(final String stem,
+	private List<String> createList(final String stem,
 			final int iterations) {
 		if (iterations == 0) {
 			return new ArrayList<String>(); // NOPMD
