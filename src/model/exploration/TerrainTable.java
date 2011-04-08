@@ -1,8 +1,10 @@
 package model.exploration;
 
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -38,5 +40,16 @@ public class TerrainTable implements EncounterTable {
 	public String generateEvent(final Tile tile) {
 		return mapping.get(tile.getType());
 	}
+	
+	/**
+	 * @return all events that this table can produce. 
+	 */
+	@Override
+	public Set<String> allEvents() {
+		return new HashSet<String>(mapping.values());
+	}
 
+	/**
+	 * @return all events that this table can produce. 
+	 */
 }

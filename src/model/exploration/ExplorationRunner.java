@@ -3,9 +3,11 @@ package model.exploration;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -192,5 +194,43 @@ public class ExplorationRunner {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Check that whether a table contains recursive calls to a table that
+	 * doesn't exist.
+	 * 
+	 * @param table
+	 *            the name of the table to consult
+	 * @return whether that table, or any table it calls, calls a table that
+	 *         doesn't exist.
+	 */
+	public boolean recursiveCheck(final String table) {
+		return recursiveCheck(table, new HashSet<String>());
+	}
+
+	/**
+	 * Check whether a table contains recursive calls to a table that doesn't
+	 * exist.
+	 * 
+	 * @param table
+	 *            the name of the table to consult
+	 * @param state
+	 *            a Set to use to prevent infinite recursion
+	 * @return whether the table, or any it calls, calls a table that doesn't
+	 *         exist.
+	 */
+	private boolean recursiveCheck(final String table, final Set<String> state) {
+		if (state.contains(table)) {
+			return false; // NOPMD
+		} else {
+			state.add(table);
+			for (String value : tables.get(table).allEvents()) {
+				if (value.contains("#") && recursiveCheck(value.split("#", 3)[1], state)) {
+					return true; // NOPMD
+				}
+			}
+			return false;
+		}
 	}
 }

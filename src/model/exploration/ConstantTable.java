@@ -1,5 +1,8 @@
 package model.exploration;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import model.viewer.Tile;
 
 /**
@@ -39,6 +42,16 @@ public class ConstantTable implements EncounterTable {
 	@Override
 	public String generateEvent(Tile tile) {
 		return value;
+	}
+
+	/**
+	 * @return all events that this table can produce. 
+	 */
+	@Override
+	public Set<String> allEvents() {
+		final Set<String> retval = new HashSet<String>();
+		retval.add(value);
+		return retval;
 	}
 
 }

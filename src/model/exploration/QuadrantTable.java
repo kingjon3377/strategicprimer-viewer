@@ -1,11 +1,12 @@
 package model.exploration;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import model.viewer.Tile;
-
 import util.Pair;
 
 /**
@@ -84,5 +85,12 @@ public class QuadrantTable implements EncounterTable {
 	@Override
 	public String generateEvent(final Tile tile) {
 		return getQuadrantValue(tile.getRow(),tile.getCol());
+	}
+	/**
+	 * @return all events that this table can produce. 
+	 */
+	@Override
+	public Set<String> allEvents() {
+		return new HashSet<String>(quadrants.values());
 	}
 }

@@ -2,7 +2,9 @@ package model.exploration;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import model.viewer.Tile;
 import util.Pair;
@@ -46,5 +48,17 @@ public class RandomTable implements EncounterTable {
 	public RandomTable(final List<Pair<Integer, String>> items) {
 		table = new ArrayList<Pair<Integer, String>>(items);
 		Collections.sort(table, Collections.reverseOrder());
+	}
+
+	/**
+	 * @return all events that this table can produce. 
+	 */
+	@Override
+	public Set<String> allEvents() {
+		final Set<String> retval = new HashSet<String>();
+		for (Pair<Integer, String> pair : table) {
+			retval.add(pair.second);
+		}
+		return retval;
 	}
 }

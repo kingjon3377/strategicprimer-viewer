@@ -1,5 +1,7 @@
 package model.exploration;
 
+import java.util.Set;
+
 import model.viewer.Tile;
 
 /**
@@ -20,4 +22,9 @@ public interface EncounterTable {
 	 * @return an appropriate event for that tile 
 	 */
 	String generateEvent(final Tile tile);
+	/**
+	 * For table-debugging purposes.
+	 * @return all events the table can return.
+	 */
+	Set<String> allEvents();
 }
