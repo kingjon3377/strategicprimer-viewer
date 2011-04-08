@@ -45,6 +45,7 @@ public final class ExplorationCLI {
 		if (ostream == null) {
 			throw new IllegalStateException("System.out is null");
 		}
+		runner.loadDefaultTables();
 		try {
 			ostream.print("Command: ");
 			String input = reader.readLine();

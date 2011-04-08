@@ -53,14 +53,16 @@ public class ExplorationRunner {
 	/**
 	 * The tables we know about.
 	 */
-	private final Map<String, EncounterTable> TABLES;
+	private final Map<String, EncounterTable> TABLES = new HashMap<String, EncounterTable>();
 	/**
 	 * A list of tables to load.
 	 */
 	private final String[] TABLE_LIST = { "major_rock", "minor_rock",
 			"boreal_major_tree", "temperate_major_tree" };
-	public ExplorationRunner() {
-		TABLES = new HashMap<String, EncounterTable>();
+	/**
+	 * Loads the default set of tables.
+	 */
+	public void loadDefaultTables() {
 		for (String table : TABLE_LIST) {
 			TABLES.put(table,
 					tryLoading("tables/" + table, 2, createList(table, 4)));
