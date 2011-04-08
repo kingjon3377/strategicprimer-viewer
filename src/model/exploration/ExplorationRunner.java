@@ -235,7 +235,7 @@ public class ExplorationRunner {
 						return true; // NOPMD
 					}
 				}
-				return false;
+				return false; // NOPMD
 			} else {
 				return true;
 			}
@@ -289,7 +289,8 @@ public class ExplorationRunner {
 			if (tables.keySet().contains(table)) {
 				for (String value : tables.get(table).allEvents()) {
 					if (value.contains("#")) {
-							verboseRecursiveCheck(value.split("#", 3)[1], ostream, state); 
+						verboseRecursiveCheck(value.split("#", 3)[1], ostream,
+								state);
 					}
 				}
 			} else {

@@ -40,7 +40,7 @@ public class ConstantTable implements EncounterTable {
 	 * @returns our specified value.
 	 */
 	@Override
-	public String generateEvent(Tile tile) {
+	public String generateEvent(final Tile tile) {
 		return value;
 	}
 
