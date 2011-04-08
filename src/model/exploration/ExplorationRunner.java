@@ -1,6 +1,7 @@
 package model.exploration;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -256,4 +257,42 @@ public class ExplorationRunner {
 		return false;
 	}
 
+	/**
+	 * Print the names of any tables that are called but don't exist yet.
+	 * 
+	 * @param ostream
+	 *            The stream to print results on.
+	 */
+	public void verboseRecursiveCheck(final PrintStream ostream) {
+		final Set<String> state = new HashSet<String>();
+		for (String table : tables.keySet()) {
+			verboseRecursiveCheck(table, ostream, state);
+		}
+	}
+
+	/**
+	 * Print the names of any tables this one calls that don't exist yet.
+	 * 
+	 * @param table
+	 *            the table to recursively check
+	 * @param ostream
+	 *            the stream to print results on
+	 * @param state
+	 *            to prevent infinite recursion.
+	 */
+	private void verboseRecursiveCheck(final String table,
+			final PrintStream ostream, final Set<String> state) {
+		if (!state.contains(table)) {
+			state.add(table);
+			if (tables.keySet().contains(table)) {
+				for (String value : tables.get(table).allEvents()) {
+					if (value.contains("#")) {
+							verboseRecursiveCheck(value.split("#", 3)[1], ostream, state); 
+					}
+				}
+			} else {
+				ostream.println(table);
+			}
+		}
+	}
 }

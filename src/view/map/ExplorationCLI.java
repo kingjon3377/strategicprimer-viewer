@@ -56,6 +56,8 @@ public final class ExplorationCLI {
 					explore(map, reader);
 				} else if (input.charAt(0) == 'f') {
 					fortressInfo(map, reader);
+				} else if (input.charAt(0) == 'k') {
+					runner.verboseRecursiveCheck(ostream);
 				}
 				ostream.print("Command: ");
 				input = reader.readLine();
