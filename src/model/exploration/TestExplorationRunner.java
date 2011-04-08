@@ -1,7 +1,6 @@
 package model.exploration;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import model.viewer.Tile;
 import model.viewer.TileType;
 
