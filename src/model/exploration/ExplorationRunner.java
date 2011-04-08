@@ -233,4 +233,18 @@ public class ExplorationRunner {
 			return false;
 		}
 	}
+	/**
+	 * Check whether any table contains recursive calls to a table that doesn't exist.
+	 * @return whether any table contains recursive calls to a nonexistent table.
+	 */
+	public boolean recursiveCheck() {
+		final Set<String> state = new HashSet<String>();
+		for (String table : tables.keySet()) {
+			if (recursiveCheck(table, state)) {
+				return true; // NOPMD;
+			}
+		}
+		return false;
+	}
+	
 }
