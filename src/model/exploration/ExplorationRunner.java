@@ -225,12 +225,16 @@ public class ExplorationRunner {
 			return false; // NOPMD
 		} else {
 			state.add(table);
+			if (tables.keySet().contains(table)) {
 			for (String value : tables.get(table).allEvents()) {
 				if (value.contains("#") && recursiveCheck(value.split("#", 3)[1], state)) {
 					return true; // NOPMD
 				}
 			}
 			return false;
+			} else {
+				return true;
+			}
 		}
 	}
 	/**
