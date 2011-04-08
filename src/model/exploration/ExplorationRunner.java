@@ -82,7 +82,7 @@ public class ExplorationRunner {
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
 	 */
-	private EncounterTable tryLoading(final String filename,
+	private static EncounterTable tryLoading(final String filename,
 			final int defaultRows, final List<String> defaultItems) {
 		try {
 			return new TableLoader().loadTable(filename); // NOPMD
@@ -102,7 +102,7 @@ public class ExplorationRunner {
 	 * @param table
 	 *            the table.
 	 */
-	void loadTable(String name, final EncounterTable table) {
+	void loadTable(final String name, final EncounterTable table) { // NOPMD
 		tables.put(name, table);
 	}
 
@@ -181,17 +181,16 @@ public class ExplorationRunner {
 	 * @return the result of the consultation
 	 */
 	public String recursiveConsultTable(final String table, final Tile tile) {
-		final String result = consultTable(table, tile);
+		String result = consultTable(table, tile);
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
 			if (split.length < 3) {
-				return split[0] + recursiveConsultTable(split[1], tile);
+				result = split[0] + recursiveConsultTable(split[1], tile);
 			} else {
-				return split[0] + recursiveConsultTable(split[1], tile)
+				result = split[0] + recursiveConsultTable(split[1], tile)
 						+ split[2];
 			}
-		} else {
-			return result;
 		}
+		return result;
 	}
 }
