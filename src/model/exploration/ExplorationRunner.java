@@ -1,5 +1,7 @@
 package model.exploration;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -294,5 +296,31 @@ public class ExplorationRunner {
 				ostream.println(table);
 			}
 		}
+	}
+
+	/**
+	 * A utility driver method that loads all files in tables/ under the current
+	 * directory, then checks to see whether any references a nonexistent table.
+	 * @param args ignore
+	 */
+	public static void main(final String[] args) {
+		final ExplorationRunner runner = new ExplorationRunner();
+		final TableLoader loader = new TableLoader();
+		final File dir = new File("tables");
+		final String[] children = dir.list();
+		if (children != null) {
+			for (String table : children) {
+				try {
+					runner.loadTable(table, loader.loadTable("tables/" + table));
+				} catch (FileNotFoundException e) {
+					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE,
+							"I/O error while parsing " + table, e);
+				}
+			}
+		}
+		// ESCA-JAVA0266:
+		runner.verboseRecursiveCheck(System.out);
 	}
 }
