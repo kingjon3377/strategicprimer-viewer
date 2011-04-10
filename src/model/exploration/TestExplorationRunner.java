@@ -1,6 +1,7 @@
 package model.exploration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import model.viewer.Tile;
 import model.viewer.TileType;
 
@@ -81,14 +82,22 @@ public final class TestExplorationRunner {
 				"boreal_major_test"));
 		runner.loadTable("temperate_major_tree", new ConstantTable(
 				"temperate_major_test"));
-		assertEquals(
+		assertEquals("primary tree test for boreal forest",
 				runner.getPrimaryTree(new Tile(0, 0, TileType.BorealForest)),
 				"boreal_major_test");
 		assertEquals(
+				"primary tree test for temperate forest",
 				runner.getPrimaryTree(new Tile(0, 0, TileType.TemperateForest)),
 				"temperate_major_test");
 	}
-
+	/**
+	 * Test that getPrimaryTree objects to non-forest tiles.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testIllegalGetPrimaryTree() {
+		runner.getPrimaryTree(new Tile(0, 0, TileType.Tundra));
+		fail("gave a primary tree for non-forest");
+	}
 	/**
 	 * Test the consultTable method.
 	 * 
@@ -117,17 +126,37 @@ public final class TestExplorationRunner {
 	 */
 	@Test
 	public void testRecursiveConsultTable() {
-		runner.loadTable("test_table_one", new ConstantTable(
+		runner.loadTable(TEST_TABLE_ONE, new ConstantTable(
 				"( #test_table_two# )"));
-		runner.loadTable("test_table_two", new ConstantTable(
+		runner.loadTable(TEST_TABLE_TWO, new ConstantTable(
 				"( #test_table_three# )"));
-		runner.loadTable("test_table_three", new ConstantTable("test_three"));
-		assertEquals(runner.recursiveConsultTable("test_table_one", new Tile(0,
-				0, TileType.Tundra)), "( ( test_three ) )");
-		assertEquals(runner.recursiveConsultTable("test_table_two", new Tile(0,
-				0, TileType.Tundra)), "( test_three )");
-		assertEquals(runner.recursiveConsultTable("test_table_three", new Tile(
-				0, 0, TileType.Tundra)), "test_three");
+		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
+		assertEquals("two levels of recursion", runner.recursiveConsultTable(
+				TEST_TABLE_ONE, new Tile(0, 0, TileType.Tundra)),
+				"( ( test_three ) )");
+		assertEquals("one level of recursion", runner.recursiveConsultTable(
+				TEST_TABLE_TWO, new Tile(0, 0, TileType.Tundra)),
+				"( test_three )");
+		assertEquals("no recursion", runner.recursiveConsultTable(
+				TEST_TABLE_THREE, new Tile(0, 0, TileType.Tundra)), TEST_THREE);
 	}
 
+	/**
+	 * Test the defaultResults() method.
+	 */
+	@Test
+	public void testDefaultResults() {
+		runner.loadTable("major_rock", new ConstantTable("test_rock"));
+		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_tree"));
+		runner.loadTable("temperate_major_tree", new ConstantTable("temperate_tree"));
+		assertEquals("defaultResults in non-forest",
+				"The primary rock type here is test_rock.\n",
+				runner.defaultResults(new Tile(0, 0, TileType.Tundra)));
+		assertEquals("defaultResults in boreal forest",
+				"The primary rock type here is test_rock.\nThe main kind of tree is boreal_tree.\n",
+				runner.defaultResults(new Tile(0, 0, TileType.BorealForest)));
+		assertEquals("defaultResults in temperate forest",
+				"The primary rock type here is test_rock.\nThe main kind of tree is temperate_tree.\n",
+				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest)));
+	}
 }
