@@ -19,12 +19,17 @@ import org.junit.Test;
 /**
  * @author Jonathan Lovelace
  */
-public class TestTableLoader {
+public final class TestTableLoader {
 	/**
 	 * The object we'll use for the tests
 	 */
 	private TableLoader loader;
-
+	/**
+	 * Constructor: implemented to make a warning go away.
+	 */
+	public TestTableLoader() {
+		setUp();
+	}
 	/**
 	 * Setup method
 	 */
@@ -44,7 +49,7 @@ public class TestTableLoader {
 				"2\none\ntwo\nthree\nfour\nfive\nsix"));
 		try {
 			final QuadrantTable result = loader.loadQuadrantTable(reader);
-			assertEquals("one",
+			assertEquals("loading quadrant table", "one",
 					result.generateEvent(new Tile(0, 0, TileType.Tundra)));
 			// TODO: somehow check that it got properly loaded, beyond this
 		} catch (IOException e) {
@@ -62,7 +67,8 @@ public class TestTableLoader {
 		final BufferedReader reader = new BufferedReader(new StringReader("0 one\n99 two"));
 		try {
 			final RandomTable result = loader.loadRandomTable(reader);
-			assertEquals("one", result.generateEvent(new Tile(30, 30, TileType.Tundra)));
+			// ESCA-JAVA0076:
+			assertEquals("loading random table", "one", result.generateEvent(new Tile(30, 30, TileType.Tundra)));
 		} catch (IOException e) {
 			fail("I/O exception");
 		}
@@ -78,9 +84,9 @@ public class TestTableLoader {
 		final BufferedReader reader = new BufferedReader(new StringReader("tundra one\nplains two\nocean three"));
 		try {
 			final TerrainTable result = loader.loadTerrainTable(reader);
-			assertEquals("one", result.generateEvent(new Tile(30, 30, TileType.Tundra)));
-			assertEquals("two", result.generateEvent(new Tile(15, 15, TileType.Plains)));
-			assertEquals("three", result.generateEvent(new Tile(15, 15, TileType.Ocean)));
+			assertEquals("loading terrain table: tundra", "one", result.generateEvent(new Tile(30, 30, TileType.Tundra)));
+			assertEquals("loading terrain table: plains", "two", result.generateEvent(new Tile(15, 15, TileType.Plains)));
+			assertEquals("loading terrain table: ocean", "three", result.generateEvent(new Tile(15, 15, TileType.Ocean)));
 		} catch (IOException e) {
 			fail("I/O exception");
 		}

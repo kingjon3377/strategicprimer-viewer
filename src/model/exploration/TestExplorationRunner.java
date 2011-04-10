@@ -13,19 +13,45 @@ import org.junit.Test;
  * @author Jonathan Lovelace
  * 
  */
-public class TestExplorationRunner {
+public final class TestExplorationRunner {
+	/**
+	 * Extracted constant, to fix a warning because it occurred three or more
+	 * times.
+	 */
+	private static final String TEST_THREE = "test_three";
+	/**
+	 * Extracted constant, to fix a warning because it occurred three or more
+	 * times.
+	 */
+	private static final String TEST_TABLE_THREE = "test_table_three";
+	/**
+	 * Extracted constant, to fix a warning because it occurred three or more
+	 * times.
+	 */
+	private static final String TEST_TABLE_TWO = "test_table_two";
+	/**
+	 * Extracted constant, to fix a warning because it occurred three or more
+	 * times.
+	 */
+	private static final String TEST_TABLE_ONE = "test_table_one";
 	/**
 	 * The object we're testing.
 	 */
 	private ExplorationRunner runner;
 
 	/**
-	 * Set up for the tests.
-	 * 
-	 * @throws Exception
+	 * To fix a warning.
 	 */
+	public TestExplorationRunner() {
+		setUp();
+	}
+
+	/**
+	 * Set up for the tests.
+	 */
+	// ESCA-JAVA0160:
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		runner = new ExplorationRunner();
 	}
 
@@ -38,7 +64,8 @@ public class TestExplorationRunner {
 	@Test
 	public void testGetPrimaryRock() {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
-		assertEquals(runner.getPrimaryRock(new Tile(0, 0, TileType.Tundra)),
+		assertEquals("primary rock test",
+				runner.getPrimaryRock(new Tile(0, 0, TileType.Tundra)),
 				"primary_rock_test");
 	}
 
@@ -70,15 +97,15 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testConsultTable() {
-		runner.loadTable("test_table_one", new ConstantTable("test_one"));
-		runner.loadTable("test_table_two", new ConstantTable("test_two"));
-		runner.loadTable("test_table_three", new ConstantTable("test_three"));
-		assertEquals(runner.consultTable("test_table_one", new Tile(0, 0,
-				TileType.Tundra)), "test_one");
-		assertEquals(runner.consultTable("test_table_two", new Tile(0, 0,
-				TileType.Tundra)), "test_two");
-		assertEquals(runner.consultTable("test_table_three", new Tile(0, 0,
-				TileType.Tundra)), "test_three");
+		runner.loadTable(TEST_TABLE_ONE, new ConstantTable("test_one"));
+		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
+		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
+		assertEquals("first table", runner.consultTable(TEST_TABLE_ONE,
+				new Tile(0, 0, TileType.Tundra)), "test_one");
+		assertEquals("second table", runner.consultTable(TEST_TABLE_TWO,
+				new Tile(0, 0, TileType.Tundra)), "test_two");
+		assertEquals("third table", runner.consultTable(TEST_TABLE_THREE,
+				new Tile(0, 0, TileType.Tundra)), TEST_THREE);
 	}
 
 	/**

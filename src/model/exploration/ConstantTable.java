@@ -37,7 +37,7 @@ public class ConstantTable implements EncounterTable {
 	}
 	/**
 	 * @param tile ignored
-	 * @returns our specified value.
+	 * @return our specified value.
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {

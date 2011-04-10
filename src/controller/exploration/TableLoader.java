@@ -47,7 +47,7 @@ public class TableLoader {
 		} else if (line.charAt(0) == 'Q' || line.charAt(0) == 'q') {
 			return loadQuadrantTable(reader); // NOPMD
 		} else if (line.charAt(0) == 'R' || line.charAt(0) == 'r') {
-			return loadRandomTable(reader);
+			return loadRandomTable(reader); // NOPMD
 		} else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
 			return loadTerrainTable(reader);
 		} else {
