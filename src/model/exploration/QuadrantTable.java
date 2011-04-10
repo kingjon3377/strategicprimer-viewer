@@ -68,15 +68,13 @@ public class QuadrantTable implements EncounterTable {
 	 */
 	public String getQuadrantValue(final int row, final int col) {
 		Pair<Integer, Integer> bestKey = Pair.of(-1, -1);
-		String bestValue = "";
 		for (Pair<Integer, Integer> iter : quadrants.keySet()) {
 			if (iter.first <= row && iter.first > bestKey.first
 					&& iter.second <= col && iter.second > bestKey.second) {
 				bestKey = iter;
-				bestValue = quadrants.get(bestKey);
 			}
 		}
-		return bestValue;
+		return quadrants.get(bestKey);
 	}
 	/**
 	 * @param tile a tile
