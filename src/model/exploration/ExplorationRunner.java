@@ -318,6 +318,13 @@ public class ExplorationRunner {
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE,
 							"I/O error while parsing " + table, e);
+				} catch (IllegalArgumentException e) {
+					LOGGER.log(
+							Level.SEVERE,
+							"Illegal argument while parsing "
+									+ table
+									+ ", probably a malformed file, possibly a Vim swap file",
+							e);
 				}
 			}
 		}
