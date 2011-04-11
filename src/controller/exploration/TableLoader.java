@@ -54,7 +54,7 @@ public class TableLoader {
 		} else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
 			return loadTerrainTable(reader);
 		} else {
-			throw new IllegalArgumentException("File specifies an unknown table type");
+			throw new IllegalArgumentException("File " + filename + " specifies an unknown table type");
 		}
 	}
 	/**
