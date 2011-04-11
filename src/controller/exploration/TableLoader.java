@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.exploration.ConstantTable;
 import model.exploration.EncounterTable;
 import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
@@ -48,6 +49,8 @@ public class TableLoader {
 			return loadQuadrantTable(reader); // NOPMD
 		} else if (line.charAt(0) == 'R' || line.charAt(0) == 'r') {
 			return loadRandomTable(reader); // NOPMD
+		} else if (line.charAt(0) == 'C' || line.charAt(0) == 'c') {
+			return loadConstantTable(reader); // NOPMD
 		} else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
 			return loadTerrainTable(reader);
 		} else {
@@ -132,5 +135,19 @@ public class TableLoader {
 		}
 		reader.close();
 		return new TerrainTable(list);
+	}
+	/**
+	 * Load a ConstantTable from file.
+	 * 
+	 * @param reader
+	 *            the file descriptor
+	 * @return the terrain-table the file describes.
+	 * @throws IOException
+	 *             on I/O error.
+	 */
+	public ConstantTable loadConstantTable(final BufferedReader reader) throws IOException {
+		final String string = reader.readLine();
+		reader.close();
+		return new ConstantTable(string);
 	}
 }

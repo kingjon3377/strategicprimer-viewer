@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
+import model.exploration.ConstantTable;
 import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
 import model.exploration.TerrainTable;
@@ -92,4 +93,17 @@ public final class TestTableLoader {
 		}
 	}
 
+	/**
+	 * Test method for {@link controller.exploration.TableLoader#loadConstantTable(java.io.BufferedReader)}
+	 */
+	@Test
+	public void testLoadConstantTable() {
+		final BufferedReader one = new BufferedReader(new StringReader("one"));
+		try {
+			final ConstantTable result = loader.loadConstantTable(one);
+			assertEquals("loading constant table: first test", "one", result.generateEvent(new Tile(10, 5, TileType.Plains)));
+		} catch (IOException e) {
+			fail("I/O exception");
+		}
+	}
 }
