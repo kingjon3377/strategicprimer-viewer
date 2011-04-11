@@ -23,7 +23,7 @@ import util.Pair;
  * 
  * @author Jonathan Lovelace
  */
-public class TableLoader {
+public class TableLoader {//NOPMD
 	/**
 	 * Load a table from file. Format: first line specifies the kind of table
 	 * (quadrant or random; first letter is the only one checked). Quadrant
@@ -40,7 +40,7 @@ public class TableLoader {
 	 * @return the table
 	 * @throws FileNotFoundException when file not found
 	 */
-	public EncounterTable loadTable(final String filename) throws FileNotFoundException, IOException {
+	public EncounterTable loadTable(final String filename) throws FileNotFoundException, IOException {//NOPMD
 		final BufferedReader reader = new LoadFile().doLoadFile(filename);
 		final String line = reader.readLine();
 		if (line == null) {
