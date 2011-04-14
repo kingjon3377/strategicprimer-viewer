@@ -131,6 +131,8 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable(
 				"( #test_table_three# )"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
+		runner.loadTable("test_table_four", new ConstantTable(
+				"_ #test_table_one"));
 		assertEquals("two levels of recursion", runner.recursiveConsultTable(
 				TEST_TABLE_ONE, new Tile(0, 0, TileType.Tundra)),
 				"( ( test_three ) )");
@@ -139,6 +141,9 @@ public final class TestExplorationRunner {
 				"( test_three )");
 		assertEquals("no recursion", runner.recursiveConsultTable(
 				TEST_TABLE_THREE, new Tile(0, 0, TileType.Tundra)), TEST_THREE);
+		assertEquals("one-sided split", runner.recursiveConsultTable(
+				"test_table_four", new Tile(0, 0, TileType.Plains)),
+				"_ ( ( test_three ) )");
 	}
 
 	/**
