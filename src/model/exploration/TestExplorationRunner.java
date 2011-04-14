@@ -92,14 +92,16 @@ public final class TestExplorationRunner {
 				runner.getPrimaryTree(new Tile(0, 0, TileType.TemperateForest)),
 				"temperate_major_test");
 	}
+
 	/**
 	 * Test that getPrimaryTree objects to non-forest tiles.
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalGetPrimaryTree() {
 		runner.getPrimaryTree(new Tile(0, 0, TileType.Tundra));
 		fail("gave a primary tree for non-forest");
 	}
+
 	/**
 	 * Test the consultTable method.
 	 * 
@@ -155,14 +157,17 @@ public final class TestExplorationRunner {
 	public void testDefaultResults() {
 		runner.loadTable("major_rock", new ConstantTable("test_rock"));
 		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_tree"));
-		runner.loadTable("temperate_major_tree", new ConstantTable("temperate_tree"));
+		runner.loadTable("temperate_major_tree", new ConstantTable(
+				"temperate_tree"));
 		assertEquals("defaultResults in non-forest",
 				"The primary rock type here is test_rock.\n",
 				runner.defaultResults(new Tile(0, 0, TileType.Tundra)));
-		assertEquals("defaultResults in boreal forest",
+		assertEquals(
+				"defaultResults in boreal forest",
 				"The primary rock type here is test_rock.\nThe main kind of tree is boreal_tree.\n",
 				runner.defaultResults(new Tile(0, 0, TileType.BorealForest)));
-		assertEquals("defaultResults in temperate forest",
+		assertEquals(
+				"defaultResults in temperate forest",
 				"The primary rock type here is test_rock.\nThe main kind of tree is temperate_tree.\n",
 				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest)));
 	}
