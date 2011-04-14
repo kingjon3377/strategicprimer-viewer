@@ -1,6 +1,8 @@
 package model.exploration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -163,5 +165,19 @@ public final class TestExplorationRunner {
 		assertEquals("defaultResults in temperate forest",
 				"The primary rock type here is test_rock.\nThe main kind of tree is temperate_tree.\n",
 				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest)));
+	}
+
+	/**
+	 * 
+	 * Test recursive checking. Note that the method returns true if the table
+	 * in question, or one it references, does *not* exist.
+	 */
+	@Test
+	public void testRecursiveCheck() {
+		runner.loadTable("existent_table", new ConstantTable("exists"));
+		assertTrue("base case of non-existent table",
+				runner.recursiveCheck("nonexistenttable"));
+		assertFalse("base case of existent table",
+				runner.recursiveCheck("existent_table"));
 	}
 }
