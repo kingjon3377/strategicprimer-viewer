@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +30,11 @@ import controller.exploration.TableLoader;
  * @author Jonathan Lovelace
  * 
  */
-public class ExplorationRunner {
+public class ExplorationRunner implements Serializable { // NOPMD
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = -6068809300217579745L;
 	/**
 	 * Logger.
 	 */
