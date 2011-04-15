@@ -45,6 +45,22 @@ public class TableLoader {//NOPMD
 	 */
 	public EncounterTable loadTable(final String filename) throws FileNotFoundException, IOException {//NOPMD
 		final BufferedReader reader = new LoadFile().doLoadFile(filename);
+		try {
+			return loadTable(reader);
+		} catch (final IllegalArgumentException except) {
+			if ("unknown table type".equals(except.getMessage())) {
+				throw new IllegalArgumentException("File " + filename + " specifies an unknown table type", except);
+			} else {
+				throw except;
+			}
+		}
+	}
+	/**
+	 * @param reader the stream to read from
+	 * @return the table constructed from the file
+	 * @throws IOException on I/O error or badly formed table.
+	 */
+	public EncounterTable loadTable(final BufferedReader reader) throws IOException {
 		final String line = reader.readLine();
 		if (line == null) {
 			throw new IOException("File doesn't start by specifying which kind of table.");
@@ -59,7 +75,7 @@ public class TableLoader {//NOPMD
 		} else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
 			return loadTerrainTable(reader);
 		} else {
-			throw new IllegalArgumentException("File " + filename + " specifies an unknown table type");
+			throw new IllegalArgumentException("unknown table type");
 		}
 	}
 	/**
