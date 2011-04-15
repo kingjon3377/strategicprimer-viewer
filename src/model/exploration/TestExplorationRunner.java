@@ -201,5 +201,7 @@ public final class TestExplorationRunner implements Serializable {
 				new QuadrantTable(1, new ArrayList<String>(Arrays.asList(new String[] {
 						"#referent_one#", "#referent_two#" }))));
 		assertFalse("recursive case to exercise cache-hits", runner.recursiveCheck("referent_three"));
+		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));
+		assertTrue("reference to nonexistent table", runner.recursiveCheck("false_referent"));
 	}
 }
