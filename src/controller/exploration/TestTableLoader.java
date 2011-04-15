@@ -1,6 +1,7 @@
 package controller.exploration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -52,6 +53,16 @@ public final class TestTableLoader {
 			// TODO: somehow check that it got properly loaded, beyond this
 		} catch (IOException e) {
 			fail("I/O exception");
+		}
+		final BufferedReader readerTwo = new BufferedReader(new StringReader(
+				"quadrant"));
+		try {
+			loader.loadTable(readerTwo);
+			fail("Didn't object to quadrant table without number of rows");
+		} catch (final IOException except) {
+			assertEquals("Objecting to quadrant table without number of rows",
+					"File doesn't start with the number of rows of quadrants",
+					except.getMessage());
 		}
 	}
 
@@ -116,6 +127,34 @@ public final class TestTableLoader {
 			assertEquals("loading constant table: first test", "one", result.generateEvent(new Tile(10, 5, TileType.Plains)));
 		} catch (IOException e) {
 			fail("I/O exception");
+		}
+	}
+
+	/**
+	 * Test the bad-input logic in
+	 * {@link controller.exploration.TableLoader#loadTable(java.io.BufferedReader)}
+	 */
+	@Test
+	public void testInvalidInput() {
+		final BufferedReader one = new BufferedReader(new StringReader(""));
+		try {
+			loader.loadTable(one);
+			fail("Accepted empty input");
+		} catch (final IOException except) {
+			assertEquals("Objects to empty input",
+					"File doesn't start by specifying which kind of table.",
+					except.getMessage());
+		}
+		final BufferedReader two = new BufferedReader(new StringReader(
+				"2\ninvaliddata\ninvaliddata"));
+		try {
+			loader.loadTable(two);
+			fail("Accepted table without header");
+		} catch (final IllegalArgumentException except) {
+			assertEquals("Table without header", "unknown table type",
+					except.getMessage());
+		} catch (final IOException except) {
+			fail("I/O error when testing for rejection of headerless tables");
 		}
 	}
 }
