@@ -60,7 +60,7 @@ public class TableLoader {//NOPMD
 	 * @return the table constructed from the file
 	 * @throws IOException on I/O error or badly formed table.
 	 */
-	public EncounterTable loadTable(final BufferedReader reader) throws IOException {
+	EncounterTable loadTable(final BufferedReader reader) throws IOException { // NOPMD
 		final String line = reader.readLine();
 		if (line == null) {
 			throw new IOException("File doesn't start by specifying which kind of table.");
