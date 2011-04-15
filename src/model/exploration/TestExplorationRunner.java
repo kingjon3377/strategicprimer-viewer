@@ -213,4 +213,16 @@ public final class TestExplorationRunner implements Serializable {
 		runner.loadDefaultTables();
 		assertFalse("table existence and usability", runner.recursiveCheck("major_rock"));
 	}
+	
+	/**
+	 * Test the recursiveCheck() method.
+	 */
+	@Test
+	public void testGlobalRecursiveCheck() {
+		assertFalse("recursive check with no tables", runner.recursiveCheck());
+		runner.loadTable("existent", new ConstantTable("true_table"));
+		assertFalse("recursive check with only valid tables", runner.recursiveCheck());
+		runner.loadTable("false_ref", new ConstantTable("#false#"));
+		assertTrue("recursive check with an invalid table", runner.recursiveCheck());
+	}
 }
