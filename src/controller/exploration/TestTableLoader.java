@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import model.exploration.ConstantTable;
+import model.exploration.LegacyTable;
 import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
 import model.exploration.TerrainTable;
@@ -88,6 +89,21 @@ public final class TestTableLoader {
 			assertEquals("loading terrain table: tundra", "one", result.generateEvent(new Tile(30, 30, TileType.Tundra)));
 			assertEquals("loading terrain table: plains", "two", result.generateEvent(new Tile(15, 15, TileType.Plains)));
 			assertEquals("loading terrain table: ocean", "three", result.generateEvent(new Tile(15, 15, TileType.Ocean)));
+		} catch (IOException e) {
+			fail("I/O exception");
+		}
+	}
+	/**
+	 * Test method for {@link controller.exploration.TableLoader#loadLegacyTable(java.io.BufferedReader)}
+	 */
+	@Test
+	public void testLoadLegacyTable() {
+		final BufferedReader reader = new BufferedReader(new StringReader("0: first\n1: second\n2: third"));
+		try {
+			final LegacyTable result = loader.loadLegacyTable(reader);
+			assertEquals("loading legacy table: one", "first", result.generateEvent(new Tile(15, 20, TileType.Tundra, 0)));
+			assertEquals("loading legacy table: two", "second", result.generateEvent(new Tile(15, 20, TileType.Tundra, 1)));
+			assertEquals("loading legacy table: three", "third", result.generateEvent(new Tile(15, 20, TileType.Tundra, 2)));
 		} catch (IOException e) {
 			fail("I/O exception");
 		}

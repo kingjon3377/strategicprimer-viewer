@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.exploration.ConstantTable;
 import model.exploration.EncounterTable;
+import model.exploration.LegacyTable;
 import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
 import model.exploration.TerrainTable;
@@ -51,6 +54,8 @@ public class TableLoader {//NOPMD
 			return loadRandomTable(reader); // NOPMD
 		} else if (line.charAt(0) == 'C' || line.charAt(0) == 'c') {
 			return loadConstantTable(reader); // NOPMD
+		} else if (line.charAt(0) == 'L' || line.charAt(0) == 'l') {
+			return loadLegacyTable(reader);
 		} else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
 			return loadTerrainTable(reader);
 		} else {
@@ -149,5 +154,22 @@ public class TableLoader {//NOPMD
 		final String string = reader.readLine();
 		reader.close();
 		return new ConstantTable(string);
+	}
+	
+	/**
+	 * Load a LegacyTable from file.
+	 * @param reader the file descriptor
+	 * @return the table the file describes.
+	 * @throws IOException on I/O error.
+	 */
+	public LegacyTable loadLegacyTable(final BufferedReader reader) throws IOException {
+		final Map<Integer, String> map = new HashMap<Integer, String>();
+		String line = reader.readLine();
+		while (line != null) {
+			final String[] split = line.split(":", 2);
+			map.put(Integer.parseInt(split[0]),split[1].trim());
+			line = reader.readLine();
+		}
+		return new LegacyTable(map);
 	}
 }
