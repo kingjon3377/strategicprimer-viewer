@@ -204,4 +204,13 @@ public final class TestExplorationRunner implements Serializable {
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));
 		assertTrue("reference to nonexistent table", runner.recursiveCheck("false_referent"));
 	}
+	
+	/**
+	 * Test that loading the default tables loads one particular table, and that it's usable.
+	 */
+	@Test
+	public void testLoadDefaultTables() {
+		runner.loadDefaultTables();
+		assertFalse("table existence and usability", runner.recursiveCheck("major_rock"));
+	}
 }
