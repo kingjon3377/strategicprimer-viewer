@@ -6,15 +6,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import model.viewer.Tile;
 import model.viewer.TileType;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import util.Pair;
 
 /**
  * A test case for TestExplorationRunner
@@ -194,18 +191,5 @@ public final class TestExplorationRunner implements Serializable {
 				runner.recursiveCheck("nonexistenttable"));
 		assertFalse("base case of existent table",
 				runner.recursiveCheck("existent_table"));
-		runner.loadTable("two_existent", new RandomTable(new ArrayList<Pair<Integer, String>>() {
-			/**
-			 * Version UID for serialization, to make static analyzers stop complaining.
-			 */
-			private static final long serialVersionUID = 1646707332942616179L;
-
-			{ // NOPMD
-				add(Pair.of(0, "existent_table"));
-				add(Pair.of(20, "existent_table"));
-			}
-		}));
-		assertFalse("works on existent table referenced twice",
-				runner.recursiveCheck("two_existent"));
 	}
 }
