@@ -64,18 +64,21 @@ public class TableLoader {//NOPMD
 		final String line = reader.readLine();
 		if (line == null) {
 			throw new IOException("File doesn't start by specifying which kind of table.");
-		} else if (line.charAt(0) == 'Q' || line.charAt(0) == 'q') {
-			return loadQuadrantTable(reader); // NOPMD
-		} else if (line.charAt(0) == 'R' || line.charAt(0) == 'r') {
-			return loadRandomTable(reader); // NOPMD
-		} else if (line.charAt(0) == 'C' || line.charAt(0) == 'c') {
-			return loadConstantTable(reader); // NOPMD
-		} else if (line.charAt(0) == 'L' || line.charAt(0) == 'l') {
-			return loadLegacyTable(reader);
-		} else if (line.charAt(0) == 'T' || line.charAt(0) == 't') {
-			return loadTerrainTable(reader);
 		} else {
-			throw new IllegalArgumentException("unknown table type");
+			switch (line.charAt(0)) { // NOPMD
+			case 'Q': case 'q':
+				return loadQuadrantTable(reader); // NOPMD
+			case 'R': case 'r':
+				return loadRandomTable(reader); // NOPMD
+			case 'C': case 'c':
+				return loadConstantTable(reader); // NOPMD
+			case 'L': case 'l':
+				return loadLegacyTable(reader); // NOPMD
+			case 'T': case 't':
+				return loadTerrainTable(reader);
+			default:
+				throw new IllegalArgumentException("unknown table type");
+			}
 		}
 	}
 	/**
