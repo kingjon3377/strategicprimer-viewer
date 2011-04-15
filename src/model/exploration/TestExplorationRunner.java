@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -191,5 +193,13 @@ public final class TestExplorationRunner implements Serializable {
 				runner.recursiveCheck("nonexistenttable"));
 		assertFalse("base case of existent table",
 				runner.recursiveCheck("existent_table"));
+		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
+		runner.loadTable("referent_two", new ConstantTable(
+				"( #existent_table# )"));
+		runner.loadTable(
+				"referent_three",
+				new QuadrantTable(1, new ArrayList<String>(Arrays.asList(new String[] {
+						"#referent_one#", "#referent_two#" }))));
+		assertFalse("recursive case to exercise cache-hits", runner.recursiveCheck("referent_three"));
 	}
 }
