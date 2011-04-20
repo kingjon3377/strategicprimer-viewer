@@ -45,7 +45,7 @@ public final class ExplorationCLI {
 		if (ostream == null) {
 			throw new IllegalStateException("System.out is null");
 		}
-		runner.loadDefaultTables();
+		runner.loadAllTables("tables");
 		try {
 			ostream.print("Command: ");
 			String input = reader.readLine();
@@ -88,7 +88,8 @@ public final class ExplorationCLI {
 		ostream.print("Column: ");
 		final int col = Integer.parseInt(reader.readLine());
 		final Tile tile = map.getTile(row, col);
-		ostream.println(runner.consultTable("minor_rock", tile));
+		ostream.println("Tile is " + tile.	getType());
+		ostream.println(runner.recursiveConsultTable("main", tile));
 	}
 
 	/**

@@ -313,13 +313,23 @@ public class ExplorationRunner implements Serializable { // NOPMD
 	 */
 	public static void main(final String[] args) {
 		final ExplorationRunner runner = new ExplorationRunner();
+		runner.loadAllTables("tables");
+		// ESCA-JAVA0266:
+		runner.verboseRecursiveCheck(System.out);
+	}
+
+	/**
+	 * Load all tables in the specified path.
+	 * @param path the directory to look in
+	 */
+	public void loadAllTables(final String path) {
 		final TableLoader loader = new TableLoader();
-		final File dir = new File("tables");
+		final File dir = new File(path);
 		final String[] children = dir.list();
 		if (children != null) {
 			for (String table : children) {
 				try {
-					runner.loadTable(table, loader.loadTable("tables/" + table));
+					loadTable(table, loader.loadTable(path + '/' + table));
 				} catch (FileNotFoundException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 				} catch (IOException e) {
@@ -335,7 +345,5 @@ public class ExplorationRunner implements Serializable { // NOPMD
 				}
 			}
 		}
-		// ESCA-JAVA0266:
-		runner.verboseRecursiveCheck(System.out);
 	}
 }
