@@ -174,7 +174,7 @@ public class XMLWriter { // NOPMD
 		}
 	}
 
-	private void printRiver(River river) {
+	private void printRiver(final River river) {
 		indent(3);
 		if (River.Lake.equals(river)) {
 			writer.println("<lake />");

@@ -246,7 +246,7 @@ public class MapReader {
 				final StartElement element = reader.nextEvent().asStartElement();
 				throw new IllegalStateException(UNEXPECTED_TAG
 						+ getTagType(element).getText()
-						+ ": a player can't contain anything yet");
+						+ ": a river can't contain anything yet");
 			} else if (reader.nextEvent().isEndElement()) {
 				break;
 			}
