@@ -3,7 +3,14 @@ package view.map;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 
 import javax.swing.JLabel;
 
@@ -37,6 +44,79 @@ public class GUITile extends JLabel {
 	 * The tile this GUI-tile represents
 	 */
 	private final Tile tile;
+	/**
+	 * A cached copy of our width. If it hasn't changed, we can use cached
+	 * rendering objects.
+	 */
+	private int width = -1;
+	/**
+	 * A cached copy of our height. If it hasn't changed, we can used cached
+	 * rendering objects.
+	 */
+	private int height = -1;
+	/**
+	 * 7/16
+	 */
+	private static final double SEVEN_SIXTEENTHS = 7.0 / 16.0;
+	/**
+	 * A cached copy of our background.
+	 */
+	private Rectangle background;
+	/**
+	 * The shapes representing the rivers on the tile
+	 */
+	private final List<Shape> rivers = new ArrayList<Shape>();
+	/**
+	 * Shape representing the fortress that might be on the tile.
+	 */
+	private Shape fort;
+	/**
+	 * Shape representing the unit that might be on the tile
+	 */
+	private Shape unit;
+
+	/**
+	 * Check, and possibly regenerate, the cache.
+	 */
+	private void checkCache() {
+		if (width != getWidth() || height != getHeight()) {
+			width = getWidth();
+			height = getHeight();
+			background = new Rectangle(0, 0, width, height);
+			rivers.clear();
+			for (River river : tile.getRivers()) {
+				switch (river) {
+				case East:
+					rivers.add(new Rectangle2D.Double(width / 2.0, height
+							* SEVEN_SIXTEENTHS, width / 2.0, height / 8.0));
+					break;
+				case Lake:
+					rivers.add(new Ellipse2D.Double(width / 4.0,
+							height / 4.0, width / 2.0, height / 2.0));
+					break;
+				case North:
+					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS,
+							0, width / 8.0, height / 2.0));
+					break;
+				case South:
+					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS,
+							height / 2.0, width / 8.0, height / 2.0));
+					break;
+				case West:
+					rivers.add(new Rectangle2D.Double(0, height
+							* SEVEN_SIXTEENTHS, width / 2.0, height / 8.0));
+					break;
+				default:
+					// Can't get here unless we add another case to the enum.
+					break;
+				}
+			}
+			fort = new Rectangle2D.Double(width / 2.0, height / 2.0,
+					width / 2.0, height / 2.0);
+			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
+					height / 4.0);
+		}
+	}
 
 	/**
 	 * @return the tile this GUI represents.
@@ -71,63 +151,35 @@ public class GUITile extends JLabel {
 	@Override
 	public void paint(final Graphics pen) {
 		// super.paint(pen);
-		final Color saveColor = pen.getColor();
-		pen.setColor(colorMap.get(tile.getType()));
-		pen.fillRect(0, 0, getWidth(), getHeight());
-		pen.setColor(Color.BLACK);
-		pen.drawRect(0, 0, getWidth(), getHeight());
+		final Graphics2D pen2d = (Graphics2D) pen;
+		final Color saveColor = pen2d.getColor();
+		pen2d.setColor(colorMap.get(tile.getType()));
+		checkCache();
+		pen2d.fill(background);
+		pen2d.setColor(Color.BLACK);
+		pen2d.draw(background);
 		if (!TileType.NotVisible.equals(tile.getType())) {
-		if (!tile.getRivers().isEmpty()) {
-			pen.setColor(Color.BLUE);
-			for (River river : tile.getRivers()) {
-				switch (river) {
-				case East:
-					// ESCA-JAVA0076:
-					pen.fillRect(getWidth() / 2, 7 * getHeight() / 16,
-							getWidth() / 2, getHeight() / 8);
-					break;
-				case Lake:
-					// ESCA-JAVA0076:
-					pen.fillOval(3 * getWidth() / 8, 3 * getHeight() / 8,
-							getWidth() / 4, getHeight() / 4);
-					break;
-				case North:
-					// ESCA-JAVA0076:
-					pen.fillRect(7 * getWidth() / 16, 0, getWidth() / 8,
-							getHeight() / 2);
-					break;
-				case South:
-					// ESCA-JAVA0076:
-					pen.fillRect(7 * getWidth() / 16, getHeight() / 2,
-							getWidth() / 8, getHeight() / 2);
-					break;
-				case West:
-					// ESCA-JAVA0076:
-					pen.fillRect(0, 7 * getHeight() / 16, getWidth() / 2,
-							getHeight() / 8);
-					break;
-				default:
-					// Can't get here unless we add another case to the enum.
+			if (!tile.getRivers().isEmpty()) {
+				pen2d.setColor(Color.BLUE);
+				for (Shape river : rivers) {
+					pen2d.fill(river);
 				}
 			}
-		}
-		if (tile.getForts().isEmpty()) {
-			if (!tile.getUnits().isEmpty()) {
-				pen.setColor(PURPLE);
-				pen.fillOval(getWidth() / 2, getHeight() / 2, getWidth() / 4,
-						getHeight() / 4);
+			if (tile.getForts().isEmpty()) {
+				if (!tile.getUnits().isEmpty()) {
+					pen2d.setColor(PURPLE);
+					pen2d.fill(unit);
+				}
+			} else {
+				pen2d.setColor(BROWN);
+				pen2d.fill(fort);
 			}
-		} else {
-			pen.setColor(BROWN);
-			pen.fillRect(getWidth() / 4 + 1, getHeight() / 4 + 1,
-					getWidth() / 2, getHeight() / 2);
-		}
 		}
 		if (selected) {
-			pen.setColor(Color.BLACK);
-			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
+			pen2d.setColor(Color.BLACK);
+			pen2d.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
 		}
-		pen.setColor(saveColor);
+		pen2d.setColor(saveColor);
 	}
 
 	private static final Color BROWN = new Color(160, 82, 45);
