@@ -176,9 +176,13 @@ public class XMLWriter { // NOPMD
 
 	private void printRiver(River river) {
 		indent(3);
-		writer.print("<river direction=\"");
-		writer.print(XML_RIVERS.get(river));
-		writer.println("\" />");
+		if (River.Lake.equals(river)) {
+			writer.println("<lake />");
+		} else {
+			writer.print("<river direction=\"");
+			writer.print(XML_RIVERS.get(river));
+			writer.println("\" />");
+		}
 	}
 
 	/**

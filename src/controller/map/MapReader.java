@@ -82,6 +82,10 @@ public class MapReader {
 		 */
 		River("river"),
 		/**
+		 * Lakes: internally a special case of rivers, but we want a simpler XML tile for them.
+		 */
+		Lake("lake"),
+		/**
 		 * Anything not enumerated.
 		 */
 		Unknown("unknown");
@@ -201,7 +205,7 @@ public class MapReader {
 					tile.addFort(parseFortress(tile, elem, reader));
 				} else if (Tag.Unit.equals(tag)) {
 					tile.addUnit(parseUnit(tile, elem, reader));
-				} else if (Tag.River.equals(tag)) {
+				} else if (Tag.River.equals(tag) || Tag.Lake.equals(tag)) {
 					tile.addRiver(parseRiver(elem, reader));
 				} else {
 					throw new IllegalStateException(
@@ -230,7 +234,13 @@ public class MapReader {
 	 */
 	public static River parseRiver(final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
-		final River river = River.getRiver(getAttribute(elem, "direction"));
+		// ESCA-JAVA0177:
+		final River river;
+		if (Tag.Lake.equals(getTagType(elem))) {
+			river = River.Lake;
+		} else {
+			river = River.getRiver(getAttribute(elem, "direction"));
+		}
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent().asStartElement();
