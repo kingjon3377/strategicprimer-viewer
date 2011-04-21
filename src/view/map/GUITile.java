@@ -90,7 +90,7 @@ public class GUITile extends JComponent {
 	 * @param hei
 	 *            the current height
 	 */
-	private static void checkCache(int wid, int hei) {
+	private static void checkCache(final int wid, final int hei) {
 		if (width != wid || height != hei) {
 			width = wid;
 			height = hei;
