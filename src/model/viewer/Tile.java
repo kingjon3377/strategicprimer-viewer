@@ -3,7 +3,9 @@ package model.viewer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A tile in a map.
@@ -228,5 +230,33 @@ public final class Tile implements Serializable {
 			sbuilder.append(unit);
 		}
 		return sbuilder.toString();
+	}
+	
+	/**
+	 * The river-directions on this tile.
+	 */
+	private final Set<River> rivers = EnumSet.noneOf(River.class);
+	
+	/**
+	 * @return the river directions on this tile
+	 */
+	public Set<River> getRivers() {
+		return EnumSet.copyOf(rivers);
+	}
+	
+	/**
+	 * @param river a river to add
+	 * @return the result of the operation
+	 */
+	public boolean addRiver(final River river) {
+		return rivers.add(river);
+	}
+	
+	/**
+	 * @param river a river to remove
+	 * @return the result of the operation
+	 */
+	public boolean removeRiver(final River river) {
+		return rivers.remove(river);
 	}
 }

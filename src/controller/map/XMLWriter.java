@@ -9,6 +9,7 @@ import java.util.EnumMap;
 
 import model.viewer.Fortress;
 import model.viewer.Player;
+import model.viewer.River;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -155,7 +156,8 @@ public class XMLWriter { // NOPMD
 				printQuoted(tile.getEvent());
 			}
 			writer.print('>');
-			if (!tile.getForts().isEmpty() || !tile.getUnits().isEmpty()) {
+			if (!tile.getForts().isEmpty() || !tile.getUnits().isEmpty()
+					|| !tile.getRivers().isEmpty()) {
 				writer.println();
 				for (Fortress fort : tile.getForts()) {
 					printFort(fort);
@@ -163,10 +165,20 @@ public class XMLWriter { // NOPMD
 				for (Unit unit : tile.getUnits()) {
 					printUnit(unit);
 				}
+				for (River river : tile.getRivers()) {
+					printRiver(river);
+				}
 				indent(2);
 			}
 			writer.println("</tile>");
 		}
+	}
+
+	private void printRiver(River river) {
+		indent(3);
+		writer.print("<river direction=\"");
+		writer.print(XML_RIVERS.get(river));
+		writer.println("\" />");
 	}
 
 	/**
@@ -221,6 +233,7 @@ public class XMLWriter { // NOPMD
 	 */
 	private static final EnumMap<TileType, String> XML_TYPES = new EnumMap<TileType, String>(
 			TileType.class);
+	private static final EnumMap<River, String> XML_RIVERS = new EnumMap<River, String>(River.class);
 	static {
 		XML_TYPES.put(TileType.Tundra, "tundra");
 		XML_TYPES.put(TileType.TemperateForest, "temperate_forest");
@@ -230,5 +243,10 @@ public class XMLWriter { // NOPMD
 		XML_TYPES.put(TileType.Plains, "plains");
 		XML_TYPES.put(TileType.Jungle, "jungle");
 		XML_TYPES.put(TileType.Mountain, "mountain");
+		XML_RIVERS.put(River.North, "north");
+		XML_RIVERS.put(River.South, "south");
+		XML_RIVERS.put(River.East, "east");
+		XML_RIVERS.put(River.West, "west");
+		XML_RIVERS.put(River.Lake, "lake");
 	}
 }

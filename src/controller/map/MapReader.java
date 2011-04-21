@@ -17,6 +17,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.viewer.Fortress;
 import model.viewer.Player;
+import model.viewer.River;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -33,6 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class MapReader {
 	private static final String UNEXPECTED_TAG = "Unexpected tag ";
+
 	/**
 	 * @param file
 	 *            the file to read from
@@ -200,7 +202,7 @@ public class MapReader {
 				} else if (Tag.Unit.equals(tag)) {
 					tile.addUnit(parseUnit(tile, elem, reader));
 				} else if (Tag.River.equals(tag)) {
-					// FIXME: implement
+					tile.addRiver(parseRiver(elem, reader));
 				} else {
 					throw new IllegalStateException(
 							"Unexpected "
@@ -212,6 +214,34 @@ public class MapReader {
 			}
 		}
 		return tile;
+	}
+
+	/**
+	 * Parse a river. This is its own method so we can deal with the closing
+	 * tag, and for extensibility.
+	 * 
+	 * @param elem
+	 *            the river tag itself
+	 * @param reader
+	 *            the stream of elements we're reading from
+	 * @return the river in question.
+	 * @throws XMLStreamException
+	 *             on badly-formed XML or other processing error
+	 */
+	public static River parseRiver(final StartElement elem,
+			final XMLEventReader reader) throws XMLStreamException {
+		final River river = River.getRiver(getAttribute(elem, "direction"));
+		while (reader.hasNext()) {
+			if (reader.peek().isStartElement()) {
+				final StartElement element = reader.nextEvent().asStartElement();
+				throw new IllegalStateException(UNEXPECTED_TAG
+						+ getTagType(element).getText()
+						+ ": a player can't contain anything yet");
+			} else if (reader.nextEvent().isEndElement()) {
+				break;
+			}
+		}
+		return river;
 	}
 
 	/**
@@ -261,14 +291,15 @@ public class MapReader {
 	 * @param reader
 	 *            the stream of elements we're reading from
 	 * @return the fortress in question.
-	 * @throws XMLStreamException on ill-formed XML or other processing problem
+	 * @throws XMLStreamException
+	 *             on ill-formed XML or other processing problem
 	 * 
 	 */
 	private static Unit parseUnit(final Tile tile, final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
-		final Unit unit = new Unit(tile,
-				Integer.parseInt(getAttribute(elem, "owner")), getAttribute(
-						elem, "type"), getAttribute(elem, "name"));
+		final Unit unit = new Unit(tile, Integer.parseInt(getAttribute(elem,
+				"owner")), getAttribute(elem, "type"), getAttribute(elem,
+				"name"));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
@@ -292,7 +323,8 @@ public class MapReader {
 	 */
 	private static String getAttribute(final StartElement startElement,
 			final String attribute) {
-		final Attribute attr = startElement.getAttributeByName(new QName(attribute));
+		final Attribute attr = startElement.getAttributeByName(new QName(
+				attribute));
 		return attr == null ? null : attr.getValue();
 	}
 
@@ -304,17 +336,17 @@ public class MapReader {
 	 * @param reader
 	 *            the stream of elements we're reading from
 	 * @return The player it encapsulates.
-	 * @throws XMLStreamException on ill-formed XML or other processing problem
+	 * @throws XMLStreamException
+	 *             on ill-formed XML or other processing problem
 	 */
 	private static Player parsePlayer(final StartElement element,
 			final XMLEventReader reader) throws XMLStreamException {
-		final Player player = new Player(Integer.parseInt(element.getAttributeByName(
-				new QName("number")).getValue()), element.getAttributeByName(
-				new QName("code_name")).getValue());
+		final Player player = new Player(Integer.parseInt(element
+				.getAttributeByName(new QName("number")).getValue()), element
+				.getAttributeByName(new QName("code_name")).getValue());
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
-				final StartElement elem = reader.nextEvent()
-						.asStartElement();
+				final StartElement elem = reader.nextEvent().asStartElement();
 				throw new IllegalStateException(UNEXPECTED_TAG
 						+ getTagType(elem).getText()
 						+ ": a player can't contain anything yet");
@@ -335,9 +367,13 @@ public class MapReader {
 	private static Tag getTagType(final StartElement startElement) {
 		return Tag.fromString(startElement.getName().getLocalPart());
 	}
+
 	/**
-	 * Driver method to compare the results of this reader with those of the legacy reader.
-	 * @param args The maps to test the two readers on.
+	 * Driver method to compare the results of this reader with those of the
+	 * legacy reader.
+	 * 
+	 * @param args
+	 *            The maps to test the two readers on.
 	 */
 	// ESCA-JAVA0266:
 	public static void main(final String[] args) {
@@ -355,8 +391,10 @@ public class MapReader {
 				} else {
 					System.out.println("Readers differ on " + arg);
 				}
-				System.out.println("Old method took " + (endOne - startOne) + " time-units;");
-				System.out.println("New method took " + (endTwo - startTwo) + " time-units.");
+				System.out.println("Old method took " + (endOne - startOne)
+						+ " time-units;");
+				System.out.println("New method took " + (endTwo - startTwo)
+						+ " time-units.");
 			} catch (SAXException e) {
 				logger.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
 			} catch (IOException e) {
