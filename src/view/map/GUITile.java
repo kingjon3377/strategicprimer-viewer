@@ -37,6 +37,10 @@ public class GUITile extends JLabel {
 	 */
 	private static final int TILE_SIZE = 10;
 	/**
+	 * The size of each GUI tile, as a Dimension
+	 */
+	private static final Dimension PREF_SIZE = new Dimension(TILE_SIZE, TILE_SIZE);
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4047750632787337702L;
@@ -116,6 +120,10 @@ public class GUITile extends JLabel {
 			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
 					height / 4.0);
 		}
+		if ("".equals(getToolTipText())) {
+			setToolTipText("Terrain: " + terrainText(tile.getType())
+				+ anyForts(tile) + anyUnits(tile) + anyEvent(tile));
+		}
 	}
 
 	/**
@@ -133,11 +141,10 @@ public class GUITile extends JLabel {
 	 */
 	public GUITile(final Tile _tile) {
 		super();
-		setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-		setMinimumSize(getPreferredSize());
+		setPreferredSize(PREF_SIZE);
+		setMinimumSize(PREF_SIZE);
 		setMaximumSize(null);
-		setToolTipText("Terrain: " + terrainText(_tile.getType())
-				+ anyForts(_tile) + anyUnits(_tile) + anyEvent(_tile));
+		setToolTipText("");
 		setOpaque(true);
 		tile = _tile;
 	}
