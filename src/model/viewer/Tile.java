@@ -208,25 +208,25 @@ public final class Tile implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("");
-		sb.append('(');
-		sb.append(row);
-		sb.append(", ");
-		sb.append(col);
-		sb.append("): ");
-		sb.append(type);
-		sb.append(", event ");
-		sb.append(event);
-		sb.append(". Forts:");
+		final StringBuilder sbuilder = new StringBuilder("");
+		sbuilder.append('(');
+		sbuilder.append(row);
+		sbuilder.append(", ");
+		sbuilder.append(col);
+		sbuilder.append("): ");
+		sbuilder.append(type);
+		sbuilder.append(", event ");
+		sbuilder.append(event);
+		sbuilder.append(". Forts:");
 		for (Fortress fort : forts) {
-			sb.append("\n\t\t");
-			sb.append(fort);
+			sbuilder.append("\n\t\t");
+			sbuilder.append(fort);
 		}
-		sb.append("\n\tUnits:");
+		sbuilder.append("\n\tUnits:");
 		for (Unit unit : units) {
-			sb.append("\n\t\t");
-			sb.append(unit);
+			sbuilder.append("\n\t\t");
+			sbuilder.append(unit);
 		}
-		return sb.toString();
+		return sbuilder.toString();
 	}
 }

@@ -10,9 +10,6 @@ import javax.xml.stream.XMLStreamException;
 
 import model.viewer.SPMap;
 import model.viewer.TileType;
-
-import org.xml.sax.SAXException;
-
 import controller.map.MapReader;
 
 /**

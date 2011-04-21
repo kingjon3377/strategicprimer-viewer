@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
  * 
  */
 public class MapReader {
+	private static final String UNEXPECTED_TAG = "Unexpected tag ";
 	/**
 	 * @param file
 	 *            the file to read from
@@ -160,7 +161,7 @@ public class MapReader {
 					map.addTile(parseTile(startElement, eventReader));
 				} else {
 					throw new IllegalStateException(
-							"Unexpected tag "
+							UNEXPECTED_TAG
 									+ tag.getText()
 									+ ": players, rows, and tiles are the only accepted top-level tags");
 				}
@@ -238,7 +239,7 @@ public class MapReader {
 				if (Tag.Unit.equals(getTagType(element))) {
 					fort.addUnit(parseUnit(tile, elem, reader));
 				} else {
-					throw new IllegalStateException("Unexpected tag "
+					throw new IllegalStateException(UNEXPECTED_TAG
 							+ getTagType(element).getText()
 							+ ": a fortress can only contain units");
 				}
@@ -265,14 +266,14 @@ public class MapReader {
 	 */
 	private static Unit parseUnit(final Tile tile, final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
-		Unit unit = new Unit(tile,
+		final Unit unit = new Unit(tile,
 				Integer.parseInt(getAttribute(elem, "owner")), getAttribute(
 						elem, "type"), getAttribute(elem, "name"));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
 						.asStartElement();
-				throw new IllegalStateException("Unexpected tag "
+				throw new IllegalStateException(UNEXPECTED_TAG
 						+ getTagType(element).getText()
 						+ ": a unit can't contain anything yet");
 			} else if (reader.nextEvent().isEndElement()) {
@@ -291,12 +292,8 @@ public class MapReader {
 	 */
 	private static String getAttribute(final StartElement startElement,
 			final String attribute) {
-		Attribute attr = startElement.getAttributeByName(new QName(attribute));
-		if (attr == null) {
-			return null;
-		} else {
-			return attr.getValue();
-		}
+		final Attribute attr = startElement.getAttributeByName(new QName(attribute));
+		return attr == null ? null : attr.getValue();
 	}
 
 	/**
@@ -311,14 +308,14 @@ public class MapReader {
 	 */
 	private static Player parsePlayer(final StartElement element,
 			final XMLEventReader reader) throws XMLStreamException {
-		Player player = new Player(Integer.parseInt(element.getAttributeByName(
+		final Player player = new Player(Integer.parseInt(element.getAttributeByName(
 				new QName("number")).getValue()), element.getAttributeByName(
 				new QName("code_name")).getValue());
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement elem = reader.nextEvent()
 						.asStartElement();
-				throw new IllegalStateException("Unexpected tag "
+				throw new IllegalStateException(UNEXPECTED_TAG
 						+ getTagType(elem).getText()
 						+ ": a player can't contain anything yet");
 			} else if (reader.nextEvent().isEndElement()) {
@@ -338,16 +335,20 @@ public class MapReader {
 	private static Tag getTagType(final StartElement startElement) {
 		return Tag.fromString(startElement.getName().getLocalPart());
 	}
-
+	/**
+	 * Driver method to compare the results of this reader with those of the legacy reader.
+	 * @param args The maps to test the two readers on.
+	 */
+	// ESCA-JAVA0266:
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger(MapReader.class.getName());
 		for (String arg : args) {
 			try {
 				final long startOne = System.nanoTime();
-				final SPMap map1 = new XMLReader().getMap(arg);
+				final SPMap map1 = new XMLReader().getMap(arg); // NOPMD;
 				final long endOne = System.nanoTime();
 				final long startTwo = System.nanoTime();
-				final SPMap map2 = new MapReader().readMap(arg);
+				final SPMap map2 = new MapReader().readMap(arg); // NOPMD;
 				final long endTwo = System.nanoTime();
 				if (map1.equals(map2)) {
 					System.out.println("Readers produce identical results");
@@ -367,7 +368,7 @@ public class MapReader {
 			} catch (NumberFormatException e) {
 				logger.log(Level.SEVERE,
 						"Non-numeric when numeric data expected in " + arg, e);
-			} catch (NullPointerException e) {
+			} catch (NullPointerException e) { // NOPMD
 				logger.log(Level.SEVERE, "Null pointer in " + arg, e);
 			} catch (IllegalStateException e) {
 				logger.log(Level.SEVERE, "Unexpected state in " + arg, e);

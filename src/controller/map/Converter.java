@@ -12,8 +12,6 @@ import javax.xml.stream.XMLStreamException;
 import model.map.TileType;
 import model.viewer.SPMap;
 
-import org.xml.sax.SAXException;
-
 /**
  * A program to create a new-style map from an old-style map
  * 

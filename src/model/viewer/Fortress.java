@@ -119,16 +119,16 @@ public class Fortress implements Comparable<Fortress> { // We need something abo
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("Fortress ");
-		sb.append(name);
-		sb.append(", owned by player ");
-		sb.append(owner);
-		sb.append(". Units:");
+		final StringBuilder sbuild = new StringBuilder("Fortress ");
+		sbuild.append(name);
+		sbuild.append(", owned by player ");
+		sbuild.append(owner);
+		sbuild.append(". Units:");
 		for (Unit unit : units) {
-			sb.append("\n\t\t\t");
-			sb.append(unit);
+			sbuild.append("\n\t\t\t");
+			sbuild.append(unit);
 		}
-		return sb.toString();
+		return sbuild.toString();
 	}
 	/**
 	 * @param fort Another fortress
@@ -137,7 +137,7 @@ public class Fortress implements Comparable<Fortress> { // We need something abo
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(Fortress fort) {
+	public int compareTo(final Fortress fort) {
 		return Integer.valueOf(hashCode()).compareTo(fort.hashCode());
 	}
 }
