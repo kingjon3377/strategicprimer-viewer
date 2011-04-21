@@ -343,13 +343,19 @@ public class MapReader {
 		final Logger logger = Logger.getLogger(MapReader.class.getName());
 		for (String arg : args) {
 			try {
+				final long startOne = System.nanoTime();
 				final SPMap map1 = new XMLReader().getMap(arg);
+				final long endOne = System.nanoTime();
+				final long startTwo = System.nanoTime();
 				final SPMap map2 = new MapReader().readMap(arg);
+				final long endTwo = System.nanoTime();
 				if (map1.equals(map2)) {
 					System.out.println("Readers produce identical results");
 				} else {
 					System.out.println("Readers differ on " + arg);
 				}
+				System.out.println("Old method took " + (endOne - startOne) + " time-units;");
+				System.out.println("New method took " + (endTwo - startTwo) + " time-units.");
 			} catch (SAXException e) {
 				logger.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
 			} catch (IOException e) {
