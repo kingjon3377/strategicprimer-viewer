@@ -180,4 +180,53 @@ public final class Tile implements Serializable {
 	public int getEvent() {
 		return event;
 	}
+
+	/**
+	 * @param obj
+	 *            an object
+	 * @return whether it is an identical tile
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return (obj instanceof Tile) && row == ((Tile) obj).row
+				&& col == ((Tile) obj).col && event == ((Tile) obj).event
+				&& type.equals(((Tile) obj).type)
+				&& forts.equals(((Tile) obj).forts)
+				&& units.equals(((Tile) obj).units);
+	}
+
+	/**
+	 * @return a hash-code for the object
+	 */
+	@Override
+	public int hashCode() {
+		return row + col << 2 + event << 4 + type.ordinal() << 6 + forts
+				.hashCode() << 8 + units.hashCode() << 10;
+	}
+	/**
+	 * @return a String representation of the tile
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append('(');
+		sb.append(row);
+		sb.append(", ");
+		sb.append(col);
+		sb.append("): ");
+		sb.append(type);
+		sb.append(", event ");
+		sb.append(event);
+		sb.append(". Forts:");
+		for (Fortress fort : forts) {
+			sb.append("\n\t\t");
+			sb.append(fort);
+		}
+		sb.append("\n\tUnits:");
+		for (Unit unit : units) {
+			sb.append("\n\t\t");
+			sb.append(unit);
+		}
+		return sb.toString();
+	}
 }

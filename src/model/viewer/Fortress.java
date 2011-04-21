@@ -11,7 +11,7 @@ import java.util.List;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress { // We need something about resources and buildings yet
+public class Fortress implements Comparable<Fortress> { // We need something about resources and buildings yet
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -92,5 +92,52 @@ public class Fortress { // We need something about resources and buildings yet
 	 */
 	public final String getName() {
 		return name;
+	}
+
+	/**
+	 * @param obj
+	 *            an object
+	 * @return whether it is an identical fortress
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Fortress && ((Fortress) obj).name.equals(name)
+				&& ((Fortress) obj).owner == owner
+				&& ((Fortress) obj).units.equals(units);
+	}
+	
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return name.hashCode() << owner + units.hashCode();
+	}
+	
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("Fortress ");
+		sb.append(name);
+		sb.append(", owned by player ");
+		sb.append(owner);
+		sb.append(". Units:");
+		for (Unit unit : units) {
+			sb.append("\n\t\t\t");
+			sb.append(unit);
+		}
+		return sb.toString();
+	}
+	/**
+	 * @param fort Another fortress
+	 * @return the result of a comparison with it
+	 *
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(Fortress fort) {
+		return Integer.valueOf(hashCode()).compareTo(fort.hashCode());
 	}
 }

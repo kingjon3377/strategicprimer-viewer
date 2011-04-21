@@ -6,7 +6,7 @@ package model.viewer;
  * @author Jonathan Lovelace
  * 
  */
-public class Unit {
+public class Unit implements Comparable<Unit> {
 	/**
 	 * The tile the unit is on.
 	 */
@@ -73,5 +73,49 @@ public class Unit {
 	 */
 	public final String getName() {
 		return name;
+	}
+
+	/**
+	 * @param obj
+	 *            an object
+	 * @return whether it's an identical Unit.
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Unit
+				&& ((Unit) obj).owner == owner
+				&& (type == null ? ((Unit) obj).type == null
+						: ((Unit) obj).type.equals(type))
+				&& (name == null ? ((Unit) obj).name == null
+						: ((Unit) obj).name.equals(name));
+	}
+
+	/**
+	 * @return a hash-code for the object
+	 */
+	@Override
+	public int hashCode() {
+		return type.hashCode() << owner | name.hashCode();
+	}
+
+	/**
+	 * @return a String representation of the Unit.
+	 */
+	@Override
+	public String toString() {
+		return "Unit of type " + type + ", belonging to player " + owner
+				+ ", named " + name;
+	}
+
+	/**
+	 * @param unit
+	 *            A Unit to compare to
+	 * @return the result of the comparison
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(final Unit unit) {
+		return Integer.valueOf(hashCode()).compareTo(unit.hashCode());
 	}
 }

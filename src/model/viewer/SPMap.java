@@ -2,6 +2,7 @@ package model.viewer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -202,5 +203,88 @@ public class SPMap implements Serializable {
 	 */
 	public List<Player> getPlayers() {
 		return new ArrayList<Player>(players);
+	}
+
+	/**
+	 * @param obj
+	 *            another object
+	 * @return whether it is an identical map.
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		if (!(obj instanceof SPMap)) {
+			return false;
+		}
+		final SPMap map = (SPMap) obj;
+		if (myCols != map.cols() || myRows != map.rows()) {
+			return false;
+		}
+		List<Player> ourPlayers = players;
+		Collections.sort(ourPlayers);
+		List<Player> theirPlayers = map.getPlayers();
+		Collections.sort(theirPlayers);
+		if (!ourPlayers.equals(theirPlayers)) {
+			return false;
+		}
+		List<Fortress> ourForts = forts;
+		Collections.sort(ourForts);
+		List<Fortress> theirForts = map.forts;
+		Collections.sort(theirForts);
+		if (!ourForts.equals(theirForts)) {
+			return false;
+		}
+		List<Unit> ourUnits = units;
+		Collections.sort(ourUnits);
+		List<Unit> theirUnits = map.units;
+		Collections.sort(theirUnits);
+		if (!ourUnits.equals(theirUnits)) {
+			return false;
+		}
+		for (Point point : tiles.keySet()) {
+			if (!map.tiles.get(point).equals(tiles.get(point))) {
+				return false;
+			}
+		}
+		for (Point point : map.tiles.keySet()) {
+			if (!tiles.get(point).equals(map.tiles.get(point))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	/**
+	 * @return a String representation of the map
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("SP Map with ");
+		sb.append(myRows);
+		sb.append(" rows and ");
+		sb.append(myCols);
+		sb.append(" columns. Players:");
+		for (Player player : players) {
+			sb.append("\n\t");
+			sb.append(player);
+		}
+		sb.append("\nForts:");
+		for (Fortress fort : forts) {
+			sb.append("\n\t");
+			sb.append(fort);
+		}
+		sb.append("\nUnits:");
+		for (Unit unit : units) {
+			sb.append("\n\t");
+			sb.append(unit);
+		}
+		sb.append("\nTiles:");
+		for (Point point : tiles.keySet()) {
+			sb.append("\n\t(");
+			sb.append(point.row());
+			sb.append(", ");
+			sb.append(point.col());
+			sb.append("): ");
+			sb.append(tiles.get(point));
+		}
+		return sb.toString();
 	}
 }

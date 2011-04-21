@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author jsl7
  * 
  */
-public class Player implements Serializable {
+public class Player implements Serializable, Comparable<Player> {
 
 	/**
 	 * 
@@ -48,5 +48,43 @@ public class Player implements Serializable {
 	 */
 	public final String getName() {
 		return playerName;
+	}
+
+	/**
+	 * @param obj
+	 *            an object
+	 * @return whether it's an identical Player
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Player && playerID == ((Player) obj).getId()
+				&& playerName.equals(((Player) obj).getName());
+	}
+	
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return playerID | playerName.hashCode();
+	}
+	/**
+	 * Compare to another Player.
+	 * @param player the Player to compare to
+	 * @return the result of the comparison
+	 *
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(final Player player) {
+		return Integer.valueOf(hashCode()).compareTo(player.hashCode());
+	}
+	
+	/**
+	 * @return a String representation of the Player
+	 */
+	@Override
+	public String toString() {
+		return "Player number " + playerID + ", code-name \"" + playerName + '"';
 	}
 }
