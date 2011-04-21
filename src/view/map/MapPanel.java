@@ -38,6 +38,7 @@ public class MapPanel extends JPanel {
 	public MapPanel(final SPMap _map) {
 		super();
 		selListener = new SelectionListener();
+		setOpaque(true);
 		loadMap(_map);
 	}
 
@@ -104,6 +105,8 @@ public class MapPanel extends JPanel {
 	private void addTile(final GUITile tile) {
 		tile.addMouseListener(selListener);
 		add(tile);
+		tile.setVisible(true);
+		tile.repaint();
 	}
 
 	/**
