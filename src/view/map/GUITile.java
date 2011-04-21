@@ -58,6 +58,7 @@ public class GUITile extends JLabel {
 		setMaximumSize(null);
 		setToolTipText("Terrain: " + terrainText(_tile.getType())
 				+ anyForts(_tile) + anyUnits(_tile) + anyEvent(_tile));
+		setOpaque(true);
 		tile = _tile;
 	}
 
@@ -69,15 +70,13 @@ public class GUITile extends JLabel {
 	 */
 	@Override
 	public void paint(final Graphics pen) {
-		super.paint(pen);
+		// super.paint(pen);
 		final Color saveColor = pen.getColor();
 		pen.setColor(colorMap.get(tile.getType()));
 		pen.fillRect(0, 0, getWidth(), getHeight());
 		pen.setColor(Color.BLACK);
 		pen.drawRect(0, 0, getWidth(), getHeight());
-		if (selected) {
-			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
-		}
+		if (!TileType.NotVisible.equals(tile.getType())) {
 		if (!tile.getRivers().isEmpty()) {
 			pen.setColor(Color.BLUE);
 			for (River river : tile.getRivers()) {
@@ -112,10 +111,8 @@ public class GUITile extends JLabel {
 				}
 			}
 		}
-		if (tile.getForts().isEmpty()
-				|| tile.getType().equals(TileType.NotVisible)) {
-			if (!tile.getUnits().isEmpty()
-					&& !tile.getType().equals(TileType.NotVisible)) {
+		if (tile.getForts().isEmpty()) {
+			if (!tile.getUnits().isEmpty()) {
 				pen.setColor(PURPLE);
 				pen.fillOval(getWidth() / 2, getHeight() / 2, getWidth() / 4,
 						getHeight() / 4);
@@ -124,6 +121,11 @@ public class GUITile extends JLabel {
 			pen.setColor(BROWN);
 			pen.fillRect(getWidth() / 4 + 1, getHeight() / 4 + 1,
 					getWidth() / 2, getHeight() / 2);
+		}
+		}
+		if (selected) {
+			pen.setColor(Color.BLACK);
+			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
 		}
 		pen.setColor(saveColor);
 	}
