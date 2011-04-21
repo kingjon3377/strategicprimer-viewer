@@ -177,6 +177,12 @@ public class MapReader {
 		}
 		LOGGER.info("Finished reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
+		eventReader.close();
+		try {
+			istream.close();
+		} catch (IOException e) {
+			LOGGER.log(Level.WARNING, "I/O error closing the input stream", e);
+		}
 		return map;
 	}
 
