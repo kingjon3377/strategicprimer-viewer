@@ -8,6 +8,7 @@ import java.util.EnumMap;
 import javax.swing.JLabel;
 
 import model.viewer.Fortress;
+import model.viewer.River;
 import model.viewer.Tile;
 import model.viewer.TileType;
 import model.viewer.Unit;
@@ -76,6 +77,40 @@ public class GUITile extends JLabel {
 		pen.drawRect(0, 0, getWidth(), getHeight());
 		if (selected) {
 			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
+		}
+		if (!tile.getRivers().isEmpty()) {
+			pen.setColor(Color.BLUE);
+			for (River river : tile.getRivers()) {
+				switch (river) {
+				case East:
+					// ESCA-JAVA0076:
+					pen.fillRect(getWidth() / 2, 7 * getHeight() / 16,
+							getWidth() / 2, getHeight() / 8);
+					break;
+				case Lake:
+					// ESCA-JAVA0076:
+					pen.fillOval(3 * getWidth() / 8, 3 * getHeight() / 8,
+							getWidth() / 4, getHeight() / 4);
+					break;
+				case North:
+					// ESCA-JAVA0076:
+					pen.fillRect(7 * getWidth() / 16, 0, getWidth() / 8,
+							getHeight() / 2);
+					break;
+				case South:
+					// ESCA-JAVA0076:
+					pen.fillRect(7 * getWidth() / 16, getHeight() / 2,
+							getWidth() / 8, getHeight() / 2);
+					break;
+				case West:
+					// ESCA-JAVA0076:
+					pen.fillRect(0, 7 * getHeight() / 16, getWidth() / 2,
+							getHeight() / 8);
+					break;
+				default:
+					// Can't get here unless we add another case to the enum.
+				}
+			}
 		}
 		if (tile.getForts().isEmpty()
 				|| tile.getType().equals(TileType.NotVisible)) {
