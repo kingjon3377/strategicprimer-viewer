@@ -5,15 +5,14 @@ import java.util.EnumMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.stream.XMLStreamException;
+
 import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
 import model.viewer.Unit;
-
-import org.xml.sax.SAXException;
-
-import controller.map.XMLReader;
+import controller.map.MapReader;
 
 /**
  * A viewer that generates an HTML view, for the really big maps.
@@ -73,8 +72,8 @@ public final class HTMLViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new HTMLViewer(new XMLReader().getMap(args[0]));
-		} catch (SAXException e) {
+			new HTMLViewer(new MapReader().readMap(args[0]));
+		} catch (XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;

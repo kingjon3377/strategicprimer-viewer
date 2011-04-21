@@ -7,13 +7,12 @@ import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.xml.sax.SAXException;
-
-import controller.map.XMLReader;
+import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationRunner;
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import controller.map.MapReader;
 
 /**
  * A driver for running exploration results, etc., using the new model.
@@ -121,8 +120,8 @@ public final class ExplorationCLI {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ExplorationCLI(new XMLReader().getMap(args[0]));
-		} catch (SAXException e) {
+			new ExplorationCLI(new MapReader().readMap(args[0]));
+		} catch (XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;

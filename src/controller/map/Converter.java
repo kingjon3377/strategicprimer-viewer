@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.stream.XMLStreamException;
+
 import model.map.TileType;
 import model.viewer.SPMap;
 
@@ -307,8 +309,8 @@ public final class Converter {
 	 */
 	public static void main(final String[] args) {
 		try {
-			final Converter conv = new Converter(new XMLReader()
-					.getMap(args[0]));
+			final Converter conv = new Converter(new MapReader()
+					.readMap(args[0]));
 			int changes = 1;
 			int iterations = 0;
 			while (changes != 0 && iterations < 100000) {
@@ -318,7 +320,7 @@ public final class Converter {
 						+ changes);
 			}
 			conv.writeToFile("/home/kingjon/new_map.spmap");
-		} catch (SAXException e) {
+		} catch (XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);

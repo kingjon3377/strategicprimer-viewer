@@ -6,12 +6,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.stream.XMLStreamException;
+
 import model.viewer.SPMap;
 import model.viewer.TileType;
 
 import org.xml.sax.SAXException;
 
-import controller.map.XMLReader;
+import controller.map.MapReader;
 
 /**
  * A CLI to create a colored text version of the map from the XML, blinking a
@@ -59,9 +61,9 @@ public final class AltTerminalViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new AltTerminalViewer(new XMLReader().getMap(args[0]), Integer
+			new AltTerminalViewer(new MapReader().readMap(args[0]), Integer
 					.parseInt(args[1]), Integer.parseInt(args[2]));
-		} catch (SAXException e) {
+		} catch (XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;
@@ -69,7 +71,11 @@ public final class AltTerminalViewer {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;
-		}
+		} catch (NumberFormatException e) {
+			LOGGER.log(Level.SEVERE, "Non-numeric data where numeric expected", e);
+			System.exit(3);
+			return; // NOPMD
+		} 
 	}
 
 	/**

@@ -15,10 +15,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.xml.stream.XMLStreamException;
 
-import org.xml.sax.SAXException;
-
-import controller.map.XMLReader;
+import controller.map.MapReader;
 import controller.map.XMLWriter;
 
 /**
@@ -90,7 +89,7 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 			}
 			frame = new ViewerFrame(filename);
 			frame.setVisible(true);
-		} catch (SAXException e) {
+		} catch (XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
@@ -104,10 +103,10 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 *            The filename of an XML file describing the map
 	 * @throws IOException
 	 *             on I/O error
-	 * @throws SAXException
+	 * @throws XMLStreamException
 	 *             on XML reading error
 	 */
-	private ViewerFrame(final String filename) throws SAXException, IOException {
+	private ViewerFrame(final String filename) throws XMLStreamException, IOException {
 		super();
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -124,7 +123,7 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		final JButton saveButton = new JButton("Save As");
 		saveButton.addActionListener(this);
 		buttonPanel.add(saveButton);
-		mapPanel = new MapPanel(new XMLReader().getMap(filename));
+		mapPanel = new MapPanel(new MapReader().readMap(filename));
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
 		buttonPanel.add(vrpanel);
 		final JButton quitButton = new JButton("Quit");
@@ -234,9 +233,9 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
-					mapPanel.loadMap(new XMLReader().getMap(chooser
+					mapPanel.loadMap(new MapReader().readMap(chooser
 							.getSelectedFile().getPath()));
-				} catch (SAXException e) {
+				} catch (XMLStreamException e) {
 					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
