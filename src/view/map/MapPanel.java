@@ -81,6 +81,7 @@ public class MapPanel extends JPanel {
 			this.map = _map;
 			LOGGER.info("Finished loading panel");
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
+			repaint();
 		}
 	}
 
