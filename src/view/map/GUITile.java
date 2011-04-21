@@ -119,8 +119,6 @@ public class GUITile extends JLabel {
 					width / 2.0, height / 2.0);
 			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
 					height / 4.0);
-		}
-		if ("".equals(getToolTipText())) {
 			setToolTipText("Terrain: " + terrainText(tile.getType())
 				+ anyForts(tile) + anyUnits(tile) + anyEvent(tile));
 		}
