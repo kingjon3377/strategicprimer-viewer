@@ -163,14 +163,13 @@ public class GUITile extends JComponent {
 			for (River river : tile.getRivers()) {
 				pen2d.fill(rivers.get(river));
 			}
-			if (tile.getForts().isEmpty()) {
-				if (!tile.getUnits().isEmpty()) {
-					pen2d.setColor(PURPLE);
-					pen2d.fill(unit);
-				}
-			} else {
+			if (!tile.getForts().isEmpty()) {
 				pen2d.setColor(BROWN);
 				pen2d.fill(fort);
+			} 
+			if (!tile.getUnits().isEmpty()) {
+				pen2d.setColor(PURPLE);
+				pen2d.fill(unit);
 			}
 		}
 		if (selected) {
