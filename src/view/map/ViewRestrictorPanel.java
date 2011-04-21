@@ -1,5 +1,6 @@
 package view.map;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -89,7 +90,12 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 			minColBox.setText(Integer.toString(minCol));
 			final int maxCol = betweenMax(minCol, parse(maxColBox.getText()),
 					mpanel.getMap().cols() - 1);
-			mpanel.loadMap(mpanel.getMap(), minRow, maxRow, minCol, maxCol);
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					mpanel.loadMap(mpanel.getMap(), minRow, maxRow, minCol, maxCol);
+				}
+			});
 		}
 	}
 
