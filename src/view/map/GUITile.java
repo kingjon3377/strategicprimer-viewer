@@ -28,6 +28,7 @@ import model.viewer.Unit;
  * 
  */
 public class GUITile extends JLabel {
+	private static final double EIGHT = 8.0;
 	/**
 	 * Whether this is the currently selected tile.
 	 */
@@ -52,11 +53,13 @@ public class GUITile extends JLabel {
 	 * A cached copy of our width. If it hasn't changed, we can use cached
 	 * rendering objects.
 	 */
+	// ESCA-JAVA0244:
 	private int width = -1;
 	/**
 	 * A cached copy of our height. If it hasn't changed, we can used cached
 	 * rendering objects.
 	 */
+	// ESCA-JAVA0244:
 	private int height = -1;
 	/**
 	 * 7/16
@@ -91,24 +94,24 @@ public class GUITile extends JLabel {
 			for (River river : tile.getRivers()) {
 				switch (river) {
 				case East:
-					rivers.add(new Rectangle2D.Double(width / 2.0, height
-							* SEVEN_SIXTEENTHS, width / 2.0, height / 8.0));
+					rivers.add(new Rectangle2D.Double(width / 2.0, height // NOPMD
+							* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
 					break;
 				case Lake:
-					rivers.add(new Ellipse2D.Double(width / 4.0,
+					rivers.add(new Ellipse2D.Double(width / 4.0, // NOPMD
 							height / 4.0, width / 2.0, height / 2.0));
 					break;
 				case North:
-					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS,
-							0, width / 8.0, height / 2.0));
+					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS, // NOPMD
+							0, width / EIGHT, height / 2.0));
 					break;
 				case South:
-					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS,
-							height / 2.0, width / 8.0, height / 2.0));
+					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS, // NOPMD
+							height / 2.0, width / EIGHT, height / 2.0));
 					break;
 				case West:
-					rivers.add(new Rectangle2D.Double(0, height
-							* SEVEN_SIXTEENTHS, width / 2.0, height / 8.0));
+					rivers.add(new Rectangle2D.Double(0, height // NOPMD
+							* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
 					break;
 				default:
 					// Can't get here unless we add another case to the enum.
