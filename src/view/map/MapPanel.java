@@ -1,12 +1,15 @@
 package view.map;
 
 import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import util.Pair;
 
 /**
  * A panel to display a map.
@@ -68,12 +71,7 @@ public class MapPanel extends JPanel {
 					&& row < maxRow + 1; row++) {
 				for (int col = Math.max(0, minCol); col < _map.cols()
 						&& col < maxCol + 1; col++) {
-					final Tile tile = _map.getTile(row, col);
-					if (tile == null) {
-						addTile(new NullGUITile(row, col)); // NOPMD
-					} else {
-						addTile(new GUITile(tile)); // NOPMD
-					}
+					addTile(row, col, _map.getTile(row, col));
 				}
 				LOGGER.fine("Added row ");
 				LOGGER.fine(Integer.toString(row));
@@ -96,6 +94,38 @@ public class MapPanel extends JPanel {
 		loadMap(_map, 0, Integer.MAX_VALUE - 1, 0, Integer.MAX_VALUE - 1);
 	}
 
+	/**
+	 * Set up a new tile, possibly getting it from cache.
+	 * 
+	 * @param row
+	 *            the row
+	 * @param col
+	 *            the column
+	 * @param tile
+	 *            the tile we're setting up a GUI for.
+	 */
+	private void addTile(final int row, final int col, final Tile tile) {
+		if (tile == null) {
+			if (!nullCache.containsKey(Pair.of(row, col))) {
+				nullCache.put(Pair.of(row, col), new NullGUITile(row, col));
+			}
+			addTile(nullCache.get(Pair.of(row, col)));
+		} else {
+			if (!tileCache.containsKey(tile)) {
+				tileCache.put(tile, new GUITile(tile));
+			}
+			addTile(tileCache.get(tile));
+		}
+	}
+
+	/**
+	 * A cache of NullTiles.
+	 */
+	private final Map<Pair<Integer, Integer>, NullGUITile> nullCache = new HashMap<Pair<Integer, Integer>, NullGUITile>();
+	/**
+	 * A cache of GUITiles.
+	 */
+	private final Map<Tile, GUITile> tileCache = new HashMap<Tile, GUITile>();
 	/**
 	 * Set up a new GUI tile
 	 * 
