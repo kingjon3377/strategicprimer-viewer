@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
 
-import javax.swing.JLabel;
+import javax.swing.JComponent;
 
 import model.viewer.Fortress;
 import model.viewer.River;
@@ -26,7 +26,7 @@ import model.viewer.Unit;
  * @author Jonathan Lovelace
  * 
  */
-public class GUITile extends JLabel {
+public class GUITile extends JComponent {
 	private static final double EIGHT = 8.0;
 	/**
 	 * Whether this is the currently selected tile.
