@@ -8,9 +8,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 
@@ -54,13 +53,13 @@ public class GUITile extends JLabel {
 	 * rendering objects.
 	 */
 	// ESCA-JAVA0244:
-	private int width = -1;
+	private static int width = -1;
 	/**
 	 * A cached copy of our height. If it hasn't changed, we can used cached
 	 * rendering objects.
 	 */
 	// ESCA-JAVA0244:
-	private int height = -1;
+	private static int height = -1;
 	/**
 	 * 7/16
 	 */
@@ -68,62 +67,51 @@ public class GUITile extends JLabel {
 	/**
 	 * A cached copy of our background.
 	 */
-	private Rectangle background;
+	private static Rectangle background;
 	/**
 	 * The shapes representing the rivers on the tile
 	 */
-	private final List<Shape> rivers = new ArrayList<Shape>();
+	private static final Map<River, Shape> rivers = new EnumMap<River, Shape>( //NOPMD
+			River.class);
 	/**
 	 * Shape representing the fortress that might be on the tile.
 	 */
-	private Shape fort;
+	private static Shape fort;
 	/**
 	 * Shape representing the unit that might be on the tile
 	 */
-	private Shape unit;
+	private static Shape unit;
 
 	/**
 	 * Check, and possibly regenerate, the cache.
+	 * 
+	 * @param wid
+	 *            the current width
+	 * @param hei
+	 *            the current height
 	 */
-	private void checkCache() {
-		if (width != getWidth() || height != getHeight()) {
-			width = getWidth();
-			height = getHeight();
+	private static void checkCache(int wid, int hei) {
+		if (width != wid || height != hei) {
+			width = wid;
+			height = hei;
 			background = new Rectangle(0, 0, width, height);
 			rivers.clear();
-			for (River river : tile.getRivers()) {
-				switch (river) {
-				case East:
-					rivers.add(new Rectangle2D.Double(width / 2.0, height // NOPMD
-							* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
-					break;
-				case Lake:
-					rivers.add(new Ellipse2D.Double(width / 4.0, // NOPMD
-							height / 4.0, width / 2.0, height / 2.0));
-					break;
-				case North:
-					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS, // NOPMD
-							0, width / EIGHT, height / 2.0));
-					break;
-				case South:
-					rivers.add(new Rectangle2D.Double(width * SEVEN_SIXTEENTHS, // NOPMD
-							height / 2.0, width / EIGHT, height / 2.0));
-					break;
-				case West:
-					rivers.add(new Rectangle2D.Double(0, height // NOPMD
-							* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
-					break;
-				default:
-					// Can't get here unless we add another case to the enum.
-					break;
-				}
-			}
+			rivers.put(River.East, new Rectangle2D.Double(width / 2.0, height // NOPMD
+					* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
+			rivers.put(River.Lake, new Ellipse2D.Double(width / 4.0, // NOPMD
+					height / 4.0, width / 2.0, height / 2.0));
+			rivers.put(River.North, new Rectangle2D.Double(width
+					* SEVEN_SIXTEENTHS, // NOPMD
+					0, width / EIGHT, height / 2.0));
+			rivers.put(River.South, new Rectangle2D.Double(width
+					* SEVEN_SIXTEENTHS, // NOPMD
+					height / 2.0, width / EIGHT, height / 2.0));
+			rivers.put(River.West, new Rectangle2D.Double(0, height // NOPMD
+					* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
 			fort = new Rectangle2D.Double(width / 2.0, height / 2.0,
 					width / 2.0, height / 2.0);
 			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
 					height / 4.0);
-			setToolTipText("Terrain: " + terrainText(tile.getType())
-				+ anyForts(tile) + anyUnits(tile) + anyEvent(tile));
 		}
 	}
 
@@ -162,16 +150,18 @@ public class GUITile extends JLabel {
 		final Graphics2D pen2d = (Graphics2D) pen;
 		final Color saveColor = pen2d.getColor();
 		pen2d.setColor(colorMap.get(tile.getType()));
-		checkCache();
+		checkCache(getWidth(), getHeight());
+		if ("".equals(getToolTipText())) {
+			setToolTipText("Terrain: " + terrainText(tile.getType())
+					+ anyForts(tile) + anyUnits(tile) + anyEvent(tile));
+		}
 		pen2d.fill(background);
 		pen2d.setColor(Color.BLACK);
 		pen2d.draw(background);
 		if (!TileType.NotVisible.equals(tile.getType())) {
-			if (!tile.getRivers().isEmpty()) {
-				pen2d.setColor(Color.BLUE);
-				for (Shape river : rivers) {
-					pen2d.fill(river);
-				}
+			pen2d.setColor(Color.BLUE);
+			for (River river : tile.getRivers()) {
+				pen2d.fill(rivers.get(river));
 			}
 			if (tile.getForts().isEmpty()) {
 				if (!tile.getUnits().isEmpty()) {
