@@ -194,6 +194,7 @@ public final class Tile implements Serializable {
 				&& col == ((Tile) obj).col && event == ((Tile) obj).event
 				&& type.equals(((Tile) obj).type)
 				&& forts.equals(((Tile) obj).forts)
+				&& rivers.equals(((Tile) obj).rivers)
 				&& units.equals(((Tile) obj).units);
 	}
 
@@ -203,7 +204,7 @@ public final class Tile implements Serializable {
 	@Override
 	public int hashCode() {
 		return row + col << 2 + event << 4 + type.ordinal() << 6 + forts
-				.hashCode() << 8 + units.hashCode() << 10;
+				.hashCode() << 8 + units.hashCode() << 10 + rivers.hashCode() << 12;
 	}
 	/**
 	 * @return a String representation of the tile
