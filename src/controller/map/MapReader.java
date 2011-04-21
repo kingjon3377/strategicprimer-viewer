@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class MapReader {
 	private static final String UNEXPECTED_TAG = "Unexpected tag ";
-
+	private static final Logger LOGGER = Logger.getLogger(MapReader.class.getName());
 	/**
 	 * @param file
 	 *            the file to read from
@@ -140,6 +140,8 @@ public class MapReader {
 	 *             on badly-formed XML or other processing error
 	 */
 	public SPMap readMap(final InputStream istream) throws XMLStreamException {
+		LOGGER.info("Started reading XML");
+		LOGGER.info(Long.toString(System.currentTimeMillis()));
 		SPMap map = null;
 		final XMLEventReader eventReader = XMLInputFactory.newInstance()
 				.createXMLEventReader(istream);
@@ -173,6 +175,8 @@ public class MapReader {
 				}
 			}
 		}
+		LOGGER.info("Finished reading XML");
+		LOGGER.info(Long.toString(System.currentTimeMillis()));
 		return map;
 	}
 
@@ -387,7 +391,6 @@ public class MapReader {
 	 */
 	// ESCA-JAVA0266:
 	public static void main(final String[] args) {
-		final Logger logger = Logger.getLogger(MapReader.class.getName());
 		for (String arg : args) {
 			try {
 				final long startOne = System.nanoTime();
@@ -406,20 +409,20 @@ public class MapReader {
 				System.out.println("New method took " + (endTwo - startTwo)
 						+ " time-units.");
 			} catch (SAXException e) {
-				logger.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
+				LOGGER.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "I/O error while parsing " + arg, e);
+				LOGGER.log(Level.SEVERE, "I/O error while parsing " + arg, e);
 			} catch (XMLStreamException e) {
-				logger.log(Level.SEVERE,
+				LOGGER.log(Level.SEVERE,
 						"XMLStreamException (probably badly formed input) in "
 								+ arg, e);
 			} catch (NumberFormatException e) {
-				logger.log(Level.SEVERE,
+				LOGGER.log(Level.SEVERE,
 						"Non-numeric when numeric data expected in " + arg, e);
 			} catch (NullPointerException e) { // NOPMD
-				logger.log(Level.SEVERE, "Null pointer in " + arg, e);
+				LOGGER.log(Level.SEVERE, "Null pointer in " + arg, e);
 			} catch (IllegalStateException e) {
-				logger.log(Level.SEVERE, "Unexpected state in " + arg, e);
+				LOGGER.log(Level.SEVERE, "Unexpected state in " + arg, e);
 			}
 		}
 	}

@@ -58,6 +58,8 @@ public class MapPanel extends JPanel {
 	public final void loadMap(final SPMap _map, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
 		if (_map != null) {
+			LOGGER.info("Started loading panel");
+			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			removeAll();
 			setLayout(new GridLayout(Math.min(_map.rows(), Math.max(0, maxRow
 					+ 1 - minRow)), 0));
@@ -77,6 +79,8 @@ public class MapPanel extends JPanel {
 				LOGGER.fine("\n");
 			}
 			this.map = _map;
+			LOGGER.info("Finished loading panel");
+			LOGGER.info(Long.toString(System.currentTimeMillis()));
 		}
 	}
 
