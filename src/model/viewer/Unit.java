@@ -95,7 +95,8 @@ public class Unit implements Comparable<Unit> {
 	 */
 	@Override
 	public int hashCode() {
-		return type.hashCode() << owner | name.hashCode();
+		return (type == null ? 0 : type.hashCode()) + owner << 2 + (name == null ? 0
+				: name.hashCode()) << 4;
 	}
 
 	/**
