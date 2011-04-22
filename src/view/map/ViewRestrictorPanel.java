@@ -79,24 +79,31 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		if ("Refresh".equals(evt.getActionCommand())) {
-			final int minRow = betweenMin(0, parse(minRowBox.getText()), mpanel
-					.getMap().rows() - 1);
-			minRowBox.setText(Integer.toString(minRow));
-			final int maxRow = betweenMax(minRow, parse(maxRowBox.getText()),
-					mpanel.getMap().rows() - 1);
-			maxRowBox.setText(Integer.toString(maxRow));
-			final int minCol = betweenMin(0, parse(minColBox.getText()), mpanel
-					.getMap().cols() - 1);
-			minColBox.setText(Integer.toString(minCol));
-			final int maxCol = betweenMax(minCol, parse(maxColBox.getText()),
-					mpanel.getMap().cols() - 1);
-			EventQueue.invokeLater(new Runnable() {
+			new Thread() {
 				@Override
 				public void run() {
-					mpanel.loadMap(mpanel.getMap(), minRow, maxRow, minCol, maxCol);
+					refreshMap();
 				}
-			});
+			}.start();
 		}
+	}
+
+	/**
+	 * Refresh the map. Its own method so we can run it in a separate thread.
+	 */
+	public void refreshMap() {
+		final int minRow = betweenMin(0, parse(minRowBox.getText()), mpanel
+				.getMap().rows() - 1);
+		minRowBox.setText(Integer.toString(minRow));
+		final int maxRow = betweenMax(minRow, parse(maxRowBox.getText()),
+				mpanel.getMap().rows() - 1);
+		maxRowBox.setText(Integer.toString(maxRow));
+		final int minCol = betweenMin(0, parse(minColBox.getText()), mpanel
+				.getMap().cols() - 1);
+		minColBox.setText(Integer.toString(minCol));
+		final int maxCol = betweenMax(minCol, parse(maxColBox.getText()),
+				mpanel.getMap().cols() - 1);
+				mpanel.loadMap(mpanel.getMap(), minRow, maxRow, minCol, maxCol);
 	}
 
 	/**

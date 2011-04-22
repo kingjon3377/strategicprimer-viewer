@@ -74,8 +74,7 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 * 
 	 */
 	public static void main(final String[] args) {
-		try {
-			String filename = "";
+			final String filename;
 			if (args.length > 0) {
 				filename = args[0];
 			} else {
@@ -87,13 +86,19 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 					return;
 				}
 			}
-			frame = new ViewerFrame(filename);
-			frame.setVisible(true);
-		} catch (XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-		}
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+					frame = new ViewerFrame(filename);
+					frame.setVisible(true);
+				} catch (XMLStreamException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+				}
+				}
+			}.start();
 	}
 
 	/**

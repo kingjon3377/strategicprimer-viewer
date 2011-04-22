@@ -1,5 +1,6 @@
 package view.map;
 
+import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +81,12 @@ public class MapPanel extends JPanel {
 			this.map = _map;
 			LOGGER.info("Finished loading panel");
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
-			repaint();
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					repaint();
+				}
+			});
 		}
 	}
 
