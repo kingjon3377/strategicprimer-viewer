@@ -1,7 +1,6 @@
 package controller.exploration;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -19,6 +18,8 @@ import org.junit.Test;
  * @author Jonathan Lovelace
  */
 public final class TestTableLoader {
+	private static final String IO_ERROR_MESSAGE = "I/O exception";
+	private static final String ONE_STRING = "one";
 	/**
 	 * The object we'll use for the tests
 	 */
@@ -48,11 +49,11 @@ public final class TestTableLoader {
 				"quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"));
 		try {
 			final EncounterTable result = loader.loadTable(reader);
-			assertEquals("loading quadrant table", "one",
+			assertEquals("loading quadrant table", ONE_STRING,
 					result.generateEvent(new Tile(0, 0, TileType.Tundra)));
 			// TODO: somehow check that it got properly loaded, beyond this
 		} catch (IOException e) {
-			fail("I/O exception");
+			fail(IO_ERROR_MESSAGE);
 		}
 		final BufferedReader readerTwo = new BufferedReader(new StringReader(
 				"quadrant"));
@@ -77,9 +78,9 @@ public final class TestTableLoader {
 		try {
 			final EncounterTable result = loader.loadTable(reader);
 			// ESCA-JAVA0076:
-			assertEquals("loading random table", "one", result.generateEvent(new Tile(30, 30, TileType.Tundra)));
+			assertEquals("loading random table", ONE_STRING, result.generateEvent(new Tile(30, 30, TileType.Tundra)));
 		} catch (IOException e) {
-			fail("I/O exception");
+			fail(IO_ERROR_MESSAGE);
 		}
 	}
 
@@ -93,11 +94,11 @@ public final class TestTableLoader {
 		final BufferedReader reader = new BufferedReader(new StringReader("terrain\ntundra one\nplains two\nocean three"));
 		try {
 			final EncounterTable result = loader.loadTable(reader);
-			assertEquals("loading terrain table: tundra", "one", result.generateEvent(new Tile(30, 30, TileType.Tundra)));
+			assertEquals("loading terrain table: tundra", ONE_STRING, result.generateEvent(new Tile(30, 30, TileType.Tundra)));
 			assertEquals("loading terrain table: plains", "two", result.generateEvent(new Tile(15, 15, TileType.Plains)));
 			assertEquals("loading terrain table: ocean", "three", result.generateEvent(new Tile(15, 15, TileType.Ocean)));
 		} catch (IOException e) {
-			fail("I/O exception");
+			fail(IO_ERROR_MESSAGE);
 		}
 	}
 	/**
@@ -112,7 +113,7 @@ public final class TestTableLoader {
 			assertEquals("loading legacy table: two", "second", result.generateEvent(new Tile(15, 20, TileType.Tundra, 1)));
 			assertEquals("loading legacy table: three", "third", result.generateEvent(new Tile(15, 20, TileType.Tundra, 2)));
 		} catch (IOException e) {
-			fail("I/O exception");
+			fail(IO_ERROR_MESSAGE);
 		}
 	}
 
@@ -124,9 +125,9 @@ public final class TestTableLoader {
 		final BufferedReader one = new BufferedReader(new StringReader("constant\none"));
 		try {
 			final EncounterTable result = loader.loadTable(one);
-			assertEquals("loading constant table: first test", "one", result.generateEvent(new Tile(10, 5, TileType.Plains)));
+			assertEquals("loading constant table: first test", ONE_STRING, result.generateEvent(new Tile(10, 5, TileType.Plains)));
 		} catch (IOException e) {
-			fail("I/O exception");
+			fail(IO_ERROR_MESSAGE);
 		}
 	}
 
