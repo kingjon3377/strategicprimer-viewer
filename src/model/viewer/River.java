@@ -1,6 +1,7 @@
 package model.viewer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * If a tile has a river, it could be in any one of several directions. This
@@ -35,7 +36,7 @@ public enum River {
 	/**
 	 * Mapping from descriptive strings to directions.
 	 */
-	private static final HashMap<String, River> RIVER_MAP = new HashMap<String, River>();
+	private static final Map<String, River> RIVER_MAP = new HashMap<String, River>();
 
 	static {
 		RIVER_MAP.put("north", River.North);
