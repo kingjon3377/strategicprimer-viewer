@@ -6,8 +6,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -139,6 +141,47 @@ public class GUITile extends JComponent {
 	}
 
 	/**
+	 * Cache of what the tile should look like.
+	 */
+	private BufferedImage image;
+
+	/**
+	 * Check whether that cache is out of date, and recreate it if it is.
+	 * This lets us draw everything except the selection box only *once*
+	 * per tile in most cases.
+	 */
+	private void checkImageCache() {
+		if (image == null || image.getWidth() != width || image.getHeight() != height) {
+			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			Graphics2D pen = image.createGraphics();
+			pen.setColor(colorMap.get(tile.getType()));
+			pen.fill(background);
+			pen.setColor(Color.BLACK);
+			pen.draw(background);
+			if (!TileType.NotVisible.equals(tile.getType())) {
+				pen.setColor(Color.BLUE);
+				for (River river : tile.getRivers()) {
+					pen.fill(rivers.get(river));
+				}
+				if (!tile.getForts().isEmpty()) {
+					pen.setColor(BROWN);
+					pen.fill(fort);
+				} 
+				if (!tile.getUnits().isEmpty()) {
+					pen.setColor(PURPLE);
+					pen.fill(unit);
+				}
+			}
+		}
+	}
+
+	/**
+	 * The identity transformation. drawImage() requires a transformation,
+	 * and we *really* don't want to create one every time we paint a tile.
+	 */
+	private static final AffineTransform IDENT = new AffineTransform();
+
+	/**
 	 * Paint the tile
 	 * 
 	 * @param pen
@@ -154,24 +197,8 @@ public class GUITile extends JComponent {
 			setToolTipText("Terrain: " + terrainText(tile.getType())
 					+ anyForts(tile) + anyUnits(tile) + anyEvent(tile));
 		}
-		pen2d.setColor(colorMap.get(tile.getType()));
-		pen2d.fill(background);
-		pen2d.setColor(Color.BLACK);
-		pen2d.draw(background);
-		if (!TileType.NotVisible.equals(tile.getType())) {
-			pen2d.setColor(Color.BLUE);
-			for (River river : tile.getRivers()) {
-				pen2d.fill(rivers.get(river));
-			}
-			if (!tile.getForts().isEmpty()) {
-				pen2d.setColor(BROWN);
-				pen2d.fill(fort);
-			} 
-			if (!tile.getUnits().isEmpty()) {
-				pen2d.setColor(PURPLE);
-				pen2d.fill(unit);
-			}
-		}
+		checkImageCache();
+		pen2d.drawImage(image, IDENT, this);
 		if (selected) {
 			pen2d.setColor(Color.BLACK);
 			pen2d.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
