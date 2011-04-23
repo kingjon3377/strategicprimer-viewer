@@ -149,12 +149,12 @@ public class GUITile extends JComponent {
 		// super.paint(pen);
 		final Graphics2D pen2d = (Graphics2D) pen;
 		final Color saveColor = pen2d.getColor();
-		pen2d.setColor(colorMap.get(tile.getType()));
 		checkCache(getWidth(), getHeight());
 		if ("".equals(getToolTipText())) {
 			setToolTipText("Terrain: " + terrainText(tile.getType())
 					+ anyForts(tile) + anyUnits(tile) + anyEvent(tile));
 		}
+		pen2d.setColor(colorMap.get(tile.getType()));
 		pen2d.fill(background);
 		pen2d.setColor(Color.BLACK);
 		pen2d.draw(background);
