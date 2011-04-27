@@ -37,7 +37,7 @@ public class GUITile extends JComponent {
 	/**
 	 * The size of each GUI tile
 	 */
-	private static final int TILE_SIZE = 10;
+	private static final int TILE_SIZE = 13;
 	/**
 	 * The size of each GUI tile, as a Dimension
 	 */
