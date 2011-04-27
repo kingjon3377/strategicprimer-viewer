@@ -74,22 +74,22 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 * 
 	 */
 	public static void main(final String[] args) {
-			final String filename;
-			if (args.length > 0) {
-				filename = args[0];
+		final String filename;
+		if (args.length > 0) {
+			filename = args[0];
+		} else {
+			final JFileChooser chooser = new JFileChooser();
+			chooser.setFileFilter(new MapFileFilter());
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				filename = chooser.getSelectedFile().getPath();
 			} else {
-				final JFileChooser chooser = new JFileChooser();
-				chooser.setFileFilter(new MapFileFilter());
-				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					filename = chooser.getSelectedFile().getPath();
-				} else {
-					return;
-				}
+				return;
 			}
-			new Thread() {
-				@Override
-				public void run() {
-					try {
+		}
+		new Thread() {
+			@Override
+			public void run() {
+				try {
 					frame = new ViewerFrame(filename);
 					frame.setVisible(true);
 				} catch (XMLStreamException e) {
@@ -97,8 +97,8 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 				}
-				}
-			}.start();
+			}
+		}.start();
 	}
 
 	/**
@@ -111,7 +111,8 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 * @throws XMLStreamException
 	 *             on XML reading error
 	 */
-	private ViewerFrame(final String filename) throws XMLStreamException, IOException {
+	private ViewerFrame(final String filename) throws XMLStreamException,
+			IOException {
 		super();
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
