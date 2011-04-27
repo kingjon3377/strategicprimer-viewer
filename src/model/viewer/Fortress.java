@@ -111,7 +111,8 @@ public class Fortress implements Comparable<Fortress> { // We need something abo
 	 */
 	@Override
 	public int hashCode() {
-		return name.hashCode() << owner + units.hashCode();
+		return (name == null ? 0 : name.hashCode()) + owner << 2 + units
+				.hashCode() << 4;
 	}
 	
 	/**

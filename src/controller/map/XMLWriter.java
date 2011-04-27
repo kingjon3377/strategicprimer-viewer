@@ -140,8 +140,8 @@ public class XMLWriter { // NOPMD
 	 *            the tile to print.
 	 */
 	private void printTile(final Tile tile) { // NOPMD
-		if (tile.getType() != TileType.NotVisible || !tile.getForts().isEmpty()
-				|| !tile.getUnits().isEmpty()) {
+		if (tile != null && (tile.getType() != TileType.NotVisible || !tile.getForts().isEmpty()
+				|| !tile.getUnits().isEmpty())) {
 			indent(2);
 			writer.print("<tile row=");
 			printQuoted(tile.getRow());
