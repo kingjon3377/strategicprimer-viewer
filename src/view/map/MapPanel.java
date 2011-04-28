@@ -38,10 +38,12 @@ public class MapPanel extends JPanel {
 	 * 
 	 * @param _map
 	 *            The map object this panel is representing
+	 * @param details
+	 * 			  The panel that'll show the details of the selected tile
 	 */
-	public MapPanel(final SPMap _map) {
+	public MapPanel(final SPMap _map, final DetailPanel details) {
 		super();
-		selListener = new SelectionListener();
+		selListener = new SelectionListener(details);
 		setOpaque(true);
 		loadMap(_map);
 	}

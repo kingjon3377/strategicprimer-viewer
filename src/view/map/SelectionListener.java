@@ -24,7 +24,20 @@ public class SelectionListener implements MouseListener {
 	 * The menu to change a tile's type.
 	 */
 	private static final TerrainChangingMenu MENU = new TerrainChangingMenu();
-
+	/**
+	 * The detail panel.
+	 */
+	private final DetailPanel detailPanel;
+	/**
+	 * Constructor.
+	 * @param details the panel that'll show the details of the selected tile
+	 */
+	public SelectionListener(final DetailPanel details) {
+		if (details == null) {
+			throw new IllegalArgumentException("DetailPanel was null");
+		}
+		detailPanel = details;
+	}
 	/**
 	 * Handle mouse clicks.
 	 * 
@@ -39,6 +52,7 @@ public class SelectionListener implements MouseListener {
 			}
 			selection = (GUITile) event.getComponent();
 			selection.setSelected(true);
+			detailPanel.setTile(selection.getTile());
 			LOGGER.fine("Click");
 		}
 	}

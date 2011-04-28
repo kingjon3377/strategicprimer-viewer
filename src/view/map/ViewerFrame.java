@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -129,13 +131,25 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		final JButton saveButton = new JButton("Save As");
 		saveButton.addActionListener(this);
 		buttonPanel.add(saveButton);
-		mapPanel = new MapPanel(new MapReader().readMap(filename));
+		final DetailPanel details = new DetailPanel();
+		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(final ComponentEvent event) {
+				if (event.getComponent() instanceof ViewerFrame) {
+					details.setMaximumSize(new Dimension(event.getComponent()
+							.getWidth() >> 2, event.getComponent().getHeight()));
+					details.setPreferredSize(details.getMaximumSize());
+				}
+			}
+		});
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
 		buttonPanel.add(vrpanel);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		buttonPanel.add(quitButton);
 		add(buttonPanel, BorderLayout.SOUTH);
+		add(details, BorderLayout.EAST);
 		add(new JScrollPane(mapPanel), BorderLayout.CENTER);
 		// final MapComponent map = new MapComponent(new
 		// XMLReader().getMap(filename));
