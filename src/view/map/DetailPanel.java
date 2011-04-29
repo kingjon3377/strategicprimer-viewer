@@ -2,9 +2,10 @@ package view.map;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,6 +16,7 @@ import model.viewer.Tile;
 import model.viewer.TileType;
 import model.viewer.Unit;
 import view.util.IsAdmin;
+import view.util.SizeLimiter;
 
 /**
  * A panel to show the details of a tile. FIXME: If the map includes the name of
@@ -32,7 +34,7 @@ public class DetailPanel extends JPanel {
 	private final JLabel unitsLabel = new JLabel();
 	private final JLabel eventLabel = new ShortLabel();
 	private final JTextField resultsField = new JTextField();
-
+	private static final Logger LOGGER = Logger.getLogger(DetailPanel.class.getName());
 	/**
 	 * Constructor.
 	 */
@@ -42,19 +44,25 @@ public class DetailPanel extends JPanel {
 		typePanel.add(new JLabel("Tile type:"), BorderLayout.WEST);
 		typePanel.add(typeLabel, BorderLayout.CENTER);
 		add(typePanel, BorderLayout.NORTH);
+		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.25));
 		if (IsAdmin.IS_ADMIN) {
 			JPanel eventPanel = new JPanel(new BorderLayout());
 			eventPanel.add(new JLabel("Legacy Event:"), BorderLayout.WEST);
 			eventPanel.add(eventLabel, BorderLayout.CENTER);
 			add(eventPanel, BorderLayout.SOUTH);
+			addComponentListener(new SizeLimiter(eventPanel, 1.0, 0.1));
 		}
 		final JPanel viewPanel = new JPanel(new BorderLayout());
-		viewPanel.add(new JPanel(), BorderLayout.WEST);
+		final JPanel chitPanel = new JPanel(new FlowLayout());
+		viewPanel.add(chitPanel, BorderLayout.WEST);
+		viewPanel.addComponentListener(new SizeLimiter(chitPanel, 0.5, 0.7));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
-		resultsPanel.add(new ShortLabel("Exploration\nresults"), BorderLayout.NORTH);
+		resultsPanel.add(new ShortLabel("Exploration\nresults"), BorderLayout.WEST);
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
-		viewPanel.add(resultsPanel, BorderLayout.EAST);
+		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
+		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0, 0.3));
 		add(viewPanel, BorderLayout.CENTER);
+		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.75));
 	}
 
 	/**

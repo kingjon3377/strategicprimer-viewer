@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -19,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
+import view.util.SizeLimiter;
 import controller.map.MapReader;
 import controller.map.XMLWriter;
 
@@ -119,10 +118,6 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
-		this.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		this.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		this.setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		addWindowListener(this);
 		final JPanel buttonPanel = new JPanel();
 		final JButton loadButton = new JButton("Load");
@@ -133,24 +128,23 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		buttonPanel.add(saveButton);
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(final ComponentEvent event) {
-				if (event.getComponent() instanceof ViewerFrame) {
-					details.setMaximumSize(new Dimension(event.getComponent()
-							.getWidth() >> 2, event.getComponent().getHeight()));
-					details.setPreferredSize(details.getMaximumSize());
-				}
-			}
-		});
+		addComponentListener(new SizeLimiter(details, 0.25, 1.0));
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
 		buttonPanel.add(vrpanel);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		buttonPanel.add(quitButton);
 		add(buttonPanel, BorderLayout.SOUTH);
+		addComponentListener(new SizeLimiter(buttonPanel, 0.75, 0.1));
+//		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.5, 1.0));
 		add(details, BorderLayout.EAST);
-		add(new JScrollPane(mapPanel), BorderLayout.CENTER);
+		JScrollPane scroller = new JScrollPane(mapPanel);
+		add(scroller, BorderLayout.CENTER);
+		addComponentListener(new SizeLimiter(scroller, 0.75, 0.9));
+		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		// final MapComponent map = new MapComponent(new
 		// XMLReader().getMap(filename));
 		// final JScrollPane scrollPane = new JScrollPane(map);
