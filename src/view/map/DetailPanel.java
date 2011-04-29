@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,19 +32,18 @@ public class DetailPanel extends JPanel {
 	private final JLabel unitsLabel = new JLabel();
 	private final JLabel eventLabel = new JLabel();
 	private final JTextField resultsField = new JTextField();
-	private static final Logger LOGGER = Logger.getLogger(DetailPanel.class.getName());
 	/**
 	 * Constructor.
 	 */
 	public DetailPanel() {
 		super(new BorderLayout());
-		JPanel typePanel = new JPanel(new BorderLayout());
+		final JPanel typePanel = new JPanel(new BorderLayout());
 		typePanel.add(new JLabel("Tile type:"), BorderLayout.WEST);
 		typePanel.add(typeLabel, BorderLayout.CENTER);
 		add(typePanel, BorderLayout.NORTH);
 		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.25));
 		if (IsAdmin.IS_ADMIN) {
-			JPanel eventPanel = new JPanel(new BorderLayout());
+			final JPanel eventPanel = new JPanel(new BorderLayout());
 			eventPanel.add(new JLabel("Legacy Event:"), BorderLayout.WEST);
 			eventPanel.add(eventLabel, BorderLayout.CENTER);
 			add(eventPanel, BorderLayout.SOUTH);
