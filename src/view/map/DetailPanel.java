@@ -1,7 +1,6 @@
 package view.map;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.EnumMap;
 import java.util.List;
@@ -29,10 +28,10 @@ public class DetailPanel extends JPanel {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 3391860564156014799L;
-	private final JLabel typeLabel = new ShortLabel();
+	private final JLabel typeLabel = new JLabel();
 	private final JLabel fortsLabel = new JLabel();
 	private final JLabel unitsLabel = new JLabel();
-	private final JLabel eventLabel = new ShortLabel();
+	private final JLabel eventLabel = new JLabel();
 	private final JTextField resultsField = new JTextField();
 	private static final Logger LOGGER = Logger.getLogger(DetailPanel.class.getName());
 	/**
@@ -57,7 +56,7 @@ public class DetailPanel extends JPanel {
 		viewPanel.add(chitPanel, BorderLayout.WEST);
 		viewPanel.addComponentListener(new SizeLimiter(chitPanel, 0.5, 0.7));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
-		resultsPanel.add(new ShortLabel("Exploration\nresults"), BorderLayout.WEST);
+		resultsPanel.add(new JLabel("<html>Exploration<br>results</html>"), BorderLayout.WEST);
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
 		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0, 0.3));
@@ -157,25 +156,5 @@ public class DetailPanel extends JPanel {
 			sbuild.append('\n');
 		}
 		return sbuild.toString();
-	}
-	public static class ShortLabel extends JLabel {
-		@Override
-		public Dimension getMaximumSize() {
-			return new Dimension(super.getMaximumSize().width,
-					getMinimumSize().height);
-		}
-		@Override
-		public Dimension getPreferredSize() {
-			return getMaximumSize();
-		}
-		public ShortLabel(String string) {
-			super(string);
-		}
-		public ShortLabel() {
-			super();
-		}
-		public String getText() {
-			return "<html><pre>" + super.getText() + "</pre></html>";
-		}
 	}
 }
