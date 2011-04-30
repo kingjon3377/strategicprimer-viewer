@@ -1,4 +1,4 @@
-package view.map;
+package view.map.main;
 
 import model.viewer.Tile;
 import model.viewer.TileType;

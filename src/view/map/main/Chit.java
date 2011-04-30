@@ -1,4 +1,4 @@
-package view.map;
+package view.map.main;
 
 import java.awt.Dimension;
 import java.awt.event.MouseListener;

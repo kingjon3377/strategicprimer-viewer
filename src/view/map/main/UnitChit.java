@@ -1,4 +1,4 @@
-package view.map;
+package view.map.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -43,7 +43,7 @@ public class UnitChit extends Chit {
 	private final String desc;
 	/**
 	 * @return a description of the unit, to show the user.
-	 * @see view.map.Chit#describe()
+	 * @see view.map.main.Chit#describe()
 	 */
 	@Override
 	public String describe() {

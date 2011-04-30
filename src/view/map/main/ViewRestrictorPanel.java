@@ -1,4 +1,4 @@
-package view.map;
+package view.map.main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,4 +1,4 @@
-package view.map;
+package view.map.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -46,7 +46,7 @@ public class FortChit extends Chit {
 
 	/**
 	 * @return a description of the fortress, to show the user.
-	 * @see view.map.Chit#describe()
+	 * @see view.map.main.Chit#describe()
 	 */
 	@Override
 	public String describe() {

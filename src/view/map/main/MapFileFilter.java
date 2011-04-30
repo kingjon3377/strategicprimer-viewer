@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.map;
+package view.map.main;
 
 import java.io.File;
 

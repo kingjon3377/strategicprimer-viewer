@@ -1,4 +1,4 @@
-package view.map;
+package view.map.main;
 
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
