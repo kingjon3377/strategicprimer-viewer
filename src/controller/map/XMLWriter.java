@@ -56,6 +56,9 @@ public class XMLWriter { // NOPMD
 	 *            the map to write
 	 */
 	public void write(final SPMap map) {
+		writer.print("<?xml version=");
+		printQuoted("1.0");
+		writer.println("?>");
 		writer.print("<map version=");
 		printQuoted("0");
 		writer.print(" rows=");
