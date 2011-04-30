@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
 
-import javax.swing.JComponent;
 
 import model.viewer.Fortress;
 import model.viewer.River;
@@ -28,12 +27,8 @@ import model.viewer.Unit;
  * @author Jonathan Lovelace
  * 
  */
-public class GUITile extends JComponent {
+public class GUITile extends Selectable {
 	private static final double EIGHT = 8.0;
-	/**
-	 * Whether this is the currently selected tile.
-	 */
-	private boolean selected;
 	/**
 	 * The size of each GUI tile
 	 */
@@ -199,11 +194,8 @@ public class GUITile extends JComponent {
 		}
 		checkImageCache();
 		pen2d.drawImage(image, IDENT, this);
-		if (selected) {
-			pen2d.setColor(Color.BLACK);
-			pen2d.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
-		}
 		pen2d.setColor(saveColor);
+		super.paint(pen);
 	}
 
 	private static final Color BROWN = new Color(160, 82, 45);
@@ -303,21 +295,5 @@ public class GUITile extends JComponent {
 		colorMap.put(TileType.Plains, new Color(0, 117, 0));
 		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
 		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
-	}
-
-	/**
-	 * @return whether this is the currently selected tile
-	 */
-	public boolean isSelected() {
-		return selected;
-	}
-
-	/**
-	 * @param sel
-	 *            whether this is the currently selected tile
-	 */
-	public void setSelected(final boolean sel) {
-		selected = sel;
-		repaint();
 	}
 }
