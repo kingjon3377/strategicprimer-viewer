@@ -148,24 +148,31 @@ public class GUITile extends Selectable {
 	private void checkImageCache() {
 		if (image == null || image.getWidth() != width || image.getHeight() != height) {
 			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-			Graphics2D pen = image.createGraphics();
-			pen.setColor(colorMap.get(tile.getType()));
-			pen.fill(background);
-			pen.setColor(Color.BLACK);
-			pen.draw(background);
-			if (!TileType.NotVisible.equals(tile.getType())) {
-				pen.setColor(Color.BLUE);
-				for (River river : tile.getRivers()) {
-					pen.fill(rivers.get(river));
-				}
-				if (!tile.getForts().isEmpty()) {
-					pen.setColor(BROWN);
-					pen.fill(fort);
-				} 
-				if (!tile.getUnits().isEmpty()) {
-					pen.setColor(PURPLE);
-					pen.fill(unit);
-				}
+			regenerateCache();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void regenerateCache() {
+		final Graphics2D pen = image.createGraphics();
+		pen.setColor(colorMap.get(tile.getType()));
+		pen.fill(background);
+		pen.setColor(Color.BLACK);
+		pen.draw(background);
+		if (!TileType.NotVisible.equals(tile.getType())) {
+			pen.setColor(Color.BLUE);
+			for (River river : tile.getRivers()) {
+				pen.fill(rivers.get(river));
+			}
+			if (!tile.getForts().isEmpty()) {
+				pen.setColor(BROWN);
+				pen.fill(fort);
+			} 
+			if (!tile.getUnits().isEmpty()) {
+				pen.setColor(PURPLE);
+				pen.fill(unit);
 			}
 		}
 	}
