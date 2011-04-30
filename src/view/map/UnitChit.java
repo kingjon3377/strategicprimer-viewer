@@ -61,7 +61,8 @@ public class UnitChit extends Chit {
 		super.paint(pen);
 		final Color saveColor = pen.getColor();
 		pen.setColor(UNIT_COLOR);
-		pen.fillOval(0, 0, getWidth(), getHeight());
+		pen.fillOval(((int) (getWidth() * 0.25)), ((int) (getHeight() * 0.25)),
+				((int) (getWidth() * 0.5)), ((int) (getHeight() * 0.5)));
 		pen.setColor(saveColor);
 	}
 	private static final Color UNIT_COLOR = Color.BLACK;

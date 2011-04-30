@@ -19,7 +19,7 @@ public abstract class Chit extends Selectable { //NOPMD
 	/**
 	 * The maximum size of a chit.
 	 */
-	private static final int SIZE = 10;
+	private static final int SIZE = 20;
 	/**
 	 * The maximum size of a chit, in the form other objects will want.
 	 */
@@ -53,5 +53,6 @@ public abstract class Chit extends Selectable { //NOPMD
 		super();
 		setOpaque(false);
 		addMouseListener(listener);
+//		setBorder(new EmptyBorder(5, 5, 5, 5));
 	}
 }
