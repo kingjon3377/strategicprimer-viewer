@@ -91,7 +91,7 @@ public class DetailPanel extends JPanel {
 				chitPanel.add(new UnitChit(unit, chitSelecter)); // NOPMD
 			}
 			eventLabel.setText(Integer.toString(newTile.getEvent()));
-			resultsField.setText(""); // FIXME: Implement
+			resultsField.setText(newTile.getTileText());
 		}
 		repaint();
 	}
