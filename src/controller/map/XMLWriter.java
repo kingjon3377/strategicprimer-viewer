@@ -144,7 +144,7 @@ public class XMLWriter { // NOPMD
 	 */
 	private void printTile(final Tile tile) { // NOPMD
 		if (tile != null && (tile.getType() != TileType.NotVisible || !tile.getForts().isEmpty()
-				|| !tile.getUnits().isEmpty())) {
+				|| !tile.getUnits().isEmpty() || !"".equals(tile.getTileText()))) {
 			indent(2);
 			writer.print("<tile row=");
 			printQuoted(tile.getRow());
@@ -160,7 +160,7 @@ public class XMLWriter { // NOPMD
 			}
 			writer.print('>');
 			if (!tile.getForts().isEmpty() || !tile.getUnits().isEmpty()
-					|| !tile.getRivers().isEmpty()) {
+					|| !tile.getRivers().isEmpty() || !"".equals(tile.getTileText())) {
 				writer.println();
 				for (Fortress fort : tile.getForts()) {
 					printFort(fort);
@@ -172,6 +172,7 @@ public class XMLWriter { // NOPMD
 					printRiver(river);
 				}
 				indent(2);
+				writer.print(tile.getTileText());
 			}
 			writer.println("</tile>");
 		}

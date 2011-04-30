@@ -14,6 +14,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -225,7 +226,11 @@ public class MapReader {
 									+ tag.getText()
 									+ " tag: only fortresses, units, and rivers can be inside a tile");
 				}
+			} else if (reader.peek().isCharacters()) {
+				tile.setTileText(tile.getTileText()
+						+ reader.nextEvent().asCharacters().getData());
 			} else if (reader.nextEvent().isEndElement()) {
+				tile.setTileText(tile.getTileText().trim());
 				break;
 			}
 		}

@@ -195,6 +195,7 @@ public final class Tile implements Serializable {
 				&& type.equals(((Tile) obj).type)
 				&& forts.equals(((Tile) obj).forts)
 				&& rivers.equals(((Tile) obj).rivers)
+				&& tileText.equals(((Tile) obj).tileText)
 				&& units.equals(((Tile) obj).units);
 	}
 
@@ -204,7 +205,8 @@ public final class Tile implements Serializable {
 	@Override
 	public int hashCode() {
 		return row + col << 2 + event << 4 + type.ordinal() << 6 + forts
-				.hashCode() << 8 + units.hashCode() << 10 + rivers.hashCode() << 12;
+				.hashCode() << 8 + units.hashCode() << 10 + rivers.hashCode() << 12 +
+				tileText.hashCode() << 14;
 	}
 	/**
 	 * @return a String representation of the tile
@@ -259,5 +261,22 @@ public final class Tile implements Serializable {
 	 */
 	public boolean removeRiver(final River river) {
 		return rivers.remove(river);
+	}
+	/**
+	 * Text associated with the tile: encounter results, for instance.
+	 */
+	private String tileText = "";
+	/**
+	 * @param text text associated with the tile
+	 */
+	public void setTileText(final String text) {
+		tileText = (text == null ? "" : text);
+	}
+	
+	/**
+	 * @return any text associated with the tile
+	 */
+	public String getTileText() {
+		return tileText;
 	}
 }
