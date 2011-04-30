@@ -3,6 +3,8 @@ package view.map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,28 +87,29 @@ public final class ReplViewer {
 	 */
 	// ESCA-JAVA0266:
 	private static void printTile(final Tile tile) {
-		System.out.print("Tile (");
-		System.out.print(tile.getRow());
-		System.out.print(", ");
-		System.out.print(tile.getCol());
-		System.out.println("):");
-		System.out.print("Tile type: ");
-		System.out.println(tile.getType().toString());
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		out.print("Tile (");
+		out.print(tile.getRow());
+		out.print(", ");
+		out.print(tile.getCol());
+		out.println("):");
+		out.print("Tile type: ");
+		out.println(tile.getType().toString());
 		if (!tile.getForts().isEmpty()) {
-			System.out.println("Fortresses on this tile:");
+			out.println("Fortresses on this tile:");
 			for (Fortress fort : tile.getForts()) {
-				System.out.println(fort);
+				out.println(fort);
 			}
 		}
 		if (!tile.getUnits().isEmpty()) {
-			System.out.println("Units on this tile:");
+			out.println("Units on this tile:");
 			for (Unit unit : tile.getUnits()) {
-				System.out.println(unit);
+				out.println(unit);
 			}
 		}
 		if (tile.getEvent() != -1) {
-			System.out.print("Event on this tile: ");
-			System.out.println(tile.getEvent());
+			out.print("Event on this tile: ");
+			out.println(tile.getEvent());
 		}
 	}
 

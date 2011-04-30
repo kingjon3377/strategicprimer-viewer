@@ -1,6 +1,8 @@
 package view.map;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.EnumMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,36 +37,37 @@ public final class HTMLViewer {
 	 */
 	// ESCA-JAVA0266:
 	private HTMLViewer(final SPMap map) {
-		System.out.println("<html>");
-		System.out.println("<head>");
-		System.out.println("<title>Strategic Primer map view</title>");
-		System.out.println("</head>");
-		System.out.println("<body>");
-		System.out
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<title>Strategic Primer map view</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out
 				.println("<table border=\"0\" cellpadding=\"0\" cellspacing=\"1\">");
 		for (int i = 0; i < map.rows(); i++) {
-			System.out.println("<tr>");
+			out.println("<tr>");
 			for (int j = 0; j < map.cols(); j++) {
-				System.out.print("<td><img width=\"8\" height=\"8\" src=\"");
-				System.out.print(stringMap.get(map.getTile(i, j).getType()));
-				System.out.print("\" alt=\"");
-				System.out.print('(');
-				System.out.print(i);
-				System.out.print(", ");
-				System.out.print(j);
-				System.out.print("): ");
-				System.out.print("Terrain: ");
-				System.out.print(DESCRIPTIONS.get(map.getTile(i, j).getType()));
-				System.out.print(anyForts(map.getTile(i, j)));
-				System.out.print(anyUnits(map.getTile(i, j)));
-				System.out.print(anyEvent(map.getTile(i, j)));
-				System.out.println("\"></td>");
+				out.print("<td><img width=\"8\" height=\"8\" src=\"");
+				out.print(stringMap.get(map.getTile(i, j).getType()));
+				out.print("\" alt=\"");
+				out.print('(');
+				out.print(i);
+				out.print(", ");
+				out.print(j);
+				out.print("): ");
+				out.print("Terrain: ");
+				out.print(DESCRIPTIONS.get(map.getTile(i, j).getType()));
+				out.print(anyForts(map.getTile(i, j)));
+				out.print(anyUnits(map.getTile(i, j)));
+				out.print(anyEvent(map.getTile(i, j)));
+				out.println("\"></td>");
 			}
-			System.out.println("</tr>");
+			out.println("</tr>");
 		}
-		System.out.println("</table>");
-		System.out.println("</body>");
-		System.out.println("</html>");
+		out.println("</table>");
+		out.println("</body>");
+		out.println("</html>");
 	}
 
 	/**

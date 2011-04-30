@@ -1,6 +1,8 @@
 package view.map;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -37,15 +39,16 @@ public final class AltTerminalViewer {
 	 */
 	// ESCA-JAVA0266:
 	private AltTerminalViewer(final SPMap map, final int row, final int col) {
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
 		for (int i = 0; i < map.rows(); i++) {
 			for (int j = 0; j < map.cols(); j++) {
 				if (i == row && j == col) {
-					System.out.print(ANSI.BLINK);
+					out.print(ANSI.BLINK);
 				}
-				System.out.print(getTerrainChar(map.getTile(i, j).getType()));
-				System.out.print(ANSI.SANE);
+				out.print(getTerrainChar(map.getTile(i, j).getType()));
+				out.print(ANSI.SANE);
 			}
-			System.out.println();
+			out.println();
 		}
 	}
 

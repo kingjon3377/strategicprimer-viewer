@@ -1,6 +1,8 @@
 package view.map;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -40,6 +42,8 @@ public class TerminalViewer {
 	 *            the column of the point to highlight
 	 */
 	public TerminalViewer(final SPMap map, final int row, final int col) {
+		// ESCA-JAVA0266:
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
 		textMap = new char[map.rows()][map.cols()];
 		createTextMap(map);
 		final StringBuilder sbuilder = new StringBuilder("");
@@ -56,8 +60,7 @@ public class TerminalViewer {
 			}
 			sbuilder.append("\n");
 		}
-		// ESCA-JAVA0266:
-		System.out.print(sbuilder.toString());
+		out.print(sbuilder.toString());
 	}
 
 	/**
