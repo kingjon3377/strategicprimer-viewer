@@ -218,7 +218,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		saveButton.addActionListener(this);
 		firstButtonPanel.add(saveButton, BorderLayout.SOUTH);
 		innerButtonPanel.addComponentListener(new SizeLimiter(firstButtonPanel,
-				0.30, 1.0));
+				0.35, 1.0));
 		innerButtonPanel.add(firstButtonPanel, BorderLayout.WEST);
 		final JPanel secondButtonPanel = new JPanel(new BorderLayout());
 		final JButton loadSecondaryMap = new JButton(LOAD_2D_MAP_CMD);
@@ -232,7 +232,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				saveSecondaryMap, 1.0, 0.5));
 		secondButtonPanel.add(saveSecondaryMap, BorderLayout.SOUTH);
 		innerButtonPanel.addComponentListener(new SizeLimiter(
-				secondButtonPanel, 0.7, 1.0));
+				secondButtonPanel, 0.65, 1.0));
 		innerButtonPanel.add(secondButtonPanel, BorderLayout.EAST);
 		buttonPanel.addComponentListener(new SizeLimiter(innerButtonPanel, 0.4,
 				1.0));
@@ -241,12 +241,19 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
 		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
-		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.6, 1.0));
+		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.55, 1.0));
 		buttonPanel.add(vrpanel, BorderLayout.CENTER);
+		final JPanel thirdButtonPanel = new JPanel(new BorderLayout());
+		final JButton swapButton = new JButton("Switch maps");
+		swapButton.addActionListener(this);
+		thirdButtonPanel.addComponentListener(new SizeLimiter(swapButton, 1.0, 0.5));
+		thirdButtonPanel.add(swapButton, BorderLayout.NORTH);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
-		buttonPanel.addComponentListener(new SizeLimiter(quitButton, 0.1, 0.4));
-		buttonPanel.add(quitButton, BorderLayout.EAST);
+		thirdButtonPanel.addComponentListener(new SizeLimiter(quitButton, 1.0, 0.5));
+		thirdButtonPanel.add(quitButton, BorderLayout.SOUTH);
+		buttonPanel.addComponentListener(new SizeLimiter(thirdButtonPanel, 0.15, 0.4));
+		buttonPanel.add(thirdButtonPanel, BorderLayout.EAST);
 		add(buttonPanel, BorderLayout.SOUTH);
 		addComponentListener(new SizeLimiter(buttonPanel,
 				1.0 - DETAIL_PANEL_WIDTH, BUTTON_PANEL_HEIGHT));
