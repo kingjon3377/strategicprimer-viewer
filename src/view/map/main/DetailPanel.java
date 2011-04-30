@@ -2,6 +2,8 @@ package view.map.main;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EnumMap;
 
 import javax.swing.JButton;
@@ -22,7 +24,8 @@ import view.util.SizeLimiter;
  * 
  * @author Jonathan Lovelace
  */
-public class DetailPanel extends JPanel {
+public class DetailPanel extends JPanel implements ActionListener {
+	private static final String RESULTS_SAVE_CMD = "Save changes to results";
 	private static final double CHIT_PANEL_HEIGHT = 0.6;
 	private static final double CHIT_PANEL_WIDTH = 0.5;
 	private static final double RESULTS_BUTTON_HEIGHT = 0.15; // NOPMD
@@ -66,8 +69,8 @@ public class DetailPanel extends JPanel {
 		resultsPanel.addComponentListener(new SizeLimiter(resultsLabel, 1.0 - RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
 		resultsPanel.addComponentListener(new SizeLimiter(resultsField, RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
-		final JButton resultsButton = new JButton("Save changes to results");
-//		resultsButton.addActionListener(this);
+		final JButton resultsButton = new JButton(RESULTS_SAVE_CMD);
+		resultsButton.addActionListener(this);
 		resultsPanel.add(resultsButton, BorderLayout.SOUTH);
 		resultsPanel.addComponentListener(new SizeLimiter(resultsButton, 1.0, RESULTS_BUTTON_HEIGHT));
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
@@ -77,6 +80,10 @@ public class DetailPanel extends JPanel {
 	}
 
 	/**
+	 * The tile we refer to
+	 */
+	private Tile tile = null;
+	/**
 	 * To handle which chit is selected.
 	 */
 	private final transient SelectionListener chitSelecter = new ChitSelectionListener(chitDetail);
@@ -85,22 +92,23 @@ public class DetailPanel extends JPanel {
 	 *            the tile we should now refer to.
 	 */
 	public void setTile(final Tile newTile) {
-		if (newTile == null) {
+		tile = newTile;
+		if (tile == null) {
 			typeLabel.setText("");
 			chitPanel.removeAll();
 			eventLabel.setText("");
 			resultsField.setText("");
 		} else {
-			typeLabel.setText(terrainText(newTile.getType()));
+			typeLabel.setText(terrainText(tile.getType()));
 			chitPanel.removeAll();
 			chitSelecter.clearSelection();
-			for (Fortress fort : newTile.getForts()) {
+			for (Fortress fort : tile.getForts()) {
 				chitPanel.add(new FortChit(fort, chitSelecter)); // NOPMD
 			}
-			for (Unit unit : newTile.getUnits()) {
+			for (Unit unit : tile.getUnits()) {
 				chitPanel.add(new UnitChit(unit, chitSelecter)); // NOPMD
 			}
-			eventLabel.setText(Integer.toString(newTile.getEvent()));
+			eventLabel.setText(Integer.toString(tile.getEvent()));
 			resultsField.setText(newTile.getTileText());
 		}
 		repaint();
@@ -134,5 +142,17 @@ public class DetailPanel extends JPanel {
 			return DESCRIPTIONS.get(type);
 		} // else
 		throw new IllegalArgumentException("Unknown terrain type");
+	}
+	/**
+	 * Handle button presses
+	 * @param event the event to handle
+	 *
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(final ActionEvent event) {
+		if (RESULTS_SAVE_CMD.equals(event.getActionCommand()) && tile != null) {
+			tile.setTileText(resultsField.getText().trim());
+		}
 	}
 }
