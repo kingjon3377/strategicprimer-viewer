@@ -2,9 +2,10 @@ package model.viewer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import util.Sorter;
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
@@ -214,9 +215,9 @@ public class SPMap implements Serializable {
 	public boolean equals(final Object obj) {
 		return obj instanceof SPMap && myCols == ((SPMap) obj).cols()
 				&& myRows == ((SPMap) obj).rows()
-				&& sort(players).equals(sort(((SPMap) obj).getPlayers()))
-				&& sort(forts).equals(sort(((SPMap) obj).forts))
-				&& sort(units).equals(sort(((SPMap) obj).units))
+				&& Sorter.sort(players).equals(Sorter.sort(((SPMap) obj).getPlayers()))
+				&& Sorter.sort(forts).equals(Sorter.sort(((SPMap) obj).forts))
+				&& Sorter.sort(units).equals(Sorter.sort(((SPMap) obj).units))
 				&& tiles.equals(((SPMap) obj).tiles);
 	}
 
@@ -263,12 +264,5 @@ public class SPMap implements Serializable {
 			sbuild.append(tiles.get(point));
 		}
 		return sbuild.toString();
-	}
-
-	private static <T extends Comparable<T>> List<T> sort(
-			final List<? extends T> list) {
-		final List<T> newList = new ArrayList<T>(list);
-		Collections.sort(newList);
-		return newList;
 	}
 }
