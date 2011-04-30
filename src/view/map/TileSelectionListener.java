@@ -43,9 +43,11 @@ public class TileSelectionListener extends SelectionListener {
 	@Override
 	public void mouseClicked(final MouseEvent event) {
 		super.mouseClicked(event);
-		if (event.getComponent() instanceof GUITile) {
-			detailPanel.setTile(((GUITile) (event.getComponent())).getTile());
+		if (selection instanceof GUITile) {
+			detailPanel.setTile(((GUITile) selection).getTile());
 			LOGGER.fine("Click");
+		} else {
+			detailPanel.setTile(null);
 		}
 	}
 
