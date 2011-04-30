@@ -50,7 +50,6 @@ public class DetailPanel extends JPanel {
 			addComponentListener(new SizeLimiter(eventPanel, 1.0, 0.1));
 		}
 		final JPanel viewPanel = new JPanel(new BorderLayout());
-		final JPanel chitPanel = new JPanel(new FlowLayout());
 		viewPanel.add(chitPanel, BorderLayout.WEST);
 		viewPanel.addComponentListener(new SizeLimiter(chitPanel, 0.5, 0.7));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
@@ -75,11 +74,17 @@ public class DetailPanel extends JPanel {
 		tile = newTile;
 		if (tile != null) {
 			typeLabel.setText(terrainText(tile.getType()));
-			fortsLabel.setText(anyForts(tile.getForts()));
-			unitsLabel.setText(anyUnits(tile.getUnits()));
+			chitPanel.removeAll();
+			for (Fortress fort : tile.getForts()) {
+				chitPanel.add(new FortChit(fort, null)); // FIXME: Make it an actual listener
+			}
+			for (Unit unit : tile.getUnits()) {
+				chitPanel.add(new UnitChit(unit, null)); // FIXME: Make it an actual listener
+			}
 			eventLabel.setText(Integer.toString(tile.getEvent()));
 			resultsField.setText(""); // FIXME: Implement
 		}
+		repaint();
 	}
 
 	/**
@@ -87,6 +92,7 @@ public class DetailPanel extends JPanel {
 	 */
 	private static final EnumMap<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
 			TileType.class);
+	private final JPanel chitPanel = new JPanel(new FlowLayout());
 	static {
 		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");
 		DESCRIPTIONS.put(TileType.Desert, "Desert");
