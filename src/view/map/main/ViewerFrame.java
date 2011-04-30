@@ -196,21 +196,26 @@ public final class ViewerFrame extends JFrame implements
 				repaint();
 			}
 		});
-		final JPanel buttonPanel = new JPanel();
+		final JPanel buttonPanel = new JPanel(new BorderLayout());
+		final JPanel firstButtonPanel = new JPanel(new BorderLayout());
 		final JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(this);
-		buttonPanel.add(loadButton);
+		firstButtonPanel.add(loadButton, BorderLayout.NORTH);
 		final JButton saveButton = new JButton("Save As");
 		saveButton.addActionListener(this);
-		buttonPanel.add(saveButton);
+		firstButtonPanel.add(saveButton, BorderLayout.SOUTH);
+		buttonPanel.addComponentListener(new SizeLimiter(firstButtonPanel, 0.15, 1.0));
+		buttonPanel.add(firstButtonPanel, BorderLayout.WEST);
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
 		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
-		buttonPanel.add(vrpanel);
+		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.75, 1.0));
+		buttonPanel.add(vrpanel, BorderLayout.CENTER);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
-		buttonPanel.add(quitButton);
+		buttonPanel.addComponentListener(new SizeLimiter(quitButton, 0.1, 1.0));
+		buttonPanel.add(quitButton, BorderLayout.EAST);
 		add(buttonPanel, BorderLayout.SOUTH);
 		addComponentListener(new SizeLimiter(buttonPanel,
 				1.0 - DETAIL_PANEL_WIDTH, 0.1));

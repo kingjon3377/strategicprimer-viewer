@@ -1,5 +1,6 @@
 package view.map.main;
 
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import view.util.ConstraintHelper;
 
 /**
  * A panel to let the user restrict the portion of the map that's drawn.
@@ -51,22 +54,22 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	 *            the map panel.
 	 */
 	public ViewRestrictorPanel(final MapPanel mapPanel) {
-		super();
+		super(new GridBagLayout());
 		mpanel = mapPanel;
-		add(new JLabel("Display only rows "));
+		add(new JLabel("Display only rows "), new ConstraintHelper(0, 0, 2, 1));
 		minRowBox.setText("0");
-		add(minRowBox);
-		add(new JLabel(" to "));
+		add(minRowBox, new ConstraintHelper(2, 0, 1, 1));
+		add(new JLabel(" to "), new ConstraintHelper(3, 0, 1, 1));
 		maxRowBox.setText(Integer.toString(mpanel.getMap().rows() - 1));
-		add(maxRowBox);
-		add(new JLabel(" and columns "));
+		add(maxRowBox, new ConstraintHelper(4, 0, 1, 1));
+		add(new JLabel(" and columns "), new ConstraintHelper(0, 1, 2, 1));
 		minColBox.setText("0");
-		add(minColBox);
-		add(new JLabel(" to "));
+		add(minColBox, new ConstraintHelper(2, 1, 1, 1));
+		add(new JLabel(" to "), new ConstraintHelper(3, 1, 1, 1));
 		maxColBox.setText(Integer.toString(mpanel.getMap().cols() - 1));
-		add(maxColBox);
+		add(maxColBox, new ConstraintHelper(4, 1, 1, 1));
 		button.addActionListener(this);
-		add(button);
+		add(button, new ConstraintHelper(5, 0, 1, 2));
 	}
 
 	/**

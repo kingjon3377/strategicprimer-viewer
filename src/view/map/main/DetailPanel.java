@@ -25,10 +25,10 @@ import view.util.SizeLimiter;
  * @author Jonathan Lovelace
  */
 public class DetailPanel extends JPanel implements ActionListener {
-	private static final String RESULTS_SAVE_CMD = "Save changes to results";
+	private static final String RESULTS_SAVE_CMD = "<html><p>Save changed results</p></html>";
 	private static final double CHIT_PANEL_HEIGHT = 0.6;
 	private static final double CHIT_PANEL_WIDTH = 0.5;
-	private static final double RESULTS_BUTTON_HEIGHT = 0.15; // NOPMD
+	private static final double RESULTS_BUTTON_HEIGHT = 0.2; // NOPMD
 	private static final double RESULTS_FIELD_WIDTH = 0.5; // NOPMD
 	/**
 	 * Version UID for serialization.
