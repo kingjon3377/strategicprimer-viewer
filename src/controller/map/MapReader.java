@@ -14,7 +14,6 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -169,7 +168,7 @@ public class MapReader {
 					// Deliberately ignore
 					continue;
 				} else if (Tag.Tile.equals(tag)) {
-					map.addTile(parseTile(startElement, eventReader));
+					map.addTile(parseTileContents(startElement, eventReader));
 				} else {
 					throw new IllegalStateException(
 							UNEXPECTED_TAG
@@ -200,16 +199,9 @@ public class MapReader {
 	 * @throws XMLStreamException
 	 *             on badly-formed XML or other processing error
 	 */
-	private static Tile parseTile(final StartElement element,
+	private static Tile parseTileContents(final StartElement element,
 			final XMLEventReader reader) throws XMLStreamException {
-		final Tile tile = getAttribute(element, "event") == null ? new Tile(
-				Integer.parseInt(getAttribute(element, "row")),
-				Integer.parseInt(getAttribute(element, "column")),
-				TileType.getTileType(getAttribute(element, "type")))
-				: new Tile(Integer.parseInt(getAttribute(element, "row")),
-						Integer.parseInt(getAttribute(element, "column")),
-						TileType.getTileType(getAttribute(element, "type")),
-						Integer.parseInt(getAttribute(element, "event")));
+		final Tile tile = parseTile(element);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement elem = reader.nextEvent().asStartElement();
@@ -235,6 +227,22 @@ public class MapReader {
 			}
 		}
 		return tile;
+	}
+
+	/**
+	 * Parse the tile itself.
+	 * @param element The tile XML tag
+	 * @return the tile it represents.
+	 */
+	private static Tile parseTile(final StartElement element) {
+		return getAttribute(element, "event") == null ? new Tile(
+				Integer.parseInt(getAttribute(element, "row")),
+				Integer.parseInt(getAttribute(element, "column")),
+				TileType.getTileType(getAttribute(element, "type")))
+				: new Tile(Integer.parseInt(getAttribute(element, "row")),
+						Integer.parseInt(getAttribute(element, "column")),
+						TileType.getTileType(getAttribute(element, "type")),
+						Integer.parseInt(getAttribute(element, "event")));
 	}
 
 	/**
