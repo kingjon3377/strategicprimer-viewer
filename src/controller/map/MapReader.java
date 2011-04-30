@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -245,7 +247,7 @@ public class MapReader {
 	public static River parseRiver(final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
 		// ESCA-JAVA0177:
-		final River river;
+		final River river; // NOPMD
 		if (Tag.Lake.equals(getTagType(elem))) {
 			river = River.Lake;
 		} else {
@@ -397,6 +399,7 @@ public class MapReader {
 	 */
 	// ESCA-JAVA0266:
 	public static void main(final String[] args) {
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
 		for (String arg : args) {
 			try {
 				final long startOne = System.nanoTime();
@@ -406,13 +409,13 @@ public class MapReader {
 				final SPMap map2 = new MapReader().readMap(arg); // NOPMD;
 				final long endTwo = System.nanoTime();
 				if (map1.equals(map2)) {
-					System.out.println("Readers produce identical results");
+					out.println("Readers produce identical results");
 				} else {
-					System.out.println("Readers differ on " + arg);
+					out.println("Readers differ on " + arg);
 				}
-				System.out.println("Old method took " + (endOne - startOne)
+				out.println("Old method took " + (endOne - startOne)
 						+ " time-units;");
-				System.out.println("New method took " + (endTwo - startTwo)
+				out.println("New method took " + (endTwo - startTwo)
 						+ " time-units.");
 			} catch (SAXException e) {
 				LOGGER.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
