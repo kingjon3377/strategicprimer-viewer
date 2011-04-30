@@ -1,6 +1,7 @@
 package controller.map;
 
 import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -77,6 +78,8 @@ public class MapUpdater {
 	 *            Command-line arguments: master, then a map to update.
 	 */
 	public static void main(final String[] args) {
+		// ESCA-JAVA0267:
+		final PrintWriter err = new PrintWriter(new OutputStreamWriter(System.err));
 		if (args.length < 2) {
 			throw new IllegalArgumentException("Not enough arguments");
 		}
@@ -86,12 +89,11 @@ public class MapUpdater {
 		try {
 			updater = new MapUpdater(reader.readMap(args[0]));
 		} catch (FileNotFoundException e) {
-			// ESCA-JAVA0267:
-			System.err.println("File " + args[0] + " not found");
+			err.println("File " + args[0] + " not found");
 			System.exit(1);
 			return; // NOPMD
 		} catch (XMLStreamException e) {
-			System.err.println("XML stream error parsing " + args[0]);
+			err.println("XML stream error parsing " + args[0]);
 			System.exit(2);
 			return; // NOPMD
 		}
@@ -100,11 +102,11 @@ public class MapUpdater {
 		try {
 			derived = reader.readMap(args[1]);
 		} catch (FileNotFoundException e) {
-			System.err.println("File " + args[1] + " not found");
+			err.println("File " + args[1] + " not found");
 			System.exit(3);
 			return; // NOPMD
 		} catch (XMLStreamException e) {
-			System.err.println("XML stream error parsing " + args[1]);
+			err.println("XML stream error parsing " + args[1]);
 			System.exit(4);
 			return;
 		}
