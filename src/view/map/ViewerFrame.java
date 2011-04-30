@@ -89,19 +89,14 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 				return;
 			}
 		}
-		new Thread() {
-			@Override
-			public void run() {
-				try {
-					frame = new ViewerFrame(filename);
-					frame.setVisible(true);
-				} catch (XMLStreamException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-				} catch (IOException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-				}
-			}
-		}.start();
+		try {
+			frame = new ViewerFrame(filename);
+			frame.setVisible(true);
+		} catch (XMLStreamException e) {
+			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+		}
 	}
 
 	/**
@@ -137,12 +132,14 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		quitButton.addActionListener(this);
 		buttonPanel.add(quitButton);
 		add(buttonPanel, BorderLayout.SOUTH);
-		addComponentListener(new SizeLimiter(buttonPanel, 1.0 - DETAIL_PANEL_WIDTH, 0.1));
-//		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.5, 1.0));
+		addComponentListener(new SizeLimiter(buttonPanel,
+				1.0 - DETAIL_PANEL_WIDTH, 0.1));
+		// buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.5, 1.0));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
-		addComponentListener(new SizeLimiter(scroller, 1.0 - DETAIL_PANEL_WIDTH, 0.9));
+		addComponentListener(new SizeLimiter(scroller,
+				1.0 - DETAIL_PANEL_WIDTH, 0.9));
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
