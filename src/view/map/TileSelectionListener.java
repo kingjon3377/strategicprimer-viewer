@@ -1,7 +1,6 @@
 package view.map;
 
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.logging.Logger;
 
 /**
@@ -10,11 +9,7 @@ import java.util.logging.Logger;
  * @author Jonathan Lovelace
  */
 //ESCA-JAVA0137:
-public class TileSelectionListener implements MouseListener {
-	/**
-	 * The currently-selected tile.
-	 */
-	private GUITile selection;
+public class TileSelectionListener extends SelectionListener {
 	/**
 	 * Logger.
 	 */
@@ -33,6 +28,7 @@ public class TileSelectionListener implements MouseListener {
 	 * @param details the panel that'll show the details of the selected tile
 	 */
 	public TileSelectionListener(final DetailPanel details) {
+		super();
 		if (details == null) {
 			throw new IllegalArgumentException("DetailPanel was null");
 		}
@@ -46,37 +42,11 @@ public class TileSelectionListener implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
+		super.mouseClicked(event);
 		if (event.getComponent() instanceof GUITile) {
-			if (selection != null) {
-				selection.setSelected(false);
-			}
-			selection = (GUITile) event.getComponent();
-			selection.setSelected(true);
-			detailPanel.setTile(selection.getTile());
+			detailPanel.setTile(((GUITile) (event.getComponent())).getTile());
 			LOGGER.fine("Click");
 		}
-	}
-
-	/**
-	 * Ignored
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void mouseEntered(final MouseEvent event) {
-		// Do nothing
-	}
-
-	/**
-	 * Ignored
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void mouseExited(final MouseEvent event) {
-		// Do nothing
 	}
 
 	/**
@@ -87,6 +57,7 @@ public class TileSelectionListener implements MouseListener {
 	 */
 	@Override
 	public void mousePressed(final MouseEvent event) {
+		super.mousePressed(event);
 		if (event.isPopupTrigger()) {
 			MENU.setTile((GUITile) event.getComponent());
 			MENU.show(event.getComponent(), event.getX(), event.getY());
@@ -101,6 +72,7 @@ public class TileSelectionListener implements MouseListener {
 	 */
 	@Override
 	public void mouseReleased(final MouseEvent event) {
+		super.mouseReleased(event);
 		if (event.isPopupTrigger()) {
 			MENU.setTile((GUITile) event.getComponent());
 			MENU.show(event.getComponent(), event.getX(), event.getY());
