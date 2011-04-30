@@ -27,8 +27,7 @@ import controller.map.XMLWriter;
  * @author Jonathan Lovelace
  * 
  */
-public final class ViewerFrame extends JFrame implements 
-		ActionListener {
+public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * The width of the details panel, as a percentage of the window's width.
 	 */
