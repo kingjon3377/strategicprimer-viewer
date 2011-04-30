@@ -40,5 +40,13 @@ public class ChitSelectionListener extends SelectionListener {
 			detailLabel.setText("");
 		}
 	}
-
+	
+	/**
+	 * Clear the selection.
+	 */
+	@Override
+	public void clearSelection() {
+		super.clearSelection();
+		detailLabel.setText("");
+	}
 }

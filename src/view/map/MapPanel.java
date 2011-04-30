@@ -68,6 +68,7 @@ public class MapPanel extends JPanel {
 			LOGGER.info("Started loading panel");
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			removeAll();
+			selListener.clearSelection();
 			setLayout(new GridLayout(Math.min(_map.rows(), Math.max(0, maxRow
 					+ 1 - minRow)), 0));
 			for (int row = Math.max(0, minRow); row < _map.rows()

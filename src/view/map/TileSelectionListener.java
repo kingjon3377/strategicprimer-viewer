@@ -80,5 +80,13 @@ public class TileSelectionListener extends SelectionListener {
 			MENU.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
-
+	
+	/**
+	 * Clear the selection.
+	 */
+	@Override
+	public void clearSelection() {
+		super.clearSelection();
+		detailPanel.setTile(null);
+	}
 }

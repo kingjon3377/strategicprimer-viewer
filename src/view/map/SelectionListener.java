@@ -2,10 +2,12 @@ package view.map;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 /**
  * A class to handle selecting one of a class of GUI elements.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class SelectionListener implements MouseListener {
 
@@ -13,6 +15,7 @@ public class SelectionListener implements MouseListener {
 	 * The currently-selected tile.
 	 */
 	protected Selectable selection;
+
 	/**
 	 * Constructor
 	 */
@@ -82,4 +85,11 @@ public class SelectionListener implements MouseListener {
 		// Do nothing.
 	}
 
+	/**
+	 * Clear the selection. This should be overridden to something that'll take
+	 * care of clearing the view of the selection.
+	 */
+	public void clearSelection() {
+		selection = null; // NOPMD
+	}
 }

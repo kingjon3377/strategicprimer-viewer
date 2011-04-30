@@ -84,6 +84,7 @@ public class DetailPanel extends JPanel {
 		if (tile != null) {
 			typeLabel.setText(terrainText(tile.getType()));
 			chitPanel.removeAll();
+			chitSelecter.clearSelection();
 			for (Fortress fort : tile.getForts()) {
 				chitPanel.add(new FortChit(fort, chitSelecter)); // NOPMD
 			}
@@ -92,6 +93,11 @@ public class DetailPanel extends JPanel {
 			}
 			eventLabel.setText(Integer.toString(tile.getEvent()));
 			resultsField.setText(""); // FIXME: Implement
+		} else {
+			typeLabel.setText("");
+			chitPanel.removeAll();
+			eventLabel.setText("");
+			resultsField.setText("");
 		}
 		repaint();
 	}
