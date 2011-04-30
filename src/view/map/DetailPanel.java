@@ -28,8 +28,6 @@ public class DetailPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 3391860564156014799L;
 	private final JLabel typeLabel = new JLabel();
-	private final JLabel fortsLabel = new JLabel();
-	private final JLabel unitsLabel = new JLabel();
 	private final JLabel eventLabel = new JLabel();
 	private final JTextField resultsField = new JTextField();
 	/**
