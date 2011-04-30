@@ -52,7 +52,7 @@ public class MapPanel extends JPanel {
 	 * Load and draw a subset of a map.
 	 * 
 	 * @param _map
-	 *            the map to load
+	 *            the map to load. If null, ignored.
 	 * @param minRow
 	 *            the first row to draw
 	 * @param maxRow
