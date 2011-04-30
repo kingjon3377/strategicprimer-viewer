@@ -12,6 +12,12 @@ import model.viewer.Fortress;
  * @author Jonathan Lovelace
  */
 public class FortChit extends Chit {
+	private static final double MARGIN = 0.25;
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 3918628977804086020L;
+
 	/**
 	 * Constructor.
 	 * 
@@ -56,12 +62,12 @@ public class FortChit extends Chit {
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	@Override
-	public void paint(Graphics pen) {
+	public void paint(final Graphics pen) {
 		super.paint(pen);
 		final Color saveColor = pen.getColor();
 		pen.setColor(FORT_COLOR);
-		pen.fillRect(((int) (getWidth() * 0.25)), ((int) (getHeight() * 0.25)),
-				((int) (getWidth() * 0.5)), ((int) (getHeight() * 0.5)));
+		pen.fillRect(((int) (getWidth() * MARGIN)), ((int) (getHeight() * MARGIN)),
+				((int) (getWidth() * (1.0 - MARGIN * 2.0))), ((int) (getHeight() * (1.0 - MARGIN * 2.0))));
 		pen.setColor(saveColor);
 	}
 

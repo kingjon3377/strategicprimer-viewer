@@ -3,7 +3,6 @@ package view.map;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.EnumMap;
-import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -68,10 +67,6 @@ public class DetailPanel extends JPanel {
 	}
 
 	/**
-	 * The tile we refer to
-	 */
-	private Tile tile = null;
-	/**
 	 * To handle which chit is selected.
 	 */
 	private final transient SelectionListener chitSelecter = new ChitSelectionListener(chitDetail);
@@ -80,24 +75,23 @@ public class DetailPanel extends JPanel {
 	 *            the tile we should now refer to.
 	 */
 	public void setTile(final Tile newTile) {
-		tile = newTile;
-		if (tile != null) {
-			typeLabel.setText(terrainText(tile.getType()));
-			chitPanel.removeAll();
-			chitSelecter.clearSelection();
-			for (Fortress fort : tile.getForts()) {
-				chitPanel.add(new FortChit(fort, chitSelecter)); // NOPMD
-			}
-			for (Unit unit : tile.getUnits()) {
-				chitPanel.add(new UnitChit(unit, chitSelecter)); // NOPMD
-			}
-			eventLabel.setText(Integer.toString(tile.getEvent()));
-			resultsField.setText(""); // FIXME: Implement
-		} else {
+		if (newTile == null) {
 			typeLabel.setText("");
 			chitPanel.removeAll();
 			eventLabel.setText("");
 			resultsField.setText("");
+		} else {
+			typeLabel.setText(terrainText(newTile.getType()));
+			chitPanel.removeAll();
+			chitSelecter.clearSelection();
+			for (Fortress fort : newTile.getForts()) {
+				chitPanel.add(new FortChit(fort, chitSelecter)); // NOPMD
+			}
+			for (Unit unit : newTile.getUnits()) {
+				chitPanel.add(new UnitChit(unit, chitSelecter)); // NOPMD
+			}
+			eventLabel.setText(Integer.toString(newTile.getEvent()));
+			resultsField.setText(""); // FIXME: Implement
 		}
 		repaint();
 	}
