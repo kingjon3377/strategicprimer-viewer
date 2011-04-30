@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
+import model.viewer.SPMap;
 import view.util.SizeLimiter;
 import controller.map.MapReader;
 import controller.map.XMLWriter;
@@ -28,6 +29,9 @@ import controller.map.XMLWriter;
  * 
  */
 public final class ViewerFrame extends JFrame implements ActionListener {
+	private static final String LOAD_2D_MAP_CMD = "<html><p>Load secondary map</p></html>";
+	private static final String SAVE_2D_MAP_CMD = "<html><p>Save secondary map</p></html>";
+	private static final double BUTTON_PANEL_HEIGHT = 0.1;
 	/**
 	 * The width of the details panel, as a percentage of the window's width.
 	 */
@@ -62,6 +66,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private final MapPanel mapPanel;
 
+	/**
+	 * A secondary map: usually a player's. We won't show it directly, but will
+	 * eventually allow copying data from the main map to it.
+	 */
+	private SPMap secondaryMap = null;
 	/**
 	 * @return the quasi-Singleton objects
 	 */
@@ -196,6 +205,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			}
 		});
 		final JPanel buttonPanel = new JPanel(new BorderLayout());
+		final JPanel innerButtonPanel = new JPanel(new BorderLayout());
 		final JPanel firstButtonPanel = new JPanel(new BorderLayout());
 		final JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(this);
@@ -203,26 +213,39 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final JButton saveButton = new JButton("Save As");
 		saveButton.addActionListener(this);
 		firstButtonPanel.add(saveButton, BorderLayout.SOUTH);
-		buttonPanel.addComponentListener(new SizeLimiter(firstButtonPanel, 0.15, 1.0));
-		buttonPanel.add(firstButtonPanel, BorderLayout.WEST);
+		innerButtonPanel.addComponentListener(new SizeLimiter(firstButtonPanel, 0.30, 1.0));
+		innerButtonPanel.add(firstButtonPanel, BorderLayout.WEST);
+		final JPanel secondButtonPanel = new JPanel(new BorderLayout());
+		final JButton loadSecondaryMap = new JButton(LOAD_2D_MAP_CMD);
+		loadSecondaryMap.addActionListener(this);
+		secondButtonPanel.addComponentListener(new SizeLimiter(loadSecondaryMap, 1.0, 0.5));
+		secondButtonPanel.add(loadSecondaryMap, BorderLayout.NORTH);
+		final JButton saveSecondaryMap = new JButton(SAVE_2D_MAP_CMD);
+		saveSecondaryMap.addActionListener(this);
+		secondButtonPanel.addComponentListener(new SizeLimiter(saveSecondaryMap, 1.0, 0.5));
+		secondButtonPanel.add(saveSecondaryMap, BorderLayout.SOUTH);
+		innerButtonPanel.addComponentListener(new SizeLimiter(secondButtonPanel, 0.7, 1.0));
+		innerButtonPanel.add(secondButtonPanel, BorderLayout.EAST);
+		buttonPanel.addComponentListener(new SizeLimiter(innerButtonPanel, 0.4, 1.0));
+		buttonPanel.add(innerButtonPanel, BorderLayout.WEST);
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
 		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
-		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.75, 1.0));
+		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.6, 1.0));
 		buttonPanel.add(vrpanel, BorderLayout.CENTER);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
-		buttonPanel.addComponentListener(new SizeLimiter(quitButton, 0.1, 1.0));
+		buttonPanel.addComponentListener(new SizeLimiter(quitButton, 0.1, 0.4));
 		buttonPanel.add(quitButton, BorderLayout.EAST);
 		add(buttonPanel, BorderLayout.SOUTH);
 		addComponentListener(new SizeLimiter(buttonPanel,
-				1.0 - DETAIL_PANEL_WIDTH, 0.1));
+				1.0 - DETAIL_PANEL_WIDTH, BUTTON_PANEL_HEIGHT));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
 		addComponentListener(new SizeLimiter(scroller,
-				1.0 - DETAIL_PANEL_WIDTH, 0.9));
+				1.0 - DETAIL_PANEL_WIDTH, 1.0 - BUTTON_PANEL_HEIGHT));
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -251,9 +274,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 				}
-			} else {
-				return;
-			}
+			} 
 		} else if ("Save As".equals(event.getActionCommand())) {
 			final JFileChooser chooser = new JFileChooser();
 			chooser.setFileFilter(new MapFileFilter());
@@ -267,6 +288,30 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			}
 		} else if ("Quit".equals(event.getActionCommand())) {
 			quit(0);
+		} else if (LOAD_2D_MAP_CMD.equals(event.getActionCommand())) {
+			final JFileChooser chooser = new JFileChooser();
+			chooser.setFileFilter(new MapFileFilter());
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				try {
+					secondaryMap = new MapReader().readMap(chooser
+							.getSelectedFile().getPath());
+				} catch (XMLStreamException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+				}
+			} 
+		} else if (SAVE_2D_MAP_CMD.equals(event.getActionCommand())) {
+			final JFileChooser chooser = new JFileChooser();
+			chooser.setFileFilter(new MapFileFilter());
+			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+				try {
+					new XMLWriter(chooser.getSelectedFile().getPath())
+							.write(secondaryMap);
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+				}
+			}
 		}
 	}
 
