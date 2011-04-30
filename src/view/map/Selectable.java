@@ -5,7 +5,21 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-public abstract class Selectable extends JComponent {
+/**
+ * A superclass for GUI elements where one (or more) of a class can be selected,
+ * and this is to be visually marked by drawing a box around it. This used to be
+ * just GUITiles, but then I invented Chits.
+ * 
+ * @author Jonathan Lovelace
+ * 
+ */
+// ESCA-JAVA0011:
+public abstract class Selectable extends JComponent { // NOPMD
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 6213677364292114007L;
+
 	/**
 	 * Paint a rectangle around the item if it's selected.
 	 */
@@ -20,12 +34,15 @@ public abstract class Selectable extends JComponent {
 			pen.setColor(saveColor);
 		}
 	}
+
 	/**
 	 * Whether this is the currently selected tile.
 	 */
 	private boolean selected;
-
-	public Selectable() {
+	/**
+	 * Constructor. Initially the control is not selected.
+	 */
+	protected Selectable() {
 		super();
 		selected = false;
 	}

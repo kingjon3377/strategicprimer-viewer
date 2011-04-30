@@ -29,6 +29,7 @@ import controller.map.XMLWriter;
  */
 public final class ViewerFrame extends JFrame implements WindowListener,
 		ActionListener {
+	private static final double DETAIL_PANEL_WIDTH = 0.25;
 	/**
 	 * An error message refactored from at least four uses.
 	 */
@@ -75,7 +76,8 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 	 * 
 	 */
 	public static void main(final String[] args) {
-		final String filename;
+		// ESCA-JAVA0177:
+		final String filename; // NOPMD
 		if (args.length > 0) {
 			filename = args[0];
 		} else {
@@ -128,19 +130,19 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		buttonPanel.add(saveButton);
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
-		addComponentListener(new SizeLimiter(details, 0.25, 1.0));
+		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
 		buttonPanel.add(vrpanel);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
 		buttonPanel.add(quitButton);
 		add(buttonPanel, BorderLayout.SOUTH);
-		addComponentListener(new SizeLimiter(buttonPanel, 0.75, 0.1));
+		addComponentListener(new SizeLimiter(buttonPanel, 1.0 - DETAIL_PANEL_WIDTH, 0.1));
 //		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.5, 1.0));
 		add(details, BorderLayout.EAST);
-		JScrollPane scroller = new JScrollPane(mapPanel);
+		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
-		addComponentListener(new SizeLimiter(scroller, 0.75, 0.9));
+		addComponentListener(new SizeLimiter(scroller, 1.0 - DETAIL_PANEL_WIDTH, 0.9));
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
