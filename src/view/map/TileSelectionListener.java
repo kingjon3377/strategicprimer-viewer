@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * @author Jonathan Lovelace
  */
 //ESCA-JAVA0137:
-public class SelectionListener implements MouseListener {
+public class TileSelectionListener implements MouseListener {
 	/**
 	 * The currently-selected tile.
 	 */
@@ -19,7 +19,7 @@ public class SelectionListener implements MouseListener {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger
-			.getLogger(SelectionListener.class.getName());
+			.getLogger(TileSelectionListener.class.getName());
 	/**
 	 * The menu to change a tile's type.
 	 */
@@ -32,7 +32,7 @@ public class SelectionListener implements MouseListener {
 	 * Constructor.
 	 * @param details the panel that'll show the details of the selected tile
 	 */
-	public SelectionListener(final DetailPanel details) {
+	public TileSelectionListener(final DetailPanel details) {
 		if (details == null) {
 			throw new IllegalArgumentException("DetailPanel was null");
 		}

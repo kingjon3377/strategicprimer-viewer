@@ -26,7 +26,7 @@ public class MapPanel extends JPanel {
 	/**
 	 * Selection listener.
 	 */
-	private final transient SelectionListener selListener;
+	private final transient TileSelectionListener selListener;
 	/**
 	 * The map we represent. Saved only so we can export it.
 	 */
@@ -43,7 +43,7 @@ public class MapPanel extends JPanel {
 	 */
 	public MapPanel(final SPMap _map, final DetailPanel details) {
 		super();
-		selListener = new SelectionListener(details);
+		selListener = new TileSelectionListener(details);
 		setOpaque(true);
 		loadMap(_map);
 	}
