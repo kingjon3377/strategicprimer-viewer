@@ -23,6 +23,8 @@ import view.util.SizeLimiter;
  * @author Jonathan Lovelace
  */
 public class DetailPanel extends JPanel {
+	private static final double CHIT_PANEL_HEIGHT = 0.7;
+	private static final double CHIT_PANEL_WIDTH = 0.5;
 	/**
 	 * Version UID for serialization.
 	 */
@@ -50,14 +52,14 @@ public class DetailPanel extends JPanel {
 		}
 		final JPanel viewPanel = new JPanel(new BorderLayout());
 		viewPanel.add(chitPanel, BorderLayout.WEST);
-		viewPanel.addComponentListener(new SizeLimiter(chitPanel, 0.5, 0.7));
+		viewPanel.addComponentListener(new SizeLimiter(chitPanel, CHIT_PANEL_WIDTH, CHIT_PANEL_HEIGHT));
 		viewPanel.add(chitDetail, BorderLayout.EAST);
-		viewPanel.addComponentListener(new SizeLimiter(chitDetail, 0.5, 0.7));
+		viewPanel.addComponentListener(new SizeLimiter(chitDetail, 1.0 - CHIT_PANEL_WIDTH, CHIT_PANEL_HEIGHT));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
 		resultsPanel.add(new JLabel("<html>Exploration<br>results</html>"), BorderLayout.WEST);
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
-		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0, 0.3));
+		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0, 1.0 - CHIT_PANEL_HEIGHT));
 		add(viewPanel, BorderLayout.CENTER);
 		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.75));
 	}
@@ -69,7 +71,7 @@ public class DetailPanel extends JPanel {
 	/**
 	 * To handle which chit is selected.
 	 */
-	private final SelectionListener chitSelecter = new ChitSelectionListener(chitDetail);
+	private final transient SelectionListener chitSelecter = new ChitSelectionListener(chitDetail);
 	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
@@ -80,10 +82,10 @@ public class DetailPanel extends JPanel {
 			typeLabel.setText(terrainText(tile.getType()));
 			chitPanel.removeAll();
 			for (Fortress fort : tile.getForts()) {
-				chitPanel.add(new FortChit(fort, chitSelecter)); // FIXME: Make it an actual listener
+				chitPanel.add(new FortChit(fort, chitSelecter)); // NOPMD
 			}
 			for (Unit unit : tile.getUnits()) {
-				chitPanel.add(new UnitChit(unit, chitSelecter)); // FIXME: Make it an actual listener
+				chitPanel.add(new UnitChit(unit, chitSelecter)); // NOPMD
 			}
 			eventLabel.setText(Integer.toString(tile.getEvent()));
 			resultsField.setText(""); // FIXME: Implement
@@ -119,50 +121,5 @@ public class DetailPanel extends JPanel {
 			return DESCRIPTIONS.get(type);
 		} // else
 		throw new IllegalArgumentException("Unknown terrain type");
-	}
-
-	/**
-	 * @param forts
-	 *            a list of forts
-	 * @return a string representation of the list, to show the user
-	 */
-	private static String anyForts(final List<Fortress> forts) {
-		final StringBuilder sbuild = new StringBuilder();
-		for (Fortress fort : forts) {
-			sbuild.append("Fortress ");
-			if (fort.getName() != null) {
-				sbuild.append(fort.getName());
-				sbuild.append(", ");
-			}
-			sbuild.append("owned by player ");
-			sbuild.append(fort.getOwner());
-			sbuild.append('\n');
-		}
-		return sbuild.toString();
-	}
-
-	/**
-	 * @param units
-	 *            a list of units
-	 * @return a string representation of the list, to show the user
-	 */
-	private static String anyUnits(final List<Unit> units) {
-		final StringBuilder sbuild = new StringBuilder();
-		for (Unit unit : units) {
-			sbuild.append("Unit ");
-			if (unit.getName() != null) {
-				sbuild.append(unit.getName());
-				sbuild.append(", ");
-			}
-			if (unit.getType() != null) {
-				sbuild.append("of type ");
-				sbuild.append(unit.getType());
-				sbuild.append(", ");
-			}
-			sbuild.append("owned by player ");
-			sbuild.append(unit.getOwner());
-			sbuild.append('\n');
-		}
-		return sbuild.toString();
 	}
 }
