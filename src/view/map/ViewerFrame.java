@@ -27,7 +27,7 @@ import controller.map.XMLWriter;
  * @author Jonathan Lovelace
  * 
  */
-public final class ViewerFrame extends JFrame implements WindowListener,
+public final class ViewerFrame extends JFrame implements 
 		ActionListener {
 	private static final double DETAIL_PANEL_WIDTH = 0.25;
 	/**
@@ -115,7 +115,84 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
-		addWindowListener(this);
+		addWindowListener(new WindowListener() {
+			/**
+			 * Do nothing special on window activation.
+			 * 
+			 * @param event
+			 *            ignored
+			 */
+			@Override
+			public void windowActivated(final WindowEvent event) {
+				repaint();
+			}
+
+			/**
+			 * Quit on window close.
+			 * 
+			 * @param event
+			 *            ignored
+			 */
+			@Override
+			public void windowClosed(final WindowEvent event) {
+				System.exit(0);
+			}
+
+			/**
+			 * Do nothing special on window-closing.
+			 * 
+			 * @param event
+			 *            ignored
+			 */
+			@Override
+			public void windowClosing(final WindowEvent event) {
+				// Do nothing
+			}
+
+			/**
+			 * Do nothing special on window-deactivation.
+			 * 
+			 * @param event
+			 *            ignored
+			 */
+			@Override
+			public void windowDeactivated(final WindowEvent event) {
+				// Do nothing
+			}
+
+			/**
+			 * Do nothing special when deiconified.
+			 * 
+			 * @param event
+			 *            ignored
+			 */
+			@Override
+			public void windowDeiconified(final WindowEvent event) {
+				repaint();
+			}
+
+			/**
+			 * do nothing special when iconified.
+			 * 
+			 * @param event
+			 *            ignored
+			 */
+			@Override
+			public void windowIconified(final WindowEvent event) {
+				// Do nothing
+			}
+
+			/**
+			 * Do nothing special when opened.
+			 * 
+			 * @param event
+			 *            ignored
+			 */
+			@Override
+			public void windowOpened(final WindowEvent event) {
+				repaint();
+			}
+		});
 		final JPanel buttonPanel = new JPanel();
 		final JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(this);
@@ -153,83 +230,6 @@ public final class ViewerFrame extends JFrame implements WindowListener,
 		// scrollPane.setPreferredSize(scrollPane.getMaximumSize());
 		// add(scrollPane, BorderLayout.CENTER);
 		pack();
-		repaint();
-	}
-
-	/**
-	 * Do nothing special on window activation.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void windowActivated(final WindowEvent event) {
-		repaint();
-	}
-
-	/**
-	 * Quit on window close.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void windowClosed(final WindowEvent event) {
-		System.exit(0);
-	}
-
-	/**
-	 * Do nothing special on window-closing.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void windowClosing(final WindowEvent event) {
-		// Do nothing
-	}
-
-	/**
-	 * Do nothing special on window-deactivation.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void windowDeactivated(final WindowEvent event) {
-		// Do nothing
-	}
-
-	/**
-	 * Do nothing special when deiconified.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void windowDeiconified(final WindowEvent event) {
-		repaint();
-	}
-
-	/**
-	 * do nothing special when iconified.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void windowIconified(final WindowEvent event) {
-		// Do nothing
-	}
-
-	/**
-	 * Do nothing special when opened.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void windowOpened(final WindowEvent event) {
 		repaint();
 	}
 
