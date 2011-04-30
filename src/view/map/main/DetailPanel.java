@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.EnumMap;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -22,8 +23,10 @@ import view.util.SizeLimiter;
  * @author Jonathan Lovelace
  */
 public class DetailPanel extends JPanel {
-	private static final double CHIT_PANEL_HEIGHT = 0.7;
+	private static final double CHIT_PANEL_HEIGHT = 0.6;
 	private static final double CHIT_PANEL_WIDTH = 0.5;
+	private static final double RESULTS_BUTTON_HEIGHT = 0.15; // NOPMD
+	private static final double RESULTS_FIELD_WIDTH = 0.5; // NOPMD
 	/**
 	 * Version UID for serialization.
 	 */
@@ -41,7 +44,7 @@ public class DetailPanel extends JPanel {
 		typePanel.add(new JLabel("Tile type:"), BorderLayout.WEST);
 		typePanel.add(typeLabel, BorderLayout.CENTER);
 		add(typePanel, BorderLayout.NORTH);
-		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.25));
+		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.2));
 		if (IsAdmin.IS_ADMIN) {
 			final JPanel eventPanel = new JPanel(new BorderLayout());
 			eventPanel.add(new JLabel("Legacy Event:"), BorderLayout.WEST);
@@ -58,12 +61,19 @@ public class DetailPanel extends JPanel {
 		viewPanel.add(chitSuperPanel, BorderLayout.NORTH);
 		viewPanel.addComponentListener(new SizeLimiter(chitSuperPanel, 1.0, CHIT_PANEL_HEIGHT));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
-		resultsPanel.add(new JLabel("<html>Exploration<br>results</html>"), BorderLayout.WEST);
+		final JLabel resultsLabel = new JLabel("<html>Exploration<br>results</html>");
+		resultsPanel.add(resultsLabel, BorderLayout.WEST);
+		resultsPanel.addComponentListener(new SizeLimiter(resultsLabel, 1.0 - RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
+		resultsPanel.addComponentListener(new SizeLimiter(resultsField, RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
+		final JButton resultsButton = new JButton("Save changes to results");
+//		resultsButton.addActionListener(this);
+		resultsPanel.add(resultsButton, BorderLayout.SOUTH);
+		resultsPanel.addComponentListener(new SizeLimiter(resultsButton, 1.0, RESULTS_BUTTON_HEIGHT));
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
 		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0, 1.0 - CHIT_PANEL_HEIGHT));
 		add(viewPanel, BorderLayout.CENTER);
-		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.75));
+		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.8));
 	}
 
 	/**
