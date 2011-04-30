@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +72,8 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * eventually allow copying data from the main map to it.
 	 */
 	private SPMap secondaryMap = null;
+	private final JFileChooser chooser = new JFileChooser();
+
 	/**
 	 * @return the quasi-Singleton objects
 	 */
@@ -126,6 +129,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
+		chooser.setFileFilter(new MapFileFilter());
 		addWindowListener(new WindowListener() {
 			/**
 			 * Do nothing special on window activation.
@@ -263,21 +267,10 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Load".equals(event.getActionCommand())) {
-			final JFileChooser chooser = new JFileChooser();
-			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				try {
-					mapPanel.loadMap(new MapReader().readMap(chooser
-							.getSelectedFile().getPath()));
-				} catch (XMLStreamException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-				} catch (IOException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-				}
-			} 
+				mapPanel.loadMap(readMap(chooser.getSelectedFile().getPath()));
+			}
 		} else if ("Save As".equals(event.getActionCommand())) {
-			final JFileChooser chooser = new JFileChooser();
-			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())
@@ -286,24 +279,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}
 			}
-		} else if ("Quit".equals(event.getActionCommand())) {
-			quit(0);
 		} else if (LOAD_2D_MAP_CMD.equals(event.getActionCommand())) {
-			final JFileChooser chooser = new JFileChooser();
-			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				try {
-					secondaryMap = new MapReader().readMap(chooser
-							.getSelectedFile().getPath());
-				} catch (XMLStreamException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-				} catch (IOException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-				}
-			} 
+				secondaryMap = readMap(chooser.getSelectedFile().getPath());
+			}
 		} else if (SAVE_2D_MAP_CMD.equals(event.getActionCommand())) {
-			final JFileChooser chooser = new JFileChooser();
-			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())
@@ -312,6 +292,28 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}
 			}
+		} else if ("Quit".equals(event.getActionCommand())) {
+			quit(0);
+		} 
+	}
+
+	/**
+	 * Note that runtime loading of a new map should always ignore calls with a
+	 * null map.
+	 * 
+	 * @param filename
+	 *            a file to load a map from
+	 * @return the map in that file, or null if errors happen.
+	 */
+	private static SPMap readMap(final String filename) {
+		try {
+			return new MapReader().readMap(filename); // NOPMD
+		} catch (XMLStreamException e) {
+			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+			return null; // NOPMD
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+			return null;
 		}
 	}
 
