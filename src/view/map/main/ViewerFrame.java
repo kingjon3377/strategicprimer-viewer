@@ -217,20 +217,25 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final JButton saveButton = new JButton("Save As");
 		saveButton.addActionListener(this);
 		firstButtonPanel.add(saveButton, BorderLayout.SOUTH);
-		innerButtonPanel.addComponentListener(new SizeLimiter(firstButtonPanel, 0.30, 1.0));
+		innerButtonPanel.addComponentListener(new SizeLimiter(firstButtonPanel,
+				0.30, 1.0));
 		innerButtonPanel.add(firstButtonPanel, BorderLayout.WEST);
 		final JPanel secondButtonPanel = new JPanel(new BorderLayout());
 		final JButton loadSecondaryMap = new JButton(LOAD_2D_MAP_CMD);
 		loadSecondaryMap.addActionListener(this);
-		secondButtonPanel.addComponentListener(new SizeLimiter(loadSecondaryMap, 1.0, 0.5));
+		secondButtonPanel.addComponentListener(new SizeLimiter(
+				loadSecondaryMap, 1.0, 0.5));
 		secondButtonPanel.add(loadSecondaryMap, BorderLayout.NORTH);
 		final JButton saveSecondaryMap = new JButton(SAVE_2D_MAP_CMD);
 		saveSecondaryMap.addActionListener(this);
-		secondButtonPanel.addComponentListener(new SizeLimiter(saveSecondaryMap, 1.0, 0.5));
+		secondButtonPanel.addComponentListener(new SizeLimiter(
+				saveSecondaryMap, 1.0, 0.5));
 		secondButtonPanel.add(saveSecondaryMap, BorderLayout.SOUTH);
-		innerButtonPanel.addComponentListener(new SizeLimiter(secondButtonPanel, 0.7, 1.0));
+		innerButtonPanel.addComponentListener(new SizeLimiter(
+				secondButtonPanel, 0.7, 1.0));
 		innerButtonPanel.add(secondButtonPanel, BorderLayout.EAST);
-		buttonPanel.addComponentListener(new SizeLimiter(innerButtonPanel, 0.4, 1.0));
+		buttonPanel.addComponentListener(new SizeLimiter(innerButtonPanel, 0.4,
+				1.0));
 		buttonPanel.add(innerButtonPanel, BorderLayout.WEST);
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
@@ -294,7 +299,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			}
 		} else if ("Quit".equals(event.getActionCommand())) {
 			quit(0);
-		} 
+		}
 	}
 
 	/**
