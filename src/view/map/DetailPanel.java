@@ -29,6 +29,7 @@ public class DetailPanel extends JPanel {
 	private static final long serialVersionUID = 3391860564156014799L;
 	private final JLabel typeLabel = new JLabel();
 	private final JLabel eventLabel = new JLabel();
+	private final JLabel chitDetail = new JLabel();
 	private final JTextField resultsField = new JTextField();
 	/**
 	 * Constructor.
@@ -50,6 +51,8 @@ public class DetailPanel extends JPanel {
 		final JPanel viewPanel = new JPanel(new BorderLayout());
 		viewPanel.add(chitPanel, BorderLayout.WEST);
 		viewPanel.addComponentListener(new SizeLimiter(chitPanel, 0.5, 0.7));
+		viewPanel.add(chitDetail, BorderLayout.EAST);
+		viewPanel.addComponentListener(new SizeLimiter(chitDetail, 0.5, 0.7));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
 		resultsPanel.add(new JLabel("<html>Exploration<br>results</html>"), BorderLayout.WEST);
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
@@ -66,7 +69,7 @@ public class DetailPanel extends JPanel {
 	/**
 	 * To handle which chit is selected.
 	 */
-	private final SelectionListener chitSelecter = new SelectionListener();
+	private final SelectionListener chitSelecter = new ChitSelectionListener(chitDetail);
 	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
