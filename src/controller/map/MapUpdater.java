@@ -81,31 +81,35 @@ public class MapUpdater {
 			throw new IllegalArgumentException("Not enough arguments");
 		}
 		final MapReader reader = new MapReader();
-		final MapUpdater updater;
+		// ESCA-JAVA0177:
+		final MapUpdater updater; // NOPMD
 		try {
 			updater = new MapUpdater(reader.readMap(args[0]));
 		} catch (FileNotFoundException e) {
+			// ESCA-JAVA0267:
 			System.err.println("File " + args[0] + " not found");
 			System.exit(1);
-			return;
+			return; // NOPMD
 		} catch (XMLStreamException e) {
 			System.err.println("XML stream error parsing " + args[0]);
 			System.exit(2);
-			return;
+			return; // NOPMD
 		}
-		final SPMap derived;
+		// ESCA-JAVA0177:
+		final SPMap derived; // NOPMD
 		try {
 			derived = reader.readMap(args[1]);
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + args[1] + " not found");
 			System.exit(3);
-			return;
+			return; // NOPMD
 		} catch (XMLStreamException e) {
 			System.err.println("XML stream error parsing " + args[1]);
 			System.exit(4);
 			return;
 		}
 		updater.update(derived);
+		// ESCA-JAVA0266:
 		new XMLWriter(new PrintWriter(System.out)).write(derived);
 	}
 }

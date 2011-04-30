@@ -29,7 +29,10 @@ import controller.map.XMLWriter;
  */
 public final class ViewerFrame extends JFrame implements 
 		ActionListener {
-	private static final double DETAIL_PANEL_WIDTH = 0.25;
+	/**
+	 * The width of the details panel, as a percentage of the window's width.
+	 */
+	private static final double DETAIL_PANEL_WIDTH = 0.25; // NOPMD
 	/**
 	 * An error message refactored from at least four uses.
 	 */
