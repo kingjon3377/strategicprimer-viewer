@@ -13,12 +13,9 @@ import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
 
-
-import model.viewer.Fortress;
 import model.viewer.River;
 import model.viewer.Tile;
 import model.viewer.TileType;
-import model.viewer.Unit;
 
 /**
  * A GUI representation of a tile. Information about what's on the tile should
@@ -130,7 +127,6 @@ public class GUITile extends Selectable {
 		setPreferredSize(PREF_SIZE);
 		setMinimumSize(PREF_SIZE);
 		setMaximumSize(null);
-		setToolTipText("");
 		setOpaque(true);
 		tile = _tile;
 	}
@@ -195,10 +191,6 @@ public class GUITile extends Selectable {
 		final Graphics2D pen2d = (Graphics2D) pen;
 		final Color saveColor = pen2d.getColor();
 		checkCache(getWidth(), getHeight());
-		if ("".equals(getToolTipText())) {
-			setToolTipText("Terrain: " + terrainText(tile.getType())
-					+ anyForts(tile) + anyUnits(tile) + anyEvent(tile));
-		}
 		checkImageCache();
 		pen2d.drawImage(image, IDENT, this);
 		pen2d.setColor(saveColor);
@@ -208,91 +200,10 @@ public class GUITile extends Selectable {
 	private static final Color BROWN = new Color(160, 82, 45);
 	private static final Color PURPLE = new Color(148, 0, 211);
 
-	/**
-	 * @param tile2
-	 *            a tile
-	 * @return a String representation of the units on the tile, if any,
-	 *         preceded by a newline if there are any
-	 */
-	private static String anyUnits(final Tile tile2) {
-		final StringBuffer retval = new StringBuffer("");
-		if (tile2.getUnits().size() > 0) {
-			retval.append('\n');
-			for (Unit u : tile2.getUnits()) {
-				if (retval.length() > 1) {
-					retval.append(", ");
-				}
-				retval.append(u.getType());
-				retval.append(" (Player ");
-				retval.append(u.getOwner());
-				retval.append(')');
-			}
-		}
-		return retval.toString();
-	}
-
-	/**
-	 * @param tile2
-	 *            a tile
-	 * @return A string representation of any fortresses on the tile. If there
-	 *         are any, it is preceded by a newline.
-	 */
-	private static String anyForts(final Tile tile2) {
-		final StringBuffer retval = new StringBuffer();
-		if (tile2.getForts().size() > 0) {
-			retval.append("\nForts belonging to players ");
-			for (Fortress f : tile2.getForts()) {
-				if (retval.charAt(retval.length() - 2) != 's') {
-					retval.append(", ");
-				}
-				retval.append(f.getOwner());
-			}
-		}
-		return retval.toString();
-	}
-
-	/**
-	 * @param tile
-	 *            a tile
-	 * @return A string saying what the event on the tile is, if there is one,
-	 *         or if not an empty string.
-	 */
-	private static String anyEvent(final Tile tile) {
-		return (tile == null || tile.getEvent() == -1 ? "" : "\nEvent: "
-				+ Integer.toString(tile.getEvent()));
-	}
-
-	/**
-	 * @param type
-	 *            a terrain type
-	 * @return a String representation of that terrain type
-	 */
-	private static String terrainText(final TileType type) {
-		if (DESCRIPTIONS.containsKey(type)) {
-			return DESCRIPTIONS.get(type);
-		} // else
-		throw new IllegalArgumentException("Unknown terrain type");
-	}
-
-	/**
-	 * Descriptions of the types.
-	 */
-	private static final EnumMap<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
-			TileType.class);
-
 	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
 			TileType.class);
 	// ESCA-JAVA0076:
 	static {
-		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");
-		DESCRIPTIONS.put(TileType.Desert, "Desert");
-		DESCRIPTIONS.put(TileType.Jungle, "Jungle");
-		DESCRIPTIONS.put(TileType.Mountain, "Mountains");
-		DESCRIPTIONS.put(TileType.NotVisible, "Unknown");
-		DESCRIPTIONS.put(TileType.Ocean, "Ocean");
-		DESCRIPTIONS.put(TileType.Plains, "Plains");
-		DESCRIPTIONS.put(TileType.TemperateForest, "Temperate Forest");
-		DESCRIPTIONS.put(TileType.Tundra, "Tundra");
 		colorMap.put(TileType.BorealForest, new Color(72, 218, 164));
 		colorMap.put(TileType.Desert, new Color(249, 233, 28));
 		colorMap.put(TileType.Jungle, new Color(229, 46, 46));
