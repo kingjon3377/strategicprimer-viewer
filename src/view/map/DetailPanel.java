@@ -51,10 +51,13 @@ public class DetailPanel extends JPanel {
 			addComponentListener(new SizeLimiter(eventPanel, 1.0, 0.1));
 		}
 		final JPanel viewPanel = new JPanel(new BorderLayout());
-		viewPanel.add(chitPanel, BorderLayout.WEST);
-		viewPanel.addComponentListener(new SizeLimiter(chitPanel, CHIT_PANEL_WIDTH, CHIT_PANEL_HEIGHT));
-		viewPanel.add(chitDetail, BorderLayout.EAST);
-		viewPanel.addComponentListener(new SizeLimiter(chitDetail, 1.0 - CHIT_PANEL_WIDTH, CHIT_PANEL_HEIGHT));
+		final JPanel chitSuperPanel = new JPanel(new BorderLayout());
+		chitSuperPanel.add(chitPanel, BorderLayout.WEST);
+		chitSuperPanel.addComponentListener(new SizeLimiter(chitPanel, CHIT_PANEL_WIDTH, 1.0));
+		chitSuperPanel.add(chitDetail, BorderLayout.EAST);
+		chitSuperPanel.addComponentListener(new SizeLimiter(chitDetail, 1.0 - CHIT_PANEL_WIDTH, 1.0));
+		viewPanel.add(chitSuperPanel, BorderLayout.NORTH);
+		viewPanel.addComponentListener(new SizeLimiter(chitSuperPanel, 1.0, CHIT_PANEL_HEIGHT));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
 		resultsPanel.add(new JLabel("<html>Exploration<br>results</html>"), BorderLayout.WEST);
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
