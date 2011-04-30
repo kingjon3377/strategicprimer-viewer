@@ -265,8 +265,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}
 			}
-		}
-		if ("Quit".equals(event.getActionCommand())) {
+		} else if ("Quit".equals(event.getActionCommand())) {
 			quit(0);
 		}
 	}
