@@ -1,16 +1,13 @@
 package view.map;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.MouseListener;
-
-import javax.swing.JComponent;
 /**
  * A "piece" to represent a unit or fortress (or something else ...) in the details-panel.
  * @author kingjon
  *
  */
-public abstract class Chit extends JComponent { //NOPMD
+public abstract class Chit extends Selectable { //NOPMD
 	/**
 	 * Version UID for serialization.
 	 */

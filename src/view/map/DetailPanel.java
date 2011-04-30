@@ -63,7 +63,10 @@ public class DetailPanel extends JPanel {
 	 * The tile we refer to
 	 */
 	private Tile tile = null;
-
+	/**
+	 * To handle which chit is selected.
+	 */
+	private final SelectionListener chitSelecter = new SelectionListener();
 	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
@@ -74,10 +77,10 @@ public class DetailPanel extends JPanel {
 			typeLabel.setText(terrainText(tile.getType()));
 			chitPanel.removeAll();
 			for (Fortress fort : tile.getForts()) {
-				chitPanel.add(new FortChit(fort, null)); // FIXME: Make it an actual listener
+				chitPanel.add(new FortChit(fort, chitSelecter)); // FIXME: Make it an actual listener
 			}
 			for (Unit unit : tile.getUnits()) {
-				chitPanel.add(new UnitChit(unit, null)); // FIXME: Make it an actual listener
+				chitPanel.add(new UnitChit(unit, chitSelecter)); // FIXME: Make it an actual listener
 			}
 			eventLabel.setText(Integer.toString(tile.getEvent()));
 			resultsField.setText(""); // FIXME: Implement
