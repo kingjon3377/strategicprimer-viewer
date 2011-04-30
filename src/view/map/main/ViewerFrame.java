@@ -219,7 +219,6 @@ public final class ViewerFrame extends JFrame implements
 		add(buttonPanel, BorderLayout.SOUTH);
 		addComponentListener(new SizeLimiter(buttonPanel,
 				1.0 - DETAIL_PANEL_WIDTH, 0.1));
-		// buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.5, 1.0));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
@@ -229,14 +228,6 @@ public final class ViewerFrame extends JFrame implements
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		// final MapComponent map = new MapComponent(new
-		// XMLReader().getMap(filename));
-		// final JScrollPane scrollPane = new JScrollPane(map);
-		// map.createImage();
-		// scrollPane.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT
-		// - 5));
-		// scrollPane.setPreferredSize(scrollPane.getMaximumSize());
-		// add(scrollPane, BorderLayout.CENTER);
 		pack();
 		repaint();
 	}
