@@ -20,7 +20,7 @@ import controller.map.MapReader;
  * 
  * @author Jonathan Lovelace
  */
-public class TerminalViewer {
+public final class TerminalViewer {
 	/**
 	 * Logger.
 	 */
@@ -41,7 +41,7 @@ public class TerminalViewer {
 	 * @param col
 	 *            the column of the point to highlight
 	 */
-	public TerminalViewer(final SPMap map, final int row, final int col) {
+	private TerminalViewer(final SPMap map, final int row, final int col) {
 		// ESCA-JAVA0266:
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
 				System.out));
