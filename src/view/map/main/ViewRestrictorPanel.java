@@ -1,6 +1,5 @@
 package view.map.main;
 
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,8 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import view.util.ConstraintHelper;
+import javax.swing.SpringLayout;
 
 /**
  * A panel to let the user restrict the portion of the map that's drawn.
@@ -54,22 +52,45 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	 *            the map panel.
 	 */
 	public ViewRestrictorPanel(final MapPanel mapPanel) {
-		super(new GridBagLayout());
 		mpanel = mapPanel;
-		add(new JLabel("Display only rows "), new ConstraintHelper(0, 0, 2, 1));
+		SpringLayout springLayout = new SpringLayout();
+		springLayout.putConstraint(SpringLayout.NORTH, button, 6, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, button, 204, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, maxColBox, 19, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, maxColBox, 178, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, maxRowBox, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, maxRowBox, 178, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, minColBox, 19, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, minColBox, 129, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, minRowBox, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, minRowBox, 129, SpringLayout.WEST, this);
+		setLayout(springLayout);
+		JLabel label = new JLabel("Display only rows ");
+		springLayout.putConstraint(SpringLayout.NORTH, label, 2, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, label, 0, SpringLayout.WEST, this);
+		add(label);
 		minRowBox.setText("0");
-		add(minRowBox, new ConstraintHelper(2, 0, 1, 1));
-		add(new JLabel(" to "), new ConstraintHelper(3, 0, 1, 1));
+		add(minRowBox);
+		JLabel label_1 = new JLabel(" to ");
+		springLayout.putConstraint(SpringLayout.NORTH, label_1, 2, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, label_1, 155, SpringLayout.WEST, this);
+		add(label_1);
 		maxRowBox.setText(Integer.toString(mpanel.getMap().rows() - 1));
-		add(maxRowBox, new ConstraintHelper(4, 0, 1, 1));
-		add(new JLabel(" and columns "), new ConstraintHelper(0, 1, 2, 1));
+		add(maxRowBox);
+		JLabel label_2 = new JLabel(" and columns ");
+		springLayout.putConstraint(SpringLayout.NORTH, label_2, 21, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, label_2, 16, SpringLayout.WEST, this);
+		add(label_2);
 		minColBox.setText("0");
-		add(minColBox, new ConstraintHelper(2, 1, 1, 1));
-		add(new JLabel(" to "), new ConstraintHelper(3, 1, 1, 1));
+		add(minColBox);
+		JLabel label_3 = new JLabel(" to ");
+		springLayout.putConstraint(SpringLayout.NORTH, label_3, 21, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, label_3, 155, SpringLayout.WEST, this);
+		add(label_3);
 		maxColBox.setText(Integer.toString(mpanel.getMap().cols() - 1));
-		add(maxColBox, new ConstraintHelper(4, 1, 1, 1));
+		add(maxColBox);
 		button.addActionListener(this);
-		add(button, new ConstraintHelper(5, 0, 1, 2));
+		add(button);
 	}
 
 	/**
