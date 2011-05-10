@@ -299,6 +299,13 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}
 			}
+		} else if ("Switch maps".equals(event.getActionCommand())) {
+			new Thread() {
+				@Override
+				public void run() {
+					mapPanel.swapMaps();
+				}
+			}.start();
 		} else if ("Quit".equals(event.getActionCommand())) {
 			quit(0);
 		}
