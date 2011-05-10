@@ -67,11 +67,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private final MapPanel mapPanel;
 
-	/**
-	 * A secondary map: usually a player's. We won't show it directly, but will
-	 * eventually allow copying data from the main map to it.
-	 */
-	private SPMap secondaryMap = null;
 	private final JFileChooser chooser = new JFileChooser();
 
 	/**
@@ -293,13 +288,13 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			}
 		} else if (LOAD_2D_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				secondaryMap = readMap(chooser.getSelectedFile().getPath());
+				mapPanel.setSecondaryMap(readMap(chooser.getSelectedFile().getPath()));
 			}
 		} else if (SAVE_2D_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())
-							.write(secondaryMap);
+							.write(mapPanel.getSecondaryMap());
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}

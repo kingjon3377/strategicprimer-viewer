@@ -31,6 +31,10 @@ public class MapPanel extends JPanel {
 	 * The map we represent. Saved only so we can export it.
 	 */
 	private SPMap map;
+	/**
+	 * The secondary map.
+	 */
+	private SPMap secondaryMap;
 	private static final Logger LOGGER = Logger.getLogger(MapPanel.class.getName());
 
 	/**
@@ -153,5 +157,25 @@ public class MapPanel extends JPanel {
 	 */
 	public SPMap getMap() {
 		return map;
+	}
+	/**
+	 * @param secMap the new secondary map
+	 */
+	public void setSecondaryMap(final SPMap secMap) {
+		secondaryMap = secMap;
+	}
+	/**
+	 * Swap the main and secondary maps, i.e. show the secondary map
+	 */
+	public void swapMaps() {
+		final SPMap temp = map;
+		loadMap(secondaryMap);
+		secondaryMap = temp;
+	}
+	/**
+	 * @return the secondary map
+	 */
+	public SPMap getSecondaryMap() {
+		return secondaryMap;
 	}
 }
