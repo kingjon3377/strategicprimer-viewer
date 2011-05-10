@@ -63,8 +63,10 @@ public final class Converter {
 	 *            the old-style map to convert
 	 */
 	public Converter(final SPMap map) {
-		rows = map.rows() * SUBTILES_PER_TILE;
-		cols = map.cols() * SUBTILES_PER_TILE;
+		final int origRows = map.rows();
+		rows = origRows * SUBTILES_PER_TILE;
+		final int origCols = map.cols();
+		cols = origCols * SUBTILES_PER_TILE;
 		LOGGER.log(Level.INFO, "rows = " + rows);
 		LOGGER.log(Level.INFO, "cols = " + cols);
 		// newTiles = new Tile[rows][cols];
@@ -73,8 +75,8 @@ public final class Converter {
 		tBuffer = new TileType[rows][cols];
 		elevations = new char[rows][cols];
 		eBuffer = new char[rows][cols];
-		for (int row = 0; row < map.rows(); row++) {
-			for (int col = 0; col < map.cols(); col++) {
+		for (int row = 0; row < origRows; row++) {
+			for (int col = 0; col < origCols; col++) {
 				for (int i = 0; i < SUBTILES_PER_TILE; i++) {
 					for (int j = 0; j < SUBTILES_PER_TILE; j++) {
 						// newTiles[row * SUBTILES_PER_TILE + i][col
@@ -115,18 +117,32 @@ public final class Converter {
 	 * @return the equivalent new-style tile type.
 	 */
 	private static TileType convertType(final model.viewer.TileType type) {
-		return type == model.viewer.TileType.Desert ? TileType.DESERT
-				: type == model.viewer.TileType.Jungle ? TileType.SWAMP
-						: type == model.viewer.TileType.NotVisible ? TileType.UNEXPLORED
-								: type == model.viewer.TileType.Ocean ? TileType.WATER
-										: type == model.viewer.TileType.Tundra ? TileType.ICE
+		return (type == model.viewer.TileType.Desert) ? TileType.DESERT
+				: (type == model.viewer.TileType.Jungle) ? TileType.SWAMP
+						: (type == model.viewer.TileType.NotVisible) ? TileType.UNEXPLORED
+								: (type == model.viewer.TileType.Ocean) ? TileType.WATER
+										: (type == model.viewer.TileType.Tundra) ? TileType.ICE
 												: TileType.PLAINS;
 	}
-
+	/**
+	 * Medium-low elevation.
+	 */
 	private static final char MEDIUM_LOW = 256;
+	/**
+	 * Medium-high elevation.
+	 */
 	private static final char MEDIUM_HIGH = 768;
+	/**
+	 * High elevation.
+	 */
 	private static final char HIGH = 1024;
+	/**
+	 * Low elevation.
+	 */
 	private static final char LOW = 0;
+	/**
+	 * Medium elevation.
+	 */
 	private static final char MEDIUM = 512;
 
 	/**
@@ -137,11 +153,11 @@ public final class Converter {
 	 * @return an appropriate elevation.
 	 */
 	private static char convertElevation(final model.viewer.TileType type) {
-		return type == model.viewer.TileType.BorealForest
-				|| type == model.viewer.TileType.Tundra ? MEDIUM_HIGH
-				: type == model.viewer.TileType.Jungle ? MEDIUM_LOW
-						: type == model.viewer.TileType.Mountain ? HIGH
-								: type == model.viewer.TileType.Ocean ? LOW
+		return (type == model.viewer.TileType.BorealForest
+				|| type == model.viewer.TileType.Tundra) ? MEDIUM_HIGH
+				: (type == model.viewer.TileType.Jungle) ? MEDIUM_LOW
+						: (type == model.viewer.TileType.Mountain) ? HIGH
+								: (type == model.viewer.TileType.Ocean) ? LOW
 										: MEDIUM;
 	}
 
@@ -158,12 +174,12 @@ public final class Converter {
 		copyToBuffer();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				if (tooMuchHigher(eBuffer[i][j],
+				if (isTooMuchHigher(eBuffer[i][j],
 						eBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
 						eBuffer[mod(i - 1, rows)][j],
 						eBuffer[mod(i - 1, rows)][(j + 1) % cols],
 						eBuffer[i][mod(j - 1, cols)])
-						|| tooMuchHigher(eBuffer[i][j], eBuffer[i][(j + 1)
+						|| isTooMuchHigher(eBuffer[i][j], eBuffer[i][(j + 1)
 								% cols],
 								eBuffer[(i + 1) % rows][mod(j - 1, cols)],
 								eBuffer[(i + 1) % rows][j], eBuffer[(i + 1)
@@ -171,12 +187,12 @@ public final class Converter {
 					elevations[i][j]--;
 					changes++; // NOPMD
 				}
-				if (tooMuchLower(eBuffer[i][j],
+				if (isTooMuchLower(eBuffer[i][j],
 						eBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
 						eBuffer[mod(i - 1, rows)][j],
 						eBuffer[mod(i - 1, rows)][(j + 1) % cols],
 						eBuffer[i][mod(j - 1, cols)])
-						|| tooMuchLower(eBuffer[i][j], eBuffer[i][(j + 1)
+						|| isTooMuchLower(eBuffer[i][j], eBuffer[i][(j + 1)
 								% cols],
 								eBuffer[(i + 1) % rows][mod(j - 1, cols)],
 								eBuffer[(i + 1) % rows][j], eBuffer[(i + 1)
@@ -219,7 +235,7 @@ public final class Converter {
 	 * @return i % mod, taking negatives properly into account.
 	 */
 	private static int mod(final int integ, final int mod) {
-		return integ < 0 ? mod + integ : integ <= mod ? integ : mod(
+		return (integ < 0) ? mod + integ : (integ <= mod) ? integ : mod(
 				integ - mod, mod);
 	}
 
@@ -236,34 +252,57 @@ public final class Converter {
 			// }
 		}
 	}
-
-	private static final int[] counts = new int[TileType.values().length];
-
+	/**
+	 * How many tiles use the terrain type.
+	 */
+	private static final int[] TERRAIN_COUNTS = new int[TileType.values().length];
+	/**
+	 * The type the tile should be.
+	 * @param tile the tile we're considering.
+	 * @param moreTiles its neighbors.
+	 * @return what type the tile should be. 
+	 */
 	private static TileType shouldChangeType(final TileType tile,
 			final TileType... moreTiles) {
-		Arrays.fill(counts, 0);
-		counts[tile.ordinal()] = 2;
+		Arrays.fill(TERRAIN_COUNTS, 0);
+		TERRAIN_COUNTS[tile.ordinal()] = 2;
 		for (final TileType next : moreTiles) {
-			counts[next.ordinal()]++;
+			TERRAIN_COUNTS[next.ordinal()]++;
 		}
 		TileType common = TileType.UNEXPLORED; // NOPMD
 		int max = -1; // NOPMD
 		for (final TileType type : TileType.values()) {
-			if (counts[type.ordinal()] > max) {
+			if (TERRAIN_COUNTS[type.ordinal()] > max) {
 				common = type; // NOPMD
-				max = counts[type.ordinal()]; // NOPMD
+				max = TERRAIN_COUNTS[type.ordinal()]; // NOPMD
 			}
 		}
 		return common;
 	}
 
-	private static boolean tooMuchLower(final char tile, final char tile2,
+	/**
+	 * @param tile the tile
+	 * @param tile2 one neighbor
+	 * @param tile3 a second neighbor
+	 * @param tile4 a third neighbor
+	 * @param tile5 a fourth neighbor
+	 * @return whether the tile is too much below any of them
+	 */
+	private static boolean isTooMuchLower(final char tile, final char tile2,
 			final char tile3, final char tile4, final char tile5) {
 		return tile - tile2 < -2 || tile - tile3 < -2 || tile - tile4 < -2
 				|| tile - tile5 < -3;
 	}
 
-	private static boolean tooMuchHigher(final char tile, final char tile2,
+	/**
+	 * @param tile the tile
+	 * @param tile2 one neighbor
+	 * @param tile3 a second neighbor
+	 * @param tile4 a third neighbor
+	 * @param tile5 a fourth neighbor
+	 * @return whether the tile is too much above any of them
+	 */
+	private static boolean isTooMuchHigher(final char tile, final char tile2,
 			final char tile3, final char tile4, final char tile5) {
 		return tile - tile2 > 2 || tile - tile3 > 2 || tile - tile4 > 2
 				|| tile - tile5 > 3;
@@ -301,12 +340,14 @@ public final class Converter {
 		}
 		out.close();
 	}
-
+	/**
+	 * Logger.
+	 */
 	private static final Logger LOGGER = Logger.getLogger(Converter.class
 			.getName());
 
 	/**
-	 * Entry point for this program
+	 * Entry point for this program.
 	 * 
 	 * @param args
 	 *            the XML map to read

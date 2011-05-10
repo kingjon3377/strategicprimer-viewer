@@ -172,7 +172,7 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	 * @return value if it's in the range, or min otherwise.
 	 */
 	private static int betweenMin(final int min, final int value, final int max) {
-		return value < min || value > max ? min : value;
+		return (value < min || value > max) ? min : value;
 	}
 
 	/**
@@ -185,6 +185,6 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	 * @return value if it's in the range, or max otherwise.
 	 */
 	private static int betweenMax(final int min, final int value, final int max) {
-		return value < min || value > max ? max : value;
+		return (value < min || value > max) ? max : value;
 	}
 }

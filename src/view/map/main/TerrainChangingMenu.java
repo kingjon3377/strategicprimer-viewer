@@ -3,6 +3,7 @@ package view.map.main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -17,10 +18,13 @@ import model.viewer.TileType;
  */
 public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 	/**
-	 * Version UID for serialization
+	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = -7592568002529958689L;
-	private static final EnumMap<TileType, JMenuItem> ITEM_MAP = new EnumMap<TileType, JMenuItem>(
+	/**
+	 * Map of tile types and menu items representing them.
+	 */
+	private static final Map<TileType, JMenuItem> ITEM_MAP = new EnumMap<TileType, JMenuItem>(
 			TileType.class);
 	static {
 		for (final TileType type : TileType.values()) {
@@ -54,6 +58,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 
 	/**
 	 * Handle Menu selections.
+	 * @param event the menu-item-selected event we're handling.
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {

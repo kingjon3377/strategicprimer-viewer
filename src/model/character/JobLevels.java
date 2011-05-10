@@ -98,9 +98,9 @@ public class JobLevels implements Serializable {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof JobLevels
+		return this == obj || (obj instanceof JobLevels
 				&& ((JobLevels) obj).getJob().equals(jobType)
-				&& ((JobLevels) obj).getLevels() == levels;
+				&& ((JobLevels) obj).getLevels() == levels);
 	}
 
 	/**

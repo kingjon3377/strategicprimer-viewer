@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,19 +27,49 @@ import view.util.SizeLimiter;
  * @author Jonathan Lovelace
  */
 public class DetailPanel extends JPanel implements ActionListener {
+	/**
+	 * Command to save changed results.
+	 */
 	private static final String RESULTS_SAVE_CMD = "<html><p>Save changed results</p></html>";
+	/**
+	 * Height of the chit panel as a ratio to its parent's height.
+	 */
 	private static final double CHIT_PANEL_HEIGHT = 0.6;
+	/**
+	 * Width of the chit panel as a ratio to its parent's width.
+	 */
 	private static final double CHIT_PANEL_WIDTH = 0.5;
+	/**
+	 * Height of the results button as a ratio to its parent's height.
+	 */
 	private static final double RESULTS_BUTTON_HEIGHT = 0.2; // NOPMD
+	/**
+	 * Width of the results field as a ratio to its parent's width.
+	 */
 	private static final double RESULTS_FIELD_WIDTH = 0.5; // NOPMD
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 3391860564156014799L;
+	/**
+	 * Label to show the tile's terrain type.
+	 */
 	private final JLabel typeLabel = new JLabel();
+	/**
+	 * Label to show the legacy event on the tile.
+	 */
 	private final JLabel eventLabel = new JLabel();
+	/**
+	 * Label to show the details of the selected chit.
+	 */
 	private final JLabel chitDetail = new JLabel();
+	/**
+	 * Field to show and edit exploration results.
+	 */
 	private final JTextField resultsField = new JTextField();
+	/**
+	 * Exploration runner to produce exploration results.
+	 */
 	private final ExplorationRunner runner = new ExplorationRunner();
 
 	/**
@@ -131,8 +162,11 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * Descriptions of the types.
 	 */
-	private static final EnumMap<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
+	private static final Map<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
 			TileType.class);
+	/**
+	 * Panel for chits.
+	 */
 	private final JPanel chitPanel = new JPanel(new FlowLayout());
 	static {
 		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");

@@ -21,11 +21,11 @@ public class LegacyTable implements EncounterTable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param _map
+	 * @param entryMap
 	 *            the entries in the table.
 	 */
-	public LegacyTable(final Map<Integer, String> _map) {
-		map = new HashMap<Integer, String>(_map);
+	public LegacyTable(final Map<Integer, String> entryMap) {
+		map = new HashMap<Integer, String>(entryMap);
 	}
 
 	/**

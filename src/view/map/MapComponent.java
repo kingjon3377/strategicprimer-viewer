@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.EnumMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 
@@ -103,7 +104,7 @@ public class MapComponent extends JComponent {
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return rect == null ? new Rectangle(0, 0, map.cols() * TILE_SIZE,
+		return (rect == null) ? new Rectangle(0, 0, map.cols() * TILE_SIZE,
 				map.rows() * TILE_SIZE) : rect;
 	}
 
@@ -122,7 +123,7 @@ public class MapComponent extends JComponent {
 	private static void paintTile(final Graphics pen, final Tile tile,
 			final int row, final int col) {
 		final Color saveColor = pen.getColor();
-		pen.setColor(colorMap.get(tile.getType()));
+		pen.setColor(COLORS.get(tile.getType()));
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
 		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -130,34 +131,41 @@ public class MapComponent extends JComponent {
 				|| tile.getType().equals(TileType.NotVisible)) {
 			if (!tile.getUnits().isEmpty()
 					&& !tile.getType().equals(TileType.NotVisible)) {
-				pen.setColor(PURPLE);
+				pen.setColor(UNIT_COLOR);
 				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE
 						+ TILE_SIZE / 2, TILE_SIZE / 4, TILE_SIZE / 4);
 			}
 		} else {
-			pen.setColor(BROWN);
+			pen.setColor(FORT_COLOR);
 			pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE
 					+ TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
 		}
 		pen.setColor(saveColor);
 	}
-
-	private static final Color BROWN = new Color(160, 82, 45);
-	private static final Color PURPLE = new Color(148, 0, 211);
-
-	private static EnumMap<TileType, Color> colorMap = new EnumMap<TileType, Color>(
+	/**
+	 * Brown, the color of a fortress.
+	 */
+	private static final Color FORT_COLOR = new Color(160, 82, 45);
+	/**
+	 * Purple, the color of a unit.
+	 */
+	private static final Color UNIT_COLOR = new Color(148, 0, 211);
+	/**
+	 * Map from tile types to colors representing them.
+	 */
+	private static final Map<TileType, Color> COLORS = new EnumMap<TileType, Color>(
 			TileType.class);
 	// ESCA-JAVA0076:
 	static {
-		colorMap.put(TileType.BorealForest, new Color(72, 218, 164));
-		colorMap.put(TileType.Desert, new Color(249, 233, 28));
-		colorMap.put(TileType.Jungle, new Color(229, 46, 46));
-		colorMap.put(TileType.Mountain, new Color(249, 137, 28));
-		colorMap.put(TileType.NotVisible, new Color(255, 255, 255));
-		colorMap.put(TileType.Ocean, new Color(0, 0, 255));
-		colorMap.put(TileType.Plains, new Color(0, 117, 0));
-		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
-		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
+		COLORS.put(TileType.BorealForest, new Color(72, 218, 164));
+		COLORS.put(TileType.Desert, new Color(249, 233, 28));
+		COLORS.put(TileType.Jungle, new Color(229, 46, 46));
+		COLORS.put(TileType.Mountain, new Color(249, 137, 28));
+		COLORS.put(TileType.NotVisible, new Color(255, 255, 255));
+		COLORS.put(TileType.Ocean, new Color(0, 0, 255));
+		COLORS.put(TileType.Plains, new Color(0, 117, 0));
+		COLORS.put(TileType.TemperateForest, new Color(72, 250, 72));
+		COLORS.put(TileType.Tundra, new Color(153, 153, 153));
 	}
 
 }

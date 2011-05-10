@@ -70,7 +70,7 @@ public final class TestExplorationRunner implements Serializable {
 	/**
 	 * Test the getPrimaryRock method.
 	 * 
-	 * @todo Use a mock object rather than a real object for the Tile, and even
+	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 *       for the Table.
 	 */
 	@Test
@@ -84,7 +84,7 @@ public final class TestExplorationRunner implements Serializable {
 	/**
 	 * Test the getPrimaryTree method.
 	 * 
-	 * @todo Use a mock object rather than a real object for the Tile, and even
+	 * TODO Use a mock object rather than a real object for the Tile, and even
 	 *       for the Tables.
 	 */
 	@Test
@@ -114,7 +114,7 @@ public final class TestExplorationRunner implements Serializable {
 	/**
 	 * Test the consultTable method.
 	 * 
-	 * @todo Use a mock object rather than a real object for the Tile, and even
+	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 *       for the Tables.
 	 */
 	@Test
@@ -134,7 +134,7 @@ public final class TestExplorationRunner implements Serializable {
 	 * Test the recursiveConsultTable method: the one method under test whose
 	 * correctness is nonobvious.
 	 * 
-	 * @todo Use a mock object rather than a real object for the Tile, and even
+	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 *       for the Tables.
 	 */
 	@Test

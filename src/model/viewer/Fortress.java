@@ -34,17 +34,17 @@ public class Fortress implements Comparable<Fortress> {
 	/**
 	 * Csontructor.
 	 * 
-	 * @param _tile
+	 * @param parentTile
 	 *            the tile the fortress is on
-	 * @param _owner
+	 * @param fortOwner
 	 *            the player that owns the fortress
-	 * @param _name
+	 * @param fortName
 	 *            the name of the fortress
 	 */
-	public Fortress(final Tile _tile, final int _owner, final String _name) {
-		tile = _tile;
-		owner = _owner;
-		name = _name;
+	public Fortress(final Tile parentTile, final int fortOwner, final String fortName) {
+		tile = parentTile;
+		owner = fortOwner;
+		name = fortName;
 		units = new ArrayList<Unit>();
 	}
 
@@ -103,9 +103,9 @@ public class Fortress implements Comparable<Fortress> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Fortress && ((Fortress) obj).name.equals(name)
+		return this == obj || (obj instanceof Fortress && ((Fortress) obj).name.equals(name)
 				&& ((Fortress) obj).owner == owner
-				&& ((Fortress) obj).units.equals(units);
+				&& ((Fortress) obj).units.equals(units));
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class Fortress implements Comparable<Fortress> {
 	 */
 	@Override
 	public int hashCode() {
-		return (name == null ? 0 : name.hashCode()) + owner << 2 + units
+		return ((name == null) ? 0 : name.hashCode()) + owner << 2 + units
 				.hashCode() << 4;
 	}
 

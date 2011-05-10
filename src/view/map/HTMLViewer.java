@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,11 +46,13 @@ public final class HTMLViewer {
 		out.println("</head>");
 		out.println("<body>");
 		out.println("<table border=\"0\" cellpadding=\"0\" cellspacing=\"1\">");
-		for (int i = 0; i < map.rows(); i++) {
+		final int rows = map.rows();
+		final int cols = map.cols();
+		for (int i = 0; i < rows; i++) {
 			out.println("<tr>");
-			for (int j = 0; j < map.cols(); j++) {
+			for (int j = 0; j < cols; j++) {
 				out.print("<td><img width=\"8\" height=\"8\" src=\"");
-				out.print(stringMap.get(map.getTile(i, j).getType()));
+				out.print(STRING_MAP.get(map.getTile(i, j).getType()));
 				out.print("\" alt=\"");
 				out.print('(');
 				out.print(i);
@@ -68,6 +71,7 @@ public final class HTMLViewer {
 		out.println("</table>");
 		out.println("</body>");
 		out.println("</html>");
+		out.close();
 	}
 
 	/**
@@ -90,7 +94,7 @@ public final class HTMLViewer {
 	/**
 	 * A cache of terrain type image filenames
 	 */
-	private static EnumMap<TileType, String> stringMap = new EnumMap<TileType, String>(
+	private static final Map<TileType, String> STRING_MAP = new EnumMap<TileType, String>(
 			TileType.class);
 	static {
 		addStringToMap(TileType.Plains, "plains");
@@ -113,7 +117,7 @@ public final class HTMLViewer {
 	 *            The string to use as the base of the filename
 	 */
 	private static void addStringToMap(final TileType type, final String tile) {
-		stringMap.put(type, tile + ".png");
+		STRING_MAP.put(type, tile + ".png");
 	}
 
 	/**
@@ -146,7 +150,7 @@ public final class HTMLViewer {
 	 *         are any, it is preceded by a newline.
 	 */
 	private static String anyForts(final Tile tile2) {
-		final StringBuffer retval = new StringBuffer();
+		final StringBuffer retval = new StringBuffer(32);
 		if (tile2.getForts().size() > 0) {
 			retval.append("\nForts belonging to players ");
 			for (final Fortress f : tile2.getForts()) {
@@ -166,14 +170,14 @@ public final class HTMLViewer {
 	 *         or if not an empty string.
 	 */
 	private static String anyEvent(final Tile tile) {
-		return (tile == null || tile.getEvent() == -1 ? "" : "\nEvent: "
-				+ Integer.toString(tile.getEvent()));
+		return (tile == null || tile.getEvent() == -1) ? "" : "\nEvent: "
+				+ Integer.toString(tile.getEvent());
 	}
 
 	/**
 	 * Descriptions of the types.
 	 */
-	private static final EnumMap<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
+	private static final Map<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
 			TileType.class);
 	static {
 		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");

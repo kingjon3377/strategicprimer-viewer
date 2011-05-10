@@ -29,21 +29,21 @@ public class SPCharacter implements Serializable {
 	}
 
 	/**
-	 * @param _name
+	 * @param charName
 	 *            the character's name
 	 */
-	public void setName(final String _name) {
-		name = _name;
+	public void setName(final String charName) {
+		name = charName;
 	}
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param _name
+	 * @param charName
 	 *            the character's name
 	 */
-	public SPCharacter(final String _name) {
-		name = _name;
+	public SPCharacter(final String charName) {
+		name = charName;
 		if (IsAdmin.IS_ADMIN) {
 			stats = new AdminStatsImpl();
 		} else {
@@ -55,14 +55,14 @@ public class SPCharacter implements Serializable {
 	 * Constructor taking a "stats" value. For use in the admin side when all we
 	 * have is the summary.
 	 * 
-	 * @param _name
+	 * @param charName
 	 *            the character's name
-	 * @param _stats
+	 * @param charStats
 	 *            the character's stats
 	 */
-	public SPCharacter(final String _name, final CharStats _stats) {
-		name = _name;
-		stats = _stats;
+	public SPCharacter(final String charName, final CharStats charStats) {
+		name = charName;
+		stats = charStats;
 	}
 
 	/**

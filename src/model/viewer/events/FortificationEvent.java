@@ -17,7 +17,7 @@ public final class FortificationEvent extends AbstractEvent.AbstractTownEvent {
 	 * @param discdc
 	 *            The DC to discover it.
 	 */
-	protected FortificationEvent(final TownStatus tStatus,
+	public FortificationEvent(final TownStatus tStatus,
 			final TownSize tSize, final int discdc) {
 		super(EventKind.Fortification, tStatus, tSize);
 		dc = discdc;

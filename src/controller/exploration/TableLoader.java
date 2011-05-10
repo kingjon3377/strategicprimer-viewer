@@ -28,6 +28,13 @@ import util.Pair;
  */
 public class TableLoader {// NOPMD
 	/**
+	 * Extracted constant for clarity: If we split() a string "once", we tell
+	 * split() to give us at most two pieces, and then test whether it gave us
+	 * two or fewer pieces.
+	 */
+	private static final int SPLIT_ONCE = 2;
+
+	/**
 	 * Load a table from file. Format: first line specifies the kind of table
 	 * (quadrant or random; first letter is the only one checked). Quadrant
 	 * tables have number of rows on the next line, then all the items, one per
@@ -45,11 +52,14 @@ public class TableLoader {// NOPMD
 	 *             when file not found
 	 */
 	public EncounterTable loadTable(final String filename)
-			throws FileNotFoundException, IOException {// NOPMD
+			throws FileNotFoundException, IOException { // NOPMD
 		final BufferedReader reader = new LoadFile().doLoadFile(filename);
 		try {
-			return loadTable(reader);
+			final EncounterTable table = loadTable(reader);
+			reader.close();
+			return table;
 		} catch (final IllegalArgumentException except) {
+			reader.close();
 			if ("unknown table type".equals(except.getMessage())) {
 				throw new IllegalArgumentException("File " + filename
 						+ " specifies an unknown table type", except);
@@ -143,8 +153,8 @@ public class TableLoader {// NOPMD
 		String line = reader.readLine();
 		final List<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
 		while (line != null) {
-			final String[] array = line.split(" ", 2);
-			if (array.length < 2) {
+			final String[] array = line.split(" ", SPLIT_ONCE);
+			if (array.length < SPLIT_ONCE) {
 				Logger.getLogger(TableLoader.class.getName()).severe(
 						"Line with no blanks, continuing ...");
 			} else {
@@ -170,8 +180,8 @@ public class TableLoader {// NOPMD
 		String line = reader.readLine();
 		final List<Pair<TileType, String>> list = new ArrayList<Pair<TileType, String>>();
 		while (line != null) {
-			final String[] array = line.split(" ", 2);
-			if (array.length < 2) {
+			final String[] array = line.split(" ", SPLIT_ONCE);
+			if (array.length < SPLIT_ONCE) {
 				Logger.getLogger(TableLoader.class.getName()).severe(
 						"Line with no blanks, continuing ...");
 			} else {
@@ -213,7 +223,7 @@ public class TableLoader {// NOPMD
 		final Map<Integer, String> map = new HashMap<Integer, String>();
 		String line = reader.readLine();
 		while (line != null) {
-			final String[] split = line.split(":", 2);
+			final String[] split = line.split(":", SPLIT_ONCE);
 			map.put(Integer.parseInt(split[0]), split[1].trim());
 			line = reader.readLine();
 		}

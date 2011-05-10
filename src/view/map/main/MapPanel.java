@@ -35,28 +35,31 @@ public class MapPanel extends JPanel {
 	 * The secondary map.
 	 */
 	private SPMap secondaryMap;
+	/**
+	 * Logger.
+	 */
 	private static final Logger LOGGER = Logger.getLogger(MapPanel.class
 			.getName());
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param _map
+	 * @param newMap
 	 *            The map object this panel is representing
 	 * @param details
 	 *            The panel that'll show the details of the selected tile
 	 */
-	public MapPanel(final SPMap _map, final DetailPanel details) {
+	public MapPanel(final SPMap newMap, final DetailPanel details) {
 		super();
 		selListener = new TileSelectionListener(this, details);
 		setOpaque(true);
-		loadMap(_map);
+		loadMap(newMap);
 	}
 
 	/**
 	 * Load and draw a subset of a map.
 	 * 
-	 * @param _map
+	 * @param newMap
 	 *            the map to load. If null, ignored.
 	 * @param minRow
 	 *            the first row to draw
@@ -67,26 +70,28 @@ public class MapPanel extends JPanel {
 	 * @param maxCol
 	 *            the last column to draw
 	 */
-	public final void loadMap(final SPMap _map, final int minRow,
+	public final void loadMap(final SPMap newMap, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
-		if (_map != null) {
+		if (newMap != null) {
 			LOGGER.info("Started loading panel");
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			removeAll();
 			selListener.clearSelection();
-			setLayout(new GridLayout(Math.min(_map.rows(),
+			setLayout(new GridLayout(Math.min(newMap.rows(),
 					Math.max(0, maxRow + 1 - minRow)), 0));
-			for (int row = Math.max(0, minRow); row < _map.rows()
-					&& row < maxRow + 1; row++) {
-				for (int col = Math.max(0, minCol); col < _map.cols()
-						&& col < maxCol + 1; col++) {
-					addTile(row, col, _map.getTile(row, col));
+			final int trueMinRow = Math.max(0, minRow);
+			final int trueMaxRow = Math.min(newMap.rows(), maxRow + 1);
+			final int trueMinCol = Math.max(0, minCol);
+			final int trueMaxCol = Math.min(newMap.cols(), maxCol + 1);
+			for (int row = trueMinRow; row < trueMaxRow; row++) {
+				for (int col = trueMinCol; col < trueMaxCol; col++) {
+					addTile(row, col, newMap.getTile(row, col));
 				}
 				LOGGER.fine("Added row ");
 				LOGGER.fine(Integer.toString(row));
 				LOGGER.fine("\n");
 			}
-			this.map = _map;
+			map = newMap;
 			LOGGER.info("Finished loading panel");
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			EventQueue.invokeLater(new Runnable() {
@@ -99,13 +104,13 @@ public class MapPanel extends JPanel {
 	}
 
 	/**
-	 * Load and draw a map
+	 * Load and draw a map.
 	 * 
-	 * @param _map
+	 * @param newMap
 	 *            the map to load
 	 */
-	public final void loadMap(final SPMap _map) {
-		loadMap(_map, 0, Integer.MAX_VALUE - 1, 0, Integer.MAX_VALUE - 1);
+	public final void loadMap(final SPMap newMap) {
+		loadMap(newMap, 0, Integer.MAX_VALUE - 1, 0, Integer.MAX_VALUE - 1);
 	}
 
 	/**

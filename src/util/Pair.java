@@ -29,14 +29,14 @@ public final class Pair<FIRST, SECOND> implements
 	/**
 	 * Constructor.
 	 * 
-	 * @param _first
+	 * @param firstItem
 	 *            The first item in the pair.
-	 * @param _second
+	 * @param secondItem
 	 *            The second item in the pair.
 	 */
-	private Pair(final FIRST _first, final SECOND _second) {
-		first = _first;
-		second = _second;
+	private Pair(final FIRST firstItem, final SECOND secondItem) {
+		first = firstItem;
+		second = secondItem;
 	}
 
 	/**
@@ -50,7 +50,7 @@ public final class Pair<FIRST, SECOND> implements
 	 *            The first element in the pair.
 	 * @param second
 	 *            The second element in the pair.
-	 * @return
+	 * @return a pair containing the two elements
 	 */
 	public static <FIRST, SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD
 			final SECOND second) {
@@ -67,11 +67,11 @@ public final class Pair<FIRST, SECOND> implements
 	@Override
 	public int compareTo(final Pair<FIRST, SECOND> other) {
 		final int cmp = compare(first, other.first);
-		return cmp == 0 ? compare(second, other.second) : cmp;
+		return (cmp == 0) ? compare(second, other.second) : cmp;
 	}
 
 	/**
-	 * @todo move this to a helper class.
+	 * TODO: move this to a helper class.
 	 * @param one
 	 *            one object
 	 * @param two
@@ -80,7 +80,7 @@ public final class Pair<FIRST, SECOND> implements
 	 */
 	@SuppressWarnings("unchecked")
 	private static int compare(final Object one, final Object two) {
-		return one == null ? two == null ? 0 : -1 : two == null ? +1
+		return (one == null) ? (two == null) ? 0 : -1 : (two == null) ? +1
 				: ((Comparable<Object>) one).compareTo(two);
 	}
 
@@ -95,13 +95,13 @@ public final class Pair<FIRST, SECOND> implements
 	// ESCA-JAVA0244:
 	// ESCA-JAVA0064:
 	/**
-	 * @todo move this to a helper class.
+	 * TODO: move this to a helper class.
 	 * @param obj
 	 *            an object
 	 * @return a hash code for it, or 0 if null.
 	 */
 	private static int hashcode(final Object obj) {
-		return obj == null ? 0 : obj.hashCode();
+		return (obj == null) ? 0 : obj.hashCode();
 	}
 
 	/**
@@ -111,14 +111,14 @@ public final class Pair<FIRST, SECOND> implements
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean equals(final Object obj) {
-		return (obj instanceof Pair) ? this == obj ? true : equal(first,
+	public boolean equals(final Object obj) { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
+		return (obj instanceof Pair) ? (this == obj) ? true : equal(first,
 				((Pair) obj).first) && equal(second, ((Pair) obj).second)
 				: false;
 	}
 
 	/**
-	 * @todo move this to a helper class.
+	 * TODO: move this to a helper class.
 	 * @param one
 	 *            One object
 	 * @param two
@@ -126,7 +126,7 @@ public final class Pair<FIRST, SECOND> implements
 	 * @return whether the objects are equal
 	 */
 	private static boolean equal(final Object one, final Object two) {
-		return one == null ? two == null : (one == two || one.equals(two)); // NOPMD
+		return (one == null) ? two == null : (one == two || one.equals(two)); // NOPMD // $codepro.audit.disable useEquals
 	}
 
 	/**

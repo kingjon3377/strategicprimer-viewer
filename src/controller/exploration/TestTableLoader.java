@@ -18,7 +18,13 @@ import org.junit.Test;
  * @author Jonathan Lovelace
  */
 public final class TestTableLoader {
+	/**
+	 * Error message for IOExceptions.
+	 */
 	private static final String IO_ERROR_MESSAGE = "I/O exception";
+	/**
+	 * "one".
+	 */
 	private static final String ONE_STRING = "one";
 	/**
 	 * The object we'll use for the tests
@@ -67,6 +73,11 @@ public final class TestTableLoader {
 					"File doesn't start with the number of rows of quadrants",
 					except.getMessage());
 		}
+		try {
+			reader.close();
+		} catch (IOException e) {
+			fail("I/O error cleaning up after the test");
+		}
 	}
 
 	/**
@@ -83,6 +94,7 @@ public final class TestTableLoader {
 			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
 					result.generateEvent(new Tile(30, 30, TileType.Tundra)));
+			one.close();
 		} catch (final IOException e) {
 			fail(IO_ERROR_MESSAGE);
 		}
@@ -105,6 +117,7 @@ public final class TestTableLoader {
 					result.generateEvent(new Tile(15, 15, TileType.Plains)));
 			assertEquals("loading terrain table: ocean", "three",
 					result.generateEvent(new Tile(15, 15, TileType.Ocean)));
+			one.close();
 		} catch (final IOException e) {
 			fail(IO_ERROR_MESSAGE);
 		}
@@ -126,6 +139,7 @@ public final class TestTableLoader {
 					result.generateEvent(new Tile(15, 20, TileType.Tundra, 1)));
 			assertEquals("loading legacy table: three", "third",
 					result.generateEvent(new Tile(15, 20, TileType.Tundra, 2)));
+			one.close();
 		} catch (final IOException e) {
 			fail(IO_ERROR_MESSAGE);
 		}
@@ -143,6 +157,7 @@ public final class TestTableLoader {
 			final EncounterTable result = loader.loadTable(one);
 			assertEquals("loading constant table: first test", ONE_STRING,
 					result.generateEvent(new Tile(10, 5, TileType.Plains)));
+			one.close();
 		} catch (final IOException e) {
 			fail(IO_ERROR_MESSAGE);
 		}
@@ -173,6 +188,12 @@ public final class TestTableLoader {
 					except.getMessage());
 		} catch (final IOException except) {
 			fail("I/O error when testing for rejection of headerless tables");
+		} 
+		try {
+			one.close();
+			two.close();
+		} catch (IOException e) {
+			fail("I/O error while closing the stream");
 		}
 	}
 }

@@ -234,7 +234,7 @@ public final class CharacterPanel extends JPanel implements Applyable,
 	 * @param panel
 	 *            the panel holding the Job to remove
 	 */
-	protected void removeJob(final JobPanel panel) {
+	public void removeJob(final JobPanel panel) {
 		// FIXME: implement
 	}
 }

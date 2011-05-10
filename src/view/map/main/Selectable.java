@@ -22,6 +22,7 @@ public abstract class Selectable extends JComponent { // NOPMD
 
 	/**
 	 * Paint a rectangle around the item if it's selected.
+	 * @param pen the graphics context.
 	 */
 	@Override
 	public void paint(final Graphics pen) {

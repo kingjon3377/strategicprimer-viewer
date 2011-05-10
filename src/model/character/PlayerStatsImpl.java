@@ -1,6 +1,7 @@
 package model.character;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * An implementation of CharStats for players, who shouldn't know the precise
@@ -17,7 +18,7 @@ public class PlayerStatsImpl implements CharStats {
 	/**
 	 * A map containing the stats.
 	 */
-	private final EnumMap<Stat, Attribute> stats = new EnumMap<Stat, Attribute>(
+	private final Map<Stat,Attribute> stats = new EnumMap<Stat, Attribute>(
 			Stat.class);
 
 	/**

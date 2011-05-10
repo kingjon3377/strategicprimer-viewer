@@ -62,16 +62,16 @@ public class JobPanel extends JPanel implements Applyable, ActionListener {
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param cpanel
 	 *            the panel this is embedded in
-	 * @param _job
+	 * @param charJob
 	 *            the job this represents
 	 */
-	public JobPanel(final CharacterPanel cpanel, final JobLevels _job) {
+	public JobPanel(final CharacterPanel cpanel, final JobLevels charJob) {
 		this(cpanel);
-		job = _job;
+		job = charJob;
 	}
 
 	/**
@@ -82,11 +82,11 @@ public class JobPanel extends JPanel implements Applyable, ActionListener {
 	}
 
 	/**
-	 * @param _job
+	 * @param newJob
 	 *            the job this now represents
 	 */
-	public void setJob(final JobLevels _job) {
-		job = _job;
+	public void setJob(final JobLevels newJob) {
+		job = newJob;
 		revert();
 	}
 
@@ -103,7 +103,12 @@ public class JobPanel extends JPanel implements Applyable, ActionListener {
 			job.setLevels(Integer.parseInt(levels.getText()));
 		}
 	}
-
+	
+	/**
+	 * Revert all changes made in the panel.
+	 *
+	 * @see view.util.Applyable#revert()
+	 */
 	@Override
 	public void revert() {
 		if (job == null) {
@@ -117,6 +122,7 @@ public class JobPanel extends JPanel implements Applyable, ActionListener {
 
 	/**
 	 * Handle button presses.
+	 * @param event the button press being handled.
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {

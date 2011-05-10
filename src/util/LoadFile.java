@@ -30,10 +30,10 @@ public class LoadFile {
 	public BufferedReader doLoadFile(final String fileName)
 			throws FileNotFoundException {
 		// ESCA-JAVA0177:
-		InputStream inputStream;
+		InputStream inputStream; // $codepro.audit.disable localDeclaration
 		// try to load file from disk
 		try {
-			inputStream = new FileInputStream(fileName);
+			inputStream = new FileInputStream(fileName); // $codepro.audit.disable closeWhereCreated
 		} catch (final FileNotFoundException fe) {
 			// failed, so try to load it from resources in class path
 			inputStream = LoadFile.class.getClassLoader().getResourceAsStream(
@@ -43,6 +43,6 @@ public class LoadFile {
 						+ fileName); // NOPMD
 			}
 		}
-		return new BufferedReader(new InputStreamReader(inputStream));
+		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable closeWhereCreated
 	}
 }

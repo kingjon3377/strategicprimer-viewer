@@ -12,6 +12,9 @@ import model.viewer.Fortress;
  * @author Jonathan Lovelace
  */
 public class FortChit extends Chit {
+	/**
+	 * The margin we allow around the chit itself.
+	 */
 	private static final double MARGIN = 0.25;
 	/**
 	 * Version UID for serialization.
@@ -72,6 +75,8 @@ public class FortChit extends Chit {
 				((int) (getHeight() * (1.0 - MARGIN * 2.0))));
 		pen.setColor(saveColor);
 	}
-
+	/**
+	 * The color of the chit.
+	 */
 	private static final Color FORT_COLOR = new Color(160, 82, 45);
 }

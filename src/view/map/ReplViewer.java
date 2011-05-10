@@ -43,7 +43,8 @@ public final class ReplViewer {
 	private ReplViewer(final SPMap map, final int row, final int col) {
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				System.in));
-		int iRow = row, iCol = col;
+		int iRow = row;
+		int iCol = col;
 		Tile tile = map.getTile(row, col);
 		printTile(tile);
 		try {
@@ -76,6 +77,12 @@ public final class ReplViewer {
 			reader.close();
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
+		} finally {
+			try {
+				reader.close();
+			} catch (final IOException except) {
+				LOGGER.log(Level.SEVERE, "I/O exception while closing reader", except);
+			}
 		}
 	}
 
@@ -112,6 +119,7 @@ public final class ReplViewer {
 			out.print("Event on this tile: ");
 			out.println(tile.getEvent());
 		}
+		out.close();
 	}
 
 	/**

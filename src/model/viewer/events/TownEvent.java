@@ -17,7 +17,7 @@ public final class TownEvent extends AbstractEvent.AbstractTownEvent {
 	 * @param discdc
 	 *            The DC to discover it.
 	 */
-	protected TownEvent(final TownStatus tStatus, final TownSize tSize,
+	public TownEvent(final TownStatus tStatus, final TownSize tSize,
 			final int discdc) {
 		super(EventKind.Town, tStatus, tSize);
 		dc = discdc;

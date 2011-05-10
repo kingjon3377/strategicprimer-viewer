@@ -24,20 +24,20 @@ public class ChangeableComponent extends JPanel {
 	 */
 	public ChangeableComponent(final JComponent comp) {
 		super();
-		component = comp;
-		add(component);
+		wrappedComponent = comp;
+		add(wrappedComponent);
 	}
 
 	/**
 	 * The component we're wrapping.
 	 */
-	private JComponent component;
+	private JComponent wrappedComponent;
 
 	/**
 	 * @return the component we're wrapping
 	 */
 	public JComponent getComponent() {
-		return component;
+		return wrappedComponent;
 	}
 
 	/**
@@ -45,8 +45,8 @@ public class ChangeableComponent extends JPanel {
 	 *            the new component
 	 */
 	public void setComponent(final JComponent comp) {
-		remove(component);
-		component = comp;
-		add(component);
+		remove(wrappedComponent);
+		wrappedComponent = comp;
+		add(wrappedComponent);
 	}
 }

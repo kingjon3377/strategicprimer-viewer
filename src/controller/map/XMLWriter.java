@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.EnumMap;
+import java.util.Map;
 
 import model.viewer.Fortress;
 import model.viewer.Player;
@@ -36,17 +37,18 @@ public class XMLWriter { // NOPMD
 	 *             on I/O error opening the file
 	 */
 	public XMLWriter(final String filename) throws IOException {
-		this(new FileWriter(filename));
+		this(new FileWriter(filename)); // $codepro.audit.disable closeWhereCreated
 	}
 
 	/**
-	 * Constructor
+	 * Constructor. FIXME: The writer (or filename) should be a parameter to
+	 * write(), not an instance variable.
 	 * 
 	 * @param out
 	 *            the writer to write to
 	 */
 	public XMLWriter(final Writer out) {
-		writer = new PrintWriter(new BufferedWriter(out));
+		writer = new PrintWriter(new BufferedWriter(out)); // $codepro.audit.disable closeWhereCreated
 	}
 
 	/**
@@ -74,7 +76,8 @@ public class XMLWriter { // NOPMD
 			printQuoted(player.getName());
 			writer.println(" />");
 		}
-		for (int i = 0; i < map.rows(); i++) {
+		final int rows = map.rows();
+		for (int i = 0; i < rows; i++) {
 			printRow(map, i);
 		}
 		writer.println("</map>");
@@ -92,7 +95,8 @@ public class XMLWriter { // NOPMD
 		writer.print("<row index=");
 		printQuoted(row);
 		writer.println('>');
-		for (int j = 0; j < map.cols(); j++) {
+		final int cols = map.cols();
+		for (int j = 0; j < cols; j++) {
 			printTile(map.getTile(row, j));
 		}
 		indent(1);
@@ -182,6 +186,12 @@ public class XMLWriter { // NOPMD
 		}
 	}
 
+	/**
+	 * Print the tag for a river.
+	 * 
+	 * @param river
+	 *            the river to print
+	 */
 	private void printRiver(final River river) {
 		indent(3);
 		if (River.Lake.equals(river)) {
@@ -243,9 +253,12 @@ public class XMLWriter { // NOPMD
 	/**
 	 * A mapping from tile types to descriptive strings as used in the XML.
 	 */
-	private static final EnumMap<TileType, String> XML_TYPES = new EnumMap<TileType, String>(
+	private static final Map<TileType, String> XML_TYPES = new EnumMap<TileType, String>(
 			TileType.class);
-	private static final EnumMap<River, String> XML_RIVERS = new EnumMap<River, String>(
+	/**
+	 * Mapping from river directions to the strings used for them in the XML.
+	 */
+	private static final Map<River, String> XML_RIVERS = new EnumMap<River, String>(
 			River.class);
 	static {
 		XML_TYPES.put(TileType.Tundra, "tundra");

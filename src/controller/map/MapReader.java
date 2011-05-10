@@ -1,7 +1,6 @@
 package controller.map;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -35,7 +34,13 @@ import org.xml.sax.SAXException;
  * 
  */
 public class MapReader {
+	/**
+	 * Error message for unexpected tag.
+	 */
 	private static final String UNEXPECTED_TAG = "Unexpected tag ";
+	/**
+	 * Logger.
+	 */
 	private static final Logger LOGGER = Logger.getLogger(MapReader.class
 			.getName());
 
@@ -43,14 +48,15 @@ public class MapReader {
 	 * @param file
 	 *            the file to read from
 	 * @return the map contained in that file
-	 * @throws FileNotFoundException
-	 *             if file not found
 	 * @throws XMLStreamException
 	 *             on badly-formed XML or other processing error
+	 * @throws IOException if file not found or on other I/O error, e.g. while closing the stream.
 	 */
-	public SPMap readMap(final String file) throws FileNotFoundException,
-			XMLStreamException {
-		return readMap(new FileInputStream(file));
+	public SPMap readMap(final String file) throws XMLStreamException, IOException {
+		final FileInputStream istream = new FileInputStream(file);
+		final SPMap retval = readMap(istream);
+		istream.close();
+		return retval;
 	}
 
 	/**
@@ -97,37 +103,36 @@ public class MapReader {
 		/**
 		 * The text version of the tag.
 		 */
-		private String text;
+		private final String text;
 
 		/**
 		 * Constructor
 		 * 
-		 * @param _text
+		 * @param tagText
 		 *            The string to associate with the tag.
 		 */
-		Tag(final String _text) {
-			text = _text;
+		Tag(final String tagText) {
+			text = tagText;
 		}
 
 		/**
 		 * @return the string associated with the tag.
-		 * @return
 		 */
 		public String getText() {
 			return text;
 		}
 
 		/**
-		 * @param _text
+		 * @param tagText
 		 *            a string
 		 * @return the tag that represents that string, if any, or Unknown if
 		 *         none.
 		 */
-		public static Tag fromString(final String _text) {
+		public static Tag fromString(final String tagText) {
 			Tag retval = Unknown;
-			if (_text != null) {
+			if (tagText != null) {
 				for (final Tag tag : Tag.values()) {
-					if (_text.equalsIgnoreCase(tag.text)) {
+					if (tagText.equalsIgnoreCase(tag.text)) {
 						retval = tag;
 						break;
 					}
@@ -240,7 +245,7 @@ public class MapReader {
 	 * @return the tile it represents.
 	 */
 	private static Tile parseTile(final StartElement element) {
-		return getAttribute(element, "event") == null ? new Tile(
+		return (getAttribute(element, "event") == null) ? new Tile(
 				Integer.parseInt(getAttribute(element, "row")),
 				Integer.parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttribute(element, "type")))
@@ -265,12 +270,7 @@ public class MapReader {
 	public static River parseRiver(final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
 		// ESCA-JAVA0177:
-		final River river; // NOPMD
-		if (Tag.Lake.equals(getTagType(elem))) {
-			river = River.Lake;
-		} else {
-			river = River.getRiver(getAttribute(elem, "direction"));
-		}
+		final River river = Tag.Lake.equals(getTagType(elem)) ? River.Lake : River.getRiver(getAttribute(elem, "direction"));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
@@ -366,7 +366,7 @@ public class MapReader {
 			final String attribute) {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
-		return attr == null ? null : attr.getValue();
+		return (attr == null) ? null : attr.getValue();
 	}
 
 	/**
@@ -454,5 +454,6 @@ public class MapReader {
 				LOGGER.log(Level.SEVERE, "Unexpected state in " + arg, e);
 			}
 		}
+		out.close();
 	}
 }

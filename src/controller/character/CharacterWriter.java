@@ -15,7 +15,7 @@ import model.character.SPCharacter;
 /**
  * Write a character to file.
  * 
- * @todo write tests for this
+ * TODO: write tests for this
  * 
  * @author Jonathan Lovelace.
  * 
@@ -30,7 +30,7 @@ public class CharacterWriter {
 	 *             on I/O error opening file.
 	 */
 	public CharacterWriter(final String filename) throws IOException {
-		this(new FileWriter(filename));
+		this(new FileWriter(filename)); // $codepro.audit.disable closeWhereCreated
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class CharacterWriter {
 	 *            a stream to write to
 	 */
 	public CharacterWriter(final Writer out) {
-		ostream = new PrintWriter(new BufferedWriter(out));
+		ostream = new PrintWriter(new BufferedWriter(out)); // $codepro.audit.disable closeWhereCreated
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class CharacterWriter {
 		writeName(character);
 		writeStats(character, forPlayer);
 		writeJobs(character);
-		ostream.close();
+		ostream.close(); // $codepro.audit.disable closeInFinally
 	}
 
 	/**

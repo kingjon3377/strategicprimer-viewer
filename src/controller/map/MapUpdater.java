@@ -47,9 +47,11 @@ public class MapUpdater {
 				|| master.cols() != derived.cols()) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
-		for (int i = 0; i < master.rows(); i++) {
-			for (int j = 0; j < master.cols(); j++) {
-				if (compareTiles(derived.getTile(i, j), master.getTile(i, j))) {
+		final int rows = master.rows();
+		final int cols = master.cols();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (shouldUpdate(derived.getTile(i, j), master.getTile(i, j))) {
 					derived.addTile(master.getTile(i, j));
 				}
 			}
@@ -63,7 +65,7 @@ public class MapUpdater {
 	 *            the equivalent tile from a derived map
 	 * @return whether the derived map needs updating in this tile
 	 */
-	public boolean compareTiles(final Tile masterTile, final Tile tile) {
+	public boolean shouldUpdate(final Tile masterTile, final Tile tile) {
 		return tile != null && !TileType.NotVisible.equals(tile.getType())
 				&& masterTile != null
 				&& !TileType.NotVisible.equals(masterTile.getType())
@@ -86,33 +88,40 @@ public class MapUpdater {
 		}
 		final MapReader reader = new MapReader();
 		// ESCA-JAVA0177:
-		final MapUpdater updater; // NOPMD
+		final MapUpdater updater; // NOPMD // $codepro.audit.disable localDeclaration
 		try {
 			updater = new MapUpdater(reader.readMap(args[0]));
 		} catch (final FileNotFoundException e) {
 			err.println("File " + args[0] + " not found");
+			err.close();
 			System.exit(1);
 			return; // NOPMD
 		} catch (final XMLStreamException e) {
 			err.println("XML stream error parsing " + args[0]);
+			err.close();
 			System.exit(2);
 			return; // NOPMD
 		}
 		// ESCA-JAVA0177:
-		final SPMap derived; // NOPMD
+		final SPMap derived; // NOPMD // $codepro.audit.disable localDeclaration
 		try {
 			derived = reader.readMap(args[1]);
 		} catch (final FileNotFoundException e) {
 			err.println("File " + args[1] + " not found");
+			err.close();
 			System.exit(3);
 			return; // NOPMD
 		} catch (final XMLStreamException e) {
 			err.println("XML stream error parsing " + args[1]);
+			err.close();
 			System.exit(4);
 			return;
 		}
 		updater.update(derived);
 		// ESCA-JAVA0266:
-		new XMLWriter(new PrintWriter(System.out)).write(derived);
+		final PrintWriter writer = new PrintWriter(System.out);
+		new XMLWriter(writer).write(derived);
+		writer.close();
+		err.close();
 	}
 }

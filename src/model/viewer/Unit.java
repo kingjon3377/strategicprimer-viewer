@@ -32,19 +32,19 @@ public class Unit implements Comparable<Unit> {
 	 * 
 	 * @param loc
 	 *            the tile the unit is on
-	 * @param _owner
+	 * @param unitOwner
 	 *            the player that owns the unit
-	 * @param _type
+	 * @param unitType
 	 *            the type of unit
-	 * @param _name
+	 * @param unitName
 	 *            the name of this unit
 	 */
-	public Unit(final Tile loc, final int _owner, final String _type,
-			final String _name) {
+	public Unit(final Tile loc, final int unitOwner, final String unitType,
+			final String unitName) {
 		location = loc;
-		owner = _owner;
-		type = _type;
-		name = _name;
+		owner = unitOwner;
+		type = unitType;
+		name = unitName;
 	}
 
 	/**
@@ -82,12 +82,12 @@ public class Unit implements Comparable<Unit> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Unit
+		return this == obj || (obj instanceof Unit
 				&& ((Unit) obj).owner == owner
-				&& (type == null ? ((Unit) obj).type == null
+				&& ((type == null) ? ((Unit) obj).type == null
 						: ((Unit) obj).type.equals(type))
-				&& (name == null ? ((Unit) obj).name == null
-						: ((Unit) obj).name.equals(name));
+				&& ((name == null) ? ((Unit) obj).name == null
+						: ((Unit) obj).name.equals(name)));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class Unit implements Comparable<Unit> {
 	 */
 	@Override
 	public int hashCode() {
-		return (type == null ? 0 : type.hashCode()) + owner << 2 + (name == null ? 0
+		return ((type == null) ? 0 : type.hashCode()) + owner << 2 + ((name == null) ? 0
 				: name.hashCode()) << 4;
 	}
 

@@ -57,8 +57,8 @@ public class Player implements Serializable, Comparable<Player> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Player && playerID == ((Player) obj).getId()
-				&& playerName.equals(((Player) obj).getName());
+		return this == obj || (obj instanceof Player && playerID == ((Player) obj).getId()
+				&& playerName.equals(((Player) obj).getName()));
 	}
 
 	/**

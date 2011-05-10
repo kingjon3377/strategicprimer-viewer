@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import util.Sorter;
 
@@ -56,19 +57,19 @@ public class SPMap implements Serializable {
 	/**
 	 * The tiles on the map.
 	 */
-	private HashMap<Point, Tile> tiles; // NOPMD
+	private Map<Point, Tile> tiles; // NOPMD
 	/**
 	 * The fortresses on the map.
 	 */
-	private final ArrayList<Fortress> forts; // NOPMD
+	private final List<Fortress> forts; // NOPMD
 	/**
 	 * The units on the map.
 	 */
-	private final ArrayList<Unit> units; // NOPMD
+	private final List<Unit> units; // NOPMD
 	/**
 	 * The players in the game.
 	 */
-	private final ArrayList<Player> players; // NOPMD
+	private final List<Player> players; // NOPMD
 
 	/**
 	 * @return how many rows the map has.
@@ -159,14 +160,14 @@ public class SPMap implements Serializable {
 		/**
 		 * Constructor.
 		 * 
-		 * @param _row
+		 * @param row
 		 *            The first coordinate
-		 * @param _col
+		 * @param col
 		 *            The second coordinate
 		 */
-		public Point(final int _row, final int _col) {
-			myRow = _row;
-			myCol = _col;
+		public Point(final int row, final int col) {
+			myRow = row;
+			myCol = col;
 		}
 
 		/**
@@ -176,7 +177,7 @@ public class SPMap implements Serializable {
 		 */
 		@Override
 		public final boolean equals(final Object obj) {
-			return (obj instanceof Point && (((Point) obj).myRow == myRow && ((Point) obj).myCol == myCol));
+			return this == obj || (obj instanceof Point && (((Point) obj).myRow == myRow && ((Point) obj).myCol == myCol));
 		}
 
 		/**
@@ -213,14 +214,14 @@ public class SPMap implements Serializable {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof SPMap
+		return this == obj || (obj instanceof SPMap
 				&& myCols == ((SPMap) obj).cols()
 				&& myRows == ((SPMap) obj).rows()
 				&& Sorter.sort(players).equals(
 						Sorter.sort(((SPMap) obj).getPlayers()))
 				&& Sorter.sort(forts).equals(Sorter.sort(((SPMap) obj).forts))
 				&& Sorter.sort(units).equals(Sorter.sort(((SPMap) obj).units))
-				&& tiles.equals(((SPMap) obj).tiles);
+				&& tiles.equals(((SPMap) obj).tiles));
 	}
 
 	/**

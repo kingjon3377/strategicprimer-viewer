@@ -22,17 +22,17 @@ public final class Tile implements Serializable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param _row
+	 * @param tileRow
 	 *            The row number
-	 * @param _col
+	 * @param tileCol
 	 *            The column number
-	 * @param _type
+	 * @param tileType
 	 *            The tile type
 	 */
-	public Tile(final int _row, final int _col, final TileType _type) {
-		row = _row;
-		col = _col;
-		type = _type;
+	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
+		row = tileRow;
+		col = tileCol;
+		type = tileType;
 		forts = new ArrayList<Fortress>();
 		units = new ArrayList<Unit>();
 		event = -1;
@@ -41,20 +41,20 @@ public final class Tile implements Serializable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param _row
+	 * @param tileRow
 	 *            The row number
-	 * @param _col
+	 * @param tileCol
 	 *            The column number
-	 * @param _type
+	 * @param tileType
 	 *            The tile type
 	 * @param newEvent
 	 *            the event on the tile
 	 */
-	public Tile(final int _row, final int _col, final TileType _type,
+	public Tile(final int tileRow, final int tileCol, final TileType tileType,
 			final int newEvent) {
-		row = _row;
-		col = _col;
-		type = _type;
+		row = tileRow;
+		col = tileCol;
+		type = tileType;
 		forts = new ArrayList<Fortress>();
 		units = new ArrayList<Unit>();
 		event = newEvent;
@@ -103,7 +103,7 @@ public final class Tile implements Serializable {
 	/**
 	 * The fortress(es) on the tile. FIXME: Should this be a Set?
 	 */
-	private final ArrayList<Fortress> forts; // NOPMD
+	private final List<Fortress> forts; // NOPMD
 
 	/**
 	 * FIXME: Should return a copy, not the real collection.
@@ -137,7 +137,7 @@ public final class Tile implements Serializable {
 	/**
 	 * FIXME: Should this be a Set? The units on the tile.
 	 */
-	private final ArrayList<Unit> units; // NOPMD
+	private final List<Unit> units; // NOPMD
 
 	/**
 	 * FIXME: Should return a copy, not the real collection.
@@ -182,13 +182,13 @@ public final class Tile implements Serializable {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return (obj instanceof Tile) && row == ((Tile) obj).row
+		return this == obj || ((obj instanceof Tile) && row == ((Tile) obj).row
 				&& col == ((Tile) obj).col && event == ((Tile) obj).event
 				&& type.equals(((Tile) obj).type)
 				&& forts.equals(((Tile) obj).forts)
 				&& rivers.equals(((Tile) obj).rivers)
 				&& tileText.equals(((Tile) obj).tileText)
-				&& units.equals(((Tile) obj).units);
+				&& units.equals(((Tile) obj).units));
 	}
 
 	/**
@@ -243,19 +243,17 @@ public final class Tile implements Serializable {
 	/**
 	 * @param river
 	 *            a river to add
-	 * @return the result of the operation
 	 */
-	public boolean addRiver(final River river) {
-		return rivers.add(river);
+	public void addRiver(final River river) {
+		rivers.add(river);
 	}
 
 	/**
 	 * @param river
 	 *            a river to remove
-	 * @return the result of the operation
 	 */
-	public boolean removeRiver(final River river) {
-		return rivers.remove(river);
+	public void removeRiver(final River river) {
+		rivers.remove(river);
 	}
 
 	/**
@@ -268,7 +266,7 @@ public final class Tile implements Serializable {
 	 *            text associated with the tile
 	 */
 	public void setTileText(final String text) {
-		tileText = (text == null ? "" : text);
+		tileText = ((text == null) ? "" : text);
 	}
 
 	/**

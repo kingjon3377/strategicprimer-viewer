@@ -41,8 +41,10 @@ public final class AltTerminalViewer {
 	private AltTerminalViewer(final SPMap map, final int row, final int col) {
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
 				System.out));
-		for (int i = 0; i < map.rows(); i++) {
-			for (int j = 0; j < map.cols(); j++) {
+		final int rows = map.rows();
+		final int cols = map.cols();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				if (i == row && j == col) {
 					out.print(ANSI.BLINK);
 				}
@@ -51,6 +53,7 @@ public final class AltTerminalViewer {
 			}
 			out.println();
 		}
+		out.close();
 	}
 
 	/**

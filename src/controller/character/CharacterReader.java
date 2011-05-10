@@ -41,7 +41,7 @@ public class CharacterReader {
 	 *             when file not found.
 	 */
 	public CharacterReader(final String filename) throws FileNotFoundException {
-		this(new BufferedReader(new FileReader(filename)));
+		this(new BufferedReader(new FileReader(filename))); // $codepro.audit.disable closeWhereCreated
 	}
 
 	/**

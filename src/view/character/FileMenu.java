@@ -32,12 +32,12 @@ public class FileMenu extends JMenu implements ActionListener {
 	/**
 	 * Constructor
 	 * 
-	 * @param _window
+	 * @param parentWindow
 	 *            the window we're attached to
 	 */
-	public FileMenu(final CharacterFrame _window) {
+	public FileMenu(final CharacterFrame parentWindow) {
 		super("File");
-		window = _window;
+		window = parentWindow;
 		addMenuItem("New");
 		addMenuItem("Open");
 		addMenuItem("Save As");

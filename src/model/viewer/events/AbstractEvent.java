@@ -4,7 +4,7 @@ package model.viewer.events;
  * An "event" --- something, other than a fortress, unit, or river, that can be
  * on a tile. Intended to replace legacy/numeric "events."
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public abstract class AbstractEvent {
@@ -51,6 +51,7 @@ public abstract class AbstractEvent {
 
 	/**
 	 * An abstract superclass for towns etc.
+	 * @author Jonathan Lovelace
 	 */
 	// ESCA-JAVA0011:
 	protected abstract static class AbstractTownEvent extends AbstractEvent {
