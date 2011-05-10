@@ -54,6 +54,7 @@ public class TileSelectionListener extends SelectionListener {
 		if (selection instanceof GUITile) {
 			detailPanel.setTile(((GUITile) selection).getTile());
 			if (event.getClickCount() == 2) {
+				detailPanel.runEncounter();
 				viewer.copyTile(((GUITile) selection).getTile());
 			}
 			LOGGER.fine("Click");

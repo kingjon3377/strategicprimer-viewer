@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.exploration.ExplorationRunner;
 import model.viewer.Fortress;
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -38,6 +39,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	private final JLabel eventLabel = new JLabel();
 	private final JLabel chitDetail = new JLabel();
 	private final JTextField resultsField = new JTextField();
+	private final ExplorationRunner runner = new ExplorationRunner();
 	/**
 	 * Constructor.
 	 */
@@ -77,6 +79,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0, 1.0 - CHIT_PANEL_HEIGHT));
 		add(viewPanel, BorderLayout.CENTER);
 		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.8));
+		runner.loadAllTables("tables");
 	}
 
 	/**
@@ -154,5 +157,12 @@ public class DetailPanel extends JPanel implements ActionListener {
 		if (RESULTS_SAVE_CMD.equals(event.getActionCommand()) && tile != null) {
 			tile.setTileText(resultsField.getText().trim());
 		}
+	}
+	/**
+	 * Run an encounter.
+	 */
+	public void runEncounter() {
+		resultsField.setText(resultsField.getText() + '\n' + runner.recursiveConsultTable("main", tile));
+		actionPerformed(new ActionEvent(this, 0, RESULTS_SAVE_CMD));
 	}
 }
