@@ -47,7 +47,7 @@ public class MapPanel extends JPanel {
 	 */
 	public MapPanel(final SPMap _map, final DetailPanel details) {
 		super();
-		selListener = new TileSelectionListener(details);
+		selListener = new TileSelectionListener(this, details);
 		setOpaque(true);
 		loadMap(_map);
 	}
@@ -168,9 +168,11 @@ public class MapPanel extends JPanel {
 	 * Swap the main and secondary maps, i.e. show the secondary map
 	 */
 	public void swapMaps() {
-		final SPMap temp = map;
-		loadMap(secondaryMap);
-		secondaryMap = temp;
+		if (secondaryMap != null) {
+			final SPMap temp = map;
+			loadMap(secondaryMap);
+			secondaryMap = temp;
+		}
 	}
 	/**
 	 * @return the secondary map
