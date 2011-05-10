@@ -24,15 +24,23 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	private final DetailPanel detailPanel;
 	/**
+	 * The main viewer ... the only object that can copy a tile from the main map to the alternate.
+	 */
+	private final MapPanel viewer;
+	/**
 	 * Constructor.
+	 * @param view the main panel. Needed to copy a tile from the main map to a sub-map.
 	 * @param details the panel that'll show the details of the selected tile
 	 */
-	public TileSelectionListener(final DetailPanel details) {
+	public TileSelectionListener(final MapPanel view, final DetailPanel details) {
 		super();
 		if (details == null) {
 			throw new IllegalArgumentException("DetailPanel was null");
+		} else if (view == null) {
+			throw new IllegalArgumentException("ViewerFrame was null");
 		}
 		detailPanel = details;
+		viewer = view;
 	}
 	/**
 	 * Handle mouse clicks.
@@ -45,6 +53,9 @@ public class TileSelectionListener extends SelectionListener {
 		super.mouseClicked(event);
 		if (selection instanceof GUITile) {
 			detailPanel.setTile(((GUITile) selection).getTile());
+			if (event.getClickCount() == 2) {
+				viewer.copyTile(((GUITile) selection).getTile());
+			}
 			LOGGER.fine("Click");
 		} else {
 			detailPanel.setTile(null);

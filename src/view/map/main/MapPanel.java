@@ -180,4 +180,17 @@ public class MapPanel extends JPanel {
 	public SPMap getSecondaryMap() {
 		return secondaryMap;
 	}
+	/**
+	 * Copy a tile from the main map to the secondary map.
+	 * @param selection
+	 */
+	public void copyTile(final Tile selection) {
+		if (map.getTile(selection.getRow(), selection.getCol()) != null && secondaryMap != null) {
+			if (secondaryMap.getTile(selection.getRow(), selection.getCol()) == null) {
+				secondaryMap.addTile(map.getTile(selection.getRow(), selection.getCol()));
+			} else {
+				// Update. FIXME: Implement.
+			}
+		}
+	}
 }
