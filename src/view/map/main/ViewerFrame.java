@@ -240,13 +240,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final JPanel thirdButtonPanel = new JPanel(new BorderLayout());
 		final JButton swapButton = new JButton("Switch maps");
 		swapButton.addActionListener(this);
-		thirdButtonPanel.addComponentListener(new SizeLimiter(swapButton, 1.0, 0.5));
+		thirdButtonPanel.addComponentListener(new SizeLimiter(swapButton, 1.0,
+				0.5));
 		thirdButtonPanel.add(swapButton, BorderLayout.NORTH);
 		final JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(this);
-		thirdButtonPanel.addComponentListener(new SizeLimiter(quitButton, 1.0, 0.5));
+		thirdButtonPanel.addComponentListener(new SizeLimiter(quitButton, 1.0,
+				0.5));
 		thirdButtonPanel.add(quitButton, BorderLayout.SOUTH);
-		buttonPanel.addComponentListener(new SizeLimiter(thirdButtonPanel, 0.15, 0.4));
+		buttonPanel.addComponentListener(new SizeLimiter(thirdButtonPanel,
+				0.15, 0.4));
 		buttonPanel.add(thirdButtonPanel, BorderLayout.EAST);
 		add(buttonPanel, BorderLayout.SOUTH);
 		addComponentListener(new SizeLimiter(buttonPanel,
@@ -287,7 +290,8 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			}
 		} else if (LOAD_2D_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				mapPanel.setSecondaryMap(readMap(chooser.getSelectedFile().getPath()));
+				mapPanel.setSecondaryMap(readMap(chooser.getSelectedFile()
+						.getPath()));
 			}
 		} else if (SAVE_2D_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
