@@ -68,7 +68,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 	 * A list of tables to load.
 	 */
 	private final String[] defaultTableList = { "major_rock", "minor_rock",
-			"boreal_major_tree", "temperate_major_tree" };
+			"boreal_major_tree", "temperate_major_tree", "main" };
 
 	/**
 	 * Loads the default set of tables.
