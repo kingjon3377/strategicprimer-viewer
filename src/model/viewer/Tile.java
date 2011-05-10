@@ -279,4 +279,17 @@ public final class Tile implements Serializable {
 	public String getTileText() {
 		return tileText;
 	}
+	/**
+	 * Update with data from a tile in another map.
+	 * @param tile the same tile in another map.
+	 */
+	public void update(final Tile tile) {
+		forts.addAll(tile.forts);
+		forts.retainAll(tile.forts);
+		rivers.addAll(tile.rivers);
+		rivers.retainAll(tile.rivers);
+		units.addAll(tile.units);
+		units.retainAll(tile.units);
+		tileText = tile.tileText;
+	}
 }

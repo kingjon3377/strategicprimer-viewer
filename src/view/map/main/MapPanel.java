@@ -189,7 +189,7 @@ public class MapPanel extends JPanel {
 			if (secondaryMap.getTile(selection.getRow(), selection.getCol()) == null) {
 				secondaryMap.addTile(map.getTile(selection.getRow(), selection.getCol()));
 			} else {
-				// Update. FIXME: Implement.
+				secondaryMap.getTile(selection.getRow(), selection.getCol()).update(map.getTile(selection.getRow(), selection.getCol()));
 			}
 		}
 	}
