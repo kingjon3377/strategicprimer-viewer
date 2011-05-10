@@ -41,7 +41,7 @@ public class GUITile extends Selectable {
 	/**
 	 * The tile this GUI-tile represents
 	 */
-	private final Tile tile;
+	private Tile tile;
 	/**
 	 * A cached copy of our width. If it hasn't changed, we can use cached
 	 * rendering objects.
@@ -213,5 +213,12 @@ public class GUITile extends Selectable {
 		colorMap.put(TileType.Plains, new Color(0, 117, 0));
 		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
 		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
+	}
+	/**
+	 * @param _tile the tile this now represents
+	 */
+	public void setTile(final Tile _tile) {
+		tile = _tile;
+		regenerateCache();
 	}
 }

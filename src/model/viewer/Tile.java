@@ -91,21 +91,13 @@ public final class Tile implements Serializable {
 	/**
 	 * The tile type.
 	 */
-	private TileType type;
+	private final TileType type;
 
 	/**
 	 * @return the tile type
 	 */
 	public TileType getType() {
 		return type;
-	}
-
-	/**
-	 * @param _type
-	 *            the tile type
-	 */
-	public void setType(final TileType _type) {
-		type = _type;
 	}
 
 	/**

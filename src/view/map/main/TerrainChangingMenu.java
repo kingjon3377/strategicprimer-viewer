@@ -7,7 +7,10 @@ import java.util.EnumMap;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import model.viewer.Fortress;
+import model.viewer.Tile;
 import model.viewer.TileType;
+import model.viewer.Unit;
 
 /**
  * A popup menu to let the user change a tile's terrain type.
@@ -57,7 +60,11 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if (tile != null && event != null) {
-			tile.getTile().setType(TileType.valueOf(event.getActionCommand()));
+			final Tile newTile = new Tile(tile.getTile().getRow(), tile.getTile()
+					.getCol(), TileType.valueOf(event.getActionCommand()),
+					tile.getTile().getEvent());
+			newTile.update(tile.getTile());
+			tile.setTile(newTile);
 			tile.repaint();
 		}
 	}
