@@ -1,6 +1,7 @@
 package controller.map;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
@@ -101,6 +102,11 @@ public class MapUpdater {
 			err.close();
 			System.exit(2);
 			return; // NOPMD
+		} catch (final IOException e) {
+			err.println("I/O error processing " + args[0]);
+			err.close();
+			System.exit(5);
+			return; // NOPMD
 		}
 		// ESCA-JAVA0177:
 		final SPMap derived; // NOPMD // $codepro.audit.disable localDeclaration
@@ -115,6 +121,11 @@ public class MapUpdater {
 			err.println("XML stream error parsing " + args[1]);
 			err.close();
 			System.exit(4);
+			return;
+		} catch (final IOException e) {
+			err.println("I/O error parsing " + args[1]);
+			err.close();
+			System.exit(6);
 			return;
 		}
 		updater.update(derived);

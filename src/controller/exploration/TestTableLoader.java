@@ -94,7 +94,7 @@ public final class TestTableLoader {
 			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
 					result.generateEvent(new Tile(30, 30, TileType.Tundra)));
-			one.close();
+			reader.close();
 		} catch (final IOException e) {
 			fail(IO_ERROR_MESSAGE);
 		}
@@ -117,7 +117,7 @@ public final class TestTableLoader {
 					result.generateEvent(new Tile(15, 15, TileType.Plains)));
 			assertEquals("loading terrain table: ocean", "three",
 					result.generateEvent(new Tile(15, 15, TileType.Ocean)));
-			one.close();
+			reader.close();
 		} catch (final IOException e) {
 			fail(IO_ERROR_MESSAGE);
 		}
@@ -139,7 +139,7 @@ public final class TestTableLoader {
 					result.generateEvent(new Tile(15, 20, TileType.Tundra, 1)));
 			assertEquals("loading legacy table: three", "third",
 					result.generateEvent(new Tile(15, 20, TileType.Tundra, 2)));
-			one.close();
+			reader.close();
 		} catch (final IOException e) {
 			fail(IO_ERROR_MESSAGE);
 		}
