@@ -1,0 +1,42 @@
+package model.viewer.events;
+
+/**
+ * An abandoned, ruined, or burned-out fortification.
+ * 
+ * @author Jonathan Lovelace
+ * 
+ */
+public final class FortificationEvent extends AbstractEvent.AbstractTownEvent {
+	/**
+	 * Constructor
+	 * 
+	 * @param tStatus
+	 *            The status of the fortification
+	 * @param tSize
+	 *            The size of the fortification
+	 * @param discdc
+	 *            The DC to discover it.
+	 */
+	protected FortificationEvent(final TownStatus tStatus,
+			final TownSize tSize, final int discdc) {
+		super(EventKind.Fortification, tStatus, tSize);
+		dc = discdc;
+	}
+
+	/**
+	 * The DC to discover the fortification. TODO: Should perhaps be mutable.
+	 */
+	public final int dc; // NOPMD
+
+	/**
+	 * 
+	 * @return the DC to discover the event.
+	 * 
+	 * @see model.viewer.events.AbstractEvent#getDC()
+	 */
+	@Override
+	public int getDC() {
+		return dc;
+	}
+
+}
