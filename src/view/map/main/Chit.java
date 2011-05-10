@@ -7,7 +7,7 @@ import java.awt.event.MouseListener;
  * A "piece" to represent a unit or fortress (or something else ...) in the
  * details-panel.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public abstract class Chit extends Selectable { // NOPMD

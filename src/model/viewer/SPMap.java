@@ -12,7 +12,7 @@ import util.Sorter;
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
  * tile; each unit is either in a fortress or on a tile directly.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public class SPMap implements Serializable {

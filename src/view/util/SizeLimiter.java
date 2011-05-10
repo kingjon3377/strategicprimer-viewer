@@ -9,7 +9,7 @@ import java.awt.event.ComponentEvent;
  * A listener that reduces a child component's size to a specified ratio to its
  * parent's size when the parent is resized.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public class SizeLimiter extends ComponentAdapter {

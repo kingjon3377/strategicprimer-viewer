@@ -17,7 +17,7 @@ import view.util.Applyable;
 /**
  * A panel to represent levels in a Job.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public class JobPanel extends JPanel implements Applyable, ActionListener {

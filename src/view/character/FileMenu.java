@@ -14,7 +14,7 @@ import javax.swing.JMenuItem;
 /**
  * File menu for the character management program.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public class FileMenu extends JMenu implements ActionListener {

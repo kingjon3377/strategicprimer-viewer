@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 /**
  * A class to handle selecting Chits.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public class ChitSelectionListener extends SelectionListener {

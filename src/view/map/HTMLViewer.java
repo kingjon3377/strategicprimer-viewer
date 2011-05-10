@@ -20,7 +20,7 @@ import controller.map.MapReader;
 /**
  * A viewer that generates an HTML view, for the really big maps.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public final class HTMLViewer {

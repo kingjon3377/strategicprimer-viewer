@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * A class to encapsulate our not-in-place List sorting method.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public final class Sorter {

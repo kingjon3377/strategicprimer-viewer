@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileFilter;
 /**
  * Filter out extraneous files when we're opening a map.
  * 
- * @author kingjon
+ * @author Jonathan Lovelace
  * 
  */
 public final class MapFileFilter extends FileFilter {
