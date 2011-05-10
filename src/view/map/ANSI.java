@@ -20,11 +20,11 @@ public final class ANSI {
 	 */
 	public static final String LOW_INTESITY = "\u001B[2m";
 	/**
-	 * Italicize text
+	 * Italicize text.
 	 */
 	public static final String ITALIC = "\u001B[3m";
 	/**
-	 * Underline text
+	 * Underline text.
 	 */
 	public static final String UNDERLINE = "\u001B[4m";
 	/**
@@ -32,7 +32,7 @@ public final class ANSI {
 	 */
 	public static final String BLINK = "\u001B[5m";
 	/**
-	 * Blink text rapidly
+	 * Blink text rapidly.
 	 */
 	public static final String RAPID_BLINK = "\u001B[6m";
 	/**
@@ -40,7 +40,7 @@ public final class ANSI {
 	 */
 	public static final String REVERSE_VIDEO = "\u001B[7m";
 	/**
-	 * Make text invisile.
+	 * Make text invisible.
 	 */
 	public static final String INVISIBLE_TEXT = "\u001B[8m";
 	/**
@@ -52,59 +52,59 @@ public final class ANSI {
 	 */
 	public static final String RED = "\u001B[31m";
 	/**
-	 * Make text green
+	 * Make text green.
 	 */
 	public static final String GREEN = "\u001B[32m";
 	/**
-	 * Make text yellow
+	 * Make text yellow.
 	 */
 	public static final String YELLOW = "\u001B[33m";
 	/**
-	 * Make text blue
+	 * Make text blue.
 	 */
 	public static final String BLUE = "\u001B[34m";
 	/**
-	 * Make text magenta
+	 * Make text magenta.
 	 */
 	public static final String MAGENTA = "\u001B[35m";
 	/**
-	 * Make text cyan
+	 * Make text cyan.
 	 */
 	public static final String CYAN = "\u001B[36m";
 	/**
-	 * Make text white
+	 * Make text white.
 	 */
 	public static final String WHITE = "\u001B[37m";
 	/**
-	 * Make background black
+	 * Make background black.
 	 */
 	public static final String BACKGROUND_BLACK = "\u001B[40m";
 	/**
-	 * Make background red
+	 * Make background red.
 	 */
 	public static final String BACKGROUND_RED = "\u001B[41m";
 	/**
-	 * Make background green
+	 * Make background green.
 	 */
 	public static final String BACKGROUND_GREEN = "\u001B[42m";
 	/**
-	 * Make background yellow
+	 * Make background yellow.
 	 */
 	public static final String BACKGROUND_YELLOW = "\u001B[43m";
 	/**
-	 * Make background blue
+	 * Make background blue.
 	 */
 	public static final String BACKGROUND_BLUE = "\u001B[44m";
 	/**
-	 * Make background magenta
+	 * Make background magenta.
 	 */
 	public static final String BACKGRD_MAGENTA = "\u001B[45m";
 	/**
-	 * Make background cyan
+	 * Make background cyan.
 	 */
 	public static final String BACKGROUND_CYAN = "\u001B[46m";
 	/**
-	 * Make background white
+	 * Make background white.
 	 */
 	public static final String BACKGROUND_WHITE = "\u001B[47m";
 
@@ -112,6 +112,6 @@ public final class ANSI {
 	 * Do not instantiate this class.
 	 */
 	private ANSI() {
-		// Do nohing
+		// Do nothing
 	}
 }

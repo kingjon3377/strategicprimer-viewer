@@ -22,12 +22,12 @@ import controller.map.MapReader;
  */
 public class TerminalViewer {
 	/**
-	 * Logger
+	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(TerminalViewer.class
 			.getName());
 	/**
-	 * The text map
+	 * The text map.
 	 */
 	private final char[][] textMap;
 
@@ -68,7 +68,7 @@ public class TerminalViewer {
 	}
 
 	/**
-	 * Create the text map
+	 * Create the text map.
 	 * 
 	 * @param map
 	 *            The map the text map represents
@@ -84,7 +84,7 @@ public class TerminalViewer {
 	}
 
 	/**
-	 * The entry point for this driver
+	 * The entry point for this driver.
 	 * 
 	 * @param args
 	 *            Command-line arguments: The XML file name and the coordinates

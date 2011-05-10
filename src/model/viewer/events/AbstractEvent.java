@@ -12,7 +12,38 @@ public abstract class AbstractEvent {
 	 * The kinds of events we know about.
 	 */
 	public enum EventKind {
-		Nothing, Mineral, Fortification, Town, Battlefield, City, Stone, Caves;
+		/**
+		 * "Nothing of interest here ...". Useful primarily as an alternative to null.
+		 */
+		Nothing,
+		/**
+		 * A mineral vein.
+		 */
+		Mineral,
+		/**
+		 * A fortification.
+		 */
+		Fortification,
+		/**
+		 * A town.
+		 */
+		Town,
+		/**
+		 * Signs of a long-ago battle.
+		 */
+		Battlefield,
+		/**
+		 * A city.
+		 */
+		City,
+		/**
+		 * A stone deposit.
+		 */
+		Stone,
+		/**
+		 * Caves beneath the tile.
+		 */
+		Caves;
 	}
 
 	/**
@@ -21,17 +52,43 @@ public abstract class AbstractEvent {
 	public final EventKind kind;
 
 	/**
-	 * Possible status of towns, fortifications, and cities
+	 * Possible status of towns, fortifications, and cities.
 	 */
 	public enum TownStatus {
-		Active, Abandoned, Burned, Ruined;
+		/**
+		 * The town is inhabited.
+		 */
+		Active,
+		/**
+		 * The town is abandoned.
+		 */
+		Abandoned,
+		/**
+		 * The town is burned-out.
+		 */
+		Burned,
+		/**
+		 * The town is in ruins.
+		 */
+		Ruined;
 	}
 
 	/**
-	 * Sizes of towns, fortifications, and cities
+	 * Sizes of towns, fortifications, and cities.
 	 */
 	public enum TownSize {
-		Small, Medium, Large;
+		/**
+		 * Small.
+		 */
+		Small,
+		/**
+		 * Medium.
+		 */
+		Medium,
+		/**
+		 * Large.
+		 */
+		Large;
 	}
 
 	/**
@@ -73,11 +130,11 @@ public abstract class AbstractEvent {
 		}
 
 		/**
-		 * The status of the town, fortress, or city
+		 * The status of the town, fortress, or city.
 		 */
 		public final TownStatus status;
 		/**
-		 * The size of the town, fortress, or city
+		 * The size of the town, fortress, or city.
 		 */
 		public final TownSize size;
 	}
