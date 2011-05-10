@@ -21,7 +21,8 @@ public class PlayerStatsImpl implements CharStats {
 			Stat.class);
 
 	/**
-	 * @param stat a stat
+	 * @param stat
+	 *            a stat
 	 * @return a summary of that stat
 	 */
 	@Override
@@ -30,18 +31,21 @@ public class PlayerStatsImpl implements CharStats {
 	}
 
 	/**
-	 * @param stat a stat
-	 * @param value the new summary value of that stat.
+	 * @param stat
+	 *            a stat
+	 * @param value
+	 *            the new summary value of that stat.
 	 */
 	@Override
 	public void setStat(final Stat stat, final Attribute value) {
 		stats.put(stat, value);
 	}
+
 	/**
 	 * Constructor.
 	 */
 	public PlayerStatsImpl() {
-		for (Stat stat : Stat.values()) {
+		for (final Stat stat : Stat.values()) {
 			stats.put(stat, Attribute.Average);
 		}
 	}

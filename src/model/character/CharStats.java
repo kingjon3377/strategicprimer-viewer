@@ -24,14 +24,19 @@ public interface CharStats extends Serializable {
 	enum Stat {
 		Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma
 	}
+
 	/**
-	 * @param stat a stat
+	 * @param stat
+	 *            a stat
 	 * @return an approximate value for that stat
 	 */
 	Attribute getStat(final Stat stat);
+
 	/**
-	 * @param stat a stat
-	 * @param value a new approximate value for that stat
+	 * @param stat
+	 *            a stat
+	 * @param value
+	 *            a new approximate value for that stat
 	 */
 	void setStat(final Stat stat, final Attribute value);
 }

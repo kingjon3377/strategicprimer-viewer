@@ -96,8 +96,8 @@ public class JobPanel extends JPanel implements Applyable, ActionListener {
 	@Override
 	public void apply() {
 		if (job == null) {
-			job = new JobLevels((JobType) jobChoices.getSelectedItem(), Integer
-					.parseInt(levels.getText()));
+			job = new JobLevels((JobType) jobChoices.getSelectedItem(),
+					Integer.parseInt(levels.getText()));
 		} else {
 			job.setJob((JobType) jobChoices.getSelectedItem());
 			job.setLevels(Integer.parseInt(levels.getText()));
@@ -114,6 +114,7 @@ public class JobPanel extends JPanel implements Applyable, ActionListener {
 			levels.setText(Integer.toString(job.getLevels()));
 		}
 	}
+
 	/**
 	 * Handle button presses.
 	 */

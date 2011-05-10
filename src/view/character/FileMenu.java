@@ -68,7 +68,7 @@ public class FileMenu extends JMenu implements ActionListener {
 				&& FILE_CHOOSER.showSaveDialog(window) == JFileChooser.APPROVE_OPTION) {
 			try {
 				window.save(FILE_CHOOSER.getSelectedFile().getPath());
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error while saving the map", e);
 			}
 		} else if ("Open".equals(evt.getActionCommand())

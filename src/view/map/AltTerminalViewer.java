@@ -39,7 +39,8 @@ public final class AltTerminalViewer {
 	 */
 	// ESCA-JAVA0266:
 	private AltTerminalViewer(final SPMap map, final int row, final int col) {
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
+				System.out));
 		for (int i = 0; i < map.rows(); i++) {
 			for (int j = 0; j < map.cols(); j++) {
 				if (i == row && j == col) {
@@ -61,21 +62,22 @@ public final class AltTerminalViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new AltTerminalViewer(new MapReader().readMap(args[0]), Integer
-					.parseInt(args[1]), Integer.parseInt(args[2]));
-		} catch (XMLStreamException e) {
+			new AltTerminalViewer(new MapReader().readMap(args[0]),
+					Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;
-		} catch (NumberFormatException e) {
-			LOGGER.log(Level.SEVERE, "Non-numeric data where numeric expected", e);
+		} catch (final NumberFormatException e) {
+			LOGGER.log(Level.SEVERE, "Non-numeric data where numeric expected",
+					e);
 			System.exit(3);
 			return; // NOPMD
-		} 
+		}
 	}
 
 	/**
@@ -88,8 +90,7 @@ public final class AltTerminalViewer {
 	 */
 	static {
 		CHAR_MAP.put(TileType.Tundra, ANSI.BACKGROUND_WHITE + ANSI.BLACK + 'T');
-		CHAR_MAP
-				.put(TileType.Desert, ANSI.BACKGROUND_BLACK + ANSI.YELLOW + 'D');
+		CHAR_MAP.put(TileType.Desert, ANSI.BACKGROUND_BLACK + ANSI.YELLOW + 'D');
 		CHAR_MAP.put(TileType.Mountain, ANSI.BACKGROUND_BLACK + ANSI.RED + 'M');
 		CHAR_MAP.put(TileType.BorealForest, ANSI.BACKGROUND_BLACK + ANSI.CYAN
 				+ 'B');

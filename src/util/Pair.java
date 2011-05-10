@@ -112,9 +112,9 @@ public final class Pair<FIRST, SECOND> implements
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(final Object obj) {
-		return (obj instanceof Pair) ? this == obj ? true : equal(
-				first, ((Pair) obj).first)
-				&& equal(second, ((Pair) obj).second) : false;
+		return (obj instanceof Pair) ? this == obj ? true : equal(first,
+				((Pair) obj).first) && equal(second, ((Pair) obj).second)
+				: false;
 	}
 
 	/**
@@ -128,6 +128,7 @@ public final class Pair<FIRST, SECOND> implements
 	private static boolean equal(final Object one, final Object two) {
 		return one == null ? two == null : (one == two || one.equals(two)); // NOPMD
 	}
+
 	/**
 	 * @return a String representation of the pair.
 	 */

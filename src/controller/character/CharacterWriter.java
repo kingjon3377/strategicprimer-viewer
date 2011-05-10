@@ -23,34 +23,48 @@ import model.character.SPCharacter;
 public class CharacterWriter {
 	/**
 	 * Constructor taking a filename.
-	 * @param filename the file to write to
-	 * @throws IOException on I/O error opening file.
+	 * 
+	 * @param filename
+	 *            the file to write to
+	 * @throws IOException
+	 *             on I/O error opening file.
 	 */
 	public CharacterWriter(final String filename) throws IOException {
 		this(new FileWriter(filename));
 	}
+
 	/**
 	 * Constructor taking a writer.
-	 * @param out a stream to write to
+	 * 
+	 * @param out
+	 *            a stream to write to
 	 */
 	public CharacterWriter(final Writer out) {
 		ostream = new PrintWriter(new BufferedWriter(out));
 	}
+
 	/**
 	 * The stream we'll write to.
 	 */
 	private final PrintWriter ostream;
+
 	/**
 	 * Write a character.
-	 * @param character the character to write.
+	 * 
+	 * @param character
+	 *            the character to write.
 	 */
 	public void write(final SPCharacter character) {
 		write(character, false);
 	}
+
 	/**
 	 * Write a character, maybe for player consumption.
-	 * @param character the character to write.
-	 * @param forPlayer true if we shouldn't write exact scores. 
+	 * 
+	 * @param character
+	 *            the character to write.
+	 * @param forPlayer
+	 *            true if we shouldn't write exact scores.
 	 */
 	public void write(final SPCharacter character, final boolean forPlayer) {
 		writeHeader();
@@ -59,6 +73,7 @@ public class CharacterWriter {
 		writeJobs(character);
 		ostream.close();
 	}
+
 	/**
 	 * Writes the file header.
 	 */
@@ -66,20 +81,26 @@ public class CharacterWriter {
 		ostream.println("# SP character file format v. 0");
 		ostream.println();
 	}
+
 	/**
 	 * Writes the character's name.
-	 * @param character the character to write.
+	 * 
+	 * @param character
+	 *            the character to write.
 	 */
 	private void writeName(final SPCharacter character) {
 		ostream.print("CHARNAME:");
 		ostream.println(character.getName());
 		ostream.println();
 	}
+
 	/**
 	 * Writes the character's stats.
 	 * 
-	 * @param character the character to write
-	 * @param forPlayer true if we shouldn't write exact stats.
+	 * @param character
+	 *            the character to write
+	 * @param forPlayer
+	 *            true if we shouldn't write exact stats.
 	 */
 	private void writeStats(final SPCharacter character, final boolean forPlayer) {
 		if (forPlayer || character.getStats() instanceof PlayerStatsImpl) {
@@ -89,34 +110,44 @@ public class CharacterWriter {
 		}
 		ostream.println();
 	}
+
 	/**
 	 * Write the character's stats, approximately.
-	 * @param character the character to write
+	 * 
+	 * @param character
+	 *            the character to write
 	 */
 	private void writeApproximateStats(final SPCharacter character) {
-		for (CharStats.Stat stat : CharStats.Stat.values()) {
+		for (final CharStats.Stat stat : CharStats.Stat.values()) {
 			ostream.print(stat);
 			ostream.print(':');
 			ostream.println(character.getStats().getStat(stat));
 		}
 	}
+
 	/**
 	 * Write the character's stats, exactly.
-	 * @param character the character to write
+	 * 
+	 * @param character
+	 *            the character to write
 	 */
 	private void writeExactStats(final SPCharacter character) {
-		for (CharStats.Stat stat : CharStats.Stat.values()) {
+		for (final CharStats.Stat stat : CharStats.Stat.values()) {
 			ostream.print(stat);
 			ostream.print(':');
-			ostream.println(((AdminStatsImpl) character.getStats()).getStatValue(stat));
+			ostream.println(((AdminStatsImpl) character.getStats())
+					.getStatValue(stat));
 		}
 	}
+
 	/**
 	 * Write the character's Jobs
-	 * @param character the character to write
+	 * 
+	 * @param character
+	 *            the character to write
 	 */
 	private void writeJobs(final SPCharacter character) {
-		for (JobLevels job : character.getJobs()) {
+		for (final JobLevels job : character.getJobs()) {
 			ostream.print("Job:");
 			ostream.print(job.getJob());
 			ostream.print(':');

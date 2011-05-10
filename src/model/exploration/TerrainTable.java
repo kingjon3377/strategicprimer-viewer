@@ -23,26 +23,31 @@ public class TerrainTable implements EncounterTable {
 	 */
 	private final Map<TileType, String> mapping = new EnumMap<TileType, String>(
 			TileType.class);
+
 	/**
 	 * Constructor.
-	 * @param items the items to add to the list
+	 * 
+	 * @param items
+	 *            the items to add to the list
 	 */
 	public TerrainTable(final List<Pair<TileType, String>> items) {
 		for (final Pair<TileType, String> item : items) {
 			mapping.put(item.first, item.second);
 		}
 	}
+
 	/**
-	 * @param tile a tile
+	 * @param tile
+	 *            a tile
 	 * @return what the table has for that kind of tile.
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
 		return mapping.get(tile.getType());
 	}
-	
+
 	/**
-	 * @return all events that this table can produce. 
+	 * @return all events that this table can produce.
 	 */
 	@Override
 	public Set<String> allEvents() {
@@ -50,6 +55,6 @@ public class TerrainTable implements EncounterTable {
 	}
 
 	/**
-	 * @return all events that this table can produce. 
+	 * @return all events that this table can produce.
 	 */
 }

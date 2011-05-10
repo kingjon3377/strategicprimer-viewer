@@ -16,33 +16,41 @@ public class AdminStatsImpl implements CharStats { // NOPMD
 	/**
 	 * A map containing the stats.
 	 */
-	private final EnumMap<Stat, Integer> stats = new EnumMap<Stat, Integer>(Stat.class);
+	private final EnumMap<Stat, Integer> stats = new EnumMap<Stat, Integer>(
+			Stat.class);
+
 	/**
 	 * Constructor.
 	 */
 	public AdminStatsImpl() {
-		for (Stat stat : Stat.values()) {
+		for (final Stat stat : Stat.values()) {
 			// ESCA-JAVA0076:
 			stats.put(stat, 10);
 		}
 	}
+
 	/**
-	 * @param stat a stat
+	 * @param stat
+	 *            a stat
 	 * @return that stat
 	 */
 	public int getStatValue(final Stat stat) {
 		return stats.get(stat);
 	}
+
 	/**
-	 * @param stat a stat
+	 * @param stat
+	 *            a stat
 	 * @return a summary of that stat
 	 */
 	@Override
 	public Attribute getStat(final Stat stat) {
 		return convertStat(stats.get(stat));
 	}
+
 	/**
-	 * @param value a stat value
+	 * @param value
+	 *            a stat value
 	 * @return a summary of it
 	 */
 	public static Attribute convertStat(final int value) { // NOPMD
@@ -62,7 +70,7 @@ public class AdminStatsImpl implements CharStats { // NOPMD
 		case 8:
 		case 9:
 			return Attribute.SomewhatLow; // NOPMD
-		// ESCA-JAVA0076:
+			// ESCA-JAVA0076:
 		case 10:
 		case 11:
 			return Attribute.Average; // NOPMD
@@ -79,17 +87,23 @@ public class AdminStatsImpl implements CharStats { // NOPMD
 			return Attribute.VeryHigh;
 		}
 	}
+
 	/**
-	 * @param stat a stat
-	 * @param value the new summary value of that stat.
+	 * @param stat
+	 *            a stat
+	 * @param value
+	 *            the new summary value of that stat.
 	 */
 	@Override
 	public void setStat(final Stat stat, final Attribute value) {
-		stats.put(stat,value.ordinal() * 2);
+		stats.put(stat, value.ordinal() * 2);
 	}
+
 	/**
-	 * @param stat a stat
-	 * @param value the new exact value of that stat.
+	 * @param stat
+	 *            a stat
+	 * @param value
+	 *            the new exact value of that stat.
 	 */
 	public void setStat(final Stat stat, final int value) {
 		stats.put(stat, value);

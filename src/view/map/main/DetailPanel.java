@@ -40,6 +40,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	private final JLabel chitDetail = new JLabel();
 	private final JTextField resultsField = new JTextField();
 	private final ExplorationRunner runner = new ExplorationRunner();
+
 	/**
 	 * Constructor.
 	 */
@@ -60,23 +61,31 @@ public class DetailPanel extends JPanel implements ActionListener {
 		final JPanel viewPanel = new JPanel(new BorderLayout());
 		final JPanel chitSuperPanel = new JPanel(new BorderLayout());
 		chitSuperPanel.add(chitPanel, BorderLayout.WEST);
-		chitSuperPanel.addComponentListener(new SizeLimiter(chitPanel, CHIT_PANEL_WIDTH, 1.0));
+		chitSuperPanel.addComponentListener(new SizeLimiter(chitPanel,
+				CHIT_PANEL_WIDTH, 1.0));
 		chitSuperPanel.add(chitDetail, BorderLayout.EAST);
-		chitSuperPanel.addComponentListener(new SizeLimiter(chitDetail, 1.0 - CHIT_PANEL_WIDTH, 1.0));
+		chitSuperPanel.addComponentListener(new SizeLimiter(chitDetail,
+				1.0 - CHIT_PANEL_WIDTH, 1.0));
 		viewPanel.add(chitSuperPanel, BorderLayout.NORTH);
-		viewPanel.addComponentListener(new SizeLimiter(chitSuperPanel, 1.0, CHIT_PANEL_HEIGHT));
+		viewPanel.addComponentListener(new SizeLimiter(chitSuperPanel, 1.0,
+				CHIT_PANEL_HEIGHT));
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
-		final JLabel resultsLabel = new JLabel("<html>Exploration<br>results</html>");
+		final JLabel resultsLabel = new JLabel(
+				"<html>Exploration<br>results</html>");
 		resultsPanel.add(resultsLabel, BorderLayout.WEST);
-		resultsPanel.addComponentListener(new SizeLimiter(resultsLabel, 1.0 - RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
+		resultsPanel.addComponentListener(new SizeLimiter(resultsLabel,
+				1.0 - RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
-		resultsPanel.addComponentListener(new SizeLimiter(resultsField, RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
+		resultsPanel.addComponentListener(new SizeLimiter(resultsField,
+				RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
 		final JButton resultsButton = new JButton(RESULTS_SAVE_CMD);
 		resultsButton.addActionListener(this);
 		resultsPanel.add(resultsButton, BorderLayout.SOUTH);
-		resultsPanel.addComponentListener(new SizeLimiter(resultsButton, 1.0, RESULTS_BUTTON_HEIGHT));
+		resultsPanel.addComponentListener(new SizeLimiter(resultsButton, 1.0,
+				RESULTS_BUTTON_HEIGHT));
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
-		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0, 1.0 - CHIT_PANEL_HEIGHT));
+		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0,
+				1.0 - CHIT_PANEL_HEIGHT));
 		add(viewPanel, BorderLayout.CENTER);
 		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.8));
 		runner.loadAllTables("tables");
@@ -89,7 +98,9 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * To handle which chit is selected.
 	 */
-	private final transient SelectionListener chitSelecter = new ChitSelectionListener(chitDetail);
+	private final transient SelectionListener chitSelecter = new ChitSelectionListener(
+			chitDetail);
+
 	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
@@ -105,10 +116,10 @@ public class DetailPanel extends JPanel implements ActionListener {
 			typeLabel.setText(terrainText(tile.getType()));
 			chitPanel.removeAll();
 			chitSelecter.clearSelection();
-			for (Fortress fort : tile.getForts()) {
+			for (final Fortress fort : tile.getForts()) {
 				chitPanel.add(new FortChit(fort, chitSelecter)); // NOPMD
 			}
-			for (Unit unit : tile.getUnits()) {
+			for (final Unit unit : tile.getUnits()) {
 				chitPanel.add(new UnitChit(unit, chitSelecter)); // NOPMD
 			}
 			eventLabel.setText(Integer.toString(tile.getEvent()));
@@ -146,10 +157,13 @@ public class DetailPanel extends JPanel implements ActionListener {
 		} // else
 		throw new IllegalArgumentException("Unknown terrain type");
 	}
+
 	/**
 	 * Handle button presses
-	 * @param event the event to handle
-	 *
+	 * 
+	 * @param event
+	 *            the event to handle
+	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
@@ -158,11 +172,13 @@ public class DetailPanel extends JPanel implements ActionListener {
 			tile.setTileText(resultsField.getText().trim());
 		}
 	}
+
 	/**
 	 * Run an encounter.
 	 */
 	public void runEncounter() {
-		resultsField.setText(resultsField.getText() + '\n' + runner.recursiveConsultTable("main", tile));
+		resultsField.setText(resultsField.getText() + '\n'
+				+ runner.recursiveConsultTable("main", tile));
 		actionPerformed(new ActionEvent(this, 0, RESULTS_SAVE_CMD));
 	}
 }

@@ -5,18 +5,22 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 
 /**
- * A class to handle selecting Chits. 
+ * A class to handle selecting Chits.
+ * 
  * @author kingjon
- *
+ * 
  */
 public class ChitSelectionListener extends SelectionListener {
 	/**
 	 * The label we'll write the details to.
 	 */
 	private final JLabel detailLabel;
+
 	/**
 	 * Constructor.
-	 * @param label the label we'll write the details of the selected item to.
+	 * 
+	 * @param label
+	 *            the label we'll write the details of the selected item to.
 	 */
 	public ChitSelectionListener(final JLabel label) {
 		super();
@@ -25,6 +29,7 @@ public class ChitSelectionListener extends SelectionListener {
 		}
 		detailLabel = label;
 	}
+
 	/**
 	 * Handle mouse clicks.
 	 * 
@@ -40,7 +45,7 @@ public class ChitSelectionListener extends SelectionListener {
 			detailLabel.setText("");
 		}
 	}
-	
+
 	/**
 	 * Clear the selection.
 	 */

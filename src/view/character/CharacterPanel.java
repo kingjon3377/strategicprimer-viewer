@@ -27,7 +27,8 @@ import controller.character.CharacterWriter;
  * @author Jonathan Lovelace
  * 
  */
-public final class CharacterPanel extends JPanel implements Applyable, SaveableOpenable {
+public final class CharacterPanel extends JPanel implements Applyable,
+		SaveableOpenable {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -44,36 +45,45 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 		character = chrc;
 		revert();
 	}
+
 	/**
 	 * A panel to put Jobs in.
 	 */
 	private JPanel jobsPanel;
+
 	/**
 	 * No-value constructor.
 	 */
 	public CharacterPanel() {
 		super(new GridBagLayout());
 		add(new JLabel("Name"), new ConstraintHelper(0, 0));
-//		GridBagConstraints nameConstraints = new GridBagConstraints();
+		// GridBagConstraints nameConstraints = new GridBagConstraints();
 		add(nameField, new ConstraintHelper(1, 0));
 		/**
 		 * Labels describing the statistics.
 		 */
 		final JLabel[] statLabels = new JLabel[CharStats.Stat.values().length];
-		for (CharStats.Stat stat : CharStats.Stat.values()) {
+		for (final CharStats.Stat stat : CharStats.Stat.values()) {
 			statLabels[stat.ordinal()] = new JLabel(stat.toString()); // NOPMD
-			add(statLabels[stat.ordinal()], new ConstraintHelper(0, stat.ordinal() + 1)); // NOPMD
+			add(statLabels[stat.ordinal()],
+					new ConstraintHelper(0, stat.ordinal() + 1)); // NOPMD
 			if (IsAdmin.IS_ADMIN) {
-				statComps[stat.ordinal()] = new ChangeableComponent(new JTextField(3)); // NOPMD
+				statComps[stat.ordinal()] = new ChangeableComponent(
+						new JTextField(3)); // NOPMD
 			} else {
-				statComps[stat.ordinal()] = new ChangeableComponent(new JLabel()); // NOPMD
+				statComps[stat.ordinal()] = new ChangeableComponent(
+						new JLabel()); // NOPMD
 			}
-			add(statComps[stat.ordinal()], new ConstraintHelper(1, stat.ordinal() + 1)); // NOPMD
+			add(statComps[stat.ordinal()],
+					new ConstraintHelper(1, stat.ordinal() + 1)); // NOPMD
 		}
 		jobsPanel = new JobsPanel(this);
-		add(jobsPanel, new ConstraintHelper(0, CharStats.Stat.values().length + 2, 2, 1));
-		add(applyButton, new ConstraintHelper(0, CharStats.Stat.values().length + 3));
-		add(revertButton, new ConstraintHelper(1, CharStats.Stat.values().length + 3));
+		add(jobsPanel, new ConstraintHelper(0,
+				CharStats.Stat.values().length + 2, 2, 1));
+		add(applyButton, new ConstraintHelper(0,
+				CharStats.Stat.values().length + 3));
+		add(revertButton, new ConstraintHelper(1,
+				CharStats.Stat.values().length + 3));
 		applyButton.addActionListener(list);
 		revertButton.addActionListener(list);
 	}
@@ -117,18 +127,18 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 		}
 		if (statComps[0].getComponent() instanceof JTextField) {
 			final AdminStatsImpl stats = (AdminStatsImpl) character.getStats();
-			for (CharStats.Stat stat : CharStats.Stat.values()) {
+			for (final CharStats.Stat stat : CharStats.Stat.values()) {
 				try {
-				stats.setStat(stat, Integer
-						.parseInt(((JTextField) statComps[stat.ordinal()].getComponent())
-								.getText()));
+					stats.setStat(stat, Integer
+							.parseInt(((JTextField) statComps[stat.ordinal()]
+									.getComponent()).getText()));
 				} catch (final NumberFormatException except) {
 					continue;
 				}
 			}
 		} else if (statComps[0].getComponent() instanceof JComboBox) {
 			final CharStats stats = character.getStats();
-			for (CharStats.Stat stat : CharStats.Stat.values()) {
+			for (final CharStats.Stat stat : CharStats.Stat.values()) {
 				stats.setStat(stat,
 						(CharStats.Attribute) ((JComboBox) statComps[stat
 								.ordinal()].getComponent()).getSelectedItem());
@@ -149,9 +159,9 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 				adminRevert();
 			} else {
 				final CharStats stats = character.getStats();
-				for (CharStats.Stat stat : CharStats.Stat.values()) {
-					((JLabel) statComps[stat.ordinal()].getComponent()).setText(stats.getStat(
-							stat).toString());
+				for (final CharStats.Stat stat : CharStats.Stat.values()) {
+					((JLabel) statComps[stat.ordinal()].getComponent())
+							.setText(stats.getStat(stat).toString());
 				}
 			}
 		}
@@ -164,53 +174,65 @@ public final class CharacterPanel extends JPanel implements Applyable, SaveableO
 		final CharStats stats = character.getStats();
 		if (stats instanceof AdminStatsImpl) {
 			if (!(statComps[0].getComponent() instanceof JTextField)) {
-				for (CharStats.Stat stat : CharStats.Stat.values()) {
+				for (final CharStats.Stat stat : CharStats.Stat.values()) {
 					statComps[stat.ordinal()].setComponent(new JTextField()); // NOPMD
 				}
 			}
-			for (CharStats.Stat stat : CharStats.Stat.values()) {
-				((JTextField) statComps[stat.ordinal()].getComponent()).setText(Integer
-						.toString(((AdminStatsImpl) stats).getStatValue(stat)));
+			for (final CharStats.Stat stat : CharStats.Stat.values()) {
+				((JTextField) statComps[stat.ordinal()].getComponent())
+						.setText(Integer.toString(((AdminStatsImpl) stats)
+								.getStatValue(stat)));
 			}
 		} else {
 			if (!(statComps[0].getComponent() instanceof JComboBox)) {
-				for (CharStats.Stat stat : CharStats.Stat.values()) {
+				for (final CharStats.Stat stat : CharStats.Stat.values()) {
 					statComps[stat.ordinal()].setComponent(new JComboBox( // NOPMD
 							CharStats.Attribute.values()));
 				}
 			}
-			for (CharStats.Stat stat : CharStats.Stat.values()) {
-				((JComboBox) statComps[stat.ordinal()].getComponent()).setSelectedItem(stats
-						.getStat(stat));
+			for (final CharStats.Stat stat : CharStats.Stat.values()) {
+				((JComboBox) statComps[stat.ordinal()].getComponent())
+						.setSelectedItem(stats.getStat(stat));
 			}
-		} 
+		}
 	}
+
 	/**
-	 * @return the character we're editing 
+	 * @return the character we're editing
 	 */
 	public SPCharacter getCharacter() {
 		return character;
 	}
+
 	/**
 	 * Required by SaveableOpenable spec.
-	 * @param file ignored
+	 * 
+	 * @param file
+	 *            ignored
 	 */
 	@Override
 	public void open(final String file) {
 		throw new IllegalStateException("Shouldn't get called");
 	}
+
 	/**
 	 * Save the character to file.
-	 * @param file the filename to save to
-	 * @throws IOException on I/O error while saving
+	 * 
+	 * @param file
+	 *            the filename to save to
+	 * @throws IOException
+	 *             on I/O error while saving
 	 */
 	@Override
 	public void save(final String file) throws IOException {
 		new CharacterWriter(file).write(character, !IsAdmin.IS_ADMIN);
 	}
+
 	/**
 	 * Remove a Job.
-	 * @param panel the panel holding the Job to remove
+	 * 
+	 * @param panel
+	 *            the panel holding the Job to remove
 	 */
 	protected void removeJob(final JobPanel panel) {
 		// FIXME: implement

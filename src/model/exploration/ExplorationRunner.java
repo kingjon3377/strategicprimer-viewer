@@ -74,7 +74,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 	 * Loads the default set of tables.
 	 */
 	public void loadDefaultTables() {
-		for (String table : defaultTableList) {
+		for (final String table : defaultTableList) {
 			tables.put(table,
 					tryLoading("tables/" + table, 2, createList(table, 4)));
 		}
@@ -97,7 +97,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 			final int defaultRows, final List<String> defaultItems) {
 		try {
 			return new TableLoader().loadTable(filename); // NOPMD
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
 					+ filename, e);
 			return new QuadrantTable(defaultRows, new LinkedList<String>(
@@ -234,7 +234,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 		} else {
 			state.add(table);
 			if (tables.keySet().contains(table)) {
-				for (String value : tables.get(table).allEvents()) {
+				for (final String value : tables.get(table).allEvents()) {
 					if (value.contains("#")
 							&& recursiveCheck(value.split("#", 3)[1], state)) {
 						return true; // NOPMD
@@ -256,7 +256,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 	 */
 	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<String>();
-		for (String table : tables.keySet()) {
+		for (final String table : tables.keySet()) {
 			if (recursiveCheck(table, state)) {
 				return true; // NOPMD;
 			}
@@ -272,7 +272,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 	 */
 	public void verboseRecursiveCheck(final PrintStream ostream) {
 		final Set<String> state = new HashSet<String>();
-		for (String table : tables.keySet()) {
+		for (final String table : tables.keySet()) {
 			verboseRecursiveCheck(table, ostream, state);
 		}
 	}
@@ -292,7 +292,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 		if (!state.contains(table)) {
 			state.add(table);
 			if (tables.keySet().contains(table)) {
-				for (String value : tables.get(table).allEvents()) {
+				for (final String value : tables.get(table).allEvents()) {
 					if (value.contains("#")) {
 						verboseRecursiveCheck(value.split("#", 3)[1], ostream,
 								state);
@@ -320,22 +320,24 @@ public class ExplorationRunner implements Serializable { // NOPMD
 
 	/**
 	 * Load all tables in the specified path.
-	 * @param path the directory to look in
+	 * 
+	 * @param path
+	 *            the directory to look in
 	 */
 	public void loadAllTables(final String path) {
 		final TableLoader loader = new TableLoader();
 		final File dir = new File(path);
 		final String[] children = dir.list();
 		if (children != null) {
-			for (String table : children) {
+			for (final String table : children) {
 				try {
 					loadTable(table, loader.loadTable(path + '/' + table));
-				} catch (FileNotFoundException e) {
+				} catch (final FileNotFoundException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					LOGGER.log(Level.SEVERE,
 							"I/O error while parsing " + table, e);
-				} catch (IllegalArgumentException e) {
+				} catch (final IllegalArgumentException e) {
 					LOGGER.log(
 							Level.SEVERE,
 							"Illegal argument while parsing "

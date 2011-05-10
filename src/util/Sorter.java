@@ -6,8 +6,9 @@ import java.util.List;
 
 /**
  * A class to encapsulate our not-in-place List sorting method.
+ * 
  * @author kingjon
- *
+ * 
  */
 public final class Sorter {
 	/**
@@ -16,10 +17,14 @@ public final class Sorter {
 	private Sorter() {
 		// Do nothing.
 	}
+
 	/**
 	 * Sort a list, returning the sorted list but not modifying the parameter
-	 * @param <T> The type of list
-	 * @param list A list
+	 * 
+	 * @param <T>
+	 *            The type of list
+	 * @param list
+	 *            A list
 	 * @return A sorted version of the list
 	 */
 	public static <T extends Comparable<T>> List<T> sort(

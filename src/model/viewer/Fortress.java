@@ -8,10 +8,12 @@ import java.util.List;
  * A fortress on the map. A player can only have one fortress per tile, but
  * multiple players may have fortresses on the same tile.
  * 
+ * FIXME:  We need something about resources and buildings yet
+ *
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements Comparable<Fortress> { // We need something about resources and buildings yet
+public class Fortress implements Comparable<Fortress> {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -105,7 +107,7 @@ public class Fortress implements Comparable<Fortress> { // We need something abo
 				&& ((Fortress) obj).owner == owner
 				&& ((Fortress) obj).units.equals(units);
 	}
-	
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -114,7 +116,7 @@ public class Fortress implements Comparable<Fortress> { // We need something abo
 		return (name == null ? 0 : name.hashCode()) + owner << 2 + units
 				.hashCode() << 4;
 	}
-	
+
 	/**
 	 * @return a String representation of the object.
 	 */
@@ -125,16 +127,18 @@ public class Fortress implements Comparable<Fortress> { // We need something abo
 		sbuild.append(", owned by player ");
 		sbuild.append(owner);
 		sbuild.append(". Units:");
-		for (Unit unit : units) {
+		for (final Unit unit : units) {
 			sbuild.append("\n\t\t\t");
 			sbuild.append(unit);
 		}
 		return sbuild.toString();
 	}
+
 	/**
-	 * @param fort Another fortress
+	 * @param fort
+	 *            Another fortress
 	 * @return the result of a comparison with it
-	 *
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override

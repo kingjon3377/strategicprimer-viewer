@@ -29,6 +29,7 @@ public final class ExplorationCLI {
 	 * The helper that actually runs the exploration
 	 */
 	private final ExplorationRunner runner = new ExplorationRunner();
+
 	/**
 	 * Constructor.
 	 * 
@@ -62,7 +63,7 @@ public final class ExplorationCLI {
 				input = reader.readLine();
 			}
 			reader.close();
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		}
 	}
@@ -87,7 +88,7 @@ public final class ExplorationCLI {
 		ostream.print("Column: ");
 		final int col = Integer.parseInt(reader.readLine());
 		final Tile tile = map.getTile(row, col);
-		ostream.println("Tile is " + tile.	getType());
+		ostream.println("Tile is " + tile.getType());
 		ostream.println(runner.recursiveConsultTable("main", tile));
 	}
 
@@ -103,8 +104,8 @@ public final class ExplorationCLI {
 	 *             on I/O error
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_ALWAYS_NULL")
-	private void fortressInfo(final SPMap map,
-			final BufferedReader reader) throws IOException {
+	private void fortressInfo(final SPMap map, final BufferedReader reader)
+			throws IOException {
 		final PrintStream ostream = System.out;
 		ostream.print("Row: ");
 		final int row = Integer.parseInt(reader.readLine());
@@ -121,11 +122,11 @@ public final class ExplorationCLI {
 	public static void main(final String[] args) {
 		try {
 			new ExplorationCLI(new MapReader().readMap(args[0]));
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;

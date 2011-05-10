@@ -26,7 +26,7 @@ import util.Pair;
  * 
  * @author Jonathan Lovelace
  */
-public class TableLoader {//NOPMD
+public class TableLoader {// NOPMD
 	/**
 	 * Load a table from file. Format: first line specifies the kind of table
 	 * (quadrant or random; first letter is the only one checked). Quadrant
@@ -39,53 +39,69 @@ public class TableLoader {//NOPMD
 	 * @param filename
 	 *            the file containing the table.
 	 * @throws IOException
-	 *             on I/O error 
+	 *             on I/O error
 	 * @return the table
-	 * @throws FileNotFoundException when file not found
+	 * @throws FileNotFoundException
+	 *             when file not found
 	 */
-	public EncounterTable loadTable(final String filename) throws FileNotFoundException, IOException {//NOPMD
+	public EncounterTable loadTable(final String filename)
+			throws FileNotFoundException, IOException {// NOPMD
 		final BufferedReader reader = new LoadFile().doLoadFile(filename);
 		try {
 			return loadTable(reader);
 		} catch (final IllegalArgumentException except) {
 			if ("unknown table type".equals(except.getMessage())) {
-				throw new IllegalArgumentException("File " + filename + " specifies an unknown table type", except);
+				throw new IllegalArgumentException("File " + filename
+						+ " specifies an unknown table type", except);
 			} else {
 				throw except;
 			}
 		}
 	}
+
 	/**
-	 * @param reader the stream to read from
+	 * @param reader
+	 *            the stream to read from
 	 * @return the table constructed from the file
-	 * @throws IOException on I/O error or badly formed table.
+	 * @throws IOException
+	 *             on I/O error or badly formed table.
 	 */
 	EncounterTable loadTable(final BufferedReader reader) throws IOException { // NOPMD
 		final String line = reader.readLine();
 		if (line == null) {
-			throw new IOException("File doesn't start by specifying which kind of table.");
+			throw new IOException(
+					"File doesn't start by specifying which kind of table.");
 		} else {
 			switch (line.charAt(0)) { // NOPMD
-			case 'Q': case 'q':
+			case 'Q':
+			case 'q':
 				return loadQuadrantTable(reader); // NOPMD
-			case 'R': case 'r':
+			case 'R':
+			case 'r':
 				return loadRandomTable(reader); // NOPMD
-			case 'C': case 'c':
+			case 'C':
+			case 'c':
 				return loadConstantTable(reader); // NOPMD
-			case 'L': case 'l':
+			case 'L':
+			case 'l':
 				return loadLegacyTable(reader); // NOPMD
-			case 'T': case 't':
+			case 'T':
+			case 't':
 				return loadTerrainTable(reader);
 			default:
 				throw new IllegalArgumentException("unknown table type");
 			}
 		}
 	}
+
 	/**
 	 * Load a QuadrantTable from file.
-	 * @param reader the file descriptor
+	 * 
+	 * @param reader
+	 *            the file descriptor
 	 * @return the quadrant table the file describes.
-	 * @throws IOException on I/O error reading the number of rows
+	 * @throws IOException
+	 *             on I/O error reading the number of rows
 	 */
 	public QuadrantTable loadQuadrantTable(final BufferedReader reader)
 			throws IOException {
@@ -101,7 +117,7 @@ public class TableLoader {//NOPMD
 			items.add(line);
 			try {
 				line = reader.readLine();
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				Logger.getLogger(TableLoader.class.getName())
 						.log(Level.SEVERE,
 								"I/O error while reading table from file, continuing with what we've got so far ...",
@@ -112,21 +128,27 @@ public class TableLoader {//NOPMD
 		reader.close();
 		return new QuadrantTable(rows, items);
 	}
+
 	/**
 	 * Load a RandomTable from file.
-	 * @param reader the file descriptor
-	 * @return the random-table the file describes. 
-	 * @throws IOException on I/O error
+	 * 
+	 * @param reader
+	 *            the file descriptor
+	 * @return the random-table the file describes.
+	 * @throws IOException
+	 *             on I/O error
 	 */
-	public RandomTable loadRandomTable(final BufferedReader reader) throws IOException {
+	public RandomTable loadRandomTable(final BufferedReader reader)
+			throws IOException {
 		String line = reader.readLine();
-		final List<Pair<Integer,String>> list = new ArrayList<Pair<Integer, String>>();
+		final List<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
 		while (line != null) {
 			final String[] array = line.split(" ", 2);
 			if (array.length < 2) {
-				Logger.getLogger(TableLoader.class.getName()).severe("Line with no blanks, continuing ...");
+				Logger.getLogger(TableLoader.class.getName()).severe(
+						"Line with no blanks, continuing ...");
 			} else {
-				list.add(Pair.of(Integer.parseInt(array[0]),array[1]));
+				list.add(Pair.of(Integer.parseInt(array[0]), array[1]));
 			}
 			line = reader.readLine();
 		}
@@ -160,6 +182,7 @@ public class TableLoader {//NOPMD
 		reader.close();
 		return new TerrainTable(list);
 	}
+
 	/**
 	 * Load a ConstantTable from file.
 	 * 
@@ -169,24 +192,29 @@ public class TableLoader {//NOPMD
 	 * @throws IOException
 	 *             on I/O error.
 	 */
-	public ConstantTable loadConstantTable(final BufferedReader reader) throws IOException {
+	public ConstantTable loadConstantTable(final BufferedReader reader)
+			throws IOException {
 		final String string = reader.readLine();
 		reader.close();
 		return new ConstantTable(string);
 	}
-	
+
 	/**
 	 * Load a LegacyTable from file.
-	 * @param reader the file descriptor
+	 * 
+	 * @param reader
+	 *            the file descriptor
 	 * @return the table the file describes.
-	 * @throws IOException on I/O error.
+	 * @throws IOException
+	 *             on I/O error.
 	 */
-	public LegacyTable loadLegacyTable(final BufferedReader reader) throws IOException {
+	public LegacyTable loadLegacyTable(final BufferedReader reader)
+			throws IOException {
 		final Map<Integer, String> map = new HashMap<Integer, String>();
 		String line = reader.readLine();
 		while (line != null) {
 			final String[] split = line.split(":", 2);
-			map.put(Integer.parseInt(split[0]),split[1].trim());
+			map.put(Integer.parseInt(split[0]), split[1].trim());
 			line = reader.readLine();
 		}
 		return new LegacyTable(map);

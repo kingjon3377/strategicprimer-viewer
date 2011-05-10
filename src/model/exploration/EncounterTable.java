@@ -18,12 +18,16 @@ public interface EncounterTable {
 	 * Generates an "encounter." For QuadrantTables this is always the same for
 	 * each tile; for random event tables the result will be randomly selected
 	 * from that table.
-	 * @param tile a tile
-	 * @return an appropriate event for that tile 
+	 * 
+	 * @param tile
+	 *            a tile
+	 * @return an appropriate event for that tile
 	 */
 	String generateEvent(final Tile tile);
+
 	/**
 	 * For table-debugging purposes.
+	 * 
 	 * @return all events the table can return.
 	 */
 	Set<String> allEvents();

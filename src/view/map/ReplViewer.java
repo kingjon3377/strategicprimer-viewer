@@ -74,7 +74,7 @@ public final class ReplViewer {
 				input = reader.readLine();
 			}
 			reader.close();
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		}
 	}
@@ -87,7 +87,8 @@ public final class ReplViewer {
 	 */
 	// ESCA-JAVA0266:
 	private static void printTile(final Tile tile) {
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
+				System.out));
 		out.print("Tile (");
 		out.print(tile.getRow());
 		out.print(", ");
@@ -97,13 +98,13 @@ public final class ReplViewer {
 		out.println(tile.getType().toString());
 		if (!tile.getForts().isEmpty()) {
 			out.println("Fortresses on this tile:");
-			for (Fortress fort : tile.getForts()) {
+			for (final Fortress fort : tile.getForts()) {
 				out.println(fort);
 			}
 		}
 		if (!tile.getUnits().isEmpty()) {
 			out.println("Units on this tile:");
-			for (Unit unit : tile.getUnits()) {
+			for (final Unit unit : tile.getUnits()) {
 				out.println(unit);
 			}
 		}
@@ -119,13 +120,13 @@ public final class ReplViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ReplViewer(new MapReader().readMap(args[0]), Integer
-					.parseInt(args[1]), Integer.parseInt(args[2]));
-		} catch (XMLStreamException e) {
+			new ReplViewer(new MapReader().readMap(args[0]),
+					Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;

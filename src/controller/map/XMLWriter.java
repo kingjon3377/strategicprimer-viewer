@@ -66,7 +66,7 @@ public class XMLWriter { // NOPMD
 		writer.print(" columns=");
 		printQuoted(map.cols());
 		writer.println('>');
-		for (Player player : map.getPlayers()) {
+		for (final Player player : map.getPlayers()) {
 			indent(1);
 			writer.print("<player number=");
 			printQuoted(player.getId());
@@ -143,8 +143,11 @@ public class XMLWriter { // NOPMD
 	 *            the tile to print.
 	 */
 	private void printTile(final Tile tile) { // NOPMD
-		if (tile != null && (tile.getType() != TileType.NotVisible || !tile.getForts().isEmpty()
-				|| !tile.getUnits().isEmpty() || !"".equals(tile.getTileText()))) {
+		if (tile != null
+				&& (tile.getType() != TileType.NotVisible
+						|| !tile.getForts().isEmpty()
+						|| !tile.getUnits().isEmpty() || !"".equals(tile
+						.getTileText()))) {
 			indent(2);
 			writer.print("<tile row=");
 			printQuoted(tile.getRow());
@@ -160,15 +163,16 @@ public class XMLWriter { // NOPMD
 			}
 			writer.print('>');
 			if (!tile.getForts().isEmpty() || !tile.getUnits().isEmpty()
-					|| !tile.getRivers().isEmpty() || !"".equals(tile.getTileText())) {
+					|| !tile.getRivers().isEmpty()
+					|| !"".equals(tile.getTileText())) {
 				writer.println();
-				for (Fortress fort : tile.getForts()) {
+				for (final Fortress fort : tile.getForts()) {
 					printFort(fort);
 				}
-				for (Unit unit : tile.getUnits()) {
+				for (final Unit unit : tile.getUnits()) {
 					printUnit(unit);
 				}
-				for (River river : tile.getRivers()) {
+				for (final River river : tile.getRivers()) {
 					printRiver(river);
 				}
 				indent(2);
@@ -206,7 +210,7 @@ public class XMLWriter { // NOPMD
 		writer.print('>');
 		if (!fort.getUnits().isEmpty()) {
 			writer.println();
-			for (Unit unit : fort.getUnits()) {
+			for (final Unit unit : fort.getUnits()) {
 				indent(1);
 				printUnit(unit);
 			}
@@ -241,7 +245,8 @@ public class XMLWriter { // NOPMD
 	 */
 	private static final EnumMap<TileType, String> XML_TYPES = new EnumMap<TileType, String>(
 			TileType.class);
-	private static final EnumMap<River, String> XML_RIVERS = new EnumMap<River, String>(River.class);
+	private static final EnumMap<River, String> XML_RIVERS = new EnumMap<River, String>(
+			River.class);
 	static {
 		XML_TYPES.put(TileType.Tundra, "tundra");
 		XML_TYPES.put(TileType.TemperateForest, "temperate_forest");

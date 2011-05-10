@@ -35,7 +35,8 @@ public class MapPanel extends JPanel {
 	 * The secondary map.
 	 */
 	private SPMap secondaryMap;
-	private static final Logger LOGGER = Logger.getLogger(MapPanel.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MapPanel.class
+			.getName());
 
 	/**
 	 * Constructor.
@@ -43,7 +44,7 @@ public class MapPanel extends JPanel {
 	 * @param _map
 	 *            The map object this panel is representing
 	 * @param details
-	 * 			  The panel that'll show the details of the selected tile
+	 *            The panel that'll show the details of the selected tile
 	 */
 	public MapPanel(final SPMap _map, final DetailPanel details) {
 		super();
@@ -73,8 +74,8 @@ public class MapPanel extends JPanel {
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			removeAll();
 			selListener.clearSelection();
-			setLayout(new GridLayout(Math.min(_map.rows(), Math.max(0, maxRow
-					+ 1 - minRow)), 0));
+			setLayout(new GridLayout(Math.min(_map.rows(),
+					Math.max(0, maxRow + 1 - minRow)), 0));
 			for (int row = Math.max(0, minRow); row < _map.rows()
 					&& row < maxRow + 1; row++) {
 				for (int col = Math.max(0, minCol); col < _map.cols()
@@ -139,6 +140,7 @@ public class MapPanel extends JPanel {
 	 * A cache of GUITiles.
 	 */
 	private final Map<Tile, GUITile> tileCache = new HashMap<Tile, GUITile>();
+
 	/**
 	 * Set up a new GUI tile
 	 * 
@@ -158,12 +160,15 @@ public class MapPanel extends JPanel {
 	public SPMap getMap() {
 		return map;
 	}
+
 	/**
-	 * @param secMap the new secondary map
+	 * @param secMap
+	 *            the new secondary map
 	 */
 	public void setSecondaryMap(final SPMap secMap) {
 		secondaryMap = secMap;
 	}
+
 	/**
 	 * Swap the main and secondary maps, i.e. show the secondary map
 	 */
@@ -174,22 +179,29 @@ public class MapPanel extends JPanel {
 			secondaryMap = temp;
 		}
 	}
+
 	/**
 	 * @return the secondary map
 	 */
 	public SPMap getSecondaryMap() {
 		return secondaryMap;
 	}
+
 	/**
 	 * Copy a tile from the main map to the secondary map.
+	 * 
 	 * @param selection
 	 */
 	public void copyTile(final Tile selection) {
-		if (map.getTile(selection.getRow(), selection.getCol()) != null && secondaryMap != null) {
+		if (map.getTile(selection.getRow(), selection.getCol()) != null
+				&& secondaryMap != null) {
 			if (secondaryMap.getTile(selection.getRow(), selection.getCol()) == null) {
-				secondaryMap.addTile(map.getTile(selection.getRow(), selection.getCol()));
+				secondaryMap.addTile(map.getTile(selection.getRow(),
+						selection.getCol()));
 			} else {
-				secondaryMap.getTile(selection.getRow(), selection.getCol()).update(map.getTile(selection.getRow(), selection.getCol()));
+				secondaryMap.getTile(selection.getRow(), selection.getCol())
+						.update(map.getTile(selection.getRow(),
+								selection.getCol()));
 			}
 		}
 	}

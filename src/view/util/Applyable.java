@@ -12,6 +12,7 @@ public interface Applyable {
 	 * Method to call when the Apply button is pressed.
 	 */
 	void apply();
+
 	/**
 	 * Method to call when the Revert button is pressed.
 	 */

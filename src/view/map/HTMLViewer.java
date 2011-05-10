@@ -37,14 +37,14 @@ public final class HTMLViewer {
 	 */
 	// ESCA-JAVA0266:
 	private HTMLViewer(final SPMap map) {
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
+				System.out));
 		out.println("<html>");
 		out.println("<head>");
 		out.println("<title>Strategic Primer map view</title>");
 		out.println("</head>");
 		out.println("<body>");
-		out
-				.println("<table border=\"0\" cellpadding=\"0\" cellspacing=\"1\">");
+		out.println("<table border=\"0\" cellpadding=\"0\" cellspacing=\"1\">");
 		for (int i = 0; i < map.rows(); i++) {
 			out.println("<tr>");
 			for (int j = 0; j < map.cols(); j++) {
@@ -76,11 +76,11 @@ public final class HTMLViewer {
 	public static void main(final String[] args) {
 		try {
 			new HTMLViewer(new MapReader().readMap(args[0]));
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;
@@ -126,7 +126,7 @@ public final class HTMLViewer {
 		final StringBuffer retval = new StringBuffer("");
 		if (tile2.getUnits().size() > 0) {
 			retval.append('\n');
-			for (Unit u : tile2.getUnits()) {
+			for (final Unit u : tile2.getUnits()) {
 				if (retval.length() > 1) {
 					retval.append(", ");
 				}
@@ -149,7 +149,7 @@ public final class HTMLViewer {
 		final StringBuffer retval = new StringBuffer();
 		if (tile2.getForts().size() > 0) {
 			retval.append("\nForts belonging to players ");
-			for (Fortress f : tile2.getForts()) {
+			for (final Fortress f : tile2.getForts()) {
 				if (retval.charAt(retval.length() - 2) != 's') {
 					retval.append(", ");
 				}

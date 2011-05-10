@@ -26,7 +26,7 @@ public class RandomTable implements EncounterTable {
 	@Override
 	public String generateEvent(final Tile tile) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
-		for (Pair<Integer, String> item : table) {
+		for (final Pair<Integer, String> item : table) {
 			if (roll >= item.first) {
 				return item.second; // NOPMD
 			}
@@ -51,12 +51,12 @@ public class RandomTable implements EncounterTable {
 	}
 
 	/**
-	 * @return all events that this table can produce. 
+	 * @return all events that this table can produce.
 	 */
 	@Override
 	public Set<String> allEvents() {
 		final Set<String> retval = new HashSet<String>();
-		for (Pair<Integer, String> pair : table) {
+		for (final Pair<Integer, String> pair : table) {
 			retval.add(pair.second);
 		}
 		return retval;

@@ -102,6 +102,7 @@ public class JobLevels implements Serializable {
 				&& ((JobLevels) obj).getJob().equals(jobType)
 				&& ((JobLevels) obj).getLevels() == levels;
 	}
+
 	/**
 	 * @return a hash-code for the object
 	 */

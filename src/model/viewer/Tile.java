@@ -197,9 +197,10 @@ public final class Tile implements Serializable {
 	@Override
 	public int hashCode() {
 		return row + col << 2 + event << 4 + type.ordinal() << 6 + forts
-				.hashCode() << 8 + units.hashCode() << 10 + rivers.hashCode() << 12 +
-				tileText.hashCode() << 14;
+				.hashCode() << 8 + units.hashCode() << 10 + rivers.hashCode() << 12 + tileText
+				.hashCode() << 14;
 	}
+
 	/**
 	 * @return a String representation of the tile
 	 */
@@ -215,65 +216,73 @@ public final class Tile implements Serializable {
 		sbuilder.append(", event ");
 		sbuilder.append(event);
 		sbuilder.append(". Forts:");
-		for (Fortress fort : forts) {
+		for (final Fortress fort : forts) {
 			sbuilder.append("\n\t\t");
 			sbuilder.append(fort);
 		}
 		sbuilder.append("\n\tUnits:");
-		for (Unit unit : units) {
+		for (final Unit unit : units) {
 			sbuilder.append("\n\t\t");
 			sbuilder.append(unit);
 		}
 		return sbuilder.toString();
 	}
-	
+
 	/**
 	 * The river-directions on this tile.
 	 */
 	private final Set<River> rivers = EnumSet.noneOf(River.class);
-	
+
 	/**
 	 * @return the river directions on this tile
 	 */
 	public Set<River> getRivers() {
 		return EnumSet.copyOf(rivers);
 	}
-	
+
 	/**
-	 * @param river a river to add
+	 * @param river
+	 *            a river to add
 	 * @return the result of the operation
 	 */
 	public boolean addRiver(final River river) {
 		return rivers.add(river);
 	}
-	
+
 	/**
-	 * @param river a river to remove
+	 * @param river
+	 *            a river to remove
 	 * @return the result of the operation
 	 */
 	public boolean removeRiver(final River river) {
 		return rivers.remove(river);
 	}
+
 	/**
 	 * Text associated with the tile: encounter results, for instance.
 	 */
 	private String tileText = "";
+
 	/**
-	 * @param text text associated with the tile
+	 * @param text
+	 *            text associated with the tile
 	 */
 	public void setTileText(final String text) {
 		tileText = (text == null ? "" : text);
 	}
-	
+
 	/**
 	 * @return any text associated with the tile
 	 */
 	public String getTileText() {
 		return tileText;
 	}
+
 	/**
 	 * Update with data from a tile in another map.
-	 * @param tile the same tile in another map.
+	 * 
+	 * @param tile
+	 *            the same tile in another map.
 	 */
 	public void update(final Tile tile) {
 		forts.addAll(tile.forts);

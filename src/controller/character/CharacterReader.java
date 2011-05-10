@@ -85,8 +85,8 @@ public class CharacterReader {
 				handleLine(line.trim());
 			} else {
 				if (line.contains(":")) {
-					handleLine(line.split(":")[0], line.substring(line
-							.indexOf(':')));
+					handleLine(line.split(":")[0],
+							line.substring(line.indexOf(':')));
 				}
 			}
 		}
@@ -115,8 +115,7 @@ public class CharacterReader {
 		} else if ("charname".equalsIgnoreCase(var)) {
 			name = rest;
 		} else if ("job".equalsIgnoreCase(var)) {
-			handleJob(rest.split(":")[0], rest.substring(rest
-					.indexOf(':')));
+			handleJob(rest.split(":")[0], rest.substring(rest.indexOf(':')));
 		} else if (isStat(var.trim())) {
 			if (stats == null) {
 				createStats(isNumeric(rest.trim()) && IsAdmin.IS_ADMIN);
@@ -136,7 +135,7 @@ public class CharacterReader {
 		try {
 			CharStats.Stat.valueOf(str);
 			return true; // NOPMD
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			return false;
 		}
 	}
@@ -152,7 +151,7 @@ public class CharacterReader {
 		try {
 			Integer.parseInt(str);
 			return true; // NOPMD
-		} catch (NumberFormatException except) {
+		} catch (final NumberFormatException except) {
 			return false;
 		}
 	}
@@ -186,30 +185,38 @@ public class CharacterReader {
 				((AdminStatsImpl) stats).setStat(CharStats.Stat.valueOf(stat),
 						Integer.parseInt(value));
 			} else {
-				stats.setStat(CharStats.Stat.valueOf(stat), AdminStatsImpl
-						.convertStat(Integer.parseInt(value)));
+				stats.setStat(CharStats.Stat.valueOf(stat),
+						AdminStatsImpl.convertStat(Integer.parseInt(value)));
 			}
-		} catch (NumberFormatException except) {
-			stats.setStat(CharStats.Stat.valueOf(stat), CharStats.Attribute
-					.valueOf(value));
+		} catch (final NumberFormatException except) {
+			stats.setStat(CharStats.Stat.valueOf(stat),
+					CharStats.Attribute.valueOf(value));
 		}
 	}
+
 	/**
 	 * Handle a Job. FIXME: validate input before calling this.
-	 * @param job the job
-	 * @param levels how many levels 
+	 * 
+	 * @param job
+	 *            the job
+	 * @param levels
+	 *            how many levels
 	 */
 	private void handleJob(final String job, final String levels) {
 		if (isJob(job) && isNumeric(levels)) {
-			jobs.add(new JobLevels(JobType.valueOf(job), Integer.parseInt(levels)));
+			jobs.add(new JobLevels(JobType.valueOf(job), Integer
+					.parseInt(levels)));
 		}
 	}
+
 	/**
 	 * The jobs the character has levels in.
 	 */
 	private final List<JobLevels> jobs = new ArrayList<JobLevels>();
+
 	/**
-	 * Is the string a Job? FIXME: Should load Job definitions from file rather than enumerating them.
+	 * Is the string a Job? FIXME: Should load Job definitions from file rather
+	 * than enumerating them.
 	 * 
 	 * @param str
 	 *            a string
@@ -219,7 +226,7 @@ public class CharacterReader {
 		try {
 			JobType.valueOf(str);
 			return true; // NOPMD
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			return false;
 		}
 	}

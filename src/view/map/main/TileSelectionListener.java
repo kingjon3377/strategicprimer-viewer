@@ -8,7 +8,7 @@ import java.util.logging.Logger;
  * 
  * @author Jonathan Lovelace
  */
-//ESCA-JAVA0137:
+// ESCA-JAVA0137:
 public class TileSelectionListener extends SelectionListener {
 	/**
 	 * Logger.
@@ -24,13 +24,19 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	private final DetailPanel detailPanel;
 	/**
-	 * The main viewer ... the only object that can copy a tile from the main map to the alternate.
+	 * The main viewer ... the only object that can copy a tile from the main
+	 * map to the alternate.
 	 */
 	private final MapPanel viewer;
+
 	/**
 	 * Constructor.
-	 * @param view the main panel. Needed to copy a tile from the main map to a sub-map.
-	 * @param details the panel that'll show the details of the selected tile
+	 * 
+	 * @param view
+	 *            the main panel. Needed to copy a tile from the main map to a
+	 *            sub-map.
+	 * @param details
+	 *            the panel that'll show the details of the selected tile
 	 */
 	public TileSelectionListener(final MapPanel view, final DetailPanel details) {
 		super();
@@ -42,6 +48,7 @@ public class TileSelectionListener extends SelectionListener {
 		detailPanel = details;
 		viewer = view;
 	}
+
 	/**
 	 * Handle mouse clicks.
 	 * 
@@ -92,7 +99,7 @@ public class TileSelectionListener extends SelectionListener {
 			MENU.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
-	
+
 	/**
 	 * Clear the selection.
 	 */

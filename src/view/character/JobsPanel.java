@@ -30,9 +30,12 @@ public class JobsPanel extends JPanel implements ActionListener {
 	 * The panel managing the whole character.
 	 */
 	private final CharacterPanel parent;
+
 	/**
 	 * Constructor
-	 * @param charPanel the main character editing panel
+	 * 
+	 * @param charPanel
+	 *            the main character editing panel
 	 */
 	public JobsPanel(final CharacterPanel charPanel) {
 		super(new BorderLayout());
@@ -43,9 +46,12 @@ public class JobsPanel extends JPanel implements ActionListener {
 		addButton.addActionListener(this);
 		add(addButton, BorderLayout.SOUTH);
 	}
+
 	/**
 	 * Add any JobPanels to the content panel.
-	 * @param comp the component to add
+	 * 
+	 * @param comp
+	 *            the component to add
 	 * @return the component we added
 	 */
 	@Override
@@ -57,12 +63,14 @@ public class JobsPanel extends JPanel implements ActionListener {
 		}
 		return comp;
 	}
+
 	/**
 	 * Handle button press.
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		// FIXME: We need to keep track of the jobs we're displaying, and become an Applyable.
+		// FIXME: We need to keep track of the jobs we're displaying, and become
+		// an Applyable.
 		if ("Add Job".equals(event.getActionCommand())) {
 			add(new JobPanel(parent));
 		}

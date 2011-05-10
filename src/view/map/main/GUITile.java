@@ -33,7 +33,8 @@ public class GUITile extends Selectable {
 	/**
 	 * The size of each GUI tile, as a Dimension
 	 */
-	private static final Dimension PREF_SIZE = new Dimension(TILE_SIZE, TILE_SIZE);
+	private static final Dimension PREF_SIZE = new Dimension(TILE_SIZE,
+			TILE_SIZE);
 	/**
 	 * 
 	 */
@@ -65,7 +66,7 @@ public class GUITile extends Selectable {
 	/**
 	 * The shapes representing the rivers on the tile
 	 */
-	private static final Map<River, Shape> rivers = new EnumMap<River, Shape>( //NOPMD
+	private static final Map<River, Shape> rivers = new EnumMap<River, Shape>( // NOPMD
 			River.class);
 	/**
 	 * Shape representing the fortress that might be on the tile.
@@ -137,12 +138,13 @@ public class GUITile extends Selectable {
 	private BufferedImage image;
 
 	/**
-	 * Check whether that cache is out of date, and recreate it if it is.
-	 * This lets us draw everything except the selection box only *once*
-	 * per tile in most cases.
+	 * Check whether that cache is out of date, and recreate it if it is. This
+	 * lets us draw everything except the selection box only *once* per tile in
+	 * most cases.
 	 */
 	private void checkImageCache() {
-		if (image == null || image.getWidth() != width || image.getHeight() != height) {
+		if (image == null || image.getWidth() != width
+				|| image.getHeight() != height) {
 			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			regenerateCache();
 		}
@@ -159,13 +161,13 @@ public class GUITile extends Selectable {
 		pen.draw(background);
 		if (!TileType.NotVisible.equals(tile.getType())) {
 			pen.setColor(Color.BLUE);
-			for (River river : tile.getRivers()) {
+			for (final River river : tile.getRivers()) {
 				pen.fill(rivers.get(river));
 			}
 			if (!tile.getForts().isEmpty()) {
 				pen.setColor(BROWN);
 				pen.fill(fort);
-			} 
+			}
 			if (!tile.getUnits().isEmpty()) {
 				pen.setColor(PURPLE);
 				pen.fill(unit);
@@ -174,8 +176,8 @@ public class GUITile extends Selectable {
 	}
 
 	/**
-	 * The identity transformation. drawImage() requires a transformation,
-	 * and we *really* don't want to create one every time we paint a tile.
+	 * The identity transformation. drawImage() requires a transformation, and
+	 * we *really* don't want to create one every time we paint a tile.
 	 */
 	private static final AffineTransform IDENT = new AffineTransform();
 
@@ -214,8 +216,10 @@ public class GUITile extends Selectable {
 		colorMap.put(TileType.TemperateForest, new Color(72, 250, 72));
 		colorMap.put(TileType.Tundra, new Color(153, 153, 153));
 	}
+
 	/**
-	 * @param _tile the tile this now represents
+	 * @param _tile
+	 *            the tile this now represents
 	 */
 	public void setTile(final Tile _tile) {
 		tile = _tile;

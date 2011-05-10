@@ -141,7 +141,8 @@ public final class Converter {
 				|| type == model.viewer.TileType.Tundra ? MEDIUM_HIGH
 				: type == model.viewer.TileType.Jungle ? MEDIUM_LOW
 						: type == model.viewer.TileType.Mountain ? HIGH
-								: type == model.viewer.TileType.Ocean ? LOW : MEDIUM;
+								: type == model.viewer.TileType.Ocean ? LOW
+										: MEDIUM;
 	}
 
 	// private static final int MAX_ELEV_CHANGE = 3;
@@ -157,25 +158,29 @@ public final class Converter {
 		copyToBuffer();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				if (tooMuchHigher(eBuffer[i][j], eBuffer[mod(i - 1, rows)][mod(
-						j - 1, cols)], eBuffer[mod(i - 1, rows)][j],
+				if (tooMuchHigher(eBuffer[i][j],
+						eBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
+						eBuffer[mod(i - 1, rows)][j],
 						eBuffer[mod(i - 1, rows)][(j + 1) % cols],
 						eBuffer[i][mod(j - 1, cols)])
 						|| tooMuchHigher(eBuffer[i][j], eBuffer[i][(j + 1)
-								% cols], eBuffer[(i + 1) % rows][mod(j - 1,
-								cols)], eBuffer[(i + 1) % rows][j],
-								eBuffer[(i + 1) % rows][(j + 1) % cols])) {
+								% cols],
+								eBuffer[(i + 1) % rows][mod(j - 1, cols)],
+								eBuffer[(i + 1) % rows][j], eBuffer[(i + 1)
+										% rows][(j + 1) % cols])) {
 					elevations[i][j]--;
 					changes++; // NOPMD
 				}
-				if (tooMuchLower(eBuffer[i][j], eBuffer[mod(i - 1, rows)][mod(
-						j - 1, cols)], eBuffer[mod(i - 1, rows)][j],
+				if (tooMuchLower(eBuffer[i][j],
+						eBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
+						eBuffer[mod(i - 1, rows)][j],
 						eBuffer[mod(i - 1, rows)][(j + 1) % cols],
 						eBuffer[i][mod(j - 1, cols)])
 						|| tooMuchLower(eBuffer[i][j], eBuffer[i][(j + 1)
-								% cols], eBuffer[(i + 1) % rows][mod(j - 1,
-								cols)], eBuffer[(i + 1) % rows][j],
-								eBuffer[(i + 1) % rows][(j + 1) % cols])) {
+								% cols],
+								eBuffer[(i + 1) % rows][mod(j - 1, cols)],
+								eBuffer[(i + 1) % rows][j], eBuffer[(i + 1)
+										% rows][(j + 1) % cols])) {
 					elevations[i][j]++;
 					changes++; // NOPMD
 				}
@@ -192,9 +197,10 @@ public final class Converter {
 								.equals(tBuffer[i][j])) {
 					newTypes[i][j] = shouldChangeType(tBuffer[i][j],
 							tBuffer[mod(i - 1, rows)][mod(j - 1, cols)],
-							tBuffer[mod(i - 1, rows)][j], tBuffer[mod(i - 1,
-									rows)][(j + 1) % cols], tBuffer[i][mod(
-									j - 1, cols)], tBuffer[i][(j + 1) % cols],
+							tBuffer[mod(i - 1, rows)][j],
+							tBuffer[mod(i - 1, rows)][(j + 1) % cols],
+							tBuffer[i][mod(j - 1, cols)], tBuffer[i][(j + 1)
+									% cols],
 							tBuffer[(i + 1) % rows][mod(j - 1, cols)],
 							tBuffer[(i + 1) % rows][j],
 							tBuffer[(i + 1) % rows][(j + 1) % cols]);
@@ -237,12 +243,12 @@ public final class Converter {
 			final TileType... moreTiles) {
 		Arrays.fill(counts, 0);
 		counts[tile.ordinal()] = 2;
-		for (TileType next : moreTiles) {
+		for (final TileType next : moreTiles) {
 			counts[next.ordinal()]++;
 		}
 		TileType common = TileType.UNEXPLORED; // NOPMD
 		int max = -1; // NOPMD
-		for (TileType type : TileType.values()) {
+		for (final TileType type : TileType.values()) {
 			if (counts[type.ordinal()] > max) {
 				common = type; // NOPMD
 				max = counts[type.ordinal()]; // NOPMD
@@ -307,8 +313,8 @@ public final class Converter {
 	 */
 	public static void main(final String[] args) {
 		try {
-			final Converter conv = new Converter(new MapReader()
-					.readMap(args[0]));
+			final Converter conv = new Converter(
+					new MapReader().readMap(args[0]));
 			int changes = 1;
 			int iterations = 0;
 			while (changes != 0 && iterations < 100000) {
@@ -318,9 +324,9 @@ public final class Converter {
 						+ changes);
 			}
 			conv.writeToFile("/home/kingjon/new_map.spmap");
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 		}
 	}

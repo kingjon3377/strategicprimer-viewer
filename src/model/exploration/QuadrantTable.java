@@ -68,7 +68,7 @@ public class QuadrantTable implements EncounterTable {
 	 */
 	public String getQuadrantValue(final int row, final int col) {
 		Pair<Integer, Integer> bestKey = Pair.of(-1, -1);
-		for (Pair<Integer, Integer> iter : quadrants.keySet()) {
+		for (final Pair<Integer, Integer> iter : quadrants.keySet()) {
 			if (iter.first <= row && iter.first > bestKey.first
 					&& iter.second <= col && iter.second > bestKey.second) {
 				bestKey = iter;
@@ -76,16 +76,19 @@ public class QuadrantTable implements EncounterTable {
 		}
 		return quadrants.get(bestKey);
 	}
+
 	/**
-	 * @param tile a tile
+	 * @param tile
+	 *            a tile
 	 * @return what the table has for that tile
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
-		return getQuadrantValue(tile.getRow(),tile.getCol());
+		return getQuadrantValue(tile.getRow(), tile.getCol());
 	}
+
 	/**
-	 * @return all events that this table can produce. 
+	 * @return all events that this table can produce.
 	 */
 	@Override
 	public Set<String> allEvents() {

@@ -169,13 +169,13 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 		if (currentTile == null) {
 			if (atts.getValue("event") == null) {
 				currentTile = new Tile(Integer.parseInt(atts.getValue("row")),
-						Integer.parseInt(atts.getValue("column")), TileType
-								.getTileType(atts.getValue("type")));
+						Integer.parseInt(atts.getValue("column")),
+						TileType.getTileType(atts.getValue("type")));
 			} else {
 				currentTile = new Tile(Integer.parseInt(atts.getValue("row")),
-						Integer.parseInt(atts.getValue("column")), TileType
-								.getTileType(atts.getValue("type")), Integer
-								.parseInt(atts.getValue("event")));
+						Integer.parseInt(atts.getValue("column")),
+						TileType.getTileType(atts.getValue("type")),
+						Integer.parseInt(atts.getValue("event")));
 			}
 		} else {
 			throw new SAXException(new IllegalStateException(
@@ -224,8 +224,8 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 						"Cannot have a unit not in a tile"));
 			}
 			currentUnit = new Unit(currentTile, Integer.parseInt(atts
-					.getValue("owner")), atts.getValue("type"), atts
-					.getValue("name"));
+					.getValue("owner")), atts.getValue("type"),
+					atts.getValue("name"));
 		} else {
 			throw new SAXException(new IllegalStateException(
 					"Cannot (currently) have a unit inside a unit"));
@@ -243,9 +243,9 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	 */
 	public void parsePlayer(final Attributes atts) throws SAXException {
 		if (currentPlayer == null) {
-			currentPlayer = new Player(Integer
-					.parseInt(atts.getValue("number")), atts
-					.getValue("code_name"));
+			currentPlayer = new Player(
+					Integer.parseInt(atts.getValue("number")),
+					atts.getValue("code_name"));
 		} else {
 			throw new SAXException(new IllegalStateException(
 					"Cannot have a player inside a player"));

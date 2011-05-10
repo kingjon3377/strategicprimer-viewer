@@ -39,6 +39,7 @@ public abstract class Selectable extends JComponent { // NOPMD
 	 * Whether this is the currently selected tile.
 	 */
 	private boolean selected;
+
 	/**
 	 * Constructor. Initially the control is not selected.
 	 */

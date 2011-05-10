@@ -86,10 +86,10 @@ public class MapComponent extends JComponent {
 		final Rectangle bounds = bounds(pen.getClipBounds());
 		final int minX = (int) (bounds.getMinX() / TILE_SIZE);
 		final int minY = (int) (bounds.getMinY() / TILE_SIZE);
-		final int maxX = Math.min((int) (bounds.getMaxX() / TILE_SIZE + 1), map
-				.cols());
-		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1), map
-				.rows());
+		final int maxX = Math.min((int) (bounds.getMaxX() / TILE_SIZE + 1),
+				map.cols());
+		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1),
+				map.rows());
 		for (int i = minY; i < maxY; i++) {
 			for (int j = minX; j < maxX; j++) {
 				paintTile(pen, map.getTile(i, j), i, j);
@@ -103,9 +103,8 @@ public class MapComponent extends JComponent {
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return rect == null ? new Rectangle(0, 0, map.cols() * TILE_SIZE, map
-				.rows()
-				* TILE_SIZE) : rect;
+		return rect == null ? new Rectangle(0, 0, map.cols() * TILE_SIZE,
+				map.rows() * TILE_SIZE) : rect;
 	}
 
 	/**

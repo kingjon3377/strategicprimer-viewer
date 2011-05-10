@@ -43,10 +43,12 @@ public abstract class AbstractEvent {
 	protected AbstractEvent(final EventKind eKind) {
 		kind = eKind;
 	}
+
 	/**
 	 * @return the DC to discover the event.
 	 */
 	public abstract int getDC();
+
 	/**
 	 * An abstract superclass for towns etc.
 	 */
@@ -54,15 +56,21 @@ public abstract class AbstractEvent {
 	protected abstract static class AbstractTownEvent extends AbstractEvent {
 		/**
 		 * Constructor.
-		 * @param eKind what kind of event this is
-		 * @param tSize the size of the town, fortress, or city
-		 * @param tStatus the status of the town, fortress, or city
+		 * 
+		 * @param eKind
+		 *            what kind of event this is
+		 * @param tSize
+		 *            the size of the town, fortress, or city
+		 * @param tStatus
+		 *            the status of the town, fortress, or city
 		 */
-		protected AbstractTownEvent(final EventKind eKind, final TownStatus tStatus, final TownSize tSize) {
+		protected AbstractTownEvent(final EventKind eKind,
+				final TownStatus tStatus, final TownSize tSize) {
 			super(eKind);
 			status = tStatus;
 			size = tSize;
 		}
+
 		/**
 		 * The status of the town, fortress, or city
 		 */

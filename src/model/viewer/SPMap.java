@@ -213,9 +213,11 @@ public class SPMap implements Serializable {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof SPMap && myCols == ((SPMap) obj).cols()
+		return obj instanceof SPMap
+				&& myCols == ((SPMap) obj).cols()
 				&& myRows == ((SPMap) obj).rows()
-				&& Sorter.sort(players).equals(Sorter.sort(((SPMap) obj).getPlayers()))
+				&& Sorter.sort(players).equals(
+						Sorter.sort(((SPMap) obj).getPlayers()))
 				&& Sorter.sort(forts).equals(Sorter.sort(((SPMap) obj).forts))
 				&& Sorter.sort(units).equals(Sorter.sort(((SPMap) obj).units))
 				&& tiles.equals(((SPMap) obj).tiles);
@@ -240,22 +242,22 @@ public class SPMap implements Serializable {
 		sbuild.append(" rows and ");
 		sbuild.append(myCols);
 		sbuild.append(" columns. Players:");
-		for (Player player : players) {
+		for (final Player player : players) {
 			sbuild.append("\n\t");
 			sbuild.append(player);
 		}
 		sbuild.append("\nForts:");
-		for (Fortress fort : forts) {
+		for (final Fortress fort : forts) {
 			sbuild.append("\n\t");
 			sbuild.append(fort);
 		}
 		sbuild.append("\nUnits:");
-		for (Unit unit : units) {
+		for (final Unit unit : units) {
 			sbuild.append("\n\t");
 			sbuild.append(unit);
 		}
 		sbuild.append("\nTiles:");
-		for (Point point : tiles.keySet()) {
+		for (final Point point : tiles.keySet()) {
 			sbuild.append("\n\t(");
 			sbuild.append(point.row());
 			sbuild.append(", ");

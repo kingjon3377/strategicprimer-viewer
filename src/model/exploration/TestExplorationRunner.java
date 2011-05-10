@@ -198,22 +198,27 @@ public final class TestExplorationRunner implements Serializable {
 				"( #existent_table# )"));
 		runner.loadTable(
 				"referent_three",
-				new QuadrantTable(1, new ArrayList<String>(Arrays.asList(new String[] {
-						"#referent_one#", "#referent_two#" }))));
-		assertFalse("recursive case to exercise cache-hits", runner.recursiveCheck("referent_three"));
+				new QuadrantTable(1, new ArrayList<String>(Arrays
+						.asList(new String[] { "#referent_one#",
+								"#referent_two#" }))));
+		assertFalse("recursive case to exercise cache-hits",
+				runner.recursiveCheck("referent_three"));
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));
-		assertTrue("reference to nonexistent table", runner.recursiveCheck("false_referent"));
+		assertTrue("reference to nonexistent table",
+				runner.recursiveCheck("false_referent"));
 	}
-	
+
 	/**
-	 * Test that loading the default tables loads one particular table, and that it's usable.
+	 * Test that loading the default tables loads one particular table, and that
+	 * it's usable.
 	 */
 	@Test
 	public void testLoadDefaultTables() {
 		runner.loadDefaultTables();
-		assertFalse("table existence and usability", runner.recursiveCheck("major_rock"));
+		assertFalse("table existence and usability",
+				runner.recursiveCheck("major_rock"));
 	}
-	
+
 	/**
 	 * Test the recursiveCheck() method.
 	 */
@@ -221,8 +226,10 @@ public final class TestExplorationRunner implements Serializable {
 	public void testGlobalRecursiveCheck() {
 		assertFalse("recursive check with no tables", runner.recursiveCheck());
 		runner.loadTable("existent", new ConstantTable("true_table"));
-		assertFalse("recursive check with only valid tables", runner.recursiveCheck());
+		assertFalse("recursive check with only valid tables",
+				runner.recursiveCheck());
 		runner.loadTable("false_ref", new ConstantTable("#false#"));
-		assertTrue("recursive check with an invalid table", runner.recursiveCheck());
+		assertTrue("recursive check with an invalid table",
+				runner.recursiveCheck());
 	}
 }

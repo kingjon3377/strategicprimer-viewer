@@ -36,7 +36,9 @@ import org.xml.sax.SAXException;
  */
 public class MapReader {
 	private static final String UNEXPECTED_TAG = "Unexpected tag ";
-	private static final Logger LOGGER = Logger.getLogger(MapReader.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MapReader.class
+			.getName());
+
 	/**
 	 * @param file
 	 *            the file to read from
@@ -84,7 +86,8 @@ public class MapReader {
 		 */
 		River("river"),
 		/**
-		 * Lakes: internally a special case of rivers, but we want a simpler XML tile for them.
+		 * Lakes: internally a special case of rivers, but we want a simpler XML
+		 * tile for them.
 		 */
 		Lake("lake"),
 		/**
@@ -123,7 +126,7 @@ public class MapReader {
 		public static Tag fromString(final String _text) {
 			Tag retval = Unknown;
 			if (_text != null) {
-				for (Tag tag : Tag.values()) {
+				for (final Tag tag : Tag.values()) {
 					if (_text.equalsIgnoreCase(tag.text)) {
 						retval = tag;
 						break;
@@ -182,7 +185,7 @@ public class MapReader {
 		eventReader.close();
 		try {
 			istream.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.WARNING, "I/O error closing the input stream", e);
 		}
 		return map;
@@ -231,7 +234,9 @@ public class MapReader {
 
 	/**
 	 * Parse the tile itself.
-	 * @param element The tile XML tag
+	 * 
+	 * @param element
+	 *            The tile XML tag
 	 * @return the tile it represents.
 	 */
 	private static Tile parseTile(final StartElement element) {
@@ -268,7 +273,8 @@ public class MapReader {
 		}
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
-				final StartElement element = reader.nextEvent().asStartElement();
+				final StartElement element = reader.nextEvent()
+						.asStartElement();
 				throw new IllegalStateException(UNEXPECTED_TAG
 						+ getTagType(element).getText()
 						+ ": a river can't contain anything yet");
@@ -412,8 +418,9 @@ public class MapReader {
 	 */
 	// ESCA-JAVA0266:
 	public static void main(final String[] args) {
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-		for (String arg : args) {
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
+				System.out));
+		for (final String arg : args) {
 			try {
 				final long startOne = System.nanoTime();
 				final SPMap map1 = new XMLReader().getMap(arg); // NOPMD;
@@ -430,20 +437,20 @@ public class MapReader {
 						+ " time-units;");
 				out.println("New method took " + (endTwo - startTwo)
 						+ " time-units.");
-			} catch (SAXException e) {
+			} catch (final SAXException e) {
 				LOGGER.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error while parsing " + arg, e);
-			} catch (XMLStreamException e) {
+			} catch (final XMLStreamException e) {
 				LOGGER.log(Level.SEVERE,
 						"XMLStreamException (probably badly formed input) in "
 								+ arg, e);
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				LOGGER.log(Level.SEVERE,
 						"Non-numeric when numeric data expected in " + arg, e);
-			} catch (NullPointerException e) { // NOPMD
+			} catch (final NullPointerException e) { // NOPMD
 				LOGGER.log(Level.SEVERE, "Null pointer in " + arg, e);
-			} catch (IllegalStateException e) {
+			} catch (final IllegalStateException e) {
 				LOGGER.log(Level.SEVERE, "Unexpected state in " + arg, e);
 			}
 		}

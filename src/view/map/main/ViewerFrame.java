@@ -100,9 +100,9 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		try {
 			frame = new ViewerFrame(filename);
 			frame.setVisible(true);
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 		}
 	}
@@ -284,7 +284,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())
 							.write(mapPanel.getMap());
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}
 			}
@@ -298,7 +298,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())
 							.write(mapPanel.getSecondaryMap());
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}
 			}
@@ -325,10 +325,10 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	private static SPMap readMap(final String filename) {
 		try {
 			return new MapReader().readMap(filename); // NOPMD
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			return null; // NOPMD
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			return null;
 		}

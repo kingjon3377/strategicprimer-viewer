@@ -54,6 +54,7 @@ public class SPCharacter implements Serializable {
 	/**
 	 * Constructor taking a "stats" value. For use in the admin side when all we
 	 * have is the summary.
+	 * 
 	 * @param _name
 	 *            the character's name
 	 * @param _stats
@@ -63,6 +64,7 @@ public class SPCharacter implements Serializable {
 		name = _name;
 		stats = _stats;
 	}
+
 	/**
 	 * The character's statistics.
 	 */
@@ -74,26 +76,34 @@ public class SPCharacter implements Serializable {
 	public CharStats getStats() {
 		return stats;
 	}
+
 	/**
 	 * The character's levels in Jobs, if any
 	 */
 	private final List<JobLevels> jobs = new ArrayList<JobLevels>();
+
 	/**
 	 * @return the character's levels in Jobs, if any
 	 */
 	public List<JobLevels> getJobs() {
 		return new ArrayList<JobLevels>(jobs);
 	}
+
 	/**
 	 * Add a new job.
-	 * @param job the job to add
+	 * 
+	 * @param job
+	 *            the job to add
 	 */
 	public void addJob(final JobLevels job) {
 		jobs.add(job);
 	}
+
 	/**
 	 * Remove a job.
-	 * @param job the job to remove
+	 * 
+	 * @param job
+	 *            the job to remove
 	 */
 	public void removeJob(final JobLevels job) {
 		jobs.remove(job);

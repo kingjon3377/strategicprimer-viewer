@@ -9,6 +9,7 @@ import model.viewer.Tile;
 
 /**
  * A table for legacy "events."
+ * 
  * @author Jonathan Lovelace
  */
 public class LegacyTable implements EncounterTable {
@@ -16,15 +17,20 @@ public class LegacyTable implements EncounterTable {
 	 * The data structure behind this class.
 	 */
 	private final Map<Integer, String> map;
+
 	/**
 	 * Constructor.
-	 * @param _map the entries in the table.
+	 * 
+	 * @param _map
+	 *            the entries in the table.
 	 */
 	public LegacyTable(final Map<Integer, String> _map) {
 		map = new HashMap<Integer, String>(_map);
 	}
+
 	/**
-	 * @param tile the tile in question
+	 * @param tile
+	 *            the tile in question
 	 * @return the event on that tile
 	 */
 	@Override

@@ -43,7 +43,8 @@ public class TerminalViewer {
 	 */
 	public TerminalViewer(final SPMap map, final int row, final int col) {
 		// ESCA-JAVA0266:
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
+				System.out));
 		textMap = new char[map.rows()][map.cols()];
 		createTextMap(map);
 		final StringBuilder sbuilder = new StringBuilder("");
@@ -86,13 +87,13 @@ public class TerminalViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new TerminalViewer(new MapReader().readMap(args[0]), Integer
-					.parseInt(args[1]), Integer.parseInt(args[2]));
-		} catch (XMLStreamException e) {
+			new TerminalViewer(new MapReader().readMap(args[0]),
+					Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			System.exit(1);
 			return; // NOPMD;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;

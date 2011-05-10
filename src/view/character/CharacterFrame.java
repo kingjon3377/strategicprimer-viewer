@@ -14,8 +14,9 @@ import controller.character.CharacterReader;
 
 /**
  * A window (and driver) for the character-management program.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class CharacterFrame extends JFrame implements SaveableOpenable,
 		UICloseable {
@@ -23,9 +24,12 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = -1521685216194840568L;
+
 	/**
 	 * Driver entry point.
-	 * @param args ignored at this point
+	 * 
+	 * @param args
+	 *            ignored at this point
 	 */
 	public static void main(final String args[]) {
 		new CharacterFrame().setVisible(true);
@@ -49,6 +53,7 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 		setJMenuBar(menu);
 		pack();
 	}
+
 	/**
 	 * Open a character.
 	 * 
@@ -62,9 +67,10 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	@Override
 	public void open(final String file) throws FileNotFoundException,
 			IOException {
-		tabber.addTab("Character", new CharacterPanel(new CharacterReader(file)
-				.getCharacter()));
+		tabber.addTab("Character",
+				new CharacterPanel(new CharacterReader(file).getCharacter()));
 	}
+
 	/**
 	 * Save the current character.
 	 * 
@@ -91,7 +97,7 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	public void close() {
 		tabber.removeTabAt(tabber.getSelectedIndex());
 	}
-	
+
 	/**
 	 * Quit the application. FIXME: Ask to save unmodified files, etc.
 	 */
@@ -99,7 +105,7 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 		setVisible(false);
 		dispose();
 	}
-	
+
 	/**
 	 * Open a panel for a new character.
 	 */
