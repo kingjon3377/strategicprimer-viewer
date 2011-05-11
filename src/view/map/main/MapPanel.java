@@ -147,7 +147,7 @@ public class MapPanel extends JPanel {
 	private final Map<Tile, GUITile> tileCache = new HashMap<Tile, GUITile>();
 
 	/**
-	 * Set up a new GUI tile
+	 * Set up a new GUI tile.
 	 * 
 	 * @param tile
 	 *            the GUI tile to set up.
@@ -195,7 +195,7 @@ public class MapPanel extends JPanel {
 	/**
 	 * Copy a tile from the main map to the secondary map.
 	 * 
-	 * @param selection
+	 * @param selection a tile in the relevant position.
 	 */
 	public void copyTile(final Tile selection) {
 		if (map.getTile(selection.getRow(), selection.getCol()) != null

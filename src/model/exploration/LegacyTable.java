@@ -8,7 +8,7 @@ import java.util.Set;
 import model.viewer.Tile;
 
 /**
- * A table for legacy "events."
+ * A table for legacy "events".
  * 
  * @author Jonathan Lovelace
  */

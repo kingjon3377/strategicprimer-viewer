@@ -1,7 +1,7 @@
 package model.viewer.events;
 
 /**
- * "Nothing interesting here..."
+ * "Nothing interesting here...".
  * 
  * @author Jonathan Lovelace
  * 

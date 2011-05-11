@@ -32,7 +32,7 @@ public class JobsPanel extends JPanel implements ActionListener {
 	private final CharacterPanel parentPanel;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param charPanel
 	 *            the main character editing panel

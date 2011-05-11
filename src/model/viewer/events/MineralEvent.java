@@ -29,7 +29,26 @@ public final class MineralEvent extends AbstractEvent {
 	 * Kinds of minerals whose events the program knows about.
 	 */
 	public enum MineralKind {
-		Iron, Copper, Gold, Silver, Coal;
+		/**
+		 * Iron.
+		 */
+		Iron,
+		/**
+		 * Copper.
+		 */
+		Copper,
+		/**
+		 * Gold.
+		 */
+		Gold,
+		/**
+		 * Silver.
+		 */
+		Silver,
+		/**
+		 * Coal.
+		 */
+		Coal;
 	}
 
 	/**

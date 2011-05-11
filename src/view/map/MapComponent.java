@@ -54,7 +54,7 @@ public class MapComponent extends JComponent {
 	}
 
 	/**
-	 * Creates the buffered image
+	 * Creates the buffered image.
 	 */
 	public void createImage() {
 		image = createImage(map.cols() * TILE_SIZE, map.rows() * TILE_SIZE);
@@ -83,7 +83,7 @@ public class MapComponent extends JComponent {
 	 * @param pen
 	 *            the graphics context
 	 */
-	private final void drawMap(final Graphics pen) {
+	private void drawMap(final Graphics pen) {
 		final Rectangle bounds = bounds(pen.getClipBounds());
 		final int minX = (int) (bounds.getMinX() / TILE_SIZE);
 		final int minY = (int) (bounds.getMinY() / TILE_SIZE);

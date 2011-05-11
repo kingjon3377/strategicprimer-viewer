@@ -78,7 +78,7 @@ public class SPCharacter implements Serializable {
 	}
 
 	/**
-	 * The character's levels in Jobs, if any
+	 * The character's levels in Jobs, if any.
 	 */
 	private final List<JobLevels> jobs = new ArrayList<JobLevels>();
 

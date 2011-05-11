@@ -19,7 +19,7 @@ public final class Sorter {
 	}
 
 	/**
-	 * Sort a list, returning the sorted list but not modifying the parameter
+	 * Sort a list, returning the sorted list but not modifying the parameter.
 	 * 
 	 * @param <T>
 	 *            The type of list

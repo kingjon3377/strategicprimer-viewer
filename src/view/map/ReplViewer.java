@@ -25,7 +25,7 @@ import controller.map.MapReader;
  */
 public final class ReplViewer {
 	/**
-	 * Logger
+	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ReplViewer.class
 			.getName());

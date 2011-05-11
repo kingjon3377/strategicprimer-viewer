@@ -8,7 +8,7 @@ package model.viewer.events;
  */
 public final class FortificationEvent extends AbstractEvent.AbstractTownEvent {
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param tStatus
 	 *            The status of the fortification

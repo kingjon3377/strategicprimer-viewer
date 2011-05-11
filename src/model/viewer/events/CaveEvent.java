@@ -1,7 +1,7 @@
 package model.viewer.events;
 
 /**
- * "There are extensive caves beneath this tile."
+ * "There are extensive caves beneath this tile".
  * 
  * @author Jonathan Lovelace
  * 

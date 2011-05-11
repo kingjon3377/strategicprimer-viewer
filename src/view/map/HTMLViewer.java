@@ -25,7 +25,7 @@ import controller.map.MapReader;
  */
 public final class HTMLViewer {
 	/**
-	 * Logger
+	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(HTMLViewer.class
 			.getName());
@@ -75,7 +75,7 @@ public final class HTMLViewer {
 	}
 
 	/**
-	 * @param args
+	 * @param args command-line arguments: the first is the map file, the rest are ignored.
 	 */
 	public static void main(final String[] args) {
 		try {
@@ -92,7 +92,7 @@ public final class HTMLViewer {
 	}
 
 	/**
-	 * A cache of terrain type image filenames
+	 * A cache of terrain type image filenames.
 	 */
 	private static final Map<TileType, String> STRING_MAP = new EnumMap<TileType, String>(
 			TileType.class);
@@ -109,7 +109,7 @@ public final class HTMLViewer {
 	}
 
 	/**
-	 * Populate the filename cache
+	 * Populate the filename cache.
 	 * 
 	 * @param type
 	 *            A terrain type

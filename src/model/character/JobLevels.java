@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class JobLevels implements Serializable {
 	/**
-	 * Version UID for serialization
+	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = -7717128400521917978L;
 

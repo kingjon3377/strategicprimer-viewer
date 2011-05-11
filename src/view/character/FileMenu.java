@@ -30,7 +30,7 @@ public class FileMenu extends JMenu implements ActionListener {
 			.getName());
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param parentWindow
 	 *            the window we're attached to

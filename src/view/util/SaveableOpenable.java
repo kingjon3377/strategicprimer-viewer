@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public interface SaveableOpenable {
 	/**
-	 * Load from file
+	 * Load from file.
 	 * 
 	 * @param file
 	 *            the filename to load from
@@ -23,7 +23,7 @@ public interface SaveableOpenable {
 	void open(final String file) throws FileNotFoundException, IOException;
 
 	/**
-	 * Save to file
+	 * Save to file.
 	 * 
 	 * @param file
 	 *            the filename to save to

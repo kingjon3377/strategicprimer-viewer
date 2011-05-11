@@ -19,7 +19,7 @@ import util.Pair;
  */
 public class TerrainTable implements EncounterTable {
 	/**
-	 * Mapping from terrain type to "events."
+	 * Mapping from terrain type to "events".
 	 */
 	private final Map<TileType, String> mapping = new EnumMap<TileType, String>(
 			TileType.class);

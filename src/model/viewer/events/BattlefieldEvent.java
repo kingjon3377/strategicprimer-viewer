@@ -1,7 +1,7 @@
 package model.viewer.events;
 
 /**
- * "There are the signs of a long-ago battle here."
+ * "There are the signs of a long-ago battle here".
  * 
  * @author Jonathan Lovelace
  */

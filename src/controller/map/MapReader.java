@@ -64,7 +64,7 @@ public class MapReader {
 	 */
 	private enum Tag {
 		/**
-		 * The main map tag
+		 * The main map tag.
 		 */
 		Map("map"),
 		/**
@@ -106,7 +106,7 @@ public class MapReader {
 		private final String text;
 
 		/**
-		 * Constructor
+		 * Constructor.
 		 * 
 		 * @param tagText
 		 *            The string to associate with the tag.
@@ -286,7 +286,7 @@ public class MapReader {
 	}
 
 	/**
-	 * Parse a fortress
+	 * Parse a fortress.
 	 * 
 	 * @param tile
 	 *            the tile the fortress is on

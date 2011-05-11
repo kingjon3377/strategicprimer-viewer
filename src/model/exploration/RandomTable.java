@@ -11,7 +11,7 @@ import util.Pair;
 import util.SingletonRandom;
 
 /**
- * A table where the event is selected at random
+ * A table where the event is selected at random.
  * 
  * @author Jonathan Lovelace
  * 

@@ -8,7 +8,7 @@ package model.viewer.events;
  */
 public final class TownEvent extends AbstractEvent.AbstractTownEvent {
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param tStatus
 	 *            The status of the town

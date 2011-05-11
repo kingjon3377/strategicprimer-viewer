@@ -27,7 +27,7 @@ public final class TestTableLoader {
 	 */
 	private static final String ONE_STRING = "one";
 	/**
-	 * The object we'll use for the tests
+	 * The object we'll use for the tests.
 	 */
 	private TableLoader loader;
 
@@ -39,7 +39,7 @@ public final class TestTableLoader {
 	}
 
 	/**
-	 * Setup method
+	 * Setup method.
 	 */
 	@Before
 	public void setUp() {
@@ -48,7 +48,7 @@ public final class TestTableLoader {
 
 	/**
 	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadQuadrantTable(java.io.BufferedReader)}
+	 * {@link controller.exploration.TableLoader#loadQuadrantTable(java.io.BufferedReader)}.
 	 * .
 	 */
 	@Test
@@ -125,7 +125,7 @@ public final class TestTableLoader {
 
 	/**
 	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadLegacyTable(java.io.BufferedReader)}
+	 * {@link controller.exploration.TableLoader#loadLegacyTable(java.io.BufferedReader)}.
 	 */
 	@Test
 	public void testLoadLegacyTable() {
@@ -147,7 +147,7 @@ public final class TestTableLoader {
 
 	/**
 	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadConstantTable(java.io.BufferedReader)}
+	 * {@link controller.exploration.TableLoader#loadConstantTable(java.io.BufferedReader)}.
 	 */
 	@Test
 	public void testLoadConstantTable() {
@@ -165,7 +165,7 @@ public final class TestTableLoader {
 
 	/**
 	 * Test the bad-input logic in
-	 * {@link controller.exploration.TableLoader#loadTable(java.io.BufferedReader)}
+	 * {@link controller.exploration.TableLoader#loadTable(java.io.BufferedReader)}.
 	 */
 	@Test
 	public void testInvalidInput() {

@@ -3,7 +3,7 @@ package util;
 /**
  * From
  * <http://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-
- * c-pairl-r-in-java/3646398#3646398>
+ * c-pairl-r-in-java/3646398#3646398>.
  * 
  * @author Peter Lawrey
  * @author adapted by Jonathan Lovelace to pass muster with static analysis,

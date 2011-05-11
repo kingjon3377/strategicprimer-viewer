@@ -16,14 +16,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A test case for TestExplorationRunner
+ * A test case for TestExplorationRunner.
  * 
  * @author Jonathan Lovelace
  * 
  */
 public final class TestExplorationRunner implements Serializable {
 	/**
-	 * Version UID for serialization
+	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = -8497977146573973206L;
 	/**

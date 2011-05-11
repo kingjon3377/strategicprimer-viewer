@@ -12,7 +12,7 @@ import javax.swing.filechooser.FileFilter;
  */
 public final class MapFileFilter extends FileFilter {
 	/**
-	 * Accept .xml and .map
+	 * Accept .xml and .map.
 	 * 
 	 * @param file
 	 *            a file to consider

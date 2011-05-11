@@ -228,7 +228,8 @@ public class ExplorationRunner implements Serializable { // NOPMD
 	 * @return whether the table, or any it calls, calls a table that doesn't
 	 *         exist.
 	 */
-	private boolean recursiveCheck(final String table, final Set<String> state) { // $codepro.audit.disable booleanMethodNamingConvention
+	// $codepro.audit.disable booleanMethodNamingConvention
+	private boolean recursiveCheck(final String table, final Set<String> state) { 
 		if (state.contains(table)) {
 			return false; // NOPMD
 		} else {

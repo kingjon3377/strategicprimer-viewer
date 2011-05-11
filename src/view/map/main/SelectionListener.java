@@ -17,7 +17,7 @@ public class SelectionListener implements MouseListener {
 	protected Selectable selection;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public SelectionListener() {
 		super();
@@ -42,7 +42,7 @@ public class SelectionListener implements MouseListener {
 	}
 
 	/**
-	 * Ignored
+	 * Ignored.
 	 * 
 	 * @param event
 	 *            ignored
@@ -53,7 +53,7 @@ public class SelectionListener implements MouseListener {
 	}
 
 	/**
-	 * Ignored
+	 * Ignored.
 	 * 
 	 * @param event
 	 *            ignored
@@ -64,7 +64,7 @@ public class SelectionListener implements MouseListener {
 	}
 
 	/**
-	 * Ignored
+	 * Ignored.
 	 * 
 	 * @param event
 	 *            the event to handle
@@ -75,7 +75,7 @@ public class SelectionListener implements MouseListener {
 	}
 
 	/**
-	 * Ignored
+	 * Ignored.
 	 * 
 	 * @param event
 	 *            the event to handle

@@ -141,7 +141,7 @@ public class CharacterWriter {
 	}
 
 	/**
-	 * Write the character's Jobs
+	 * Write the character's Jobs.
 	 * 
 	 * @param character
 	 *            the character to write

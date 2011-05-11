@@ -22,19 +22,19 @@ import view.util.Applyable;
  */
 public class JobPanel extends JPanel implements Applyable, ActionListener {
 	/**
-	 * Version UID for serialization
+	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 8624586188877069678L;
 	/**
-	 * The panel this is embedded in
+	 * The panel this is embedded in.
 	 */
 	private final CharacterPanel outer;
 	/**
-	 * The Job this represents
+	 * The Job this represents.
 	 */
 	private JobLevels job;
 	/**
-	 * A control to choose what type of job this is
+	 * A control to choose what type of job this is.
 	 */
 	private final JComboBox jobChoices;
 	/**
@@ -43,7 +43,7 @@ public class JobPanel extends JPanel implements Applyable, ActionListener {
 	private final JTextField levels;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param cpanel
 	 *            the panel this is embedded in

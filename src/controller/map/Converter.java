@@ -13,7 +13,7 @@ import model.map.TileType;
 import model.viewer.SPMap;
 
 /**
- * A program to create a new-style map from an old-style map
+ * A program to create a new-style map from an old-style map.
  * 
  * @author Jonathan Lovelace
  * 
@@ -32,7 +32,7 @@ public final class Converter {
 	// */
 	// private final Tile[][] buffer;
 	/**
-	 * A buffer to use while iterating
+	 * A buffer to use while iterating.
 	 */
 	private final TileType[][] tBuffer;
 	/**
@@ -52,7 +52,7 @@ public final class Converter {
 	 */
 	private final int cols;
 	/**
-	 * How many little tiles per big tile in each dimension
+	 * How many little tiles per big tile in each dimension.
 	 */
 	private static final int SUBTILES_PER_TILE = 66;
 
@@ -309,7 +309,7 @@ public final class Converter {
 	}
 
 	/**
-	 * Write the final map to file
+	 * Write the final map to file.
 	 * 
 	 * @param filename
 	 *            name of the file to write to

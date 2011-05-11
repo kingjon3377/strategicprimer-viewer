@@ -50,7 +50,7 @@ public enum TileType {
 	 * The mapping from descriptive strings to tile types. Used to make
 	 * multiple-return-points warnings go away.
 	 */
-	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>();// NOPMD
+	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>(); // NOPMD
 
 	static {
 		TILE_TYPE_MAP.put("tundra", TileType.Tundra);

@@ -25,11 +25,11 @@ public class CharacterReader {
 	/**
 	 * Constructor.
 	 * 
-	 * @param in_stream
+	 * @param inStream
 	 *            the stream to read from
 	 */
-	public CharacterReader(final BufferedReader in_stream) {
-		istream = in_stream;
+	public CharacterReader(final BufferedReader inStream) {
+		istream = inStream;
 	}
 
 	/**

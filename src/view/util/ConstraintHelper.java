@@ -30,7 +30,7 @@ public class ConstraintHelper extends GridBagConstraints {
 	}
 
 	/**
-	 * Constructor taking position and extent
+	 * Constructor taking position and extent.
 	 * 
 	 * @param col
 	 *            the column

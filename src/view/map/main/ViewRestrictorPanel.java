@@ -52,6 +52,7 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	 *            the map panel.
 	 */
 	public ViewRestrictorPanel(final MapPanel mapPanel) {
+		super();
 		mpanel = mapPanel;
 		final SpringLayout springLayout = new SpringLayout();
 		springLayout.putConstraint(SpringLayout.NORTH, button, 6,
@@ -83,28 +84,28 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 		add(label);
 		minRowBox.setText("0");
 		add(minRowBox);
-		final JLabel label_1 = new JLabel(" to ");
-		springLayout.putConstraint(SpringLayout.NORTH, label_1, 2,
+		final JLabel labelOne = new JLabel(" to ");
+		springLayout.putConstraint(SpringLayout.NORTH, labelOne, 2,
 				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, label_1, 155,
+		springLayout.putConstraint(SpringLayout.WEST, labelOne, 155,
 				SpringLayout.WEST, this);
-		add(label_1);
+		add(labelOne);
 		maxRowBox.setText(Integer.toString(mpanel.getMap().rows() - 1));
 		add(maxRowBox);
-		final JLabel label_2 = new JLabel(" and columns ");
-		springLayout.putConstraint(SpringLayout.NORTH, label_2, 21,
+		final JLabel labelTwo = new JLabel(" and columns ");
+		springLayout.putConstraint(SpringLayout.NORTH, labelTwo, 21,
 				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, label_2, 16,
+		springLayout.putConstraint(SpringLayout.WEST, labelTwo, 16,
 				SpringLayout.WEST, this);
-		add(label_2);
+		add(labelTwo);
 		minColBox.setText("0");
 		add(minColBox);
-		final JLabel label_3 = new JLabel(" to ");
-		springLayout.putConstraint(SpringLayout.NORTH, label_3, 21,
+		final JLabel labelThree = new JLabel(" to ");
+		springLayout.putConstraint(SpringLayout.NORTH, labelThree, 21,
 				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, label_3, 155,
+		springLayout.putConstraint(SpringLayout.WEST, labelThree, 155,
 				SpringLayout.WEST, this);
-		add(label_3);
+		add(labelThree);
 		maxColBox.setText(Integer.toString(mpanel.getMap().cols() - 1));
 		add(maxColBox);
 		button.addActionListener(this);

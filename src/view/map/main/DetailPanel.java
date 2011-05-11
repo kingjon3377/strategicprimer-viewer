@@ -123,7 +123,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * The tile we refer to
+	 * The tile we refer to.
 	 */
 	private Tile tile = null;
 	/**
@@ -193,7 +193,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Handle button presses
+	 * Handle button presses.
 	 * 
 	 * @param event
 	 *            the event to handle

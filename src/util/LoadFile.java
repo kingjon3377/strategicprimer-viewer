@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 /**
  * Load a file, from a file or (if no such file) from a resource on the
- * classpath
+ * classpath.
  * 
  * @author hoom Taken from
  *         http://hoomb.blogspot.com/2010/12/read-text-file-from-
@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
  */
 public class LoadFile {
 	/**
-	 * Load a file from disk or the classpath
+	 * Load a file from disk or the classpath.
 	 * 
 	 * @param fileName
 	 *            Name of the file to load

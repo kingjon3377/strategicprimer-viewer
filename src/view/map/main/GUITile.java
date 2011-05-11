@@ -43,7 +43,7 @@ public class GUITile extends Selectable {
 	 */
 	private static final long serialVersionUID = 4047750632787337702L;
 	/**
-	 * The tile this GUI-tile represents
+	 * The tile this GUI-tile represents.
 	 */
 	private Tile tile;
 	/**
@@ -76,7 +76,7 @@ public class GUITile extends Selectable {
 	 */
 	private static Shape fort;
 	/**
-	 * Shape representing the unit that might be on the tile
+	 * Shape representing the unit that might be on the tile.
 	 */
 	private static Shape unit;
 
@@ -185,7 +185,7 @@ public class GUITile extends Selectable {
 	private static final AffineTransform IDENT = new AffineTransform();
 
 	/**
-	 * Paint the tile
+	 * Paint the tile.
 	 * 
 	 * @param pen
 	 *            the graphics context

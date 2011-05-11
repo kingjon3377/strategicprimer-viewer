@@ -22,6 +22,10 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public final class SAXReader extends DefaultHandler implements Serializable {
 	/**
+	 * Error message for the outer exception when we get an unexpected tag.
+	 */
+	private static final String NON_COMPLIANT_XML = "Non-compliant XML";
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6927535476104522093L;
@@ -137,12 +141,12 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 				currentMap = new SPMap(Integer.parseInt(atts.getValue("rows")),
 						Integer.parseInt(atts.getValue("columns")));
 			} else {
-				throw new SAXException("Non-compliant XML", new IllegalStateException(
+				throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 						"Must start with a map tag!"));
 			}
 		} else {
 			if ("map".equals(localName)) {
-				throw new SAXException("Non-compliant XML", new IllegalStateException(
+				throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 						"Shouldn't have multiple map tags"));
 			} else if ("tile".equals(localName)) {
 				parseTile(atts);
@@ -178,7 +182,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 						Integer.parseInt(atts.getValue("event")));
 			}
 		} else {
-			throw new SAXException("Non-compliant XML", new IllegalStateException(
+			throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 					"Cannot (at present) have one tile inside another: row "
 							+ atts.getValue("row") + ", col "
 							+ atts.getValue("column")));
@@ -197,13 +201,13 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	public void parseFort(final Attributes atts) throws SAXException {
 		if (currentFortress == null) {
 			if (currentTile == null) {
-				throw new SAXException("Non-compliant XML", new IllegalStateException(
+				throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 						"Cannot have a fortress not in a tile"));
 			}
 			currentFortress = new Fortress(currentTile, Integer.parseInt(atts
 					.getValue("owner")), atts.getValue("name"));
 		} else {
-			throw new SAXException("Non-compliant XML", new IllegalStateException(
+			throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 					"Cannot have a fortress in a fortress"));
 		}
 	}
@@ -220,14 +224,14 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	public void parseUnit(final Attributes atts) throws SAXException {
 		if (currentUnit == null) {
 			if (currentTile == null) {
-				throw new SAXException("Non-compliant XML", new IllegalStateException(
+				throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 						"Cannot have a unit not in a tile"));
 			}
 			currentUnit = new Unit(currentTile, Integer.parseInt(atts
 					.getValue("owner")), atts.getValue("type"),
 					atts.getValue("name"));
 		} else {
-			throw new SAXException("Non-compliant XML", new IllegalStateException(
+			throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 					"Cannot (currently) have a unit inside a unit"));
 		}
 	}
@@ -247,7 +251,7 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 					Integer.parseInt(atts.getValue("number")),
 					atts.getValue("code_name"));
 		} else {
-			throw new SAXException("Non-compliant XML", new IllegalStateException(
+			throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 					"Cannot have a player inside a player"));
 		}
 	}

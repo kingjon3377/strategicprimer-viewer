@@ -57,7 +57,7 @@ public class FortChit extends Chit {
 	}
 
 	/**
-	 * Paint the chit
+	 * Paint the chit.
 	 * 
 	 * @param pen
 	 *            the graphics context

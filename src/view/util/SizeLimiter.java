@@ -32,15 +32,15 @@ public class SizeLimiter extends ComponentAdapter {
 	}
 
 	/**
-	 * The component whose size we are limiting
+	 * The component whose size we are limiting.
 	 */
 	private final Component component;
 	/**
-	 * Its width compared to the parent's width
+	 * Its width compared to the parent's width.
 	 */
 	private final double wFactor;
 	/**
-	 * Its height compared to the parent's height
+	 * Its height compared to the parent's height.
 	 */
 	private final double hFactor;
 

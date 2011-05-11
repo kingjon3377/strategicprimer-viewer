@@ -97,11 +97,11 @@ public final class CharacterPanel extends JPanel implements Applyable,
 	 */
 	private final JTextField nameField = new JTextField();
 	/**
-	 * Apply button
+	 * Apply button.
 	 */
 	private final JButton applyButton = new JButton("Apply");
 	/**
-	 * Revert button
+	 * Revert button.
 	 */
 	private final JButton revertButton = new JButton("Revert");
 	/**

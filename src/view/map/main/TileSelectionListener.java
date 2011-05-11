@@ -71,7 +71,7 @@ public class TileSelectionListener extends SelectionListener {
 	}
 
 	/**
-	 * Ignored
+	 * Ignored.
 	 * 
 	 * @param event
 	 *            the event to handle
@@ -86,7 +86,7 @@ public class TileSelectionListener extends SelectionListener {
 	}
 
 	/**
-	 * Ignored
+	 * Ignored.
 	 * 
 	 * @param event
 	 *            the event to handle

@@ -25,12 +25,12 @@ public class QuadrantTable implements EncounterTable {
 	 */
 	private static final int MAP_SIZE_COLS = 88;
 	/**
-	 * The collection of results
+	 * The collection of results.
 	 */
 	private final Map<Pair<Integer, Integer>, String> quadrants;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param rows
 	 *            the number of rows of quadrants

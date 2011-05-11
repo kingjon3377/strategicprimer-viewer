@@ -21,12 +21,12 @@ import controller.map.MapReader;
  */
 public final class ExplorationCLI {
 	/**
-	 * Logger
+	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ExplorationCLI.class
 			.getName());
 	/**
-	 * The helper that actually runs the exploration
+	 * The helper that actually runs the exploration.
 	 */
 	private final ExplorationRunner runner = new ExplorationRunner();
 

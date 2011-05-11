@@ -33,7 +33,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public TerrainChangingMenu() {
 		super();

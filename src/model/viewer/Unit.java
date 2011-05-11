@@ -20,7 +20,7 @@ public class Unit implements Comparable<Unit> {
 	 */
 	private final String type;
 	/**
-	 * The name of this unit
+	 * The name of this unit.
 	 */
 	private final String name;
 

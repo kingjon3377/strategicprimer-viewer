@@ -22,7 +22,7 @@ import controller.map.MapReader;
  */
 public final class AltTerminalViewer {
 	/**
-	 * Logger
+	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger
 			.getLogger(AltTerminalViewer.class.getName());
@@ -57,7 +57,7 @@ public final class AltTerminalViewer {
 	}
 
 	/**
-	 * The entry point for this driver
+	 * The entry point for this driver.
 	 * 
 	 * @param args
 	 *            Command-line arguments: The XML file name and the coordinates

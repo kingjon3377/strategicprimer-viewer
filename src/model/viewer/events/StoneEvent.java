@@ -25,7 +25,14 @@ public final class StoneEvent extends AbstractEvent {
 	 * The kinds of stone we know about (for purposes of this event).
 	 */
 	public enum StoneKind {
-		Limestone, Marble;
+		/**
+		 * Limestone.
+		 */
+		Limestone,
+		/**
+		 * Marble.
+		 */
+		Marble;
 	}
 
 	/**

@@ -24,7 +24,7 @@ import model.viewer.Unit;
  */
 public class XMLWriter { // NOPMD
 	/**
-	 * The writer we'll write to
+	 * The writer we'll write to.
 	 */
 	private final PrintWriter writer;
 
@@ -104,7 +104,7 @@ public class XMLWriter { // NOPMD
 	}
 
 	/**
-	 * Prints a string in quotation marks
+	 * Prints a string in quotation marks.
 	 * 
 	 * @param text
 	 *            the string to print
@@ -116,7 +116,7 @@ public class XMLWriter { // NOPMD
 	}
 
 	/**
-	 * Prints a number in quotation marks
+	 * Prints a number in quotation marks.
 	 * 
 	 * @param num
 	 *            the number to print

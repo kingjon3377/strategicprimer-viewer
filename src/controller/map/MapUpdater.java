@@ -19,7 +19,7 @@ import model.viewer.TileType;
  */
 public class MapUpdater {
 	/**
-	 * The master map
+	 * The master map.
 	 */
 	private final SPMap master;
 

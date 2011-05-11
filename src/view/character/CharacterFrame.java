@@ -31,12 +31,12 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	 * @param args
 	 *            ignored at this point
 	 */
-	public static void main(final String args[]) {
+	public static void main(final String[] args) {
 		new CharacterFrame().setVisible(true);
 	}
 
 	/**
-	 * The panel manager
+	 * The panel manager.
 	 */
 	private final JTabbedPane tabber;
 
