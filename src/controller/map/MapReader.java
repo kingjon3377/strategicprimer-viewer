@@ -50,9 +50,12 @@ public class MapReader {
 	 * @return the map contained in that file
 	 * @throws XMLStreamException
 	 *             on badly-formed XML or other processing error
-	 * @throws IOException if file not found or on other I/O error, e.g. while closing the stream.
+	 * @throws IOException
+	 *             if file not found or on other I/O error, e.g. while closing
+	 *             the stream.
 	 */
-	public SPMap readMap(final String file) throws XMLStreamException, IOException {
+	public SPMap readMap(final String file) throws XMLStreamException,
+			IOException {
 		final FileInputStream istream = new FileInputStream(file);
 		final SPMap retval = readMap(istream);
 		istream.close();
@@ -270,7 +273,8 @@ public class MapReader {
 	public static River parseRiver(final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
 		// ESCA-JAVA0177:
-		final River river = Tag.Lake.equals(getTagType(elem)) ? River.Lake : River.getRiver(getAttribute(elem, "direction"));
+		final River river = Tag.Lake.equals(getTagType(elem)) ? River.Lake
+				: River.getRiver(getAttribute(elem, "direction"));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
@@ -367,11 +371,12 @@ public class MapReader {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
 		if (attr == null) {
-			throw new IllegalArgumentException("Element doesn't contain that attribute");
+			throw new IllegalArgumentException(
+					"Element doesn't contain that attribute");
 		}
 		return attr.getValue();
 	}
-	
+
 	/**
 	 * @param startElement
 	 *            a tag
@@ -383,6 +388,7 @@ public class MapReader {
 			final String attribute) {
 		return startElement.getAttributeByName(new QName(attribute)) == null;
 	}
+
 	/**
 	 * Parse a player from a player tag.
 	 * 
