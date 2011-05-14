@@ -245,7 +245,7 @@ public class MapReader {
 	 * @return the tile it represents.
 	 */
 	private static Tile parseTile(final StartElement element) {
-		return (getAttribute(element, "event") == null) ? new Tile(
+		return (hasAttribute(element, "event")) ? new Tile(
 				Integer.parseInt(getAttribute(element, "row")),
 				Integer.parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttribute(element, "type")))
@@ -366,9 +366,23 @@ public class MapReader {
 			final String attribute) {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
-		return (attr == null) ? null : attr.getValue();
+		if (attr == null) {
+			throw new IllegalArgumentException("Element doesn't contain that attribute");
+		}
+		return attr.getValue();
 	}
-
+	
+	/**
+	 * @param startElement
+	 *            a tag
+	 * @param attribute
+	 *            the attribute we want
+	 * @return whether the tag has that attribute
+	 */
+	private static boolean hasAttribute(final StartElement startElement,
+			final String attribute) {
+		return startElement.getAttributeByName(new QName(attribute)) == null;
+	}
 	/**
 	 * Parse a player from a player tag.
 	 * 
