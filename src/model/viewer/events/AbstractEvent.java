@@ -169,7 +169,7 @@ public abstract class AbstractEvent {
 			}
 		}
 		/**
-		 * @param a string representing a TownSize
+		 * @param string a string representing a TownSize
 		 * @return the TownSize it represents
 		 */
 		public static TownSize parseTownSize(final String string) {
