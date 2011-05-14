@@ -1,5 +1,8 @@
 package model.viewer.events;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * An "event" --- something, other than a fortress, unit, or river, that can be
  * on a tile. Intended to replace legacy/numeric "events."
@@ -15,35 +18,62 @@ public abstract class AbstractEvent {
 		/**
 		 * "Nothing of interest here ...". Useful primarily as an alternative to null.
 		 */
-		Nothing,
+		Nothing("nothing"),
 		/**
 		 * A mineral vein.
 		 */
-		Mineral,
+		Mineral("mineral"),
 		/**
 		 * A fortification.
 		 */
-		Fortification,
+		Fortification("fortification"),
 		/**
 		 * A town.
 		 */
-		Town,
+		Town("town"),
 		/**
 		 * Signs of a long-ago battle.
 		 */
-		Battlefield,
+		Battlefield("battlefield"),
 		/**
 		 * A city.
 		 */
-		City,
+		City("city"),
 		/**
 		 * A stone deposit.
 		 */
-		Stone,
+		Stone("stone"),
 		/**
 		 * Caves beneath the tile.
 		 */
-		Caves;
+		Caves("cave");
+		/**
+		 * A mapping from strings to EventKinds.
+		 */
+		private static final Map<String, EventKind> EK_MAP = new HashMap<String, EventKind>();
+		/**
+		 * A string representing the event.
+		 */
+		private final String str;
+		/**
+		 * Constructor.
+		 * @param string a string representing the event, to be used in non-specific event tags.
+		 */
+		private EventKind(final String string) {
+			str = string;
+		}
+		static {
+			for (EventKind ek : values()) {
+				EK_MAP.put(ek.str, ek);
+			}
+		}
+		/**
+		 * @param string a string representing an EventKind
+		 * @return the EventKind it represents
+		 */
+		public static EventKind parseEventKind(final String string) {
+			return EK_MAP.get(string);
+		}
 	}
 
 	/**
@@ -58,19 +88,48 @@ public abstract class AbstractEvent {
 		/**
 		 * The town is inhabited.
 		 */
-		Active,
+		Active("active"),
 		/**
 		 * The town is abandoned.
 		 */
-		Abandoned,
+		Abandoned("abandoned"),
 		/**
 		 * The town is burned-out.
 		 */
-		Burned,
+		Burned("burned"),
 		/**
 		 * The town is in ruins.
 		 */
-		Ruined;
+		Ruined("ruined");
+		/**
+		 * A mapping fro strings to TownStatus.
+		 */
+		private static final Map<String, TownStatus> TST_MAP = new HashMap<String, TownStatus>();
+		/**
+		 * A string representing the TownStatus.
+		 */
+		private final String str;
+		/**
+		 * Constructor.
+		 * @param string a string representing the status.
+		 */
+		private TownStatus(final String string) {
+			str = string;
+		}
+		static {
+			for (TownStatus ts : values()) {
+				TST_MAP.put(ts.str, ts);
+			}
+		}
+		/**
+		 * @param string a string representing a TownStatus
+		 * @return the TownStatus it represents
+		 * @param string
+		 * @return
+		 */
+		public static TownStatus parseTownStatus(final String string) {
+			return TST_MAP.get(string);
+		}
 	}
 
 	/**
@@ -80,15 +139,42 @@ public abstract class AbstractEvent {
 		/**
 		 * Small.
 		 */
-		Small,
+		Small("small"),
 		/**
 		 * Medium.
 		 */
-		Medium,
+		Medium("medium"),
 		/**
 		 * Large.
 		 */
-		Large;
+		Large("large");
+		/**
+		 * A mapping from string to TownSize.
+		 */
+		private static final Map<String, TownSize> TSZ_MAP = new HashMap<String, TownSize>();
+		/**
+		 * A string representing the size.
+		 */
+		private final String tsz_str;
+		/**
+		 * Constructor.
+		 * @param str a string representing the size.
+		 */
+		private TownSize(final String str) {
+			tsz_str = str;
+		}
+		static {
+			for (TownSize tsz : values()) {
+				TSZ_MAP.put(tsz.tsz_str, tsz);
+			}
+		}
+		/**
+		 * @param a string representing a TownSize
+		 * @return the TownSize it represents
+		 */
+		public static TownSize parseTownSize(final String string) {
+			return TSZ_MAP.get(string);
+		}
 	}
 
 	/**

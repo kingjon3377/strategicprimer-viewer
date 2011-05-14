@@ -23,6 +23,19 @@ import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
 import model.viewer.Unit;
+import model.viewer.events.AbstractEvent;
+import model.viewer.events.AbstractEvent.EventKind;
+import model.viewer.events.AbstractEvent.TownSize;
+import model.viewer.events.AbstractEvent.TownStatus;
+import model.viewer.events.BattlefieldEvent;
+import model.viewer.events.CaveEvent;
+import model.viewer.events.CityEvent;
+import model.viewer.events.FortificationEvent;
+import model.viewer.events.MineralEvent;
+import model.viewer.events.MineralEvent.MineralKind;
+import model.viewer.events.StoneEvent;
+import model.viewer.events.StoneEvent.StoneKind;
+import model.viewer.events.TownEvent;
 
 import org.xml.sax.SAXException;
 
@@ -99,6 +112,39 @@ public class MapReader {
 		 * tile for them.
 		 */
 		Lake("lake"),
+		/**
+		 * An Event. @see model.viewer.events.AbstractEvent
+		 */
+		Event("event"),
+		/**
+		 * A battlefield. @see model.viewer.events.BattlefieldEvent
+		 */
+		Battlefield("battlefield"),
+		/**
+		 * Cave. @see model.veiwer.events.CaveEvent
+		 */
+		Cave("cave"),
+		/**
+		 * City. @see model.viewer.events.CityEvent
+		 */
+		City("city"),
+		/**
+		 * Fortification: @see model.viewer.events.FortificationEvent FIXME: We
+		 * want this to use the Fortress tag instead, eventually.
+		 */
+		Fortification("fortification"),
+		/**
+		 * Minerals. @see model.viewer.events.MineralEvent
+		 */
+		Mineral("mineral"),
+		/**
+		 * Stone. @see model.viewer.events.StoneEvent
+		 */
+		Stone("stone"),
+		/**
+		 * Town. @see model.viewer.events.TownEvent
+		 */
+		Town("town"),
 		/**
 		 * Anything not enumerated.
 		 */
@@ -223,6 +269,12 @@ public class MapReader {
 					tile.addUnit(parseUnit(tile, elem, reader));
 				} else if (Tag.River.equals(tag) || Tag.Lake.equals(tag)) {
 					tile.addRiver(parseRiver(elem, reader));
+				} else if (Tag.Event.equals(tag) || Tag.Battlefield.equals(tag)
+						|| Tag.Cave.equals(tag) || Tag.City.equals(tag)
+						|| Tag.Fortification.equals(tag)
+						|| Tag.Mineral.equals(tag) || Tag.Stone.equals(tag)
+						|| Tag.Town.equals(tag)) {
+					tile.addEvent(parseEvent(tile, elem, reader));
 				} else {
 					throw new IllegalStateException(
 							"Unexpected "
@@ -238,6 +290,96 @@ public class MapReader {
 			}
 		}
 		return tile;
+	}
+
+	/**
+	 * @param tile
+	 *            the tile
+	 * @param elem
+	 *            an XML element representing an event on that tile
+	 * @param reader
+	 *            the XML stream we're reading from
+	 * @return the event
+	 */
+	private static AbstractEvent parseEvent(final Tile tile,
+			final StartElement elem, final XMLEventReader reader) {
+		AbstractEvent retval;
+		switch (getEventType(elem)) {
+		case Battlefield:
+			retval = new BattlefieldEvent(Integer.parseInt(getAttribute(elem,
+					"dc")));
+			break;
+		case Caves:
+			retval = new CaveEvent(Integer.parseInt(getAttribute(elem, "dc")));
+			break;
+		case City:
+			retval = new CityEvent(TownStatus.parseTownStatus(getAttribute(
+					elem, "status")), TownSize.parseTownSize(getAttribute(elem,
+					"size")), Integer.parseInt(getAttribute(elem, "dc")));
+			break;
+		case Fortification:
+			retval = new FortificationEvent(
+					TownStatus.parseTownStatus(getAttribute(elem, "status")),
+					TownSize.parseTownSize(getAttribute(elem, "size")),
+					Integer.parseInt(getAttribute(elem, "dc")));
+			break;
+		case Mineral:
+			retval = new MineralEvent(
+					MineralKind.parseMineralKind(getAttribute(elem, "mineral")),
+					Boolean.parseBoolean(getAttribute(elem, "exposed")),
+					Integer.parseInt(getAttribute(elem, "dc")));
+			break;
+		case Stone:
+			retval = new StoneEvent(StoneKind.parseStoneKind(getAttribute(elem,
+					"stone")), Integer.parseInt(getAttribute(elem, "dc")));
+			break;
+		case Town:
+			retval = new TownEvent(TownStatus.parseTownStatus(getAttribute(
+					elem, "status")), TownSize.parseTownSize(getAttribute(elem,
+					"size")), Integer.parseInt(getAttribute(elem, "dc")));
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown event type");
+		}
+		return retval;
+	}
+
+	/**
+	 * @param elem
+	 *            an XML tag representing an event
+	 * @return what kind of event it represents
+	 */
+	private static EventKind getEventType(final StartElement elem) {
+		EventKind kind;
+		switch (getTagType(elem)) {
+		case Battlefield:
+			kind = EventKind.Battlefield;
+			break;
+		case Cave:
+			kind = EventKind.Caves;
+			break;
+		case City:
+			kind = EventKind.City;
+			break;
+		case Event:
+			kind = EventKind.parseEventKind(getAttribute(elem, "kind"));
+			break;
+		case Fortification:
+			kind = EventKind.Fortification;
+			break;
+		case Mineral:
+			kind = EventKind.Mineral;
+			break;
+		case Stone:
+			kind = EventKind.Stone;
+			break;
+		case Town:
+			kind = EventKind.Town;
+			break;
+		default:
+			throw new IllegalStateException("Not a tag representing an Event");
+		}
+		return kind;
 	}
 
 	/**

@@ -7,6 +7,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import model.viewer.events.AbstractEvent;
+
 /**
  * A tile in a map.
  * 
@@ -290,5 +292,13 @@ public final class Tile implements Serializable {
 		units.addAll(tile.units);
 		units.retainAll(tile.units);
 		tileText = tile.tileText;
+	}
+	/**
+	 * Add an event to the tile. FIXME: implement.
+	 * @param event the event to add.
+	 */
+	public void addEvent(final AbstractEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }
