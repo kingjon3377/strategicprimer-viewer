@@ -6,7 +6,7 @@ package model.viewer;
  * @author Jonathan Lovelace
  * 
  */
-public class Unit implements Comparable<Unit> {
+public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * The tile the unit is on.
 	 */
@@ -50,6 +50,7 @@ public class Unit implements Comparable<Unit> {
 	/**
 	 * @return the tile the unit is on
 	 */
+	@Override
 	public final Tile getLocation() {
 		return location;
 	}

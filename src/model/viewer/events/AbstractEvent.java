@@ -3,6 +3,9 @@ package model.viewer.events;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.viewer.Tile;
+import model.viewer.TileFixture;
+
 /**
  * An "event" --- something, other than a fortress, unit, or river, that can be
  * on a tile. Intended to replace legacy/numeric "events."
@@ -10,7 +13,7 @@ import java.util.Map;
  * @author Jonathan Lovelace
  * 
  */
-public abstract class AbstractEvent {
+public abstract class AbstractEvent implements TileFixture {
 	/**
 	 * The kinds of events we know about.
 	 */
@@ -191,7 +194,23 @@ public abstract class AbstractEvent {
 	 * @return the DC to discover the event.
 	 */
 	public abstract int getDC();
-
+	/**
+	 * The location of the event.
+	 */
+	private Tile location;
+	/**
+	 * @return the location of the event
+	 */
+	@Override
+	public Tile getLocation() {
+		return location;
+	}
+	/**
+	 * @param tile the new location of the event 
+	 */
+	public void setLocation(final Tile tile) {
+		location = tile;
+	}
 	/**
 	 * An abstract superclass for towns etc.
 	 * @author Jonathan Lovelace

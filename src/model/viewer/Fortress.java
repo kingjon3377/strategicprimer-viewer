@@ -13,7 +13,7 @@ import java.util.List;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements Comparable<Fortress> {
+public class Fortress implements Comparable<Fortress>, TileFixture {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -85,7 +85,8 @@ public class Fortress implements Comparable<Fortress> {
 	/**
 	 * @return the tile the fortress is on
 	 */
-	public final Tile getTile() {
+	@Override
+	public final Tile getLocation() {
 		return tile;
 	}
 
