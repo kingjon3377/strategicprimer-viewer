@@ -3,6 +3,8 @@ package model.viewer.events;
 /**
  * An abandoned, ruined, or burned-out fortification.
  * 
+ * FIXME: We want this to share a tag, and thus probably model code as well, with Fortress.
+ * 
  * @author Jonathan Lovelace
  * 
  */
