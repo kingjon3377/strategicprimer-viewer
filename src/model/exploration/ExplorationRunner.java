@@ -47,7 +47,7 @@ public class ExplorationRunner implements Serializable { // NOPMD
 	 * @return what the owner of a fortress on the tile knows
 	 */
 	public String defaultResults(final Tile tile) {
-		final StringBuilder sb = new StringBuilder( // NOPMD
+		final StringBuilder sb = new StringBuilder(// NOPMD
 				"The primary rock type here is ");
 		sb.append(getPrimaryRock(tile));
 		sb.append(".\n");

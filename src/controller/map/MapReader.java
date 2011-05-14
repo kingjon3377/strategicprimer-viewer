@@ -162,7 +162,7 @@ public class MapReader {
 				final Tag tag = getTagType(startElement);
 				if (map == null) {
 					if (Tag.Map.equals(tag)) {
-						map = new SPMap(Integer.parseInt(getAttribute( // NOPMD
+						map = new SPMap(Integer.parseInt(getAttribute(// NOPMD
 								startElement, "rows")),
 								Integer.parseInt(getAttribute(startElement,
 										"columns"))); // NOPMD

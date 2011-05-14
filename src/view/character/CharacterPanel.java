@@ -186,7 +186,7 @@ public final class CharacterPanel extends JPanel implements Applyable,
 		} else {
 			if (!(statComps[0].getComponent() instanceof JComboBox)) {
 				for (final CharStats.Stat stat : CharStats.Stat.values()) {
-					statComps[stat.ordinal()].setComponent(new JComboBox( // NOPMD
+					statComps[stat.ordinal()].setComponent(new JComboBox(// NOPMD
 							CharStats.Attribute.values()));
 				}
 			}

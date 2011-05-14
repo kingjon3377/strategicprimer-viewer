@@ -32,15 +32,15 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * Command to load the secondary map.
 	 */
-	private static final String LOAD_SECOND_MAP_CMD = "<html><p>Load secondary map</p></html>";
+	private static final String LOAD_ALT_MAP_CMD = "<html><p>Load secondary map</p></html>";
 	/**
 	 * Command to save the secondary map.
 	 */
-	private static final String SAVE_SECOND_MAP_CMD = "<html><p>Save secondary map</p></html>";
+	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
 	/**
 	 * Height of the button panel as a ratio to the main frame.
 	 */
-	private static final double BUTTON_PANEL_HEIGHT = 0.1;
+	private static final double BUTTON_PANEL_HT = 0.1;
 	/**
 	 * The width of the details panel, as a percentage of the window's width.
 	 */
@@ -227,12 +227,12 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				0.35, 1.0));
 		innerButtonPanel.add(firstButtonPanel, BorderLayout.WEST);
 		final JPanel secondButtonPanel = new JPanel(new BorderLayout());
-		final JButton loadSecondaryMap = new JButton(LOAD_SECOND_MAP_CMD);
+		final JButton loadSecondaryMap = new JButton(LOAD_ALT_MAP_CMD);
 		loadSecondaryMap.addActionListener(this);
 		secondButtonPanel.addComponentListener(new SizeLimiter(
 				loadSecondaryMap, 1.0, 0.5));
 		secondButtonPanel.add(loadSecondaryMap, BorderLayout.NORTH);
-		final JButton saveSecondaryMap = new JButton(SAVE_SECOND_MAP_CMD);
+		final JButton saveSecondaryMap = new JButton(SAVE_ALT_MAP_CMD);
 		saveSecondaryMap.addActionListener(this);
 		secondButtonPanel.addComponentListener(new SizeLimiter(
 				saveSecondaryMap, 1.0, 0.5));
@@ -265,12 +265,12 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		buttonPanel.add(thirdButtonPanel, BorderLayout.EAST);
 		add(buttonPanel, BorderLayout.SOUTH);
 		addComponentListener(new SizeLimiter(buttonPanel,
-				1.0 - DETAIL_PANEL_WIDTH, BUTTON_PANEL_HEIGHT));
+				1.0 - DETAIL_PANEL_WIDTH, BUTTON_PANEL_HT));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
 		addComponentListener(new SizeLimiter(scroller,
-				1.0 - DETAIL_PANEL_WIDTH, 1.0 - BUTTON_PANEL_HEIGHT));
+				1.0 - DETAIL_PANEL_WIDTH, 1.0 - BUTTON_PANEL_HT));
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -300,12 +300,12 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 				}
 			}
-		} else if (LOAD_SECOND_MAP_CMD.equals(event.getActionCommand())) {
+		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				mapPanel.setSecondaryMap(readMap(chooser.getSelectedFile()
 						.getPath()));
 			}
-		} else if (SAVE_SECOND_MAP_CMD.equals(event.getActionCommand())) {
+		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())

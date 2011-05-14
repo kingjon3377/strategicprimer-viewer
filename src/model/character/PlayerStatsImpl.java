@@ -18,7 +18,7 @@ public class PlayerStatsImpl implements CharStats {
 	/**
 	 * A map containing the stats.
 	 */
-	private final Map<Stat,Attribute> stats = new EnumMap<Stat, Attribute>(
+	private final Map<Stat, Attribute> stats = new EnumMap<Stat, Attribute>(
 			Stat.class);
 
 	/**

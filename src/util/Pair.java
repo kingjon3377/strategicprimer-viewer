@@ -111,7 +111,8 @@ public final class Pair<FIRST, SECOND> implements
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean equals(final Object obj) { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
+	// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
+	public boolean equals(final Object obj) { 
 		return (obj instanceof Pair) ? (this == obj) ? true : equal(first,
 				((Pair) obj).first) && equal(second, ((Pair) obj).second)
 				: false;

@@ -69,7 +69,7 @@ public class GUITile extends Selectable {
 	/**
 	 * The shapes representing the rivers on the tile.
 	 */
-	private static final Map<River, Shape> RIVERS = new EnumMap<River, Shape>( // NOPMD
+	private static final Map<River, Shape> RIVERS = new EnumMap<River, Shape>(// NOPMD
 			River.class);
 	/**
 	 * Shape representing the fortress that might be on the tile.
