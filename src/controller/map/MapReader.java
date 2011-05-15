@@ -541,7 +541,7 @@ public class MapReader {
 	 */
 	private static boolean hasAttribute(final StartElement startElement,
 			final String attribute) {
-		return startElement.getAttributeByName(new QName(attribute)) == null;
+		return startElement.getAttributeByName(new QName(attribute)) != null;
 	}
 
 	/**
