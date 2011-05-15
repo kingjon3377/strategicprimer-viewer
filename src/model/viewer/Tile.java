@@ -35,8 +35,7 @@ public final class Tile implements Serializable {
 		row = tileRow;
 		col = tileCol;
 		type = tileType;
-		forts = new ArrayList<Fortress>();
-		units = new ArrayList<Unit>();
+		contents = new ArrayList<TileFixture>();
 		event = -1;
 	}
 
@@ -57,8 +56,7 @@ public final class Tile implements Serializable {
 		row = tileRow;
 		col = tileCol;
 		type = tileType;
-		forts = new ArrayList<Fortress>();
-		units = new ArrayList<Unit>();
+		contents = new ArrayList<TileFixture>();
 		event = newEvent;
 	}
 
@@ -101,19 +99,32 @@ public final class Tile implements Serializable {
 	public TileType getType() {
 		return type;
 	}
-
 	/**
-	 * The fortress(es) on the tile. FIXME: Should this be a Set?
+	 * The units, fortresses, and events on the tile.
 	 */
-	private final List<Fortress> forts; // NOPMD
-
+	private final List<TileFixture> contents;
+	/**
+	 * FIXME: Should return a copy, not the real collection.
+	 * 
+	 * @return the contents of the tile
+	 */
+	public List<TileFixture> getContents() {
+		return Collections.unmodifiableList(contents);
+	}
 	/**
 	 * FIXME: Should return a copy, not the real collection.
 	 * 
 	 * @return the fortress(es) on the tile
 	 */
+	@Deprecated
 	public List<Fortress> getForts() {
-		return Collections.unmodifiableList(forts);
+		final List<Fortress> retval = new ArrayList<Fortress>();
+		for (TileFixture fix : contents) {
+			if (fix instanceof Fortress) {
+				retval.add((Fortress) fix);
+			}
+		}
+		return retval;
 	}
 
 	/**
@@ -123,7 +134,7 @@ public final class Tile implements Serializable {
 	 *            the fortress to add
 	 */
 	public void addFort(final Fortress fort) {
-		forts.add(fort);
+		contents.add(fort);
 	}
 
 	/**
@@ -133,21 +144,23 @@ public final class Tile implements Serializable {
 	 *            the fortress to remove
 	 */
 	public void removeFort(final Fortress fort) {
-		forts.remove(fort);
+		contents.remove(fort);
 	}
-
-	/**
-	 * FIXME: Should this be a Set? The units on the tile.
-	 */
-	private final List<Unit> units; // NOPMD
 
 	/**
 	 * FIXME: Should return a copy, not the real collection.
 	 * 
 	 * @return the units on the tile
 	 */
+	@Deprecated
 	public List<Unit> getUnits() {
-		return Collections.unmodifiableList(units);
+		final List<Unit> retval = new ArrayList<Unit>();
+		for (TileFixture fix : contents) {
+			if (fix instanceof Unit) {
+				retval.add((Unit) fix);
+			}
+		}
+		return retval;
 	}
 
 	/**
@@ -157,7 +170,7 @@ public final class Tile implements Serializable {
 	 *            the unit to add
 	 */
 	public void addUnit(final Unit unit) {
-		units.add(unit);
+		contents.add(unit);
 	}
 
 	/**
@@ -167,7 +180,7 @@ public final class Tile implements Serializable {
 	 *            the unit to remove
 	 */
 	public void removeUnit(final Unit unit) {
-		units.remove(unit);
+		contents.remove(unit);
 	}
 
 	/**
@@ -187,10 +200,9 @@ public final class Tile implements Serializable {
 		return this == obj || ((obj instanceof Tile) && row == ((Tile) obj).row
 				&& col == ((Tile) obj).col && event == ((Tile) obj).event
 				&& type.equals(((Tile) obj).type)
-				&& forts.equals(((Tile) obj).forts)
+				&& contents.equals(((Tile) obj).contents)
 				&& rivers.equals(((Tile) obj).rivers)
-				&& tileText.equals(((Tile) obj).tileText)
-				&& units.equals(((Tile) obj).units));
+				&& tileText.equals(((Tile) obj).tileText));
 	}
 
 	/**
@@ -198,8 +210,8 @@ public final class Tile implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return row + col << 2 + event << 4 + type.ordinal() << 6 + forts
-				.hashCode() << 8 + units.hashCode() << 10 + rivers.hashCode() << 12 + tileText
+		return row + col << 2 + event << 4 + type.ordinal() << 6 + contents
+				.hashCode() << 8 + + rivers.hashCode() << 10 + tileText
 				.hashCode() << 14;
 	}
 
@@ -217,15 +229,10 @@ public final class Tile implements Serializable {
 		sbuilder.append(type);
 		sbuilder.append(", event ");
 		sbuilder.append(event);
-		sbuilder.append(". Forts:");
-		for (final Fortress fort : forts) {
+		sbuilder.append(". Contents:");
+		for (final TileFixture fix : contents) {
 			sbuilder.append("\n\t\t");
-			sbuilder.append(fort);
-		}
-		sbuilder.append("\n\tUnits:");
-		for (final Unit unit : units) {
-			sbuilder.append("\n\t\t");
-			sbuilder.append(unit);
+			sbuilder.append(fix);
 		}
 		return sbuilder.toString();
 	}
@@ -285,12 +292,10 @@ public final class Tile implements Serializable {
 	 *            the same tile in another map.
 	 */
 	public void update(final Tile tile) {
-		forts.addAll(tile.forts);
-		forts.retainAll(tile.forts);
+		contents.addAll(tile.contents);
+		contents.retainAll(tile.contents);
 		rivers.addAll(tile.rivers);
 		rivers.retainAll(tile.rivers);
-		units.addAll(tile.units);
-		units.retainAll(tile.units);
 		tileText = tile.tileText;
 	}
 	/**
