@@ -495,9 +495,11 @@ public class MapReader {
 	 */
 	private static Unit parseUnit(final Tile tile, final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
-		final Unit unit = new Unit(tile, Integer.parseInt(getAttribute(elem,
-				"owner")), getAttribute(elem, "type"), getAttribute(elem,
-				"name"));
+		final Unit unit = new Unit(tile,
+				hasAttribute(elem, "owner") ? Integer.parseInt(getAttribute(
+						elem, "owner")) : -1,
+				hasAttribute(elem, "type") ? getAttribute(elem, "type") : null,
+				hasAttribute(elem, "name") ? getAttribute(elem, "name") : null);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
