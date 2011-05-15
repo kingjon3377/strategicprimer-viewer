@@ -37,11 +37,11 @@ public final class StoneEvent extends AbstractEvent {
 		 */
 		Marble("marble");
 		/**
-		 * A string representing the StoneKind
+		 * A string representing the StoneKind.
 		 */
 		private final String str;
 		/**
-		 * A mapping from string representation to StoneKind
+		 * A mapping from string representation to StoneKind.
 		 */
 		private static final Map<String, StoneKind> SK_MAP = new HashMap<String, StoneKind>();
 		/**
