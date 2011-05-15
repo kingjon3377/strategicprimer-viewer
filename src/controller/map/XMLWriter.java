@@ -16,6 +16,13 @@ import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
+import model.viewer.events.AbstractEvent;
+import model.viewer.events.AbstractEvent.EventKind;
+import model.viewer.events.CityEvent;
+import model.viewer.events.FortificationEvent;
+import model.viewer.events.MineralEvent;
+import model.viewer.events.StoneEvent;
+import model.viewer.events.TownEvent;
 
 /**
  * A class to write a map to file.
@@ -174,6 +181,8 @@ public class XMLWriter { // NOPMD
 						printFort((Fortress) fix);
 					} else if (fix instanceof Unit) {
 						printUnit((Unit) fix);
+					} else if (fix instanceof AbstractEvent) {
+						printEvent((AbstractEvent) fix);
 					}
 				}
 				for (final River river : tile.getRivers()) {
@@ -184,6 +193,52 @@ public class XMLWriter { // NOPMD
 			}
 			writer.println("</tile>");
 		}
+	}
+
+	private void printEvent(AbstractEvent fix) {
+		if (!EventKind.Nothing.equals(fix.kind)) {
+		indent(3);
+		writer.print('<');
+		switch (fix.kind) {
+		case Battlefield:
+			writer.print("battlefield");
+			break;
+		case Caves:
+			writer.print("cave");
+			break;
+		case City:
+			writer.print("city status=");
+			printQuoted(((CityEvent) fix).status.toString());
+			writer.print(" size=");
+			printQuoted(((CityEvent) fix).size.toString());
+			break;
+		case Fortification:
+			writer.print("fortification status=");
+			printQuoted(((FortificationEvent) fix).status.toString());
+			writer.print(" size=");
+			printQuoted(((FortificationEvent) fix).size.toString());
+			break;
+		case Town:
+			writer.print("town status=");
+			printQuoted(((TownEvent) fix).status.toString());
+			writer.print(" size=");
+			printQuoted(((TownEvent) fix).size.toString());
+			break;
+		case Mineral:
+			writer.print("mineral mineral=");
+			printQuoted(((MineralEvent) fix).mineral.toString());
+			break;
+		case Stone:
+			writer.print("stone stone=");
+			printQuoted(((StoneEvent) fix).stone.toString());
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown event type");
+		}
+		writer.print(" dc=");
+		printQuoted(fix.getDC());
+		writer.println(" />");
+		} 
 	}
 
 	/**
