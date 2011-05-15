@@ -126,10 +126,8 @@ public final class Tile implements Serializable {
 	 */
 	public void removeFixture(final TileFixture fix) {
 		contents.remove(fix);
-		if (fix instanceof Unit) {
-			checkUnits();
-		} else if (fix instanceof Fortress) {
-			checkForts();
+		if (fix instanceof Unit || fix instanceof Fortress) {
+			checkCache();
 		}
 	}
 	/**
@@ -311,23 +309,17 @@ public final class Tile implements Serializable {
 	/**
 	 * Check whether there are any units on the tile.
 	 */
-	private void checkUnits() {
+	private void checkCache() {
 		anyUnits = false;
+		anyForts = false;
 		for (TileFixture fix : contents) {
 			if (fix instanceof Unit) {
 				anyUnits = true;
-				break;
 			}
-		}
-	}
-	/**
-	 * Check whether there are any forts on the tile.
-	 */
-	private void checkForts() {
-		anyForts = false;
-		for (TileFixture fix : contents) {
 			if (fix instanceof Fortress) {
 				anyForts = true;
+			}
+			if (anyUnits && anyForts) {
 				break;
 			}
 		}
