@@ -63,6 +63,13 @@ public final class StoneEvent extends AbstractEvent {
 		private StoneKind(final String string) {
 			str = string;
 		}
+		/**
+		 * @return a string representation of the kind of stone
+		 */
+		@Override
+		public String toString() {
+			return str;
+		}
 	}
 
 	/**

@@ -79,6 +79,13 @@ public final class MineralEvent extends AbstractEvent {
 		public static MineralKind parseMineralKind(final String string) {
 			return M_MAP.get(string);
 		}
+		/**
+		 * @return a string representation of the mineral
+		 */
+		@Override
+		public String toString() {
+			return str;
+		}
 	}
 
 	/**
