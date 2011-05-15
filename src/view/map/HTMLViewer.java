@@ -128,7 +128,7 @@ public final class HTMLViewer {
 	 */
 	private static String anyUnits(final Tile tile2) {
 		final StringBuffer retval = new StringBuffer("");
-		if (tile2.getUnits().size() > 0) {
+		if (!tile2.getUnits().isEmpty()) {
 			retval.append('\n');
 			for (final Unit u : tile2.getUnits()) {
 				if (retval.length() > 1) {
