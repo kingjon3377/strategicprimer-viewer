@@ -104,6 +104,18 @@ public final class Tile implements Serializable {
 	 */
 	private final List<TileFixture> contents;
 	/**
+	 * @param fix something new on the tile
+	 */
+	public void addFixture(final TileFixture fix) {
+		contents.add(fix);
+	}
+	/**
+	 * @param fix something to remove from the tile
+	 */
+	public void removeFixture(final TileFixture fix) {
+		contents.remove(fix);
+	}
+	/**
 	 * FIXME: Should return a copy, not the real collection.
 	 * 
 	 * @return the contents of the tile
