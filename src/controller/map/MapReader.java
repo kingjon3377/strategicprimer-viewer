@@ -274,7 +274,7 @@ public class MapReader {
 						|| Tag.Fortification.equals(tag)
 						|| Tag.Mineral.equals(tag) || Tag.Stone.equals(tag)
 						|| Tag.Town.equals(tag)) {
-					tile.addEvent(parseEvent(tile, elem, reader));
+					tile.addFixture(parseEvent(tile, elem, reader));
 				} else {
 					throw new IllegalStateException(
 							"Unexpected "
