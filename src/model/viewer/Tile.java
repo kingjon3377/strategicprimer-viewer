@@ -86,7 +86,7 @@ public final class Tile implements Serializable {
 	/**
 	 * The event on the tile, if any.
 	 */
-	private final int event;
+	private int event;
 
 	/**
 	 * @return the column number
@@ -144,6 +144,7 @@ public final class Tile implements Serializable {
 	/**
 	 * @return the event on the tile
 	 */
+	@Deprecated
 	public int getEvent() {
 		return event;
 	}
@@ -286,5 +287,11 @@ public final class Tile implements Serializable {
 	 */
 	public boolean hasAnyForts() {
 		return anyForts;
+	}
+	/**
+	 * @param newEvent the new event number
+	 */
+	public void setEvent(final int newEvent) {
+		event = newEvent;
 	}
 }
