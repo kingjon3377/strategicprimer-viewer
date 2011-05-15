@@ -264,9 +264,9 @@ public class MapReader {
 				final StartElement elem = reader.nextEvent().asStartElement();
 				final Tag tag = getTagType(elem);
 				if (Tag.Fortress.equals(tag)) {
-					tile.addFort(parseFortress(tile, elem, reader));
+					tile.addFixture(parseFortress(tile, elem, reader));
 				} else if (Tag.Unit.equals(tag)) {
-					tile.addUnit(parseUnit(tile, elem, reader));
+					tile.addFixture(parseUnit(tile, elem, reader));
 				} else if (Tag.River.equals(tag) || Tag.Lake.equals(tag)) {
 					tile.addRiver(parseRiver(elem, reader));
 				} else if (Tag.Event.equals(tag) || Tag.Battlefield.equals(tag)

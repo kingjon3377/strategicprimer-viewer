@@ -140,50 +140,6 @@ public final class Tile implements Serializable {
 	}
 
 	/**
-	 * Add a fortress to the tile.
-	 * 
-	 * @param fort
-	 *            the fortress to add
-	 */
-	public void addFort(final Fortress fort) {
-		contents.add(fort);
-		anyForts = true;
-	}
-
-	/**
-	 * Remove a fortress from the tile.
-	 * 
-	 * @param fort
-	 *            the fortress to remove
-	 */
-	public void removeFort(final Fortress fort) {
-		contents.remove(fort);
-		checkForts();
-	}
-
-	/**
-	 * Add a unit to the tile.
-	 * 
-	 * @param unit
-	 *            the unit to add
-	 */
-	public void addUnit(final Unit unit) {
-		contents.add(unit);
-		anyUnits = true;
-	}
-
-	/**
-	 * Remove a unit from the tile.
-	 * 
-	 * @param unit
-	 *            the unit to remove
-	 */
-	public void removeUnit(final Unit unit) {
-		contents.remove(unit);
-		checkUnits();
-	}
-
-	/**
 	 * @return the event on the tile
 	 */
 	public int getEvent() {

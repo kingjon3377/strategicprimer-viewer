@@ -101,13 +101,13 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 			final String qualifiedName) throws SAXException {
 		if ("unit".equals(localName)) {
 			if (currentFortress == null) {
-				currentTile.addUnit(currentUnit);
+				currentTile.addFixture(currentUnit);
 			} else {
 				currentFortress.addUnit(currentUnit);
 			}
 			currentUnit = null; // NOPMD
 		} else if ("fortress".equals(localName)) {
-			currentTile.addFort(currentFortress);
+			currentTile.addFixture(currentFortress);
 			currentFortress = null; // NOPMD
 		} else if ("tile".equals(localName)) {
 			currentMap.addTile(currentTile);
