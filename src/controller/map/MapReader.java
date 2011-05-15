@@ -458,8 +458,8 @@ public class MapReader {
 	private static Fortress parseFortress(final Tile tile,
 			final StartElement elem, final XMLEventReader reader)
 			throws XMLStreamException {
-		final Fortress fort = new Fortress(tile, Integer.parseInt(getAttribute(
-				elem, "owner")), getAttribute(elem, "name"));
+		final Fortress fort = new Fortress(tile, hasAttribute(elem, "owner") ? Integer.parseInt(getAttribute(
+				elem, "owner")) : -1, hasAttribute(elem, "name") ? getAttribute(elem, "name") : null);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()

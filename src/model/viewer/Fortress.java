@@ -104,7 +104,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof Fortress && ((Fortress) obj).name.equals(name)
+		return this == obj || (obj instanceof Fortress && (name == null ? ((Fortress) obj).name == null : name .equals(((Fortress) obj).name))
 				&& ((Fortress) obj).owner == owner
 				&& ((Fortress) obj).units.equals(units));
 	}
