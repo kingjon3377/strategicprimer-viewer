@@ -8,6 +8,10 @@ package model.viewer.events;
  */
 public final class NothingEvent extends AbstractEvent {
 	/**
+	 * A singleton to compare with.
+	 */
+	public static final NothingEvent NOTHING_EVENT = new NothingEvent();
+	/**
 	 * Constructor.
 	 */
 	public NothingEvent() {
