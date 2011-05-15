@@ -7,6 +7,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import model.viewer.events.NothingEvent;
+
 /**
  * A tile in a map.
  * 
@@ -112,11 +114,13 @@ public final class Tile implements Serializable {
 	 * @param fix something new on the tile
 	 */
 	public void addFixture(final TileFixture fix) {
+		if (!fix.equals(NothingEvent.NOTHING_EVENT)) {
 		contents.add(fix);
 		if (fix instanceof Unit) {
 			anyUnits = true;
 		} else if (fix instanceof Fortress) {
 			anyForts = true;
+		}
 		}
 	}
 	/**
