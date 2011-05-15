@@ -45,7 +45,8 @@ public class XMLWriter { // NOPMD
 	 *             on I/O error opening the file
 	 */
 	public XMLWriter(final String filename) throws IOException {
-		this(new FileWriter(filename)); // $codepro.audit.disable closeWhereCreated
+		this(new FileWriter(filename)); // $codepro.audit.disable
+										// closeWhereCreated
 	}
 
 	/**
@@ -56,7 +57,8 @@ public class XMLWriter { // NOPMD
 	 *            the writer to write to
 	 */
 	public XMLWriter(final Writer out) {
-		writer = new PrintWriter(new BufferedWriter(out)); // $codepro.audit.disable closeWhereCreated
+		writer = new PrintWriter(new BufferedWriter(out)); // $codepro.audit.disable
+															// closeWhereCreated
 	}
 
 	/**
@@ -157,8 +159,8 @@ public class XMLWriter { // NOPMD
 	private void printTile(final Tile tile) { // NOPMD
 		if (tile != null
 				&& (tile.getType() != TileType.NotVisible
-						|| !tile.getContents().isEmpty()
-						|| !"".equals(tile.getTileText()))) {
+						|| !tile.getContents().isEmpty() || !"".equals(tile
+						.getTileText()))) {
 			indent(2);
 			writer.print("<tile row=");
 			printQuoted(tile.getRow());
@@ -195,50 +197,61 @@ public class XMLWriter { // NOPMD
 		}
 	}
 
-	private void printEvent(AbstractEvent fix) {
+	/**
+	 * Print an Event.
+	 * 
+	 * @param fix
+	 *            the event to print
+	 */
+	private void printEvent(final AbstractEvent fix) {
 		if (!EventKind.Nothing.equals(fix.kind)) {
-		indent(3);
-		writer.print('<');
-		switch (fix.kind) {
-		case Battlefield:
-			writer.print("battlefield");
-			break;
-		case Caves:
-			writer.print("cave");
-			break;
-		case City:
-			writer.print("city status=");
-			printQuoted(((CityEvent) fix).status.toString());
-			writer.print(" size=");
-			printQuoted(((CityEvent) fix).size.toString());
-			break;
-		case Fortification:
-			writer.print("fortification status=");
-			printQuoted(((FortificationEvent) fix).status.toString());
-			writer.print(" size=");
-			printQuoted(((FortificationEvent) fix).size.toString());
-			break;
-		case Town:
-			writer.print("town status=");
-			printQuoted(((TownEvent) fix).status.toString());
-			writer.print(" size=");
-			printQuoted(((TownEvent) fix).size.toString());
-			break;
-		case Mineral:
-			writer.print("mineral mineral=");
-			printQuoted(((MineralEvent) fix).mineral.toString());
-			break;
-		case Stone:
-			writer.print("stone stone=");
-			printQuoted(((StoneEvent) fix).stone.toString());
-			break;
-		default:
-			throw new IllegalArgumentException("Unknown event type");
+			indent(3);
+			writer.print('<');
+			switch (fix.kind) {
+			case Battlefield:
+				writer.print("battlefield");
+				break;
+			case Caves:
+				writer.print("cave");
+				break;
+			case City:
+				writer.print("city status=");
+				printQuoted(((CityEvent) fix).status.toString());
+				writer.print(" size=");
+				printQuoted(((CityEvent) fix).size.toString());
+				break;
+			case Fortification:
+				writer.print("fortification status=");
+				printQuoted(((FortificationEvent) fix).status.toString());
+				writer.print(" size=");
+				if (((FortificationEvent) fix).size == null) {
+					System.err.println("How did size get to be null?");
+				}
+				printQuoted(((FortificationEvent) fix).size.toString());
+				break;
+			case Town:
+				writer.print("town status=");
+				printQuoted(((TownEvent) fix).status.toString());
+				writer.print(" size=");
+				printQuoted(((TownEvent) fix).size.toString());
+				break;
+			case Mineral:
+				writer.print("mineral mineral=");
+				printQuoted(((MineralEvent) fix).mineral.toString());
+				writer.print(" exposed=");
+				printQuoted(Boolean.toString(((MineralEvent) fix).exposed));
+				break;
+			case Stone:
+				writer.print("stone stone=");
+				printQuoted(((StoneEvent) fix).stone.toString());
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown event type");
+			}
+			writer.print(" dc=");
+			printQuoted(fix.getDC());
+			writer.println(" />");
 		}
-		writer.print(" dc=");
-		printQuoted(fix.getDC());
-		writer.println(" />");
-		} 
 	}
 
 	/**
