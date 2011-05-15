@@ -10,10 +10,9 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
-import model.viewer.Unit;
+import model.viewer.TileFixture;
 import controller.map.MapReader;
 
 /**
@@ -103,16 +102,10 @@ public final class ReplViewer {
 		out.println("):");
 		out.print("Tile type: ");
 		out.println(tile.getType().toString());
-		if (!tile.getForts().isEmpty()) {
-			out.println("Fortresses on this tile:");
-			for (final Fortress fort : tile.getForts()) {
-				out.println(fort);
-			}
-		}
-		if (!tile.getUnits().isEmpty()) {
-			out.println("Units on this tile:");
-			for (final Unit unit : tile.getUnits()) {
-				out.println(unit);
+		if (!tile.getContents().isEmpty()) {
+			out.println("Contents of this tile:");
+			for (final TileFixture fix : tile.getContents()) {
+				out.println(fix);
 			}
 		}
 		if (tile.getEvent() != -1) {

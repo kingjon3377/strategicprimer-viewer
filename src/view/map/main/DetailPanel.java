@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import model.exploration.ExplorationRunner;
 import model.viewer.Fortress;
 import model.viewer.Tile;
+import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
 import view.util.IsAdmin;
@@ -147,11 +148,12 @@ public class DetailPanel extends JPanel implements ActionListener {
 			typeLabel.setText(terrainText(tile.getType()));
 			chitPanel.removeAll();
 			chitSelecter.clearSelection();
-			for (final Fortress fort : tile.getForts()) {
-				chitPanel.add(new FortChit(fort, chitSelecter)); // NOPMD
-			}
-			for (final Unit unit : tile.getUnits()) {
-				chitPanel.add(new UnitChit(unit, chitSelecter)); // NOPMD
+			for (final TileFixture fix : tile.getContents()) {
+				if (fix instanceof Fortress) {
+					chitPanel.add(new FortChit((Fortress) fix, chitSelecter)); // NOPMD
+				} else if (fix instanceof Unit) {
+					chitPanel.add(new UnitChit((Unit) fix, chitSelecter)); // NOPMD
+				}
 			}
 			eventLabel.setText(Integer.toString(tile.getEvent()));
 			resultsField.setText(newTile.getTileText());

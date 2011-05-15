@@ -13,6 +13,7 @@ import model.viewer.Player;
 import model.viewer.River;
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
 
@@ -149,9 +150,8 @@ public class XMLWriter { // NOPMD
 	private void printTile(final Tile tile) { // NOPMD
 		if (tile != null
 				&& (tile.getType() != TileType.NotVisible
-						|| !tile.getForts().isEmpty()
-						|| !tile.getUnits().isEmpty() || !"".equals(tile
-						.getTileText()))) {
+						|| !tile.getContents().isEmpty()
+						|| !"".equals(tile.getTileText()))) {
 			indent(2);
 			writer.print("<tile row=");
 			printQuoted(tile.getRow());
@@ -166,15 +166,15 @@ public class XMLWriter { // NOPMD
 				printQuoted(tile.getEvent());
 			}
 			writer.print('>');
-			if (!tile.getForts().isEmpty() || !tile.getUnits().isEmpty()
-					|| !tile.getRivers().isEmpty()
+			if (!tile.getContents().isEmpty() || !tile.getRivers().isEmpty()
 					|| !"".equals(tile.getTileText())) {
 				writer.println();
-				for (final Fortress fort : tile.getForts()) {
-					printFort(fort);
-				}
-				for (final Unit unit : tile.getUnits()) {
-					printUnit(unit);
+				for (final TileFixture fix : tile.getContents()) {
+					if (fix instanceof Fortress) {
+						printFort((Fortress) fix);
+					} else if (fix instanceof Unit) {
+						printUnit((Unit) fix);
+					}
 				}
 				for (final River river : tile.getRivers()) {
 					printRiver(river);
