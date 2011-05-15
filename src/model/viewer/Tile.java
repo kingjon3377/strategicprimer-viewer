@@ -251,6 +251,7 @@ public final class Tile implements Serializable {
 		rivers.addAll(tile.rivers);
 		rivers.retainAll(tile.rivers);
 		tileText = tile.tileText;
+		checkCache();
 	}
 	/**
 	 * Check whether there are any units on the tile.
