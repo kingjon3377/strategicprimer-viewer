@@ -133,6 +133,13 @@ public abstract class AbstractEvent implements TileFixture {
 		public static TownStatus parseTownStatus(final String string) {
 			return TST_MAP.get(string);
 		}
+		/**
+		 * @return a string representation of the status
+		 */
+		@Override
+		public String toString() {
+			return str;
+		}
 	}
 
 	/**
@@ -177,6 +184,13 @@ public abstract class AbstractEvent implements TileFixture {
 		 */
 		public static TownSize parseTownSize(final String string) {
 			return TSZ_MAP.get(string);
+		}
+		/**
+		 * @return a string representation of the size
+		 */
+		@Override
+		public String toString() {
+			return tsz_str;
 		}
 	}
 
