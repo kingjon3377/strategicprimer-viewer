@@ -24,5 +24,22 @@ public final class NothingEvent extends AbstractEvent {
 	public int getDC() {
 		return 0;
 	}
+	/**
+	 * @return a hash-code for this object.
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return 0;
+	}
 
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one---iff it's another NothingEvent.
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || obj instanceof NothingEvent;
+	}
 }
