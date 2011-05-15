@@ -105,7 +105,7 @@ public abstract class AbstractEvent implements TileFixture {
 		 */
 		Ruined("ruined");
 		/**
-		 * A mapping fro strings to TownStatus.
+		 * A mapping from strings to TownStatus.
 		 */
 		private static final Map<String, TownStatus> TST_MAP = new HashMap<String, TownStatus>();
 		/**
