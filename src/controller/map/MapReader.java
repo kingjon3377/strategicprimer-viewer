@@ -300,9 +300,10 @@ public class MapReader {
 	 * @param reader
 	 *            the XML stream we're reading from
 	 * @return the event
+	 * @throws XMLStreamException on error while trying to find our end tag
 	 */
 	private static AbstractEvent parseEvent(final Tile tile,
-			final StartElement elem, final XMLEventReader reader) {
+			final StartElement elem, final XMLEventReader reader) throws XMLStreamException {
 		AbstractEvent retval;
 		switch (getEventType(elem)) {
 		case Battlefield:
@@ -340,6 +341,17 @@ public class MapReader {
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown event type");
+		}
+		while (reader.hasNext()) {
+			if (reader.peek().isStartElement()) {
+				final StartElement element = reader.nextEvent()
+						.asStartElement();
+				throw new IllegalStateException(UNEXPECTED_TAG
+						+ getTagType(element).getText()
+						+ ": an event can't contain anything yet");
+			} else if (reader.nextEvent().isEndElement()) {
+				break;
+			}
 		}
 		return retval;
 	}
