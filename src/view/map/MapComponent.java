@@ -127,9 +127,9 @@ public class MapComponent extends JComponent {
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
 		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		if (tile.getForts().isEmpty()
+		if (tile.hasAnyForts()
 				|| tile.getType().equals(TileType.NotVisible)) {
-			if (!tile.getUnits().isEmpty()
+			if (!tile.hasAnyUnits()
 					&& !tile.getType().equals(TileType.NotVisible)) {
 				pen.setColor(UNIT_COLOR);
 				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE

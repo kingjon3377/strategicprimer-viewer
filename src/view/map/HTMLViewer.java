@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
 import controller.map.MapReader;
@@ -61,8 +62,7 @@ public final class HTMLViewer {
 				out.print("): ");
 				out.print("Terrain: ");
 				out.print(DESCRIPTIONS.get(map.getTile(i, j).getType()));
-				out.print(anyForts(map.getTile(i, j)));
-				out.print(anyUnits(map.getTile(i, j)));
+				out.print(anyContents(map.getTile(i, j)));
 				out.print(anyEvent(map.getTile(i, j)));
 				out.println("\"></td>");
 			}
@@ -126,38 +126,24 @@ public final class HTMLViewer {
 	 * @return a String representation of the units on the tile, if any,
 	 *         preceded by a newline if there are any
 	 */
-	private static String anyUnits(final Tile tile2) {
+	private static String anyContents(final Tile tile2) {
 		final StringBuffer retval = new StringBuffer("");
-		if (!tile2.getUnits().isEmpty()) {
+		if (!tile2.getContents().isEmpty()) {
 			retval.append('\n');
-			for (final Unit u : tile2.getUnits()) {
+			for (final TileFixture fix : tile2.getContents()) {
 				if (retval.length() > 1) {
 					retval.append(", ");
 				}
-				retval.append(u.getType());
-				retval.append(" (Player ");
-				retval.append(u.getOwner());
-				retval.append(')');
-			}
-		}
-		return retval.toString();
-	}
-
-	/**
-	 * @param tile2
-	 *            a tile
-	 * @return A string representation of any fortresses on the tile. If there
-	 *         are any, it is preceded by a newline.
-	 */
-	private static String anyForts(final Tile tile2) {
-		final StringBuffer retval = new StringBuffer(32);
-		if (tile2.getForts().size() > 0) {
-			retval.append("\nForts belonging to players ");
-			for (final Fortress f : tile2.getForts()) {
-				if (retval.charAt(retval.length() - 2) != 's') {
-					retval.append(", ");
+				if (fix instanceof Unit) {
+					retval.append(((Unit) fix).getType());
+					retval.append(" (Player ");
+					retval.append(((Unit) fix).getOwner());
+					retval.append(')');
+				} else if (fix instanceof Fortress) {
+					retval.append("Fortress (Player ");
+					retval.append(((Fortress) fix).getOwner());
+					retval.append(')');
 				}
-				retval.append(f.getOwner());
 			}
 		}
 		return retval.toString();

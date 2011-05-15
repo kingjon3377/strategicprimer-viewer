@@ -167,11 +167,11 @@ public class GUITile extends Selectable {
 			for (final River river : tile.getRivers()) {
 				pen.fill(RIVERS.get(river));
 			}
-			if (!tile.getForts().isEmpty()) {
+			if (tile.hasAnyForts()) {
 				pen.setColor(FORT_COLOR);
 				pen.fill(fort);
 			}
-			if (!tile.getUnits().isEmpty()) {
+			if (tile.hasAnyUnits()) {
 				pen.setColor(UNIT_COLOR);
 				pen.fill(unit);
 			}

@@ -20,7 +20,14 @@ public final class Tile implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -8600736789182987551L;
-
+	/**
+	 * Whether the tile currently holds any units.
+	 */
+	private boolean anyUnits = false;
+	/**
+	 * Whether the tile currently holds any fortresses.
+	 */
+	private boolean anyForts = false;
 	/**
 	 * Constructor.
 	 * 
@@ -108,12 +115,22 @@ public final class Tile implements Serializable {
 	 */
 	public void addFixture(final TileFixture fix) {
 		contents.add(fix);
+		if (fix instanceof Unit) {
+			anyUnits = true;
+		} else if (fix instanceof Fortress) {
+			anyForts = true;
+		}
 	}
 	/**
 	 * @param fix something to remove from the tile
 	 */
 	public void removeFixture(final TileFixture fix) {
 		contents.remove(fix);
+		if (fix instanceof Unit) {
+			checkUnits();
+		} else if (fix instanceof Fortress) {
+			checkForts();
+		}
 	}
 	/**
 	 * FIXME: Should return a copy, not the real collection.
@@ -122,21 +139,6 @@ public final class Tile implements Serializable {
 	 */
 	public List<TileFixture> getContents() {
 		return Collections.unmodifiableList(contents);
-	}
-	/**
-	 * FIXME: Should return a copy, not the real collection.
-	 * 
-	 * @return the fortress(es) on the tile
-	 */
-	@Deprecated
-	public List<Fortress> getForts() {
-		final List<Fortress> retval = new ArrayList<Fortress>();
-		for (TileFixture fix : contents) {
-			if (fix instanceof Fortress) {
-				retval.add((Fortress) fix);
-			}
-		}
-		return retval;
 	}
 
 	/**
@@ -147,6 +149,7 @@ public final class Tile implements Serializable {
 	 */
 	public void addFort(final Fortress fort) {
 		contents.add(fort);
+		anyForts = true;
 	}
 
 	/**
@@ -157,22 +160,7 @@ public final class Tile implements Serializable {
 	 */
 	public void removeFort(final Fortress fort) {
 		contents.remove(fort);
-	}
-
-	/**
-	 * FIXME: Should return a copy, not the real collection.
-	 * 
-	 * @return the units on the tile
-	 */
-	@Deprecated
-	public List<Unit> getUnits() {
-		final List<Unit> retval = new ArrayList<Unit>();
-		for (TileFixture fix : contents) {
-			if (fix instanceof Unit) {
-				retval.add((Unit) fix);
-			}
-		}
-		return retval;
+		checkForts();
 	}
 
 	/**
@@ -183,6 +171,7 @@ public final class Tile implements Serializable {
 	 */
 	public void addUnit(final Unit unit) {
 		contents.add(unit);
+		anyUnits = true;
 	}
 
 	/**
@@ -193,6 +182,7 @@ public final class Tile implements Serializable {
 	 */
 	public void removeUnit(final Unit unit) {
 		contents.remove(unit);
+		checkUnits();
 	}
 
 	/**
@@ -317,5 +307,41 @@ public final class Tile implements Serializable {
 	public void addEvent(final AbstractEvent event) {
 		// TODO Auto-generated method stub
 		
+	}
+	/**
+	 * Check whether there are any units on the tile.
+	 */
+	private void checkUnits() {
+		anyUnits = false;
+		for (TileFixture fix : contents) {
+			if (fix instanceof Unit) {
+				anyUnits = true;
+				break;
+			}
+		}
+	}
+	/**
+	 * Check whether there are any forts on the tile.
+	 */
+	private void checkForts() {
+		anyForts = false;
+		for (TileFixture fix : contents) {
+			if (fix instanceof Fortress) {
+				anyForts = true;
+				break;
+			}
+		}
+	}
+	/**
+	 * @return whether there are any units on the tile
+	 */
+	public boolean hasAnyUnits() {
+		return anyUnits;
+	}
+	/**
+	 * @return whether there are any forts on the tile
+	 */
+	public boolean hasAnyForts() {
+		return anyForts;
 	}
 }
