@@ -55,7 +55,13 @@ public class EventConverter {
 	public EventConverter() throws FileNotFoundException, IOException {
 		table = (LegacyTable) (new TableLoader().loadTable("tables/legacy"));
 	}
-
+	/**
+	 * Constructor.
+	 * @param ltable the table to use, instead of constructing our own.
+	 */
+	public EventConverter(final LegacyTable ltable) {
+		table = ltable;
+	}
 	/**
 	 * @param tile
 	 *            a tile with a numeric event
