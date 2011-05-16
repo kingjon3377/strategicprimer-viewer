@@ -402,10 +402,7 @@ public class MapReader {
 	 * @return the tile it represents.
 	 */
 	private static Tile parseTile(final StartElement element) {
-		return (hasAttribute(element, "event")) ? new Tile(Integer.parseInt(getAttribute(element, "row")),
-				Integer.parseInt(getAttribute(element, "column")),
-				TileType.getTileType(getAttribute(element, "type")),
-				Integer.parseInt(getAttribute(element, "event"))) : new Tile(
+		return new Tile(
 				Integer.parseInt(getAttribute(element, "row")),
 				Integer.parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttribute(element, "type")));

@@ -63,7 +63,6 @@ public final class HTMLViewer {
 				out.print("Terrain: ");
 				out.print(DESCRIPTIONS.get(map.getTile(i, j).getType()));
 				out.print(anyContents(map.getTile(i, j)));
-				out.print(anyEvent(map.getTile(i, j)));
 				out.println("\"></td>");
 			}
 			out.println("</tr>");
@@ -147,17 +146,6 @@ public final class HTMLViewer {
 			}
 		}
 		return retval.toString();
-	}
-
-	/**
-	 * @param tile
-	 *            a tile
-	 * @return A string saying what the event on the tile is, if there is one,
-	 *         or if not an empty string.
-	 */
-	private static String anyEvent(final Tile tile) {
-		return (tile == null || tile.getEvent() == -1) ? "" : "\nEvent: "
-				+ Integer.toString(tile.getEvent());
 	}
 
 	/**

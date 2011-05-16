@@ -170,10 +170,6 @@ public class XMLWriter { // NOPMD
 				writer.print(" type=");
 				printQuoted(XML_TYPES.get(tile.getType()));
 			}
-			if (tile.getEvent() >= 0) {
-				writer.print(" event=");
-				printQuoted(tile.getEvent());
-			}
 			writer.print('>');
 			if (!tile.getContents().isEmpty() || !tile.getRivers().isEmpty()
 					|| !"".equals(tile.getTileText())) {

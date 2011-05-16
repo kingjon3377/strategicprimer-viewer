@@ -108,10 +108,6 @@ public final class ReplViewer {
 				out.println(fix);
 			}
 		}
-		if (tile.getEvent() != -1) {
-			out.print("Event on this tile: ");
-			out.println(tile.getEvent());
-		}
 		out.close();
 	}
 

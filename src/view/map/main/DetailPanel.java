@@ -57,10 +57,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private final JLabel typeLabel = new JLabel();
 	/**
-	 * Label to show the legacy event on the tile.
-	 */
-	private final JLabel eventLabel = new JLabel();
-	/**
 	 * Label to show the details of the selected chit.
 	 */
 	private final JLabel chitDetail = new JLabel();
@@ -83,13 +79,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 		typePanel.add(typeLabel, BorderLayout.CENTER);
 		add(typePanel, BorderLayout.NORTH);
 		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.2));
-		if (IsAdmin.IS_ADMIN) {
-			final JPanel eventPanel = new JPanel(new BorderLayout());
-			eventPanel.add(new JLabel("Legacy Event:"), BorderLayout.WEST);
-			eventPanel.add(eventLabel, BorderLayout.CENTER);
-			add(eventPanel, BorderLayout.SOUTH);
-			addComponentListener(new SizeLimiter(eventPanel, 1.0, 0.1));
-		}
 		final JPanel viewPanel = new JPanel(new BorderLayout());
 		final JPanel chitSuperPanel = new JPanel(new BorderLayout());
 		chitSuperPanel.add(chitPanel, BorderLayout.WEST);
@@ -142,7 +131,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 		if (tile == null) {
 			typeLabel.setText("");
 			chitPanel.removeAll();
-			eventLabel.setText("");
 			resultsField.setText("");
 		} else {
 			typeLabel.setText(terrainText(tile.getType()));
@@ -155,7 +143,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 					chitPanel.add(new UnitChit((Unit) fix, chitSelecter)); // NOPMD
 				}
 			}
-			eventLabel.setText(Integer.toString(tile.getEvent()));
 			resultsField.setText(newTile.getTileText());
 		}
 		repaint();

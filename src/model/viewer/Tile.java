@@ -43,28 +43,6 @@ public final class Tile implements Serializable {
 		col = tileCol;
 		type = tileType;
 		contents = new ArrayList<TileFixture>();
-		event = -1;
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param tileRow
-	 *            The row number
-	 * @param tileCol
-	 *            The column number
-	 * @param tileType
-	 *            The tile type
-	 * @param newEvent
-	 *            the event on the tile
-	 */
-	public Tile(final int tileRow, final int tileCol, final TileType tileType,
-			final int newEvent) {
-		row = tileRow;
-		col = tileCol;
-		type = tileType;
-		contents = new ArrayList<TileFixture>();
-		event = newEvent;
 	}
 
 	/**
@@ -83,10 +61,6 @@ public final class Tile implements Serializable {
 	 * The column number.
 	 */
 	private final int col;
-	/**
-	 * The event on the tile, if any.
-	 */
-	private int event;
 
 	/**
 	 * @return the column number
@@ -142,14 +116,6 @@ public final class Tile implements Serializable {
 	}
 
 	/**
-	 * @return the event on the tile
-	 */
-	@Deprecated
-	public int getEvent() {
-		return event;
-	}
-
-	/**
 	 * @param obj
 	 *            an object
 	 * @return whether it is an identical tile
@@ -157,7 +123,7 @@ public final class Tile implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj || ((obj instanceof Tile) && row == ((Tile) obj).row
-				&& col == ((Tile) obj).col && event == ((Tile) obj).event
+				&& col == ((Tile) obj).col 
 				&& type.equals(((Tile) obj).type)
 				&& contents.equals(((Tile) obj).contents)
 				&& rivers.equals(((Tile) obj).rivers)
@@ -169,7 +135,7 @@ public final class Tile implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return row + col << 2 + event << 4 + type.ordinal() << 6 + contents
+		return row + col << 2 + type.ordinal() << 6 + contents
 				.hashCode() << 8 + + rivers.hashCode() << 10 + tileText
 				.hashCode() << 14;
 	}
@@ -186,8 +152,6 @@ public final class Tile implements Serializable {
 		sbuilder.append(col);
 		sbuilder.append("): ");
 		sbuilder.append(type);
-		sbuilder.append(", event ");
-		sbuilder.append(event);
 		sbuilder.append(". Contents:");
 		for (final TileFixture fix : contents) {
 			sbuilder.append("\n\t\t");
@@ -287,11 +251,5 @@ public final class Tile implements Serializable {
 	 */
 	public boolean hasAnyForts() {
 		return anyForts;
-	}
-	/**
-	 * @param newEvent the new event number
-	 */
-	public void setEvent(final int newEvent) {
-		event = newEvent;
 	}
 }

@@ -125,28 +125,6 @@ public final class TestTableLoader {
 
 	/**
 	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadLegacyTable(java.io.BufferedReader)}.
-	 */
-	@Test
-	public void testLoadLegacyTable() {
-		final BufferedReader reader = new BufferedReader(new StringReader(
-				"legacy\n0: first\n1: second\n2: third"));
-		try {
-			final EncounterTable result = loader.loadTable(reader);
-			assertEquals("loading legacy table: one", "first",
-					result.generateEvent(new Tile(15, 20, TileType.Tundra, 0)));
-			assertEquals("loading legacy table: two", "second",
-					result.generateEvent(new Tile(15, 20, TileType.Tundra, 1)));
-			assertEquals("loading legacy table: three", "third",
-					result.generateEvent(new Tile(15, 20, TileType.Tundra, 2)));
-			reader.close();
-		} catch (final IOException e) {
-			fail(IO_ERROR_MESSAGE);
-		}
-	}
-
-	/**
-	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadConstantTable(java.io.BufferedReader)}.
 	 */
 	@Test

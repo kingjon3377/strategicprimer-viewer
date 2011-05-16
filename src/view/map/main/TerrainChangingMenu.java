@@ -65,7 +65,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 		if (tile != null && event != null) {
 			final Tile newTile = new Tile(tile.getTile().getRow(), tile
 					.getTile().getCol(), TileType.valueOf(event
-					.getActionCommand()), tile.getTile().getEvent());
+					.getActionCommand()));
 			newTile.update(tile.getTile());
 			tile.setTile(newTile);
 			tile.repaint();
