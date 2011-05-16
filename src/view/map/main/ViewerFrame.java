@@ -1,11 +1,13 @@
 package view.map.main;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +52,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * An error message refactored from at least four uses.
 	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file:";
+	private static final String XML_ERROR_STRING = "Error reading XML file";
 	/**
 	 * Logger.
 	 */
@@ -116,13 +118,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			frame.setVisible(true);
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+			showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
+		} catch (final FileNotFoundException e) {
+			LOGGER.log(Level.SEVERE, filename + " not found", e);
+			showErrorDialog(null, "File " + filename + " not found");
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+			showErrorDialog(null, "I/O error reading " + filename);
 		} catch (MapVersionException e) {
 			LOGGER.log(Level.SEVERE, "Map version too old", e);
-			JOptionPane.showMessageDialog(null,
-					"Strategic Primer Map Viewer error", "Map version too old",
-					JOptionPane.ERROR_MESSAGE);
+			showErrorDialog(null, "Map version too old");
 		}
 	}
 
@@ -348,17 +353,35 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			return new MapReader().readMap(filename); // NOPMD
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+			showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
+			return null; // NOPMD
+		} catch (final FileNotFoundException e) {
+			LOGGER.log(Level.SEVERE, filename + " not found", e);
+			showErrorDialog(this, "File " + filename + " not found");
 			return null; // NOPMD
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+			showErrorDialog(this, "I/O error reading " + filename);
 			return null;
 		} catch (MapVersionException e) {
 			LOGGER.log(Level.SEVERE, "Map version too old", e);
-			JOptionPane.showMessageDialog(this,
-					"Strategic Primer Map Viewer error", "Map version too old",
-					JOptionPane.ERROR_MESSAGE);
+			showErrorDialog(this, "Map version too old");
 			return null;
 		}
+	}
+	
+	/**
+	 * Show an error dialog.
+	 * 
+	 * @param parent
+	 *            the parent component for the dialog
+	 * @param message
+	 *            the error message.
+	 */
+	private static void showErrorDialog(final Component parent, final String message) {
+		JOptionPane.showMessageDialog(parent,
+				message, "Strategic Primer Map Viewer error",
+				JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
