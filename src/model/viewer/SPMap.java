@@ -22,6 +22,11 @@ public class SPMap implements Serializable {
 	private static final long serialVersionUID = -7490067634803753892L;
 
 	/**
+	 * Map version.
+	 */
+	public static final int VERSION = 1;
+
+	/**
 	 * Constructor.
 	 */
 	public SPMap() {

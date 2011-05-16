@@ -211,10 +211,17 @@ public class MapReader {
 				final Tag tag = getTagType(startElement);
 				if (map == null) {
 					if (Tag.Map.equals(tag)) {
+						if (hasAttribute(startElement, "version") && 
+							Integer.parseInt(getAttribute(startElement, "version")) >= SPMap.VERSION) {
 						map = new SPMap(Integer.parseInt(getAttribute(// NOPMD
 								startElement, "rows")),
 								Integer.parseInt(getAttribute(startElement,
 										"columns"))); // NOPMD
+						} else {
+							throw new IllegalArgumentException("Map is too old a version."); 
+							// FIXME: Should be custom exception, so we can catch it and show a nice error message in
+							// the GUI.
+						}
 					} else {
 						throw new IllegalStateException(
 								"Has to start with a map tag");
