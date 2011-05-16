@@ -18,7 +18,7 @@ import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
-import view.util.IsAdmin;
+import model.viewer.events.AbstractEvent;
 import view.util.SizeLimiter;
 
 /**
@@ -141,6 +141,8 @@ public class DetailPanel extends JPanel implements ActionListener {
 					chitPanel.add(new FortChit((Fortress) fix, chitSelecter)); // NOPMD
 				} else if (fix instanceof Unit) {
 					chitPanel.add(new UnitChit((Unit) fix, chitSelecter)); // NOPMD
+				} else if (fix instanceof AbstractEvent) {
+					chitPanel.add(new EventChit((AbstractEvent) fix, chitSelecter)); // NOPMD
 				}
 			}
 			resultsField.setText(newTile.getTileText());
