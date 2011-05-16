@@ -46,4 +46,12 @@ public final class NothingEvent extends AbstractEvent {
 	public boolean equals(final Object obj) {
 		return this == obj || obj instanceof NothingEvent;
 	}
+
+	/**
+	 * @return exploration-result text for the event.
+	 */
+	@Override
+	public String getText() {
+		return "Nothing interesting here ...";
+	}
 }

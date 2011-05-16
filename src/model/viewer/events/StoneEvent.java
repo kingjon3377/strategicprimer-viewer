@@ -92,4 +92,15 @@ public final class StoneEvent extends AbstractEvent {
 		return dc;
 	}
 
+	/**
+	 * @return exploration-result text for the event.
+	 */
+	@Override
+	public String getText() {
+		final StringBuilder build = new StringBuilder("There is an exposed ");
+		build.append(stone.toString());
+		build.append(" deposit here.");
+		return build.toString();
+	}
+
 }

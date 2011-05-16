@@ -113,4 +113,24 @@ public final class MineralEvent extends AbstractEvent {
 		return dc;
 	}
 
+	/**
+	 * @return exploration-result text for the event.
+	 */
+	@Override
+	public String getText() {
+		final StringBuilder build = new StringBuilder("There is a");
+		if (exposed) {
+			build.append("n exposed");
+		} 
+		build.append(" vein of ");
+		build.append(mineral.toString());
+		build.append(" here");
+		if (exposed) {
+			build.append('.');
+		} else {
+			build.append(", but it's not exposed.");
+		}
+		return build.toString();
+	}
+
 }

@@ -208,6 +208,12 @@ public abstract class AbstractEvent implements TileFixture {
 	 * @return the DC to discover the event.
 	 */
 	public abstract int getDC();
+	
+	/**
+	 * @return exploration-result text for the event.
+	 */
+	public abstract String getText();
+
 	/**
 	 * The location of the event.
 	 */
@@ -259,5 +265,23 @@ public abstract class AbstractEvent implements TileFixture {
 		 * The size of the town, fortress, or city.
 		 */
 		public final TownSize size;
+		/**
+		 * FIXME: What about towns we've already rolled up?
+		 * @return exploration-result text for the event.
+		 */
+		@Override
+		public String getText() {
+			final StringBuilder builder = new StringBuilder("There is a ");
+			builder.append(TownSize.Medium.equals(size) ? "medium-size" : size.toString());
+			if (!TownStatus.Active.equals(status)) {
+				builder.append(' ');
+				builder.append(TownStatus.Burned.equals(status) ? "burned-out" : status.toString());
+			}
+			builder.append(' ');
+			builder.append(kind.toString());
+			builder.append(" here");
+			builder.append(TownStatus.Active.equals(status) ? " (roll it up)" : '.');
+			return builder.toString();
+		}
 	}
 }

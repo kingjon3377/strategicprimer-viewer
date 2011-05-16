@@ -34,4 +34,12 @@ public final class CaveEvent extends AbstractEvent {
 		return dc;
 	}
 
+	/**
+	 * @return exploration-result text for the event.
+	 */
+	@Override
+	public String getText() {
+		return "There are extensive caves beneath this tile.";
+	}
+
 }

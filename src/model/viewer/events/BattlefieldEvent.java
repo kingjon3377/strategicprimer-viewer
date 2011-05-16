@@ -33,4 +33,14 @@ public final class BattlefieldEvent extends AbstractEvent {
 		return dc;
 	}
 
+	/**
+	 * @return exploration-result text for the event.
+	 *
+	 * @see model.viewer.events.AbstractEvent#getText()
+	 */
+	@Override
+	public String getText() {
+		return "There are the signs of a long-ago battle here.";
+	}
+
 }
