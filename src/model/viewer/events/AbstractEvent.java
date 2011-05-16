@@ -77,6 +77,13 @@ public abstract class AbstractEvent implements TileFixture {
 		public static EventKind parseEventKind(final String string) {
 			return EK_MAP.get(string);
 		}
+		/**
+		 * @return a string representing the kind of event.
+		 */
+		@Override
+		public String toString() {
+			return str;
+		}
 	}
 
 	/**
