@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.SPMap;
 import model.viewer.TileType;
 import controller.map.MapReader;
+import controller.map.MapReader.MapVersionException;
 
 /**
  * A CLI to create a text version of the map from the XML, coloring a specified
@@ -102,6 +103,10 @@ public final class TerminalViewer {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
+			System.exit(3);
+			return; // NOPMD
 		}
 	}
 

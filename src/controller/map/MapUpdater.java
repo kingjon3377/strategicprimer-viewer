@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.MapReader.MapVersionException;
+
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -107,6 +109,11 @@ public class MapUpdater {
 			err.close();
 			System.exit(5);
 			return; // NOPMD
+		} catch (MapVersionException e) {
+			err.println(args[0] + " map version too old");
+			err.close();
+			System.exit(7);
+			return; // NOPMD
 		}
 		// ESCA-JAVA0177:
 		final SPMap derived; // NOPMD // $codepro.audit.disable localDeclaration
@@ -127,6 +134,11 @@ public class MapUpdater {
 			err.close();
 			System.exit(6);
 			return;
+		} catch (MapVersionException e) {
+			err.println(args[1] + " map version too old");
+			err.close();
+			System.exit(8);
+			return; // NOPMD
 		}
 		updater.update(derived);
 		// ESCA-JAVA0266:

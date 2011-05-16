@@ -14,6 +14,7 @@ import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import controller.map.MapReader;
+import controller.map.MapReader.MapVersionException;
 
 /**
  * A viewer to let the user explore the map without being overwhelmed by
@@ -127,6 +128,10 @@ public final class ReplViewer {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
+			System.exit(3);
+			return; // NOPMD
 		}
 	}
 }

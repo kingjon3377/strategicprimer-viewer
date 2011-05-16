@@ -66,9 +66,10 @@ public class MapReader {
 	 * @throws IOException
 	 *             if file not found or on other I/O error, e.g. while closing
 	 *             the stream.
+	 * @throws MapVersionException if the map is too old a version
 	 */
 	public SPMap readMap(final String file) throws XMLStreamException,
-			IOException {
+			IOException, MapVersionException {
 		final FileInputStream istream = new FileInputStream(file);
 		final SPMap retval = readMap(istream);
 		istream.close();
@@ -197,8 +198,9 @@ public class MapReader {
 	 * @return the map contained in the data in the stream
 	 * @throws XMLStreamException
 	 *             on badly-formed XML or other processing error
+	 * @throws MapVersionException if the map is too old a version
 	 */
-	public SPMap readMap(final InputStream istream) throws XMLStreamException {
+	public SPMap readMap(final InputStream istream) throws XMLStreamException, MapVersionException {
 		LOGGER.info("Started reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
 		SPMap map = null;
@@ -219,11 +221,8 @@ public class MapReader {
 									Integer.parseInt(getAttribute(startElement,
 											"columns"))); // NOPMD
 						} else {
-							throw new IllegalArgumentException(
+							throw new MapVersionException(
 									"Map is too old a version.");
-							// FIXME: Should be custom exception, so we can
-							// catch it and show a nice error message in
-							// the GUI.
 						}
 					} else {
 						throw new IllegalStateException(
@@ -637,8 +636,27 @@ public class MapReader {
 				LOGGER.log(Level.SEVERE, "Null pointer in " + arg, e);
 			} catch (final IllegalStateException e) {
 				LOGGER.log(Level.SEVERE, "Unexpected state in " + arg, e);
+			} catch (MapVersionException e) {
+				LOGGER.log(Level.SEVERE, "Map version too old for new-style reader");
 			}
 		}
 		out.close();
+	}
+	/**
+	 * An exception to throw when the map's version is too old.
+	 */
+	public static class MapVersionException extends Exception {
+		/**
+		 * Version UID for serialization.
+		 */
+		private static final long serialVersionUID = 7748965005262842245L;
+
+		/**
+		 * Constructor.
+		 * @param message the message to show the user if this isn't caught.
+		 */
+		public MapVersionException(final String message) {
+			super(message);
+		}
 	}
 }

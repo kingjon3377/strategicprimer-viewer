@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.MapReader.MapVersionException;
+
 import model.map.TileType;
 import model.viewer.SPMap;
 
@@ -369,6 +371,8 @@ public final class Converter {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
 		}
 	}
 }

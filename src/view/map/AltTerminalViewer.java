@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.SPMap;
 import model.viewer.TileType;
 import controller.map.MapReader;
+import controller.map.MapReader.MapVersionException;
 
 /**
  * A CLI to create a colored text version of the map from the XML, blinking a
@@ -79,6 +80,10 @@ public final class AltTerminalViewer {
 			LOGGER.log(Level.SEVERE, "Non-numeric data where numeric expected",
 					e);
 			System.exit(3);
+			return; // NOPMD
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
+			System.exit(4);
 			return; // NOPMD
 		}
 	}

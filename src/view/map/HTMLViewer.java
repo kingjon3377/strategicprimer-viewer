@@ -17,6 +17,7 @@ import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
 import controller.map.MapReader;
+import controller.map.MapReader.MapVersionException;
 
 /**
  * A viewer that generates an HTML view, for the really big maps.
@@ -87,6 +88,10 @@ public final class HTMLViewer {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
+			System.exit(3);
+			return; // NOPMD
 		}
 	}
 

@@ -13,6 +13,7 @@ import model.exploration.ExplorationRunner;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import controller.map.MapReader;
+import controller.map.MapReader.MapVersionException;
 
 /**
  * A driver for running exploration results, etc., using the new model.
@@ -130,6 +131,10 @@ public final class ExplorationCLI {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			System.exit(2);
 			return; // NOPMD;
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
+			System.exit(3);
+			return; // NOPMD
 		}
 	}
 

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
@@ -20,6 +21,7 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.SPMap;
 import view.util.SizeLimiter;
 import controller.map.MapReader;
+import controller.map.MapReader.MapVersionException;
 import controller.map.XMLWriter;
 
 /**
@@ -116,6 +118,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
+			JOptionPane.showMessageDialog(null,
+					"Strategic Primer Map Viewer error", "Map version too old",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -128,9 +135,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 *             on I/O error
 	 * @throws XMLStreamException
 	 *             on XML reading error
+	 * @throws MapVersionException
+	 *             if map version too old
 	 */
 	private ViewerFrame(final String filename) throws XMLStreamException,
-			IOException {
+			IOException, MapVersionException {
 		super();
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -334,7 +343,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 *            a file to load a map from
 	 * @return the map in that file, or null if errors happen.
 	 */
-	private static SPMap readMap(final String filename) {
+	private SPMap readMap(final String filename) {
 		try {
 			return new MapReader().readMap(filename); // NOPMD
 		} catch (final XMLStreamException e) {
@@ -342,6 +351,12 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			return null; // NOPMD
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+			return null;
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version too old", e);
+			JOptionPane.showMessageDialog(this,
+					"Strategic Primer Map Viewer error", "Map version too old",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}
