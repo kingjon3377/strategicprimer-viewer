@@ -33,7 +33,7 @@ public abstract class Selectable extends JComponent { // NOPMD
 			pen.setColor(Color.BLACK);
 			pen.drawRect(0, 0, getWidth(), getHeight());
 			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
-			pen.drawRect(2, 2, getWidth() - 3, getHeight() - 3);
+			pen.drawRect(2, 2, getWidth() - 4, getHeight() - 4);
 			pen.setColor(saveColor);
 		}
 	}
