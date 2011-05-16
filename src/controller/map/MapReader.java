@@ -211,15 +211,18 @@ public class MapReader {
 				final Tag tag = getTagType(startElement);
 				if (map == null) {
 					if (Tag.Map.equals(tag)) {
-						if (hasAttribute(startElement, "version") && 
-							Integer.parseInt(getAttribute(startElement, "version")) >= SPMap.VERSION) {
-						map = new SPMap(Integer.parseInt(getAttribute(// NOPMD
-								startElement, "rows")),
-								Integer.parseInt(getAttribute(startElement,
-										"columns"))); // NOPMD
+						if (hasAttribute(startElement, "version")
+								&& Integer.parseInt(getAttribute(startElement,
+										"version")) >= SPMap.VERSION) {
+							map = new SPMap(Integer.parseInt(getAttribute(// NOPMD
+									startElement, "rows")),
+									Integer.parseInt(getAttribute(startElement,
+											"columns"))); // NOPMD
 						} else {
-							throw new IllegalArgumentException("Map is too old a version."); 
-							// FIXME: Should be custom exception, so we can catch it and show a nice error message in
+							throw new IllegalArgumentException(
+									"Map is too old a version.");
+							// FIXME: Should be custom exception, so we can
+							// catch it and show a nice error message in
 							// the GUI.
 						}
 					} else {
@@ -307,10 +310,12 @@ public class MapReader {
 	 * @param reader
 	 *            the XML stream we're reading from
 	 * @return the event
-	 * @throws XMLStreamException on error while trying to find our end tag
+	 * @throws XMLStreamException
+	 *             on error while trying to find our end tag
 	 */
 	private static AbstractEvent parseEvent(final Tile tile,
-			final StartElement elem, final XMLEventReader reader) throws XMLStreamException {
+			final StartElement elem, final XMLEventReader reader)
+			throws XMLStreamException {
 		AbstractEvent retval;
 		switch (getEventType(elem)) {
 		case Battlefield:
@@ -409,8 +414,7 @@ public class MapReader {
 	 * @return the tile it represents.
 	 */
 	private static Tile parseTile(final StartElement element) {
-		return new Tile(
-				Integer.parseInt(getAttribute(element, "row")),
+		return new Tile(Integer.parseInt(getAttribute(element, "row")),
 				Integer.parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttribute(element, "type")));
 	}
@@ -462,8 +466,10 @@ public class MapReader {
 	private static Fortress parseFortress(final Tile tile,
 			final StartElement elem, final XMLEventReader reader)
 			throws XMLStreamException {
-		final Fortress fort = new Fortress(tile, hasAttribute(elem, "owner") ? Integer.parseInt(getAttribute(
-				elem, "owner")) : -1, hasAttribute(elem, "name") ? getAttribute(elem, "name") : null);
+		final Fortress fort = new Fortress(tile,
+				hasAttribute(elem, "owner") ? Integer.parseInt(getAttribute(
+						elem, "owner")) : -1,
+				hasAttribute(elem, "name") ? getAttribute(elem, "name") : null);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
