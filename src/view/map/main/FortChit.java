@@ -69,8 +69,8 @@ public class FortChit extends Chit {
 		super.paint(pen);
 		final Color saveColor = pen.getColor();
 		pen.setColor(FORT_COLOR);
-		pen.fillRect(((int) (getWidth() * MARGIN)),
-				((int) (getHeight() * MARGIN)),
+		pen.fillRect(((int) (getWidth() * MARGIN)) + 1,
+				((int) (getHeight() * MARGIN)) + 1,
 				((int) (getWidth() * (1.0 - MARGIN * 2.0))),
 				((int) (getHeight() * (1.0 - MARGIN * 2.0))));
 		pen.setColor(saveColor);
