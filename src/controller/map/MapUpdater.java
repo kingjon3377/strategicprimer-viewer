@@ -4,14 +4,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
-
-import controller.map.MapReader.MapVersionException;
 
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
+import controller.map.MapReader.MapVersionException;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
@@ -83,9 +84,7 @@ public class MapUpdater {
 	 *            Command-line arguments: master, then a map to update.
 	 */
 	public static void main(final String[] args) {
-		// ESCA-JAVA0267:
-		final PrintWriter err = new PrintWriter(new OutputStreamWriter(
-				System.err));
+		final Logger logger = Logger.getLogger(MapUpdater.class.getName());
 		if (args.length < 2) {
 			throw new IllegalArgumentException("Not enough arguments");
 		}
@@ -95,23 +94,19 @@ public class MapUpdater {
 		try {
 			updater = new MapUpdater(reader.readMap(args[0]));
 		} catch (final FileNotFoundException e) {
-			err.println("File " + args[0] + " not found");
-			err.close();
+			logger.log(Level.SEVERE, buildString("File ", args[0], " not found"), e);
 			System.exit(1);
 			return; // NOPMD
 		} catch (final XMLStreamException e) {
-			err.println("XML stream error parsing " + args[0]);
-			err.close();
+			logger.log(Level.SEVERE, buildString("XML stream error parsing ", args[0]), e);
 			System.exit(2);
 			return; // NOPMD
 		} catch (final IOException e) {
-			err.println("I/O error processing " + args[0]);
-			err.close();
+			logger.log(Level.SEVERE, buildString("I/O error processing ", args[0]), e);
 			System.exit(5);
 			return; // NOPMD
 		} catch (MapVersionException e) {
-			err.println(args[0] + " map version too old");
-			err.close();
+			logger.log(Level.SEVERE, buildString(args[0], " map version too old"), e);
 			System.exit(7);
 			return; // NOPMD
 		}
@@ -120,23 +115,19 @@ public class MapUpdater {
 		try {
 			derived = reader.readMap(args[1]);
 		} catch (final FileNotFoundException e) {
-			err.println("File " + args[1] + " not found");
-			err.close();
+			logger.log(Level.SEVERE, buildString("File ", args[1], " not found"), e);
 			System.exit(3);
 			return; // NOPMD
 		} catch (final XMLStreamException e) {
-			err.println("XML stream error parsing " + args[1]);
-			err.close();
+			logger.log(Level.SEVERE, buildString("XML stream error parsing ", args[1]), e);
 			System.exit(4);
 			return;
 		} catch (final IOException e) {
-			err.println("I/O error parsing " + args[1]);
-			err.close();
+			logger.log(Level.SEVERE, buildString("I/O error processing ", args[1]), e);
 			System.exit(6);
 			return;
 		} catch (MapVersionException e) {
-			err.println(args[1] + " map version too old");
-			err.close();
+			logger.log(Level.SEVERE, buildString(args[1], " map version too old"), e);
 			System.exit(8);
 			return; // NOPMD
 		}
@@ -145,6 +136,18 @@ public class MapUpdater {
 		final PrintWriter writer = new PrintWriter(System.out);
 		new XMLWriter(writer).write(derived);
 		writer.close();
-		err.close();
+	}
+	
+	/**
+	 * Build a string.
+	 * @param strings the strings to concatenate.
+	 * @return the result of the concatenation
+	 */
+	private static String buildString(final String... strings) {
+		final StringBuilder build = new StringBuilder(16);
+		for (String str : strings) {
+			build.append(str);
+		}
+		return build.toString();
 	}
 }
