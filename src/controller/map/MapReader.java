@@ -524,8 +524,8 @@ public class MapReader {
 		final Unit unit = new Unit(tile,
 				hasAttribute(elem, OWNER_ATTRIBUTE) ? Integer.parseInt(getAttribute(
 						elem, OWNER_ATTRIBUTE)) : -1,
-				hasAttribute(elem, "type") ? getAttribute(elem, "type") : null,
-				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : null);
+				hasAttribute(elem, "type") ? getAttribute(elem, "type") : "",
+				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : "");
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				throw new IllegalStateException(UNEXPECTED_TAG
