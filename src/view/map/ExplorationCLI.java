@@ -59,6 +59,8 @@ public final class ExplorationCLI {
 					fortressInfo(map, reader);
 				} else if (input.charAt(0) == 'k') {
 					runner.verboseRecursiveCheck(ostream);
+				} else if (input.charAt(0) == 'h') {
+					hunt(reader, map, ostream);
 				}
 				ostream.print("Command: ");
 				input = reader.readLine();
@@ -114,6 +116,44 @@ public final class ExplorationCLI {
 		final int col = Integer.parseInt(reader.readLine());
 		final Tile tile = map.getTile(row, col);
 		ostream.print(runner.defaultResults(tile));
+	}
+
+	/**
+	 * How many hours we assume a working day is for a hunter or such.
+	 */
+	private static final int HUNTER_HOURS = 10;
+	/**
+	 * How many encounters per hour for a hunter or such.
+	 */
+	private static final int HOURLY_ENCOUNTERS = 4;
+
+	/**
+	 * Create results for a hunter. We assume 10-hour days, and that the hunter
+	 * stays on one tile all day; it's up to the Judge to run the encounters
+	 * this produces.
+	 * 
+	 * @param reader
+	 *            the stream to read coordinates from
+	 * @param map
+	 *            the map we're dealing with
+	 * @param ostream
+	 *            the stream to print them on
+	 * @throws IOException
+	 *             on I/O error
+	 * @throws NumberFormatException
+	 *             on non-numeric input
+	 */
+	private void hunt(final BufferedReader reader, final SPMap map,
+			final PrintStream ostream) throws NumberFormatException,
+			IOException {
+		ostream.print("Row: ");
+		final int row = Integer.parseInt(reader.readLine());
+		ostream.print("Column: ");
+		final int col = Integer.parseInt(reader.readLine());
+		final Tile tile = map.getTile(row, col);
+		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
+			ostream.println(runner.recursiveConsultTable("hunter", tile));
+		}
 	}
 
 	/**
