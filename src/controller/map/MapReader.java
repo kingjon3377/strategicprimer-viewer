@@ -48,6 +48,14 @@ import org.xml.sax.SAXException;
  */
 public class MapReader {
 	/**
+	 * The "name" attribute.
+	 */
+	private static final String NAME_ATTRIBUTE = "name";
+	/**
+	 * The "owner" attribute.
+	 */
+	private static final String OWNER_ATTRIBUTE = "owner";
+	/**
 	 * Error message for unexpected tag.
 	 */
 	private static final String UNEXPECTED_TAG = "Unexpected tag ";
@@ -283,7 +291,7 @@ public class MapReader {
 						|| Tag.Fortification.equals(tag)
 						|| Tag.Mineral.equals(tag) || Tag.Stone.equals(tag)
 						|| Tag.Town.equals(tag)) {
-					tile.addFixture(parseEvent(tile, elem, reader));
+					tile.addFixture(parseEvent(elem, reader));
 				} else {
 					throw new IllegalStateException(
 							"Unexpected "
@@ -302,8 +310,6 @@ public class MapReader {
 	}
 
 	/**
-	 * @param tile
-	 *            the tile
 	 * @param elem
 	 *            an XML element representing an event on that tile
 	 * @param reader
@@ -312,9 +318,8 @@ public class MapReader {
 	 * @throws XMLStreamException
 	 *             on error while trying to find our end tag
 	 */
-	private static AbstractEvent parseEvent(final Tile tile,
-			final StartElement elem, final XMLEventReader reader)
-			throws XMLStreamException {
+	private static AbstractEvent parseEvent(final StartElement elem,
+			final XMLEventReader reader) throws XMLStreamException {
 		AbstractEvent retval;
 		switch (getEventType(elem)) {
 		case Battlefield:
@@ -373,36 +378,26 @@ public class MapReader {
 	 * @return what kind of event it represents
 	 */
 	private static EventKind getEventType(final StartElement elem) {
-		EventKind kind;
 		switch (getTagType(elem)) {
 		case Battlefield:
-			kind = EventKind.Battlefield;
-			break;
+			return EventKind.Battlefield; // NOPMD
 		case Cave:
-			kind = EventKind.Caves;
-			break;
+			return EventKind.Caves; // NOPMD
 		case City:
-			kind = EventKind.City;
-			break;
+			return EventKind.City; // NOPMD
 		case Event:
-			kind = EventKind.parseEventKind(getAttribute(elem, "kind"));
-			break;
+			return EventKind.parseEventKind(getAttribute(elem, "kind")); // NOPMD
 		case Fortification:
-			kind = EventKind.Fortification;
-			break;
+			return EventKind.Fortification; // NOPMD
 		case Mineral:
-			kind = EventKind.Mineral;
-			break;
+			return EventKind.Mineral; // NOPMD
 		case Stone:
-			kind = EventKind.Stone;
-			break;
+			return EventKind.Stone; // NOPMD
 		case Town:
-			kind = EventKind.Town;
-			break;
+			return EventKind.Town; // NOPMD
 		default:
 			throw new IllegalStateException("Not a tag representing an Event");
 		}
-		return kind;
 	}
 
 	/**
@@ -466,9 +461,9 @@ public class MapReader {
 			final StartElement elem, final XMLEventReader reader)
 			throws XMLStreamException {
 		final Fortress fort = new Fortress(tile,
-				hasAttribute(elem, "owner") ? Integer.parseInt(getAttribute(
-						elem, "owner")) : -1,
-				hasAttribute(elem, "name") ? getAttribute(elem, "name") : null);
+				hasAttribute(elem, OWNER_ATTRIBUTE) ? Integer.parseInt(getAttribute(
+						elem, OWNER_ATTRIBUTE)) : -1,
+				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : null);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
@@ -505,10 +500,10 @@ public class MapReader {
 	private static Unit parseUnit(final Tile tile, final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
 		final Unit unit = new Unit(tile,
-				hasAttribute(elem, "owner") ? Integer.parseInt(getAttribute(
-						elem, "owner")) : -1,
+				hasAttribute(elem, OWNER_ATTRIBUTE) ? Integer.parseInt(getAttribute(
+						elem, OWNER_ATTRIBUTE)) : -1,
 				hasAttribute(elem, "type") ? getAttribute(elem, "type") : null,
-				hasAttribute(elem, "name") ? getAttribute(elem, "name") : null);
+				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : null);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()

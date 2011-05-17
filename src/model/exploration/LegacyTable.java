@@ -1,7 +1,6 @@
 package model.exploration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -45,18 +44,18 @@ public class LegacyTable implements EncounterTable {
 		data.add(new CaveEvent(0).getText());
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
-				data.add(new CityEvent(status, size, 0).getText());
-				data.add(new FortificationEvent(status, size, 0).getText());
-				data.add(new TownEvent(status, size, 0).getText());
+				data.add(new CityEvent(status, size, 0).getText()); // NOPMD
+				data.add(new FortificationEvent(status, size, 0).getText()); // NOPMD
+				data.add(new TownEvent(status, size, 0).getText()); // NOPMD
 			}
 		}
 		for (MineralKind mineral : MineralKind.values()) {
-			data.add(new MineralEvent(mineral, true, 0).getText());
-			data.add(new MineralEvent(mineral, false, 0).getText());
+			data.add(new MineralEvent(mineral, true, 0).getText()); // NOPMD
+			data.add(new MineralEvent(mineral, false, 0).getText()); // NOPMD
 		}
 		data.add(NothingEvent.NOTHING_EVENT.getText());
 		for (StoneKind stone : StoneKind.values()) {
-			data.add(new StoneEvent(stone, 0).getText());
+			data.add(new StoneEvent(stone, 0).getText()); // NOPMD
 		}
 	}
 
