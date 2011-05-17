@@ -522,10 +522,9 @@ public class MapReader {
 	private static Unit parseUnit(final Tile tile, final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
 		final Unit unit = new Unit(tile,
-				hasAttribute(elem, OWNER_ATTRIBUTE) ? Integer.parseInt(getAttribute(
-						elem, OWNER_ATTRIBUTE)) : -1,
-				hasAttribute(elem, "type") ? getAttribute(elem, "type") : "",
-				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : "");
+				Integer.parseInt(getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
+						"-1")), getAttributeWithDefault(elem, "type", ""),
+				getAttributeWithDefault(elem, NAME_ATTRIBUTE, ""));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				throw new IllegalStateException(UNEXPECTED_TAG
@@ -539,6 +538,16 @@ public class MapReader {
 		return unit;
 	}
 
+	/**
+	 * @param elem the element
+	 * @param attr the attribute we want
+	 * @param defaultValue the default value if the element doesn't have the attribute
+	 * @return the value of attribute if it exists, or the default
+	 */
+	private static String getAttributeWithDefault(final StartElement elem,
+			final String attr, final String defaultValue) {
+		return hasAttribute(elem, attr) ? getAttribute(elem, attr) : defaultValue;
+	}
 	/**
 	 * @param startElement
 	 *            a tag
