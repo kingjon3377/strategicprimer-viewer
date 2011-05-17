@@ -293,23 +293,31 @@ public class MapReader {
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement elem = reader.nextEvent().asStartElement();
-				final Tag tag = getTagType(elem);
-				if (Tag.Fortress.equals(tag)) {
-					tile.addFixture(parseFortress(tile, elem, reader));
-				} else if (Tag.Unit.equals(tag)) {
-					tile.addFixture(parseUnit(tile, elem, reader));
-				} else if (Tag.River.equals(tag) || Tag.Lake.equals(tag)) {
+				switch (getTagType(elem)) {
+				case River:
+				case Lake:
 					tile.addRiver(parseRiver(elem, reader));
-				} else if (Tag.Event.equals(tag) || Tag.Battlefield.equals(tag)
-						|| Tag.Cave.equals(tag) || Tag.City.equals(tag)
-						|| Tag.Fortification.equals(tag)
-						|| Tag.Mineral.equals(tag) || Tag.Stone.equals(tag)
-						|| Tag.Town.equals(tag)) {
+					break;
+				case Fortress:
+					tile.addFixture(parseFortress(tile, elem, reader));
+					break;
+				case Unit:
+					tile.addFixture(parseUnit(tile, elem, reader));
+					break;
+				case Event:
+				case Battlefield:
+				case Cave:
+				case City:
+				case Fortification:
+				case Mineral:
+				case Stone:
+				case Town:
 					tile.addFixture(parseEvent(elem, reader));
-				} else {
+					break;
+				default:
 					throw new IllegalStateException(
 							"Unexpected "
-									+ tag.getText()
+									+ elem.getName().getLocalPart()
 									+ " tag: only fortresses, units, and rivers can be inside a tile");
 				}
 			} else if (reader.peek().isCharacters()) {
