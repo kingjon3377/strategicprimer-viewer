@@ -175,13 +175,7 @@ public class XMLWriter { // NOPMD
 					|| !"".equals(tile.getTileText())) {
 				writer.println();
 				for (final TileFixture fix : tile.getContents()) {
-					if (fix instanceof Fortress) {
-						printFort((Fortress) fix);
-					} else if (fix instanceof Unit) {
-						printUnit((Unit) fix);
-					} else if (fix instanceof AbstractEvent) {
-						printEvent((AbstractEvent) fix);
-					}
+					printFixture(fix);
 				}
 				for (final River river : tile.getRivers()) {
 					printRiver(river);
@@ -190,6 +184,19 @@ public class XMLWriter { // NOPMD
 				writer.print(tile.getTileText());
 			}
 			writer.println("</tile>");
+		}
+	}
+
+	/**
+	 * @param fix the fixture to print.
+	 */
+	private void printFixture(final TileFixture fix) {
+		if (fix instanceof Fortress) {
+			printFort((Fortress) fix);
+		} else if (fix instanceof Unit) {
+			printUnit((Unit) fix);
+		} else if (fix instanceof AbstractEvent) {
+			printEvent((AbstractEvent) fix);
 		}
 	}
 
