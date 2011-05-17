@@ -101,16 +101,23 @@ public class XMLWriter { // NOPMD
 	 *            the row we're on
 	 */
 	private void printRow(final SPMap map, final int row) {
-		indent(1);
-		writer.print("<row index=");
-		printQuoted(row);
-		writer.println('>');
+		boolean anyTiles = false;
 		final int cols = map.cols();
 		for (int j = 0; j < cols; j++) {
+			Tile tile = map.getTile(row, j);
+			if (!anyTiles && tile != null && !TileType.NotVisible.equals(tile.getType())) {
+				indent(1);
+				anyTiles = true;
+				writer.print("<row index=");
+				printQuoted(row);
+				writer.println('>');
+			}
 			printTile(map.getTile(row, j));
 		}
-		indent(1);
-		writer.println("</row>");
+		if (anyTiles) {
+			indent(1);
+			writer.println("</row>");
+		}
 	}
 
 	/**
