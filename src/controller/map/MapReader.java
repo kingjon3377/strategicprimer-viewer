@@ -641,8 +641,6 @@ public class MapReader {
 			} catch (final NumberFormatException e) {
 				LOGGER.log(Level.SEVERE,
 						"Non-numeric when numeric data expected in " + arg, e);
-			} catch (final NullPointerException e) { // NOPMD
-				LOGGER.log(Level.SEVERE, "Null pointer in " + arg, e);
 			} catch (final IllegalStateException e) {
 				LOGGER.log(Level.SEVERE, "Unexpected state in " + arg, e);
 			} catch (MapVersionException e) {
