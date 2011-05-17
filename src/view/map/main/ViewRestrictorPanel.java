@@ -12,10 +12,61 @@ import javax.swing.SpringLayout;
 /**
  * A panel to let the user restrict the portion of the map that's drawn.
  * 
+ * Note that the SpringLayout stuff was all tool-generated, though I extracted
+ * the constants to clear up the static analysis warnings about "magic numbers."
+ * 
  * @author Jonathan Lovelace
  * 
  */
 public class ViewRestrictorPanel extends JPanel implements ActionListener {
+	/**
+	 * Spring amount for the west constraint on the third label.
+	 */
+	private static final int LABEL3_WEST = 155;
+	/**
+	 * Spring amount for the north constraint on the third label.
+	 */
+	private static final int LABEL3_NORTH = 21;
+	/**
+	 * Spring amount for the north constraint on the second label.
+	 */
+	private static final int LABEL2_NORTH = 21;
+	/**
+	 * Spring amount for the west constraint on the first label.
+	 */
+	private static final int LABEL1_WEST = 155;
+	/**
+	 * Spring amount for the west constraint on minRowBox.
+	 */
+	private static final int MINROWBOX_WEST = 129;
+	/**
+	 * Spring amount for the west constraint on minColBox.
+	 */
+	private static final int MINCOLBOX_WEST = 129;
+	/**
+	 * Spring amount for the north constraint on minColBox.
+	 */
+	private static final int MINCOLBOX_NORTH = 19;
+	/**
+	 * Spring amount for the west constraint on maxRowBox.
+	 */
+	private static final int MAXROWBOX_WEST = 178;
+	/**
+	 * Spring amount for the west constraint on maxColBox;
+	 */
+	private static final int MAXCOLBOX_WEST = 178;
+	/**
+	 * Spring amount for the north constraint on maxColBox.
+	 */
+	private static final int MAXCOLBOX_NORTH = 19;
+	/**
+	 * Spring amount for the west constraint on the button.
+	 */
+	private static final int BUTTON_WEST_SPRING = 204;
+	/**
+	 * Spring amount for the north constraint on the button.
+	 */
+	private static final int BUTTON_NORTH_SPRING = 6;
 	/**
 	 * Version UID for serialization.
 	 */
@@ -55,26 +106,26 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 		super();
 		mpanel = mapPanel;
 		final SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.NORTH, button, 6,
-				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, button, 204,
-				SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, maxColBox, 19,
-				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, maxColBox, 178,
-				SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, button,
+				BUTTON_NORTH_SPRING, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, button,
+				BUTTON_WEST_SPRING, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, maxColBox,
+				MAXCOLBOX_NORTH, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, maxColBox,
+				MAXCOLBOX_WEST, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, maxRowBox, 0,
 				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, maxRowBox, 178,
-				SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, minColBox, 19,
-				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, minColBox, 129,
-				SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, maxRowBox,
+				MAXROWBOX_WEST, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, minColBox,
+				MINCOLBOX_NORTH, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, minColBox,
+				MINCOLBOX_WEST, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, minRowBox, 0,
 				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, minRowBox, 129,
-				SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, minRowBox,
+				MINROWBOX_WEST, SpringLayout.WEST, this);
 		setLayout(springLayout);
 		final JLabel label = new JLabel("Display only rows ");
 		springLayout.putConstraint(SpringLayout.NORTH, label, 2,
@@ -87,13 +138,13 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 		final JLabel labelOne = new JLabel(" to ");
 		springLayout.putConstraint(SpringLayout.NORTH, labelOne, 2,
 				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, labelOne, 155,
+		springLayout.putConstraint(SpringLayout.WEST, labelOne, LABEL1_WEST,
 				SpringLayout.WEST, this);
 		add(labelOne);
 		maxRowBox.setText(Integer.toString(mpanel.getMap().rows() - 1));
 		add(maxRowBox);
 		final JLabel labelTwo = new JLabel(" and columns ");
-		springLayout.putConstraint(SpringLayout.NORTH, labelTwo, 21,
+		springLayout.putConstraint(SpringLayout.NORTH, labelTwo, LABEL2_NORTH,
 				SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, labelTwo, 16,
 				SpringLayout.WEST, this);
@@ -101,9 +152,9 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 		minColBox.setText("0");
 		add(minColBox);
 		final JLabel labelThree = new JLabel(" to ");
-		springLayout.putConstraint(SpringLayout.NORTH, labelThree, 21,
-				SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, labelThree, 155,
+		springLayout.putConstraint(SpringLayout.NORTH, labelThree,
+				LABEL3_NORTH, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, labelThree, LABEL3_WEST,
 				SpringLayout.WEST, this);
 		add(labelThree);
 		maxColBox.setText(Integer.toString(mpanel.getMap().cols() - 1));
