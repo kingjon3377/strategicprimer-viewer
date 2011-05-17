@@ -1,10 +1,9 @@
 package model.viewer;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import model.viewer.events.NothingEvent;
@@ -42,7 +41,7 @@ public final class Tile implements Serializable {
 		row = tileRow;
 		col = tileCol;
 		type = tileType;
-		contents = new ArrayList<TileFixture>();
+		contents = new HashSet<TileFixture>();
 	}
 
 	/**
@@ -83,7 +82,7 @@ public final class Tile implements Serializable {
 	/**
 	 * The units, fortresses, and events on the tile.
 	 */
-	private final List<TileFixture> contents;
+	private final Set<TileFixture> contents;
 	/**
 	 * @param fix something new on the tile
 	 */
@@ -111,8 +110,8 @@ public final class Tile implements Serializable {
 	 * 
 	 * @return the contents of the tile
 	 */
-	public List<TileFixture> getContents() {
-		return Collections.unmodifiableList(contents);
+	public Set<TileFixture> getContents() {
+		return Collections.unmodifiableSet(contents);
 	}
 
 	/**
