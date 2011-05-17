@@ -259,9 +259,8 @@ public class MapReader {
 	 */
 	private static SPMap firstTag(final StartElement startElement) throws MapVersionException {
 		if (Tag.Map.equals(getTagType(startElement))) {
-			if (hasAttribute(startElement, "version")
-					&& Integer.parseInt(getAttribute(startElement,
-							"version")) >= SPMap.VERSION) {
+			if (Integer.parseInt(getAttributeWithDefault(startElement,
+					"version", "-1")) >= SPMap.VERSION) {
 				return new SPMap(Integer.parseInt(getAttribute(// NOPMD
 						startElement, "rows")),
 						Integer.parseInt(getAttribute(startElement,
@@ -483,9 +482,9 @@ public class MapReader {
 			final StartElement elem, final XMLEventReader reader)
 			throws XMLStreamException {
 		final Fortress fort = new Fortress(tile,
-				hasAttribute(elem, OWNER_ATTRIBUTE) ? Integer.parseInt(getAttribute(
-						elem, OWNER_ATTRIBUTE)) : -1,
-				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : "");
+				Integer.parseInt(getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
+						"-1")), getAttributeWithDefault(elem, NAME_ATTRIBUTE,
+						""));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
