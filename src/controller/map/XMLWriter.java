@@ -220,9 +220,6 @@ public class XMLWriter { // NOPMD
 				writer.print("fortification status=");
 				printQuoted(((FortificationEvent) fix).status.toString());
 				writer.print(" size=");
-				if (((FortificationEvent) fix).size == null) {
-					System.err.println("How did size get to be null?");
-				}
 				printQuoted(((FortificationEvent) fix).size.toString());
 				break;
 			case Town:
