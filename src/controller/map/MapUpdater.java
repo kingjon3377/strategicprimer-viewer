@@ -2,7 +2,6 @@ package controller.map;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +20,10 @@ import controller.map.MapReader.MapVersionException;
  * 
  */
 public class MapUpdater {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(MapUpdater.class.getName());
 	/**
 	 * The master map.
 	 */
@@ -84,53 +87,14 @@ public class MapUpdater {
 	 *            Command-line arguments: master, then a map to update.
 	 */
 	public static void main(final String[] args) {
-		final Logger logger = Logger.getLogger(MapUpdater.class.getName());
 		if (args.length < 2) {
 			throw new IllegalArgumentException("Not enough arguments");
 		}
-		final MapReader reader = new MapReader();
 		// ESCA-JAVA0177:
 		final MapUpdater updater; // NOPMD // $codepro.audit.disable localDeclaration
-		try {
-			updater = new MapUpdater(reader.readMap(args[0]));
-		} catch (final FileNotFoundException e) {
-			logger.log(Level.SEVERE, buildString("File ", args[0], " not found"), e);
-			System.exit(1);
-			return; // NOPMD
-		} catch (final XMLStreamException e) {
-			logger.log(Level.SEVERE, buildString("XML stream error parsing ", args[0]), e);
-			System.exit(2);
-			return; // NOPMD
-		} catch (final IOException e) {
-			logger.log(Level.SEVERE, buildString("I/O error processing ", args[0]), e);
-			System.exit(5);
-			return; // NOPMD
-		} catch (MapVersionException e) {
-			logger.log(Level.SEVERE, buildString(args[0], " map version too old"), e);
-			System.exit(7);
-			return; // NOPMD
-		}
+			updater = new MapUpdater(loadMap(args[0]));
 		// ESCA-JAVA0177:
-		final SPMap derived; // NOPMD // $codepro.audit.disable localDeclaration
-		try {
-			derived = reader.readMap(args[1]);
-		} catch (final FileNotFoundException e) {
-			logger.log(Level.SEVERE, buildString("File ", args[1], " not found"), e);
-			System.exit(3);
-			return; // NOPMD
-		} catch (final XMLStreamException e) {
-			logger.log(Level.SEVERE, buildString("XML stream error parsing ", args[1]), e);
-			System.exit(4);
-			return;
-		} catch (final IOException e) {
-			logger.log(Level.SEVERE, buildString("I/O error processing ", args[1]), e);
-			System.exit(6);
-			return;
-		} catch (MapVersionException e) {
-			logger.log(Level.SEVERE, buildString(args[1], " map version too old"), e);
-			System.exit(8);
-			return; // NOPMD
-		}
+		final SPMap derived = loadMap(args[1]);
 		updater.update(derived);
 		// ESCA-JAVA0266:
 		final PrintWriter writer = new PrintWriter(System.out);
@@ -149,5 +113,35 @@ public class MapUpdater {
 			build.append(str);
 		}
 		return build.toString();
+	}
+	/**
+	 * An exception to throw if execution gets past System.exit().
+	 */
+	private static final IllegalStateException PASSED_EXIT = new IllegalStateException("Execution passed System.exit()");
+	/**
+	 * Load a map; if this fails, log a suitable error message and quit.
+	 * @param filename the name of the map to load
+	 * @return the map
+	 */
+	private static SPMap loadMap(final String filename) {
+		try {
+			return new MapReader().readMap(filename);
+		} catch (final FileNotFoundException e) {
+			LOGGER.log(Level.SEVERE, buildString("File ", filename, " not found"), e);
+			System.exit(1);
+			throw PASSED_EXIT;
+		} catch (final XMLStreamException e) {
+			LOGGER.log(Level.SEVERE, buildString("XML stream error parsing ", filename), e);
+			System.exit(2);
+			throw PASSED_EXIT;
+		} catch (final IOException e) {
+			LOGGER.log(Level.SEVERE, buildString("I/O error processing ", filename), e);
+			System.exit(3);
+			throw PASSED_EXIT;
+		} catch (MapVersionException e) {
+			LOGGER.log(Level.SEVERE, buildString(filename, " map version too old"), e);
+			System.exit(4);
+			throw PASSED_EXIT;
+		}
 	}
 }
