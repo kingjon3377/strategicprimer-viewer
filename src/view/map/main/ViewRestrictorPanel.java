@@ -106,10 +106,10 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 		super();
 		mpanel = mapPanel;
 		final SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.NORTH, button,
-				BUTTON_NORTH, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, button,
-				BUTTON_WEST, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, button, BUTTON_NORTH,
+				SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, button, BUTTON_WEST,
+				SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, maxColBox,
 				MAXCOLBOX_NORTH, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, maxColBox,
