@@ -542,7 +542,7 @@ public class MapReader {
 	 */
 	private static String getAttributeWithDefault(final StartElement elem,
 			final String attr, final String defaultValue) {
-		return (elem.getAttributeByName(new QName(attr)) != null) ? getAttribute(elem, attr) : defaultValue;
+		return (elem.getAttributeByName(new QName(attr)) == null) ? defaultValue : getAttribute(elem, attr);
 	}
 	/**
 	 * @param startElement
