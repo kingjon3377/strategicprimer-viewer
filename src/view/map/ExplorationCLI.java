@@ -157,12 +157,9 @@ public final class ExplorationCLI {
 	 *            the stream to print them on
 	 * @throws IOException
 	 *             on I/O error
-	 * @throws NumberFormatException
-	 *             on non-numeric input
 	 */
 	private void hunt(final BufferedReader reader, final SPMap map,
-			final PrintStream ostream) throws NumberFormatException,
-			IOException {
+			final PrintStream ostream) throws IOException {
 		final Tile tile = selectTile(map, reader, ostream);
 		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
 			ostream.println(runner.recursiveConsultTable("hunter", tile));
