@@ -91,8 +91,7 @@ public class MapUpdater {
 			throw new IllegalArgumentException("Not enough arguments");
 		}
 		// ESCA-JAVA0177:
-		final MapUpdater updater; // NOPMD // $codepro.audit.disable localDeclaration
-			updater = new MapUpdater(loadMap(args[0]));
+		final MapUpdater updater = new MapUpdater(loadMap(args[0]));
 		// ESCA-JAVA0177:
 		final SPMap derived = loadMap(args[1]);
 		updater.update(derived);
