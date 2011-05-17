@@ -172,15 +172,44 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		if ("Refresh".equals(evt.getActionCommand())) {
-			new Thread() {
-				@Override
-				public void run() {
-					refreshMap();
-				}
-			}.start();
+			refThread.start();
 		}
 	}
+	
+	/**
+	 * A class to refresh the map asynchronously. It was inline in the
+	 * actionPerformed() method, but CheckStyle complained about the syntax. And
+	 * this should be somewhat more readable anyway, and will limit the number
+	 * of threads we can spawn.
+	 * 
+	 * @author Jonathan Lovelace
+	 * 
+	 */
+	private class RefreshThread extends Thread {
+		// ESCA-JAVA0128:
+		/**
+		 * Constructor, to avoid a synthetic-access-method warning.
+		 */
+		public RefreshThread() { // NOPMD
+			super();
+			// We don't need to do anything here.
+		}
 
+		/**
+		 * Refresh the map when this thread starts.
+		 * 
+		 *
+		 * @see java.lang.Thread#run()
+		 */
+		@Override
+		public void run() {
+			refreshMap();
+		}
+	}
+	/**
+	 * An instance of that thread.
+	 */
+	private final RefreshThread refThread = new RefreshThread();
 	/**
 	 * Refresh the map. Its own method so we can run it in a separate thread.
 	 */
