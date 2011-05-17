@@ -485,7 +485,7 @@ public class MapReader {
 		final Fortress fort = new Fortress(tile,
 				hasAttribute(elem, OWNER_ATTRIBUTE) ? Integer.parseInt(getAttribute(
 						elem, OWNER_ATTRIBUTE)) : -1,
-				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : null);
+				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : "");
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				final StartElement element = reader.nextEvent()
