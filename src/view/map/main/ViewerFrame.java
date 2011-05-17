@@ -34,6 +34,14 @@ import controller.map.XMLWriter;
  */
 public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
+	 * Error message fragment when file not found.
+	 */
+	private static final String NOT_FOUND_ERROR = " not found";
+	/**
+	 * Error message when the map version is too old.
+	 */
+	private static final String OLD_VERSION_ERROR = "Map version too old";
+	/**
 	 * Command to load the secondary map.
 	 */
 	private static final String LOAD_ALT_MAP_CMD = "<html><p>Load secondary map</p></html>";
@@ -120,14 +128,14 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + " not found", e);
-			showErrorDialog(null, "File " + filename + " not found");
+			LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
+			showErrorDialog(null, "File " + filename + NOT_FOUND_ERROR);
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(null, "I/O error reading " + filename);
 		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version too old", e);
-			showErrorDialog(null, "Map version too old");
+			LOGGER.log(Level.SEVERE, OLD_VERSION_ERROR, e);
+			showErrorDialog(null, OLD_VERSION_ERROR);
 		}
 	}
 
@@ -356,16 +364,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
 			return null; // NOPMD
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + " not found", e);
-			showErrorDialog(this, "File " + filename + " not found");
+			LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
+			showErrorDialog(this, "File " + filename + NOT_FOUND_ERROR);
 			return null; // NOPMD
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(this, "I/O error reading " + filename);
 			return null;
 		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version too old", e);
-			showErrorDialog(this, "Map version too old");
+			LOGGER.log(Level.SEVERE, OLD_VERSION_ERROR, e);
+			showErrorDialog(this, OLD_VERSION_ERROR);
 			return null;
 		}
 	}
