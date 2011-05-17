@@ -3,7 +3,7 @@
   <headerType>gui</headerType>
   <jar>/home/kingjon/viewer.jar</jar>
   <outfile>/home/kingjon/viewer.exe</outfile>
-  <errTitle>Strategic Primer Viewer error</errTitle>
+  <errTitle>Strategic Primer Map Viewer error</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
   <priority>normal</priority>
