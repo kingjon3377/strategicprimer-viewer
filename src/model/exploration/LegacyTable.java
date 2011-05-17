@@ -3,7 +3,6 @@ package model.exploration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import model.viewer.Tile;
@@ -34,11 +33,8 @@ public class LegacyTable implements EncounterTable {
 	private final List<String> data;
 	/**
 	 * Constructor.
-	 * 
-	 * @param entryMap
-	 *            the entries in the table.
 	 */
-	public LegacyTable(final Map<Integer, String> entryMap) {
+	public LegacyTable() {
 		data = new ArrayList<String>();
 		data.add(new BattlefieldEvent(0).getText());
 		data.add(new CaveEvent(0).getText());

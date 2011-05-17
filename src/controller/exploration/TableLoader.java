@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,7 +92,7 @@ public class TableLoader { // NOPMD
 				return loadConstantTable(reader); // NOPMD
 			case 'L':
 			case 'l':
-				return loadLegacyTable(reader); // NOPMD
+				return loadLegacyTable(); // NOPMD
 			case 'T':
 			case 't':
 				return loadTerrainTable(reader);
@@ -212,21 +210,9 @@ public class TableLoader { // NOPMD
 	/**
 	 * Load a LegacyTable from file.
 	 * 
-	 * @param reader
-	 *            the file descriptor
 	 * @return the table the file describes.
-	 * @throws IOException
-	 *             on I/O error.
 	 */
-	public LegacyTable loadLegacyTable(final BufferedReader reader)
-			throws IOException {
-		final Map<Integer, String> map = new HashMap<Integer, String>();
-		String line = reader.readLine();
-		while (line != null) {
-			final String[] split = line.split(":", SPLIT_ONCE);
-			map.put(Integer.parseInt(split[0]), split[1].trim());
-			line = reader.readLine();
-		}
-		return new LegacyTable(map);
+	public LegacyTable loadLegacyTable() {
+		return new LegacyTable();
 	}
 }
