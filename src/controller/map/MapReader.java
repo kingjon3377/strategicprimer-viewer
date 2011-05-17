@@ -218,36 +218,23 @@ public class MapReader {
 			final XMLEvent event = eventReader.nextEvent();
 			if (event.isStartElement()) {
 				final StartElement startElement = event.asStartElement();
-				final Tag tag = getTagType(startElement);
 				if (map == null) {
-					if (Tag.Map.equals(tag)) {
-						if (hasAttribute(startElement, "version")
-								&& Integer.parseInt(getAttribute(startElement,
-										"version")) >= SPMap.VERSION) {
-							map = new SPMap(Integer.parseInt(getAttribute(// NOPMD
-									startElement, "rows")),
-									Integer.parseInt(getAttribute(startElement,
-											"columns"))); // NOPMD
-						} else {
-							throw new MapVersionException(
-									"Map is too old a version.");
-						}
+					map = firstTag(startElement);
+				} else {
+					final Tag tag = getTagType(startElement);
+					if (Tag.Player.equals(tag)) {
+						map.addPlayer(parsePlayer(startElement, eventReader));
+					} else if (Tag.Row.equals(tag)) {
+						// Deliberately ignore
+						continue;
+					} else if (Tag.Tile.equals(tag)) {
+						map.addTile(parseTileContents(startElement, eventReader));
 					} else {
 						throw new IllegalStateException(
-								"Has to start with a map tag");
+								UNEXPECTED_TAG
+										+ tag.getText()
+										+ ": players, rows, and tiles are the only accepted top-level tags");
 					}
-				} else if (Tag.Player.equals(tag)) {
-					map.addPlayer(parsePlayer(startElement, eventReader));
-				} else if (Tag.Row.equals(tag)) {
-					// Deliberately ignore
-					continue;
-				} else if (Tag.Tile.equals(tag)) {
-					map.addTile(parseTileContents(startElement, eventReader));
-				} else {
-					throw new IllegalStateException(
-							UNEXPECTED_TAG
-									+ tag.getText()
-									+ ": players, rows, and tiles are the only accepted top-level tags");
 				}
 			}
 		}
@@ -260,6 +247,31 @@ public class MapReader {
 			LOGGER.log(Level.WARNING, "I/O error closing the input stream", e);
 		}
 		return map;
+	}
+
+	/**
+	 * Handle the first tag, which should be the map tag.
+	 * @param startElement The current element.
+	 * @return The map.
+	 * @throws MapVersionException If the map version is too old.
+	 */
+	private static SPMap firstTag(final StartElement startElement) throws MapVersionException {
+		if (Tag.Map.equals(getTagType(startElement))) {
+			if (hasAttribute(startElement, "version")
+					&& Integer.parseInt(getAttribute(startElement,
+							"version")) >= SPMap.VERSION) {
+				return new SPMap(Integer.parseInt(getAttribute(// NOPMD
+						startElement, "rows")),
+						Integer.parseInt(getAttribute(startElement,
+								"columns"))); // NOPMD
+			} else {
+				throw new MapVersionException(
+						"Map is too old a version.");
+			}
+		} else {
+			throw new IllegalStateException(
+					"Has to start with a map tag");
+		}
 	}
 
 	/**
