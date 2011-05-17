@@ -545,7 +545,7 @@ public class MapReader {
 	 */
 	private static String getAttributeWithDefault(final StartElement elem,
 			final String attr, final String defaultValue) {
-		return hasAttribute(elem, attr) ? getAttribute(elem, attr) : defaultValue;
+		return (elem.getAttributeByName(new QName(attr)) != null) ? getAttribute(elem, attr) : defaultValue;
 	}
 	/**
 	 * @param startElement
@@ -563,18 +563,6 @@ public class MapReader {
 					"Element doesn't contain that attribute");
 		}
 		return attr.getValue();
-	}
-
-	/**
-	 * @param startElement
-	 *            a tag
-	 * @param attribute
-	 *            the attribute we want
-	 * @return whether the tag has that attribute
-	 */
-	private static boolean hasAttribute(final StartElement startElement,
-			final String attribute) {
-		return startElement.getAttributeByName(new QName(attribute)) != null;
 	}
 
 	/**
