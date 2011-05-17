@@ -221,18 +221,20 @@ public class MapReader {
 				if (map == null) {
 					map = firstTag(startElement);
 				} else {
-					final Tag tag = getTagType(startElement);
-					if (Tag.Player.equals(tag)) {
+					switch (getTagType(startElement)) {
+					case Player:
 						map.addPlayer(parsePlayer(startElement, eventReader));
-					} else if (Tag.Row.equals(tag)) {
+						break;
+					case Row:
 						// Deliberately ignore
 						continue;
-					} else if (Tag.Tile.equals(tag)) {
+					case Tile:
 						map.addTile(parseTileContents(startElement, eventReader));
-					} else {
+						break;
+					default:
 						throw new IllegalStateException(
 								UNEXPECTED_TAG
-										+ tag.getText()
+										+ startElement.getName().getLocalPart()
 										+ ": players, rows, and tiles are the only accepted top-level tags");
 					}
 				}
