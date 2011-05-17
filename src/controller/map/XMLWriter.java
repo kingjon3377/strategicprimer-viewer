@@ -307,11 +307,11 @@ public class XMLWriter { // NOPMD
 		indent(3);
 		writer.print("<unit owner=");
 		printQuoted(unit.getOwner());
-		if (unit.getType() != null) {
+		if (unit.getType() != null && !"".equals(unit.getType())) {
 			writer.print(" type=");
 			printQuoted(unit.getType());
 		}
-		if (unit.getName() != null) {
+		if (unit.getName() != null && !"".equals(unit.getName())) {
 			writer.print(" name=");
 			printQuoted(unit.getName());
 		}
