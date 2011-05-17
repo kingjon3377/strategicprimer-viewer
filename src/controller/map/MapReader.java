@@ -331,6 +331,31 @@ public class MapReader {
 	}
 
 	/**
+	 * Move along the stream until we hit an end element, but object to any
+	 * start elements.
+	 * 
+	 * @param tag
+	 *            what kind of tag we're in (for the error message)
+	 * @param reader
+	 *            the XML stream we're reading from
+	 * @throws XMLStreamException
+	 *             on error while trying to find our end tag
+	 */
+	private static void spinUntilEnd(final String tag, final XMLEventReader reader)
+			throws XMLStreamException {
+		while (reader.hasNext()) {
+			if (reader.peek().isStartElement()) {
+				final StartElement element = reader.nextEvent()
+						.asStartElement();
+				throw new IllegalStateException(UNEXPECTED_TAG
+						+ getTagType(element).getText()
+						+ ": " + tag + " can't contain anything yet");
+			} else if (reader.nextEvent().isEndElement()) {
+				break;
+			}
+		}
+	}
+	/**
 	 * @param elem
 	 *            an XML element representing an event on that tile
 	 * @param reader
@@ -341,6 +366,7 @@ public class MapReader {
 	 */
 	private static AbstractEvent parseEvent(final StartElement elem,
 			final XMLEventReader reader) throws XMLStreamException {
+		// ESCA-JAVA0177:
 		AbstractEvent retval;
 		switch (getEventType(elem)) {
 		case Battlefield:
@@ -379,17 +405,7 @@ public class MapReader {
 		default:
 			throw new IllegalArgumentException("Unknown event type");
 		}
-		while (reader.hasNext()) {
-			if (reader.peek().isStartElement()) {
-				final StartElement element = reader.nextEvent()
-						.asStartElement();
-				throw new IllegalStateException(UNEXPECTED_TAG
-						+ getTagType(element).getText()
-						+ ": an event can't contain anything yet");
-			} else if (reader.nextEvent().isEndElement()) {
-				break;
-			}
-		}
+		spinUntilEnd("<event>", reader);
 		return retval;
 	}
 
@@ -451,17 +467,7 @@ public class MapReader {
 		// ESCA-JAVA0177:
 		final River river = Tag.Lake.equals(getTagType(elem)) ? River.Lake
 				: River.getRiver(getAttribute(elem, "direction"));
-		while (reader.hasNext()) {
-			if (reader.peek().isStartElement()) {
-				final StartElement element = reader.nextEvent()
-						.asStartElement();
-				throw new IllegalStateException(UNEXPECTED_TAG
-						+ getTagType(element).getText()
-						+ ": a river can't contain anything yet");
-			} else if (reader.nextEvent().isEndElement()) {
-				break;
-			}
-		}
+		spinUntilEnd("<river>", reader);
 		return river;
 	}
 
@@ -524,16 +530,7 @@ public class MapReader {
 				Integer.parseInt(getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
 						"-1")), getAttributeWithDefault(elem, "type", ""),
 				getAttributeWithDefault(elem, NAME_ATTRIBUTE, ""));
-		while (reader.hasNext()) {
-			if (reader.peek().isStartElement()) {
-				throw new IllegalStateException(UNEXPECTED_TAG
-						+ getTagType(reader.nextEvent()
-								.asStartElement()).getText()
-						+ ": a unit can't contain anything yet");
-			} else if (reader.nextEvent().isEndElement()) {
-				break;
-			}
-		}
+		spinUntilEnd("<unit>", reader);
 		return unit;
 	}
 
