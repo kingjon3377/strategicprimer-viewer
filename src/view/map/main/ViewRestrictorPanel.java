@@ -52,7 +52,7 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	 */
 	private static final int MAXROWBOX_WEST = 178;
 	/**
-	 * Spring amount for the west constraint on maxColBox;
+	 * Spring amount for the west constraint on maxColBox.
 	 */
 	private static final int MAXCOLBOX_WEST = 178;
 	/**
@@ -62,11 +62,11 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	/**
 	 * Spring amount for the west constraint on the button.
 	 */
-	private static final int BUTTON_WEST_SPRING = 204;
+	private static final int BUTTON_WEST = 204;
 	/**
 	 * Spring amount for the north constraint on the button.
 	 */
-	private static final int BUTTON_NORTH_SPRING = 6;
+	private static final int BUTTON_NORTH = 6;
 	/**
 	 * Version UID for serialization.
 	 */
@@ -107,9 +107,9 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 		mpanel = mapPanel;
 		final SpringLayout springLayout = new SpringLayout();
 		springLayout.putConstraint(SpringLayout.NORTH, button,
-				BUTTON_NORTH_SPRING, SpringLayout.NORTH, this);
+				BUTTON_NORTH, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, button,
-				BUTTON_WEST_SPRING, SpringLayout.WEST, this);
+				BUTTON_WEST, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, maxColBox,
 				MAXCOLBOX_NORTH, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, maxColBox,
