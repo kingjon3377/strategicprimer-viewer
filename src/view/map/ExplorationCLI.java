@@ -81,16 +81,12 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_ALWAYS_NULL")
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_NULL_PARAM_DEREF_NONVIRTUAL")
 	private void explore(final SPMap map, final BufferedReader reader)
 			throws IOException {
 		// ESCA-JAVA0266:
 		final PrintStream ostream = System.out;
-		ostream.print("Row: ");
-		final int row = Integer.parseInt(reader.readLine());
-		ostream.print("Column: ");
-		final int col = Integer.parseInt(reader.readLine());
-		final Tile tile = map.getTile(row, col);
+		final Tile tile = selectTile(map, reader, ostream);
 		ostream.println("Tile is " + tile.getType());
 		ostream.println(runner.recursiveConsultTable("main", tile));
 	}
@@ -106,16 +102,37 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_ALWAYS_NULL")
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_NULL_PARAM_DEREF_NONVIRTUAL")
 	private void fortressInfo(final SPMap map, final BufferedReader reader)
 			throws IOException {
 		final PrintStream ostream = System.out;
-		ostream.print("Row: ");
-		final int row = Integer.parseInt(reader.readLine());
-		ostream.print("Column: ");
-		final int col = Integer.parseInt(reader.readLine());
-		final Tile tile = map.getTile(row, col);
-		ostream.print(runner.defaultResults(tile));
+		ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
+	}
+	/**
+	 * @param reader the stream we read from
+	 * @param ostream the stream we write to
+	 * @param string the prompt
+	 * @return the integer the player specified
+	 * @throws IOException on I/O error
+	 */
+	private static int getInteger(final BufferedReader reader, final PrintStream ostream, final String string) throws IOException {
+		ostream.print(string);
+		final String line = reader.readLine();
+		if (line == null) {
+			throw new IOException("End of input");
+		}
+		return Integer.parseInt(line);
+	}
+	/**
+	 * @param map The map we're dealing with
+	 * @param reader The stream we're reading from
+	 * @param ostream The stream we write the prompts to
+	 * @return The tile the user specifies.
+	 * @throws IOException on I/O error
+	 */
+	private static Tile selectTile(final SPMap map, final BufferedReader reader,
+			final PrintStream ostream) throws IOException {
+		return map.getTile(getInteger(reader, ostream, "Row: "), getInteger(reader, ostream, "Column: "));
 	}
 
 	/**
@@ -146,11 +163,7 @@ public final class ExplorationCLI {
 	private void hunt(final BufferedReader reader, final SPMap map,
 			final PrintStream ostream) throws NumberFormatException,
 			IOException {
-		ostream.print("Row: ");
-		final int row = Integer.parseInt(reader.readLine());
-		ostream.print("Column: ");
-		final int col = Integer.parseInt(reader.readLine());
-		final Tile tile = map.getTile(row, col);
+		final Tile tile = selectTile(map, reader, ostream);
 		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
 			ostream.println(runner.recursiveConsultTable("hunter", tile));
 		}
