@@ -180,7 +180,7 @@ public class XMLWriter { // NOPMD
 			writer.print('>');
 			if (!tile.getContents().isEmpty() || !tile.getRivers().isEmpty()
 					|| !"".equals(tile.getTileText())) {
-				writer.println();
+				writer.println(tile.getTileText());
 				for (final TileFixture fix : tile.getContents()) {
 					printFixture(fix);
 				}
@@ -188,7 +188,6 @@ public class XMLWriter { // NOPMD
 					printRiver(river);
 				}
 				indent(2);
-				writer.print(tile.getTileText());
 			}
 			writer.println("</tile>");
 		}
