@@ -528,10 +528,9 @@ public class MapReader {
 				hasAttribute(elem, NAME_ATTRIBUTE) ? getAttribute(elem, NAME_ATTRIBUTE) : null);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
-				final StartElement element = reader.nextEvent()
-						.asStartElement();
 				throw new IllegalStateException(UNEXPECTED_TAG
-						+ getTagType(element).getText()
+						+ getTagType(reader.nextEvent()
+								.asStartElement()).getText()
 						+ ": a unit can't contain anything yet");
 			} else if (reader.nextEvent().isEndElement()) {
 				break;
