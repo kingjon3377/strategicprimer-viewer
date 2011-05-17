@@ -243,7 +243,7 @@ public abstract class AbstractEvent implements TileFixture {
 	 * @author Jonathan Lovelace
 	 */
 	// ESCA-JAVA0011:
-	protected abstract static class AbstractTownEvent extends AbstractEvent {
+	public abstract static class AbstractTownEvent extends AbstractEvent {
 		/**
 		 * Constructor.
 		 * 

@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import model.viewer.events.AbstractEvent;
+import model.viewer.events.AbstractEvent.AbstractTownEvent;
+import model.viewer.events.AbstractEvent.TownStatus;
+import view.util.IsAdmin;
 
 /**
  * A Chit to represent an event. TODO: Make it look different for different Events.
@@ -28,6 +31,11 @@ public class EventChit extends Chit {
 		}
 		final StringBuilder builder = new StringBuilder("<html><p>");
 		builder.append(event.getText());
+		if (event instanceof AbstractTownEvent
+				&& TownStatus.Active.equals(((AbstractTownEvent) event).status) && !IsAdmin.IS_ADMIN) {
+			final int cursor = builder.indexOf(" (roll it up)");
+			builder.replace(cursor, cursor + 13, "");
+		}
 		builder.append("</p></html>");
 		desc = builder.toString();
 	}
