@@ -21,6 +21,8 @@ import model.viewer.Unit;
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
  * 
+ * TODO: implement the selection-management stuff now we no longer need tool-tips.
+ * 
  * @author Jonathan Lovelace
  * 
  */
