@@ -13,9 +13,12 @@ import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
 
+import model.viewer.Fortress;
 import model.viewer.River;
 import model.viewer.Tile;
+import model.viewer.TileFixture;
 import model.viewer.TileType;
+import model.viewer.Unit;
 
 /**
  * A GUI representation of a tile. Information about what's on the tile should
@@ -167,15 +170,39 @@ public class GUITile extends Selectable {
 			for (final River river : tile.getRivers()) {
 				pen.fill(RIVERS.get(river));
 			}
-			if (tile.hasAnyForts()) {
+			if (hasAnyForts(tile)) {
 				pen.setColor(FORT_COLOR);
 				pen.fill(fort);
 			}
-			if (tile.hasAnyUnits()) {
+			if (hasAnyUnits(tile)) {
 				pen.setColor(UNIT_COLOR);
 				pen.fill(unit);
 			}
 		}
+	}
+	/**
+	 * @param tile a tile
+	 * @return whether the tile has any forts.
+	 */
+	private static boolean hasAnyForts(final Tile tile) {
+		for (TileFixture fix : tile.getContents()) {
+			if (fix instanceof Fortress) {
+				return true; // NOPMD
+			}
+		}
+		return false;
+	}
+	/**
+	 * @param tile a tile
+	 * @return whether the tile has any units.
+	 */
+	private static boolean hasAnyUnits(final Tile tile) {
+		for (TileFixture fix : tile.getContents()) {
+			if (fix instanceof Unit) {
+				return true; // NOPMD
+			}
+		}
+		return false;
 	}
 
 	/**

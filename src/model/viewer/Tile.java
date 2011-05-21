@@ -20,14 +20,6 @@ public final class Tile implements Serializable {
 	 */
 	private static final long serialVersionUID = -8600736789182987551L;
 	/**
-	 * Whether the tile currently holds any units.
-	 */
-	private boolean anyUnits = false;
-	/**
-	 * Whether the tile currently holds any fortresses.
-	 */
-	private boolean anyForts = false;
-	/**
 	 * Constructor.
 	 * 
 	 * @param tileRow
@@ -89,11 +81,6 @@ public final class Tile implements Serializable {
 	public void addFixture(final TileFixture fix) {
 		if (!fix.equals(NothingEvent.NOTHING_EVENT)) {
 		contents.add(fix);
-		if (fix instanceof Unit) {
-			anyUnits = true;
-		} else if (fix instanceof Fortress) {
-			anyForts = true;
-		}
 		}
 	}
 	/**
@@ -101,9 +88,6 @@ public final class Tile implements Serializable {
 	 */
 	public void removeFixture(final TileFixture fix) {
 		contents.remove(fix);
-		if (fix instanceof Unit || fix instanceof Fortress) {
-			checkCache();
-		}
 	}
 	/**
 	 * FIXME: Should return a copy, not the real collection.
@@ -219,36 +203,5 @@ public final class Tile implements Serializable {
 		rivers.addAll(tile.rivers);
 		rivers.retainAll(tile.rivers);
 		tileText = tile.tileText;
-		checkCache();
-	}
-	/**
-	 * Check whether there are any units on the tile.
-	 */
-	private void checkCache() {
-		anyUnits = false;
-		anyForts = false;
-		for (TileFixture fix : contents) {
-			if (fix instanceof Unit) {
-				anyUnits = true;
-			}
-			if (fix instanceof Fortress) {
-				anyForts = true;
-			}
-			if (anyUnits && anyForts) {
-				break;
-			}
-		}
-	}
-	/**
-	 * @return whether there are any units on the tile
-	 */
-	public boolean hasAnyUnits() {
-		return anyUnits;
-	}
-	/**
-	 * @return whether there are any forts on the tile
-	 */
-	public boolean hasAnyForts() {
-		return anyForts;
 	}
 }

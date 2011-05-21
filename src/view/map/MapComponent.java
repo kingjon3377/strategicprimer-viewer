@@ -10,9 +10,12 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
+import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import model.viewer.TileFixture;
 import model.viewer.TileType;
+import model.viewer.Unit;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -127,9 +130,9 @@ public class MapComponent extends JComponent {
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
 		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		if (tile.hasAnyForts()
+		if (hasAnyForts(tile)
 				|| tile.getType().equals(TileType.NotVisible)) {
-			if (!tile.hasAnyUnits()
+			if (!hasAnyUnits(tile)
 					&& !tile.getType().equals(TileType.NotVisible)) {
 				pen.setColor(UNIT_COLOR);
 				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE
@@ -141,6 +144,30 @@ public class MapComponent extends JComponent {
 					+ TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
 		}
 		pen.setColor(saveColor);
+	}
+	/**
+	 * @param tile a tile
+	 * @return whether the tile has any forts.
+	 */
+	private static boolean hasAnyForts(final Tile tile) {
+		for (TileFixture fix : tile.getContents()) {
+			if (fix instanceof Fortress) {
+				return true; // NOPMD
+			}
+		}
+		return false;
+	}
+	/**
+	 * @param tile a tile
+	 * @return whether the tile has any units.
+	 */
+	private static boolean hasAnyUnits(final Tile tile) {
+		for (TileFixture fix : tile.getContents()) {
+			if (fix instanceof Unit) {
+				return true; // NOPMD
+			}
+		}
+		return false;
 	}
 	/**
 	 * Brown, the color of a fortress.
