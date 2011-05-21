@@ -130,18 +130,15 @@ public class MapComponent extends JComponent {
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
 		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		if (hasAnyForts(tile)
-				|| tile.getType().equals(TileType.NotVisible)) {
-			if (!hasAnyUnits(tile)
+		if (hasAnyForts(tile) && !tile.getType().equals(TileType.NotVisible)) {
+				pen.setColor(FORT_COLOR);
+				pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE
+						+ TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
+		} else if (hasAnyUnits(tile)
 					&& !tile.getType().equals(TileType.NotVisible)) {
 				pen.setColor(UNIT_COLOR);
 				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE
 						+ TILE_SIZE / 2, TILE_SIZE / 4, TILE_SIZE / 4);
-			}
-		} else {
-			pen.setColor(FORT_COLOR);
-			pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE
-					+ TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
 		}
 		pen.setColor(saveColor);
 	}
