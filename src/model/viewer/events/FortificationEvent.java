@@ -28,7 +28,7 @@ public final class FortificationEvent extends AbstractEvent.AbstractTownEvent {
 	/**
 	 * The DC to discover the fortification. TODO: Should perhaps be mutable.
 	 */
-	public final int dc; // NOPMD
+	private final int dc; // NOPMD
 
 	/**
 	 * 

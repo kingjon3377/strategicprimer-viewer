@@ -26,7 +26,7 @@ public final class CityEvent extends AbstractEvent.AbstractTownEvent {
 	/**
 	 * The DC to discover the city. TODO: Should perhaps be mutable.
 	 */
-	public final int dc; // NOPMD
+	private final int dc; // NOPMD
 
 	/**
 	 * 

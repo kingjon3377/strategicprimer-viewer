@@ -243,9 +243,9 @@ public class XMLWriter { // NOPMD
 				break;
 			case Mineral:
 				writer.print("mineral mineral=");
-				printQuoted(((MineralEvent) fix).mineral.toString());
+				printQuoted(((MineralEvent) fix).mineral().toString());
 				writer.print(" exposed=");
-				printQuoted(Boolean.toString(((MineralEvent) fix).exposed));
+				printQuoted(Boolean.toString(((MineralEvent) fix).isExposed()));
 				break;
 			case Stone:
 				writer.print("stone stone=");

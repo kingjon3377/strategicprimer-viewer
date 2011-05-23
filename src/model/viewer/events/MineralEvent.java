@@ -91,16 +91,28 @@ public final class MineralEvent extends AbstractEvent {
 	/**
 	 * What kind of mineral this is.
 	 */
-	public final MineralKind mineral;
+	private final MineralKind mineral;
+	/**
+	 * @return what kind of mineral this is
+	 */
+	public MineralKind mineral() {
+		return mineral;
+	}
 	/**
 	 * Whether the vein is exposed. TODO: Perhaps this should be mutable and
 	 * protected by accessor methods?
 	 */
-	public final boolean exposed;
+	private final boolean exposed;
+	/**
+	 * @return whether the vein is exposed
+	 */
+	public boolean isExposed() {
+		return exposed;
+	}
 	/**
 	 * The DC to discover the vein. TODO: Should perhaps be mutable.
 	 */
-	public final int dc; // NOPMD
+	private final int dc; // NOPMD
 
 	/**
 	 * 

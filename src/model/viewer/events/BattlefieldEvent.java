@@ -20,7 +20,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	/**
 	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
 	 */
-	public final int dc; // NOPMD
+	private final int dc; // NOPMD
 
 	/**
 	 * 

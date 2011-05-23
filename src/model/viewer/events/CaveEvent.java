@@ -21,7 +21,7 @@ public final class CaveEvent extends AbstractEvent {
 	/**
 	 * The DC to discover the caves. TODO: Should perhaps be mutable.
 	 */
-	public final int dc; // NOPMD
+	private final int dc; // NOPMD
 
 	/**
 	 * 
