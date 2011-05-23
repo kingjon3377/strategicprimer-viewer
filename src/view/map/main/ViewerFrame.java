@@ -91,7 +91,34 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * to construct it every time.
 	 */
 	private final JFileChooser chooser = new JFileChooser();
-
+	/**
+	 * A thread to switch the maps.
+	 */
+	private static class MapSwitcher extends Thread {
+		/**
+		 * The panel to switch.
+		 */
+		private final MapPanel panel;
+		// ESCA-JAVA0128:
+		/**
+		 * Constructor; otherwise it's "emulated by a synthetic ... method."
+		 * @param mpanel the panel whose maps we'll be swapping.
+		 */
+		public MapSwitcher(final MapPanel mpanel) {
+			panel = mpanel;
+		}
+		/**
+		 * Switch the maps.
+		 */
+		@Override
+		public void run() {
+			panel.swapMaps();
+		}
+	}
+	/**
+	 * A thread to switch the maps.
+	 */
+	private final MapSwitcher mapSwitcher;
 	/**
 	 * @return the quasi-Singleton objects
 	 */
@@ -297,6 +324,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		mapSwitcher = new MapSwitcher(mapPanel);
 		pack();
 		repaint();
 	}
@@ -337,12 +365,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				}
 			}
 		} else if ("Switch maps".equals(event.getActionCommand())) {
-			new Thread() {
-				@Override
-				public void run() {
-					mapPanel.swapMaps();
-				}
-			}.start();
+			mapSwitcher.start();
 		} else if ("Quit".equals(event.getActionCommand())) {
 			quit(0);
 		}
