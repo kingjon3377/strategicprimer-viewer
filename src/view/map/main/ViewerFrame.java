@@ -306,7 +306,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(this, "I/O error reading " + filename);
-			return null;
+			return null; // NOPMD
 		} catch (MapVersionException e) {
 			LOGGER.log(Level.SEVERE, OLD_VERSION_ERROR, e);
 			showErrorDialog(this, OLD_VERSION_ERROR);
