@@ -10,7 +10,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 import model.exploration.ExplorationRunner;
 import model.viewer.Fortress;
@@ -63,7 +63,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * Field to show and edit exploration results.
 	 */
-	private final JTextField resultsField = new JTextField();
+	private final JTextArea resultsField = new JTextArea();
 	/**
 	 * Exploration runner to produce exploration results.
 	 */
@@ -96,6 +96,8 @@ public class DetailPanel extends JPanel implements ActionListener {
 		resultsPanel.add(resultsLabel, BorderLayout.WEST);
 		resultsPanel.addComponentListener(new SizeLimiter(resultsLabel,
 				1.0 - RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
+		resultsField.setLineWrap(true);
+		resultsField.setEditable(true);
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
 		resultsPanel.addComponentListener(new SizeLimiter(resultsField,
 				RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
