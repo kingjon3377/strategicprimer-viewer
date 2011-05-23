@@ -21,7 +21,19 @@ public class SelectionListener implements MouseListener {
 	protected Selectable selection() {
 		return selection;
 	}
-
+	/**
+	 * Set the selection, and notify both the old and the new values of the change.
+	 * @param sel the new currently-selected item
+	 */
+	protected void setSelection(final Selectable sel) {
+		if (selection != null) {
+			selection.setSelected(false);
+		}
+		selection = sel;
+		if (selection != null) {
+			selection.setSelected(true);
+		}
+	}
 	/**
 	 * Constructor.
 	 */
@@ -39,11 +51,7 @@ public class SelectionListener implements MouseListener {
 	@Override
 	public void mouseClicked(final MouseEvent event) {
 		if (event.getComponent() instanceof Selectable) {
-			if (selection != null) {
-				selection.setSelected(false);
-			}
-			selection = (Selectable) event.getComponent();
-			selection.setSelected(true);
+			setSelection((Selectable) (event.getComponent()));
 		}
 	}
 
