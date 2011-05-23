@@ -2,7 +2,6 @@ package view.character;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -19,12 +18,6 @@ public class FileMenu extends JMenu implements ActionListener {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 8844526617362435258L;
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(FileMenu.class
-			.getName());
 
 	/**
 	 * Constructor.
