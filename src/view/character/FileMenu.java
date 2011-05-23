@@ -2,9 +2,6 @@ package view.character;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
@@ -64,7 +61,6 @@ public class FileMenu extends JMenu implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
-		try {
 		if ("Save As".equals(evt.getActionCommand())
 				&& FILE_CHOOSER.showSaveDialog(window) == JFileChooser.APPROVE_OPTION) {
 				window.save(FILE_CHOOSER.getSelectedFile().getPath());
@@ -78,12 +74,6 @@ public class FileMenu extends JMenu implements ActionListener {
 			window.quit();
 		} else if ("New".equals(evt.getActionCommand())) {
 			window.newCharacter();
-		}
-		} catch (final FileNotFoundException except) {
-			LOGGER.log(Level.WARNING,
-					"File not found while opening the map", except);
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error while opening or saving the map", e);
 		} 
 	}
 

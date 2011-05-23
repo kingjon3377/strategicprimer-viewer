@@ -3,6 +3,8 @@ package view.character;
 import java.awt.Component;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -20,6 +22,12 @@ import controller.character.CharacterReader;
  */
 public class CharacterFrame extends JFrame implements SaveableOpenable,
 		UICloseable {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(CharacterFrame.class
+			.getName());
+
 	/**
 	 * Version UID for serialization.
 	 */
@@ -59,16 +67,18 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	 * 
 	 * @param file
 	 *            the filename to load from
-	 * @throws IOException
-	 *             on I/O error loading
-	 * @throws FileNotFoundException
-	 *             if the file doesn't exist
 	 */
 	@Override
-	public void open(final String file) throws FileNotFoundException,
-			IOException {
-		tabber.addTab("Character",
-				new CharacterPanel(new CharacterReader(file).getCharacter()));
+	public void open(final String file) {
+		try {
+			tabber.addTab("Character",
+					new CharacterPanel(new CharacterReader(file).getCharacter()));
+		} catch (final FileNotFoundException except) {
+			LOGGER.log(Level.WARNING,
+					"File not found while opening the character", except);
+		} catch (final IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error while opening the character", e);
+		}
 	}
 
 	/**
@@ -76,14 +86,16 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	 * 
 	 * @param file
 	 *            the filename to save to
-	 * @throws IOException
-	 *             on I/O error while saving
 	 */
 	@Override
-	public void save(final String file) throws IOException {
+	public void save(final String file) {
 		final Component comp = tabber.getSelectedComponent();
 		if (comp instanceof SaveableOpenable) {
-			((SaveableOpenable) comp).save(file);
+			try {
+				((SaveableOpenable) comp).save(file);
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "I/O error while saving the character", e);
+			}
 		} else {
 			throw new IllegalStateException(
 					"Told to save when the current tab can't.");
