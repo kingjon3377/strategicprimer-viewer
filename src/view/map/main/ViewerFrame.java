@@ -118,10 +118,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		}
 	}
 	/**
-	 * A thread to switch the maps.
-	 */
-	private final MapSwitcher mapSwitcher;
-	/**
 	 * @return the quasi-Singleton objects
 	 */
 	public static ViewerFrame getFrame() {
@@ -326,7 +322,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		mapSwitcher = new MapSwitcher(mapPanel);
 		pack();
 		repaint();
 	}
@@ -367,7 +362,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				}
 			}
 		} else if ("Switch maps".equals(event.getActionCommand())) {
-			mapSwitcher.start();
+			new MapSwitcher(mapPanel).start();
 		} else if ("Quit".equals(event.getActionCommand())) {
 			DriverQuit.quit(0);
 		}
