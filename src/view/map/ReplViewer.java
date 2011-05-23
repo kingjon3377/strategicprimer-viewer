@@ -49,10 +49,7 @@ public final class ReplViewer {
 		printTile(tile);
 		try {
 			String input = reader.readLine();
-			while (input != null && input.length() > 0) {
-				if (input.charAt(0) == 'q') {
-					break;
-				} else {
+			while (keepGoing(input)) {
 					switch (input.charAt(0)) {
 					case 'n':
 						iRow--;
@@ -69,7 +66,6 @@ public final class ReplViewer {
 					default:
 						break;
 					}
-				}
 				tile = map.getTile(iRow, iCol);
 				printTile(tile);
 				input = reader.readLine();
@@ -84,6 +80,18 @@ public final class ReplViewer {
 				LOGGER.log(Level.SEVERE, "I/O exception while closing reader", except);
 			}
 		}
+	}
+
+	/**
+	 * We keep looping if the input is not null, is not an empty string, and is
+	 * not "quit" (only the first character is checked).
+	 * 
+	 * @param input
+	 *            a line of input
+	 * @return whether that input says we should keep going.
+	 */
+	private static boolean keepGoing(final String input) {
+		return input != null && input.length() > 0 && input.charAt(0) != 'q';
 	}
 
 	/**
