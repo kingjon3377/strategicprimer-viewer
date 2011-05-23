@@ -105,6 +105,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		 * @param mpanel the panel whose maps we'll be swapping.
 		 */
 		public MapSwitcher(final MapPanel mpanel) {
+			super();
 			panel = mpanel;
 		}
 		/**
