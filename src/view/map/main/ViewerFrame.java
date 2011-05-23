@@ -254,18 +254,15 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
+		try {
 		if ("Load".equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				mapPanel.loadMap(readMap(chooser.getSelectedFile().getPath()));
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())
 							.write(mapPanel.getMap());
-				} catch (final IOException e) {
-					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
-				}
 			}
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -274,17 +271,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			}
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-				try {
 					new XMLWriter(chooser.getSelectedFile().getPath())
 							.write(mapPanel.getSecondaryMap());
-				} catch (final IOException e) {
-					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
-				}
 			}
 		} else if ("Switch maps".equals(event.getActionCommand())) {
 			new MapSwitcher(mapPanel).start();
 		} else if ("Quit".equals(event.getActionCommand())) {
 			DriverQuit.quit(0);
+		}
+		} catch (final IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 		}
 	}
 
