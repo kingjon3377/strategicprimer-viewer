@@ -104,7 +104,7 @@ public class XMLWriter { // NOPMD
 		boolean anyTiles = false;
 		final int cols = map.cols();
 		for (int j = 0; j < cols; j++) {
-			Tile tile = map.getTile(row, j);
+			final Tile tile = map.getTile(row, j);
 			if (!anyTiles && tile != null && !TileType.NotVisible.equals(tile.getType())) {
 				indent(1);
 				anyTiles = true;
