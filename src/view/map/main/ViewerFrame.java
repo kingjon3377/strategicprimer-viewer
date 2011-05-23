@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.SPMap;
+import view.util.DriverQuit;
 import view.util.SizeLimiter;
 import controller.map.MapReader;
 import controller.map.MapReader.MapVersionException;
@@ -368,7 +369,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		} else if ("Switch maps".equals(event.getActionCommand())) {
 			mapSwitcher.start();
 		} else if ("Quit".equals(event.getActionCommand())) {
-			quit(0);
+			DriverQuit.quit(0);
 		}
 	}
 
@@ -416,13 +417,4 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
-	/**
-	 * Quit. (Don't halt the VM from a non-static context.)
-	 * 
-	 * @param code
-	 *            The exit code.
-	 */
-	private static void quit(final int code) {
-		System.exit(code);
-	}
 }
