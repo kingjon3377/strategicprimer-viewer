@@ -32,7 +32,7 @@ public class TerrainTable implements EncounterTable {
 	 */
 	public TerrainTable(final List<Pair<TileType, String>> items) {
 		for (final Pair<TileType, String> item : items) {
-			mapping.put(item.first, item.second);
+			mapping.put(item.first(), item.second());
 		}
 	}
 

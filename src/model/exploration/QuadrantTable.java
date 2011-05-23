@@ -69,8 +69,8 @@ public class QuadrantTable implements EncounterTable {
 	public String getQuadrantValue(final int row, final int col) {
 		Pair<Integer, Integer> bestKey = Pair.of(-1, -1);
 		for (final Pair<Integer, Integer> iter : quadrants.keySet()) {
-			if (iter.first <= row && iter.first > bestKey.first
-					&& iter.second <= col && iter.second > bestKey.second) {
+			if (iter.first() <= row && iter.first() > bestKey.first()
+					&& iter.second() <= col && iter.second() > bestKey.second()) {
 				bestKey = iter;
 			}
 		}

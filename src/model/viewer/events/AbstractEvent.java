@@ -89,8 +89,13 @@ public abstract class AbstractEvent implements TileFixture {
 	/**
 	 * What kind of event this is.
 	 */
-	public final EventKind kind;
-
+	private final EventKind kind;
+	/**
+	 * @return what kind of event this is
+	 */
+	public EventKind kind() {
+		return kind;
+	}
 	/**
 	 * Possible status of towns, fortifications, and cities.
 	 */
@@ -172,17 +177,17 @@ public abstract class AbstractEvent implements TileFixture {
 		/**
 		 * A string representing the size.
 		 */
-		private final String tsz_str;
+		private final String sizeStr;
 		/**
 		 * Constructor.
 		 * @param str a string representing the size.
 		 */
 		private TownSize(final String str) {
-			tsz_str = str;
+			sizeStr = str;
 		}
 		static {
 			for (TownSize tsz : values()) {
-				TSZ_MAP.put(tsz.tsz_str, tsz);
+				TSZ_MAP.put(tsz.sizeStr, tsz);
 			}
 		}
 		/**
@@ -197,7 +202,7 @@ public abstract class AbstractEvent implements TileFixture {
 		 */
 		@Override
 		public String toString() {
-			return tsz_str;
+			return sizeStr;
 		}
 	}
 
@@ -267,11 +272,23 @@ public abstract class AbstractEvent implements TileFixture {
 		/**
 		 * The status of the town, fortress, or city.
 		 */
-		public final TownStatus status;
+		private final TownStatus status;
+		/**
+		 * @return the status of the town, fortress, or city
+		 */
+		public TownStatus status() {
+			return status;
+		}
 		/**
 		 * The size of the town, fortress, or city.
 		 */
-		public final TownSize size;
+		private final TownSize size;
+		/**
+		 * @return the size of the town, fortress, or city
+		 */
+		public TownSize size() {
+			return size;
+		}
 		/**
 		 * FIXME: What about towns we've already rolled up?
 		 * @return exploration-result text for the event.
@@ -285,7 +302,7 @@ public abstract class AbstractEvent implements TileFixture {
 				builder.append(TownStatus.Burned.equals(status) ? "burned-out" : status.toString());
 			}
 			builder.append(' ');
-			builder.append(kind.toString());
+			builder.append(kind().toString());
 			builder.append(" here");
 			builder.append(TownStatus.Active.equals(status) ? " (roll it up)" : '.');
 			return builder.toString();

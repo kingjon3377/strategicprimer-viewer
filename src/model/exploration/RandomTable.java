@@ -27,11 +27,11 @@ public class RandomTable implements EncounterTable {
 	public String generateEvent(final Tile tile) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		for (final Pair<Integer, String> item : table) {
-			if (roll >= item.first) {
-				return item.second; // NOPMD
+			if (roll >= item.first()) {
+				return item.second(); // NOPMD
 			}
 		}
-		return table.get(table.size() - 1).second;
+		return table.get(table.size() - 1).second();
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class RandomTable implements EncounterTable {
 	public Set<String> allEvents() {
 		final Set<String> retval = new HashSet<String>();
 		for (final Pair<Integer, String> pair : table) {
-			retval.add(pair.second);
+			retval.add(pair.second());
 		}
 		return retval;
 	}

@@ -39,8 +39,8 @@ public class ChitSelectionListener extends SelectionListener {
 	@Override
 	public void mouseClicked(final MouseEvent event) {
 		super.mouseClicked(event);
-		if (selection instanceof Chit) {
-			detailLabel.setText(((Chit) (selection)).describe());
+		if (selection() instanceof Chit) {
+			detailLabel.setText(((Chit) (selection())).describe());
 		} else {
 			detailLabel.setText("");
 		}

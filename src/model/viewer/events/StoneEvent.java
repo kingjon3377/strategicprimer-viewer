@@ -75,12 +75,17 @@ public final class StoneEvent extends AbstractEvent {
 	/**
 	 * What kind of stone this deposit is.
 	 */
-	public final StoneKind stone;
+	private final StoneKind stone;
+	/**
+	 * @return what kind of stone this deposit is.
+	 */
+	public StoneKind stone() {
+		return stone;
+	}
 	/**
 	 * The DC to discover the stone. TODO: Should perhaps be mutable.
 	 */
-	public final int dc; // NOPMD
-
+	private final int dc; // NOPMD
 	/**
 	 * 
 	 * @return the DC to discover the event.

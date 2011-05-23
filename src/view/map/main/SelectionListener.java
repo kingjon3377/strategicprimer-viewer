@@ -14,7 +14,13 @@ public class SelectionListener implements MouseListener {
 	/**
 	 * The currently-selected tile.
 	 */
-	protected Selectable selection;
+	private Selectable selection;
+	/**
+	 * @return the currently-selected item.
+	 */
+	protected Selectable selection() {
+		return selection;
+	}
 
 	/**
 	 * Constructor.

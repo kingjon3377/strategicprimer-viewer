@@ -19,11 +19,23 @@ public final class Pair<FIRST, SECOND> implements
 	/**
 	 * The first item in the pair.
 	 */
-	public final FIRST first;
+	private final FIRST first;
+	/**
+	 * @return the first item in the pair
+	 */
+	public FIRST first() {
+		return first;
+	}
 	/**
 	 * The second item in the pair.
 	 */
-	public final SECOND second;
+	private final SECOND second;
+	/**
+	 * @return the second item in the pair
+	 */
+	public SECOND second() {
+		return second;
+	}
 
 	// ESCA-JAVA0029:
 	/**

@@ -213,10 +213,10 @@ public class XMLWriter { // NOPMD
 	 *            the event to print
 	 */
 	private void printEvent(final AbstractEvent fix) {
-		if (!EventKind.Nothing.equals(fix.kind)) {
+		if (!EventKind.Nothing.equals(fix.kind())) {
 			indent(3);
 			writer.print('<');
-			switch (fix.kind) {
+			switch (fix.kind()) {
 			case Battlefield:
 				writer.print("battlefield");
 				break;
@@ -225,21 +225,21 @@ public class XMLWriter { // NOPMD
 				break;
 			case City:
 				writer.print("city status=");
-				printQuoted(((CityEvent) fix).status.toString());
+				printQuoted(((CityEvent) fix).status().toString());
 				writer.print(" size=");
-				printQuoted(((CityEvent) fix).size.toString());
+				printQuoted(((CityEvent) fix).size().toString());
 				break;
 			case Fortification:
 				writer.print("fortification status=");
-				printQuoted(((FortificationEvent) fix).status.toString());
+				printQuoted(((FortificationEvent) fix).status().toString());
 				writer.print(" size=");
-				printQuoted(((FortificationEvent) fix).size.toString());
+				printQuoted(((FortificationEvent) fix).size().toString());
 				break;
 			case Town:
 				writer.print("town status=");
-				printQuoted(((TownEvent) fix).status.toString());
+				printQuoted(((TownEvent) fix).status().toString());
 				writer.print(" size=");
-				printQuoted(((TownEvent) fix).size.toString());
+				printQuoted(((TownEvent) fix).size().toString());
 				break;
 			case Mineral:
 				writer.print("mineral mineral=");
@@ -249,7 +249,7 @@ public class XMLWriter { // NOPMD
 				break;
 			case Stone:
 				writer.print("stone stone=");
-				printQuoted(((StoneEvent) fix).stone.toString());
+				printQuoted(((StoneEvent) fix).stone().toString());
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown event type");
