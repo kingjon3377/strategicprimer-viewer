@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -183,84 +181,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
-		addWindowListener(new WindowListener() {
-			/**
-			 * Do nothing special on window activation.
-			 * 
-			 * @param event
-			 *            ignored
-			 */
-			@Override
-			public void windowActivated(final WindowEvent event) {
-				repaint();
-			}
-
-			/**
-			 * Quit on window close.
-			 * 
-			 * @param event
-			 *            ignored
-			 */
-			@Override
-			public void windowClosed(final WindowEvent event) {
-				// Do nothing.
-			}
-
-			/**
-			 * Do nothing special on window-closing.
-			 * 
-			 * @param event
-			 *            ignored
-			 */
-			@Override
-			public void windowClosing(final WindowEvent event) {
-				// Do nothing
-			}
-
-			/**
-			 * Do nothing special on window-deactivation.
-			 * 
-			 * @param event
-			 *            ignored
-			 */
-			@Override
-			public void windowDeactivated(final WindowEvent event) {
-				// Do nothing
-			}
-
-			/**
-			 * Do nothing special when deiconified.
-			 * 
-			 * @param event
-			 *            ignored
-			 */
-			@Override
-			public void windowDeiconified(final WindowEvent event) {
-				repaint();
-			}
-
-			/**
-			 * do nothing special when iconified.
-			 * 
-			 * @param event
-			 *            ignored
-			 */
-			@Override
-			public void windowIconified(final WindowEvent event) {
-				// Do nothing
-			}
-
-			/**
-			 * Do nothing special when opened.
-			 * 
-			 * @param event
-			 *            ignored
-			 */
-			@Override
-			public void windowOpened(final WindowEvent event) {
-				repaint();
-			}
-		});
 		final JPanel buttonPanel = new JPanel(new BorderLayout());
 		final JPanel innerButtonPanel = new JPanel(new BorderLayout());
 		final JPanel firstButtonPanel = new JPanel(new BorderLayout());
