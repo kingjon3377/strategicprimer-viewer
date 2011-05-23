@@ -98,6 +98,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 				1.0 - RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
 		resultsField.setLineWrap(true);
 		resultsField.setEditable(true);
+		resultsField.setWrapStyleWord(true);
 		resultsPanel.add(resultsField, BorderLayout.CENTER);
 		resultsPanel.addComponentListener(new SizeLimiter(resultsField,
 				RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
