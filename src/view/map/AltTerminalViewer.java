@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.viewer.SPMap;
 import model.viewer.TileType;
+import view.util.DriverQuit;
 import controller.map.MapReader;
 import controller.map.MapReader.MapVersionException;
 
@@ -70,20 +71,20 @@ public final class AltTerminalViewer {
 					Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
-			System.exit(1);
+			DriverQuit.quit(1);
 			return; // NOPMD;
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
-			System.exit(2);
+			DriverQuit.quit(2);
 			return; // NOPMD;
 		} catch (final NumberFormatException e) {
 			LOGGER.log(Level.SEVERE, "Non-numeric data where numeric expected",
 					e);
-			System.exit(3);
+			DriverQuit.quit(3);
 			return; // NOPMD
 		} catch (MapVersionException e) {
 			LOGGER.log(Level.SEVERE, "Map version too old", e);
-			System.exit(4);
+			DriverQuit.quit(4);
 			return; // NOPMD
 		}
 	}

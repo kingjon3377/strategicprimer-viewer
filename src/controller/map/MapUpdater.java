@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
+import view.util.DriverQuit;
 import controller.map.MapReader.MapVersionException;
 
 /**
@@ -127,19 +128,19 @@ public class MapUpdater {
 			return new MapReader().readMap(filename);
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, buildString("File ", filename, " not found"), e);
-			System.exit(1);
+			DriverQuit.quit(1);
 			throw PASSED_EXIT;
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, buildString("XML stream error parsing ", filename), e);
-			System.exit(2);
+			DriverQuit.quit(2);
 			throw PASSED_EXIT;
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, buildString("I/O error processing ", filename), e);
-			System.exit(3);
+			DriverQuit.quit(3);
 			throw PASSED_EXIT;
 		} catch (MapVersionException e) {
 			LOGGER.log(Level.SEVERE, buildString(filename, " map version too old"), e);
-			System.exit(4);
+			DriverQuit.quit(4);
 			throw PASSED_EXIT;
 		}
 	}

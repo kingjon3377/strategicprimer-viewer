@@ -16,6 +16,7 @@ import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
+import view.util.DriverQuit;
 import controller.map.MapReader;
 import controller.map.MapReader.MapVersionException;
 
@@ -82,15 +83,15 @@ public final class HTMLViewer {
 			new HTMLViewer(new MapReader().readMap(args[0]));
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
-			System.exit(1);
+			DriverQuit.quit(1);
 			return; // NOPMD;
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
-			System.exit(2);
+			DriverQuit.quit(2);
 			return; // NOPMD;
 		} catch (MapVersionException e) {
 			LOGGER.log(Level.SEVERE, "Map version too old", e);
-			System.exit(3);
+			DriverQuit.quit(3);
 			return; // NOPMD
 		}
 	}
