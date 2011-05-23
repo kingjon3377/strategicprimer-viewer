@@ -37,32 +37,35 @@ public final class ExplorationCLI {
 	 * @param map
 	 *            the map
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE")
 	private ExplorationCLI(final SPMap map) {
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				System.in));
 		// ESCA-JAVA0266:
-		final PrintStream ostream = System.out;
-		if (ostream == null) {
-			throw new IllegalStateException("System.out is null");
-		}
+		final PrintStream ostream = createOstream();
 		runner.loadAllTables("tables");
 		try {
 			ostream.print("Command: ");
 			String input = reader.readLine();
-			while (input != null && input.length() > 0) {
-				if (input.charAt(0) == 'q') {
-					break;
-				} else if (input.charAt(0) == 'x') {
+			while (keepGoing(input)) {
+				switch (input.charAt(0)) {
+				case 'x':
 					explore(map, reader);
-				} else if (input.charAt(0) == 'f') {
+					break;
+				case 'f':
 					fortressInfo(map, reader);
-				} else if (input.charAt(0) == 'k') {
+					break;
+				case 'k':
 					runner.verboseRecursiveCheck(ostream);
-				} else if (input.charAt(0) == 'h') {
+					break;
+				case 'h':
 					hunt(reader, map, ostream);
-				} else if (input.charAt(0) == 'g') {
+					break;
+				case 'g':
 					gather(reader, map, ostream);
+					break;
+				default:
+					ostream.println("Unknown command.");
+					break;
 				}
 				ostream.print("Command: ");
 				input = reader.readLine();
@@ -71,6 +74,30 @@ public final class ExplorationCLI {
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		}
+	}
+
+	/**
+	 * We keep looping if the input is not null, is not an empty string, and is
+	 * not "quit" (only the first character is checked).
+	 * 
+	 * @param input
+	 *            a line of input
+	 * @return whether that input says we should keep going.
+	 */
+	private static boolean keepGoing(final String input) {
+		return input != null && input.length() > 0 && input.charAt(0) != 'q';
+	}
+
+	/**
+	 * @return System.out, making sure it's not null, as FindBugs seems to think.
+	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE")
+	private static PrintStream createOstream() {
+		final PrintStream ostream = System.out;
+		if (ostream == null) {
+			throw new IllegalStateException("System.out is null");
+		}
+		return ostream;
 	}
 
 	/**
