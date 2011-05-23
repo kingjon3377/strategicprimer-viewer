@@ -207,7 +207,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			 */
 			@Override
 			public void windowClosed(final WindowEvent event) {
-				System.exit(0);
+				// Do nothing.
 			}
 
 			/**
