@@ -31,8 +31,6 @@ public class SPMap implements Serializable {
 	 */
 	public SPMap() {
 		tiles = new HashMap<Point, Tile>();
-		forts = new ArrayList<Fortress>();
-		units = new ArrayList<Unit>();
 		players = new ArrayList<Player>();
 	}
 
@@ -64,14 +62,6 @@ public class SPMap implements Serializable {
 	 */
 	private Map<Point, Tile> tiles; // NOPMD
 	/**
-	 * The fortresses on the map.
-	 */
-	private final List<Fortress> forts; // NOPMD
-	/**
-	 * The units on the map.
-	 */
-	private final List<Unit> units; // NOPMD
-	/**
 	 * The players in the game.
 	 */
 	private final List<Player> players; // NOPMD
@@ -88,28 +78,6 @@ public class SPMap implements Serializable {
 	 */
 	public final int cols() {
 		return myCols;
-	}
-
-	/**
-	 * Adds a fortress to the map. FIXME: Should require its coordinates and add
-	 * it to the relevant tile.
-	 * 
-	 * @param fort
-	 *            the fortress to add.
-	 */
-	public final void addFortress(final Fortress fort) {
-		forts.add(fort);
-	}
-
-	/**
-	 * Adds a unit to the map. FIXME: Should require its coordinates and add it
-	 * to the relevant tile, and maybe to the relevant fortress if any.
-	 * 
-	 * @param unit
-	 *            the unit to add.
-	 */
-	public final void addUnit(final Unit unit) {
-		units.add(unit);
 	}
 
 	/**
@@ -224,8 +192,6 @@ public class SPMap implements Serializable {
 				&& myRows == ((SPMap) obj).rows()
 				&& Sorter.sort(players).equals(
 						Sorter.sort(((SPMap) obj).getPlayers()))
-				&& Sorter.sort(forts).equals(Sorter.sort(((SPMap) obj).forts))
-				&& Sorter.sort(units).equals(Sorter.sort(((SPMap) obj).units))
 				&& tiles.equals(((SPMap) obj).tiles));
 	}
 
@@ -234,8 +200,7 @@ public class SPMap implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return myRows + myCols << 2 + players.hashCode() << 4 + forts
-				.hashCode() << 6 + units.hashCode() << 8 + tiles.hashCode() << 10;
+		return myRows + myCols << 2 + players.hashCode() << 4 + tiles.hashCode() << 10;
 	}
 
 	/**
@@ -251,16 +216,6 @@ public class SPMap implements Serializable {
 		for (final Player player : players) {
 			sbuild.append("\n\t");
 			sbuild.append(player);
-		}
-		sbuild.append("\nForts:");
-		for (final Fortress fort : forts) {
-			sbuild.append("\n\t");
-			sbuild.append(fort);
-		}
-		sbuild.append("\nUnits:");
-		for (final Unit unit : units) {
-			sbuild.append("\n\t");
-			sbuild.append(unit);
 		}
 		sbuild.append("\nTiles:");
 		for (final Point point : tiles.keySet()) {
