@@ -118,7 +118,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * The tile we refer to.
 	 */
-	private Tile tile = null;
+	private Tile tile;
 	/**
 	 * To handle which chit is selected.
 	 */
