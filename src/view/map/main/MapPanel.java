@@ -79,12 +79,10 @@ public class MapPanel extends JPanel {
 			selListener.clearSelection();
 			setLayout(new GridLayout(Math.min(newMap.rows(),
 					Math.max(0, maxRow + 1 - minRow)), 0));
-			final int trueMinRow = Math.max(0, minRow);
-			final int trueMaxRow = Math.min(newMap.rows(), maxRow + 1);
-			final int trueMinCol = Math.max(0, minCol);
-			final int trueMaxCol = Math.min(newMap.cols(), maxCol + 1);
-			for (int row = trueMinRow; row < trueMaxRow; row++) {
-				for (int col = trueMinCol; col < trueMaxCol; col++) {
+			for (int row = Math.max(0, minRow); row < Math.min(newMap.rows(),
+					maxRow + 1); row++) {
+				for (int col = Math.max(0, minCol); col < Math.min(
+						newMap.cols(), maxCol + 1); col++) {
 					addTile(row, col, newMap.getTile(row, col));
 				}
 				LOGGER.fine("Added row ");
