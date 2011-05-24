@@ -70,39 +70,12 @@ public class TileReader {
 	 * @throws XMLStreamException
 	 *             on badly-formed XML or other processing error
 	 */
-	Tile parseTileContents(final StartElement element, // NOPMD
+	Tile parseTileAndContents(final StartElement element, // NOPMD
 			final XMLEventReader reader) throws XMLStreamException {
 		final Tile tile = parseTile(element);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
-				final StartElement elem = reader.nextEvent().asStartElement();
-				switch (mainReader.getTagType(elem)) {
-				case River:
-				case Lake:
-					tile.addRiver(parseRiver(elem, reader));
-					break;
-				case Fortress:
-					tile.addFixture(parseFortress(tile, elem, reader));
-					break;
-				case Unit:
-					tile.addFixture(parseUnit(tile, elem, reader));
-					break;
-				case Event:
-				case Battlefield:
-				case Cave:
-				case City:
-				case Fortification:
-				case Mineral:
-				case Stone:
-				case Town:
-					tile.addFixture(parseEvent(elem, reader));
-					break;
-				default:
-					throw new IllegalStateException(
-							"Unexpected "
-									+ elem.getName().getLocalPart()
-									+ " tag: only fortresses, units, and rivers can be inside a tile");
-				}
+				parseTileContents(reader, tile);
 			} else if (reader.peek().isCharacters()) {
 				tile.setTileText(tile.getTileText()
 						+ reader.nextEvent().asCharacters().getData());
@@ -112,6 +85,42 @@ public class TileReader {
 			}
 		}
 		return tile;
+	}
+	/**
+	 * @param reader the stream of elements we're reading from
+	 * @param tile the tile we're in the middle of
+	 * @throws XMLStreamException on badly-formed XML or other processing error
+	 */
+	private void parseTileContents(final XMLEventReader reader, final Tile tile)
+			throws XMLStreamException {
+		final StartElement elem = reader.nextEvent().asStartElement();
+		switch (mainReader.getTagType(elem)) {
+		case River:
+		case Lake:
+			tile.addRiver(parseRiver(elem, reader));
+			break;
+		case Fortress:
+			tile.addFixture(parseFortress(tile, elem, reader));
+			break;
+		case Unit:
+			tile.addFixture(parseUnit(tile, elem, reader));
+			break;
+		case Event:
+		case Battlefield:
+		case Cave:
+		case City:
+		case Fortification:
+		case Mineral:
+		case Stone:
+		case Town:
+			tile.addFixture(parseEvent(elem, reader));
+			break;
+		default:
+			throw new IllegalStateException(
+					"Unexpected "
+							+ elem.getName().getLocalPart()
+							+ " tag: only fortresses, units, and rivers can be inside a tile");
+		}
 	}
 
 	/**

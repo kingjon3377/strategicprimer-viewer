@@ -216,7 +216,7 @@ public class MapReader {
 						// Deliberately ignore
 						continue;
 					case Tile:
-						map.addTile(tileReader.parseTileContents(startElement, eventReader));
+						map.addTile(tileReader.parseTileAndContents(startElement, eventReader));
 						break;
 					default:
 						throw new IllegalStateException(
