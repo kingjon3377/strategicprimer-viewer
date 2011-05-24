@@ -324,12 +324,15 @@ public class MapReader {
 				if (map1.equals(map2)) {
 					out.println("Readers produce identical results");
 				} else {
-					out.println("Readers differ on " + arg);
+					out.print("Readers differ on ");
+					out.println(arg);
 				}
-				out.println("Old method took " + (endOne - startOne)
-						+ " time-units;");
-				out.println("New method took " + (endTwo - startTwo)
-						+ " time-units.");
+				out.print("Old method took ");
+				out.print((endOne - startOne));
+				out.println(" time-units;");
+				out.print("New method took ");
+				out.print((endTwo - startTwo));
+				out.println(" time-units.");
 			} catch (final SAXException e) {
 				LOGGER.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
 			} catch (final IOException e) {

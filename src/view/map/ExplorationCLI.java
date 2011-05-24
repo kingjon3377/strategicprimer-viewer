@@ -117,7 +117,8 @@ public final class ExplorationCLI {
 		// ESCA-JAVA0266:
 		final PrintStream ostream = System.out;
 		final Tile tile = selectTile(map, reader, ostream);
-		ostream.println("Tile is " + tile.getType());
+		ostream.print("Tile is ");
+		ostream.println(tile.getType());
 		ostream.println(runner.recursiveConsultTable("main", tile));
 	}
 
