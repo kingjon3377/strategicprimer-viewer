@@ -254,33 +254,36 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		try {
 		if ("Load".equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				mapPanel.loadMap(readMap(chooser.getSelectedFile().getPath()));
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
-			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-					new XMLWriter(chooser.getSelectedFile().getPath())
-							.write(mapPanel.getMap());
-			}
+			saveMap(mapPanel.getMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				mapPanel.setSecondaryMap(readMap(chooser.getSelectedFile()
 						.getPath()));
 			}
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-					new XMLWriter(chooser.getSelectedFile().getPath())
-							.write(mapPanel.getSecondaryMap());
-			}
+			saveMap(mapPanel.getSecondaryMap());
 		} else if ("Switch maps".equals(event.getActionCommand())) {
 			new MapSwitcher(mapPanel).start();
 		} else if ("Quit".equals(event.getActionCommand())) {
 			DriverQuit.quit(0);
 		}
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+	}
+	/**
+	 * Save a map.
+	 * @param map the map to save.
+	 */
+	private void saveMap(final SPMap map) {
+		if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+			try {
+				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+			}
 		}
 	}
 
