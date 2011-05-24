@@ -255,13 +255,13 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Load".equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				mapPanel.loadMap(readMap(chooser.getSelectedFile().getPath()));
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMap(mapPanel.getMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				mapPanel.setSecondaryMap(readMap(chooser.getSelectedFile()
 						.getPath()));
 			}
@@ -278,7 +278,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * @param map the map to save.
 	 */
 	private void saveMap(final SPMap map) {
-		if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
 			} catch (IOException e) {
