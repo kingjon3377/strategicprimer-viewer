@@ -261,20 +261,31 @@ public class TileReader {
 						""));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
-				final StartElement element = reader.nextEvent()
-						.asStartElement();
-				if (Tag.Unit.equals(mainReader.getTagType(element))) {
-					fort.addUnit(parseUnit(tile, elem, reader));
-				} else {
-					throw new IllegalStateException(UNEXPECTED_TAG
-							+ element.getName().getLocalPart()
-							+ ": a fortress can only contain units");
-				}
+				parseFortContents(tile, fort, reader.nextEvent()
+						.asStartElement(), reader);
 			} else if (reader.nextEvent().isEndElement()) {
 				break;
 			}
 		}
 		return fort;
+	}
+	/**
+	 * @param tile the tile we're in the middle of
+	 * @param fort the fortress we're in the middle of
+	 * @param element the current XML element
+	 * @param reader the stream of XML elements we're reading from
+	 * @throws XMLStreamException on badly-formed XML or other parsing error
+	 */
+	private void parseFortContents(final Tile tile, final Fortress fort, final StartElement element,
+			final XMLEventReader reader)
+			throws XMLStreamException {
+		if (Tag.Unit.equals(mainReader.getTagType(element))) {
+			fort.addUnit(parseUnit(tile, element, reader));
+		} else {
+			throw new IllegalStateException(UNEXPECTED_TAG
+					+ element.getName().getLocalPart()
+					+ ": a fortress can only contain units");
+		}
 	}
 
 	/**
