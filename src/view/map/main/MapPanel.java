@@ -77,6 +77,12 @@ public class MapPanel extends JPanel {
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			selListener.clearSelection();
 			removeAll();
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					repaint();
+				}
+			});
 			setLayout(new GridLayout(Math.min(newMap.rows(),
 					Math.max(0, maxRow + 1 - minRow)), 0));
 			for (int row = Math.max(0, minRow); row < Math.min(newMap.rows(),
