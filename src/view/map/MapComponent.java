@@ -79,9 +79,8 @@ public class MapComponent extends JComponent {
 		if (image == null) {
 			drawMap(pen);
 			createImage();
-		} else {
-			pen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-		}
+		} 
+		pen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 	}
 
 	/**
