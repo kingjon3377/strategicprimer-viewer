@@ -42,7 +42,7 @@ public class MapComponent extends JComponent {
 	/**
 	 * Tile size.
 	 */
-	private static final int TILE_SIZE = 10;
+	private static final int TILE_SIZE = 13;
 
 	/**
 	 * Constructor.
