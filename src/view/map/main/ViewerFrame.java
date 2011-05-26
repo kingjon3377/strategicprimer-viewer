@@ -176,7 +176,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private ViewerFrame(final String filename) throws XMLStreamException,
 			IOException, MapVersionException {
-		super();
+		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
