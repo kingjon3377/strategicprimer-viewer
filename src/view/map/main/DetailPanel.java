@@ -130,12 +130,13 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 *            the tile we should now refer to.
 	 */
 	public void setTile(final Tile newTile) {
-		tile = newTile;
-		if (tile == null) {
+		if (newTile == null) {
+			tile = null;
 			typeLabel.setText("");
 			chitPanel.removeAll();
 			resultsField.setText("");
-		} else {
+		} else if (!newTile.equals(tile)) {
+			tile = newTile;
 			typeLabel.setText(terrainText(tile.getType()));
 			chitPanel.removeAll();
 			chitSelecter.clearSelection();

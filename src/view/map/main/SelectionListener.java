@@ -26,12 +26,14 @@ public class SelectionListener implements MouseListener {
 	 * @param sel the new currently-selected item
 	 */
 	protected void setSelection(final Selectable sel) {
-		if (selection != null) {
-			selection.setSelected(false);
-		}
-		selection = sel;
-		if (selection != null) {
-			selection.setSelected(true);
+		if ((sel == null ? selection != null : !sel.equals(selection))) {
+			if (selection != null) {
+				selection.setSelected(false);
+			}
+			selection = sel;
+			if (selection != null) {
+				selection.setSelected(true);
+			}
 		}
 	}
 	/**
