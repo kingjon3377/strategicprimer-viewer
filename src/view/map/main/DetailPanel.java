@@ -75,7 +75,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	public DetailPanel() {
 		super(new BorderLayout());
 		final JPanel typePanel = new JPanel(new BorderLayout());
-		typePanel.add(new JLabel("Tile type:"), BorderLayout.WEST);
+		typePanel.add(new JLabel("<html>Coordinates:<br />Tile type:</html>"), BorderLayout.WEST);
 		typePanel.add(typeLabel, BorderLayout.CENTER);
 		add(typePanel, BorderLayout.NORTH);
 		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.2));
@@ -137,7 +137,8 @@ public class DetailPanel extends JPanel implements ActionListener {
 			resultsField.setText("");
 		} else if (!newTile.equals(tile)) {
 			tile = newTile;
-			typeLabel.setText(terrainText(tile.getType()));
+			typeLabel.setText("<html>(" + tile.getRow() + ", " + tile.getCol()
+					+ ")<br />" + terrainText(tile.getType()) + "</html>");
 			chitPanel.removeAll();
 			chitSelecter.clearSelection();
 			for (final TileFixture fix : tile.getContents()) {
