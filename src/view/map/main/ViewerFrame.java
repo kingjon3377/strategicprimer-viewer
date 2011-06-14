@@ -5,17 +5,21 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
+import javax.swing.Box.Filler;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.SPMap;
@@ -181,57 +185,51 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
-		final JPanel buttonPanel = new JPanel(new BorderLayout());
-		final JPanel innerButtonPanel = new JPanel(new BorderLayout());
-		final JPanel firstButtonPanel = new JPanel(new BorderLayout());
-		final JButton loadButton = new JButton("Load");
-		loadButton.addActionListener(this);
-		firstButtonPanel.add(loadButton, BorderLayout.NORTH);
-		final JButton saveButton = new JButton("Save As");
-		saveButton.addActionListener(this);
-		firstButtonPanel.add(saveButton, BorderLayout.SOUTH);
-		innerButtonPanel.addComponentListener(new SizeLimiter(firstButtonPanel,
-				0.35, 1.0));
-		innerButtonPanel.add(firstButtonPanel, BorderLayout.WEST);
-		final JPanel secondButtonPanel = new JPanel(new BorderLayout());
-		final JButton loadSecondaryMap = new JButton(LOAD_ALT_MAP_CMD);
-		loadSecondaryMap.addActionListener(this);
-		secondButtonPanel.addComponentListener(new SizeLimiter(
-				loadSecondaryMap, 1.0, 0.5));
-		secondButtonPanel.add(loadSecondaryMap, BorderLayout.NORTH);
-		final JButton saveSecondaryMap = new JButton(SAVE_ALT_MAP_CMD);
-		saveSecondaryMap.addActionListener(this);
-		secondButtonPanel.addComponentListener(new SizeLimiter(
-				saveSecondaryMap, 1.0, 0.5));
-		secondButtonPanel.add(saveSecondaryMap, BorderLayout.SOUTH);
-		innerButtonPanel.addComponentListener(new SizeLimiter(
-				secondButtonPanel, 0.65, 1.0));
-		innerButtonPanel.add(secondButtonPanel, BorderLayout.EAST);
-		buttonPanel.addComponentListener(new SizeLimiter(innerButtonPanel, 0.4,
-				1.0));
-		buttonPanel.add(innerButtonPanel, BorderLayout.WEST);
+		final JMenuBar mbar = new JMenuBar();
+		final JMenu mapMenu = new JMenu("Map");
+		mapMenu.setMnemonic(KeyEvent.VK_M);
+		final JMenuItem loadItem = new JMenuItem("Load", KeyEvent.VK_L);
+		loadItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		loadItem.getAccessibleContext().setAccessibleDescription("Load a main map from file");
+		loadItem.addActionListener(this);
+		mapMenu.add(loadItem);
+		final JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_S);
+		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		saveItem.getAccessibleContext().setAccessibleDescription("Save the main map to file");
+		saveItem.addActionListener(this);
+		mapMenu.add(saveItem);
+		mapMenu.addSeparator();
+		final JMenuItem loadSecItem = new JMenuItem(LOAD_ALT_MAP_CMD, KeyEvent.VK_D);
+		loadSecItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK));
+		loadSecItem.getAccessibleContext().setAccessibleDescription("Load a secondary map from file");
+		loadSecItem.addActionListener(this);
+		mapMenu.add(loadSecItem);
+		final JMenuItem saveSecItem = new JMenuItem(SAVE_ALT_MAP_CMD, KeyEvent.VK_V);
+		saveSecItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK));
+		saveSecItem.getAccessibleContext().setAccessibleDescription("Save the secondary map to file");
+		saveSecItem.addActionListener(this);
+		mapMenu.add(saveSecItem);
+		mapMenu.addSeparator();
+		final JMenuItem swapItem = new JMenuItem("Switch maps", KeyEvent.VK_W);
+		swapItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		swapItem.getAccessibleContext().setAccessibleDescription("Make the secondary map the main map and vice versa");
+		swapItem.addActionListener(this);
+		mapMenu.add(swapItem);
+		mbar.add(mapMenu);
+		final JMenuItem quitItem = new JMenuItem("Quit", KeyEvent.VK_Q);
+		quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+		quitItem.getAccessibleContext().setAccessibleDescription("Quit the viewer");
+		quitItem.addActionListener(this);
+		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0), 
+                new Dimension(Integer.MAX_VALUE, 0)));
+		mbar.add(quitItem);
+		setJMenuBar(mbar);
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
 		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
 		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
-		buttonPanel.addComponentListener(new SizeLimiter(vrpanel, 0.55, 1.0));
-		buttonPanel.add(vrpanel, BorderLayout.CENTER);
-		final JPanel thirdButtonPanel = new JPanel(new BorderLayout());
-		final JButton swapButton = new JButton("Switch maps");
-		swapButton.addActionListener(this);
-		thirdButtonPanel.addComponentListener(new SizeLimiter(swapButton, 1.0,
-				0.5));
-		thirdButtonPanel.add(swapButton, BorderLayout.NORTH);
-		final JButton quitButton = new JButton("Quit");
-		quitButton.addActionListener(this);
-		thirdButtonPanel.addComponentListener(new SizeLimiter(quitButton, 1.0,
-				0.5));
-		thirdButtonPanel.add(quitButton, BorderLayout.SOUTH);
-		buttonPanel.addComponentListener(new SizeLimiter(thirdButtonPanel,
-				0.15, 0.4));
-		buttonPanel.add(thirdButtonPanel, BorderLayout.EAST);
-		add(buttonPanel, BorderLayout.SOUTH);
-		addComponentListener(new SizeLimiter(buttonPanel,
+		add(vrpanel, BorderLayout.SOUTH);
+		addComponentListener(new SizeLimiter(vrpanel,
 				1.0 - DETAIL_PANEL_WIDTH, BUTTON_PANEL_HT));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
