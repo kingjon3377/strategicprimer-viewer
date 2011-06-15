@@ -181,6 +181,27 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
+		createMenu();
+		final DetailPanel details = new DetailPanel();
+		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
+		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
+		add(details, BorderLayout.EAST);
+		final JScrollPane scroller = new JScrollPane(mapPanel);
+		add(scroller, BorderLayout.CENTER);
+		addComponentListener(new SizeLimiter(scroller,
+				1.0 - DETAIL_PANEL_WIDTH, 1.0));
+		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		pack();
+		repaint();
+	}
+
+	/**
+	 * Set up the menu.
+	 */
+	private void createMenu() {
 		final JMenuBar mbar = new JMenuBar();
 		final JMenu mapMenu = new JMenu("Map");
 		mapMenu.setMnemonic(KeyEvent.VK_M);
@@ -216,20 +237,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
 				"Quit the viewer", this));
 		setJMenuBar(mbar);
-		final DetailPanel details = new DetailPanel();
-		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
-		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
-		add(details, BorderLayout.EAST);
-		final JScrollPane scroller = new JScrollPane(mapPanel);
-		add(scroller, BorderLayout.CENTER);
-		addComponentListener(new SizeLimiter(scroller,
-				1.0 - DETAIL_PANEL_WIDTH, 1.0));
-		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		pack();
-		repaint();
 	}
 	/**
 	 * Create a menu item.
