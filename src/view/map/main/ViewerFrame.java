@@ -53,10 +53,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
 	/**
-	 * Height of the button panel as a ratio to the main frame.
-	 */
-	private static final double BUTTON_PANEL_HT = 0.1;
-	/**
 	 * The width of the details panel, as a percentage of the window's width.
 	 */
 	private static final double DETAIL_PANEL_WIDTH = 0.25; // NOPMD
@@ -227,7 +223,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
 		addComponentListener(new SizeLimiter(scroller,
-				1.0 - DETAIL_PANEL_WIDTH, 1.0 - BUTTON_PANEL_HT));
+				1.0 - DETAIL_PANEL_WIDTH, 1.0));
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
