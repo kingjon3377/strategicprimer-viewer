@@ -40,7 +40,7 @@ public class ChitSelectionListener extends SelectionListener {
 	public void mouseClicked(final MouseEvent event) {
 		super.mouseClicked(event);
 		if (selection() instanceof Chit) {
-			detailLabel.setText(((Chit) (selection())).describe());
+			detailLabel.setText("<html>" + ((Chit) (selection())).describe() + "</html>");
 		} else {
 			detailLabel.setText("");
 		}
