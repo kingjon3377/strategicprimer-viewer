@@ -188,46 +188,37 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final JMenuBar mbar = new JMenuBar();
 		final JMenu mapMenu = new JMenu("Map");
 		mapMenu.setMnemonic(KeyEvent.VK_M);
-		final JMenuItem loadItem = new JMenuItem("Load", KeyEvent.VK_L);
-		loadItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-		loadItem.getAccessibleContext().setAccessibleDescription("Load a main map from file");
-		loadItem.addActionListener(this);
-		mapMenu.add(loadItem);
-		final JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_S);
-		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		saveItem.getAccessibleContext().setAccessibleDescription("Save the main map to file");
-		saveItem.addActionListener(this);
-		mapMenu.add(saveItem);
+		mapMenu.add(createMenuItem("Load", KeyEvent.VK_L,
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
+				"Load a main map from file", this));
+		mapMenu.add(createMenuItem("Save", KeyEvent.VK_S,
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
+				"Save the main map to file", this));
 		mapMenu.addSeparator();
-		final JMenuItem loadSecItem = new JMenuItem(LOAD_ALT_MAP_CMD, KeyEvent.VK_D);
-		loadSecItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK));
-		loadSecItem.getAccessibleContext().setAccessibleDescription("Load a secondary map from file");
-		loadSecItem.addActionListener(this);
-		mapMenu.add(loadSecItem);
-		final JMenuItem saveSecItem = new JMenuItem(SAVE_ALT_MAP_CMD, KeyEvent.VK_V);
-		saveSecItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK));
-		saveSecItem.getAccessibleContext().setAccessibleDescription("Save the secondary map to file");
-		saveSecItem.addActionListener(this);
-		mapMenu.add(saveSecItem);
+		mapMenu.add(createMenuItem(
+				LOAD_ALT_MAP_CMD,
+				KeyEvent.VK_D,
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
+						+ ActionEvent.ALT_MASK),
+				"Load a secondary map from file", this));
+		mapMenu.add(createMenuItem(SAVE_ALT_MAP_CMD,
+				KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+						ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK),
+				"Save the secondary map to file", this));
 		mapMenu.addSeparator();
-		final JMenuItem swapItem = new JMenuItem("Switch maps", KeyEvent.VK_W);
-		swapItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-		swapItem.getAccessibleContext().setAccessibleDescription("Make the secondary map the main map and vice versa");
-		swapItem.addActionListener(this);
-		mapMenu.add(swapItem);
+		mapMenu.add(createMenuItem("Switch maps", KeyEvent.VK_W,
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
+				"Make the secondary map the main map and vice versa", this));
 		mbar.add(mapMenu);
-		final JMenuItem resizeItem = new JMenuItem("Restrict view", KeyEvent.VK_R);
-		resizeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-		resizeItem.getAccessibleContext().setAccessibleDescription("Show only a subset of the map");
-		resizeItem.addActionListener(this);
-		mbar.add(resizeItem);
-		final JMenuItem quitItem = new JMenuItem("Quit", KeyEvent.VK_Q);
-		quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
-		quitItem.getAccessibleContext().setAccessibleDescription("Quit the viewer");
-		quitItem.addActionListener(this);
+		mbar.add(createMenuItem("Restrict view",
+				KeyEvent.VK_R,
+				KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
+				"Show only a subset of the map", this));
 		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0), 
                 new Dimension(Integer.MAX_VALUE, 0)));
-		mbar.add(quitItem);
+		mbar.add(createMenuItem("Quit", KeyEvent.VK_Q,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
+				"Quit the viewer", this));
 		setJMenuBar(mbar);
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
@@ -244,7 +235,24 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		pack();
 		repaint();
 	}
-
+	/**
+	 * Create a menu item.
+	 * @param item the text of the item
+	 * @param mnemonic the mnemonic key
+	 * @param accel the keyboard accelerator
+	 * @param desc the accessibile description.
+	 * @param list the listener to hande when the item is selected.
+	 * @return the configured menu item.
+	 */
+	private static JMenuItem createMenuItem(final String item,
+			final int mnemonic, final KeyStroke accel, final String desc,
+			final ActionListener list) {
+		final JMenuItem mitem = new JMenuItem(item, mnemonic);
+		mitem.setAccelerator(accel);
+		mitem.getAccessibleContext().setAccessibleDescription(desc);
+		mitem.addActionListener(list);
+		return mitem;
+	}
 	/**
 	 * Handle button presses and the like.
 	 * 
