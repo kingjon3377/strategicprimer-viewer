@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.EnumMap;
 import java.util.Map;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -73,11 +74,12 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 * Constructor.
 	 */
 	public DetailPanel() {
-		super(new BorderLayout());
+		super();
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		final JPanel typePanel = new JPanel(new BorderLayout());
 		typePanel.add(new JLabel("<html>Coordinates:<br />Tile type:</html>"), BorderLayout.WEST);
 		typePanel.add(typeLabel, BorderLayout.CENTER);
-		add(typePanel, BorderLayout.NORTH);
+		add(typePanel);
 		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.2));
 		final JPanel viewPanel = new JPanel(new BorderLayout());
 		final JPanel chitSuperPanel = new JPanel(new BorderLayout());
@@ -110,7 +112,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
 		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0,
 				1.0 - CHIT_PANEL_HEIGHT));
-		add(viewPanel, BorderLayout.CENTER);
+		add(viewPanel);
 		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.8));
 		runner.loadAllTables("tables");
 	}
