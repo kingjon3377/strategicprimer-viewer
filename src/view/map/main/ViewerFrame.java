@@ -216,6 +216,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		swapItem.addActionListener(this);
 		mapMenu.add(swapItem);
 		mbar.add(mapMenu);
+		final JMenuItem resizeItem = new JMenuItem("Restrict view", KeyEvent.VK_R);
+		resizeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+		resizeItem.getAccessibleContext().setAccessibleDescription("Show only a subset of the map");
+		resizeItem.addActionListener(this);
+		mbar.add(resizeItem);
 		final JMenuItem quitItem = new JMenuItem("Quit", KeyEvent.VK_Q);
 		quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		quitItem.getAccessibleContext().setAccessibleDescription("Quit the viewer");
@@ -227,10 +232,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
 		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
-		final ViewRestrictorPanel vrpanel = new ViewRestrictorPanel(mapPanel);
-		add(vrpanel, BorderLayout.SOUTH);
-		addComponentListener(new SizeLimiter(vrpanel,
-				1.0 - DETAIL_PANEL_WIDTH, BUTTON_PANEL_HT));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
@@ -267,6 +268,8 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			saveMap(mapPanel.getSecondaryMap());
 		} else if ("Switch maps".equals(event.getActionCommand())) {
 			new MapSwitcher(mapPanel).start();
+		} else if ("Restrict view".equals(event.getActionCommand())) {
+			new RestrictDialog(mapPanel).setVisible(true);
 		} else if ("Quit".equals(event.getActionCommand())) {
 			DriverQuit.quit(0);
 		}
