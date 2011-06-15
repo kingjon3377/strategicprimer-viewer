@@ -172,7 +172,7 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		if ("Refresh".equals(evt.getActionCommand())) {
-			refThread.start();
+			new RefreshThread().start();
 		}
 	}
 	
@@ -206,10 +206,6 @@ public class ViewRestrictorPanel extends JPanel implements ActionListener {
 			refreshMap();
 		}
 	}
-	/**
-	 * An instance of that thread.
-	 */
-	private final RefreshThread refThread = new RefreshThread();
 	/**
 	 * Refresh the map. Its own method so we can run it in a separate thread.
 	 */
