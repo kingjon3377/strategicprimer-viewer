@@ -115,6 +115,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		add(viewPanel);
 		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.8));
 		runner.loadAllTables("tables");
+		add(new KeyPanel());
 	}
 
 	/**
@@ -183,7 +184,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 *            a terrain type
 	 * @return a String representation of that terrain type
 	 */
-	private static String terrainText(final TileType type) {
+	static String terrainText(final TileType type) { // NOPMD
 		if (DESCRIPTIONS.containsKey(type)) {
 			return DESCRIPTIONS.get(type);
 		} // else
