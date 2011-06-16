@@ -80,7 +80,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 		typePanel.add(new JLabel("<html>Coordinates:<br />Tile type:</html>"), BorderLayout.WEST);
 		typePanel.add(typeLabel, BorderLayout.CENTER);
 		add(typePanel);
-		addComponentListener(new SizeLimiter(typePanel, 1.0, 0.2));
 		final JPanel viewPanel = new JPanel(new BorderLayout());
 		final JPanel chitSuperPanel = new JPanel(new BorderLayout());
 		chitSuperPanel.add(chitPanel, BorderLayout.WEST);
@@ -107,8 +106,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 		final JButton resultsButton = new JButton(RESULTS_SAVE_CMD);
 		resultsButton.addActionListener(this);
 		resultsPanel.add(resultsButton, BorderLayout.SOUTH);
-		resultsPanel.addComponentListener(new SizeLimiter(resultsButton, 1.0,
-				RESULTS_BUTTON_HEIGHT));
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
 		viewPanel.addComponentListener(new SizeLimiter(resultsPanel, 1.0,
 				1.0 - CHIT_PANEL_HEIGHT));
