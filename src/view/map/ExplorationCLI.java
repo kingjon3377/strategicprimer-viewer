@@ -111,11 +111,9 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_NULL_PARAM_DEREF_NONVIRTUAL")
 	private void explore(final SPMap map, final BufferedReader reader)
 			throws IOException {
-		// ESCA-JAVA0266:
-		final PrintStream ostream = System.out;
+		final PrintStream ostream = createOstream();
 		final Tile tile = selectTile(map, reader, ostream);
 		ostream.print("Tile is ");
 		ostream.println(tile.getType());
@@ -133,10 +131,9 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_NULL_PARAM_DEREF_NONVIRTUAL")
 	private void fortressInfo(final SPMap map, final BufferedReader reader)
 			throws IOException {
-		final PrintStream ostream = System.out;
+		final PrintStream ostream = createOstream();
 		ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
 	}
 	/**
