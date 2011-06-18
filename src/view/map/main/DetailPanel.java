@@ -131,7 +131,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	public void setTile(final Tile newTile) {
 		if (newTile == null) {
-			tile = null;
+			tile = null; // NOPMD
 			typeLabel.setText("");
 			chitPanel.removeAll();
 			resultsField.setText("");
