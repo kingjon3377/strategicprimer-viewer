@@ -35,7 +35,7 @@ public class GUITile extends Selectable {
 	/**
 	 * The size of each GUI tile.
 	 */
-	private static final int TILE_SIZE = 13;
+	private static final int TILE_SIZE = 16;
 	/**
 	 * The size of each GUI tile, as a Dimension.
 	 */
