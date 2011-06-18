@@ -157,31 +157,27 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	}
 
 	/**
-	 * @param value
-	 *            possibly a String representation of a number
-	 * @return whether it is or not
+	 * A convenience method to "simplify" other methods.
+	 * @param args a series of strings
+	 * @return true if all of them are numeric, false otherwise.
 	 */
-	private static boolean isNumeric(final String value) {
-		try {
-			Integer.parseInt(value);
-		} catch (final NumberFormatException except) {
-			return false; // NOPMD
+	private static boolean areNumeric(final String... args) {
+		for (String arg : args) {
+			try {
+				Integer.parseInt(arg);
+			} catch (final NumberFormatException except) {
+				return false; // NOPMD
+			}
 		}
 		return true;
 	}
-
 	/**
 	 * @return a description of why input is invalid
 	 */
 	private String whyInvalidInput() {
-		if (!isNumeric(minCol.getText())) {
-			return "Minimum column must be a whole number."; // NOPMD
-		} else if (!isNumeric(maxCol.getText())) {
-			return "Maximum column must be a whole number."; // NOPMD
-		} else if (!isNumeric(minRow.getText())) {
-			return "Minimum row must be a whole number."; // NOPMD
-		} else if (!isNumeric(maxRow.getText())) {
-			return "Maximum row must be a whole number."; // NOPMD
+		if (!areNumeric(minCol.getText(), maxCol.getText(), minRow.getText(),
+				maxRow.getText())) {
+			return "All bounds must be whole numbers."; // NOPMD
 		} else if (parse(minCol.getText()) < 0 || parse(minRow.getText()) < 0) {
 			return "Minimum row and column must be greater than or equal to zero."; // NOPMD
 		} else if (parse(maxCol.getText()) >= mpanel.getMap().cols()) {
