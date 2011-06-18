@@ -175,23 +175,25 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * @return a description of why input is invalid
 	 */
 	private String whyInvalidInput() {
-		if (!areNumeric(minCol.getText(), maxCol.getText(), minRow.getText(),
+		if (areNumeric(minCol.getText(), maxCol.getText(), minRow.getText(),
 				maxRow.getText())) {
-			return "All bounds must be whole numbers."; // NOPMD
-		} else if (parse(minCol.getText()) < 0 || parse(minRow.getText()) < 0) {
-			return "Minimum row and column must be greater than or equal to zero."; // NOPMD
-		} else if (parse(maxCol.getText()) >= mpanel.getMap().cols()) {
-			return "Maximum column must be less than " // NOPMD
-					+ mpanel.getMap().cols();
-		} else if (parse(maxRow.getText()) >= mpanel.getMap().rows()) {
-			return "Maximum row must be less than " // NOPMD
-					+ mpanel.getMap().rows();
-		} else if (parse(minCol.getText()) > parse(maxCol.getText())) {
-			return "Maximum column cannot be below minimum column."; // NOPMD
-		} else if (parse(minRow.getText()) > parse(maxRow.getText())) {
-			return "Maximum row cannot be below minimum row."; // NOPMD
+			if (parse(minCol.getText()) < 0 || parse(minRow.getText()) < 0) {
+				return "Minimum row and column must be greater than or equal to zero."; // NOPMD
+			} else if (parse(maxCol.getText()) >= mpanel.getMap().cols()) {
+				return "Maximum column must be less than " // NOPMD
+						+ mpanel.getMap().cols();
+			} else if (parse(maxRow.getText()) >= mpanel.getMap().rows()) {
+				return "Maximum row must be less than " // NOPMD
+						+ mpanel.getMap().rows();
+			} else if (parse(minCol.getText()) > parse(maxCol.getText())) {
+				return "Maximum column cannot be below minimum column."; // NOPMD
+			} else if (parse(minRow.getText()) > parse(maxRow.getText())) {
+				return "Maximum row cannot be below minimum row."; // NOPMD
+			} else {
+				return "Input is valid ... if you can see this message, please report this as a bug."; // NOPMD
+			}
 		} else {
-			return "Input is valid ... if you can see this message, please report this as a bug."; // NOPMD
+			return "All bounds must be whole numbers."; // NOPMD
 		}
 	}
 
