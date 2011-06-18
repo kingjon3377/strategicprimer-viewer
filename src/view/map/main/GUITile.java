@@ -109,8 +109,8 @@ public class GUITile extends Selectable {
 					height / 2.0, width / EIGHT, height / 2.0));
 			RIVERS.put(River.West, new Rectangle2D.Double(0, height // NOPMD
 					* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
-			fort = new Rectangle2D.Double(width / 2.0, height / 2.0,
-					width / 2.0, height / 2.0);
+			fort = new Rectangle2D.Double(width * 2.0 / 3.0 - 1.0,
+					height * 2.0 / 3.0 - 1.0, width / 3.0, height / 3.0);
 			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
 					height / 4.0);
 		}
