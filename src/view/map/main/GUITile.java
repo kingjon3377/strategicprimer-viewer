@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -19,6 +20,7 @@ import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
+import model.viewer.events.AbstractEvent;
 
 /**
  * A GUI representation of a tile. Information about what's on the tile should
@@ -28,6 +30,11 @@ import model.viewer.Unit;
  * 
  */
 public class GUITile extends Selectable {
+	/**
+	 * The color of the icon used to show that a tile has an event or associated text.
+	 */
+	private static final Color EVENT_COLOR = Color.pink;
+
 	/**
 	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their short dimension.
 	 */
@@ -84,6 +91,11 @@ public class GUITile extends Selectable {
 	private static Shape unit;
 
 	/**
+	 * Shape representing an event, or relevant text, associated with the tile.
+	 */
+	private static Shape event;
+
+	/**
 	 * Check, and possibly regenerate, the cache.
 	 * 
 	 * @param wid
@@ -113,6 +125,9 @@ public class GUITile extends Selectable {
 					height * 2.0 / 3.0 - 1.0, width / 3.0, height / 3.0);
 			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
 					height / 4.0);
+			event = new Polygon(new int[] { (int) (width * 3.0 / 4.0),
+					(int) (width / 2.0), width }, new int[] { 0,
+					(int) (height / 2.0), (int) (height / 2.0) }, 3);
 		}
 	}
 
@@ -178,6 +193,10 @@ public class GUITile extends Selectable {
 				pen.setColor(UNIT_COLOR);
 				pen.fill(unit);
 			}
+			if (hasEvent(tile)) {
+				pen.setColor(EVENT_COLOR);
+				pen.fill(event);
+			}
 		}
 	}
 	/**
@@ -203,6 +222,23 @@ public class GUITile extends Selectable {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param tile a tile
+	 * @return whether the tile has any events
+	 */
+	private static boolean hasEvent(final Tile tile) {
+		if (tile.getTileText() == null || "".equals(tile.getTileText())) {
+			for (TileFixture fix : tile.getContents()) {
+				if (fix instanceof AbstractEvent) {
+					return true; // NOPMD
+				}
+			}
+			return false; // NOPMD
+		} else {
+			return true;
+		}
 	}
 
 	/**
