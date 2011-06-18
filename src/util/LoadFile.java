@@ -39,8 +39,8 @@ public class LoadFile {
 			inputStream = LoadFile.class.getClassLoader().getResourceAsStream(
 					fileName); // NOPMD
 			if (inputStream == null) {
-				throw new FileNotFoundException("could not find file: "
-						+ fileName); // NOPMD
+				throw new FileNotFoundException("could not find file: " // NOPMD
+						+ fileName);
 			}
 		}
 		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable closeWhereCreated
