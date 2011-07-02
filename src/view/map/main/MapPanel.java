@@ -52,6 +52,7 @@ public class MapPanel extends JPanel {
 	public MapPanel(final SPMap newMap, final DetailPanel details) {
 		super();
 		selListener = new TileSelectionListener(this, details);
+		changeListener = details;
 		setOpaque(true);
 		loadMap(newMap);
 	}
@@ -148,6 +149,7 @@ public class MapPanel extends JPanel {
 				LOGGER.fine("\n");
 			}
 			map = newMap;
+			changeListener.setMap(map);
 			LOGGER.info("Finished loading panel");
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			EventQueue.invokeLater(new Runnable() {
@@ -266,4 +268,8 @@ public class MapPanel extends JPanel {
 			}
 		}
 	}
+	/**
+	 * Needs to know when the map is changed.
+	 */
+	private final DetailPanel changeListener;
 }
