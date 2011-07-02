@@ -2,3 +2,5 @@
 bin/tiles.jar
 src/view/util/IsAdmin.java
 bin/tables
+.pt
+pmd-eclipse.log
