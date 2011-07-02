@@ -235,7 +235,14 @@ public final class ViewerFrame extends JFrame implements ActionListener {
                 new Dimension(Integer.MAX_VALUE, 0)));
 		mbar.add(createMenuItem("Quit", KeyEvent.VK_Q,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
-				"Quit the viewer", this));
+				"Quit the viewer", new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				if ("Quit".equals(event.getActionCommand())) {
+					DriverQuit.quit(0);
+				}
+			}
+		}));
 		setJMenuBar(mbar);
 	}
 	/**
@@ -281,9 +288,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			new MapSwitcher(mapPanel).start();
 		} else if ("Restrict view".equals(event.getActionCommand())) {
 			new RestrictDialog(mapPanel).setVisible(true);
-		} else if ("Quit".equals(event.getActionCommand())) {
-			DriverQuit.quit(0);
-		}
+		} 
 	}
 	/**
 	 * Save a map.
