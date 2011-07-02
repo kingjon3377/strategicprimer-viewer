@@ -69,10 +69,10 @@ public class ChitSelectionListener extends SelectionListener {
 					throw new IllegalStateException(
 							"Didn't find numbers after finding them once");
 				}
-				return players.containsKey(substr.group()) ? text.replaceAll(
+				return players.containsKey(substr.group()) ? text.replaceAll(// NOPMD
 						matcher.group(), players.get(substr.group())) : text;
 			} else {
-				return text;
+				return text; // NOPMD
 			}
 		} else {
 			return text;
