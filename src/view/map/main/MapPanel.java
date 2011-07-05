@@ -2,12 +2,19 @@ package view.map.main;
 
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
+import model.viewer.Point;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import util.Pair;
@@ -52,6 +59,60 @@ public class MapPanel extends JPanel {
 	public MapPanel(final SPMap newMap, final DetailPanel details) {
 		super();
 		selListener = new TileSelectionListener(this, details);
+		InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
+		final ActionMap actionMap = getActionMap();
+		actionMap.put("up", new AbstractAction() {
+			/**
+			 * Version UID for serialization.
+			 */
+			private static final long serialVersionUID = -1085752808313621553L;
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.up();
+			}
+		});
+		actionMap.put("down", new AbstractAction() {
+			/**
+			 * Version UID for serialization.
+			 */
+			private static final long serialVersionUID = -1085752808313621553L;
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.down();
+			}
+		});
+		actionMap.put("left", new AbstractAction() {
+			/**
+			 * Version UID for serialization.
+			 */
+			private static final long serialVersionUID = -1085752808313621553L;
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.left();
+			}
+		});
+		actionMap.put("right", new AbstractAction() {
+			/**
+			 * Version UID for serialization.
+			 */
+			private static final long serialVersionUID = -1085752808313621553L;
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.right();
+			}
+		});
 		changeListener = details;
 		setOpaque(true);
 		loadMap(newMap);
@@ -126,6 +187,7 @@ public class MapPanel extends JPanel {
 			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			selListener.clearSelection();
 			removeAll();
+			locCache.clear();
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -187,11 +249,13 @@ public class MapPanel extends JPanel {
 				nullCache.put(Pair.of(row, col), new NullGUITile(row, col));
 			}
 			addTile(nullCache.get(Pair.of(row, col)));
+			locCache.put(new Point(row, col), nullCache.get(Pair.of(row, col)));
 		} else {
 			if (!tileCache.containsKey(tile)) {
 				tileCache.put(tile, new GUITile(tile));
 			}
 			addTile(tileCache.get(tile));
+			locCache.put(new Point(row, col), tileCache.get(tile));
 		}
 	}
 
@@ -203,6 +267,10 @@ public class MapPanel extends JPanel {
 	 * A cache of GUITiles.
 	 */
 	private final Map<Tile, GUITile> tileCache = new HashMap<Tile, GUITile>();
+	/**
+	 * A cache of the GUITiles given just their position.
+	 */
+	private final Map<Point, GUITile> locCache = new HashMap<Point, GUITile>();
 
 	/**
 	 * Set up a new GUI tile.
@@ -272,4 +340,11 @@ public class MapPanel extends JPanel {
 	 * Needs to know when the map is changed.
 	 */
 	private final DetailPanel changeListener;
+	/**
+	 * @param coords a set of coordinates
+	 * @return the GUITile at those coordinates, if any.
+	 */
+	public GUITile getTile(final Point coords) {
+		return locCache.get(coords);
+	}
 }

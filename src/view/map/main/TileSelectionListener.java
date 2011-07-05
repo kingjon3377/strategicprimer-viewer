@@ -3,6 +3,8 @@ package view.map.main;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
+import model.viewer.Point;
+
 /**
  * A class to keep track of which tile is selected.
  * 
@@ -64,12 +66,60 @@ public class TileSelectionListener extends SelectionListener {
 				detailPanel.runEncounter();
 				viewer.copyTile(((GUITile) selection()).getTile());
 			}
+			selection().requestFocusInWindow();
 			LOGGER.fine("Click");
 		} else {
 			detailPanel.setTile(null);
 		}
 	}
-
+	/**
+	 * Move the cursor up one.
+	 */
+	public void up() { // NOPMD
+		if (selection() instanceof GUITile) {
+			final GUITile newTile = viewer.getTile(new Point(
+					((GUITile) selection()).getTile().getRow() - 1,
+					((GUITile) selection()).getTile().getCol())); 
+			setSelection(newTile);
+			detailPanel.setTile(newTile.getTile());
+		}
+	}
+	/**
+	 * Move the cursor left one.
+	 */
+	public void left() {
+		if (selection() instanceof GUITile) {
+			final GUITile newTile = viewer.getTile(new Point(
+					((GUITile) selection()).getTile().getRow(),
+					((GUITile) selection()).getTile().getCol() - 1)); 
+			setSelection(newTile);
+			detailPanel.setTile(newTile.getTile());
+		}
+	}
+	/**
+	 * Move the cursor down one.
+	 */
+	public void down() { // NOPMD
+		if (selection() instanceof GUITile) {
+			final GUITile newTile = viewer.getTile(new Point(
+					((GUITile) selection()).getTile().getRow() + 1,
+					((GUITile) selection()).getTile().getCol())); 
+			setSelection(newTile);
+			detailPanel.setTile(newTile.getTile());
+		}
+	}
+	/**
+	 * Move the cursor right one.
+	 */
+	public void right() {
+		if (selection() instanceof GUITile) {
+			final GUITile newTile = viewer.getTile(new Point(
+					((GUITile) selection()).getTile().getRow(),
+					((GUITile) selection()).getTile().getCol() + 1)); 
+			setSelection(newTile);
+			detailPanel.setTile(newTile.getTile());
+		}
+	}
 	/**
 	 * Ignored.
 	 * 
