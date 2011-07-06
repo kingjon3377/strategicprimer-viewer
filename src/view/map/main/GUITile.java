@@ -24,7 +24,7 @@ import model.viewer.events.AbstractEvent;
 
 /**
  * A GUI representation of a tile. Information about what's on the tile should
- * be indicated by a small icon or by tooltip text.
+ * be indicated by a small icon.
  * 
  * @author Jonathan Lovelace
  * 
