@@ -279,6 +279,10 @@ public class MapPanel extends JPanel {
 	 *            the GUI tile to set up.
 	 */
 	private void addTile(final GUITile tile) {
+		// We have to remove the listener because the tile might be cached. But
+		// the spec says removing it won't fail or throw an exception even if
+		// the listener wasn't already attached.
+		tile.removeMouseListener(selListener);
 		tile.addMouseListener(selListener);
 		add(tile);
 		tile.setVisible(true);
