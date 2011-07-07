@@ -146,7 +146,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		}
 		try {
 			frame = new ViewerFrame(filename);
-			frame.setVisible(true);
+			new Thread() {
+				@Override
+				@SuppressWarnings("synthetic-access")
+				public void run() {
+					frame.setVisible(true);
+				}
+			}.start();
+			if (args.length > 1) {
+				frame.mapPanel.setSecondaryMap(frame.readMap(args[1]));
+			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
