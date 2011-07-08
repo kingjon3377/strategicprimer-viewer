@@ -64,6 +64,9 @@ public final class ExplorationCLI {
 				case 'g':
 					gather(reader, map, ostream);
 					break;
+				case 'i':
+					fish(reader, map, ostream);
+					break;
 				default:
 					ostream.println("Unknown command.");
 					break;
@@ -191,6 +194,28 @@ public final class ExplorationCLI {
 		final Tile tile = selectTile(map, reader, ostream);
 		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
 			ostream.println(runner.recursiveConsultTable("hunter", tile));
+		}
+	}
+
+	/**
+	 * Create results for a fisherman. This should produce a list of fish that
+	 * pass by the fisherman's line, net, or trap; each (or each group) should
+	 * make a save or check to see whether it is caught.
+	 * 
+	 * @param reader
+	 *            the stream to read coordinates from
+	 * @param map
+	 *            the map we're dealing with
+	 * @param ostream
+	 *            the stream to print them on
+	 * @throws IOException
+	 *             on I/O error
+	 */
+	private void fish(final BufferedReader reader, final SPMap map,
+			final PrintStream ostream) throws IOException {
+		final Tile tile = selectTile(map, reader, ostream);
+		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
+			ostream.println(runner.recursiveConsultTable("fisher", tile));
 		}
 	}
 
