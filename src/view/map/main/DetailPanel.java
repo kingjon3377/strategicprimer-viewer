@@ -2,6 +2,7 @@ package view.map.main;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
@@ -101,8 +102,10 @@ public class DetailPanel extends JPanel implements ActionListener {
 		resultsField.setLineWrap(true);
 		resultsField.setEditable(true);
 		resultsField.setWrapStyleWord(true);
-		resultsPanel.add(resultsField, BorderLayout.CENTER);
-		resultsPanel.addComponentListener(new SizeLimiter(resultsField,
+		final ScrollPane resultsWrapper = new ScrollPane();
+		resultsWrapper.add(resultsField);
+		resultsPanel.add(resultsWrapper, BorderLayout.CENTER);
+		resultsPanel.addComponentListener(new SizeLimiter(resultsWrapper,
 				RESULTS_FIELD_WIDTH, 1.0 - RESULTS_BUTTON_HEIGHT));
 		final JButton resultsButton = new JButton(RESULTS_SAVE_CMD);
 		resultsButton.addActionListener(this);
