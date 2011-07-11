@@ -89,7 +89,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * File-choosing dialog. Used often, but immutable, so we don't want to have
 	 * to construct it every time.
 	 */
-	private final JFileChooser chooser = new JFileChooser();
+	private final JFileChooser chooser = new JFileChooser(".");
 	/**
 	 * A thread to switch the maps.
 	 */
@@ -136,7 +136,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		if (args.length > 0) {
 			filename = args[0];
 		} else {
-			final JFileChooser chooser = new JFileChooser();
+			final JFileChooser chooser = new JFileChooser(".");
 			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				filename = chooser.getSelectedFile().getPath();
