@@ -17,7 +17,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	/**
 	 * The player that owns the fortress.
 	 */
-	private final int owner;
+	private final Player owner;
 	/**
 	 * The name of the fortress.
 	 */
@@ -41,7 +41,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 * @param fortName
 	 *            the name of the fortress
 	 */
-	public Fortress(final Tile parentTile, final int fortOwner, final String fortName) {
+	public Fortress(final Tile parentTile, final Player fortOwner, final String fortName) {
 		tile = parentTile;
 		owner = fortOwner;
 		name = fortName;
@@ -78,7 +78,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	/**
 	 * @return the player that owns the fortress
 	 */
-	public final int getOwner() {
+	public final Player getOwner() {
 		return owner;
 	}
 
@@ -108,7 +108,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 				|| (obj instanceof Fortress
 						&& (name == null ? ((Fortress) obj).name == null : name
 								.equals(((Fortress) obj).name))
-						&& ((Fortress) obj).owner == owner && ((Fortress) obj).units
+						&& ((Fortress) obj).owner.equals(owner) && ((Fortress) obj).units
 						.equals(units));
 	}
 
@@ -117,7 +117,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 */
 	@Override
 	public int hashCode() {
-		return ((name == null) ? 0 : name.hashCode()) + owner << 2 + units
+		return ((name == null) ? 0 : name.hashCode()) + owner.hashCode() << 2 + units
 				.hashCode() << 4;
 	}
 

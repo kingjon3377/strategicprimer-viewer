@@ -286,7 +286,7 @@ public class XMLWriter { // NOPMD
 	private void printFort(final Fortress fort) {
 		indent(3);
 		writer.print("<fortress owner=");
-		printQuoted(fort.getOwner());
+		printQuoted(fort.getOwner().getId());
 		if (fort.getName() != null) {
 			writer.print(" name=");
 			printQuoted(fort.getName());
@@ -312,7 +312,7 @@ public class XMLWriter { // NOPMD
 	private void printUnit(final Unit unit) {
 		indent(3);
 		writer.print("<unit owner=");
-		printQuoted(unit.getOwner());
+		printQuoted(unit.getOwner().getId());
 		if (unit.getType() != null && !"".equals(unit.getType())) {
 			writer.print(" type=");
 			printQuoted(unit.getType());

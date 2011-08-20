@@ -5,6 +5,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import model.viewer.Fortress;
+import model.viewer.PlayerCollection;
 import model.viewer.River;
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -66,16 +67,19 @@ public class TileReader {
 	 *            the tile tag itself
 	 * @param reader
 	 *            the stream of elements we're reading from
+	 * @param players
+	 *            the map's collection of players
 	 * @return the tile in question.
 	 * @throws XMLStreamException
 	 *             on badly-formed XML or other processing error
 	 */
 	Tile parseTileAndContents(final StartElement element, // NOPMD
-			final XMLEventReader reader) throws XMLStreamException {
+			final XMLEventReader reader, final PlayerCollection players)
+			throws XMLStreamException {
 		final Tile tile = parseTile(element);
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
-				parseTileContents(reader, tile);
+				parseTileContents(reader, tile, players);
 			} else if (reader.peek().isCharacters()) {
 				tile.setTileText(tile.getTileText()
 						+ reader.nextEvent().asCharacters().getData());
@@ -89,9 +93,11 @@ public class TileReader {
 	/**
 	 * @param reader the stream of elements we're reading from
 	 * @param tile the tile we're in the middle of
+	 * @param players
+	 *            the map's collection of players
 	 * @throws XMLStreamException on badly-formed XML or other processing error
 	 */
-	private void parseTileContents(final XMLEventReader reader, final Tile tile)
+	private void parseTileContents(final XMLEventReader reader, final Tile tile, final PlayerCollection players)
 			throws XMLStreamException {
 		final StartElement elem = reader.nextEvent().asStartElement();
 		switch (mainReader.getTagType(elem)) {
@@ -100,10 +106,10 @@ public class TileReader {
 			tile.addRiver(parseRiver(elem, reader));
 			break;
 		case Fortress:
-			tile.addFixture(parseFortress(tile, elem, reader));
+			tile.addFixture(parseFortress(tile, elem, reader, players));
 			break;
 		case Unit:
-			tile.addFixture(parseUnit(tile, elem, reader));
+			tile.addFixture(parseUnit(tile, elem, reader, players));
 			break;
 		case Event:
 		case Battlefield:
@@ -248,21 +254,23 @@ public class TileReader {
 	 *            the fortress tag itself
 	 * @param reader
 	 *            the stream of elements we're reading from
+	 * @param players
+	 *            the map's collection of players
 	 * @return the fortress in question.
 	 * @throws XMLStreamException
 	 *             on badly-formed XML or other processing error
 	 */
 	private Fortress parseFortress(final Tile tile,
-			final StartElement elem, final XMLEventReader reader)
+			final StartElement elem, final XMLEventReader reader, final PlayerCollection players)
 			throws XMLStreamException {
 		final Fortress fort = new Fortress(tile,
-				Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
-						"-1")), helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE,
+				players.getPlayer(Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
+						"-1"))), helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE,
 						""));
 		while (reader.hasNext()) {
 			if (reader.peek().isStartElement()) {
 				parseFortContents(tile, fort, reader.nextEvent()
-						.asStartElement(), reader);
+						.asStartElement(), reader, players);
 			} else if (reader.nextEvent().isEndElement()) {
 				break;
 			}
@@ -274,13 +282,15 @@ public class TileReader {
 	 * @param fort the fortress we're in the middle of
 	 * @param element the current XML element
 	 * @param reader the stream of XML elements we're reading from
+	 * @param players
+	 *            the map's collection of players
 	 * @throws XMLStreamException on badly-formed XML or other parsing error
 	 */
 	private void parseFortContents(final Tile tile, final Fortress fort, final StartElement element,
-			final XMLEventReader reader)
+			final XMLEventReader reader, final PlayerCollection players)
 			throws XMLStreamException {
 		if (Tag.Unit.equals(mainReader.getTagType(element))) {
-			fort.addUnit(parseUnit(tile, element, reader));
+			fort.addUnit(parseUnit(tile, element, reader, players));
 		} else {
 			throw new IllegalStateException(UNEXPECTED_TAG
 					+ element.getName().getLocalPart()
@@ -298,16 +308,18 @@ public class TileReader {
 	 *            the unit tag
 	 * @param reader
 	 *            the stream of elements we're reading from
+	 * @param players
+	 *            the map's collection of players
 	 * @return the fortress in question.
 	 * @throws XMLStreamException
 	 *             on ill-formed XML or other processing problem
 	 * 
 	 */
 	private Unit parseUnit(final Tile tile, final StartElement elem,
-			final XMLEventReader reader) throws XMLStreamException {
+			final XMLEventReader reader, final PlayerCollection players) throws XMLStreamException {
 		final Unit unit = new Unit(tile,
-				Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
-						"-1")), helper.getAttributeWithDefault(elem, "type", ""),
+				players.getPlayer(Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
+						"-1"))), helper.getAttributeWithDefault(elem, "type", ""),
 				helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE, ""));
 		helper.spinUntilEnd("<unit>", reader);
 		return unit;

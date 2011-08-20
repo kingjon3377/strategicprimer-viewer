@@ -197,8 +197,8 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 				throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 						"Cannot have a fortress not in a tile"));
 			}
-			currentFortress = new Fortress(currentTile, Integer.parseInt(atts
-					.getValue("owner")), atts.getValue("name"));
+			currentFortress = new Fortress(currentTile, currentMap.getPlayers().getPlayer(Integer.parseInt(atts
+					.getValue("owner"))), atts.getValue("name"));
 		} else {
 			throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 					"Cannot have a fortress in a fortress"));
@@ -220,8 +220,8 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 				throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(
 						"Cannot have a unit not in a tile"));
 			}
-			currentUnit = new Unit(currentTile, Integer.parseInt(atts
-					.getValue("owner")), atts.getValue("type"),
+			currentUnit = new Unit(currentTile, currentMap.getPlayers().getPlayer(Integer.parseInt(atts
+					.getValue("owner"))), atts.getValue("type"),
 					atts.getValue("name"));
 		} else {
 			throw new SAXException(NON_COMPLIANT_XML, new IllegalStateException(

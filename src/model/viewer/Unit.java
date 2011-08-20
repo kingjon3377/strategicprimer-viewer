@@ -14,7 +14,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * The player that owns the unit.
 	 */
-	private final int owner;
+	private final Player owner;
 	/**
 	 * What kind of unit this is.
 	 */
@@ -39,7 +39,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	 * @param unitName
 	 *            the name of this unit
 	 */
-	public Unit(final Tile loc, final int unitOwner, final String unitType,
+	public Unit(final Tile loc, final Player unitOwner, final String unitType,
 			final String unitName) {
 		location = loc;
 		owner = unitOwner;
@@ -58,7 +58,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * @return the player that owns the unit
 	 */
-	public final int getOwner() {
+	public final Player getOwner() {
 		return owner;
 	}
 
@@ -96,7 +96,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	 */
 	@Override
 	public int hashCode() {
-		return ((type == null) ? 0 : type.hashCode()) + owner << 2 + ((name == null) ? 0
+		return ((type == null) ? 0 : type.hashCode()) + owner.hashCode() << 2 + ((name == null) ? 0
 				: name.hashCode()) << 4;
 	}
 
