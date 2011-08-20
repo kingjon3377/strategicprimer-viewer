@@ -1,12 +1,8 @@
 package model.viewer;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import util.Sorter;
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
@@ -31,7 +27,7 @@ public class SPMap implements Serializable {
 	 */
 	public SPMap() {
 		tiles = new HashMap<Point, Tile>();
-		players = new ArrayList<Player>();
+		players = new PlayerCollection();
 	}
 
 	/**
@@ -64,7 +60,7 @@ public class SPMap implements Serializable {
 	/**
 	 * The players in the game.
 	 */
-	private final List<Player> players; // NOPMD
+	private final PlayerCollection players; // NOPMD
 
 	/**
 	 * @return how many rows the map has.
@@ -97,7 +93,7 @@ public class SPMap implements Serializable {
 	 *            the player to add
 	 */
 	public final void addPlayer(final Player player) {
-		players.add(player);
+		players.addPlayer(player);
 	}
 
 	/**
@@ -114,8 +110,8 @@ public class SPMap implements Serializable {
 	/**
 	 * @return the players in the map
 	 */
-	public List<Player> getPlayers() {
-		return new ArrayList<Player>(players);
+	public PlayerCollection getPlayers() {
+		return players;
 	}
 
 	/**
@@ -128,8 +124,7 @@ public class SPMap implements Serializable {
 		return this == obj || (obj instanceof SPMap
 				&& myCols == ((SPMap) obj).cols()
 				&& myRows == ((SPMap) obj).rows()
-				&& Sorter.sort(players).equals(
-						Sorter.sort(((SPMap) obj).getPlayers()))
+				&& players.equals(((SPMap) obj).getPlayers())
 				&& tiles.equals(((SPMap) obj).tiles));
 	}
 
