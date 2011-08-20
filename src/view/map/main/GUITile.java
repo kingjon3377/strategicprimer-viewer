@@ -156,7 +156,7 @@ public class GUITile extends Selectable {
 	/**
 	 * Cache of what the tile should look like.
 	 */
-	private BufferedImage image = new BufferedImage(0, 0, BufferedImage.TYPE_BYTE_GRAY);
+	private BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_GRAY);
 
 	/**
 	 * Check whether that cache is out of date, and recreate it if it is. This
