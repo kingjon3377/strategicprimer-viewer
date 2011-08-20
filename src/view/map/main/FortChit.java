@@ -36,7 +36,7 @@ public class FortChit extends Chit {
 			sbuild.append(fort.getName());
 			sbuild.append(", ");
 		}
-		sbuild.append("owned by player ");
+		sbuild.append("owned by ");
 		sbuild.append(fort.getOwner());
 		sbuild.append("</p></html>");
 		desc = sbuild.toString();

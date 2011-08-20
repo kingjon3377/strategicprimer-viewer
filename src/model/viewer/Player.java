@@ -82,7 +82,6 @@ public class Player implements Comparable<Player> {
 	 */
 	@Override
 	public String toString() {
-		return "Player number " + playerID + ", code-name \"" + playerName
-				+ '"';
+		return playerName == null || "".equals(playerName) ? "player #" + playerID : playerName;
 	}
 }
