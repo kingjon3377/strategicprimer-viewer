@@ -1,6 +1,5 @@
 package model.character;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +10,7 @@ import view.util.IsAdmin;
  * 
  * @author Jonathan Lovelace
  */
-public class SPCharacter implements Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -1906146834037495060L;
+public class SPCharacter {
 	/**
 	 * The character's name.
 	 */

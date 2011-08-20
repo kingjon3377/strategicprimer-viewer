@@ -1,6 +1,5 @@
 package model.character;
 
-import java.io.Serializable;
 
 /**
  * An interface to represent a character's stats. One implementing class will
@@ -9,7 +8,7 @@ import java.io.Serializable;
  * @author Jonathan Lovelace
  * 
  */
-public interface CharStats extends Serializable {
+public interface CharStats {
 
 	/**
 	 * Possible values, as visible to players, of an attribute.

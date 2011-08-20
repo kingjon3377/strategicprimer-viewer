@@ -1,6 +1,5 @@
 package model.character;
 
-import java.io.Serializable;
 
 /**
  * A class to represent having (or trying to acquire) levels in a Job.
@@ -8,12 +7,7 @@ import java.io.Serializable;
  * @author Jonathan Lovelace
  * 
  */
-public class JobLevels implements Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -7717128400521917978L;
-
+public class JobLevels {
 	/**
 	 * No-arg constructor. Has zero levels in Laborer.
 	 */

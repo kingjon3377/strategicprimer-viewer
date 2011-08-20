@@ -1,7 +1,5 @@
 package controller.map;
 
-import java.io.Serializable;
-
 import model.viewer.Fortress;
 import model.viewer.Player;
 import model.viewer.SPMap;
@@ -20,16 +18,11 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Jonathan Lovelace
  * 
  */
-public final class SAXReader extends DefaultHandler implements Serializable {
+public final class SAXReader extends DefaultHandler {
 	/**
 	 * Error message for the outer exception when we get an unexpected tag.
 	 */
 	private static final String NON_COMPLIANT_XML = "Non-compliant XML";
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6927535476104522093L;
-
 	/**
 	 * Constructor.
 	 */
@@ -51,27 +44,27 @@ public final class SAXReader extends DefaultHandler implements Serializable {
 	/**
 	 * Throw an exception when we're asked for the map unless this is true.
 	 */
-	private transient boolean safeToReturn;
+	private boolean safeToReturn;
 	/**
 	 * The tile we're currently parsing. (For Units and Fortresses.)
 	 */
-	private transient Tile currentTile;
+	private Tile currentTile;
 	/**
 	 * The fortress we're currently parsing. (For Units in a fortress.)
 	 */
-	private transient Fortress currentFortress;
+	private Fortress currentFortress;
 	/**
 	 * The map we're currently parsing.
 	 */
-	private transient SPMap currentMap;
+	private SPMap currentMap;
 	/**
 	 * The unit we're currently parsing.
 	 */
-	private transient Unit currentUnit;
+	private Unit currentUnit;
 	/**
 	 * The player we're currently parsing.
 	 */
-	private transient model.viewer.Player currentPlayer;
+	private Player currentPlayer;
 
 	/**
 	 * Called when we're done parsing.

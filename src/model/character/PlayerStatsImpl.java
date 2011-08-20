@@ -12,10 +12,6 @@ import java.util.Map;
  */
 public class PlayerStatsImpl implements CharStats {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 6518166681439110407L;
-	/**
 	 * A map containing the stats.
 	 */
 	private final Map<Stat, Attribute> stats = new EnumMap<Stat, Attribute>(

@@ -1,6 +1,5 @@
 package model.viewer;
 
-import java.io.Serializable;
 
 /**
  * A representation of a player in the game.
@@ -8,12 +7,7 @@ import java.io.Serializable;
  * @author jsl7
  * 
  */
-public class Player implements Serializable, Comparable<Player> {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3822757264856144605L;
+public class Player implements Comparable<Player> {
 	/**
 	 * The player's number.
 	 */

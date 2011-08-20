@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,11 +20,7 @@ import org.junit.Test;
  * @author Jonathan Lovelace
  * 
  */
-public final class TestExplorationRunner implements Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -8497977146573973206L;
+public final class TestExplorationRunner {
 	/**
 	 * Extracted constant, to fix a warning because it occurred three or more
 	 * times.

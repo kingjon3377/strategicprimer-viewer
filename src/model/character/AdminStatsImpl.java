@@ -10,10 +10,6 @@ import java.util.EnumMap;
  */
 public class AdminStatsImpl implements CharStats { // NOPMD
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 3610744454711188925L;
-	/**
 	 * A map containing the stats.
 	 */
 	private final EnumMap<Stat, Integer> stats = new EnumMap<Stat, Integer>(

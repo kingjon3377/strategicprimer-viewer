@@ -1,6 +1,5 @@
 package model.viewer;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -14,11 +13,7 @@ import model.viewer.events.NothingEvent;
  * @author Jonathan Lovelace
  * 
  */
-public final class Tile implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8600736789182987551L;
+public final class Tile {
 	/**
 	 * Constructor.
 	 * 

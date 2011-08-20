@@ -1,6 +1,5 @@
 package model.viewer;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,12 +10,7 @@ import java.util.Map;
  * @author Jonathan Lovelace
  * 
  */
-public class SPMap implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7490067634803753892L;
-
+public class SPMap {
 	/**
 	 * Map version.
 	 */

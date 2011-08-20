@@ -1,7 +1,6 @@
 package controller.map;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import model.viewer.SPMap;
 
@@ -14,15 +13,11 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @author Jonathan Lovelace
  * 
  */
-public final class XMLReader implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1008526252261106761L;
+public final class XMLReader {
 	/**
 	 * The XML parser that hands events to the SAXReader.
 	 */
-	private final transient org.xml.sax.XMLReader parser;
+	private final org.xml.sax.XMLReader parser;
 	/**
 	 * The event-handler that constructs the objects for us.
 	 */
