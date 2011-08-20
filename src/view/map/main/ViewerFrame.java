@@ -74,10 +74,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private static final int DEFAULT_HEIGHT = 480;
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5978274834544191806L;
-	/**
 	 * The quasi-Singleton.
 	 */
 	private static ViewerFrame frame;
@@ -152,7 +148,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				public void run() {
 					frame.setVisible(true);
 				}
-			}.start();
+			} .start();
 			if (args.length > 1) {
 				frame.mapPanel.setSecondaryMap(frame.readMap(args[1]));
 			}

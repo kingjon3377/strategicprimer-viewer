@@ -11,11 +11,6 @@ import java.awt.GridBagConstraints;
  */
 public class ConstraintHelper extends GridBagConstraints {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -1563269880596989283L;
-
-	/**
 	 * Constructor taking just position.
 	 * 
 	 * @param col

@@ -21,11 +21,6 @@ import javax.swing.JTextField;
  * 
  */
 public class RestrictDialog extends JDialog implements ActionListener {
-
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -4870292230932732488L;
 	/**
 	 * The map panel we'll update when the user orders a change.
 	 */

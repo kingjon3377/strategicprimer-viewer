@@ -15,11 +15,6 @@ import javax.swing.JMenuItem;
  */
 public class FileMenu extends JMenu implements ActionListener {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 8844526617362435258L;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param parentWindow

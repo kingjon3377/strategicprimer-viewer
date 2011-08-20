@@ -52,10 +52,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private static final double RESULTS_FIELD_WIDTH = 0.5; // NOPMD
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 3391860564156014799L;
-	/**
 	 * Label to show the tile's terrain type.
 	 */
 	private final JLabel typeLabel = new JLabel();

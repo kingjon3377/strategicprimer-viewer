@@ -27,12 +27,6 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	 */
 	private static final Logger LOGGER = Logger.getLogger(CharacterFrame.class
 			.getName());
-
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -1521685216194840568L;
-
 	/**
 	 * Driver entry point.
 	 * 

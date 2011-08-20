@@ -17,11 +17,6 @@ public class FortChit extends Chit {
 	 */
 	private static final double MARGIN = 0.25;
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 3918628977804086020L;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param fort

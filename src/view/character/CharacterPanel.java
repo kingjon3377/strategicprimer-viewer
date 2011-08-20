@@ -30,11 +30,6 @@ import controller.character.CharacterWriter;
 public final class CharacterPanel extends JPanel implements Applyable,
 		SaveableOpenable {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -4920419938470844999L;
-
-	/**
 	 * Constructor taking a value.
 	 * 
 	 * @param chrc

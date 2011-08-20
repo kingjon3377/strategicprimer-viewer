@@ -17,10 +17,6 @@ import model.viewer.TileType;
  */
 public class KeyPanel extends JPanel {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -548507058298616182L;
-	/**
 	 * Constructor.
 	 */
 	public KeyPanel() {
@@ -36,11 +32,6 @@ public class KeyPanel extends JPanel {
 	 * An element of the key.
 	 */
 	private static final class KeyElement extends JPanel {
-		// ESCA-JAVA0096:
-		/**
-		 * Version UID for serialization.
-		 */
-		private static final long serialVersionUID = 3135240991502160231L;
 		/**
 		 * Minimum buffer space between elements.
 		 */

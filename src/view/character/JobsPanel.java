@@ -19,10 +19,6 @@ import javax.swing.JPanel;
  */
 public class JobsPanel extends JPanel implements ActionListener {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 6381213579509853088L;
-	/**
 	 * The panel most of the content actually goes on.
 	 */
 	private final JPanel contentPanel;

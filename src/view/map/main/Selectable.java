@@ -16,11 +16,6 @@ import javax.swing.JComponent;
 // ESCA-JAVA0011:
 public abstract class Selectable extends JComponent { // NOPMD
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 6213677364292114007L;
-
-	/**
 	 * Paint a rectangle around the item if it's selected.
 	 * 
 	 * @param pen

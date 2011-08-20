@@ -11,11 +11,6 @@ import model.viewer.TileType;
  */
 public class NullGUITile extends GUITile {
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3684031398509936102L;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param row

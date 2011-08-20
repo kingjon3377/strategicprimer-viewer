@@ -17,11 +17,6 @@ public class UnitChit extends Chit {
 	 */
 	private static final double MARGIN = 0.25;
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 3528975373388842318L;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param unit

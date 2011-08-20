@@ -357,11 +357,6 @@ public class MapReader {
 	 */
 	public static class MapVersionException extends Exception {
 		/**
-		 * Version UID for serialization.
-		 */
-		private static final long serialVersionUID = 7748965005262842245L;
-
-		/**
 		 * Constructor.
 		 * @param message the message to show the user if this isn't caught.
 		 */

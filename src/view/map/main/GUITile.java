@@ -49,10 +49,6 @@ public class GUITile extends Selectable {
 	private static final Dimension PREF_SIZE = new Dimension(TILE_SIZE,
 			TILE_SIZE);
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 4047750632787337702L;
-	/**
 	 * The tile this GUI-tile represents.
 	 */
 	private Tile tile;

@@ -28,10 +28,6 @@ import model.viewer.Unit;
  */
 public class MapComponent extends JComponent {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 435344338279530103L;
-	/**
 	 * The map this represents.
 	 */
 	private final SPMap map;

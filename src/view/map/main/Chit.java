@@ -12,11 +12,6 @@ import java.awt.event.MouseListener;
  */
 public abstract class Chit extends Selectable { // NOPMD
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 6370080411961068523L;
-
-	/**
 	 * @return the description of the unit or fortress this chit represents, to
 	 *         report to the user
 	 */

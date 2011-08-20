@@ -12,11 +12,6 @@ import javax.swing.JPanel;
  */
 public class ChangeableComponent extends JPanel {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -4804570258956941305L;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param comp

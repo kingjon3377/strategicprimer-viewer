@@ -44,10 +44,6 @@ public class EventChit extends Chit {
 	 */
 	private final String desc;
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 4184219768582425453L;
-	/**
 	 * @return A description of the event this chit represents. 
 	 *
 	 * @see view.map.main.Chit#describe()

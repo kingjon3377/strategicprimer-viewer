@@ -27,10 +27,6 @@ import util.Pair;
  */
 public class MapPanel extends JPanel {
 	/**
-	 * A UID for serialization.
-	 */
-	private static final long serialVersionUID = 4707498496341178052L;
-	/**
 	 * Selection listener.
 	 */
 	private final transient TileSelectionListener selListener;
@@ -66,11 +62,6 @@ public class MapPanel extends JPanel {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
 		final ActionMap actionMap = getActionMap();
 		actionMap.put("up", new AbstractAction() {
-			/**
-			 * Version UID for serialization.
-			 */
-			private static final long serialVersionUID = -1085752808313621553L;
-
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void actionPerformed(final ActionEvent event) {
@@ -78,11 +69,6 @@ public class MapPanel extends JPanel {
 			}
 		});
 		actionMap.put("down", new AbstractAction() {
-			/**
-			 * Version UID for serialization.
-			 */
-			private static final long serialVersionUID = -1085752808313621553L;
-
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void actionPerformed(final ActionEvent event) {
@@ -90,11 +76,6 @@ public class MapPanel extends JPanel {
 			}
 		});
 		actionMap.put("left", new AbstractAction() {
-			/**
-			 * Version UID for serialization.
-			 */
-			private static final long serialVersionUID = -1085752808313621553L;
-
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void actionPerformed(final ActionEvent event) {
@@ -102,11 +83,6 @@ public class MapPanel extends JPanel {
 			}
 		});
 		actionMap.put("right", new AbstractAction() {
-			/**
-			 * Version UID for serialization.
-			 */
-			private static final long serialVersionUID = -1085752808313621553L;
-
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void actionPerformed(final ActionEvent event) {

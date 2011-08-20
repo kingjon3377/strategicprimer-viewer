@@ -18,10 +18,6 @@ import model.viewer.TileType;
  */
 public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = -7592568002529958689L;
-	/**
 	 * Map of tile types and menu items representing them.
 	 */
 	private static final Map<TileType, JMenuItem> ITEM_MAP = new EnumMap<TileType, JMenuItem>(

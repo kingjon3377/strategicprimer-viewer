@@ -22,10 +22,6 @@ import view.util.Applyable;
  */
 public class JobPanel extends JPanel implements Applyable, ActionListener {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 8624586188877069678L;
-	/**
 	 * The panel this is embedded in.
 	 */
 	private final CharacterPanel outer;
