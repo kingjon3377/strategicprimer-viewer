@@ -128,19 +128,23 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private final transient SelectionListener chitSelecter = new ChitSelectionListener(
 			chitDetail);
-
+	
+	/**
+	 * An alternative to Null.
+	 */
+	private static final Tile NULL_TILE = new Tile(-1, -1, TileType.NotVisible);
 	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
 	 */
 	public void setTile(final Tile newTile) {
 		if (newTile == null) {
-			tile = null; // NOPMD
-			typeLabel.setText("");
-			chitPanel.removeAll();
-			resultsField.setText("");
-		} else if (!newTile.equals(tile)) {
+			tile = NULL_TILE;
+		} else if (newTile.equals(tile)) {
+			return;
+		} else {
 			tile = newTile;
+		}
 			typeLabel.setText("<html>(" + tile.getRow() + ", " + tile.getCol()
 					+ ")<br />" + terrainText(tile.getType()) + "</html>");
 			chitPanel.removeAll();
@@ -154,8 +158,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 					chitPanel.add(new EventChit((AbstractEvent) fix, chitSelecter)); // NOPMD
 				}
 			}
-			resultsField.setText(newTile.getTileText());
-		}
+			resultsField.setText(tile.getTileText());
 		repaint();
 	}
 
