@@ -192,9 +192,8 @@ public final class ExplorationCLI {
 	private void hunt(final BufferedReader reader, final SPMap map,
 			final PrintStream ostream) throws IOException {
 		final Tile tile = selectTile(map, reader, ostream);
-		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
-			ostream.println(runner.recursiveConsultTable("hunter", tile));
-		}
+		repeatedlyConsultTable("hunter", tile, HUNTER_HOURS
+				* HOURLY_ENCOUNTERS, ostream);
 	}
 
 	/**
@@ -214,9 +213,8 @@ public final class ExplorationCLI {
 	private void fish(final BufferedReader reader, final SPMap map,
 			final PrintStream ostream) throws IOException {
 		final Tile tile = selectTile(map, reader, ostream);
-		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
-			ostream.println(runner.recursiveConsultTable("fisher", tile));
-		}
+		repeatedlyConsultTable("fisher", tile, HUNTER_HOURS
+				* HOURLY_ENCOUNTERS, ostream);
 	}
 
 	/**
@@ -234,11 +232,22 @@ public final class ExplorationCLI {
 	private void gather(final BufferedReader reader, final SPMap map,
 			final PrintStream ostream) throws IOException {
 		final Tile tile = selectTile(map, reader, ostream);
-		for (int i = 0; i < HUNTER_HOURS * HOURLY_ENCOUNTERS; i++) {
-			ostream.println(runner.recursiveConsultTable("gatherer", tile));
+		repeatedlyConsultTable("gatherer", tile, HUNTER_HOURS
+				* HOURLY_ENCOUNTERS, ostream);
+	}
+	/**
+	 * Repeatedly consult a table.
+	 * @param table the table to consult
+	 * @param tile the tile to refer to
+	 * @param reps how many times to consult it
+	 * @param ostream the stream to print the results to
+	 */
+	private void repeatedlyConsultTable(final String table, final Tile tile,
+			final int reps, final PrintStream ostream) {
+		for (int i = 0; i < reps; i++) {
+			ostream.println(runner.recursiveConsultTable(table, tile));
 		}
 	}
-
 	/**
 	 * @param args
 	 *            command-line arguments
