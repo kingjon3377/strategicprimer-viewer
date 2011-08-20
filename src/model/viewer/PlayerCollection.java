@@ -17,10 +17,6 @@ public class PlayerCollection implements Iterable<Player> {
 	 */
 	private final Map<Integer, Player> players = new HashMap<Integer, Player>();
 	/**
-	 * "An unknown player" --- used when we're asked for an ID we don't contain.
-	 */
-	public static final Player NULL_PLAYER = new Player(-1, "Unknown");
-	/**
 	 * Add a player.
 	 * @param player the player to add.
 	 */
@@ -29,10 +25,10 @@ public class PlayerCollection implements Iterable<Player> {
 	}
 	/**
 	 * @param player a player-id
-	 * @return the player with that ID, or an "unknown-player" player if no match.
+	 * @return the player with that ID, or a new Player with that number if we don't have it.
 	 */
 	public Player getPlayer(final int player) {
-		return players.containsKey(player) ? players.get(player) : NULL_PLAYER;
+		return players.containsKey(player) ? players.get(player) : new Player(player, "");
 	}
 	/**
 	 * @return an iterator over the players we contain.
