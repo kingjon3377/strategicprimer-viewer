@@ -13,6 +13,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public final class XMLReader {
 	/**
 	 * The XML parser that hands events to the SAXReader.

@@ -18,6 +18,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public final class SAXReader extends DefaultHandler {
 	/**
 	 * Error message for the outer exception when we get an unexpected tag.

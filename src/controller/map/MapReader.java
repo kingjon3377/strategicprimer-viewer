@@ -310,6 +310,7 @@ public class MapReader {
 	 *            The maps to test the two readers on.
 	 */
 	// ESCA-JAVA0266:
+	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) {
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
 				System.out));
