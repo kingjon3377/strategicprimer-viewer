@@ -91,6 +91,19 @@ public class MapComponent extends JComponent {
 				map.cols());
 		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1),
 				map.rows());
+		drawMapPortion(pen, minX, minY, maxX, maxY);
+	}
+
+	/**
+	 * Draw a subset of the map.
+	 * @param pen the graphics context
+	 * @param minX the minimum X (row?) to draw
+	 * @param minY the minimum Y (col?) to draw
+	 * @param maxX the maximum X (row?) to draw
+	 * @param maxY the maximum Y (col?) to draw
+	 */
+	private void drawMapPortion(final Graphics pen, final int minX,
+			final int minY, final int maxX, final int maxY) {
 		for (int i = minY; i < maxY; i++) {
 			for (int j = minX; j < maxX; j++) {
 				paintTile(pen, map.getTile(i, j), i, j);

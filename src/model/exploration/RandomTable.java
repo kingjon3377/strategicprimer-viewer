@@ -26,8 +26,16 @@ public class RandomTable implements EncounterTable {
 	@Override
 	public String generateEvent(final Tile tile) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
+		return getLowestMatch(roll);
+	}
+
+	/**
+	 * @param value a number to check the table against
+	 * @return the result of the check
+	 */
+	private String getLowestMatch(final int value) {
 		for (final Pair<Integer, String> item : table) {
-			if (roll >= item.first()) {
+			if (value >= item.first()) {
 				return item.second(); // NOPMD
 			}
 		}
