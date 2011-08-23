@@ -55,14 +55,14 @@ public class MapPanel extends JPanel {
 	public MapPanel(final SPMap newMap, final DetailPanel details) {
 		super();
 		selListener = new TileSelectionListener(this, details);
-		InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
 		final ActionMap actionMap = getActionMap();
 		actionMap.put("up", new AbstractAction() {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings("synthetic-access") // NOPMD
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				selListener.up();
