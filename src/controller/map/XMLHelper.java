@@ -1,10 +1,9 @@
 package controller.map;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
 /**
  * A class for helper methods we'll want to share between MapReader, TileReader,
@@ -36,18 +35,15 @@ public class XMLHelper {
 	 *            what kind of tag we're in (for the error message)
 	 * @param reader
 	 *            the XML stream we're reading from
-	 * @throws XMLStreamException
-	 *             on error while trying to find our end tag
 	 */
-	public void spinUntilEnd(final String tag, final XMLEventReader reader)
-			throws XMLStreamException {
-		while (reader.hasNext()) {
-			if (reader.peek().isStartElement()) {
+	public void spinUntilEnd(final String tag, final Iterable<XMLEvent> reader) {
+		for (XMLEvent event : reader) {
+			if (event.isStartElement()) {
 				throw new IllegalStateException(UNEXPECTED_TAG
-						+ reader.nextEvent()
+						+ event
 								.asStartElement().getName().getLocalPart()
 						+ ": " + tag + " can't contain anything yet");
-			} else if (reader.nextEvent().isEndElement()) {
+			} else if (event.isEndElement()) {
 				break;
 			}
 		}

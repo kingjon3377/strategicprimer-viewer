@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -19,6 +18,8 @@ import model.viewer.Player;
 import model.viewer.SPMap;
 
 import org.xml.sax.SAXException;
+
+import util.IteratorWrapper;
 
 /**
  * A StAX implementation of a map parser. The annoyance of extending the SAX
@@ -199,10 +200,10 @@ public class MapReader {
 		LOGGER.info("Started reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
 		SPMap map = null;
-		final XMLEventReader eventReader = XMLInputFactory.newInstance()
-				.createXMLEventReader(istream);
-		while (eventReader.hasNext()) {
-			final XMLEvent event = eventReader.nextEvent();
+		@SuppressWarnings("unchecked")
+		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
+				XMLInputFactory.newInstance().createXMLEventReader(istream));
+		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final StartElement startElement = event.asStartElement();
 				if (map == null) {
@@ -229,7 +230,6 @@ public class MapReader {
 		}
 		LOGGER.info("Finished reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
-		eventReader.close();
 		try {
 			istream.close();
 		} catch (final IOException e) {
@@ -270,20 +270,18 @@ public class MapReader {
 	 * @param reader
 	 *            the stream of elements we're reading from
 	 * @return The player it encapsulates.
-	 * @throws XMLStreamException
-	 *             on ill-formed XML or other processing problem
 	 */
 	private static Player parsePlayer(final StartElement element,
-			final XMLEventReader reader) throws XMLStreamException {
+			final Iterable<XMLEvent> reader) {
 		final Player player = new Player(Integer.parseInt(element
 				.getAttributeByName(new QName("number")).getValue()), element
 				.getAttributeByName(new QName("code_name")).getValue());
-		while (reader.hasNext()) {
-			if (reader.peek().isStartElement()) {
+		for (XMLEvent event : reader) {
+			if (event.isStartElement()) {
 				throw new IllegalStateException(UNEXPECTED_TAG
-						+ reader.nextEvent().asStartElement().getName().getLocalPart()
+						+ event.asStartElement().getName().getLocalPart()
 						+ ": a player can't contain anything yet");
-			} else if (reader.nextEvent().isEndElement()) {
+			} else if (event.isEndElement()) {
 				break;
 			}
 		}

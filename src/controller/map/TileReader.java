@@ -1,8 +1,7 @@
 package controller.map;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
 import model.viewer.Fortress;
 import model.viewer.PlayerCollection;
@@ -70,20 +69,17 @@ public class TileReader {
 	 * @param players
 	 *            the map's collection of players
 	 * @return the tile in question.
-	 * @throws XMLStreamException
-	 *             on badly-formed XML or other processing error
 	 */
 	Tile parseTileAndContents(final StartElement element, // NOPMD
-			final XMLEventReader reader, final PlayerCollection players)
-			throws XMLStreamException {
+			final Iterable<XMLEvent> reader, final PlayerCollection players) {
 		final Tile tile = parseTile(element);
-		while (reader.hasNext()) {
-			if (reader.peek().isStartElement()) {
+		for (XMLEvent event : reader) {
+			if (event.isStartElement()) {
 				parseTileContents(reader, tile, players);
-			} else if (reader.peek().isCharacters()) {
+			} else if (event.isCharacters()) {
 				tile.setTileText(tile.getTileText()
-						+ reader.nextEvent().asCharacters().getData());
-			} else if (reader.nextEvent().isEndElement()) {
+						+ event.asCharacters().getData());
+			} else if (event.isEndElement()) {
 				tile.setTileText(tile.getTileText().trim());
 				break;
 			}
@@ -95,11 +91,9 @@ public class TileReader {
 	 * @param tile the tile we're in the middle of
 	 * @param players
 	 *            the map's collection of players
-	 * @throws XMLStreamException on badly-formed XML or other processing error
 	 */
-	private void parseTileContents(final XMLEventReader reader, final Tile tile, final PlayerCollection players)
-			throws XMLStreamException {
-		final StartElement elem = reader.nextEvent().asStartElement();
+	private void parseTileContents(final Iterable<XMLEvent> reader, final Tile tile, final PlayerCollection players) {
+		final StartElement elem = reader.iterator().next().asStartElement();
 		switch (mainReader.getTagType(elem)) {
 		case River:
 		case Lake:
@@ -135,11 +129,9 @@ public class TileReader {
 	 * @param reader
 	 *            the XML stream we're reading from
 	 * @return the event
-	 * @throws XMLStreamException
-	 *             on error while trying to find our end tag
 	 */
 	private AbstractEvent parseEvent(final StartElement elem,
-			final XMLEventReader reader) throws XMLStreamException {
+			final Iterable<XMLEvent> reader) {
 		// ESCA-JAVA0177:
 		AbstractEvent retval;
 		switch (getEventType(elem)) {
@@ -233,11 +225,9 @@ public class TileReader {
 	 * @param reader
 	 *            the stream of elements we're reading from
 	 * @return the river in question.
-	 * @throws XMLStreamException
-	 *             on badly-formed XML or other processing error
 	 */
 	public River parseRiver(final StartElement elem,
-			final XMLEventReader reader) throws XMLStreamException {
+			final Iterable<XMLEvent> reader) {
 		// ESCA-JAVA0177:
 		final River river = Tag.Lake.equals(mainReader.getTagType(elem)) ? River.Lake
 				: River.getRiver(helper.getAttribute(elem, "direction"));
@@ -257,21 +247,18 @@ public class TileReader {
 	 * @param players
 	 *            the map's collection of players
 	 * @return the fortress in question.
-	 * @throws XMLStreamException
-	 *             on badly-formed XML or other processing error
 	 */
 	private Fortress parseFortress(final Tile tile,
-			final StartElement elem, final XMLEventReader reader, final PlayerCollection players)
-			throws XMLStreamException {
+			final StartElement elem, final Iterable<XMLEvent> reader, final PlayerCollection players) {
 		final Fortress fort = new Fortress(tile,
 				players.getPlayer(Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
 						"-1"))), helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE,
 						""));
-		while (reader.hasNext()) {
-			if (reader.peek().isStartElement()) {
-				parseFortContents(tile, fort, reader.nextEvent()
+		for (XMLEvent event : reader) {
+			if (event.isStartElement()) {
+				parseFortContents(tile, fort, event
 						.asStartElement(), reader, players);
-			} else if (reader.nextEvent().isEndElement()) {
+			} else if (event.isEndElement()) {
 				break;
 			}
 		}
@@ -284,11 +271,9 @@ public class TileReader {
 	 * @param reader the stream of XML elements we're reading from
 	 * @param players
 	 *            the map's collection of players
-	 * @throws XMLStreamException on badly-formed XML or other parsing error
 	 */
 	private void parseFortContents(final Tile tile, final Fortress fort, final StartElement element,
-			final XMLEventReader reader, final PlayerCollection players)
-			throws XMLStreamException {
+			final Iterable<XMLEvent> reader, final PlayerCollection players) {
 		if (Tag.Unit.equals(mainReader.getTagType(element))) {
 			fort.addUnit(parseUnit(tile, element, reader, players));
 		} else {
@@ -311,12 +296,10 @@ public class TileReader {
 	 * @param players
 	 *            the map's collection of players
 	 * @return the fortress in question.
-	 * @throws XMLStreamException
-	 *             on ill-formed XML or other processing problem
 	 * 
 	 */
 	private Unit parseUnit(final Tile tile, final StartElement elem,
-			final XMLEventReader reader, final PlayerCollection players) throws XMLStreamException {
+			final Iterable<XMLEvent> reader, final PlayerCollection players) {
 		final Unit unit = new Unit(tile,
 				players.getPlayer(Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
 						"-1"))), helper.getAttributeWithDefault(elem, "type", ""),
