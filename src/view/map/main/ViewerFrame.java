@@ -129,9 +129,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	public static void main(final String[] args) {
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD // $codepro.audit.disable localDeclaration
-		if (args.length > 0) {
-			filename = args[0];
-		} else {
+		if (args.length == 0) {
 			final JFileChooser chooser = new JFileChooser(".");
 			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -139,6 +137,8 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			} else {
 				return;
 			}
+		} else {
+			filename = args[0];
 		}
 		try {
 			frame = new ViewerFrame(filename);
