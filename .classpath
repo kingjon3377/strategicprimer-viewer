@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry excluding="tables/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/kingjon/.eclipse/org.eclipse.platform_3.7.0_272132064/plugins/edu.umd.cs.findbugs.plugin.eclipse_1.3.9.20090821/lib/annotations.jar"/>
-	<classpathentry kind="lib" path="/home/kingjon/.eclipse/org.eclipse.platform_3.7.0_272132064/plugins/edu.umd.cs.findbugs.plugin.eclipse_1.3.9.20090821/lib/jsr305.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/sp-ng"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Commons Lang"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/FindBugs annotations"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
