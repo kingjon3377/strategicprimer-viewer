@@ -273,9 +273,6 @@ public class MapReader {
 	 */
 	private static Player parsePlayer(final StartElement element,
 			final Iterable<XMLEvent> reader) {
-		final Player player = new Player(Integer.parseInt(element
-				.getAttributeByName(new QName("number")).getValue()), element
-				.getAttributeByName(new QName("code_name")).getValue());
 		for (XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				throw new IllegalStateException(UNEXPECTED_TAG
@@ -285,7 +282,9 @@ public class MapReader {
 				break;
 			}
 		}
-		return player;
+		return new Player(Integer.parseInt(element
+				.getAttributeByName(new QName("number")).getValue()), element
+				.getAttributeByName(new QName("code_name")).getValue());
 	}
 
 	/**
