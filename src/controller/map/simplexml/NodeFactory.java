@@ -14,6 +14,13 @@ import org.apache.commons.lang.NotImplementedException;
  */
 public final class NodeFactory { // NOPMD
 	/**
+	 * The name for the property for what kind of event an event is. We create
+	 * this property when setting up nodes for events that had their own unique
+	 * tags.
+	 */
+	private static final String EVENT_KIND_PROP = "kind";
+
+	/**
 	 * Do not instantiate.
 	 */
 	private NodeFactory() {
@@ -155,22 +162,22 @@ public final class NodeFactory { // NOPMD
 		switch (TAGS.get(tag)) {
 		case Battlefield:
 			node = new EventNode();
-			node.addProperty("kind", "battlefield");
+			node.addProperty(EVENT_KIND_PROP, "battlefield");
 			break;
 		case Cave:
 			node = new EventNode();
-			node.addProperty("kind", "cave");
+			node.addProperty(EVENT_KIND_PROP, "cave");
 			break;
 		case City:
 			node = new EventNode();
-			node.addProperty("kind", "city");
+			node.addProperty(EVENT_KIND_PROP, "city");
 			break;
 		case Event:
 			node = new EventNode();
 			break;
 		case Fortification:
 			node = new EventNode();
-			node.addProperty("kind", "fortification");
+			node.addProperty(EVENT_KIND_PROP, "fortification");
 			break;
 		case Fortress:
 			throw new NotImplementedException("Fortress not implemented");
@@ -183,7 +190,7 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Mineral:
 			node = new EventNode();
-			node.addProperty("kind", "mineral");
+			node.addProperty(EVENT_KIND_PROP, "mineral");
 			break;
 		case Player:
 			throw new NotImplementedException("Player not implemented yet");
@@ -194,13 +201,13 @@ public final class NodeFactory { // NOPMD
 			throw new NotImplementedException("Skippable not implemented yet");
 		case Stone:
 			node = new EventNode();
-			node.addProperty("kind", "stone");
+			node.addProperty(EVENT_KIND_PROP, "stone");
 			break;
 		case Tile:
 			throw new NotImplementedException("Tile not implemented yet");
 		case Town:
 			node = new EventNode();
-			node.addProperty("kind", "town");
+			node.addProperty(EVENT_KIND_PROP, "town");
 			break;
 		case Unit:
 			throw new NotImplementedException("Unit not implemented yet");
