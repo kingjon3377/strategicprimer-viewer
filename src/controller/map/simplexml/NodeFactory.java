@@ -154,15 +154,24 @@ public final class NodeFactory { // NOPMD
 		// ESCA-JAVA0040:
 		switch (TAGS.get(tag)) {
 		case Battlefield:
-			throw new NotImplementedException("Battlefield not implemented");
+			node = new EventNode();
+			node.addProperty("kind", "battlefield");
+			break;
 		case Cave:
-			throw new NotImplementedException("Cave not implemented");
+			node = new EventNode();
+			node.addProperty("kind", "cave");
+			break;
 		case City:
-			throw new NotImplementedException("City not implemented");
+			node = new EventNode();
+			node.addProperty("kind", "city");
+			break;
 		case Event:
-			throw new NotImplementedException("Event not implemented");
+			node = new EventNode();
+			break;
 		case Fortification:
-			throw new NotImplementedException("Fortification not implemented");
+			node = new EventNode();
+			node.addProperty("kind", "fortification");
+			break;
 		case Fortress:
 			throw new NotImplementedException("Fortress not implemented");
 		case Lake:
@@ -173,7 +182,9 @@ public final class NodeFactory { // NOPMD
 			node = new MapNode();
 			break;
 		case Mineral:
-			throw new NotImplementedException("Mineral not implemented yet");
+			node = new EventNode();
+			node.addProperty("kind", "mineral");
+			break;
 		case Player:
 			throw new NotImplementedException("Player not implemented yet");
 		case River:
@@ -182,11 +193,15 @@ public final class NodeFactory { // NOPMD
 		case Skippable:
 			throw new NotImplementedException("Skippable not implemented yet");
 		case Stone:
-			throw new NotImplementedException("Stone not implemented yet");
+			node = new EventNode();
+			node.addProperty("kind", "stone");
+			break;
 		case Tile:
 			throw new NotImplementedException("Tile not implemented yet");
 		case Town:
-			throw new NotImplementedException("Town not implemented yet");
+			node = new EventNode();
+			node.addProperty("kind", "town");
+			break;
 		case Unit:
 			throw new NotImplementedException("Unit not implemented yet");
 		default:
