@@ -21,6 +21,22 @@ import model.viewer.events.TownEvent;
  */
 public class EventNode extends AbstractChildNode<AbstractEvent> {
 	/**
+	 * A stone event.
+	 */
+	private static final String STONE_KIND = "stone";
+	/**
+	 * A mineral event.
+	 */
+	private static final String MINERAL_KIND = "mineral";
+	/**
+	 * The property of a town-like event saying how big it is.
+	 */
+	private static final String SIZE_PROPERTY = "size";
+	/**
+	 * The property of a town-like event saying what its status is.
+	 */
+	private static final String STATUS_PROP = "status";
+	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
 	private static final String DC_PROPERTY = "dc";
@@ -43,24 +59,24 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 			event = new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("city".equals(getProperty(KIND_PROPERTY))) {
 			event = new CityEvent(
-					TownStatus.parseTownStatus(getProperty("status")),
-					TownSize.parseTownSize(getProperty("size")),
+					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
+					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("fortification".equals(getProperty(KIND_PROPERTY))) {
 			event = new FortificationEvent(
-					TownStatus.parseTownStatus(getProperty("status")),
-					TownSize.parseTownSize(getProperty("size")),
+					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
+					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("town".equals(getProperty(KIND_PROPERTY))) {
 			event = new TownEvent(
-					TownStatus.parseTownStatus(getProperty("status")),
-					TownSize.parseTownSize(getProperty("size")),
+					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
+					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if ("mineral".equals(getProperty(KIND_PROPERTY))) {
+		} else if (MINERAL_KIND.equals(getProperty(KIND_PROPERTY))) {
 			event = new MineralEvent(MineralKind.parseMineralKind(getProperty("mineral")),
 					Boolean.parseBoolean(getProperty("exposed")),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if ("stone".equals(getProperty(KIND_PROPERTY))) {
+		} else if (STONE_KIND.equals(getProperty(KIND_PROPERTY))) {
 			event = new StoneEvent(
 					StoneKind.parseStoneKind(getProperty("stone")),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
@@ -87,16 +103,16 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 			if (("town".equals(getProperty(KIND_PROPERTY))
 					|| "fortification".equals(getProperty(KIND_PROPERTY)) || "city"
 						.equals(getProperty(KIND_PROPERTY)))
-					&& (!hasProperty("size") || !hasProperty("status"))) {
+					&& (!hasProperty(SIZE_PROPERTY) || !hasProperty(STATUS_PROP))) {
 				throw new SPFormatException(
 						"Town-related events must have \"size\" and \"status\" properties",
 						getLine());
-			} else if ("mineral".equals(getProperty(KIND_PROPERTY))
+			} else if (MINERAL_KIND.equals(getProperty(KIND_PROPERTY))
 					&& (!hasProperty("mineral") || !hasProperty("exposed"))) {
 				throw new SPFormatException(
 						"Mineral events must have \"mineral\" and \"exposed\" properties.",
 						getLine());
-			} else if ("stone".equals(getProperty(KIND_PROPERTY))
+			} else if (STONE_KIND.equals(getProperty(KIND_PROPERTY))
 					&& !hasProperty("stone")) {
 				throw new SPFormatException(
 						"Stone events must have \"stone\" property.",
