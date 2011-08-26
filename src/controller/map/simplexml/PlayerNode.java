@@ -1,8 +1,6 @@
 package controller.map.simplexml;
 
 import model.viewer.Player;
-
-import org.apache.commons.lang.NotImplementedException;
 /**
  * A Node to represent a Player.
  * @author Jonathan Lovelace
@@ -16,7 +14,7 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	 */
 	@Override
 	public Player produce() throws SPFormatException {
-		throw new NotImplementedException("Player production not yet implemented.");
+		return new Player(Integer.parseInt(getProperty("number")), getProperty("code_name"));
 	}
 	/**
 	 * Check whether we contain invalid data. A Player is valid iff 
