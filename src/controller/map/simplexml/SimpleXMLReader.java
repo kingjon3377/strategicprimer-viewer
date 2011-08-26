@@ -29,7 +29,21 @@ import controller.map.MapVersionException;
  * @author Jonathan Lovelace
  * 
  */
+@SuppressWarnings("deprecation")
 public class SimpleXMLReader {
+	/**
+	 * @param file the name of a file
+	 * @return the map contained in that file
+	 * @throws IOException on I/O error
+	 * @throws SPFormatException if the data is invalid
+	 * @throws XMLStreamException if the XML isn't well-formed
+	 */
+	public SPMap readMap(final String file) throws IOException, XMLStreamException, SPFormatException {
+		final FileInputStream istream = new FileInputStream(file);
+		final SPMap retval = readMap(istream);
+		istream.close();
+		return retval;
+	}
 	/**
 	 * @param istream a stream
 	 * @return the map contained in that stream
