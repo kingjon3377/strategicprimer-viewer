@@ -75,7 +75,7 @@ public class TileReader {
 		final Tile tile = parseTile(element);
 		for (XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				parseTileContents(reader, tile, players);
+				parseTileContents(event.asStartElement(), reader, tile, players);
 			} else if (event.isCharacters()) {
 				tile.setTileText(tile.getTileText()
 						+ event.asCharacters().getData());
@@ -87,13 +87,15 @@ public class TileReader {
 		return tile;
 	}
 	/**
+	 * @param elem the element we're parsing
 	 * @param reader the stream of elements we're reading from
 	 * @param tile the tile we're in the middle of
 	 * @param players
 	 *            the map's collection of players
 	 */
-	private void parseTileContents(final Iterable<XMLEvent> reader, final Tile tile, final PlayerCollection players) {
-		final StartElement elem = reader.iterator().next().asStartElement();
+	private void parseTileContents(final StartElement elem,
+			final Iterable<XMLEvent> reader, final Tile tile,
+			final PlayerCollection players) {
 		switch (mainReader.getTagType(elem)) {
 		case River:
 		case Lake:
