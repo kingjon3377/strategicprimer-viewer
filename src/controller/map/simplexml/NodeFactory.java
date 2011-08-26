@@ -180,7 +180,8 @@ public final class NodeFactory { // NOPMD
 			node.addProperty(EVENT_KIND_PROP, "fortification");
 			break;
 		case Fortress:
-			throw new NotImplementedException("Fortress not implemented");
+			node = new FortressNode();
+			break;
 		case Lake:
 			node = new RiverNode();
 			node.addProperty("direction", "lake");
