@@ -139,8 +139,6 @@ public abstract class AbstractEvent implements TileFixture {
 		/**
 		 * @param string a string representing a TownStatus
 		 * @return the TownStatus it represents
-		 * @param string
-		 * @return
 		 */
 		public static TownStatus parseTownStatus(final String string) {
 			return TST_MAP.get(string);
