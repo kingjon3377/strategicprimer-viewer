@@ -42,7 +42,18 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 */
 	@Override
 	public SPMap produce() throws SPFormatException {
-		throw new NotImplementedException("Placeholder");
+		final SPMap map = new SPMap(Integer.parseInt(getProperty("rows")),
+				Integer.parseInt(getProperty("columns")));
+		for (AbstractXMLNode node : this) {
+			if (node instanceof PlayerNode) {
+				map.addPlayer(((PlayerNode) node).produce());
+			} else if (node instanceof TileNode) {
+				map.addTile(((TileNode) node).produce());
+			} else {
+				throw new SPFormatException("Unsupported direct child of <map>", node.getLine());
+			}
+		}
+		return map;
 	}
 
 }
