@@ -1,7 +1,5 @@
 package controller.map.simplexml;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import model.viewer.River;
 
 /**
@@ -21,8 +19,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	 */
 	@Override
 	public River produce() throws SPFormatException {
-		throw new NotImplementedException(
-				"River production not implemented yet.");
+		return River.getRiver(getProperty("direction")); 
 	}
 
 	/**
