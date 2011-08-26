@@ -40,6 +40,7 @@ public class TileNode extends AbstractChildNode<Tile> {
 						.produce(players));
 			}
 		}
+		tile.setTileText(sbuild.toString().trim());
 		return tile;
 	}
 	/**
@@ -67,5 +68,15 @@ public class TileNode extends AbstractChildNode<Tile> {
 					getLine());
 		}
 	}
-
+	/**
+	 * The text associated with the tile.
+	 */
+	private final StringBuilder sbuild = new StringBuilder("");
+	/**
+	 * Add text to the tile.
+	 * @param text the text to add
+	 */
+	public void addText(final String text) {
+		sbuild.append(text);
+	}
 }
