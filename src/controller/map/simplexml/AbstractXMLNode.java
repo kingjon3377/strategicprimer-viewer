@@ -71,12 +71,11 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 */
 	public final void canonicalize() {
 		for (AbstractXMLNode node : children) {
+			node.canonicalize();
 			if (node instanceof SkippableNode) {
 				children.addAll(node.children);
 				children.remove(node);
-			} else {
-				node.canonicalize();
-			}
+			} 
 		}
 	}
 }
