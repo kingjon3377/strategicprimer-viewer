@@ -1,8 +1,10 @@
 package controller.map.simplexml;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * A class representing an XML tag and its descendants---except not necessarily
@@ -16,7 +18,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	/**
 	 * The children of this node.
 	 */
-	private final Set<AbstractXMLNode> children = new CopyOnWriteArraySet<AbstractXMLNode>();
+	private final Set<AbstractXMLNode> children = new HashSet<AbstractXMLNode>();
 	/**
 	 * The line number the tag was on.
 	 */
@@ -70,12 +72,16 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 * validity-checking should be side-effect-free.
 	 */
 	public final void canonicalize() {
+		final List<AbstractXMLNode> nodesToRemove = new LinkedList<AbstractXMLNode>();
+		final List<AbstractXMLNode> nodesToAdd = new LinkedList<AbstractXMLNode>();
 		for (AbstractXMLNode node : children) {
 			node.canonicalize();
 			if (node instanceof SkippableNode) {
-				children.addAll(node.children);
-				children.remove(node);
+				nodesToAdd.addAll(node.children);
+				nodesToRemove.add(node);
 			} 
 		}
+		children.removeAll(nodesToRemove);
+		children.addAll(nodesToAdd);
 	}
 }
