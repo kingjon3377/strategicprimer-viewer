@@ -29,6 +29,7 @@ import controller.map.MapReader.Tag;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class TileReader {
 	/**
 	 * The "name" attribute.

@@ -3,8 +3,6 @@ package controller.map;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,9 +14,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.viewer.Player;
 import model.viewer.SPMap;
-
-import org.xml.sax.SAXException;
-
 import util.IteratorWrapper;
 
 /**
@@ -28,6 +23,7 @@ import util.IteratorWrapper;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class MapReader {
 	/**
 	 * Error message for unexpected tag.
@@ -299,57 +295,6 @@ public class MapReader {
 		return Tag.fromString(startElement.getName().getLocalPart());
 	}
 
-	/**
-	 * Driver method to compare the results of this reader with those of the
-	 * legacy reader.
-	 * 
-	 * @param args
-	 *            The maps to test the two readers on.
-	 */
-	// ESCA-JAVA0266:
-	@SuppressWarnings("deprecation")
-	public static void main(final String[] args) {
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
-				System.out));
-		for (final String arg : args) {
-			try {
-				final long startOne = System.nanoTime();
-				final SPMap map1 = new XMLReader().getMap(arg); // NOPMD;
-				final long endOne = System.nanoTime();
-				final long startTwo = System.nanoTime();
-				final SPMap map2 = new MapReader().readMap(arg); // NOPMD;
-				final long endTwo = System.nanoTime();
-				if (map1.equals(map2)) {
-					out.println("Readers produce identical results");
-				} else {
-					out.print("Readers differ on ");
-					out.println(arg);
-				}
-				out.print("Old method took ");
-				out.print((endOne - startOne));
-				out.println(" time-units;");
-				out.print("New method took ");
-				out.print((endTwo - startTwo));
-				out.println(" time-units.");
-			} catch (final SAXException e) {
-				LOGGER.log(Level.SEVERE, "SAX exception when parsing " + arg, e);
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error while parsing " + arg, e);
-			} catch (final XMLStreamException e) {
-				LOGGER.log(Level.SEVERE,
-						"XMLStreamException (probably badly formed input) in "
-								+ arg, e);
-			} catch (final NumberFormatException e) {
-				LOGGER.log(Level.SEVERE,
-						"Non-numeric when numeric data expected in " + arg, e);
-			} catch (final IllegalStateException e) {
-				LOGGER.log(Level.SEVERE, "Unexpected state in " + arg, e);
-			} catch (MapVersionException e) {
-				LOGGER.log(Level.SEVERE, "Map version too old for new-style reader");
-			}
-		}
-		out.close();
-	}
 	/**
 	 * An exception to throw when the map's version is too old.
 	 */

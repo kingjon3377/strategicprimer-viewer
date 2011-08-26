@@ -12,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
  * @author kingjon
  * 
  */
+@Deprecated
 public class XMLHelper {
 	/**
 	 * Error message for unexpected tag.
