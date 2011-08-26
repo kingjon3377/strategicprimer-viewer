@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -39,11 +38,6 @@ public class MapPanel extends JPanel {
 	 * The secondary map.
 	 */
 	private SPMap secondaryMap;
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(MapPanel.class
-			.getName());
 
 	/**
 	 * Constructor.
@@ -160,8 +154,6 @@ public class MapPanel extends JPanel {
 	public final void loadMap(final SPMap newMap, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
 		if (newMap != null) {
-			LOGGER.info("Started loading panel");
-			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			selListener.clearSelection();
 			removeAll();
 			locCache.clear();
@@ -183,14 +175,9 @@ public class MapPanel extends JPanel {
 						newMap.cols(), maxCol + 1); col++) {
 					addTile(row, col, newMap.getTile(row, col));
 				}
-				LOGGER.fine("Added row ");
-				LOGGER.fine(Integer.toString(row));
-				LOGGER.fine("\n");
 			}
 			map = newMap;
 			changeListener.setMap(map);
-			LOGGER.info("Finished loading panel");
-			LOGGER.info(Long.toString(System.currentTimeMillis()));
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
