@@ -88,6 +88,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	private final JFileChooser chooser = new JFileChooser(".");
 	/**
 	 * A thread to switch the maps.
+	 * @author Jonathan Lovelace
 	 */
 	private static class MapSwitcher extends Thread {
 		/**

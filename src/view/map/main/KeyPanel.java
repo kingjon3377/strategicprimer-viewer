@@ -30,6 +30,7 @@ public class KeyPanel extends JPanel {
 	}
 	/**
 	 * An element of the key.
+	 * @author Jonathan Lovelace
 	 */
 	private static final class KeyElement extends JPanel {
 		/**
