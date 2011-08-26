@@ -55,7 +55,7 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 		final AbstractEvent event; // NOPMD
 		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {
 			event = new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if ("caves".equals(getProperty(KIND_PROPERTY))) {
+		} else if ("cave".equals(getProperty(KIND_PROPERTY))) {
 			event = new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("city".equals(getProperty(KIND_PROPERTY))) {
 			event = new CityEvent(
