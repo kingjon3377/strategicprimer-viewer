@@ -54,4 +54,11 @@ public final class NothingEvent extends AbstractEvent {
 	public String getText() {
 		return "Nothing interesting here ...";
 	}
+	/**
+	 * @return a string representation of the event
+	 */
+	@Override
+	public String toString() {
+		return "A nothing event.";
+	}
 }

@@ -42,5 +42,26 @@ public final class BattlefieldEvent extends AbstractEvent {
 	public String getText() {
 		return "There are the signs of a long-ago battle here.";
 	}
-
+	/**
+	 * @param obj an object
+	 * @return whether it's an identical BattlefieldEvent.
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || (obj instanceof BattlefieldEvent && ((BattlefieldEvent) obj).dc == dc);
+	}
+	/**
+	 * @return a hash value for the event.
+	 */
+	@Override
+	public int hashCode() {
+		return dc;
+	}
+	/**
+	 * @return a string representation of the event
+	 */
+	@Override
+	public String toString() {
+		return "An ancient battlefield with DC " + dc;
+	}
 }

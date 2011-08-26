@@ -144,5 +144,30 @@ public final class MineralEvent extends AbstractEvent {
 		}
 		return build.toString();
 	}
-
+	/**
+	 * @param obj an object
+	 * @return whether it's an identical event
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || (obj instanceof MineralEvent
+				&& ((MineralEvent) obj).mineral.equals(mineral)
+				&& ((MineralEvent) obj).exposed == exposed
+				&& ((MineralEvent) obj).dc == dc);
+	}
+	/**
+	 * @return a hash value for the event
+	 */
+	@Override
+	public int hashCode() {
+		return mineral.hashCode() + Boolean.valueOf(exposed).hashCode() << 3 + dc << 5;
+	}
+	/**
+	 * @return a string representation of the event
+	 */
+	@Override
+	public String toString() {
+		return "A " + mineral.toString() + " deposit, "
+				+ (exposed ? "exposed" : "not exposed") + ", DC " + dc;
+	}
 }

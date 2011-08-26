@@ -307,5 +307,31 @@ public abstract class AbstractEvent implements TileFixture {
 			builder.append(TownStatus.Active.equals(status) ? " (roll it up)" : '.');
 			return builder.toString();
 		}
+		/**
+		 * @param obj an object
+		 * @return whether it's an identical event
+		 */
+		@Override
+		public boolean equals(final Object obj) {
+			return this == obj || (obj instanceof AbstractTownEvent
+					&& ((AbstractTownEvent) obj).kind().equals(kind())
+					&& ((AbstractTownEvent) obj).size.equals(size) 
+					&& ((AbstractTownEvent) obj).status.equals(status)
+					&& ((AbstractTownEvent) obj).getDC() == getDC());
+		}
+		/**
+		 * @return a hash value for the object
+		 */
+		@Override
+		public int hashCode() {
+			return kind().hashCode() + size.hashCode() << 4 + status.hashCode() << 8 + getDC() << 12; 
+		}
+		/**
+		 * @return a string representation of the event
+		 */
+		@Override
+		public String toString() {
+			return "A " + size.toString() + status.toString() + kind().toString() + " of DC " + getDC();
+		}
 	}
 }

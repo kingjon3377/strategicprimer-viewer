@@ -107,5 +107,28 @@ public final class StoneEvent extends AbstractEvent {
 		build.append(" deposit here.");
 		return build.toString();
 	}
-
+	/**
+	 * @param obj an object
+	 * @return whether it's an identical event
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || (obj instanceof StoneEvent
+				&& ((StoneEvent) obj).stone.equals(stone)
+				&& ((StoneEvent) obj).dc == dc);
+	}
+	/**
+	 * @return a hash value for the event
+	 */
+	@Override
+	public int hashCode() {
+		return stone.hashCode() + dc << 3;
+	}
+	/**
+	 * @return a string representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "A " + stone.toString() + " deposit, of DC " + dc;
+	}
 }

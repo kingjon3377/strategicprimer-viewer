@@ -42,4 +42,26 @@ public final class CaveEvent extends AbstractEvent {
 		return "There are extensive caves beneath this tile.";
 	}
 
+	/**
+	 * @param obj an object
+	 * @return whether it's an identical CaveEvent.
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || (obj instanceof CaveEvent && ((CaveEvent) obj).dc == dc);
+	}
+	/**
+	 * @return a hash value for the event.
+	 */
+	@Override
+	public int hashCode() {
+		return dc;
+	}
+	/**
+	 * @return a string representation of the event
+	 */
+	@Override
+	public String toString() {
+		return "Caves with DC " + dc;
+	}
 }
