@@ -1,8 +1,8 @@
 package controller.map.simplexml;
 
 import model.viewer.Tile;
-
-import org.apache.commons.lang.NotImplementedException;
+import model.viewer.TileFixture;
+import model.viewer.TileType;
 /**
  * A Node to represent a Tile.
  * @author Jonathan Lovelace
@@ -14,9 +14,21 @@ public class TileNode extends AbstractChildNode<Tile> {
 	 * @return the equivalent Tile.
 	 * @throws SPFormatException if we contain invalid data.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Tile produce() throws SPFormatException {
-		throw new NotImplementedException("Tile production not yet implemented.");
+		final Tile tile = new Tile(Integer.parseInt(getProperty("row")),
+				Integer.parseInt(getProperty("column")),
+				TileType.getTileType(getProperty("type")));
+		for (AbstractXMLNode node : this) {
+			if (node instanceof RiverNode) {
+				tile.addRiver(((RiverNode) node).produce());
+			} else if (node instanceof FortressNode || node instanceof UnitNode
+					|| node instanceof EventNode) {
+				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node).produce());
+			}
+		}
+		return tile;
 	}
 	/**
 	 * Check whether we contain invalid data. A Tile is valid if it has row, column, 
