@@ -43,6 +43,7 @@ public class SimpleXMLReader {
 				stack.pop();
 			}
 		}
+		root.canonicalize();
 		root.checkNode();
 		return root.getMapNode().produce();
 	}
