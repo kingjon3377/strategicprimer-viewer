@@ -2,8 +2,6 @@ package controller.map.simplexml;
 
 import model.viewer.SPMap;
 
-import org.apache.commons.lang.NotImplementedException;
-
 /**
  * A node generated from the <map> tag.
  * @author Jonathan Lovelace
