@@ -67,7 +67,7 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 	 * it has no children (thus towns, etc., shouldn't be Events much longer) and 
 	 * has a DC property. Additionally, town-related events must have size and 
 	 * status properties, minerals must have mineral and exposed properties, and 
-	 * stone events must have stone and exposed properties. For forward compatibility, 
+	 * stone events must have a "stone" property. For forward compatibility, 
 	 * we do not object to unknown properties.   
 	 * 
 	 * @throws SPFormatException if it contains any invalid data.
@@ -90,9 +90,9 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 						"Mineral events must have \"mineral\" and \"exposed\" properties.",
 						getLine());
 			} else if ("stone".equals(getProperty(KIND_PROPERTY))
-					&& (!hasProperty("stone") || !hasProperty("exposed"))) {
+					&& !hasProperty("stone")) {
 				throw new SPFormatException(
-						"Stone events must have \"stone\" and \"exposed\" properties.",
+						"Stone events must have \"stone\" property.",
 						getLine());
 			}
 		} else {
