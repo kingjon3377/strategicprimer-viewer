@@ -77,7 +77,7 @@ public class SPMap {
 	 *            the tile to add
 	 */
 	public final void addTile(final Tile tile) {
-		tiles.put(new Point(tile.getRow(), tile.getCol()), tile);
+		tiles.put(PointFactory.point(tile.getRow(), tile.getCol()), tile);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class SPMap {
 	 * @return the tile at those coordinates
 	 */
 	public final Tile getTile(final int row, final int col) {
-		return tiles.get(new Point(row, col));
+		return tiles.get(PointFactory.point(row, col));
 	}
 
 	/**

@@ -3,7 +3,7 @@ package view.map.main;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
-import model.viewer.Point;
+import model.viewer.PointFactory;
 
 /**
  * A class to keep track of which tile is selected.
@@ -77,7 +77,7 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void up() { // NOPMD
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(new Point(
+			final GUITile newTile = viewer.getTile(PointFactory.point(
 					((GUITile) selection()).getTile().getRow() - 1,
 					((GUITile) selection()).getTile().getCol())); 
 			setSelection(newTile);
@@ -89,7 +89,7 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void left() {
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(new Point(
+			final GUITile newTile = viewer.getTile(PointFactory.point(
 					((GUITile) selection()).getTile().getRow(),
 					((GUITile) selection()).getTile().getCol() - 1)); 
 			setSelection(newTile);
@@ -101,7 +101,7 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void down() { // NOPMD
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(new Point(
+			final GUITile newTile = viewer.getTile(PointFactory.point(
 					((GUITile) selection()).getTile().getRow() + 1,
 					((GUITile) selection()).getTile().getCol())); 
 			setSelection(newTile);
@@ -113,7 +113,7 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void right() {
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(new Point(
+			final GUITile newTile = viewer.getTile(PointFactory.point(
 					((GUITile) selection()).getTile().getRow(),
 					((GUITile) selection()).getTile().getCol() + 1)); 
 			setSelection(newTile);

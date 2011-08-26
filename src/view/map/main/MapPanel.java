@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import model.viewer.Point;
+import model.viewer.PointFactory;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import util.Pair;
@@ -225,13 +226,13 @@ public class MapPanel extends JPanel {
 				nullCache.put(Pair.of(row, col), new NullGUITile(row, col));
 			}
 			addTile(nullCache.get(Pair.of(row, col)));
-			locCache.put(new Point(row, col), nullCache.get(Pair.of(row, col)));
+			locCache.put(PointFactory.point(row, col), nullCache.get(Pair.of(row, col)));
 		} else {
 			if (!tileCache.containsKey(tile)) {
 				tileCache.put(tile, new GUITile(tile));
 			}
 			addTile(tileCache.get(tile));
-			locCache.put(new Point(row, col), tileCache.get(tile));
+			locCache.put(PointFactory.point(row, col), tileCache.get(tile));
 		}
 	}
 
