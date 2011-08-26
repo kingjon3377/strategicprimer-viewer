@@ -3,8 +3,6 @@ package controller.map.simplexml;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.NotImplementedException;
-
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
  * the tags that represent them.
@@ -200,7 +198,8 @@ public final class NodeFactory { // NOPMD
 			node = new RiverNode();
 			break;
 		case Skippable:
-			throw new NotImplementedException("Skippable not implemented yet");
+			node = new SkippableNode();
+			break;
 		case Stone:
 			node = new EventNode();
 			node.addProperty(EVENT_KIND_PROP, "stone");
