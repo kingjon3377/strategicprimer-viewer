@@ -14,7 +14,7 @@ import model.viewer.SPMap;
 import model.viewer.TileType;
 import view.util.DriverQuit;
 import controller.map.MapReader;
-import controller.map.MapReader.MapVersionException;
+import controller.map.MapVersionException;
 
 /**
  * A CLI to create a colored text version of the map from the XML, blinking a

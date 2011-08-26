@@ -12,7 +12,6 @@ import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
 import view.util.DriverQuit;
-import controller.map.MapReader.MapVersionException;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.

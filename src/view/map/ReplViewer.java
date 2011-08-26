@@ -15,7 +15,7 @@ import model.viewer.Tile;
 import model.viewer.TileFixture;
 import view.util.DriverQuit;
 import controller.map.MapReader;
-import controller.map.MapReader.MapVersionException;
+import controller.map.MapVersionException;
 
 /**
  * A viewer to let the user explore the map without being overwhelmed by

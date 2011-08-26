@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import controller.map.MapReader.MapVersionException;
 
 import model.map.TileType;
 import model.viewer.SPMap;

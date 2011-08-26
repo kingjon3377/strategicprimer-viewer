@@ -20,7 +20,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.viewer.SPMap;
 import util.IteratorWrapper;
 import controller.map.MapReader;
-import controller.map.MapReader.MapVersionException;
+import controller.map.MapVersionException;
 
 /**
  * An XML-map reader that just converts the XML into XMLNodes, which then

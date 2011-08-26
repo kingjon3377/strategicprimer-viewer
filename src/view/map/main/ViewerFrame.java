@@ -26,7 +26,7 @@ import model.viewer.SPMap;
 import view.util.DriverQuit;
 import view.util.SizeLimiter;
 import controller.map.MapReader;
-import controller.map.MapReader.MapVersionException;
+import controller.map.MapVersionException;
 import controller.map.XMLWriter;
 
 /**

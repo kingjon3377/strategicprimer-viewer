@@ -14,7 +14,7 @@ import model.viewer.SPMap;
 import model.viewer.Tile;
 import view.util.DriverQuit;
 import controller.map.MapReader;
-import controller.map.MapReader.MapVersionException;
+import controller.map.MapVersionException;
 
 /**
  * A driver for running exploration results, etc., using the new model.
