@@ -5,6 +5,7 @@ import model.viewer.PlayerCollection;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
+import model.viewer.Unit;
 /**
  * A Node to represent a Tile.
  * @author Jonathan Lovelace
@@ -30,7 +31,11 @@ public class TileNode extends AbstractChildNode<Tile> {
 				final Fortress fort = ((FortressNode) node).produce(players);
 				fort.setLocation(tile);
 				tile.addFixture(fort);
-			} else if (node instanceof UnitNode || node instanceof EventNode) {
+			} else if (node instanceof UnitNode) { 
+				final Unit unit = ((UnitNode) node).produce(players);
+				unit.setLocation(tile);
+				tile.addFixture(unit);
+			} else if (node instanceof EventNode) {
 				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node)
 						.produce(players));
 			}

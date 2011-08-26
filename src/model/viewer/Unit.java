@@ -10,7 +10,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * The tile the unit is on.
 	 */
-	private final Tile location;
+	private Tile location;
 	/**
 	 * The player that owns the unit.
 	 */
@@ -41,7 +41,22 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	 */
 	public Unit(final Tile loc, final Player unitOwner, final String unitType,
 			final String unitName) {
+		this(unitOwner, unitType, unitName);
 		location = loc;
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param unitOwner
+	 *            the player that owns the unit
+	 * @param unitType
+	 *            the type of unit
+	 * @param unitName
+	 *            the name of this unit
+	 */
+	public Unit(final Player unitOwner, final String unitType,
+			final String unitName) {
 		owner = unitOwner;
 		type = unitType;
 		name = unitName;
@@ -119,5 +134,11 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	@Override
 	public int compareTo(final Unit unit) {
 		return Integer.valueOf(hashCode()).compareTo(unit.hashCode());
+	}
+	/**
+	 * @param loc the location of the unit.
+	 */
+	public void setLocation(final Tile loc) {
+		location = loc;
 	}
 }
