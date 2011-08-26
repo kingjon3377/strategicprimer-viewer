@@ -213,7 +213,8 @@ public final class NodeFactory { // NOPMD
 			node.addProperty(EVENT_KIND_PROP, "town");
 			break;
 		case Unit:
-			throw new NotImplementedException("Unit not implemented yet");
+			node = new UnitNode();
+			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
 		}
