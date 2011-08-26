@@ -13,8 +13,8 @@ import model.exploration.ExplorationRunner;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import view.util.DriverQuit;
-import controller.map.MapReader;
-import controller.map.MapVersionException;
+import controller.map.simplexml.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A driver for running exploration results, etc., using the new model.
@@ -254,7 +254,7 @@ public final class ExplorationCLI {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ExplorationCLI(new MapReader().readMap(args[0]));
+			new ExplorationCLI(new SimpleXMLReader().readMap(args[0]));
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			DriverQuit.quit(1);
@@ -263,10 +263,10 @@ public final class ExplorationCLI {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			DriverQuit.quit(2);
 			return; // NOPMD;
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version too old", e);
-			DriverQuit.quit(3);
-			return; // NOPMD
+		} catch (SPFormatException e) {
+			LOGGER.log(Level.SEVERE, "Map contains invalid data", e);
+			DriverQuit.quit(2);
+			return; // NOPMD;
 		}
 	}
 

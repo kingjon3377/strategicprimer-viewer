@@ -14,8 +14,8 @@ import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import view.util.DriverQuit;
-import controller.map.MapReader;
-import controller.map.MapVersionException;
+import controller.map.simplexml.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A viewer to let the user explore the map without being overwhelmed by
@@ -127,7 +127,7 @@ public final class ReplViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ReplViewer(new MapReader().readMap(args[0]),
+			new ReplViewer(new SimpleXMLReader().readMap(args[0]),
 					Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
@@ -137,8 +137,8 @@ public final class ReplViewer {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			DriverQuit.quit(2);
 			return; // NOPMD;
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version too old", e);
+		} catch (SPFormatException e) {
+			LOGGER.log(Level.SEVERE, "Map contained invalid data", e);
 			DriverQuit.quit(3);
 			return; // NOPMD
 		}

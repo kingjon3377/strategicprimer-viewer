@@ -13,8 +13,8 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.SPMap;
 import model.viewer.TileType;
 import view.util.DriverQuit;
-import controller.map.MapReader;
-import controller.map.MapVersionException;
+import controller.map.simplexml.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A CLI to create a text version of the map from the XML, coloring a specified
@@ -92,7 +92,7 @@ public final class TerminalViewer {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new TerminalViewer(new MapReader().readMap(args[0]),
+			new TerminalViewer(new SimpleXMLReader().readMap(args[0]),
 					Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
@@ -102,8 +102,8 @@ public final class TerminalViewer {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			DriverQuit.quit(2);
 			return; // NOPMD;
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version too old", e);
+		} catch (SPFormatException e) {
+			LOGGER.log(Level.SEVERE, "Map contained invalid data", e);
 			DriverQuit.quit(3);
 			return; // NOPMD
 		}

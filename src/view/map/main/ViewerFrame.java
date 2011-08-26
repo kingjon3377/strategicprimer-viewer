@@ -25,9 +25,9 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.SPMap;
 import view.util.DriverQuit;
 import view.util.SizeLimiter;
-import controller.map.MapReader;
-import controller.map.MapVersionException;
 import controller.map.XMLWriter;
+import controller.map.simplexml.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * The main driver class for the viewer app.
@@ -43,7 +43,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * Error message when the map version is too old.
 	 */
-	private static final String OLD_VERSION_ERROR = "Map version too old";
+	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
 	 * Command to load the secondary map.
 	 */
@@ -161,9 +161,9 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(null, "I/O error reading " + filename);
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, OLD_VERSION_ERROR, e);
-			showErrorDialog(null, OLD_VERSION_ERROR);
+		} catch (SPFormatException e) {
+			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
+			showErrorDialog(null, INV_DATA_ERROR);
 		}
 	}
 
@@ -176,11 +176,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 *             on I/O error
 	 * @throws XMLStreamException
 	 *             on XML reading error
-	 * @throws MapVersionException
-	 *             if map version too old
+	 * @throws SPFormatException
+	 *             if the map contained invalid data
 	 */
 	private ViewerFrame(final String filename) throws XMLStreamException,
-			IOException, MapVersionException {
+			IOException, SPFormatException {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -188,7 +188,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		chooser.setFileFilter(new MapFileFilter());
 		createMenu();
 		final DetailPanel details = new DetailPanel();
-		mapPanel = new MapPanel(new MapReader().readMap(filename), details);
+		mapPanel = new MapPanel(new SimpleXMLReader().readMap(filename), details);
 		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
@@ -319,7 +319,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private SPMap readMap(final String filename) {
 		try {
-			return new MapReader().readMap(filename); // NOPMD
+			return new SimpleXMLReader().readMap(filename); // NOPMD
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
@@ -332,9 +332,9 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			showErrorDialog(this, "I/O error reading " + filename);
 			return null; // NOPMD
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, OLD_VERSION_ERROR, e);
-			showErrorDialog(this, OLD_VERSION_ERROR);
+		} catch (SPFormatException e) {
+			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
+			showErrorDialog(this, INV_DATA_ERROR);
 			return null;
 		}
 	}

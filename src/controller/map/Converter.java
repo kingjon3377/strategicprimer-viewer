@@ -9,9 +9,10 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-
 import model.map.TileType;
 import model.viewer.SPMap;
+import controller.map.simplexml.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A program to create a new-style map from an old-style map.
@@ -356,7 +357,7 @@ public final class Converter {
 	public static void main(final String[] args) {
 		try {
 			final Converter conv = new Converter(
-					new MapReader().readMap(args[0]));
+					new SimpleXMLReader().readMap(args[0]));
 			int changes = 1;
 			int iterations = 0;
 			while (changes != 0 && iterations < 100000) {
@@ -370,8 +371,8 @@ public final class Converter {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version too old", e);
+		} catch (SPFormatException e) {
+			LOGGER.log(Level.SEVERE, "Map contained invalid data", e);
 		}
 	}
 }

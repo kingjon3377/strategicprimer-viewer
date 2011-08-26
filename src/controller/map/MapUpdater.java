@@ -12,6 +12,8 @@ import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileType;
 import view.util.DriverQuit;
+import controller.map.simplexml.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
@@ -122,7 +124,7 @@ public class MapUpdater {
 	 */
 	private static SPMap loadMap(final String filename) {
 		try {
-			return new MapReader().readMap(filename);
+			return new SimpleXMLReader().readMap(filename);
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, buildString("File ", filename, " not found"), e);
 			DriverQuit.quit(1);
@@ -135,8 +137,8 @@ public class MapUpdater {
 			LOGGER.log(Level.SEVERE, buildString("I/O error processing ", filename), e);
 			DriverQuit.quit(3);
 			throw PASSED_EXIT;
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, buildString(filename, " map version too old"), e);
+		} catch (SPFormatException e) {
+			LOGGER.log(Level.SEVERE, buildString(filename, " contained invalid data"), e);
 			DriverQuit.quit(4);
 			throw PASSED_EXIT;
 		}
