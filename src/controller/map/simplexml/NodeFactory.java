@@ -194,7 +194,8 @@ public final class NodeFactory { // NOPMD
 			node.addProperty(EVENT_KIND_PROP, "mineral");
 			break;
 		case Player:
-			throw new NotImplementedException("Player not implemented yet");
+			node = new PlayerNode();
+			break;
 		case River:
 			node = new RiverNode();
 			break;
