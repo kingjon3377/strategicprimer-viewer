@@ -1,5 +1,6 @@
 package controller.map.simplexml;
 
+import model.viewer.Fortress;
 import model.viewer.PlayerCollection;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
@@ -25,9 +26,13 @@ public class TileNode extends AbstractChildNode<Tile> {
 		for (AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
 				tile.addRiver(((RiverNode) node).produce(players));
-			} else if (node instanceof FortressNode || node instanceof UnitNode
-					|| node instanceof EventNode) {
-				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node).produce(players));
+			} else if (node instanceof FortressNode) {
+				final Fortress fort = ((FortressNode) node).produce(players);
+				fort.setLocation(tile);
+				tile.addFixture(fort);
+			} else if (node instanceof UnitNode || node instanceof EventNode) {
+				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node)
+						.produce(players));
 			}
 		}
 		return tile;

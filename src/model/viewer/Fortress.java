@@ -25,7 +25,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	/**
 	 * The tile the fortress is on.
 	 */
-	private final Tile tile;
+	private Tile tile;
 	/**
 	 * The units in the fortress.
 	 */
@@ -42,7 +42,18 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 *            the name of the fortress
 	 */
 	public Fortress(final Tile parentTile, final Player fortOwner, final String fortName) {
+		this(fortOwner, fortName);
 		tile = parentTile;
+	}
+	/**
+	 * Constructor.
+	 * 
+	 * @param fortOwner
+	 *            the player that owns the fortress
+	 * @param fortName
+	 *            the name of the fortress
+	 */
+	public Fortress(final Player fortOwner, final String fortName) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<Unit>();
@@ -148,5 +159,11 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	@Override
 	public int compareTo(final Fortress fort) {
 		return Integer.valueOf(hashCode()).compareTo(fort.hashCode());
+	}
+	/**
+	 * @param loc the location of the fortress.
+	 */
+	public void setLocation(final Tile loc) {
+		tile = loc;
 	}
 }

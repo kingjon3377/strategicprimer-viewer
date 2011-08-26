@@ -2,8 +2,6 @@ package controller.map.simplexml;
 
 import model.viewer.Fortress;
 import model.viewer.PlayerCollection;
-
-import org.apache.commons.lang.NotImplementedException;
 /**
  * A node to produce a Fortress.
  * @author Jonathan Lovelace
@@ -17,7 +15,18 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 	 */
 	@Override
 	public Fortress produce(final PlayerCollection players) throws SPFormatException {
-		throw new NotImplementedException("Fortress production not implemented yet");
+		final Fortress fort = new Fortress(
+				players.getPlayer(hasProperty("owner") ? Integer
+						.parseInt(getProperty("owner")) : -1),
+				hasProperty("name") ? getProperty("name") : "");
+		for (final AbstractXMLNode node : this) {
+			if (node instanceof UnitNode) {
+				fort.addUnit(((UnitNode) node).produce(players));
+			} else {
+				throw new SPFormatException("Fortress should contain only units", node.getLine());
+			}
+		}
+		return fort;
 	}
 	/**
 	 * Check whether we contain valid data. A Fortress contains valid
