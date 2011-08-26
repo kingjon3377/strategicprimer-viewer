@@ -3,6 +3,8 @@ package controller.map.simplexml;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.viewer.PlayerCollection;
+
 /**
  * A class representing an XML tag and its descendants.
  * @param <T> the business-logic type this will eventually get turned into.
@@ -38,8 +40,9 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	}
 	/**
 	 * Convert the Node to its equivalent business-logic type.
+	 * @param players the players in the map. May be null for Nodes that don't use it.
 	 * @return the business-logic object represented by the node.
 	 * @throws SPFormatException if the data isn't legal.
 	 */
-	public abstract T produce() throws SPFormatException;
+	public abstract T produce(final PlayerCollection players) throws SPFormatException;
 }

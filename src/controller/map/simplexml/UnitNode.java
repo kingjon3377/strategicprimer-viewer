@@ -1,5 +1,6 @@
 package controller.map.simplexml;
 
+import model.viewer.PlayerCollection;
 import model.viewer.Unit;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -15,7 +16,7 @@ public class UnitNode extends AbstractChildNode<Unit> {
 	 * @throws SPFormatException if we contain invalid data.
 	 */
 	@Override
-	public Unit produce() throws SPFormatException {
+	public Unit produce(final PlayerCollection players) throws SPFormatException {
 		throw new NotImplementedException("Unit production not yet implemented.");
 	}
 	/**

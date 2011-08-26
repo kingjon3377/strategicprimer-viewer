@@ -1,5 +1,6 @@
 package controller.map.simplexml;
 
+import model.viewer.PlayerCollection;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
@@ -11,21 +12,22 @@ import model.viewer.TileType;
 public class TileNode extends AbstractChildNode<Tile> {
 	/**
 	 * Produce the equivalent Tile.
+	 * @param players the players in the map
 	 * @return the equivalent Tile.
 	 * @throws SPFormatException if we contain invalid data.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Tile produce() throws SPFormatException {
+	public Tile produce(final PlayerCollection players) throws SPFormatException {
 		final Tile tile = new Tile(Integer.parseInt(getProperty("row")),
 				Integer.parseInt(getProperty("column")),
 				TileType.getTileType(getProperty("type")));
 		for (AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
-				tile.addRiver(((RiverNode) node).produce());
+				tile.addRiver(((RiverNode) node).produce(players));
 			} else if (node instanceof FortressNode || node instanceof UnitNode
 					|| node instanceof EventNode) {
-				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node).produce());
+				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node).produce(players));
 			}
 		}
 		return tile;

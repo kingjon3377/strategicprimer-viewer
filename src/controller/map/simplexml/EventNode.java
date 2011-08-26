@@ -1,5 +1,6 @@
 package controller.map.simplexml;
 
+import model.viewer.PlayerCollection;
 import model.viewer.events.AbstractEvent;
 import model.viewer.events.AbstractEvent.TownSize;
 import model.viewer.events.AbstractEvent.TownStatus;
@@ -46,11 +47,12 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * Produce the equivalent Event.
+	 * @param players ignored
 	 * @return the equivalent event
 	 * @throws SPFormatException if this Node contains invalid data.
 	 */
 	@Override
-	public AbstractEvent produce() throws SPFormatException {
+	public AbstractEvent produce(final PlayerCollection players) throws SPFormatException {
 		// ESCA-JAVA0177:
 		final AbstractEvent event; // NOPMD
 		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {

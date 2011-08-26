@@ -1,6 +1,7 @@
 package controller.map.simplexml;
 
 import model.viewer.Fortress;
+import model.viewer.PlayerCollection;
 
 import org.apache.commons.lang.NotImplementedException;
 /**
@@ -10,11 +11,12 @@ import org.apache.commons.lang.NotImplementedException;
 public class FortressNode extends AbstractChildNode<Fortress> {
 	/**
 	 * Produce the equivalent fortress.
+	 * @param players the players in the map
 	 * @return the equivalent fortress.
 	 * @throws SPFormatException if this node contains invalid data.
 	 */
 	@Override
-	public Fortress produce() throws SPFormatException {
+	public Fortress produce(final PlayerCollection players) throws SPFormatException {
 		throw new NotImplementedException("Fortress production not implemented yet");
 	}
 	/**

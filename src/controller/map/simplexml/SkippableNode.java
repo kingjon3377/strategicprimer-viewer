@@ -1,5 +1,7 @@
 package controller.map.simplexml;
 
+import model.viewer.PlayerCollection;
+
 /**
  * A Node for tags we'd rather skip. This is an AbstractChildNode because
  * NodeFactory needs to be able to return one; the type parameter doesn't matter
@@ -14,14 +16,14 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	/**
 	 * Throws an exception, because you should move all children from this to
 	 * its parent and then remove this node instead.
-	 * 
+	 * @param players ignored
 	 * @return nothing
 	 * @throws SPFormatException
 	 *             never
 	 */
 	@Deprecated
 	@Override
-	public SkippableNode produce() throws SPFormatException {
+	public SkippableNode produce(final PlayerCollection players) throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}
 

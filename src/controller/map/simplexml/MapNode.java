@@ -1,5 +1,6 @@
 package controller.map.simplexml;
 
+import model.viewer.PlayerCollection;
 import model.viewer.SPMap;
 
 /**
@@ -36,17 +37,18 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	}
 	/**
 	 * @return the map the XML represented
+	 * @param players will be null, and is ignored
 	 * @throws SPFormatException if something's wrong with the format.
 	 */
 	@Override
-	public SPMap produce() throws SPFormatException {
+	public SPMap produce(final PlayerCollection players) throws SPFormatException {
 		final SPMap map = new SPMap(Integer.parseInt(getProperty("rows")),
 				Integer.parseInt(getProperty("columns")));
 		for (AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
-				map.addPlayer(((PlayerNode) node).produce());
+				map.addPlayer(((PlayerNode) node).produce(null));
 			} else if (node instanceof TileNode) {
-				map.addTile(((TileNode) node).produce());
+				map.addTile(((TileNode) node).produce(map.getPlayers()));
 			} else {
 				throw new SPFormatException("Unsupported direct child of <map>", node.getLine());
 			}

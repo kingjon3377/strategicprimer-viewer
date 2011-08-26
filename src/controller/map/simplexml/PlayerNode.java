@@ -1,6 +1,7 @@
 package controller.map.simplexml;
 
 import model.viewer.Player;
+import model.viewer.PlayerCollection;
 /**
  * A Node to represent a Player.
  * @author Jonathan Lovelace
@@ -9,11 +10,12 @@ import model.viewer.Player;
 public class PlayerNode extends AbstractChildNode<Player> {
 	/**
 	 * Produce the equivalent Player.
+	 * @param players ignored
 	 * @return the equivalent Player.
 	 * @throws SPFormatException if we contain invalid data.
 	 */
 	@Override
-	public Player produce() throws SPFormatException {
+	public Player produce(final PlayerCollection players) throws SPFormatException {
 		return new Player(Integer.parseInt(getProperty("number")), getProperty("code_name"));
 	}
 	/**

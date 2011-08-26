@@ -1,5 +1,6 @@
 package controller.map.simplexml;
 
+import model.viewer.PlayerCollection;
 import model.viewer.River;
 
 /**
@@ -12,13 +13,13 @@ public class RiverNode extends AbstractChildNode<River> {
 	/**
 	 * We don't *promise* to throw an exception here if there are unexpected
 	 * children---still need to call checkNode().
-	 * 
+	 * @param players ignored
 	 * @return a River equivalent to this.
 	 * @throws SPFormatException
 	 *             if this has unexpected children or doesn't have needed data
 	 */
 	@Override
-	public River produce() throws SPFormatException {
+	public River produce(final PlayerCollection players) throws SPFormatException {
 		return River.getRiver(getProperty("direction")); 
 	}
 

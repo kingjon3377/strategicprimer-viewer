@@ -54,7 +54,7 @@ public class SimpleXMLReader {
 		}
 		root.canonicalize();
 		root.checkNode();
-		return root.getMapNode().produce();
+		return root.getMapNode().produce(null);
 	}
 	/**
 	 * Turn a tag and its contents (properties) into a Node.
