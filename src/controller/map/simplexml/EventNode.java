@@ -1,8 +1,17 @@
 package controller.map.simplexml;
 
 import model.viewer.events.AbstractEvent;
-
-import org.apache.commons.lang.NotImplementedException;
+import model.viewer.events.AbstractEvent.TownSize;
+import model.viewer.events.AbstractEvent.TownStatus;
+import model.viewer.events.BattlefieldEvent;
+import model.viewer.events.CaveEvent;
+import model.viewer.events.CityEvent;
+import model.viewer.events.FortificationEvent;
+import model.viewer.events.MineralEvent;
+import model.viewer.events.MineralEvent.MineralKind;
+import model.viewer.events.StoneEvent;
+import model.viewer.events.StoneEvent.StoneKind;
+import model.viewer.events.TownEvent;
 
 /**
  * A Node that will produce an Event.
@@ -22,7 +31,36 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 	 */
 	@Override
 	public AbstractEvent produce() throws SPFormatException {
-		throw new NotImplementedException("Event production not implemented yet.");
+		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {
+			return new BattlefieldEvent(Integer.parseInt(getProperty("dc")));
+		} else if ("caves".equals(getProperty(KIND_PROPERTY))) {
+			return new CaveEvent(Integer.parseInt(getProperty("dc")));
+		} else if ("city".equals(getProperty(KIND_PROPERTY))) {
+			return new CityEvent(
+					TownStatus.parseTownStatus(getProperty("status")),
+					TownSize.parseTownSize(getProperty("size")),
+					Integer.parseInt(getProperty("dc")));
+		} else if ("fortification".equals(getProperty(KIND_PROPERTY))) {
+			return new FortificationEvent(
+					TownStatus.parseTownStatus(getProperty("status")),
+					TownSize.parseTownSize(getProperty("size")),
+					Integer.parseInt(getProperty("dc")));
+		} else if ("town".equals(getProperty(KIND_PROPERTY))) {
+			return new TownEvent(
+					TownStatus.parseTownStatus(getProperty("status")),
+					TownSize.parseTownSize(getProperty("size")),
+					Integer.parseInt(getProperty("dc")));
+		} else if ("mineral".equals(getProperty(KIND_PROPERTY))) {
+			return new MineralEvent(MineralKind.parseMineralKind(getProperty("mineral")),
+					Boolean.parseBoolean(getProperty("exposed")),
+					Integer.parseInt(getProperty("dc")));
+		} else if ("stone".equals(getProperty(KIND_PROPERTY))) {
+			return new StoneEvent(
+					StoneKind.parseStoneKind(getProperty("stone")),
+					Integer.parseInt(getProperty("dc")));
+		} else {
+			throw new SPFormatException("Unknown kind of event", getLine());
+		}
 	}
 	/**
 	 * Check that this Node contains entirely valid data. An Event is valid if
