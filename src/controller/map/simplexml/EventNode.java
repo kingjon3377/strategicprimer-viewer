@@ -35,36 +35,39 @@ public class EventNode extends AbstractChildNode<AbstractEvent> {
 	 */
 	@Override
 	public AbstractEvent produce() throws SPFormatException {
+		// ESCA-JAVA0177:
+		final AbstractEvent event; // NOPMD
 		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {
-			return new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
+			event = new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("caves".equals(getProperty(KIND_PROPERTY))) {
-			return new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
+			event = new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("city".equals(getProperty(KIND_PROPERTY))) {
-			return new CityEvent(
+			event = new CityEvent(
 					TownStatus.parseTownStatus(getProperty("status")),
 					TownSize.parseTownSize(getProperty("size")),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("fortification".equals(getProperty(KIND_PROPERTY))) {
-			return new FortificationEvent(
+			event = new FortificationEvent(
 					TownStatus.parseTownStatus(getProperty("status")),
 					TownSize.parseTownSize(getProperty("size")),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("town".equals(getProperty(KIND_PROPERTY))) {
-			return new TownEvent(
+			event = new TownEvent(
 					TownStatus.parseTownStatus(getProperty("status")),
 					TownSize.parseTownSize(getProperty("size")),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("mineral".equals(getProperty(KIND_PROPERTY))) {
-			return new MineralEvent(MineralKind.parseMineralKind(getProperty("mineral")),
+			event = new MineralEvent(MineralKind.parseMineralKind(getProperty("mineral")),
 					Boolean.parseBoolean(getProperty("exposed")),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else if ("stone".equals(getProperty(KIND_PROPERTY))) {
-			return new StoneEvent(
+			event = new StoneEvent(
 					StoneKind.parseStoneKind(getProperty("stone")),
 					Integer.parseInt(getProperty(DC_PROPERTY)));
 		} else {
 			throw new SPFormatException("Unknown kind of event", getLine());
 		}
+		return event;
 	}
 	/**
 	 * Check that this Node contains entirely valid data. An Event is valid if
