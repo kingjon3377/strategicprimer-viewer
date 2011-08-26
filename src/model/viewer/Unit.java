@@ -99,7 +99,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj || (obj instanceof Unit
-				&& ((Unit) obj).owner == owner
+				&& ((Unit) obj).owner.equals(owner)
 				&& ((type == null) ? ((Unit) obj).type == null
 						: ((Unit) obj).type.equals(type))
 				&& ((name == null) ? ((Unit) obj).name == null
