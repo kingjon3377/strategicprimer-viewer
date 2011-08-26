@@ -43,7 +43,7 @@ public class PlayerCollection implements Iterable<Player> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof PlayerCollection && ((PlayerCollection) obj).players.equals(players);
+		return this == obj || (obj instanceof PlayerCollection && ((PlayerCollection) obj).players.equals(players));
 	}
 	/**
 	 * @return a hash value for this collection.
