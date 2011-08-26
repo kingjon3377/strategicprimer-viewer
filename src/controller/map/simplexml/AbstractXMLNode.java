@@ -1,8 +1,8 @@
 package controller.map.simplexml;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * A class representing an XML tag and its descendants---except not necessarily
@@ -16,7 +16,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	/**
 	 * The children of this node.
 	 */
-	private final Set<AbstractXMLNode> children = new HashSet<AbstractXMLNode>();
+	private final Set<AbstractXMLNode> children = new CopyOnWriteArraySet<AbstractXMLNode>();
 	/**
 	 * The line number the tag was on.
 	 */
