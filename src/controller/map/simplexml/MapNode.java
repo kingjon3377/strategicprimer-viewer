@@ -11,12 +11,30 @@ import org.apache.commons.lang.NotImplementedException;
  */
 public class MapNode extends AbstractChildNode<SPMap> {
 	/**
-	 * Check the node. 
-	 * @throws SPFormatException if all is not well.
+	 * Check the node. A Map is valid iff every child is either a Player or a
+	 * Tile and it includes version (greater than or equal to 1, for this
+	 * version of the reader), rows, and columns properties.
+	 * 
+	 * @throws SPFormatException
+	 *             if all is not well.
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
-		throw new NotImplementedException("Placeholder");
+		for (AbstractXMLNode node : this) {
+			if (node instanceof TileNode || node instanceof PlayerNode) {
+				node.checkNode();
+			} else {
+				throw new SPFormatException("Map should only directly contain Tiles and Players.", getLine());
+			}
+		}
+		if (!hasProperty("version") || Integer.parseInt(getProperty("version")) < 1) {
+			throw new SPFormatException(
+					"This reader only accepts maps with a \"version\" property greater than or equal to 1.",
+					getLine());
+		} else if (!hasProperty("rows") || !hasProperty("columns")) {
+			throw new SPFormatException(
+					"Map must specify number of rows and columns.", getLine());
+		}
 	}
 	/**
 	 * @return the map the XML represented

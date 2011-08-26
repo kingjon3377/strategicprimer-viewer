@@ -18,12 +18,21 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 		throw new NotImplementedException("Fortress production not implemented yet");
 	}
 	/**
-	 * Check whether we contain valid data.
+	 * Check whether we contain valid data. A Fortress contains valid
+	 * data iff every child is a Unit. At present we don't require it 
+	 * to have any properties, not even "owner" or "name"; if or when 
+	 * that changes, this should change to check those conditions.
 	 * @throws SPFormatException if we don't.
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
-		throw new NotImplementedException("Fortress validity-checking not implemented yet.");
+		for (AbstractXMLNode node : this) {
+			if (node instanceof UnitNode) {
+				node.checkNode();
+			} else {
+				throw new SPFormatException("Fortress should contain only units", getLine());
+			}
+		}
 	}
 
 }

@@ -27,7 +27,8 @@ public class RiverNode extends AbstractChildNode<River> {
 
 	/**
 	 * Check the validity of the node. (TODO: eventually we may want to allow
-	 * units or even fortresses, etc., in rivers.)
+	 * units or even fortresses, etc., in rivers.) A river is valid iff it has
+	 * no children and has a direction.
 	 * 
 	 * @throws SPFormatException
 	 *             if the River contains anythig.
@@ -38,6 +39,8 @@ public class RiverNode extends AbstractChildNode<River> {
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("River has sub-tags", getLine());
+		} else if (!hasProperty("direction")) {
+			throw new SPFormatException("River should have a direction", getLine());
 		}
 	}
 
