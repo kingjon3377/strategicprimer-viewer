@@ -27,9 +27,9 @@ public class MapNode extends AbstractChildNode<SPMap> {
 				throw new SPFormatException("Map should only directly contain Tiles and Players.", getLine());
 			}
 		}
-		if (!hasProperty("version") || Integer.parseInt(getProperty("version")) < 1) {
+		if (!hasProperty("version") || Integer.parseInt(getProperty("version")) < SPMap.VERSION) {
 			throw new SPFormatException(
-					"This reader only accepts maps with a \"version\" property greater than or equal to 1.",
+					"This reader only accepts maps with a \"version\" property greater than or equal to " + SPMap.VERSION,
 					getLine());
 		} else if (!hasProperty("rows") || !hasProperty("columns")) {
 			throw new SPFormatException(
