@@ -206,7 +206,8 @@ public final class NodeFactory { // NOPMD
 			node.addProperty(EVENT_KIND_PROP, "stone");
 			break;
 		case Tile:
-			throw new NotImplementedException("Tile not implemented yet");
+			node = new TileNode();
+			break;
 		case Town:
 			node = new EventNode();
 			node.addProperty(EVENT_KIND_PROP, "town");
