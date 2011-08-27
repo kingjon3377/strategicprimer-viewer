@@ -132,7 +132,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(null, whyInvalidInput(),
 						"Invalid restriction parameters",
 						JOptionPane.WARNING_MESSAGE);
-				correctInvalidInput();
+				correctInvalidInput(mpanel.getVisibleDimensions());
 			}
 		}
 	}
@@ -195,9 +195,9 @@ public class RestrictDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Correct invalid input, so the user can try again.
+	 * @param visDim the current visible dimensions of the map
 	 */
-	private void correctInvalidInput() {
-		final VisibleDimensions visDim = mpanel.getVisibleDimensions();
+	private void correctInvalidInput(final VisibleDimensions visDim) {
 		if (parse(minCol.getText()) < 0) {
 			minCol.setText(Integer.toString(visDim.getMinimumCol()));
 		}
