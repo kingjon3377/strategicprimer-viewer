@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import controller.map.simplexml.node.SkippableNode;
 
@@ -98,5 +100,12 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	protected final void moveChildrenTo(final AbstractXMLNode dest) {
 		dest.children.addAll(children);
 		children.clear();
+	}
+	/**
+	 * Log a warning, e.g. if a particular map-format construct is deprecated.
+	 * @param warning the warning 
+	 */
+	protected final void warn(final Exception warning) {
+		Logger.getLogger(getClass().getName()).log(Level.WARNING, "Warning: ", warning);
 	}
 }
