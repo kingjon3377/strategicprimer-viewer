@@ -66,5 +66,16 @@ public class XMLHelper {
 		}
 		return attr.getValue();
 	}
+	/**
+	 * Get the tag type of a tag.
+	 * 
+	 * @param startElement
+	 *            the tag to identify
+	 * @return the type of tag, in usable (enumerated) form.
+	 */
+	// ESCA-JAVA0130:
+	public static Tag getTagType(final StartElement startElement) { // NOPMD
+		return Tag.fromString(startElement.getName().getLocalPart());
+	}
 
 }

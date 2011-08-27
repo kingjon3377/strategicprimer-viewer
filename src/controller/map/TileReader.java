@@ -22,7 +22,6 @@ import model.viewer.events.MineralEvent.MineralKind;
 import model.viewer.events.StoneEvent;
 import model.viewer.events.StoneEvent.StoneKind;
 import model.viewer.events.TownEvent;
-import controller.map.MapReader.Tag;
 
 /**
  * A helper class to read tiles and their contents from file. MapReader had too many methods.
@@ -44,20 +43,14 @@ public class TileReader {
 	 */
 	private static final String UNEXPECTED_TAG = "Unexpected tag ";
 	/**
-	 * Our reference to the main reader, which has a couple of methods that do belong there that we need to use.
-	 */
-	private final MapReader mainReader;
-	/**
 	 * The helper for managing XML difficulties.
 	 */
 	private final XMLHelper helper;
 	/**
 	 * Constructor.
-	 * @param reader the main reader
 	 * @param xmlHelper a helper for some XML difficulties
 	 */
-	public TileReader(final MapReader reader, final XMLHelper xmlHelper) {
-		mainReader = reader;
+	public TileReader(final XMLHelper xmlHelper) {
 		helper = xmlHelper;
 	}
 	/**
@@ -97,7 +90,7 @@ public class TileReader {
 	private void parseTileContents(final StartElement elem,
 			final Iterable<XMLEvent> reader, final Tile tile,
 			final PlayerCollection players) {
-		switch (mainReader.getTagType(elem)) {
+		switch (XMLHelper.getTagType(elem)) {
 		case River:
 		case Lake:
 			tile.addRiver(parseRiver(elem, reader));
@@ -184,7 +177,7 @@ public class TileReader {
 	 * @return what kind of event it represents
 	 */
 	private EventKind getEventType(final StartElement elem) {
-		switch (mainReader.getTagType(elem)) {
+		switch (XMLHelper.getTagType(elem)) {
 		case Battlefield:
 			return EventKind.Battlefield; // NOPMD
 		case Cave:
@@ -232,7 +225,7 @@ public class TileReader {
 	public River parseRiver(final StartElement elem,
 			final Iterable<XMLEvent> reader) {
 		// ESCA-JAVA0177:
-		final River river = Tag.Lake.equals(mainReader.getTagType(elem)) ? River.Lake
+		final River river = Tag.Lake.equals(XMLHelper.getTagType(elem)) ? River.Lake
 				: River.getRiver(helper.getAttribute(elem, "direction"));
 		helper.spinUntilEnd("<river>", reader);
 		return river;
@@ -277,7 +270,7 @@ public class TileReader {
 	 */
 	private void parseFortContents(final Tile tile, final Fortress fort, final StartElement element,
 			final Iterable<XMLEvent> reader, final PlayerCollection players) {
-		if (Tag.Unit.equals(mainReader.getTagType(element))) {
+		if (Tag.Unit.equals(XMLHelper.getTagType(element))) {
 			fort.addUnit(parseUnit(tile, element, reader, players));
 		} else {
 			throw new IllegalStateException(UNEXPECTED_TAG
