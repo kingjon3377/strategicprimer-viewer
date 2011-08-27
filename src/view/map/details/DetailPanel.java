@@ -93,6 +93,10 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private static final int BUTTON_MAX_HT = 25;
 	/**
+	 * Label to show the tile's coordinates.
+	 */
+	private final JLabel coordLabel = new JLabel();
+	/**
 	 * Label to show the tile's terrain type.
 	 */
 	private final JLabel typeLabel = new JLabel();
@@ -119,7 +123,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		setPreferredSize(new Dimension(Integer.MAX_VALUE, DETAIL_PANEL_HT));
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		final JPanel typePanel = new JPanel(new BorderLayout());
-		typePanel.add(new JLabel("<html>Coordinates:<br />Tile type:</html>"), BorderLayout.NORTH);
+		typePanel.add(coordLabel, BorderLayout.NORTH);
 		typePanel.add(typeLabel, BorderLayout.SOUTH);
 		add(typePanel);
 		final JScrollPane chitPane = new JScrollPane(chitPanel);
@@ -185,8 +189,8 @@ public class DetailPanel extends JPanel implements ActionListener {
 		} else {
 			tile = newTile;
 		}
-			typeLabel.setText("<html>(" + tile.getRow() + ", " + tile.getCol()
-					+ ")<br />" + terrainText(tile.getType()) + "</html>");
+		coordLabel.setText("<html>Coordinates: (" + tile.getRow() + ", " + tile.getCol() + ")</html>");
+			typeLabel.setText("<html>Tile type: " + terrainText(tile.getType()) + "</html>");
 			chitPanel.clear();
 			for (final TileFixture fix : tile.getContents()) {
 				chitPanel.add(fix);
