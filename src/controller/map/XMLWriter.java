@@ -105,7 +105,7 @@ public class XMLWriter { // NOPMD
 		final int cols = map.cols();
 		for (int j = 0; j < cols; j++) {
 			final Tile tile = map.getTile(row, j);
-			if (!anyTiles && tile != null && !TileType.NotVisible.equals(tile.getType())) {
+			if (!anyTiles && !TileType.NotVisible.equals(tile.getType())) {
 				indent(1);
 				anyTiles = true;
 				writer.print("<row index=");

@@ -17,7 +17,6 @@ import model.viewer.Point;
 import model.viewer.PointFactory;
 import model.viewer.SPMap;
 import model.viewer.Tile;
-import util.Pair;
 
 /**
  * A panel to display a map.
@@ -208,25 +207,13 @@ public class MapPanel extends JPanel {
 	 *            the tile we're setting up a GUI for.
 	 */
 	private void addTile(final int row, final int col, final Tile tile) {
-		if (tile == null) {
-			if (!nullCache.containsKey(Pair.of(row, col))) {
-				nullCache.put(Pair.of(row, col), new NullGUITile(row, col));
-			}
-			addTile(nullCache.get(Pair.of(row, col)));
-			locCache.put(PointFactory.point(row, col), nullCache.get(Pair.of(row, col)));
-		} else {
 			if (!tileCache.containsKey(tile)) {
 				tileCache.put(tile, new GUITile(tile));
 			}
 			addTile(tileCache.get(tile));
 			locCache.put(PointFactory.point(row, col), tileCache.get(tile));
-		}
 	}
 
-	/**
-	 * A cache of NullTiles.
-	 */
-	private final Map<Pair<Integer, Integer>, NullGUITile> nullCache = new HashMap<Pair<Integer, Integer>, NullGUITile>();
 	/**
 	 * A cache of GUITiles.
 	 */
@@ -292,16 +279,10 @@ public class MapPanel extends JPanel {
 	 * @param selection a tile in the relevant position.
 	 */
 	public void copyTile(final Tile selection) {
-		if (map.getTile(selection.getRow(), selection.getCol()) != null
-				&& secondaryMap != null) {
-			if (secondaryMap.getTile(selection.getRow(), selection.getCol()) == null) {
-				secondaryMap.addTile(map.getTile(selection.getRow(),
-						selection.getCol()));
-			} else {
+		if (secondaryMap != null) {
 				secondaryMap.getTile(selection.getRow(), selection.getCol())
 						.update(map.getTile(selection.getRow(),
 								selection.getCol()));
-			}
 		}
 	}
 	/**
