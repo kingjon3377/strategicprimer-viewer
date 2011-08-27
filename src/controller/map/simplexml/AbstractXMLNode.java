@@ -64,17 +64,22 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	protected void setLine(final int tagLine) {
 		line = tagLine;
 	}
+	
 	/**
 	 * Canonicalize the tree. For now, that just means removing each
 	 * SkippableNode after adding its contents to its parent, but any other
 	 * actions that need to be taken after setting up the tree but before
 	 * validity-checking should go here. We do this in a separate method because
 	 * validity-checking should be side-effect-free.
+	 * @throws SPFormatException on format errors uncovered in this process
 	 */
-	public final void canonicalize() {
+	public final void canonicalize() throws SPFormatException {
 		final List<AbstractXMLNode> nodesToRemove = new LinkedList<AbstractXMLNode>();
 		final List<AbstractXMLNode> nodesToAdd = new LinkedList<AbstractXMLNode>();
 		for (AbstractXMLNode node : children) {
+			if (node instanceof NeedsExtraCanonicalization) {
+				((NeedsExtraCanonicalization) node).canonicalizeImpl();
+			}
 			node.canonicalize();
 			if (node instanceof SkippableNode) {
 				nodesToAdd.addAll(node.children);
