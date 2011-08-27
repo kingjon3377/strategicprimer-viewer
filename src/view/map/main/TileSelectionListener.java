@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
 import model.viewer.PointFactory;
+import model.viewer.Tile;
+import model.viewer.TileType;
 
 /**
  * A class to keep track of which tile is selected.
@@ -69,7 +71,7 @@ public class TileSelectionListener extends SelectionListener {
 			selection().requestFocusInWindow();
 			LOGGER.fine("Click");
 		} else {
-			detailPanel.setTile(null);
+			detailPanel.setTile(new Tile(-1, -1, TileType.NotVisible));
 		}
 	}
 	/**
@@ -156,6 +158,6 @@ public class TileSelectionListener extends SelectionListener {
 	@Override
 	public void clearSelection() {
 		super.clearSelection();
-		detailPanel.setTile(null);
+		detailPanel.setTile(new Tile(-1, -1, TileType.NotVisible));
 	}
 }
