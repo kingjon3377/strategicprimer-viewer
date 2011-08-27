@@ -270,6 +270,27 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		return mitem;
 	}
 	/**
+	 * Display an appropriate error message.
+	 * @param except an Exception
+	 * @param filename the file we were trying to process
+	 */
+	private void handleError(final Exception except, final String filename) {
+		String msg;
+		if (except instanceof XMLStreamException) {
+			msg = XML_ERROR_STRING + ' ' + filename;
+		} else if (except instanceof FileNotFoundException) {
+			msg = "File " + filename + NOT_FOUND_ERROR;
+		} else if (except instanceof IOException) {
+			msg = "I/O error reading file " + filename;
+		} else if (except instanceof SPFormatException) {
+			msg = INV_DATA_ERROR + " in file " + filename;
+		} else {
+			throw new IllegalStateException("Unknown exception type", except);
+		}
+		LOGGER.log(Level.SEVERE, msg, except);
+		showErrorDialog(this, msg);
+	}
+	/**
 	 * Handle button presses and the like.
 	 * 
 	 * @param event
@@ -280,20 +301,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		if ("Load".equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
+				// ESCA-JAVA0166:
 				try {
 				mapPanel.loadMap(readMap(filename));
-				} catch (final XMLStreamException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-					showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
-				} catch (final FileNotFoundException e) {
-					LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
-					showErrorDialog(this, "File " + filename + NOT_FOUND_ERROR);
-				} catch (final IOException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-					showErrorDialog(this, "I/O error reading " + filename);
-				} catch (SPFormatException e) {
-					LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
-					showErrorDialog(this, INV_DATA_ERROR);
+				} catch (final Exception e) {
+					handleError(e, filename);
 				}
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
@@ -301,20 +313,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
+				// ESCA-JAVA0166:
 				try {
 				mapPanel.setSecondaryMap(readMap(filename));
-				} catch (final XMLStreamException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-					showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
-				} catch (final FileNotFoundException e) {
-					LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
-					showErrorDialog(this, "File " + filename + NOT_FOUND_ERROR);
-				} catch (final IOException e) {
-					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-					showErrorDialog(this, "I/O error reading " + filename);
-				} catch (SPFormatException e) {
-					LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
-					showErrorDialog(this, INV_DATA_ERROR);
+				} catch (final Exception e) {
+					handleError(e, filename);
 				}
 			}
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
