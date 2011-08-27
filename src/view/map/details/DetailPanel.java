@@ -20,7 +20,6 @@ import model.exploration.ExplorationRunner;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
-import view.util.SizeLimiter;
 
 /**
  * A panel to show the details of a tile. FIXME: If the map includes the name of
@@ -154,7 +153,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 		resultsPanel.add(resultsButton, BorderLayout.SOUTH);
 		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
 		add(viewPanel);
-		addComponentListener(new SizeLimiter(viewPanel, 1.0, 0.8));
 		runner.loadAllTables("tables");
 		add(new KeyPanel());
 	}

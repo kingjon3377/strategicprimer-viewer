@@ -24,7 +24,6 @@ import javax.xml.stream.XMLStreamException;
 
 import view.map.details.DetailPanel;
 import view.util.DriverQuit;
-import view.util.SizeLimiter;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -192,8 +191,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
-		addComponentListener(new SizeLimiter(scroller,
-				1.0 - DETAIL_PANEL_WIDTH, 1.0));
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
