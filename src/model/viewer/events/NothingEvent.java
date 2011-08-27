@@ -43,7 +43,7 @@ public final class NothingEvent extends AbstractEvent {
 	 * @return whether it's equal to this one---iff it's another NothingEvent.
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(final Object obj) { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
 		return this == obj || obj instanceof NothingEvent;
 	}
 
