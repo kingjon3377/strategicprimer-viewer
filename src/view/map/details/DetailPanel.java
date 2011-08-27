@@ -35,11 +35,11 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * Maximum height of this panel, in pixels.
 	 */
-	public static final int DETAIL_PAN_MAX_HT = 150;
+	public static final int DETAIL_PAN_MAX_HT = 175;
 	/**
 	 * Preferred width of this panel, in pixels.
 	 */
-	public static final int DETAIL_PANEL_HT = 100;
+	public static final int DETAIL_PANEL_HT = 125;
 	/**
 	 * Minimum width of this panel, in pixels.
 	 */
@@ -63,11 +63,11 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * Preferred height of the results field and its label.
 	 */
-	private static final int RESULTS_PREF_WD = 300;
+	private static final int RESULTS_PREF_WD = 250;
 	/**
 	 * Maximum height of the results field and its label.
 	 */
-	private static final int RESULTS_MAX_WD = 400;
+	private static final int RESULTS_MAX_WD = 300;
 	/**
 	 * Minimum height of the results label.
 	 */
@@ -206,15 +206,15 @@ public class DetailPanel extends JPanel implements ActionListener {
 	private final ChitPanel chitPanel = new ChitPanel(new ChitSelectionListener(
 			chitDetail));
 	static {
-		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");
-		DESCRIPTIONS.put(TileType.Desert, "Desert");
-		DESCRIPTIONS.put(TileType.Jungle, "Jungle");
-		DESCRIPTIONS.put(TileType.Mountain, "Mountains");
-		DESCRIPTIONS.put(TileType.NotVisible, "Unknown");
-		DESCRIPTIONS.put(TileType.Ocean, "Ocean");
-		DESCRIPTIONS.put(TileType.Plains, "Plains");
-		DESCRIPTIONS.put(TileType.TemperateForest, "Temperate Forest");
-		DESCRIPTIONS.put(TileType.Tundra, "Tundra");
+		DESCRIPTIONS.put(TileType.BorealForest, "<html><p>Boreal Forest</p></html>");
+		DESCRIPTIONS.put(TileType.Desert, "<html><p>Desert</p></html>");
+		DESCRIPTIONS.put(TileType.Jungle, "<html><p>Jungle</p></html>");
+		DESCRIPTIONS.put(TileType.Mountain, "<html><p>Mountains</p></html>");
+		DESCRIPTIONS.put(TileType.NotVisible, "<html><p>Unknown</p></html>");
+		DESCRIPTIONS.put(TileType.Ocean, "<html><p>Ocean</p></html>");
+		DESCRIPTIONS.put(TileType.Plains, "<html><p>Plains</p></html>");
+		DESCRIPTIONS.put(TileType.TemperateForest, "<html><p>Temperate Forest</p></html>");
+		DESCRIPTIONS.put(TileType.Tundra, "<html><p>Tundra</p></html>");
 	}
 
 	/**

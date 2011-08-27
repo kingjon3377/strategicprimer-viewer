@@ -42,7 +42,7 @@ public class GUITile extends Selectable {
 	/**
 	 * The size of each GUI tile.
 	 */
-	private static final int TILE_SIZE = 16;
+	public static final int TILE_SIZE = 16;
 	/**
 	 * The size of each GUI tile, as a Dimension.
 	 */
@@ -172,7 +172,7 @@ public class GUITile extends Selectable {
 	 */
 	private void regenerateCache() {
 		final Graphics2D pen = image.createGraphics();
-		pen.setColor(COLORS.get(tile.getType()));
+		pen.setColor(getTileColor(tile.getType()));
 		pen.fill(backgroundShape);
 		pen.setColor(Color.BLACK);
 		pen.draw(backgroundShape);
@@ -194,6 +194,13 @@ public class GUITile extends Selectable {
 				pen.fill(event);
 			}
 		}
+	}
+	/**
+	 * @param type a tile type
+	 * @return the color associated with that tile-type.
+	 */
+	public static Color getTileColor(final TileType type) {
+		return COLORS.get(type);
 	}
 	/**
 	 * @param tile a tile

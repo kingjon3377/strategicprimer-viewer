@@ -1,14 +1,16 @@
 package view.map.details;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.viewer.Tile;
 import model.viewer.TileType;
 import view.map.main.GUITile;
 /**
@@ -40,6 +42,18 @@ public class KeyPanel extends JPanel {
 		 */
 		private static final int HORIZ_BUFFER = 7;
 		/**
+		 * Minimum size of a colored area.
+		 */
+		private static final Dimension MIN_SIZE = new Dimension(4, 4);
+		/**
+		 * Maximum size of a colored area.
+		 */
+		private static final Dimension MAX_SIZE = new Dimension(GUITile.TILE_SIZE, GUITile.TILE_SIZE);
+		/**
+		 * Preferred size of a colored area.
+		 */
+		private static final Dimension PREF_SIZE = new Dimension(8, 8);
+		/**
 		 * Constructor.
 		 * @param type the type this is the key element for.
 		 */
@@ -51,7 +65,24 @@ public class KeyPanel extends JPanel {
 			final JPanel panel = new JPanel();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 			panel.add(Box.createRigidArea(new Dimension(0, 4)));
-			final GUITile tile = new GUITile(new Tile(-1, -1, type)); 
+			final JComponent tile = new JComponent() {
+				/**
+				 * The color of this Component.
+				 */
+				private final Color color = GUITile.getTileColor(type);
+				/**
+				 * @param pen the graphics context
+				 */
+				@Override
+				public void paint(final Graphics pen) {
+					final Graphics context = pen.create();
+					context.setColor(color);
+					context.fillRect(0, 0, getWidth(), getHeight());
+				}
+			}; 
+			tile.setMinimumSize(MIN_SIZE);
+			tile.setPreferredSize(PREF_SIZE);
+			tile.setMaximumSize(MAX_SIZE);
 			panel.add(tile);
 			panel.add(Box.createRigidArea(new Dimension(0, 4)));
 			final JLabel label = new JLabel(DetailPanel.terrainText(type));
