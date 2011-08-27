@@ -6,7 +6,7 @@ package model.viewer;
  * @author Jonathan Lovelace
  * 
  */
-public class Point {
+public class Point implements Comparable<Point> {
 	/**
 	 * The first coordinate.
 	 */
@@ -59,5 +59,13 @@ public class Point {
 	@Override
 	public final int hashCode() {
 		return myRow | myCol;
+	}
+	/**
+	 * @param point another point
+	 * @return the result of a comparison with that point
+	 */
+	@Override
+	public int compareTo(final Point point) {
+		return ((point.row() - row()) << 7) + (point.col() - col());
 	}
 }
