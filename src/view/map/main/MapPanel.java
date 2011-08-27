@@ -86,6 +86,7 @@ public class MapPanel extends JPanel {
 		changeListener = details;
 		setOpaque(true);
 		loadMap(newMap);
+		secondaryMap = new SPMap(newMap.rows(), newMap.cols());
 	}
 
 	/**
@@ -257,11 +258,9 @@ public class MapPanel extends JPanel {
 	 * Swap the main and secondary maps, i.e. show the secondary map
 	 */
 	public void swapMaps() {
-		if (secondaryMap != null) {
 			final SPMap temp = map;
 			loadMap(secondaryMap);
 			secondaryMap = temp;
-		}
 	}
 
 	/**
@@ -277,11 +276,9 @@ public class MapPanel extends JPanel {
 	 * @param selection a tile in the relevant position.
 	 */
 	public void copyTile(final Tile selection) {
-		if (secondaryMap != null) {
 				secondaryMap.getTile(selection.getRow(), selection.getCol())
 						.update(map.getTile(selection.getRow(),
 								selection.getCol()));
-		}
 	}
 	/**
 	 * Needs to know when the map is changed.
