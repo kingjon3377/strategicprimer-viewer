@@ -1,6 +1,7 @@
 package view.map.details;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,10 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 * Command to save changed results.
 	 */
 	private static final String RESULTS_SAVE_CMD = "<html><p>Save changed results</p></html>";
+	/**
+	 * Preferred width of this panel, in pixels.
+	 */
+	private static final int PANEL_WIDTH = 250;
 	/**
 	 * Height of the chit panel as a ratio to its parent's height.
 	 */
@@ -74,6 +79,9 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	public DetailPanel() {
 		super();
+		setMaximumSize(new Dimension(PANEL_WIDTH, Integer.MAX_VALUE));
+		setMinimumSize(new Dimension(150, Integer.MAX_VALUE));
+		setPreferredSize(new Dimension(PANEL_WIDTH, Integer.MAX_VALUE));
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		final JPanel typePanel = new JPanel(new BorderLayout());
 		typePanel.add(new JLabel("<html>Coordinates:<br />Tile type:</html>"), BorderLayout.WEST);
