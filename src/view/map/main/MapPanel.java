@@ -140,7 +140,7 @@ public class MapPanel extends JPanel {
 	 * Load and draw a subset of a map.
 	 * 
 	 * @param newMap
-	 *            the map to load. If null, ignored.
+	 *            the map to load.
 	 * @param minRow
 	 *            the first row to draw
 	 * @param maxRow
@@ -152,7 +152,6 @@ public class MapPanel extends JPanel {
 	 */
 	public final void loadMap(final SPMap newMap, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
-		if (newMap != null) {
 			selListener.clearSelection();
 			removeAll();
 			locCache.clear();
@@ -183,7 +182,6 @@ public class MapPanel extends JPanel {
 					repaint();
 				}
 			});
-		}
 	}
 
 	/**
