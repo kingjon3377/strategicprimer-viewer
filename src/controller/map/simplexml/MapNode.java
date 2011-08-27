@@ -1,5 +1,8 @@
 package controller.map.simplexml;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import model.viewer.PlayerCollection;
 import model.viewer.SPMap;
 
@@ -44,14 +47,18 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	public SPMap produce(final PlayerCollection players) throws SPFormatException {
 		final SPMap map = new SPMap(Integer.parseInt(getProperty("rows")),
 				Integer.parseInt(getProperty("columns")));
+		final List<TileNode> tiles = new LinkedList<TileNode>();
 		for (AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
 				map.addPlayer(((PlayerNode) node).produce(null));
 			} else if (node instanceof TileNode) {
-				map.addTile(((TileNode) node).produce(map.getPlayers()));
+				tiles.add((TileNode) node);
 			} else {
 				throw new SPFormatException("Unsupported direct child of <map>", node.getLine());
 			}
+		}
+		for (TileNode node : tiles) {
+			map.addTile(node.produce(map.getPlayers()));
 		}
 		return map;
 	}
