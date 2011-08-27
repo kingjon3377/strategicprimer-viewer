@@ -1,4 +1,4 @@
-package view.map.main;
+package view.map.details;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -22,6 +22,7 @@ import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
 import model.viewer.events.AbstractEvent;
+import view.map.main.SelectionListener;
 import view.util.SizeLimiter;
 
 /**

@@ -1,4 +1,4 @@
-package view.map.main;
+package view.map.details;
 
 import java.awt.Color;
 import java.awt.Graphics;

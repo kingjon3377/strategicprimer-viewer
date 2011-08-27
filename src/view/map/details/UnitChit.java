@@ -1,49 +1,54 @@
-package view.map.main;
+package view.map.details;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
-import model.viewer.Fortress;
+import model.viewer.Unit;
 
 /**
- * A chit to represent a fortress.
+ * A chit to represent a unit.
  * 
  * @author Jonathan Lovelace
  */
-public class FortChit extends Chit {
+public class UnitChit extends Chit {
 	/**
-	 * The margin we allow around the chit itself.
+	 * The margin we allow around the chit.
 	 */
 	private static final double MARGIN = 0.25;
 	/**
 	 * Constructor.
 	 * 
-	 * @param fort
-	 *            the fortress this chit represents
+	 * @param unit
+	 *            the unit this chit represents
 	 * @param listener
 	 *            the object listening for clicks on this chit.
 	 */
-	public FortChit(final Fortress fort, final MouseListener listener) {
+	public UnitChit(final Unit unit, final MouseListener listener) {
 		super(listener);
-		final StringBuilder sbuild = new StringBuilder("<html><p>Fortress ");
-		if (!"".equals(fort.getName())) {
-			sbuild.append(fort.getName());
+		final StringBuilder sbuild = new StringBuilder("<html><p>Unit ");
+		if (!"".equals(unit.getName())) {
+			sbuild.append(unit.getName());
 			sbuild.append(", ");
 		}
-		sbuild.append("owned by ");
-		sbuild.append(fort.getOwner());
+		if (!"".equals(unit.getType())) {
+			sbuild.append("of type ");
+			sbuild.append(unit.getType());
+			sbuild.append(", ");
+		}
+		sbuild.append("owned by player ");
+		sbuild.append(unit.getOwner());
 		sbuild.append("</p></html>");
 		desc = sbuild.toString();
 	}
 
 	/**
-	 * A description of the fortress.
+	 * A description of the unit.
 	 */
 	private final String desc;
 
 	/**
-	 * @return a description of the fortress, to show the user.
+	 * @return a description of the unit, to show the user.
 	 * @see view.map.main.Chit#describe()
 	 */
 	@Override
@@ -63,15 +68,15 @@ public class FortChit extends Chit {
 	public void paint(final Graphics pen) {
 		super.paint(pen);
 		final Color saveColor = pen.getColor();
-		pen.setColor(FORT_COLOR);
-		pen.fillRect(((int) (getWidth() * MARGIN)) + 1,
+		pen.setColor(UNIT_COLOR);
+		pen.fillOval(((int) (getWidth() * MARGIN)) + 1,
 				((int) (getHeight() * MARGIN)) + 1,
 				((int) (getWidth() * (1.0 - MARGIN * 2.0))),
 				((int) (getHeight() * (1.0 - MARGIN * 2.0))));
 		pen.setColor(saveColor);
 	}
 	/**
-	 * The color of the chit.
+	 * The color that we draw the unit.
 	 */
-	private static final Color FORT_COLOR = new Color(160, 82, 45);
+	private static final Color UNIT_COLOR = Color.BLACK;
 }

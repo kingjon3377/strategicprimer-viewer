@@ -1,4 +1,4 @@
-package view.map.main;
+package view.map.details;
 
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 
 import model.viewer.Player;
 import model.viewer.SPMap;
+import view.map.main.SelectionListener;
 
 /**
  * A class to handle selecting Chits.

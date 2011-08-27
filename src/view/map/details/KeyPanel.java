@@ -1,4 +1,4 @@
-package view.map.main;
+package view.map.details;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import model.viewer.Tile;
 import model.viewer.TileType;
+import view.map.main.GUITile;
 /**
  * Provides a visual "key" to the various terrain types.
  * @author Jonathan Lovelace

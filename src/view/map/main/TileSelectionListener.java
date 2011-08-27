@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import model.viewer.PointFactory;
 import model.viewer.Tile;
 import model.viewer.TileType;
+import view.map.details.DetailPanel;
 
 /**
  * A class to keep track of which tile is selected.

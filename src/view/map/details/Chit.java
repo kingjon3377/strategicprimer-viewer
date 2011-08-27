@@ -1,7 +1,9 @@
-package view.map.main;
+package view.map.details;
 
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
+
+import view.map.main.Selectable;
 
 /**
  * A "piece" to represent a unit or fortress (or something else ...) in the

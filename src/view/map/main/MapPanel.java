@@ -15,6 +15,7 @@ import model.viewer.Point;
 import model.viewer.PointFactory;
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import view.map.details.DetailPanel;
 
 /**
  * A panel to display a map.
