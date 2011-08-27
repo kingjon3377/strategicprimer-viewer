@@ -560,10 +560,6 @@
             <ruleset>J2EE Rules</ruleset>
         </rule>
         <rule>
-            <name>UseProperClassLoader</name>
-            <ruleset>J2EE Rules</ruleset>
-        </rule>
-        <rule>
             <name>ProperLogger</name>
             <ruleset>Jakarta Commons Logging Rules</ruleset>
         </rule>
