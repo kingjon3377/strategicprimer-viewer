@@ -1,128 +1,98 @@
 package controller.map.simplexml;
 
+import java.util.Iterator;
+
 import model.viewer.PlayerCollection;
 import model.viewer.events.AbstractEvent;
-import model.viewer.events.AbstractEvent.TownSize;
-import model.viewer.events.AbstractEvent.TownStatus;
-import model.viewer.events.BattlefieldEvent;
-import model.viewer.events.CaveEvent;
-import model.viewer.events.CityEvent;
-import model.viewer.events.FortificationEvent;
-import model.viewer.events.MineralEvent;
-import model.viewer.events.MineralEvent.MineralKind;
-import model.viewer.events.StoneEvent;
-import model.viewer.events.StoneEvent.StoneKind;
-import model.viewer.events.TownEvent;
 
 /**
  * A Node that will produce an Event.
+ * 
  * @see AbstractEvent
  * @author Jonathan Lovelace
- *
+ * 
  */
-public class EventNode extends AbstractChildNode<AbstractEvent> {
-	/**
-	 * A stone event.
-	 */
-	private static final String STONE_KIND = "stone";
-	/**
-	 * A mineral event.
-	 */
-	private static final String MINERAL_KIND = "mineral";
-	/**
-	 * The property of a town-like event saying how big it is.
-	 */
-	private static final String SIZE_PROPERTY = "size";
-	/**
-	 * The property of a town-like event saying what its status is.
-	 */
-	private static final String STATUS_PROP = "status";
-	/**
-	 * The property of an event saying how difficult it is to find it.
-	 */
-	private static final String DC_PROPERTY = "dc";
+public class EventNode extends AbstractChildNode<AbstractEvent> implements
+		NeedsExtraCanonicalization {
 	/**
 	 * The property of an Event saying what kind of event it is.
 	 */
 	private static final String KIND_PROPERTY = "kind";
+
 	/**
 	 * Produce the equivalent Event.
-	 * @param players ignored
+	 * 
+	 * @param players
+	 *            ignored
 	 * @return the equivalent event
-	 * @throws SPFormatException if this Node contains invalid data.
+	 * @throws SPFormatException
+	 *             if this Node contains invalid data.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractEvent produce(final PlayerCollection players) throws SPFormatException {
-		// ESCA-JAVA0177:
-		final AbstractEvent event; // NOPMD
-		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {
-			event = new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if ("cave".equals(getProperty(KIND_PROPERTY))) {
-			event = new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if ("city".equals(getProperty(KIND_PROPERTY))) {
-			event = new CityEvent(
-					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
-					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if ("fortification".equals(getProperty(KIND_PROPERTY))) {
-			event = new FortificationEvent(
-					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
-					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if ("town".equals(getProperty(KIND_PROPERTY))) {
-			event = new TownEvent(
-					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
-					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if (MINERAL_KIND.equals(getProperty(KIND_PROPERTY))) {
-			event = new MineralEvent(MineralKind.parseMineralKind(getProperty("mineral")),
-					Boolean.parseBoolean(getProperty("exposed")),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else if (STONE_KIND.equals(getProperty(KIND_PROPERTY))) {
-			event = new StoneEvent(
-					StoneKind.parseStoneKind(getProperty("stone")),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
-		} else {
-			throw new SPFormatException("Unknown kind of event", getLine());
-		}
-		return event;
+	public AbstractEvent produce(final PlayerCollection players)
+			throws SPFormatException {
+		return ((AbstractChildNode<? extends AbstractEvent>) iterator().next())
+				.produce(players);
 	}
+
 	/**
 	 * Check that this Node contains entirely valid data. An Event is valid if
-	 * it has no children (thus towns, etc., shouldn't be Events much longer) and 
-	 * has a DC property. Additionally, town-related events must have size and 
-	 * status properties, minerals must have mineral and exposed properties, and 
-	 * stone events must have a "stone" property. For forward compatibility, 
-	 * we do not object to unknown properties.   
+	 * it has no children (thus towns, etc., shouldn't be Events much longer)
+	 * and has a DC property. Additionally, town-related events must have size
+	 * and status properties, minerals must have mineral and exposed properties,
+	 * and stone events must have a "stone" property. For forward compatibility,
+	 * we do not object to unknown properties.
 	 * 
-	 * @throws SPFormatException if it contains any invalid data.
+	 * @throws SPFormatException
+	 *             if it contains any invalid data.
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new SPFormatException("Event shouldn't have children", getLine());
-		} else if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {
-			if (("town".equals(getProperty(KIND_PROPERTY))
-					|| "fortification".equals(getProperty(KIND_PROPERTY)) || "city"
-						.equals(getProperty(KIND_PROPERTY)))
-					&& (!hasProperty(SIZE_PROPERTY) || !hasProperty(STATUS_PROP))) {
-				throw new SPFormatException(
-						"Town-related events must have \"size\" and \"status\" properties",
-						getLine());
-			} else if (MINERAL_KIND.equals(getProperty(KIND_PROPERTY))
-					&& (!hasProperty("mineral") || !hasProperty("exposed"))) {
-				throw new SPFormatException(
-						"Mineral events must have \"mineral\" and \"exposed\" properties.",
-						getLine());
-			} else if (STONE_KIND.equals(getProperty(KIND_PROPERTY))
-					&& !hasProperty("stone")) {
-				throw new SPFormatException(
-						"Stone events must have \"stone\" property.",
-						getLine());
-			}
-		} else {
-			throw new SPFormatException("Event must have \"kind\" and \"dc\" properties", getLine());
+		final Iterator<AbstractXMLNode> iter = iterator();
+		if (!iter.hasNext()) {
+			throw new SPFormatException(
+					"Doesn't have the child that actually holds the Event",
+					getLine());
 		}
+		iter.next().checkNode();
+		if (iter.hasNext()) {
+			throw new SPFormatException(
+					"EventNode shouldn't have more than the one child",
+					getLine());
+		}
+	}
+
+	/**
+	 * Convert this node into a wrapper around a more specific Node.
+	 * 
+	 * @throws SPFormatException
+	 *             on format error uncovered by this process
+	 */
+	@Override
+	public void canonicalizeImpl() throws SPFormatException {
+		// ESCA-JAVA0177:
+		final AbstractChildNode<? extends AbstractEvent> child; // NOPMD
+		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {
+			child = new BattlefieldEventNode();
+		} else if ("cave".equals(getProperty(KIND_PROPERTY))) {
+			child = new CaveEventNode();
+		} else if ("city".equals(getProperty(KIND_PROPERTY))
+				|| "fortification".equals(getProperty(KIND_PROPERTY))
+				|| "town".equals(getProperty(KIND_PROPERTY))) {
+			child = new TownEventNode();
+		} else if ("mineral".equals(getProperty(KIND_PROPERTY))) {
+			child = new MineralEventNode();
+		} else if ("stone".equals(getProperty(KIND_PROPERTY))) {
+			child = new StoneEventNode();
+		} else if (hasProperty(KIND_PROPERTY)) {
+			throw new SPFormatException("Unknown kind of event", getLine());
+		} else {
+			throw new SPFormatException("Event must have a \"kind\" property",
+					getLine());
+		}
+		moveEverythingTo(child);
+		addChild(child);
 	}
 
 }
