@@ -28,6 +28,7 @@ public class KeyPanel extends JPanel {
 		setMinimumSize(new Dimension(getMinimumSize().width,
 				new KeyElement(TileType.NotVisible).getMinimumSize()
 						.height * 3));
+		setPreferredSize(getMinimumSize());
 	}
 	/**
 	 * An element of the key.
