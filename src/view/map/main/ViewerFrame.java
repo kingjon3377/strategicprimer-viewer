@@ -22,10 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
-import model.viewer.SPMap;
 import view.util.DriverQuit;
 import view.util.SizeLimiter;
-import controller.map.XMLWriter;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -41,7 +39,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private static final String NOT_FOUND_ERROR = " not found";
 	/**
-	 * Error message when the map version is too old.
+	 * Error message when the map contains invalid data.
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
@@ -151,7 +149,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				}
 			} .start();
 			if (args.length > 1) {
-				frame.mapPanel.setSecondaryMap(readMap(args[1]));
+				frame.mapPanel.setSecondaryMap(new SimpleXMLReader().readMap(args[1]));
 			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
@@ -187,9 +185,9 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
-		createMenu();
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new SimpleXMLReader().readMap(filename), details);
+		createMenu();
 		addComponentListener(new SizeLimiter(details, DETAIL_PANEL_WIDTH, 1.0));
 		add(details, BorderLayout.EAST);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
@@ -210,24 +208,25 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	private void createMenu() {
 		final JMenuBar mbar = new JMenuBar();
 		final JMenu mapMenu = new JMenu("Map");
+		final ActionListener ioListener = new IOHandler(mapPanel, chooser);
 		mapMenu.setMnemonic(KeyEvent.VK_M);
 		mapMenu.add(createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
-				"Load a main map from file", this));
+				"Load a main map from file", ioListener));
 		mapMenu.add(createMenuItem("Save", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
-				"Save the main map to file", this));
+				"Save the main map to file", ioListener));
 		mapMenu.addSeparator();
 		mapMenu.add(createMenuItem(
 				LOAD_ALT_MAP_CMD,
 				KeyEvent.VK_D,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
 						+ ActionEvent.ALT_MASK),
-				"Load a secondary map from file", this));
+				"Load a secondary map from file", ioListener));
 		mapMenu.add(createMenuItem(SAVE_ALT_MAP_CMD,
 				KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 						ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK),
-				"Save the secondary map to file", this));
+				"Save the secondary map to file", ioListener));
 		mapMenu.addSeparator();
 		mapMenu.add(createMenuItem("Switch maps", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
@@ -270,27 +269,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		return mitem;
 	}
 	/**
-	 * Display an appropriate error message.
-	 * @param except an Exception
-	 * @param filename the file we were trying to process
-	 */
-	private void handleError(final Exception except, final String filename) {
-		String msg;
-		if (except instanceof XMLStreamException) {
-			msg = XML_ERROR_STRING + ' ' + filename;
-		} else if (except instanceof FileNotFoundException) {
-			msg = "File " + filename + NOT_FOUND_ERROR;
-		} else if (except instanceof IOException) {
-			msg = "I/O error reading file " + filename;
-		} else if (except instanceof SPFormatException) {
-			msg = INV_DATA_ERROR + " in file " + filename;
-		} else {
-			throw new IllegalStateException("Unknown exception type", except);
-		}
-		LOGGER.log(Level.SEVERE, msg, except);
-		showErrorDialog(this, msg);
-	}
-	/**
 	 * Handle button presses and the like.
 	 * 
 	 * @param event
@@ -298,63 +276,13 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		if ("Load".equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				final String filename = chooser.getSelectedFile().getPath();
-				// ESCA-JAVA0166:
-				try {
-				mapPanel.loadMap(readMap(filename));
-				} catch (final Exception e) {
-					handleError(e, filename);
-				}
-			}
-		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(mapPanel.getMap());
-		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				final String filename = chooser.getSelectedFile().getPath();
-				// ESCA-JAVA0166:
-				try {
-				mapPanel.setSecondaryMap(readMap(filename));
-				} catch (final Exception e) {
-					handleError(e, filename);
-				}
-			}
-		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			saveMap(mapPanel.getSecondaryMap());
-		} else if ("Switch maps".equals(event.getActionCommand())) {
+		if ("Switch maps".equals(event.getActionCommand())) {
 			new MapSwitcher(mapPanel).start();
 		} else if ("Restrict view".equals(event.getActionCommand())) {
 			new RestrictDialog(mapPanel).setVisible(true);
 		} 
 	}
-	/**
-	 * Save a map.
-	 * @param map the map to save.
-	 */
-	private void saveMap(final SPMap map) {
-		if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-			try {
-				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
-			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
-			}
-		}
-	}
 
-	/**
-	 * @param filename
-	 *            a file to load a map from
-	 * @return the map in that file
-	 * @throws SPFormatException if the file contains invalid data
-	 * @throws XMLStreamException if the XML isn't well-formed
-	 * @throws IOException on other I/O error
-	 */
-	private static SPMap readMap(final String filename) throws IOException,
-			XMLStreamException, SPFormatException {
-			return new SimpleXMLReader().readMap(filename); 
-	}
-	
 	/**
 	 * Show an error dialog.
 	 * 
@@ -363,7 +291,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * @param message
 	 *            the error message.
 	 */
-	private static void showErrorDialog(final Component parent, final String message) {
+	public static void showErrorDialog(final Component parent, final String message) {
 		JOptionPane.showMessageDialog(parent,
 				message, "Strategic Primer Map Viewer error",
 				JOptionPane.ERROR_MESSAGE);
