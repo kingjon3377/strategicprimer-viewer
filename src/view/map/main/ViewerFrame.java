@@ -62,11 +62,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * Default width of the Frame.
 	 */
-	private static final int DEFAULT_WIDTH = 640;
+	private static final int DEFAULT_WIDTH = 800;
 	/**
 	 * Default height of the Frame.
 	 */
-	private static final int DEFAULT_HEIGHT = 480;
+	private static final int DEFAULT_HEIGHT = 600;
 	/**
 	 * The quasi-Singleton.
 	 */
