@@ -125,7 +125,7 @@ public class SimpleXMLReader {
 				// ESCA-JAVA0177:
 				final SPMap map2; // NOPMD
 				try {
-					map2 = new SimpleXMLReader().readMap(new FileInputStream(arg)); // $codepro.audit.disable closeWhereCreated
+					map2 = new SimpleXMLReader().readMap(arg); // NOPMD
 				} catch (FileNotFoundException e) {
 					logger.log(Level.SEVERE, arg + " not found", e);
 					continue;
@@ -134,6 +134,9 @@ public class SimpleXMLReader {
 					continue;
 				} catch (SPFormatException e) {
 					logger.log(Level.SEVERE, "Invalid SP map data in " + arg, e);
+					continue;
+				} catch (IOException e) {
+					logger.log(Level.SEVERE, "I/O error parsing " + arg, e);
 					continue;
 				}
 				final long endTwo = System.nanoTime();
