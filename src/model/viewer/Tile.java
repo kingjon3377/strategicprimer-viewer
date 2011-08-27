@@ -58,13 +58,19 @@ public final class Tile {
 	/**
 	 * The tile type.
 	 */
-	private final TileType type;
+	private TileType type;
 
 	/**
 	 * @return the tile type
 	 */
 	public TileType getType() {
 		return type;
+	}
+	/**
+	 * @param ttype the tile's new type
+	 */
+	public void setType(final TileType ttype) {
+		type = ttype;
 	}
 	/**
 	 * The units, fortresses, and events on the tile.
