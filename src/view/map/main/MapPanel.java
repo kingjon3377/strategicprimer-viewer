@@ -172,7 +172,7 @@ public class MapPanel extends JPanel {
 					maxRow + 1); row++) {
 				for (int col = Math.max(0, minCol); col < Math.min(
 						newMap.cols(), maxCol + 1); col++) {
-					addTile(row, col, newMap.getTile(row, col));
+					addTile(new GUITile(newMap.getTile(row, col)));
 				}
 			}
 			map = newMap;
@@ -196,28 +196,6 @@ public class MapPanel extends JPanel {
 	}
 
 	/**
-	 * Set up a new tile, possibly getting it from cache.
-	 * 
-	 * @param row
-	 *            the row
-	 * @param col
-	 *            the column
-	 * @param tile
-	 *            the tile we're setting up a GUI for.
-	 */
-	private void addTile(final int row, final int col, final Tile tile) {
-			if (!tileCache.containsKey(tile)) {
-				tileCache.put(tile, new GUITile(tile));
-			}
-			addTile(tileCache.get(tile));
-			locCache.put(PointFactory.point(row, col), tileCache.get(tile));
-	}
-
-	/**
-	 * A cache of GUITiles.
-	 */
-	private final Map<Tile, GUITile> tileCache = new HashMap<Tile, GUITile>();
-	/**
 	 * A cache of the GUITiles given just their position.
 	 */
 	private final Map<Point, GUITile> locCache = new HashMap<Point, GUITile>();
@@ -229,12 +207,9 @@ public class MapPanel extends JPanel {
 	 *            the GUI tile to set up.
 	 */
 	private void addTile(final GUITile tile) {
-		// We have to remove the listener because the tile might be cached. But
-		// the spec says removing it won't fail or throw an exception even if
-		// the listener wasn't already attached.
-		tile.removeMouseListener(selListener);
 		tile.addMouseListener(selListener);
 		add(tile);
+		locCache.put(PointFactory.point(tile.getTile().getRow(), tile.getTile().getCol()), tile);
 		tile.setVisible(true);
 		tile.repaint();
 	}
