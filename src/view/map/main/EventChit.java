@@ -26,9 +26,6 @@ public class EventChit extends Chit {
 	 */
 	public EventChit(final AbstractEvent event, final MouseListener listener) {
 		super(listener);
-		if (event == null) {
-			throw new IllegalArgumentException("Event was null");
-		}
 		final StringBuilder builder = new StringBuilder("<html><p>");
 		builder.append(event.getText());
 		if (event instanceof AbstractTownEvent

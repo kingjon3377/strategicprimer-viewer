@@ -286,7 +286,7 @@ public class XMLWriter { // NOPMD
 		indent(3);
 		writer.print("<fortress owner=");
 		printQuoted(fort.getOwner().getId());
-		if (fort.getName() != null) {
+		if (!"".equals(fort.getName())) {
 			writer.print(" name=");
 			printQuoted(fort.getName());
 		}
@@ -312,11 +312,11 @@ public class XMLWriter { // NOPMD
 		indent(3);
 		writer.print("<unit owner=");
 		printQuoted(unit.getOwner().getId());
-		if (unit.getType() != null && !"".equals(unit.getType())) {
+		if (!"".equals(unit.getType())) {
 			writer.print(" type=");
 			printQuoted(unit.getType());
 		}
-		if (unit.getName() != null && !"".equals(unit.getName())) {
+		if (!"".equals(unit.getName())) {
 			writer.print(" name=");
 			printQuoted(unit.getName());
 		}

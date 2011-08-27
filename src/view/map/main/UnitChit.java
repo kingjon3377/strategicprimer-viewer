@@ -27,11 +27,11 @@ public class UnitChit extends Chit {
 	public UnitChit(final Unit unit, final MouseListener listener) {
 		super(listener);
 		final StringBuilder sbuild = new StringBuilder("<html><p>Unit ");
-		if (unit.getName() != null) {
+		if (!"".equals(unit.getName())) {
 			sbuild.append(unit.getName());
 			sbuild.append(", ");
 		}
-		if (unit.getType() != null) {
+		if (!"".equals(unit.getType())) {
 			sbuild.append("of type ");
 			sbuild.append(unit.getType());
 			sbuild.append(", ");

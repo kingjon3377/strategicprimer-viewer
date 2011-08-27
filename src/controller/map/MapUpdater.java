@@ -37,9 +37,6 @@ public class MapUpdater {
 	 *            the master map
 	 */
 	public MapUpdater(final SPMap masterMap) {
-		if (masterMap == null) {
-			throw new IllegalArgumentException("Null map passed");
-		}
 		master = masterMap;
 	}
 
@@ -50,9 +47,7 @@ public class MapUpdater {
 	 *            the derived map to update.
 	 */
 	public void update(final SPMap derived) {
-		if (derived == null) {
-			throw new IllegalArgumentException("Null map passed as derived.");
-		} else if (master.rows() != derived.rows()
+		if (master.rows() != derived.rows()
 				|| master.cols() != derived.cols()) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
@@ -74,7 +69,6 @@ public class MapUpdater {
 	 */
 	public boolean shouldUpdate(final Tile masterTile, final Tile tile) {
 		return !TileType.NotVisible.equals(tile.getType())
-				&& masterTile != null
 				&& !TileType.NotVisible.equals(masterTile.getType())
 				&& !tile.equals(masterTile);
 	}

@@ -44,11 +44,6 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public TileSelectionListener(final MapPanel view, final DetailPanel details) {
 		super();
-		if (details == null) {
-			throw new IllegalArgumentException("DetailPanel was null");
-		} else if (view == null) {
-			throw new IllegalArgumentException("ViewerFrame was null");
-		}
 		detailPanel = details;
 		viewer = view;
 	}

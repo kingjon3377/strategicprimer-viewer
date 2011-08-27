@@ -100,10 +100,8 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	public boolean equals(final Object obj) {
 		return this == obj || (obj instanceof Unit
 				&& ((Unit) obj).owner.equals(owner)
-				&& ((type == null) ? ((Unit) obj).type == null
-						: ((Unit) obj).type.equals(type))
-				&& ((name == null) ? ((Unit) obj).name == null
-						: ((Unit) obj).name.equals(name)));
+				&& (((Unit) obj).type.equals(type))
+				&& (((Unit) obj).name.equals(name)));
 	}
 
 	/**
@@ -111,8 +109,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	 */
 	@Override
 	public int hashCode() {
-		return ((type == null) ? 0 : type.hashCode()) + owner.hashCode() << 2 + ((name == null) ? 0
-				: name.hashCode()) << 4;
+		return (type.hashCode()) + owner.hashCode() << 2 + (name.hashCode()) << 4;
 	}
 
 	/**

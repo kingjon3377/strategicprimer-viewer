@@ -176,7 +176,7 @@ public final class Tile {
 	 *            text associated with the tile
 	 */
 	public void setTileText(final String text) {
-		tileText = ((text == null) ? "" : text);
+		tileText = text;
 	}
 
 	/**

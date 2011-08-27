@@ -262,9 +262,6 @@ public abstract class AbstractEvent implements TileFixture {
 			super(eKind);
 			status = tStatus;
 			size = tSize;
-			if (status == null || size == null) {
-				throw new IllegalArgumentException("An enumerated argument was somehow null!");
-			}
 		}
 
 		/**

@@ -31,9 +31,6 @@ public class ChitSelectionListener extends SelectionListener {
 	 */
 	public ChitSelectionListener(final JLabel label) {
 		super();
-		if (label == null) {
-			throw new IllegalArgumentException("Label was null");
-		}
 		detailLabel = label;
 	}
 
@@ -59,7 +56,7 @@ public class ChitSelectionListener extends SelectionListener {
 	 * @return the text, with "player N" replaced by the player's name if known.
 	 */
 	private String fixText(final String text) {
-		if (text != null && text.indexOf("player ", 0) >= 0) {
+		if (text.indexOf("player ", 0) >= 0) {
 			final Matcher matcher = Pattern.compile("player \\d+")
 					.matcher(text);
 			if (matcher.find()) {

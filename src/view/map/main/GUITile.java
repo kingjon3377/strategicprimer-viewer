@@ -225,7 +225,7 @@ public class GUITile extends Selectable {
 	 * @return whether the tile has any events
 	 */
 	private static boolean hasEvent(final Tile tile) {
-		if (tile.getTileText() == null || "".equals(tile.getTileText())) {
+		if ("".equals(tile.getTileText())) {
 			for (TileFixture fix : tile.getContents()) {
 				if (fix instanceof AbstractEvent) {
 					return true; // NOPMD
