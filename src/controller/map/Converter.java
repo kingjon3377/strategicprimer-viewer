@@ -56,7 +56,7 @@ public final class Converter {
 	/**
 	 * How many little tiles per big tile in each dimension.
 	 */
-	private static final int SUBTILES_PER_TILE = 66;
+	private static final int SUBTILES_PER_TILE = 10;
 
 	/**
 	 * Constructor.
