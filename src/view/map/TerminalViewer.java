@@ -76,8 +76,10 @@ public final class TerminalViewer {
 	 *            The map the text map represents
 	 */
 	private void createTextMap(final SPMap map) {
-		for (int i = 0; i < map.rows(); i++) {
-			for (int j = 0; j < map.cols(); j++) {
+		final int rows = map.rows();
+		final int cols = map.cols();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				textMap[i][j] = getTerrainChar(map.getTile(i, j).getType());
 			}
 		}

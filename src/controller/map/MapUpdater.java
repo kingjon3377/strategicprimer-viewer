@@ -51,8 +51,10 @@ public class MapUpdater {
 				|| master.cols() != derived.cols()) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
-		for (int i = 0; i < master.rows(); i++) {
-			for (int j = 0; j < master.cols(); j++) {
+		final int rows = master.rows();
+		final int cols = master.cols();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				if (shouldUpdate(derived.getTile(i, j), master.getTile(i, j))) {
 					derived.addTile(master.getTile(i, j));
 				}

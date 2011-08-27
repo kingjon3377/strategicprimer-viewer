@@ -100,10 +100,10 @@ public class MapPanel extends JPanel {
 		dimensions = new VisibleDimensions(Math.max(0, minRow), Math.min(
 				newMap.rows(), maxRow + 1) - 1, Math.max(0, minCol), Math.min(
 				newMap.cols(), maxCol + 1) - 1);
-			for (int row = Math.max(0, minRow); row < Math.min(newMap.rows(),
-					maxRow + 1); row++) {
-				for (int col = Math.max(0, minCol); col < Math.min(
-						newMap.cols(), maxCol + 1); col++) {
+		final int rows = Math.min(newMap.rows(), maxRow + 1);
+		final int cols = Math.min(newMap.cols(), maxCol + 1);
+		for (int row = Math.max(0, minRow); row < rows; row++) {
+				for (int col = Math.max(0, minCol); col < cols; col++) {
 					addTile(new GUITile(newMap.getTile(row, col))); // NOPMD
 				}
 			}
