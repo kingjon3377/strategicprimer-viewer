@@ -125,7 +125,7 @@ public class SimpleXMLReader {
 				// ESCA-JAVA0177:
 				final SPMap map2; // NOPMD
 				try {
-					map2 = new SimpleXMLReader().readMap(new FileInputStream(arg)); // NOPMD // $codepro.audit.disable closeWhereCreated
+					map2 = new SimpleXMLReader().readMap(new FileInputStream(arg)); // $codepro.audit.disable closeWhereCreated
 				} catch (FileNotFoundException e) {
 					logger.log(Level.SEVERE, arg + " not found", e);
 					continue;
