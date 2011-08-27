@@ -55,7 +55,6 @@ public class MapPanel extends JPanel {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
 		final ActionMap actionMap = getActionMap();
 		new ArrowKeyListener().setUpListeners(selListener, actionMap);
-		changeListener = details;
 		setOpaque(true);
 		loadMap(newMap);
 		secondaryMap = new SPMap(newMap.rows(), newMap.cols());
@@ -187,10 +186,6 @@ public class MapPanel extends JPanel {
 						.update(map.getTile(selection.getRow(),
 								selection.getCol()));
 	}
-	/**
-	 * Needs to know when the map is changed.
-	 */
-	private final DetailPanel changeListener;
 	/**
 	 * @param coords a set of coordinates
 	 * @return the GUITile at those coordinates, if any.
