@@ -20,7 +20,6 @@ import model.exploration.ExplorationRunner;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
-import view.map.main.SelectionListener;
 import view.util.SizeLimiter;
 
 /**
@@ -164,11 +163,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 * The tile we refer to.
 	 */
 	private Tile tile;
-	/**
-	 * To handle which chit is selected.
-	 */
-	private final transient SelectionListener chitSelecter = new ChitSelectionListener(
-			chitDetail);
 	
 	/**
 	 * @param newTile
@@ -198,7 +192,8 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * Panel for chits.
 	 */
-	private final ChitPanel chitPanel = new ChitPanel(chitSelecter);
+	private final ChitPanel chitPanel = new ChitPanel(new ChitSelectionListener(
+			chitDetail));
 	static {
 		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");
 		DESCRIPTIONS.put(TileType.Desert, "Desert");
