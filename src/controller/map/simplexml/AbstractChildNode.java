@@ -45,4 +45,13 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 * @throws SPFormatException if the data isn't legal.
 	 */
 	public abstract T produce(final PlayerCollection players) throws SPFormatException;
+	/**
+	 * Move everything---properties and children---to another Node.
+	 * @param dest the destination node.
+	 */
+	protected final void moveEverythingTo(final AbstractChildNode<? extends T> dest) {
+		moveChildrenTo(dest);
+		dest.properties.putAll(properties);
+		properties.clear();
+	}
 }

@@ -89,4 +89,12 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		children.removeAll(nodesToRemove);
 		children.addAll(nodesToAdd);
 	}
+	/**
+	 * Move all children to another Node.
+	 * @param dest the destination Node.
+	 */
+	protected final void moveChildrenTo(final AbstractXMLNode dest) {
+		dest.children.addAll(children);
+		children.clear();
+	}
 }
