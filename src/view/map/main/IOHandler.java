@@ -67,7 +67,7 @@ public final class IOHandler implements ActionListener {
 				// ESCA-JAVA0166:
 				try {
 					panel.loadMap(readMap(filename));
-				} catch (final Exception e) {
+				} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 					handleError(e, filename);
 				}
 			}
@@ -79,7 +79,7 @@ public final class IOHandler implements ActionListener {
 				// ESCA-JAVA0166:
 				try {
 					panel.setSecondaryMap(readMap(filename));
-				} catch (final Exception e) {
+				} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 					handleError(e, filename);
 				}
 			}
