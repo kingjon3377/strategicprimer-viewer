@@ -100,58 +100,67 @@ public class SimpleXMLReader {
 		// ESCA-JAVA0266:
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
 		final Logger logger = Logger.getLogger(SimpleXMLReader.class.getName());
+		final MapReader oldReader = new MapReader();
+		final SimpleXMLReader newReader = new SimpleXMLReader();
 		try {
 		for (final String arg : args) {
-				final long startOne = System.nanoTime();
-				// ESCA-JAVA0177:
-				final SPMap map1; // NOPMD
-				try {
-					map1 = new MapReader().readMap(arg); // NOPMD
-				} catch (XMLStreamException e) {
-					logger.log(Level.SEVERE, "XMLStreamException (probably badly formed input) in " + arg, e);
-					continue;
-				} catch (IOException e) {
-					logger.log(Level.SEVERE, "I/O error while parsing" + arg, e);
-					continue;
-				} catch (MapVersionException e) {
-					logger.log(Level.SEVERE, "Map version too old for old-style reader in file " + arg, e);
-					continue;
-				} 
-				final long endOne = System.nanoTime();
-				out.print("Old method took ");
-				out.print((endOne - startOne));
-				out.println(" time-units.");
-				final long startTwo = System.nanoTime();
-				// ESCA-JAVA0177:
-				final SPMap map2; // NOPMD
-				try {
-					map2 = new SimpleXMLReader().readMap(arg); // NOPMD
-				} catch (FileNotFoundException e) {
-					logger.log(Level.SEVERE, arg + " not found", e);
-					continue;
-				} catch (XMLStreamException e) {
-					logger.log(Level.SEVERE, "XML stream exception in " + arg, e);
-					continue;
-				} catch (SPFormatException e) {
-					logger.log(Level.SEVERE, "Invalid SP map data in " + arg, e);
-					continue;
-				} catch (IOException e) {
-					logger.log(Level.SEVERE, "I/O error parsing " + arg, e);
-					continue;
-				}
-				final long endTwo = System.nanoTime();
-				out.print("New method took ");
-				out.print((endTwo - startTwo));
-				out.println(" time-units.");
-				if (map1.equals(map2)) {
-					out.println("Readers produce identical results.");
-				} else {
-					out.print("Readers differ on ");
-					out.println(arg);
-				}
+			try {
+				compareReaders(out, arg, oldReader, newReader);
+			} catch (XMLStreamException e) {
+				logger.log(Level.SEVERE, "XMLStreamException (probably badly formed input) in " + arg, e);
+				continue;
+			} catch (FileNotFoundException e) {
+				logger.log(Level.SEVERE, arg + " not found", e);
+				continue;
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "I/O error while parsing" + arg, e);
+				continue;
+			} catch (SPFormatException e) {
+				logger.log(Level.SEVERE, "New reader claims invalid SP map data in " + arg, e);
+				continue;
+			} catch (MapVersionException e) {
+				logger.log(Level.SEVERE, "Map version too old for old-style reader in file " + arg, e);
+				continue; 
+			} 
 		}
 		} finally {
 		out.close();
+		}
+	}
+	// ESCA-JAVA0160:
+	/**
+	 * Compare two readers on a single file.
+	 * @param out the stream to write results on
+	 * @param arg the file to try them on
+	 * @param oldReader the old reader
+	 * @param newReader the new reader
+	 * @throws XMLStreamException if either reader claims badly formed input
+	 * @throws FileNotFoundException if either reader can't find the file
+	 * @throws IOException on other I/O error in either reader
+	 * @throws SPFormatException if the new reader claims invalid data
+	 * @throws MapVersionException if the old reader can't handle that map version
+	 */
+	private static void compareReaders(final PrintWriter out,
+			final String arg, final MapReader oldReader,
+			final SimpleXMLReader newReader) throws XMLStreamException,
+			FileNotFoundException, IOException, SPFormatException, MapVersionException {
+		final long startOne = System.nanoTime();
+		final SPMap map1 = oldReader.readMap(arg); 
+		final long endOne = System.nanoTime();
+		out.print("Old method took ");
+		out.print((endOne - startOne));
+		out.println(" time-units.");
+		final long startTwo = System.nanoTime();
+		final SPMap map2 = newReader.readMap(arg); 
+		final long endTwo = System.nanoTime();
+		out.print("New method took ");
+		out.print((endTwo - startTwo));
+		out.println(" time-units.");
+		if (map1.equals(map2)) {
+			out.println("Readers produce identical results.");
+		} else {
+			out.print("Readers differ on ");
+			out.println(arg);
 		}
 	}
 }
