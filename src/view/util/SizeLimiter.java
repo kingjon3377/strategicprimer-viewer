@@ -12,6 +12,7 @@ import java.awt.event.ComponentEvent;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class SizeLimiter extends ComponentAdapter {
 	/**
 	 * Constructor.
