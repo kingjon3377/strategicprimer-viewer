@@ -1,10 +1,13 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import model.viewer.PlayerCollection;
 import model.viewer.SPMap;
+import controller.map.simplexml.AbstractChildNode;
+import controller.map.simplexml.AbstractXMLNode;
+import controller.map.simplexml.SPFormatException;
 
 /**
  * A node generated from the <map> tag.

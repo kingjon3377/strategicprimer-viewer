@@ -3,6 +3,15 @@ package controller.map.simplexml;
 import java.util.HashMap;
 import java.util.Map;
 
+import controller.map.simplexml.node.EventNode;
+import controller.map.simplexml.node.FortressNode;
+import controller.map.simplexml.node.MapNode;
+import controller.map.simplexml.node.PlayerNode;
+import controller.map.simplexml.node.RiverNode;
+import controller.map.simplexml.node.SkippableNode;
+import controller.map.simplexml.node.TileNode;
+import controller.map.simplexml.node.UnitNode;
+
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
  * the tags that represent them.

@@ -1,4 +1,4 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import model.viewer.Fortress;
 import model.viewer.PlayerCollection;
@@ -6,6 +6,9 @@ import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
+import controller.map.simplexml.AbstractChildNode;
+import controller.map.simplexml.AbstractXMLNode;
+import controller.map.simplexml.SPFormatException;
 /**
  * A Node to represent a Tile.
  * @author Jonathan Lovelace

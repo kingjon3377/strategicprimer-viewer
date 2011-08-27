@@ -1,7 +1,9 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import model.viewer.Player;
 import model.viewer.PlayerCollection;
+import controller.map.simplexml.AbstractChildNode;
+import controller.map.simplexml.SPFormatException;
 /**
  * A Node to represent a Player.
  * @author Jonathan Lovelace

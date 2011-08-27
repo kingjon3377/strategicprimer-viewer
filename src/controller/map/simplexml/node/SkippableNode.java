@@ -1,6 +1,8 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import model.viewer.PlayerCollection;
+import controller.map.simplexml.AbstractChildNode;
+import controller.map.simplexml.SPFormatException;
 
 /**
  * A Node for tags we'd rather skip. This is an AbstractChildNode because

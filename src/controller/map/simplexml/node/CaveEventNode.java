@@ -1,15 +1,15 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import model.viewer.PlayerCollection;
-import model.viewer.events.BattlefieldEvent;
-
+import model.viewer.events.CaveEvent;
+import controller.map.simplexml.AbstractChildNode;
+import controller.map.simplexml.SPFormatException;
 /**
- * A Node representing a BattlefieldEvent.
- * 
- * @author Jonathan Lovelace
- * 
+ * A Node representing a CaveEvent.
+ * @author kingjon
+ *
  */
-public class BattlefieldEventNode extends AbstractChildNode<BattlefieldEvent> {
+public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
@@ -27,17 +27,16 @@ public class BattlefieldEventNode extends AbstractChildNode<BattlefieldEvent> {
 	 *             if this includes invalid data
 	 */
 	@Override
-	public BattlefieldEvent produce(final PlayerCollection players)
+	public CaveEvent produce(final PlayerCollection players)
 			throws SPFormatException {
-		return new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
+		return new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
 	
 	/**
-	 * Check whether this Node has valid data or not. A battlefield must have
-	 * "kind" and "dc" properties (any others are ignored, for forward
-	 * compatibility) and no children.
+	 * Check whether this Node has valid data or not. A Cave is valid if it has
+	 * "dc" and "kind" properties and no children.
 	 * 
-	 * @throws SPFormatException if the data is invalid
+	 * @throws SPFormatException if it isn't valid.
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {

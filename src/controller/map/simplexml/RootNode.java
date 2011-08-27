@@ -2,6 +2,8 @@ package controller.map.simplexml;
 
 import java.util.Iterator;
 
+import controller.map.simplexml.node.MapNode;
+
 /**
  * A node at the root of the hierarchy. Its only child should be a MapNode.
  * 

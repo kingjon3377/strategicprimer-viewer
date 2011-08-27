@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import controller.map.simplexml.node.SkippableNode;
+
 /**
  * A class representing an XML tag and its descendants---except not necessarily
  * a node actually *in* the XML tree.
@@ -53,7 +55,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	/**
 	 * @return the line the tag was on
 	 */
-	protected int getLine() {
+	public int getLine() {
 		return line;
 	}
 
