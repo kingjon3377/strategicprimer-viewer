@@ -24,7 +24,7 @@ public final class MapFileFilter extends FileFilter {
 			return true; // NOPMD
 		} else {
 			final String extension = getExtension(file);
-			return ("xml".equals(extension) || "map".equals(extension));
+			return "xml".equals(extension) || "map".equals(extension);
 		}
 	}
 
