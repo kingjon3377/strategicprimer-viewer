@@ -17,7 +17,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import model.exploration.ExplorationRunner;
-import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
@@ -246,12 +245,5 @@ public class DetailPanel extends JPanel implements ActionListener {
 		resultsField.setText(resultsField.getText() + '\n'
 				+ runner.recursiveConsultTable("main", tile));
 		actionPerformed(new ActionEvent(this, 0, RESULTS_SAVE_CMD));
-	}
-	
-	/**
-	 * @param map the main map
-	 */
-	public void setMap(final SPMap map) {
-		((ChitSelectionListener) chitSelecter).setMap(map);
 	}
 }
