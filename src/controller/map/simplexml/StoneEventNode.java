@@ -32,7 +32,13 @@ public class StoneEventNode extends AbstractChildNode<StoneEvent> {
 				StoneKind.parseStoneKind(getProperty("stone")),
 				Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
-
+	
+	/**
+	 * Check whether the node is valid. A Stone Node is valid if it has no
+	 * children and "kind", "dc", and "stone" properties.
+	 * 
+	 * @throws SPFormatException if the data is invalid.
+	 */
 	@Override
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {

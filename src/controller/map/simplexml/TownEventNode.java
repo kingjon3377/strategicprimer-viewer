@@ -63,7 +63,13 @@ public class TownEventNode extends AbstractChildNode<AbstractTownEvent> {
 		}
 		return event;
 	}
-
+	
+	/**
+	 * Check the data for validity. A Town or similar is valid if it has no
+	 * children and "kind", "dc", "size', and "status" properties.
+	 * 
+	 * @throws SPFormatException if the data are invalid.
+	 */
 	@Override
 	public void checkNode() throws SPFormatException {
 		if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {

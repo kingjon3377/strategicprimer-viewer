@@ -29,7 +29,13 @@ public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 			throws SPFormatException {
 		return new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
-
+	
+	/**
+	 * Check whether this Node has valid data or not. A Cave is valid if it has
+	 * "dc" and "kind" properties and no children.
+	 * 
+	 * @throws SPFormatException if it isn't valid.
+	 */
 	@Override
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {

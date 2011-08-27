@@ -31,7 +31,14 @@ public class BattlefieldEventNode extends AbstractChildNode<BattlefieldEvent> {
 			throws SPFormatException {
 		return new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
-
+	
+	/**
+	 * Check whether this Node has valid data or not. A battlefield must have
+	 * "kind" and "dc" properties (any others are ignored, for forward
+	 * compatibility) and no children.
+	 * 
+	 * @throws SPFormatException if the data is invalid
+	 */
 	@Override
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
