@@ -136,7 +136,8 @@ public final class TestTableLoader {
 				reader.close();
 			} catch (final IOException e) {
 				fail(IO_ERROR_MESSAGE);
-			}		}
+			}
+		}
 	}
 
 	/**
@@ -159,7 +160,8 @@ public final class TestTableLoader {
 				one.close();
 			} catch (final IOException e) {
 				fail(IO_ERROR_MESSAGE);
-			}		}
+			}
+		}
 	}
 
 	/**
@@ -178,11 +180,12 @@ public final class TestTableLoader {
 					"File doesn't start by specifying which kind of table.",
 					except.getMessage());
 		} finally {
-		try {
-			one.close();
-		} catch (IOException e) {
-			fail("I/O error while closing the stream");
-		} }
+			try {
+				one.close();
+			} catch (IOException e) {
+				fail("I/O error while closing the stream");
+			}
+		}
 		final BufferedReader two = new BufferedReader(new StringReader(
 				"2\ninvaliddata\ninvaliddata"));
 		try {
@@ -194,10 +197,11 @@ public final class TestTableLoader {
 		} catch (final IOException except) {
 			fail("I/O error when testing for rejection of headerless tables");
 		} finally {
-		try {
-			two.close();
-		} catch (IOException e) {
-			fail("I/O error while closing the stream");
-		} }
+			try {
+				two.close();
+			} catch (IOException e) {
+				fail("I/O error while closing the stream");
+			}
+		}
 	}
 }
