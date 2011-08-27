@@ -151,7 +151,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				}
 			} .start();
 			if (args.length > 1) {
-				frame.mapPanel.setSecondaryMap(frame.readMap(args[1]));
+				frame.mapPanel.setSecondaryMap(readMap(args[1]));
 			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
@@ -279,14 +279,43 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	public void actionPerformed(final ActionEvent event) {
 		if ("Load".equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				mapPanel.loadMap(readMap(chooser.getSelectedFile().getPath()));
+				final String filename = chooser.getSelectedFile().getPath();
+				try {
+				mapPanel.loadMap(readMap(filename));
+				} catch (final XMLStreamException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+					showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
+				} catch (final FileNotFoundException e) {
+					LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
+					showErrorDialog(this, "File " + filename + NOT_FOUND_ERROR);
+				} catch (final IOException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+					showErrorDialog(this, "I/O error reading " + filename);
+				} catch (SPFormatException e) {
+					LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
+					showErrorDialog(this, INV_DATA_ERROR);
+				}
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMap(mapPanel.getMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				mapPanel.setSecondaryMap(readMap(chooser.getSelectedFile()
-						.getPath()));
+				final String filename = chooser.getSelectedFile().getPath();
+				try {
+				mapPanel.setSecondaryMap(readMap(filename));
+				} catch (final XMLStreamException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+					showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
+				} catch (final FileNotFoundException e) {
+					LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
+					showErrorDialog(this, "File " + filename + NOT_FOUND_ERROR);
+				} catch (final IOException e) {
+					LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
+					showErrorDialog(this, "I/O error reading " + filename);
+				} catch (SPFormatException e) {
+					LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
+					showErrorDialog(this, INV_DATA_ERROR);
+				}
 			}
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			saveMap(mapPanel.getSecondaryMap());
@@ -311,33 +340,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Note that runtime loading of a new map should always ignore calls with a
-	 * null map.
-	 * 
 	 * @param filename
 	 *            a file to load a map from
-	 * @return the map in that file, or null if errors happen.
+	 * @return the map in that file
+	 * @throws SPFormatException if the file contains invalid data
+	 * @throws XMLStreamException if the XML isn't well-formed
+	 * @throws IOException on other I/O error
 	 */
-	private SPMap readMap(final String filename) {
-		try {
-			return new SimpleXMLReader().readMap(filename); // NOPMD
-		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			showErrorDialog(this, XML_ERROR_STRING + ' ' + filename);
-			return null; // NOPMD
-		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
-			showErrorDialog(this, "File " + filename + NOT_FOUND_ERROR);
-			return null; // NOPMD
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			showErrorDialog(this, "I/O error reading " + filename);
-			return null; // NOPMD
-		} catch (SPFormatException e) {
-			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
-			showErrorDialog(this, INV_DATA_ERROR);
-			return null;
-		}
+	private static SPMap readMap(final String filename) throws IOException,
+			XMLStreamException, SPFormatException {
+			return new SimpleXMLReader().readMap(filename); 
 	}
 	
 	/**
