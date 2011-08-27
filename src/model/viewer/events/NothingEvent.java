@@ -14,7 +14,7 @@ public final class NothingEvent extends AbstractEvent {
 	/**
 	 * Constructor.
 	 */
-	public NothingEvent() {
+	private NothingEvent() {
 		super(EventKind.Nothing);
 	}
 
