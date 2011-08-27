@@ -6,7 +6,7 @@ package model.viewer.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class TownEvent extends AbstractEvent.AbstractTownEvent {
+public final class TownEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
 	 * 

@@ -8,7 +8,7 @@ package model.viewer.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class FortificationEvent extends AbstractEvent.AbstractTownEvent {
+public final class FortificationEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
 	 * 
