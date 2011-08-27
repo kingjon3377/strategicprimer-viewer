@@ -184,7 +184,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final DetailPanel details = new DetailPanel();
 		mapPanel = new MapPanel(new SimpleXMLReader().readMap(filename), details);
 		createMenu();
-		add(details, BorderLayout.EAST);
+		add(details, BorderLayout.SOUTH);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
 		add(scroller, BorderLayout.CENTER);
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));

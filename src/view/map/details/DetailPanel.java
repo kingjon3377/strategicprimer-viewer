@@ -33,41 +33,65 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private static final String RESULTS_SAVE_CMD = "<html><p>Save changed results</p></html>";
 	/**
+	 * Maximum height of this panel, in pixels.
+	 */
+	public static final int DETAIL_PAN_MAX_HT = 150;
+	/**
 	 * Preferred width of this panel, in pixels.
 	 */
-	public static final int DETAIL_PANEL_WIDTH = 250;
+	public static final int DETAIL_PANEL_HT = 100;
 	/**
 	 * Minimum width of this panel, in pixels.
 	 */
-	public static final int DETAIL_PAN_MIN_WID = 150;
+	public static final int DETAIL_PAN_MIN_HT = 50;
 	/**
 	 * Maximum height of the chit panel and chit-detail label, in pixels.
 	 */
-	private static final int CHIT_PAN_MAX_HT = 200;
+	private static final int CHIT_PAN_MAX_WD = 200;
 	/**
 	 * Minimum height of the chit panel and chit-detail label, in pixels.
 	 */
-	private static final int CHIT_PAN_MIN_HT = 100;
+	private static final int CHIT_PAN_MIN_WD = 100;
 	/**
 	 * Preferred height of the chit panel and chit-detail label, in pixels.
 	 */
-	private static final int CHIT_PANEL_HEIGHT = 150;
+	private static final int CHIT_PANEL_WIDTH = 150;
 	/**
 	 * Minimum height of the results field and its label.
 	 */
-	private static final int RESULTS_MIN_HT = 150;
+	private static final int RESULTS_MIN_WD = 200;
 	/**
 	 * Preferred height of the results field and its label.
 	 */
-	private static final int RESULTS_HEIGHT = 250;
+	private static final int RESULTS_PREF_WD = 300;
 	/**
 	 * Maximum height of the results field and its label.
 	 */
-	private static final int RESULTS_MAX_HT = 350;
+	private static final int RESULTS_MAX_WD = 400;
 	/**
-	 * Height of the results button as a ratio to its parent's height.
+	 * Minimum height of the results label.
 	 */
-	private static final int RESULTS_BUTTON_HEIGHT = 20; // NOPMD
+	private static final int LABEL_MIN_HT = 10; // NOPMD
+	/**
+	 * Preferred height of the results label.
+	 */
+	private static final int LABEL_PREF_HT = 15;
+	/**
+	 * Maximum height for the results label.
+	 */
+	private static final int LABEL_MAX_HT = 20;
+	/**
+	 * Minimum height of the results button.
+	 */
+	private static final int BUTTON_MIN_HT = 15;
+	/**
+	 * Preferred height of the results button.
+	 */
+	private static final int BUTTON_PREF_HT = 20;
+	/**
+	 * Maximum height of the results button.
+	 */
+	private static final int BUTTON_MAX_HT = 25;
 	/**
 	 * Label to show the tile's terrain type.
 	 */
@@ -90,69 +114,58 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	public DetailPanel() {
 		super();
-		setMaximumSize(new Dimension(DETAIL_PANEL_WIDTH, Integer.MAX_VALUE));
-		setMinimumSize(new Dimension(DETAIL_PAN_MIN_WID, Integer.MAX_VALUE));
-		setPreferredSize(new Dimension(DETAIL_PANEL_WIDTH, Integer.MAX_VALUE));
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		setMaximumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MAX_HT));
+		setMinimumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MIN_HT));
+		setPreferredSize(new Dimension(Integer.MAX_VALUE, DETAIL_PANEL_HT));
+		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		final JPanel typePanel = new JPanel(new BorderLayout());
-		typePanel.add(new JLabel("<html>Coordinates:<br />Tile type:</html>"), BorderLayout.WEST);
-		typePanel.add(typeLabel, BorderLayout.CENTER);
+		typePanel.add(new JLabel("<html>Coordinates:<br />Tile type:</html>"), BorderLayout.NORTH);
+		typePanel.add(typeLabel, BorderLayout.SOUTH);
 		add(typePanel);
-		final JPanel viewPanel = new JPanel(new BorderLayout());
-		final JPanel chitSuperPanel = new JPanel(new BorderLayout());
 		final JScrollPane chitPane = new JScrollPane(chitPanel);
-		chitPane.setMaximumSize(new Dimension(getMaximumSize().width / 2, CHIT_PAN_MAX_HT));
-		chitPane.setMinimumSize(new Dimension(getMinimumSize().width / 2, CHIT_PAN_MIN_HT));
-		chitPane.setPreferredSize(new Dimension(getPreferredSize().width / 2, CHIT_PANEL_HEIGHT));
+		chitPane.setMaximumSize(new Dimension(CHIT_PAN_MAX_WD, getMaximumSize().height / 2));
+		chitPane.setMinimumSize(new Dimension(CHIT_PAN_MIN_WD, getMinimumSize().height / 2));
+		chitPane.setPreferredSize(new Dimension(CHIT_PANEL_WIDTH, getPreferredSize().width / 2));
 		chitPane.setBorder(null);
-		chitSuperPanel.add(chitPane, BorderLayout.WEST);
+		add(chitPane);
 		
-		chitDetail.setMaximumSize(new Dimension(getMaximumSize().width
-				- chitPane.getMaximumSize().width,
-				chitPane.getMaximumSize().height));
-		chitDetail.setMinimumSize(new Dimension(getMinimumSize().width
-				- chitPane.getMinimumSize().width,
-				chitPane.getMinimumSize().height));
-		chitDetail.setPreferredSize(new Dimension(getPreferredSize().width
-				- chitPane.getPreferredSize().width, chitPane
-				.getPreferredSize().height));
-		chitSuperPanel.add(chitDetail, BorderLayout.EAST);
+		chitDetail.setMaximumSize(new Dimension(
+				chitPane.getMaximumSize().width, getMaximumSize().height));
+		chitDetail.setMinimumSize(new Dimension(
+				chitPane.getMinimumSize().width, getMinimumSize().height));
+		chitDetail.setPreferredSize(new Dimension(
+				chitPane.getPreferredSize().width, getPreferredSize().height));
+		add(chitDetail);
 
-		viewPanel.add(chitSuperPanel, BorderLayout.NORTH);
-		
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
 		final JLabel resultsLabel = new JLabel(
-				"<html>Exploration<br>results</html>");
-		resultsLabel.setVerticalTextPosition(SwingConstants.CENTER);
-		resultsLabel.setMinimumSize(new Dimension(getMinimumSize().width / 2, RESULTS_MIN_HT));
-		resultsLabel.setPreferredSize(new Dimension(getPreferredSize().width / 2, RESULTS_HEIGHT));
-		resultsLabel.setMaximumSize(new Dimension(getMaximumSize().width / 2, RESULTS_MAX_HT));
-		resultsPanel.add(resultsLabel, BorderLayout.WEST);
+				"Exploration results");
+		resultsLabel.setAlignmentY(SwingConstants.CENTER);
+		resultsLabel.setMinimumSize(new Dimension(RESULTS_MIN_WD, LABEL_MIN_HT));
+		resultsLabel.setPreferredSize(new Dimension(RESULTS_PREF_WD, LABEL_PREF_HT));
+		resultsLabel.setMaximumSize(new Dimension(RESULTS_MAX_WD, LABEL_MAX_HT));
+		resultsPanel.add(resultsLabel, BorderLayout.NORTH);
 
 		resultsField.setLineWrap(true);
 		resultsField.setEditable(true);
 		resultsField.setWrapStyleWord(true);
 		final ScrollPane resultsWrapper = new ScrollPane();
 		resultsWrapper.add(resultsField);
-		resultsWrapper.setMinimumSize(new Dimension(getMinimumSize().width
-				- resultsLabel.getMinimumSize().width, resultsLabel
-				.getMinimumSize().height));
-		resultsWrapper.setPreferredSize(new Dimension(getPreferredSize().width
-				- resultsLabel.getPreferredSize().width, resultsLabel
-				.getPreferredSize().height));
-		resultsWrapper.setMaximumSize(new Dimension(getMaximumSize().width
-				- resultsLabel.getMaximumSize().width, resultsLabel
-				.getMaximumSize().height));
+		resultsWrapper.setMinimumSize(new Dimension(RESULTS_MIN_WD,
+				getMinimumSize().height - LABEL_MIN_HT - BUTTON_MIN_HT));
+		resultsWrapper.setPreferredSize(new Dimension(RESULTS_PREF_WD,
+				getPreferredSize().height - LABEL_PREF_HT - BUTTON_PREF_HT));
+		resultsWrapper.setMaximumSize(new Dimension(RESULTS_MAX_WD,
+				getMaximumSize().height - LABEL_MAX_HT - BUTTON_MAX_HT));
 		resultsPanel.add(resultsWrapper, BorderLayout.CENTER);
 
 		final JButton resultsButton = new JButton(RESULTS_SAVE_CMD);
 		resultsButton.addActionListener(this);
-		resultsButton.setMinimumSize(new Dimension(getMinimumSize().width, RESULTS_BUTTON_HEIGHT));
-		resultsButton.setPreferredSize(new Dimension(getPreferredSize().width, RESULTS_BUTTON_HEIGHT));
-		resultsButton.setMaximumSize(new Dimension(getMaximumSize().width, RESULTS_BUTTON_HEIGHT));
+		resultsButton.setMinimumSize(new Dimension(RESULTS_MIN_WD, BUTTON_MIN_HT));
+		resultsButton.setPreferredSize(new Dimension(RESULTS_PREF_WD, BUTTON_PREF_HT));
+		resultsButton.setMaximumSize(new Dimension(RESULTS_MAX_WD, BUTTON_MAX_HT));
 		resultsPanel.add(resultsButton, BorderLayout.SOUTH);
-		viewPanel.add(resultsPanel, BorderLayout.SOUTH);
-		add(viewPanel);
+		add(resultsPanel);
 		runner.loadAllTables("tables");
 		add(new KeyPanel());
 	}
