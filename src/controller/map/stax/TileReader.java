@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.stax;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;

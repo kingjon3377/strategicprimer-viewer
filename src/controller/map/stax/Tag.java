@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.stax;
 
 
 /**

@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.stax;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.viewer.Player;
 import model.viewer.SPMap;
 import util.IteratorWrapper;
+import controller.map.MapVersionException;
 
 /**
  * A StAX implementation of a map parser. The annoyance of extending the SAX

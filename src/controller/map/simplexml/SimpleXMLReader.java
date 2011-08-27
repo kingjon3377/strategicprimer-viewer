@@ -19,9 +19,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.viewer.SPMap;
 import util.IteratorWrapper;
-import controller.map.MapReader;
 import controller.map.MapVersionException;
 import controller.map.simplexml.node.TileNode;
+import controller.map.stax.MapReader;
 
 /**
  * An XML-map reader that just converts the XML into XMLNodes, which then
