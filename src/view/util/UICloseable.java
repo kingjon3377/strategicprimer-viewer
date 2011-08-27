@@ -12,5 +12,5 @@ public interface UICloseable {
 	/**
 	 * Close the element.
 	 */
-	void close();
+	void closeElement();
 }

@@ -100,7 +100,7 @@ public class CharacterFrame extends JFrame implements SaveableOpenable,
 	 * Close the current character.
 	 */
 	@Override
-	public void close() {
+	public void closeElement() {
 		tabber.removeTabAt(tabber.getSelectedIndex());
 	}
 

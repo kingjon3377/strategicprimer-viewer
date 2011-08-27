@@ -56,7 +56,7 @@ public class FileMenu extends JMenu implements ActionListener {
 				&& FILE_CHOOSER.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
 				window.open(FILE_CHOOSER.getSelectedFile().getPath());
 		} else if ("Close".equals(evt.getActionCommand())) {
-			window.close();
+			window.closeElement();
 		} else if ("Quit".equals(evt.getActionCommand())) {
 			// FIXME: ask to save unmodified characters, etc.
 			window.quit();
