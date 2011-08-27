@@ -1,7 +1,5 @@
 package model.viewer;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
@@ -20,7 +18,7 @@ public class SPMap {
 	 * Constructor.
 	 */
 	public SPMap() {
-		tiles = new HashMap<Point, Tile>();
+		tiles = new TileCollection();
 		players = new PlayerCollection();
 	}
 
@@ -50,7 +48,7 @@ public class SPMap {
 	/**
 	 * The tiles on the map.
 	 */
-	private Map<Point, Tile> tiles; // NOPMD
+	private TileCollection tiles; // NOPMD
 	/**
 	 * The players in the game.
 	 */
@@ -77,7 +75,7 @@ public class SPMap {
 	 *            the tile to add
 	 */
 	public final void addTile(final Tile tile) {
-		tiles.put(PointFactory.point(tile.getRow(), tile.getCol()), tile);
+		tiles.addTile(tile);
 	}
 
 	/**
@@ -98,7 +96,7 @@ public class SPMap {
 	 * @return the tile at those coordinates
 	 */
 	public final Tile getTile(final int row, final int col) {
-		return tiles.get(PointFactory.point(row, col));
+		return tiles.getTile(PointFactory.point(row, col));
 	}
 
 	/**
@@ -145,13 +143,13 @@ public class SPMap {
 			sbuild.append(player);
 		}
 		sbuild.append("\nTiles:");
-		for (final Point point : tiles.keySet()) {
+		for (final Point point : tiles) {
 			sbuild.append("\n\t(");
 			sbuild.append(point.row());
 			sbuild.append(", ");
 			sbuild.append(point.col());
 			sbuild.append("): ");
-			sbuild.append(tiles.get(point));
+			sbuild.append(tiles.getTile(point));
 		}
 		return sbuild.toString();
 	}
