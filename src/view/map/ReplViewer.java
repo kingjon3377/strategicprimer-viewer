@@ -71,7 +71,6 @@ public final class ReplViewer {
 				printTile(tile);
 				input = reader.readLine();
 			}
-			reader.close();
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		} finally {
@@ -105,6 +104,7 @@ public final class ReplViewer {
 	private static void printTile(final Tile tile) {
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
 				System.out));
+		try {
 		out.print("Tile (");
 		out.print(tile.getRow());
 		out.print(", ");
@@ -118,7 +118,9 @@ public final class ReplViewer {
 				out.println(fix);
 			}
 		}
+		} finally {
 		out.close();
+		}
 	}
 
 	/**

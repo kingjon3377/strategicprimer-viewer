@@ -43,6 +43,7 @@ public final class AltTerminalViewer {
 	private AltTerminalViewer(final SPMap map, final int row, final int col) {
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
 				System.out));
+		try {
 		final int rows = map.rows();
 		final int cols = map.cols();
 		for (int i = 0; i < rows; i++) {
@@ -55,7 +56,9 @@ public final class AltTerminalViewer {
 			}
 			out.println();
 		}
+		} finally {
 		out.close();
+		}
 	}
 
 	/**

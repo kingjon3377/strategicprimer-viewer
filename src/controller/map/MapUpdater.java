@@ -93,8 +93,11 @@ public class MapUpdater {
 		updater.update(derived);
 		// ESCA-JAVA0266:
 		final PrintWriter writer = new PrintWriter(System.out);
+		try {
 		new XMLWriter(writer).write(derived);
+		} finally {
 		writer.close();
+		}
 	}
 	
 	/**

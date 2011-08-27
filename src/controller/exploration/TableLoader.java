@@ -53,17 +53,16 @@ public class TableLoader { // NOPMD
 			throws FileNotFoundException, IOException { // NOPMD
 		final BufferedReader reader = new LoadFile().doLoadFile(filename);
 		try {
-			final EncounterTable table = loadTable(reader);
-			reader.close();
-			return table;
+			return loadTable(reader);
 		} catch (final IllegalArgumentException except) {
-			reader.close();
 			if ("unknown table type".equals(except.getMessage())) {
 				throw new IllegalArgumentException("File " + filename
 						+ " specifies an unknown table type", except);
 			} else {
 				throw except;
 			}
+		} finally {
+			reader.close();
 		}
 	}
 
@@ -121,19 +120,19 @@ public class TableLoader { // NOPMD
 		final int rows = Integer.parseInt(line);
 		final List<String> items = new LinkedList<String>();
 		line = reader.readLine();
-		while (line != null) {
-			items.add(line);
 			try {
+				while (line != null) {
+					items.add(line);
 				line = reader.readLine();
+				}
 			} catch (final IOException except) {
 				Logger.getLogger(TableLoader.class.getName())
 						.log(Level.SEVERE,
 								"I/O error while reading table from file, continuing with what we've got so far ...",
 								except);
-				break;
-			}
-		}
+		} finally {
 		reader.close();
+		}
 		return new QuadrantTable(rows, items);
 	}
 
@@ -150,6 +149,7 @@ public class TableLoader { // NOPMD
 			throws IOException {
 		String line = reader.readLine();
 		final List<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
+		try {
 		while (line != null) {
 			final String[] array = line.split(" ", SPLIT_ONCE);
 			if (array.length < SPLIT_ONCE) {
@@ -160,7 +160,9 @@ public class TableLoader { // NOPMD
 			}
 			line = reader.readLine();
 		}
+		} finally {
 		reader.close();
+		}
 		return new RandomTable(list);
 	}
 
@@ -177,6 +179,7 @@ public class TableLoader { // NOPMD
 			throws IOException {
 		String line = reader.readLine();
 		final List<Pair<TileType, String>> list = new ArrayList<Pair<TileType, String>>();
+		try {
 		while (line != null) {
 			final String[] array = line.split(" ", SPLIT_ONCE);
 			if (array.length < SPLIT_ONCE) {
@@ -187,7 +190,9 @@ public class TableLoader { // NOPMD
 			}
 			line = reader.readLine();
 		}
+		} finally {
 		reader.close();
+		}
 		return new TerrainTable(list);
 	}
 
@@ -202,9 +207,11 @@ public class TableLoader { // NOPMD
 	 */
 	public ConstantTable loadConstantTable(final BufferedReader reader)
 			throws IOException {
-		final String string = reader.readLine();
-		reader.close();
-		return new ConstantTable(string);
+		try {
+			return new ConstantTable(reader.readLine());
+		} finally {
+			reader.close();
+		}
 	}
 
 	/**

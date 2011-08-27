@@ -45,8 +45,6 @@ public final class TerminalViewer {
 	 */
 	private TerminalViewer(final SPMap map, final int row, final int col) {
 		// ESCA-JAVA0266:
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
-				System.out));
 		textMap = new char[map.rows()][map.cols()];
 		createTextMap(map);
 		final StringBuilder sbuilder = new StringBuilder("");
@@ -65,8 +63,13 @@ public final class TerminalViewer {
 			}
 			sbuilder.append('\n');
 		}
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(
+				System.out));
+		try {
 		out.print(sbuilder.toString());
+		} finally {
 		out.close();
+		}
 	}
 
 	/**

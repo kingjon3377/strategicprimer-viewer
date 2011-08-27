@@ -63,9 +63,11 @@ public class MapReader {
 	public SPMap readMap(final String file) throws XMLStreamException,
 			IOException, MapVersionException {
 		final FileInputStream istream = new FileInputStream(file);
-		final SPMap retval = readMap(istream);
-		istream.close();
-		return retval;
+		try {
+			return readMap(istream);
+		} finally {
+			istream.close();
+		}
 	}
 
 	/**
@@ -77,6 +79,7 @@ public class MapReader {
 	 * @throws MapVersionException if the map is too old a version
 	 */
 	public SPMap readMap(final InputStream istream) throws XMLStreamException, MapVersionException {
+		try {
 		LOGGER.info("Started reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
 		SPMap map = null;
@@ -110,12 +113,13 @@ public class MapReader {
 		}
 		LOGGER.info("Finished reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
+		return map;
+		} finally {
 		try {
 			istream.close();
 		} catch (final IOException e) {
 			LOGGER.log(Level.WARNING, "I/O error closing the input stream", e);
-		}
-		return map;
+		} }
 	}
 
 	/**

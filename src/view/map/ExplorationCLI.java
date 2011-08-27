@@ -74,9 +74,14 @@ public final class ExplorationCLI {
 				ostream.print("Command: ");
 				input = reader.readLine();
 			}
-			reader.close();
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
+		} finally {
+			try {
+			reader.close();
+			} catch (final IOException except) {
+				LOGGER.log(Level.SEVERE, "I/O exception while closing reader", except);
+			} 
 		}
 	}
 

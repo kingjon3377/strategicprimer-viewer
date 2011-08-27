@@ -40,9 +40,11 @@ public class SimpleXMLReader {
 	 */
 	public SPMap readMap(final String file) throws IOException, XMLStreamException, SPFormatException {
 		final FileInputStream istream = new FileInputStream(file);
-		final SPMap retval = readMap(istream);
+		try {
+			return readMap(istream);
+		} finally {
 		istream.close();
-		return retval;
+		}
 	}
 	/**
 	 * @param istream a stream
@@ -98,6 +100,7 @@ public class SimpleXMLReader {
 		// ESCA-JAVA0266:
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
 		final Logger logger = Logger.getLogger(SimpleXMLReader.class.getName());
+		try {
 		for (final String arg : args) {
 				final long startOne = System.nanoTime();
 				// ESCA-JAVA0177:
@@ -122,7 +125,7 @@ public class SimpleXMLReader {
 				// ESCA-JAVA0177:
 				final SPMap map2; // NOPMD
 				try {
-					map2 = new SimpleXMLReader().readMap(new FileInputStream(arg)); // NOPMD
+					map2 = new SimpleXMLReader().readMap(new FileInputStream(arg)); // NOPMD // $codepro.audit.disable closeWhereCreated
 				} catch (FileNotFoundException e) {
 					logger.log(Level.SEVERE, arg + " not found", e);
 					continue;
@@ -144,6 +147,8 @@ public class SimpleXMLReader {
 					out.println(arg);
 				}
 		}
+		} finally {
 		out.close();
+		}
 	}
 }

@@ -320,6 +320,7 @@ public final class Converter {
 	 */
 	public void writeToFile(final String filename) throws IOException {
 		final BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+		try {
 		out.append(Integer.toString(rows));
 		out.append(' ');
 		out.append(Integer.toString(cols));
@@ -340,7 +341,9 @@ public final class Converter {
 			}
 			out.append('\n');
 		}
+		} finally {
 		out.close();
+		}
 	}
 	/**
 	 * Logger.
