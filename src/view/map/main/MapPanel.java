@@ -2,12 +2,10 @@ package view.map.main;
 
 import java.awt.EventQueue;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JPanel;
@@ -55,34 +53,7 @@ public class MapPanel extends JPanel {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
 		final ActionMap actionMap = getActionMap();
-		actionMap.put("up", new AbstractAction() {
-			@SuppressWarnings("synthetic-access") // NOPMD
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.up();
-			}
-		});
-		actionMap.put("down", new AbstractAction() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.down();
-			}
-		});
-		actionMap.put("left", new AbstractAction() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.left();
-			}
-		});
-		actionMap.put("right", new AbstractAction() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.right();
-			}
-		});
+		new ArrowKeyListener().setUpListeners(selListener, actionMap);
 		changeListener = details;
 		setOpaque(true);
 		loadMap(newMap);
@@ -90,53 +61,15 @@ public class MapPanel extends JPanel {
 	}
 
 	/**
-	 * The lowest row we draw.
+	 * Our visible dimensions.
 	 */
-	private int minimumRow;
-	
+	private VisibleDimensions dimensions;
 	/**
-	 * @return the lowest row we draw
+	 * @return our visible dimensions
 	 */
-	public int getMinimumRow() {
-		return minimumRow;
+	public VisibleDimensions getVisibleDimensions() {
+		return dimensions;
 	}
-	
-	/**
-	 * The highest row we draw.
-	 */
-	private int maximumRow;
-	
-	/**
-	 * @return the highest row we draw.
-	 */
-	public int getMaximumRow() {
-		return maximumRow;
-	}
-		
-	/**
-	 * The lowest column we draw.
-	 */
-	private int minimumCol;
-	
-	/**
-	 * @return the lowest column we draw
-	 */
-	public int getMinimumCol() {
-		return minimumCol;
-	}
-	
-	/**
-	 * The highest column we draw.
-	 */
-	private int maximumCol;
-	
-	/**
-	 * @return the highest column we draw.
-	 */
-	public int getMaximumCol() {
-		return maximumCol;
-	}
-	
 	/**
 	 * Load and draw a subset of a map.
 	 * 
@@ -164,15 +97,14 @@ public class MapPanel extends JPanel {
 			});
 			setLayout(new GridLayout(Math.min(newMap.rows(),
 					Math.max(0, maxRow + 1 - minRow)), 0));
-			minimumRow = Math.max(0, minRow);
-			minimumCol = Math.max(0, minCol);
-			maximumRow = Math.min(newMap.rows(), maxRow + 1) - 1;
-			maximumCol = Math.min(newMap.cols(), maxCol + 1) - 1;
+		dimensions = new VisibleDimensions(Math.max(0, minRow), Math.min(
+				newMap.rows(), maxRow + 1) - 1, Math.max(0, minCol), Math.min(
+				newMap.cols(), maxCol + 1) - 1);
 			for (int row = Math.max(0, minRow); row < Math.min(newMap.rows(),
 					maxRow + 1); row++) {
 				for (int col = Math.max(0, minCol); col < Math.min(
 						newMap.cols(), maxCol + 1); col++) {
-					addTile(new GUITile(newMap.getTile(row, col)));
+					addTile(new GUITile(newMap.getTile(row, col))); // NOPMD
 				}
 			}
 			map = newMap;

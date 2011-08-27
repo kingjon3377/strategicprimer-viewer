@@ -74,12 +74,13 @@ public class RestrictDialog extends JDialog implements ActionListener {
 		rowPanel.add(new JLabel("Display only rows "));
 		rowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		rowPanel.add(minRow);
-		minRow.setText(Integer.toString(mpanel.getMinimumRow()));
+		final VisibleDimensions visDim = mpanel.getVisibleDimensions();
+		minRow.setText(Integer.toString(visDim.getMinimumRow()));
 		rowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		rowPanel.add(new JLabel(" to "));
 		rowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		rowPanel.add(maxRow);
-		maxRow.setText(Integer.toString(mpanel.getMaximumRow()));
+		maxRow.setText(Integer.toString(visDim.getMaximumRow()));
 		rowPanel.add(Box.createHorizontalGlue());
 		add(rowPanel);
 		add(Box.createRigidArea(new Dimension(0, 5)));
@@ -89,12 +90,12 @@ public class RestrictDialog extends JDialog implements ActionListener {
 		colPanel.add(new JLabel("Display only columns "));
 		colPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		colPanel.add(minCol);
-		minCol.setText(Integer.toString(mpanel.getMinimumCol()));
+		minCol.setText(Integer.toString(visDim.getMinimumCol()));
 		colPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		colPanel.add(new JLabel(" to "));
 		colPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		colPanel.add(maxCol);
-		maxCol.setText(Integer.toString(mpanel.getMaximumCol()));
+		maxCol.setText(Integer.toString(visDim.getMaximumCol()));
 		colPanel.add(Box.createHorizontalGlue());
 		add(colPanel);
 		add(Box.createRigidArea(new Dimension(0, 5)));
@@ -196,19 +197,20 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * Correct invalid input, so the user can try again.
 	 */
 	private void correctInvalidInput() {
+		final VisibleDimensions visDim = mpanel.getVisibleDimensions();
 		if (parse(minCol.getText()) < 0) {
-			minCol.setText(Integer.toString(mpanel.getMinimumCol()));
+			minCol.setText(Integer.toString(visDim.getMinimumCol()));
 		}
 		if (parse(maxCol.getText()) >= mpanel.getMap().cols()
 				|| parse(minCol.getText()) > parse(maxCol.getText())) {
-			maxCol.setText(Integer.toString(mpanel.getMaximumCol()));
+			maxCol.setText(Integer.toString(visDim.getMaximumCol()));
 		}
 		if (parse(minRow.getText()) < 0) {
-			minRow.setText(Integer.toString(mpanel.getMinimumRow()));
+			minRow.setText(Integer.toString(visDim.getMinimumRow()));
 		}
 		if (parse(maxRow.getText()) >= mpanel.getMap().rows()
 				|| parse(minRow.getText()) > parse(maxRow.getText())) {
-			maxRow.setText(Integer.toString(mpanel.getMaximumRow()));
+			maxRow.setText(Integer.toString(visDim.getMaximumRow()));
 		}
 	}
 
