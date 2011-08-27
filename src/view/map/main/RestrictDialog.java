@@ -124,7 +124,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 			setVisible(false);
 			dispose();
 		} else if ("OK".equals(evt.getActionCommand())) {
-			if (verifyInput()) {
+			if (isInputValid()) {
 				setVisible(false);
 				refreshMap();
 				dispose();
@@ -142,13 +142,13 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * 
 	 * @return whether the input in the text-boxes makes sense.
 	 */
-	private boolean verifyInput() {
-		return between(parse(minRow.getText()), 0, mpanel.getMap().rows() - 1)
-				&& between(parse(maxRow.getText()), parse(minRow.getText()),
+	private boolean isInputValid() {
+		return isBetween(parse(minRow.getText()), 0, mpanel.getMap().rows() - 1)
+				&& isBetween(parse(maxRow.getText()), parse(minRow.getText()),
 						mpanel.getMap().rows() - 1)
-				&& between(parse(minCol.getText()), 0,
+				&& isBetween(parse(minCol.getText()), 0,
 						mpanel.getMap().cols() - 1)
-				&& between(parse(maxCol.getText()), parse(minCol.getText()),
+				&& isBetween(parse(maxCol.getText()), parse(minCol.getText()),
 						mpanel.getMap().cols() - 1);
 	}
 
@@ -157,7 +157,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * @param args a series of strings
 	 * @return true if all of them are numeric, false otherwise.
 	 */
-	private static boolean areNumeric(final String... args) {
+	private static boolean isEachNumeric(final String... args) {
 		for (String arg : args) {
 			try {
 				Integer.parseInt(arg);
@@ -171,7 +171,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * @return a description of why input is invalid
 	 */
 	private String whyInvalidInput() {
-		if (areNumeric(minCol.getText(), maxCol.getText(), minRow.getText(),
+		if (isEachNumeric(minCol.getText(), maxCol.getText(), minRow.getText(),
 				maxRow.getText())) {
 			if (parse(minCol.getText()) < 0 || parse(minRow.getText()) < 0) {
 				return "Minimum row and column must be greater than or equal to zero."; // NOPMD
@@ -223,7 +223,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 *            the top of a range
 	 * @return whether value is in the range
 	 */
-	private static boolean between(final int value, final int min, final int max) {
+	private static boolean isBetween(final int value, final int min, final int max) {
 		return value >= min && value <= max;
 	}
 

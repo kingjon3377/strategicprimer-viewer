@@ -50,7 +50,7 @@ public final class ReplViewer {
 		printTile(tile);
 		try {
 			String input = reader.readLine();
-			while (keepGoing(input)) {
+			while (canKeepGoing(input)) {
 					switch (input.charAt(0)) {
 					case 'n':
 						iRow--;
@@ -91,7 +91,7 @@ public final class ReplViewer {
 	 *            a line of input
 	 * @return whether that input says we should keep going.
 	 */
-	private static boolean keepGoing(final String input) {
+	private static boolean canKeepGoing(final String input) {
 		return input != null && input.length() > 0 && input.charAt(0) != 'q';
 	}
 
