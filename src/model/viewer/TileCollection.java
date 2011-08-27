@@ -47,4 +47,21 @@ public final class TileCollection implements Iterable<Point> {
 	public Iterator<Point> iterator() {
 		return tiles.keySet().iterator();
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it is an identical TileCollection.
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this
+				|| (obj instanceof TileCollection && ((TileCollection) obj).tiles
+						.equals(tiles));
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return tiles.hashCode();
+	}
 }
