@@ -126,17 +126,11 @@ public class DetailPanel extends JPanel implements ActionListener {
 			chitDetail);
 	
 	/**
-	 * An alternative to Null.
-	 */
-	private static final Tile NULL_TILE = new Tile(-1, -1, TileType.NotVisible);
-	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
 	 */
 	public void setTile(final Tile newTile) {
-		if (newTile == null) {
-			tile = NULL_TILE;
-		} else if (newTile.equals(tile)) {
+		if (newTile.equals(tile)) {
 			return;
 		} else {
 			tile = newTile;
@@ -201,7 +195,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		if (RESULTS_SAVE_CMD.equals(event.getActionCommand()) && tile != null) {
+		if (RESULTS_SAVE_CMD.equals(event.getActionCommand())) {
 			tile.setTileText(resultsField.getText().trim());
 		}
 	}

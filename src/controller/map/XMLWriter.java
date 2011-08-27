@@ -164,8 +164,7 @@ public class XMLWriter { // NOPMD
 	 *            the tile to print.
 	 */
 	private void printTile(final Tile tile) { // NOPMD
-		if (tile != null
-				&& (tile.getType() != TileType.NotVisible
+		if ((tile.getType() != TileType.NotVisible
 						|| !tile.getContents().isEmpty() || !"".equals(tile
 						.getTileText()))) {
 			indent(2);
