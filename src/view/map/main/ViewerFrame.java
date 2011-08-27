@@ -51,10 +51,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
 	/**
-	 * The width of the details panel, as a percentage of the window's width.
-	 */
-	private static final double DETAIL_PANEL_WIDTH = 0.25; // NOPMD
-	/**
 	 * An error message refactored from at least four uses.
 	 */
 	private static final String XML_ERROR_STRING = "Error reading XML file";
