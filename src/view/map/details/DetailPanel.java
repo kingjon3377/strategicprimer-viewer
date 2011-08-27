@@ -2,7 +2,6 @@ package view.map.details;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,16 +12,15 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 import model.exploration.ExplorationRunner;
-import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
-import model.viewer.Unit;
-import model.viewer.events.AbstractEvent;
 import view.map.main.SelectionListener;
 import view.util.SizeLimiter;
 
@@ -146,16 +144,9 @@ public class DetailPanel extends JPanel implements ActionListener {
 		}
 			typeLabel.setText("<html>(" + tile.getRow() + ", " + tile.getCol()
 					+ ")<br />" + terrainText(tile.getType()) + "</html>");
-			chitPanel.removeAll();
-			chitSelecter.clearSelection();
+			chitPanel.clear();
 			for (final TileFixture fix : tile.getContents()) {
-				if (fix instanceof Fortress) {
-					chitPanel.add(new FortChit((Fortress) fix, chitSelecter)); // NOPMD
-				} else if (fix instanceof Unit) {
-					chitPanel.add(new UnitChit((Unit) fix, chitSelecter)); // NOPMD
-				} else if (fix instanceof AbstractEvent) {
-					chitPanel.add(new EventChit((AbstractEvent) fix, chitSelecter)); // NOPMD
-				}
+				chitPanel.add(fix);
 			}
 			resultsField.setText(tile.getTileText());
 		repaint();
@@ -169,7 +160,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 	/**
 	 * Panel for chits.
 	 */
-	private final JPanel chitPanel = new JPanel(new FlowLayout());
+	private final ChitPanel chitPanel = new ChitPanel(chitSelecter);
 	static {
 		DESCRIPTIONS.put(TileType.BorealForest, "Boreal Forest");
 		DESCRIPTIONS.put(TileType.Desert, "Desert");
