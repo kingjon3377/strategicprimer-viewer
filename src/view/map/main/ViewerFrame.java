@@ -94,7 +94,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		 * Constructor; otherwise it's "emulated by a synthetic ... method."
 		 * @param mpanel the panel whose maps we'll be swapping.
 		 */
-		public MapSwitcher(final MapPanel mpanel) {
+		public MapSwitcher(final MapPanel mpanel) { // $codepro.audit.disable publicConstructorInNonPublicType
 			super();
 			panel = mpanel;
 		}
