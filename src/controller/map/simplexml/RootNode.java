@@ -21,10 +21,10 @@ public final class RootNode extends AbstractXMLNode {
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
-		if (!iterator().hasNext() || !(iterator().next() instanceof MapNode)) {
-			throw new SPFormatException("<map> must be top-level tag", 0);
-		} else {
+		if (iterator().hasNext() && iterator().next() instanceof MapNode) {
 			iterator().next().checkNode();
+		} else {
+			throw new SPFormatException("<map> must be top-level tag", 0);
 		}
 	}
 
