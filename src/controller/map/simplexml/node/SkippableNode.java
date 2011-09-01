@@ -16,6 +16,23 @@ import controller.map.simplexml.SPFormatException;
  */
 public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	/**
+	 * Constructor. Warns if the tag isn't the one kind we routinely expect to
+	 * see in every map; tags we expect to see in future map formats are added
+	 * as SkippableNodes too, but if we see them in a map we should warn about
+	 * that.
+	 * 
+	 * @param tag
+	 *            the text of the tag name.
+	 * @param line
+	 *            the line of the file the tag occurs.
+	 */
+	public SkippableNode(final String tag, final int line) {
+		super();
+		if (!"row".equals(tag)) {
+			warn(new SPFormatException("Unexpected tag " + tag + ": probably a more recent map format than viewer.", line));
+		}
+	}
+	/**
 	 * Throws an exception, because you should move all children from this to
 	 * its parent and then remove this node instead.
 	 * @param players ignored
