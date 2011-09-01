@@ -14,7 +14,8 @@ import controller.map.simplexml.node.UnitNode;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
- * the tags that represent them.
+ * the tags that represent them. TODO: Actually implement <include>---and that
+ * will entail making this no longer Singleton.
  * 
  * @author Jonathan Lovelace
  * 
@@ -127,8 +128,22 @@ public final class NodeFactory { // NOPMD
 	private static void addTag(final String string, final Tag tag) {
 		TAGS.put(string, tag);
 	}
-
+	
+	/**
+	 * Tags we expect to use in the future; they are SkippableNodes for now and
+	 * we'll warn if they're used.
+	 */
+	private static final String[] FUTURE = { "include", "worker", "building",
+			"resource", "forest", "animal", "changeset", "change", "move",
+			"work", "discover" };
+	/**
+	 * Set up the mappings from tags to node types. And just in case we didn't
+	 * remove a tag from FUTURE, we handle those before the tags we *do* handle.
+	 */
 	static {
+		for (String string : FUTURE) {
+			addTag(string, Tag.Skippable);
+		}
 		addTag("map", Tag.Map);
 		addTag("row", Tag.Skippable);
 		addTag("tile", Tag.Tile);
