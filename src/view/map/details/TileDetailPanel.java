@@ -16,11 +16,11 @@ public class TileDetailPanel extends JPanel {
 	/**
 	 * The label for showing the coordinates.
 	 */
-	private final JLabel coordLabel = new JLabel("");
+	private final JLabel coordLabel = new JLabel("<html>Coordinates: (-1, -1)</html>");
 	/**
 	 * The label for showing the tile type.
 	 */
-	private final JLabel typeLabel = new JLabel("");
+	private final JLabel typeLabel = new JLabel("<html>Tile type: NotVisible</html>");
 	/**
 	 * Constructor.
 	 */
