@@ -133,9 +133,9 @@ public final class NodeFactory { // NOPMD
 	 * Tags we expect to use in the future; they are SkippableNodes for now and
 	 * we'll warn if they're used.
 	 */
-	private static final String[] FUTURE = { "include", "worker", "building",
-			"resource", "forest", "animal", "changeset", "change", "move",
-			"work", "discover" };
+	private static final String[] FUTURE = { "include", "worker", "explorer",
+			"building", "resource", "forest", "animal", "changeset", "change",
+			"move", "work", "discover" };
 	/**
 	 * Set up the mappings from tags to node types. And just in case we didn't
 	 * remove a tag from FUTURE, we handle those before the tags we *do* handle.
