@@ -120,9 +120,9 @@ public class DetailPanel extends JPanel implements ActionListener {
 		typePanel.updateText(new Tile(-1, -1, TileType.NotVisible));
 		add(typePanel);
 		final JScrollPane chitPane = new JScrollPane(chitPanel);
-		chitPane.setMaximumSize(new Dimension(CHIT_PAN_MAX_WD, getMaximumSize().height / 2));
-		chitPane.setMinimumSize(new Dimension(CHIT_PAN_MIN_WD, getMinimumSize().height / 2));
-		chitPane.setPreferredSize(new Dimension(CHIT_PANEL_WIDTH, getPreferredSize().height / 2));
+		chitPane.setMaximumSize(new Dimension(CHIT_PAN_MAX_WD, getMaximumSize().height));
+		chitPane.setMinimumSize(new Dimension(CHIT_PAN_MIN_WD, getMinimumSize().height));
+		chitPane.setPreferredSize(new Dimension(CHIT_PANEL_WIDTH, getPreferredSize().height));
 		chitPane.setBorder(null);
 		add(chitPane);
 		
