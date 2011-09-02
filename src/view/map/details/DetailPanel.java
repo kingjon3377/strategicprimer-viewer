@@ -2,7 +2,6 @@ package view.map.details;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
@@ -147,8 +146,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		resultsField.setLineWrap(true);
 		resultsField.setEditable(true);
 		resultsField.setWrapStyleWord(true);
-		final ScrollPane resultsWrapper = new ScrollPane();
-		resultsWrapper.add(resultsField);
+		final JScrollPane resultsWrapper = new JScrollPane(resultsField);
 		resultsWrapper.setMinimumSize(new Dimension(RESULTS_MIN_WD,
 				getMinimumSize().height - LABEL_MIN_HT - BUTTON_MIN_HT));
 		resultsWrapper.setPreferredSize(new Dimension(RESULTS_PREF_WD,
