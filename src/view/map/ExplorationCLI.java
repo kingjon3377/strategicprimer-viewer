@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,29 +50,7 @@ public final class ExplorationCLI {
 			ostream.print("Command: ");
 			String input = reader.readLine();
 			while (canKeepGoing(input)) {
-				switch (input.charAt(0)) {
-				case 'x':
-					explore(map, reader, ostream);
-					break;
-				case 'f':
-					fortressInfo(map, reader, ostream);
-					break;
-				case 'k':
-					runner.verboseRecursiveCheck(ostream);
-					break;
-				case 'h':
-					hunt(reader, map, ostream);
-					break;
-				case 'g':
-					gather(reader, map, ostream);
-					break;
-				case 'i':
-					fish(reader, map, ostream);
-					break;
-				default:
-					ostream.println("Unknown command.");
-					break;
-				}
+				handleCommand(map, reader, ostream, input.charAt(0));
 				ostream.print("Command: ");
 				input = reader.readLine();
 			}
@@ -82,6 +62,38 @@ public final class ExplorationCLI {
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O exception while closing reader", except);
 			} 
+		}
+	}
+
+	/**
+	 * @param map the map
+	 * @param reader the stream to read further input from
+	 * @param ostream the stream to write to
+	 * @param input the command
+	 * @throws IOException on I/O error
+	 */
+	public void handleCommand(final SPMap map, final BufferedReader reader,
+			final PrintStream ostream, final char input) throws IOException {
+		switch (input) {
+		case 'x':
+			explore(map, reader, ostream);
+			break;
+		case 'f':
+			fortressInfo(map, reader, ostream);
+			break;
+		case 'k':
+			runner.verboseRecursiveCheck(ostream);
+			break;
+		case 'h':
+		case 'g':
+		case 'i':
+			repeatedlyConsultTable(ORDER_MAP.get(input),
+					selectTile(map, reader, ostream), HUNTER_HOURS
+							* HOURLY_ENCOUNTERS, ostream);
+		break;
+		default:
+			ostream.println("Unknown command.");
+			break;
 		}
 	}
 
@@ -181,67 +193,21 @@ public final class ExplorationCLI {
 	 * How many encounters per hour for a hunter or such.
 	 */
 	private static final int HOURLY_ENCOUNTERS = 4;
-
+	
 	/**
-	 * Create results for a hunter. We assume 10-hour days, and that the hunter
-	 * stays on one tile all day; it's up to the Judge to run the encounters
-	 * this produces.
-	 * 
-	 * @param reader
-	 *            the stream to read coordinates from
-	 * @param map
-	 *            the map we're dealing with
-	 * @param ostream
-	 *            the stream to print them on
-	 * @throws IOException
-	 *             on I/O error
+	 * A map from commands to tables. Hunters, fishermen, and Food Gatherers are
+	 * handled the same way, but with different tables.
 	 */
-	private void hunt(final BufferedReader reader, final SPMap map,
-			final PrintStream ostream) throws IOException {
-		final Tile tile = selectTile(map, reader, ostream);
-		repeatedlyConsultTable("hunter", tile, HUNTER_HOURS
-				* HOURLY_ENCOUNTERS, ostream);
+	private static final Map<Character, String> ORDER_MAP = new HashMap<Character, String>();
+	static {
+		ORDER_MAP.put('h', "hunter");
+		ORDER_MAP.put('H', "hunter");
+		ORDER_MAP.put('g', "gatherer");
+		ORDER_MAP.put('G', "gatherer");
+		ORDER_MAP.put('i', "fisher");
+		ORDER_MAP.put('I', "fisher");
 	}
-
-	/**
-	 * Create results for a fisherman. This should produce a list of fish that
-	 * pass by the fisherman's line, net, or trap; each (or each group) should
-	 * make a save or check to see whether it is caught.
-	 * 
-	 * @param reader
-	 *            the stream to read coordinates from
-	 * @param map
-	 *            the map we're dealing with
-	 * @param ostream
-	 *            the stream to print them on
-	 * @throws IOException
-	 *             on I/O error
-	 */
-	private void fish(final BufferedReader reader, final SPMap map,
-			final PrintStream ostream) throws IOException {
-		final Tile tile = selectTile(map, reader, ostream);
-		repeatedlyConsultTable("fisher", tile, HUNTER_HOURS
-				* HOURLY_ENCOUNTERS, ostream);
-	}
-
-	/**
-	 * Create results for a food gatherer. @see hunt(BufferedReader, SPMap, PrintStream)
-	 * 
-	 * @param reader
-	 *            the stream to read coordinates from
-	 * @param map
-	 *            the map we're dealing with
-	 * @param ostream
-	 *            the stream to print them on
-	 * @throws IOException
-	 *             on I/O error
-	 */
-	private void gather(final BufferedReader reader, final SPMap map,
-			final PrintStream ostream) throws IOException {
-		final Tile tile = selectTile(map, reader, ostream);
-		repeatedlyConsultTable("gatherer", tile, HUNTER_HOURS
-				* HOURLY_ENCOUNTERS, ostream);
-	}
+	
 	/**
 	 * Repeatedly consult a table.
 	 * @param table the table to consult
