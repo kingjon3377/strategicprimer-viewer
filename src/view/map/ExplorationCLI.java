@@ -50,10 +50,10 @@ public final class ExplorationCLI {
 			while (canKeepGoing(input)) {
 				switch (input.charAt(0)) {
 				case 'x':
-					explore(map, reader);
+					explore(map, reader, ostream);
 					break;
 				case 'f':
-					fortressInfo(map, reader);
+					fortressInfo(map, reader, ostream);
 					break;
 				case 'k':
 					runner.verboseRecursiveCheck(ostream);
@@ -116,12 +116,13 @@ public final class ExplorationCLI {
 	 *            the map
 	 * @param reader
 	 *            source of user input
+	 * @param ostream
+	 *            the stream to write the results to
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	private void explore(final SPMap map, final BufferedReader reader)
+	private void explore(final SPMap map, final BufferedReader reader, final PrintStream ostream)
 			throws IOException {
-		final PrintStream ostream = createOstream();
 		final Tile tile = selectTile(map, reader, ostream);
 		ostream.print("Tile is ");
 		ostream.println(tile.getType());
@@ -136,12 +137,13 @@ public final class ExplorationCLI {
 	 *            the map
 	 * @param reader
 	 *            source of user input
+	 * @param ostream
+	 *            the stream to print results to
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	private void fortressInfo(final SPMap map, final BufferedReader reader)
-			throws IOException {
-		final PrintStream ostream = createOstream();
+	private void fortressInfo(final SPMap map, final BufferedReader reader,
+			final PrintStream ostream) throws IOException {
 		ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
 	}
 	/**
