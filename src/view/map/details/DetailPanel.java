@@ -17,7 +17,6 @@ import javax.swing.SwingConstants;
 
 import model.exploration.ExplorationRunner;
 import model.viewer.Tile;
-import model.viewer.TileFixture;
 import model.viewer.TileType;
 
 /**
@@ -43,18 +42,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 * Minimum width of this panel, in pixels.
 	 */
 	public static final int DETAIL_PAN_MIN_HT = 50;
-	/**
-	 * Maximum height of the chit panel and chit-detail label, in pixels.
-	 */
-	private static final int CHIT_PAN_MAX_WD = 200;
-	/**
-	 * Minimum height of the chit panel and chit-detail label, in pixels.
-	 */
-	private static final int CHIT_PAN_MIN_WD = 100;
-	/**
-	 * Preferred height of the chit panel and chit-detail label, in pixels.
-	 */
-	private static final int CHIT_PANEL_WIDTH = 150;
 	/**
 	 * Minimum height of the results field and its label.
 	 */
@@ -96,9 +83,9 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private final TileDetailPanel typePanel = new TileDetailPanel();
 	/**
-	 * Label to show the details of the selected chit.
+	 * Panel to show chits for the items on the tile and the details of a selected chit.
 	 */
-	private final JLabel chitDetail = new JLabel();
+	private final ChitAndDetailPanel chitPanel;
 	/**
 	 * Field to show and edit exploration results.
 	 */
@@ -119,20 +106,8 @@ public class DetailPanel extends JPanel implements ActionListener {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		typePanel.updateText(new Tile(-1, -1, TileType.NotVisible));
 		add(typePanel);
-		final JScrollPane chitPane = new JScrollPane(chitPanel);
-		chitPane.setMaximumSize(new Dimension(CHIT_PAN_MAX_WD, getMaximumSize().height));
-		chitPane.setMinimumSize(new Dimension(CHIT_PAN_MIN_WD, getMinimumSize().height));
-		chitPane.setPreferredSize(new Dimension(CHIT_PANEL_WIDTH, getPreferredSize().height));
-		chitPane.setBorder(null);
-		add(chitPane);
-		
-		chitDetail.setMaximumSize(new Dimension(
-				chitPane.getMaximumSize().width, getMaximumSize().height));
-		chitDetail.setMinimumSize(new Dimension(
-				chitPane.getMinimumSize().width, getMinimumSize().height));
-		chitDetail.setPreferredSize(new Dimension(
-				chitPane.getPreferredSize().width, getPreferredSize().height));
-		add(chitDetail);
+		chitPanel = new ChitAndDetailPanel(DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT);
+		add(chitPanel);
 
 		final JPanel resultsPanel = new JPanel(new BorderLayout());
 		final JLabel resultsLabel = new JLabel(
@@ -182,10 +157,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 			tile = newTile;
 		}
 		typePanel.updateText(tile);
-			chitPanel.clear();
-			for (final TileFixture fix : tile.getContents()) {
-				chitPanel.add(fix);
-			}
+		chitPanel.updateChits(tile);
 			resultsField.setText(tile.getTileText());
 		repaint();
 	}
@@ -195,11 +167,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private static final Map<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
 			TileType.class);
-	/**
-	 * Panel for chits.
-	 */
-	private final ChitPanel chitPanel = new ChitPanel(new ChitSelectionListener(
-			chitDetail));
 	static {
 		DESCRIPTIONS.put(TileType.BorealForest, "<html><p>Boreal Forest</p></html>");
 		DESCRIPTIONS.put(TileType.Desert, "<html><p>Desert</p></html>");
