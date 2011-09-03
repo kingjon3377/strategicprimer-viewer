@@ -117,8 +117,10 @@ public class ResultsPanel extends JPanel {
 	 * @param newTile the new tile
 	 */
 	public void setTile(final Tile newTile) {
+		if (!newTile.equals(tile)) {
 		tile = newTile;
 		field.setText(tile.getTileText());
+		}
 	}
 	/**
 	 * The tile we get and save results from and to. 

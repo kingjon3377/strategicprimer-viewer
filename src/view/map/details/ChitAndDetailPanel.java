@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 
 import model.viewer.Tile;
 import model.viewer.TileFixture;
+import model.viewer.TileType;
 
 /**
  * A panel to encapsulate the ChitPanel and the label for showing a chit's
@@ -58,13 +59,20 @@ public class ChitAndDetailPanel extends JPanel {
 		add(label);
 	}
 	/**
-	 * Update the chits for a new tile.
-	 * @param tile the new tile
+	 * The tile the chits are on.
 	 */
-	public void updateChits(final Tile tile) {
+	private Tile tile = new Tile(-1, -1, TileType.NotVisible);
+	/**
+	 * Update the chits for a new tile.
+	 * @param newTile the new tile
+	 */
+	public void updateChits(final Tile newTile) {
+		if (!newTile.equals(tile)) {
+			tile = newTile;
 		panel.clear();
 		for (final TileFixture fix : tile.getContents()) {
 			panel.add(fix);
+		}
 		}
 	}
 }

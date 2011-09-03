@@ -36,7 +36,8 @@ public class DetailPanel extends JPanel {
 	/**
 	 * Panel to show chits for the items on the tile and the details of a selected chit.
 	 */
-	private final ChitAndDetailPanel chitPanel;
+	private final ChitAndDetailPanel chitPanel = new ChitAndDetailPanel(
+			DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT);
 	/**
 	 * Panel to show and edit exploration results.
 	 */
@@ -52,33 +53,20 @@ public class DetailPanel extends JPanel {
 		setMinimumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MIN_HT));
 		setPreferredSize(new Dimension(Integer.MAX_VALUE, DETAIL_PANEL_HT));
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		typePanel.updateText(new Tile(-1, -1, TileType.NotVisible));
 		add(typePanel);
-		chitPanel = new ChitAndDetailPanel(DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT);
 		add(chitPanel);
-
 		add(resultsPanel);
 		add(new KeyPanel());
 	}
 
 	/**
-	 * The tile we refer to.
-	 */
-	private Tile tile;
-	
-	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
 	 */
 	public void setTile(final Tile newTile) {
-		if (newTile.equals(tile)) {
-			return;
-		} else {
-			tile = newTile;
-		}
-		typePanel.updateText(tile);
-		chitPanel.updateChits(tile);
-		resultsPanel.setTile(tile);
+		typePanel.updateText(newTile);
+		chitPanel.updateChits(newTile);
+		resultsPanel.setTile(newTile);
 		repaint();
 	}
 
