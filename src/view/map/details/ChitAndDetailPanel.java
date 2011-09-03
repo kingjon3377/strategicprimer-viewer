@@ -1,6 +1,8 @@
 package view.map.details;
 
 import java.awt.Dimension;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -17,7 +19,7 @@ import model.viewer.TileType;
  * 
  * @author Jonathan Lovelace
  */
-public class ChitAndDetailPanel extends JPanel {
+public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * The detail label.
 	 */
@@ -73,6 +75,16 @@ public class ChitAndDetailPanel extends JPanel {
 		for (final TileFixture fix : tile.getContents()) {
 			panel.add(fix);
 		}
+		}
+	}
+	/**
+	 * Handle a property change.
+	 * @param evt the event to handle.
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		if ("tile".equals(evt.getPropertyName())) {
+			updateChits((Tile) evt.getNewValue());
 		}
 	}
 }

@@ -54,8 +54,11 @@ public class DetailPanel extends JPanel {
 		setPreferredSize(new Dimension(Integer.MAX_VALUE, DETAIL_PANEL_HT));
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		add(typePanel);
+		addPropertyChangeListener(typePanel);
 		add(chitPanel);
+		addPropertyChangeListener(chitPanel);
 		add(resultsPanel);
+		addPropertyChangeListener(resultsPanel);
 		add(new KeyPanel());
 	}
 
@@ -64,9 +67,7 @@ public class DetailPanel extends JPanel {
 	 *            the tile we should now refer to.
 	 */
 	public void setTile(final Tile newTile) {
-		typePanel.updateText(newTile);
-		chitPanel.updateChits(newTile);
-		resultsPanel.setTile(newTile);
+		firePropertyChange("tile", null, newTile);
 		repaint();
 	}
 

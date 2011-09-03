@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,7 +20,7 @@ import model.viewer.Tile;
  * A panel for displaying and editing tile text i.e. results.
  * @author Jonathan Lovelace
  */
-public class ResultsPanel extends JPanel {
+public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * Exploration runner to produce exploration results.
 	 */
@@ -133,5 +135,15 @@ public class ResultsPanel extends JPanel {
 		field.setText(field.getText() + '\n'
 				+ runner.recursiveConsultTable("main", tile));
 		saveTileText();
+	}
+	/**
+	 * Handle a property change.
+	 * @param evt the event to handle.
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		if ("tile".equals(evt.getPropertyName())) {
+			setTile((Tile) evt.getNewValue());
+		}
 	}
 }
