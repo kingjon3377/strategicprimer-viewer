@@ -1,6 +1,7 @@
 package view.map.details;
 
 import java.awt.Dimension;
+import java.beans.PropertyChangeListener;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -30,15 +31,6 @@ public class DetailPanel extends JPanel {
 	 */
 	public static final int DETAIL_PAN_MIN_HT = 50;
 	/**
-	 * Panel to show the tile's coordinates and terrain type.
-	 */
-	private final TileDetailPanel typePanel = new TileDetailPanel();
-	/**
-	 * Panel to show chits for the items on the tile and the details of a selected chit.
-	 */
-	private final ChitAndDetailPanel chitPanel = new ChitAndDetailPanel(
-			DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT);
-	/**
 	 * Panel to show and edit exploration results.
 	 */
 	private final ResultsPanel resultsPanel = new ResultsPanel(DETAIL_PAN_MIN_HT,
@@ -53,15 +45,22 @@ public class DetailPanel extends JPanel {
 		setMinimumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MIN_HT));
 		setPreferredSize(new Dimension(Integer.MAX_VALUE, DETAIL_PANEL_HT));
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		add(typePanel);
-		addPropertyChangeListener(typePanel);
-		add(chitPanel);
-		addPropertyChangeListener(chitPanel);
-		add(resultsPanel);
-		addPropertyChangeListener(resultsPanel);
+		addListener(new TileDetailPanel());
+		addListener(new ChitAndDetailPanel(
+				DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT));
+		addListener(resultsPanel);
 		add(new KeyPanel());
 	}
-
+	/**
+	 * Add a subpanel and make it a property-change listener, if it is one.
+	 * @param panel the panel to add
+	 */
+	private void addListener(final JPanel panel) {
+		add(panel);
+		if (panel instanceof PropertyChangeListener) {
+			addPropertyChangeListener((PropertyChangeListener) panel);
+		}
+	}
 	/**
 	 * @param newTile
 	 *            the tile we should now refer to.
