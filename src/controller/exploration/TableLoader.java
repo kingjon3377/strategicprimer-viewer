@@ -222,4 +222,11 @@ public class TableLoader { // NOPMD
 	public LegacyTable loadLegacyTable() {
 		return new LegacyTable();
 	}
+	/**
+	 * @return a String representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "TableLoader";
+	}
 }

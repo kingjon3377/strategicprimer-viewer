@@ -230,4 +230,11 @@ public class CharacterReader {
 			return false;
 		}
 	}
+	/**
+	 * @return a String representation of this class.
+	 */
+	@Override
+	public String toString() {
+		return "CharacterReader";
+	}
 }

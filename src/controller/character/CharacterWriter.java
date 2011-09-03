@@ -154,4 +154,11 @@ public class CharacterWriter {
 			ostream.print(job.getLevels());
 		}
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "CharacterWriter";
+	}
 }
