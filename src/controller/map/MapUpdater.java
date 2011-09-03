@@ -21,7 +21,7 @@ import controller.map.simplexml.SimpleXMLReader;
  * @author Jonathan Lovelace
  * 
  */
-public class MapUpdater {
+public final class MapUpdater {
 	/**
 	 * Logger.
 	 */

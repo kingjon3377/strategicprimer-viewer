@@ -24,7 +24,7 @@ import util.Pair;
  * 
  * @author Jonathan Lovelace
  */
-public class TableLoader { // NOPMD
+public final class TableLoader { // NOPMD
 	/**
 	 * Extracted constant for clarity: If we split() a string "once", we tell
 	 * split() to give us at most two pieces, and then test whether it gave us

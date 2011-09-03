@@ -20,7 +20,7 @@ import model.character.SPCharacter;
  * @author Jonathan Lovelace.
  * 
  */
-public class CharacterWriter {
+public final class CharacterWriter {
 	/**
 	 * Constructor taking a filename.
 	 * 

@@ -21,7 +21,7 @@ import view.util.IsAdmin;
  * @author Jonathan Lovelace
  * 
  */
-public class CharacterReader {
+public final class CharacterReader {
 	/**
 	 * Constructor.
 	 * 
