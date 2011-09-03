@@ -98,7 +98,8 @@ public class MapReader {
 					final StartElement startElement = event.asStartElement();
 					if (map == null) {
 						map = firstTag(startElement);
-					} else {
+						continue;
+					} 
 						switch (XMLHelper.getTagType(startElement)) {
 						case Player:
 							map.addPlayer(parsePlayer(startElement, eventReader));
@@ -117,7 +118,6 @@ public class MapReader {
 													.getLocalPart()
 											+ ": players, rows, and tiles are the only accepted top-level tags");
 						}
-					}
 				}
 			}
 			LOGGER.info("Finished reading XML");
