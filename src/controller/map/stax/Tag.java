@@ -87,7 +87,7 @@ enum Tag {
 	 * @param tagText
 	 *            The string to associate with the tag.
 	 */
-	Tag(final String tagText) {
+	private Tag(final String tagText) {
 		text = tagText;
 	}
 
