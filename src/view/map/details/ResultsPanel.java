@@ -97,6 +97,7 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 		button.addActionListener(new ActionListener() {
 			/**
 			 * Handle button presses.
+			 * @param event the event to handle
 			 */
 			@Override
 			public void actionPerformed(final ActionEvent event) {
