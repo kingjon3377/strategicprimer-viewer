@@ -229,8 +229,8 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				KeyEvent.VK_R,
 				KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
 				"Show only a subset of the map", this));
-		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0), 
-                new Dimension(Integer.MAX_VALUE, 0)));
+		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0),
+				new Dimension(Integer.MAX_VALUE, 0)));
 		mbar.add(createMenuItem("Quit", KeyEvent.VK_Q,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
 				"Quit the viewer", new ActionListener() {
