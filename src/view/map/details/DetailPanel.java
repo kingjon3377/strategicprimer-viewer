@@ -1,21 +1,12 @@
 package view.map.details;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.EnumMap;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 
-import model.exploration.ExplorationRunner;
 import model.viewer.Tile;
 import model.viewer.TileType;
 
@@ -25,11 +16,7 @@ import model.viewer.TileType;
  * 
  * @author Jonathan Lovelace
  */
-public class DetailPanel extends JPanel implements ActionListener {
-	/**
-	 * Command to save changed results.
-	 */
-	private static final String RESULTS_SAVE_CMD = "<html><p>Save changed results</p></html>";
+public class DetailPanel extends JPanel {
 	/**
 	 * Maximum height of this panel, in pixels.
 	 */
@@ -43,42 +30,6 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	public static final int DETAIL_PAN_MIN_HT = 50;
 	/**
-	 * Minimum height of the results field and its label.
-	 */
-	private static final int RESULTS_MIN_WD = 200;
-	/**
-	 * Preferred height of the results field and its label.
-	 */
-	private static final int RESULTS_PREF_WD = 250;
-	/**
-	 * Maximum height of the results field and its label.
-	 */
-	private static final int RESULTS_MAX_WD = 300;
-	/**
-	 * Minimum height of the results label.
-	 */
-	private static final int LABEL_MIN_HT = 10; // NOPMD
-	/**
-	 * Preferred height of the results label.
-	 */
-	private static final int LABEL_PREF_HT = 15;
-	/**
-	 * Maximum height for the results label.
-	 */
-	private static final int LABEL_MAX_HT = 20;
-	/**
-	 * Minimum height of the results button.
-	 */
-	private static final int BUTTON_MIN_HT = 15;
-	/**
-	 * Preferred height of the results button.
-	 */
-	private static final int BUTTON_PREF_HT = 20;
-	/**
-	 * Maximum height of the results button.
-	 */
-	private static final int BUTTON_MAX_HT = 25;
-	/**
 	 * Panel to show the tile's coordinates and terrain type.
 	 */
 	private final TileDetailPanel typePanel = new TileDetailPanel();
@@ -87,13 +38,10 @@ public class DetailPanel extends JPanel implements ActionListener {
 	 */
 	private final ChitAndDetailPanel chitPanel;
 	/**
-	 * Field to show and edit exploration results.
+	 * Panel to show and edit exploration results.
 	 */
-	private final JTextArea resultsField = new JTextArea();
-	/**
-	 * Exploration runner to produce exploration results.
-	 */
-	private final ExplorationRunner runner = new ExplorationRunner();
+	private final ResultsPanel resultsPanel = new ResultsPanel(DETAIL_PAN_MIN_HT,
+			DETAIL_PANEL_HT, DETAIL_PAN_MAX_HT);
 
 	/**
 	 * Constructor.
@@ -109,35 +57,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		chitPanel = new ChitAndDetailPanel(DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT);
 		add(chitPanel);
 
-		final JPanel resultsPanel = new JPanel(new BorderLayout());
-		final JLabel resultsLabel = new JLabel(
-				"Exploration results");
-		resultsLabel.setAlignmentY(SwingConstants.CENTER);
-		resultsLabel.setMinimumSize(new Dimension(RESULTS_MIN_WD, LABEL_MIN_HT));
-		resultsLabel.setPreferredSize(new Dimension(RESULTS_PREF_WD, LABEL_PREF_HT));
-		resultsLabel.setMaximumSize(new Dimension(RESULTS_MAX_WD, LABEL_MAX_HT));
-		resultsPanel.add(resultsLabel, BorderLayout.NORTH);
-
-		resultsField.setLineWrap(true);
-		resultsField.setEditable(true);
-		resultsField.setWrapStyleWord(true);
-		final JScrollPane resultsWrapper = new JScrollPane(resultsField);
-		resultsWrapper.setMinimumSize(new Dimension(RESULTS_MIN_WD,
-				getMinimumSize().height - LABEL_MIN_HT - BUTTON_MIN_HT));
-		resultsWrapper.setPreferredSize(new Dimension(RESULTS_PREF_WD,
-				getPreferredSize().height - LABEL_PREF_HT - BUTTON_PREF_HT));
-		resultsWrapper.setMaximumSize(new Dimension(RESULTS_MAX_WD,
-				getMaximumSize().height - LABEL_MAX_HT - BUTTON_MAX_HT));
-		resultsPanel.add(resultsWrapper, BorderLayout.CENTER);
-
-		final JButton resultsButton = new JButton(RESULTS_SAVE_CMD);
-		resultsButton.addActionListener(this);
-		resultsButton.setMinimumSize(new Dimension(RESULTS_MIN_WD, BUTTON_MIN_HT));
-		resultsButton.setPreferredSize(new Dimension(RESULTS_PREF_WD, BUTTON_PREF_HT));
-		resultsButton.setMaximumSize(new Dimension(RESULTS_MAX_WD, BUTTON_MAX_HT));
-		resultsPanel.add(resultsButton, BorderLayout.SOUTH);
 		add(resultsPanel);
-		runner.loadAllTables("tables");
 		add(new KeyPanel());
 	}
 
@@ -158,7 +78,7 @@ public class DetailPanel extends JPanel implements ActionListener {
 		}
 		typePanel.updateText(tile);
 		chitPanel.updateChits(tile);
-			resultsField.setText(tile.getTileText());
+		resultsPanel.setTile(tile);
 		repaint();
 	}
 
@@ -190,28 +110,12 @@ public class DetailPanel extends JPanel implements ActionListener {
 		} // else
 		throw new IllegalArgumentException("Unknown terrain type");
 	}
-
+	
 	/**
-	 * Handle button presses.
-	 * 
-	 * @param event
-	 *            the event to handle
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	@Override
-	public void actionPerformed(final ActionEvent event) {
-		if (RESULTS_SAVE_CMD.equals(event.getActionCommand())) {
-			tile.setTileText(resultsField.getText().trim());
-		}
-	}
-
-	/**
-	 * Run an encounter.
+	 * Run an encounter. This remains here despite the logic having moved to
+	 * ResultsPanel until we find a better way.
 	 */
 	public void runEncounter() {
-		resultsField.setText(resultsField.getText() + '\n'
-				+ runner.recursiveConsultTable("main", tile));
-		actionPerformed(new ActionEvent(this, 0, RESULTS_SAVE_CMD));
+		resultsPanel.runEncounter();
 	}
 }
