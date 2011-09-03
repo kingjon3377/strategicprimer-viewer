@@ -31,12 +31,6 @@ public class DetailPanel extends JPanel {
 	 */
 	public static final int DETAIL_PAN_MIN_HT = 50;
 	/**
-	 * Panel to show and edit exploration results.
-	 */
-	private final ResultsPanel resultsPanel = new ResultsPanel(DETAIL_PAN_MIN_HT,
-			DETAIL_PANEL_HT, DETAIL_PAN_MAX_HT);
-
-	/**
 	 * Constructor.
 	 */
 	public DetailPanel() {
@@ -48,7 +42,8 @@ public class DetailPanel extends JPanel {
 		addListener(new TileDetailPanel());
 		addListener(new ChitAndDetailPanel(
 				DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT));
-		addListener(resultsPanel);
+		addListener(new ResultsPanel(DETAIL_PAN_MIN_HT,
+				DETAIL_PANEL_HT, DETAIL_PAN_MAX_HT));
 		add(new KeyPanel());
 	}
 	/**
@@ -104,6 +99,6 @@ public class DetailPanel extends JPanel {
 	 * ResultsPanel until we find a better way.
 	 */
 	public void runEncounter() {
-		resultsPanel.runEncounter();
+		firePropertyChange("encounter", "old", "new");
 	}
 }
