@@ -63,6 +63,9 @@ public class MapNode extends AbstractChildNode<SPMap> {
 		for (TileNode node : tiles) {
 			map.addTile(node.produce(map.getPlayers()));
 		}
+		if (hasProperty("current_player")) {
+			map.getPlayers().getPlayer(Integer.parseInt(getProperty("current_player"))).setCurrent(true);
+		}
 		return map;
 	}
 

@@ -84,4 +84,20 @@ public class Player implements Comparable<Player> {
 	public String toString() {
 		return "".equals(playerName) ? "player #" + playerID : playerName;
 	}
+	/**
+	 * Whether this is the current player or not.
+	 */
+	private boolean current = false;
+	/**
+	 * @param curr whether this is the current player or not
+	 */
+	public void setCurrent(final boolean curr) {
+		current = curr;
+	}
+	/**
+	 * @return true iff this is the current player
+	 */
+	public boolean isCurrent() {
+		return current;
+	}
 }

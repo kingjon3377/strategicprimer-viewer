@@ -78,6 +78,11 @@ public class XMLWriter { // NOPMD
 		printQuoted(map.rows());
 		writer.print(" columns=");
 		printQuoted(map.cols());
+		final Player currentPlayer = map.getPlayers().getCurrentPlayer();
+		if (!"".equals(currentPlayer.getName())) {
+			writer.print(" current_player=");
+			printQuoted(currentPlayer.getId());
+		}
 		writer.println('>');
 		for (final Player player : map.getPlayers()) {
 			indent(1);

@@ -52,4 +52,16 @@ public class PlayerCollection implements Iterable<Player> {
 	public int hashCode() {
 		return players.hashCode();
 	}
+	/**
+	 * Note that this method currently iterates through all the players to find the one marked current.
+	 * @return the current player, or a new player with a negative number and the empty string for a name.
+	 */
+	public Player getCurrentPlayer() {
+		for (Player player : this) {
+			if (player.isCurrent()) {
+				return player; // NOPMD
+			}
+		}
+		return new Player(-1, "");
+	}
 }
