@@ -47,6 +47,7 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("tile".equals(evt.getPropertyName())) {
 			updateText((Tile) evt.getNewValue());
+			repaint();
 		}
 	}
 }

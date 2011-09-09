@@ -85,6 +85,7 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("tile".equals(evt.getPropertyName())) {
 			updateChits((Tile) evt.getNewValue());
+			repaint();
 		}
 	}
 }

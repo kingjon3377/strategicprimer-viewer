@@ -145,6 +145,7 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("tile".equals(evt.getPropertyName())) {
 			setTile((Tile) evt.getNewValue());
+			repaint();
 		} else if ("encounter".equals(evt.getPropertyName())) {
 			runEncounter();
 		}
