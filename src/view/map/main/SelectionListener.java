@@ -3,6 +3,10 @@ package view.map.main;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+import view.util.PropertyChangeSource;
 
 /**
  * A class to handle selecting one of a class of GUI elements.
@@ -10,7 +14,11 @@ import java.awt.event.MouseListener;
  * @author Jonathan Lovelace
  * 
  */
-public class SelectionListener implements MouseListener {
+public class SelectionListener implements MouseListener, PropertyChangeSource {
+	/**
+	 * A helper object to handle property-change listeners for us.
+	 */
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
 	 * The currently-selected tile.
@@ -130,5 +138,27 @@ public class SelectionListener implements MouseListener {
 		public void paint(final Graphics pen) {
 			// Do nothing.
 		}
+	}
+	/**
+	 * @return the helper object managing our property-change listeners.
+	 */
+	protected final PropertyChangeSupport getSupport() {
+		return pcs;
+	}
+	/**
+	 * Add a property-change listener.
+	 * @param list the listener to add
+	 */
+	@Override
+	public void addPropertyChangeListener(final PropertyChangeListener list) {
+		pcs.addPropertyChangeListener(list);
+	}
+	/**
+	 * Remove a property-change listener.
+	 * @param list the listener to remove.
+	 */
+	@Override
+	public void removePropertyChangeListener(final PropertyChangeListener list) {
+		pcs.removePropertyChangeListener(list);
 	}
 }

@@ -1,12 +1,13 @@
 package view.map.main;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
@@ -15,7 +16,6 @@ import model.viewer.Point;
 import model.viewer.PointFactory;
 import model.viewer.SPMap;
 import model.viewer.Tile;
-import view.map.details.DetailPanel;
 
 /**
  * A panel to display a map.
@@ -24,10 +24,6 @@ import view.map.details.DetailPanel;
  * 
  */
 public class MapPanel extends JPanel {
-	/**
-	 * Selection listener.
-	 */
-	private final transient TileSelectionListener selListener;
 	/**
 	 * The map we represent. Saved only so we can export it.
 	 */
@@ -42,24 +38,42 @@ public class MapPanel extends JPanel {
 	 * 
 	 * @param newMap
 	 *            The map object this panel is representing
-	 * @param details
-	 *            The panel that'll show the details of the selected tile
 	 */
-	public MapPanel(final SPMap newMap, final DetailPanel details) {
+	public MapPanel(final SPMap newMap) {
 		super();
-		selListener = new TileSelectionListener(this, details);
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
-		final ActionMap actionMap = getActionMap();
-		new ArrowKeyListener().setUpListeners(selListener, actionMap);
 		setOpaque(true);
 		loadMap(newMap);
 		secondaryMap = new SPMap(newMap.rows(), newMap.cols());
 	}
-
+	
+	/**
+	 * Set up arrow-key listeners. The listener is added as a MouseListener to
+	 * this and connected to the arrow keys.
+	 * 
+	 * @param list
+	 *            a TileSelectionListener
+	 */
+	public void setUpListeners(final TileSelectionListener list) {
+		addMouseListener(list);
+		final Thread thr = new Thread() {
+			/**
+			 * Add the listener to all the tiles.
+			 */
+			@Override
+			public void run() {
+				for (Component comp : getComponents()) {
+					comp.addMouseListener(list);
+				}
+			}
+		};
+		thr.start();
+		new ArrowKeyListener().setUpListeners(list, getActionMap());
+	}
 	/**
 	 * Our visible dimensions.
 	 */
@@ -86,7 +100,11 @@ public class MapPanel extends JPanel {
 	 */
 	public final void loadMap(final SPMap newMap, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
-			selListener.clearSelection();
+		for (MouseListener list : getMouseListeners()) {
+			if (list instanceof SelectionListener) {
+				((SelectionListener) list).clearSelection();
+			}
+		}
 			removeAll();
 			locCache.clear();
 			EventQueue.invokeLater(new Runnable() {
@@ -138,7 +156,9 @@ public class MapPanel extends JPanel {
 	 *            the GUI tile to set up.
 	 */
 	private void addTile(final GUITile tile) {
-		tile.addMouseListener(selListener);
+		for (MouseListener list : getMouseListeners()) {
+			tile.addMouseListener(list);
+		}
 		add(tile);
 		locCache.put(PointFactory.point(tile.getTile().getRow(), tile.getTile().getCol()), tile);
 		tile.setVisible(true);

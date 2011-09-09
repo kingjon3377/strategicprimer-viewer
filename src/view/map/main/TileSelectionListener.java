@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import model.viewer.PointFactory;
 import model.viewer.Tile;
 import model.viewer.TileType;
-import view.map.details.DetailPanel;
 
 /**
  * A class to keep track of which tile is selected.
@@ -25,27 +24,19 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	private static final TerrainChangingMenu MENU = new TerrainChangingMenu();
 	/**
-	 * The detail panel.
-	 */
-	private final DetailPanel detailPanel;
-	/**
 	 * The main viewer ... the only object that can copy a tile from the main
 	 * map to the alternate.
 	 */
 	private final MapPanel viewer;
-
 	/**
 	 * Constructor.
 	 * 
 	 * @param view
 	 *            the main panel. Needed to copy a tile from the main map to a
 	 *            sub-map.
-	 * @param details
-	 *            the panel that'll show the details of the selected tile
 	 */
-	public TileSelectionListener(final MapPanel view, final DetailPanel details) {
+	public TileSelectionListener(final MapPanel view) {
 		super();
-		detailPanel = details;
 		viewer = view;
 	}
 
@@ -59,15 +50,15 @@ public class TileSelectionListener extends SelectionListener {
 	public void mouseClicked(final MouseEvent event) {
 		super.mouseClicked(event);
 		if (selection() instanceof GUITile) {
-			detailPanel.setTile(((GUITile) selection()).getTile());
+			fireTileChangeEvent(((GUITile) selection()).getTile());
 			if (event.getClickCount() == 2) {
-				detailPanel.runEncounter();
+				getSupport().firePropertyChange("encounter", "old", "new");
 				viewer.copyTile(((GUITile) selection()).getTile());
 			}
 			selection().requestFocusInWindow();
 			LOGGER.fine("Click");
 		} else {
-			detailPanel.setTile(new Tile(-1, -1, TileType.NotVisible));
+			fireTileChangeEvent(new Tile(-1, -1, TileType.NotVisible));
 		}
 	}
 	/**
@@ -79,7 +70,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getRow() - 1,
 					((GUITile) selection()).getTile().getCol())); 
 			setSelection(newTile);
-			detailPanel.setTile(newTile.getTile());
+			fireTileChangeEvent(newTile.getTile());
 		}
 	}
 	/**
@@ -91,7 +82,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getRow(),
 					((GUITile) selection()).getTile().getCol() - 1)); 
 			setSelection(newTile);
-			detailPanel.setTile(newTile.getTile());
+			fireTileChangeEvent(newTile.getTile());
 		}
 	}
 	/**
@@ -103,7 +94,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getRow() + 1,
 					((GUITile) selection()).getTile().getCol())); 
 			setSelection(newTile);
-			detailPanel.setTile(newTile.getTile());
+			fireTileChangeEvent(newTile.getTile());
 		}
 	}
 	/**
@@ -115,7 +106,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getRow(),
 					((GUITile) selection()).getTile().getCol() + 1)); 
 			setSelection(newTile);
-			detailPanel.setTile(newTile.getTile());
+			fireTileChangeEvent(newTile.getTile());
 		}
 	}
 	/**
@@ -154,6 +145,13 @@ public class TileSelectionListener extends SelectionListener {
 	@Override
 	public void clearSelection() {
 		super.clearSelection();
-		detailPanel.setTile(new Tile(-1, -1, TileType.NotVisible));
+		fireTileChangeEvent(new Tile(-1, -1, TileType.NotVisible));
+	}
+	/**
+	 * Fire a property change event for a new tile.
+	 * @param tile the new tile.
+	 */
+	private void fireTileChangeEvent(final Tile tile) {
+		getSupport().firePropertyChange("tile", null, tile);
 	}
 }

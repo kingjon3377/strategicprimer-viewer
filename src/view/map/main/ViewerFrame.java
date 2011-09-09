@@ -181,8 +181,10 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
-		final DetailPanel details = new DetailPanel();
-		mapPanel = new MapPanel(new SimpleXMLReader().readMap(filename), details);
+		mapPanel = new MapPanel(new SimpleXMLReader().readMap(filename));
+		final TileSelectionListener tsl = new TileSelectionListener(mapPanel);
+		mapPanel.setUpListeners(tsl);
+		final DetailPanel details = new DetailPanel(tsl);
 		createMenu();
 		add(details, BorderLayout.SOUTH);
 		final JScrollPane scroller = new JScrollPane(mapPanel);
