@@ -1,8 +1,7 @@
 package view.map.details;
 
 import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
+import java.beans.PropertyChangeListener;
 
 import view.map.main.SelectionListener;
 
@@ -14,19 +13,13 @@ import view.map.main.SelectionListener;
  */
 public class ChitSelectionListener extends SelectionListener {
 	/**
-	 * The label we'll write the details to.
-	 */
-	private final JLabel detailLabel;
-
-	/**
 	 * Constructor.
 	 * 
-	 * @param label
-	 *            the label we'll write the details of the selected item to.
+	 * @param list a listener to tell when the selected chit changes
 	 */
-	public ChitSelectionListener(final JLabel label) {
+	public ChitSelectionListener(final PropertyChangeListener list) {
 		super();
-		detailLabel = label;
+		addPropertyChangeListener(list);
 	}
 
 	/**
@@ -38,11 +31,7 @@ public class ChitSelectionListener extends SelectionListener {
 	@Override
 	public void mouseClicked(final MouseEvent event) {
 		super.mouseClicked(event);
-		if (selection() instanceof Chit) {
-			detailLabel.setText("<html>" + ((Chit) (selection())).describe() + "</html>");
-		} else {
-			detailLabel.setText("");
-		}
+		getSupport().firePropertyChange("chit", null, selection());
 	}
 
 	/**
@@ -51,6 +40,6 @@ public class ChitSelectionListener extends SelectionListener {
 	@Override
 	public void clearSelection() {
 		super.clearSelection();
-		detailLabel.setText("");
+		getSupport().firePropertyChange("chit", null, new Object());
 	}
 }

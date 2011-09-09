@@ -5,7 +5,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -23,7 +22,7 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 	/**
 	 * The detail label.
 	 */
-	private final JLabel label = new JLabel();
+	private final ChitDescriptionLabel label = new ChitDescriptionLabel();
 	/**
 	 * The ChitPanel.
 	 */
