@@ -213,4 +213,11 @@ public class MapPanel extends JPanel {
 	public GUITile getTile(final Point coords) {
 		return locCache.get(coords);
 	}
+	/**
+	 * @param coords a set of coordinates
+	 * @return the tile at those coordinates in the secondary map
+	 */
+	public Tile getSecondaryTile(final Point coords) {
+		return secondaryMap.getTile(coords.row(), coords.col());
+	}
 }

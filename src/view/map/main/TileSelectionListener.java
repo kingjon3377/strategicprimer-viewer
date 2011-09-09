@@ -3,6 +3,7 @@ package view.map.main;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
+import model.viewer.Point;
 import model.viewer.PointFactory;
 import model.viewer.Tile;
 import model.viewer.TileType;
@@ -51,6 +52,9 @@ public class TileSelectionListener extends SelectionListener {
 		super.mouseClicked(event);
 		if (selection() instanceof GUITile) {
 			fireTileChangeEvent(((GUITile) selection()).getTile());
+			fireSecondaryTileChange(viewer.getSecondaryTile(PointFactory.point(
+					((GUITile) selection()).getTile().getRow(),
+					((GUITile) selection()).getTile().getCol() - 1)));
 			if (event.getClickCount() == 2) {
 				getSupport().firePropertyChange("encounter", "old", "new");
 				viewer.copyTile(((GUITile) selection()).getTile());
@@ -66,11 +70,13 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void up() { // NOPMD
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(PointFactory.point(
+			final Point point = PointFactory.point(
 					((GUITile) selection()).getTile().getRow() - 1,
-					((GUITile) selection()).getTile().getCol())); 
+					((GUITile) selection()).getTile().getCol());
+			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
 			fireTileChangeEvent(newTile.getTile());
+			fireSecondaryTileChange(viewer.getSecondaryTile(point));
 		}
 	}
 	/**
@@ -78,11 +84,13 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void left() {
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(PointFactory.point(
+			final Point point = PointFactory.point(
 					((GUITile) selection()).getTile().getRow(),
-					((GUITile) selection()).getTile().getCol() - 1)); 
+					((GUITile) selection()).getTile().getCol() - 1);
+			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
 			fireTileChangeEvent(newTile.getTile());
+			fireSecondaryTileChange(viewer.getSecondaryTile(point));
 		}
 	}
 	/**
@@ -90,11 +98,13 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void down() { // NOPMD
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(PointFactory.point(
+			final Point point = PointFactory.point(
 					((GUITile) selection()).getTile().getRow() + 1,
-					((GUITile) selection()).getTile().getCol())); 
+					((GUITile) selection()).getTile().getCol());
+			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
 			fireTileChangeEvent(newTile.getTile());
+			fireSecondaryTileChange(viewer.getSecondaryTile(point));
 		}
 	}
 	/**
@@ -102,11 +112,13 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	public void right() {
 		if (selection() instanceof GUITile) {
-			final GUITile newTile = viewer.getTile(PointFactory.point(
+			final Point point = PointFactory.point(
 					((GUITile) selection()).getTile().getRow(),
-					((GUITile) selection()).getTile().getCol() + 1)); 
+					((GUITile) selection()).getTile().getCol() + 1);
+			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
 			fireTileChangeEvent(newTile.getTile());
+			fireSecondaryTileChange(viewer.getSecondaryTile(point));
 		}
 	}
 	/**
@@ -146,6 +158,7 @@ public class TileSelectionListener extends SelectionListener {
 	public void clearSelection() {
 		super.clearSelection();
 		fireTileChangeEvent(new Tile(-1, -1, TileType.NotVisible));
+		fireSecondaryTileChange(new Tile(-1, -1, TileType.NotVisible));
 	}
 	/**
 	 * Fire a property change event for a new tile.
@@ -153,5 +166,12 @@ public class TileSelectionListener extends SelectionListener {
 	 */
 	private void fireTileChangeEvent(final Tile tile) {
 		getSupport().firePropertyChange("tile", null, tile);
+	}
+	/**
+	 * Fire a property-change event for the secondary tile.
+	 * @param tile the new secondary tile
+	 */
+	private void fireSecondaryTileChange(final Tile tile) {
+		getSupport().firePropertyChange("secondary-tile", null, tile);
 	}
 }
