@@ -54,7 +54,7 @@ public class TileSelectionListener extends SelectionListener {
 			fireTileChangeEvent(((GUITile) selection()).getTile());
 			fireSecondaryTileChange(viewer.getSecondaryTile(PointFactory.point(
 					((GUITile) selection()).getTile().getRow(),
-					((GUITile) selection()).getTile().getCol() - 1)));
+					((GUITile) selection()).getTile().getCol())));
 			if (event.getClickCount() == 2) {
 				getSupport().firePropertyChange("encounter", "old", "new");
 				viewer.copyTile(((GUITile) selection()).getTile());
