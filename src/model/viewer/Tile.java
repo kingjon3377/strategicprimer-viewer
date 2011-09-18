@@ -204,5 +204,6 @@ public final class Tile {
 		rivers.addAll(tile.rivers);
 		rivers.retainAll(tile.rivers);
 		tileText = tile.tileText;
+		type = tile.type;
 	}
 }
