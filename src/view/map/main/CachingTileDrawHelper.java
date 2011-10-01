@@ -116,18 +116,6 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 			}
 		}
 	}
-	// ESCA-JAVA0076:
-	static {
-		COLORS.put(TileType.BorealForest, new Color(72, 218, 164));
-		COLORS.put(TileType.Desert, new Color(249, 233, 28));
-		COLORS.put(TileType.Jungle, new Color(229, 46, 46));
-		COLORS.put(TileType.Mountain, new Color(249, 137, 28));
-		COLORS.put(TileType.NotVisible, new Color(255, 255, 255));
-		COLORS.put(TileType.Ocean, new Color(0, 0, 255));
-		COLORS.put(TileType.Plains, new Color(0, 117, 0));
-		COLORS.put(TileType.TemperateForest, new Color(72, 250, 72));
-		COLORS.put(TileType.Tundra, new Color(153, 153, 153));
-	}
 	/**
 	 * Approximately zero. @see{floatEquals}.
 	 */
