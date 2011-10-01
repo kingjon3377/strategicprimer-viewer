@@ -151,9 +151,11 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
 		final int reps = 50; // NOPMD
 		long start, end;
+		Graphics pen;
 		System.out.println("About to start");
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
 					helperOne.drawTile(image.createGraphics(), map.getTile(i, j), 16, 16);
@@ -165,6 +167,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
 					helperTwo.drawTile(image.createGraphics(), map.getTile(i, j), 16, 16);
@@ -177,6 +180,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
 					helperOne.drawTile(image.createGraphics(), map.getTile(i, j), i * 16, j * 16, 16, 16);
@@ -188,6 +192,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
 					helperTwo.drawTile(image.createGraphics(), map.getTile(i, j), i * 16, j * 16, 16, 16);
@@ -197,10 +202,65 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		end = System.nanoTime();
 		System.out.print("Direct did second test (translating) in ");
 		printStats(end - start, reps);
-		final MapComponent componentOne = new MapComponent(map, false);
-		final MapComponent componentTwo = new MapComponent(map, true);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
+			pen = image.createGraphics();
+			for (int i = 0; i < map.rows(); i++) {
+				for (int j = 0; j < map.cols(); j++) {
+					helperOne.drawTile(pen, map.getTile(i, j), 16, 16);
+				}
+			}
+		}
+		end = System.nanoTime();
+		System.out.print("Caching did third test (in-place, reusing Graphics) in ");
+		printStats(end - start, reps);
+		start = System.nanoTime();
+		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
+			pen = image.createGraphics();
+			for (int i = 0; i < map.rows(); i++) {
+				for (int j = 0; j < map.cols(); j++) {
+					helperTwo.drawTile(pen, map.getTile(i, j), 16, 16);
+				}
+			}
+		}
+		end = System.nanoTime();
+		System.out.print("Direct did third test (in-place, reusing Graphics) in ");
+		printStats(end - start, reps);
+		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
+		start = System.nanoTime();
+		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
+			pen = image.createGraphics();
+			for (int i = 0; i < map.rows(); i++) {
+				for (int j = 0; j < map.cols(); j++) {
+					helperOne.drawTile(pen, map.getTile(i, j), i * 16, j * 16, 16, 16);
+				}
+			}
+		}
+		end = System.nanoTime();
+		System.out.print("Caching did fourth test (translating, reusing G) in ");
+		printStats(end - start, reps);
+		start = System.nanoTime();
+		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
+			pen = image.createGraphics();
+			for (int i = 0; i < map.rows(); i++) {
+				for (int j = 0; j < map.cols(); j++) {
+					helperTwo.drawTile(pen, map.getTile(i, j), i * 16, j * 16, 16, 16);
+				}
+			}
+		}
+		end = System.nanoTime();
+		System.out.print("Direct did fourth test (translating, reusing G) in ");
+		printStats(end - start, reps);
+		final MapComponent componentOne = new MapComponent(map, false);
+		final MapComponent componentTwo = new MapComponent(map, true);
+		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
+		start = System.nanoTime();
+		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
 			componentOne.paint(image.createGraphics());
 		}
 		end = System.nanoTime();
@@ -208,6 +268,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
 			componentTwo.paint(image.createGraphics());
 		}
 		end = System.nanoTime();
