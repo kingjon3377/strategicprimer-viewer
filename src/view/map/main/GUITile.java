@@ -23,7 +23,7 @@ public class GUITile extends Selectable {
 	/**
 	 * The helper object to actually do the drawing.
 	 */
-	private static final TileDrawHelper HELPER = new TileDrawHelper();
+	private static final TileDrawHelper HELPER = new CachingTileDrawHelper();
 	/**
 	 * The size of each GUI tile.
 	 */
