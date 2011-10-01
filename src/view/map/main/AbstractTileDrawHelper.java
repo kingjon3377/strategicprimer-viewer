@@ -172,7 +172,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Direct did first test in ");
+		System.out.print("Direct did first test (all in one place) in ");
 		printStats(end - start, reps);
 		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
 		start = System.nanoTime();
@@ -204,14 +204,14 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			componentOne.paint(image.createGraphics());
 		}
 		end = System.nanoTime();
-		System.out.print("Unhelped did test in ");
+		System.out.print("Unhelped MapComponent did test in ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			componentTwo.paint(image.createGraphics());
 		}
 		end = System.nanoTime();
-		System.out.print("Helped did test in ");
+		System.out.print("Helped MapComponent did test in ");
 		printStats(end - start, reps);
 	}
 	/**
@@ -220,8 +220,9 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @param reps how many reps there were
 	 */
 	private static void printStats(final long total, final int reps) {
+		System.out.print('\t');
 		System.out.print(total);
-		System.out.print(", average of ");
+		System.out.print(", average of\t");
 		System.out.print(Long.toString(total / reps));
 		System.out.println(" ns.");
 	}
