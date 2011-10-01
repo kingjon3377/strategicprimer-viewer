@@ -22,5 +22,15 @@ public interface TileDrawHelper {
 	 */
 	void drawTile(final Graphics2D pen, final Tile tile,
 			final int width, final int height);
-
+	/**
+	 * Draw a tile, at the given coordinates.
+	 * @param pen the graphics context
+	 * @param tile the tile to draw
+	 * @param xCoord the tile's left-hand edge
+	 * @param yCoord the tile's upper edge
+	 * @param width the tile's width
+	 * @param height the tile's height
+	 */
+	void drawTile(final Graphics2D pen, final Tile tile, final int xCoord,
+			final int yCoord, final int width, final int height);
 }

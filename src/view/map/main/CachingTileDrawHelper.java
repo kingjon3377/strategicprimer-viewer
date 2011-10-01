@@ -129,4 +129,18 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	private static boolean floatEquals(final double one, final double two) {
 		return Math.abs(one - two) < APPROX_ZERO;
 	}
+	/**
+	 * Draw a tile at the specified coordinates.
+	 * @param pen the graphics context.
+	 * @param tile the tile to draw
+	 * @param xCoord the tile's left boundary
+	 * @param yCoord the tile's right boundary
+	 * @param width the tile's width
+	 * @param height the tile's height
+	 */
+	@Override
+	public void drawTile(final Graphics2D pen, final Tile tile, final int xCoord,
+			final int yCoord, final int width, final int height) {
+		drawTile((Graphics2D) pen.create(xCoord, yCoord, width, height), tile, width, height);
+	}
 }
