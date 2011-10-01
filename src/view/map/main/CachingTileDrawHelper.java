@@ -10,39 +10,23 @@ import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
 
-import model.viewer.Fortress;
 import model.viewer.River;
 import model.viewer.Tile;
-import model.viewer.TileFixture;
 import model.viewer.TileType;
-import model.viewer.Unit;
-import model.viewer.events.AbstractEvent;
 
 /**
  * A class to do the drawing of a tile, whether on a GUITile or on a single-component map.
  * @author Jonathan Lovelace
  *
  */
-public class CachingTileDrawHelper implements TileDrawHelper {
+public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Constructor.
 	 */
 	public CachingTileDrawHelper() {
+		super();
 		checkCache(1, 1);
 	}
-	/**
-	 * The color of the icon used to show that a tile has an event or associated text.
-	 */
-	private static final Color EVENT_COLOR = Color.pink;
-
-	/**
-	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their short dimension.
-	 */
-	private static final double EIGHT = 8.0;
-	/**
-	 * 7/16: where the short side of a river starts, along the edge of the tile.
-	 */
-	private static final double SEVEN_SIXTEENTHS = 7.0 / 16.0;
 	/**
 	 * A cached copy of our background.
 	 */
@@ -100,13 +84,6 @@ public class CachingTileDrawHelper implements TileDrawHelper {
 		}
 	}
 	/**
-	 * @param type a tile type
-	 * @return the color associated with that tile-type.
-	 */
-	private static Color getTileColor(final TileType type) {
-		return COLORS.get(type);
-	}
-	/**
 	 * Draw a tile. The graphics context needs to be translated so that its origin is the tile's upper-left-hand corner.
 	 * @param pen the graphics context
 	 * @param tile the tile to draw
@@ -139,59 +116,6 @@ public class CachingTileDrawHelper implements TileDrawHelper {
 			}
 		}
 	}
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any forts.
-	 */
-	private static boolean hasAnyForts(final Tile tile) {
-		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Fortress) {
-				return true; // NOPMD
-			}
-		}
-		return false;
-	}
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any units.
-	 */
-	private static boolean hasAnyUnits(final Tile tile) {
-		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Unit) {
-				return true; // NOPMD
-			}
-		}
-		return false;
-	}
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any events
-	 */
-	private static boolean hasEvent(final Tile tile) {
-		if ("".equals(tile.getTileText())) {
-			for (TileFixture fix : tile.getContents()) {
-				if (fix instanceof AbstractEvent) {
-					return true; // NOPMD
-				}
-			}
-			return false; // NOPMD
-		} else {
-			return true;
-		}
-	}
-	/**
-	 * Brown, the color of a fortress.
-	 */
-	private static final Color FORT_COLOR = new Color(160, 82, 45);
-	/**
-	 * Purple, the color of a unit.
-	 */
-	private static final Color UNIT_COLOR = new Color(148, 0, 211);
-	/**
-	 * Mapping from tile types to colors.
-	 */
-	private static final Map<TileType, Color> COLORS = new EnumMap<TileType, Color>(
-			TileType.class);
 	// ESCA-JAVA0076:
 	static {
 		COLORS.put(TileType.BorealForest, new Color(72, 218, 164));
