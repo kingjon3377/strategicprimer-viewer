@@ -4,23 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
 
-import model.viewer.Fortress;
-import model.viewer.River;
 import model.viewer.Tile;
-import model.viewer.TileFixture;
 import model.viewer.TileType;
-import model.viewer.Unit;
-import model.viewer.events.AbstractEvent;
 
 /**
  * A GUI representation of a tile. Information about what's on the tile should
@@ -31,14 +21,9 @@ import model.viewer.events.AbstractEvent;
  */
 public class GUITile extends Selectable {
 	/**
-	 * The color of the icon used to show that a tile has an event or associated text.
+	 * The helper object to actually do the drawing.
 	 */
-	private static final Color EVENT_COLOR = Color.pink;
-
-	/**
-	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their short dimension.
-	 */
-	private static final double EIGHT = 8.0;
+	private static final TileDrawHelper HELPER = new TileDrawHelper();
 	/**
 	 * The size of each GUI tile.
 	 */
@@ -52,81 +37,6 @@ public class GUITile extends Selectable {
 	 * The tile this GUI-tile represents.
 	 */
 	private Tile tile;
-	/**
-	 * A cached copy of our width. If it hasn't changed, we can use cached
-	 * rendering objects.
-	 */
-	// ESCA-JAVA0244:
-	private static int width = -1;
-	/**
-	 * A cached copy of our height. If it hasn't changed, we can used cached
-	 * rendering objects.
-	 */
-	// ESCA-JAVA0244:
-	private static int height = -1;
-	/**
-	 * 7/16: where the short side of a river starts, along the edge of the tile.
-	 */
-	private static final double SEVEN_SIXTEENTHS = 7.0 / 16.0;
-	/**
-	 * A cached copy of our background.
-	 */
-	private static Rectangle backgroundShape;
-	/**
-	 * The shapes representing the rivers on the tile.
-	 */
-	private static final Map<River, Shape> RIVERS = new EnumMap<River, Shape>(// NOPMD
-			River.class);
-	/**
-	 * Shape representing the fortress that might be on the tile.
-	 */
-	private static Shape fort;
-	/**
-	 * Shape representing the unit that might be on the tile.
-	 */
-	private static Shape unit;
-
-	/**
-	 * Shape representing an event, or relevant text, associated with the tile.
-	 */
-	private static Shape event;
-
-	/**
-	 * Check, and possibly regenerate, the cache.
-	 * 
-	 * @param wid
-	 *            the current width
-	 * @param hei
-	 *            the current height
-	 */
-	private static void checkCache(final int wid, final int hei) {
-		if (width != wid || height != hei) {
-			width = wid;
-			height = hei;
-			backgroundShape = new Rectangle(0, 0, width, height);
-			RIVERS.clear();
-			RIVERS.put(River.East, new Rectangle2D.Double(width / 2.0, height // NOPMD
-					* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
-			RIVERS.put(River.Lake, new Ellipse2D.Double(width / 4.0, // NOPMD
-					height / 4.0, width / 2.0, height / 2.0));
-			RIVERS.put(River.North, new Rectangle2D.Double(width
-					* SEVEN_SIXTEENTHS, // NOPMD
-					0, width / EIGHT, height / 2.0));
-			RIVERS.put(River.South, new Rectangle2D.Double(width
-					* SEVEN_SIXTEENTHS, // NOPMD
-					height / 2.0, width / EIGHT, height / 2.0));
-			RIVERS.put(River.West, new Rectangle2D.Double(0, height // NOPMD
-					* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
-			fort = new Rectangle2D.Double(width * 2.0 / 3.0 - 1.0,
-					height * 2.0 / 3.0 - 1.0, width / 3.0, height / 3.0);
-			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
-					height / 4.0);
-			event = new Polygon(new int[] { (int) (width * 3.0 / 4.0),
-					(int) (width / 2.0), width }, new int[] { 0,
-					(int) (height / 2.0), (int) (height / 2.0) }, 3);
-		}
-	}
-
 	/**
 	 * @return the tile this GUI represents.
 	 */
@@ -160,9 +70,9 @@ public class GUITile extends Selectable {
 	 * most cases.
 	 */
 	private void checkImageCache() {
-		if (image.getWidth() != width
-				|| image.getHeight() != height) {
-			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		if (image.getWidth() != getWidth()
+				|| image.getHeight() != getHeight()) {
+			image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 			regenerateCache();
 		}
 	}
@@ -172,28 +82,7 @@ public class GUITile extends Selectable {
 	 */
 	private void regenerateCache() {
 		final Graphics2D pen = image.createGraphics();
-		pen.setColor(getTileColor(tile.getType()));
-		pen.fill(backgroundShape);
-		pen.setColor(Color.BLACK);
-		pen.draw(backgroundShape);
-		if (!TileType.NotVisible.equals(tile.getType())) {
-			pen.setColor(Color.BLUE);
-			for (final River river : tile.getRivers()) {
-				pen.fill(RIVERS.get(river));
-			}
-			if (hasAnyForts(tile)) {
-				pen.setColor(FORT_COLOR);
-				pen.fill(fort);
-			}
-			if (hasAnyUnits(tile)) {
-				pen.setColor(UNIT_COLOR);
-				pen.fill(unit);
-			}
-			if (hasEvent(tile)) {
-				pen.setColor(EVENT_COLOR);
-				pen.fill(event);
-			}
-		}
+		HELPER.drawTile(pen, tile, image.getWidth(), image.getHeight());
 	}
 	/**
 	 * @param type a tile type
@@ -202,48 +91,6 @@ public class GUITile extends Selectable {
 	public static Color getTileColor(final TileType type) {
 		return COLORS.get(type);
 	}
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any forts.
-	 */
-	private static boolean hasAnyForts(final Tile tile) {
-		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Fortress) {
-				return true; // NOPMD
-			}
-		}
-		return false;
-	}
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any units.
-	 */
-	private static boolean hasAnyUnits(final Tile tile) {
-		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Unit) {
-				return true; // NOPMD
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any events
-	 */
-	private static boolean hasEvent(final Tile tile) {
-		if ("".equals(tile.getTileText())) {
-			for (TileFixture fix : tile.getContents()) {
-				if (fix instanceof AbstractEvent) {
-					return true; // NOPMD
-				}
-			}
-			return false; // NOPMD
-		} else {
-			return true;
-		}
-	}
-
 	/**
 	 * The identity transformation. drawImage() requires a transformation, and
 	 * we *really* don't want to create one every time we paint a tile.
@@ -261,20 +108,13 @@ public class GUITile extends Selectable {
 		// super.paint(pen);
 		final Graphics2D pen2d = (Graphics2D) pen;
 		final Color saveColor = pen2d.getColor();
-		checkCache(getWidth(), getHeight());
+		getWidth();
+		getHeight();
 		checkImageCache();
 		pen2d.drawImage(image, IDENT, this);
 		pen2d.setColor(saveColor);
 		super.paint(pen);
 	}
-	/**
-	 * Brown, the color of a fortress.
-	 */
-	private static final Color FORT_COLOR = new Color(160, 82, 45);
-	/**
-	 * Purple, the color of a unit.
-	 */
-	private static final Color UNIT_COLOR = new Color(148, 0, 211);
 	/**
 	 * Mapping from tile types to colors.
 	 */
