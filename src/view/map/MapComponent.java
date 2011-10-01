@@ -10,6 +10,9 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
+import view.map.main.DirectTileDrawHelper;
+import view.map.main.TileDrawHelper;
+
 import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
@@ -39,19 +42,28 @@ public class MapComponent extends JComponent {
 	 * Tile size.
 	 */
 	private static final int TILE_SIZE = 13;
-
+	/**
+	 * Whether we should use a helper.
+	 */
+	private final boolean shouldUseHelper;
+	/**
+	 * The helper, which we'll use if this is specified.
+	 */
+	private final TileDrawHelper helper = new DirectTileDrawHelper();
 	/**
 	 * Constructor.
 	 * 
 	 * @param theMap
 	 *            The map this represents
+	 * @param useHelper whether we should use a TileDrawHelper
 	 */
-	public MapComponent(final SPMap theMap) {
+	public MapComponent(final SPMap theMap, final boolean useHelper) {
 		super();
 		map = theMap;
 		setMinimumSize(new Dimension(map.cols() * TILE_SIZE, map.rows()
 				* TILE_SIZE));
 		setPreferredSize(getMinimumSize());
+		shouldUseHelper = useHelper;
 	}
 
 	/**
@@ -133,9 +145,12 @@ public class MapComponent extends JComponent {
 	 * @param col
 	 *            which column this is
 	 */
-	private static void paintTile(final Graphics pen, final Tile tile,
+	private void paintTile(final Graphics pen, final Tile tile,
 			final int row, final int col) {
 		final Color saveColor = pen.getColor();
+		if (shouldUseHelper) {
+			helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		} else {
 		pen.setColor(COLORS.get(tile.getType()));
 		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(Color.BLACK);
@@ -149,6 +164,7 @@ public class MapComponent extends JComponent {
 				pen.setColor(UNIT_COLOR);
 				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE
 						+ TILE_SIZE / 2, TILE_SIZE / 4, TILE_SIZE / 4);
+		}
 		}
 		pen.setColor(saveColor);
 	}
