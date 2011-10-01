@@ -1,7 +1,7 @@
 package view.map.main;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import model.viewer.River;
 import model.viewer.Tile;
@@ -26,7 +26,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the tile's height
 	 */
 	@Override
-	public void drawTile(final Graphics2D pen, final Tile tile, final int xCoord,
+	public void drawTile(final Graphics pen, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
 		pen.setColor(getTileColor(tile.getType()));
 		pen.fillRect(xCoord, yCoord, width, height);
@@ -63,7 +63,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics2D pen, final Tile tile, final int width, final int height) {
+	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
 		drawTile(pen, tile, 0, 0, width, height);
 	}
 	/**
@@ -75,7 +75,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param width the width of the tile's drawing-space
 	 * @param height the height of the tile's drawing-space
 	 */
-	private static void drawRiver(final Graphics2D pen, final River river,
+	private static void drawRiver(final Graphics pen, final River river,
 			final int xCoord, final int yCoord, final int width,
 			final int height) {
 		switch (river) {

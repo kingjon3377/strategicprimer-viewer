@@ -1,6 +1,7 @@
 package view.map.main;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -91,28 +92,32 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics2D pen, final Tile tile, final int width, final int height) {
+	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
 		checkCache(width, height);
-		pen.setColor(getTileColor(tile.getType()));
-		pen.fill(backgroundShape);
-		pen.setColor(Color.BLACK);
-		pen.draw(backgroundShape);
+		if (!(pen instanceof Graphics2D)) {
+			throw new IllegalArgumentException("CachingTileDrawHelper requires Graphics2D, not an old Graphics");
+		}
+		final Graphics2D pen2d = (Graphics2D) pen;
+		pen2d.setColor(getTileColor(tile.getType()));
+		pen2d.fill(backgroundShape);
+		pen2d.setColor(Color.BLACK);
+		pen2d.draw(backgroundShape);
 		if (!TileType.NotVisible.equals(tile.getType())) {
-			pen.setColor(Color.BLUE);
+			pen2d.setColor(Color.BLUE);
 			for (final River river : tile.getRivers()) {
-				pen.fill(rivers.get(river));
+				pen2d.fill(rivers.get(river));
 			}
 			if (hasAnyForts(tile)) {
-				pen.setColor(FORT_COLOR);
-				pen.fill(fort);
+				pen2d.setColor(FORT_COLOR);
+				pen2d.fill(fort);
 			}
 			if (hasAnyUnits(tile)) {
-				pen.setColor(UNIT_COLOR);
-				pen.fill(unit);
+				pen2d.setColor(UNIT_COLOR);
+				pen2d.fill(unit);
 			}
 			if (hasEvent(tile)) {
-				pen.setColor(EVENT_COLOR);
-				pen.fill(event);
+				pen2d.setColor(EVENT_COLOR);
+				pen2d.fill(event);
 			}
 		}
 	}
@@ -139,8 +144,8 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the tile's height
 	 */
 	@Override
-	public void drawTile(final Graphics2D pen, final Tile tile, final int xCoord,
+	public void drawTile(final Graphics pen, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
-		drawTile((Graphics2D) pen.create(xCoord, yCoord, width, height), tile, width, height);
+		drawTile(pen.create(xCoord, yCoord, width, height), tile, width, height);
 	}
 }

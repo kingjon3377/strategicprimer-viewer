@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import model.viewer.Tile;
 
@@ -20,7 +20,7 @@ public interface TileDrawHelper {
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
-	void drawTile(final Graphics2D pen, final Tile tile,
+	void drawTile(final Graphics pen, final Tile tile,
 			final int width, final int height);
 	/**
 	 * Draw a tile, at the given coordinates.
@@ -31,6 +31,6 @@ public interface TileDrawHelper {
 	 * @param width the tile's width
 	 * @param height the tile's height
 	 */
-	void drawTile(final Graphics2D pen, final Tile tile, final int xCoord,
+	void drawTile(final Graphics pen, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height);
 }

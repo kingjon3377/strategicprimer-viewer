@@ -1,7 +1,7 @@
 package view.map.main;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -115,5 +115,5 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public abstract void drawTile(final Graphics2D pen, final Tile tile, final int width, final int height);
+	public abstract void drawTile(final Graphics pen, final Tile tile, final int width, final int height);
 }
