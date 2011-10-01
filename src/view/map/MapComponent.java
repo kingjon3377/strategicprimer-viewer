@@ -5,13 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
-
-import view.map.main.DirectTileDrawHelper;
-import view.map.main.TileDrawHelper;
 
 import model.viewer.Fortress;
 import model.viewer.SPMap;
@@ -19,6 +17,8 @@ import model.viewer.Tile;
 import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
+import view.map.main.DirectTileDrawHelper;
+import view.map.main.TileDrawHelper;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -71,6 +71,9 @@ public class MapComponent extends JComponent {
 	 */
 	public void createImage() {
 		image = createImage(map.cols() * TILE_SIZE, map.rows() * TILE_SIZE);
+		if (image == null) {
+			image = new BufferedImage(map.cols() * TILE_SIZE, map.rows() * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+		}
 		final Graphics pen = image.getGraphics();
 		drawMap(pen);
 		pen.dispose();
