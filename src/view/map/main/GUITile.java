@@ -104,8 +104,8 @@ public class GUITile extends Selectable {
 	 *            the graphics context
 	 */
 	@Override
-	public void paintComponent(final Graphics pen) {
-		super.paintComponent(pen);
+	public void paint(final Graphics pen) {
+		super.paint(pen);
 		final Graphics2D pen2d = (Graphics2D) pen;
 		final Color saveColor = pen2d.getColor();
 		getWidth();
