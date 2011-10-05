@@ -64,6 +64,9 @@ public class TileSelectionListener extends SelectionListener {
 		} else {
 			fireTileChangeEvent(new Tile(-1, -1, TileType.NotVisible));
 		}
+		if (event.getSource() instanceof MapPanel) {
+			((MapPanel) event.getSource()).repaint();
+		}
 	}
 	/**
 	 * Move the cursor up one.
