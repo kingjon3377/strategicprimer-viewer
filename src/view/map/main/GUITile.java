@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
@@ -91,12 +90,6 @@ public class GUITile extends Selectable {
 	public static Color getTileColor(final TileType type) {
 		return COLORS.get(type);
 	}
-	/**
-	 * The identity transformation. drawImage() requires a transformation, and
-	 * we *really* don't want to create one every time we paint a tile.
-	 */
-	private static final AffineTransform IDENT = new AffineTransform();
-
 	/**
 	 * Paint the tile.
 	 * 
