@@ -106,11 +106,10 @@ public class GUITile extends Selectable {
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-		final Graphics2D pen2d = (Graphics2D) pen;
-		final Color saveColor = pen2d.getColor();
+		final Color saveColor = pen.getColor();
 		checkImageCache();
-		pen2d.drawImage(image, IDENT, this);
-		pen2d.setColor(saveColor);
+		pen.drawImage(image, 0, 0, this);
+		pen.setColor(saveColor);
 	}
 	/**
 	 * Mapping from tile types to colors.
