@@ -108,8 +108,6 @@ public class GUITile extends Selectable {
 		super.paint(pen);
 		final Graphics2D pen2d = (Graphics2D) pen;
 		final Color saveColor = pen2d.getColor();
-		getWidth();
-		getHeight();
 		checkImageCache();
 		pen2d.drawImage(image, IDENT, this);
 		pen2d.setColor(saveColor);
