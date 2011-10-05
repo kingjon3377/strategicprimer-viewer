@@ -191,6 +191,7 @@ public class MapPanel extends JPanel {
 			final SPMap temp = map;
 			loadMap(secondaryMap);
 			secondaryMap = temp;
+			repaint();
 	}
 
 	/**
