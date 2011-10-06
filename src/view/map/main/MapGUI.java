@@ -3,7 +3,11 @@ package view.map.main;
 import model.viewer.Point;
 import model.viewer.SPMap;
 import model.viewer.Tile;
-
+/**
+ * An interface for a UI representing a map.
+ * @author Jonathan Lovelace
+ *
+ */
 public interface MapGUI {
 
 	/**
@@ -75,5 +79,4 @@ public interface MapGUI {
 	 * @return the tile at those coordinates in the secondary map
 	 */
 	Tile getSecondaryTile(final Point coords);
-
 }
