@@ -28,7 +28,7 @@ import view.util.PropertyChangeSource;
  * @author Jonathan Lovelace
  * 
  */
-public class MapComponent extends JComponent implements PropertyChangeSource,
+public final class MapComponent extends JComponent implements PropertyChangeSource,
 		MapGUI {
 	/**
 	 * The map this represents.
@@ -58,7 +58,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	 */
 	public MapComponent(final SPMap theMap) {
 		super();
-		map = theMap;
+		loadMap(theMap);
 		setMinimumSize(new Dimension(map.cols() * TILE_SIZE, map.rows()
 				* TILE_SIZE));
 		setPreferredSize(getMinimumSize());
@@ -219,7 +219,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	 */
 	@Override
 	public void loadMap(final SPMap newMap) {
-		loadMap(newMap, 0, 0, map.rows() - 1, map.cols() - 1);
+		loadMap(newMap, 0, 0, newMap.rows() - 1, newMap.cols() - 1);
 	}
 
 	/**
