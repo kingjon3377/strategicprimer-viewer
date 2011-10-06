@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
+import view.map.MapComponent;
 import view.map.details.DetailPanel;
 import view.util.DriverQuit;
 import controller.map.simplexml.SPFormatException;
@@ -182,10 +183,8 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
-		mapPanel = new MapPanel(new SimpleXMLReader().readMap(filename));
-		final TileSelectionListener tsl = new TileSelectionListener((MapPanel) mapPanel);
-		((MapPanel) mapPanel).setUpListeners(tsl);
-		final DetailPanel details = new DetailPanel(tsl);
+		mapPanel = new MapComponent(new SimpleXMLReader().readMap(filename));
+		final DetailPanel details = new DetailPanel((MapComponent) mapPanel);
 		createMenu();
 		add(details, BorderLayout.SOUTH);
 		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
