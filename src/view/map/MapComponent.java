@@ -168,7 +168,6 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 				TILE_SIZE);
 		if (currentTile.equals(tile)) {
 			pen.setColor(Color.black);
-			pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 			pen.drawRect(col * TILE_SIZE + 1, row * TILE_SIZE + 1, TILE_SIZE - 2, TILE_SIZE - 2);
 		}
 		pen.setColor(saveColor);
