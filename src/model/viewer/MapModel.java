@@ -58,7 +58,7 @@ public final class MapModel implements PropertyChangeSource {
 	 */
 	public void setMainMap(final SPMap newMap) {
 		map = newMap;
-		secondaryMap = new SPMap(map.rows(), map.cols());
+		setSecondaryMap(new SPMap(map.rows(), map.cols()));
 		setSelection(-1, -1);
 	}
 	/**
