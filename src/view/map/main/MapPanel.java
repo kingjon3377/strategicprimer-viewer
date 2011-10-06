@@ -24,7 +24,7 @@ import model.viewer.Tile;
  * @author Jonathan Lovelace
  * 
  */
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements MapGUI {
 	/**
 	 * The map we represent. Saved only so we can export it.
 	 */
@@ -83,25 +83,24 @@ public class MapPanel extends JPanel {
 	 */
 	private VisibleDimensions dimensions;
 	/**
-	 * @return our visible dimensions
+	 * @return
+	 *
+	 * @see view.map.main.MapGUI#getVisibleDimensions()
 	 */
+	@Override
 	public VisibleDimensions getVisibleDimensions() {
 		return dimensions;
 	}
 	/**
-	 * Load and draw a subset of a map.
-	 * 
 	 * @param newMap
-	 *            the map to load.
 	 * @param minRow
-	 *            the first row to draw
 	 * @param maxRow
-	 *            the last row to draw
 	 * @param minCol
-	 *            the first column to draw
 	 * @param maxCol
-	 *            the last column to draw
+	 *
+	 * @see view.map.main.MapGUI#loadMap(model.viewer.SPMap, int, int, int, int)
 	 */
+	@Override
 	public final void loadMap(final SPMap newMap, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
 		for (MouseListener list : getMouseListeners()) {
@@ -139,11 +138,11 @@ public class MapPanel extends JPanel {
 	}
 
 	/**
-	 * Load and draw a map.
-	 * 
 	 * @param newMap
-	 *            the map to load
+	 *
+	 * @see view.map.main.MapGUI#loadMap(model.viewer.SPMap)
 	 */
+	@Override
 	public final void loadMap(final SPMap newMap) {
 		loadMap(newMap, 0, Integer.MAX_VALUE - 1, 0, Integer.MAX_VALUE - 1);
 	}
@@ -170,23 +169,31 @@ public class MapPanel extends JPanel {
 	}
 
 	/**
-	 * @return the map we represent
+	 * @return
+	 *
+	 * @see view.map.main.MapGUI#getMap()
 	 */
+	@Override
 	public SPMap getMap() {
 		return map;
 	}
 
 	/**
 	 * @param secMap
-	 *            the new secondary map
+	 *
+	 * @see view.map.main.MapGUI#setSecondaryMap(model.viewer.SPMap)
 	 */
+	@Override
 	public void setSecondaryMap(final SPMap secMap) {
 		secondaryMap = secMap;
 	}
 
 	/**
-	 * Swap the main and secondary maps, i.e. show the secondary map
+	 * 
+	 *
+	 * @see view.map.main.MapGUI#swapMaps()
 	 */
+	@Override
 	public void swapMaps() {
 			final SPMap temp = map;
 			loadMap(secondaryMap);
@@ -195,33 +202,43 @@ public class MapPanel extends JPanel {
 	}
 
 	/**
-	 * @return the secondary map
+	 * @return
+	 *
+	 * @see view.map.main.MapGUI#getSecondaryMap()
 	 */
+	@Override
 	public SPMap getSecondaryMap() {
 		return secondaryMap;
 	}
 
 	/**
-	 * Copy a tile from the main map to the secondary map.
-	 * 
-	 * @param selection a tile in the relevant position.
+	 * @param selection
+	 *
+	 * @see view.map.main.MapGUI#copyTile(model.viewer.Tile)
 	 */
+	@Override
 	public void copyTile(final Tile selection) {
 				secondaryMap.getTile(selection.getRow(), selection.getCol())
 						.update(map.getTile(selection.getRow(),
 								selection.getCol()));
 	}
 	/**
-	 * @param coords a set of coordinates
-	 * @return the GUITile at those coordinates, if any.
+	 * @param coords
+	 * @return
+	 *
+	 * @see view.map.main.MapGUI#getTile(model.viewer.Point)
 	 */
+	@Override
 	public GUITile getTile(final Point coords) {
 		return locCache.get(coords);
 	}
 	/**
-	 * @param coords a set of coordinates
-	 * @return the tile at those coordinates in the secondary map
+	 * @param coords
+	 * @return
+	 *
+	 * @see view.map.main.MapGUI#getSecondaryTile(model.viewer.Point)
 	 */
+	@Override
 	public Tile getSecondaryTile(final Point coords) {
 		return secondaryMap.getTile(coords.row(), coords.col());
 	}

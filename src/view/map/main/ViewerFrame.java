@@ -88,13 +88,13 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		/**
 		 * The panel to switch.
 		 */
-		private final MapPanel panel;
+		private final MapGUI panel;
 		// ESCA-JAVA0128:
 		/**
 		 * Constructor; otherwise it's "emulated by a synthetic ... method."
 		 * @param mpanel the panel whose maps we'll be swapping.
 		 */
-		public MapSwitcher(final MapPanel mpanel) { // $codepro.audit.disable publicConstructorInNonPublicType
+		public MapSwitcher(final MapGUI mpanel) { // $codepro.audit.disable publicConstructorInNonPublicType
 			super();
 			panel = mpanel;
 		}

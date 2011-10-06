@@ -24,7 +24,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	/**
 	 * The map panel we'll update when the user orders a change.
 	 */
-	private final MapPanel mpanel;
+	private final MapGUI mpanel;
 
 	/**
 	 * The minimum-row box.
@@ -62,7 +62,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * @param mapPanel
 	 *            the map panel
 	 */
-	public RestrictDialog(final MapPanel mapPanel) {
+	public RestrictDialog(final MapGUI mapPanel) {
 		super(null, "Restrict view to map subset", Dialog.DEFAULT_MODALITY_TYPE);
 		setMinimumSize(new Dimension(245, 100));
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
