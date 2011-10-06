@@ -40,7 +40,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	/**
 	 * Tile size.
 	 */
-	private static final int TILE_SIZE = 13;
+	private static final int TILE_SIZE = 16;
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
