@@ -31,7 +31,7 @@ public interface MapGUI {
 	 */
 	void loadMap(final SPMap newMap, final int minRow, final int maxRow,
 			final int minCol, final int maxCol);
-
+	
 	/**
 	 * Load and draw a map.
 	 * 
@@ -43,12 +43,14 @@ public interface MapGUI {
 	/**
 	 * @return the map we represent
 	 */
+	@Deprecated
 	SPMap getMap();
 
 	/**
 	 * @param secMap
 	 *            the new secondary map
 	 */
+	@Deprecated
 	void setSecondaryMap(final SPMap secMap);
 
 	/**
@@ -59,6 +61,7 @@ public interface MapGUI {
 	/**
 	 * @return the secondary map
 	 */
+	@Deprecated
 	SPMap getSecondaryMap();
 
 	/**
@@ -66,6 +69,7 @@ public interface MapGUI {
 	 * 
 	 * @param selection a tile in the relevant position.
 	 */
+	@Deprecated
 	void copyTile(final Tile selection);
 	/**
 	 * @return the model encapsulating the map, secondary map, etc.
