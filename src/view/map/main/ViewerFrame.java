@@ -146,7 +146,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				}
 			} .start();
 			if (args.length > 1) {
-				frame.mapPanel.setSecondaryMap(new SimpleXMLReader().readMap(args[1]));
+				frame.mapPanel.getModel().setSecondaryMap(new SimpleXMLReader().readMap(args[1]));
 			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);

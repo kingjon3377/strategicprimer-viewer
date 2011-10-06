@@ -143,13 +143,13 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * @return whether the input in the text-boxes makes sense.
 	 */
 	private boolean isInputValid() {
-		return isBetween(parse(minRow.getText()), 0, mpanel.getMap().rows() - 1)
+		return isBetween(parse(minRow.getText()), 0, mpanel.getModel().getSizeRows() - 1)
 				&& isBetween(parse(maxRow.getText()), parse(minRow.getText()),
-						mpanel.getMap().rows() - 1)
+						mpanel.getModel().getSizeRows() - 1)
 				&& isBetween(parse(minCol.getText()), 0,
-						mpanel.getMap().cols() - 1)
+						mpanel.getModel().getSizeCols() - 1)
 				&& isBetween(parse(maxCol.getText()), parse(minCol.getText()),
-						mpanel.getMap().cols() - 1);
+						mpanel.getModel().getSizeCols() - 1);
 	}
 
 	/**
@@ -175,12 +175,12 @@ public class RestrictDialog extends JDialog implements ActionListener {
 				maxRow.getText())) {
 			if (parse(minCol.getText()) < 0 || parse(minRow.getText()) < 0) {
 				return "Minimum row and column must be greater than or equal to zero."; // NOPMD
-			} else if (parse(maxCol.getText()) >= mpanel.getMap().cols()) {
+			} else if (parse(maxCol.getText()) >= mpanel.getModel().getSizeCols()) {
 				return "Maximum column must be less than " // NOPMD
-						+ mpanel.getMap().cols();
-			} else if (parse(maxRow.getText()) >= mpanel.getMap().rows()) {
+						+ mpanel.getModel().getSizeCols();
+			} else if (parse(maxRow.getText()) >= mpanel.getModel().getSizeRows()) {
 				return "Maximum row must be less than " // NOPMD
-						+ mpanel.getMap().rows();
+						+ mpanel.getModel().getSizeRows();
 			} else if (parse(minCol.getText()) > parse(maxCol.getText())) {
 				return "Maximum column cannot be below minimum column."; // NOPMD
 			} else if (parse(minRow.getText()) > parse(maxRow.getText())) {
@@ -201,14 +201,14 @@ public class RestrictDialog extends JDialog implements ActionListener {
 		if (parse(minCol.getText()) < 0) {
 			minCol.setText(Integer.toString(visDim.getMinimumCol()));
 		}
-		if (parse(maxCol.getText()) >= mpanel.getMap().cols()
+		if (parse(maxCol.getText()) >= mpanel.getModel().getSizeCols()
 				|| parse(minCol.getText()) > parse(maxCol.getText())) {
 			maxCol.setText(Integer.toString(visDim.getMaximumCol()));
 		}
 		if (parse(minRow.getText()) < 0) {
 			minRow.setText(Integer.toString(visDim.getMinimumRow()));
 		}
-		if (parse(maxRow.getText()) >= mpanel.getMap().rows()
+		if (parse(maxRow.getText()) >= mpanel.getModel().getSizeRows()
 				|| parse(minRow.getText()) > parse(maxRow.getText())) {
 			maxRow.setText(Integer.toString(visDim.getMaximumRow()));
 		}
@@ -232,14 +232,14 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 */
 	private void refreshMap() {
 		final int minimumRow = betweenMin(0, parse(minRow.getText()), mpanel
-				.getMap().rows() - 1);
+				.getModel().getSizeRows() - 1);
 		final int maximumRow = betweenMax(minimumRow, parse(maxRow.getText()),
-				mpanel.getMap().rows() - 1);
+				mpanel.getModel().getSizeRows() - 1);
 		final int minimumCol = betweenMin(0, parse(minCol.getText()), mpanel
-				.getMap().cols() - 1);
+				.getModel().getSizeCols() - 1);
 		final int maximumCol = betweenMax(minimumCol, parse(maxCol.getText()),
-				mpanel.getMap().cols() - 1);
-		mpanel.loadMap(mpanel.getMap(), minimumRow, maximumRow, minimumCol,
+				mpanel.getModel().getSizeCols() - 1);
+		mpanel.loadMap(mpanel.getModel().getMainMap(), minimumRow, maximumRow, minimumCol,
 				maximumCol);
 	}
 

@@ -72,19 +72,19 @@ public final class IOHandler implements ActionListener {
 				}
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(panel.getMap());
+			saveMap(panel.getModel().getMainMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog((Component) panel) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
 				// ESCA-JAVA0166:
 				try {
-					panel.setSecondaryMap(readMap(filename));
+					panel.getModel().setSecondaryMap(readMap(filename));
 				} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 					handleError(e, filename);
 				}
 			}
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			saveMap(panel.getSecondaryMap());
+			saveMap(panel.getModel().getSecondaryMap());
 		}
 	}
 
