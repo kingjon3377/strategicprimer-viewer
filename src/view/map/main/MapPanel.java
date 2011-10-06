@@ -219,13 +219,6 @@ public class MapPanel extends JPanel implements MapGUI {
 		return locCache.get(coords);
 	}
 	/**
-	 * @param coords a set of coordinates
-	 * @return the tile at those coordinates in the secondary map
-	 */
-	public Tile getSecondaryTile(final Point coords) {
-		return model.getSecondaryTile(coords.row(), coords.col());
-	}
-	/**
 	 * @return the map model
 	 */
 	@Override
