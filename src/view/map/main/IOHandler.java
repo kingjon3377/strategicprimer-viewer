@@ -1,5 +1,6 @@
 package view.map.main;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -11,7 +12,6 @@ import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.SPMap;
-
 import controller.map.XMLWriter;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
@@ -62,7 +62,7 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Load".equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog((Component) panel) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
 				// ESCA-JAVA0166:
 				try {
@@ -74,7 +74,7 @@ public final class IOHandler implements ActionListener {
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMap(panel.getMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog((Component) panel) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
 				// ESCA-JAVA0166:
 				try {
@@ -92,7 +92,7 @@ public final class IOHandler implements ActionListener {
 	 * The panel that needs to be told about newly loaded maps and that holds
 	 * maps to be saved.
 	 */
-	private final MapPanel panel;
+	private final MapGUI panel;
 
 	/**
 	 * Constructor.
@@ -102,7 +102,7 @@ public final class IOHandler implements ActionListener {
 	 * @param fchooser
 	 *            the file chooser
 	 */
-	public IOHandler(final MapPanel map, final JFileChooser fchooser) {
+	public IOHandler(final MapGUI map, final JFileChooser fchooser) {
 		panel = map;
 		chooser = fchooser;
 	}
@@ -130,7 +130,7 @@ public final class IOHandler implements ActionListener {
 			throw new IllegalStateException("Unknown exception type", except);
 		}
 		LOGGER.log(Level.SEVERE, msg, except);
-		ViewerFrame.showErrorDialog(panel, msg);
+		ViewerFrame.showErrorDialog((Component) panel, msg);
 	}
 
 	/**
@@ -140,7 +140,7 @@ public final class IOHandler implements ActionListener {
 	 *            the map to save.
 	 */
 	private void saveMap(final SPMap map) {
-		if (chooser.showSaveDialog(panel) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showSaveDialog((Component) panel) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
 			} catch (IOException e) {

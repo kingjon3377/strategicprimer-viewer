@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Box.Filler;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -74,7 +75,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * The map (view) itself.
 	 */
-	private final MapPanel mapPanel;
+	private final MapGUI mapPanel;
 	/**
 	 * File-choosing dialog. Used often, but immutable, so we don't want to have
 	 * to construct it every time.
@@ -182,12 +183,12 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
 		mapPanel = new MapPanel(new SimpleXMLReader().readMap(filename));
-		final TileSelectionListener tsl = new TileSelectionListener(mapPanel);
-		mapPanel.setUpListeners(tsl);
+		final TileSelectionListener tsl = new TileSelectionListener((MapPanel) mapPanel);
+		((MapPanel) mapPanel).setUpListeners(tsl);
 		final DetailPanel details = new DetailPanel(tsl);
 		createMenu();
 		add(details, BorderLayout.SOUTH);
-		final JScrollPane scroller = new JScrollPane(mapPanel);
+		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
 		add(scroller, BorderLayout.CENTER);
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
