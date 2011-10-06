@@ -57,6 +57,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap the new map
 	 */
 	public void setMainMap(final SPMap newMap) {
+		pcs.firePropertyChange("map", map, newMap);
 		map = newMap;
 		setSecondaryMap(new SPMap(map.rows(), map.cols()));
 		setSelection(-1, -1);
@@ -66,6 +67,7 @@ public final class MapModel implements PropertyChangeSource {
 	 */
 	public void setSecondaryMap(final SPMap newMap) {
 		if (newMap.rows() == map.rows() && newMap.cols() == map.cols()) {
+			pcs.firePropertyChange("secondary-map", secondaryMap, newMap);
 			secondaryMap = newMap;
 		} else {
 			throw new IllegalArgumentException("Map sizes must match");

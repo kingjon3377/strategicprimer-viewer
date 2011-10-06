@@ -21,7 +21,7 @@ import view.map.main.MapGUI;
 import view.map.main.TileDrawHelper;
 import view.map.main.VisibleDimensions;
 import view.util.PropertyChangeSource;
-
+import static util.EqualsAny.equalsAny;
 /**
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
@@ -30,7 +30,7 @@ import view.util.PropertyChangeSource;
  * 
  */
 public final class MapComponent extends JComponent implements PropertyChangeSource,
-		MapGUI {
+		MapGUI, PropertyChangeListener {
 	/**
 	 * The map model encapsulating the map this represents, the secondary map, and the selected tile.
 	 */
@@ -70,20 +70,10 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 			 */
 			@Override
 			public void mouseClicked(final MouseEvent event) {
-				selectTile(event.getPoint().y / TILE_SIZE, event.getPoint().x / TILE_SIZE);
+				getModel().setSelection(event.getPoint().y / TILE_SIZE, event.getPoint().x / TILE_SIZE);
 			}
 		});
-		model.addPropertyChangeListener(new PropertyChangeListener() {
-			/**
-			 * Handle events.
-			 * @param evt the event to handle.
-			 */
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-			}
-			
-		});
+		model.addPropertyChangeListener(this);
 	}
 
 	/**
@@ -257,21 +247,22 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	}
 
 	/**
-	 * Select the given tile.
-	 * @param row the tile's row
-	 * @param col the tile's column
-	 */
-	private void selectTile(final int row, final int col) {
-		model.setSelection(row, col);
-		createImage();
-		repaint();
-	}
-
-	/**
 	 * @return the map model
 	 */
 	@Override
 	public MapModel getModel() {
 		return model;
+	}
+	/**
+	 * Handle events.
+	 * @param evt the event to handle.
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+		if (equalsAny(evt.getPropertyName(), "map", "tile")) {
+			createImage();
+			repaint();
+		}
 	}
 }
