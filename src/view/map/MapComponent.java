@@ -6,17 +6,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.EnumMap;
-import java.util.Map;
 
 import javax.swing.JComponent;
 
-import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
-import model.viewer.TileFixture;
-import model.viewer.TileType;
-import model.viewer.Unit;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
 
@@ -43,11 +37,7 @@ public class MapComponent extends JComponent {
 	 */
 	private static final int TILE_SIZE = 13;
 	/**
-	 * Whether we should use a helper.
-	 */
-	private final boolean shouldUseHelper;
-	/**
-	 * The helper, which we'll use if this is specified.
+	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
 	private final TileDrawHelper helper = new DirectTileDrawHelper();
 	/**
@@ -55,15 +45,13 @@ public class MapComponent extends JComponent {
 	 * 
 	 * @param theMap
 	 *            The map this represents
-	 * @param useHelper whether we should use a TileDrawHelper
 	 */
-	public MapComponent(final SPMap theMap, final boolean useHelper) {
+	public MapComponent(final SPMap theMap) {
 		super();
 		map = theMap;
 		setMinimumSize(new Dimension(map.cols() * TILE_SIZE, map.rows()
 				* TILE_SIZE));
 		setPreferredSize(getMinimumSize());
-		shouldUseHelper = useHelper;
 	}
 
 	/**
@@ -151,74 +139,8 @@ public class MapComponent extends JComponent {
 	private void paintTile(final Graphics pen, final Tile tile,
 			final int row, final int col) {
 		final Color saveColor = pen.getColor();
-		if (shouldUseHelper) {
 			helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		} else {
-		pen.setColor(COLORS.get(tile.getType()));
-		pen.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		pen.setColor(Color.BLACK);
-		pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		if (hasAnyForts(tile) && !tile.getType().equals(TileType.NotVisible)) {
-				pen.setColor(FORT_COLOR);
-				pen.fillRect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE
-						+ TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
-		} else if (hasAnyUnits(tile)
-					&& !tile.getType().equals(TileType.NotVisible)) {
-				pen.setColor(UNIT_COLOR);
-				pen.fillOval(col * TILE_SIZE + TILE_SIZE / 2, row * TILE_SIZE
-						+ TILE_SIZE / 2, TILE_SIZE / 4, TILE_SIZE / 4);
-		}
-		}
 		pen.setColor(saveColor);
-	}
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any forts.
-	 */
-	private static boolean hasAnyForts(final Tile tile) {
-		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Fortress) {
-				return true; // NOPMD
-			}
-		}
-		return false;
-	}
-	/**
-	 * @param tile a tile
-	 * @return whether the tile has any units.
-	 */
-	private static boolean hasAnyUnits(final Tile tile) {
-		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Unit) {
-				return true; // NOPMD
-			}
-		}
-		return false;
-	}
-	/**
-	 * Brown, the color of a fortress.
-	 */
-	private static final Color FORT_COLOR = new Color(160, 82, 45);
-	/**
-	 * Purple, the color of a unit.
-	 */
-	private static final Color UNIT_COLOR = new Color(148, 0, 211);
-	/**
-	 * Map from tile types to colors representing them.
-	 */
-	private static final Map<TileType, Color> COLORS = new EnumMap<TileType, Color>(
-			TileType.class);
-	// ESCA-JAVA0076:
-	static {
-		COLORS.put(TileType.BorealForest, new Color(72, 218, 164));
-		COLORS.put(TileType.Desert, new Color(249, 233, 28));
-		COLORS.put(TileType.Jungle, new Color(229, 46, 46));
-		COLORS.put(TileType.Mountain, new Color(249, 137, 28));
-		COLORS.put(TileType.NotVisible, new Color(255, 255, 255));
-		COLORS.put(TileType.Ocean, new Color(0, 0, 255));
-		COLORS.put(TileType.Plains, new Color(0, 117, 0));
-		COLORS.put(TileType.TemperateForest, new Color(72, 250, 72));
-		COLORS.put(TileType.Tundra, new Color(153, 153, 153));
 	}
 
 }

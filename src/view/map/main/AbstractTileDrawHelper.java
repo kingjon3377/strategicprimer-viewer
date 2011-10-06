@@ -18,7 +18,6 @@ import model.viewer.TileFixture;
 import model.viewer.TileType;
 import model.viewer.Unit;
 import model.viewer.events.AbstractEvent;
-import view.map.MapComponent;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 /**
@@ -254,25 +253,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		}
 		end = System.nanoTime();
 		System.out.print("Direct did fourth test (translating, reusing G) in ");
-		printStats(end - start, reps);
-		final MapComponent componentOne = new MapComponent(map, false);
-		final MapComponent componentTwo = new MapComponent(map, true);
-		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
-		start = System.nanoTime();
-		for (int rep = 0; rep < reps; rep++) {
-			image.flush();
-			componentOne.paint(image.createGraphics());
-		}
-		end = System.nanoTime();
-		System.out.print("Unhelped MapComponent did test in ");
-		printStats(end - start, reps);
-		start = System.nanoTime();
-		for (int rep = 0; rep < reps; rep++) {
-			image.flush();
-			componentTwo.paint(image.createGraphics());
-		}
-		end = System.nanoTime();
-		System.out.print("Helped MapComponent did test in ");
 		printStats(end - start, reps);
 	}
 	/**
