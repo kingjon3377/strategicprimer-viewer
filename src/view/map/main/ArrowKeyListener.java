@@ -16,7 +16,7 @@ public class ArrowKeyListener {
 	 * @param selListener The actual listener whose methods have to be attached.
 	 * @param actionMap The action map we'll be putting the glue listeners into.
 	 */
-	public void setUpListeners(final TileSelectionListener selListener,
+	public void setUpListeners(final DirectionSelectionChanger selListener,
 			final ActionMap actionMap) {
 		actionMap.put("up", new AbstractAction() {
 			@Override

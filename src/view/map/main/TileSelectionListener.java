@@ -14,7 +14,7 @@ import model.viewer.PointFactory;
  * @author Jonathan Lovelace
  */
 // ESCA-JAVA0137:
-public class TileSelectionListener extends SelectionListener {
+public class TileSelectionListener extends SelectionListener implements DirectionSelectionChanger {
 	/**
 	 * Logger.
 	 */
@@ -75,6 +75,7 @@ public class TileSelectionListener extends SelectionListener {
 	/**
 	 * Move the cursor up one.
 	 */
+	@Override
 	public void up() { // NOPMD
 		if (selection() instanceof GUITile) {
 			final Point point = PointFactory.point(
@@ -88,6 +89,7 @@ public class TileSelectionListener extends SelectionListener {
 	/**
 	 * Move the cursor left one.
 	 */
+	@Override
 	public void left() {
 		if (selection() instanceof GUITile) {
 			final Point point = PointFactory.point(
@@ -101,6 +103,7 @@ public class TileSelectionListener extends SelectionListener {
 	/**
 	 * Move the cursor down one.
 	 */
+	@Override
 	public void down() { // NOPMD
 		if (selection() instanceof GUITile) {
 			final Point point = PointFactory.point(
@@ -114,6 +117,7 @@ public class TileSelectionListener extends SelectionListener {
 	/**
 	 * Move the cursor right one.
 	 */
+	@Override
 	public void right() {
 		if (selection() instanceof GUITile) {
 			final Point point = PointFactory.point(
