@@ -3,6 +3,7 @@ package model.viewer;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import view.map.main.VisibleDimensions;
 import view.util.PropertyChangeSource;
 /**
  * A class to encapsulate the various model-type things views need to do with maps.
@@ -61,6 +62,7 @@ public final class MapModel implements PropertyChangeSource {
 		map = newMap;
 		setSecondaryMap(new SPMap(map.rows(), map.cols()));
 		setSelection(-1, -1);
+		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0, getSizeCols() - 1));
 	}
 	/**
 	 * @param newMap the new secondary map
@@ -166,5 +168,22 @@ public final class MapModel implements PropertyChangeSource {
 		secondTile = new Tile(-1, -1, TileType.NotVisible);
 		pcs.firePropertyChange("tile", oldSelection, selTile);
 		pcs.firePropertyChange("secondary-tile", oldSecSelection, secondTile);
+	}
+	/**
+	 * The visible dimensions of the map.
+	 */
+	private VisibleDimensions dimensions;
+	/**
+	 * @param dim the new visible dimensions of the map
+	 */
+	public void setDimensions(final VisibleDimensions dim) {
+		pcs.firePropertyChange("dimensions", dimensions, dim);
+		dimensions = dim;
+	}
+	/**
+	 * @return the visible dimensions of the map
+	 */
+	public VisibleDimensions getDimensions() {
+		return dimensions;
 	}
 }

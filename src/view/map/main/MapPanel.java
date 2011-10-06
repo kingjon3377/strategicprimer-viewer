@@ -16,7 +16,7 @@ import model.viewer.MapModel;
 import model.viewer.Point;
 import model.viewer.PointFactory;
 import model.viewer.SPMap;
-
+import static util.EqualsAny.equalsAny;
 /**
  * A panel to display a map.
  * 
@@ -71,15 +71,11 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 						getActionMap());
 	}
 	/**
-	 * Our visible dimensions.
-	 */
-	private VisibleDimensions dimensions;
-	/**
 	 * @return our visible dimensions
 	 */
 	@Override
 	public VisibleDimensions getVisibleDimensions() {
-		return dimensions;
+		return model.getDimensions();
 	}
 	/**
 	 * Load and draw a subset of a map.
@@ -99,9 +95,9 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 	public final void loadMap(final SPMap newMap, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
 		model.setMainMap(newMap);
-		dimensions = new VisibleDimensions(Math.max(0, minRow), Math.min(
+		model.setDimensions(new VisibleDimensions(Math.max(0, minRow), Math.min(
 				newMap.rows(), maxRow + 1) - 1, Math.max(0, minCol), Math.min(
-				newMap.cols(), maxCol + 1) - 1);
+				newMap.cols(), maxCol + 1) - 1));
 		reinitializeGUI();
 	}
 
@@ -123,11 +119,11 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 				}
 			});
 			setLayout(new GridLayout(Math.min(model.getSizeRows(),
-					Math.max(0, dimensions.getMaximumRow() + 1 - dimensions.getMinimumRow())), 0));
-		final int rows = Math.min(model.getSizeRows(), dimensions.getMaximumRow() + 1);
-		final int cols = Math.min(model.getSizeCols(), dimensions.getMaximumCol() + 1);
-		for (int row = Math.max(0, dimensions.getMinimumRow()); row < rows; row++) {
-				for (int col = Math.max(0, dimensions.getMinimumCol()); col < cols; col++) {
+					Math.max(0, getVisibleDimensions().getMaximumRow() + 1 - getVisibleDimensions().getMinimumRow())), 0));
+		final int rows = Math.min(model.getSizeRows(), getVisibleDimensions().getMaximumRow() + 1);
+		final int cols = Math.min(model.getSizeCols(), getVisibleDimensions().getMaximumCol() + 1);
+		for (int row = Math.max(0, getVisibleDimensions().getMinimumRow()); row < rows; row++) {
+				for (int col = Math.max(0, getVisibleDimensions().getMinimumCol()); col < cols; col++) {
 					addTile(new GUITile(model.getTile(row, col))); // NOPMD
 				}
 			}
@@ -191,7 +187,7 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-		if ("map".equals(evt.getPropertyName())) {
+		if (equalsAny(evt.getPropertyName(), "map", "dimension")) {
 			reinitializeGUI();
 		}
 	}
