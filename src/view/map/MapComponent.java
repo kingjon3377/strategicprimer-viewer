@@ -202,7 +202,13 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	@Override
 	public void loadMap(final SPMap newMap, final int minRow, final int maxRow,
 			final int minCol, final int maxCol) {
-		throw new IllegalStateException("Not yet implemented");
+		map = newMap;
+		secondaryMap = new SPMap(map.rows(), map.cols());
+		currentTile = new Tile(-1, -1, TileType.NotVisible);
+		visibleDimensions = new VisibleDimensions(Math.max(0, minRow),
+				Math.min(map.rows(), maxRow + 1) - 1, Math.max(0, minCol),
+				Math.min(map.cols(), maxCol + 1) - 1);
+		createImage();
 	}
 
 	/**
@@ -213,11 +219,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	 */
 	@Override
 	public void loadMap(final SPMap newMap) {
-		map = newMap;
-		secondaryMap = new SPMap(map.rows(), map.cols());
-		currentTile = new Tile(-1, -1, TileType.NotVisible);
-		visibleDimensions = new VisibleDimensions(0, map.rows() - 1, 0, map.cols() - 1);
-		createImage();
+		loadMap(newMap, 0, 0, map.rows() - 1, map.cols() - 1);
 	}
 
 	/**
