@@ -9,10 +9,13 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
+import model.viewer.Point;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import view.map.main.DirectTileDrawHelper;
+import view.map.main.MapGUI;
 import view.map.main.TileDrawHelper;
+import view.map.main.VisibleDimensions;
 import view.util.PropertyChangeSource;
 
 /**
@@ -24,11 +27,11 @@ import view.util.PropertyChangeSource;
  * @author Jonathan Lovelace
  * 
  */
-public class MapComponent extends JComponent implements PropertyChangeSource {
+public class MapComponent extends JComponent implements PropertyChangeSource, MapGUI {
 	/**
 	 * The map this represents.
 	 */
-	private final SPMap map;
+	private SPMap map;
 	/**
 	 * An image of the map.
 	 */
@@ -142,6 +145,106 @@ public class MapComponent extends JComponent implements PropertyChangeSource {
 		final Color saveColor = pen.getColor();
 			helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		pen.setColor(saveColor);
+	}
+
+	/**
+	 * @return our visible dimensions
+	 */
+	@Override
+	public VisibleDimensions getVisibleDimensions() {
+		throw new IllegalStateException("Not implemented yet");
+	}
+	/**
+	 * Load and draw a subset of a map.
+	 * 
+	 * @param newMap
+	 *            the map to load.
+	 * @param minRow
+	 *            the first row to draw
+	 * @param maxRow
+	 *            the last row to draw
+	 * @param minCol
+	 *            the first column to draw
+	 * @param maxCol
+	 *            the last column to draw
+	 */
+	@Override
+	public void loadMap(final SPMap newMap, final int minRow, final int maxRow,
+			final int minCol, final int maxCol) {
+		throw new IllegalStateException("Not yet implemented");
+	}
+
+	/**
+	 * Load and draw a map.
+	 * 
+	 * @param newMap
+	 *            the map to load
+	 */
+	@Override
+	public void loadMap(final SPMap newMap) {
+		map = newMap;
+		secondaryMap = new SPMap(map.rows(), map.cols());
+		repaint();
+	}
+
+	/**
+	 * @return the map we represent
+	 */
+	@Override
+	public SPMap getMap() {
+		return map;
+	}
+	/**
+	 * The secondary map.
+	 */
+	private SPMap secondaryMap;
+	
+	/**
+	 * @param secMap
+	 *            the new secondary map
+	 */
+	@Override
+	public void setSecondaryMap(final SPMap secMap) {
+		secondaryMap = secMap;
+	}
+
+	/**
+	 * Swap the main and secondary maps, i.e. show the secondary map
+	 */
+	@Override
+	public void swapMaps() {
+		final SPMap temp = map;
+		loadMap(secondaryMap);
+		secondaryMap = temp;
+	}
+
+	/**
+	 * @return the secondary map
+	 */
+	@Override
+	public SPMap getSecondaryMap() {
+		return secondaryMap;
+	}
+
+	/**
+	 * Copy a tile from the main map to the secondary map.
+	 * 
+	 * @param selection a tile in the relevant position.
+	 */
+	@Override
+	public void copyTile(final Tile selection) {
+		secondaryMap.getTile(selection.getRow(), selection.getCol())
+		.update(map.getTile(selection.getRow(),
+				selection.getCol()));
+	}
+
+	/**
+	 * @param coords a set of coordinates
+	 * @return the tile at those coordinates in the secondary map
+	 */
+	@Override
+	public Tile getSecondaryTile(final Point coords) {
+		return secondaryMap.getTile(coords.row(), coords.col());
 	}
 
 }
