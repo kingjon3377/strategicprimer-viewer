@@ -209,6 +209,14 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 				Math.min(map.rows(), maxRow + 1) - 1, Math.max(0, minCol),
 				Math.min(map.cols(), maxCol + 1) - 1);
 		createImage();
+		setMinimumSize(new Dimension(
+				(visibleDimensions.getMaximumCol() - visibleDimensions.getMinimumCol())
+						* TILE_SIZE,
+				(visibleDimensions.getMaximumRow() - visibleDimensions
+						.getMinimumRow()) * TILE_SIZE));
+		setPreferredSize(getMinimumSize());
+		setSize(getMinimumSize());
+		revalidate();
 	}
 
 	/**
