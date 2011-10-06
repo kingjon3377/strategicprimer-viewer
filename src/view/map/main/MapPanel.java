@@ -228,6 +228,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	/**
 	 * @return the map model
 	 */
+	@Override
 	public MapModel getModel() {
 		return model;
 	}

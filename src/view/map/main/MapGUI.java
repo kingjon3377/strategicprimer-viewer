@@ -1,5 +1,6 @@
 package view.map.main;
 
+import model.viewer.MapModel;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 /**
@@ -66,4 +67,8 @@ public interface MapGUI {
 	 * @param selection a tile in the relevant position.
 	 */
 	void copyTile(final Tile selection);
+	/**
+	 * @return the model encapsulating the map, secondary map, etc.
+	 */
+	MapModel getModel();
 }

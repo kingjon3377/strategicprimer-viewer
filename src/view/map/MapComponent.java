@@ -306,6 +306,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	/**
 	 * @return the map model
 	 */
+	@Override
 	public MapModel getModel() {
 		return model;
 	}
