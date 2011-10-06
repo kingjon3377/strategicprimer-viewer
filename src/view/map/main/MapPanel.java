@@ -102,6 +102,17 @@ public class MapPanel extends JPanel implements MapGUI {
 	@Override
 	public final void loadMap(final SPMap newMap, final int minRow,
 			final int maxRow, final int minCol, final int maxCol) {
+		model.setMainMap(newMap);
+		dimensions = new VisibleDimensions(Math.max(0, minRow), Math.min(
+				newMap.rows(), maxRow + 1) - 1, Math.max(0, minCol), Math.min(
+				newMap.cols(), maxCol + 1) - 1);
+		reinitializeGUI();
+	}
+
+	/**
+	 * Reinitialize the GUI after a model change.
+	 */
+	private void reinitializeGUI() {
 		for (MouseListener list : getMouseListeners()) {
 			if (list instanceof SelectionListener) {
 				((SelectionListener) list).clearSelection();
@@ -115,19 +126,15 @@ public class MapPanel extends JPanel implements MapGUI {
 					repaint();
 				}
 			});
-			setLayout(new GridLayout(Math.min(newMap.rows(),
-					Math.max(0, maxRow + 1 - minRow)), 0));
-		dimensions = new VisibleDimensions(Math.max(0, minRow), Math.min(
-				newMap.rows(), maxRow + 1) - 1, Math.max(0, minCol), Math.min(
-				newMap.cols(), maxCol + 1) - 1);
-		final int rows = Math.min(newMap.rows(), maxRow + 1);
-		final int cols = Math.min(newMap.cols(), maxCol + 1);
-		for (int row = Math.max(0, minRow); row < rows; row++) {
-				for (int col = Math.max(0, minCol); col < cols; col++) {
-					addTile(new GUITile(newMap.getTile(row, col))); // NOPMD
+			setLayout(new GridLayout(Math.min(model.getSizeRows(),
+					Math.max(0, dimensions.getMaximumRow() + 1 - dimensions.getMinimumRow())), 0));
+		final int rows = Math.min(model.getSizeRows(), dimensions.getMaximumRow() + 1);
+		final int cols = Math.min(model.getSizeCols(), dimensions.getMaximumCol() + 1);
+		for (int row = Math.max(0, dimensions.getMinimumRow()); row < rows; row++) {
+				for (int col = Math.max(0, dimensions.getMinimumCol()); col < cols; col++) {
+					addTile(new GUITile(model.getTile(row, col))); // NOPMD
 				}
 			}
-			model.setMainMap(newMap);
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -191,6 +198,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	@Override
 	public void swapMaps() {
 		model.swapMaps();
+		reinitializeGUI();
 			repaint();
 	}
 
