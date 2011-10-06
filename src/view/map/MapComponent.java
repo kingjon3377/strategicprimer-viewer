@@ -74,9 +74,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 			image = new BufferedImage(map.cols() * TILE_SIZE, map.rows()
 					* TILE_SIZE, BufferedImage.TYPE_INT_RGB);
 		}
-		final Graphics pen = image.getGraphics();
-		drawMap(pen);
-		pen.dispose();
+		drawMap(image.getGraphics());
 	}
 
 	/**
