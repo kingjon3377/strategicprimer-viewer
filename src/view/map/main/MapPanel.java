@@ -4,16 +4,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.InputMap;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
 import model.viewer.MapModel;
 import model.viewer.Point;
@@ -43,11 +40,6 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 		setMinimumSize(new Dimension(newMap.cols() * GUITile.TILE_SIZE, newMap.rows() * GUITile.TILE_SIZE));
 		setPreferredSize(new Dimension(newMap.cols() * GUITile.TILE_SIZE, newMap.rows() * GUITile.TILE_SIZE));
 		setSize(getPreferredSize());
-		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
 		setOpaque(true);
 		loadMap(newMap);
 	}
@@ -73,7 +65,10 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 			}
 		};
 		thr.start();
-		new ArrowKeyListener().setUpListeners(list, getActionMap());
+		new ArrowKeyListener()
+				.setUpListeners(list,
+						getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
+						getActionMap());
 	}
 	/**
 	 * Our visible dimensions.
