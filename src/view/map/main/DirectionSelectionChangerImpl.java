@@ -21,41 +21,41 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 	}
 	/**
 	 * Move the cursor up.
-	 * TODO: Support restricted view.
 	 */
 	@Override
 	public void up() { // NOPMD
-		if (model.getSelectedTile().getRow() > 0) {
+		if (model.getSelectedTile().getRow() > 0 && model.getSelectedTile().getRow() > model.getDimensions().getMinimumRow()) {
 			model.setSelection(model.getSelectedTile().getRow() - 1, model.getSelectedTile().getCol());
 		}
 	}
 	/**
 	 * Move the cursor left.
-	 * TODO: Support restricted view.
 	 */
 	@Override
 	public void left() {
-		if (model.getSelectedTile().getCol() > 0) {
+		if (model.getSelectedTile().getCol() > 0 && model.getSelectedTile().getCol() > model.getDimensions().getMinimumCol()) {
 			model.setSelection(model.getSelectedTile().getRow(), model.getSelectedTile().getCol() - 1);
 		}
 	}
 	/**
 	 * Move the cursor down.
-	 * TODO: Support restricted view.
 	 */
 	@Override
 	public void down() {
-		if (model.getSelectedTile().getRow() < model.getSizeRows() - 1) {
+		if (model.getSelectedTile().getRow() < model.getSizeRows() - 1
+				&& model.getSelectedTile().getRow() < model.getDimensions()
+						.getMaximumRow()) {
 			model.setSelection(model.getSelectedTile().getRow() + 1, model.getSelectedTile().getCol());
 		}
 	}
 	/**
 	 * Move the cursor right.
-	 * TODO: Support restricted view.
 	 */
 	@Override
 	public void right() {
-		if (model.getSelectedTile().getCol() < model.getSizeCols() - 1) {
+		if (model.getSelectedTile().getCol() < model.getSizeCols() - 1
+				&& model.getSelectedTile().getCol() < model.getDimensions()
+						.getMaximumCol()) {
 			model.setSelection(model.getSelectedTile().getRow(), model.getSelectedTile().getCol() + 1);
 		}
 	}
