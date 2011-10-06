@@ -154,4 +154,15 @@ public final class MapModel implements PropertyChangeSource {
 	public SPMap getSecondaryMap() {
 		return secondaryMap;
 	}
+	/**
+	 * Clear the selection.
+	 */
+	public void clearSelection() {
+		final Tile oldSelection = selTile;
+		final Tile oldSecSelection = secondTile;
+		selTile = new Tile(-1, -1, TileType.NotVisible);
+		secondTile = new Tile(-1, -1, TileType.NotVisible);
+		pcs.firePropertyChange("tile", oldSelection, selTile);
+		pcs.firePropertyChange("secondary-tile", oldSecSelection, secondTile);
+	}
 }

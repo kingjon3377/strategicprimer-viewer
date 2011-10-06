@@ -1,12 +1,12 @@
 package view.map.main;
 
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import model.viewer.Point;
 import model.viewer.PointFactory;
-import model.viewer.Tile;
-import model.viewer.TileType;
 
 /**
  * A class to keep track of which tile is selected.
@@ -39,6 +39,13 @@ public class TileSelectionListener extends SelectionListener {
 	public TileSelectionListener(final MapPanel view) {
 		super();
 		viewer = view;
+		view.getModel().addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				getSupport().firePropertyChange(evt);
+			}
+			
+		});
 	}
 
 	/**
@@ -51,18 +58,15 @@ public class TileSelectionListener extends SelectionListener {
 	public void mouseClicked(final MouseEvent event) {
 		super.mouseClicked(event);
 		if (selection() instanceof GUITile) {
-			fireTileChangeEvent(((GUITile) selection()).getTile());
-			fireSecondaryTileChange(viewer.getSecondaryTile(PointFactory.point(
-					((GUITile) selection()).getTile().getRow(),
-					((GUITile) selection()).getTile().getCol())));
+			viewer.getModel().setSelection(((GUITile) selection()).getTile().getRow(), ((GUITile) selection()).getTile().getCol());
 			if (event.getClickCount() == 2) {
 				getSupport().firePropertyChange("encounter", "old", "new");
-				viewer.copyTile(((GUITile) selection()).getTile());
+				viewer.getModel().copyTile(((GUITile) selection()).getTile());
 			}
 			selection().requestFocusInWindow();
 			LOGGER.fine("Click");
 		} else {
-			fireTileChangeEvent(new Tile(-1, -1, TileType.NotVisible));
+			viewer.getModel().clearSelection();
 		}
 		if (event.getSource() instanceof MapGUI) {
 			((MapPanel) event.getSource()).repaint();
@@ -78,8 +82,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getCol());
 			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
-			fireTileChangeEvent(newTile.getTile());
-			fireSecondaryTileChange(viewer.getSecondaryTile(point));
+			viewer.getModel().setSelection(point.row(), point.col());
 		}
 	}
 	/**
@@ -92,8 +95,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getCol() - 1);
 			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
-			fireTileChangeEvent(newTile.getTile());
-			fireSecondaryTileChange(viewer.getSecondaryTile(point));
+			viewer.getModel().setSelection(point.row(), point.col());
 		}
 	}
 	/**
@@ -106,8 +108,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getCol());
 			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
-			fireTileChangeEvent(newTile.getTile());
-			fireSecondaryTileChange(viewer.getSecondaryTile(point));
+			viewer.getModel().setSelection(point.row(), point.col());
 		}
 	}
 	/**
@@ -120,8 +121,7 @@ public class TileSelectionListener extends SelectionListener {
 					((GUITile) selection()).getTile().getCol() + 1);
 			final GUITile newTile = viewer.getTile(point); 
 			setSelection(newTile);
-			fireTileChangeEvent(newTile.getTile());
-			fireSecondaryTileChange(viewer.getSecondaryTile(point));
+			viewer.getModel().setSelection(point.row(), point.col());
 		}
 	}
 	/**
@@ -160,21 +160,6 @@ public class TileSelectionListener extends SelectionListener {
 	@Override
 	public void clearSelection() {
 		super.clearSelection();
-		fireTileChangeEvent(new Tile(-1, -1, TileType.NotVisible));
-		fireSecondaryTileChange(new Tile(-1, -1, TileType.NotVisible));
-	}
-	/**
-	 * Fire a property change event for a new tile.
-	 * @param tile the new tile.
-	 */
-	private void fireTileChangeEvent(final Tile tile) {
-		getSupport().firePropertyChange("tile", null, tile);
-	}
-	/**
-	 * Fire a property-change event for the secondary tile.
-	 * @param tile the new secondary tile
-	 */
-	private void fireSecondaryTileChange(final Tile tile) {
-		getSupport().firePropertyChange("secondary-tile", null, tile);
+		viewer.getModel().clearSelection();
 	}
 }
