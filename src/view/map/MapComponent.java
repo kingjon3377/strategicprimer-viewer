@@ -16,7 +16,9 @@ import javax.swing.JComponent;
 import model.viewer.MapModel;
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import view.map.main.ArrowKeyListener;
 import view.map.main.DirectTileDrawHelper;
+import view.map.main.DirectionSelectionChangerImpl;
 import view.map.main.MapGUI;
 import view.map.main.TileDrawHelper;
 import view.map.main.VisibleDimensions;
@@ -74,6 +76,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 			}
 		});
 		model.addPropertyChangeListener(this);
+		new ArrowKeyListener().setUpListeners(new DirectionSelectionChangerImpl(model), getInputMap(), getActionMap());
 	}
 
 	/**
