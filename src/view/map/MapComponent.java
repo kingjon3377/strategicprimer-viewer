@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import model.viewer.TileType;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.MapGUI;
 import view.map.main.TileDrawHelper;
@@ -45,7 +46,10 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
 	private final TileDrawHelper helper = new DirectTileDrawHelper();
-
+	/**
+	 * The currently selected tile.
+	 */
+	private Tile currentTile;
 	/**
 	 * Constructor.
 	 * 
@@ -154,6 +158,11 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 		final Color saveColor = pen.getColor();
 		helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE,
 				TILE_SIZE);
+		if (currentTile.equals(tile)) {
+			pen.setColor(Color.black);
+			pen.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+			pen.drawRect(col * TILE_SIZE + 1, row * TILE_SIZE + 1, TILE_SIZE - 2, TILE_SIZE - 2);
+		}
 		pen.setColor(saveColor);
 	}
 
@@ -195,6 +204,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	public void loadMap(final SPMap newMap) {
 		map = newMap;
 		secondaryMap = new SPMap(map.rows(), map.cols());
+		currentTile = new Tile(-1, -1, TileType.NotVisible);
 		repaint();
 	}
 
