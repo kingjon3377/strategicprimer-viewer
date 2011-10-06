@@ -83,12 +83,29 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 * Creates the buffered image.
 	 */
 	public void createImage() {
-		image = createImage(model.getSizeCols() * TILE_SIZE, model.getSizeRows() * TILE_SIZE);
+		image = createImage(
+				(getModel().getDimensions().getMaximumCol() - getModel()
+						.getDimensions().getMinimumCol()) * TILE_SIZE,
+				(getModel().getDimensions().getMaximumRow() - getModel()
+						.getDimensions().getMinimumRow()) * TILE_SIZE);
 		if (image == null) {
-			image = new BufferedImage(model.getSizeCols() * TILE_SIZE, model.getSizeRows()
-					* TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+			image = new BufferedImage((getModel().getDimensions()
+					.getMaximumCol() - getModel().getDimensions()
+					.getMinimumCol())
+					* TILE_SIZE,
+					(getModel().getDimensions().getMaximumRow() - getModel()
+							.getDimensions().getMinimumRow()) * TILE_SIZE,
+					BufferedImage.TYPE_INT_RGB);
 		}
 		drawMap(image.getGraphics());
+		setMinimumSize(new Dimension(
+				(getModel().getDimensions().getMaximumCol() - getModel().getDimensions().getMinimumCol())
+						* TILE_SIZE,
+				(getModel().getDimensions().getMaximumRow() - getModel().getDimensions()
+						.getMinimumRow()) * TILE_SIZE));
+		setPreferredSize(getMinimumSize());
+		setSize(getMinimumSize());
+		revalidate();
 	}
 
 	/**
@@ -216,14 +233,6 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 				Math.min(model.getSizeRows(), maxRow + 1) - 1, Math.max(0, minCol),
 				Math.min(model.getSizeCols(), maxCol + 1) - 1));
 		createImage();
-		setMinimumSize(new Dimension(
-				(getModel().getDimensions().getMaximumCol() - getModel().getDimensions().getMinimumCol())
-						* TILE_SIZE,
-				(getModel().getDimensions().getMaximumRow() - getModel().getDimensions()
-						.getMinimumRow()) * TILE_SIZE));
-		setPreferredSize(getMinimumSize());
-		setSize(getMinimumSize());
-		revalidate();
 	}
 
 	/**
