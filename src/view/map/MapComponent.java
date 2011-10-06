@@ -21,12 +21,14 @@ import view.util.PropertyChangeSource;
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
  * 
- * TODO: implement the selection-management stuff now we no longer need tool-tips.
+ * TODO: implement the selection-management stuff now we no longer need
+ * tool-tips.
  * 
  * @author Jonathan Lovelace
  * 
  */
-public class MapComponent extends JComponent implements PropertyChangeSource, MapGUI {
+public class MapComponent extends JComponent implements PropertyChangeSource,
+		MapGUI {
 	/**
 	 * The map this represents.
 	 */
@@ -43,6 +45,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
 	private final TileDrawHelper helper = new DirectTileDrawHelper();
+
 	/**
 	 * Constructor.
 	 * 
@@ -63,7 +66,8 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 	public void createImage() {
 		image = createImage(map.cols() * TILE_SIZE, map.rows() * TILE_SIZE);
 		if (image == null) {
-			image = new BufferedImage(map.cols() * TILE_SIZE, map.rows() * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+			image = new BufferedImage(map.cols() * TILE_SIZE, map.rows()
+					* TILE_SIZE, BufferedImage.TYPE_INT_RGB);
 		}
 		final Graphics pen = image.getGraphics();
 		drawMap(pen);
@@ -81,7 +85,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 		if (image == null) {
 			drawMap(pen);
 			createImage();
-		} 
+		}
 		pen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 	}
 
@@ -102,11 +106,17 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 
 	/**
 	 * Draw a subset of the map.
-	 * @param pen the graphics context
-	 * @param minX the minimum X (row?) to draw
-	 * @param minY the minimum Y (col?) to draw
-	 * @param maxX the maximum X (row?) to draw
-	 * @param maxY the maximum Y (col?) to draw
+	 * 
+	 * @param pen
+	 *            the graphics context
+	 * @param minX
+	 *            the minimum X (row?) to draw
+	 * @param minY
+	 *            the minimum Y (col?) to draw
+	 * @param maxX
+	 *            the maximum X (row?) to draw
+	 * @param maxY
+	 *            the maximum Y (col?) to draw
 	 */
 	private void drawMapPortion(final Graphics pen, final int minX,
 			final int minY, final int maxX, final int maxY) {
@@ -139,10 +149,11 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 	 * @param col
 	 *            which column this is
 	 */
-	private void paintTile(final Graphics pen, final Tile tile,
-			final int row, final int col) {
+	private void paintTile(final Graphics pen, final Tile tile, final int row,
+			final int col) {
 		final Color saveColor = pen.getColor();
-			helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE,
+				TILE_SIZE);
 		pen.setColor(saveColor);
 	}
 
@@ -153,6 +164,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 	public VisibleDimensions getVisibleDimensions() {
 		throw new IllegalStateException("Not implemented yet");
 	}
+
 	/**
 	 * Load and draw a subset of a map.
 	 * 
@@ -193,11 +205,12 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 	public SPMap getMap() {
 		return map;
 	}
+
 	/**
 	 * The secondary map.
 	 */
 	private SPMap secondaryMap;
-	
+
 	/**
 	 * @param secMap
 	 *            the new secondary map
@@ -228,12 +241,12 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 	/**
 	 * Copy a tile from the main map to the secondary map.
 	 * 
-	 * @param selection a tile in the relevant position.
+	 * @param selection
+	 *            a tile in the relevant position.
 	 */
 	@Override
 	public void copyTile(final Tile selection) {
-		secondaryMap.getTile(selection.getRow(), selection.getCol())
-		.update(map.getTile(selection.getRow(),
-				selection.getCol()));
+		secondaryMap.getTile(selection.getRow(), selection.getCol()).update(
+				map.getTile(selection.getRow(), selection.getCol()));
 	}
 }
