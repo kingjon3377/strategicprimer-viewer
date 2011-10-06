@@ -74,7 +74,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 		rowPanel.add(new JLabel("Display only rows "));
 		rowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		rowPanel.add(minRow);
-		final VisibleDimensions visDim = mpanel.getVisibleDimensions();
+		final VisibleDimensions visDim = mpanel.getModel().getDimensions();
 		minRow.setText(Integer.toString(visDim.getMinimumRow()));
 		rowPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 		rowPanel.add(new JLabel(" to "));
@@ -132,7 +132,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(null, whyInvalidInput(),
 						"Invalid restriction parameters",
 						JOptionPane.WARNING_MESSAGE);
-				correctInvalidInput(mpanel.getVisibleDimensions());
+				correctInvalidInput(mpanel.getModel().getDimensions());
 			}
 		}
 	}

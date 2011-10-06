@@ -143,16 +143,16 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	private void drawMapPortion(final Graphics pen, final int minX,
 			final int minY, final int maxX, final int maxY) {
 		for (int i = minY; i < maxY
-				&& i + getVisibleDimensions().getMinimumRow() < getVisibleDimensions()
+				&& i + getModel().getDimensions().getMinimumRow() < getModel().getDimensions()
 						.getMaximumRow() + 1; i++) {
 			for (int j = minX; j < maxX
-					&& j + getVisibleDimensions().getMinimumCol() < getVisibleDimensions()
+					&& j + getModel().getDimensions().getMinimumCol() < getModel().getDimensions()
 							.getMaximumCol() + 1; j++) {
 				paintTile(
 						pen,
 						model.getTile(i
-								+ getVisibleDimensions().getMinimumRow(), j
-								+ getVisibleDimensions().getMinimumCol()), i, j);
+								+ getModel().getDimensions().getMinimumRow(), j
+								+ getModel().getDimensions().getMinimumCol()), i, j);
 			}
 		}
 	}
@@ -164,10 +164,10 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	private Rectangle bounds(final Rectangle rect) {
 		return (rect == null) ? new Rectangle(0, 0,
-				(getVisibleDimensions().getMaximumCol()
-						- getVisibleDimensions().getMinimumCol() - 1)
-						* TILE_SIZE, (getVisibleDimensions().getMaximumRow()
-						- getVisibleDimensions().getMinimumRow() - 1)
+				(getModel().getDimensions().getMaximumCol()
+						- getModel().getDimensions().getMinimumCol() - 1)
+						* TILE_SIZE, (getModel().getDimensions().getMaximumRow()
+						- getModel().getDimensions().getMinimumRow() - 1)
 						* TILE_SIZE) : rect;
 	}
 
@@ -195,14 +195,6 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		pen.setColor(saveColor);
 	}
 	/**
-	 * @return our visible dimensions
-	 */
-	@Override
-	public VisibleDimensions getVisibleDimensions() {
-		return model.getDimensions();
-	}
-
-	/**
 	 * Load and draw a subset of a map.
 	 * 
 	 * @param newMap
@@ -225,9 +217,9 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 				Math.min(model.getSizeCols(), maxCol + 1) - 1));
 		createImage();
 		setMinimumSize(new Dimension(
-				(getVisibleDimensions().getMaximumCol() - getVisibleDimensions().getMinimumCol())
+				(getModel().getDimensions().getMaximumCol() - getModel().getDimensions().getMinimumCol())
 						* TILE_SIZE,
-				(getVisibleDimensions().getMaximumRow() - getVisibleDimensions()
+				(getModel().getDimensions().getMaximumRow() - getModel().getDimensions()
 						.getMinimumRow()) * TILE_SIZE));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());

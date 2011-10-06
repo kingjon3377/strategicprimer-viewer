@@ -71,13 +71,6 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 						getActionMap());
 	}
 	/**
-	 * @return our visible dimensions
-	 */
-	@Override
-	public VisibleDimensions getVisibleDimensions() {
-		return model.getDimensions();
-	}
-	/**
 	 * Load and draw a subset of a map.
 	 * 
 	 * @param newMap
@@ -119,11 +112,11 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 				}
 			});
 			setLayout(new GridLayout(Math.min(model.getSizeRows(),
-					Math.max(0, getVisibleDimensions().getMaximumRow() + 1 - getVisibleDimensions().getMinimumRow())), 0));
-		final int rows = Math.min(model.getSizeRows(), getVisibleDimensions().getMaximumRow() + 1);
-		final int cols = Math.min(model.getSizeCols(), getVisibleDimensions().getMaximumCol() + 1);
-		for (int row = Math.max(0, getVisibleDimensions().getMinimumRow()); row < rows; row++) {
-				for (int col = Math.max(0, getVisibleDimensions().getMinimumCol()); col < cols; col++) {
+					Math.max(0, getModel().getDimensions().getMaximumRow() + 1 - getModel().getDimensions().getMinimumRow())), 0));
+		final int rows = Math.min(model.getSizeRows(), getModel().getDimensions().getMaximumRow() + 1);
+		final int cols = Math.min(model.getSizeCols(), getModel().getDimensions().getMaximumCol() + 1);
+		for (int row = Math.max(0, getModel().getDimensions().getMinimumRow()); row < rows; row++) {
+				for (int col = Math.max(0, getModel().getDimensions().getMinimumCol()); col < cols; col++) {
 					addTile(new GUITile(model.getTile(row, col))); // NOPMD
 				}
 			}

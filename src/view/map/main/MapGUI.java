@@ -8,12 +8,6 @@ import model.viewer.SPMap;
  *
  */
 public interface MapGUI {
-
-	/**
-	 * @return our visible dimensions
-	 */
-	VisibleDimensions getVisibleDimensions();
-
 	/**
 	 * Load and draw a subset of a map.
 	 * 
