@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
-import model.viewer.Point;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import view.map.main.DirectTileDrawHelper;
@@ -237,14 +236,4 @@ public class MapComponent extends JComponent implements PropertyChangeSource, Ma
 		.update(map.getTile(selection.getRow(),
 				selection.getCol()));
 	}
-
-	/**
-	 * @param coords a set of coordinates
-	 * @return the tile at those coordinates in the secondary map
-	 */
-	@Override
-	public Tile getSecondaryTile(final Point coords) {
-		return secondaryMap.getTile(coords.row(), coords.col());
-	}
-
 }

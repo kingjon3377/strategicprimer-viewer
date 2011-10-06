@@ -230,7 +230,6 @@ public class MapPanel extends JPanel implements MapGUI {
 	 * @param coords a set of coordinates
 	 * @return the tile at those coordinates in the secondary map
 	 */
-	@Override
 	public Tile getSecondaryTile(final Point coords) {
 		return secondaryMap.getTile(coords.row(), coords.col());
 	}

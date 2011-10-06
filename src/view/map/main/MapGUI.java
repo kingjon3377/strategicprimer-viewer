@@ -1,6 +1,5 @@
 package view.map.main;
 
-import model.viewer.Point;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 /**
@@ -67,10 +66,4 @@ public interface MapGUI {
 	 * @param selection a tile in the relevant position.
 	 */
 	void copyTile(final Tile selection);
-
-	/**
-	 * @param coords a set of coordinates
-	 * @return the tile at those coordinates in the secondary map
-	 */
-	Tile getSecondaryTile(final Point coords);
 }
