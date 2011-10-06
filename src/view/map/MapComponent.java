@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
@@ -22,14 +24,11 @@ import view.util.PropertyChangeSource;
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
  * 
- * TODO: implement the selection-management stuff now we no longer need
- * tool-tips.
- * 
  * @author Jonathan Lovelace
  * 
  */
 public final class MapComponent extends JComponent implements PropertyChangeSource,
-		MapGUI {
+		MapGUI, MouseListener {
 	/**
 	 * The map this represents.
 	 */
@@ -63,6 +62,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 				* TILE_SIZE));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
+		addMouseListener(this);
 	}
 
 	/**
@@ -280,5 +280,72 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	public void copyTile(final Tile selection) {
 		secondaryMap.getTile(selection.getRow(), selection.getCol()).update(
 				map.getTile(selection.getRow(), selection.getCol()));
+	}
+	/**
+	 * Handle mouse clicks.
+	 * 
+	 * @param e
+	 *            the event to handle
+	 */
+	@Override
+	public void mouseClicked(final MouseEvent e) {
+		selectTile(e.getPoint().y / TILE_SIZE, e.getPoint().x / TILE_SIZE);
+	}
+
+	/**
+	 * Select the given tile.
+	 * @param row the tile's row
+	 * @param col the tile's column
+	 */
+	private void selectTile(final int row, final int col) {
+		final Tile tile = currentTile;
+		currentTile = map.getTile(row, col);
+		firePropertyChange("tile", tile, currentTile);
+		firePropertyChange("secondary-tile", null, secondaryMap.getTile(row, col));
+		createImage();
+		repaint();
+	}
+	/**
+	 * Ignored.
+	 * 
+	 * @param event
+	 *            ignored
+	 */
+	@Override
+	public void mouseEntered(final MouseEvent event) {
+		// Do nothing
+	}
+
+	/**
+	 * Ignored.
+	 * 
+	 * @param event
+	 *            ignored
+	 */
+	@Override
+	public void mouseExited(final MouseEvent event) {
+		// Do nothing
+	}
+
+	/**
+	 * Ignored.
+	 * 
+	 * @param event
+	 *            the event to handle
+	 */
+	@Override
+	public void mousePressed(final MouseEvent event) {
+		// Do nothing
+	}
+
+	/**
+	 * Ignored.
+	 * 
+	 * @param event
+	 *            the event to handle
+	 */
+	@Override
+	public void mouseReleased(final MouseEvent event) {
+		// Do nothing.
 	}
 }
