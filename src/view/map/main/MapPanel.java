@@ -17,7 +17,6 @@ import model.viewer.MapModel;
 import model.viewer.Point;
 import model.viewer.PointFactory;
 import model.viewer.SPMap;
-import model.viewer.Tile;
 
 /**
  * A panel to display a map.
@@ -176,23 +175,6 @@ public class MapPanel extends JPanel implements MapGUI {
 	}
 
 	/**
-	 * @return the map we represent
-	 */
-	@Override
-	public SPMap getMap() {
-		return model.getMainMap();
-	}
-
-	/**
-	 * @param secMap
-	 *            the new secondary map
-	 */
-	@Override
-	public void setSecondaryMap(final SPMap secMap) {
-		model.setSecondaryMap(secMap);
-	}
-
-	/**
 	 * Swap the main and secondary maps, i.e. show the secondary map
 	 */
 	@Override
@@ -200,24 +182,6 @@ public class MapPanel extends JPanel implements MapGUI {
 		model.swapMaps();
 		reinitializeGUI();
 			repaint();
-	}
-
-	/**
-	 * @return the secondary map
-	 */
-	@Override
-	public SPMap getSecondaryMap() {
-		return model.getSecondaryMap();
-	}
-
-	/**
-	 * Copy a tile from the main map to the secondary map.
-	 * 
-	 * @param selection a tile in the relevant position.
-	 */
-	@Override
-	public void copyTile(final Tile selection) {
-		model.copyTile(selection);
 	}
 	/**
 	 * @param coords a set of coordinates

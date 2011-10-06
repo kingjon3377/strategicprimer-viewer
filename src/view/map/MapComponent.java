@@ -249,47 +249,11 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	}
 
 	/**
-	 * @return the map we represent
-	 */
-	@Override
-	public SPMap getMap() {
-		return model.getMainMap();
-	}
-
-	/**
-	 * @param secMap
-	 *            the new secondary map
-	 */
-	@Override
-	public void setSecondaryMap(final SPMap secMap) {
-		model.setSecondaryMap(secMap);
-	}
-
-	/**
 	 * Swap the main and secondary maps, i.e. show the secondary map
 	 */
 	@Override
 	public void swapMaps() {
 		model.swapMaps();
-	}
-
-	/**
-	 * @return the secondary map
-	 */
-	@Override
-	public SPMap getSecondaryMap() {
-		return model.getSecondaryMap();
-	}
-
-	/**
-	 * Copy a tile from the main map to the secondary map.
-	 * 
-	 * @param selection
-	 *            a tile in the relevant position.
-	 */
-	@Override
-	public void copyTile(final Tile selection) {
-		model.copyTile(selection);
 	}
 
 	/**
