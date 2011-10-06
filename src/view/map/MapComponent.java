@@ -227,7 +227,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	@Override
 	public void loadMap(final SPMap newMap) {
-		loadMap(newMap, 0, 0, newMap.rows() - 1, newMap.cols() - 1);
+		loadMap(newMap, 0, newMap.rows() - 1, 0, newMap.cols() - 1);
 	}
 
 	/**
