@@ -141,8 +141,12 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return (rect == null) ? new Rectangle(0, 0, map.cols() * TILE_SIZE,
-				map.rows() * TILE_SIZE) : rect;
+		return (rect == null) ? new Rectangle(0, 0,
+				(visibleDimensions.getMaximumCol()
+						- visibleDimensions.getMinimumCol() - 1)
+						* TILE_SIZE, (visibleDimensions.getMaximumRow()
+						- visibleDimensions.getMinimumRow() - 1)
+						* TILE_SIZE) : rect;
 	}
 
 	/**
