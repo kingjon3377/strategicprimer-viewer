@@ -98,6 +98,9 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	 *            the graphics context
 	 */
 	private void drawMap(final Graphics pen) {
+		final Color save = pen.getColor();
+		pen.setColor(Color.white);
+		pen.fillRect(0, 0, getWidth(), getHeight());
 		final Rectangle bounds = bounds(pen.getClipBounds());
 		final int minX = (int) (bounds.getMinX() / TILE_SIZE);
 		final int minY = (int) (bounds.getMinY() / TILE_SIZE);
@@ -106,6 +109,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1),
 				map.rows());
 		drawMapPortion(pen, minX, minY, maxX, maxY);
+		pen.setColor(save);
 	}
 
 	/**
@@ -124,9 +128,9 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 	 */
 	private void drawMapPortion(final Graphics pen, final int minX,
 			final int minY, final int maxX, final int maxY) {
-		for (int i = minY; i < maxY; i++) {
-			for (int j = minX; j < maxX; j++) {
-				paintTile(pen, map.getTile(i, j), i, j);
+		for (int i = minY; i < maxY && i + visibleDimensions.getMinimumRow() < visibleDimensions.getMaximumRow() + 1; i++) {
+			for (int j = minX; j < maxX && j + visibleDimensions.getMinimumCol() < visibleDimensions.getMaximumCol() + 1; j++) {
+				paintTile(pen, map.getTile(i + visibleDimensions.getMinimumRow(), j + visibleDimensions.getMinimumCol()), i, j);
 			}
 		}
 	}
@@ -165,13 +169,16 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 		}
 		pen.setColor(saveColor);
 	}
-
+	/**
+	 * Our visible dimensions.
+	 */
+	private VisibleDimensions visibleDimensions;
 	/**
 	 * @return our visible dimensions
 	 */
 	@Override
 	public VisibleDimensions getVisibleDimensions() {
-		throw new IllegalStateException("Not implemented yet");
+		return visibleDimensions;
 	}
 
 	/**
@@ -205,6 +212,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 		map = newMap;
 		secondaryMap = new SPMap(map.rows(), map.cols());
 		currentTile = new Tile(-1, -1, TileType.NotVisible);
+		visibleDimensions = new VisibleDimensions(0, map.rows() - 1, 0, map.cols() - 1);
 		repaint();
 	}
 
