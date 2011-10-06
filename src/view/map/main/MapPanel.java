@@ -175,14 +175,6 @@ public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 		tile.setVisible(true);
 		tile.repaint();
 	}
-
-	/**
-	 * Swap the main and secondary maps, i.e. show the secondary map
-	 */
-	@Override
-	public void swapMaps() {
-		model.swapMaps();
-	}
 	/**
 	 * @param coords a set of coordinates
 	 * @return the GUITile at those coordinates, if any.

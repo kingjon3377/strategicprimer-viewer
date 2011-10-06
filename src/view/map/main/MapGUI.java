@@ -38,11 +38,6 @@ public interface MapGUI {
 	 *            the map to load
 	 */
 	void loadMap(final SPMap newMap);
-
-	/**
-	 * Swap the main and secondary maps, i.e. show the secondary map
-	 */
-	void swapMaps();
 	/**
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */

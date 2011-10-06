@@ -239,14 +239,6 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	}
 
 	/**
-	 * Swap the main and secondary maps, i.e. show the secondary map
-	 */
-	@Override
-	public void swapMaps() {
-		model.swapMaps();
-	}
-
-	/**
 	 * @return the map model
 	 */
 	@Override

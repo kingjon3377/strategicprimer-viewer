@@ -104,7 +104,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		 */
 		@Override
 		public void run() {
-			panel.swapMaps();
+			panel.getModel().swapMaps();
 		}
 	}
 	/**
