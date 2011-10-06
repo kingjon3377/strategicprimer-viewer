@@ -85,6 +85,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	@Override
 	public void paint(final Graphics pen) {
+		super.paint(pen);
 		if (image == null) {
 			drawMap(pen);
 			createImage();
