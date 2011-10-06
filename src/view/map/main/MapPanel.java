@@ -13,6 +13,7 @@ import javax.swing.InputMap;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import model.viewer.MapModel;
 import model.viewer.Point;
 import model.viewer.PointFactory;
 import model.viewer.SPMap;
@@ -26,14 +27,9 @@ import model.viewer.Tile;
  */
 public class MapPanel extends JPanel implements MapGUI {
 	/**
-	 * The map we represent. Saved only so we can export it.
+	 * The map model, encapsulating the map and secondary map.
 	 */
-	private SPMap map;
-	/**
-	 * The secondary map.
-	 */
-	private SPMap secondaryMap;
-
+	private final MapModel model;
 	/**
 	 * Constructor.
 	 * 
@@ -42,6 +38,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	 */
 	public MapPanel(final SPMap newMap) {
 		super();
+		model = new MapModel(newMap);
 		setMinimumSize(new Dimension(newMap.cols() * GUITile.TILE_SIZE, newMap.rows() * GUITile.TILE_SIZE));
 		setPreferredSize(new Dimension(newMap.cols() * GUITile.TILE_SIZE, newMap.rows() * GUITile.TILE_SIZE));
 		setSize(getPreferredSize());
@@ -52,7 +49,6 @@ public class MapPanel extends JPanel implements MapGUI {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
 		setOpaque(true);
 		loadMap(newMap);
-		secondaryMap = new SPMap(newMap.rows(), newMap.cols());
 	}
 	
 	/**
@@ -131,7 +127,7 @@ public class MapPanel extends JPanel implements MapGUI {
 					addTile(new GUITile(newMap.getTile(row, col))); // NOPMD
 				}
 			}
-			map = newMap;
+			model.setMainMap(newMap);
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -177,7 +173,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	 */
 	@Override
 	public SPMap getMap() {
-		return map;
+		return model.getMainMap();
 	}
 
 	/**
@@ -186,7 +182,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	 */
 	@Override
 	public void setSecondaryMap(final SPMap secMap) {
-		secondaryMap = secMap;
+		model.setSecondaryMap(secMap);
 	}
 
 	/**
@@ -194,9 +190,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	 */
 	@Override
 	public void swapMaps() {
-			final SPMap temp = map;
-			loadMap(secondaryMap);
-			secondaryMap = temp;
+		model.swapMaps();
 			repaint();
 	}
 
@@ -205,7 +199,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	 */
 	@Override
 	public SPMap getSecondaryMap() {
-		return secondaryMap;
+		return model.getSecondaryMap();
 	}
 
 	/**
@@ -215,9 +209,7 @@ public class MapPanel extends JPanel implements MapGUI {
 	 */
 	@Override
 	public void copyTile(final Tile selection) {
-				secondaryMap.getTile(selection.getRow(), selection.getCol())
-						.update(map.getTile(selection.getRow(),
-								selection.getCol()));
+		model.copyTile(selection);
 	}
 	/**
 	 * @param coords a set of coordinates
@@ -231,6 +223,12 @@ public class MapPanel extends JPanel implements MapGUI {
 	 * @return the tile at those coordinates in the secondary map
 	 */
 	public Tile getSecondaryTile(final Point coords) {
-		return secondaryMap.getTile(coords.row(), coords.col());
+		return model.getSecondaryTile(coords.row(), coords.col());
+	}
+	/**
+	 * @return the map model
+	 */
+	public MapModel getModel() {
+		return model;
 	}
 }

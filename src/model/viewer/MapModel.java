@@ -133,6 +133,16 @@ public final class MapModel implements PropertyChangeSource {
 		return map.getTile(row, col);
 	}
 	/**
+	 * @param row the row of a tile
+	 * @param col the column of a tile
+	 * @return the tile in the secondary map at those coordinates
+	 * @deprecated MapModel should be used for handling the selection instead.
+	 */
+	@Deprecated
+	public Tile getSecondaryTile(final int row, final int col) {
+		return secondaryMap.getTile(row, col);
+	}
+	/**
 	 * @return the main map
 	 */
 	public SPMap getMainMap() {
