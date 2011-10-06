@@ -217,7 +217,7 @@ public class MapComponent extends JComponent implements PropertyChangeSource,
 		secondaryMap = new SPMap(map.rows(), map.cols());
 		currentTile = new Tile(-1, -1, TileType.NotVisible);
 		visibleDimensions = new VisibleDimensions(0, map.rows() - 1, 0, map.cols() - 1);
-		repaint();
+		createImage();
 	}
 
 	/**
