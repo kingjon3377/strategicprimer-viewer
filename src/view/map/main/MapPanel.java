@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ import model.viewer.SPMap;
  * @author Jonathan Lovelace
  * 
  */
-public class MapPanel extends JPanel implements MapGUI {
+public class MapPanel extends JPanel implements MapGUI, PropertyChangeListener {
 	/**
 	 * The map model, encapsulating the map and secondary map.
 	 */
@@ -180,8 +182,6 @@ public class MapPanel extends JPanel implements MapGUI {
 	@Override
 	public void swapMaps() {
 		model.swapMaps();
-		reinitializeGUI();
-			repaint();
 	}
 	/**
 	 * @param coords a set of coordinates
@@ -196,5 +196,16 @@ public class MapPanel extends JPanel implements MapGUI {
 	@Override
 	public MapModel getModel() {
 		return model;
+	}
+	/**
+	 * Handle events.
+	 * @param evt the event to handle.
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+		if ("map".equals(evt.getPropertyName())) {
+			reinitializeGUI();
+		}
 	}
 }
