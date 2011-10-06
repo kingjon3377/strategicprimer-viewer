@@ -13,6 +13,7 @@ import model.viewer.SPMap;
 import model.viewer.Tile;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
+import view.util.PropertyChangeSource;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -23,7 +24,7 @@ import view.map.main.TileDrawHelper;
  * @author Jonathan Lovelace
  * 
  */
-public class MapComponent extends JComponent {
+public class MapComponent extends JComponent implements PropertyChangeSource {
 	/**
 	 * The map this represents.
 	 */
