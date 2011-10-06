@@ -28,6 +28,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
+		final Color save = pen.getColor();
 		pen.setColor(getTileColor(tile.getType()));
 		pen.fillRect(xCoord, yCoord, width, height);
 		pen.setColor(Color.black);
@@ -54,6 +55,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 					(int) (height / 2.0) + yCoord, (int) (height / 2.0) + yCoord }, 3);
 			}
 		}
+		pen.setColor(save);
 	}
 	/**
 	 * Draw a tile. At present, the graphics context needs to be translated so that its origin is the tile's upper-left-hand corner.
