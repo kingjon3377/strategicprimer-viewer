@@ -28,7 +28,7 @@ public class TileSelectionListener extends SelectionListener {
 	 * The main viewer ... the only object that can copy a tile from the main
 	 * map to the alternate.
 	 */
-	private final MapGUI viewer;
+	private final MapPanel viewer;
 	/**
 	 * Constructor.
 	 * 
@@ -36,7 +36,7 @@ public class TileSelectionListener extends SelectionListener {
 	 *            the main panel. Needed to copy a tile from the main map to a
 	 *            sub-map.
 	 */
-	public TileSelectionListener(final MapGUI view) {
+	public TileSelectionListener(final MapPanel view) {
 		super();
 		viewer = view;
 	}

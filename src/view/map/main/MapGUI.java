@@ -70,12 +70,6 @@ public interface MapGUI {
 
 	/**
 	 * @param coords a set of coordinates
-	 * @return the GUITile at those coordinates, if any.
-	 */
-	GUITile getTile(final Point coords);
-
-	/**
-	 * @param coords a set of coordinates
 	 * @return the tile at those coordinates in the secondary map
 	 */
 	Tile getSecondaryTile(final Point coords);

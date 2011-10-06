@@ -223,7 +223,6 @@ public class MapPanel extends JPanel implements MapGUI {
 	 * @param coords a set of coordinates
 	 * @return the GUITile at those coordinates, if any.
 	 */
-	@Override
 	public GUITile getTile(final Point coords) {
 		return locCache.get(coords);
 	}
