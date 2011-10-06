@@ -5,15 +5,17 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 
+import model.viewer.MapModel;
 import model.viewer.SPMap;
 import model.viewer.Tile;
-import model.viewer.TileType;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.MapGUI;
 import view.map.main.TileDrawHelper;
@@ -28,11 +30,11 @@ import view.util.PropertyChangeSource;
  * 
  */
 public final class MapComponent extends JComponent implements PropertyChangeSource,
-		MapGUI, MouseListener {
+		MapGUI {
 	/**
-	 * The map this represents.
+	 * The map model encapsulating the map this represents, the secondary map, and the selected tile.
 	 */
-	private SPMap map;
+	private final MapModel model;
 	/**
 	 * An image of the map.
 	 */
@@ -46,10 +48,6 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	private final TileDrawHelper helper = new DirectTileDrawHelper();
 	/**
-	 * The currently selected tile.
-	 */
-	private Tile currentTile;
-	/**
 	 * Constructor.
 	 * 
 	 * @param theMap
@@ -57,21 +55,44 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	public MapComponent(final SPMap theMap) {
 		super();
+		model = new MapModel(theMap);
 		loadMap(theMap);
-		setMinimumSize(new Dimension(map.cols() * TILE_SIZE, map.rows()
+		setMinimumSize(new Dimension(model.getSizeCols() * TILE_SIZE, model.getSizeRows()
 				* TILE_SIZE));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
-		addMouseListener(this);
+		addMouseListener(new MouseAdapter() {
+			/**
+			 * Handle mouse clicks.
+			 * 
+			 * @param event
+			 *            the event to handle
+			 */
+			@Override
+			public void mouseClicked(final MouseEvent event) {
+				selectTile(event.getPoint().y / TILE_SIZE, event.getPoint().x / TILE_SIZE);
+			}
+		});
+		model.addPropertyChangeListener(new PropertyChangeListener() {
+			/**
+			 * Handle events.
+			 * @param evt the event to handle.
+			 */
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+			}
+			
+		});
 	}
 
 	/**
 	 * Creates the buffered image.
 	 */
 	public void createImage() {
-		image = createImage(map.cols() * TILE_SIZE, map.rows() * TILE_SIZE);
+		image = createImage(model.getSizeCols() * TILE_SIZE, model.getSizeRows() * TILE_SIZE);
 		if (image == null) {
-			image = new BufferedImage(map.cols() * TILE_SIZE, map.rows()
+			image = new BufferedImage(model.getSizeCols() * TILE_SIZE, model.getSizeRows()
 					* TILE_SIZE, BufferedImage.TYPE_INT_RGB);
 		}
 		drawMap(image.getGraphics());
@@ -105,9 +126,9 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		final int minX = (int) (bounds.getMinX() / TILE_SIZE);
 		final int minY = (int) (bounds.getMinY() / TILE_SIZE);
 		final int maxX = Math.min((int) (bounds.getMaxX() / TILE_SIZE + 1),
-				map.cols());
+				model.getSizeCols());
 		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1),
-				map.rows());
+				model.getSizeRows());
 		drawMapPortion(pen, minX, minY, maxX, maxY);
 		pen.setColor(save);
 	}
@@ -130,7 +151,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 			final int minY, final int maxX, final int maxY) {
 		for (int i = minY; i < maxY && i + visibleDimensions.getMinimumRow() < visibleDimensions.getMaximumRow() + 1; i++) {
 			for (int j = minX; j < maxX && j + visibleDimensions.getMinimumCol() < visibleDimensions.getMaximumCol() + 1; j++) {
-				paintTile(pen, map.getTile(i + visibleDimensions.getMinimumRow(), j + visibleDimensions.getMinimumCol()), i, j);
+				paintTile(pen, model.getTile(i + visibleDimensions.getMinimumRow(), j + visibleDimensions.getMinimumCol()), i, j);
 			}
 		}
 	}
@@ -166,7 +187,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		final Color saveColor = pen.getColor();
 		helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE,
 				TILE_SIZE);
-		if (currentTile.equals(tile)) {
+		if (model.getSelectedTile().equals(tile)) {
 			pen.setColor(Color.black);
 			pen.drawRect(col * TILE_SIZE + 1, row * TILE_SIZE + 1, TILE_SIZE - 2, TILE_SIZE - 2);
 		}
@@ -201,12 +222,10 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	@Override
 	public void loadMap(final SPMap newMap, final int minRow, final int maxRow,
 			final int minCol, final int maxCol) {
-		map = newMap;
-		secondaryMap = new SPMap(map.rows(), map.cols());
-		currentTile = new Tile(-1, -1, TileType.NotVisible);
+		model.setMainMap(newMap);
 		visibleDimensions = new VisibleDimensions(Math.max(0, minRow),
-				Math.min(map.rows(), maxRow + 1) - 1, Math.max(0, minCol),
-				Math.min(map.cols(), maxCol + 1) - 1);
+				Math.min(model.getSizeRows(), maxRow + 1) - 1, Math.max(0, minCol),
+				Math.min(model.getSizeCols(), maxCol + 1) - 1);
 		createImage();
 		setMinimumSize(new Dimension(
 				(visibleDimensions.getMaximumCol() - visibleDimensions.getMinimumCol())
@@ -234,13 +253,8 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	@Override
 	public SPMap getMap() {
-		return map;
+		return model.getMainMap();
 	}
-
-	/**
-	 * The secondary map.
-	 */
-	private SPMap secondaryMap;
 
 	/**
 	 * @param secMap
@@ -248,7 +262,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	@Override
 	public void setSecondaryMap(final SPMap secMap) {
-		secondaryMap = secMap;
+		model.setSecondaryMap(secMap);
 	}
 
 	/**
@@ -256,9 +270,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	@Override
 	public void swapMaps() {
-		final SPMap temp = map;
-		loadMap(secondaryMap);
-		secondaryMap = temp;
+		model.swapMaps();
 	}
 
 	/**
@@ -266,7 +278,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	@Override
 	public SPMap getSecondaryMap() {
-		return secondaryMap;
+		return model.getSecondaryMap();
 	}
 
 	/**
@@ -277,18 +289,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	@Override
 	public void copyTile(final Tile selection) {
-		secondaryMap.getTile(selection.getRow(), selection.getCol()).update(
-				map.getTile(selection.getRow(), selection.getCol()));
-	}
-	/**
-	 * Handle mouse clicks.
-	 * 
-	 * @param e
-	 *            the event to handle
-	 */
-	@Override
-	public void mouseClicked(final MouseEvent e) {
-		selectTile(e.getPoint().y / TILE_SIZE, e.getPoint().x / TILE_SIZE);
+		model.copyTile(selection);
 	}
 
 	/**
@@ -297,54 +298,15 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 * @param col the tile's column
 	 */
 	private void selectTile(final int row, final int col) {
-		final Tile tile = currentTile;
-		currentTile = map.getTile(row, col);
-		firePropertyChange("tile", tile, currentTile);
-		firePropertyChange("secondary-tile", null, secondaryMap.getTile(row, col));
+		model.setSelection(row, col);
 		createImage();
 		repaint();
 	}
-	/**
-	 * Ignored.
-	 * 
-	 * @param event
-	 *            ignored
-	 */
-	@Override
-	public void mouseEntered(final MouseEvent event) {
-		// Do nothing
-	}
 
 	/**
-	 * Ignored.
-	 * 
-	 * @param event
-	 *            ignored
+	 * @return the map model
 	 */
-	@Override
-	public void mouseExited(final MouseEvent event) {
-		// Do nothing
-	}
-
-	/**
-	 * Ignored.
-	 * 
-	 * @param event
-	 *            the event to handle
-	 */
-	@Override
-	public void mousePressed(final MouseEvent event) {
-		// Do nothing
-	}
-
-	/**
-	 * Ignored.
-	 * 
-	 * @param event
-	 *            the event to handle
-	 */
-	@Override
-	public void mouseReleased(final MouseEvent event) {
-		// Do nothing.
+	public MapModel getModel() {
+		return model;
 	}
 }
