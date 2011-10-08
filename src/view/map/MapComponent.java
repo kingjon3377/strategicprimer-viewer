@@ -99,10 +99,10 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		}
 		drawMap(image.getGraphics());
 		setMinimumSize(new Dimension(
-				(getModel().getDimensions().getMaximumCol() - getModel().getDimensions().getMinimumCol())
+				(getModel().getDimensions().getMaximumCol() - getModel().getDimensions().getMinimumCol() + 1)
 						* TILE_SIZE,
 				(getModel().getDimensions().getMaximumRow() - getModel().getDimensions()
-						.getMinimumRow()) * TILE_SIZE));
+						.getMinimumRow() + 1) * TILE_SIZE));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
 		revalidate();
