@@ -1,5 +1,7 @@
 package view.map;
 
+import static util.EqualsAny.equalsAny;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,7 +25,6 @@ import view.map.main.MapGUI;
 import view.map.main.TileDrawHelper;
 import view.map.main.VisibleDimensions;
 import view.util.PropertyChangeSource;
-import static util.EqualsAny.equalsAny;
 /**
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
