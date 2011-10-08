@@ -127,7 +127,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 			drawMap(pen);
 			createImage();
 		}
-		pen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		pen.drawImage(image, 0, 0, this);
 	}
 
 	/**
