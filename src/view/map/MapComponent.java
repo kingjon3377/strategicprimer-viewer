@@ -84,16 +84,16 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	public void createImage() {
 		image = createImage(
-				(getModel().getDimensions().getMaximumCol() - getModel()
+				(getModel().getDimensions().getMaximumCol() + 1 - getModel()
 						.getDimensions().getMinimumCol()) * TILE_SIZE,
-				(getModel().getDimensions().getMaximumRow() - getModel()
+				(getModel().getDimensions().getMaximumRow() + 1 - getModel()
 						.getDimensions().getMinimumRow()) * TILE_SIZE);
 		if (image == null) {
 			image = new BufferedImage((getModel().getDimensions()
-					.getMaximumCol() - getModel().getDimensions()
+					.getMaximumCol() + 1 - getModel().getDimensions()
 					.getMinimumCol())
 					* TILE_SIZE,
-					(getModel().getDimensions().getMaximumRow() - getModel()
+					(getModel().getDimensions().getMaximumRow() + 1 - getModel()
 							.getDimensions().getMinimumRow()) * TILE_SIZE,
 					BufferedImage.TYPE_INT_RGB);
 		}
@@ -182,9 +182,9 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	private Rectangle bounds(final Rectangle rect) {
 		return (rect == null) ? new Rectangle(0, 0,
 				(getModel().getDimensions().getMaximumCol()
-						- getModel().getDimensions().getMinimumCol() - 1)
+						- getModel().getDimensions().getMinimumCol())
 						* TILE_SIZE, (getModel().getDimensions().getMaximumRow()
-						- getModel().getDimensions().getMinimumRow() - 1)
+						- getModel().getDimensions().getMinimumRow())
 						* TILE_SIZE) : rect;
 	}
 
