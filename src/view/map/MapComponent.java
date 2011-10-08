@@ -74,6 +74,10 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 			@Override
 			public void mouseClicked(final MouseEvent event) {
 				getModel().setSelection(event.getPoint().y / TILE_SIZE, event.getPoint().x / TILE_SIZE);
+				if (event.getClickCount() == 2) {
+					firePropertyChange("encounter", "old", "new");
+					getModel().copyTile(getModel().getSelectedTile());
+				}
 			}
 		});
 		model.addPropertyChangeListener(this);
