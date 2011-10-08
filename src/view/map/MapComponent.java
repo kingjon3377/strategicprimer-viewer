@@ -57,6 +57,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	public MapComponent(final SPMap theMap) {
 		super();
+		setDoubleBuffered(true);
 		model = new MapModel(theMap);
 		loadMap(theMap);
 		setMinimumSize(new Dimension(model.getSizeCols() * TILE_SIZE, model.getSizeRows()
