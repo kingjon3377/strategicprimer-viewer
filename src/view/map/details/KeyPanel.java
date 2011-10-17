@@ -12,7 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.viewer.TileType;
-import view.map.main.GUITile;
+import view.map.main.AbstractTileDrawHelper;
+import view.map.main.MapComponent;
 /**
  * Provides a visual "key" to the various terrain types.
  * @author Jonathan Lovelace
@@ -48,7 +49,7 @@ public class KeyPanel extends JPanel {
 		/**
 		 * Maximum size of a colored area.
 		 */
-		private static final Dimension MAX_SIZE = new Dimension(GUITile.TILE_SIZE, GUITile.TILE_SIZE);
+		private static final Dimension MAX_SIZE = new Dimension(MapComponent.TILE_SIZE, MapComponent.TILE_SIZE);
 		/**
 		 * Preferred size of a colored area.
 		 */
@@ -69,7 +70,7 @@ public class KeyPanel extends JPanel {
 				/**
 				 * The color of this Component.
 				 */
-				private final Color color = GUITile.getTileColor(type);
+				private final Color color = AbstractTileDrawHelper.getTileColor(type);
 				/**
 				 * @param pen the graphics context
 				 */
