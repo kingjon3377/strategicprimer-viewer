@@ -64,7 +64,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 		if (event != null) {
 			tile.setType(TileType.valueOf(event
 					.getActionCommand()));
-			// TODO: Need some way to trigger a repaint. 
+			firePropertyChange("tile", null, tile);
 		}
 	}
 	/**
