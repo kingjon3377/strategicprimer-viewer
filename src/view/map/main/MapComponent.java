@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -39,7 +37,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	/**
 	 * Tile size.
 	 */
-	private static final int TILE_SIZE = 16;
+	public static final int TILE_SIZE = 16;
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
@@ -59,22 +57,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 				* TILE_SIZE));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
-		addMouseListener(new MouseAdapter() {
-			/**
-			 * Handle mouse clicks.
-			 * 
-			 * @param event
-			 *            the event to handle
-			 */
-			@Override
-			public void mouseClicked(final MouseEvent event) {
-				getModel().setSelection(event.getPoint().y / TILE_SIZE, event.getPoint().x / TILE_SIZE);
-				if (event.getClickCount() == 2) {
-					firePropertyChange("encounter", "old", "new");
-					getModel().copyTile(getModel().getSelectedTile());
-				}
-			}
-		});
+		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
 		new ArrowKeyListener().setUpListeners(new DirectionSelectionChangerImpl(model), getInputMap(), getActionMap());
 	}
