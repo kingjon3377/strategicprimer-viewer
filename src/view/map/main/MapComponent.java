@@ -1,4 +1,4 @@
-package view.map;
+package view.map.main;
 
 import static util.EqualsAny.equalsAny;
 
@@ -18,12 +18,6 @@ import javax.swing.JComponent;
 import model.viewer.MapModel;
 import model.viewer.SPMap;
 import model.viewer.Tile;
-import view.map.main.ArrowKeyListener;
-import view.map.main.DirectTileDrawHelper;
-import view.map.main.DirectionSelectionChangerImpl;
-import view.map.main.MapGUI;
-import view.map.main.TileDrawHelper;
-import view.map.main.VisibleDimensions;
 import view.util.PropertyChangeSource;
 /**
  * A component to display the map, even a large one, without the performance

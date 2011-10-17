@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
-import view.map.MapComponent;
 import view.map.details.DetailPanel;
 import view.util.DriverQuit;
 import controller.map.simplexml.SPFormatException;
