@@ -27,8 +27,14 @@ public final class ComponentMouseListener extends MouseAdapter {
 	public ComponentMouseListener(final MapModel mapModel, final PropertyChangeListener list) {
 		super();
 		model = mapModel;
+		menu.setTile(model.getSelectedTile());
+		model.addPropertyChangeListener(menu);
 		pcs.addPropertyChangeListener(list);
 	}
+	/**
+	 * The terrain-changing menu.
+	 */
+	private final TerrainChangingMenu menu = new TerrainChangingMenu();
 	/**
 	 * Handle mouse clicks.
 	 * 
@@ -41,6 +47,33 @@ public final class ComponentMouseListener extends MouseAdapter {
 		if (event.getClickCount() == 2) {
 			pcs.firePropertyChange("encounter", "old", "new");
 			model.copyTile(model.getSelectedTile());
+		}
+		if (event.isPopupTrigger()) {
+			menu.show(event.getComponent(), event.getX(), event.getY());
+		}
+	}
+	/**
+	 * Handle mouse presses.
+	 * 
+	 * @param event
+	 *            the event to handle
+	 */
+	@Override
+	public void mousePressed(final MouseEvent event) {
+		if (event.isPopupTrigger()) {
+			menu.show(event.getComponent(), event.getX(), event.getY());
+		}
+	}
+	/**
+	 * Handle mouse releases.
+	 * 
+	 * @param event
+	 *            the event to handle
+	 */
+	@Override
+	public void mouseReleased(final MouseEvent event) {
+		if (event.isPopupTrigger()) {
+			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
 }

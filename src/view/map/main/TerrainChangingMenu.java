@@ -2,12 +2,15 @@ package view.map.main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.EnumMap;
 import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import model.viewer.Tile;
 import model.viewer.TileType;
 
 /**
@@ -15,7 +18,8 @@ import model.viewer.TileType;
  * 
  * @author Jonathan Lovelace
  */
-public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
+public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
+		PropertyChangeListener {
 	/**
 	 * Map of tile types and menu items representing them.
 	 */
@@ -41,13 +45,13 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 	/**
 	 * The tile whose terrain we might change.
 	 */
-	private GUITile tile;
+	private Tile tile;
 
 	/**
 	 * @param newTile
 	 *            the tile whose terrain we might change
 	 */
-	public void setTile(final GUITile newTile) {
+	public void setTile(final Tile newTile) {
 		tile = newTile;
 	}
 
@@ -58,9 +62,19 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if (event != null) {
-			tile.getTile().setType(TileType.valueOf(event
+			tile.setType(TileType.valueOf(event
 					.getActionCommand()));
-			tile.repaint();
+			// TODO: Need some way to trigger a repaint. 
+		}
+	}
+	/**
+	 * Listen for property changes.
+	 * @param evt the property-change event to handle
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		if ("tile".equals(evt.getPropertyName()) && evt.getNewValue() instanceof Tile) {
+			tile = (Tile) evt.getNewValue();
 		}
 	}
 }
