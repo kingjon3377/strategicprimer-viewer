@@ -1,6 +1,9 @@
 package view.map.details;
 
 import java.awt.Dimension;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragSource;
 import java.awt.event.MouseListener;
 
 import view.map.main.Selectable;
@@ -13,6 +16,11 @@ import view.map.main.Selectable;
  * 
  */
 public abstract class Chit extends Selectable { // NOPMD
+	/**
+	 * A wrapper around our data.
+	 */
+	private final Transferable trans;
+
 	/**
 	 * @return the description of the unit or fortress this chit represents, to
 	 *         report to the user
@@ -57,11 +65,23 @@ public abstract class Chit extends Selectable { // NOPMD
 	 * 
 	 * @param listener
 	 *            a listener to detect clicks on the chit.
+	 * @param transferable
+	 *            a Transferable encapsulating the data the Chit represents.
 	 */
-	protected Chit(final MouseListener listener) {
+	protected Chit(final MouseListener listener, final Transferable transferable) {
 		super();
 		setOpaque(false);
 		addMouseListener(listener);
+		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+				this, DnDConstants.ACTION_COPY,
+				new ChitDragGestureListener());
 		// setBorder(new EmptyBorder(5, 5, 5, 5));
+		trans = transferable;
+	}
+	/**
+	 * @return a Transferable encapsulating the fortress this represents
+	 */
+	public Transferable getData() {
+		return trans;
 	}
 }

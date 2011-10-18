@@ -2,6 +2,7 @@ package view.map.details;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.dnd.DropTarget;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -73,11 +74,22 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 						: "<html><center>Tile contents on secondary map:</center></html>", SwingConstants.CENTER);
 		add(title, BorderLayout.NORTH);
 		add(wrapperPanel, BorderLayout.CENTER);
+		setDropTarget(new DropTarget(this, new ChitDropListener()));
 	}
 	/**
 	 * The tile the chits are on.
 	 */
 	private Tile tile = new Tile(-1, -1, TileType.NotVisible);
+	/**
+	 * @param fix a TileFixture to add to the underlying tile
+	 */
+	public void addFixture(final TileFixture fix) {
+		if (!tile.getContents().contains(fix)) {
+			tile.addFixture(fix);
+			panel.add(fix);
+			panel.validate();
+		}
+	}
 	/**
 	 * Update the chits for a new tile.
 	 * @param newTile the new tile

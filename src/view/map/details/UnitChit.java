@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import model.viewer.Unit;
+import controller.map.FixtureTransferable;
 
 /**
  * A chit to represent a unit.
@@ -25,7 +26,7 @@ public class UnitChit extends Chit {
 	 *            the object listening for clicks on this chit.
 	 */
 	public UnitChit(final Unit unit, final MouseListener listener) {
-		super(listener);
+		super(listener, new FixtureTransferable(unit));
 		final StringBuilder sbuild = new StringBuilder("<html><p>Unit ");
 		if (!"".equals(unit.getName())) {
 			sbuild.append(unit.getName());

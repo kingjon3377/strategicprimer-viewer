@@ -8,6 +8,7 @@ import model.viewer.events.AbstractEvent;
 import model.viewer.events.AbstractEvent.TownStatus;
 import model.viewer.events.AbstractTownEvent;
 import view.util.IsAdmin;
+import controller.map.FixtureTransferable;
 
 /**
  * A Chit to represent an event. TODO: Make it look different for different Events.
@@ -25,7 +26,7 @@ public class EventChit extends Chit {
 	 * @param listener the object listening for clicks on this chit.
 	 */
 	public EventChit(final AbstractEvent event, final MouseListener listener) {
-		super(listener);
+		super(listener, new FixtureTransferable(event));
 		final StringBuilder builder = new StringBuilder("<html><p>");
 		builder.append(event.getText());
 		if (event instanceof AbstractTownEvent

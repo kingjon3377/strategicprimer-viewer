@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import model.viewer.Fortress;
+import controller.map.FixtureTransferable;
 
 /**
  * A chit to represent a fortress.
@@ -25,7 +26,7 @@ public class FortChit extends Chit {
 	 *            the object listening for clicks on this chit.
 	 */
 	public FortChit(final Fortress fort, final MouseListener listener) {
-		super(listener);
+		super(listener, new FixtureTransferable(fort));
 		final StringBuilder sbuild = new StringBuilder("<html><p>Fortress ");
 		if (!"".equals(fort.getName())) {
 			sbuild.append(fort.getName());
