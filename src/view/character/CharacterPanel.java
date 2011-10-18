@@ -63,11 +63,11 @@ public final class CharacterPanel extends JPanel implements Applyable,
 			add(statLabels[stat.ordinal()],
 					new ConstraintHelper(0, stat.ordinal() + 1)); // NOPMD
 			if (IsAdmin.IS_ADMIN) {
-				statComps[stat.ordinal()] = new ChangeableComponent(
-						new JTextField(3)); // NOPMD
+				statComps[stat.ordinal()] = new ChangeableComponent(// NOPMD
+						new JTextField(3));
 			} else {
-				statComps[stat.ordinal()] = new ChangeableComponent(
-						new JLabel()); // NOPMD
+				statComps[stat.ordinal()] = new ChangeableComponent(// NOPMD
+						new JLabel());
 			}
 			add(statComps[stat.ordinal()],
 					new ConstraintHelper(1, stat.ordinal() + 1)); // NOPMD
@@ -153,10 +153,9 @@ public final class CharacterPanel extends JPanel implements Applyable,
 			if (IsAdmin.IS_ADMIN) {
 				adminRevert();
 			} else {
-				final CharStats stats = character.getStats();
 				for (final CharStats.Stat stat : CharStats.Stat.values()) {
 					((JLabel) statComps[stat.ordinal()].getComponent())
-							.setText(stats.getStat(stat).toString());
+							.setText(character.getStats().getStat(stat).toString());
 				}
 			}
 		}

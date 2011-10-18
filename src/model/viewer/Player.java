@@ -28,6 +28,7 @@ public class Player implements Comparable<Player> {
 	public Player(final int idNum, final String name) {
 		playerID = idNum;
 		playerName = name;
+		setCurrent(false);
 	}
 
 	/**
@@ -87,17 +88,17 @@ public class Player implements Comparable<Player> {
 	/**
 	 * Whether this is the current player or not.
 	 */
-	private boolean current = false;
+	private boolean current;
 	/**
 	 * @param curr whether this is the current player or not
 	 */
-	public void setCurrent(final boolean curr) {
+	public final void setCurrent(final boolean curr) {
 		current = curr;
 	}
 	/**
 	 * @return true iff this is the current player
 	 */
-	public boolean isCurrent() {
+	public final boolean isCurrent() {
 		return current;
 	}
 }
