@@ -1,5 +1,7 @@
 package model.viewer;
 
+import util.PointFactory;
+
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a

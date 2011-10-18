@@ -1,7 +1,9 @@
-package model.viewer;
+package util;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import model.viewer.Point;
 
 /**
  * A cache for Points.

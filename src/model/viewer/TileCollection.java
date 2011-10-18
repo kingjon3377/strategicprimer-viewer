@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import util.PointFactory;
+
 /**
  * A collection of tiles. This is a wrapper around the Map that had been used by
  * SPMap, to avoid ever returning null. The main difference between this and an
