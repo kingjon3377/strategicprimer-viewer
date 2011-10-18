@@ -50,7 +50,7 @@ public class DrawHelperComparator {
 		final int reps = 50; // NOPMD
 		long start, end;
 		Graphics pen;
-		SystemOut.SYS_OUT.println("About to start");
+		SystemOut.SYS_OUT.println("1. All in one place:");
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -63,7 +63,7 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Caching did first test (all in one place) in ");
+		SystemOut.SYS_OUT.print("Caching:");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -77,8 +77,9 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Direct did first test (all in one place) in ");
+		SystemOut.SYS_OUT.print("Direct: ");
 		printStats(end - start, reps);
+		SystemOut.SYS_OUT.println("2. Translating:");
 		image = new BufferedImage(MapComponent.getTileSize() * map.cols(),
 				MapComponent.getTileSize() * map.rows(),
 				BufferedImage.TYPE_INT_RGB);
@@ -96,7 +97,7 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Caching did second test (translating) in ");
+		SystemOut.SYS_OUT.print("Caching: ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -112,8 +113,9 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Direct did second test (translating) in ");
+		SystemOut.SYS_OUT.print("Direct: ");
 		printStats(end - start, reps);
+		SystemOut.SYS_OUT.println("3. In-place, reusing Graphics:");
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -127,7 +129,7 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Caching did third test (in-place, reusing Graphics) in ");
+		SystemOut.SYS_OUT.print("Caching: ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -142,8 +144,9 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Direct did third test (in-place, reusing Graphics) in ");
+		SystemOut.SYS_OUT.print("Direct: ");
 		printStats(end - start, reps);
+		SystemOut.SYS_OUT.println("4. Translating, reusing Graphics:");
 		image = new BufferedImage(MapComponent.getTileSize() * map.cols(),
 				MapComponent.getTileSize() * map.rows(),
 				BufferedImage.TYPE_INT_RGB);
@@ -162,7 +165,7 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Caching did fourth test (translating, reusing G) in ");
+		SystemOut.SYS_OUT.print("Caching: ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -179,7 +182,7 @@ public class DrawHelperComparator {
 			}
 		}
 		end = System.nanoTime();
-		SystemOut.SYS_OUT.print("Direct did fourth test (translating, reusing G) in ");
+		SystemOut.SYS_OUT.print("Direct: ");
 		printStats(end - start, reps);
 	}
 	/**
