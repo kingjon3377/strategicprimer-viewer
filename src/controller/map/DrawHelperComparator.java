@@ -12,6 +12,7 @@ import model.viewer.SPMap;
 import view.map.main.AbstractTileDrawHelper;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
+import view.map.main.MapComponent;
 import view.map.main.TileDrawHelper;
 import view.util.SystemOut;
 import controller.map.simplexml.SPFormatException;
@@ -28,7 +29,7 @@ public class DrawHelperComparator {
 	 * @param args the command-line arguments.
 	 */
 	public static void main(final String[] args) { // NOPMD
-		final Logger logger = Logger.getLogger(AbstractTileDrawHelper.class.getName());
+		final Logger logger = Logger.getLogger(DrawHelperComparator.class.getName());
 		// ESCA-JAVA0177:
 		final SPMap map; // NOPMD
 		try {
@@ -45,7 +46,7 @@ public class DrawHelperComparator {
 		}
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
-		BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(MapComponent.getTileSize(), MapComponent.getTileSize(), BufferedImage.TYPE_INT_RGB);
 		final int reps = 50; // NOPMD
 		long start, end;
 		Graphics pen;
@@ -55,7 +56,9 @@ public class DrawHelperComparator {
 			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperOne.drawTile(image.createGraphics(), map.getTile(i, j), 16, 16);
+					helperOne.drawTile(image.createGraphics(),
+							map.getTile(i, j), MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
@@ -67,20 +70,28 @@ public class DrawHelperComparator {
 			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperTwo.drawTile(image.createGraphics(), map.getTile(i, j), 16, 16);
+					helperTwo.drawTile(image.createGraphics(),
+							map.getTile(i, j), MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
 		end = System.nanoTime();
 		SystemOut.SYS_OUT.print("Direct did first test (all in one place) in ");
 		printStats(end - start, reps);
-		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(MapComponent.getTileSize() * map.cols(),
+				MapComponent.getTileSize() * map.rows(),
+				BufferedImage.TYPE_INT_RGB);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperOne.drawTile(image.createGraphics(), map.getTile(i, j), i * 16, j * 16, 16, 16);
+					helperOne.drawTile(image.createGraphics(),
+							map.getTile(i, j), i * MapComponent.getTileSize(),
+							j * MapComponent.getTileSize(),
+							MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
@@ -92,7 +103,11 @@ public class DrawHelperComparator {
 			image.flush();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperTwo.drawTile(image.createGraphics(), map.getTile(i, j), i * 16, j * 16, 16, 16);
+					helperTwo.drawTile(image.createGraphics(),
+							map.getTile(i, j), i * MapComponent.getTileSize(),
+							j * MapComponent.getTileSize(),
+							MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
@@ -105,7 +120,9 @@ public class DrawHelperComparator {
 			pen = image.createGraphics();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperOne.drawTile(pen, map.getTile(i, j), 16, 16);
+					helperOne.drawTile(pen, map.getTile(i, j),
+							MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
@@ -118,21 +135,29 @@ public class DrawHelperComparator {
 			pen = image.createGraphics();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperTwo.drawTile(pen, map.getTile(i, j), 16, 16);
+					helperTwo.drawTile(pen, map.getTile(i, j),
+							MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
 		end = System.nanoTime();
 		SystemOut.SYS_OUT.print("Direct did third test (in-place, reusing Graphics) in ");
 		printStats(end - start, reps);
-		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(MapComponent.getTileSize() * map.cols(),
+				MapComponent.getTileSize() * map.rows(),
+				BufferedImage.TYPE_INT_RGB);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			pen = image.createGraphics();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperOne.drawTile(pen, map.getTile(i, j), i * 16, j * 16, 16, 16);
+					helperOne.drawTile(pen, map.getTile(i, j),
+							i * MapComponent.getTileSize(),
+							j * MapComponent.getTileSize(),
+							MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
@@ -145,7 +170,11 @@ public class DrawHelperComparator {
 			pen = image.createGraphics();
 			for (int i = 0; i < map.rows(); i++) {
 				for (int j = 0; j < map.cols(); j++) {
-					helperTwo.drawTile(pen, map.getTile(i, j), i * 16, j * 16, 16, 16);
+					helperTwo.drawTile(pen, map.getTile(i, j),
+							i * MapComponent.getTileSize(),
+							j * MapComponent.getTileSize(),
+							MapComponent.getTileSize(),
+							MapComponent.getTileSize());
 				}
 			}
 		}
