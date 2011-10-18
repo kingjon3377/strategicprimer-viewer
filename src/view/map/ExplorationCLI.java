@@ -15,6 +15,7 @@ import model.exploration.ExplorationRunner;
 import model.viewer.SPMap;
 import model.viewer.Tile;
 import view.util.DriverQuit;
+import view.util.SystemOut;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -44,7 +45,7 @@ public final class ExplorationCLI {
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				System.in));
 		// ESCA-JAVA0266:
-		final PrintStream ostream = createOstream();
+		final PrintStream ostream = SystemOut.SYS_OUT;
 		runner.loadAllTables("tables");
 		try {
 			ostream.print("Command: ");
@@ -107,18 +108,6 @@ public final class ExplorationCLI {
 	 */
 	private static boolean canKeepGoing(final String input) {
 		return input != null && input.length() > 0 && input.charAt(0) != 'q';
-	}
-
-	/**
-	 * @return System.out, making sure it's not null, as FindBugs seems to think.
-	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE")
-	private static PrintStream createOstream() {
-		final PrintStream ostream = System.out;
-		if (ostream == null) {
-			throw new IllegalStateException("System.out is null");
-		}
-		return ostream;
 	}
 
 	/**

@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import view.util.SystemOut;
+
 import model.viewer.Fortress;
 import model.viewer.SPMap;
 import model.viewer.Tile;
@@ -151,7 +153,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		final int reps = 50; // NOPMD
 		long start, end;
 		Graphics pen;
-		System.out.println("About to start");
+		SystemOut.SYS_OUT.println("About to start");
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -162,7 +164,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Caching did first test (all in one place) in ");
+		SystemOut.SYS_OUT.print("Caching did first test (all in one place) in ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -174,7 +176,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Direct did first test (all in one place) in ");
+		SystemOut.SYS_OUT.print("Direct did first test (all in one place) in ");
 		printStats(end - start, reps);
 		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
 		start = System.nanoTime();
@@ -187,7 +189,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Caching did second test (translating) in ");
+		SystemOut.SYS_OUT.print("Caching did second test (translating) in ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -199,7 +201,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Direct did second test (translating) in ");
+		SystemOut.SYS_OUT.print("Direct did second test (translating) in ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -212,7 +214,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Caching did third test (in-place, reusing Graphics) in ");
+		SystemOut.SYS_OUT.print("Caching did third test (in-place, reusing Graphics) in ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -225,7 +227,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Direct did third test (in-place, reusing Graphics) in ");
+		SystemOut.SYS_OUT.print("Direct did third test (in-place, reusing Graphics) in ");
 		printStats(end - start, reps);
 		image = new BufferedImage(16 * map.cols(), 16 * map.rows(), BufferedImage.TYPE_INT_RGB);
 		start = System.nanoTime();
@@ -239,7 +241,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Caching did fourth test (translating, reusing G) in ");
+		SystemOut.SYS_OUT.print("Caching did fourth test (translating, reusing G) in ");
 		printStats(end - start, reps);
 		start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
@@ -252,7 +254,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 			}
 		}
 		end = System.nanoTime();
-		System.out.print("Direct did fourth test (translating, reusing G) in ");
+		SystemOut.SYS_OUT.print("Direct did fourth test (translating, reusing G) in ");
 		printStats(end - start, reps);
 	}
 	/**
@@ -261,10 +263,10 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @param reps how many reps there were
 	 */
 	private static void printStats(final long total, final int reps) {
-		System.out.print('\t');
-		System.out.print(total);
-		System.out.print(", average of\t");
-		System.out.print(Long.toString(total / reps));
-		System.out.println(" ns.");
+		SystemOut.SYS_OUT.print('\t');
+		SystemOut.SYS_OUT.print(total);
+		SystemOut.SYS_OUT.print(", average of\t");
+		SystemOut.SYS_OUT.print(Long.toString(total / reps));
+		SystemOut.SYS_OUT.println(" ns.");
 	}
 }
