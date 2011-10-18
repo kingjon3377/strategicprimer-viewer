@@ -35,9 +35,15 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	private transient Image image;
 	/**
+	 * @return the size of a visible tile.
+	 */
+	public static int getTileSize() {
+		return TILE_SIZE;
+	}
+	/**
 	 * Tile size.
 	 */
-	public static final int TILE_SIZE = 16;
+	private static final int TILE_SIZE = 16;
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
@@ -53,8 +59,8 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		setDoubleBuffered(true);
 		model = new MapModel(theMap);
 		loadMap(theMap);
-		setMinimumSize(new Dimension(model.getSizeCols() * TILE_SIZE, model.getSizeRows()
-				* TILE_SIZE));
+		setMinimumSize(new Dimension(model.getSizeCols() * getTileSize(), model.getSizeRows()
+				* getTileSize()));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
 		addMouseListener(new ComponentMouseListener(model, this));
@@ -68,24 +74,24 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	public void createImage() {
 		image = createImage(
 				(getModel().getDimensions().getMaximumCol() + 1 - getModel()
-						.getDimensions().getMinimumCol()) * TILE_SIZE,
+						.getDimensions().getMinimumCol()) * getTileSize(),
 				(getModel().getDimensions().getMaximumRow() + 1 - getModel()
-						.getDimensions().getMinimumRow()) * TILE_SIZE);
+						.getDimensions().getMinimumRow()) * getTileSize());
 		if (image == null) {
 			image = new BufferedImage((getModel().getDimensions()
 					.getMaximumCol() + 1 - getModel().getDimensions()
 					.getMinimumCol())
-					* TILE_SIZE,
+					* getTileSize(),
 					(getModel().getDimensions().getMaximumRow() + 1 - getModel()
-							.getDimensions().getMinimumRow()) * TILE_SIZE,
+							.getDimensions().getMinimumRow()) * getTileSize(),
 					BufferedImage.TYPE_INT_RGB);
 		}
 		drawMap(image.getGraphics());
 		setMinimumSize(new Dimension(
 				(getModel().getDimensions().getMaximumCol() - getModel().getDimensions().getMinimumCol() + 1)
-						* TILE_SIZE,
+						* getTileSize(),
 				(getModel().getDimensions().getMaximumRow() - getModel().getDimensions()
-						.getMinimumRow() + 1) * TILE_SIZE));
+						.getMinimumRow() + 1) * getTileSize()));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
 		revalidate();
@@ -116,11 +122,11 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		pen.setColor(Color.white);
 		pen.fillRect(0, 0, getWidth(), getHeight());
 		final Rectangle bounds = bounds(pen.getClipBounds());
-		final int minX = (int) (bounds.getMinX() / TILE_SIZE);
-		final int minY = (int) (bounds.getMinY() / TILE_SIZE);
-		final int maxX = Math.min((int) (bounds.getMaxX() / TILE_SIZE + 1),
+		final int minX = (int) (bounds.getMinX() / getTileSize());
+		final int minY = (int) (bounds.getMinY() / getTileSize());
+		final int maxX = Math.min((int) (bounds.getMaxX() / getTileSize() + 1),
 				model.getSizeCols());
-		final int maxY = Math.min((int) (bounds.getMaxY() / TILE_SIZE + 1),
+		final int maxY = Math.min((int) (bounds.getMaxY() / getTileSize() + 1),
 				model.getSizeRows());
 		drawMapPortion(pen, minX, minY, maxX, maxY);
 		pen.setColor(save);
@@ -166,9 +172,9 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		return (rect == null) ? new Rectangle(0, 0,
 				(getModel().getDimensions().getMaximumCol()
 						- getModel().getDimensions().getMinimumCol())
-						* TILE_SIZE, (getModel().getDimensions().getMaximumRow()
+						* getTileSize(), (getModel().getDimensions().getMaximumRow()
 						- getModel().getDimensions().getMinimumRow())
-						* TILE_SIZE) : rect;
+						* getTileSize()) : rect;
 	}
 
 	/**
@@ -186,11 +192,11 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	private void paintTile(final Graphics pen, final Tile tile, final int row,
 			final int col) {
 		final Color saveColor = pen.getColor();
-		helper.drawTile(pen, tile, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE,
-				TILE_SIZE);
+		helper.drawTile(pen, tile, col * getTileSize(), row * getTileSize(), getTileSize(),
+				getTileSize());
 		if (model.getSelectedTile().equals(tile)) {
 			pen.setColor(Color.black);
-			pen.drawRect(col * TILE_SIZE + 1, row * TILE_SIZE + 1, TILE_SIZE - 2, TILE_SIZE - 2);
+			pen.drawRect(col * getTileSize() + 1, row * getTileSize() + 1, getTileSize() - 2, getTileSize() - 2);
 		}
 		pen.setColor(saveColor);
 	}
