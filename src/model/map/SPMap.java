@@ -14,14 +14,6 @@ public class SPMap {
 	public static final int MAX_VERSION = 1;
 
 	/**
-	 * Constructor.
-	 */
-	public SPMap() {
-		tiles = new TileCollection();
-		players = new PlayerCollection();
-	}
-
-	/**
 	 * Constructor that takes the size.
 	 * 
 	 * @param rows
@@ -30,7 +22,8 @@ public class SPMap {
 	 *            the number of columns
 	 */
 	public SPMap(final int rows, final int cols) {
-		this();
+		tiles = new TileCollection();
+		players = new PlayerCollection();
 		myRows = rows;
 		myCols = cols;
 	}
