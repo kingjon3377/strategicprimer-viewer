@@ -91,7 +91,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * Mapping from tile types to colors.
 	 */
-	protected static final TileColors COLORS = new TileColors();
+	protected static final TileUIHelper COLORS = new TileUIHelper();
 	/**
 	 * Two as a double.
 	 */

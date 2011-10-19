@@ -13,7 +13,7 @@ import model.viewer.TileType;
  * @author Jonathan Lovelace
  * 
  */
-public class TileColors {
+public class TileUIHelper {
 	/**
 	 * The map we wrap.
 	 */
@@ -23,7 +23,7 @@ public class TileColors {
 	 * Constructor.
 	 */
 	// ESCA-JAVA0076:
-	public TileColors() {
+	public TileUIHelper() {
 		colors.put(TileType.BorealForest, new Color(72, 218, 164));
 		colors.put(TileType.Desert, new Color(249, 233, 28));
 		colors.put(TileType.Jungle, new Color(229, 46, 46));
@@ -46,6 +46,6 @@ public class TileColors {
 	 */
 	@Override
 	public String toString() {
-		return "TileColors";
+		return "TileUIHelper";
 	}
 }
