@@ -32,11 +32,9 @@ public class TileNode extends AbstractChildNode<Tile> {
 				tile.addRiver(((RiverNode) node).produce(players));
 			} else if (node instanceof FortressNode) {
 				final Fortress fort = ((FortressNode) node).produce(players);
-				fort.setLocation(tile);
 				tile.addFixture(fort);
 			} else if (node instanceof UnitNode) { 
 				final Unit unit = ((UnitNode) node).produce(players);
-				unit.setLocation(tile);
 				tile.addFixture(unit);
 			} else if (node instanceof EventNode) {
 				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node)

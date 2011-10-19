@@ -8,10 +8,6 @@ package model.viewer;
  */
 public class Unit implements Comparable<Unit>, TileFixture {
 	/**
-	 * The tile the unit is on.
-	 */
-	private Tile location;
-	/**
 	 * The player that owns the unit.
 	 */
 	private final Player owner;
@@ -30,24 +26,6 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * Constructor.
 	 * 
-	 * @param loc
-	 *            the tile the unit is on
-	 * @param unitOwner
-	 *            the player that owns the unit
-	 * @param unitType
-	 *            the type of unit
-	 * @param unitName
-	 *            the name of this unit
-	 */
-	public Unit(final Tile loc, final Player unitOwner, final String unitType,
-			final String unitName) {
-		this(unitOwner, unitType, unitName);
-		location = loc;
-	}
-
-	/**
-	 * Constructor.
-	 * 
 	 * @param unitOwner
 	 *            the player that owns the unit
 	 * @param unitType
@@ -60,14 +38,6 @@ public class Unit implements Comparable<Unit>, TileFixture {
 		owner = unitOwner;
 		type = unitType;
 		name = unitName;
-	}
-
-	/**
-	 * @return the tile the unit is on
-	 */
-	@Override
-	public final Tile getLocation() {
-		return location;
 	}
 
 	/**
@@ -131,11 +101,5 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	@Override
 	public int compareTo(final Unit unit) {
 		return Integer.valueOf(hashCode()).compareTo(unit.hashCode());
-	}
-	/**
-	 * @param loc the location of the unit.
-	 */
-	public void setLocation(final Tile loc) {
-		location = loc;
 	}
 }

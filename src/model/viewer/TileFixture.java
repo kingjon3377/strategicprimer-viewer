@@ -6,8 +6,5 @@ package model.viewer;
  * @author Jonathan Lovelace
  */
 public interface TileFixture {
-	/**
-	 * @return what tile the Fixture is on.
-	 */
-	Tile getLocation();
+	// Marker interface; also, TODO: what members should this have?
 }

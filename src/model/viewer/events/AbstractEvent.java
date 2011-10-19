@@ -3,7 +3,6 @@ package model.viewer.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.viewer.Tile;
 import model.viewer.TileFixture;
 
 /**
@@ -223,22 +222,4 @@ public abstract class AbstractEvent implements TileFixture {
 	 * @return exploration-result text for the event.
 	 */
 	public abstract String getText();
-
-	/**
-	 * The location of the event.
-	 */
-	private Tile location;
-	/**
-	 * @return the location of the event
-	 */
-	@Override
-	public Tile getLocation() {
-		return location;
-	}
-	/**
-	 * @param tile the new location of the event 
-	 */
-	public void setLocation(final Tile tile) {
-		location = tile;
-	}
 }

@@ -23,28 +23,10 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 */
 	private final String name;
 	/**
-	 * The tile the fortress is on.
-	 */
-	private Tile tile;
-	/**
 	 * The units in the fortress.
 	 */
 	private final List<Unit> units; // Should this be a Set?
 
-	/**
-	 * Csontructor.
-	 * 
-	 * @param parentTile
-	 *            the tile the fortress is on
-	 * @param fortOwner
-	 *            the player that owns the fortress
-	 * @param fortName
-	 *            the name of the fortress
-	 */
-	public Fortress(final Tile parentTile, final Player fortOwner, final String fortName) {
-		this(fortOwner, fortName);
-		tile = parentTile;
-	}
 	/**
 	 * Constructor.
 	 * 
@@ -91,14 +73,6 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 */
 	public final Player getOwner() {
 		return owner;
-	}
-
-	/**
-	 * @return the tile the fortress is on
-	 */
-	@Override
-	public final Tile getLocation() {
-		return tile;
 	}
 
 	/**
@@ -159,11 +133,5 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	@Override
 	public int compareTo(final Fortress fort) {
 		return Integer.valueOf(hashCode()).compareTo(fort.hashCode());
-	}
-	/**
-	 * @param loc the location of the fortress.
-	 */
-	public void setLocation(final Tile loc) {
-		tile = loc;
 	}
 }

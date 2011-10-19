@@ -96,10 +96,10 @@ public class TileReader {
 			tile.addRiver(parseRiver(elem, reader));
 			break;
 		case Fortress:
-			tile.addFixture(parseFortress(tile, elem, reader, players));
+			tile.addFixture(parseFortress(elem, reader, players));
 			break;
 		case Unit:
-			tile.addFixture(parseUnit(tile, elem, reader, players));
+			tile.addFixture(parseUnit(elem, reader, players));
 			break;
 		case Event:
 		case Battlefield:
@@ -234,8 +234,6 @@ public class TileReader {
 	/**
 	 * Parse a fortress.
 	 * 
-	 * @param tile
-	 *            the tile the fortress is on
 	 * @param elem
 	 *            the fortress tag itself
 	 * @param reader
@@ -244,16 +242,14 @@ public class TileReader {
 	 *            the map's collection of players
 	 * @return the fortress in question.
 	 */
-	private Fortress parseFortress(final Tile tile,
-			final StartElement elem, final Iterable<XMLEvent> reader, final PlayerCollection players) {
-		final Fortress fort = new Fortress(tile,
-				players.getPlayer(Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
-						"-1"))), helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE,
-						""));
+	private Fortress parseFortress(final StartElement elem, final Iterable<XMLEvent> reader, final PlayerCollection players) {
+		final Fortress fort = new Fortress(players.getPlayer(Integer
+				.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
+						"-1"))), helper.getAttributeWithDefault(elem,
+				NAME_ATTRIBUTE, ""));
 		for (XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				parseFortContents(tile, fort, event
-						.asStartElement(), reader, players);
+				parseFortContents(fort, event.asStartElement(), reader, players);
 			} else if (event.isEndElement()) {
 				break;
 			}
@@ -261,17 +257,16 @@ public class TileReader {
 		return fort;
 	}
 	/**
-	 * @param tile the tile we're in the middle of
 	 * @param fort the fortress we're in the middle of
 	 * @param element the current XML element
 	 * @param reader the stream of XML elements we're reading from
 	 * @param players
 	 *            the map's collection of players
 	 */
-	private void parseFortContents(final Tile tile, final Fortress fort, final StartElement element,
+	private void parseFortContents(final Fortress fort, final StartElement element,
 			final Iterable<XMLEvent> reader, final PlayerCollection players) {
 		if (Tag.Unit.equals(XMLHelper.getTagType(element))) {
-			fort.addUnit(parseUnit(tile, element, reader, players));
+			fort.addUnit(parseUnit(element, reader, players));
 		} else {
 			throw new IllegalStateException(UNEXPECTED_TAG
 					+ element.getName().getLocalPart()
@@ -283,8 +278,6 @@ public class TileReader {
 	 * Parse a unit TODO: Soon there'll be tags nested inside units; we should
 	 * handle them. And enforce the no-nested-units rule.
 	 * 
-	 * @param tile
-	 *            the tile the unit is on
 	 * @param elem
 	 *            the unit tag
 	 * @param reader
@@ -294,11 +287,11 @@ public class TileReader {
 	 * @return the fortress in question.
 	 * 
 	 */
-	private Unit parseUnit(final Tile tile, final StartElement elem,
+	private Unit parseUnit(final StartElement elem,
 			final Iterable<XMLEvent> reader, final PlayerCollection players) {
-		final Unit unit = new Unit(tile,
-				players.getPlayer(Integer.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
-						"-1"))), helper.getAttributeWithDefault(elem, "type", ""),
+		final Unit unit = new Unit(players.getPlayer(Integer.parseInt(helper
+				.getAttributeWithDefault(elem, OWNER_ATTRIBUTE, "-1"))),
+				helper.getAttributeWithDefault(elem, "type", ""),
 				helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE, ""));
 		helper.spinUntilEnd("<unit>", reader);
 		return unit;
