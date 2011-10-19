@@ -1,10 +1,12 @@
 package view.map.main;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Box.Filler;
 import javax.swing.JComponent;
@@ -12,12 +14,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
-import model.exploration.ExplorationRunner;
 import model.viewer.MapModel;
-import view.map.details.DetailPanel;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
 
@@ -49,21 +50,24 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * Constructor.
 	 * 
-	 * @param runner
-	 *            an exploration runner
+	 * @param details
+	 *            a panel to show details of tiles
+	 * @param list
+	 *            a listener to attach to the map UI's tile-selection etc.
+	 *            updates.
 	 * @param map
 	 *            The map model.
 	 * @param mapMenu
 	 *            the menu dealing with file I/O and map switching.
 	 */
-	public ViewerFrame(final ExplorationRunner runner, final MapModel map, final JMenu mapMenu) {
+	public ViewerFrame(final JPanel details, final PropertyChangeListener list, final MapModel map, final JMenu mapMenu) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
 		mapPanel = new MapComponent(map);
-		final DetailPanel details = new DetailPanel(runner, (MapComponent) mapPanel);
+		((Component) mapPanel).addPropertyChangeListener(list); 
 		add(details, BorderLayout.SOUTH);
 		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
 		add(scroller, BorderLayout.CENTER);
