@@ -1,4 +1,12 @@
-package view.map.main;
+package view.map.main; // NOPMD
+
+import static view.util.DrawingNumericConstants.EIGHT;
+import static view.util.DrawingNumericConstants.FOUR;
+import static view.util.DrawingNumericConstants.SEVEN_SIXTEENTHS;
+import static view.util.DrawingNumericConstants.THREE;
+import static view.util.DrawingNumericConstants.THREE_QUARTERS;
+import static view.util.DrawingNumericConstants.TWO;
+import static view.util.DrawingNumericConstants.TWO_THIRDS;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,7 +22,6 @@ import java.util.Map;
 import model.viewer.River;
 import model.viewer.Tile;
 import model.viewer.TileType;
-
 /**
  * A class to do the drawing of a tile, whether on a GUITile or on a single-component map.
  * @author Jonathan Lovelace

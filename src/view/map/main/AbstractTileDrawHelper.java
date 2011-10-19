@@ -20,14 +20,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * The color of the icon used to show that a tile has an event or associated text.
 	 */
 	protected static final Color EVENT_COLOR = Color.pink;
-	/**
-	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their short dimension.
-	 */
-	protected static final double EIGHT = 8.0;
-	/**
-	 * 7/16: where the short side of a river starts, along the edge of the tile.
-	 */
-	protected static final double SEVEN_SIXTEENTHS = 7.0 / 16.0;
 
 	/**
 	 * @param type a tile type
@@ -92,26 +84,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * Mapping from tile types to colors.
 	 */
 	protected static final TileUIHelper COLORS = new TileUIHelper();
-	/**
-	 * Two as a double.
-	 */
-	protected static final double TWO = 2.0;
-	/**
-	 * Four as a double.
-	 */
-	protected static final double FOUR = 4.0;
-	/**
-	 * Two-thirds as a double.
-	 */
-	protected static final double TWO_THIRDS = 2.0 / 3.0;
-	/**
-	 * Three-quarters as a double.
-	 */
-	protected static final double THREE_QUARTERS = 3.0 / 4.0;
-	/**
-	 * Three as a double.
-	 */
-	protected static final double THREE = 3.0;
 	/**
 	 * The number of sides on the symbol for a miscellaneous event.
 	 */
