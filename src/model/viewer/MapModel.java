@@ -61,11 +61,11 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap the new map
 	 */
 	public void setMainMap(final SPMap newMap) {
-		pcs.firePropertyChange("map", map, newMap);
 		map = newMap;
 		setSecondaryMap(new SPMap(map.rows(), map.cols()));
 		setSelection(-1, -1);
 		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0, getSizeCols() - 1));
+		pcs.firePropertyChange("map", map, newMap);
 	}
 	/**
 	 * @param newMap the new secondary map
