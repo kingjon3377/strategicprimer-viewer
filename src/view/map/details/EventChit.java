@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import model.viewer.events.AbstractEvent;
-import model.viewer.events.AbstractEvent.TownStatus;
 import model.viewer.events.AbstractTownEvent;
+import model.viewer.events.TownStatus;
 import view.util.IsAdmin;
 import controller.map.FixtureTransferable;
 

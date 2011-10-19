@@ -11,7 +11,6 @@ import model.viewer.TileType;
 import model.viewer.Unit;
 import model.viewer.events.AbstractEvent;
 import model.viewer.events.AbstractEvent.TownSize;
-import model.viewer.events.AbstractEvent.TownStatus;
 import model.viewer.events.BattlefieldEvent;
 import model.viewer.events.CaveEvent;
 import model.viewer.events.CityEvent;
@@ -22,6 +21,7 @@ import model.viewer.events.MineralEvent.MineralKind;
 import model.viewer.events.StoneEvent;
 import model.viewer.events.StoneEvent.StoneKind;
 import model.viewer.events.TownEvent;
+import model.viewer.events.TownStatus;
 
 /**
  * A helper class to read tiles and their contents from file. MapReader had too many methods.
