@@ -30,7 +30,8 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	public SkippableNode(final String tag, final int line) {
 		super();
 		if (!"row".equals(tag)) {
-			Warning.warn(new SPFormatException("Unexpected tag " + tag + ": probably a more recent map format than viewer.", line));
+			Warning.warn(new SPFormatException("Unexpected tag " + tag
+					+ ": probably a more recent map format than viewer.", line));
 		}
 	}
 	/**
@@ -43,7 +44,8 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 */
 	@Deprecated
 	@Override
-	public SkippableNode produce(final PlayerCollection players) throws SPFormatException {
+	public SkippableNode produce(final PlayerCollection players)
+			throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}
 

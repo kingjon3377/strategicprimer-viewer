@@ -47,7 +47,8 @@ public class BattlefieldEventNode extends AbstractChildNode<BattlefieldEvent> {
 			throw new SPFormatException("Event shouldn't have children",
 					getLine());
 		} else if (!hasProperty(KIND_PROPERTY) || !hasProperty(DC_PROPERTY)) {
-			throw new SPFormatException("Event must have \"kind\" and \"dc\" properties", getLine());
+			throw new SPFormatException(
+					"Event must have \"kind\" and \"dc\" properties", getLine());
 		} 
 	}
 	/**

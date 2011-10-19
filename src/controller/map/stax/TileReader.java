@@ -24,9 +24,11 @@ import model.viewer.events.TownSize;
 import model.viewer.events.TownStatus;
 
 /**
- * A helper class to read tiles and their contents from file. MapReader had too many methods.
+ * A helper class to read tiles and their contents from file. MapReader had too
+ * many methods.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 @Deprecated
 public class TileReader {
@@ -242,7 +244,8 @@ public class TileReader {
 	 *            the map's collection of players
 	 * @return the fortress in question.
 	 */
-	private Fortress parseFortress(final StartElement elem, final Iterable<XMLEvent> reader, final PlayerCollection players) {
+	private Fortress parseFortress(final StartElement elem,
+			final Iterable<XMLEvent> reader, final PlayerCollection players) {
 		final Fortress fort = new Fortress(players.getPlayer(Integer
 				.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
 						"-1"))), helper.getAttributeWithDefault(elem,

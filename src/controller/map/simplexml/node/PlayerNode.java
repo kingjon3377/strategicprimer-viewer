@@ -18,7 +18,8 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	 */
 	@Override
 	public Player produce(final PlayerCollection players) throws SPFormatException {
-		return new Player(Integer.parseInt(getProperty("number")), getProperty("code_name"));
+		return new Player(Integer.parseInt(getProperty("number")),
+				getProperty("code_name"));
 	}
 	/**
 	 * Check whether we contain invalid data. A Player is valid iff 

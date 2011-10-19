@@ -115,7 +115,8 @@ public final class MapUpdater {
 	/**
 	 * An exception to throw if execution gets past System.exit().
 	 */
-	private static final IllegalStateException PASSED_EXIT = new IllegalStateException("Execution passed System.exit()");
+	private static final IllegalStateException PASSED_EXIT = new IllegalStateException(
+			"Execution passed System.exit()");
 	/**
 	 * Load a map; if this fails, log a suitable error message and quit.
 	 * @param filename the name of the map to load
@@ -129,7 +130,8 @@ public final class MapUpdater {
 			DriverQuit.quit(1);
 			throw PASSED_EXIT;
 		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, buildString("XML stream error parsing ", filename), e);
+			LOGGER.log(Level.SEVERE,
+					buildString("XML stream error parsing ", filename), e);
 			DriverQuit.quit(2);
 			throw PASSED_EXIT;
 		} catch (final IOException e) {

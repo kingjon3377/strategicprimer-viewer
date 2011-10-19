@@ -29,13 +29,16 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			if (node instanceof TileNode || node instanceof PlayerNode) {
 				node.checkNode();
 			} else {
-				throw new SPFormatException("Map should only directly contain Tiles and Players.", getLine());
+				throw new SPFormatException(
+						"Map should only directly contain Tiles and Players.",
+						getLine());
 			}
 		}
-		if (!hasProperty("version") || Integer.parseInt(getProperty("version")) < SPMap.VERSION) {
+		if (!hasProperty("version")
+				|| Integer.parseInt(getProperty("version")) < SPMap.VERSION) {
 			throw new SPFormatException(
-					"This reader only accepts maps with a \"version\" property greater than or equal to " + SPMap.VERSION,
-					getLine());
+					"This reader only accepts maps with a \"version\" property greater than or equal to "
+							+ SPMap.VERSION, getLine());
 		} else if (!hasProperty("rows") || !hasProperty("columns")) {
 			throw new SPFormatException(
 					"Map must specify number of rows and columns.", getLine());
@@ -57,14 +60,17 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			} else if (node instanceof TileNode) {
 				tiles.add((TileNode) node);
 			} else {
-				throw new SPFormatException("Unsupported direct child of <map>", node.getLine());
+				throw new SPFormatException(
+						"Unsupported direct child of <map>", node.getLine());
 			}
 		}
 		for (TileNode node : tiles) {
 			map.addTile(node.produce(map.getPlayers()));
 		}
 		if (hasProperty("current_player")) {
-			map.getPlayers().getPlayer(Integer.parseInt(getProperty("current_player"))).setCurrent(true);
+			map.getPlayers()
+					.getPlayer(Integer.parseInt(getProperty("current_player")))
+					.setCurrent(true);
 		}
 		return map;
 	}

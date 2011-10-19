@@ -31,7 +31,8 @@ public class SimpleXMLReader {
 	 * @throws SPFormatException if the data is invalid
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 */
-	public SPMap readMap(final String file) throws IOException, XMLStreamException, SPFormatException {
+	public SPMap readMap(final String file) throws IOException,
+			XMLStreamException, SPFormatException {
 		final FileInputStream istream = new FileInputStream(file);
 		try {
 			return readMap(istream);
@@ -45,7 +46,8 @@ public class SimpleXMLReader {
 	 * @throws XMLStreamException if XML isn't well-formed.
 	 * @throws SPFormatException if the data is invalid.
 	 */
-	public SPMap readMap(final InputStream istream) throws XMLStreamException, SPFormatException {
+	public SPMap readMap(final InputStream istream) throws XMLStreamException,
+			SPFormatException {
 		final RootNode root = new RootNode();
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
@@ -75,11 +77,13 @@ public class SimpleXMLReader {
 	 * @return the equivalent node.
 	 * @throws SPFormatException on unexpecte or illegal XML.
 	 */
-	private static AbstractXMLNode parseTag(final StartElement element) throws SPFormatException {
+	private static AbstractXMLNode parseTag(final StartElement element)
+			throws SPFormatException {
 		final AbstractChildNode<?> node = NodeFactory.create(element.getName()
 				.getLocalPart(), element.getLocation().getLineNumber());
 		@SuppressWarnings("unchecked")
-		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(element.getAttributes());
+		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(
+				element.getAttributes());
 		for (Attribute att : attributes) {
 			node.addProperty(att.getName().getLocalPart(), att.getValue());
 		}

@@ -131,11 +131,10 @@ public class MapReader {
 								startElement, eventReader, map.getPlayers()));
 						break;
 					default:
-						throw new IllegalStateException(
-								UNEXPECTED_TAG
-										+ startElement.getName()
-												.getLocalPart()
-										+ ": players, rows, and tiles are the only accepted top-level tags");
+					throw new IllegalStateException(
+							UNEXPECTED_TAG
+									+ startElement.getName().getLocalPart()
+									+ ": players, rows, and tiles are the only accepted top-level tags");
 					}
 			}
 		}

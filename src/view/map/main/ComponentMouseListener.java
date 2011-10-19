@@ -24,7 +24,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * @param mapModel the map model we'll refer to
 	 * @param list a listener to send encounter events to
 	 */
-	public ComponentMouseListener(final MapModel mapModel, final PropertyChangeListener list) {
+	public ComponentMouseListener(final MapModel mapModel,
+			final PropertyChangeListener list) {
 		super();
 		model = mapModel;
 		menu.setTile(model.getSelectedTile());

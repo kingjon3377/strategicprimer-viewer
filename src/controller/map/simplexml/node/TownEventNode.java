@@ -81,7 +81,8 @@ public class TownEventNode extends AbstractChildNode<AbstractTownEvent> {
 						getLine());
 			}
 		} else {
-			throw new SPFormatException("Event must have \"kind\" and \"dc\" properties", getLine());
+			throw new SPFormatException(
+					"Event must have \"kind\" and \"dc\" properties", getLine());
 		}
 	}
 	/**

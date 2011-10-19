@@ -26,7 +26,8 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 			if (node instanceof UnitNode) {
 				fort.addUnit(((UnitNode) node).produce(players));
 			} else {
-				throw new SPFormatException("Fortress should contain only units", node.getLine());
+				throw new SPFormatException(
+						"Fortress should contain only units", node.getLine());
 			}
 		}
 		return fort;
@@ -44,7 +45,8 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 			if (node instanceof UnitNode) {
 				node.checkNode();
 			} else {
-				throw new SPFormatException("Fortress should contain only units", getLine());
+				throw new SPFormatException(
+						"Fortress should contain only units", getLine());
 			}
 		}
 	}

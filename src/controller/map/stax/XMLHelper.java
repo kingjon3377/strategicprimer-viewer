@@ -26,7 +26,8 @@ public class XMLHelper {
 	 */
 	public String getAttributeWithDefault(final StartElement elem,
 			final String attr, final String defaultValue) {
-		return (elem.getAttributeByName(new QName(attr)) == null) ? defaultValue : getAttribute(elem, attr);
+		return (elem.getAttributeByName(new QName(attr)) == null) ? defaultValue
+				: getAttribute(elem, attr);
 	}
 	/**
 	 * Move along the stream until we hit an end element, but object to any
