@@ -50,7 +50,30 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * Shape representing an event, or relevant text, associated with the tile.
 	 */
 	private Shape event;
-
+	/**
+	 * Two as a double.
+	 */
+	private static final double TWO = 2.0;
+	/**
+	 * Four as a double.
+	 */
+	private static final double FOUR = 4.0;
+	/**
+	 * Two-thirds as a double.
+	 */
+	private static final double TWO_THIRDS = 2.0 / 3.0;
+	/**
+	 * Three-quarters as a double.
+	 */
+	private static final double THREE_QUARTERS = 3.0 / 4.0;
+	/**
+	 * Three as a double.
+	 */
+	private static final double THREE = 3.0;
+	/**
+	 * The number of sides on the symbol for a miscellaneous event.
+	 */
+	private static final int MISC_EVENT_SIDES = 3;
 	/**
 	 * Check, and possibly regenerate, the cache.
 	 * 
@@ -63,25 +86,26 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 		if (!equalFloats(backgroundShape.getWidth(), width) || !equalFloats(backgroundShape.getHeight(), height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
 			rivers.clear();
-			rivers.put(River.East, new Rectangle2D.Double(width / 2.0, height // NOPMD
-					* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
-			rivers.put(River.Lake, new Ellipse2D.Double(width / 4.0, // NOPMD
-					height / 4.0, width / 2.0, height / 2.0));
+			rivers.put(River.East, new Rectangle2D.Double(width / TWO, height
+					* SEVEN_SIXTEENTHS, width / TWO, height / EIGHT));
+			rivers.put(River.Lake, new Ellipse2D.Double(width / FOUR,
+					height / FOUR, width / TWO, height / TWO));
 			rivers.put(River.North, new Rectangle2D.Double(width
-					* SEVEN_SIXTEENTHS, // NOPMD
-					0, width / EIGHT, height / 2.0));
+					* SEVEN_SIXTEENTHS, 
+					0, width / EIGHT, height / TWO));
 			rivers.put(River.South, new Rectangle2D.Double(width
 					* SEVEN_SIXTEENTHS, // NOPMD
-					height / 2.0, width / EIGHT, height / 2.0));
-			rivers.put(River.West, new Rectangle2D.Double(0, height // NOPMD
-					* SEVEN_SIXTEENTHS, width / 2.0, height / EIGHT));
-			fort = new Rectangle2D.Double(width * 2.0 / 3.0 - 1.0,
-					height * 2.0 / 3.0 - 1.0, width / 3.0, height / 3.0);
-			unit = new Ellipse2D.Double(width / 4.0, height / 4.0, width / 4.0,
-					height / 4.0);
-			event = new Polygon(new int[] { (int) (width * 3.0 / 4.0),
-					(int) (width / 2.0), width }, new int[] { 0,
-					(int) (height / 2.0), (int) (height / 2.0) }, 3);
+					height / TWO, width / EIGHT, height / TWO));
+			rivers.put(River.West, new Rectangle2D.Double(0, height 
+					* SEVEN_SIXTEENTHS, width / TWO, height / EIGHT));
+			fort = new Rectangle2D.Double(width * TWO_THIRDS - 1.0,
+					height * TWO_THIRDS - 1.0, width / THREE, height / THREE);
+			unit = new Ellipse2D.Double(width / FOUR, height / FOUR, width
+					/ FOUR, height / FOUR);
+			event = new Polygon(new int[] { (int) (width * THREE_QUARTERS),
+					(int) (width / TWO), width }, new int[] { 0,
+					(int) (height / TWO), (int) (height / TWO) },
+					MISC_EVENT_SIDES);
 		}
 	}
 	/**
