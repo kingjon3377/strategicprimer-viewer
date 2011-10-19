@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.viewer.TileType;
-import view.map.main.AbstractTileDrawHelper;
 import view.map.main.MapComponent;
 import view.map.main.TileUIHelper;
 
@@ -46,6 +45,7 @@ final class KeyElement extends JPanel {
 	 */
 	KeyElement(final TileType type) {
 		super();
+		final TileUIHelper helper = TUI_HELPER;
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		add(Box.createHorizontalGlue());
 		add(Box.createRigidArea(new Dimension(HORIZ_BUFFER, 0)));
@@ -56,7 +56,7 @@ final class KeyElement extends JPanel {
 			/**
 			 * The color of this Component.
 			 */
-			private final Color color = AbstractTileDrawHelper.getTileColor(type);
+			private final Color color = helper.get(type);
 			/**
 			 * @param pen the graphics context
 			 */
