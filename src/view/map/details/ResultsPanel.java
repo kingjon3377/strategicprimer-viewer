@@ -3,12 +3,9 @@ package view.map.details;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -51,25 +48,9 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	 */
 	private static final int LABEL_MAX_HT = 20;
 	/**
-	 * Minimum height of the button.
-	 */
-	private static final int BUTTON_MIN_HT = 15;
-	/**
-	 * Preferred height of the button.
-	 */
-	private static final int BUTTON_HEIGHT = 20;
-	/**
-	 * Maximum height of the button.
-	 */
-	private static final int BUTTON_MAX_HT = 25;
-	/**
 	 * Field to show and edit exploration results.
 	 */
 	private final JTextArea field = new JTextArea();
-	/**
-	 * Command for saving changed results to the map.
-	 */
-	private static final String SAVE_COMMAND = "<html><p>Save changed results</p></html>";
 	/**
 	 * Constructor.
 	 * @param minHeight the minimum height of this panel
@@ -88,27 +69,16 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 		field.setLineWrap(true);
 		field.setEditable(true);
 		field.setWrapStyleWord(true);
+		final ResultsTextSaveButton button = new ResultsTextSaveButton(
+				MINIMUM_WIDTH, PREF_WIDTH, MAX_WIDTH);
+		button.addPropertyChangeListener(this);
+		add(button, BorderLayout.SOUTH);
 		final JScrollPane wrapper = new JScrollPane(field);
-		wrapper.setMinimumSize(new Dimension(MINIMUM_WIDTH, minHeight - LABEL_MIN_HT - BUTTON_MIN_HT));
-		wrapper.setPreferredSize(new Dimension(PREF_WIDTH, height - LABEL_HEIGHT - BUTTON_HEIGHT));
-		wrapper.setMaximumSize(new Dimension(MAX_WIDTH, maxHeight - LABEL_MAX_HT - BUTTON_MAX_HT));
+		wrapper.setMinimumSize(new Dimension(MINIMUM_WIDTH, minHeight - LABEL_MIN_HT - (int) button.getMinimumSize().getHeight()));
+		wrapper.setPreferredSize(new Dimension(PREF_WIDTH, height - LABEL_HEIGHT - (int) button.getPreferredSize().getHeight()));
+		wrapper.setMaximumSize(new Dimension(MAX_WIDTH, maxHeight - LABEL_MAX_HT - (int) button.getMaximumSize().getHeight()));
 		add(wrapper, BorderLayout.CENTER);
 		
-		final JButton button = new JButton(SAVE_COMMAND);
-		button.addActionListener(new ActionListener() {
-			/**
-			 * Handle button presses.
-			 * @param event the event to handle
-			 */
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				saveTileText();
-			}
-		});
-		button.setMinimumSize(new Dimension(MINIMUM_WIDTH, BUTTON_MIN_HT));
-		button.setPreferredSize(new Dimension(PREF_WIDTH, BUTTON_HEIGHT));
-		button.setMaximumSize(new Dimension(MAX_WIDTH, BUTTON_MAX_HT));
-		add(button, BorderLayout.SOUTH);
 		runner.loadAllTables("tables");
 	}
 	/**
@@ -149,6 +119,8 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 			repaint();
 		} else if ("encounter".equals(evt.getPropertyName())) {
 			runEncounter();
+		} else if ("save-text".equals(evt.getPropertyName())) {
+			saveTileText();
 		}
 	}
 }
