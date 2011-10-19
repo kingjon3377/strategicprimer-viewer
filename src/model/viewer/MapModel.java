@@ -3,7 +3,6 @@ package model.viewer;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import view.map.main.VisibleDimensions;
 import view.util.PropertyChangeSource;
 /**
  * A class to encapsulate the various model-type things views need to do with maps.

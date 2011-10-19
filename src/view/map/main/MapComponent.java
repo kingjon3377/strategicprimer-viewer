@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import model.viewer.MapModel;
 import model.viewer.SPMap;
 import model.viewer.Tile;
+import model.viewer.VisibleDimensions;
 import view.util.PropertyChangeSource;
 /**
  * A component to display the map, even a large one, without the performance
