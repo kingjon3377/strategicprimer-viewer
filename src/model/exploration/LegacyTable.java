@@ -16,7 +16,7 @@ import model.viewer.events.MineralEvent;
 import model.viewer.events.MineralKind;
 import model.viewer.events.NothingEvent;
 import model.viewer.events.StoneEvent;
-import model.viewer.events.StoneEvent.StoneKind;
+import model.viewer.events.StoneKind;
 import model.viewer.events.TownEvent;
 import model.viewer.events.TownSize;
 import model.viewer.events.TownStatus;
