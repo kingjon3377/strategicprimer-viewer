@@ -46,10 +46,6 @@ public final class ViewerStart {
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
-	 * The viewer instance.
-	 */
-	private static ViewerFrame frame;
-	/**
 	 * Run the app.
 	 * 
 	 * @param args
@@ -73,7 +69,7 @@ public final class ViewerStart {
 		}
 		try {
 			final MapModel model = new MapModel(new SimpleXMLReader().readMap(filename));
-			frame = new ViewerFrame(model);
+			final ViewerFrame frame = new ViewerFrame(model);
 			frame.createMenu(new IOHandler(model, frame, chooser).setUpMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {
@@ -92,11 +88,5 @@ public final class ViewerStart {
 			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
 			ErrorShower.showErrorDialog(null, INV_DATA_ERROR);
 		}
-	}
-	/**
-	 * @return the quasi-Singleton objects
-	 */
-	public static ViewerFrame getFrame() {
-		return frame;
 	}
 }
