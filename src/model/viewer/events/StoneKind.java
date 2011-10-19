@@ -3,8 +3,6 @@ package model.viewer.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.viewer.events.StoneEvent.StoneKind;
-
 /**
  * The kinds of stone we know about (for purposes of this event).
  */

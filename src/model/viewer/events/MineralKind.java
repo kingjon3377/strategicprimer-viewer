@@ -3,8 +3,6 @@ package model.viewer.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.viewer.events.MineralEvent.MineralKind;
-
 /**
  * Kinds of minerals whose events the program knows about.
  */

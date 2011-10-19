@@ -3,8 +3,6 @@ package model.viewer.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.viewer.events.AbstractEvent.TownSize;
-
 /**
  * Sizes of towns, fortifications, and cities.
  */

@@ -3,8 +3,6 @@ package model.viewer.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.viewer.events.AbstractEvent.EventKind;
-
 /**
  * The kinds of events we know about.
  */
