@@ -1,4 +1,4 @@
-package controller.exploration;
+package controller.map.drivers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import model.map.SPMap;
 import model.map.Tile;
 import view.util.DriverQuit;
 import view.util.SystemOut;
+import controller.exploration.TableLoader;
 import controller.map.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
