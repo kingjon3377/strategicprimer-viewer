@@ -46,7 +46,7 @@ public final class ExplorationCLI {
 				System.in));
 		// ESCA-JAVA0266:
 		final PrintStream ostream = SystemOut.SYS_OUT;
-		runner.loadAllTables("tables");
+		new TableLoader().loadAllTables("tables", runner);
 		try {
 			ostream.print("Command: ");
 			String input = reader.readLine();

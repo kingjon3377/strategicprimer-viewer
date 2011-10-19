@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 
 import model.exploration.ExplorationRunner;
 import model.map.Tile;
+import controller.exploration.TableLoader;
 /**
  * A panel for displaying and editing tile text i.e. results.
  * @author Jonathan Lovelace
@@ -82,7 +83,7 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 				- LABEL_MAX_HT - (int) button.getMaximumSize().getHeight()));
 		add(wrapper, BorderLayout.CENTER);
 		
-		runner.loadAllTables("tables");
+		new TableLoader().loadAllTables("tables", runner);
 	}
 	/**
 	 * Save changed results back to the tile.

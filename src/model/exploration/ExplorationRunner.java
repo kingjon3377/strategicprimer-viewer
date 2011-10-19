@@ -1,18 +1,10 @@
 package model.exploration;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import model.map.Tile;
 import model.map.TileType;
@@ -26,12 +18,6 @@ import controller.exploration.TableLoader;
  * 
  */
 public class ExplorationRunner { // NOPMD
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(ExplorationRunner.class.getName());
-
 	/**
 	 * @param tile
 	 *            a tile
@@ -55,46 +41,7 @@ public class ExplorationRunner { // NOPMD
 	 * The tables we know about.
 	 */
 	private final Map<String, EncounterTable> tables = new HashMap<String, EncounterTable>();
-	/**
-	 * A list of tables to load.
-	 */
-	private final String[] defaultTableList = { "major_rock", "minor_rock",
-			"boreal_major_tree", "temperate_major_tree", "main" };
 
-	/**
-	 * Loads the default set of tables.
-	 */
-	public void loadDefaultTables() {
-		for (final String table : defaultTableList) {
-			tables.put(table,
-					tryLoading("tables/" + table, 2, createList(table, 4)));
-		}
-	}
-
-	/**
-	 * Try to load a table from file, but log the error and use the given backup
-	 * if it fails.
-	 * 
-	 * @param filename
-	 *            the file to load from
-	 * @param defaultRows
-	 *            the number of rows to use if loading fails
-	 * @param defaultItems
-	 *            a list of items to use if loading fails
-	 * @return a valid table, from file if that works, using the default data if
-	 *         not.
-	 */
-	private static EncounterTable tryLoading(final String filename,
-			final int defaultRows, final List<String> defaultItems) {
-		try {
-			return new TableLoader().loadTable(filename); // NOPMD
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
-					+ filename, e);
-			return new QuadrantTable(defaultRows, new LinkedList<String>(
-					defaultItems));
-		}
-	}
 
 	/**
 	 * Add a table. This is package-visibility so our test-case can use it.
@@ -104,7 +51,7 @@ public class ExplorationRunner { // NOPMD
 	 * @param table
 	 *            the table.
 	 */
-	void loadTable(final String name, final EncounterTable table) { // NOPMD
+	public void loadTable(final String name, final EncounterTable table) { // NOPMD
 		tables.put(name, table);
 	}
 
@@ -130,26 +77,6 @@ public class ExplorationRunner { // NOPMD
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
-		}
-	}
-
-	/**
-	 * Create a list of strings, each beginning with a specified stem and ending
-	 * with a sequential number.
-	 * 
-	 * @param stem
-	 *            the string to begin each item with
-	 * @param iterations
-	 *            how many items should be in the list
-	 * @return such a list
-	 */
-	private List<String> createList(final String stem, final int iterations) {
-		if (iterations == 0) {
-			return new ArrayList<String>(); // NOPMD
-		} else {
-			final List<String> list = createList(stem, iterations - 1);
-			list.add(stem + iterations);
-			return list;
 		}
 	}
 
@@ -305,41 +232,11 @@ public class ExplorationRunner { // NOPMD
 	 */
 	public static void main(final String[] args) {
 		final ExplorationRunner runner = new ExplorationRunner();
-		runner.loadAllTables("tables");
+		new TableLoader().loadAllTables("tables", runner);
 		// ESCA-JAVA0266:
 		runner.verboseRecursiveCheck(System.out);
 	}
 
-	/**
-	 * Load all tables in the specified path.
-	 * 
-	 * @param path
-	 *            the directory to look in
-	 */
-	public void loadAllTables(final String path) {
-		final TableLoader loader = new TableLoader();
-		final File dir = new File(path);
-		final String[] children = dir.list();
-		if (children != null) {
-			for (final String table : children) {
-				try {
-					loadTable(table, loader.loadTable(path + '/' + table));
-				} catch (final FileNotFoundException e) {
-					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
-				} catch (final IOException e) {
-					LOGGER.log(Level.SEVERE,
-							"I/O error while parsing " + table, e);
-				} catch (final IllegalArgumentException e) {
-					LOGGER.log(
-							Level.SEVERE,
-							"Illegal argument while parsing "
-									+ table
-									+ ", probably a malformed file, possibly a Vim swap file",
-							e);
-				}
-			}
-		}
-	}
 	/**
 	 * @return a String representation of the object
 	 */

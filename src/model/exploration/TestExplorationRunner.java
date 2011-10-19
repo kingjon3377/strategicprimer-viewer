@@ -204,17 +204,6 @@ public final class TestExplorationRunner {
 	}
 
 	/**
-	 * Test that loading the default tables loads one particular table, and that
-	 * it's usable.
-	 */
-	@Test
-	public void testLoadDefaultTables() {
-		runner.loadDefaultTables();
-		assertFalse("table existence and usability",
-				runner.recursiveCheck("major_rock"));
-	}
-
-	/**
 	 * Test the recursiveCheck() method.
 	 */
 	@Test
