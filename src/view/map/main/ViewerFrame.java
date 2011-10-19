@@ -28,14 +28,6 @@ import view.util.MenuItemCreator;
  */
 public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
-	 * Command to load the secondary map.
-	 */
-	private static final String LOAD_ALT_MAP_CMD = "<html><p>Load secondary map</p></html>";
-	/**
-	 * Command to save the secondary map.
-	 */
-	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
-	/**
 	 * Default width of the Frame.
 	 */
 	private static final int DEFAULT_WIDTH = 800;
@@ -85,29 +77,9 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final MenuItemCreator creator = new MenuItemCreator();
 		final JMenuBar mbar = new JMenuBar();
 		final JMenu mapMenu = new JMenu("Map");
-		final ActionListener ioListener = new IOHandler(mapPanel.getModel(), this, chooser);
+		final IOHandler ioListener = new IOHandler(mapPanel.getModel(), this, chooser);
 		mapMenu.setMnemonic(KeyEvent.VK_M);
-		mapMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
-				"Load a main map from file", ioListener));
-		mapMenu.add(creator.createMenuItem("Save", KeyEvent.VK_S,
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
-				"Save the main map to file", ioListener));
-		mapMenu.addSeparator();
-		mapMenu.add(creator.createMenuItem(
-				LOAD_ALT_MAP_CMD,
-				KeyEvent.VK_D,
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
-						+ ActionEvent.ALT_MASK),
-				"Load a secondary map from file", ioListener));
-		mapMenu.add(creator.createMenuItem(SAVE_ALT_MAP_CMD,
-				KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-						ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK),
-				"Save the secondary map to file", ioListener));
-		mapMenu.addSeparator();
-		mapMenu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
-				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
-				"Make the secondary map the main map and vice versa", this));
+		ioListener.setUpMenu(mapMenu);
 		mbar.add(mapMenu);
 		mbar.add(creator.createMenuItem("Restrict view",
 				KeyEvent.VK_R,

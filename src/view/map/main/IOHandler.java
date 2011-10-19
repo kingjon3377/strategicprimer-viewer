@@ -3,17 +3,21 @@ package view.map.main;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
 import model.viewer.MapModel;
 import view.util.ErrorShower;
+import view.util.MenuItemCreator;
 import controller.map.XMLWriter;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
@@ -54,7 +58,10 @@ public final class IOHandler implements ActionListener {
 	 * File chooser.
 	 */
 	private final JFileChooser chooser;
-
+	/**
+	 * The helper to create menu items for us.
+	 */
+	private final MenuItemCreator creator = new MenuItemCreator();
 	/**
 	 * Handle menu selections.
 	 * 
@@ -179,5 +186,32 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public String toString() {
 		return "IOHandler";
+	}
+	/**
+	 * Set up the menu we'll be handling.
+	 * @param  menu the menu to set up
+	 */
+	public void setUpMenu(final JMenu menu) {
+		menu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
+				"Load a main map from file", this));
+		menu.add(creator.createMenuItem("Save", KeyEvent.VK_S,
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
+				"Save the main map to file", this));
+		menu.addSeparator();
+		menu.add(creator.createMenuItem(
+				LOAD_ALT_MAP_CMD,
+				KeyEvent.VK_D,
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
+						+ ActionEvent.ALT_MASK),
+				"Load a secondary map from file", this));
+		menu.add(creator.createMenuItem(SAVE_ALT_MAP_CMD,
+				KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+						ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK),
+				"Save the secondary map to file", this));
+		menu.addSeparator();
+		menu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
+				"Make the secondary map the main map and vice versa", this));
 	}
 }
