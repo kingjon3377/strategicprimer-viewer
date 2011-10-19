@@ -26,4 +26,19 @@ public final class EqualsAny {
 		}
 		return false;
 	}
+	/**
+	 * Compare a value with a collection of other (generally constant) values.
+	 * @param <TYPE> the type of all the values.
+	 * @param against the value to compare the others to
+	 * @param values the values to compare to it
+	 * @return true if any of theme equal it, false otherwise.
+	 */
+	public static <TYPE> boolean equalsAny(final TYPE against, final Iterable<TYPE> values) {
+		for (TYPE value : values) {
+			if (against.equals(value)) {
+				return true; // NOPMD
+			}
+		}
+		return false;
+	}
 }
