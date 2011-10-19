@@ -53,33 +53,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private final JFileChooser chooser = new JFileChooser(".");
 	/**
-	 * A thread to switch the maps.
-	 * @author Jonathan Lovelace
-	 */
-	private static class MapSwitcher extends Thread {
-		/**
-		 * The panel to switch.
-		 */
-		private final MapGUI panel;
-		// ESCA-JAVA0128:
-		/**
-		 * Constructor; otherwise it's "emulated by a synthetic ... method."
-		 * @param mpanel the panel whose maps we'll be swapping.
-		 */
-		public MapSwitcher(final MapGUI mpanel) { // $codepro.audit.disable publicConstructorInNonPublicType
-			super();
-			panel = mpanel;
-		}
-		/**
-		 * Switch the maps.
-		 */
-		@Override
-		public void run() {
-			panel.getModel().swapMaps();
-		}
-	}
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param map
@@ -180,7 +153,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Switch maps".equals(event.getActionCommand())) {
-			new MapSwitcher(mapPanel).start();
+			mapPanel.getModel().swapMaps();
 		} else if ("Restrict view".equals(event.getActionCommand())) {
 			new RestrictDialog(mapPanel).setVisible(true);
 		} 
