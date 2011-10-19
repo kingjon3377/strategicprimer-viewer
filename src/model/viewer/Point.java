@@ -68,4 +68,11 @@ public class Point implements Comparable<Point> {
 	public int compareTo(final Point point) {
 		return ((point.row() - row()) << 7) + (point.col() - col());
 	}
+	/**
+	 * @return a String representation of the class
+	 */
+	@Override
+	public String toString() {
+		return "point (" + myRow + ", " + myCol + ")";
+	}
 }

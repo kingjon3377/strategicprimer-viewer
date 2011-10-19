@@ -66,4 +66,11 @@ public final class TileCollection implements Iterable<Point> {
 	public int hashCode() {
 		return tiles.hashCode();
 	}
+	/**
+	 * @return a String representation of the class
+	 */
+	@Override
+	public String toString() {
+		return "TileCollection";
+	}
 }

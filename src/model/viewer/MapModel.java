@@ -176,4 +176,11 @@ public final class MapModel implements PropertyChangeSource {
 	public VisibleDimensions getDimensions() {
 		return dimensions;
 	}
+	/**
+	 * @return a String representation of the class
+	 */
+	@Override
+	public String toString() {
+		return "MapModel";
+	}
 }

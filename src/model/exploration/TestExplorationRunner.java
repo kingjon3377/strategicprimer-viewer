@@ -227,4 +227,11 @@ public final class TestExplorationRunner {
 		assertTrue("recursive check with an invalid table",
 				runner.recursiveCheck());
 	}
+	/**
+	 * @return a String representation of the class
+	 */
+	@Override
+	public String toString() {
+		return "TestExplorationRunner";
+	}
 }

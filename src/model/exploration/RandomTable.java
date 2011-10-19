@@ -69,4 +69,11 @@ public class RandomTable implements EncounterTable {
 		}
 		return retval;
 	}
+	/**
+	 * @return a String representation of the class
+	 */
+	@Override
+	public String toString() {
+		return "RandomTable";
+	}
 }

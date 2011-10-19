@@ -64,4 +64,11 @@ public class PlayerCollection implements Iterable<Player> {
 		}
 		return new Player(-1, "");
 	}
+	/**
+	 * @return a String representation of the class
+	 */
+	@Override
+	public String toString() {
+		return "PlayerCollection";
+	}
 }

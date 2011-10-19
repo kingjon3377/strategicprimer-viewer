@@ -53,8 +53,11 @@ public class TerrainTable implements EncounterTable {
 	public Set<String> allEvents() {
 		return new HashSet<String>(mapping.values());
 	}
-
 	/**
-	 * @return all events that this table can produce.
+	 * @return a String representation of the class
 	 */
+	@Override
+	public String toString() {
+		return "TerrainTable";
+	}
 }
