@@ -9,8 +9,7 @@ import javax.swing.JPanel;
 import view.util.PropertyChangeSource;
 
 /**
- * A panel to show the details of a tile. FIXME: If the map includes the name of
- * a player, it should show that player's name in addition to his or her number.
+ * A panel to show the details of a tile. 
  * 
  * @author Jonathan Lovelace
  */
