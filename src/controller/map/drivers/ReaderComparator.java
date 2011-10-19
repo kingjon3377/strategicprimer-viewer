@@ -58,16 +58,16 @@ public class ReaderComparator {
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, "I/O error while parsing" + arg, e);
 				continue;
-			} catch (SPFormatException e) {
-				logger.log(Level.SEVERE,
-						"New reader claims invalid SP map data in " + arg, e);
-				continue;
 			} catch (MapVersionException e) {
 				logger.log(Level.SEVERE,
 						"Map version too old for old-style reader in file "
 								+ arg, e);
 				continue;
-			}
+			} catch (SPFormatException e) {
+				logger.log(Level.SEVERE,
+						"New reader claims invalid SP map data in " + arg, e);
+				continue;
+			} 
 		}
 	}
 

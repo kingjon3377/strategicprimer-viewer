@@ -16,7 +16,6 @@ import model.map.SPMap;
 import model.map.Tile;
 import view.util.DriverQuit;
 import view.util.SystemOut;
-import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
@@ -232,10 +231,6 @@ public final class ExplorationCLI {
 			LOGGER.log(Level.SEVERE, "Map contains invalid data", e);
 			DriverQuit.quit(2);
 			return; // NOPMD;
-		} catch (MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Reader can't handle this map version", e);
-			DriverQuit.quit(3);
-			return; // NOPMD
 		}
 	}
 	/**
