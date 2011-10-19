@@ -70,7 +70,7 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Load".equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(comp) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
 				// ESCA-JAVA0166:
 				try {
@@ -82,7 +82,7 @@ public final class IOHandler implements ActionListener {
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMap(panel.getMainMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(comp) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
 				// ESCA-JAVA0166:
 				try {
@@ -112,13 +112,13 @@ public final class IOHandler implements ActionListener {
 	 */
 	public IOHandler(final MapModel map, final JFileChooser fchooser) {
 		panel = map;
-		comp = setUpMenu();
+		setUpMenu();
 		chooser = fchooser;
 	}
 	/**
 	 * A component to show the chooser under.
 	 */
-	private final JMenu comp;
+	private JMenu menu;
 	/**
 	 * Display an appropriate error message.
 	 * 
@@ -142,7 +142,7 @@ public final class IOHandler implements ActionListener {
 			throw new IllegalStateException("Unknown exception type", except);
 		}
 		LOGGER.log(Level.SEVERE, msg, except);
-		ErrorShower.showErrorDialog(comp, msg);
+		ErrorShower.showErrorDialog(menu, msg);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public final class IOHandler implements ActionListener {
 	 *            the map to save.
 	 */
 	private void saveMap(final SPMap map) {
-		if (chooser.showSaveDialog(comp) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showSaveDialog(menu) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
 			} catch (IOException e) {
@@ -185,10 +185,9 @@ public final class IOHandler implements ActionListener {
 	}
 	/**
 	 * Set up the menu we'll be handling.
-	 * @return the menu we set up
 	 */
-	private JMenu setUpMenu() {
-		final JMenu menu = new JMenu("Map");
+	private void setUpMenu() {
+		menu = new JMenu("Map");
 		menu.setMnemonic(KeyEvent.VK_M);
 		menu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
@@ -211,12 +210,11 @@ public final class IOHandler implements ActionListener {
 		menu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Make the secondary map the main map and vice versa", this));
-		return menu;
 	}
 	/**
 	 * @return the menu we handle
 	 */
 	public JMenu getMenu() {
-		return comp;
+		return menu;
 	}
 }
