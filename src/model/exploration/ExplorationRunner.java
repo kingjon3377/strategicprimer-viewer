@@ -8,7 +8,6 @@ import java.util.Set;
 
 import model.map.Tile;
 import model.map.TileType;
-import controller.exploration.TableLoader;
 
 /**
  * A class to create exploration results. The initial implementation is a bit
