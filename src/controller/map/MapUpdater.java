@@ -142,4 +142,11 @@ public final class MapUpdater {
 			throw PASSED_EXIT;
 		}
 	}
+	/**
+	 * @return a String representation of this object
+	 */
+	@Override
+	public String toString() {
+		return "MapUpdater";
+	}
 }

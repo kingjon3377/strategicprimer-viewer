@@ -296,6 +296,11 @@ public class TileReader {
 		helper.spinUntilEnd("<unit>", reader);
 		return unit;
 	}
-
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TileReader";
+	}
 }

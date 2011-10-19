@@ -55,5 +55,11 @@ public class StoneEventNode extends AbstractChildNode<StoneEvent> {
 			throw new SPFormatException("Event must have \"kind\" and \"dc\" properties", getLine());
 		}
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "StoneEventNode";
+	}
 }

@@ -356,4 +356,11 @@ public class XMLWriter { // NOPMD
 		XML_RIVERS.put(River.West, "west");
 		XML_RIVERS.put(River.Lake, "lake");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "XMLWriter";
+	}
 }

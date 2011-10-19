@@ -85,4 +85,12 @@ public class SimpleXMLReader {
 		}
 		return node;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SimpleXMLReader";
+	}
+
 }

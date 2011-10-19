@@ -59,4 +59,11 @@ public class MineralEventNode extends AbstractChildNode<MineralEvent> {
 					"Event must have \"kind\" and \"dc\" properties", getLine());
 		}
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "MineralEventNode";
+	}
 }

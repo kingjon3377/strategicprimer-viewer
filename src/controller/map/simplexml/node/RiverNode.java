@@ -43,5 +43,11 @@ public class RiverNode extends AbstractChildNode<River> {
 			throw new SPFormatException("River should have a direction", getLine());
 		}
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "RiverNode";
+	}
 }

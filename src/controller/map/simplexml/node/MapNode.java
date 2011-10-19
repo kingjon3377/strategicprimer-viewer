@@ -68,5 +68,11 @@ public class MapNode extends AbstractChildNode<SPMap> {
 		}
 		return map;
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MapNode";
+	}
 }

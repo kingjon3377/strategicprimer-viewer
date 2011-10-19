@@ -80,4 +80,12 @@ public class TileNode extends AbstractChildNode<Tile> {
 	public void addText(final String text) {
 		sbuild.append(text);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TileNode";
+	}
+
 }

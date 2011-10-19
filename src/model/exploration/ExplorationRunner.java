@@ -340,4 +340,11 @@ public class ExplorationRunner { // NOPMD
 			}
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ExplorationRunner";
+	}
 }

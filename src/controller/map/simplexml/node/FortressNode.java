@@ -48,5 +48,11 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 			}
 		}
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "FortressNode";
+	}
 }

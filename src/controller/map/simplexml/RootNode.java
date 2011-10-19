@@ -46,4 +46,12 @@ public final class RootNode extends AbstractXMLNode {
 			throw new SPFormatException("No top-level tag", 0);
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "RootNode";
+	}
+
 }

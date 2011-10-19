@@ -47,5 +47,11 @@ public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 			throw new SPFormatException("Event must have \"kind\" and \"dc\" properties", getLine());
 		} 
 	}
-
+	/**
+	 * @return a String representation of this object
+	 */
+	@Override
+	public String toString() {
+		return "CaveEventNode";
+	}
 }

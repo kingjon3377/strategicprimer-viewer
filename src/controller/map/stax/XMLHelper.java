@@ -77,5 +77,11 @@ public class XMLHelper {
 	public static Tag getTagType(final StartElement startElement) { // NOPMD
 		return Tag.fromString(startElement.getName().getLocalPart());
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "XMLHelper";
+	}
 }

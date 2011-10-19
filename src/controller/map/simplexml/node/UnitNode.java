@@ -37,5 +37,11 @@ public class UnitNode extends AbstractChildNode<Unit> {
 			throw new SPFormatException("Unit should't contain anything", getLine());
 		}
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "UnitNode";
+	}
 }

@@ -57,5 +57,11 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	public void checkNode() throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SkippableNode";
+	}
 }

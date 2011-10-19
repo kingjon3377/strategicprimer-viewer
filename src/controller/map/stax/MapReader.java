@@ -182,4 +182,12 @@ public class MapReader {
 				new QName("number")).getValue()), element.getAttributeByName(
 				new QName("code_name")).getValue());
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MapReader";
+	}
+
 }

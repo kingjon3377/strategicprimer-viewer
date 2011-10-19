@@ -77,5 +77,11 @@ public class LegacyTable implements EncounterTable {
 	public Set<String> allEvents() {
 		return new HashSet<String>(data);
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "LegacyTable";
+	}
 }
