@@ -1,6 +1,5 @@
 package view.map.main;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -108,21 +107,18 @@ public final class IOHandler implements ActionListener {
 	 * 
 	 * @param map
 	 *            the map model
-	 * @param parent
-	 *            the component to show the chooser under
 	 * @param fchooser
 	 *            the file chooser
 	 */
-	public IOHandler(final MapModel map, final Component parent,
-			final JFileChooser fchooser) {
+	public IOHandler(final MapModel map, final JFileChooser fchooser) {
 		panel = map;
-		comp = parent;
+		comp = setUpMenu();
 		chooser = fchooser;
 	}
 	/**
 	 * A component to show the chooser under.
 	 */
-	private final Component comp;
+	private final JMenu comp;
 	/**
 	 * Display an appropriate error message.
 	 * 
@@ -191,7 +187,7 @@ public final class IOHandler implements ActionListener {
 	 * Set up the menu we'll be handling.
 	 * @return the menu we set up
 	 */
-	public JMenu setUpMenu() {
+	private JMenu setUpMenu() {
 		final JMenu menu = new JMenu("Map");
 		menu.setMnemonic(KeyEvent.VK_M);
 		menu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
@@ -216,5 +212,11 @@ public final class IOHandler implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Make the secondary map the main map and vice versa", this));
 		return menu;
+	}
+	/**
+	 * @return the menu we handle
+	 */
+	public JMenu getMenu() {
+		return comp;
 	}
 }

@@ -70,7 +70,7 @@ public final class ViewerStart {
 		try {
 			final MapModel model = new MapModel(new SimpleXMLReader().readMap(filename));
 			final ViewerFrame frame = new ViewerFrame(model);
-			frame.createMenu(new IOHandler(model, frame, chooser).setUpMenu());
+			frame.createMenu(new IOHandler(model, chooser).getMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {
 				model.setSecondaryMap(new SimpleXMLReader().readMap(args[1]));
