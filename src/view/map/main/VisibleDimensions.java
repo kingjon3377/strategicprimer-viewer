@@ -58,4 +58,14 @@ public class VisibleDimensions {
 	public int getMaximumCol() {
 		return maximumCol;
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return new StringBuilder("VisibleDimensions: (").append(minimumRow)
+				.append(", ").append(minimumCol).append(") to (")
+				.append(maximumRow).append(", ").append(maximumCol).append(')')
+				.toString();
+	}
 }

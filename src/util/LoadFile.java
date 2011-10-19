@@ -45,4 +45,11 @@ public class LoadFile {
 		}
 		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable closeWhereCreated
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "LoadFile";
+	}
 }

@@ -78,4 +78,11 @@ public final class ComponentMouseListener extends MouseAdapter {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "ComponentMouseListener";
+	}
 }

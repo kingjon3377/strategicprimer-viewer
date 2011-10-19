@@ -17,5 +17,11 @@ public class ChitDragGestureListener implements DragGestureListener {
 			dge.startDrag(null, ((Chit) dge.getComponent()).getData());
 		}
 	}
-
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "ChitDragGestureListener";
+	}
 }

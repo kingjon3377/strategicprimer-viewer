@@ -165,4 +165,11 @@ public final class IOHandler implements ActionListener {
 			XMLStreamException, SPFormatException {
 		return new SimpleXMLReader().readMap(filename);
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "IOHandler";
+	}
 }

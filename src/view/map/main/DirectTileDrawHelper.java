@@ -111,4 +111,11 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			break;
 		}
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "DirectTileDrawHelper";
+	}
 }

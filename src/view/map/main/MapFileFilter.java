@@ -48,4 +48,11 @@ public final class MapFileFilter extends FileFilter {
 	public String getDescription() {
 		return "Strategic Primer world map files";
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "MapFileFilter";
+	}
 }

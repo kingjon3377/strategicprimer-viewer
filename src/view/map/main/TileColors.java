@@ -41,4 +41,11 @@ public class TileColors {
 	public Color get(final TileType type) {
 		return colors.get(type);
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "TileColors";
+	}
 }

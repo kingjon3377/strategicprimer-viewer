@@ -32,4 +32,11 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	public Iterator<T> iterator() {
 		return iter;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return iter.toString();
+	}
 }

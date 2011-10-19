@@ -161,4 +161,11 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	public void removePropertyChangeListener(final PropertyChangeListener list) {
 		pcs.removePropertyChangeListener(list);
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "SelectionListener";
+	}
 }

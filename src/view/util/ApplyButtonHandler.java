@@ -39,5 +39,11 @@ public class ApplyButtonHandler implements ActionListener {
 			obj.revert();
 		}
 	}
-
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "ApplyButtonHandler";
+	}
 }

@@ -42,4 +42,11 @@ public class ChitSelectionListener extends SelectionListener {
 		super.clearSelection();
 		getSupport().firePropertyChange("chit", null, new Object());
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "ChitSelectionListener";
+	}
 }

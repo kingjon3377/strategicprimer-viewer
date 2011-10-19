@@ -231,5 +231,11 @@ public final class ExplorationCLI {
 			return; // NOPMD;
 		}
 	}
-
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "ExplorationCLI";
+	}
 }

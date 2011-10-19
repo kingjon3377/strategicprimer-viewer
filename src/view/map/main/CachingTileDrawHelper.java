@@ -148,4 +148,11 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 			final int yCoord, final int width, final int height) {
 		drawTile(pen.create(xCoord, yCoord, width, height), tile, width, height);
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "CachingTileDrawHelper";
+	}
 }

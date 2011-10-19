@@ -59,5 +59,11 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 			model.setSelection(model.getSelectedTile().getRow(), model.getSelectedTile().getCol() + 1);
 		}
 	}
-
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "DirectionSelectionChangerImpl";
+	}
 }
