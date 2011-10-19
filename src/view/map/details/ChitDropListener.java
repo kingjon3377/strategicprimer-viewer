@@ -22,6 +22,10 @@ import model.viewer.TileFixture;
  */
 public class ChitDropListener implements DropTargetListener {
 	/**
+	 * The data flavor we want.
+	 */
+	private static final String WANTED_FLAVOR = "TileFixture";
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ChitDropListener.class.getName());
@@ -32,7 +36,7 @@ public class ChitDropListener implements DropTargetListener {
 	@Override
 	public void dragEnter(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 && EqualsAny
-				.equalsAny("TileFixture", dtde.getCurrentDataFlavorsAsList())) {
+				.equalsAny(WANTED_FLAVOR, dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -45,7 +49,7 @@ public class ChitDropListener implements DropTargetListener {
 	@Override
 	public void dragOver(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 && EqualsAny
-				.equalsAny("TileFixture", dtde.getCurrentDataFlavorsAsList())) {
+				.equalsAny(WANTED_FLAVOR, dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -58,7 +62,7 @@ public class ChitDropListener implements DropTargetListener {
 	@Override
 	public void dropActionChanged(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 && EqualsAny
-				.equalsAny("TileFixture", dtde.getCurrentDataFlavorsAsList())) {
+				.equalsAny(WANTED_FLAVOR, dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -79,7 +83,7 @@ public class ChitDropListener implements DropTargetListener {
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
 		for (DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-			if ("TileFixture".equals(flavor.getHumanPresentableName())) {
+			if (WANTED_FLAVOR.equals(flavor.getHumanPresentableName())) {
 				try {
 					((ChitAndDetailPanel) ((DropTarget) dtde.getSource())
 							.getComponent()).addFixture((TileFixture) dtde
