@@ -2,13 +2,10 @@ package view.map.details;
 
 import java.awt.Dimension;
 import java.beans.PropertyChangeListener;
-import java.util.EnumMap;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import model.viewer.TileType;
 import view.util.PropertyChangeSource;
 
 /**
