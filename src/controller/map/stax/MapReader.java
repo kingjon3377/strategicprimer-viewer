@@ -162,12 +162,12 @@ public class MapReader implements IMapReader {
 			throws MapVersionException {
 		if (Tag.Map.equals(XMLHelper.getTagType(startElement))) {
 			if (Integer.parseInt(helper.getAttributeWithDefault(startElement,
-					"version", "-1")) >= SPMap.VERSION) {
+					"version", "-1")) == 1) {
 				return new SPMap(Integer.parseInt(helper.getAttribute(// NOPMD
 						startElement, "rows")), Integer.parseInt(helper
 						.getAttribute(startElement, "columns"))); // NOPMD
 			} else {
-				throw new MapVersionException("Map is too old a version.");
+				throw new MapVersionException("STaX reader only supports map version 1.");
 			}
 		} else {
 			throw new IllegalStateException("Has to start with a map tag");
