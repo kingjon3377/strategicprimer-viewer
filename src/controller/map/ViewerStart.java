@@ -73,13 +73,7 @@ public final class ViewerStart {
 		try {
 			final MapModel model = new MapModel(new SimpleXMLReader().readMap(filename));
 			frame = new ViewerFrame(model);
-			new Thread() {
-				@Override
-				@SuppressWarnings("synthetic-access")
-				public void run() {
-					frame.setVisible(true);
-				}
-			} .start();
+			frame.setVisible(true);
 			if (args.length > 1) {
 				model.setSecondaryMap(new SimpleXMLReader().readMap(args[1]));
 			}
