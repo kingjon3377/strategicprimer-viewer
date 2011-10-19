@@ -1,6 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.viewer.PlayerCollection;
+import util.Warning;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.SPFormatException;
 
@@ -29,7 +30,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	public SkippableNode(final String tag, final int line) {
 		super();
 		if (!"row".equals(tag)) {
-			warn(new SPFormatException("Unexpected tag " + tag + ": probably a more recent map format than viewer.", line));
+			Warning.warn(new SPFormatException("Unexpected tag " + tag + ": probably a more recent map format than viewer.", line));
 		}
 	}
 	/**
