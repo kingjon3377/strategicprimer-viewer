@@ -36,6 +36,15 @@ public class UnitNode extends AbstractChildNode<Unit> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Unit should't contain anything", getLine());
 		}
+		if (!hasProperty("owner") || "".equals(getProperty("owner"))) {
+			warn(new SPFormatException("Unit should have an owner", getLine()));
+		}
+		if (!hasProperty("type") || "".equals(getProperty("type"))) {
+			warn(new SPFormatException("Unit should have a type", getLine()));
+		}
+		if (!hasProperty("name") || "".equals(getProperty("name"))) {
+			warn(new SPFormatException("Unit should have a name", getLine()));
+		}
 	}
 	/**
 	 * @return a String representation of the object

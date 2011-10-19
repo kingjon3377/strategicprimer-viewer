@@ -49,6 +49,12 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 						"Fortress should contain only units", getLine());
 			}
 		}
+		if (!hasProperty("owner")) {
+			warn(new SPFormatException("Fortress should have an owner", getLine()));
+		}
+		if (!hasProperty("name")) {
+			warn(new SPFormatException("Fortress should have a name", getLine()));
+		}
 	}
 	/**
 	 * @return a String representation of the object
