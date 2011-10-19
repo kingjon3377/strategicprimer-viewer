@@ -1,16 +1,17 @@
 package controller.map;
 
-
-
 /**
- * An interface for Nodes to implement if they need to do something
- * before the body of canonicalize() runs.
+ * An interface for Nodes to implement if they need to do something before the
+ * body of canonicalize() runs.
+ * 
  * @author Jonathan Lovelace
  */
 public interface NeedsExtraCanonicalization {
 	/**
 	 * Do the extra necessary work.
-	 * @throws SPFormatException on format errors uncovered in this process.
+	 * 
+	 * @throws SPFormatException
+	 *             on format errors uncovered in this process.
 	 */
 	void canonicalizeImpl() throws SPFormatException;
 }

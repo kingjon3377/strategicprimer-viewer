@@ -33,10 +33,13 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 					+ ": probably a more recent map format than viewer.", line));
 		}
 	}
+
 	/**
 	 * Throws an exception, because you should move all children from this to
 	 * its parent and then remove this node instead.
-	 * @param players ignored
+	 * 
+	 * @param players
+	 *            ignored
 	 * @return nothing
 	 * @throws SPFormatException
 	 *             never
@@ -53,12 +56,14 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * SkippableNode in the node-tree at the point that we're checking the data
 	 * for validity is a sign that something's wrong.
 	 * 
-	 * @throws SPFormatException never
+	 * @throws SPFormatException
+	 *             never
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

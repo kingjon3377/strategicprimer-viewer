@@ -18,6 +18,7 @@ import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.VisibleDimensions;
 import util.PropertyChangeSource;
+
 /**
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
@@ -25,8 +26,8 @@ import util.PropertyChangeSource;
  * @author Jonathan Lovelace
  * 
  */
-public final class MapComponent extends JComponent implements PropertyChangeSource,
-		MapGUI, PropertyChangeListener {
+public final class MapComponent extends JComponent implements
+		PropertyChangeSource, MapGUI, PropertyChangeListener {
 	/**
 	 * The map model encapsulating the map this represents, the secondary map,
 	 * and the selected tile.
@@ -36,12 +37,14 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 * An image of the map.
 	 */
 	private transient Image image;
+
 	/**
 	 * @return the size of a visible tile.
 	 */
 	public static int getTileSize() {
 		return TILE_SIZE;
 	}
+
 	/**
 	 * Tile size.
 	 */
@@ -50,6 +53,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
 	private final TileDrawHelper helper = new DirectTileDrawHelper();
+
 	/**
 	 * Constructor.
 	 * 
@@ -61,8 +65,8 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		setDoubleBuffered(true);
 		model = theMap;
 		loadMap(theMap.getMainMap());
-		setMinimumSize(new Dimension(model.getSizeCols() * getTileSize(), model.getSizeRows()
-				* getTileSize()));
+		setMinimumSize(new Dimension(model.getSizeCols() * getTileSize(),
+				model.getSizeRows() * getTileSize()));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
 		addMouseListener(new ComponentMouseListener(model, this));
@@ -85,18 +89,19 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 			image = new BufferedImage((getModel().getDimensions()
 					.getMaximumCol() + 1 - getModel().getDimensions()
 					.getMinimumCol())
-					* getTileSize(),
-					(getModel().getDimensions().getMaximumRow() + 1 - getModel()
-							.getDimensions().getMinimumRow()) * getTileSize(),
-					BufferedImage.TYPE_INT_RGB);
+					* getTileSize(), (getModel().getDimensions()
+					.getMaximumRow() + 1 - getModel().getDimensions()
+					.getMinimumRow())
+					* getTileSize(), BufferedImage.TYPE_INT_RGB);
 		}
 		drawMap(image.getGraphics());
 		setMinimumSize(new Dimension(
 				(getModel().getDimensions().getMaximumCol()
 						- getModel().getDimensions().getMinimumCol() + 1)
-						* getTileSize(),
-				(getModel().getDimensions().getMaximumRow() - getModel().getDimensions()
-						.getMinimumRow() + 1) * getTileSize()));
+						* getTileSize(), (getModel().getDimensions()
+						.getMaximumRow()
+						- getModel().getDimensions().getMinimumRow() + 1)
+						* getTileSize()));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
 		revalidate();
@@ -170,12 +175,12 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return (rect == null) ? new Rectangle(0, 0,
-				(getModel().getDimensions().getMaximumCol()
-						- getModel().getDimensions().getMinimumCol())
-						* getTileSize(), (getModel().getDimensions().getMaximumRow()
-						- getModel().getDimensions().getMinimumRow())
-						* getTileSize()) : rect;
+		return (rect == null) ? new Rectangle(0, 0, (getModel().getDimensions()
+				.getMaximumCol() - getModel().getDimensions().getMinimumCol())
+				* getTileSize(),
+				(getModel().getDimensions().getMaximumRow() - getModel()
+						.getDimensions().getMinimumRow()) * getTileSize())
+				: rect;
 	}
 
 	/**
@@ -193,8 +198,8 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	private void paintTile(final Graphics pen, final Tile tile, final int row,
 			final int col) {
 		final Color saveColor = pen.getColor();
-		helper.drawTile(pen, tile, col * getTileSize(), row * getTileSize(), getTileSize(),
-				getTileSize());
+		helper.drawTile(pen, tile, col * getTileSize(), row * getTileSize(),
+				getTileSize(), getTileSize());
 		if (model.getSelectedTile().equals(tile)) {
 			pen.setColor(Color.black);
 			pen.drawRect(col * getTileSize() + 1, row * getTileSize() + 1,
@@ -202,6 +207,7 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		}
 		pen.setColor(saveColor);
 	}
+
 	/**
 	 * Load and draw a subset of a map.
 	 * 
@@ -220,8 +226,8 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	public void loadMap(final SPMap newMap, final int minRow, final int maxRow,
 			final int minCol, final int maxCol) {
 		model.setMainMap(newMap);
-		model.setDimensions(new VisibleDimensions(Math.max(0, minRow),
-				Math.min(model.getSizeRows(), maxRow + 1) - 1, Math.max(0, minCol),
+		model.setDimensions(new VisibleDimensions(Math.max(0, minRow), Math
+				.min(model.getSizeRows(), maxRow + 1) - 1, Math.max(0, minCol),
 				Math.min(model.getSizeCols(), maxCol + 1) - 1));
 		createImage();
 	}
@@ -244,13 +250,17 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	public MapModel getModel() {
 		return model;
 	}
+
 	/**
 	 * Handle events.
-	 * @param evt the event to handle.
+	 * 
+	 * @param evt
+	 *            the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
-		firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+		firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
+				evt.getNewValue());
 		if (equalsAny(evt.getPropertyName(), "map", "tile", "dimensions")) {
 			createImage();
 			repaint();

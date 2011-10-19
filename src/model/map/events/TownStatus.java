@@ -31,25 +31,32 @@ public enum TownStatus {
 	 * A string representing the TownStatus.
 	 */
 	private final String str;
+
 	/**
 	 * Constructor.
-	 * @param string a string representing the status.
+	 * 
+	 * @param string
+	 *            a string representing the status.
 	 */
 	private TownStatus(final String string) {
 		str = string;
 	}
+
 	static {
-		for (TownStatus ts : values()) {
+		for (final TownStatus ts : values()) {
 			TST_MAP.put(ts.str, ts);
 		}
 	}
+
 	/**
-	 * @param string a string representing a TownStatus
+	 * @param string
+	 *            a string representing a TownStatus
 	 * @return the TownStatus it represents
 	 */
 	public static TownStatus parseTownStatus(final String string) {
 		return TST_MAP.get(string);
 	}
+
 	/**
 	 * @return a string representation of the status
 	 */

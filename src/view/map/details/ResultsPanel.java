@@ -14,8 +14,10 @@ import javax.swing.SwingConstants;
 
 import model.exploration.ExplorationRunner;
 import model.map.Tile;
+
 /**
  * A panel for displaying and editing tile text i.e. results.
+ * 
  * @author Jonathan Lovelace
  */
 public class ResultsPanel extends JPanel implements PropertyChangeListener {
@@ -51,12 +53,18 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	 * Field to show and edit exploration results.
 	 */
 	private final JTextArea field = new JTextArea();
+
 	/**
 	 * Constructor.
-	 * @param minHeight the minimum height of this panel
-	 * @param height the (preferred) height of this panel
-	 * @param maxHeight the maximum height of this panel
-	 * @param xrunner an exploration runner.
+	 * 
+	 * @param minHeight
+	 *            the minimum height of this panel
+	 * @param height
+	 *            the (preferred) height of this panel
+	 * @param maxHeight
+	 *            the maximum height of this panel
+	 * @param xrunner
+	 *            an exploration runner.
 	 */
 	public ResultsPanel(final int minHeight, final int height,
 			final int maxHeight, final ExplorationRunner xrunner) {
@@ -68,7 +76,7 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 		label.setPreferredSize(new Dimension(PREF_WIDTH, LABEL_HEIGHT));
 		label.setMaximumSize(new Dimension(MAX_WIDTH, LABEL_MAX_HT));
 		add(label, BorderLayout.NORTH);
-		
+
 		field.setLineWrap(true);
 		field.setEditable(true);
 		field.setWrapStyleWord(true);
@@ -85,25 +93,30 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 				- LABEL_MAX_HT - (int) button.getMaximumSize().getHeight()));
 		add(wrapper, BorderLayout.CENTER);
 	}
+
 	/**
 	 * Save changed results back to the tile.
 	 */
 	public void saveTileText() {
 		tile.setTileText(field.getText().trim());
 	}
+
 	/**
-	 * @param newTile the new tile
+	 * @param newTile
+	 *            the new tile
 	 */
 	public void setTile(final Tile newTile) {
 		if (!newTile.equals(tile)) {
-		tile = newTile;
-		field.setText(tile.getTileText());
+			tile = newTile;
+			field.setText(tile.getTileText());
 		}
 	}
+
 	/**
-	 * The tile we get and save results from and to. 
+	 * The tile we get and save results from and to.
 	 */
 	private Tile tile;
+
 	/**
 	 * Run an encounter.
 	 */
@@ -112,9 +125,12 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 				+ runner.recursiveConsultTable("main", tile));
 		saveTileText();
 	}
+
 	/**
 	 * Handle a property change.
-	 * @param evt the event to handle.
+	 * 
+	 * @param evt
+	 *            the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {

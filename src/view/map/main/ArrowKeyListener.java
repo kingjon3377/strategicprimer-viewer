@@ -11,15 +11,20 @@ import javax.swing.KeyStroke;
 
 /**
  * A class to handle setting up listeners for the arrow keys.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class ArrowKeyListener {
 	/**
 	 * Set up listeners.
-	 * @param selListener The actual listener whose methods have to be attached.
-	 * @param inputMap An input map to set up the keybindings.
-	 * @param actionMap The action map we'll be putting the glue listeners into.
+	 * 
+	 * @param selListener
+	 *            The actual listener whose methods have to be attached.
+	 * @param inputMap
+	 *            An input map to set up the keybindings.
+	 * @param actionMap
+	 *            The action map we'll be putting the glue listeners into.
 	 */
 	public void setUpListeners(final DirectionSelectionChanger selListener,
 			final InputMap inputMap, final ActionMap actionMap) {
@@ -52,6 +57,7 @@ public class ArrowKeyListener {
 			}
 		});
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

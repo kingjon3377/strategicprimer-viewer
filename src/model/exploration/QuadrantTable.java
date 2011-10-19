@@ -94,6 +94,7 @@ public class QuadrantTable implements EncounterTable {
 	public Set<String> allEvents() {
 		return new HashSet<String>(quadrants.values());
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

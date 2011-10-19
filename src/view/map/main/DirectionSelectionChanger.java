@@ -1,8 +1,11 @@
 package view.map.main;
+
 /**
- * An interface for something that can make the selection go in one of the cardinal directions.
+ * An interface for something that can make the selection go in one of the
+ * cardinal directions.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public interface DirectionSelectionChanger {
 

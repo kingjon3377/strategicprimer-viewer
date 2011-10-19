@@ -42,6 +42,7 @@ public class ConstraintHelper extends GridBagConstraints {
 		gridwidth = width;
 		gridheight = height;
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

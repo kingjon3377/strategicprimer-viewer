@@ -68,10 +68,10 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof Unit
-				&& ((Unit) obj).owner.equals(owner)
-				&& (((Unit) obj).type.equals(type))
-				&& (((Unit) obj).name.equals(name)));
+		return this == obj
+				|| (obj instanceof Unit && ((Unit) obj).owner.equals(owner)
+						&& (((Unit) obj).type.equals(type)) && (((Unit) obj).name
+							.equals(name)));
 	}
 
 	/**

@@ -30,7 +30,8 @@ public class RandomTable implements EncounterTable {
 	}
 
 	/**
-	 * @param value a number to check the table against
+	 * @param value
+	 *            a number to check the table against
 	 * @return the result of the check
 	 */
 	private String getLowestMatch(final int value) {
@@ -69,6 +70,7 @@ public class RandomTable implements EncounterTable {
 		}
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the class
 	 */

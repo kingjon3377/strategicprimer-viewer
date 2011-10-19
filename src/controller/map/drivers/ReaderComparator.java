@@ -44,30 +44,30 @@ public class ReaderComparator {
 	 *            The logger to log errors to.
 	 */
 	public void compareReaders(final String[] args, final Logger logger) {
-		for (String arg : args) {
+		for (final String arg : args) {
 			try {
 				compareReaders(arg);
-			} catch (XMLStreamException e) {
+			} catch (final XMLStreamException e) {
 				logger.log(Level.SEVERE,
 						"XMLStreamException (probably badly formed input) in "
 								+ arg, e);
 				continue;
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				logger.log(Level.SEVERE, arg + " not found", e);
 				continue;
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				logger.log(Level.SEVERE, "I/O error while parsing" + arg, e);
 				continue;
-			} catch (MapVersionException e) {
+			} catch (final MapVersionException e) {
 				logger.log(Level.SEVERE,
 						"Map version too old for old-style reader in file "
 								+ arg, e);
 				continue;
-			} catch (SPFormatException e) {
+			} catch (final SPFormatException e) {
 				logger.log(Level.SEVERE,
 						"New reader claims invalid SP map data in " + arg, e);
 				continue;
-			} 
+			}
 		}
 	}
 
@@ -140,6 +140,7 @@ public class ReaderComparator {
 			out.println(arg);
 		}
 	}
+
 	/**
 	 * @return a String representation of this object
 	 */

@@ -29,11 +29,15 @@ import controller.map.simplexml.node.TileNode;
  */
 public class SimpleXMLReader implements IMapReader {
 	/**
-	 * @param file the name of a file
+	 * @param file
+	 *            the name of a file
 	 * @return the map contained in that file
-	 * @throws IOException on I/O error
-	 * @throws SPFormatException if the data is invalid
-	 * @throws XMLStreamException if the XML isn't well-formed
+	 * @throws IOException
+	 *             on I/O error
+	 * @throws SPFormatException
+	 *             if the data is invalid
+	 * @throws XMLStreamException
+	 *             if the XML isn't well-formed
 	 */
 	@Override
 	public SPMap readMap(final String file) throws IOException,
@@ -42,14 +46,18 @@ public class SimpleXMLReader implements IMapReader {
 		try {
 			return readMap(istream);
 		} finally {
-		istream.close();
+			istream.close();
 		}
 	}
+
 	/**
-	 * @param istream a stream
+	 * @param istream
+	 *            a stream
 	 * @return the map contained in that stream
-	 * @throws XMLStreamException if XML isn't well-formed.
-	 * @throws SPFormatException if the data is invalid.
+	 * @throws XMLStreamException
+	 *             if XML isn't well-formed.
+	 * @throws SPFormatException
+	 *             if the data is invalid.
 	 */
 	@Override
 	public SPMap readMap(final InputStream istream) throws XMLStreamException,
@@ -60,14 +68,15 @@ public class SimpleXMLReader implements IMapReader {
 		@SuppressWarnings("unchecked")
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
-		for (XMLEvent event : eventReader) {
+		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final AbstractXMLNode node = parseTag(event.asStartElement());
 				stack.peek().addChild(node);
 				stack.push(node);
 			} else if (event.isCharacters()) {
 				if (stack.peek() instanceof TileNode) {
-					((TileNode) stack.peek()).addText(event.asCharacters().getData());
+					((TileNode) stack.peek()).addText(event.asCharacters()
+							.getData());
 				}
 			} else if (event.isEndElement()) {
 				stack.pop();
@@ -77,11 +86,15 @@ public class SimpleXMLReader implements IMapReader {
 		root.checkNode();
 		return root.getMapNode().produce(null);
 	}
+
 	/**
 	 * Turn a tag and its contents (properties) into a Node.
-	 * @param element the tag
+	 * 
+	 * @param element
+	 *            the tag
 	 * @return the equivalent node.
-	 * @throws SPFormatException on unexpecte or illegal XML.
+	 * @throws SPFormatException
+	 *             on unexpecte or illegal XML.
 	 */
 	private static AbstractXMLNode parseTag(final StartElement element)
 			throws SPFormatException {
@@ -90,11 +103,12 @@ public class SimpleXMLReader implements IMapReader {
 		@SuppressWarnings("unchecked")
 		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(
 				element.getAttributes());
-		for (Attribute att : attributes) {
+		for (final Attribute att : attributes) {
 			node.addProperty(att.getName().getLocalPart(), att.getValue());
 		}
 		return node;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

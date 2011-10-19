@@ -61,6 +61,7 @@ public class ConstantTable implements EncounterTable {
 		retval.add(value);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

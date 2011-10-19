@@ -18,10 +18,14 @@ public class XMLHelper {
 	 * Error message for unexpected tag.
 	 */
 	private static final String UNEXPECTED_TAG = "Unexpected tag ";
+
 	/**
-	 * @param elem the element
-	 * @param attr the attribute we want
-	 * @param defaultValue the default value if the element doesn't have the attribute
+	 * @param elem
+	 *            the element
+	 * @param attr
+	 *            the attribute we want
+	 * @param defaultValue
+	 *            the default value if the element doesn't have the attribute
 	 * @return the value of attribute if it exists, or the default
 	 */
 	public String getAttributeWithDefault(final StartElement elem,
@@ -29,6 +33,7 @@ public class XMLHelper {
 		return (elem.getAttributeByName(new QName(attr)) == null) ? defaultValue
 				: getAttribute(elem, attr);
 	}
+
 	/**
 	 * Move along the stream until we hit an end element, but object to any
 	 * start elements.
@@ -39,17 +44,17 @@ public class XMLHelper {
 	 *            the XML stream we're reading from
 	 */
 	public void spinUntilEnd(final String tag, final Iterable<XMLEvent> reader) {
-		for (XMLEvent event : reader) {
+		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				throw new IllegalStateException(UNEXPECTED_TAG
-						+ event
-								.asStartElement().getName().getLocalPart()
+						+ event.asStartElement().getName().getLocalPart()
 						+ ": " + tag + " can't contain anything yet");
 			} else if (event.isEndElement()) {
 				break;
 			}
 		}
 	}
+
 	/**
 	 * @param startElement
 	 *            a tag
@@ -67,6 +72,7 @@ public class XMLHelper {
 		}
 		return attr.getValue();
 	}
+
 	/**
 	 * Get the tag type of a tag.
 	 * 
@@ -78,6 +84,7 @@ public class XMLHelper {
 	public static Tag getTagType(final StartElement startElement) { // NOPMD
 		return Tag.fromString(startElement.getName().getLocalPart());
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

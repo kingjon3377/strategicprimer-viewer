@@ -53,7 +53,7 @@ public final class NodeFactory { // NOPMD
 	private static void addTag(final String string, final Tag tag) {
 		TAGS.put(string, tag);
 	}
-	
+
 	/**
 	 * Tags we expect to use in the future; they are SkippableNodes for now and
 	 * we'll warn if they're used.
@@ -66,7 +66,7 @@ public final class NodeFactory { // NOPMD
 	 * remove a tag from FUTURE, we handle those before the tags we *do* handle.
 	 */
 	static {
-		for (String string : FUTURE) {
+		for (final String string : FUTURE) {
 			addTag(string, Tag.Skippable);
 		}
 		addTag("map", Tag.Map);
@@ -98,7 +98,7 @@ public final class NodeFactory { // NOPMD
 	 * @throws SPFormatException
 	 *             on unrecognized tag
 	 */
-	public static AbstractChildNode<?> create(final String tag, final int line) //NOPMD
+	public static AbstractChildNode<?> create(final String tag, final int line) // NOPMD
 			throws SPFormatException {
 		if (!TAGS.containsKey(tag)) {
 			throw new SPFormatException("Unknown tag " + tag, line);

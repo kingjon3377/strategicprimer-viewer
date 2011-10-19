@@ -1,6 +1,5 @@
 package controller.map.stax;
 
-
 /**
  * An enumerated type for the tags we know about.
  */
@@ -56,8 +55,8 @@ enum Tag {
 	 */
 	City("city"),
 	/**
-	 * Fortification: @see model.viewer.events.FortificationEvent FIXME: We
-	 * want this to use the Fortress tag instead, eventually.
+	 * Fortification: @see model.viewer.events.FortificationEvent FIXME: We want
+	 * this to use the Fortress tag instead, eventually.
 	 */
 	Fortification("fortification"),
 	/**
@@ -101,8 +100,7 @@ enum Tag {
 	/**
 	 * @param tagText
 	 *            a string
-	 * @return the tag that represents that string, if any, or Unknown if
-	 *         none.
+	 * @return the tag that represents that string, if any, or Unknown if none.
 	 */
 	public static Tag fromString(final String tagText) {
 		Tag retval = Unknown;

@@ -30,7 +30,8 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(TableLoader.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(TableLoader.class
+			.getName());
 	/**
 	 * An error-message string. Pulled out because it's so long.
 	 */
@@ -131,16 +132,16 @@ public final class TableLoader { // NOPMD
 		final int rows = Integer.parseInt(line);
 		final List<String> items = new LinkedList<String>();
 		line = reader.readLine();
-			try {
-				while (line != null) {
-					items.add(line);
+		try {
+			while (line != null) {
+				items.add(line);
 				line = reader.readLine();
-				}
-			} catch (final IOException except) {
+			}
+		} catch (final IOException except) {
 			Logger.getLogger(TableLoader.class.getName()).log(Level.SEVERE,
 					IO_ERR_STRING, except);
 		} finally {
-		reader.close();
+			reader.close();
 		}
 		return new QuadrantTable(rows, items);
 	}
@@ -159,18 +160,18 @@ public final class TableLoader { // NOPMD
 		String line = reader.readLine();
 		final List<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
 		try {
-		while (line != null) {
-			final String[] array = line.split(" ", SPLIT_ONCE);
-			if (array.length < SPLIT_ONCE) {
-				Logger.getLogger(TableLoader.class.getName()).severe(
-						"Line with no blanks, continuing ...");
-			} else {
-				list.add(Pair.of(Integer.parseInt(array[0]), array[1]));
+			while (line != null) {
+				final String[] array = line.split(" ", SPLIT_ONCE);
+				if (array.length < SPLIT_ONCE) {
+					Logger.getLogger(TableLoader.class.getName()).severe(
+							"Line with no blanks, continuing ...");
+				} else {
+					list.add(Pair.of(Integer.parseInt(array[0]), array[1]));
+				}
+				line = reader.readLine();
 			}
-			line = reader.readLine();
-		}
 		} finally {
-		reader.close();
+			reader.close();
 		}
 		return new RandomTable(list);
 	}
@@ -189,18 +190,18 @@ public final class TableLoader { // NOPMD
 		String line = reader.readLine();
 		final List<Pair<TileType, String>> list = new ArrayList<Pair<TileType, String>>();
 		try {
-		while (line != null) {
-			final String[] array = line.split(" ", SPLIT_ONCE);
-			if (array.length < SPLIT_ONCE) {
-				Logger.getLogger(TableLoader.class.getName()).severe(
-						"Line with no blanks, continuing ...");
-			} else {
-				list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
+			while (line != null) {
+				final String[] array = line.split(" ", SPLIT_ONCE);
+				if (array.length < SPLIT_ONCE) {
+					Logger.getLogger(TableLoader.class.getName()).severe(
+							"Line with no blanks, continuing ...");
+				} else {
+					list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
+				}
+				line = reader.readLine();
 			}
-			line = reader.readLine();
-		}
 		} finally {
-		reader.close();
+			reader.close();
 		}
 		return new TerrainTable(list);
 	}
@@ -231,6 +232,7 @@ public final class TableLoader { // NOPMD
 	public LegacyTable loadLegacyTable() {
 		return new LegacyTable();
 	}
+
 	/**
 	 * @return a String representation of this class
 	 */
@@ -238,6 +240,7 @@ public final class TableLoader { // NOPMD
 	public String toString() {
 		return "TableLoader";
 	}
+
 	/**
 	 * Try to load a table from file, but log the error and use the given backup
 	 * if it fails.
@@ -262,6 +265,7 @@ public final class TableLoader { // NOPMD
 					defaultItems));
 		}
 	}
+
 	/**
 	 * A list of tables to load.
 	 */
@@ -270,7 +274,9 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Loads the default set of tables.
-	 * @param runner the runner to add them to
+	 * 
+	 * @param runner
+	 *            the runner to add them to
 	 */
 	public void loadDefaultTables(final ExplorationRunner runner) {
 		for (final String table : defaultTableList) {
@@ -278,6 +284,7 @@ public final class TableLoader { // NOPMD
 					tryLoading("tables/" + table, 2, createList(table, 4)));
 		}
 	}
+
 	/**
 	 * Create a list of strings, each beginning with a specified stem and ending
 	 * with a sequential number.
@@ -297,7 +304,7 @@ public final class TableLoader { // NOPMD
 			return list;
 		}
 	}
-	
+
 	/**
 	 * Load all tables in the specified path.
 	 * 
@@ -313,7 +320,8 @@ public final class TableLoader { // NOPMD
 		if (children != null) {
 			for (final String table : children) {
 				try {
-					runner.loadTable(table, loader.loadTable(path + '/' + table));
+					runner.loadTable(table,
+							loader.loadTable(path + '/' + table));
 				} catch (final FileNotFoundException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 				} catch (final IOException e) {

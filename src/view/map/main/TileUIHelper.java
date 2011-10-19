@@ -19,6 +19,7 @@ public class TileUIHelper {
 	 */
 	private final Map<TileType, Color> colors = new EnumMap<TileType, Color>(
 			TileType.class);
+
 	/**
 	 * Constructor.
 	 */
@@ -33,23 +34,28 @@ public class TileUIHelper {
 		colors.put(TileType.Plains, new Color(0, 117, 0));
 		colors.put(TileType.TemperateForest, new Color(72, 250, 72));
 		colors.put(TileType.Tundra, new Color(153, 153, 153));
-		descriptions.put(TileType.BorealForest, "<html><p>Boreal Forest</p></html>");
+		descriptions.put(TileType.BorealForest,
+				"<html><p>Boreal Forest</p></html>");
 		descriptions.put(TileType.Desert, "<html><p>Desert</p></html>");
 		descriptions.put(TileType.Jungle, "<html><p>Jungle</p></html>");
 		descriptions.put(TileType.Mountain, "<html><p>Mountains</p></html>");
 		descriptions.put(TileType.NotVisible, "<html><p>Unknown</p></html>");
 		descriptions.put(TileType.Ocean, "<html><p>Ocean</p></html>");
 		descriptions.put(TileType.Plains, "<html><p>Plains</p></html>");
-		descriptions.put(TileType.TemperateForest, "<html><p>Temperate Forest</p></html>");
+		descriptions.put(TileType.TemperateForest,
+				"<html><p>Temperate Forest</p></html>");
 		descriptions.put(TileType.Tundra, "<html><p>Tundra</p></html>");
 	}
+
 	/**
-	 * @param type a tile type
+	 * @param type
+	 *            a tile type
 	 * @return its color, if any
 	 */
 	public Color get(final TileType type) {
 		return colors.get(type);
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */
@@ -57,11 +63,13 @@ public class TileUIHelper {
 	public String toString() {
 		return "TileUIHelper";
 	}
+
 	/**
 	 * Descriptions of the types.
 	 */
 	private final Map<TileType, String> descriptions = new EnumMap<TileType, String>(
 			TileType.class);
+
 	/**
 	 * @param type
 	 *            a terrain type

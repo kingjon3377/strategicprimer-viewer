@@ -60,19 +60,25 @@ public final class ExplorationCLI {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		} finally {
 			try {
-			reader.close();
+				reader.close();
 			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O exception while closing reader", except);
-			} 
+				LOGGER.log(Level.SEVERE, "I/O exception while closing reader",
+						except);
+			}
 		}
 	}
 
 	/**
-	 * @param map the map
-	 * @param reader the stream to read further input from
-	 * @param ostream the stream to write to
-	 * @param input the command
-	 * @throws IOException on I/O error
+	 * @param map
+	 *            the map
+	 * @param reader
+	 *            the stream to read further input from
+	 * @param ostream
+	 *            the stream to write to
+	 * @param input
+	 *            the command
+	 * @throws IOException
+	 *             on I/O error
 	 */
 	public void handleCommand(final SPMap map, final BufferedReader reader,
 			final PrintStream ostream, final char input) throws IOException {
@@ -92,7 +98,7 @@ public final class ExplorationCLI {
 			repeatedlyConsultTable(ORDER_MAP.get(input),
 					selectTile(map, reader, ostream), HUNTER_HOURS
 							* HOURLY_ENCOUNTERS, ostream);
-		break;
+			break;
 		default:
 			ostream.println("Unknown command.");
 			break;
@@ -123,8 +129,8 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	private void explore(final SPMap map, final BufferedReader reader, final PrintStream ostream)
-			throws IOException {
+	private void explore(final SPMap map, final BufferedReader reader,
+			final PrintStream ostream) throws IOException {
 		final Tile tile = selectTile(map, reader, ostream);
 		ostream.print("Tile is ");
 		ostream.println(tile.getType());
@@ -148,12 +154,17 @@ public final class ExplorationCLI {
 			final PrintStream ostream) throws IOException {
 		ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
 	}
+
 	/**
-	 * @param reader the stream we read from
-	 * @param ostream the stream we write to
-	 * @param string the prompt
+	 * @param reader
+	 *            the stream we read from
+	 * @param ostream
+	 *            the stream we write to
+	 * @param string
+	 *            the prompt
 	 * @return the integer the player specified
-	 * @throws IOException on I/O error
+	 * @throws IOException
+	 *             on I/O error
 	 */
 	private static int getInteger(final BufferedReader reader,
 			final PrintStream ostream, final String string) throws IOException {
@@ -164,15 +175,21 @@ public final class ExplorationCLI {
 		}
 		return Integer.parseInt(line);
 	}
+
 	/**
-	 * @param map The map we're dealing with
-	 * @param reader The stream we're reading from
-	 * @param ostream The stream we write the prompts to
+	 * @param map
+	 *            The map we're dealing with
+	 * @param reader
+	 *            The stream we're reading from
+	 * @param ostream
+	 *            The stream we write the prompts to
 	 * @return The tile the user specifies.
-	 * @throws IOException on I/O error
+	 * @throws IOException
+	 *             on I/O error
 	 */
-	private static Tile selectTile(final SPMap map, final BufferedReader reader,
-			final PrintStream ostream) throws IOException {
+	private static Tile selectTile(final SPMap map,
+			final BufferedReader reader, final PrintStream ostream)
+			throws IOException {
 		return map.getTile(getInteger(reader, ostream, "Row: "),
 				getInteger(reader, ostream, "Column: "));
 	}
@@ -185,7 +202,7 @@ public final class ExplorationCLI {
 	 * How many encounters per hour for a hunter or such.
 	 */
 	private static final int HOURLY_ENCOUNTERS = 4;
-	
+
 	/**
 	 * A map from commands to tables. Hunters, fishermen, and Food Gatherers are
 	 * handled the same way, but with different tables.
@@ -199,13 +216,18 @@ public final class ExplorationCLI {
 		ORDER_MAP.put('i', "fisher");
 		ORDER_MAP.put('I', "fisher");
 	}
-	
+
 	/**
 	 * Repeatedly consult a table.
-	 * @param table the table to consult
-	 * @param tile the tile to refer to
-	 * @param reps how many times to consult it
-	 * @param ostream the stream to print the results to
+	 * 
+	 * @param table
+	 *            the table to consult
+	 * @param tile
+	 *            the tile to refer to
+	 * @param reps
+	 *            how many times to consult it
+	 * @param ostream
+	 *            the stream to print the results to
 	 */
 	private void repeatedlyConsultTable(final String table, final Tile tile,
 			final int reps, final PrintStream ostream) {
@@ -213,6 +235,7 @@ public final class ExplorationCLI {
 			ostream.println(runner.recursiveConsultTable(table, tile));
 		}
 	}
+
 	/**
 	 * @param args
 	 *            command-line arguments
@@ -228,12 +251,13 @@ public final class ExplorationCLI {
 			LOGGER.log(Level.SEVERE, "I/O error", e);
 			DriverQuit.quit(2);
 			return; // NOPMD;
-		} catch (SPFormatException e) {
+		} catch (final SPFormatException e) {
 			LOGGER.log(Level.SEVERE, "Map contains invalid data", e);
 			DriverQuit.quit(2);
 			return; // NOPMD;
 		}
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

@@ -9,8 +9,9 @@ import controller.map.SPFormatException;
 
 /**
  * A node generated from the <map> tag.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class MapNode extends AbstractChildNode<SPMap> {
 	/**
@@ -23,7 +24,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
-		for (AbstractXMLNode node : this) {
+		for (final AbstractXMLNode node : this) {
 			if (node instanceof TileNode || node instanceof PlayerNode) {
 				node.checkNode();
 			} else {
@@ -42,17 +43,21 @@ public class MapNode extends AbstractChildNode<SPMap> {
 					"Map must specify number of rows and columns.", getLine());
 		}
 	}
+
 	/**
 	 * @return the map the XML represented
-	 * @param players will be null, and is ignored
-	 * @throws SPFormatException if something's wrong with the format.
+	 * @param players
+	 *            will be null, and is ignored
+	 * @throws SPFormatException
+	 *             if something's wrong with the format.
 	 */
 	@Override
-	public SPMap produce(final PlayerCollection players) throws SPFormatException {
+	public SPMap produce(final PlayerCollection players)
+			throws SPFormatException {
 		final SPMap map = new SPMap(Integer.parseInt(getProperty("rows")),
 				Integer.parseInt(getProperty("columns")));
 		final List<TileNode> tiles = new LinkedList<TileNode>();
-		for (AbstractXMLNode node : this) {
+		for (final AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
 				map.addPlayer(((PlayerNode) node).produce(null));
 			} else if (node instanceof TileNode) {
@@ -62,7 +67,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 						"Unsupported direct child of <map>", node.getLine());
 			}
 		}
-		for (TileNode node : tiles) {
+		for (final TileNode node : tiles) {
 			map.addTile(node.produce(map.getPlayers()));
 		}
 		if (hasProperty("current_player")) {
@@ -72,6 +77,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 		}
 		return map;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

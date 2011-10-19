@@ -11,6 +11,7 @@ public final class NothingEvent extends AbstractEvent {
 	 * A singleton to compare with.
 	 */
 	public static final NothingEvent NOTHING_EVENT = new NothingEvent();
+
 	/**
 	 * Constructor.
 	 */
@@ -28,9 +29,10 @@ public final class NothingEvent extends AbstractEvent {
 	public int getDC() {
 		return 0;
 	}
+
 	/**
 	 * @return a hash-code for this object.
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -39,11 +41,12 @@ public final class NothingEvent extends AbstractEvent {
 	}
 
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it's equal to this one---iff it's another NothingEvent.
 	 */
 	@Override
-	public boolean equals(final Object obj) {  // $codepro.audit.disable
+	public boolean equals(final Object obj) { // $codepro.audit.disable
 		return this == obj || obj instanceof NothingEvent;
 	}
 
@@ -54,6 +57,7 @@ public final class NothingEvent extends AbstractEvent {
 	public String getText() {
 		return "Nothing interesting here ...";
 	}
+
 	/**
 	 * @return a string representation of the event
 	 */

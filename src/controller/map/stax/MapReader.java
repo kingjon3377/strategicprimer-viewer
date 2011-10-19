@@ -102,10 +102,13 @@ public class MapReader implements IMapReader {
 	}
 
 	/**
-	 * @param istream the stream to read from
+	 * @param istream
+	 *            the stream to read from
 	 * @return the map
-	 * @throws XMLStreamException on XML error
-	 * @throws MapVersionException if the map version is one we can't handle
+	 * @throws XMLStreamException
+	 *             on XML error
+	 * @throws MapVersionException
+	 *             if the map version is one we can't handle
 	 */
 	private SPMap readMapImpl(final InputStream istream)
 			throws XMLStreamException, MapVersionException {
@@ -115,30 +118,30 @@ public class MapReader implements IMapReader {
 		@SuppressWarnings("unchecked")
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
-		for (XMLEvent event : eventReader) {
+		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final StartElement startElement = event.asStartElement();
 				if (map == null) {
 					map = firstTag(startElement);
 					continue;
-				} 
-					switch (XMLHelper.getTagType(startElement)) {
-					case Player:
-						map.addPlayer(parsePlayer(startElement, eventReader));
-						break;
-					case Row:
-						// Deliberately ignore
-						continue;
-					case Tile:
-						map.addTile(tileReader.parseTileAndContents(
-								startElement, eventReader, map.getPlayers()));
-						break;
-					default:
+				}
+				switch (XMLHelper.getTagType(startElement)) {
+				case Player:
+					map.addPlayer(parsePlayer(startElement, eventReader));
+					break;
+				case Row:
+					// Deliberately ignore
+					continue;
+				case Tile:
+					map.addTile(tileReader.parseTileAndContents(startElement,
+							eventReader, map.getPlayers()));
+					break;
+				default:
 					throw new IllegalStateException(
 							UNEXPECTED_TAG
 									+ startElement.getName().getLocalPart()
 									+ ": players, rows, and tiles are the only accepted top-level tags");
-					}
+				}
 			}
 		}
 		LOGGER.info("Finished reading XML");
@@ -182,7 +185,7 @@ public class MapReader implements IMapReader {
 	 */
 	private static Player parsePlayer(final StartElement element,
 			final Iterable<XMLEvent> reader) {
-		for (XMLEvent event : reader) {
+		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				throw new IllegalStateException(UNEXPECTED_TAG
 						+ event.asStartElement().getName().getLocalPart()
@@ -195,6 +198,7 @@ public class MapReader implements IMapReader {
 				new QName("number")).getValue()), element.getAttributeByName(
 				new QName("code_name")).getValue());
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -91,10 +91,9 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	public boolean equals(final Object obj) {
 		return this == obj
 				|| (obj instanceof Fortress
-						&& (name
-								.equals(((Fortress) obj).name))
+						&& (name.equals(((Fortress) obj).name))
 						&& ((Fortress) obj).owner.equals(owner) && ((Fortress) obj).units
-						.equals(units));
+							.equals(units));
 	}
 
 	/**
@@ -102,8 +101,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 */
 	@Override
 	public int hashCode() {
-		return (name.hashCode()) + owner.hashCode() << 2 + units
-				.hashCode() << 4;
+		return (name.hashCode()) + owner.hashCode() << 2 + units.hashCode() << 4;
 	}
 
 	/**

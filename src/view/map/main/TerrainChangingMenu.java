@@ -57,23 +57,28 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 
 	/**
 	 * Handle Menu selections.
-	 * @param event the menu-item-selected event we're handling.
+	 * 
+	 * @param event
+	 *            the menu-item-selected event we're handling.
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if (event != null) {
-			tile.setType(TileType.valueOf(event
-					.getActionCommand()));
+			tile.setType(TileType.valueOf(event.getActionCommand()));
 			firePropertyChange("tile", null, tile);
 		}
 	}
+
 	/**
 	 * Listen for property changes.
-	 * @param evt the property-change event to handle
+	 * 
+	 * @param evt
+	 *            the property-change event to handle
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("tile".equals(evt.getPropertyName()) && evt.getNewValue() instanceof Tile) {
+		if ("tile".equals(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Tile) {
 			tile = (Tile) evt.getNewValue();
 		}
 	}

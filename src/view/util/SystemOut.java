@@ -1,10 +1,12 @@
 package view.util;
 
 import java.io.PrintStream;
+
 /**
  * A class to get around FindBugs' insistence that System.out is always null.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class SystemOut extends PrintStream {
 	/**
@@ -13,10 +15,13 @@ public final class SystemOut extends PrintStream {
 	private SystemOut() {
 		super(System.out);
 	}
+
 	/**
 	 * The singleton object.
 	 */
-	public static final SystemOut SYS_OUT = new SystemOut(); // $codepro.audit.disable closeWhereCreated
+	public static final SystemOut SYS_OUT = new SystemOut(); // $codepro.audit.disable
+																// closeWhereCreated
+
 	/**
 	 * @return a String representation of the object.
 	 */

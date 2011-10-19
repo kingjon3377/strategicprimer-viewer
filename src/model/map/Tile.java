@@ -66,30 +66,38 @@ public final class Tile {
 	public TileType getType() {
 		return type;
 	}
+
 	/**
-	 * @param ttype the tile's new type
+	 * @param ttype
+	 *            the tile's new type
 	 */
 	public void setType(final TileType ttype) {
 		type = ttype;
 	}
+
 	/**
 	 * The units, fortresses, and events on the tile.
 	 */
 	private final Set<TileFixture> contents;
+
 	/**
-	 * @param fix something new on the tile
+	 * @param fix
+	 *            something new on the tile
 	 */
 	public void addFixture(final TileFixture fix) {
 		if (!fix.equals(NothingEvent.NOTHING_EVENT)) {
-		contents.add(fix);
+			contents.add(fix);
 		}
 	}
+
 	/**
-	 * @param fix something to remove from the tile
+	 * @param fix
+	 *            something to remove from the tile
 	 */
 	public void removeFixture(final TileFixture fix) {
 		contents.remove(fix);
 	}
+
 	/**
 	 * FIXME: Should return a copy, not the real collection.
 	 * 
@@ -106,12 +114,13 @@ public final class Tile {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || ((obj instanceof Tile) && row == ((Tile) obj).row
-				&& col == ((Tile) obj).col 
-				&& type.equals(((Tile) obj).type)
-				&& contents.equals(((Tile) obj).contents)
-				&& rivers.equals(((Tile) obj).rivers)
-				&& tileText.equals(((Tile) obj).tileText));
+		return this == obj
+				|| ((obj instanceof Tile) && row == ((Tile) obj).row
+						&& col == ((Tile) obj).col
+						&& type.equals(((Tile) obj).type)
+						&& contents.equals(((Tile) obj).contents)
+						&& rivers.equals(((Tile) obj).rivers) && tileText
+							.equals(((Tile) obj).tileText));
 	}
 
 	/**
@@ -119,9 +128,8 @@ public final class Tile {
 	 */
 	@Override
 	public int hashCode() {
-		return row + col << 2 + type.ordinal() << 6 + contents
-				.hashCode() << 8 + + rivers.hashCode() << 10 + tileText
-				.hashCode() << 14;
+		return row + col << 2 + type.ordinal() << 6 + contents.hashCode() << 8 + +rivers
+				.hashCode() << 10 + tileText.hashCode() << 14;
 	}
 
 	/**

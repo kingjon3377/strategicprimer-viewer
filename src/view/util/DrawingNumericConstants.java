@@ -1,8 +1,10 @@
 package view.util;
+
 /**
  * A class to hold numeric constants useful for drawing.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class DrawingNumericConstants {
 	/**
@@ -11,8 +13,10 @@ public final class DrawingNumericConstants {
 	private DrawingNumericConstants() {
 		// Do not use.
 	}
+
 	/**
-	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their short dimension.
+	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their
+	 * short dimension.
 	 */
 	public static final double EIGHT = 8.0;
 	/**

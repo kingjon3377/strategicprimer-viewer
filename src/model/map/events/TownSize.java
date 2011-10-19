@@ -27,25 +27,32 @@ public enum TownSize {
 	 * A string representing the size.
 	 */
 	private final String sizeStr;
+
 	/**
 	 * Constructor.
-	 * @param str a string representing the size.
+	 * 
+	 * @param str
+	 *            a string representing the size.
 	 */
 	private TownSize(final String str) {
 		sizeStr = str;
 	}
+
 	static {
-		for (TownSize tsz : values()) {
+		for (final TownSize tsz : values()) {
 			TSZ_MAP.put(tsz.sizeStr, tsz);
 		}
 	}
+
 	/**
-	 * @param string a string representing a TownSize
+	 * @param string
+	 *            a string representing a TownSize
 	 * @return the TownSize it represents
 	 */
 	public static TownSize parseTownSize(final String string) {
 		return TSZ_MAP.get(string);
 	}
+
 	/**
 	 * @return a string representation of the size
 	 */

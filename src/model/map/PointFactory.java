@@ -3,11 +3,11 @@ package model.map;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
  * A cache for Points.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class PointFactory {
 	/**
@@ -15,13 +15,17 @@ public final class PointFactory {
 	 */
 	private PointFactory() {
 	}
+
 	/**
 	 * The cache.
 	 */
 	private static final Map<Integer, Map<Integer, Point>> CACHE = new ConcurrentHashMap<Integer, Map<Integer, Point>>();
+
 	/**
-	 * @param row a row
-	 * @param col a column
+	 * @param row
+	 *            a row
+	 * @param col
+	 *            a column
 	 * @return a Point representing this point.
 	 */
 	public static Point point(final int row, final int col) {
@@ -30,7 +34,7 @@ public final class PointFactory {
 		}
 		if (!CACHE.get(row).containsKey(col)) {
 			CACHE.get(row).put(col, new Point(row, col));
-		} 
+		}
 		return CACHE.get(row).get(col);
 	}
 }

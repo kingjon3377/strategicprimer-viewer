@@ -35,15 +35,17 @@ public final class BattlefieldEvent extends AbstractEvent {
 
 	/**
 	 * @return exploration-result text for the event.
-	 *
+	 * 
 	 * @see model.map.events.AbstractEvent#getText()
 	 */
 	@Override
 	public String getText() {
 		return "There are the signs of a long-ago battle here.";
 	}
+
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it's an identical BattlefieldEvent.
 	 */
 	@Override
@@ -51,6 +53,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 		return this == obj
 				|| (obj instanceof BattlefieldEvent && ((BattlefieldEvent) obj).dc == dc);
 	}
+
 	/**
 	 * @return a hash value for the event.
 	 */
@@ -58,6 +61,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	public int hashCode() {
 		return dc;
 	}
+
 	/**
 	 * @return a string representation of the event
 	 */

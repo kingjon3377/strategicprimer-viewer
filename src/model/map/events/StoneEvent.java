@@ -1,6 +1,5 @@
 package model.map.events;
 
-
 /**
  * A deposit (always exposed for now) of stone.
  * 
@@ -26,16 +25,19 @@ public final class StoneEvent extends AbstractEvent {
 	 * What kind of stone this deposit is.
 	 */
 	private final StoneKind stone;
+
 	/**
 	 * @return what kind of stone this deposit is.
 	 */
 	public StoneKind stone() {
 		return stone;
 	}
+
 	/**
 	 * The DC to discover the stone. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
+
 	/**
 	 * 
 	 * @return the DC to discover the event.
@@ -57,16 +59,19 @@ public final class StoneEvent extends AbstractEvent {
 		build.append(" deposit here.");
 		return build.toString();
 	}
+
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it's an identical event
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof StoneEvent
-				&& ((StoneEvent) obj).stone.equals(stone)
-				&& ((StoneEvent) obj).dc == dc);
+		return this == obj
+				|| (obj instanceof StoneEvent
+						&& ((StoneEvent) obj).stone.equals(stone) && ((StoneEvent) obj).dc == dc);
 	}
+
 	/**
 	 * @return a hash value for the event
 	 */
@@ -74,6 +79,7 @@ public final class StoneEvent extends AbstractEvent {
 	public int hashCode() {
 		return stone.hashCode() + dc << 3;
 	}
+
 	/**
 	 * @return a string representation of the object
 	 */

@@ -16,6 +16,7 @@ import view.map.main.TileUIHelper;
 
 /**
  * An element of the key.
+ * 
  * @author Jonathan Lovelace
  */
 final class KeyElement extends JPanel {
@@ -40,9 +41,12 @@ final class KeyElement extends JPanel {
 	 * Preferred size of a colored area.
 	 */
 	private static final Dimension PREF_SIZE = new Dimension(8, 8);
+
 	/**
 	 * Constructor.
-	 * @param type the type this is the key element for.
+	 * 
+	 * @param type
+	 *            the type this is the key element for.
 	 */
 	KeyElement(final TileType type) {
 		super();
@@ -58,8 +62,10 @@ final class KeyElement extends JPanel {
 			 * The color of this Component.
 			 */
 			private final Color color = helper.get(type);
+
 			/**
-			 * @param pen the graphics context
+			 * @param pen
+			 *            the graphics context
 			 */
 			@Override
 			public void paint(final Graphics pen) {
@@ -67,7 +73,7 @@ final class KeyElement extends JPanel {
 				context.setColor(color);
 				context.fillRect(0, 0, getWidth(), getHeight());
 			}
-		}; 
+		};
 		tile.setMinimumSize(MIN_SIZE);
 		tile.setPreferredSize(PREF_SIZE);
 		tile.setMaximumSize(MAX_SIZE);

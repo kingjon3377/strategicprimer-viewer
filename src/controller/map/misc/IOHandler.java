@@ -13,13 +13,12 @@ import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
-import controller.map.SPFormatException;
-import controller.map.XMLWriter;
-
 import model.map.SPMap;
 import model.viewer.MapModel;
 import view.util.ErrorShower;
 import view.util.MenuItemCreator;
+import controller.map.SPFormatException;
+import controller.map.XMLWriter;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -61,6 +60,7 @@ public final class IOHandler implements ActionListener {
 	 * The helper to create menu items for us.
 	 */
 	private final MenuItemCreator creator = new MenuItemCreator();
+
 	/**
 	 * Handle menu selections.
 	 * 
@@ -72,23 +72,23 @@ public final class IOHandler implements ActionListener {
 		String filename = "";
 		// ESCA-JAVA0166:
 		try {
-		if ("Load".equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
-				filename = chooser.getSelectedFile().getPath();
+			if ("Load".equals(event.getActionCommand())) {
+				if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
+					filename = chooser.getSelectedFile().getPath();
 					panel.setMainMap(readMap(filename));
-			}
-		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(panel.getMainMap());
-		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
-				filename = chooser.getSelectedFile().getPath();
+				}
+			} else if ("Save As".equals(event.getActionCommand())) {
+				saveMap(panel.getMainMap());
+			} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
+				if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
+					filename = chooser.getSelectedFile().getPath();
 					panel.setSecondaryMap(readMap(filename));
+				}
+			} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
+				saveMap(panel.getSecondaryMap());
+			} else if ("Switch maps".equals(event.getActionCommand())) {
+				panel.swapMaps();
 			}
-		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			saveMap(panel.getSecondaryMap());
-		} else if ("Switch maps".equals(event.getActionCommand())) {
-			panel.swapMaps();
-		} 
 		} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 			handleError(e, filename);
 		}
@@ -113,10 +113,12 @@ public final class IOHandler implements ActionListener {
 		setUpMenu();
 		chooser = fchooser;
 	}
+
 	/**
 	 * A component to show the chooser under.
 	 */
 	private JMenu menu;
+
 	/**
 	 * Display an appropriate error message.
 	 * 
@@ -153,7 +155,7 @@ public final class IOHandler implements ActionListener {
 		if (chooser.showSaveDialog(menu) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
 		}
@@ -174,6 +176,7 @@ public final class IOHandler implements ActionListener {
 			XMLStreamException, SPFormatException {
 		return new MapReaderAdapter().readMap(filename);
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */
@@ -181,6 +184,7 @@ public final class IOHandler implements ActionListener {
 	public String toString() {
 		return "IOHandler";
 	}
+
 	/**
 	 * Set up the menu we'll be handling.
 	 */
@@ -200,15 +204,18 @@ public final class IOHandler implements ActionListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
 						+ ActionEvent.ALT_MASK),
 				"Load a secondary map from file", this));
-		menu.add(creator.createMenuItem(SAVE_ALT_MAP_CMD,
-				KeyEvent.VK_V, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-						ActionEvent.CTRL_MASK + ActionEvent.ALT_MASK),
+		menu.add(creator.createMenuItem(
+				SAVE_ALT_MAP_CMD,
+				KeyEvent.VK_V,
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK
+						+ ActionEvent.ALT_MASK),
 				"Save the secondary map to file", this));
 		menu.addSeparator();
 		menu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Make the secondary map the main map and vice versa", this));
 	}
+
 	/**
 	 * @return the menu we handle
 	 */

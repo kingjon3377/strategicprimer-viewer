@@ -48,13 +48,17 @@ public class TileReader {
 	 * The helper for managing XML difficulties.
 	 */
 	private final XMLHelper helper;
+
 	/**
 	 * Constructor.
-	 * @param xmlHelper a helper for some XML difficulties
+	 * 
+	 * @param xmlHelper
+	 *            a helper for some XML difficulties
 	 */
 	public TileReader(final XMLHelper xmlHelper) {
 		helper = xmlHelper;
 	}
+
 	/**
 	 * Parse a tile.
 	 * 
@@ -69,7 +73,7 @@ public class TileReader {
 	Tile parseTileAndContents(final StartElement element, // NOPMD
 			final Iterable<XMLEvent> reader, final PlayerCollection players) {
 		final Tile tile = parseTile(element);
-		for (XMLEvent event : reader) {
+		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				parseTileContents(event.asStartElement(), reader, tile, players);
 			} else if (event.isCharacters()) {
@@ -82,10 +86,14 @@ public class TileReader {
 		}
 		return tile;
 	}
+
 	/**
-	 * @param elem the element we're parsing
-	 * @param reader the stream of elements we're reading from
-	 * @param tile the tile we're in the middle of
+	 * @param elem
+	 *            the element we're parsing
+	 * @param reader
+	 *            the stream of elements we're reading from
+	 * @param tile
+	 *            the tile we're in the middle of
 	 * @param players
 	 *            the map's collection of players
 	 */
@@ -134,37 +142,41 @@ public class TileReader {
 		AbstractEvent retval;
 		switch (getEventType(elem)) {
 		case Battlefield:
-			retval = new BattlefieldEvent(Integer.parseInt(helper.getAttribute(elem,
-					"dc")));
+			retval = new BattlefieldEvent(Integer.parseInt(helper.getAttribute(
+					elem, "dc")));
 			break;
 		case Caves:
-			retval = new CaveEvent(Integer.parseInt(helper.getAttribute(elem, "dc")));
+			retval = new CaveEvent(Integer.parseInt(helper.getAttribute(elem,
+					"dc")));
 			break;
 		case City:
-			retval = new CityEvent(TownStatus.parseTownStatus(helper.getAttribute(
-					elem, "status")), TownSize.parseTownSize(helper.getAttribute(elem,
-					"size")), Integer.parseInt(helper.getAttribute(elem, "dc")));
+			retval = new CityEvent(TownStatus.parseTownStatus(helper
+					.getAttribute(elem, "status")),
+					TownSize.parseTownSize(helper.getAttribute(elem, "size")),
+					Integer.parseInt(helper.getAttribute(elem, "dc")));
 			break;
 		case Fortification:
-			retval = new FortificationEvent(
-					TownStatus.parseTownStatus(helper.getAttribute(elem, "status")),
+			retval = new FortificationEvent(TownStatus.parseTownStatus(helper
+					.getAttribute(elem, "status")),
 					TownSize.parseTownSize(helper.getAttribute(elem, "size")),
 					Integer.parseInt(helper.getAttribute(elem, "dc")));
 			break;
 		case Mineral:
-			retval = new MineralEvent(
-					MineralKind.parseMineralKind(helper.getAttribute(elem, "mineral")),
+			retval = new MineralEvent(MineralKind.parseMineralKind(helper
+					.getAttribute(elem, "mineral")),
 					Boolean.parseBoolean(helper.getAttribute(elem, "exposed")),
 					Integer.parseInt(helper.getAttribute(elem, "dc")));
 			break;
 		case Stone:
-			retval = new StoneEvent(StoneKind.parseStoneKind(helper.getAttribute(elem,
-					"stone")), Integer.parseInt(helper.getAttribute(elem, "dc")));
+			retval = new StoneEvent(StoneKind.parseStoneKind(helper
+					.getAttribute(elem, "stone")), Integer.parseInt(helper
+					.getAttribute(elem, "dc")));
 			break;
 		case Town:
-			retval = new TownEvent(TownStatus.parseTownStatus(helper.getAttribute(
-					elem, "status")), TownSize.parseTownSize(helper.getAttribute(elem,
-					"size")), Integer.parseInt(helper.getAttribute(elem, "dc")));
+			retval = new TownEvent(TownStatus.parseTownStatus(helper
+					.getAttribute(elem, "status")),
+					TownSize.parseTownSize(helper.getAttribute(elem, "size")),
+					Integer.parseInt(helper.getAttribute(elem, "dc")));
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown event type");
@@ -250,7 +262,7 @@ public class TileReader {
 				.parseInt(helper.getAttributeWithDefault(elem, OWNER_ATTRIBUTE,
 						"-1"))), helper.getAttributeWithDefault(elem,
 				NAME_ATTRIBUTE, ""));
-		for (XMLEvent event : reader) {
+		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				parseFortContents(fort, event.asStartElement(), reader, players);
 			} else if (event.isEndElement()) {
@@ -259,15 +271,20 @@ public class TileReader {
 		}
 		return fort;
 	}
+
 	/**
-	 * @param fort the fortress we're in the middle of
-	 * @param element the current XML element
-	 * @param reader the stream of XML elements we're reading from
+	 * @param fort
+	 *            the fortress we're in the middle of
+	 * @param element
+	 *            the current XML element
+	 * @param reader
+	 *            the stream of XML elements we're reading from
 	 * @param players
 	 *            the map's collection of players
 	 */
-	private void parseFortContents(final Fortress fort, final StartElement element,
-			final Iterable<XMLEvent> reader, final PlayerCollection players) {
+	private void parseFortContents(final Fortress fort,
+			final StartElement element, final Iterable<XMLEvent> reader,
+			final PlayerCollection players) {
 		if (Tag.Unit.equals(XMLHelper.getTagType(element))) {
 			fort.addUnit(parseUnit(element, reader, players));
 		} else {
@@ -299,6 +316,7 @@ public class TileReader {
 		helper.spinUntilEnd("<unit>", reader);
 		return unit;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

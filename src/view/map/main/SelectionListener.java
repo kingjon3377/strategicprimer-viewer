@@ -23,23 +23,29 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	 * The currently-selected tile.
 	 */
 	private Selectable selection;
+
 	/**
 	 * @return the currently-selected item.
 	 */
 	protected Selectable selection() {
 		return selection;
 	}
+
 	/**
-	 * Set the selection, and notify both the old and the new values of the change.
-	 * @param sel the new currently-selected item
+	 * Set the selection, and notify both the old and the new values of the
+	 * change.
+	 * 
+	 * @param sel
+	 *            the new currently-selected item
 	 */
 	protected void setSelection(final Selectable sel) {
 		if (!sel.equals(selection)) {
-				selection.setSelected(false);
+			selection.setSelected(false);
 			selection = sel;
-				selection.setSelected(true);
+			selection.setSelected(true);
 		}
 	}
+
 	/**
 	 * Constructor.
 	 */
@@ -113,28 +119,36 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	public void clearSelection() {
 		selection = NullSelection.EMPTY;
 	}
+
 	/**
 	 * @return the helper object managing our property-change listeners.
 	 */
 	protected final PropertyChangeSupport getSupport() {
 		return pcs;
 	}
+
 	/**
 	 * Add a property-change listener.
-	 * @param list the listener to add
+	 * 
+	 * @param list
+	 *            the listener to add
 	 */
 	@Override
 	public void addPropertyChangeListener(final PropertyChangeListener list) {
 		pcs.addPropertyChangeListener(list);
 	}
+
 	/**
 	 * Remove a property-change listener.
-	 * @param list the listener to remove.
+	 * 
+	 * @param list
+	 *            the listener to remove.
 	 */
 	@Override
 	public void removePropertyChangeListener(final PropertyChangeListener list) {
 		pcs.removePropertyChangeListener(list);
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

@@ -30,11 +30,16 @@ public class ResultsTextSaveButton extends JButton implements ActionListener {
 	 * Maximum height of the button.
 	 */
 	private static final int BUTTON_MAX_HT = 25;
+
 	/**
 	 * Constructor.
-	 * @param minWidth the minimum width of the button.
-	 * @param width the preferred width of the button.
-	 * @param maxWidth the maximum width of the button.
+	 * 
+	 * @param minWidth
+	 *            the minimum width of the button.
+	 * @param width
+	 *            the preferred width of the button.
+	 * @param maxWidth
+	 *            the maximum width of the button.
 	 */
 	public ResultsTextSaveButton(final int minWidth, final int width,
 			final int maxWidth) {
@@ -43,9 +48,12 @@ public class ResultsTextSaveButton extends JButton implements ActionListener {
 		setPreferredSize(new Dimension(width, BUTTON_HEIGHT));
 		setMaximumSize(new Dimension(maxWidth, BUTTON_MAX_HT));
 	}
+
 	/**
 	 * Handle button press.
-	 * @param event the event to handle.
+	 * 
+	 * @param event
+	 *            the event to handle.
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {

@@ -46,7 +46,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * to construct it every time.
 	 */
 	private final JFileChooser chooser = new JFileChooser(".");
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -60,14 +60,15 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * @param mapMenu
 	 *            the menu dealing with file I/O and map switching.
 	 */
-	public ViewerFrame(final JPanel details, final PropertyChangeListener list, final MapModel map, final JMenu mapMenu) {
+	public ViewerFrame(final JPanel details, final PropertyChangeListener list,
+			final MapModel map, final JMenu mapMenu) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
 		mapPanel = new MapComponent(map);
-		((Component) mapPanel).addPropertyChangeListener(list); 
+		((Component) mapPanel).addPropertyChangeListener(list);
 		add(details, BorderLayout.SOUTH);
 		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
 		add(scroller, BorderLayout.CENTER);
@@ -82,14 +83,15 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 
 	/**
 	 * Set up the menu.
-	 * @param mapMenu the map menu
+	 * 
+	 * @param mapMenu
+	 *            the map menu
 	 */
 	private void createMenu(final JMenu mapMenu) {
 		final MenuItemCreator creator = new MenuItemCreator();
 		final JMenuBar mbar = new JMenuBar();
 		mbar.add(mapMenu);
-		mbar.add(creator.createMenuItem("Restrict view",
-				KeyEvent.VK_R,
+		mbar.add(creator.createMenuItem("Restrict view", KeyEvent.VK_R,
 				KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
 				"Show only a subset of the map", this));
 		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0),
@@ -97,15 +99,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		mbar.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
 				"Quit the viewer", new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				if ("Quit".equals(event.getActionCommand())) {
-					DriverQuit.quit(0);
-				}
-			}
-		}));
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						if ("Quit".equals(event.getActionCommand())) {
+							DriverQuit.quit(0);
+						}
+					}
+				}));
 		setJMenuBar(mbar);
 	}
+
 	/**
 	 * Handle button presses and the like.
 	 * 
@@ -116,7 +119,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	public void actionPerformed(final ActionEvent event) {
 		if ("Restrict view".equals(event.getActionCommand())) {
 			new RestrictDialog(mapPanel).setVisible(true);
-		} 
+		}
 	}
 
 }

@@ -22,10 +22,13 @@ import java.util.Map;
 import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
+
 /**
- * A class to do the drawing of a tile, whether on a GUITile or on a single-component map.
+ * A class to do the drawing of a tile, whether on a GUITile or on a
+ * single-component map.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
@@ -35,6 +38,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 		super();
 		checkCache(1, 1);
 	}
+
 	/**
 	 * A cached copy of our background.
 	 */
@@ -57,6 +61,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * Shape representing an event, or relevant text, associated with the tile.
 	 */
 	private Shape event;
+
 	/**
 	 * Check, and possibly regenerate, the cache.
 	 * 
@@ -72,18 +77,17 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 			rivers.clear();
 			rivers.put(River.East, new Rectangle2D.Double(width / TWO, height
 					* SEVEN_SIXTEENTHS, width / TWO, height / EIGHT));
-			rivers.put(River.Lake, new Ellipse2D.Double(width / FOUR,
-					height / FOUR, width / TWO, height / TWO));
+			rivers.put(River.Lake, new Ellipse2D.Double(width / FOUR, height
+					/ FOUR, width / TWO, height / TWO));
 			rivers.put(River.North, new Rectangle2D.Double(width
-					* SEVEN_SIXTEENTHS, 
-					0, width / EIGHT, height / TWO));
+					* SEVEN_SIXTEENTHS, 0, width / EIGHT, height / TWO));
 			rivers.put(River.South, new Rectangle2D.Double(width
 					* SEVEN_SIXTEENTHS, // NOPMD
 					height / TWO, width / EIGHT, height / TWO));
-			rivers.put(River.West, new Rectangle2D.Double(0, height 
+			rivers.put(River.West, new Rectangle2D.Double(0, height
 					* SEVEN_SIXTEENTHS, width / TWO, height / EIGHT));
-			fort = new Rectangle2D.Double(width * TWO_THIRDS - 1.0,
-					height * TWO_THIRDS - 1.0, width / THREE, height / THREE);
+			fort = new Rectangle2D.Double(width * TWO_THIRDS - 1.0, height
+					* TWO_THIRDS - 1.0, width / THREE, height / THREE);
 			unit = new Ellipse2D.Double(width / FOUR, height / FOUR, width
 					/ FOUR, height / FOUR);
 			event = new Polygon(new int[] { (int) (width * THREE_QUARTERS),
@@ -92,7 +96,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					MISC_EVENT_SIDES);
 		}
 	}
-	
+
 	/**
 	 * Draw a tile. The graphics context needs to be translated so that its
 	 * origin is the tile's upper-left-hand corner.
@@ -107,7 +111,8 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
+	public void drawTile(final Graphics pen, final Tile tile, final int width,
+			final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException(
@@ -137,33 +142,47 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 			}
 		}
 	}
+
 	/**
 	 * Approximately zero. @see{floatEquals}.
 	 */
 	private static final double APPROX_ZERO = 0.000001;
+
 	/**
 	 * Compare two floating-point values.
-	 * @param one the first value
-	 * @param two the second value
+	 * 
+	 * @param one
+	 *            the first value
+	 * @param two
+	 *            the second value
 	 * @return whether the two are approximately equal
 	 */
 	private static boolean equalFloats(final double one, final double two) {
 		return Math.abs(one - two) < APPROX_ZERO;
 	}
+
 	/**
 	 * Draw a tile at the specified coordinates.
-	 * @param pen the graphics context.
-	 * @param tile the tile to draw
-	 * @param xCoord the tile's left boundary
-	 * @param yCoord the tile's right boundary
-	 * @param width the tile's width
-	 * @param height the tile's height
+	 * 
+	 * @param pen
+	 *            the graphics context.
+	 * @param tile
+	 *            the tile to draw
+	 * @param xCoord
+	 *            the tile's left boundary
+	 * @param yCoord
+	 *            the tile's right boundary
+	 * @param width
+	 *            the tile's width
+	 * @param height
+	 *            the tile's height
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
 		drawTile(pen.create(xCoord, yCoord, width, height), tile, width, height);
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

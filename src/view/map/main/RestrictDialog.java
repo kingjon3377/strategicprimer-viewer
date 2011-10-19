@@ -145,22 +145,25 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * @return whether the input in the text-boxes makes sense.
 	 */
 	private boolean isInputValid() {
-		return isBetween(parse(minRow.getText()), 0, mpanel.getModel().getSizeRows() - 1)
+		return isBetween(parse(minRow.getText()), 0, mpanel.getModel()
+				.getSizeRows() - 1)
 				&& isBetween(parse(maxRow.getText()), parse(minRow.getText()),
 						mpanel.getModel().getSizeRows() - 1)
-				&& isBetween(parse(minCol.getText()), 0,
-						mpanel.getModel().getSizeCols() - 1)
+				&& isBetween(parse(minCol.getText()), 0, mpanel.getModel()
+						.getSizeCols() - 1)
 				&& isBetween(parse(maxCol.getText()), parse(minCol.getText()),
 						mpanel.getModel().getSizeCols() - 1);
 	}
 
 	/**
 	 * A convenience method to "simplify" other methods.
-	 * @param args a series of strings
+	 * 
+	 * @param args
+	 *            a series of strings
 	 * @return true if all of them are numeric, false otherwise.
 	 */
 	private static boolean isEachNumeric(final String... args) {
-		for (String arg : args) {
+		for (final String arg : args) {
 			try {
 				Integer.parseInt(arg);
 			} catch (final NumberFormatException except) {
@@ -169,6 +172,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 		}
 		return true;
 	}
+
 	/**
 	 * @return a description of why input is invalid
 	 */
@@ -177,10 +181,12 @@ public class RestrictDialog extends JDialog implements ActionListener {
 				maxRow.getText())) {
 			if (parse(minCol.getText()) < 0 || parse(minRow.getText()) < 0) {
 				return "Minimum row and column must be greater than or equal to zero."; // NOPMD
-			} else if (parse(maxCol.getText()) >= mpanel.getModel().getSizeCols()) {
+			} else if (parse(maxCol.getText()) >= mpanel.getModel()
+					.getSizeCols()) {
 				return "Maximum column must be less than " // NOPMD
 						+ mpanel.getModel().getSizeCols();
-			} else if (parse(maxRow.getText()) >= mpanel.getModel().getSizeRows()) {
+			} else if (parse(maxRow.getText()) >= mpanel.getModel()
+					.getSizeRows()) {
 				return "Maximum row must be less than " // NOPMD
 						+ mpanel.getModel().getSizeRows();
 			} else if (parse(minCol.getText()) > parse(maxCol.getText())) {
@@ -197,7 +203,9 @@ public class RestrictDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Correct invalid input, so the user can try again.
-	 * @param visDim the current visible dimensions of the map
+	 * 
+	 * @param visDim
+	 *            the current visible dimensions of the map
 	 */
 	private void correctInvalidInput(final VisibleDimensions visDim) {
 		if (parse(minCol.getText()) < 0) {
@@ -225,7 +233,8 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 *            the top of a range
 	 * @return whether value is in the range
 	 */
-	private static boolean isBetween(final int value, final int min, final int max) {
+	private static boolean isBetween(final int value, final int min,
+			final int max) {
 		return value >= min && value <= max;
 	}
 
@@ -241,8 +250,8 @@ public class RestrictDialog extends JDialog implements ActionListener {
 				.getModel().getSizeCols() - 1);
 		final int maximumCol = betweenMax(minimumCol, parse(maxCol.getText()),
 				mpanel.getModel().getSizeCols() - 1);
-		mpanel.loadMap(mpanel.getModel().getMainMap(), minimumRow, maximumRow, minimumCol,
-				maximumCol);
+		mpanel.loadMap(mpanel.getModel().getMainMap(), minimumRow, maximumRow,
+				minimumCol, maximumCol);
 	}
 
 	/**

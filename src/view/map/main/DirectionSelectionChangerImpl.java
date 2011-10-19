@@ -4,21 +4,26 @@ import model.viewer.MapModel;
 
 /**
  * A class for moving the cursor around the single-component map UI.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class DirectionSelectionChangerImpl implements DirectionSelectionChanger {
 	/**
 	 * The map model we'll be referring to.
 	 */
 	private final MapModel model;
+
 	/**
 	 * Constructor.
-	 * @param mapModel the map model we're to use
+	 * 
+	 * @param mapModel
+	 *            the map model we're to use
 	 */
 	public DirectionSelectionChangerImpl(final MapModel mapModel) {
 		model = mapModel;
 	}
+
 	/**
 	 * Move the cursor up.
 	 */
@@ -31,6 +36,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 					.getSelectedTile().getCol());
 		}
 	}
+
 	/**
 	 * Move the cursor left.
 	 */
@@ -43,6 +49,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 					.getSelectedTile().getCol() - 1);
 		}
 	}
+
 	/**
 	 * Move the cursor down.
 	 */
@@ -55,6 +62,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 					.getSelectedTile().getCol());
 		}
 	}
+
 	/**
 	 * Move the cursor right.
 	 */
@@ -67,6 +75,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 					.getSelectedTile().getCol() + 1);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

@@ -21,9 +21,11 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 
 /**
- * A class to start the viewer, to reduce circular dependencies between packages.
+ * A class to start the viewer, to reduce circular dependencies between
+ * packages.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class ViewerStart {
 	/**
@@ -32,6 +34,7 @@ public final class ViewerStart {
 	private ViewerStart() {
 		// Do not use.
 	}
+
 	/**
 	 * An error message refactored from at least four uses.
 	 */
@@ -49,6 +52,7 @@ public final class ViewerStart {
 	 * Error message when the map contains invalid data.
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
+
 	/**
 	 * Run the app.
 	 * 
@@ -61,7 +65,8 @@ public final class ViewerStart {
 		final JFileChooser chooser = new JFileChooser(".");
 		chooser.setFileFilter(new MapFileFilter());
 		// ESCA-JAVA0177:
-		final String filename; // NOPMD // $codepro.audit.disable localDeclaration
+		final String filename; // NOPMD // $codepro.audit.disable
+								// localDeclaration
 		if (args.length == 0) {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				filename = chooser.getSelectedFile().getPath();
@@ -72,27 +77,30 @@ public final class ViewerStart {
 			filename = args[0];
 		}
 		try {
-			final MapModel model = new MapModel(new MapReaderAdapter().readMap(filename));
+			final MapModel model = new MapModel(
+					new MapReaderAdapter().readMap(filename));
 			final ExplorationRunner runner = new ExplorationRunner();
 			new TableLoader().loadAllTables("tables", runner);
 			final PropertyProxy proxy = new PropertyProxy(model);
 			final DetailPanel detailPanel = new DetailPanel(runner, proxy);
-			final ViewerFrame frame = new ViewerFrame(detailPanel, proxy, model, new IOHandler(
-					model, chooser).getMenu());
+			final ViewerFrame frame = new ViewerFrame(detailPanel, proxy,
+					model, new IOHandler(model, chooser).getMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {
 				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1]));
 			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			ErrorShower.showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
+			ErrorShower
+					.showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
-			ErrorShower.showErrorDialog(null, "File " + filename + NOT_FOUND_ERROR);
+			ErrorShower.showErrorDialog(null, "File " + filename
+					+ NOT_FOUND_ERROR);
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
 			ErrorShower.showErrorDialog(null, "I/O error reading " + filename);
-		} catch (SPFormatException e) {
+		} catch (final SPFormatException e) {
 			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
 			ErrorShower.showErrorDialog(null, INV_DATA_ERROR);
 		}

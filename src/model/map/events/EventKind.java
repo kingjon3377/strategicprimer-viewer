@@ -8,7 +8,8 @@ import java.util.Map;
  */
 public enum EventKind {
 	/**
-	 * "Nothing of interest here ...". Useful primarily as an alternative to null.
+	 * "Nothing of interest here ...". Useful primarily as an alternative to
+	 * null.
 	 */
 	Nothing("nothing"),
 	/**
@@ -47,25 +48,33 @@ public enum EventKind {
 	 * A string representing the event.
 	 */
 	private final String str;
+
 	/**
 	 * Constructor.
-	 * @param string a string representing the event, to be used in non-specific event tags.
+	 * 
+	 * @param string
+	 *            a string representing the event, to be used in non-specific
+	 *            event tags.
 	 */
 	private EventKind(final String string) {
 		str = string;
 	}
+
 	static {
-		for (EventKind ek : values()) {
+		for (final EventKind ek : values()) {
 			EK_MAP.put(ek.str, ek);
 		}
 	}
+
 	/**
-	 * @param string a string representing an EventKind
+	 * @param string
+	 *            a string representing an EventKind
 	 * @return the EventKind it represents
 	 */
 	public static EventKind parseEventKind(final String string) {
 		return EK_MAP.get(string);
 	}
+
 	/**
 	 * @return a string representing the kind of event.
 	 */

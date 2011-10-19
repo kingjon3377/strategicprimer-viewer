@@ -10,7 +10,8 @@ import java.util.Iterator;
  * 
  * @author Jonathan Lovelace
  * 
- * @param <T> the type of the iterator.
+ * @param <T>
+ *            the type of the iterator.
  * 
  */
 public class IteratorWrapper<T> implements Iterable<T> {
@@ -18,13 +19,17 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	 * The iterator we're wrapping.
 	 */
 	private final Iterator<T> iter;
+
 	/**
 	 * Constructor.
-	 * @param iterator the iterator to wrap
+	 * 
+	 * @param iterator
+	 *            the iterator to wrap
 	 */
 	public IteratorWrapper(final Iterator<T> iterator) {
 		iter = iterator;
 	}
+
 	/**
 	 * @return the iterator
 	 */
@@ -32,6 +37,7 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	public Iterator<T> iterator() {
 		return iter;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

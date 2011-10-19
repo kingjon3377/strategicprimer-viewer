@@ -17,6 +17,7 @@ public class FortChit extends Chit {
 	 * The margin we allow around the chit itself.
 	 */
 	private static final double MARGIN = 0.25;
+
 	/**
 	 * Constructor.
 	 * 
@@ -71,6 +72,7 @@ public class FortChit extends Chit {
 				((int) (getHeight() * (1.0 - MARGIN * 2.0))));
 		pen.setColor(saveColor);
 	}
+
 	/**
 	 * The color of the chit.
 	 */

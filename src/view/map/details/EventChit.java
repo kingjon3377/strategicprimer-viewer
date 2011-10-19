@@ -10,19 +10,25 @@ import model.map.events.TownStatus;
 import model.viewer.FixtureTransferable;
 
 /**
- * A Chit to represent an event. TODO: Make it look different for different Events.
+ * A Chit to represent an event. TODO: Make it look different for different
+ * Events.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class EventChit extends Chit {
 	/**
 	 * The margin we allow around the chit itself.
 	 */
 	private static final double MARGIN = 0.15;
+
 	/**
 	 * Constructor.
-	 * @param event the fortress this chit represents
-	 * @param listener the object listening for clicks on this chit.
+	 * 
+	 * @param event
+	 *            the fortress this chit represents
+	 * @param listener
+	 *            the object listening for clicks on this chit.
 	 */
 	public EventChit(final AbstractEvent event, final MouseListener listener) {
 		super(listener, new FixtureTransferable(event));
@@ -37,22 +43,27 @@ public class EventChit extends Chit {
 		builder.append("</p></html>");
 		desc = builder.toString();
 	}
+
 	/**
 	 * The description of the event, HTML-ized so it'll wrap.
 	 */
 	private final String desc;
+
 	/**
-	 * @return A description of the event this chit represents. 
-	 *
+	 * @return A description of the event this chit represents.
+	 * 
 	 * @see view.map.details.Chit#describe()
 	 */
 	@Override
 	public String describe() {
 		return desc;
 	}
+
 	/**
 	 * Paint the chit.
-	 * @param pen the graphics context
+	 * 
+	 * @param pen
+	 *            the graphics context
 	 */
 	@Override
 	public void paint(final Graphics pen) {
@@ -68,9 +79,8 @@ public class EventChit extends Chit {
 		pen.setColor(saveColor);
 		pen.fillRoundRect(((int) (getWidth() / 2.0 - getWidth() * MARGIN)) + 1,
 				((int) (getHeight() / 2.0 - getHeight() * MARGIN)) + 1,
-				((int) (getWidth() * MARGIN * 2.0)),
-				((int) (getHeight() * MARGIN * 2.0)),
-				((int) (getWidth() * MARGIN / 2.0)),
+				((int) (getWidth() * MARGIN * 2.0)), ((int) (getHeight()
+						* MARGIN * 2.0)), ((int) (getWidth() * MARGIN / 2.0)),
 				((int) (getHeight() * MARGIN / 2.0)));
 	}
 }

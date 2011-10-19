@@ -33,7 +33,8 @@ public class LoadFile {
 		InputStream inputStream; // $codepro.audit.disable localDeclaration
 		// try to load file from disk
 		try {
-			inputStream = new FileInputStream(fileName); // $codepro.audit.disable closeWhereCreated
+			inputStream = new FileInputStream(fileName); // $codepro.audit.disable
+															// closeWhereCreated
 		} catch (final FileNotFoundException fe) {
 			// failed, so try to load it from resources in class path
 			inputStream = LoadFile.class.getClassLoader().getResourceAsStream(
@@ -43,8 +44,10 @@ public class LoadFile {
 						+ fileName);
 			}
 		}
-		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable closeWhereCreated
+		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable
+																		// closeWhereCreated
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

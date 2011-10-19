@@ -61,14 +61,17 @@ public class Point implements Comparable<Point> {
 	public final int hashCode() {
 		return myRow | myCol;
 	}
+
 	/**
-	 * @param point another point
+	 * @param point
+	 *            another point
 	 * @return the result of a comparison with that point
 	 */
 	@Override
 	public int compareTo(final Point point) {
 		return ((point.row() - row()) << 7) + (point.col() - col());
 	}
+
 	/**
 	 * @return a String representation of the class
 	 */

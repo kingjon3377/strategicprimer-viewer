@@ -20,16 +20,19 @@ public final class Pair<FIRST, SECOND> implements
 	 * The first item in the pair.
 	 */
 	private final FIRST first;
+
 	/**
 	 * @return the first item in the pair
 	 */
 	public FIRST first() {
 		return first;
 	}
+
 	/**
 	 * The second item in the pair.
 	 */
 	private final SECOND second;
+
 	/**
 	 * @return the second item in the pair
 	 */
@@ -84,6 +87,7 @@ public final class Pair<FIRST, SECOND> implements
 
 	/**
 	 * TODO: move this to a helper class.
+	 * 
 	 * @param one
 	 *            one object
 	 * @param two
@@ -108,6 +112,7 @@ public final class Pair<FIRST, SECOND> implements
 	// ESCA-JAVA0064:
 	/**
 	 * TODO: move this to a helper class.
+	 * 
 	 * @param obj
 	 *            an object
 	 * @return a hash code for it, or 0 if null.
@@ -123,7 +128,7 @@ public final class Pair<FIRST, SECOND> implements
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean equals(final Object obj) { 
+	public boolean equals(final Object obj) {
 		return (this == obj) ? true : (obj instanceof Pair) ? equal(first,
 				((Pair) obj).first) && equal(second, ((Pair) obj).second)
 				: false;
@@ -131,6 +136,7 @@ public final class Pair<FIRST, SECOND> implements
 
 	/**
 	 * TODO: move this to a helper class.
+	 * 
 	 * @param one
 	 *            One object
 	 * @param two
@@ -138,7 +144,10 @@ public final class Pair<FIRST, SECOND> implements
 	 * @return whether the objects are equal
 	 */
 	private static boolean equal(final Object one, final Object two) {
-		return (one == null) ? two == null : (one == two || one.equals(two)); // NOPMD // $codepro.audit.disable useEquals
+		return (one == null) ? two == null : (one == two || one.equals(two)); // NOPMD
+																				// //
+																				// $codepro.audit.disable
+																				// useEquals
 	}
 
 	/**

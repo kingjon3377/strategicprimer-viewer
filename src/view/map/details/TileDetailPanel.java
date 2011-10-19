@@ -23,11 +23,14 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * The label for showing the coordinates.
 	 */
-	private final JLabel coordLabel = new JLabel("<html>Coordinates: (-1, -1)</html>");
+	private final JLabel coordLabel = new JLabel(
+			"<html>Coordinates: (-1, -1)</html>");
 	/**
 	 * The label for showing the tile type.
 	 */
-	private final JLabel typeLabel = new JLabel("<html>Tile type: NotVisible</html>");
+	private final JLabel typeLabel = new JLabel(
+			"<html>Tile type: NotVisible</html>");
+
 	/**
 	 * Constructor.
 	 */
@@ -36,9 +39,12 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 		add(coordLabel, BorderLayout.NORTH);
 		add(typeLabel, BorderLayout.SOUTH);
 	}
+
 	/**
 	 * Set the labels appropriately based on a new tile.
-	 * @param tile the tile we now represent
+	 * 
+	 * @param tile
+	 *            the tile we now represent
 	 */
 	public void updateText(final Tile tile) {
 		coordLabel.setText("<html>Coordinates: (" + tile.getRow() + ", "
@@ -46,9 +52,12 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 		typeLabel.setText("<html>Tile type: "
 				+ TUI_HELPER.getDescription(tile.getType()) + "</html>");
 	}
+
 	/**
 	 * Handle a property change.
-	 * @param evt the event to handle.
+	 * 
+	 * @param evt
+	 *            the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {

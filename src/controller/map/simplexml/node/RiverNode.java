@@ -14,14 +14,17 @@ public class RiverNode extends AbstractChildNode<River> {
 	/**
 	 * We don't *promise* to throw an exception here if there are unexpected
 	 * children---still need to call checkNode().
-	 * @param players ignored
+	 * 
+	 * @param players
+	 *            ignored
 	 * @return a River equivalent to this.
 	 * @throws SPFormatException
 	 *             if this has unexpected children or doesn't have needed data
 	 */
 	@Override
-	public River produce(final PlayerCollection players) throws SPFormatException {
-		return River.getRiver(getProperty("direction")); 
+	public River produce(final PlayerCollection players)
+			throws SPFormatException {
+		return River.getRiver(getProperty("direction"));
 	}
 
 	/**
@@ -39,9 +42,11 @@ public class RiverNode extends AbstractChildNode<River> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("River has sub-tags", getLine());
 		} else if (!hasProperty("direction")) {
-			throw new SPFormatException("River should have a direction", getLine());
+			throw new SPFormatException("River should have a direction",
+					getLine());
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

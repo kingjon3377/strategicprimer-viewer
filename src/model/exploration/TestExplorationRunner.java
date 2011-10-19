@@ -66,7 +66,7 @@ public final class TestExplorationRunner {
 	 * Test the getPrimaryRock method.
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
-	 *       for the Table.
+	 * for the Table.
 	 */
 	@Test
 	public void testGetPrimaryRock() {
@@ -80,7 +80,7 @@ public final class TestExplorationRunner {
 	 * Test the getPrimaryTree method.
 	 * 
 	 * TODO Use a mock object rather than a real object for the Tile, and even
-	 *       for the Tables.
+	 * for the Tables.
 	 */
 	@Test
 	public void testGetPrimaryTree() {
@@ -110,7 +110,7 @@ public final class TestExplorationRunner {
 	 * Test the consultTable method.
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
-	 *       for the Tables.
+	 * for the Tables.
 	 */
 	@Test
 	public void testConsultTable() {
@@ -130,7 +130,7 @@ public final class TestExplorationRunner {
 	 * correctness is nonobvious.
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
-	 *       for the Tables.
+	 * for the Tables.
 	 */
 	@Test
 	public void testRecursiveConsultTable() {
@@ -216,6 +216,7 @@ public final class TestExplorationRunner {
 		assertTrue("recursive check with an invalid table",
 				runner.recursiveCheck());
 	}
+
 	/**
 	 * @return a String representation of the class
 	 */

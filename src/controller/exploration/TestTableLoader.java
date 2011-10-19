@@ -66,7 +66,7 @@ public final class TestTableLoader {
 		} finally {
 			try {
 				reader.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				fail("I/O error cleaning up after the test");
 			}
 		}
@@ -82,7 +82,7 @@ public final class TestTableLoader {
 		} finally {
 			try {
 				readerTwo.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				fail("I/O error cleaning up after the test");
 			}
 		}
@@ -183,7 +183,7 @@ public final class TestTableLoader {
 		} finally {
 			try {
 				one.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				fail("I/O error while closing the stream");
 			}
 		}
@@ -200,11 +200,12 @@ public final class TestTableLoader {
 		} finally {
 			try {
 				two.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				fail("I/O error while closing the stream");
 			}
 		}
 	}
+
 	/**
 	 * @return a String representation of this class
 	 */

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
-
 /**
  * A collection of tiles. This is a wrapper around the Map that had been used by
  * SPMap, to avoid ever returning null. The main difference between this and an
@@ -21,13 +19,17 @@ public final class TileCollection implements Iterable<Point> {
 	 * The Map this is a wrapper around.
 	 */
 	private final Map<Point, Tile> tiles = new HashMap<Point, Tile>();
+
 	/**
 	 * Add a Tile to the map.
-	 * @param tile the tile to add.
+	 * 
+	 * @param tile
+	 *            the tile to add.
 	 */
 	public void addTile(final Tile tile) {
 		tiles.put(PointFactory.point(tile.getRow(), tile.getCol()), tile);
 	}
+
 	/**
 	 * Get the specified point. If it isn't in the collection, add a new "empty"
 	 * one there and return that. This should never return null.
@@ -38,10 +40,12 @@ public final class TileCollection implements Iterable<Point> {
 	 */
 	public Tile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
-			tiles.put(point, new Tile(point.row(), point.col(), TileType.NotVisible));
+			tiles.put(point, new Tile(point.row(), point.col(),
+					TileType.NotVisible));
 		}
 		return tiles.get(point);
 	}
+
 	/**
 	 * @return an iterator over the Points in the map.
 	 */
@@ -49,8 +53,10 @@ public final class TileCollection implements Iterable<Point> {
 	public Iterator<Point> iterator() {
 		return tiles.keySet().iterator();
 	}
+
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it is an identical TileCollection.
 	 */
 	@Override
@@ -59,6 +65,7 @@ public final class TileCollection implements Iterable<Point> {
 				|| (obj instanceof TileCollection && ((TileCollection) obj).tiles
 						.equals(tiles));
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -66,6 +73,7 @@ public final class TileCollection implements Iterable<Point> {
 	public int hashCode() {
 		return tiles.hashCode();
 	}
+
 	/**
 	 * @return a String representation of the class
 	 */

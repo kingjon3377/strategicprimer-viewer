@@ -42,12 +42,14 @@ public final class RootNode extends AbstractXMLNode {
 			if (child instanceof MapNode) {
 				return (MapNode) child;
 			} else {
-				throw new SPFormatException("First top-level tag isn't <map>", 0);
+				throw new SPFormatException("First top-level tag isn't <map>",
+						0);
 			}
 		} else {
 			throw new SPFormatException("No top-level tag", 0);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

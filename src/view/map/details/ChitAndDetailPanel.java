@@ -22,7 +22,8 @@ import model.map.TileType;
  * 
  * @author Jonathan Lovelace
  */
-public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener {
+public class ChitAndDetailPanel extends JPanel implements
+		PropertyChangeListener {
 	/**
 	 * The detail label.
 	 */
@@ -30,7 +31,8 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 	/**
 	 * The ChitPanel.
 	 */
-	private final ChitPanel panel = new ChitPanel(new ChitSelectionListener(label));
+	private final ChitPanel panel = new ChitPanel(new ChitSelectionListener(
+			label));
 	/**
 	 * The maximum width of either control.
 	 */
@@ -47,18 +49,25 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 	 * The property we listen for.
 	 */
 	private final String property;
+
 	/**
 	 * Constructor.
-	 * @param maxHeight the maximum height of the panel we're part of
-	 * @param minHeight the minimum height of the panel we're part of
-	 * @param height the (preferred) height of the panel we're part of
-	 * @param propertyName the property we listen for
+	 * 
+	 * @param maxHeight
+	 *            the maximum height of the panel we're part of
+	 * @param minHeight
+	 *            the minimum height of the panel we're part of
+	 * @param height
+	 *            the (preferred) height of the panel we're part of
+	 * @param propertyName
+	 *            the property we listen for
 	 */
 	public ChitAndDetailPanel(final int maxHeight, final int minHeight,
 			final int height, final String propertyName) {
 		super(new BorderLayout());
 		final JPanel wrapperPanel = new JPanel();
-		wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.LINE_AXIS));
+		wrapperPanel
+				.setLayout(new BoxLayout(wrapperPanel, BoxLayout.LINE_AXIS));
 		final JScrollPane scroller = new JScrollPane(panel);
 		scroller.setMaximumSize(new Dimension(ITEM_MAX_WIDTH, maxHeight));
 		scroller.setMinimumSize(new Dimension(ITEM_MIN_WIDTH, minHeight));
@@ -78,12 +87,15 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 		add(wrapperPanel, BorderLayout.CENTER);
 		setDropTarget(new DropTarget(this, new ChitDropListener()));
 	}
+
 	/**
 	 * The tile the chits are on.
 	 */
 	private Tile tile = new Tile(-1, -1, TileType.NotVisible);
+
 	/**
-	 * @param fix a TileFixture to add to the underlying tile
+	 * @param fix
+	 *            a TileFixture to add to the underlying tile
 	 */
 	public void addFixture(final TileFixture fix) {
 		if (!tile.getContents().contains(fix)) {
@@ -92,22 +104,28 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 			panel.validate();
 		}
 	}
+
 	/**
 	 * Update the chits for a new tile.
-	 * @param newTile the new tile
+	 * 
+	 * @param newTile
+	 *            the new tile
 	 */
 	public void updateChits(final Tile newTile) {
 		if (!newTile.equals(tile)) {
 			tile = newTile;
-		panel.clear();
-		for (final TileFixture fix : tile.getContents()) {
-			panel.add(fix);
-		}
+			panel.clear();
+			for (final TileFixture fix : tile.getContents()) {
+				panel.add(fix);
+			}
 		}
 	}
+
 	/**
 	 * Handle a property change.
-	 * @param evt the event to handle.
+	 * 
+	 * @param evt
+	 *            the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {

@@ -4,10 +4,12 @@ import model.map.PlayerCollection;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import controller.map.SPFormatException;
+
 /**
  * A Node to represent a StoneEvent.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class StoneEventNode extends AbstractChildNode<StoneEvent> {
 	/**
@@ -29,32 +31,33 @@ public class StoneEventNode extends AbstractChildNode<StoneEvent> {
 	@Override
 	public StoneEvent produce(final PlayerCollection players)
 			throws SPFormatException {
-		return new StoneEvent(
-				StoneKind.parseStoneKind(getProperty("stone")),
+		return new StoneEvent(StoneKind.parseStoneKind(getProperty("stone")),
 				Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
-	
+
 	/**
 	 * Check whether the node is valid. A Stone Node is valid if it has no
 	 * children and "kind", "dc", and "stone" properties.
 	 * 
-	 * @throws SPFormatException if the data is invalid.
+	 * @throws SPFormatException
+	 *             if the data is invalid.
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Event shouldn't have children", getLine());
+			throw new SPFormatException("Event shouldn't have children",
+					getLine());
 		} else if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {
 			if (!hasProperty("stone")) {
 				throw new SPFormatException(
-						"Stone events must have \"stone\" property.",
-						getLine());
+						"Stone events must have \"stone\" property.", getLine());
 			}
 		} else {
 			throw new SPFormatException(
 					"Event must have \"kind\" and \"dc\" properties", getLine());
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

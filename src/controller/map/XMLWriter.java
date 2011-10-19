@@ -69,36 +69,36 @@ public class XMLWriter { // NOPMD
 	 */
 	public void write(final SPMap map) {
 		try {
-		writer.print("<?xml version=");
-		printQuoted("1.0");
-		writer.println("?>");
-		writer.print("<map version=");
-		printQuoted(Integer.toString(SPMap.VERSION));
-		writer.print(" rows=");
-		printQuoted(map.rows());
-		writer.print(" columns=");
-		printQuoted(map.cols());
-		final Player currentPlayer = map.getPlayers().getCurrentPlayer();
-		if (!"".equals(currentPlayer.getName())) {
-			writer.print(" current_player=");
-			printQuoted(currentPlayer.getId());
-		}
-		writer.println('>');
-		for (final Player player : map.getPlayers()) {
-			indent(1);
-			writer.print("<player number=");
-			printQuoted(player.getId());
-			writer.print(" code_name=");
-			printQuoted(player.getName());
-			writer.println(" />");
-		}
-		final int rows = map.rows();
-		for (int i = 0; i < rows; i++) {
-			printRow(map, i);
-		}
-		writer.println("</map>");
+			writer.print("<?xml version=");
+			printQuoted("1.0");
+			writer.println("?>");
+			writer.print("<map version=");
+			printQuoted(Integer.toString(SPMap.VERSION));
+			writer.print(" rows=");
+			printQuoted(map.rows());
+			writer.print(" columns=");
+			printQuoted(map.cols());
+			final Player currentPlayer = map.getPlayers().getCurrentPlayer();
+			if (!"".equals(currentPlayer.getName())) {
+				writer.print(" current_player=");
+				printQuoted(currentPlayer.getId());
+			}
+			writer.println('>');
+			for (final Player player : map.getPlayers()) {
+				indent(1);
+				writer.print("<player number=");
+				printQuoted(player.getId());
+				writer.print(" code_name=");
+				printQuoted(player.getName());
+				writer.println(" />");
+			}
+			final int rows = map.rows();
+			for (int i = 0; i < rows; i++) {
+				printRow(map, i);
+			}
+			writer.println("</map>");
 		} finally {
-		writer.close();
+			writer.close();
 		}
 	}
 
@@ -173,8 +173,8 @@ public class XMLWriter { // NOPMD
 	 */
 	private void printTile(final Tile tile) { // NOPMD
 		if ((tile.getType() != TileType.NotVisible
-						|| !tile.getContents().isEmpty() || !"".equals(tile
-						.getTileText()))) {
+				|| !tile.getContents().isEmpty() || !"".equals(tile
+				.getTileText()))) {
 			indent(2);
 			writer.print("<tile row=");
 			printQuoted(tile.getRow());
@@ -201,7 +201,8 @@ public class XMLWriter { // NOPMD
 	}
 
 	/**
-	 * @param fix the fixture to print.
+	 * @param fix
+	 *            the fixture to print.
 	 */
 	private void printFixture(final TileFixture fix) {
 		if (fix instanceof Fortress) {
@@ -356,6 +357,7 @@ public class XMLWriter { // NOPMD
 		XML_RIVERS.put(River.West, "west");
 		XML_RIVERS.put(River.Lake, "lake");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

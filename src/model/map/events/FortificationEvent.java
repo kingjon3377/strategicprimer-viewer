@@ -3,7 +3,8 @@ package model.map.events;
 /**
  * An abandoned, ruined, or burned-out fortification.
  * 
- * FIXME: We want this to share a tag, and thus probably model code as well, with Fortress.
+ * FIXME: We want this to share a tag, and thus probably model code as well,
+ * with Fortress.
  * 
  * @author Jonathan Lovelace
  * 
@@ -19,8 +20,8 @@ public final class FortificationEvent extends AbstractTownEvent {
 	 * @param discdc
 	 *            The DC to discover it.
 	 */
-	public FortificationEvent(final TownStatus tStatus,
-			final TownSize tSize, final int discdc) {
+	public FortificationEvent(final TownStatus tStatus, final TownSize tSize,
+			final int discdc) {
 		super(EventKind.Fortification, tStatus, tSize);
 		dc = discdc;
 	}

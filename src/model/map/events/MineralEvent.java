@@ -1,6 +1,5 @@
 package model.map.events;
 
-
 /**
  * A vein of a mineral.
  * 
@@ -30,23 +29,27 @@ public final class MineralEvent extends AbstractEvent {
 	 * What kind of mineral this is.
 	 */
 	private final MineralKind mineral;
+
 	/**
 	 * @return what kind of mineral this is
 	 */
 	public MineralKind mineral() {
 		return mineral;
 	}
+
 	/**
 	 * Whether the vein is exposed. TODO: Perhaps this should be mutable and
 	 * protected by accessor methods?
 	 */
 	private final boolean exposed;
+
 	/**
 	 * @return whether the vein is exposed
 	 */
 	public boolean isExposed() {
 		return exposed;
 	}
+
 	/**
 	 * The DC to discover the vein. TODO: Should perhaps be mutable.
 	 */
@@ -71,7 +74,7 @@ public final class MineralEvent extends AbstractEvent {
 		final StringBuilder build = new StringBuilder("There is a");
 		if (exposed) {
 			build.append("n exposed");
-		} 
+		}
 		build.append(" vein of ");
 		build.append(mineral.toString());
 		build.append(" here");
@@ -82,17 +85,20 @@ public final class MineralEvent extends AbstractEvent {
 		}
 		return build.toString();
 	}
+
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it's an identical event
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof MineralEvent
-				&& ((MineralEvent) obj).mineral.equals(mineral)
-				&& ((MineralEvent) obj).exposed == exposed
-				&& ((MineralEvent) obj).dc == dc);
+		return this == obj
+				|| (obj instanceof MineralEvent
+						&& ((MineralEvent) obj).mineral.equals(mineral)
+						&& ((MineralEvent) obj).exposed == exposed && ((MineralEvent) obj).dc == dc);
 	}
+
 	/**
 	 * @return a hash value for the event
 	 */
@@ -100,6 +106,7 @@ public final class MineralEvent extends AbstractEvent {
 	public int hashCode() {
 		return mineral.hashCode() + Boolean.valueOf(exposed).hashCode() << 3 + dc << 5;
 	}
+
 	/**
 	 * @return a string representation of the event
 	 */

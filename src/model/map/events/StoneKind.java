@@ -23,25 +23,32 @@ public enum StoneKind {
 	 * A mapping from string representation to StoneKind.
 	 */
 	private static final Map<String, StoneKind> SK_MAP = new HashMap<String, StoneKind>();
+
 	/**
-	 * @param string a string representing a StoneKind
+	 * @param string
+	 *            a string representing a StoneKind
 	 * @return the StoneKind it represents
 	 */
 	public static StoneKind parseStoneKind(final String string) {
 		return SK_MAP.get(string);
 	}
+
 	static {
-		for (StoneKind sk : values()) {
+		for (final StoneKind sk : values()) {
 			SK_MAP.put(sk.str, sk);
 		}
 	}
+
 	/**
 	 * Constructor.
-	 * @param string A string representing the StoneKind.
+	 * 
+	 * @param string
+	 *            A string representing the StoneKind.
 	 */
 	private StoneKind(final String string) {
 		str = string;
 	}
+
 	/**
 	 * @return a string representation of the kind of stone
 	 */

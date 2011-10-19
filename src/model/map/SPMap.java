@@ -1,7 +1,5 @@
 package model.map;
 
-
-
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
  * tile; each unit is either in a fortress or on a tile directly.
@@ -114,11 +112,11 @@ public class SPMap {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof SPMap
-				&& myCols == ((SPMap) obj).cols()
-				&& myRows == ((SPMap) obj).rows()
-				&& players.equals(((SPMap) obj).getPlayers())
-				&& tiles.equals(((SPMap) obj).tiles));
+		return this == obj
+				|| (obj instanceof SPMap && myCols == ((SPMap) obj).cols()
+						&& myRows == ((SPMap) obj).rows()
+						&& players.equals(((SPMap) obj).getPlayers()) && tiles
+							.equals(((SPMap) obj).tiles));
 	}
 
 	/**
@@ -126,7 +124,8 @@ public class SPMap {
 	 */
 	@Override
 	public int hashCode() {
-		return myRows + myCols << 2 + players.hashCode() << 4 + tiles.hashCode() << 10;
+		return myRows + myCols << 2 + players.hashCode() << 4 + tiles
+				.hashCode() << 10;
 	}
 
 	/**

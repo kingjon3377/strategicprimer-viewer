@@ -15,7 +15,8 @@ public class ChitSelectionListener extends SelectionListener {
 	/**
 	 * Constructor.
 	 * 
-	 * @param list a listener to tell when the selected chit changes
+	 * @param list
+	 *            a listener to tell when the selected chit changes
 	 */
 	public ChitSelectionListener(final PropertyChangeListener list) {
 		super();
@@ -42,6 +43,7 @@ public class ChitSelectionListener extends SelectionListener {
 		super.clearSelection();
 		getSupport().firePropertyChange("chit", null, new Object());
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

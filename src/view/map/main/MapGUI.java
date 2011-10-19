@@ -2,10 +2,12 @@ package view.map.main;
 
 import model.map.SPMap;
 import model.viewer.MapModel;
+
 /**
  * An interface for a UI representing a map.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public interface MapGUI {
 	/**
@@ -24,7 +26,7 @@ public interface MapGUI {
 	 */
 	void loadMap(final SPMap newMap, final int minRow, final int maxRow,
 			final int minCol, final int maxCol);
-	
+
 	/**
 	 * Load and draw a map.
 	 * 
@@ -32,6 +34,7 @@ public interface MapGUI {
 	 *            the map to load
 	 */
 	void loadMap(final SPMap newMap);
+
 	/**
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */

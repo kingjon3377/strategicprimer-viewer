@@ -1,8 +1,8 @@
 package controller.map.simplexml;
 
 /**
- * The kinds of tags the Factory knows how to parse. Note that multiple XML
- * tags can get mapped to a single enumerated tag-type.
+ * The kinds of tags the Factory knows how to parse. Note that multiple XML tags
+ * can get mapped to a single enumerated tag-type.
  * 
  * @author kingjon
  * 
@@ -37,9 +37,9 @@ enum Tag {
 	 */
 	River,
 	/**
-	 * A lake. Since lakes have no attributes, we can't make them just a
-	 * special case of rivers at this stage without just saying that any
-	 * river tag without a direction is a lake.
+	 * A lake. Since lakes have no attributes, we can't make them just a special
+	 * case of rivers at this stage without just saying that any river tag
+	 * without a direction is a lake.
 	 */
 	Lake,
 	/**

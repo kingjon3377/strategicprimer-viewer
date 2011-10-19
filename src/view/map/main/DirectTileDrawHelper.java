@@ -26,12 +26,19 @@ import model.map.TileType;
 public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Draw a tile at the specified coordinates.
-	 * @param pen the graphics context.
-	 * @param tile the tile to draw
-	 * @param xCoord the tile's left boundary
-	 * @param yCoord the tile's right boundary
-	 * @param width the tile's width
-	 * @param height the tile's height
+	 * 
+	 * @param pen
+	 *            the graphics context.
+	 * @param tile
+	 *            the tile to draw
+	 * @param xCoord
+	 *            the tile's left boundary
+	 * @param yCoord
+	 *            the tile's right boundary
+	 * @param width
+	 *            the tile's width
+	 * @param height
+	 *            the tile's height
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int xCoord,
@@ -49,12 +56,13 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			if (hasAnyForts(tile)) {
 				pen.setColor(FORT_COLOR);
 				pen.fillRect((int) (width * TWO_THIRDS) - 1 + xCoord,
-						(int) (height * TWO_THIRDS) - 1 + yCoord, (int) (width / THREE),
-						(int) (height / THREE));
+						(int) (height * TWO_THIRDS) - 1 + yCoord,
+						(int) (width / THREE), (int) (height / THREE));
 			}
 			if (hasAnyUnits(tile)) {
 				pen.setColor(UNIT_COLOR);
-				pen.fillOval(((int) (width / FOUR)) + xCoord, ((int) (height / FOUR)) + yCoord,
+				pen.fillOval(((int) (width / FOUR)) + xCoord,
+						((int) (height / FOUR)) + yCoord,
 						((int) (width / FOUR)), ((int) (height / FOUR)));
 			} else if (hasEvent(tile)) {
 				pen.setColor(EVENT_COLOR);
@@ -68,7 +76,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 		}
 		pen.setColor(save);
 	}
-	
+
 	/**
 	 * Draw a tile. At present, the graphics context needs to be translated so
 	 * that its origin is the tile's upper-left-hand corner.
@@ -83,17 +91,27 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
+	public void drawTile(final Graphics pen, final Tile tile, final int width,
+			final int height) {
 		drawTile(pen, tile, 0, 0, width, height);
 	}
+
 	/**
 	 * Draw a river.
-	 * @param pen the graphics context---again, origin at tile's upper-left corner 
-	 * @param river the river to draw
-	 * @param xCoord the left boundary of the tile
-	 * @param yCoord the upper boundary of the tile
-	 * @param width the width of the tile's drawing-space
-	 * @param height the height of the tile's drawing-space
+	 * 
+	 * @param pen
+	 *            the graphics context---again, origin at tile's upper-left
+	 *            corner
+	 * @param river
+	 *            the river to draw
+	 * @param xCoord
+	 *            the left boundary of the tile
+	 * @param yCoord
+	 *            the upper boundary of the tile
+	 * @param width
+	 *            the width of the tile's drawing-space
+	 * @param height
+	 *            the height of the tile's drawing-space
 	 */
 	private static void drawRiver(final Graphics pen, final River river,
 			final int xCoord, final int yCoord, final int width,
@@ -101,12 +119,12 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 		switch (river) {
 		case East:
 			pen.fillRect((int) (width / TWO) + xCoord,
-					(int) (height * SEVEN_SIXTEENTHS) + yCoord, (int) (width / TWO),
-					(int) (height / EIGHT));
+					(int) (height * SEVEN_SIXTEENTHS) + yCoord,
+					(int) (width / TWO), (int) (height / EIGHT));
 			break;
 		case Lake:
-			pen.fillOval((int) (width / FOUR) + xCoord, (int) (height / FOUR) + yCoord,
-					(int) (width / TWO), (int) (height / TWO)); 
+			pen.fillOval((int) (width / FOUR) + xCoord, (int) (height / FOUR)
+					+ yCoord, (int) (width / TWO), (int) (height / TWO));
 			break;
 		case North:
 			pen.fillRect((int) (width * SEVEN_SIXTEENTHS) + xCoord, yCoord,
@@ -126,6 +144,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			break;
 		}
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

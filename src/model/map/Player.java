@@ -1,6 +1,5 @@
 package model.map;
 
-
 /**
  * A representation of a player in the game.
  * 
@@ -52,8 +51,9 @@ public class Player implements Comparable<Player> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof Player && playerID == ((Player) obj).getId()
-				&& playerName.equals(((Player) obj).getName()));
+		return this == obj
+				|| (obj instanceof Player && playerID == ((Player) obj).getId() && playerName
+						.equals(((Player) obj).getName()));
 	}
 
 	/**
@@ -85,16 +85,20 @@ public class Player implements Comparable<Player> {
 	public String toString() {
 		return "".equals(playerName) ? "player #" + playerID : playerName;
 	}
+
 	/**
 	 * Whether this is the current player or not.
 	 */
 	private boolean current;
+
 	/**
-	 * @param curr whether this is the current player or not
+	 * @param curr
+	 *            whether this is the current player or not
 	 */
 	public final void setCurrent(final boolean curr) {
 		current = curr;
 	}
+
 	/**
 	 * @return true iff this is the current player
 	 */

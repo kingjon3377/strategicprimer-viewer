@@ -1,6 +1,5 @@
 package model.map.events;
 
-
 import model.map.TileFixture;
 
 /**
@@ -15,12 +14,14 @@ public abstract class AbstractEvent implements TileFixture {
 	 * What kind of event this is.
 	 */
 	private final EventKind kind;
+
 	/**
 	 * @return what kind of event this is
 	 */
 	public EventKind kind() {
 		return kind;
 	}
+
 	/**
 	 * This is just a superclass. Actual events must be a subclass.
 	 * 
@@ -35,7 +36,7 @@ public abstract class AbstractEvent implements TileFixture {
 	 * @return the DC to discover the event.
 	 */
 	public abstract int getDC();
-	
+
 	/**
 	 * @return exploration-result text for the event.
 	 */

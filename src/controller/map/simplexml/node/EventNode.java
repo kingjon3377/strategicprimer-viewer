@@ -96,6 +96,7 @@ public class EventNode extends AbstractChildNode<AbstractEvent> implements
 		moveEverythingTo(child);
 		addChild(child);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

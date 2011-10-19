@@ -43,13 +43,16 @@ public final class CaveEvent extends AbstractEvent {
 	}
 
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it's an identical CaveEvent.
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof CaveEvent && ((CaveEvent) obj).dc == dc);
+		return this == obj
+				|| (obj instanceof CaveEvent && ((CaveEvent) obj).dc == dc);
 	}
+
 	/**
 	 * @return a hash value for the event.
 	 */
@@ -57,6 +60,7 @@ public final class CaveEvent extends AbstractEvent {
 	public int hashCode() {
 		return dc;
 	}
+
 	/**
 	 * @return a string representation of the event
 	 */

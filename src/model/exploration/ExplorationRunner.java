@@ -41,7 +41,6 @@ public class ExplorationRunner { // NOPMD
 	 */
 	private final Map<String, EncounterTable> tables = new HashMap<String, EncounterTable>();
 
-
 	/**
 	 * Add a table. This is package-visibility so our test-case can use it.
 	 * 
@@ -130,7 +129,8 @@ public class ExplorationRunner { // NOPMD
 	 * @return whether that table, or any table it calls, calls a table that
 	 *         doesn't exist.
 	 */
-	public boolean recursiveCheck(final String table) { // $codepro.audit.disable booleanMethodNamingConvention
+	public boolean recursiveCheck(final String table) { // $codepro.audit.disable
+														// booleanMethodNamingConvention
 		return recursiveCheck(table, new HashSet<String>());
 	}
 
@@ -146,7 +146,7 @@ public class ExplorationRunner { // NOPMD
 	 *         exist.
 	 */
 	// $codepro.audit.disable booleanMethodNamingConvention
-	private boolean recursiveCheck(final String table, final Set<String> state) { 
+	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {
 			return false; // NOPMD
 		} else {
@@ -172,7 +172,8 @@ public class ExplorationRunner { // NOPMD
 	 * @return whether any table contains recursive calls to a nonexistent
 	 *         table.
 	 */
-	public boolean recursiveCheck() { // $codepro.audit.disable booleanMethodNamingConvention
+	public boolean recursiveCheck() { // $codepro.audit.disable
+										// booleanMethodNamingConvention
 		final Set<String> state = new HashSet<String>();
 		for (final String table : tables.keySet()) {
 			if (recursiveCheck(table, state)) {

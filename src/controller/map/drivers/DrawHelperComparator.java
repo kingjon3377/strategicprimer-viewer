@@ -19,8 +19,9 @@ import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to compare the performance of TileDrawHelpers.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class DrawHelperComparator {
 	/**
@@ -31,10 +32,14 @@ public class DrawHelperComparator {
 	 * Label to put before every caching-helper test result.
 	 */
 	private static final String CACHING_NAME = "Caching:";
+
 	/**
 	 * Constructor.
-	 * @param map the map we'll be drawing in the tests
-	 * @param repetitions how many times to repeat each test
+	 * 
+	 * @param map
+	 *            the map we'll be drawing in the tests
+	 * @param repetitions
+	 *            how many times to repeat each test
 	 */
 	public DrawHelperComparator(final SPMap map, final int repetitions) {
 		spmap = map;
@@ -42,6 +47,7 @@ public class DrawHelperComparator {
 		cols = spmap.cols();
 		reps = repetitions;
 	}
+
 	/**
 	 * The map.
 	 */
@@ -63,9 +69,12 @@ public class DrawHelperComparator {
 	 * has to use.
 	 */
 	private final int tsize = MapComponent.getTileSize();
+
 	/**
 	 * The first test: all in one place.
-	 * @param helper the helper to test
+	 * 
+	 * @param helper
+	 *            the helper to test
 	 * @return how long the test took, in ns.
 	 */
 	public long first(final TileDrawHelper helper) {
@@ -84,9 +93,12 @@ public class DrawHelperComparator {
 		final long end = System.nanoTime();
 		return end - start;
 	}
+
 	/**
 	 * The second test: Translating.
-	 * @param helper the helper to test
+	 * 
+	 * @param helper
+	 *            the helper to test
 	 * @return how long the test took, in ns.
 	 */
 	public long second(final TileDrawHelper helper) {
@@ -106,9 +118,12 @@ public class DrawHelperComparator {
 		final long end = System.nanoTime();
 		return end - start;
 	}
+
 	/**
 	 * Third test: in-place, reusing Graphics.
-	 * @param helper the helper to test
+	 * 
+	 * @param helper
+	 *            the helper to test
 	 * @return how long the test took, in ns.
 	 */
 	public long third(final TileDrawHelper helper) {
@@ -127,9 +142,12 @@ public class DrawHelperComparator {
 		final long end = System.nanoTime();
 		return end - start;
 	}
+
 	/**
 	 * Third test: translating, reusing Graphics.
-	 * @param helper the helper to test
+	 * 
+	 * @param helper
+	 *            the helper to test
 	 * @return how long the test took, in ns.
 	 */
 	public long fourth(final TileDrawHelper helper) {
@@ -149,23 +167,29 @@ public class DrawHelperComparator {
 		final long end = System.nanoTime();
 		return end - start;
 	}
+
 	/**
-	 * A driver method to compare the two helpers, and the two map-GUI implementations.
-	 * @param args the command-line arguments.
+	 * A driver method to compare the two helpers, and the two map-GUI
+	 * implementations.
+	 * 
+	 * @param args
+	 *            the command-line arguments.
 	 */
 	public static void main(final String[] args) { // NOPMD
-		final Logger logger = Logger.getLogger(DrawHelperComparator.class.getName());
+		final Logger logger = Logger.getLogger(DrawHelperComparator.class
+				.getName());
 		// ESCA-JAVA0177:
 		final DrawHelperComparator comp; // NOPMD
 		try {
-			comp = new DrawHelperComparator(new MapReaderAdapter().readMap(args[0]), 50);
-		} catch (IOException e) {
+			comp = new DrawHelperComparator(
+					new MapReaderAdapter().readMap(args[0]), 50);
+		} catch (final IOException e) {
 			logger.log(Level.SEVERE, "I/O error reading map", e);
 			return; // NOPMD
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			logger.log(Level.SEVERE, "XML error reading map", e);
 			return; // NOPMD
-		} catch (SPFormatException e) {
+		} catch (final SPFormatException e) {
 			logger.log(Level.SEVERE, "Map format error reading map", e);
 			return;
 		}
@@ -192,9 +216,12 @@ public class DrawHelperComparator {
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
 		comp.printStats(comp.fourth(helperTwo));
 	}
+
 	/**
 	 * A helper method to reduce repeated strings.
-	 * @param total the total time
+	 * 
+	 * @param total
+	 *            the total time
 	 */
 	public void printStats(final long total) {
 		SystemOut.SYS_OUT.print('\t');
@@ -203,6 +230,7 @@ public class DrawHelperComparator {
 		SystemOut.SYS_OUT.print(Long.toString(total / reps));
 		SystemOut.SYS_OUT.println(" ns.");
 	}
+
 	/**
 	 * @return a String representation of this object
 	 */

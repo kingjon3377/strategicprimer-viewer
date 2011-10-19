@@ -2,6 +2,7 @@ package view.util;
 
 /**
  * A class for a wrapper around System.exit().
+ * 
  * @author Jonathan Lovelace
  */
 public final class DriverQuit {
@@ -11,7 +12,7 @@ public final class DriverQuit {
 	private DriverQuit() {
 		// Do nothing.
 	}
-	
+
 	/**
 	 * Quit. Note that this should not be called from a non-static context
 	 * except by some CLI drivers.

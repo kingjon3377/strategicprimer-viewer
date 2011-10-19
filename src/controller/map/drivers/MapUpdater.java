@@ -8,14 +8,13 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import controller.map.SPFormatException;
-import controller.map.XMLWriter;
-import controller.map.misc.MapReaderAdapter;
-
 import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 import view.util.DriverQuit;
+import controller.map.SPFormatException;
+import controller.map.XMLWriter;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
@@ -27,7 +26,8 @@ public final class MapUpdater {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(MapUpdater.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MapUpdater.class
+			.getName());
 	/**
 	 * The master map.
 	 */
@@ -49,8 +49,7 @@ public final class MapUpdater {
 	 *            the derived map to update.
 	 */
 	public void update(final SPMap derived) {
-		if (master.rows() != derived.rows()
-				|| master.cols() != derived.cols()) {
+		if (master.rows() != derived.rows() || master.cols() != derived.cols()) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
 		final int rows = master.rows();
@@ -96,39 +95,46 @@ public final class MapUpdater {
 		// ESCA-JAVA0266:
 		final PrintWriter writer = new PrintWriter(System.out);
 		try {
-		new XMLWriter(writer).write(derived);
+			new XMLWriter(writer).write(derived);
 		} finally {
-		writer.close();
+			writer.close();
 		}
 	}
-	
+
 	/**
 	 * Build a string.
-	 * @param strings the strings to concatenate.
+	 * 
+	 * @param strings
+	 *            the strings to concatenate.
 	 * @return the result of the concatenation
 	 */
 	private static String buildString(final String... strings) {
 		final StringBuilder build = new StringBuilder(16);
-		for (String str : strings) {
+		for (final String str : strings) {
 			build.append(str);
 		}
 		return build.toString();
 	}
+
 	/**
 	 * An exception to throw if execution gets past System.exit().
 	 */
 	private static final IllegalStateException PASSED_EXIT = new IllegalStateException(
 			"Execution passed System.exit()");
+
 	/**
 	 * Load a map; if this fails, log a suitable error message and quit.
-	 * @param filename the name of the map to load
+	 * 
+	 * @param filename
+	 *            the name of the map to load
 	 * @return the map
 	 */
 	private static SPMap loadMap(final String filename) {
 		try {
 			return new MapReaderAdapter().readMap(filename);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, buildString("File ", filename, " not found"), e);
+			LOGGER.log(Level.SEVERE,
+					buildString("File ", filename, " not found"), e);
 			DriverQuit.quit(1);
 			throw PASSED_EXIT;
 		} catch (final XMLStreamException e) {
@@ -137,15 +143,18 @@ public final class MapUpdater {
 			DriverQuit.quit(2);
 			throw PASSED_EXIT;
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, buildString("I/O error processing ", filename), e);
+			LOGGER.log(Level.SEVERE,
+					buildString("I/O error processing ", filename), e);
 			DriverQuit.quit(3);
 			throw PASSED_EXIT;
-		} catch (SPFormatException e) {
-			LOGGER.log(Level.SEVERE, buildString(filename, " contained invalid data"), e);
+		} catch (final SPFormatException e) {
+			LOGGER.log(Level.SEVERE,
+					buildString(filename, " contained invalid data"), e);
 			DriverQuit.quit(4);
 			throw PASSED_EXIT;
 		}
 	}
+
 	/**
 	 * @return a String representation of this object
 	 */

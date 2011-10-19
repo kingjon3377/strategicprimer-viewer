@@ -3,10 +3,12 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.events.CaveEvent;
 import controller.map.SPFormatException;
+
 /**
  * A Node representing a CaveEvent.
+ * 
  * @author kingjon
- *
+ * 
  */
 public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 	/**
@@ -30,12 +32,13 @@ public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 			throws SPFormatException {
 		return new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
-	
+
 	/**
 	 * Check whether this Node has valid data or not. A Cave is valid if it has
 	 * "dc" and "kind" properties and no children.
 	 * 
-	 * @throws SPFormatException if it isn't valid.
+	 * @throws SPFormatException
+	 *             if it isn't valid.
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
@@ -45,8 +48,9 @@ public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 		} else if (!hasProperty(KIND_PROPERTY) || !hasProperty(DC_PROPERTY)) {
 			throw new SPFormatException(
 					"Event must have \"kind\" and \"dc\" properties", getLine());
-		} 
+		}
 	}
+
 	/**
 	 * @return a String representation of this object
 	 */

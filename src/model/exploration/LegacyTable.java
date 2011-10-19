@@ -31,6 +31,7 @@ public class LegacyTable implements EncounterTable {
 	 * The list of events we can return.
 	 */
 	private final List<String> data;
+
 	/**
 	 * Constructor.
 	 */
@@ -38,19 +39,19 @@ public class LegacyTable implements EncounterTable {
 		data = new ArrayList<String>();
 		data.add(new BattlefieldEvent(0).getText());
 		data.add(new CaveEvent(0).getText());
-		for (TownStatus status : TownStatus.values()) {
-			for (TownSize size : TownSize.values()) {
+		for (final TownStatus status : TownStatus.values()) {
+			for (final TownSize size : TownSize.values()) {
 				data.add(new CityEvent(status, size, 0).getText()); // NOPMD
 				data.add(new FortificationEvent(status, size, 0).getText()); // NOPMD
 				data.add(new TownEvent(status, size, 0).getText()); // NOPMD
 			}
 		}
-		for (MineralKind mineral : MineralKind.values()) {
+		for (final MineralKind mineral : MineralKind.values()) {
 			data.add(new MineralEvent(mineral, true, 0).getText()); // NOPMD
 			data.add(new MineralEvent(mineral, false, 0).getText()); // NOPMD
 		}
 		data.add(NothingEvent.NOTHING_EVENT.getText());
-		for (StoneKind stone : StoneKind.values()) {
+		for (final StoneKind stone : StoneKind.values()) {
 			data.add(new StoneEvent(stone, 0).getText()); // NOPMD
 		}
 	}
@@ -62,7 +63,7 @@ public class LegacyTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
-		for (TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile.getContents()) {
 			if (fix instanceof AbstractEvent) {
 				return ((AbstractEvent) fix).getText(); // NOPMD
 			}
@@ -77,6 +78,7 @@ public class LegacyTable implements EncounterTable {
 	public Set<String> allEvents() {
 		return new HashSet<String>(data);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

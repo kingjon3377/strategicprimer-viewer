@@ -53,6 +53,7 @@ public class TerrainTable implements EncounterTable {
 	public Set<String> allEvents() {
 		return new HashSet<String>(mapping.values());
 	}
+
 	/**
 	 * @return a String representation of the class
 	 */

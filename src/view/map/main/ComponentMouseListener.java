@@ -6,10 +6,12 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import model.viewer.MapModel;
+
 /**
  * A mouse listener for the MapComponent.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class ComponentMouseListener extends MouseAdapter {
 	/**
@@ -20,9 +22,12 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * A helper to handle event sending.
 	 */
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
 	/**
-	 * @param mapModel the map model we'll refer to
-	 * @param list a listener to send encounter events to
+	 * @param mapModel
+	 *            the map model we'll refer to
+	 * @param list
+	 *            a listener to send encounter events to
 	 */
 	public ComponentMouseListener(final MapModel mapModel,
 			final PropertyChangeListener list) {
@@ -32,12 +37,14 @@ public final class ComponentMouseListener extends MouseAdapter {
 		model.addPropertyChangeListener(menu);
 		pcs.addPropertyChangeListener(list);
 		menu.addPropertyChangeListener(list);
-		
+
 	}
+
 	/**
 	 * The terrain-changing menu.
 	 */
 	private final TerrainChangingMenu menu = new TerrainChangingMenu();
+
 	/**
 	 * Handle mouse clicks.
 	 * 
@@ -56,6 +63,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
+
 	/**
 	 * Handle mouse presses.
 	 * 
@@ -68,6 +76,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
+
 	/**
 	 * Handle mouse releases.
 	 * 
@@ -80,6 +89,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
+
 	/**
 	 * @return a String representation of the object.
 	 */

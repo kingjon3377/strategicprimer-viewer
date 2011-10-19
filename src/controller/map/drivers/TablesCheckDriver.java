@@ -4,9 +4,11 @@ import model.exploration.ExplorationRunner;
 import controller.exploration.TableLoader;
 
 /**
- * A driver to check that a directory of encounter tables is entirely formatted correctly.
+ * A driver to check that a directory of encounter tables is entirely formatted
+ * correctly.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class TablesCheckDriver {
 	/**
@@ -22,8 +24,9 @@ public final class TablesCheckDriver {
 		// ESCA-JAVA0266:
 		runner.verboseRecursiveCheck(System.out);
 	}
+
 	/**
-	 * Do  not instantiate.
+	 * Do not instantiate.
 	 */
 	private TablesCheckDriver() {
 		// Do nothing.
