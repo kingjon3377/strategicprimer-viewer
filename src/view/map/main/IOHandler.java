@@ -69,30 +69,28 @@ public final class IOHandler implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
+		String filename = "";
+		// ESCA-JAVA0166:
+		try {
 		if ("Load".equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
-				final String filename = chooser.getSelectedFile().getPath();
-				// ESCA-JAVA0166:
-				try {
+				filename = chooser.getSelectedFile().getPath();
 					panel.setMainMap(readMap(filename));
-				} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
-					handleError(e, filename);
-				}
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMap(panel.getMainMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
-				final String filename = chooser.getSelectedFile().getPath();
-				// ESCA-JAVA0166:
-				try {
+				filename = chooser.getSelectedFile().getPath();
 					panel.setSecondaryMap(readMap(filename));
-				} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
-					handleError(e, filename);
-				}
 			}
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			saveMap(panel.getSecondaryMap());
+		} else if ("Switch maps".equals(event.getActionCommand())) {
+			panel.swapMaps();
+		} 
+		} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
+			handleError(e, filename);
 		}
 	}
 

@@ -107,9 +107,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		if ("Switch maps".equals(event.getActionCommand())) {
-			mapPanel.getModel().swapMaps();
-		} else if ("Restrict view".equals(event.getActionCommand())) {
+		if ("Restrict view".equals(event.getActionCommand())) {
 			new RestrictDialog(mapPanel).setVisible(true);
 		} 
 	}
