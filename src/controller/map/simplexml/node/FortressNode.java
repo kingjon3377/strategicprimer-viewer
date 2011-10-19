@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.Fortress;
 import model.map.PlayerCollection;
+import util.Warning;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.AbstractXMLNode;
 import controller.map.simplexml.SPFormatException;
@@ -50,10 +51,10 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 			}
 		}
 		if (!hasProperty("owner")) {
-			warn(new SPFormatException("Fortress should have an owner", getLine()));
+			Warning.warn(new SPFormatException("Fortress should have an owner", getLine()));
 		}
 		if (!hasProperty("name")) {
-			warn(new SPFormatException("Fortress should have a name", getLine()));
+			Warning.warn(new SPFormatException("Fortress should have a name", getLine()));
 		}
 	}
 	/**

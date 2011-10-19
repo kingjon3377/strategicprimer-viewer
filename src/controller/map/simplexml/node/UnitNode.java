@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.Unit;
+import util.Warning;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.SPFormatException;
 /**
@@ -37,13 +38,13 @@ public class UnitNode extends AbstractChildNode<Unit> {
 			throw new SPFormatException("Unit should't contain anything", getLine());
 		}
 		if (!hasProperty("owner") || "".equals(getProperty("owner"))) {
-			warn(new SPFormatException("Unit should have an owner", getLine()));
+			Warning.warn(new SPFormatException("Unit should have an owner", getLine()));
 		}
 		if (!hasProperty("type") || "".equals(getProperty("type"))) {
-			warn(new SPFormatException("Unit should have a type", getLine()));
+			Warning.warn(new SPFormatException("Unit should have a type", getLine()));
 		}
 		if (!hasProperty("name") || "".equals(getProperty("name"))) {
-			warn(new SPFormatException("Unit should have a name", getLine()));
+			Warning.warn(new SPFormatException("Unit should have a name", getLine()));
 		}
 	}
 	/**
