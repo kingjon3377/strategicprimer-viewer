@@ -42,8 +42,10 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 	 * @param tile the tile we now represent
 	 */
 	public void updateText(final Tile tile) {
-		coordLabel.setText("<html>Coordinates: (" + tile.getRow() + ", " + tile.getCol() + ")</html>");
-		typeLabel.setText("<html>Tile type: " + TUI_HELPER.getDescription(tile.getType()) + "</html>");
+		coordLabel.setText("<html>Coordinates: (" + tile.getRow() + ", "
+				+ tile.getCol() + ")</html>");
+		typeLabel.setText("<html>Tile type: "
+				+ TUI_HELPER.getDescription(tile.getType()) + "</html>");
 	}
 	/**
 	 * Handle a property change.
