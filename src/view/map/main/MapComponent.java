@@ -148,17 +148,13 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 */
 	private void drawMapPortion(final Graphics pen, final int minX,
 			final int minY, final int maxX, final int maxY) {
-		for (int i = minY; i < maxY
-				&& i + getModel().getDimensions().getMinimumRow() < getModel().getDimensions()
-						.getMaximumRow() + 1; i++) {
-			for (int j = minX; j < maxX
-					&& j + getModel().getDimensions().getMinimumCol() < getModel().getDimensions()
-							.getMaximumCol() + 1; j++) {
-				paintTile(
-						pen,
-						model.getTile(i
-								+ getModel().getDimensions().getMinimumRow(), j
-								+ getModel().getDimensions().getMinimumCol()), i, j);
+		final int minRow = getModel().getDimensions().getMinimumRow();
+		final int maxRow = getModel().getDimensions().getMaximumRow();
+		final int minCol = getModel().getDimensions().getMinimumCol(); // NOPMD
+		final int maxCol = getModel().getDimensions().getMaximumCol(); // NOPMD
+		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
+			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
+				paintTile(pen, model.getTile(i + minRow, j + minCol), i, j);
 			}
 		}
 	}

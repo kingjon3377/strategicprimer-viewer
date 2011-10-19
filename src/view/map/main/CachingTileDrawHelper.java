@@ -60,7 +60,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the current height
 	 */
 	private void checkCache(final int width, final int height) {
-		if (!floatEquals(backgroundShape.getWidth(), width) || !floatEquals(backgroundShape.getHeight(), height)) {
+		if (!equalFloats(backgroundShape.getWidth(), width) || !equalFloats(backgroundShape.getHeight(), height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
 			rivers.clear();
 			rivers.put(River.East, new Rectangle2D.Double(width / 2.0, height // NOPMD
@@ -131,7 +131,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param two the second value
 	 * @return whether the two are approximately equal
 	 */
-	private static boolean floatEquals(final double one, final double two) {
+	private static boolean equalFloats(final double one, final double two) {
 		return Math.abs(one - two) < APPROX_ZERO;
 	}
 	/**

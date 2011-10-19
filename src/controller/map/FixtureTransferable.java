@@ -59,4 +59,11 @@ public class FixtureTransferable implements Transferable {
 			throw new UnsupportedFlavorException(dflavor);
 		}
 	}
+	/**
+	 * @return a String representation of this object
+	 */
+	@Override
+	public String toString() {
+		return "FixtureTransferable";
+	}
 }

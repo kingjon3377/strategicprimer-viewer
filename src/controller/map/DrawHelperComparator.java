@@ -38,12 +38,22 @@ public class DrawHelperComparator {
 	 */
 	public DrawHelperComparator(final SPMap map, final int repetitions) {
 		spmap = map;
+		rows = spmap.rows();
+		cols = spmap.cols();
 		reps = repetitions;
 	}
 	/**
 	 * The map.
 	 */
 	private final SPMap spmap;
+	/**
+	 * The size of the map in rows.
+	 */
+	private final int rows;
+	/**
+	 * The size of the map in columns.
+	 */
+	private final int cols;
 	/**
 	 * How many times to repeat each test.
 	 */
@@ -64,8 +74,8 @@ public class DrawHelperComparator {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (int i = 0; i < spmap.rows(); i++) {
-				for (int j = 0; j < spmap.cols(); j++) {
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < cols; j++) {
 					helper.drawTile(image.createGraphics(),
 							spmap.getTile(i, j), tsize, tsize);
 				}
@@ -85,8 +95,8 @@ public class DrawHelperComparator {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (int i = 0; i < spmap.rows(); i++) {
-				for (int j = 0; j < spmap.cols(); j++) {
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < cols; j++) {
 					helper.drawTile(image.createGraphics(),
 							spmap.getTile(i, j), i * tsize, j * tsize, tsize,
 							tsize);
@@ -108,8 +118,8 @@ public class DrawHelperComparator {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
-			for (int i = 0; i < spmap.rows(); i++) {
-				for (int j = 0; j < spmap.cols(); j++) {
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < cols; j++) {
 					helper.drawTile(pen, spmap.getTile(i, j), tsize, tsize);
 				}
 			}
@@ -129,8 +139,8 @@ public class DrawHelperComparator {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
-			for (int i = 0; i < spmap.rows(); i++) {
-				for (int j = 0; j < spmap.cols(); j++) {
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < cols; j++) {
 					helper.drawTile(pen, spmap.getTile(i, j), i * tsize, j
 							* tsize, tsize, tsize);
 				}
@@ -192,5 +202,12 @@ public class DrawHelperComparator {
 		SystemOut.SYS_OUT.print(", average of\t");
 		SystemOut.SYS_OUT.print(Long.toString(total / reps));
 		SystemOut.SYS_OUT.println(" ns.");
+	}
+	/**
+	 * @return a String representation of this object
+	 */
+	@Override
+	public String toString() {
+		return "DrawHelperComparator";
 	}
 }

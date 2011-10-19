@@ -16,5 +16,5 @@ public final class SystemOut extends PrintStream {
 	/**
 	 * The singleton object.
 	 */
-	public static final SystemOut SYS_OUT = new SystemOut();
+	public static final SystemOut SYS_OUT = new SystemOut(); // $codepro.audit.disable closeWhereCreated
 }
