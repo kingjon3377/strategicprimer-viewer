@@ -189,9 +189,11 @@ public final class IOHandler implements ActionListener {
 	}
 	/**
 	 * Set up the menu we'll be handling.
-	 * @param  menu the menu to set up
+	 * @return the menu we set up
 	 */
-	public void setUpMenu(final JMenu menu) {
+	public JMenu setUpMenu() {
+		final JMenu menu = new JMenu("Map");
+		menu.setMnemonic(KeyEvent.VK_M);
 		menu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
 				"Load a main map from file", this));
@@ -213,5 +215,6 @@ public final class IOHandler implements ActionListener {
 		menu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Make the secondary map the main map and vice versa", this));
+		return menu;
 	}
 }

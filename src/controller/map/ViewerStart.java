@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.MapModel;
+import view.map.main.IOHandler;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
@@ -57,11 +58,11 @@ public final class ViewerStart {
 	 * 
 	 */
 	public static void main(final String[] args) {
+		final JFileChooser chooser = new JFileChooser(".");
+		chooser.setFileFilter(new MapFileFilter());
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD // $codepro.audit.disable localDeclaration
 		if (args.length == 0) {
-			final JFileChooser chooser = new JFileChooser(".");
-			chooser.setFileFilter(new MapFileFilter());
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				filename = chooser.getSelectedFile().getPath();
 			} else {
@@ -73,6 +74,7 @@ public final class ViewerStart {
 		try {
 			final MapModel model = new MapModel(new SimpleXMLReader().readMap(filename));
 			frame = new ViewerFrame(model);
+			frame.createMenu(new IOHandler(model, frame, chooser).setUpMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {
 				model.setSecondaryMap(new SimpleXMLReader().readMap(args[1]));

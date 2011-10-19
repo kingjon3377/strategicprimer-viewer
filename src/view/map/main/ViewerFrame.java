@@ -58,7 +58,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		chooser.setFileFilter(new MapFileFilter());
 		mapPanel = new MapComponent(map);
 		final DetailPanel details = new DetailPanel((MapComponent) mapPanel);
-		createMenu();
 		add(details, BorderLayout.SOUTH);
 		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
 		add(scroller, BorderLayout.CENTER);
@@ -72,14 +71,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 
 	/**
 	 * Set up the menu.
+	 * @param mapMenu the map menu
 	 */
-	private void createMenu() {
+	public void createMenu(final JMenu mapMenu) {
 		final MenuItemCreator creator = new MenuItemCreator();
 		final JMenuBar mbar = new JMenuBar();
-		final JMenu mapMenu = new JMenu("Map");
-		final IOHandler ioListener = new IOHandler(mapPanel.getModel(), this, chooser);
-		mapMenu.setMnemonic(KeyEvent.VK_M);
-		ioListener.setUpMenu(mapMenu);
 		mbar.add(mapMenu);
 		mbar.add(creator.createMenuItem("Restrict view",
 				KeyEvent.VK_R,
