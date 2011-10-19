@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.misc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
+
+import controller.map.SPFormatException;
+import controller.map.XMLWriter;
 
 import model.map.SPMap;
 import model.viewer.MapModel;

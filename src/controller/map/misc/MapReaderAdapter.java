@@ -1,10 +1,13 @@
-package controller.map;
+package controller.map.misc;
 
 import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
+import controller.map.IMapReader;
+import controller.map.MapVersionException;
+import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**

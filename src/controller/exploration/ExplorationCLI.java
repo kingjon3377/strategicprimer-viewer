@@ -16,8 +16,8 @@ import model.map.SPMap;
 import model.map.Tile;
 import view.util.DriverQuit;
 import view.util.SystemOut;
-import controller.map.MapReaderAdapter;
 import controller.map.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver for running exploration results, etc., using the new model.

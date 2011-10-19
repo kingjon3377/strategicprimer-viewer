@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import controller.map.MapReaderAdapter;
 import controller.map.SPFormatException;
 import controller.map.XMLWriter;
+import controller.map.misc.MapReaderAdapter;
 
 import model.map.SPMap;
 import model.map.Tile;

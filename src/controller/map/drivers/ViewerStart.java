@@ -12,9 +12,9 @@ import model.viewer.MapModel;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
-import controller.map.IOHandler;
-import controller.map.MapReaderAdapter;
 import controller.map.SPFormatException;
+import controller.map.misc.IOHandler;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between packages.

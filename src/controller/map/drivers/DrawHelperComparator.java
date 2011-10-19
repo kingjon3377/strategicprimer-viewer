@@ -14,8 +14,8 @@ import view.map.main.DirectTileDrawHelper;
 import view.map.main.MapComponent;
 import view.map.main.TileDrawHelper;
 import view.util.SystemOut;
-import controller.map.MapReaderAdapter;
 import controller.map.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to compare the performance of TileDrawHelpers.
