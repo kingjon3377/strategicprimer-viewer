@@ -1,4 +1,4 @@
-package view.map.main;
+package controller.map;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +17,6 @@ import model.map.SPMap;
 import model.viewer.MapModel;
 import view.util.ErrorShower;
 import view.util.MenuItemCreator;
-import controller.map.XMLWriter;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
