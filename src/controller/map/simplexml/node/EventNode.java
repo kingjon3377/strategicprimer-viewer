@@ -4,10 +4,10 @@ import java.util.Iterator;
 
 import model.map.PlayerCollection;
 import model.map.events.AbstractEvent;
+import controller.map.SPFormatException;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.AbstractXMLNode;
 import controller.map.simplexml.NeedsExtraCanonicalization;
-import controller.map.simplexml.SPFormatException;
 
 /**
  * A Node that will produce an Event.

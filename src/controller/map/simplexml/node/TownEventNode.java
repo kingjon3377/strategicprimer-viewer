@@ -7,8 +7,8 @@ import model.map.events.FortificationEvent;
 import model.map.events.TownEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
+import controller.map.SPFormatException;
 import controller.map.simplexml.AbstractChildNode;
-import controller.map.simplexml.SPFormatException;
 
 /**
  * A Node that produces a TownEvent.

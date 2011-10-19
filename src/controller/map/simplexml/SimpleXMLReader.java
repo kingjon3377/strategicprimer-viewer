@@ -14,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.SPMap;
 import util.IteratorWrapper;
+import controller.map.SPFormatException;
 import controller.map.simplexml.node.TileNode;
 
 /**

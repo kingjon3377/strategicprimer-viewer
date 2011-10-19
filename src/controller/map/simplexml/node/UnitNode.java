@@ -3,8 +3,8 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.Unit;
 import util.Warning;
+import controller.map.SPFormatException;
 import controller.map.simplexml.AbstractChildNode;
-import controller.map.simplexml.SPFormatException;
 /**
  * A Node to represent a Unit.
  * @author kingjon

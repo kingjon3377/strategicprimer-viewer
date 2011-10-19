@@ -1,4 +1,4 @@
-package controller.map.simplexml;
+package controller.map;
 /**
  * A custom exception for XML format errors.
  * @author Jonathan Lovelace

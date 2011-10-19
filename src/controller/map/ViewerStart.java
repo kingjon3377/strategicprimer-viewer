@@ -12,7 +12,6 @@ import model.viewer.MapModel;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
-import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**

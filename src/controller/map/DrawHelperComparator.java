@@ -14,7 +14,6 @@ import view.map.main.DirectTileDrawHelper;
 import view.map.main.MapComponent;
 import view.map.main.TileDrawHelper;
 import view.util.SystemOut;
-import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**

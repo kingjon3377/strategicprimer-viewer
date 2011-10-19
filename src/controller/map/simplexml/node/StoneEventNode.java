@@ -3,8 +3,8 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
+import controller.map.SPFormatException;
 import controller.map.simplexml.AbstractChildNode;
-import controller.map.simplexml.SPFormatException;
 /**
  * A Node to represent a StoneEvent.
  * @author Jonathan Lovelace

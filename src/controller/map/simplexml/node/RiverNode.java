@@ -2,8 +2,8 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.River;
+import controller.map.SPFormatException;
 import controller.map.simplexml.AbstractChildNode;
-import controller.map.simplexml.SPFormatException;
 
 /**
  * A node representing a river XML tag.

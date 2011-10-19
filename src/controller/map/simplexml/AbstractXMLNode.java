@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import controller.map.SPFormatException;
 import controller.map.simplexml.node.SkippableNode;
 
 /**

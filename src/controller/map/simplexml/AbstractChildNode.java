@@ -3,6 +3,8 @@ package controller.map.simplexml;
 import java.util.HashMap;
 import java.util.Map;
 
+import controller.map.SPFormatException;
+
 import model.map.PlayerCollection;
 
 /**

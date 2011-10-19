@@ -5,9 +5,9 @@ import java.util.List;
 
 import model.map.PlayerCollection;
 import model.map.SPMap;
+import controller.map.SPFormatException;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.AbstractXMLNode;
-import controller.map.simplexml.SPFormatException;
 
 /**
  * A node generated from the <map> tag.

@@ -3,6 +3,7 @@ package controller.map.simplexml;
 import java.util.HashMap;
 import java.util.Map;
 
+import controller.map.SPFormatException;
 import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.MapNode;

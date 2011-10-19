@@ -17,7 +17,6 @@ import model.map.SPMap;
 import model.viewer.MapModel;
 import view.util.ErrorShower;
 import view.util.MenuItemCreator;
-import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**

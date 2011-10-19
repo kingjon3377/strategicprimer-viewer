@@ -2,8 +2,8 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import util.Warning;
+import controller.map.SPFormatException;
 import controller.map.simplexml.AbstractChildNode;
-import controller.map.simplexml.SPFormatException;
 
 /**
  * A Node for tags we'd rather skip. This is an AbstractChildNode because

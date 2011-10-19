@@ -12,7 +12,6 @@ import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 import view.util.DriverQuit;
-import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**
