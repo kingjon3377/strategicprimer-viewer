@@ -7,7 +7,6 @@ import java.awt.event.MouseListener;
 import model.viewer.events.AbstractEvent;
 import model.viewer.events.AbstractTownEvent;
 import model.viewer.events.TownStatus;
-import view.util.IsAdmin;
 import controller.map.FixtureTransferable;
 
 /**
@@ -31,7 +30,7 @@ public class EventChit extends Chit {
 		builder.append(event.getText());
 		if (event instanceof AbstractTownEvent
 				&& TownStatus.Active.equals(((AbstractTownEvent) event)
-						.status()) && !IsAdmin.IS_ADMIN) {
+						.status())) {
 			final int cursor = builder.indexOf(" (roll it up)");
 			builder.replace(cursor, cursor + 13, "");
 		}
