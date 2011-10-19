@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.Unit;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
 /**
  * A Node to represent a Unit.
  * @author kingjon

@@ -3,6 +3,7 @@ package controller.map.simplexml;
 import java.util.Iterator;
 
 import controller.map.SPFormatException;
+import controller.map.simplexml.node.AbstractXMLNode;
 import controller.map.simplexml.node.MapNode;
 
 /**

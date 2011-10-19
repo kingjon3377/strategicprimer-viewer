@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.events.MineralEvent;
 import model.map.events.MineralKind;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
 
 /**
  * A Node to represent a MineralEvent.

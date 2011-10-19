@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
 /**
  * A Node to represent a StoneEvent.
  * @author Jonathan Lovelace

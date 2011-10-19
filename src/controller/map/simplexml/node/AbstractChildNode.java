@@ -1,4 +1,4 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import java.util.HashMap;
 import java.util.Map;

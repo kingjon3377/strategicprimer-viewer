@@ -8,7 +8,6 @@ import model.map.events.TownEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
 
 /**
  * A Node that produces a TownEvent.

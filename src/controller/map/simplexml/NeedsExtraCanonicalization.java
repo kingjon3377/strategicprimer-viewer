@@ -2,6 +2,7 @@ package controller.map.simplexml;
 
 import controller.map.SPFormatException;
 
+
 /**
  * An interface for Nodes to implement if they need to do something
  * before the body of canonicalize() runs.

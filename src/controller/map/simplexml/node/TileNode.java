@@ -7,8 +7,6 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.Unit;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
-import controller.map.simplexml.AbstractXMLNode;
 /**
  * A Node to represent a Tile.
  * @author Jonathan Lovelace

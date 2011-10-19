@@ -3,7 +3,6 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.events.CaveEvent;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
 /**
  * A Node representing a CaveEvent.
  * @author kingjon

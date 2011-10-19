@@ -4,8 +4,6 @@ import model.map.Fortress;
 import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
-import controller.map.simplexml.AbstractXMLNode;
 /**
  * A node to produce a Fortress.
  * @author Jonathan Lovelace

@@ -3,7 +3,6 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
 
 /**
  * A Node for tags we'd rather skip. This is an AbstractChildNode because

@@ -1,4 +1,4 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import controller.map.SPFormatException;
-import controller.map.simplexml.node.SkippableNode;
+import controller.map.simplexml.NeedsExtraCanonicalization;
 
 /**
  * A class representing an XML tag and its descendants---except not necessarily

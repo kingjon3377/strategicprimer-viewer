@@ -3,7 +3,6 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.River;
 import controller.map.SPFormatException;
-import controller.map.simplexml.AbstractChildNode;
 
 /**
  * A node representing a river XML tag.
@@ -33,7 +32,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	 * @throws SPFormatException
 	 *             if the River contains anythig.
 	 * 
-	 * @see controller.map.simplexml.AbstractXMLNode#checkNode()
+	 * @see controller.map.simplexml.node.AbstractXMLNode#checkNode()
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
