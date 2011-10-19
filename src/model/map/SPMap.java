@@ -11,7 +11,7 @@ public class SPMap {
 	/**
 	 * Map version.
 	 */
-	public static final int VERSION = 1;
+	public static final int MAX_VERSION = 1;
 
 	/**
 	 * Constructor.

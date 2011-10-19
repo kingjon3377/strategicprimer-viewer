@@ -35,10 +35,10 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			}
 		}
 		if (!hasProperty("version")
-				|| Integer.parseInt(getProperty("version")) < SPMap.VERSION) {
+				|| Integer.parseInt(getProperty("version")) < SPMap.MAX_VERSION) {
 			throw new SPFormatException(
 					"This reader only accepts maps with a \"version\" property of at least "
-							+ SPMap.VERSION, getLine());
+							+ SPMap.MAX_VERSION, getLine());
 		} else if (!hasProperty("rows") || !hasProperty("columns")) {
 			throw new SPFormatException(
 					"Map must specify number of rows and columns.", getLine());

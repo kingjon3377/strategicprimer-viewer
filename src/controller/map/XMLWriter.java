@@ -74,7 +74,7 @@ public class XMLWriter { // NOPMD
 			printQuoted("1.0");
 			writer.println("?>");
 			writer.print("<map version=");
-			printQuoted(Integer.toString(SPMap.VERSION));
+			printQuoted(Integer.toString(SPMap.MAX_VERSION));
 			writer.print(" rows=");
 			printQuoted(map.rows());
 			writer.print(" columns=");
