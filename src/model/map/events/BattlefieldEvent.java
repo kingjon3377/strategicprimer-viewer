@@ -1,4 +1,4 @@
-package model.viewer.events;
+package model.map.events;
 
 /**
  * "There are the signs of a long-ago battle here".

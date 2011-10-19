@@ -12,7 +12,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.viewer.SPMap;
+import model.map.SPMap;
 import util.IteratorWrapper;
 import controller.map.simplexml.node.TileNode;
 

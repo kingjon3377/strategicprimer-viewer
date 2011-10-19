@@ -1,11 +1,11 @@
-package model.viewer;
+package model.map;
 
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-import model.viewer.events.NothingEvent;
+import model.map.events.NothingEvent;
 
 /**
  * A tile in a map.

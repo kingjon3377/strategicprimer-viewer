@@ -3,7 +3,7 @@ package controller.map.simplexml;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.viewer.PlayerCollection;
+import model.map.PlayerCollection;
 
 /**
  * A class representing an XML tag and its descendants.

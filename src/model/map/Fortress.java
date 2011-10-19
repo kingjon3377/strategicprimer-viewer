@@ -1,4 +1,4 @@
-package model.viewer;
+package model.map;
 
 import java.util.ArrayList;
 import java.util.Collections;

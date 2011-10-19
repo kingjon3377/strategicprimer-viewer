@@ -1,4 +1,4 @@
-package model.viewer.events;
+package model.map.events;
 
 /**
  * "Nothing interesting here...".

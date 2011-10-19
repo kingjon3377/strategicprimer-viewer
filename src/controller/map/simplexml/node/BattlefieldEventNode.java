@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
-import model.viewer.PlayerCollection;
-import model.viewer.events.BattlefieldEvent;
+import model.map.PlayerCollection;
+import model.map.events.BattlefieldEvent;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.SPFormatException;
 

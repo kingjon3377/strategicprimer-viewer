@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import model.viewer.Tile;
-import model.viewer.TileType;
+import model.map.Tile;
+import model.map.TileType;
 import util.Pair;
 
 /**

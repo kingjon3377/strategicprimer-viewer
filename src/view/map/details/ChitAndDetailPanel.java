@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import model.viewer.Tile;
-import model.viewer.TileFixture;
-import model.viewer.TileType;
+import model.map.Tile;
+import model.map.TileFixture;
+import model.map.TileType;
 
 /**
  * A panel to encapsulate the ChitPanel and the label for showing a chit's

@@ -2,7 +2,7 @@ package model.exploration;
 
 import java.util.Set;
 
-import model.viewer.Tile;
+import model.map.Tile;
 
 /**
  * An interface for encounter tables, both quadrant and random-event tables. At

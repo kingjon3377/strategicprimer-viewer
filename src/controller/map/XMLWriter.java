@@ -8,21 +8,21 @@ import java.io.Writer;
 import java.util.EnumMap;
 import java.util.Map;
 
-import model.viewer.Fortress;
-import model.viewer.Player;
-import model.viewer.River;
-import model.viewer.SPMap;
-import model.viewer.Tile;
-import model.viewer.TileFixture;
-import model.viewer.TileType;
-import model.viewer.Unit;
-import model.viewer.events.AbstractEvent;
-import model.viewer.events.CityEvent;
-import model.viewer.events.EventKind;
-import model.viewer.events.FortificationEvent;
-import model.viewer.events.MineralEvent;
-import model.viewer.events.StoneEvent;
-import model.viewer.events.TownEvent;
+import model.map.Fortress;
+import model.map.Player;
+import model.map.River;
+import model.map.SPMap;
+import model.map.Tile;
+import model.map.TileFixture;
+import model.map.TileType;
+import model.map.Unit;
+import model.map.events.AbstractEvent;
+import model.map.events.CityEvent;
+import model.map.events.EventKind;
+import model.map.events.FortificationEvent;
+import model.map.events.MineralEvent;
+import model.map.events.StoneEvent;
+import model.map.events.TownEvent;
 
 /**
  * A class to write a map to file.

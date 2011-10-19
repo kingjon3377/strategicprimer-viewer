@@ -5,21 +5,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.viewer.Tile;
-import model.viewer.TileFixture;
-import model.viewer.events.AbstractEvent;
-import model.viewer.events.BattlefieldEvent;
-import model.viewer.events.CaveEvent;
-import model.viewer.events.CityEvent;
-import model.viewer.events.FortificationEvent;
-import model.viewer.events.MineralEvent;
-import model.viewer.events.MineralKind;
-import model.viewer.events.NothingEvent;
-import model.viewer.events.StoneEvent;
-import model.viewer.events.StoneKind;
-import model.viewer.events.TownEvent;
-import model.viewer.events.TownSize;
-import model.viewer.events.TownStatus;
+import model.map.Tile;
+import model.map.TileFixture;
+import model.map.events.AbstractEvent;
+import model.map.events.BattlefieldEvent;
+import model.map.events.CaveEvent;
+import model.map.events.CityEvent;
+import model.map.events.FortificationEvent;
+import model.map.events.MineralEvent;
+import model.map.events.MineralKind;
+import model.map.events.NothingEvent;
+import model.map.events.StoneEvent;
+import model.map.events.StoneKind;
+import model.map.events.TownEvent;
+import model.map.events.TownSize;
+import model.map.events.TownStatus;
 
 /**
  * A table for legacy "events".

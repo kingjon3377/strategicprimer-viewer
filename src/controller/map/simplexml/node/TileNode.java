@@ -1,11 +1,11 @@
 package controller.map.simplexml.node;
 
-import model.viewer.Fortress;
-import model.viewer.PlayerCollection;
-import model.viewer.Tile;
-import model.viewer.TileFixture;
-import model.viewer.TileType;
-import model.viewer.Unit;
+import model.map.Fortress;
+import model.map.PlayerCollection;
+import model.map.Tile;
+import model.map.TileFixture;
+import model.map.TileType;
+import model.map.Unit;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.AbstractXMLNode;
 import controller.map.simplexml.SPFormatException;

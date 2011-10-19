@@ -11,9 +11,9 @@ import static view.util.DrawingNumericConstants.TWO_THIRDS;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import model.viewer.River;
-import model.viewer.Tile;
-import model.viewer.TileType;
+import model.map.River;
+import model.map.Tile;
+import model.map.TileType;
 
 /**
  * A TileDrawHelper that doesn't create Shapes, but draws directly. If this is

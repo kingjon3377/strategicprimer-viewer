@@ -19,9 +19,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
 
-import model.viewer.River;
-import model.viewer.Tile;
-import model.viewer.TileType;
+import model.map.River;
+import model.map.Tile;
+import model.map.TileType;
 /**
  * A class to do the drawing of a tile, whether on a GUITile or on a single-component map.
  * @author Jonathan Lovelace

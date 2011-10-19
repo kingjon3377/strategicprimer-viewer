@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.viewer.TileType;
+import model.map.TileType;
 import view.map.main.MapComponent;
 import view.map.main.TileUIHelper;
 

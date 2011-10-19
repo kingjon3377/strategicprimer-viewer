@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.viewer.SPMap;
-import model.viewer.Tile;
-import model.viewer.TileType;
+import model.map.SPMap;
+import model.map.Tile;
+import model.map.TileType;
 import view.util.DriverQuit;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;

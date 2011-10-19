@@ -7,9 +7,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.map.Tile;
 import view.map.main.TileUIHelper;
-
-import model.viewer.Tile;
 
 /**
  * A panel to show the coordinates and tile type of a tile.

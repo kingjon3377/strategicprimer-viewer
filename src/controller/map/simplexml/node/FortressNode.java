@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
-import model.viewer.Fortress;
-import model.viewer.PlayerCollection;
+import model.map.Fortress;
+import model.map.PlayerCollection;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.AbstractXMLNode;
 import controller.map.simplexml.SPFormatException;

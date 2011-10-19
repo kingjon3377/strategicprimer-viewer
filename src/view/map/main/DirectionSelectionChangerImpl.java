@@ -1,6 +1,6 @@
 package view.map.main;
 
-import model.viewer.MapModel;
+import model.map.MapModel;
 
 /**
  * A class for moving the cursor around the single-component map UI.

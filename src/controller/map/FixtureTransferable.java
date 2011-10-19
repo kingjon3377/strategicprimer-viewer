@@ -5,7 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import model.viewer.TileFixture;
+import model.map.TileFixture;
 /**
  * A class to transfer a TileFixture.
  * @author Jonathan Lovelace

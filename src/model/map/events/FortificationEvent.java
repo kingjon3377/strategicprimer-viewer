@@ -1,4 +1,4 @@
-package model.viewer.events;
+package model.map.events;
 
 /**
  * An abandoned, ruined, or burned-out fortification.

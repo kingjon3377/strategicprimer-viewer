@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.EnumMap;
 import java.util.Map;
 
-import model.viewer.TileType;
+import model.map.TileType;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.

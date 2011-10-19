@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationRunner;
-import model.viewer.SPMap;
-import model.viewer.Tile;
+import model.map.SPMap;
+import model.map.Tile;
 import view.util.DriverQuit;
 import view.util.SystemOut;
 import controller.map.simplexml.SPFormatException;

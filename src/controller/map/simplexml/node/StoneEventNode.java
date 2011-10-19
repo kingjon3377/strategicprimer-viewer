@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
-import model.viewer.PlayerCollection;
-import model.viewer.events.StoneEvent;
-import model.viewer.events.StoneKind;
+import model.map.PlayerCollection;
+import model.map.events.StoneEvent;
+import model.map.events.StoneKind;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.SPFormatException;
 /**

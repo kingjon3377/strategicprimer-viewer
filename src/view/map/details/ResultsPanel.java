@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import model.exploration.ExplorationRunner;
-import model.viewer.Tile;
+import model.map.Tile;
 /**
  * A panel for displaying and editing tile text i.e. results.
  * @author Jonathan Lovelace

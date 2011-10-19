@@ -1,30 +1,30 @@
-package model.viewer.events;
+package model.map.events;
 
 /**
- * An abandoned, ruined, or burned-out town.
+ * An abandoned, ruined, or burned-out city.
  * 
  * @author Jonathan Lovelace
  * 
  */
-public final class TownEvent extends AbstractTownEvent {
+public final class CityEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
 	 * 
 	 * @param tStatus
-	 *            The status of the town
+	 *            The status of the city
 	 * @param tSize
-	 *            The size of the town
+	 *            The size of the city
 	 * @param discdc
 	 *            The DC to discover it.
 	 */
-	public TownEvent(final TownStatus tStatus, final TownSize tSize,
+	public CityEvent(final TownStatus tStatus, final TownSize tSize,
 			final int discdc) {
-		super(EventKind.Town, tStatus, tSize);
+		super(EventKind.City, tStatus, tSize);
 		dc = discdc;
 	}
 
 	/**
-	 * The DC to discover the town. TODO: Should perhaps be mutable.
+	 * The DC to discover the city. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
 

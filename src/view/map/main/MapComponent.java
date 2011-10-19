@@ -13,10 +13,10 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 
-import model.viewer.MapModel;
-import model.viewer.SPMap;
-import model.viewer.Tile;
-import model.viewer.VisibleDimensions;
+import model.map.MapModel;
+import model.map.SPMap;
+import model.map.Tile;
+import model.map.VisibleDimensions;
 import view.util.PropertyChangeSource;
 /**
  * A component to display the map, even a large one, without the performance

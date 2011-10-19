@@ -2,8 +2,8 @@ package controller.map.simplexml.node;
 
 import java.util.Iterator;
 
-import model.viewer.PlayerCollection;
-import model.viewer.events.AbstractEvent;
+import model.map.PlayerCollection;
+import model.map.events.AbstractEvent;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.AbstractXMLNode;
 import controller.map.simplexml.NeedsExtraCanonicalization;

@@ -12,9 +12,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.map.TileFixture;
 import util.EqualsAny;
-
-import model.viewer.TileFixture;
 /**
  * A class to listen for potential Chit drops.
  * @author Jonathan Lovelace

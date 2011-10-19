@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.viewer.SPMap;
+import model.map.SPMap;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.MapComponent;

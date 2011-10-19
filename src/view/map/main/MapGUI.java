@@ -1,7 +1,7 @@
 package view.map.main;
 
-import model.viewer.MapModel;
-import model.viewer.SPMap;
+import model.map.MapModel;
+import model.map.SPMap;
 /**
  * An interface for a UI representing a map.
  * @author Jonathan Lovelace

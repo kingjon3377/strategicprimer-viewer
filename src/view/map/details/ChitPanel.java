@@ -2,10 +2,10 @@ package view.map.details;
 
 import javax.swing.JPanel;
 
-import model.viewer.Fortress;
-import model.viewer.TileFixture;
-import model.viewer.Unit;
-import model.viewer.events.AbstractEvent;
+import model.map.Fortress;
+import model.map.TileFixture;
+import model.map.Unit;
+import model.map.events.AbstractEvent;
 import view.map.main.SelectionListener;
 /**
  * A panel for displaying chits.

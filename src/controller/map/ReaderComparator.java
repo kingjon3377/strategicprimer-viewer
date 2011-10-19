@@ -8,8 +8,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.viewer.SPMap;
-
+import model.map.SPMap;
 import view.util.SystemOut;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;

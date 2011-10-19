@@ -15,7 +15,7 @@ import model.exploration.LegacyTable;
 import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
 import model.exploration.TerrainTable;
-import model.viewer.TileType;
+import model.map.TileType;
 import util.LoadFile;
 import util.Pair;
 

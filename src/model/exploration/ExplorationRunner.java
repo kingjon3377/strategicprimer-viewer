@@ -14,8 +14,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.viewer.Tile;
-import model.viewer.TileType;
+import model.map.Tile;
+import model.map.TileType;
 import controller.exploration.TableLoader;
 
 /**

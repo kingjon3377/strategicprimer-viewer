@@ -2,7 +2,7 @@ package view.map.main;
 
 import java.awt.Graphics;
 
-import model.viewer.Tile;
+import model.map.Tile;
 
 /**
  * A helper to do the actual drawing of a tile. Now an interface so we can

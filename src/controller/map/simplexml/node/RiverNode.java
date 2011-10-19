@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
-import model.viewer.PlayerCollection;
-import model.viewer.River;
+import model.map.PlayerCollection;
+import model.map.River;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.SPFormatException;
 

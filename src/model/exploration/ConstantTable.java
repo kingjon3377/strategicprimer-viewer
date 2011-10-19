@@ -3,7 +3,7 @@ package model.exploration;
 import java.util.HashSet;
 import java.util.Set;
 
-import model.viewer.Tile;
+import model.map.Tile;
 
 /**
  * An EncounterTable that always returns the same value.

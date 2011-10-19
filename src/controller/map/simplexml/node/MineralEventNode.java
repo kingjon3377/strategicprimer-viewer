@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
-import model.viewer.PlayerCollection;
-import model.viewer.events.MineralEvent;
-import model.viewer.events.MineralKind;
+import model.map.PlayerCollection;
+import model.map.events.MineralEvent;
+import model.map.events.MineralKind;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.SPFormatException;
 

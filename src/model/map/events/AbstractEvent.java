@@ -1,7 +1,7 @@
-package model.viewer.events;
+package model.map.events;
 
 
-import model.viewer.TileFixture;
+import model.map.TileFixture;
 
 /**
  * An "event" --- something, other than a fortress, unit, or river, that can be

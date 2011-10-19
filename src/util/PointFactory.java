@@ -3,7 +3,7 @@ package util;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import model.viewer.Point;
+import model.map.Point;
 
 /**
  * A cache for Points.

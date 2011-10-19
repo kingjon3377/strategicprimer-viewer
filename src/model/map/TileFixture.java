@@ -1,4 +1,4 @@
-package model.viewer;
+package model.map;
 
 /**
  * Something that can go on a tile.

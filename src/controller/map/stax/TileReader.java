@@ -3,25 +3,25 @@ package controller.map.stax;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.viewer.Fortress;
-import model.viewer.PlayerCollection;
-import model.viewer.River;
-import model.viewer.Tile;
-import model.viewer.TileType;
-import model.viewer.Unit;
-import model.viewer.events.AbstractEvent;
-import model.viewer.events.BattlefieldEvent;
-import model.viewer.events.CaveEvent;
-import model.viewer.events.CityEvent;
-import model.viewer.events.EventKind;
-import model.viewer.events.FortificationEvent;
-import model.viewer.events.MineralEvent;
-import model.viewer.events.MineralKind;
-import model.viewer.events.StoneEvent;
-import model.viewer.events.StoneKind;
-import model.viewer.events.TownEvent;
-import model.viewer.events.TownSize;
-import model.viewer.events.TownStatus;
+import model.map.Fortress;
+import model.map.PlayerCollection;
+import model.map.River;
+import model.map.Tile;
+import model.map.TileType;
+import model.map.Unit;
+import model.map.events.AbstractEvent;
+import model.map.events.BattlefieldEvent;
+import model.map.events.CaveEvent;
+import model.map.events.CityEvent;
+import model.map.events.EventKind;
+import model.map.events.FortificationEvent;
+import model.map.events.MineralEvent;
+import model.map.events.MineralKind;
+import model.map.events.StoneEvent;
+import model.map.events.StoneKind;
+import model.map.events.TownEvent;
+import model.map.events.TownSize;
+import model.map.events.TownStatus;
 
 /**
  * A helper class to read tiles and their contents from file. MapReader had too

@@ -12,8 +12,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.viewer.Player;
-import model.viewer.SPMap;
+import model.map.Player;
+import model.map.SPMap;
 import util.IteratorWrapper;
 import controller.map.MapVersionException;
 

@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.viewer.VisibleDimensions;
+import model.map.VisibleDimensions;
 
 /**
  * A dialog to restrict the view to a subset of the map.

@@ -1,4 +1,4 @@
-package model.viewer;
+package model.map;
 
 /**
  * A structure encapsulating two coordinates.

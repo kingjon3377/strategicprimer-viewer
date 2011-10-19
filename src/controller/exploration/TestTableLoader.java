@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import model.exploration.EncounterTable;
-import model.viewer.Tile;
-import model.viewer.TileType;
+import model.map.Tile;
+import model.map.TileType;
 
 import org.junit.Before;
 import org.junit.Test;

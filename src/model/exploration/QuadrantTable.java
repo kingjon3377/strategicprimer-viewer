@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import model.viewer.Tile;
+import model.map.Tile;
 import util.Pair;
 
 /**

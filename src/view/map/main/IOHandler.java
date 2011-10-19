@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
-import model.viewer.SPMap;
+import model.map.SPMap;
 import view.util.ErrorShower;
 import controller.map.XMLWriter;
 import controller.map.simplexml.SPFormatException;

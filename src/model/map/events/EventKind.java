@@ -1,4 +1,4 @@
-package model.viewer.events;
+package model.map.events;
 
 import java.util.HashMap;
 import java.util.Map;

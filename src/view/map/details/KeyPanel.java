@@ -5,7 +5,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import model.viewer.TileType;
+import model.map.TileType;
 /**
  * Provides a visual "key" to the various terrain types.
  * @author Jonathan Lovelace
