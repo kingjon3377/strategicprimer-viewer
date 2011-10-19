@@ -1,15 +1,10 @@
 package view.map.main;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.Box.Filler;
 import javax.swing.JComponent;
@@ -18,15 +13,12 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
-import javax.xml.stream.XMLStreamException;
 
+import model.viewer.MapModel;
 import view.map.details.DetailPanel;
 import view.util.DriverQuit;
-import controller.map.simplexml.SPFormatException;
-import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * The main driver class for the viewer app.
@@ -36,14 +28,6 @@ import controller.map.simplexml.SimpleXMLReader;
  */
 public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
-	 * Error message fragment when file not found.
-	 */
-	private static final String NOT_FOUND_ERROR = " not found";
-	/**
-	 * Error message when the map contains invalid data.
-	 */
-	private static final String INV_DATA_ERROR = "Map contained invalid data";
-	/**
 	 * Command to load the secondary map.
 	 */
 	private static final String LOAD_ALT_MAP_CMD = "<html><p>Load secondary map</p></html>";
@@ -52,15 +36,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 */
 	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
 	/**
-	 * An error message refactored from at least four uses.
-	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file";
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
-			.getName());
-	/**
 	 * Default width of the Frame.
 	 */
 	private static final int DEFAULT_WIDTH = 800;
@@ -68,10 +43,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * Default height of the Frame.
 	 */
 	private static final int DEFAULT_HEIGHT = 600;
-	/**
-	 * The quasi-Singleton.
-	 */
-	private static ViewerFrame frame;
 	/**
 	 * The map (view) itself.
 	 */
@@ -107,82 +78,20 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 			panel.getModel().swapMaps();
 		}
 	}
-	/**
-	 * @return the quasi-Singleton objects
-	 */
-	public static ViewerFrame getFrame() {
-		return frame;
-	}
-
-	/**
-	 * Run the app.
-	 * 
-	 * @param args
-	 *            Command-line arguments: args[0] is the map filename, others
-	 *            are ignored. TODO: Add option handling.
-	 * 
-	 */
-	public static void main(final String[] args) {
-		// ESCA-JAVA0177:
-		final String filename; // NOPMD // $codepro.audit.disable localDeclaration
-		if (args.length == 0) {
-			final JFileChooser chooser = new JFileChooser(".");
-			chooser.setFileFilter(new MapFileFilter());
-			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				filename = chooser.getSelectedFile().getPath();
-			} else {
-				return;
-			}
-		} else {
-			filename = args[0];
-		}
-		try {
-			frame = new ViewerFrame(filename);
-			new Thread() {
-				@Override
-				@SuppressWarnings("synthetic-access")
-				public void run() {
-					frame.setVisible(true);
-				}
-			} .start();
-			if (args.length > 1) {
-				frame.mapPanel.getModel().setSecondaryMap(new SimpleXMLReader().readMap(args[1]));
-			}
-		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
-		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
-			showErrorDialog(null, "File " + filename + NOT_FOUND_ERROR);
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			showErrorDialog(null, "I/O error reading " + filename);
-		} catch (SPFormatException e) {
-			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
-			showErrorDialog(null, INV_DATA_ERROR);
-		}
-	}
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param filename
-	 *            The filename of an XML file describing the map
-	 * @throws IOException
-	 *             on I/O error
-	 * @throws XMLStreamException
-	 *             on XML reading error
-	 * @throws SPFormatException
-	 *             if the map contained invalid data
+	 * @param map
+	 *            The map model.
 	 */
-	private ViewerFrame(final String filename) throws XMLStreamException,
-			IOException, SPFormatException {
+	public ViewerFrame(final MapModel map) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
-		mapPanel = new MapComponent(new SimpleXMLReader().readMap(filename));
+		mapPanel = new MapComponent(map);
 		final DetailPanel details = new DetailPanel((MapComponent) mapPanel);
 		createMenu();
 		add(details, BorderLayout.SOUTH);
@@ -275,20 +184,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		} else if ("Restrict view".equals(event.getActionCommand())) {
 			new RestrictDialog(mapPanel).setVisible(true);
 		} 
-	}
-
-	/**
-	 * Show an error dialog.
-	 * 
-	 * @param parent
-	 *            the parent component for the dialog
-	 * @param message
-	 *            the error message.
-	 */
-	public static void showErrorDialog(final Component parent, final String message) {
-		JOptionPane.showMessageDialog(parent,
-				message, "Strategic Primer Map Viewer error",
-				JOptionPane.ERROR_MESSAGE);
 	}
 
 }

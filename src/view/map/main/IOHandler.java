@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.SPMap;
+import view.util.ErrorShower;
 import controller.map.XMLWriter;
 import controller.map.simplexml.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
@@ -130,7 +131,7 @@ public final class IOHandler implements ActionListener {
 			throw new IllegalStateException("Unknown exception type", except);
 		}
 		LOGGER.log(Level.SEVERE, msg, except);
-		ViewerFrame.showErrorDialog((Component) panel, msg);
+		ErrorShower.showErrorDialog((Component) panel, msg);
 	}
 
 	/**

@@ -52,13 +52,13 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 	 * Constructor.
 	 * 
 	 * @param theMap
-	 *            The map this represents
+	 *            The model containing the map this represents
 	 */
-	public MapComponent(final SPMap theMap) {
+	public MapComponent(final MapModel theMap) {
 		super();
 		setDoubleBuffered(true);
-		model = new MapModel(theMap);
-		loadMap(theMap);
+		model = theMap;
+		loadMap(theMap.getMainMap());
 		setMinimumSize(new Dimension(model.getSizeCols() * getTileSize(), model.getSizeRows()
 				* getTileSize()));
 		setPreferredSize(getMinimumSize());
