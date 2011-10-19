@@ -37,7 +37,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 		if (!hasProperty("version")
 				|| Integer.parseInt(getProperty("version")) < SPMap.VERSION) {
 			throw new SPFormatException(
-					"This reader only accepts maps with a \"version\" property greater than or equal to "
+					"This reader only accepts maps with a \"version\" property of at least "
 							+ SPMap.VERSION, getLine());
 		} else if (!hasProperty("rows") || !hasProperty("columns")) {
 			throw new SPFormatException(
