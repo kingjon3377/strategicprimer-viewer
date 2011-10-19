@@ -93,6 +93,30 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 */
 	protected static final TileColors COLORS = new TileColors();
 	/**
+	 * Two as a double.
+	 */
+	protected static final double TWO = 2.0;
+	/**
+	 * Four as a double.
+	 */
+	protected static final double FOUR = 4.0;
+	/**
+	 * Two-thirds as a double.
+	 */
+	protected static final double TWO_THIRDS = 2.0 / 3.0;
+	/**
+	 * Three-quarters as a double.
+	 */
+	protected static final double THREE_QUARTERS = 3.0 / 4.0;
+	/**
+	 * Three as a double.
+	 */
+	protected static final double THREE = 3.0;
+	/**
+	 * The number of sides on the symbol for a miscellaneous event.
+	 */
+	protected static final int MISC_EVENT_SIDES = 3;
+	/**
 	 * Draw a tile. At present, the graphics context needs to be translated so that its origin is the tile's upper-left-hand corner.
 	 * @param pen the graphics context
 	 * @param tile the tile to draw

@@ -51,30 +51,6 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Shape event;
 	/**
-	 * Two as a double.
-	 */
-	private static final double TWO = 2.0;
-	/**
-	 * Four as a double.
-	 */
-	private static final double FOUR = 4.0;
-	/**
-	 * Two-thirds as a double.
-	 */
-	private static final double TWO_THIRDS = 2.0 / 3.0;
-	/**
-	 * Three-quarters as a double.
-	 */
-	private static final double THREE_QUARTERS = 3.0 / 4.0;
-	/**
-	 * Three as a double.
-	 */
-	private static final double THREE = 3.0;
-	/**
-	 * The number of sides on the symbol for a miscellaneous event.
-	 */
-	private static final int MISC_EVENT_SIDES = 3;
-	/**
 	 * Check, and possibly regenerate, the cache.
 	 * 
 	 * @param width

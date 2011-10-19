@@ -40,19 +40,22 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			}
 			if (hasAnyForts(tile)) {
 				pen.setColor(FORT_COLOR);
-				pen.fillRect((int) (width * 2.0 / 3.0) - 1 + xCoord,
-						(int) (height * 2.0 / 3.0) - 1 + yCoord, (int) (width / 3.0),
-						(int) (height / 3.0));
+				pen.fillRect((int) (width * TWO_THIRDS) - 1 + xCoord,
+						(int) (height * TWO_THIRDS) - 1 + yCoord, (int) (width / THREE),
+						(int) (height / THREE));
 			}
 			if (hasAnyUnits(tile)) {
 				pen.setColor(UNIT_COLOR);
-				pen.fillOval(((int) (width / 4.0)) + xCoord, ((int) (height / 4.0)) + yCoord,
-						((int) (width / 4.0)), ((int) (height / 4.0)));
+				pen.fillOval(((int) (width / FOUR)) + xCoord, ((int) (height / FOUR)) + yCoord,
+						((int) (width / FOUR)), ((int) (height / FOUR)));
 			} else if (hasEvent(tile)) {
 				pen.setColor(EVENT_COLOR);
-				pen.fillPolygon(new int[] { (int) (width * 3.0 / 4.0) + xCoord,
-					(int) (width / 2.0) + xCoord, width + xCoord}, new int[] { yCoord,
-					(int) (height / 2.0) + yCoord, (int) (height / 2.0) + yCoord }, 3);
+				pen.fillPolygon(new int[] {
+						(int) (width * THREE_QUARTERS) + xCoord,
+						(int) (width / TWO) + xCoord, width + xCoord },
+						new int[] { yCoord, (int) (height / TWO) + yCoord,
+								(int) (height / TWO) + yCoord },
+						MISC_EVENT_SIDES);
 			}
 		}
 		pen.setColor(save);
@@ -82,26 +85,26 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			final int height) {
 		switch (river) {
 		case East:
-			pen.fillRect((int) (width / 2.0) + xCoord,
-					(int) (height * SEVEN_SIXTEENTHS) + yCoord, (int) (width / 2.0),
+			pen.fillRect((int) (width / TWO) + xCoord,
+					(int) (height * SEVEN_SIXTEENTHS) + yCoord, (int) (width / TWO),
 					(int) (height / EIGHT));
 			break;
 		case Lake:
-			pen.fillOval((int) (width / 4.0) + xCoord, (int) (height / 4.0) + yCoord,
-					(int) (width / 2.0), (int) (height / 2.0)); 
+			pen.fillOval((int) (width / FOUR) + xCoord, (int) (height / FOUR) + yCoord,
+					(int) (width / TWO), (int) (height / TWO)); 
 			break;
 		case North:
 			pen.fillRect((int) (width * SEVEN_SIXTEENTHS) + xCoord, yCoord,
-					(int) (width / EIGHT), (int) (height / 2.0));
+					(int) (width / EIGHT), (int) (height / TWO));
 			break;
 		case South:
 			pen.fillRect((int) (width * SEVEN_SIXTEENTHS) + xCoord,
-					(int) (height / 2.0) + yCoord, (int) (width / EIGHT),
-					(int) (height / 2.0));
+					(int) (height / TWO) + yCoord, (int) (width / EIGHT),
+					(int) (height / TWO));
 			break;
 		case West:
 			pen.fillRect(xCoord, (int) (height * SEVEN_SIXTEENTHS) + yCoord,
-					(int) (width / 2.0), (int) (height / EIGHT));
+					(int) (width / TWO), (int) (height / EIGHT));
 			break;
 		default:
 			// Shouldn't get here, but let's ignore it anyway
