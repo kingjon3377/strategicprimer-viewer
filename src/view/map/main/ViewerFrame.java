@@ -84,7 +84,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	private void createMenu() {
 		final JMenuBar mbar = new JMenuBar();
 		final JMenu mapMenu = new JMenu("Map");
-		final ActionListener ioListener = new IOHandler(mapPanel, chooser);
+		final ActionListener ioListener = new IOHandler(mapPanel.getModel(), this, chooser);
 		mapMenu.setMnemonic(KeyEvent.VK_M);
 		mapMenu.add(createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),

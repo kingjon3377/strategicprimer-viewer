@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
+import model.viewer.MapModel;
 import view.util.ErrorShower;
 import controller.map.XMLWriter;
 import controller.map.simplexml.SPFormatException;
@@ -63,29 +64,29 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent event) {
 		if ("Load".equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog((Component) panel) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog(comp) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
 				// ESCA-JAVA0166:
 				try {
-					panel.loadMap(readMap(filename));
+					panel.setMainMap(readMap(filename));
 				} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 					handleError(e, filename);
 				}
 			}
 		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(panel.getModel().getMainMap());
+			saveMap(panel.getMainMap());
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			if (chooser.showOpenDialog((Component) panel) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog(comp) == JFileChooser.APPROVE_OPTION) {
 				final String filename = chooser.getSelectedFile().getPath();
 				// ESCA-JAVA0166:
 				try {
-					panel.getModel().setSecondaryMap(readMap(filename));
+					panel.setSecondaryMap(readMap(filename));
 				} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 					handleError(e, filename);
 				}
 			}
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			saveMap(panel.getModel().getSecondaryMap());
+			saveMap(panel.getSecondaryMap());
 		}
 	}
 
@@ -93,21 +94,28 @@ public final class IOHandler implements ActionListener {
 	 * The panel that needs to be told about newly loaded maps and that holds
 	 * maps to be saved.
 	 */
-	private final MapGUI panel;
+	private final MapModel panel;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param map
-	 *            the map panel
+	 *            the map model
+	 * @param parent
+	 *            the component to show the chooser under
 	 * @param fchooser
 	 *            the file chooser
 	 */
-	public IOHandler(final MapGUI map, final JFileChooser fchooser) {
+	public IOHandler(final MapModel map, final Component parent,
+			final JFileChooser fchooser) {
 		panel = map;
+		comp = parent;
 		chooser = fchooser;
 	}
-
+	/**
+	 * A component to show the chooser under.
+	 */
+	private final Component comp;
 	/**
 	 * Display an appropriate error message.
 	 * 
@@ -131,7 +139,7 @@ public final class IOHandler implements ActionListener {
 			throw new IllegalStateException("Unknown exception type", except);
 		}
 		LOGGER.log(Level.SEVERE, msg, except);
-		ErrorShower.showErrorDialog((Component) panel, msg);
+		ErrorShower.showErrorDialog(comp, msg);
 	}
 
 	/**
@@ -141,7 +149,7 @@ public final class IOHandler implements ActionListener {
 	 *            the map to save.
 	 */
 	private void saveMap(final SPMap map) {
-		if (chooser.showSaveDialog((Component) panel) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showSaveDialog(comp) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
 			} catch (IOException e) {
