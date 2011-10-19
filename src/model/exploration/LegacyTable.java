@@ -13,7 +13,7 @@ import model.viewer.events.CaveEvent;
 import model.viewer.events.CityEvent;
 import model.viewer.events.FortificationEvent;
 import model.viewer.events.MineralEvent;
-import model.viewer.events.MineralEvent.MineralKind;
+import model.viewer.events.MineralKind;
 import model.viewer.events.NothingEvent;
 import model.viewer.events.StoneEvent;
 import model.viewer.events.StoneEvent.StoneKind;
