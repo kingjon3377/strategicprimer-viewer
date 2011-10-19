@@ -31,11 +31,11 @@ public class SPMap {
 	/**
 	 * The number of rows on the map.
 	 */
-	private int myRows;
+	private final int myRows;
 	/**
 	 * The number of columns on the map.
 	 */
-	private int myCols;
+	private final int myCols;
 
 	/**
 	 * The tiles on the map.
