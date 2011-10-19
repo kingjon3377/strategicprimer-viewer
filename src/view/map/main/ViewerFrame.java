@@ -44,13 +44,16 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * to construct it every time.
 	 */
 	private final JFileChooser chooser = new JFileChooser(".");
+	
 	/**
 	 * Constructor.
 	 * 
 	 * @param map
 	 *            The map model.
+	 * @param mapMenu
+	 *            the menu dealing with file I/O and map switching.
 	 */
-	public ViewerFrame(final MapModel map) {
+	public ViewerFrame(final MapModel map, final JMenu mapMenu) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -65,6 +68,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		createMenu(mapMenu);
 		pack();
 		repaint();
 	}
@@ -73,7 +77,7 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * Set up the menu.
 	 * @param mapMenu the map menu
 	 */
-	public void createMenu(final JMenu mapMenu) {
+	private void createMenu(final JMenu mapMenu) {
 		final MenuItemCreator creator = new MenuItemCreator();
 		final JMenuBar mbar = new JMenuBar();
 		mbar.add(mapMenu);
