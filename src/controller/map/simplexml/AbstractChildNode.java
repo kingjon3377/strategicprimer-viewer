@@ -24,7 +24,11 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 * @param value its value
 	 */
 	public final void addProperty(final String property, final String value) {
-		properties.put(property, value);
+		if ("line".equals(property)) {
+			setLine(Integer.valueOf(value));
+		} else {
+			properties.put(property, value);
+		}
 	}
 	/**
 	 * @param property a property

@@ -165,7 +165,7 @@ public final class NodeFactory { // NOPMD
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
 		}
-		node.setLine(line);
+		node.addProperty("line", Integer.toString(line));
 		return node;
 	}
 }
