@@ -1,11 +1,11 @@
 package controller.map.simplexml.node;
 
 import model.viewer.PlayerCollection;
-import model.viewer.events.AbstractEvent.TownSize;
 import model.viewer.events.AbstractTownEvent;
 import model.viewer.events.CityEvent;
 import model.viewer.events.FortificationEvent;
 import model.viewer.events.TownEvent;
+import model.viewer.events.TownSize;
 import model.viewer.events.TownStatus;
 import controller.map.simplexml.AbstractChildNode;
 import controller.map.simplexml.SPFormatException;
