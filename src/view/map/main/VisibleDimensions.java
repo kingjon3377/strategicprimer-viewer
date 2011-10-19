@@ -28,7 +28,8 @@ public class VisibleDimensions {
 	 * @param minCol the minimum column
 	 * @param maxCol the maximum column
 	 */
-	public VisibleDimensions(final int minRow, final int maxRow, final int minCol, final int maxCol) {
+	public VisibleDimensions(final int minRow, final int maxRow,
+			final int minCol, final int maxCol) {
 		minimumRow = minRow;
 		maximumRow = maxRow;
 		minimumCol = minCol;

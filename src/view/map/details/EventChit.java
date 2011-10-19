@@ -30,7 +30,8 @@ public class EventChit extends Chit {
 		final StringBuilder builder = new StringBuilder("<html><p>");
 		builder.append(event.getText());
 		if (event instanceof AbstractTownEvent
-				&& TownStatus.Active.equals(((AbstractTownEvent) event).status()) && !IsAdmin.IS_ADMIN) {
+				&& TownStatus.Active.equals(((AbstractTownEvent) event)
+						.status()) && !IsAdmin.IS_ADMIN) {
 			final int cursor = builder.indexOf(" (roll it up)");
 			builder.replace(cursor, cursor + 13, "");
 		}

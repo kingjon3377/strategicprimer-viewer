@@ -26,6 +26,11 @@ import util.Pair;
  */
 public final class TableLoader { // NOPMD
 	/**
+	 * An error-message string. Pulled out because it's so long.
+	 */
+	private static final String IO_ERR_STRING = "I/O error while reading table from file, "
+			+ "continuing with what we've got so far ...";
+	/**
 	 * Extracted constant for clarity: If we split() a string "once", we tell
 	 * split() to give us at most two pieces, and then test whether it gave us
 	 * two or fewer pieces.
@@ -126,10 +131,8 @@ public final class TableLoader { // NOPMD
 				line = reader.readLine();
 				}
 			} catch (final IOException except) {
-				Logger.getLogger(TableLoader.class.getName())
-						.log(Level.SEVERE,
-								"I/O error while reading table from file, continuing with what we've got so far ...",
-								except);
+			Logger.getLogger(TableLoader.class.getName()).log(Level.SEVERE,
+					IO_ERR_STRING, except);
 		} finally {
 		reader.close();
 		}

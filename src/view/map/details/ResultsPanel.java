@@ -74,9 +74,12 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 		button.addPropertyChangeListener(this);
 		add(button, BorderLayout.SOUTH);
 		final JScrollPane wrapper = new JScrollPane(field);
-		wrapper.setMinimumSize(new Dimension(MINIMUM_WIDTH, minHeight - LABEL_MIN_HT - (int) button.getMinimumSize().getHeight()));
-		wrapper.setPreferredSize(new Dimension(PREF_WIDTH, height - LABEL_HEIGHT - (int) button.getPreferredSize().getHeight()));
-		wrapper.setMaximumSize(new Dimension(MAX_WIDTH, maxHeight - LABEL_MAX_HT - (int) button.getMaximumSize().getHeight()));
+		wrapper.setMinimumSize(new Dimension(MINIMUM_WIDTH, minHeight
+				- LABEL_MIN_HT - (int) button.getMinimumSize().getHeight()));
+		wrapper.setPreferredSize(new Dimension(PREF_WIDTH, height
+				- LABEL_HEIGHT - (int) button.getPreferredSize().getHeight()));
+		wrapper.setMaximumSize(new Dimension(MAX_WIDTH, maxHeight
+				- LABEL_MAX_HT - (int) button.getMaximumSize().getHeight()));
 		add(wrapper, BorderLayout.CENTER);
 		
 		runner.loadAllTables("tables");

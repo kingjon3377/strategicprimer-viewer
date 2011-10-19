@@ -43,8 +43,9 @@ public class DetailPanel extends JPanel {
 		addListener(new TileDetailPanel(), tileEventSources);
 		addListener(new ChitAndDetailPanel(
 				DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT, "tile"), tileEventSources);
-		addListener(new ChitAndDetailPanel(
-				DETAIL_PAN_MAX_HT, DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT, "secondary-tile"), tileEventSources);
+		addListener(new ChitAndDetailPanel(DETAIL_PAN_MAX_HT,
+				DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT, "secondary-tile"),
+				tileEventSources);
 		addListener(new ResultsPanel(DETAIL_PAN_MIN_HT,
 				DETAIL_PANEL_HT, DETAIL_PAN_MAX_HT), tileEventSources);
 		add(new KeyPanel());

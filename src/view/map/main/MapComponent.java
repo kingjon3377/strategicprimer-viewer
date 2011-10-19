@@ -27,7 +27,8 @@ import view.util.PropertyChangeSource;
 public final class MapComponent extends JComponent implements PropertyChangeSource,
 		MapGUI, PropertyChangeListener {
 	/**
-	 * The map model encapsulating the map this represents, the secondary map, and the selected tile.
+	 * The map model encapsulating the map this represents, the secondary map,
+	 * and the selected tile.
 	 */
 	private final MapModel model;
 	/**
@@ -65,7 +66,9 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		setSize(getMinimumSize());
 		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
-		new ArrowKeyListener().setUpListeners(new DirectionSelectionChangerImpl(model), getInputMap(), getActionMap());
+		new ArrowKeyListener().setUpListeners(
+				new DirectionSelectionChangerImpl(model), getInputMap(),
+				getActionMap());
 	}
 
 	/**
@@ -88,7 +91,8 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 		}
 		drawMap(image.getGraphics());
 		setMinimumSize(new Dimension(
-				(getModel().getDimensions().getMaximumCol() - getModel().getDimensions().getMinimumCol() + 1)
+				(getModel().getDimensions().getMaximumCol()
+						- getModel().getDimensions().getMinimumCol() + 1)
 						* getTileSize(),
 				(getModel().getDimensions().getMaximumRow() - getModel().getDimensions()
 						.getMinimumRow() + 1) * getTileSize()));
@@ -192,7 +196,8 @@ public final class MapComponent extends JComponent implements PropertyChangeSour
 				getTileSize());
 		if (model.getSelectedTile().equals(tile)) {
 			pen.setColor(Color.black);
-			pen.drawRect(col * getTileSize() + 1, row * getTileSize() + 1, getTileSize() - 2, getTileSize() - 2);
+			pen.drawRect(col * getTileSize() + 1, row * getTileSize() + 1,
+					getTileSize() - 2, getTileSize() - 2);
 		}
 		pen.setColor(saveColor);
 	}

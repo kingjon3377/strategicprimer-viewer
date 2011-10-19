@@ -46,7 +46,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
-		model.setSelection(event.getPoint().y / MapComponent.getTileSize(), event.getPoint().x / MapComponent.getTileSize());
+		model.setSelection(event.getPoint().y / MapComponent.getTileSize(),
+				event.getPoint().x / MapComponent.getTileSize());
 		if (event.getClickCount() == 2) {
 			pcs.firePropertyChange("encounter", "old", "new");
 			model.copyTile(model.getSelectedTile());

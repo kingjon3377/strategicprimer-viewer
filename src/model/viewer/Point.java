@@ -50,7 +50,8 @@ public class Point implements Comparable<Point> {
 	 */
 	@Override
 	public final boolean equals(final Object obj) {
-		return this == obj || (obj instanceof Point && (((Point) obj).myRow == myRow && ((Point) obj).myCol == myCol));
+		return this == obj
+				|| (obj instanceof Point && (((Point) obj).myRow == myRow && ((Point) obj).myCol == myCol));
 	}
 
 	/**

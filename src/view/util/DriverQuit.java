@@ -11,8 +11,10 @@ public final class DriverQuit {
 	private DriverQuit() {
 		// Do nothing.
 	}
+	
 	/**
-	 * Quit. Note that this should not be called from a non-static context except by some CLI drivers.
+	 * Quit. Note that this should not be called from a non-static context
+	 * except by some CLI drivers.
 	 * 
 	 * @param code
 	 *            The exit code.

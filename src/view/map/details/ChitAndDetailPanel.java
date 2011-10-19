@@ -54,7 +54,8 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 	 * @param height the (preferred) height of the panel we're part of
 	 * @param propertyName the property we listen for
 	 */
-	public ChitAndDetailPanel(final int maxHeight, final int minHeight, final int height, final String propertyName) {
+	public ChitAndDetailPanel(final int maxHeight, final int minHeight,
+			final int height, final String propertyName) {
 		super(new BorderLayout());
 		final JPanel wrapperPanel = new JPanel();
 		wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.LINE_AXIS));
@@ -71,7 +72,8 @@ public class ChitAndDetailPanel extends JPanel implements PropertyChangeListener
 		property = propertyName;
 		final JLabel title = new JLabel(
 				"tile".equals(property) ? "<html><center>Tile contents:</center></html>"
-						: "<html><center>Tile contents on secondary map:</center></html>", SwingConstants.CENTER);
+						: "<html><center>Tile contents on secondary map:</center></html>",
+				SwingConstants.CENTER);
 		add(title, BorderLayout.NORTH);
 		add(wrapperPanel, BorderLayout.CENTER);
 		setDropTarget(new DropTarget(this, new ChitDropListener()));

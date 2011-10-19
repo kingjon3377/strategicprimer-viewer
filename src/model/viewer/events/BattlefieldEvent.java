@@ -48,7 +48,8 @@ public final class BattlefieldEvent extends AbstractEvent {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof BattlefieldEvent && ((BattlefieldEvent) obj).dc == dc);
+		return this == obj
+				|| (obj instanceof BattlefieldEvent && ((BattlefieldEvent) obj).dc == dc);
 	}
 	/**
 	 * @return a hash value for the event.

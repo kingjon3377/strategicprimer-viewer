@@ -154,7 +154,8 @@ public final class ExplorationCLI {
 	 * @return the integer the player specified
 	 * @throws IOException on I/O error
 	 */
-	private static int getInteger(final BufferedReader reader, final PrintStream ostream, final String string) throws IOException {
+	private static int getInteger(final BufferedReader reader,
+			final PrintStream ostream, final String string) throws IOException {
 		ostream.print(string);
 		final String line = reader.readLine();
 		if (line == null) {
@@ -171,7 +172,8 @@ public final class ExplorationCLI {
 	 */
 	private static Tile selectTile(final SPMap map, final BufferedReader reader,
 			final PrintStream ostream) throws IOException {
-		return map.getTile(getInteger(reader, ostream, "Row: "), getInteger(reader, ostream, "Column: "));
+		return map.getTile(getInteger(reader, ostream, "Row: "),
+				getInteger(reader, ostream, "Column: "));
 	}
 
 	/**

@@ -14,11 +14,17 @@ import model.viewer.Tile;
 public interface TileDrawHelper {
 
 	/**
-	 * Draw a tile. The graphics context needs to be translated so that its origin is the tile's upper-left-hand corner.
-	 * @param pen the graphics context
-	 * @param tile the tile to draw
-	 * @param width the width of the drawing area
-	 * @param height the height of the drawing area
+	 * Draw a tile. The graphics context needs to be translated so that its
+	 * origin is the tile's upper-left-hand corner.
+	 * 
+	 * @param pen
+	 *            the graphics context
+	 * @param tile
+	 *            the tile to draw
+	 * @param width
+	 *            the width of the drawing area
+	 * @param height
+	 *            the height of the drawing area
 	 */
 	void drawTile(final Graphics pen, final Tile tile,
 			final int width, final int height);

@@ -66,7 +66,8 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the current height
 	 */
 	private void checkCache(final int width, final int height) {
-		if (!equalFloats(backgroundShape.getWidth(), width) || !equalFloats(backgroundShape.getHeight(), height)) {
+		if (!equalFloats(backgroundShape.getWidth(), width)
+				|| !equalFloats(backgroundShape.getHeight(), height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
 			rivers.clear();
 			rivers.put(River.East, new Rectangle2D.Double(width / TWO, height
@@ -91,18 +92,26 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					MISC_EVENT_SIDES);
 		}
 	}
+	
 	/**
-	 * Draw a tile. The graphics context needs to be translated so that its origin is the tile's upper-left-hand corner.
-	 * @param pen the graphics context
-	 * @param tile the tile to draw
-	 * @param width the width of the drawing area
-	 * @param height the height of the drawing area
+	 * Draw a tile. The graphics context needs to be translated so that its
+	 * origin is the tile's upper-left-hand corner.
+	 * 
+	 * @param pen
+	 *            the graphics context
+	 * @param tile
+	 *            the tile to draw
+	 * @param width
+	 *            the width of the drawing area
+	 * @param height
+	 *            the height of the drawing area
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
-			throw new IllegalArgumentException("CachingTileDrawHelper requires Graphics2D, not an old Graphics");
+			throw new IllegalArgumentException(
+					"CachingTileDrawHelper requires Graphics2D, not an old Graphics");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
 		pen2d.setColor(getTileColor(tile.getType()));

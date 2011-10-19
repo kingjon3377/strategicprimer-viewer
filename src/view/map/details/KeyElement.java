@@ -34,7 +34,8 @@ final class KeyElement extends JPanel {
 	/**
 	 * Maximum size of a colored area.
 	 */
-	private static final Dimension MAX_SIZE = new Dimension(MapComponent.getTileSize(), MapComponent.getTileSize());
+	private static final Dimension MAX_SIZE = new Dimension(
+			MapComponent.getTileSize(), MapComponent.getTileSize());
 	/**
 	 * Preferred size of a colored area.
 	 */
