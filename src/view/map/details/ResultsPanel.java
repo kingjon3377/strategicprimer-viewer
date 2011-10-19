@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.avoidInnerClasses
 package view.map.details;
 
 import java.awt.BorderLayout;

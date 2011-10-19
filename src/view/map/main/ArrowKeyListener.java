@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.avoidInnerClasses
 package view.map.main;
 
 import java.awt.event.ActionEvent;
