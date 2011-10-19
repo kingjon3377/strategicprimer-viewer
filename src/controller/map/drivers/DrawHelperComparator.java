@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.drivers;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -14,6 +14,7 @@ import view.map.main.DirectTileDrawHelper;
 import view.map.main.MapComponent;
 import view.map.main.TileDrawHelper;
 import view.util.SystemOut;
+import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**

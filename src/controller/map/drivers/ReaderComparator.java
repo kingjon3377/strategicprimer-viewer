@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.drivers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,6 +10,8 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
 import view.util.SystemOut;
+import controller.map.MapVersionException;
+import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 import controller.map.stax.MapReader;
 
