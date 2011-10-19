@@ -13,12 +13,17 @@ import javax.swing.JPanel;
 import model.viewer.TileType;
 import view.map.main.AbstractTileDrawHelper;
 import view.map.main.MapComponent;
+import view.map.main.TileUIHelper;
 
 /**
  * An element of the key.
  * @author Jonathan Lovelace
  */
 final class KeyElement extends JPanel {
+	/**
+	 * UI helper for the terrain type descriptions and colors.
+	 */
+	private static final TileUIHelper TUI_HELPER = new TileUIHelper();
 	/**
 	 * Minimum buffer space between elements.
 	 */
@@ -67,7 +72,7 @@ final class KeyElement extends JPanel {
 		tile.setMaximumSize(MAX_SIZE);
 		panel.add(tile);
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
-		final JLabel label = new JLabel(DetailPanel.terrainText(type));
+		final JLabel label = new JLabel(TUI_HELPER.getDescription(type));
 		panel.add(label);
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		add(panel);

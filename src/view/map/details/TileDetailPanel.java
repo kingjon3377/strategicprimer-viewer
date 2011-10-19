@@ -7,6 +7,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import view.map.main.TileUIHelper;
+
 import model.viewer.Tile;
 
 /**
@@ -15,6 +17,10 @@ import model.viewer.Tile;
  * @author Jonathan Lovelace
  */
 public class TileDetailPanel extends JPanel implements PropertyChangeListener {
+	/**
+	 * UI helper for the terrain type descriptions.
+	 */
+	private static final TileUIHelper TUI_HELPER = new TileUIHelper();
 	/**
 	 * The label for showing the coordinates.
 	 */
@@ -37,7 +43,7 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 	 */
 	public void updateText(final Tile tile) {
 		coordLabel.setText("<html>Coordinates: (" + tile.getRow() + ", " + tile.getCol() + ")</html>");
-		typeLabel.setText("<html>Tile type: " + DetailPanel.terrainText(tile.getType()) + "</html>");
+		typeLabel.setText("<html>Tile type: " + TUI_HELPER.getDescription(tile.getType()) + "</html>");
 	}
 	/**
 	 * Handle a property change.

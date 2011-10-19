@@ -33,6 +33,15 @@ public class TileUIHelper {
 		colors.put(TileType.Plains, new Color(0, 117, 0));
 		colors.put(TileType.TemperateForest, new Color(72, 250, 72));
 		colors.put(TileType.Tundra, new Color(153, 153, 153));
+		descriptions.put(TileType.BorealForest, "<html><p>Boreal Forest</p></html>");
+		descriptions.put(TileType.Desert, "<html><p>Desert</p></html>");
+		descriptions.put(TileType.Jungle, "<html><p>Jungle</p></html>");
+		descriptions.put(TileType.Mountain, "<html><p>Mountains</p></html>");
+		descriptions.put(TileType.NotVisible, "<html><p>Unknown</p></html>");
+		descriptions.put(TileType.Ocean, "<html><p>Ocean</p></html>");
+		descriptions.put(TileType.Plains, "<html><p>Plains</p></html>");
+		descriptions.put(TileType.TemperateForest, "<html><p>Temperate Forest</p></html>");
+		descriptions.put(TileType.Tundra, "<html><p>Tundra</p></html>");
 	}
 	/**
 	 * @param type a tile type
@@ -47,5 +56,18 @@ public class TileUIHelper {
 	@Override
 	public String toString() {
 		return "TileUIHelper";
+	}
+	/**
+	 * Descriptions of the types.
+	 */
+	private final Map<TileType, String> descriptions = new EnumMap<TileType, String>(
+			TileType.class);
+	/**
+	 * @param type
+	 *            a terrain type
+	 * @return a String representation of that terrain type
+	 */
+	public String getDescription(final TileType type) { // NOPMD
+		return descriptions.get(type);
 	}
 }

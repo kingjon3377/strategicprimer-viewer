@@ -73,32 +73,5 @@ public class DetailPanel extends JPanel {
 			}
 		}
 	}
-	/**
-	 * Descriptions of the types.
-	 */
-	private static final Map<TileType, String> DESCRIPTIONS = new EnumMap<TileType, String>(
-			TileType.class);
-	static {
-		DESCRIPTIONS.put(TileType.BorealForest, "<html><p>Boreal Forest</p></html>");
-		DESCRIPTIONS.put(TileType.Desert, "<html><p>Desert</p></html>");
-		DESCRIPTIONS.put(TileType.Jungle, "<html><p>Jungle</p></html>");
-		DESCRIPTIONS.put(TileType.Mountain, "<html><p>Mountains</p></html>");
-		DESCRIPTIONS.put(TileType.NotVisible, "<html><p>Unknown</p></html>");
-		DESCRIPTIONS.put(TileType.Ocean, "<html><p>Ocean</p></html>");
-		DESCRIPTIONS.put(TileType.Plains, "<html><p>Plains</p></html>");
-		DESCRIPTIONS.put(TileType.TemperateForest, "<html><p>Temperate Forest</p></html>");
-		DESCRIPTIONS.put(TileType.Tundra, "<html><p>Tundra</p></html>");
-	}
 
-	/**
-	 * @param type
-	 *            a terrain type
-	 * @return a String representation of that terrain type
-	 */
-	static String terrainText(final TileType type) { // NOPMD
-		if (DESCRIPTIONS.containsKey(type)) {
-			return DESCRIPTIONS.get(type);
-		} // else
-		throw new IllegalArgumentException("Unknown terrain type");
-	}
 }
