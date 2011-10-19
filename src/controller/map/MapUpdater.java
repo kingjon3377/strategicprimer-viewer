@@ -12,7 +12,7 @@ import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 import view.util.DriverQuit;
-import controller.map.simplexml.SimpleXMLReader;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
@@ -123,7 +123,7 @@ public final class MapUpdater {
 	 */
 	private static SPMap loadMap(final String filename) {
 		try {
-			return new SimpleXMLReader().readMap(filename);
+			return new MapReaderAdapter().readMap(filename);
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, buildString("File ", filename, " not found"), e);
 			DriverQuit.quit(1);

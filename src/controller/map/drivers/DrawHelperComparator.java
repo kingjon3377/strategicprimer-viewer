@@ -15,7 +15,7 @@ import view.map.main.MapComponent;
 import view.map.main.TileDrawHelper;
 import view.util.SystemOut;
 import controller.map.SPFormatException;
-import controller.map.simplexml.SimpleXMLReader;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to compare the performance of TileDrawHelpers.
@@ -158,7 +158,7 @@ public class DrawHelperComparator {
 		// ESCA-JAVA0177:
 		final DrawHelperComparator comp; // NOPMD
 		try {
-			comp = new DrawHelperComparator(new SimpleXMLReader().readMap(args[0]), 50);
+			comp = new DrawHelperComparator(new MapReaderAdapter().readMap(args[0]), 50);
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "I/O error reading map", e);
 			return; // NOPMD

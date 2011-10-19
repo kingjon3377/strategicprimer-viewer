@@ -14,7 +14,7 @@ import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import controller.map.IOHandler;
 import controller.map.SPFormatException;
-import controller.map.simplexml.SimpleXMLReader;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between packages.
@@ -68,12 +68,12 @@ public final class ViewerStart {
 			filename = args[0];
 		}
 		try {
-			final MapModel model = new MapModel(new SimpleXMLReader().readMap(filename));
+			final MapModel model = new MapModel(new MapReaderAdapter().readMap(filename));
 			final ViewerFrame frame = new ViewerFrame(model, new IOHandler(
 					model, chooser).getMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {
-				model.setSecondaryMap(new SimpleXMLReader().readMap(args[1]));
+				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1]));
 			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);

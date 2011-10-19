@@ -17,7 +17,7 @@ import model.map.SPMap;
 import model.viewer.MapModel;
 import view.util.ErrorShower;
 import view.util.MenuItemCreator;
-import controller.map.simplexml.SimpleXMLReader;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -170,7 +170,7 @@ public final class IOHandler implements ActionListener {
 	 */
 	private static SPMap readMap(final String filename) throws IOException,
 			XMLStreamException, SPFormatException {
-		return new SimpleXMLReader().readMap(filename);
+		return new MapReaderAdapter().readMap(filename);
 	}
 	/**
 	 * @return a String representation of the object.
