@@ -74,7 +74,7 @@ public abstract class Chit extends Selectable { // NOPMD
 		addMouseListener(listener);
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY,
-				new ChitDragGestureListener());
+				new ChitDragGestureListener(transferable));
 		// setBorder(new EmptyBorder(5, 5, 5, 5));
 		trans = transferable;
 	}

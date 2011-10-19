@@ -1,5 +1,6 @@
 package view.map.details;
 
+import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 /**
@@ -8,14 +9,23 @@ import java.awt.dnd.DragGestureListener;
  */
 public class ChitDragGestureListener implements DragGestureListener {
 	/**
+	 * Constructor.
+	 * @param data the data to transfer
+	 */
+	public ChitDragGestureListener(final Transferable data) {
+		trans = data;
+	}
+	/**
+	 * The data to transfer if a drag is initiated.
+	 */
+	private final Transferable trans;
+	/**
 	 * Start a drag if the operation is appropriate.
 	 * @param dge the event to handle.
 	 */
 	@Override
 	public void dragGestureRecognized(final DragGestureEvent dge) {
-		if (dge.getComponent() instanceof Chit) {
-			dge.startDrag(null, ((Chit) dge.getComponent()).getData());
-		}
+		dge.startDrag(null, trans);
 	}
 	/**
 	 * @return a String representation of the object.
