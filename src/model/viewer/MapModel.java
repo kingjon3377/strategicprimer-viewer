@@ -1,7 +1,11 @@
-package model.map;
+package model.viewer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+
+import model.map.SPMap;
+import model.map.Tile;
+import model.map.TileType;
 
 import view.util.PropertyChangeSource;
 /**

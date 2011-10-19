@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import model.map.MapModel;
+import model.viewer.MapModel;
 /**
  * A mouse listener for the MapComponent.
  * @author Jonathan Lovelace

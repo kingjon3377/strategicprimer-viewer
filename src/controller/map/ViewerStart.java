@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.MapModel;
+import model.viewer.MapModel;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;

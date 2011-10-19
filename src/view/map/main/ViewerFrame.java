@@ -16,7 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
-import model.map.MapModel;
+import model.viewer.MapModel;
 import view.map.details.DetailPanel;
 import view.util.DriverQuit;
 

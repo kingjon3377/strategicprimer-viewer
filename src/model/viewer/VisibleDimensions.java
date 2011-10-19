@@ -1,4 +1,4 @@
-package model.map;
+package model.viewer;
 /**
  * The minimum and maximum rows and columns drawn.
  * @author kingjon
