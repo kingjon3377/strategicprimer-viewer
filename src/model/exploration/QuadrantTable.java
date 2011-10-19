@@ -64,6 +64,7 @@ public class QuadrantTable implements EncounterTable {
 	 *            the row of a tile
 	 * @param col
 	 *            the column of a tile
+	 * 
 	 * @return the result from the quadrant containing that tile.
 	 */
 	public String getQuadrantValue(final int row, final int col) {
@@ -96,6 +97,7 @@ public class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -218,6 +218,7 @@ public final class TestExplorationRunner {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the class
 	 */
 	@Override

@@ -38,6 +38,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	}
 
 	/**
+	 * 
 	 * @return an iterator over the children.
 	 */
 	@Override
@@ -48,12 +49,14 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	/**
 	 * Check that the data is legal---no tiles outside the map, for example.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if the data isn't legal.
 	 */
 	public abstract void checkNode() throws SPFormatException;
 
 	/**
+	 * 
 	 * @return the line the tag was on
 	 */
 	public int getLine() {
@@ -74,6 +77,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 * actions that need to be taken after setting up the tree but before
 	 * validity-checking should go here. We do this in a separate method because
 	 * validity-checking should be side-effect-free.
+	 * 
 	 * 
 	 * @throws SPFormatException
 	 *             on format errors uncovered in this process

@@ -20,6 +20,7 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * @param tile
 	 *            a tile
+	 * 
 	 * @return what the owner of a fortress on the tile knows
 	 */
 	public String defaultResults(final Tile tile) {
@@ -56,6 +57,7 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * @param tile
 	 *            a tile
+	 * 
 	 * @return the main kind of rock on the tile
 	 */
 	public String getPrimaryRock(final Tile tile) {
@@ -65,6 +67,7 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * @param tile
 	 *            a forest tile
+	 * 
 	 * @return the main kind of tree on the tile
 	 */
 	public String getPrimaryTree(final Tile tile) {
@@ -87,6 +90,7 @@ public class ExplorationRunner { // NOPMD
 	 *            the name of the table to consult
 	 * @param tile
 	 *            the tile to refer to
+	 * 
 	 * @return the result of the consultation
 	 */
 	public String consultTable(final String table, final Tile tile) {
@@ -104,6 +108,7 @@ public class ExplorationRunner { // NOPMD
 	 *            the name of the table to consult
 	 * @param tile
 	 *            the tile to refer to
+	 * 
 	 * @return the result of the consultation
 	 */
 	public String recursiveConsultTable(final String table, final Tile tile) {
@@ -126,6 +131,7 @@ public class ExplorationRunner { // NOPMD
 	 * 
 	 * @param table
 	 *            the name of the table to consult
+	 * 
 	 * @return whether that table, or any table it calls, calls a table that
 	 *         doesn't exist.
 	 */
@@ -142,6 +148,7 @@ public class ExplorationRunner { // NOPMD
 	 *            the name of the table to consult
 	 * @param state
 	 *            a Set to use to prevent infinite recursion
+	 * 
 	 * @return whether the table, or any it calls, calls a table that doesn't
 	 *         exist.
 	 */
@@ -168,6 +175,7 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * Check whether any table contains recursive calls to a table that doesn't
 	 * exist.
+	 * 
 	 * 
 	 * @return whether any table contains recursive calls to a nonexistent
 	 *         table.
@@ -224,6 +232,7 @@ public class ExplorationRunner { // NOPMD
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -19,6 +19,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 * Tile and it includes version (greater than or equal to 1, for this
 	 * version of the reader), rows, and columns properties.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if all is not well.
 	 */
@@ -45,9 +46,11 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	}
 
 	/**
-	 * @return the map the XML represented
+	 * 
 	 * @param players
 	 *            will be null, and is ignored
+	 * 
+	 * @return the map the XML represented
 	 * @throws SPFormatException
 	 *             if something's wrong with the format.
 	 */
@@ -79,6 +82,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

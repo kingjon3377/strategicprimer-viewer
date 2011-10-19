@@ -40,6 +40,7 @@ public class MineralEventNode extends AbstractChildNode<MineralEvent> {
 	 * Check whether the Node's data is valid. A MineralNode is valid if it has
 	 * no children and "kind", "dc", "mineral", and "exposed" properties.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
@@ -61,6 +62,7 @@ public class MineralEventNode extends AbstractChildNode<MineralEvent> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

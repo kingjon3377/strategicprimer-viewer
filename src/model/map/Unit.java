@@ -22,6 +22,13 @@ public class Unit implements Comparable<Unit>, TileFixture {
 
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
+	 * 
+	 * @param unitOwner
+	 *            the unit's owner
+	 * @param unitType
+	 *            the unit's type
+	 * @param unitName
+	 *            the unit's name
 	 */
 	/**
 	 * Constructor.
@@ -41,6 +48,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return the player that owns the unit
 	 */
 	public final Player getOwner() {
@@ -48,6 +56,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return the type of unit
 	 */
 	public final String getType() {
@@ -55,6 +64,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return the name of the unit
 	 */
 	public final String getName() {
@@ -64,6 +74,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's an identical Unit.
 	 */
 	@Override
@@ -75,6 +86,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return a hash-code for the object
 	 */
 	@Override
@@ -83,6 +95,7 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the Unit.
 	 */
 	@Override
@@ -94,9 +107,8 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * @param unit
 	 *            A Unit to compare to
-	 * @return the result of the comparison
 	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @return the result of the comparison
 	 */
 	@Override
 	public int compareTo(final Unit unit) {

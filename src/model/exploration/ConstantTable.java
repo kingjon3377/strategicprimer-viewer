@@ -63,6 +63,7 @@ public class ConstantTable implements EncounterTable {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

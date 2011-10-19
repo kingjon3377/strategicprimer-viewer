@@ -34,8 +34,6 @@ public class RiverNode extends AbstractChildNode<River> {
 	 * 
 	 * @throws SPFormatException
 	 *             if the River contains anythig.
-	 * 
-	 * @see controller.map.simplexml.node.AbstractXMLNode#checkNode()
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
@@ -48,6 +46,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -2,6 +2,8 @@ package controller.map.stax;
 
 /**
  * An enumerated type for the tags we know about.
+ * 
+ * @author Jonathan Lovelace
  */
 @Deprecated
 enum Tag {
@@ -91,6 +93,7 @@ enum Tag {
 	}
 
 	/**
+	 * 
 	 * @return the string associated with the tag.
 	 */
 	public String getText() {
@@ -100,6 +103,7 @@ enum Tag {
 	/**
 	 * @param tagText
 	 *            a string
+	 * 
 	 * @return the tag that represents that string, if any, or Unknown if none.
 	 */
 	public static Tag fromString(final String tagText) {

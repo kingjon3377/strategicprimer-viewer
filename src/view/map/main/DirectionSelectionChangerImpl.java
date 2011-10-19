@@ -77,6 +77,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

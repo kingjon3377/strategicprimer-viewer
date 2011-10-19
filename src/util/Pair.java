@@ -22,6 +22,7 @@ public final class Pair<FIRST, SECOND> implements
 	private final FIRST first;
 
 	/**
+	 * 
 	 * @return the first item in the pair
 	 */
 	public FIRST first() {
@@ -34,6 +35,7 @@ public final class Pair<FIRST, SECOND> implements
 	private final SECOND second;
 
 	/**
+	 * 
 	 * @return the second item in the pair
 	 */
 	public SECOND second() {
@@ -57,14 +59,13 @@ public final class Pair<FIRST, SECOND> implements
 	/**
 	 * Create a pair without having to specify the types.
 	 * 
-	 * @param <FIRST>
-	 *            The type of the first element in the pair.
-	 * @param <SECOND>
-	 *            The type of the second element in the pair.
+	 * 
+	 * 
 	 * @param first
 	 *            The first element in the pair.
 	 * @param second
 	 *            The second element in the pair.
+	 * 
 	 * @return a pair containing the two elements
 	 */
 	public static <FIRST, SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD
@@ -77,6 +78,7 @@ public final class Pair<FIRST, SECOND> implements
 	 * 
 	 * @param other
 	 *            the other pair
+	 * 
 	 * @return the result of the comparison.
 	 */
 	@Override
@@ -92,6 +94,7 @@ public final class Pair<FIRST, SECOND> implements
 	 *            one object
 	 * @param two
 	 *            another
+	 * 
 	 * @return a comparison between the two objects.
 	 */
 	@SuppressWarnings("unchecked")
@@ -101,6 +104,7 @@ public final class Pair<FIRST, SECOND> implements
 	}
 
 	/**
+	 * 
 	 * @return a hash code for the pair.
 	 */
 	@Override
@@ -115,6 +119,7 @@ public final class Pair<FIRST, SECOND> implements
 	 * 
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return a hash code for it, or 0 if null.
 	 */
 	private static int hashcode(final Object obj) {
@@ -124,6 +129,7 @@ public final class Pair<FIRST, SECOND> implements
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's the same as this one
 	 */
 	@SuppressWarnings("rawtypes")
@@ -141,6 +147,7 @@ public final class Pair<FIRST, SECOND> implements
 	 *            One object
 	 * @param two
 	 *            Another object
+	 * 
 	 * @return whether the objects are equal
 	 */
 	private static boolean equal(final Object one, final Object two) {

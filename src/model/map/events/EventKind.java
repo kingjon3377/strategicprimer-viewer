@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * The kinds of events we know about.
+ * 
+ * @author Jonathan Lovelace
  */
 public enum EventKind {
 	/**
@@ -69,6 +71,7 @@ public enum EventKind {
 	/**
 	 * @param string
 	 *            a string representing an EventKind
+	 * 
 	 * @return the EventKind it represents
 	 */
 	public static EventKind parseEventKind(final String string) {
@@ -76,6 +79,7 @@ public enum EventKind {
 	}
 
 	/**
+	 * 
 	 * @return a string representing the kind of event.
 	 */
 	@Override

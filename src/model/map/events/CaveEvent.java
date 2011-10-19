@@ -26,8 +26,6 @@ public final class CaveEvent extends AbstractEvent {
 	/**
 	 * 
 	 * @return the DC to discover the event.
-	 * 
-	 * @see model.map.events.AbstractEvent#getDC()
 	 */
 	@Override
 	public int getDC() {
@@ -35,6 +33,7 @@ public final class CaveEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -45,6 +44,7 @@ public final class CaveEvent extends AbstractEvent {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's an identical CaveEvent.
 	 */
 	@Override
@@ -54,6 +54,7 @@ public final class CaveEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the event.
 	 */
 	@Override
@@ -62,6 +63,7 @@ public final class CaveEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the event
 	 */
 	@Override

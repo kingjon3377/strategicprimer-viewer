@@ -18,12 +18,12 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a number of other (generally constant) values.
 	 * 
-	 * @param <TYPE>
-	 *            the type of all the values.
+	 * 
 	 * @param against
 	 *            the value to compare the others to
 	 * @param values
 	 *            the values to compare to it
+	 * 
 	 * @return true if any of theme equal it, false otherwise.
 	 */
 	public static <TYPE> boolean equalsAny(final TYPE against,
@@ -39,12 +39,12 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a collection of other (generally constant) values.
 	 * 
-	 * @param <TYPE>
-	 *            the type of all the values.
+	 * 
 	 * @param against
 	 *            the value to compare the others to
 	 * @param values
 	 *            the values to compare to it
+	 * 
 	 * @return true if any of theme equal it, false otherwise.
 	 */
 	public static <TYPE> boolean equalsAny(final TYPE against,

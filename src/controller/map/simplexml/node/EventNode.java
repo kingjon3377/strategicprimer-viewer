@@ -46,6 +46,7 @@ public class EventNode extends AbstractChildNode<AbstractEvent> implements
 	 * and stone events must have a "stone" property. For forward compatibility,
 	 * we do not object to unknown properties.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if it contains any invalid data.
 	 */
@@ -67,6 +68,7 @@ public class EventNode extends AbstractChildNode<AbstractEvent> implements
 
 	/**
 	 * Convert this node into a wrapper around a more specific Node.
+	 * 
 	 * 
 	 * @throws SPFormatException
 	 *             on format error uncovered by this process
@@ -98,6 +100,7 @@ public class EventNode extends AbstractChildNode<AbstractEvent> implements
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

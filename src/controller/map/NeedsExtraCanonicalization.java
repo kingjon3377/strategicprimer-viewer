@@ -10,6 +10,7 @@ public interface NeedsExtraCanonicalization {
 	/**
 	 * Do the extra necessary work.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             on format errors uncovered in this process.
 	 */

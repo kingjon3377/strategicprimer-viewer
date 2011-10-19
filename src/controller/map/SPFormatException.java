@@ -13,6 +13,7 @@ public class SPFormatException extends Exception {
 	private final int line;
 
 	/**
+	 * 
 	 * @return the line of the XML file containing the mistake
 	 */
 	public int getLine() {

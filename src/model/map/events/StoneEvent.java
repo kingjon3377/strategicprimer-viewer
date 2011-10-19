@@ -27,6 +27,7 @@ public final class StoneEvent extends AbstractEvent {
 	private final StoneKind stone;
 
 	/**
+	 * 
 	 * @return what kind of stone this deposit is.
 	 */
 	public StoneKind stone() {
@@ -41,8 +42,6 @@ public final class StoneEvent extends AbstractEvent {
 	/**
 	 * 
 	 * @return the DC to discover the event.
-	 * 
-	 * @see model.map.events.AbstractEvent#getDC()
 	 */
 	@Override
 	public int getDC() {
@@ -50,6 +49,7 @@ public final class StoneEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -63,6 +63,7 @@ public final class StoneEvent extends AbstractEvent {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's an identical event
 	 */
 	@Override
@@ -73,6 +74,7 @@ public final class StoneEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the event
 	 */
 	@Override
@@ -81,6 +83,7 @@ public final class StoneEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the object
 	 */
 	@Override

@@ -50,6 +50,7 @@ public class TileUIHelper {
 	/**
 	 * @param type
 	 *            a tile type
+	 * 
 	 * @return its color, if any
 	 */
 	public Color get(final TileType type) {
@@ -57,6 +58,7 @@ public class TileUIHelper {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -73,6 +75,7 @@ public class TileUIHelper {
 	/**
 	 * @param type
 	 *            a terrain type
+	 * 
 	 * @return a String representation of that terrain type
 	 */
 	public String getDescription(final TileType type) { // NOPMD

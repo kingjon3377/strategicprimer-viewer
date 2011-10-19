@@ -51,6 +51,7 @@ public enum River {
 	 * 
 	 * @param string
 	 *            a string giving the direction
+	 * 
 	 * @return the river direction
 	 */
 	public static River getRiver(final String string) {

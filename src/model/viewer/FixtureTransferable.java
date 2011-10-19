@@ -35,6 +35,7 @@ public class FixtureTransferable implements Transferable {
 	private final DataFlavor flavor;
 
 	/**
+	 * 
 	 * @return the supported DataFlavors.
 	 */
 	@Override
@@ -46,6 +47,7 @@ public class FixtureTransferable implements Transferable {
 	 * 
 	 * @param dflavor
 	 *            a DataFlavor
+	 * 
 	 * @return whether it's the one we support
 	 */
 	@Override
@@ -73,6 +75,7 @@ public class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of this object
 	 */
 	@Override

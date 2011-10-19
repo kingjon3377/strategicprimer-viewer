@@ -155,6 +155,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the first value
 	 * @param two
 	 *            the second value
+	 * 
 	 * @return whether the two are approximately equal
 	 */
 	private static boolean equalFloats(final double one, final double two) {
@@ -184,6 +185,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

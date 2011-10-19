@@ -68,6 +68,7 @@ public enum TileType {
 	 * 
 	 * @param string
 	 *            A string describing the terrain
+	 * 
 	 * @return the terrain type
 	 */
 	public static TileType getTileType(final String string) {

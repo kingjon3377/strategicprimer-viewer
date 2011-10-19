@@ -16,6 +16,7 @@ public final class MapFileFilter extends FileFilter {
 	 * 
 	 * @param file
 	 *            a file to consider
+	 * 
 	 * @return true if its extension is .xml or .map
 	 */
 	@Override
@@ -31,6 +32,7 @@ public final class MapFileFilter extends FileFilter {
 	/**
 	 * @param file
 	 *            A file
+	 * 
 	 * @return The extension of that file
 	 */
 	public static String getExtension(final File file) {
@@ -42,6 +44,7 @@ public final class MapFileFilter extends FileFilter {
 	}
 
 	/**
+	 * 
 	 * @return A description of the filter.
 	 */
 	@Override
@@ -50,6 +53,7 @@ public final class MapFileFilter extends FileFilter {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

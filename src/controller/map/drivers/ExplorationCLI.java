@@ -77,6 +77,7 @@ public final class ExplorationCLI {
 	 *            the stream to write to
 	 * @param input
 	 *            the command
+	 * 
 	 * @throws IOException
 	 *             on I/O error
 	 */
@@ -111,6 +112,7 @@ public final class ExplorationCLI {
 	 * 
 	 * @param input
 	 *            a line of input
+	 * 
 	 * @return whether that input says we should keep going.
 	 */
 	private static boolean canKeepGoing(final String input) {
@@ -126,6 +128,7 @@ public final class ExplorationCLI {
 	 *            source of user input
 	 * @param ostream
 	 *            the stream to write the results to
+	 * 
 	 * @throws IOException
 	 *             on I/O error
 	 */
@@ -147,6 +150,7 @@ public final class ExplorationCLI {
 	 *            source of user input
 	 * @param ostream
 	 *            the stream to print results to
+	 * 
 	 * @throws IOException
 	 *             on I/O error
 	 */
@@ -259,6 +263,7 @@ public final class ExplorationCLI {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

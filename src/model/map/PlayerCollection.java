@@ -30,6 +30,7 @@ public class PlayerCollection implements Iterable<Player> {
 	/**
 	 * @param player
 	 *            a player-id
+	 * 
 	 * @return the player with that ID, or a new Player with that number if we
 	 *         don't have it.
 	 */
@@ -49,6 +50,7 @@ public class PlayerCollection implements Iterable<Player> {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it is another identical PlayerCollection or not
 	 */
 	@Override
@@ -59,6 +61,7 @@ public class PlayerCollection implements Iterable<Player> {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for this collection.
 	 */
 	@Override
@@ -69,6 +72,7 @@ public class PlayerCollection implements Iterable<Player> {
 	/**
 	 * Note that this method currently iterates through all the players to find
 	 * the one marked current.
+	 * 
 	 * 
 	 * @return the current player, or a new player with a negative number and
 	 *         the empty string for a name.
@@ -83,6 +87,7 @@ public class PlayerCollection implements Iterable<Player> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the class
 	 */
 	@Override

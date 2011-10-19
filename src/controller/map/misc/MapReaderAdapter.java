@@ -34,14 +34,14 @@ public class MapReaderAdapter {
 	 * @param filename
 	 *            the file to open
 	 * @return the map it contains
-	 * @throws MapVersionException
-	 *             if the reader can't handle this map version
-	 * @throws SPFormatException
-	 *             if there are map format errors
-	 * @throws XMLStreamException
-	 *             if the XML is badly formed
 	 * @throws IOException
 	 *             on I/O error opening the file
+	 * @throws XMLStreamException
+	 *             if the XML is badly formed
+	 * @throws SPFormatException
+	 *             if there are map format errors
+	 * @throws MapVersionException
+	 *             if the reader can't handle this map version
 	 */
 	public SPMap readMap(final String filename) throws IOException,
 			XMLStreamException, SPFormatException, MapVersionException {

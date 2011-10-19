@@ -55,11 +55,9 @@ public final class TableLoader { // NOPMD
 	 * 
 	 * @param filename
 	 *            the file containing the table.
-	 * @throws IOException
-	 *             on I/O error
-	 * @return the table
-	 * @throws FileNotFoundException
-	 *             when file not found
+	 * @return the table 
+	 * @throws FileNotFoundException when file not found 
+	 * @throws IOException on I/O error
 	 */
 	public EncounterTable loadTable(final String filename)
 			throws FileNotFoundException, IOException { // NOPMD
@@ -227,6 +225,7 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Load a LegacyTable from file.
 	 * 
+	 * 
 	 * @return the table the file describes.
 	 */
 	public LegacyTable loadLegacyTable() {
@@ -234,6 +233,7 @@ public final class TableLoader { // NOPMD
 	}
 
 	/**
+	 * 
 	 * @return a String representation of this class
 	 */
 	@Override
@@ -251,6 +251,7 @@ public final class TableLoader { // NOPMD
 	 *            the number of rows to use if loading fails
 	 * @param defaultItems
 	 *            a list of items to use if loading fails
+	 * 
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
 	 */
@@ -293,6 +294,7 @@ public final class TableLoader { // NOPMD
 	 *            the string to begin each item with
 	 * @param iterations
 	 *            how many items should be in the list
+	 * 
 	 * @return such a list
 	 */
 	private List<String> createList(final String stem, final int iterations) {

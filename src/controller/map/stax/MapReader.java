@@ -181,6 +181,7 @@ public class MapReader implements IMapReader {
 	 *            The tag.
 	 * @param reader
 	 *            the stream of elements we're reading from
+	 * 
 	 * @return The player it encapsulates.
 	 */
 	private static Player parsePlayer(final StartElement element,
@@ -200,6 +201,7 @@ public class MapReader implements IMapReader {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

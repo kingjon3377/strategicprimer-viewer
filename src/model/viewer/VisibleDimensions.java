@@ -45,6 +45,7 @@ public class VisibleDimensions {
 	}
 
 	/**
+	 * 
 	 * @return the minimum visible row
 	 */
 	public int getMinimumRow() {
@@ -52,6 +53,7 @@ public class VisibleDimensions {
 	}
 
 	/**
+	 * 
 	 * @return the maximum visible row
 	 */
 	public int getMaximumRow() {
@@ -59,6 +61,7 @@ public class VisibleDimensions {
 	}
 
 	/**
+	 * 
 	 * @return the minimum visible column
 	 */
 	public int getMinimumCol() {
@@ -66,6 +69,7 @@ public class VisibleDimensions {
 	}
 
 	/**
+	 * 
 	 * @return the maximum visible column
 	 */
 	public int getMaximumCol() {
@@ -73,6 +77,7 @@ public class VisibleDimensions {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

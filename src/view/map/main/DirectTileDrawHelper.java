@@ -146,6 +146,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

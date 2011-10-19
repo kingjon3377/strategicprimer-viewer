@@ -31,6 +31,7 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	}
 
 	/**
+	 * 
 	 * @return the iterator
 	 */
 	@Override
@@ -39,6 +40,7 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

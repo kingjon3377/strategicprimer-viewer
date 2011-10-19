@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * Possible status of towns, fortifications, and cities.
+ * 
+ * @author Jonathan Lovelace
  */
 public enum TownStatus {
 	/**
@@ -51,6 +53,7 @@ public enum TownStatus {
 	/**
 	 * @param string
 	 *            a string representing a TownStatus
+	 * 
 	 * @return the TownStatus it represents
 	 */
 	public static TownStatus parseTownStatus(final String string) {
@@ -58,6 +61,7 @@ public enum TownStatus {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the status
 	 */
 	@Override

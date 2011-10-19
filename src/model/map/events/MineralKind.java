@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * Kinds of minerals whose events the program knows about.
+ * 
+ * @author Jonathan Lovelace
  */
 public enum MineralKind {
 	/**
@@ -55,6 +57,7 @@ public enum MineralKind {
 	/**
 	 * @param string
 	 *            a string representing a MineralKind
+	 * 
 	 * @return the MineralKind it represents
 	 */
 	public static MineralKind parseMineralKind(final String string) {
@@ -62,6 +65,7 @@ public enum MineralKind {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the mineral
 	 */
 	@Override

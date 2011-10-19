@@ -125,6 +125,7 @@ public class ChitDropListener implements DropTargetListener {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

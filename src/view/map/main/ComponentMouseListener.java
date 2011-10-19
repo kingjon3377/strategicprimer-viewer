@@ -91,6 +91,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

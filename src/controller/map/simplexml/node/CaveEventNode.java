@@ -37,6 +37,7 @@ public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 	 * Check whether this Node has valid data or not. A Cave is valid if it has
 	 * "dc" and "kind" properties and no children.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if it isn't valid.
 	 */
@@ -52,6 +53,7 @@ public class CaveEventNode extends AbstractChildNode<CaveEvent> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of this object
 	 */
 	@Override

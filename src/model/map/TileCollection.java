@@ -36,6 +36,7 @@ public final class TileCollection implements Iterable<Point> {
 	 * 
 	 * @param point
 	 *            a point
+	 * 
 	 * @return the tile at that point, or a new "empty" tile at that point.
 	 */
 	public Tile getTile(final Point point) {
@@ -57,6 +58,7 @@ public final class TileCollection implements Iterable<Point> {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it is an identical TileCollection.
 	 */
 	@Override
@@ -67,6 +69,7 @@ public final class TileCollection implements Iterable<Point> {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -75,6 +78,7 @@ public final class TileCollection implements Iterable<Point> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the class
 	 */
 	@Override

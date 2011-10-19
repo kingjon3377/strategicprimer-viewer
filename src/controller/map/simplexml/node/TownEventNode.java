@@ -69,6 +69,7 @@ public class TownEventNode extends AbstractChildNode<AbstractTownEvent> {
 	 * Check the data for validity. A Town or similar is valid if it has no
 	 * children and "kind", "dc", "size', and "status" properties.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if the data are invalid.
 	 */
@@ -87,6 +88,7 @@ public class TownEventNode extends AbstractChildNode<AbstractTownEvent> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

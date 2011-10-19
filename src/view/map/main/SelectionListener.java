@@ -25,6 +25,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	private Selectable selection;
 
 	/**
+	 * 
 	 * @return the currently-selected item.
 	 */
 	protected Selectable selection() {
@@ -121,6 +122,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the helper object managing our property-change listeners.
 	 */
 	protected final PropertyChangeSupport getSupport() {
@@ -150,6 +152,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

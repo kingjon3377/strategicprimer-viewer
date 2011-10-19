@@ -30,6 +30,7 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	private final TownStatus status;
 
 	/**
+	 * 
 	 * @return the status of the town, fortress, or city
 	 */
 	public TownStatus status() {
@@ -42,6 +43,7 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	private final TownSize size;
 
 	/**
+	 * 
 	 * @return the size of the town, fortress, or city
 	 */
 	public TownSize size() {
@@ -50,6 +52,7 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 
 	/**
 	 * FIXME: What about towns we've already rolled up?
+	 * 
 	 * 
 	 * @return exploration-result text for the event.
 	 */
@@ -73,6 +76,7 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's an identical event
 	 */
 	@Override
@@ -86,6 +90,7 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -94,6 +99,7 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the event
 	 */
 	@Override

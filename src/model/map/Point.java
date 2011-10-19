@@ -17,6 +17,7 @@ public class Point implements Comparable<Point> {
 	private final int myCol;
 
 	/**
+	 * 
 	 * @return the first coordinate.
 	 */
 	public final int row() {
@@ -24,6 +25,7 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
+	 * 
 	 * @return the second coordinate.
 	 */
 	public final int col() {
@@ -44,9 +46,10 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
-	 * @return whether this object equals another.
+	 * 
 	 * @param obj
 	 *            the other object
+	 * @return whether this object equals another.
 	 */
 	@Override
 	public final boolean equals(final Object obj) {
@@ -55,6 +58,7 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
+	 * 
 	 * @return a hash code.
 	 */
 	@Override
@@ -65,6 +69,7 @@ public class Point implements Comparable<Point> {
 	/**
 	 * @param point
 	 *            another point
+	 * 
 	 * @return the result of a comparison with that point
 	 */
 	@Override
@@ -73,6 +78,7 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the class
 	 */
 	@Override

@@ -80,6 +80,7 @@ public class LegacyTable implements EncounterTable {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

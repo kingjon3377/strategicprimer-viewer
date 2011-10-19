@@ -17,6 +17,7 @@ import view.map.main.Selectable;
  */
 public abstract class Chit extends Selectable { // NOPMD
 	/**
+	 * 
 	 * @return the description of the unit or fortress this chit represents, to
 	 *         report to the user
 	 */
@@ -32,6 +33,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	private static final Dimension MAX_SIZE = new Dimension(SIZE, SIZE);
 
 	/**
+	 * 
 	 * @return the maximum size of a chit
 	 */
 	@Override
@@ -40,6 +42,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	}
 
 	/**
+	 * 
 	 * @return the minimum size of a chit
 	 */
 	@Override
@@ -48,6 +51,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	}
 
 	/**
+	 * 
 	 * @return the preferred size of a chit
 	 */
 	@Override

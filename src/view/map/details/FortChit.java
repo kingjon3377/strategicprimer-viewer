@@ -46,7 +46,6 @@ public class FortChit extends Chit {
 
 	/**
 	 * @return a description of the fortress, to show the user.
-	 * @see view.map.details.Chit#describe()
 	 */
 	@Override
 	public String describe() {
@@ -58,6 +57,7 @@ public class FortChit extends Chit {
 	 * 
 	 * @param pen
 	 *            the graphics context
+	 * 
 	 * 
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */

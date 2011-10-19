@@ -32,6 +32,7 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	 * children and contains number and code_name properties. For forward
 	 * compatibility, we do not object to properties we don't check.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if we contain invalid data.
 	 */
@@ -48,6 +49,7 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

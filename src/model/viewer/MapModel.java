@@ -97,6 +97,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the currently selected tile
 	 */
 	public Tile getSelectedTile() {
@@ -104,6 +105,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the currently selected tile in the secondary map
 	 */
 	public Tile getSecondarySelectedTile() {
@@ -148,6 +150,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the size of the map in rows
 	 */
 	public int getSizeRows() {
@@ -155,6 +158,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the size of the map in columns
 	 */
 	public int getSizeCols() {
@@ -166,6 +170,7 @@ public final class MapModel implements PropertyChangeSource {
 	 *            the row of a tile
 	 * @param col
 	 *            the column of a tile
+	 * 
 	 * @return the tile at those coordinates
 	 */
 	public Tile getTile(final int row, final int col) {
@@ -173,6 +178,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the main map
 	 */
 	public SPMap getMainMap() {
@@ -180,6 +186,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the secondary map
 	 */
 	public SPMap getSecondaryMap() {
@@ -213,6 +220,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return the visible dimensions of the map
 	 */
 	public VisibleDimensions getDimensions() {
@@ -220,6 +228,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the class
 	 */
 	@Override

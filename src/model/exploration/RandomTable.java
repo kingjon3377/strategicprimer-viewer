@@ -20,6 +20,7 @@ public class RandomTable implements EncounterTable {
 	/**
 	 * @param tile
 	 *            ignored
+	 * 
 	 * @return a random item from the table, or the last item in the table if
 	 *         the normal procedure fails.
 	 */
@@ -32,6 +33,7 @@ public class RandomTable implements EncounterTable {
 	/**
 	 * @param value
 	 *            a number to check the table against
+	 * 
 	 * @return the result of the check
 	 */
 	private String getLowestMatch(final int value) {
@@ -72,6 +74,7 @@ public class RandomTable implements EncounterTable {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the class
 	 */
 	@Override

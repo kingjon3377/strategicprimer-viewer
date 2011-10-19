@@ -54,6 +54,7 @@ public class SPMap {
 	private final PlayerCollection players; // NOPMD
 
 	/**
+	 * 
 	 * @return how many rows the map has.
 	 */
 	public final int rows() {
@@ -61,6 +62,7 @@ public class SPMap {
 	}
 
 	/**
+	 * 
 	 * @return how many columns the map has
 	 */
 	public final int cols() {
@@ -92,6 +94,7 @@ public class SPMap {
 	 *            the row
 	 * @param col
 	 *            the column
+	 * 
 	 * @return the tile at those coordinates
 	 */
 	public final Tile getTile(final int row, final int col) {
@@ -99,6 +102,7 @@ public class SPMap {
 	}
 
 	/**
+	 * 
 	 * @return the players in the map
 	 */
 	public PlayerCollection getPlayers() {
@@ -108,6 +112,7 @@ public class SPMap {
 	/**
 	 * @param obj
 	 *            another object
+	 * 
 	 * @return whether it is an identical map.
 	 */
 	@Override
@@ -120,6 +125,7 @@ public class SPMap {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the map
 	 */
 	@Override
@@ -129,6 +135,7 @@ public class SPMap {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the map
 	 */
 	@Override

@@ -44,6 +44,7 @@ public class ConstraintHelper extends GridBagConstraints {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

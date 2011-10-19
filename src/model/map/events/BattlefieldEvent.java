@@ -24,9 +24,8 @@ public final class BattlefieldEvent extends AbstractEvent {
 
 	/**
 	 * 
-	 * @return the DC to discover the event.
 	 * 
-	 * @see model.map.events.AbstractEvent#getDC()
+	 * @return the DC to discover the event.
 	 */
 	@Override
 	public int getDC() {
@@ -34,9 +33,8 @@ public final class BattlefieldEvent extends AbstractEvent {
 	}
 
 	/**
-	 * @return exploration-result text for the event.
 	 * 
-	 * @see model.map.events.AbstractEvent#getText()
+	 * @return exploration-result text for the event.
 	 */
 	@Override
 	public String getText() {
@@ -46,6 +44,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's an identical BattlefieldEvent.
 	 */
 	@Override
@@ -55,6 +54,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the event.
 	 */
 	@Override
@@ -63,6 +63,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the event
 	 */
 	@Override

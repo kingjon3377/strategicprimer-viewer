@@ -38,6 +38,7 @@ public class UnitNode extends AbstractChildNode<Unit> {
 	 * some point we should start requiring properties, that condition should be
 	 * checked here.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if contain invalid data.
 	 */
@@ -62,6 +63,7 @@ public class UnitNode extends AbstractChildNode<Unit> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

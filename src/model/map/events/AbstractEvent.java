@@ -16,6 +16,7 @@ public abstract class AbstractEvent implements TileFixture {
 	private final EventKind kind;
 
 	/**
+	 * 
 	 * @return what kind of event this is
 	 */
 	public EventKind kind() {
@@ -33,11 +34,13 @@ public abstract class AbstractEvent implements TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return the DC to discover the event.
 	 */
 	public abstract int getDC();
 
 	/**
+	 * 
 	 * @return exploration-result text for the event.
 	 */
 	public abstract String getText();

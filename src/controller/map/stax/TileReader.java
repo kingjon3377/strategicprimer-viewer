@@ -68,6 +68,7 @@ public class TileReader {
 	 *            the stream of elements we're reading from
 	 * @param players
 	 *            the map's collection of players
+	 * 
 	 * @return the tile in question.
 	 */
 	Tile parseTileAndContents(final StartElement element, // NOPMD
@@ -134,6 +135,7 @@ public class TileReader {
 	 *            an XML element representing an event on that tile
 	 * @param reader
 	 *            the XML stream we're reading from
+	 * 
 	 * @return the event
 	 */
 	private AbstractEvent parseEvent(final StartElement elem,
@@ -188,6 +190,7 @@ public class TileReader {
 	/**
 	 * @param elem
 	 *            an XML tag representing an event
+	 * 
 	 * @return what kind of event it represents
 	 */
 	private EventKind getEventType(final StartElement elem) {
@@ -218,6 +221,7 @@ public class TileReader {
 	 * 
 	 * @param element
 	 *            The tile XML tag
+	 * 
 	 * @return the tile it represents.
 	 */
 	private Tile parseTile(final StartElement element) {
@@ -234,6 +238,7 @@ public class TileReader {
 	 *            the river tag itself
 	 * @param reader
 	 *            the stream of elements we're reading from
+	 * 
 	 * @return the river in question.
 	 */
 	public River parseRiver(final StartElement elem,
@@ -254,6 +259,7 @@ public class TileReader {
 	 *            the stream of elements we're reading from
 	 * @param players
 	 *            the map's collection of players
+	 * 
 	 * @return the fortress in question.
 	 */
 	private Fortress parseFortress(final StartElement elem,
@@ -304,8 +310,9 @@ public class TileReader {
 	 *            the stream of elements we're reading from
 	 * @param players
 	 *            the map's collection of players
-	 * @return the fortress in question.
 	 * 
+	 * 
+	 * @return the fortress in question.
 	 */
 	private Unit parseUnit(final StartElement elem,
 			final Iterable<XMLEvent> reader, final PlayerCollection players) {
@@ -318,6 +325,7 @@ public class TileReader {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

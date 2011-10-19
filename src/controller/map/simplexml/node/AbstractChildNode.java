@@ -39,6 +39,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	/**
 	 * @param property
 	 *            a property
+	 * 
 	 * @return whether the node contains it
 	 */
 	public final boolean hasProperty(final String property) {
@@ -48,6 +49,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	/**
 	 * @param property
 	 *            a property
+	 * 
 	 * @return its value
 	 */
 	public final String getProperty(final String property) {

@@ -26,6 +26,7 @@ public class XMLHelper {
 	 *            the attribute we want
 	 * @param defaultValue
 	 *            the default value if the element doesn't have the attribute
+	 * 
 	 * @return the value of attribute if it exists, or the default
 	 */
 	public String getAttributeWithDefault(final StartElement elem,
@@ -60,6 +61,7 @@ public class XMLHelper {
 	 *            a tag
 	 * @param attribute
 	 *            the attribute we want
+	 * 
 	 * @return the value of that attribute.
 	 */
 	public String getAttribute(final StartElement startElement,
@@ -78,6 +80,7 @@ public class XMLHelper {
 	 * 
 	 * @param startElement
 	 *            the tag to identify
+	 * 
 	 * @return the type of tag, in usable (enumerated) form.
 	 */
 	// ESCA-JAVA0130:
@@ -86,6 +89,7 @@ public class XMLHelper {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

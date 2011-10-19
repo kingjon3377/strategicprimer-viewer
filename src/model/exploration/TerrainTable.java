@@ -55,6 +55,7 @@ public class TerrainTable implements EncounterTable {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the class
 	 */
 	@Override

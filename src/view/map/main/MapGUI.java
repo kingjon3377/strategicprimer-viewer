@@ -36,6 +36,7 @@ public interface MapGUI {
 	void loadMap(final SPMap newMap);
 
 	/**
+	 * 
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */
 	MapModel getModel();

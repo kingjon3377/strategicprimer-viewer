@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * The kinds of stone we know about (for purposes of this event).
+ * 
+ * @author Jonathan Lovelace
  */
 public enum StoneKind {
 	/**
@@ -27,6 +29,7 @@ public enum StoneKind {
 	/**
 	 * @param string
 	 *            a string representing a StoneKind
+	 * 
 	 * @return the StoneKind it represents
 	 */
 	public static StoneKind parseStoneKind(final String string) {
@@ -50,6 +53,7 @@ public enum StoneKind {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the kind of stone
 	 */
 	@Override

@@ -21,12 +21,14 @@ public interface EncounterTable {
 	 * 
 	 * @param tile
 	 *            a tile
+	 * 
 	 * @return an appropriate event for that tile
 	 */
 	String generateEvent(final Tile tile);
 
 	/**
 	 * For table-debugging purposes.
+	 * 
 	 * 
 	 * @return all events the table can return.
 	 */

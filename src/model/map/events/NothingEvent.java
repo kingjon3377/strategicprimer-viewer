@@ -21,9 +21,8 @@ public final class NothingEvent extends AbstractEvent {
 
 	/**
 	 * 
-	 * @return 0
 	 * 
-	 * @see model.map.events.AbstractEvent#getDC()
+	 * @return 0: if there's nothing, it's impossible to not find it.
 	 */
 	@Override
 	public int getDC() {
@@ -32,8 +31,6 @@ public final class NothingEvent extends AbstractEvent {
 
 	/**
 	 * @return a hash-code for this object.
-	 * 
-	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
@@ -43,6 +40,7 @@ public final class NothingEvent extends AbstractEvent {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's equal to this one---iff it's another NothingEvent.
 	 */
 	@Override
@@ -51,6 +49,7 @@ public final class NothingEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -59,6 +58,7 @@ public final class NothingEvent extends AbstractEvent {
 	}
 
 	/**
+	 * 
 	 * @return a string representation of the event
 	 */
 	@Override

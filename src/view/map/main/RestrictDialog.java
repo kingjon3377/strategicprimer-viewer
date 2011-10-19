@@ -142,6 +142,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	/**
 	 * Verify whether our input is valid.
 	 * 
+	 * 
 	 * @return whether the input in the text-boxes makes sense.
 	 */
 	private boolean isInputValid() {
@@ -160,6 +161,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * 
 	 * @param args
 	 *            a series of strings
+	 * 
 	 * @return true if all of them are numeric, false otherwise.
 	 */
 	private static boolean isEachNumeric(final String... args) {
@@ -174,6 +176,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	}
 
 	/**
+	 * 
 	 * @return a description of why input is invalid
 	 */
 	private String whyInvalidInput() {
@@ -231,6 +234,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 *            the bottom of a range
 	 * @param max
 	 *            the top of a range
+	 * 
 	 * @return whether value is in the range
 	 */
 	private static boolean isBetween(final int value, final int min,
@@ -259,6 +263,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 * 
 	 * @param str
 	 *            the string to parse
+	 * 
 	 * @return the number, or -1 if it's non-numeric.
 	 */
 	private static int parse(final String str) {
@@ -276,6 +281,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 *            the value to test
 	 * @param max
 	 *            the top of the range
+	 * 
 	 * @return value if it's in the range, or min otherwise.
 	 */
 	private static int betweenMin(final int min, final int value, final int max) {
@@ -289,6 +295,7 @@ public class RestrictDialog extends JDialog implements ActionListener {
 	 *            the value to test
 	 * @param max
 	 *            the top of the range
+	 * 
 	 * @return value if it's in the range, or max otherwise.
 	 */
 	private static int betweenMax(final int min, final int value, final int max) {

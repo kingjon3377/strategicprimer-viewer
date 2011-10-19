@@ -56,6 +56,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * SkippableNode in the node-tree at the point that we're checking the data
 	 * for validity is a sign that something's wrong.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             never
 	 */
@@ -65,6 +66,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

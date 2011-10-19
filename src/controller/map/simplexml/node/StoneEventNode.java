@@ -39,6 +39,7 @@ public class StoneEventNode extends AbstractChildNode<StoneEvent> {
 	 * Check whether the node is valid. A Stone Node is valid if it has no
 	 * children and "kind", "dc", and "stone" properties.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
@@ -59,6 +60,7 @@ public class StoneEventNode extends AbstractChildNode<StoneEvent> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -44,6 +44,7 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 	 * properties, not even "owner" or "name"; if or when that changes, this
 	 * should change to check those conditions.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if we don't.
 	 */
@@ -68,6 +69,7 @@ public class FortressNode extends AbstractChildNode<Fortress> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

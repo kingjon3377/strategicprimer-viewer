@@ -41,6 +41,7 @@ public class ApplyButtonHandler implements ActionListener {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

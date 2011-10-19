@@ -31,6 +31,7 @@ public class Player implements Comparable<Player> {
 	}
 
 	/**
+	 * 
 	 * @return the player's number
 	 */
 	public final int getId() {
@@ -38,6 +39,7 @@ public class Player implements Comparable<Player> {
 	}
 
 	/**
+	 * 
 	 * @return the player's code name
 	 */
 	public final String getName() {
@@ -47,6 +49,7 @@ public class Player implements Comparable<Player> {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it's an identical Player
 	 */
 	@Override
@@ -57,6 +60,7 @@ public class Player implements Comparable<Player> {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -70,8 +74,6 @@ public class Player implements Comparable<Player> {
 	 * @param player
 	 *            the Player to compare to
 	 * @return the result of the comparison
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
 	public int compareTo(final Player player) {
@@ -79,6 +81,7 @@ public class Player implements Comparable<Player> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the Player
 	 */
 	@Override
@@ -100,6 +103,7 @@ public class Player implements Comparable<Player> {
 	}
 
 	/**
+	 * 
 	 * @return true iff this is the current player
 	 */
 	public final boolean isCurrent() {

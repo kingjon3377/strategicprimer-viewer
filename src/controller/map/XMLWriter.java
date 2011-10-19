@@ -41,6 +41,7 @@ public class XMLWriter { // NOPMD
 	 * 
 	 * @param filename
 	 *            the file to write to
+	 * 
 	 * @throws IOException
 	 *             on I/O error opening the file
 	 */
@@ -359,6 +360,7 @@ public class XMLWriter { // NOPMD
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -42,6 +42,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return the units in the fortress.
 	 */
 	public final List<Unit> getUnits() {
@@ -69,6 +70,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return the player that owns the fortress
 	 */
 	public final Player getOwner() {
@@ -76,6 +78,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return the name of the fortress
 	 */
 	public final String getName() {
@@ -85,6 +88,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it is an identical fortress
 	 */
 	@Override
@@ -97,6 +101,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -105,6 +110,7 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -125,8 +131,6 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	 * @param fort
 	 *            Another fortress
 	 * @return the result of a comparison with it
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
 	public int compareTo(final Fortress fort) {

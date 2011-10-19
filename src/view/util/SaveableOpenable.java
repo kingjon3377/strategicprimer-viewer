@@ -15,10 +15,11 @@ public interface SaveableOpenable {
 	 * 
 	 * @param file
 	 *            the filename to load from
-	 * @throws IOException
-	 *             on I/O error loading
+	 * 
 	 * @throws FileNotFoundException
 	 *             if the file doesn't exist
+	 * @throws IOException
+	 *             on I/O error loading
 	 */
 	void open(final String file) throws FileNotFoundException, IOException;
 
@@ -27,6 +28,7 @@ public interface SaveableOpenable {
 	 * 
 	 * @param file
 	 *            the filename to save to
+	 * 
 	 * @throws IOException
 	 *             on I/O error while saving
 	 */

@@ -26,6 +26,7 @@ public final class PointFactory {
 	 *            a row
 	 * @param col
 	 *            a column
+	 * 
 	 * @return a Point representing this point.
 	 */
 	public static Point point(final int row, final int col) {

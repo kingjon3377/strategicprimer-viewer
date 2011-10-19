@@ -34,10 +34,10 @@ public class SimpleXMLReader implements IMapReader {
 	 * @return the map contained in that file
 	 * @throws IOException
 	 *             on I/O error
-	 * @throws SPFormatException
-	 *             if the data is invalid
 	 * @throws XMLStreamException
 	 *             if the XML isn't well-formed
+	 * @throws SPFormatException
+	 *             if the data is invalid
 	 */
 	@Override
 	public SPMap readMap(final String file) throws IOException,
@@ -94,7 +94,7 @@ public class SimpleXMLReader implements IMapReader {
 	 *            the tag
 	 * @return the equivalent node.
 	 * @throws SPFormatException
-	 *             on unexpecte or illegal XML.
+	 *             on unexpected or illegal XML.
 	 */
 	private static AbstractXMLNode parseTag(final StartElement element)
 			throws SPFormatException {
@@ -110,6 +110,7 @@ public class SimpleXMLReader implements IMapReader {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

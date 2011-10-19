@@ -38,6 +38,7 @@ public class BattlefieldEventNode extends AbstractChildNode<BattlefieldEvent> {
 	 * "kind" and "dc" properties (any others are ignored, for forward
 	 * compatibility) and no children.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if the data is invalid
 	 */
@@ -53,6 +54,7 @@ public class BattlefieldEventNode extends AbstractChildNode<BattlefieldEvent> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of this object.
 	 */
 	@Override

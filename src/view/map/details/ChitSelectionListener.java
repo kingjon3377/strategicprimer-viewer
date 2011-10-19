@@ -45,6 +45,7 @@ public class ChitSelectionListener extends SelectionListener {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

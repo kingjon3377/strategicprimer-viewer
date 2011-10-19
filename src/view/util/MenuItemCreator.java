@@ -25,6 +25,7 @@ public class MenuItemCreator {
 	 *            the accessibile description.
 	 * @param list
 	 *            the listener to hande when the item is selected.
+	 * 
 	 * @return the configured menu item.
 	 */
 	public JMenuItem createMenuItem(final String item, final int mnemonic,

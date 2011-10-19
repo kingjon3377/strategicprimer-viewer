@@ -29,6 +29,7 @@ public class ChangeableComponent extends JPanel {
 	private JComponent wrappedComponent;
 
 	/**
+	 * 
 	 * @return the component we're wrapping
 	 */
 	public JComponent getComponent() {

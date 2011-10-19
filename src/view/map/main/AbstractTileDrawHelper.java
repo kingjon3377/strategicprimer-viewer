@@ -27,6 +27,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * @param type
 	 *            a tile type
+	 * 
 	 * @return the color associated with that tile-type.
 	 */
 	public static Color getTileColor(final TileType type) {
@@ -36,6 +37,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * @param tile
 	 *            a tile
+	 * 
 	 * @return whether the tile has any forts.
 	 */
 	protected static boolean hasAnyForts(final Tile tile) {
@@ -50,6 +52,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * @param tile
 	 *            a tile
+	 * 
 	 * @return whether the tile has any units.
 	 */
 	protected static boolean hasAnyUnits(final Tile tile) {
@@ -64,6 +67,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * @param tile
 	 *            a tile
+	 * 
 	 * @return whether the tile has any events
 	 */
 	protected static boolean hasEvent(final Tile tile) {

@@ -20,12 +20,12 @@ public interface IMapReader {
 	 * @param file
 	 *            the name of the file to read
 	 * @return the map it contains
-	 * @throws SPFormatException
-	 *             if the reader doesn't recognize the map format
-	 * @throws XMLStreamException
-	 *             if there are XML errors
-	 * @throws IOException
-	 *             if there are other I/O errors, i.e. opening the file
+	 * @throws IOException 
+	 *             if there are other I/O errors, i.e. opening the file 
+	 * @throws XMLStreamException 
+	 *             if there are XML errors 
+	 * @throws SPFormatException 
+	 *             if the reader doesn't recognize the map format 
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */
@@ -38,10 +38,10 @@ public interface IMapReader {
 	 * @param istream
 	 *            the stream to read from
 	 * @return the map it contains
-	 * @throws SPFormatException
-	 *             if the reader doesn't recognize the map format
-	 * @throws XMLStreamException
-	 *             if there are XML errors
+	 * @throws XMLStreamException 
+	 *             if there are XML errors 
+	 * @throws SPFormatException 
+	 *             if the reader doesn't recognize the map format 
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */

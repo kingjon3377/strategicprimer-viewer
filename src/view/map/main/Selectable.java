@@ -46,6 +46,7 @@ public abstract class Selectable extends JComponent { // NOPMD
 	}
 
 	/**
+	 * 
 	 * @return whether this is the currently selected tile
 	 */
 	public boolean isSelected() {

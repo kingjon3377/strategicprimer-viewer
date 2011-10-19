@@ -51,8 +51,6 @@ public class EventChit extends Chit {
 
 	/**
 	 * @return A description of the event this chit represents.
-	 * 
-	 * @see view.map.details.Chit#describe()
 	 */
 	@Override
 	public String describe() {

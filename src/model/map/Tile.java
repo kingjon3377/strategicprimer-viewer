@@ -37,6 +37,7 @@ public final class Tile {
 	private final int row;
 
 	/**
+	 * 
 	 * @return the row number
 	 */
 	public int getRow() {
@@ -49,6 +50,7 @@ public final class Tile {
 	private final int col;
 
 	/**
+	 * 
 	 * @return the column number
 	 */
 	public int getCol() {
@@ -61,6 +63,7 @@ public final class Tile {
 	private TileType type;
 
 	/**
+	 * 
 	 * @return the tile type
 	 */
 	public TileType getType() {
@@ -101,6 +104,7 @@ public final class Tile {
 	/**
 	 * FIXME: Should return a copy, not the real collection.
 	 * 
+	 * 
 	 * @return the contents of the tile
 	 */
 	public Set<TileFixture> getContents() {
@@ -110,6 +114,7 @@ public final class Tile {
 	/**
 	 * @param obj
 	 *            an object
+	 * 
 	 * @return whether it is an identical tile
 	 */
 	@Override
@@ -124,6 +129,7 @@ public final class Tile {
 	}
 
 	/**
+	 * 
 	 * @return a hash-code for the object
 	 */
 	@Override
@@ -133,6 +139,7 @@ public final class Tile {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the tile
 	 */
 	@Override
@@ -158,6 +165,7 @@ public final class Tile {
 	private final Set<River> rivers = EnumSet.noneOf(River.class);
 
 	/**
+	 * 
 	 * @return the river directions on this tile
 	 */
 	public Set<River> getRivers() {
@@ -194,6 +202,7 @@ public final class Tile {
 	}
 
 	/**
+	 * 
 	 * @return any text associated with the tile
 	 */
 	public String getTileText() {

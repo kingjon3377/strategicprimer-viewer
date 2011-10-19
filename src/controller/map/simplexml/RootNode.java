@@ -18,6 +18,7 @@ public final class RootNode extends AbstractXMLNode {
 	 * than one child, we only verify that it has at least one, which is a
 	 * MapNode.
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if it isn't.
 	 */
@@ -51,6 +52,7 @@ public final class RootNode extends AbstractXMLNode {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

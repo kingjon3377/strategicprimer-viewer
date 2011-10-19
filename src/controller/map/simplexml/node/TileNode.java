@@ -56,6 +56,7 @@ public class TileNode extends AbstractChildNode<Tile> {
 	 * properties we ignore. (But TODO: should we object to "event" tags, since
 	 * those *used* to be valid?)
 	 * 
+	 * 
 	 * @throws SPFormatException
 	 *             if contain invalid data.
 	 */
@@ -95,6 +96,7 @@ public class TileNode extends AbstractChildNode<Tile> {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object
 	 */
 	@Override

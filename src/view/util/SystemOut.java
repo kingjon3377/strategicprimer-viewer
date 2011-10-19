@@ -23,6 +23,7 @@ public final class SystemOut extends PrintStream {
 																// closeWhereCreated
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override

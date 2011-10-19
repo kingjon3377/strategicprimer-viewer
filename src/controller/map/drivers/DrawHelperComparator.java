@@ -75,6 +75,7 @@ public class DrawHelperComparator {
 	 * 
 	 * @param helper
 	 *            the helper to test
+	 * 
 	 * @return how long the test took, in ns.
 	 */
 	public long first(final TileDrawHelper helper) {
@@ -99,6 +100,7 @@ public class DrawHelperComparator {
 	 * 
 	 * @param helper
 	 *            the helper to test
+	 * 
 	 * @return how long the test took, in ns.
 	 */
 	public long second(final TileDrawHelper helper) {
@@ -124,6 +126,7 @@ public class DrawHelperComparator {
 	 * 
 	 * @param helper
 	 *            the helper to test
+	 * 
 	 * @return how long the test took, in ns.
 	 */
 	public long third(final TileDrawHelper helper) {
@@ -148,6 +151,7 @@ public class DrawHelperComparator {
 	 * 
 	 * @param helper
 	 *            the helper to test
+	 * 
 	 * @return how long the test took, in ns.
 	 */
 	public long fourth(final TileDrawHelper helper) {
@@ -232,6 +236,7 @@ public class DrawHelperComparator {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of this object
 	 */
 	@Override

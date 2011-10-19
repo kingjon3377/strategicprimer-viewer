@@ -39,6 +39,7 @@ public final class MapComponent extends JComponent implements
 	private transient Image image;
 
 	/**
+	 * 
 	 * @return the size of a visible tile.
 	 */
 	public static int getTileSize() {
@@ -172,6 +173,7 @@ public final class MapComponent extends JComponent implements
 	/**
 	 * @param rect
 	 *            a bounding rectangle
+	 * 
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
@@ -244,6 +246,7 @@ public final class MapComponent extends JComponent implements
 	}
 
 	/**
+	 * 
 	 * @return the map model
 	 */
 	@Override

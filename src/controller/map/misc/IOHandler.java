@@ -165,12 +165,12 @@ public final class IOHandler implements ActionListener {
 	 * @param filename
 	 *            a file to load a map from
 	 * @return the map in that file
-	 * @throws SPFormatException
-	 *             if the file contains invalid data
-	 * @throws XMLStreamException
-	 *             if the XML isn't well-formed
 	 * @throws IOException
 	 *             on other I/O error
+	 * @throws XMLStreamException
+	 *             if the XML isn't well-formed
+	 * @throws SPFormatException
+	 *             if the file contains invalid data
 	 */
 	private static SPMap readMap(final String filename) throws IOException,
 			XMLStreamException, SPFormatException {
@@ -178,6 +178,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -217,6 +218,7 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
+	 * 
 	 * @return the menu we handle
 	 */
 	public JMenu getMenu() {

@@ -68,6 +68,7 @@ public final class MapUpdater {
 	 *            a tile from the master map
 	 * @param tile
 	 *            the equivalent tile from a derived map
+	 * 
 	 * @return whether the derived map needs updating in this tile
 	 */
 	public boolean shouldUpdate(final Tile masterTile, final Tile tile) {
@@ -106,6 +107,7 @@ public final class MapUpdater {
 	 * 
 	 * @param strings
 	 *            the strings to concatenate.
+	 * 
 	 * @return the result of the concatenation
 	 */
 	private static String buildString(final String... strings) {
@@ -127,6 +129,7 @@ public final class MapUpdater {
 	 * 
 	 * @param filename
 	 *            the name of the map to load
+	 * 
 	 * @return the map
 	 */
 	private static SPMap loadMap(final String filename) {
@@ -156,6 +159,7 @@ public final class MapUpdater {
 	}
 
 	/**
+	 * 
 	 * @return a String representation of this object
 	 */
 	@Override
