@@ -15,6 +15,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.Player;
 import model.map.SPMap;
 import util.IteratorWrapper;
+import controller.map.IMapReader;
 import controller.map.MapVersionException;
 
 /**
@@ -25,7 +26,7 @@ import controller.map.MapVersionException;
  * 
  */
 @Deprecated
-public class MapReader {
+public class MapReader implements IMapReader {
 	/**
 	 * Error message for unexpected tag.
 	 */
@@ -65,6 +66,7 @@ public class MapReader {
 	 * @throws MapVersionException
 	 *             if the map is too old a version
 	 */
+	@Override
 	public SPMap readMap(final String file) throws XMLStreamException,
 			IOException, MapVersionException {
 		final FileInputStream istream = new FileInputStream(file);
@@ -84,6 +86,7 @@ public class MapReader {
 	 * @throws MapVersionException
 	 *             if the map is too old a version
 	 */
+	@Override
 	public SPMap readMap(final InputStream istream) throws XMLStreamException,
 			MapVersionException {
 		try {

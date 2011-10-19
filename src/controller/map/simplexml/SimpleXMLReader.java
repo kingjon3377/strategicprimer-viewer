@@ -14,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.SPMap;
 import util.IteratorWrapper;
+import controller.map.IMapReader;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
@@ -26,7 +27,7 @@ import controller.map.simplexml.node.TileNode;
  * @author Jonathan Lovelace
  * 
  */
-public class SimpleXMLReader {
+public class SimpleXMLReader implements IMapReader {
 	/**
 	 * @param file the name of a file
 	 * @return the map contained in that file
@@ -34,6 +35,7 @@ public class SimpleXMLReader {
 	 * @throws SPFormatException if the data is invalid
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 */
+	@Override
 	public SPMap readMap(final String file) throws IOException,
 			XMLStreamException, SPFormatException {
 		final FileInputStream istream = new FileInputStream(file);
@@ -49,6 +51,7 @@ public class SimpleXMLReader {
 	 * @throws XMLStreamException if XML isn't well-formed.
 	 * @throws SPFormatException if the data is invalid.
 	 */
+	@Override
 	public SPMap readMap(final InputStream istream) throws XMLStreamException,
 			SPFormatException {
 		final RootNode root = new RootNode();
