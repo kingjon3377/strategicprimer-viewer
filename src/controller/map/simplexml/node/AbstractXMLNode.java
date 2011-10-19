@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import controller.map.NeedsExtraCanonicalization;
 import controller.map.SPFormatException;
-import controller.map.simplexml.NeedsExtraCanonicalization;
 
 /**
  * A class representing an XML tag and its descendants---except not necessarily

@@ -1,6 +1,5 @@
-package controller.map.simplexml;
+package controller.map;
 
-import controller.map.SPFormatException;
 
 
 /**

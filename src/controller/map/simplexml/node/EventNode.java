@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import model.map.PlayerCollection;
 import model.map.events.AbstractEvent;
+import controller.map.NeedsExtraCanonicalization;
 import controller.map.SPFormatException;
-import controller.map.simplexml.NeedsExtraCanonicalization;
 
 /**
  * A Node that will produce an Event.
