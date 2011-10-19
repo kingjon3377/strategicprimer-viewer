@@ -1,4 +1,4 @@
-package controller.map;
+package model.viewer;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

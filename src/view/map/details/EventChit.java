@@ -7,7 +7,7 @@ import java.awt.event.MouseListener;
 import model.map.events.AbstractEvent;
 import model.map.events.AbstractTownEvent;
 import model.map.events.TownStatus;
-import controller.map.FixtureTransferable;
+import model.viewer.FixtureTransferable;
 
 /**
  * A Chit to represent an event. TODO: Make it look different for different Events.

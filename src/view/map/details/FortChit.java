@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import model.map.Fortress;
-import controller.map.FixtureTransferable;
+import model.viewer.FixtureTransferable;
 
 /**
  * A chit to represent a fortress.

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import model.map.Unit;
-import controller.map.FixtureTransferable;
+import model.viewer.FixtureTransferable;
 
 /**
  * A chit to represent a unit.
