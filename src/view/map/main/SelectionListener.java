@@ -1,6 +1,5 @@
 package view.map.main;
 
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
@@ -113,31 +112,6 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	 */
 	public void clearSelection() {
 		selection = NullSelection.EMPTY;
-	}
-	/**
-	 * A class to replace all cases where a Selectable variable is null.
-	 * @author Jonathan Lovelace
-	 */
-	public static final class NullSelection extends Selectable {
-		/**
-		 * Singleton.
-		 */
-		public static final NullSelection EMPTY = new NullSelection();
-		/**
-		 * Singleton.
-		 */
-		private NullSelection() {
-			super();
-		}
-		/**
-		 * Don't waste resources doing any painting.
-		 * @param pen ignored
-		 */
-		@Override
-		// ESCA-JAVA0025:
-		public void paint(final Graphics pen) {
-			// Do nothing.
-		}
 	}
 	/**
 	 * @return the helper object managing our property-change listeners.
