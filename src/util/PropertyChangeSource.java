@@ -1,4 +1,4 @@
-package view.util;
+package util;
 
 import java.beans.PropertyChangeListener;
 

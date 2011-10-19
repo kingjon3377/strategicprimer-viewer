@@ -17,7 +17,7 @@ import model.map.SPMap;
 import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.VisibleDimensions;
-import view.util.PropertyChangeSource;
+import util.PropertyChangeSource;
 /**
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)

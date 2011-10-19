@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import view.util.PropertyChangeSource;
+import util.PropertyChangeSource;
 
 /**
  * A panel to show the details of a tile. 

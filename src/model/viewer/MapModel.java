@@ -7,7 +7,7 @@ import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 
-import view.util.PropertyChangeSource;
+import util.PropertyChangeSource;
 /**
  * A class to encapsulate the various model-type things views need to do with maps.
  * @author Jonathan Lovelace

@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import view.util.PropertyChangeSource;
+import util.PropertyChangeSource;
 
 /**
  * A class to handle selecting one of a class of GUI elements.
