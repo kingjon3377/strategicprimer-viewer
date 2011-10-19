@@ -163,7 +163,7 @@ public class MapReader implements IMapReader {
 		if (Tag.Map.equals(XMLHelper.getTagType(startElement))) {
 			if (Integer.parseInt(helper.getAttributeWithDefault(startElement,
 					"version", "-1")) == 1) {
-				return new SPMap(Integer.parseInt(helper.getAttribute(// NOPMD
+				return new SPMap(1, Integer.parseInt(helper.getAttribute(// NOPMD
 						startElement, "rows")), Integer.parseInt(helper
 						.getAttribute(startElement, "columns"))); // NOPMD
 			} else {

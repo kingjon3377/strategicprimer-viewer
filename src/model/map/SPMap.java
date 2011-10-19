@@ -22,20 +22,23 @@ public class SPMap {
 	public int getVersion() {
 		return version;
 	}
+	
 	/**
 	 * Constructor that takes the size.
 	 * 
+	 * @param ver
+	 *            the map version
 	 * @param rows
 	 *            the number of rows
 	 * @param cols
 	 *            the number of columns
 	 */
-	public SPMap(final int rows, final int cols) {
+	public SPMap(final int ver, final int rows, final int cols) {
 		tiles = new TileCollection();
 		players = new PlayerCollection();
 		myRows = rows;
 		myCols = cols;
-		version = 1;
+		version = ver;
 	}
 
 	/**

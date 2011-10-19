@@ -57,7 +57,8 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	@Override
 	public SPMap produce(final PlayerCollection players)
 			throws SPFormatException {
-		final SPMap map = new SPMap(Integer.parseInt(getProperty("rows")),
+		final SPMap map = new SPMap(Integer.parseInt(getProperty("version")),
+				Integer.parseInt(getProperty("rows")),
 				Integer.parseInt(getProperty("columns")));
 		final List<TileNode> tiles = new LinkedList<TileNode>();
 		for (final AbstractXMLNode node : this) {
