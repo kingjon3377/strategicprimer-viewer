@@ -9,10 +9,19 @@ package model.map;
  */
 public class SPMap {
 	/**
-	 * Map version.
+	 * Map max version.
 	 */
 	public static final int MAX_VERSION = 1;
-
+	/**
+	 * Map version.
+	 */
+	private final int version;
+	/**
+	 * @return the map version
+	 */
+	public int getVersion() {
+		return version;
+	}
 	/**
 	 * Constructor that takes the size.
 	 * 
@@ -26,6 +35,7 @@ public class SPMap {
 		players = new PlayerCollection();
 		myRows = rows;
 		myCols = cols;
+		version = 1;
 	}
 
 	/**
