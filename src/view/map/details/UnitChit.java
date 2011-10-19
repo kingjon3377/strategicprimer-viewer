@@ -50,7 +50,7 @@ public class UnitChit extends Chit {
 
 	/**
 	 * @return a description of the unit, to show the user.
-	 * @see view.map.main.Chit#describe()
+	 * @see view.map.details.Chit#describe()
 	 */
 	@Override
 	public String describe() {
