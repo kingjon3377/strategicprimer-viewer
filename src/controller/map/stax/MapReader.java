@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -87,42 +88,7 @@ public class MapReader {
 	public SPMap readMap(final InputStream istream) throws XMLStreamException,
 			MapVersionException {
 		try {
-			LOGGER.info("Started reading XML");
-			LOGGER.info(Long.toString(System.currentTimeMillis()));
-			SPMap map = null;
-			@SuppressWarnings("unchecked")
-			final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
-					XMLInputFactory.newInstance().createXMLEventReader(istream));
-			for (XMLEvent event : eventReader) {
-				if (event.isStartElement()) {
-					final StartElement startElement = event.asStartElement();
-					if (map == null) {
-						map = firstTag(startElement);
-						continue;
-					} 
-						switch (XMLHelper.getTagType(startElement)) {
-						case Player:
-							map.addPlayer(parsePlayer(startElement, eventReader));
-							break;
-						case Row:
-							// Deliberately ignore
-							continue;
-						case Tile:
-							map.addTile(tileReader.parseTileAndContents(
-									startElement, eventReader, map.getPlayers()));
-							break;
-						default:
-							throw new IllegalStateException(
-									UNEXPECTED_TAG
-											+ startElement.getName()
-													.getLocalPart()
-											+ ": players, rows, and tiles are the only accepted top-level tags");
-						}
-				}
-			}
-			LOGGER.info("Finished reading XML");
-			LOGGER.info(Long.toString(System.currentTimeMillis()));
-			return map;
+			return readMapImpl(istream);
 		} finally {
 			try {
 				istream.close();
@@ -131,6 +97,52 @@ public class MapReader {
 						e);
 			}
 		}
+	}
+
+	/**
+	 * @param istream the stream to read from
+	 * @return the map
+	 * @throws XMLStreamException on XML error
+	 * @throws MapVersionException if the map version is one we can't handle
+	 */
+	private SPMap readMapImpl(final InputStream istream)
+			throws XMLStreamException, MapVersionException {
+		LOGGER.info("Started reading XML");
+		LOGGER.info(Long.toString(System.currentTimeMillis()));
+		SPMap map = null;
+		@SuppressWarnings("unchecked")
+		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
+				XMLInputFactory.newInstance().createXMLEventReader(istream));
+		for (XMLEvent event : eventReader) {
+			if (event.isStartElement()) {
+				final StartElement startElement = event.asStartElement();
+				if (map == null) {
+					map = firstTag(startElement);
+					continue;
+				} 
+					switch (XMLHelper.getTagType(startElement)) {
+					case Player:
+						map.addPlayer(parsePlayer(startElement, eventReader));
+						break;
+					case Row:
+						// Deliberately ignore
+						continue;
+					case Tile:
+						map.addTile(tileReader.parseTileAndContents(
+								startElement, eventReader, map.getPlayers()));
+						break;
+					default:
+						throw new IllegalStateException(
+								UNEXPECTED_TAG
+										+ startElement.getName()
+												.getLocalPart()
+										+ ": players, rows, and tiles are the only accepted top-level tags");
+					}
+			}
+		}
+		LOGGER.info("Finished reading XML");
+		LOGGER.info(Long.toString(System.currentTimeMillis()));
+		return map;
 	}
 
 	/**
