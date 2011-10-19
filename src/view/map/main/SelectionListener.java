@@ -57,7 +57,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	@Override
 	public void mouseClicked(final MouseEvent event) {
 		if (event.getComponent() instanceof Selectable) {
-			setSelection(event.getComponent() == null ? NullSelection.EMPTY
+			setSelection((event.getComponent() == null) ? NullSelection.EMPTY
 					: (Selectable) (event.getComponent()));
 		}
 	}
