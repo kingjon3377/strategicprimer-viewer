@@ -15,6 +15,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
+import model.exploration.ExplorationRunner;
 import model.viewer.MapModel;
 import view.map.details.DetailPanel;
 import view.util.DriverQuit;
@@ -48,19 +49,21 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * Constructor.
 	 * 
+	 * @param runner
+	 *            an exploration runner
 	 * @param map
 	 *            The map model.
 	 * @param mapMenu
 	 *            the menu dealing with file I/O and map switching.
 	 */
-	public ViewerFrame(final MapModel map, final JMenu mapMenu) {
+	public ViewerFrame(final ExplorationRunner runner, final MapModel map, final JMenu mapMenu) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
 		mapPanel = new MapComponent(map);
-		final DetailPanel details = new DetailPanel((MapComponent) mapPanel);
+		final DetailPanel details = new DetailPanel(runner, (MapComponent) mapPanel);
 		add(details, BorderLayout.SOUTH);
 		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
 		add(scroller, BorderLayout.CENTER);

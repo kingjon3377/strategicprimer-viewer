@@ -8,10 +8,12 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
+import model.exploration.ExplorationRunner;
 import model.viewer.MapModel;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
+import controller.exploration.TableLoader;
 import controller.map.SPFormatException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
@@ -69,7 +71,9 @@ public final class ViewerStart {
 		}
 		try {
 			final MapModel model = new MapModel(new MapReaderAdapter().readMap(filename));
-			final ViewerFrame frame = new ViewerFrame(model, new IOHandler(
+			final ExplorationRunner runner = new ExplorationRunner();
+			new TableLoader().loadAllTables("tables", runner);
+			final ViewerFrame frame = new ViewerFrame(runner, model, new IOHandler(
 					model, chooser).getMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {

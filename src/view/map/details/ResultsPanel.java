@@ -14,7 +14,6 @@ import javax.swing.SwingConstants;
 
 import model.exploration.ExplorationRunner;
 import model.map.Tile;
-import controller.exploration.TableLoader;
 /**
  * A panel for displaying and editing tile text i.e. results.
  * @author Jonathan Lovelace
@@ -23,7 +22,7 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * Exploration runner to produce exploration results.
 	 */
-	private final ExplorationRunner runner = new ExplorationRunner();
+	private final ExplorationRunner runner;
 	/**
 	 * Minimum width of this panel.
 	 */
@@ -57,9 +56,12 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	 * @param minHeight the minimum height of this panel
 	 * @param height the (preferred) height of this panel
 	 * @param maxHeight the maximum height of this panel
+	 * @param xrunner an exploration runner.
 	 */
-	public ResultsPanel(final int minHeight, final int height, final int maxHeight) {
+	public ResultsPanel(final int minHeight, final int height,
+			final int maxHeight, final ExplorationRunner xrunner) {
 		super(new BorderLayout());
+		runner = xrunner;
 		final JLabel label = new JLabel("Exploration results:");
 		label.setAlignmentY(SwingConstants.CENTER);
 		label.setMinimumSize(new Dimension(MINIMUM_WIDTH, LABEL_MIN_HT));
@@ -82,8 +84,6 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 		wrapper.setMaximumSize(new Dimension(MAX_WIDTH, maxHeight
 				- LABEL_MAX_HT - (int) button.getMaximumSize().getHeight()));
 		add(wrapper, BorderLayout.CENTER);
-		
-		new TableLoader().loadAllTables("tables", runner);
 	}
 	/**
 	 * Save changed results back to the tile.

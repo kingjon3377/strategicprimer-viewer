@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import model.exploration.ExplorationRunner;
 import util.PropertyChangeSource;
 
 /**
@@ -30,11 +31,13 @@ public class DetailPanel extends JPanel {
 	/**
 	 * Constructor.
 	 * 
+	 * @param runner
+	 *            an exploration runner
 	 * @param tileEventSources
 	 *            Sources of property-changing events we want sub-panels to
 	 *            listen to.
 	 */
-	public DetailPanel(final PropertyChangeSource... tileEventSources) {
+	public DetailPanel(final ExplorationRunner runner, final PropertyChangeSource... tileEventSources) {
 		super();
 		setMaximumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MAX_HT));
 		setMinimumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MIN_HT));
@@ -47,7 +50,7 @@ public class DetailPanel extends JPanel {
 				DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT, "secondary-tile"),
 				tileEventSources);
 		addListener(new ResultsPanel(DETAIL_PAN_MIN_HT,
-				DETAIL_PANEL_HT, DETAIL_PAN_MAX_HT), tileEventSources);
+				DETAIL_PANEL_HT, DETAIL_PAN_MAX_HT, runner), tileEventSources);
 		add(new KeyPanel());
 	}
 	
