@@ -40,7 +40,7 @@ public final class StoneEvent extends AbstractEvent {
 	 * 
 	 * @return the DC to discover the event.
 	 * 
-	 * @see model.viewer.events.AbstractEvent#getDC()
+	 * @see model.map.events.AbstractEvent#getDC()
 	 */
 	@Override
 	public int getDC() {

@@ -22,7 +22,7 @@ public final class NothingEvent extends AbstractEvent {
 	 * 
 	 * @return 0
 	 * 
-	 * @see model.viewer.events.AbstractEvent#getDC()
+	 * @see model.map.events.AbstractEvent#getDC()
 	 */
 	@Override
 	public int getDC() {

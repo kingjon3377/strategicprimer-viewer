@@ -26,7 +26,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	 * 
 	 * @return the DC to discover the event.
 	 * 
-	 * @see model.viewer.events.AbstractEvent#getDC()
+	 * @see model.map.events.AbstractEvent#getDC()
 	 */
 	@Override
 	public int getDC() {
@@ -36,7 +36,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	/**
 	 * @return exploration-result text for the event.
 	 *
-	 * @see model.viewer.events.AbstractEvent#getText()
+	 * @see model.map.events.AbstractEvent#getText()
 	 */
 	@Override
 	public String getText() {

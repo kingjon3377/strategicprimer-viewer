@@ -34,7 +34,7 @@ public final class FortificationEvent extends AbstractTownEvent {
 	 * 
 	 * @return the DC to discover the event.
 	 * 
-	 * @see model.viewer.events.AbstractEvent#getDC()
+	 * @see model.map.events.AbstractEvent#getDC()
 	 */
 	@Override
 	public int getDC() {
