@@ -1,4 +1,4 @@
-package util;
+package model.viewer;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

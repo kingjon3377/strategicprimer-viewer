@@ -1,6 +1,6 @@
 package model.map;
 
-import util.PointFactory;
+import model.viewer.PointFactory;
 
 
 /**
