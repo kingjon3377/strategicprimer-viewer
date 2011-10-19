@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import util.EqualsAny;
+
 import model.viewer.TileFixture;
 /**
  * A class to listen for potential Chit drops.
@@ -29,9 +31,8 @@ public class ChitDropListener implements DropTargetListener {
 	 */
 	@Override
 	public void dragEnter(final DropTargetDragEvent dtde) {
-		if (dtde.getSource() instanceof DropTarget
-				&& ((DropTarget) dtde.getSource()).getComponent() instanceof ChitAndDetailPanel
-				&& (dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) {
+		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 && EqualsAny
+				.equalsAny("TileFixture", dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -43,9 +44,8 @@ public class ChitDropListener implements DropTargetListener {
 	 */
 	@Override
 	public void dragOver(final DropTargetDragEvent dtde) {
-		if (dtde.getSource() instanceof DropTarget
-				&& ((DropTarget) dtde.getSource()).getComponent() instanceof ChitAndDetailPanel
-				&& (dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) {
+		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 && EqualsAny
+				.equalsAny("TileFixture", dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -57,9 +57,8 @@ public class ChitDropListener implements DropTargetListener {
 	 */
 	@Override
 	public void dropActionChanged(final DropTargetDragEvent dtde) {
-		if (dtde.getSource() instanceof DropTarget
-				&& ((DropTarget) dtde.getSource()).getComponent() instanceof ChitAndDetailPanel
-				&& (dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) {
+		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 && EqualsAny
+				.equalsAny("TileFixture", dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
