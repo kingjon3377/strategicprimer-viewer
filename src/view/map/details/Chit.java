@@ -17,11 +17,6 @@ import view.map.main.Selectable;
  */
 public abstract class Chit extends Selectable { // NOPMD
 	/**
-	 * A wrapper around our data.
-	 */
-	private final Transferable trans;
-
-	/**
 	 * @return the description of the unit or fortress this chit represents, to
 	 *         report to the user
 	 */
@@ -75,13 +70,5 @@ public abstract class Chit extends Selectable { // NOPMD
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY,
 				new ChitDragGestureListener(transferable));
-		// setBorder(new EmptyBorder(5, 5, 5, 5));
-		trans = transferable;
-	}
-	/**
-	 * @return a Transferable encapsulating the fortress this represents
-	 */
-	public Transferable getData() {
-		return trans;
 	}
 }
