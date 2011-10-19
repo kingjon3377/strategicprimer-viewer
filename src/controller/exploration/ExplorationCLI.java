@@ -1,4 +1,4 @@
-package view.map;
+package controller.exploration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
