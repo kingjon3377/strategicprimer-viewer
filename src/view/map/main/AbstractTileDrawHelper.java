@@ -25,13 +25,14 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	protected static final Color EVENT_COLOR = Color.pink;
 
 	/**
+	 * @param version the map version
 	 * @param type
 	 *            a tile type
 	 * 
 	 * @return the color associated with that tile-type.
 	 */
-	public static Color getTileColor(final TileType type) {
-		return COLORS.get(type);
+	public static Color getTileColor(final int version, final TileType type) {
+		return COLORS.get(version, type);
 	}
 
 	/**
@@ -106,6 +107,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
+	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -114,6 +116,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public abstract void drawTile(final Graphics pen, final Tile tile,
+	public abstract void drawTile(final Graphics pen, final int version, final Tile tile,
 			final int width, final int height);
 }

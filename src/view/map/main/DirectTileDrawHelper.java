@@ -29,6 +29,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context.
+	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param xCoord
@@ -41,10 +42,10 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the tile's height
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int xCoord,
+	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
 		final Color save = pen.getColor();
-		pen.setColor(getTileColor(tile.getType()));
+		pen.setColor(getTileColor(version, tile.getType()));
 		pen.fillRect(xCoord, yCoord, width, height);
 		pen.setColor(Color.black);
 		pen.drawRect(xCoord, yCoord, width, height);
@@ -83,6 +84,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
+	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -91,9 +93,9 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int width,
+	public void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
 			final int height) {
-		drawTile(pen, tile, 0, 0, width, height);
+		drawTile(pen, version, tile, 0, 0, width, height);
 	}
 
 	/**

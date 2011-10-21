@@ -87,7 +87,7 @@ public class DrawHelperComparator {
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					helper.drawTile(image.createGraphics(),
-							spmap.getTile(i, j), tsize, tsize);
+							spmap.getVersion(), spmap.getTile(i, j), tsize, tsize);
 				}
 			}
 		}
@@ -112,7 +112,7 @@ public class DrawHelperComparator {
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					helper.drawTile(image.createGraphics(),
-							spmap.getTile(i, j), i * tsize, j * tsize, tsize,
+							spmap.getVersion(), spmap.getTile(i, j), i * tsize, j * tsize, tsize,
 							tsize);
 				}
 			}
@@ -138,7 +138,7 @@ public class DrawHelperComparator {
 			final Graphics pen = image.createGraphics();
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
-					helper.drawTile(pen, spmap.getTile(i, j), tsize, tsize);
+					helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), tsize, tsize);
 				}
 			}
 		}
@@ -163,7 +163,7 @@ public class DrawHelperComparator {
 			final Graphics pen = image.createGraphics();
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
-					helper.drawTile(pen, spmap.getTile(i, j), i * tsize, j
+					helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), i * tsize, j
 							* tsize, tsize, tsize);
 				}
 			}

@@ -103,6 +103,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
+	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -111,7 +112,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int width,
+	public void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
 			final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
@@ -119,7 +120,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					"CachingTileDrawHelper requires Graphics2D, not an old Graphics");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
-		pen2d.setColor(getTileColor(tile.getType()));
+		pen2d.setColor(getTileColor(version, tile.getType()));
 		pen2d.fill(backgroundShape);
 		pen2d.setColor(Color.BLACK);
 		pen2d.draw(backgroundShape);
@@ -167,6 +168,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context.
+	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param xCoord
@@ -179,9 +181,9 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the tile's height
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int xCoord,
+	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
-		drawTile(pen.create(xCoord, yCoord, width, height), tile, width, height);
+		drawTile(pen.create(xCoord, yCoord, width, height), version, tile, width, height);
 	}
 
 	/**

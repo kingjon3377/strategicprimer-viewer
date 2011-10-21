@@ -45,10 +45,11 @@ final class KeyElement extends JPanel {
 	/**
 	 * Constructor.
 	 * 
+	 * @param version the map version
 	 * @param type
 	 *            the type this is the key element for.
 	 */
-	KeyElement(final TileType type) {
+	KeyElement(final int version, final TileType type) {
 		super();
 		final TileUIHelper helper = TUI_HELPER;
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -61,7 +62,7 @@ final class KeyElement extends JPanel {
 			/**
 			 * The color of this Component.
 			 */
-			private final Color color = helper.get(type);
+			private final Color color = helper.get(version, type);
 
 			/**
 			 * @param pen

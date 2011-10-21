@@ -19,6 +19,7 @@ public interface TileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
+	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -26,7 +27,7 @@ public interface TileDrawHelper {
 	 * @param height
 	 *            the height of the drawing area
 	 */
-	void drawTile(final Graphics pen, final Tile tile, final int width,
+	void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
 			final int height);
 
 	/**
@@ -34,6 +35,7 @@ public interface TileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
+	 * @param version the map version           
 	 * @param tile
 	 *            the tile to draw
 	 * @param xCoord
@@ -45,6 +47,6 @@ public interface TileDrawHelper {
 	 * @param height
 	 *            the tile's height
 	 */
-	void drawTile(final Graphics pen, final Tile tile, final int xCoord,
+	void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height);
 }

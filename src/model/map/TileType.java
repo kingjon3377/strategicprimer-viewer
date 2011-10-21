@@ -1,7 +1,13 @@
 package model.map;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Possible tile types.
@@ -13,39 +19,81 @@ public enum TileType {
 	/**
 	 * Tundra.
 	 */
-	Tundra,
+	Tundra(1, 2),
 	/**
 	 * Desert.
 	 */
-	Desert,
+	Desert(1, 2),
 	/**
 	 * Mountain.
 	 */
-	Mountain,
+	Mountain(1, 2),
 	/**
 	 * Boreal forest.
 	 */
-	BorealForest,
+	BorealForest(1),
 	/**
 	 * Temperate forest.
 	 */
-	TemperateForest,
+	TemperateForest(1),
 	/**
 	 * Ocean.
 	 */
-	Ocean,
+	Ocean(1, 2),
 	/**
 	 * Plains.
 	 */
-	Plains,
+	Plains(1, 2),
 	/**
 	 * Jungle.
 	 */
-	Jungle,
+	Jungle(1, 2),
 	/**
 	 * Not visible.
 	 */
-	NotVisible;
+	NotVisible(1, 2);
+	/**
+	 * The map versions that support the tile type as such. (For example,
+	 * version 2 and later replace forests as a tile type with forests as
+	 * something on the tile.)
+	 */
+	private final List<Integer> versions;
+	/**
+	 * A cache of the lists of types supported by particular versions.
+	 */
+	private static final Map<Integer, Set<TileType>> VALS_BY_VER = new HashMap<Integer, Set<TileType>>();
+	/**
+	 * @param ver a map version
+	 * @return a list of all tile-types that version supports.
+	 */
+	public static Set<TileType> valuesForVersion(final int ver) {
+		synchronized (VALS_BY_VER) {
+			if (!VALS_BY_VER.containsKey(ver)) {
+				final Set<TileType> set = EnumSet.noneOf(TileType.class);
+				for (TileType type : values()) {
+					if (type.isSupportedByVersion(ver)) {
+						set.add(type);
+					}
+				}
+				VALS_BY_VER.put(ver, set);
+			}
+		}
+		return Collections.unmodifiableSet(VALS_BY_VER.get(ver));
+	}
+	/**
+	 * Constructor.
+	 * @param vers the map versions that support the tile type.
+	 */
+	private TileType(final Integer... vers) {
+		versions = new ArrayList<Integer>(Arrays.asList(vers));
+	}
+	/**
+	 * @param ver a map version
+	 * @return whether that version supports this tile type.
+	 */
+	public boolean isSupportedByVersion(final int ver) {
+		return versions.contains(ver);
+	}
 	/**
 	 * The mapping from descriptive strings to tile types. Used to make
 	 * multiple-return-points warnings go away.

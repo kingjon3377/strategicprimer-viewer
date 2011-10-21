@@ -31,13 +31,14 @@ public class DetailPanel extends JPanel {
 	/**
 	 * Constructor.
 	 * 
+	 * @param version the (initial) map version
 	 * @param runner
 	 *            an exploration runner
 	 * @param tileEventSources
 	 *            Sources of property-changing events we want sub-panels to
 	 *            listen to.
 	 */
-	public DetailPanel(final ExplorationRunner runner,
+	public DetailPanel(final int version, final ExplorationRunner runner,
 			final PropertyChangeSource... tileEventSources) {
 		super();
 		setMaximumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MAX_HT));
@@ -52,7 +53,7 @@ public class DetailPanel extends JPanel {
 				tileEventSources);
 		addListener(new ResultsPanel(DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT,
 				DETAIL_PAN_MAX_HT, runner), tileEventSources);
-		add(new KeyPanel());
+		add(new KeyPanel(version));
 	}
 
 	/**

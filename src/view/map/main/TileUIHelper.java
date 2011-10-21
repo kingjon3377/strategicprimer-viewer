@@ -2,9 +2,12 @@
 package view.map.main;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
+import model.map.SPMap;
 import model.map.TileType;
 
 /**
@@ -17,23 +20,25 @@ public class TileUIHelper {
 	/**
 	 * The map we wrap.
 	 */
-	private final Map<TileType, Color> colors = new EnumMap<TileType, Color>(
-			TileType.class);
+	private final List<Map<TileType, Color>> colors = new ArrayList<Map<TileType, Color>>(SPMap.MAX_VERSION + 1);
 
 	/**
 	 * Constructor.
 	 */
 	// ESCA-JAVA0076:
 	public TileUIHelper() {
-		colors.put(TileType.BorealForest, new Color(72, 218, 164));
-		colors.put(TileType.Desert, new Color(249, 233, 28));
-		colors.put(TileType.Jungle, new Color(229, 46, 46));
-		colors.put(TileType.Mountain, new Color(249, 137, 28));
-		colors.put(TileType.NotVisible, new Color(255, 255, 255));
-		colors.put(TileType.Ocean, new Color(0, 0, 255));
-		colors.put(TileType.Plains, new Color(0, 117, 0));
-		colors.put(TileType.TemperateForest, new Color(72, 250, 72));
-		colors.put(TileType.Tundra, new Color(153, 153, 153));
+		final Map<TileType, Color> one = new EnumMap<TileType, Color>(TileType.class);
+		one.put(TileType.BorealForest, new Color(72, 218, 164));
+		one.put(TileType.Desert, new Color(249, 233, 28));
+		one.put(TileType.Jungle, new Color(229, 46, 46));
+		one.put(TileType.Mountain, new Color(249, 137, 28));
+		one.put(TileType.NotVisible, new Color(255, 255, 255));
+		one.put(TileType.Ocean, new Color(0, 0, 255));
+		one.put(TileType.Plains, new Color(0, 117, 0));
+		one.put(TileType.TemperateForest, new Color(72, 250, 72));
+		one.put(TileType.Tundra, new Color(153, 153, 153));
+		colors.add(one);
+		// FIXME: New colors for new map version.
 		descriptions.put(TileType.BorealForest,
 				"<html><p>Boreal Forest</p></html>");
 		descriptions.put(TileType.Desert, "<html><p>Desert</p></html>");
@@ -45,16 +50,18 @@ public class TileUIHelper {
 		descriptions.put(TileType.TemperateForest,
 				"<html><p>Temperate Forest</p></html>");
 		descriptions.put(TileType.Tundra, "<html><p>Tundra</p></html>");
+		descriptions.put(TileType.Steppe, "<html><p>Steppe</p></html>");
 	}
 
 	/**
+	 * @param version what version the map is
 	 * @param type
 	 *            a tile type
 	 * 
-	 * @return its color, if any
+	 * @return the tile's color, if any, under that map version
 	 */
-	public Color get(final TileType type) {
-		return colors.get(type);
+	public Color get(final int version, final TileType type) {
+		return colors.get(version).get(type);
 	}
 
 	/**

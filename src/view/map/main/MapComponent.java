@@ -165,7 +165,7 @@ public final class MapComponent extends JComponent implements
 		final int maxCol = getModel().getDimensions().getMaximumCol(); // NOPMD
 		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
-				paintTile(pen, model.getTile(i + minRow, j + minCol), i, j);
+				paintTile(pen, model.getMainMap().getVersion(), model.getTile(i + minRow, j + minCol), i, j);
 			}
 		}
 	}
@@ -190,6 +190,7 @@ public final class MapComponent extends JComponent implements
 	 * 
 	 * @param pen
 	 *            the graphics context
+	 * @param version the map version
 	 * @param tile
 	 *            the tile to paint
 	 * @param row
@@ -197,10 +198,10 @@ public final class MapComponent extends JComponent implements
 	 * @param col
 	 *            which column this is
 	 */
-	private void paintTile(final Graphics pen, final Tile tile, final int row,
+	private void paintTile(final Graphics pen, final int version, final Tile tile, final int row,
 			final int col) {
 		final Color saveColor = pen.getColor();
-		helper.drawTile(pen, tile, col * getTileSize(), row * getTileSize(),
+		helper.drawTile(pen, version, tile, col * getTileSize(), row * getTileSize(),
 				getTileSize(), getTileSize());
 		if (model.getSelectedTile().equals(tile)) {
 			pen.setColor(Color.black);
