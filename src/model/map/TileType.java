@@ -28,16 +28,19 @@ public enum TileType {
 	 * Mountain. Starting in version 2, this is represented as a plain, steppe,
 	 * or desert plus a mountain on the tile.
 	 */
+	@Deprecated
 	Mountain(1),
 	/**
 	 * Boreal forest. Starting in version 2, this is represented as a steppe
 	 * plus a forest.
 	 */
+	@Deprecated
 	BorealForest(1),
 	/**
 	 * Temperate forest. Starting in version 2, this is represented as a plain
 	 * plus a forest.
 	 */
+	@Deprecated
 	TemperateForest(1),
 	/**
 	 * Ocean.
