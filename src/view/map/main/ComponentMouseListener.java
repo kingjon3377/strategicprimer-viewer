@@ -33,6 +33,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 			final PropertyChangeListener list) {
 		super();
 		model = mapModel;
+		menu = new TerrainChangingMenu(model.getMainMap().getVersion());
 		menu.setTile(model.getSelectedTile());
 		model.addPropertyChangeListener(menu);
 		pcs.addPropertyChangeListener(list);
@@ -43,7 +44,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 	/**
 	 * The terrain-changing menu.
 	 */
-	private final TerrainChangingMenu menu = new TerrainChangingMenu();
+	private final TerrainChangingMenu menu;
 
 	/**
 	 * Handle mouse clicks.
