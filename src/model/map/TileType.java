@@ -25,15 +25,18 @@ public enum TileType {
 	 */
 	Desert(1, 2),
 	/**
-	 * Mountain.
+	 * Mountain. Starting in version 2, this is represented as a plain, steppe,
+	 * or desert plus a mountain on the tile.
 	 */
-	Mountain(1, 2),
+	Mountain(1),
 	/**
-	 * Boreal forest.
+	 * Boreal forest. Starting in version 2, this is represented as a steppe
+	 * plus a forest.
 	 */
 	BorealForest(1),
 	/**
-	 * Temperate forest.
+	 * Temperate forest. Starting in version 2, this is represented as a plain
+	 * plus a forest.
 	 */
 	TemperateForest(1),
 	/**
@@ -51,7 +54,8 @@ public enum TileType {
 	/**
 	 * Steppe. This is like plains, but higher-latitude and colder. Beginning in
 	 * version 2, a temperate forest is plains plus forest, and a boreal forest
-	 * is steppe plus forest.
+	 * is steppe plus forest, while a mountain is either a desert, a plain, or a
+	 * steppe plus a mountain.
 	 */
 	Steppe(2),
 	/**
