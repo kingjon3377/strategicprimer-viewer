@@ -23,20 +23,18 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	/**
 	 * Map of tile types and menu items representing them.
 	 */
-	private static final Map<TileType, JMenuItem> ITEM_MAP = new EnumMap<TileType, JMenuItem>(
+	private final Map<TileType, JMenuItem> itemMap = new EnumMap<TileType, JMenuItem>(
 			TileType.class);
-	static {
-		for (final TileType type : TileType.values()) {
-			ITEM_MAP.put(type, new JMenuItem(type.toString())); // NOPMD
-		}
-	}
-
 	/**
 	 * Constructor.
+	 * @param version the map version
 	 */
-	public TerrainChangingMenu() {
+	public TerrainChangingMenu(final int version) {
 		super();
-		for (final JMenuItem item : ITEM_MAP.values()) {
+		for (final TileType type : TileType.valuesForVersion(version)) {
+			itemMap.put(type, new JMenuItem(type.toString())); // NOPMD
+		}
+		for (final JMenuItem item : itemMap.values()) {
 			add(item);
 			item.addActionListener(this);
 		}
