@@ -31,6 +31,14 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 */
 	public TerrainChangingMenu(final int version) {
 		super();
+		updateForVersion(version);
+	}
+
+	/**
+	 * Update the menu for a new version.
+	 * @param version the version
+	 */
+	private void updateForVersion(final int version) {
 		for (final TileType type : TileType.valuesForVersion(version)) {
 			itemMap.put(type, new JMenuItem(type.toString())); // NOPMD
 		}
@@ -78,6 +86,8 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 		if ("tile".equals(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Tile) {
 			tile = (Tile) evt.getNewValue();
+		} else if ("version".equals(evt.getPropertyName())) {
+			updateForVersion((Integer) evt.getNewValue()); 
 		}
 	}
 }
