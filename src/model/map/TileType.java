@@ -49,6 +49,12 @@ public enum TileType {
 	 */
 	Jungle(1, 2),
 	/**
+	 * Steppe. This is like plains, but higher-latitude and colder. Beginning in
+	 * version 2, a temperate forest is plains plus forest, and a boreal forest
+	 * is steppe plus forest.
+	 */
+	Steppe(2),
+	/**
 	 * Not visible.
 	 */
 	NotVisible(1, 2);
@@ -109,6 +115,7 @@ public enum TileType {
 		TILE_TYPE_MAP.put("plains", TileType.Plains);
 		TILE_TYPE_MAP.put("jungle", TileType.Jungle);
 		TILE_TYPE_MAP.put("mountain", TileType.Mountain);
+		TILE_TYPE_MAP.put("steppe", TileType.Steppe);
 	}
 
 	/**

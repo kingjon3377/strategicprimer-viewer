@@ -352,6 +352,7 @@ public class XMLWriter { // NOPMD
 		XML_TYPES.put(TileType.Plains, "plains");
 		XML_TYPES.put(TileType.Jungle, "jungle");
 		XML_TYPES.put(TileType.Mountain, "mountain");
+		XML_TYPES.put(TileType.Steppe, "steppe");
 		XML_RIVERS.put(River.North, "north");
 		XML_RIVERS.put(River.South, "south");
 		XML_RIVERS.put(River.East, "east");
