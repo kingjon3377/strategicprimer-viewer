@@ -53,7 +53,7 @@ public class DetailPanel extends JPanel {
 				tileEventSources);
 		addListener(new ResultsPanel(DETAIL_PAN_MIN_HT, DETAIL_PANEL_HT,
 				DETAIL_PAN_MAX_HT, runner), tileEventSources);
-		add(new KeyPanel(version));
+		addListener(new KeyPanel(version), tileEventSources);
 	}
 
 	/**
