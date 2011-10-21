@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.EnumMap;
-import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -21,11 +19,6 @@ import model.map.TileType;
 public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 		PropertyChangeListener {
 	/**
-	 * Map of tile types and menu items representing them.
-	 */
-	private final Map<TileType, JMenuItem> itemMap = new EnumMap<TileType, JMenuItem>(
-			TileType.class);
-	/**
 	 * Constructor.
 	 * @param version the map version
 	 */
@@ -40,9 +33,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 */
 	private void updateForVersion(final int version) {
 		for (final TileType type : TileType.valuesForVersion(version)) {
-			itemMap.put(type, new JMenuItem(type.toString())); // NOPMD
-		}
-		for (final JMenuItem item : itemMap.values()) {
+			final JMenuItem item = new JMenuItem(type.toString()); // NOPMD
 			add(item);
 			item.addActionListener(this);
 		}
