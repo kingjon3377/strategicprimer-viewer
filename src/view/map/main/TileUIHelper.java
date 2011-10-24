@@ -2,9 +2,8 @@
 package view.map.main;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import model.map.SPMap;
@@ -20,7 +19,7 @@ public class TileUIHelper {
 	/**
 	 * The map we wrap.
 	 */
-	private final List<Map<TileType, Color>> colors = new ArrayList<Map<TileType, Color>>(SPMap.MAX_VERSION + 1);
+	private final Map<Integer, Map<TileType, Color>> colors = new HashMap<Integer, Map<TileType, Color>>(SPMap.MAX_VERSION + 1);
 
 	/**
 	 * Constructor.
@@ -37,7 +36,7 @@ public class TileUIHelper {
 		one.put(TileType.Plains, new Color(0, 117, 0));
 		one.put(TileType.TemperateForest, new Color(72, 250, 72));
 		one.put(TileType.Tundra, new Color(153, 153, 153));
-		colors.add(one);
+		colors.put(1, one);
 		final Map<TileType, Color> two = new EnumMap<TileType, Color>(TileType.class);
 		two.put(TileType.Desert, new Color(249, 233, 28));
 		two.put(TileType.Jungle, new Color(229, 46, 46));
@@ -46,7 +45,7 @@ public class TileUIHelper {
 		two.put(TileType.Plains, new Color(72, 218, 164));
 		two.put(TileType.Tundra, new Color(153, 153, 153));
 		two.put(TileType.Steppe, new Color(72, 250, 72));
-		colors.add(two);
+		colors.put(2, two);
 		descriptions.put(TileType.BorealForest,
 				"<html><p>Boreal Forest</p></html>");
 		descriptions.put(TileType.Desert, "<html><p>Desert</p></html>");
