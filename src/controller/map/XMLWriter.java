@@ -344,6 +344,20 @@ public class XMLWriter { // NOPMD
 	private static final Map<River, String> XML_RIVERS = new EnumMap<River, String>(
 			River.class);
 	static {
+		initializeTileTypeNames();
+		XML_RIVERS.put(River.North, "north");
+		XML_RIVERS.put(River.South, "south");
+		XML_RIVERS.put(River.East, "east");
+		XML_RIVERS.put(River.West, "west");
+		XML_RIVERS.put(River.Lake, "lake");
+	}
+
+	/**
+	 * Method extracted to let us localize the warning-suppression. Initialize
+	 * the XML_TYPES tile-type-to-string mapping.
+	 */
+	@SuppressWarnings("deprecation")
+	private static void initializeTileTypeNames() {
 		XML_TYPES.put(TileType.Tundra, "tundra");
 		XML_TYPES.put(TileType.TemperateForest, "temperate_forest");
 		XML_TYPES.put(TileType.BorealForest, "boreal_forest");
@@ -353,11 +367,6 @@ public class XMLWriter { // NOPMD
 		XML_TYPES.put(TileType.Jungle, "jungle");
 		XML_TYPES.put(TileType.Mountain, "mountain");
 		XML_TYPES.put(TileType.Steppe, "steppe");
-		XML_RIVERS.put(River.North, "north");
-		XML_RIVERS.put(River.South, "south");
-		XML_RIVERS.put(River.East, "east");
-		XML_RIVERS.put(River.West, "west");
-		XML_RIVERS.put(River.Lake, "lake");
 	}
 
 	/**

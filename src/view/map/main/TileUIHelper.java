@@ -25,6 +25,7 @@ public class TileUIHelper {
 	 * Constructor.
 	 */
 	// ESCA-JAVA0076:
+	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
 		final Map<TileType, Color> one = new EnumMap<TileType, Color>(TileType.class);
 		one.put(TileType.BorealForest, new Color(72, 218, 164));
