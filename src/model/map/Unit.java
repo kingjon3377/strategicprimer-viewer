@@ -6,7 +6,7 @@ package model.map;
  * @author Jonathan Lovelace
  * 
  */
-public class Unit implements Comparable<Unit>, TileFixture {
+public class Unit implements Comparable<Unit>, TileFixture, XMLWritable {
 	/**
 	 * The player that owns the unit.
 	 */
@@ -113,5 +113,23 @@ public class Unit implements Comparable<Unit>, TileFixture {
 	@Override
 	public int compareTo(final Unit unit) {
 		return Integer.valueOf(hashCode()).compareTo(unit.hashCode());
+	}
+	/**
+	 * @return an XML representation of the unit.
+	 */
+	@Override
+	public String toXML() {
+		final StringBuilder sbuild = new StringBuilder("<unit owner=\"");
+		sbuild.append(owner.getId());
+		if (!"".equals(type)) {
+			sbuild.append("\" type=\"");
+			sbuild.append(type);
+		}
+		if (!"".equals(name)) {
+			sbuild.append("\" name=\"");
+			sbuild.append(name);
+		}
+		sbuild.append("\" />");
+		return sbuild.toString();
 	}
 }
