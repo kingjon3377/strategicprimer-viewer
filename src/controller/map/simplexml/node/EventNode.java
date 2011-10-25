@@ -3,18 +3,18 @@ package controller.map.simplexml.node;
 import java.util.Iterator;
 
 import model.map.PlayerCollection;
-import model.map.events.AbstractEvent;
+import model.map.events.IEvent;
 import controller.map.NeedsExtraCanonicalization;
 import controller.map.SPFormatException;
 
 /**
  * A Node that will produce an Event.
  * 
- * @see AbstractEvent
+ * @see IEvent
  * @author Jonathan Lovelace
  * 
  */
-public class EventNode extends AbstractChildNode<AbstractEvent> implements
+public class EventNode extends AbstractChildNode<IEvent> implements
 		NeedsExtraCanonicalization {
 	/**
 	 * The property of an Event saying what kind of event it is.
@@ -32,9 +32,9 @@ public class EventNode extends AbstractChildNode<AbstractEvent> implements
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractEvent produce(final PlayerCollection players)
+	public IEvent produce(final PlayerCollection players)
 			throws SPFormatException {
-		return ((AbstractChildNode<? extends AbstractEvent>) iterator().next())
+		return ((AbstractChildNode<? extends IEvent>) iterator().next())
 				.produce(players);
 	}
 
@@ -76,7 +76,7 @@ public class EventNode extends AbstractChildNode<AbstractEvent> implements
 	@Override
 	public void canonicalizeImpl() throws SPFormatException {
 		// ESCA-JAVA0177:
-		final AbstractChildNode<? extends AbstractEvent> child; // NOPMD
+		final AbstractChildNode<? extends IEvent> child; // NOPMD
 		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {
 			child = new BattlefieldEventNode();
 		} else if ("cave".equals(getProperty(KIND_PROPERTY))) {

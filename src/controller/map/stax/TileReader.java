@@ -9,7 +9,7 @@ import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
 import model.map.Unit;
-import model.map.events.AbstractEvent;
+import model.map.events.IEvent;
 import model.map.events.BattlefieldEvent;
 import model.map.events.CaveEvent;
 import model.map.events.CityEvent;
@@ -138,10 +138,10 @@ public class TileReader {
 	 * 
 	 * @return the event
 	 */
-	private AbstractEvent parseEvent(final StartElement elem,
+	private IEvent parseEvent(final StartElement elem,
 			final Iterable<XMLEvent> reader) {
 		// ESCA-JAVA0177:
-		AbstractEvent retval;
+		IEvent retval;
 		switch (getEventType(elem)) {
 		case Battlefield:
 			retval = new BattlefieldEvent(Integer.parseInt(helper.getAttribute(

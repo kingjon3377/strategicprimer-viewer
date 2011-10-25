@@ -8,7 +8,7 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.Unit;
-import model.map.events.AbstractEvent;
+import model.map.events.IEvent;
 
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.
@@ -81,7 +81,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	protected static boolean hasEvent(final Tile tile) {
 		if ("".equals(tile.getTileText())) {
 			for (final TileFixture fix : tile.getContents()) {
-				if (fix instanceof AbstractEvent) {
+				if (fix instanceof IEvent) {
 					return true; // NOPMD
 				}
 			}

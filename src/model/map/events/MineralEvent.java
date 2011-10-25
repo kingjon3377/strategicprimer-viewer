@@ -7,7 +7,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class MineralEvent implements AbstractEvent {
+public final class MineralEvent implements IEvent {
 	/**
 	 * Constructor.
 	 * 

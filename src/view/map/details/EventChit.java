@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
-import model.map.events.AbstractEvent;
+import model.map.events.IEvent;
 import model.map.events.AbstractTownEvent;
 import model.map.events.TownStatus;
 import model.viewer.FixtureTransferable;
@@ -30,7 +30,7 @@ public class EventChit extends Chit {
 	 * @param listener
 	 *            the object listening for clicks on this chit.
 	 */
-	public EventChit(final AbstractEvent event, final MouseListener listener) {
+	public EventChit(final IEvent event, final MouseListener listener) {
 		super(listener, new FixtureTransferable(event));
 		final StringBuilder builder = new StringBuilder("<html><p>");
 		builder.append(event.getText());

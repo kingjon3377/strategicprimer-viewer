@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import model.map.Fortress;
 import model.map.TileFixture;
 import model.map.Unit;
-import model.map.events.AbstractEvent;
+import model.map.events.IEvent;
 import view.map.main.SelectionListener;
 
 /**
@@ -50,8 +50,8 @@ public class ChitPanel extends JPanel {
 			add(new FortChit((Fortress) fix, listener));
 		} else if (fix instanceof Unit) {
 			add(new UnitChit((Unit) fix, listener));
-		} else if (fix instanceof AbstractEvent) {
-			add(new EventChit((AbstractEvent) fix, listener));
+		} else if (fix instanceof IEvent) {
+			add(new EventChit((IEvent) fix, listener));
 		}
 	}
 }

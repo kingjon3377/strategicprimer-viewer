@@ -7,7 +7,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class StoneEvent implements AbstractEvent {
+public final class StoneEvent implements IEvent {
 	/**
 	 * Constructor.
 	 * 

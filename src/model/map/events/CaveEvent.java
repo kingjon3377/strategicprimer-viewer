@@ -7,7 +7,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class CaveEvent implements AbstractEvent {
+public final class CaveEvent implements IEvent {
 	/**
 	 * Constructor.
 	 * 

@@ -6,7 +6,7 @@ package model.map.events;
  * 
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent implements AbstractEvent {
+public final class BattlefieldEvent implements IEvent {
 	/**
 	 * Constructor.
 	 * 

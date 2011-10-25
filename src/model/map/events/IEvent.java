@@ -9,7 +9,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public interface AbstractEvent extends TileFixture {
+public interface IEvent extends TileFixture {
 	/**
 	 * 
 	 * @return the DC to discover the event.
