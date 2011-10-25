@@ -1,5 +1,6 @@
 package model.map;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,13 +38,25 @@ public enum River {
 	 * Mapping from descriptive strings to directions.
 	 */
 	private static final Map<String, River> RIVER_MAP = new HashMap<String, River>();
-
+	/**
+	 * Mapping from directions to descriptive strings.
+	 */
+	private static final Map<River, String> STR_MAP = new EnumMap<River, String>(River.class);
+	/**
+	 * Add a pairing to the maps.
+	 * @param str the descriptive string
+	 * @param river the direction
+	 */
+	private static void addToMaps(final String str, final River river) {
+		RIVER_MAP.put(str, river);
+		STR_MAP.put(river, str);
+	}
 	static {
-		RIVER_MAP.put("north", River.North);
-		RIVER_MAP.put("south", River.South);
-		RIVER_MAP.put("east", River.East);
-		RIVER_MAP.put("west", River.West);
-		RIVER_MAP.put("lake", River.Lake);
+		addToMaps("north", River.North);
+		addToMaps("south", River.South);
+		addToMaps("east", River.East);
+		addToMaps("west", River.West);
+		addToMaps("lake", River.Lake);
 	}
 
 	/**
