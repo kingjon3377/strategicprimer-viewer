@@ -13,7 +13,7 @@ import model.map.events.NothingEvent;
  * @author Jonathan Lovelace
  * 
  */
-public final class Tile {
+public final class Tile implements XMLWritable {
 	/**
 	 * Constructor.
 	 * 
@@ -222,5 +222,48 @@ public final class Tile {
 		rivers.retainAll(tile.rivers);
 		tileText = tile.tileText;
 		type = tile.type;
+	}
+	/**
+	 * Write the tile to XML. Returns the empty string if the tile isn't visible and contains nothing.
+	 * @return an XML representation of the tile.
+	 */
+	@Override
+	public String toXML() {
+		if (TileType.NotVisible.equals(getType()) && !hasContents()) {
+			return ""; // NOPMD
+		} else {
+			final StringBuilder sbuild = new StringBuilder("<tile row=\"");
+			sbuild.append(row);
+			sbuild.append("\" column=\"");
+			sbuild.append(col);
+			if (!(TileType.NotVisible.equals(getType()))) {
+				sbuild.append("\" type=\"");
+				sbuild.append(getType().toXML());
+			}
+			sbuild.append("\">");
+			if (!hasContents()) {
+				sbuild.append(getTileText());
+				sbuild.append('\n');
+				for (final TileFixture fix : contents) {
+					sbuild.append("\t\t\t");
+					sbuild.append(fix.toXML());
+					sbuild.append('\n');
+				}
+				for (final River river : rivers) {
+					sbuild.append("\t\t\t");
+					sbuild.append(river.toXML());
+					sbuild.append('\n');
+				}
+				sbuild.append("\t\t");
+			}
+			sbuild.append("</tile>");
+			return sbuild.toString();
+		}
+	}
+	/**
+	 * @return whether the tile has any contents.
+	 */
+	private boolean hasContents() {
+		return (!"".equals(tileText)) && (!rivers.isEmpty()) && (!contents.isEmpty());
 	}
 }
