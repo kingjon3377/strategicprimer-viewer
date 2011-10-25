@@ -241,7 +241,7 @@ public final class Tile implements XMLWritable {
 				sbuild.append(getType().toXML());
 			}
 			sbuild.append("\">");
-			if (!hasContents()) {
+			if (hasContents()) {
 				sbuild.append(getTileText());
 				sbuild.append('\n');
 				for (final TileFixture fix : contents) {
@@ -264,6 +264,6 @@ public final class Tile implements XMLWritable {
 	 * @return whether the tile has any contents.
 	 */
 	private boolean hasContents() {
-		return (!"".equals(tileText)) && (!rivers.isEmpty()) && (!contents.isEmpty());
+		return (!"".equals(tileText)) || (!rivers.isEmpty()) || (!contents.isEmpty());
 	}
 }
