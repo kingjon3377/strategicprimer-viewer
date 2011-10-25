@@ -13,7 +13,7 @@ import java.util.List;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements Comparable<Fortress>, TileFixture {
+public class Fortress implements Comparable<Fortress>, TileFixture, XMLWritable {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -135,5 +135,28 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 	@Override
 	public int compareTo(final Fortress fort) {
 		return Integer.valueOf(hashCode()).compareTo(fort.hashCode());
+	}
+	/**
+	 * @return an XML representation of the fortress.
+	 */
+	@Override
+	public String toXML() {
+		final StringBuilder sbuild = new StringBuilder("<fortress owner=\"");
+		sbuild.append(owner.getId());
+		if (!"".equals(name)) {
+			sbuild.append("\" name=\"");
+			sbuild.append(name);
+		}
+		sbuild.append("\">");
+		if (!units.isEmpty()) {
+			sbuild.append('\n');
+			for (final Unit unit : units) {
+				sbuild.append("\t\t\t\t");
+				sbuild.append(unit.toXML());
+			}
+			sbuild.append("\t\t\t");
+		}
+		sbuild.append("</fortress>");
+		return sbuild.toString();
 	}
 }
