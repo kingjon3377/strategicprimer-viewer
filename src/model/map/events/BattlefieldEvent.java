@@ -1,11 +1,13 @@
 package model.map.events;
 
+import model.map.XMLWritable;
+
 /**
  * "There are the signs of a long-ago battle here".
  * 
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent extends AbstractEvent {
+public final class BattlefieldEvent extends AbstractEvent implements XMLWritable {
 	/**
 	 * Constructor.
 	 * 
@@ -69,5 +71,12 @@ public final class BattlefieldEvent extends AbstractEvent {
 	@Override
 	public String toString() {
 		return "An ancient battlefield with DC " + dc;
+	}
+	/**
+	 * @return an XML representation of the event.
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<battlefield dc=\"").append(dc).append("\" />").toString();
 	}
 }

@@ -1,12 +1,14 @@
 package model.map.events;
 
+import model.map.XMLWritable;
+
 /**
  * "There are extensive caves beneath this tile".
  * 
  * @author Jonathan Lovelace
  * 
  */
-public final class CaveEvent extends AbstractEvent {
+public final class CaveEvent extends AbstractEvent implements XMLWritable {
 	/**
 	 * Constructor.
 	 * 
@@ -69,5 +71,12 @@ public final class CaveEvent extends AbstractEvent {
 	@Override
 	public String toString() {
 		return "Caves with DC " + dc;
+	}
+	/**
+	 * @return an XML representation of the event.
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<cave dc=\"").append(dc).append("\" />").toString();
 	}
 }
