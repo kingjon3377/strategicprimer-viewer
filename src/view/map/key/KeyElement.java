@@ -1,8 +1,6 @@
 package view.map.key;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -51,30 +49,13 @@ public final class KeyElement extends JPanel {
 	 */
 	public KeyElement(final int version, final TileType type) {
 		super();
-		final TileUIHelper helper = TUI_HELPER;
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		add(Box.createHorizontalGlue());
 		add(Box.createRigidArea(new Dimension(HORIZ_BUFFER, 0)));
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
-		final JComponent tile = new JComponent() {
-			/**
-			 * The color of this Component.
-			 */
-			private final Color color = helper.get(version, type);
-
-			/**
-			 * @param pen
-			 *            the graphics context
-			 */
-			@Override
-			public void paint(final Graphics pen) {
-				final Graphics context = pen.create();
-				context.setColor(color);
-				context.fillRect(0, 0, getWidth(), getHeight());
-			}
-		};
+		final JComponent tile = new KeyElementComponent(TUI_HELPER.get(version, type));
 		tile.setMinimumSize(MIN_SIZE);
 		tile.setPreferredSize(PREF_SIZE);
 		tile.setMaximumSize(MAX_SIZE);
