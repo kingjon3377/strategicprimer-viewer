@@ -1,4 +1,4 @@
-package view.map.details;
+package view.map.key;
 
 import java.awt.Color;
 import java.awt.Dimension;

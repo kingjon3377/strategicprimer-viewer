@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import model.exploration.ExplorationRunner;
 import util.PropertyChangeSource;
+import view.map.key.KeyPanel;
 
 /**
  * A panel to show the details of a tile.
