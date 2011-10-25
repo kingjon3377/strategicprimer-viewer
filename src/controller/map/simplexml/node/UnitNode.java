@@ -13,6 +13,19 @@ import controller.map.SPFormatException;
  */
 public class UnitNode extends AbstractChildNode<Unit> {
 	/**
+	 * The "name" attribute.
+	 */
+	private static final String NAME_ATTR = "name";
+	/**
+	 * The "type" attribute.
+	 */
+	private static final String TYPE_ATTR = "type";
+	/**
+	 * The "owner" attribute.
+	 */
+	private static final String OWNER_ATTR = "owner";
+
+	/**
 	 * Produce the equivalent Unit.
 	 * 
 	 * @param players
@@ -24,10 +37,10 @@ public class UnitNode extends AbstractChildNode<Unit> {
 	@Override
 	public Unit produce(final PlayerCollection players)
 			throws SPFormatException {
-		return new Unit(players.getPlayer(hasProperty("owner") ? Integer
-				.parseInt(getProperty("owner")) : -1),
-				hasProperty("type") ? getProperty("type") : "",
-				hasProperty("name") ? getProperty("name") : "");
+		return new Unit(players.getPlayer(hasProperty(OWNER_ATTR) ? Integer
+				.parseInt(getProperty(OWNER_ATTR)) : -1),
+				hasProperty(TYPE_ATTR) ? getProperty(TYPE_ATTR) : "",
+				hasProperty(NAME_ATTR) ? getProperty(NAME_ATTR) : "");
 	}
 
 	/**
@@ -48,15 +61,15 @@ public class UnitNode extends AbstractChildNode<Unit> {
 			throw new SPFormatException("Unit should't contain anything",
 					getLine());
 		}
-		if (!hasProperty("owner") || "".equals(getProperty("owner"))) {
+		if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
 			Warning.warn(new SPFormatException("Unit should have an owner",
 					getLine()));
 		}
-		if (!hasProperty("type") || "".equals(getProperty("type"))) {
+		if (!hasProperty(TYPE_ATTR) || "".equals(getProperty(TYPE_ATTR))) {
 			Warning.warn(new SPFormatException("Unit should have a type",
 					getLine()));
 		}
-		if (!hasProperty("name") || "".equals(getProperty("name"))) {
+		if (!hasProperty(NAME_ATTR) || "".equals(getProperty(NAME_ATTR))) {
 			Warning.warn(new SPFormatException("Unit should have a name",
 					getLine()));
 		}
