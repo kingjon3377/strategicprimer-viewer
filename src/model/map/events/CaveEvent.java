@@ -1,6 +1,5 @@
 package model.map.events;
 
-import model.map.XMLWritable;
 
 /**
  * "There are extensive caves beneath this tile".
@@ -8,7 +7,7 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  * 
  */
-public final class CaveEvent extends AbstractEvent implements XMLWritable {
+public final class CaveEvent extends AbstractEvent {
 	/**
 	 * Constructor.
 	 * 

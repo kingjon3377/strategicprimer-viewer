@@ -1,6 +1,5 @@
 package model.map.events;
 
-import model.map.XMLWritable;
 
 /**
  * A vein of a mineral.
@@ -8,7 +7,7 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  * 
  */
-public final class MineralEvent extends AbstractEvent implements XMLWritable {
+public final class MineralEvent extends AbstractEvent {
 	/**
 	 * Constructor.
 	 * 

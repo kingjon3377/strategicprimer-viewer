@@ -1,6 +1,5 @@
 package model.map.events;
 
-import model.map.XMLWritable;
 
 /**
  * An abandoned, ruined, or burned-out city.
@@ -8,7 +7,7 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  * 
  */
-public final class CityEvent extends AbstractTownEvent implements XMLWritable {
+public final class CityEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
 	 * 

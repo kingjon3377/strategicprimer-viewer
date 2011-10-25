@@ -13,7 +13,7 @@ import java.util.List;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements Comparable<Fortress>, TileFixture, XMLWritable {
+public class Fortress implements Comparable<Fortress>, TileFixture {
 	/**
 	 * The player that owns the fortress.
 	 */

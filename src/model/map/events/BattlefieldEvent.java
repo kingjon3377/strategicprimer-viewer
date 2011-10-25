@@ -1,13 +1,12 @@
 package model.map.events;
 
-import model.map.XMLWritable;
 
 /**
  * "There are the signs of a long-ago battle here".
  * 
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent extends AbstractEvent implements XMLWritable {
+public final class BattlefieldEvent extends AbstractEvent {
 	/**
 	 * Constructor.
 	 * 

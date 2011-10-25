@@ -6,7 +6,7 @@ package model.map;
  * @author Jonathan Lovelace
  * 
  */
-public class Unit implements Comparable<Unit>, TileFixture, XMLWritable {
+public class Unit implements Comparable<Unit>, TileFixture {
 	/**
 	 * The player that owns the unit.
 	 */

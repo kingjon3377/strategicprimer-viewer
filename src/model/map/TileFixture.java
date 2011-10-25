@@ -5,6 +5,6 @@ package model.map;
  * 
  * @author Jonathan Lovelace
  */
-public interface TileFixture {
+public interface TileFixture extends XMLWritable {
 	// Marker interface; also, TODO: what members should this have?
 }

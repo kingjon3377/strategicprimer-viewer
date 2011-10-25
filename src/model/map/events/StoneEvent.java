@@ -1,6 +1,5 @@
 package model.map.events;
 
-import model.map.XMLWritable;
 
 /**
  * A deposit (always exposed for now) of stone.
@@ -8,7 +7,7 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  * 
  */
-public final class StoneEvent extends AbstractEvent implements XMLWritable {
+public final class StoneEvent extends AbstractEvent {
 	/**
 	 * Constructor.
 	 * 

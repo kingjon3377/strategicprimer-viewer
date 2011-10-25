@@ -1,6 +1,5 @@
 package model.map.events;
 
-import model.map.XMLWritable;
 
 /**
  * "Nothing interesting here...".
@@ -8,7 +7,7 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  * 
  */
-public final class NothingEvent extends AbstractEvent implements XMLWritable {
+public final class NothingEvent extends AbstractEvent {
 	/**
 	 * A singleton to compare with.
 	 */
