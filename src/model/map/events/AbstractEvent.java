@@ -9,16 +9,16 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public abstract class AbstractEvent implements TileFixture {
+public interface AbstractEvent extends TileFixture {
 	/**
 	 * 
 	 * @return the DC to discover the event.
 	 */
-	public abstract int getDC();
+	int getDC();
 
 	/**
 	 * 
 	 * @return exploration-result text for the event.
 	 */
-	public abstract String getText();
+	String getText();
 }

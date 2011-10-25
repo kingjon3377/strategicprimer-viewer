@@ -7,7 +7,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class NothingEvent extends AbstractEvent {
+public final class NothingEvent implements AbstractEvent {
 	/**
 	 * A singleton to compare with.
 	 */

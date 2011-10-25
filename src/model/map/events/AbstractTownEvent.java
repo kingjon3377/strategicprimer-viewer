@@ -6,7 +6,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  */
 // ESCA-JAVA0011:
-public abstract class AbstractTownEvent extends AbstractEvent {
+public abstract class AbstractTownEvent implements AbstractEvent {
 	/**
 	 * Constructor.
 	 * 
