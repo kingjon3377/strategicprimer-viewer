@@ -13,10 +13,12 @@ public enum EventKind {
 	 * "Nothing of interest here ...". Useful primarily as an alternative to
 	 * null.
 	 */
+	@Deprecated
 	Nothing("nothing"),
 	/**
 	 * A mineral vein.
 	 */
+	@Deprecated
 	Mineral("mineral"),
 	/**
 	 * A fortification.
@@ -29,6 +31,7 @@ public enum EventKind {
 	/**
 	 * Signs of a long-ago battle.
 	 */
+	@Deprecated
 	Battlefield("battlefield"),
 	/**
 	 * A city.
@@ -37,10 +40,12 @@ public enum EventKind {
 	/**
 	 * A stone deposit.
 	 */
+	@Deprecated
 	Stone("stone"),
 	/**
 	 * Caves beneath the tile.
 	 */
+	@Deprecated
 	Caves("cave");
 	/**
 	 * A mapping from strings to EventKinds.
