@@ -75,7 +75,7 @@ public final class MapModel implements PropertyChangeSource {
 	 *            the new map
 	 */
 	public void setMainMap(final SPMap newMap) {
-		pcs.firePropertyChange("version", map.getVersion(), newMap.getVersion());
+		pcs.firePropertyChange("version", (map == null ? 0 : map.getVersion()), newMap.getVersion());
 		map = newMap;
 		setSecondaryMap(new SPMap(map.getVersion(), map.rows(), map.cols()));
 		setSelection(-1, -1);
