@@ -52,6 +52,8 @@ public class ChitPanel extends JPanel {
 			add(new UnitChit((Unit) fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));
+		} else {
+			throw new IllegalStateException("We're missing a case here");
 		}
 	}
 }
