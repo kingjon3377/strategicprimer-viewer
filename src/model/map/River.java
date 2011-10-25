@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Jonathan Lovelace
  * 
  */
-public enum River {
+public enum River implements XMLWritable {
 	/**
 	 * North.
 	 */
@@ -73,6 +73,18 @@ public enum River {
 		} else {
 			throw new IllegalArgumentException(
 					"Unrecognized river direction string");
+		}
+	}
+	/**
+	 * @return an XML representation of the river.
+	 */
+	@Override
+	public String toXML() {
+		if (Lake.equals(this)) {
+			return "<lake />"; // NOPMD
+		} else {
+			return new StringBuilder("<river direction=\"")
+					.append(STR_MAP.get(this)).append("\" />").toString();
 		}
 	}
 }
