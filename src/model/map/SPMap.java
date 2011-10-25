@@ -196,7 +196,7 @@ public class SPMap implements XMLWritable {
 					anyTiles = true;
 					sbuild.append("\t<row index=\"");
 					sbuild.append(i);
-					sbuild.append(">\n");
+					sbuild.append("\">\n");
 				}
 				if (!"".equals(tileXML)) {
 					sbuild.append("\t\t");
