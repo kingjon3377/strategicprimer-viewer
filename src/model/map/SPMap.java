@@ -7,7 +7,7 @@ package model.map;
  * @author Jonathan Lovelace
  * 
  */
-public class SPMap {
+public class SPMap implements XMLWritable {
 	/**
 	 * Map max version.
 	 */
@@ -164,6 +164,51 @@ public class SPMap {
 			sbuild.append("): ");
 			sbuild.append(tiles.getTile(point));
 		}
+		return sbuild.toString();
+	}
+	/**
+	 * Write the map to XML.
+	 * @return an XML representation of the map.
+	 */
+	@Override
+	public String toXML() {
+		final StringBuilder sbuild = new StringBuilder("<map version=\"");
+		sbuild.append(getVersion());
+		sbuild.append("\" rows=\"");
+		sbuild.append(rows());
+		sbuild.append("\" columns=\"");
+		sbuild.append(cols());
+		if (!"".equals(players.getCurrentPlayer().getName())) {
+			sbuild.append("\" current_player=\"");
+			sbuild.append(players.getCurrentPlayer().getId());
+		}
+		sbuild.append("\">\n");
+		for (Player player : players) {
+			sbuild.append('\t');
+			sbuild.append(player.toXML());
+			sbuild.append('\n');
+		}
+		for (int i = 0; i < myRows; i++) {
+			boolean anyTiles = false;
+			for (int j = 0; j < myCols; j++) {
+				final String tileXML = getTile(i, j).toXML();
+				if (!anyTiles && !"".equals(tileXML)) {
+					anyTiles = true;
+					sbuild.append("\t<row index=\"");
+					sbuild.append(i);
+					sbuild.append(">\n");
+				}
+				if (!"".equals(tileXML)) {
+					sbuild.append("\t\t");
+					sbuild.append(tileXML);
+					sbuild.append('\n');
+				}
+			}
+			if (anyTiles) {
+				sbuild.append("\t</row>\n");
+			}
+		}
+		sbuild.append("</map>\n");
 		return sbuild.toString();
 	}
 }
