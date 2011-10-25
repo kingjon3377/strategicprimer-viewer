@@ -19,7 +19,7 @@ import view.map.main.TileUIHelper;
  * 
  * @author Jonathan Lovelace
  */
-final class KeyElement extends JPanel {
+public final class KeyElement extends JPanel {
 	/**
 	 * UI helper for the terrain type descriptions and colors.
 	 */
@@ -49,7 +49,7 @@ final class KeyElement extends JPanel {
 	 * @param type
 	 *            the type this is the key element for.
 	 */
-	KeyElement(final int version, final TileType type) {
+	public KeyElement(final int version, final TileType type) {
 		super();
 		final TileUIHelper helper = TUI_HELPER;
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
