@@ -1,12 +1,14 @@
 package model.map.events;
 
+import model.map.XMLWritable;
+
 /**
  * "Nothing interesting here...".
  * 
  * @author Jonathan Lovelace
  * 
  */
-public final class NothingEvent extends AbstractEvent {
+public final class NothingEvent extends AbstractEvent implements XMLWritable {
 	/**
 	 * A singleton to compare with.
 	 */
@@ -64,5 +66,12 @@ public final class NothingEvent extends AbstractEvent {
 	@Override
 	public String toString() {
 		return "A nothing event.";
+	}
+	/**
+	 * @return an XML representation of the event: the empty string.
+	 */
+	@Override
+	public String toXML() {
+		return "";
 	}
 }
