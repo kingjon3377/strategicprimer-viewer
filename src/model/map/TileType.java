@@ -3,6 +3,7 @@ package model.map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Set;
  * @author Jonathan Lovelace
  * 
  */
-public enum TileType {
+public enum TileType implements XMLWritable {
 	/**
 	 * Tundra.
 	 */
@@ -112,17 +113,30 @@ public enum TileType {
 	 * multiple-return-points warnings go away.
 	 */
 	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>(); // NOPMD
-
+	/**
+	 * A mapping from tile types to descriptive strings as used in the XML.
+	 */
+	private static final Map<TileType, String> XML_TYPES = new EnumMap<TileType, String>(
+			TileType.class);
+	/**
+	 * Add an entry to each map.
+	 * @param string the string used to describe the type in XML
+	 * @param type the tile-type.
+	 */
+	private static void addToMaps(final String string, final TileType type) {
+		TILE_TYPE_MAP.put(string, type);
+		XML_TYPES.put(type, string);
+	}
 	static {
-		TILE_TYPE_MAP.put("tundra", TileType.Tundra);
-		TILE_TYPE_MAP.put("temperate_forest", TileType.TemperateForest);
-		TILE_TYPE_MAP.put("boreal_forest", TileType.BorealForest);
-		TILE_TYPE_MAP.put("ocean", TileType.Ocean);
-		TILE_TYPE_MAP.put("desert", TileType.Desert);
-		TILE_TYPE_MAP.put("plains", TileType.Plains);
-		TILE_TYPE_MAP.put("jungle", TileType.Jungle);
-		TILE_TYPE_MAP.put("mountain", TileType.Mountain);
-		TILE_TYPE_MAP.put("steppe", TileType.Steppe);
+		addToMaps("tundra", TileType.Tundra);
+		addToMaps("temperate_forest", TileType.TemperateForest);
+		addToMaps("boreal_forest", TileType.BorealForest);
+		addToMaps("ocean", TileType.Ocean);
+		addToMaps("desert", TileType.Desert);
+		addToMaps("plains", TileType.Plains);
+		addToMaps("jungle", TileType.Jungle);
+		addToMaps("mountain", TileType.Mountain);
+		addToMaps("steppe", TileType.Steppe);
 	}
 
 	/**
@@ -138,5 +152,12 @@ public enum TileType {
 			return TILE_TYPE_MAP.get(string);
 		} // else
 		throw new IllegalArgumentException("Unrecognized terrain type string");
+	}
+	/**
+	 * @return the XML representation of the tile type.
+	 */
+	@Override
+	public String toXML() {
+		return XML_TYPES.get(this);
 	}
 }
