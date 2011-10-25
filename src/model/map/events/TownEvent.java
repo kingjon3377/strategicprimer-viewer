@@ -1,12 +1,14 @@
 package model.map.events;
 
+import model.map.XMLWritable;
+
 /**
  * An abandoned, ruined, or burned-out town.
  * 
  * @author Jonathan Lovelace
  * 
  */
-public final class TownEvent extends AbstractTownEvent {
+public final class TownEvent extends AbstractTownEvent implements XMLWritable {
 	/**
 	 * Constructor.
 	 * 
@@ -35,6 +37,15 @@ public final class TownEvent extends AbstractTownEvent {
 	@Override
 	public int getDC() {
 		return dc;
+	}
+	/**
+	 * @return an XML representation of the event
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<town status=\"").append(status().toString())
+				.append("\" size=\"").append(size().toString())
+				.append("\" dc=\"").append(dc).append("\" />").toString();
 	}
 
 }

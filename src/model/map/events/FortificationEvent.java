@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.XMLWritable;
+
 /**
  * An abandoned, ruined, or burned-out fortification.
  * 
@@ -9,7 +11,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class FortificationEvent extends AbstractTownEvent {
+public final class FortificationEvent extends AbstractTownEvent implements XMLWritable {
 	/**
 	 * Constructor.
 	 * 
@@ -38,6 +40,16 @@ public final class FortificationEvent extends AbstractTownEvent {
 	@Override
 	public int getDC() {
 		return dc;
+	}
+	/**
+	 * @return an XML representation of the event.
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<fortification status=\"")
+				.append(status().toString()).append("\" size=\"")
+				.append(size().toString()).append("\" dc=\"").append(dc)
+				.append("\" />").toString();
 	}
 
 }
