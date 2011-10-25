@@ -32,6 +32,23 @@ public class LoadFile {
 		// ESCA-JAVA0177:
 		InputStream inputStream; // $codepro.audit.disable localDeclaration
 		// try to load file from disk
+		inputStream = doLoadFileAsStream(fileName);
+		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable
+																		// closeWhereCreated
+	}
+
+	/**
+	 * Load a file from disk or the classpath.
+	 * 
+	 * @param fileName
+	 *            Name of the file to load
+	 * @return the file as an input stream
+	 * @throws FileNotFoundException
+	 *             when the file isn't in either place
+	 */
+	public InputStream doLoadFileAsStream(final String fileName)
+			throws FileNotFoundException {
+		InputStream inputStream;
 		try {
 			inputStream = new FileInputStream(fileName); // $codepro.audit.disable
 															// closeWhereCreated
@@ -44,8 +61,7 @@ public class LoadFile {
 						+ fileName);
 			}
 		}
-		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable
-																		// closeWhereCreated
+		return inputStream;
 	}
 
 	/**
