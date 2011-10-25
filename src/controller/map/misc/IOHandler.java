@@ -195,7 +195,7 @@ public final class IOHandler implements ActionListener {
 		menu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
 				"Load a main map from file", this));
-		menu.add(creator.createMenuItem("Save", KeyEvent.VK_S,
+		menu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
 				"Save the main map to file", this));
 		menu.addSeparator();
