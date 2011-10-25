@@ -6,6 +6,7 @@ import java.util.Map;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.EventNode;
+import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.MapNode;
 import controller.map.simplexml.node.PlayerNode;
@@ -85,6 +86,7 @@ public final class NodeFactory { // NOPMD
 		addTag("stone", Tag.Stone);
 		addTag("mineral", Tag.Mineral);
 		addTag("town", Tag.Town);
+		addTag("forest", Tag.Forest);
 	}
 
 	/**
@@ -162,6 +164,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Unit:
 			node = new UnitNode();
+			break;
+		case Forest:
+			node = new ForestNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

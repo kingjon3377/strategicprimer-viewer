@@ -72,6 +72,10 @@ enum Tag {
 	 */
 	Mineral,
 	/**
+	 * A forest.
+	 */
+	Forest,
+	/**
 	 * A town.
 	 */
 	Town;
