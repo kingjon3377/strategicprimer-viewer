@@ -208,7 +208,7 @@ public class SPMap implements XMLWritable {
 				sbuild.append("\t</row>\n");
 			}
 		}
-		sbuild.append("</map>\n");
+		sbuild.append("</map>");
 		return sbuild.toString();
 	}
 }
