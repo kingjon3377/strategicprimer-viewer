@@ -1,12 +1,14 @@
 package model.map.events;
 
+import model.map.XMLWritable;
+
 /**
  * A vein of a mineral.
  * 
  * @author Jonathan Lovelace
  * 
  */
-public final class MineralEvent extends AbstractEvent {
+public final class MineralEvent extends AbstractEvent implements XMLWritable {
 	/**
 	 * Constructor.
 	 * 
@@ -118,5 +120,15 @@ public final class MineralEvent extends AbstractEvent {
 	public String toString() {
 		return "A " + mineral.toString() + " deposit, "
 				+ (exposed ? "exposed" : "not exposed") + ", DC " + dc;
+	}
+	/**
+	 * @return an XML representation of the event.
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<mineral mineral=\"")
+				.append(mineral.toString()).append("\" exposed=\"")
+				.append(exposed).append("\" dc=\"").append(dc).append("\" />")
+				.toString();
 	}
 }

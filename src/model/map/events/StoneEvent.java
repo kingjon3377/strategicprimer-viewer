@@ -1,12 +1,14 @@
 package model.map.events;
 
+import model.map.XMLWritable;
+
 /**
  * A deposit (always exposed for now) of stone.
  * 
  * @author Jonathan Lovelace
  * 
  */
-public final class StoneEvent extends AbstractEvent {
+public final class StoneEvent extends AbstractEvent implements XMLWritable {
 	/**
 	 * Constructor.
 	 * 
@@ -89,5 +91,13 @@ public final class StoneEvent extends AbstractEvent {
 	@Override
 	public String toString() {
 		return "A " + stone.toString() + " deposit, of DC " + dc;
+	}
+	/**
+	 * @return an XML representation of the event
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<stone stone=\"").append(stone.toString())
+				.append("\" dc=\"").append(dc).append("\" />").toString();
 	}
 }
