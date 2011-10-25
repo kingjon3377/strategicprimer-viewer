@@ -6,7 +6,7 @@ package model.map;
  * @author jsl7
  * 
  */
-public class Player implements Comparable<Player> {
+public class Player implements Comparable<Player>, XMLWritable {
 	/**
 	 * The player's number.
 	 */
@@ -108,5 +108,15 @@ public class Player implements Comparable<Player> {
 	 */
 	public final boolean isCurrent() {
 		return current;
+	}
+	/**
+	 * Write the player to XML.
+	 * @return an XML representation of the player.
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<player number=\"").append(getId())
+				.append("\" code_name=\"").append(getName()).append("\" />")
+				.toString();
 	}
 }
