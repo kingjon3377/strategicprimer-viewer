@@ -17,7 +17,7 @@ public final class StoneEvent extends AbstractEvent {
 	 *            the dc to discover the stone.
 	 */
 	public StoneEvent(final StoneKind skind, final int discdc) {
-		super(EventKind.Stone);
+		super();
 		stone = skind;
 		dc = discdc;
 	}
@@ -39,7 +39,6 @@ public final class StoneEvent extends AbstractEvent {
 	 * The DC to discover the stone. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
-
 	/**
 	 * 
 	 * @return the DC to discover the event.

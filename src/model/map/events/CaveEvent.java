@@ -15,7 +15,7 @@ public final class CaveEvent extends AbstractEvent {
 	 *            the DC to discover the caves
 	 */
 	public CaveEvent(final int discdc) {
-		super(EventKind.Caves);
+		super();
 		dc = discdc;
 	}
 
@@ -23,7 +23,6 @@ public final class CaveEvent extends AbstractEvent {
 	 * The DC to discover the caves. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
-
 	/**
 	 * 
 	 * @return the DC to discover the event.

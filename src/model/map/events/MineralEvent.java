@@ -20,7 +20,7 @@ public final class MineralEvent extends AbstractEvent {
 	 */
 	public MineralEvent(final MineralKind minkind, final boolean exp,
 			final int discdc) {
-		super(EventKind.Mineral);
+		super();
 		mineral = minkind;
 		exposed = exp;
 		dc = discdc;
@@ -57,7 +57,6 @@ public final class MineralEvent extends AbstractEvent {
 	 * The DC to discover the vein. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
-
 	/**
 	 * 
 	 * @return the DC to discover the event.

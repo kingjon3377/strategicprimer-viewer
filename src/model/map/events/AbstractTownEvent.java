@@ -19,7 +19,8 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	 */
 	protected AbstractTownEvent(final EventKind eKind,
 			final TownStatus tStatus, final TownSize tSize) {
-		super(eKind);
+		super();
+		kind = eKind;
 		status = tStatus;
 		size = tSize;
 	}
@@ -41,6 +42,10 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	 * The size of the town, fortress, or city.
 	 */
 	private final TownSize size;
+	/**
+	 * What kind of event this is.
+	 */
+	private final EventKind kind;
 
 	/**
 	 * 
@@ -106,5 +111,13 @@ public abstract class AbstractTownEvent extends AbstractEvent {
 	public String toString() {
 		return "A " + size.toString() + status.toString() + kind().toString()
 				+ " of DC " + getDC();
+	}
+
+	/**
+	 * 
+	 * @return what kind of event this is
+	 */
+	public EventKind kind() {
+		return kind;
 	}
 }

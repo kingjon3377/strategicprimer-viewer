@@ -14,7 +14,7 @@ public final class BattlefieldEvent extends AbstractEvent {
 	 *            the DC to discover the battlefield.
 	 */
 	public BattlefieldEvent(final int discdc) {
-		super(EventKind.Battlefield);
+		super();
 		dc = discdc;
 	}
 
@@ -22,7 +22,6 @@ public final class BattlefieldEvent extends AbstractEvent {
 	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
-
 	/**
 	 * 
 	 * 
