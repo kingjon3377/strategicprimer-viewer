@@ -61,7 +61,7 @@ public final class NodeFactory { // NOPMD
 	 * we'll warn if they're used.
 	 */
 	private static final String[] FUTURE = { "include", "worker", "explorer",
-			"building", "resource", "forest", "animal", "changeset", "change",
+			"building", "resource", "animal", "changeset", "change",
 			"move", "work", "discover" };
 	/**
 	 * Set up the mappings from tags to node types. And just in case we didn't
