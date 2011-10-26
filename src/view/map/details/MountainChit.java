@@ -10,11 +10,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-
 import model.map.events.Mountain;
 import model.viewer.FixtureTransferable;
-import util.LoadFile;
+import util.ImageLoader;
 
 /**
  * A chit to represent a mountain on a tile.
@@ -47,7 +45,7 @@ public class MountainChit extends Chit {
 	private static final Logger LOGGER = Logger.getLogger(ForestChit.class.getName());
 	static {
 		try {
-			image = ImageIO.read(new LoadFile().doLoadFileAsStream("mountain.png"));
+			image = ImageLoader.getLoader().loadImage("mountain.png");
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Mountain image file not found", e);
 			image = createImage();

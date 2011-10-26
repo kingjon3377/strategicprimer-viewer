@@ -11,11 +11,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-
 import model.map.events.Forest;
 import model.viewer.FixtureTransferable;
-import util.LoadFile;
+import util.ImageLoader;
 /**
  * A chit to represent a forest on a tile.
  * @author Jonathan Lovelace
@@ -52,7 +50,7 @@ public class ForestChit extends Chit {
 	private static final Logger LOGGER = Logger.getLogger(ForestChit.class.getName());
 	static {
 		try {
-			image = ImageIO.read(new LoadFile().doLoadFileAsStream("trees.png"));
+			image = ImageLoader.getLoader().loadImage("trees.png");
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Forest image file not found", e);
 			image = createImage();
