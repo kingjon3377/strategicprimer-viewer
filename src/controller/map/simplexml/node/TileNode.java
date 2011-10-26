@@ -1,11 +1,9 @@
 package controller.map.simplexml.node;
 
-import model.map.Fortress;
 import model.map.PlayerCollection;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.Unit;
 import controller.map.SPFormatException;
 
 /**
@@ -34,14 +32,8 @@ public class TileNode extends AbstractChildNode<Tile> {
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
 				tile.addRiver(((RiverNode) node).produce(players));
-			} else if (node instanceof FortressNode) {
-				final Fortress fort = ((FortressNode) node).produce(players);
-				tile.addFixture(fort);
-			} else if (node instanceof UnitNode) {
-				final Unit unit = ((UnitNode) node).produce(players);
-				tile.addFixture(unit);
-			} else if (node instanceof EventNode) {
-				tile.addFixture(((AbstractChildNode<? extends TileFixture>) node)
+			} else if (node instanceof AbstractFixtureNode) {
+				tile.addFixture(((AbstractFixtureNode<? extends TileFixture>) node)
 						.produce(players));
 			}
 		}
@@ -64,11 +56,8 @@ public class TileNode extends AbstractChildNode<Tile> {
 	public void checkNode() throws SPFormatException {
 		if (hasProperty("row") && hasProperty("column") && hasProperty("type")) {
 			for (final AbstractXMLNode node : this) {
-				if (node instanceof UnitNode || node instanceof FortressNode
-						|| node instanceof EventNode
-						|| node instanceof RiverNode
-						|| node instanceof MountainNode
-						|| node instanceof ForestNode) {
+				if (node instanceof AbstractFixtureNode
+						|| node instanceof RiverNode) {
 					node.checkNode();
 				} else {
 					throw new SPFormatException("Unexpected child in tile.",
