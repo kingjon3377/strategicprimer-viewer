@@ -88,6 +88,7 @@ public final class NodeFactory { // NOPMD
 		addTag("mineral", Tag.Mineral);
 		addTag("town", Tag.Town);
 		addTag("forest", Tag.Forest);
+		addTag("mountain", Tag.Mountain);
 	}
 
 	/**
