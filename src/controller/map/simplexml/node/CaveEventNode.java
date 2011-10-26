@@ -10,7 +10,7 @@ import controller.map.SPFormatException;
  * @author kingjon
  * 
  */
-public class CaveEventNode extends AbstractChildNode<CaveEvent> {
+public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */

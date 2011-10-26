@@ -14,7 +14,7 @@ import controller.map.SPFormatException;
  * 
  * @author Jonathan Lovelace
  */
-public class TownEventNode extends AbstractChildNode<AbstractTownEvent> {
+public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	/**
 	 * The property of a town-like event saying how big it is.
 	 */

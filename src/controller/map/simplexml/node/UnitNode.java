@@ -11,7 +11,7 @@ import controller.map.SPFormatException;
  * @author kingjon
  * 
  */
-public class UnitNode extends AbstractChildNode<Unit> {
+public class UnitNode extends AbstractFixtureNode<Unit> {
 	/**
 	 * The "name" attribute.
 	 */

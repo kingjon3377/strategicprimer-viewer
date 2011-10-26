@@ -10,7 +10,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  * 
  */
-public class BattlefieldEventNode extends AbstractChildNode<BattlefieldEvent> {
+public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> {
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */

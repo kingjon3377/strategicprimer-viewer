@@ -10,7 +10,7 @@ import controller.map.SPFormatException;
  * 
  * @author Jonathan Lovelace
  */
-public class MineralEventNode extends AbstractChildNode<MineralEvent> {
+public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */

@@ -11,7 +11,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  * 
  */
-public class StoneEventNode extends AbstractChildNode<StoneEvent> {
+public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */

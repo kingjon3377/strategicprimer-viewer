@@ -8,7 +8,7 @@ import model.map.events.Mountain;
  * @author Jonathan Lovelace
  *
  */
-public class MountainNode extends AbstractChildNode<Mountain> {
+public class MountainNode extends AbstractFixtureNode<Mountain> {
 	/**
 	 * @param players ignored
 	 * @return the Mountain this represents

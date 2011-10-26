@@ -14,7 +14,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  * 
  */
-public class EventNode extends AbstractChildNode<IEvent> implements
+public class EventNode extends AbstractFixtureNode<IEvent> implements
 		NeedsExtraCanonicalization {
 	/**
 	 * The property of an Event saying what kind of event it is.

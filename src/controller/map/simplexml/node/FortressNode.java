@@ -10,7 +10,7 @@ import controller.map.SPFormatException;
  * 
  * @author Jonathan Lovelace
  */
-public class FortressNode extends AbstractChildNode<Fortress> {
+public class FortressNode extends AbstractFixtureNode<Fortress> {
 	/**
 	 * Produce the equivalent fortress.
 	 * 

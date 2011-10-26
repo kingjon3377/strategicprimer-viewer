@@ -8,7 +8,7 @@ import model.map.events.Forest;
  * @author Jonathan Lovelace
  *
  */
-public class ForestNode extends AbstractChildNode<Forest> {
+public class ForestNode extends AbstractFixtureNode<Forest> {
 	/**
 	 * @param players ignored
 	 * @return the Forest this node represents.
