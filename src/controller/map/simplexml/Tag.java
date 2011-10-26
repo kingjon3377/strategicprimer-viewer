@@ -76,6 +76,10 @@ enum Tag {
 	 */
 	Forest,
 	/**
+	 * A mountain or mountainous region.
+	 */
+	Mountain,
+	/**
 	 * A town.
 	 */
 	Town;
