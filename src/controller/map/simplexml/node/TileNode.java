@@ -66,7 +66,9 @@ public class TileNode extends AbstractChildNode<Tile> {
 			for (final AbstractXMLNode node : this) {
 				if (node instanceof UnitNode || node instanceof FortressNode
 						|| node instanceof EventNode
-						|| node instanceof RiverNode) {
+						|| node instanceof RiverNode
+						|| node instanceof MountainNode
+						|| node instanceof ForestNode) {
 					node.checkNode();
 				} else {
 					throw new SPFormatException("Unexpected child in tile.",
