@@ -8,10 +8,15 @@ import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.map.Fortress;
+import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.Unit;
@@ -19,6 +24,7 @@ import model.map.events.AbstractTownEvent;
 import model.map.events.Forest;
 import model.map.events.IEvent;
 import model.map.events.Mountain;
+import model.map.events.RiverFixture;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
 /**
@@ -47,6 +53,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		super();
 		observer = iobs;
 		final String[] files = new String[] { "tree.png", "mountain.png" };
+		createRiverFiles();
 		for (String file : files) {
 			try {
 				loader.loadImage(file);
@@ -193,6 +200,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return getImage("fortress.png"); // NOPMD
 		} else if (fix instanceof Unit) {
 			return getImage("unit.png"); // TODO: Should eventually be more granular // NOPMD 
+		} else if (fix instanceof RiverFixture) { 
+			return getImage(riverFiles.get(((RiverFixture) fix).getRivers())); // NOPMD
 		} else {
 			LOGGER.warning("Using the fallback image because this is an unanticipated kind of Fixture.");
 			return fallbackImage;
@@ -213,5 +222,57 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			LOGGER.log(Level.SEVERE, "I/O error reading image " + filename, e);
 			return fallbackImage;
 		}
+	}
+	/**
+	 * A mapping from river-sets to filenames.
+	 */
+	private final Map<Set<River>, String> riverFiles = new HashMap<Set<River>, String>();
+	/**
+	 * Create the mapping from river-sets to filenames.
+	 */
+	private void createRiverFiles() {
+		riverFiles.put(EnumSet.noneOf(River.class), "riv00.png");
+		riverFiles.put(createRiverSet(River.North), "riv01.png");
+		riverFiles.put(createRiverSet(River.East), "riv02.png");
+		riverFiles.put(createRiverSet(River.South), "riv03.png");
+		riverFiles.put(createRiverSet(River.West), "riv04.png");
+		riverFiles.put(createRiverSet(River.Lake), "riv05.png");
+		riverFiles.put(createRiverSet(River.North, River.East), "riv06.png");
+		riverFiles.put(createRiverSet(River.North, River.South), "riv07.png");
+		riverFiles.put(createRiverSet(River.North, River.West), "riv08.png");
+		riverFiles.put(createRiverSet(River.North, River.Lake), "riv09.png");
+		riverFiles.put(createRiverSet(River.East, River.South), "riv10.png");
+		riverFiles.put(createRiverSet(River.East, River.West), "riv11.png");
+		riverFiles.put(createRiverSet(River.East, River.Lake), "riv12.png");
+		riverFiles.put(createRiverSet(River.South, River.West), "riv13.png");
+		riverFiles.put(createRiverSet(River.South, River.Lake), "riv14.png");
+		riverFiles.put(createRiverSet(River.West, River.Lake), "riv15.png");
+		riverFiles.put(createRiverSet(River.North, River.East, River.South), "riv16.png");
+		riverFiles.put(createRiverSet(River.North, River.East, River.West), "riv17.png");
+		riverFiles.put(createRiverSet(River.North, River.East, River.Lake), "riv18.png");
+		riverFiles.put(createRiverSet(River.North, River.South, River.West), "riv19.png");
+		riverFiles.put(createRiverSet(River.North, River.South, River.Lake), "riv20.png");
+		riverFiles.put(createRiverSet(River.North, River.West, River.Lake), "riv21.png");
+		riverFiles.put(createRiverSet(River.East, River.South, River.West), "riv22.png");
+		riverFiles.put(createRiverSet(River.East, River.South, River.Lake), "riv23.png");
+		riverFiles.put(createRiverSet(River.East, River.West, River.Lake), "riv24.png");
+		riverFiles.put(createRiverSet(River.South, River.West, River.Lake), "riv25.png");
+		riverFiles.put(createRiverSet(River.North, River.East, River.South, River.West), "riv26.png");
+		riverFiles.put(createRiverSet(River.North, River.South, River.West, River.Lake), "riv27.png");
+		riverFiles.put(createRiverSet(River.North, River.East, River.West, River.Lake), "riv28.png");
+		riverFiles.put(createRiverSet(River.North, River.East, River.South, River.Lake), "riv29.png");
+		riverFiles.put(createRiverSet(River.East, River.South, River.West, River.Lake), "riv30.png");
+		riverFiles.put(EnumSet.allOf(River.class), "riv31.png");
+	}
+	/**
+	 * @param rivers any number of rivers
+	 * @return a set containing them
+	 */
+	private static Set<River> createRiverSet(final River... rivers) {
+		final Set<River> set = EnumSet.noneOf(River.class);
+		for (River river : rivers) {
+			set.add(river);
+		}
+		return set;
 	}
 }
