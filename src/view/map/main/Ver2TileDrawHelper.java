@@ -120,7 +120,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether that tile has any fixtures (or any river
 	 */
 	private static boolean hasFixture(final Tile tile) {
-		return (!tile.getRivers().isEmpty()) || (!tile.getContents().isEmpty());
+		return (!tile.getContents().isEmpty());
 	}
 	/**
 	 * Comparator to find which fixture to draw.

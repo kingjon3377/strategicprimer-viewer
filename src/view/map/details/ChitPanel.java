@@ -8,6 +8,7 @@ import model.map.Unit;
 import model.map.events.Forest;
 import model.map.events.IEvent;
 import model.map.events.Mountain;
+import model.map.events.RiverFixture;
 import view.map.main.SelectionListener;
 
 /**
@@ -58,6 +59,8 @@ public class ChitPanel extends JPanel {
 			add(new ForestChit((Forest) fix, listener));
 		} else if (fix instanceof Mountain) {
 			add(new MountainChit((Mountain) fix, listener));
+		} else if (fix instanceof RiverFixture) {
+			// FIXME: Add a RiverChit later.
 		} else {
 			throw new IllegalStateException("We're missing a case here");
 		}
