@@ -48,7 +48,7 @@ public class TileUIHelper {
 		two.put(TileType.Ocean, new Color(0, 0, 255));
 		two.put(TileType.Plains, new Color(72, 218, 164));
 		two.put(TileType.Tundra, new Color(153, 153, 153));
-		two.put(TileType.Steppe, new Color(72, 250, 72));
+		two.put(TileType.Steppe, new Color(72, 100, 72));
 		colors.put(2, two);
 		descriptions.put(TileType.BorealForest,
 				"<html><p>Boreal Forest</p></html>");
