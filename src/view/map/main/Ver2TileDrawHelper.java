@@ -92,6 +92,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (hasFixture(tile)) {
 			pen.drawImage(getImageForFixture(getTopFixture(tile)), xCoord, yCoord, width, height, observer);
 		}
+		pen.setColor(Color.black);
+		pen.drawRect(xCoord, yCoord, width, height);
 		pen.setColor(save);
 	}
 
