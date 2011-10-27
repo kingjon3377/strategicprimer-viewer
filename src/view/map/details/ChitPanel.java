@@ -60,7 +60,7 @@ public class ChitPanel extends JPanel {
 		} else if (fix instanceof Mountain) {
 			add(new MountainChit((Mountain) fix, listener));
 		} else if (fix instanceof RiverFixture) {
-			// FIXME: Add a RiverChit later.
+			add(new RiverChit((RiverFixture) fix, listener));
 		} else {
 			throw new IllegalStateException("We're missing a case here");
 		}
