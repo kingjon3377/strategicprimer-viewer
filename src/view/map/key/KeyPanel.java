@@ -21,10 +21,10 @@ public class KeyPanel extends JPanel implements PropertyChangeListener {
 	 * @param version the map version
 	 */
 	public KeyPanel(final int version) {
-		super(new GridLayout(0, 3));
+		super(new GridLayout(0, 4));
 		updateForVersion(version);
 		setMinimumSize(new Dimension(new KeyElement(version, 
-				TileType.NotVisible).getMinimumSize().width * 3, getMinimumSize().height));
+				TileType.NotVisible).getMinimumSize().width * 4, getMinimumSize().height));
 		setPreferredSize(getMinimumSize());
 	}
 	/**
