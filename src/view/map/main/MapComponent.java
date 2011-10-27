@@ -43,17 +43,17 @@ public final class MapComponent extends JComponent implements
 	 * @return the size of a visible tile.
 	 */
 	public static int getTileSize() {
-		return TILE_SIZE;
+		return TILE_SIZE_ONE;
 	}
 
 	/**
 	 * Tile size.
 	 */
-	private static final int TILE_SIZE = 16;
+	private static final int TILE_SIZE_ONE = 16;
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
-	private final TileDrawHelper helper = new DirectTileDrawHelper();
+	private TileDrawHelper helper;
 
 	/**
 	 * Constructor.
@@ -64,6 +64,11 @@ public final class MapComponent extends JComponent implements
 	public MapComponent(final MapModel theMap) {
 		super();
 		setDoubleBuffered(true);
+		if (theMap.getMainMap().getVersion() == 1) {
+			helper = new DirectTileDrawHelper(); 
+		} else if (theMap.getMainMap().getVersion() == 2) {
+			helper = new Ver2TileDrawHelper(this);
+		}
 		model = theMap;
 		loadMap(theMap.getMainMap());
 		setMinimumSize(new Dimension(model.getSizeCols() * getTileSize(),

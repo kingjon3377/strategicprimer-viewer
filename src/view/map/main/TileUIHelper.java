@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.map.SPMap;
+import model.map.TileFixture;
 import model.map.TileType;
+import model.map.events.Forest;
+import model.map.events.Mountain;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.
@@ -59,6 +62,8 @@ public class TileUIHelper {
 				"<html><p>Temperate Forest</p></html>");
 		descriptions.put(TileType.Tundra, "<html><p>Tundra</p></html>");
 		descriptions.put(TileType.Steppe, "<html><p>Steppe</p></html>");
+		featureColors.put(Forest.class, new Color(0, 117, 0));
+		featureColors.put(Mountain.class, new Color(249, 137, 28));
 	}
 
 	/**
@@ -95,5 +100,18 @@ public class TileUIHelper {
 	 */
 	public String getDescription(final TileType type) { // NOPMD
 		return descriptions.get(type);
+	}
+	/**
+	 * A map from classes of features to the colors they can make the tile be.
+	 * Used to show that a tile is mountainous or forested even when those are
+	 * represented by icons and there's a higher icon on the tile.
+	 */
+	private final Map<Class<? extends TileFixture>, Color> featureColors = new HashMap<Class<? extends TileFixture>, Color>();
+	/**
+	 * @param fix a fixture
+	 * @return the color it should turn the tile
+	 */
+	public Color getFeatureColor(final TileFixture fix) {
+		return featureColors.get(fix.getClass());
 	}
 }

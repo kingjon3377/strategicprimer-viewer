@@ -125,4 +125,10 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	@Override
 	public abstract void drawTile(final Graphics pen, final int version, final Tile tile,
 			final int width, final int height);
+	/**
+	 * @return the UI helper.
+	 */
+	protected static TileUIHelper getHelper() {
+		return COLORS;
+	}
 }
