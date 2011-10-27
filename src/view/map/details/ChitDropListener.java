@@ -25,7 +25,7 @@ public class ChitDropListener implements DropTargetListener {
 	/**
 	 * The data flavor we want.
 	 */
-	private static final String WANTED_FLAVOR = "TileFixture";
+	private static final DataFlavor WANTED_FLAVOR = new DataFlavor(TileFixture.class, "TileFixture");
 	/**
 	 * Logger.
 	 */
@@ -103,7 +103,7 @@ public class ChitDropListener implements DropTargetListener {
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
 		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-			if (WANTED_FLAVOR.equals(flavor.getHumanPresentableName())) {
+			if (WANTED_FLAVOR.equals(flavor)) {
 				try {
 					((ChitAndDetailPanel) ((DropTarget) dtde.getSource())
 							.getComponent()).addFixture((TileFixture) dtde
