@@ -83,6 +83,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height
 	 *            the tile's height
 	 */
+	// ESCA-JAVA0138:
 	@Override
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
