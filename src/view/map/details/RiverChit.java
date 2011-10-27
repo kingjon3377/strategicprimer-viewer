@@ -63,7 +63,7 @@ public class RiverChit extends Chit {
 		final Color save = pen.getColor();
 		pen.setColor(Color.blue);
 		for (River river : fix) {
-			drawRiver(pen, river, 0, 0, getWidth(), getHeight());
+			drawRiver(pen, river);
 		}
 		pen.setColor(save);
 		super.paint(pen);
@@ -76,40 +76,30 @@ public class RiverChit extends Chit {
 	 *            corner
 	 * @param river
 	 *            the river to draw
-	 * @param xCoord
-	 *            the left boundary of the tile
-	 * @param yCoord
-	 *            the upper boundary of the tile
-	 * @param width
-	 *            the width of the tile's drawing-space
-	 * @param height
-	 *            the height of the tile's drawing-space
 	 */
-	private static void drawRiver(final Graphics pen, final River river,
-			final int xCoord, final int yCoord, final int width,
-			final int height) {
+	private void drawRiver(final Graphics pen, final River river) {
 		switch (river) {
 		case East:
-			pen.fillRect((int) (width / TWO) + xCoord,
-					(int) (height * SEVEN_SIXTEENTHS) + yCoord,
-					(int) (width / TWO), (int) (height / EIGHT));
+			pen.fillRect((int) (getWidth() / TWO),
+					(int) (getHeight() * SEVEN_SIXTEENTHS),
+					(int) (getWidth() / TWO), (int) (getHeight() / EIGHT));
 			break;
 		case Lake:
-			pen.fillOval((int) (width / FOUR) + xCoord, (int) (height / FOUR)
-					+ yCoord, (int) (width / TWO), (int) (height / TWO));
+			pen.fillOval((int) (getWidth() / FOUR), (int) (getHeight() / FOUR), 
+					(int) (getWidth() / TWO), (int) (getHeight() / TWO));
 			break;
 		case North:
-			pen.fillRect((int) (width * SEVEN_SIXTEENTHS) + xCoord, yCoord,
-					(int) (width / EIGHT), (int) (height / TWO));
+			pen.fillRect((int) (getWidth() * SEVEN_SIXTEENTHS), 0,
+					(int) (getWidth() / EIGHT), (int) (getHeight() / TWO));
 			break;
 		case South:
-			pen.fillRect((int) (width * SEVEN_SIXTEENTHS) + xCoord,
-					(int) (height / TWO) + yCoord, (int) (width / EIGHT),
-					(int) (height / TWO));
+			pen.fillRect((int) (getWidth() * SEVEN_SIXTEENTHS),
+					(int) (getHeight() / TWO), (int) (getWidth() / EIGHT),
+					(int) (getHeight() / TWO));
 			break;
 		case West:
-			pen.fillRect(xCoord, (int) (height * SEVEN_SIXTEENTHS) + yCoord,
-					(int) (width / TWO), (int) (height / EIGHT));
+			pen.fillRect(0, (int) (getHeight() * SEVEN_SIXTEENTHS),
+					(int) (getWidth() / TWO), (int) (getHeight() / EIGHT));
 			break;
 		default:
 			// Shouldn't get here, but let's ignore it anyway
