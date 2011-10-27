@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
+import model.viewer.TileViewSize;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
-import view.map.main.MapComponent;
 import view.map.main.TileDrawHelper;
 import view.util.SystemOut;
 import controller.map.SPFormatException;
@@ -46,6 +46,7 @@ public class DrawHelperComparator {
 		rows = spmap.rows();
 		cols = spmap.cols();
 		reps = repetitions;
+		tsize = new TileViewSize().getSize(map.getVersion());
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class DrawHelperComparator {
 	 * The size of a tile, factored out to reduce number of lines a line of code
 	 * has to use.
 	 */
-	private final int tsize = MapComponent.getTileSize();
+	private final int tsize;
 
 	/**
 	 * The first test: all in one place.

@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import model.map.SPMap;
 import model.map.Tile;
 import model.viewer.MapModel;
+import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import util.PropertyChangeSource;
 
@@ -42,14 +43,14 @@ public final class MapComponent extends JComponent implements
 	 * 
 	 * @return the size of a visible tile.
 	 */
-	public static int getTileSize() {
-		return TILE_SIZE_ONE;
+	public static TileViewSize getTileSize() {
+		return TILE_SIZE;
 	}
 
 	/**
 	 * Tile size.
 	 */
-	private static final int TILE_SIZE_ONE = 16;
+	private static final TileViewSize TILE_SIZE = new TileViewSize();
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
@@ -70,9 +71,10 @@ public final class MapComponent extends JComponent implements
 			helper = new Ver2TileDrawHelper(this);
 		}
 		model = theMap;
+		final int tsize = getTileSize().getSize(model.getMainMap().getVersion());
 		loadMap(theMap.getMainMap());
-		setMinimumSize(new Dimension(model.getSizeCols() * getTileSize(),
-				model.getSizeRows() * getTileSize()));
+		setMinimumSize(new Dimension(model.getSizeCols() * tsize,
+				model.getSizeRows() * tsize));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
 		addMouseListener(new ComponentMouseListener(model, this));
@@ -86,28 +88,29 @@ public final class MapComponent extends JComponent implements
 	 * Creates the buffered image.
 	 */
 	public void createImage() {
+		final int tsize = getTileSize().getSize(getModel().getMainMap().getVersion());
 		image = createImage(
 				(getModel().getDimensions().getMaximumCol() + 1 - getModel()
-						.getDimensions().getMinimumCol()) * getTileSize(),
+						.getDimensions().getMinimumCol()) * tsize,
 				(getModel().getDimensions().getMaximumRow() + 1 - getModel()
-						.getDimensions().getMinimumRow()) * getTileSize());
+						.getDimensions().getMinimumRow()) * tsize);
 		if (image == null) {
 			image = new BufferedImage((getModel().getDimensions()
 					.getMaximumCol() + 1 - getModel().getDimensions()
 					.getMinimumCol())
-					* getTileSize(), (getModel().getDimensions()
+					* tsize, (getModel().getDimensions()
 					.getMaximumRow() + 1 - getModel().getDimensions()
 					.getMinimumRow())
-					* getTileSize(), BufferedImage.TYPE_INT_RGB);
+					* tsize, BufferedImage.TYPE_INT_RGB);
 		}
 		drawMap(image.getGraphics());
 		setMinimumSize(new Dimension(
 				(getModel().getDimensions().getMaximumCol()
 						- getModel().getDimensions().getMinimumCol() + 1)
-						* getTileSize(), (getModel().getDimensions()
+						* tsize, (getModel().getDimensions()
 						.getMaximumRow()
 						- getModel().getDimensions().getMinimumRow() + 1)
-						* getTileSize()));
+						* tsize));
 		setPreferredSize(getMinimumSize());
 		setSize(getMinimumSize());
 		revalidate();
@@ -138,11 +141,12 @@ public final class MapComponent extends JComponent implements
 		pen.setColor(Color.white);
 		pen.fillRect(0, 0, getWidth(), getHeight());
 		final Rectangle bounds = bounds(pen.getClipBounds());
-		final int minX = (int) (bounds.getMinX() / getTileSize());
-		final int minY = (int) (bounds.getMinY() / getTileSize());
-		final int maxX = Math.min((int) (bounds.getMaxX() / getTileSize() + 1),
+		final int tsize = getTileSize().getSize(model.getMainMap().getVersion());
+		final int minX = (int) (bounds.getMinX() / tsize);
+		final int minY = (int) (bounds.getMinY() / tsize);
+		final int maxX = Math.min((int) (bounds.getMaxX() / tsize + 1),
 				model.getSizeCols());
-		final int maxY = Math.min((int) (bounds.getMaxY() / getTileSize() + 1),
+		final int maxY = Math.min((int) (bounds.getMaxY() / tsize + 1),
 				model.getSizeRows());
 		drawMapPortion(pen, minX, minY, maxX, maxY);
 		pen.setColor(save);
@@ -184,9 +188,9 @@ public final class MapComponent extends JComponent implements
 	private Rectangle bounds(final Rectangle rect) {
 		return (rect == null) ? new Rectangle(0, 0, (getModel().getDimensions()
 				.getMaximumCol() - getModel().getDimensions().getMinimumCol())
-				* getTileSize(),
+				* getTileSize().getSize(getModel().getMainMap().getVersion()),
 				(getModel().getDimensions().getMaximumRow() - getModel()
-						.getDimensions().getMinimumRow()) * getTileSize())
+						.getDimensions().getMinimumRow()) * getTileSize().getSize(getModel().getMainMap().getVersion()))
 				: rect;
 	}
 
@@ -206,12 +210,13 @@ public final class MapComponent extends JComponent implements
 	private void paintTile(final Graphics pen, final int version, final Tile tile, final int row,
 			final int col) {
 		final Color saveColor = pen.getColor();
-		helper.drawTile(pen, version, tile, col * getTileSize(), row * getTileSize(),
-				getTileSize(), getTileSize());
+		final int tsize = getTileSize().getSize(getModel().getMainMap().getVersion());
+		helper.drawTile(pen, version, tile, col * tsize, row * tsize,
+				tsize, tsize);
 		if (model.getSelectedTile().equals(tile)) {
 			pen.setColor(Color.black);
-			pen.drawRect(col * getTileSize() + 1, row * getTileSize() + 1,
-					getTileSize() - 2, getTileSize() - 2);
+			pen.drawRect(col * tsize + 1, row * tsize + 1,
+					tsize - 2, tsize - 2);
 		}
 		pen.setColor(saveColor);
 	}

@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.map.TileType;
-import view.map.main.MapComponent;
+import model.viewer.TileViewSize;
 import view.map.main.TileUIHelper;
 
 /**
@@ -30,11 +30,6 @@ public final class KeyElement extends JPanel {
 	 * Minimum size of a colored area.
 	 */
 	private static final Dimension MIN_SIZE = new Dimension(4, 4);
-	/**
-	 * Maximum size of a colored area.
-	 */
-	private static final Dimension MAX_SIZE = new Dimension(
-			MapComponent.getTileSize(), MapComponent.getTileSize());
 	/**
 	 * Preferred size of a colored area.
 	 */
@@ -58,7 +53,9 @@ public final class KeyElement extends JPanel {
 		final JComponent tile = new KeyElementComponent(TUI_HELPER.get(version, type));
 		tile.setMinimumSize(MIN_SIZE);
 		tile.setPreferredSize(PREF_SIZE);
-		tile.setMaximumSize(MAX_SIZE);
+		final int tsize = new TileViewSize().getSize(version);
+		tile.setMaximumSize(new Dimension(
+				tsize, tsize));
 		panel.add(tile);
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		final JLabel label = new JLabel(TUI_HELPER.getDescription(type));

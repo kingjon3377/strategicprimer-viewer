@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import model.viewer.MapModel;
+import model.viewer.TileViewSize;
 
 /**
  * A mouse listener for the MapComponent.
@@ -45,7 +46,10 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * The terrain-changing menu.
 	 */
 	private final TerrainChangingMenu menu;
-
+	/**
+	 * The helper to tell us the size of a tile.
+	 */
+	private final TileViewSize tsize = new TileViewSize();
 	/**
 	 * Handle mouse clicks.
 	 * 
@@ -54,8 +58,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
-		model.setSelection(event.getPoint().y / MapComponent.getTileSize(),
-				event.getPoint().x / MapComponent.getTileSize());
+		model.setSelection(event.getPoint().y / tsize.getSize(model.getMainMap().getVersion()),
+				event.getPoint().x / tsize.getSize(model.getMainMap().getVersion()));
 		if (event.getClickCount() == 2) {
 			pcs.firePropertyChange("encounter", "old", "new");
 			model.copyTile(model.getSelectedTile());
