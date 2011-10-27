@@ -81,7 +81,7 @@ public class ChitAndDetailPanel extends JPanel implements
 		property = propertyName;
 		final JLabel title = new JLabel(
 				"tile".equals(property) ? "<html><center>Tile contents:</center></html>"
-						: "<html><center>Tile contents on secondary map:</center></html>",
+						: "<html><center>Tile contents on<br />secondary map:</center></html>",
 				SwingConstants.CENTER);
 		add(title, BorderLayout.NORTH);
 		add(wrapperPanel, BorderLayout.CENTER);
