@@ -1,13 +1,13 @@
 package model.map.events;
 
-import model.map.TileFixture;
+import model.map.TerrainFixture;
 
 /**
  * A forest on a tile.
  * @author Jonathan Lovelace
  *
  */
-public class Forest implements TileFixture {
+public class Forest implements TerrainFixture {
 	/**
 	 * Constructor.
 	 * @param kind what kind of trees dominate.

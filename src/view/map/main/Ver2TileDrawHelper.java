@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import model.map.Fortress;
 import model.map.River;
+import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.Unit;
@@ -154,13 +155,13 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private boolean needFixtureColor(final Tile tile) {
 		boolean hasTerrainFixture = false;
 		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Forest || fix instanceof Mountain) {
+			if (fix instanceof TerrainFixture) {
 				hasTerrainFixture = true;
 			}
 		}
 		if (hasTerrainFixture) {
 			final TileFixture fix = getTopFixture(tile);
-			return !(fix instanceof Forest) && !(fix instanceof Mountain); // NOPMD
+			return !(fix instanceof TerrainFixture); // NOPMD
 		} else {
 			return false;
 		}
@@ -171,7 +172,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private static Color getFixtureColor(final Tile tile) {
 		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof Forest || fix instanceof Mountain) {
+			if (fix instanceof TerrainFixture) {
 				return getHelper().getFeatureColor(fix); // NOPMD
 			}
 		}
