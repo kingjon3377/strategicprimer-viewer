@@ -10,6 +10,7 @@ import model.map.events.AbstractTownEvent;
 import model.map.events.Forest;
 import model.map.events.IEvent;
 import model.map.events.Mountain;
+import model.map.events.RiverFixture;
 
 /**
  * A Comparator for TileFixtures. In the new map version, only the upper-most of
@@ -46,8 +47,8 @@ public class FixtureComparator implements Comparator<TileFixture>, Serializable 
 			return 10; // NOPMD
 		} else if (fix instanceof Forest) {
 			return 20; // NOPMD
-//		} else if (fix instanceof River) {
-//			return 30; // NOPMD
+		} else if (fix instanceof RiverFixture) {
+			return 30; // NOPMD
 		} else if (fix instanceof AbstractTownEvent) {
 			return 50; // NOPMD
 			// We have to do this out of order because TownEvents *are* IEvents
