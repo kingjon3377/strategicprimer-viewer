@@ -190,8 +190,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return getImage("mountain.png"); // NOPMD
 		} else if (fix instanceof Forest) {
 			return getImage("tree.png"); // NOPMD // TODO: Should have different icons depending on the kind of tree.
-//		} else if (fix instanceof River) {
-//			// FIXME: Need an image for each kind.
 		} else if (fix instanceof AbstractTownEvent) {
 			return getImage("town.png"); // FIXME: Should be more granular // NOPMD:
 		} else if (fix instanceof IEvent) {
