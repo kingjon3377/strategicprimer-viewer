@@ -2,6 +2,7 @@ package model.viewer;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.logging.Logger;
 
 import model.map.Fortress;
 import model.map.TileFixture;
@@ -27,6 +28,10 @@ public class FixtureComparator implements Comparator<TileFixture>, Serializable 
 	 * adding Serializable implementation anywhere else.
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(FixtureComparator.class.getName());
 	/**
 	 * Compare two fixtures.
 	 * @param one The first fixture
@@ -60,6 +65,7 @@ public class FixtureComparator implements Comparator<TileFixture>, Serializable 
 		} else if (fix instanceof Unit) {
 			return 70; // NOPMD
 		} else {
+			LOGGER.warning("Unhandled type of Fixture.");
 			return 0;
 		}
 	}
