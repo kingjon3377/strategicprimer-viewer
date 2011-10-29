@@ -66,6 +66,16 @@ public class EventChit extends Chit {
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
+		paintChit(pen);
+	}
+
+	/**
+	 * Paint the contents of the chit. This is split out so we can override it
+	 * in subclasses without losing access to the superclass's paint().
+	 * 
+	 * @param pen the graphics context
+	 */
+	protected void paintChit(final Graphics pen) {
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
 		pen.fillRoundRect(((int) (getWidth() * MARGIN)) + 1,

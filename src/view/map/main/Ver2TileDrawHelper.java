@@ -26,6 +26,7 @@ import model.map.events.Forest;
 import model.map.events.IEvent;
 import model.map.events.Mountain;
 import model.map.events.RiverFixture;
+import model.map.events.StoneEvent;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
 /**
@@ -193,6 +194,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return getImage("tree.png"); // NOPMD // TODO: Should have different icons depending on the kind of tree.
 		} else if (fix instanceof AbstractTownEvent) {
 			return getImage("town.png"); // FIXME: Should be more granular // NOPMD:
+		} else if (fix instanceof StoneEvent) {
+			return getImage("stone.png"); // NOPMD
 		} else if (fix instanceof IEvent) {
 			return getImage("event.png"); // NOPMD
 		} else if (fix instanceof Fortress) {
