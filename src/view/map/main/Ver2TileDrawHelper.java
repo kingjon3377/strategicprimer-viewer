@@ -24,6 +24,7 @@ import model.map.Unit;
 import model.map.events.AbstractTownEvent;
 import model.map.events.Forest;
 import model.map.events.IEvent;
+import model.map.events.MineralEvent;
 import model.map.events.Mountain;
 import model.map.events.RiverFixture;
 import model.map.events.StoneEvent;
@@ -196,6 +197,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return getImage("town.png"); // FIXME: Should be more granular // NOPMD:
 		} else if (fix instanceof StoneEvent) {
 			return getImage("stone.png"); // NOPMD
+		} else if (fix instanceof MineralEvent) {
+			return getImage("mineral.png"); // NOPMD
 		} else if (fix instanceof IEvent) {
 			return getImage("event.png"); // NOPMD
 		} else if (fix instanceof Fortress) {

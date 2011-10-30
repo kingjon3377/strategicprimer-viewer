@@ -7,6 +7,7 @@ import model.map.TileFixture;
 import model.map.Unit;
 import model.map.events.Forest;
 import model.map.events.IEvent;
+import model.map.events.MineralEvent;
 import model.map.events.Mountain;
 import model.map.events.NothingEvent;
 import model.map.events.RiverFixture;
@@ -60,7 +61,9 @@ public class ChitPanel extends JPanel {
 		} else if (fix instanceof NothingEvent) {
 			// NothingEvents represent the absence of all events, and should
 			// never actually occur.
-			return; // NOPMD 
+			return; // NOPMD
+		} else if (fix instanceof MineralEvent) {
+			add(new MineralChit((MineralEvent) fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));
 		} else if (fix instanceof Forest) { 
