@@ -8,6 +8,7 @@ import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
+import controller.map.simplexml.node.GroundNode;
 import controller.map.simplexml.node.MapNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.PlayerNode;
@@ -89,6 +90,7 @@ public final class NodeFactory { // NOPMD
 		addTag("town", Tag.Town);
 		addTag("forest", Tag.Forest);
 		addTag("mountain", Tag.Mountain);
+		addTag("ground", Tag.Ground);
 	}
 
 	/**
@@ -172,6 +174,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Mountain:
 			node = new MountainNode();
+			break;
+		case Ground:
+			node = new GroundNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

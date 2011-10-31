@@ -80,6 +80,10 @@ enum Tag {
 	 */
 	Mountain,
 	/**
+	 * The ground (rock) of a tile.
+	 */
+	Ground,
+	/**
 	 * A town.
 	 */
 	Town;

@@ -25,6 +25,7 @@ import model.map.events.IEvent;
 import model.map.events.MineralEvent;
 import model.map.events.StoneEvent;
 import model.map.fixtures.Fortress;
+import model.map.fixtures.Ground;
 import model.map.fixtures.Mountain;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.Unit;
@@ -207,6 +208,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return getImage("unit.png"); // TODO: Should eventually be more granular // NOPMD 
 		} else if (fix instanceof RiverFixture) { 
 			return getImage(riverFiles.get(((RiverFixture) fix).getRivers())); // NOPMD
+		} else if (fix instanceof Ground && ((Ground) fix).isExposed()) {
+			return getImage("expground.png"); // NOPMD)
+		} else if (fix instanceof Ground) {
+			return getImage("blank.png"); // NOPMD
 		} else {
 			LOGGER.warning("Using the fallback image because this is an unanticipated kind of Fixture.");
 			return fallbackImage;

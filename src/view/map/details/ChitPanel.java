@@ -9,6 +9,7 @@ import model.map.events.MineralEvent;
 import model.map.events.NothingEvent;
 import model.map.events.StoneEvent;
 import model.map.fixtures.Fortress;
+import model.map.fixtures.Ground;
 import model.map.fixtures.Mountain;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.Unit;
@@ -72,6 +73,8 @@ public class ChitPanel extends JPanel {
 			add(new MountainChit((Mountain) fix, listener));
 		} else if (fix instanceof RiverFixture) {
 			add(new RiverChit((RiverFixture) fix, listener));
+		} else if (fix instanceof Ground) {
+			add(new GroundChit((Ground) fix, listener));
 		} else {
 			throw new IllegalStateException("We're missing a case here");
 		}
