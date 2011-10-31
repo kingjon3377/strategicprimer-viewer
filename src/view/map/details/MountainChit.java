@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.map.events.Mountain;
+import model.map.fixtures.Mountain;
 import model.viewer.FixtureTransferable;
 import util.ImageLoader;
 

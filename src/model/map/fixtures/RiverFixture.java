@@ -1,4 +1,4 @@
-package model.map.events;
+package model.map.fixtures;
 
 import java.util.EnumSet;
 import java.util.Iterator;

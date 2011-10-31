@@ -3,12 +3,10 @@ package controller.map.stax;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.Fortress;
 import model.map.PlayerCollection;
 import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
-import model.map.Unit;
 import model.map.events.IEvent;
 import model.map.events.BattlefieldEvent;
 import model.map.events.CaveEvent;
@@ -22,6 +20,8 @@ import model.map.events.StoneKind;
 import model.map.events.TownEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
+import model.map.fixtures.Fortress;
+import model.map.fixtures.Unit;
 
 /**
  * A helper class to read tiles and their contents from file. MapReader had too

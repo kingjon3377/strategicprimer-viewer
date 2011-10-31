@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.Unit;
+import model.map.fixtures.Unit;
 import util.Warning;
 import controller.map.SPFormatException;
 

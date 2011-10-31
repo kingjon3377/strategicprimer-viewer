@@ -10,7 +10,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
 import model.map.River;
-import model.map.events.RiverFixture;
+import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureTransferable;
 
 /**

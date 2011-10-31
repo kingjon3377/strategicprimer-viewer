@@ -10,7 +10,7 @@ import model.map.SPMap;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.events.Forest;
-import model.map.events.Mountain;
+import model.map.fixtures.Mountain;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.

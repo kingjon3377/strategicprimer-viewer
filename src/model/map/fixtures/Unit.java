@@ -1,4 +1,7 @@
-package model.map;
+package model.map.fixtures;
+
+import model.map.Player;
+import model.map.TileFixture;
 
 /**
  * A unit on the map.

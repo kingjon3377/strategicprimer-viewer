@@ -1,8 +1,11 @@
-package model.map;
+package model.map.fixtures;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import model.map.Player;
+import model.map.TileFixture;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but

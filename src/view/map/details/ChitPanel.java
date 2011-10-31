@@ -2,16 +2,16 @@ package view.map.details;
 
 import javax.swing.JPanel;
 
-import model.map.Fortress;
 import model.map.TileFixture;
-import model.map.Unit;
 import model.map.events.Forest;
 import model.map.events.IEvent;
 import model.map.events.MineralEvent;
-import model.map.events.Mountain;
 import model.map.events.NothingEvent;
-import model.map.events.RiverFixture;
 import model.map.events.StoneEvent;
+import model.map.fixtures.Fortress;
+import model.map.fixtures.Mountain;
+import model.map.fixtures.RiverFixture;
+import model.map.fixtures.Unit;
 import view.map.main.SelectionListener;
 
 /**

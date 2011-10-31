@@ -15,19 +15,19 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.map.Fortress;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.Unit;
 import model.map.events.AbstractTownEvent;
 import model.map.events.Forest;
 import model.map.events.IEvent;
 import model.map.events.MineralEvent;
-import model.map.events.Mountain;
-import model.map.events.RiverFixture;
 import model.map.events.StoneEvent;
+import model.map.fixtures.Fortress;
+import model.map.fixtures.Mountain;
+import model.map.fixtures.RiverFixture;
+import model.map.fixtures.Unit;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
 /**

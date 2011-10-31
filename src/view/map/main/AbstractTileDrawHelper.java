@@ -3,12 +3,12 @@ package view.map.main;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import model.map.Fortress;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.Unit;
 import model.map.events.IEvent;
+import model.map.fixtures.Fortress;
+import model.map.fixtures.Unit;
 
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.

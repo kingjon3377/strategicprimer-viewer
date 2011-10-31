@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
-import model.map.Fortress;
+import model.map.fixtures.Fortress;
 import model.viewer.FixtureTransferable;
 
 /**

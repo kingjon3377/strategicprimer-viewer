@@ -2,7 +2,7 @@ package controller.map.simplexml.node;
 
 import controller.map.SPFormatException;
 import model.map.PlayerCollection;
-import model.map.events.Mountain;
+import model.map.fixtures.Mountain;
 /**
  * A Node to produce a Mountain.
  * @author Jonathan Lovelace

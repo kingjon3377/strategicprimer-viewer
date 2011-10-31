@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import model.map.events.NothingEvent;
-import model.map.events.RiverFixture;
+import model.map.fixtures.RiverFixture;
 
 /**
  * A tile in a map.
