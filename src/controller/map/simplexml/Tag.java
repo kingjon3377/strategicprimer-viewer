@@ -88,6 +88,10 @@ enum Tag {
 	 */
 	Shrub,
 	/**
+	 * An oasis.
+	 */
+	Oasis,
+	/**
 	 * A town.
 	 */
 	Town;

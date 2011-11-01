@@ -11,6 +11,7 @@ import model.map.events.StoneEvent;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Mountain;
+import model.map.fixtures.Oasis;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.Shrub;
 import model.map.fixtures.Unit;
@@ -78,6 +79,8 @@ public class ChitPanel extends JPanel {
 			add(new GroundChit((Ground) fix, listener));
 		} else if (fix instanceof Shrub) {
 			add(new ShrubChit((Shrub) fix, listener));
+		} else if (fix instanceof Oasis) {
+			add(new OasisChit((Oasis) fix, listener));
 		} else {
 			throw new IllegalStateException("We're missing a case here");
 		}

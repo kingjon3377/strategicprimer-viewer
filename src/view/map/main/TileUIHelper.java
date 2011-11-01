@@ -11,6 +11,7 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.events.Forest;
 import model.map.fixtures.Mountain;
+import model.map.fixtures.Oasis;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.
@@ -64,6 +65,7 @@ public class TileUIHelper {
 		descriptions.put(TileType.Steppe, "<html><p>Steppe</p></html>");
 		featureColors.put(Forest.class, new Color(0, 117, 0));
 		featureColors.put(Mountain.class, new Color(249, 137, 28));
+		featureColors.put(Oasis.class, new Color(72, 218, 164));
 	}
 
 	/**
