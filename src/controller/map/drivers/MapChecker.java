@@ -41,6 +41,8 @@ public final class MapChecker {
 			SystemOut.SYS_OUT.println("Usage: MapChecker filename [filename ...]");
 		}
 		for (String filename : args) {
+			SystemOut.SYS_OUT.print("Starting ");
+			SystemOut.SYS_OUT.println(filename);
 			try {
 				READER.readMap(filename);
 			} catch (MapVersionException e) {
@@ -58,6 +60,8 @@ public final class MapChecker {
 				LOGGER.log(Level.SEVERE, "SP map format error reading " + filename, e);
 				continue;
 			}
+			SystemOut.SYS_OUT.print("No errors in ");
+			SystemOut.SYS_OUT.println(filename);
 		}
 	}
 
