@@ -11,8 +11,8 @@ import controller.map.SPFormatException;
 public class GroundNode extends AbstractFixtureNode<Ground> {
 	/**
 	 * @param players ignored
-	 * @return the Forest this node represents.
-	 * @throws SPFormatException if the forest doesn't have a "kind" property.
+	 * @return the Ground this node represents.
+	 * @throws SPFormatException if the element was missing any required properties
 	 */
 	@Override
 	public Ground produce(final PlayerCollection players) throws SPFormatException {
@@ -20,8 +20,8 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	}
 	
 	/**
-	 * Check whether the node is valid. A forest is valid if it has a "kind"
-	 * property and no children. TODO: add further properties.
+	 * Check whether the node is valid. A Ground is valid if it has "ground" and "exposed"
+	 * properties and no children. TODO: add further properties.
 	 * 
 	 * @throws SPFormatException
 	 *             if any required properties are missing.
