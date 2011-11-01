@@ -23,6 +23,7 @@ public class ExplorationRunner { // NOPMD
 	 * 
 	 * @return what the owner of a fortress on the tile knows
 	 */
+	@SuppressWarnings("deprecation")
 	public String defaultResults(final Tile tile) {
 		final StringBuilder sb = new StringBuilder(// NOPMD
 				"The primary rock type here is ");
@@ -70,6 +71,7 @@ public class ExplorationRunner { // NOPMD
 	 * 
 	 * @return the main kind of tree on the tile
 	 */
+	@SuppressWarnings("deprecation")
 	public String getPrimaryTree(final Tile tile) {
 		if (TileType.BorealForest.equals(tile.getType())) {
 			return tables.get("boreal_major_tree").generateEvent(tile); // NOPMD

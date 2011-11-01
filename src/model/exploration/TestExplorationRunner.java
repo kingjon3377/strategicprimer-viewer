@@ -82,6 +82,7 @@ public final class TestExplorationRunner {
 	 * TODO Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetPrimaryTree() {
 		runner.loadTable("boreal_major_tree", new ConstantTable(
@@ -157,6 +158,7 @@ public final class TestExplorationRunner {
 	/**
 	 * Test the defaultResults() method.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testDefaultResults() {
 		runner.loadTable("major_rock", new ConstantTable("test_rock"));
