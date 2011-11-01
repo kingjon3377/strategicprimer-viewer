@@ -1,11 +1,8 @@
 package view.map.details;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -55,40 +52,12 @@ public class GroundChit extends Chit {
 			image = ImageLoader.getLoader().loadImage("expground.png");
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Ground image file not found", e);
-			image = createImage();
+			image = createDefaultImage();
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading ground image");
-			image = createImage();
+			image = createDefaultImage();
 		}
 	}
-	/**
-	 * Create a backup image.
-	 * @return an image of a tree.
-	 */
-	private static Image createImage() {
-		final int imageSize = 24; // NOPMD
-		final BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D pen = temp.createGraphics();
-		final Color saveColor = pen.getColor();
-		pen.setColor(Color.RED);
-		pen.fillRoundRect(((int) (imageSize * MARGIN)) + 1,
-				((int) (imageSize * MARGIN)) + 1,
-				((int) (imageSize * (1.0 - MARGIN * 2.0))),
-				((int) (imageSize * (1.0 - MARGIN * 2.0))),
-				((int) (imageSize * (MARGIN / 2.0))),
-				((int) (imageSize * (MARGIN / 2.0))));
-		pen.setColor(saveColor);
-		pen.fillRoundRect(((int) (imageSize / 2.0 - imageSize * MARGIN)) + 1,
-				((int) (imageSize / 2.0 - imageSize * MARGIN)) + 1,
-				((int) (imageSize * MARGIN * 2.0)), ((int) (imageSize
-						* MARGIN * 2.0)), ((int) (imageSize * MARGIN / 2.0)),
-				((int) (imageSize * MARGIN / 2.0)));
-		return temp;
-	}
-	/**
-	 * The margin we allow around the chit itself in the default image.
-	 */
-	private static final double MARGIN = 0.15;
 	/**
 	 * Paint the chit.
 	 * @param pen the graphics context.

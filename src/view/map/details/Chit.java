@@ -1,10 +1,14 @@
 package view.map.details;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import view.map.main.Selectable;
 
@@ -75,4 +79,33 @@ public abstract class Chit extends Selectable { // NOPMD
 				this, DnDConstants.ACTION_COPY,
 				new ChitDragGestureListener(transferable));
 	}
+	/**
+	 * Create a backup image.
+	 * @return a default image
+	 */
+	protected static Image createDefaultImage() {
+		/**
+		 * The margin we allow around the chit itself in the default image.
+		 */
+		final double margin = 0.15; // NOPMD
+		final int imageSize = 24; // NOPMD
+		final BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D pen = temp.createGraphics();
+		final Color saveColor = pen.getColor();
+		pen.setColor(Color.RED);
+		pen.fillRoundRect(((int) (imageSize * margin)) + 1,
+				((int) (imageSize * margin)) + 1,
+				((int) (imageSize * (1.0 - margin * 2.0))),
+				((int) (imageSize * (1.0 - margin * 2.0))),
+				((int) (imageSize * (margin / 2.0))),
+				((int) (imageSize * (margin / 2.0))));
+		pen.setColor(saveColor);
+		pen.fillRoundRect(((int) (imageSize / 2.0 - imageSize * margin)) + 1,
+				((int) (imageSize / 2.0 - imageSize * margin)) + 1,
+				((int) (imageSize * margin * 2.0)), ((int) (imageSize
+						* margin * 2.0)), ((int) (imageSize * margin / 2.0)),
+				((int) (imageSize * margin / 2.0)));
+		return temp;
+	}
+
 }
