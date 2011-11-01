@@ -28,6 +28,7 @@ import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Mountain;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.Shrub;
 import model.map.fixtures.Unit;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
@@ -212,6 +213,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return getImage("expground.png"); // NOPMD)
 		} else if (fix instanceof Ground) {
 			return getImage("blank.png"); // NOPMD
+		} else if (fix instanceof Shrub) {
+			return getImage("shrub.png"); // NOPMD
 		} else {
 			LOGGER.warning("Using the fallback image because this is an unanticipated kind of Fixture.");
 			return fallbackImage;
