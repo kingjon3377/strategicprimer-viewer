@@ -13,6 +13,7 @@ import controller.map.simplexml.node.MapNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.PlayerNode;
 import controller.map.simplexml.node.RiverNode;
+import controller.map.simplexml.node.ShrubNode;
 import controller.map.simplexml.node.SkippableNode;
 import controller.map.simplexml.node.TileNode;
 import controller.map.simplexml.node.UnitNode;
@@ -91,6 +92,7 @@ public final class NodeFactory { // NOPMD
 		addTag("forest", Tag.Forest);
 		addTag("mountain", Tag.Mountain);
 		addTag("ground", Tag.Ground);
+		addTag("shrub", Tag.Shrub);
 	}
 
 	/**
@@ -177,6 +179,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Ground:
 			node = new GroundNode();
+			break;
+		case Shrub:
+			node = new ShrubNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

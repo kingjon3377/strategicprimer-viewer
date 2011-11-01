@@ -84,6 +84,10 @@ enum Tag {
 	 */
 	Ground,
 	/**
+	 * A shrub or patch of shrubs.
+	 */
+	Shrub,
+	/**
 	 * A town.
 	 */
 	Town;
