@@ -50,7 +50,7 @@ public class MountainChit extends Chit {
 			LOGGER.log(Level.SEVERE, "Mountain image file not found", e);
 			image = createImage();
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading mountain image");
+			LOGGER.log(Level.SEVERE, "I/O error reading mountain image", e);
 			image = createImage();
 		}
 	}
