@@ -97,6 +97,7 @@ public final class NodeFactory { // NOPMD
 		addTag("shrub", Tag.Shrub);
 		addTag("oasis", Tag.Oasis);
 		addTag("grove", Tag.Grove);
+		addTag("orchard", Tag.Grove);
 	}
 
 	/**
