@@ -92,6 +92,10 @@ enum Tag {
 	 */
 	Oasis,
 	/**
+	 * A grove or orchard. (An orchard is fruit trees, a grove is other trees.)
+	 */
+	Grove,
+	/**
 	 * A town.
 	 */
 	Town;

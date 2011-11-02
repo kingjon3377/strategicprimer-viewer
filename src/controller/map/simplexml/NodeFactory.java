@@ -9,6 +9,7 @@ import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.GroundNode;
+import controller.map.simplexml.node.GroveNode;
 import controller.map.simplexml.node.MapNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.OasisNode;
@@ -95,6 +96,7 @@ public final class NodeFactory { // NOPMD
 		addTag("ground", Tag.Ground);
 		addTag("shrub", Tag.Shrub);
 		addTag("oasis", Tag.Oasis);
+		addTag("grove", Tag.Grove);
 	}
 
 	/**
@@ -187,6 +189,10 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Oasis:
 			node = new OasisNode();
+			break;
+		case Grove:
+			node = new GroveNode();
+			node.addProperty("tag", tag);
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
