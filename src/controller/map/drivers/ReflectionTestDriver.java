@@ -14,14 +14,16 @@ import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A driver to test reflection-based map loading speed against the old way.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class ReflectionTestDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ReflectionTestDriver.class.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(ReflectionTestDriver.class.getName());
 	/**
 	 * The map reader we'll use.
 	 */
@@ -30,49 +32,67 @@ public final class ReflectionTestDriver {
 	 * How many reps to use on each file.
 	 */
 	private static final int REPS = 50;
+
 	/**
 	 * Do not instantiate.
 	 */
 	private ReflectionTestDriver() {
 		// Nothing.
 	}
+
 	/**
-	 * @param args the list of filenames to check
+	 * Run the test.
+	 * 
+	 * @param filename
+	 *            the test file
+	 * @param runs
+	 *            how many times to run the test
+	 * @param reflection
+	 *            whether to use reflection
+	 * @return how long the test took
+	 * @throws SPFormatException on map format error
+	 * @throws XMLStreamException on XML reading error
+	 * @throws IOException on other I/O error
+	 */
+	private static long runTest(final String filename, final int runs,
+			final boolean reflection) throws IOException, XMLStreamException, SPFormatException {
+		final long start = System.nanoTime();
+		for (int i = 0; i < runs; i++) {
+			READER.readMap(filename, reflection);
+		}
+		final long end = System.nanoTime();
+		return end - start;
+	}
+
+	/**
+	 * @param args
+	 *            the list of filenames to check
 	 */
 	public static void main(final String[] args) {
 		if (args.length < 1) {
-			SystemOut.SYS_OUT.println("Usage: MapChecker filename [filename ...]");
+			SystemOut.SYS_OUT
+					.println("Usage: MapChecker filename [filename ...]");
 		}
 		for (String filename : args) {
 			try {
-			SystemOut.SYS_OUT.print("Starting ");
-			SystemOut.SYS_OUT.println(filename);
-			long duration;
-			long start = System.nanoTime();
-			for (int i = 0; i < REPS; i++) {
-					READER.readMap(filename);
-			}
-			long end = System.nanoTime();
-			duration = end - start;
-			SystemOut.SYS_OUT.print(filename);
-			SystemOut.SYS_OUT.print("\t\t\ttook ");
-			SystemOut.SYS_OUT.print(duration);
-			SystemOut.SYS_OUT.print(" ns, average of ");
-			SystemOut.SYS_OUT.println((duration / REPS));
-			start = System.nanoTime();
-			for (int i = 0; i < REPS; i++) {
-					READER.readMap(filename, true);
-			}
-			end = System.nanoTime();
-			duration = end - start;
-			SystemOut.SYS_OUT.print("With reflection, ");
-			SystemOut.SYS_OUT.print(filename);
-			SystemOut.SYS_OUT.print("\ttook ");
-			SystemOut.SYS_OUT.print(duration);
-			SystemOut.SYS_OUT.print(" ns, average of ");
-			SystemOut.SYS_OUT.println((duration / REPS));
+				SystemOut.SYS_OUT.print("Starting ");
+				SystemOut.SYS_OUT.println(filename);
+				long duration = runTest(filename, REPS, false);
+				SystemOut.SYS_OUT.print(filename);
+				SystemOut.SYS_OUT.print("\t\t\ttook ");
+				SystemOut.SYS_OUT.print(duration);
+				SystemOut.SYS_OUT.print(" ns, average of ");
+				SystemOut.SYS_OUT.println((duration / REPS));
+				duration = runTest(filename, REPS, true);
+				SystemOut.SYS_OUT.print("With reflection, ");
+				SystemOut.SYS_OUT.print(filename);
+				SystemOut.SYS_OUT.print("\ttook ");
+				SystemOut.SYS_OUT.print(duration);
+				SystemOut.SYS_OUT.print(" ns, average of ");
+				SystemOut.SYS_OUT.println((duration / REPS));
 			} catch (MapVersionException e) {
-				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
+				LOGGER.log(Level.SEVERE, "Map version in " + filename
+						+ " not acceptable to reader", e);
 				continue;
 			} catch (FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
@@ -81,10 +101,12 @@ public final class ReflectionTestDriver {
 				LOGGER.log(Level.SEVERE, "I/O error reading " + filename, e);
 				continue;
 			} catch (XMLStreamException e) {
-				LOGGER.log(Level.SEVERE, "XML stream error reading " + filename, e);
+				LOGGER.log(Level.SEVERE,
+						"XML stream error reading " + filename, e);
 				continue;
 			} catch (SPFormatException e) {
-				LOGGER.log(Level.SEVERE, "SP map format error reading " + filename, e);
+				LOGGER.log(Level.SEVERE, "SP map format error reading "
+						+ filename, e);
 				continue;
 			}
 		}
