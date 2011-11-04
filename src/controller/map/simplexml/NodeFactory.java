@@ -1,5 +1,6 @@
 package controller.map.simplexml;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +61,20 @@ public final class NodeFactory { // NOPMD
 	private static void addTag(final String string, final Tag tag) {
 		TAGS.put(string, tag);
 	}
+	/**
+	 * A mapping from tags to classes, so we can instantiate them using reflection.
+	 */
+	private static final Map<Tag, Class<? extends AbstractChildNode<?>>> CLASSES = new EnumMap<Tag, Class<? extends AbstractChildNode<?>>>(
+			Tag.class);
+	/**
+	 * Set up a class.
+	 * @param tag a tag category
+	 * @param node a node Class it should produce
+	 */
+	private static void addClass(final Tag tag,
+			final Class<? extends AbstractChildNode<?>> node) {
+		CLASSES.put(tag, node);
+	}
 
 	/**
 	 * Tags we expect to use in the future; they are SkippableNodes for now and
@@ -100,8 +115,88 @@ public final class NodeFactory { // NOPMD
 		addTag("grove", Tag.Grove);
 		addTag("orchard", Tag.Grove);
 		addTag("mine", Tag.Mine);
+		addClass(Tag.Battlefield, EventNode.class);
+		addClass(Tag.Cave, EventNode.class);
+		addClass(Tag.City, EventNode.class);
+		addClass(Tag.Event, EventNode.class);
+		addClass(Tag.Fortification, EventNode.class);
+		addClass(Tag.Fortress, FortressNode.class);
+		addClass(Tag.Lake, RiverNode.class);
+		addClass(Tag.Map, MapNode.class);
+		addClass(Tag.Mineral, EventNode.class);
+		addClass(Tag.Player, PlayerNode.class);
+		addClass(Tag.River, RiverNode.class);
+		addClass(Tag.Skippable, SkippableNode.class);
+		addClass(Tag.Stone, EventNode.class);
+		addClass(Tag.Tile, TileNode.class);
+		addClass(Tag.Town, EventNode.class);
+		addClass(Tag.Unit, UnitNode.class);
+		addClass(Tag.Forest, ForestNode.class);
+		addClass(Tag.Mountain, MountainNode.class);
+		addClass(Tag.Ground, GroundNode.class);
+		addClass(Tag.Shrub, ShrubNode.class);
+		addClass(Tag.Oasis, OasisNode.class);
+		addClass(Tag.Grove, GroveNode.class);
+		addClass(Tag.Mine, MineNode.class);
 	}
-
+	/**
+	 * Create a Node from a tag using reflection.
+	 * @param tag
+	 *            the tag.
+	 * @param line
+	 *            the line of the file it's on ... just in case.
+	 * @return a Node representing the tag, but not its contents yet.
+	 * @throws SPFormatException
+	 *             on unrecognized tag
+	 * @throws IllegalAccessException thrown by reflection
+	 * @throws InstantiationException thrown by reflection
+	 */
+	public static AbstractChildNode<?> createReflection(final String tag,
+			final int line) throws SPFormatException, InstantiationException,
+			IllegalAccessException {
+		if (!TAGS.containsKey(tag)) {
+			throw new SPFormatException("Unknown tag " + tag, line);
+		}
+		final Tag localtag = TAGS.get(tag); // NOPMD
+		if (!CLASSES.containsKey(localtag)) {
+			throw new IllegalStateException("Tag enum value " + localtag + " missing from CLASSES map");
+		}
+		final AbstractChildNode<?> node = CLASSES.get(localtag).newInstance();
+		switch (localtag) {
+		case Battlefield:
+			node.addProperty(EVENT_KIND_PROP, "battlefield");
+			break;
+		case Cave:
+			node.addProperty(EVENT_KIND_PROP, "cave");
+			break;
+		case City:
+			node.addProperty(EVENT_KIND_PROP, "city");
+			break;
+		case Fortification:
+			node.addProperty(EVENT_KIND_PROP, "fortification");
+			break;
+		case Lake:
+			node.addProperty("direction", "lake");
+			break;
+		case Mineral:
+			node.addProperty(EVENT_KIND_PROP, "mineral");
+			break;
+		case Stone:
+			node.addProperty(EVENT_KIND_PROP, "stone");
+			break;
+		case Town:
+			node.addProperty(EVENT_KIND_PROP, "town");
+			break;
+		case Grove:
+			node.addProperty("tag", tag);
+			break;
+		default:
+			// Do nothing .. this switch is only for tags that need special treatment
+			break;
+		}
+		node.addProperty("line", Integer.toString(line));
+		return node;
+	}
 	/**
 	 * Create a Node from a tag.
 	 * 

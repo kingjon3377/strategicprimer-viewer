@@ -16,6 +16,12 @@ import controller.map.SPFormatException;
  */
 public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	/**
+	 * Required for reflection.
+	 */
+	public SkippableNode() {
+		super();
+	}
+	/**
 	 * Constructor. Warns if the tag isn't the one kind we routinely expect to
 	 * see in every map; tags we expect to see in future map formats are added
 	 * as SkippableNodes too, but if we see them in a map we should warn about
