@@ -31,6 +31,18 @@ public class GroundChit extends Chit {
 		desc = "<html><p>" + ground.getDescription()
 				+ (ground.isExposed() ? " (exposed)" : " (not exposed)")
 				+ "</p></html>";
+		// ESCA-JAVA0177:
+		Image img;
+		try {
+			img = ImageLoader.getLoader().loadImage("expground.png");
+		} catch (FileNotFoundException e) {
+			LOGGER.log(Level.SEVERE, "Ground image file not found", e);
+			img = createDefaultImage();
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error reading ground image");
+			img = createDefaultImage();
+		}
+		image = img;
 	}
 	/**
 	 * @return a description of the forest.
@@ -42,22 +54,11 @@ public class GroundChit extends Chit {
 	/**
 	 * The image we'll use to draw the chit.
 	 */
-	private static Image image;
+	private final Image image;
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ForestChit.class.getName());
-	static {
-		try {
-			image = ImageLoader.getLoader().loadImage("expground.png");
-		} catch (FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "Ground image file not found", e);
-			image = createDefaultImage();
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading ground image");
-			image = createDefaultImage();
-		}
-	}
 	/**
 	 * Paint the chit.
 	 * @param pen the graphics context.

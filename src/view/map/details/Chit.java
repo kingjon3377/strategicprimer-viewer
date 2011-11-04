@@ -83,7 +83,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	 * Create a backup image.
 	 * @return a default image
 	 */
-	protected static Image createDefaultImage() {
+	protected Image createDefaultImage() {
 		/**
 		 * The margin we allow around the chit itself in the default image.
 		 */
