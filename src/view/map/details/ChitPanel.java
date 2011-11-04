@@ -68,12 +68,11 @@ public class ChitPanel extends JPanel {
 			// never actually occur.
 			return; // NOPMD
 		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
-				Oasis.class, Shrub.class, MineralEvent.class, StoneEvent.class, Mountain.class)) {
+				Oasis.class, Shrub.class, MineralEvent.class, StoneEvent.class,
+				Mountain.class, Forest.class)) {
 			add(new SimpleChit(fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));
-		} else if (fix instanceof Forest) { 
-			add(new ForestChit((Forest) fix, listener));
 		} else if (fix instanceof RiverFixture) {
 			add(new RiverChit((RiverFixture) fix, listener));
 		} else if (fix instanceof Ground) {
