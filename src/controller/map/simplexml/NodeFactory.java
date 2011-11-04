@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import util.EqualsAny;
-
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
+import controller.map.simplexml.node.AnimalNode;
 import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
@@ -118,6 +118,7 @@ public final class NodeFactory { // NOPMD
 		addTag("grove", Tag.Grove);
 		addTag("orchard", Tag.Grove);
 		addTag("mine", Tag.Mine);
+		addTag("animal", Tag.Animal);
 		addClass(Tag.Battlefield, EventNode.class);
 		addClass(Tag.Cave, EventNode.class);
 		addClass(Tag.City, EventNode.class);
@@ -141,6 +142,7 @@ public final class NodeFactory { // NOPMD
 		addClass(Tag.Oasis, OasisNode.class);
 		addClass(Tag.Grove, GroveNode.class);
 		addClass(Tag.Mine, MineNode.class);
+		addClass(Tag.Animal, AnimalNode.class);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -280,6 +282,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Mine:
 			node = new MineNode();
+			break;
+		case Animal:
+			node = new AnimalNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

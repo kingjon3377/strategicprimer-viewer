@@ -100,6 +100,10 @@ enum Tag {
 	 */
 	Mine,
 	/**
+	 * An animal or group of animals.
+	 */
+	Animal,
+	/**
 	 * A town.
 	 */
 	Town;
