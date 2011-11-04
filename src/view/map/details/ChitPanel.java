@@ -81,9 +81,7 @@ public class ChitPanel extends JPanel {
 			add(new GroundChit((Ground) fix, listener));
 		} else if (fix instanceof Shrub) {
 			add(new ShrubChit((Shrub) fix, listener));
-		} else if (fix instanceof Oasis) {
-			add(new OasisChit((Oasis) fix, listener));
-		} else if (fix instanceof Mine || fix instanceof Grove) {
+		} else if (fix instanceof Mine || fix instanceof Grove || fix instanceof Oasis) {
 			add(new SimpleChit(fix, listener));
 		} else {
 			throw new IllegalStateException("We're missing a case here");
