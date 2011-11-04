@@ -69,8 +69,9 @@ public class ChitPanel extends JPanel {
 			// NothingEvents represent the absence of all events, and should
 			// never actually occur.
 			return; // NOPMD
-		} else if (fix instanceof MineralEvent) {
-			add(new MineralChit((MineralEvent) fix, listener));
+		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
+				Oasis.class, Shrub.class, MineralEvent.class)) {
+			add(new SimpleChit(fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));
 		} else if (fix instanceof Forest) { 
@@ -81,9 +82,6 @@ public class ChitPanel extends JPanel {
 			add(new RiverChit((RiverFixture) fix, listener));
 		} else if (fix instanceof Ground) {
 			add(new GroundChit((Ground) fix, listener));
-		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
-				Oasis.class, Shrub.class)) {
-			add(new SimpleChit(fix, listener));
 		} else {
 			throw new IllegalStateException("We're missing a case here");
 		}
