@@ -44,11 +44,11 @@ public final class ReflectionTestDriver {
 			SystemOut.SYS_OUT.println("Usage: MapChecker filename [filename ...]");
 		}
 		for (String filename : args) {
+			try {
 			SystemOut.SYS_OUT.print("Starting ");
 			SystemOut.SYS_OUT.println(filename);
 			long duration;
 			long start = System.nanoTime();
-			try {
 			for (int i = 0; i < REPS; i++) {
 					READER.readMap(filename);
 			}
