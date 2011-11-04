@@ -10,6 +10,9 @@ import java.awt.dnd.DragSource;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
+import model.map.TileFixture;
+import model.map.events.Forest;
+import model.map.fixtures.Mountain;
 import view.map.main.Selectable;
 
 /**
@@ -80,10 +83,11 @@ public abstract class Chit extends Selectable { // NOPMD
 				new ChitDragGestureListener(transferable));
 	}
 	/**
-	 * Create a backup image.
+	 * Create a backup image, special-casing forests and mountains (and perhaps others).
+	 * @param fix the fixture it'll represent
 	 * @return a default image
 	 */
-	protected Image createDefaultImage() {
+	protected Image createDefaultImage(final TileFixture fix) {
 		/**
 		 * The margin we allow around the chit itself in the default image.
 		 */
@@ -92,19 +96,29 @@ public abstract class Chit extends Selectable { // NOPMD
 		final BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
-		pen.setColor(Color.RED);
-		pen.fillRoundRect(((int) (imageSize * margin)) + 1,
-				((int) (imageSize * margin)) + 1,
-				((int) (imageSize * (1.0 - margin * 2.0))),
-				((int) (imageSize * (1.0 - margin * 2.0))),
-				((int) (imageSize * (margin / 2.0))),
-				((int) (imageSize * (margin / 2.0))));
-		pen.setColor(saveColor);
-		pen.fillRoundRect(((int) (imageSize / 2.0 - imageSize * margin)) + 1,
-				((int) (imageSize / 2.0 - imageSize * margin)) + 1,
-				((int) (imageSize * margin * 2.0)), ((int) (imageSize
-						* margin * 2.0)), ((int) (imageSize * margin / 2.0)),
-				((int) (imageSize * margin / 2.0)));
+		if (fix instanceof Mountain) {
+			pen.setColor(Color.orange);
+			// ESCA-JAVA0076:
+			pen.fillPolygon(new int[] { 0, 12, 24 }, new int[] { 24, 0, 24 }, 3);
+		} else if (fix instanceof Forest) {
+			pen.setColor(Color.green);
+			// ESCA-JAVA0076:
+			pen.fillPolygon(new int[] { 8, 12, 16 }, new int[] { 24, 0, 24 }, 3);
+		} else {
+			pen.setColor(Color.RED);
+			pen.fillRoundRect(((int) (imageSize * margin)) + 1,
+					((int) (imageSize * margin)) + 1,
+					((int) (imageSize * (1.0 - margin * 2.0))),
+					((int) (imageSize * (1.0 - margin * 2.0))),
+					((int) (imageSize * (margin / 2.0))),
+					((int) (imageSize * (margin / 2.0))));
+			pen.setColor(saveColor);
+			pen.fillRoundRect(((int) (imageSize / 2.0 - imageSize * margin)) + 1,
+					((int) (imageSize / 2.0 - imageSize * margin)) + 1,
+					((int) (imageSize * margin * 2.0)), ((int) (imageSize
+							* margin * 2.0)), ((int) (imageSize * margin / 2.0)),
+							((int) (imageSize * margin / 2.0)));
+		}
 		return temp;
 	}
 

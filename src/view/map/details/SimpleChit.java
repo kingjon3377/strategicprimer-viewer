@@ -40,13 +40,13 @@ public class SimpleChit extends Chit {
 				localImage = ImageLoader.getLoader().loadImage(((HasImage) fix).getImage());
 			} catch (FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, "Mine image file not found", e);
-				localImage = createDefaultImage();
+				localImage = createDefaultImage(fix);
 			} catch (IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error reading mine image");
-				localImage = createDefaultImage();
+				localImage = createDefaultImage(fix);
 			}
 		} else {
-			localImage = createDefaultImage();
+			localImage = createDefaultImage(fix);
 		}
 		image = localImage;
 	}

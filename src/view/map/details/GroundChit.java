@@ -37,10 +37,10 @@ public class GroundChit extends Chit {
 			img = ImageLoader.getLoader().loadImage("expground.png");
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Ground image file not found", e);
-			img = createDefaultImage();
+			img = createDefaultImage(ground);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading ground image");
-			img = createDefaultImage();
+			img = createDefaultImage(ground);
 		}
 		image = img;
 	}
