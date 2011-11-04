@@ -17,6 +17,7 @@ import model.map.fixtures.Oasis;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.Shrub;
 import model.map.fixtures.Unit;
+import util.EqualsAny;
 import view.map.main.SelectionListener;
 
 /**
@@ -56,6 +57,7 @@ public class ChitPanel extends JPanel {
 	 * @param fix
 	 *            the Fixture to add a chit for
 	 */
+	@SuppressWarnings("unchecked")
 	public void add(final TileFixture fix) {
 		if (fix instanceof Fortress) {
 			add(new FortChit((Fortress) fix, listener));
@@ -79,8 +81,8 @@ public class ChitPanel extends JPanel {
 			add(new RiverChit((RiverFixture) fix, listener));
 		} else if (fix instanceof Ground) {
 			add(new GroundChit((Ground) fix, listener));
-		} else if (fix instanceof Mine || fix instanceof Grove
-				|| fix instanceof Oasis || fix instanceof Shrub) {
+		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
+				Oasis.class, Shrub.class)) {
 			add(new SimpleChit(fix, listener));
 		} else {
 			throw new IllegalStateException("We're missing a case here");
