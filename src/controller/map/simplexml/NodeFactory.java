@@ -4,6 +4,8 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import util.EqualsAny;
+
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.EventNode;
@@ -160,37 +162,13 @@ public final class NodeFactory { // NOPMD
 			throw new IllegalStateException("Tag enum value " + localtag + " missing from CLASSES map");
 		}
 		final AbstractChildNode<?> node = CLASSES.get(localtag).newInstance();
-		switch (localtag) {
-		case Battlefield:
-			node.addProperty(EVENT_KIND_PROP, "battlefield");
-			break;
-		case Cave:
-			node.addProperty(EVENT_KIND_PROP, "cave");
-			break;
-		case City:
-			node.addProperty(EVENT_KIND_PROP, "city");
-			break;
-		case Fortification:
-			node.addProperty(EVENT_KIND_PROP, "fortification");
-			break;
-		case Lake:
+		if (EqualsAny.equalsAny(localtag, Tag.Battlefield, Tag.Cave, Tag.City,
+				Tag.Fortification, Tag.Mineral, Tag.Stone, Tag.Town)) {
+			node.addProperty(EVENT_KIND_PROP, tag);
+		} else if (Tag.Lake.equals(localtag)) {
 			node.addProperty("direction", "lake");
-			break;
-		case Mineral:
-			node.addProperty(EVENT_KIND_PROP, "mineral");
-			break;
-		case Stone:
-			node.addProperty(EVENT_KIND_PROP, "stone");
-			break;
-		case Town:
-			node.addProperty(EVENT_KIND_PROP, "town");
-			break;
-		case Grove:
+		} else if (Tag.Grove.equals(localtag)) {
 			node.addProperty("tag", tag);
-			break;
-		default:
-			// Do nothing .. this switch is only for tags that need special treatment
-			break;
 		}
 		node.addProperty("line", Integer.toString(line));
 		return node;
