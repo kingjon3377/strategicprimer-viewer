@@ -26,6 +26,7 @@ import model.map.events.TownStatus;
  * 
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("deprecation")
 public class LegacyTable implements EncounterTable {
 	/**
 	 * The list of events we can return.
