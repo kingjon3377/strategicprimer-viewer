@@ -58,7 +58,7 @@ public class GroundChit extends Chit {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ForestChit.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(GroundChit.class.getName());
 	/**
 	 * Paint the chit.
 	 * @param pen the graphics context.
