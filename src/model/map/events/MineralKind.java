@@ -8,6 +8,7 @@ import java.util.Map;
  * 
  * @author Jonathan Lovelace
  */
+@Deprecated
 public enum MineralKind {
 	/**
 	 * Iron.

@@ -7,14 +7,13 @@ import model.map.PlayerCollection;
 import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
-import model.map.events.IEvent;
 import model.map.events.BattlefieldEvent;
 import model.map.events.CaveEvent;
 import model.map.events.CityEvent;
 import model.map.events.EventKind;
 import model.map.events.FortificationEvent;
+import model.map.events.IEvent;
 import model.map.events.MineralEvent;
-import model.map.events.MineralKind;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import model.map.events.TownEvent;
@@ -164,8 +163,7 @@ public class TileReader {
 					Integer.parseInt(helper.getAttribute(elem, "dc")));
 			break;
 		case Mineral:
-			retval = new MineralEvent(MineralKind.parseMineralKind(helper
-					.getAttribute(elem, "mineral")),
+			retval = new MineralEvent(helper.getAttribute(elem, "mineral"),
 					Boolean.parseBoolean(helper.getAttribute(elem, "exposed")),
 					Integer.parseInt(helper.getAttribute(elem, "dc")));
 			break;

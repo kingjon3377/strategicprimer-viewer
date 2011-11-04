@@ -47,8 +47,8 @@ public class LegacyTable implements EncounterTable {
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
-			data.add(new MineralEvent(mineral, true, 0).getText()); // NOPMD
-			data.add(new MineralEvent(mineral, false, 0).getText()); // NOPMD
+			data.add(new MineralEvent(mineral.toString(), true, 0).getText()); // NOPMD
+			data.add(new MineralEvent(mineral.toString(), false, 0).getText()); // NOPMD
 		}
 		data.add(NothingEvent.NOTHING_EVENT.getText());
 		for (final StoneKind stone : StoneKind.values()) {

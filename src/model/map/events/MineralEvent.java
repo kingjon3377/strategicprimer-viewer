@@ -18,7 +18,7 @@ public final class MineralEvent implements IEvent {
 	 * @param discdc
 	 *            the dc to discover the vein
 	 */
-	public MineralEvent(final MineralKind minkind, final boolean exp,
+	public MineralEvent(final String minkind, final boolean exp,
 			final int discdc) {
 		super();
 		mineral = minkind;
@@ -29,13 +29,13 @@ public final class MineralEvent implements IEvent {
 	/**
 	 * What kind of mineral this is.
 	 */
-	private final MineralKind mineral;
+	private final String mineral;
 
 	/**
 	 * 
 	 * @return what kind of mineral this is
 	 */
-	public MineralKind mineral() {
+	public String mineral() {
 		return mineral;
 	}
 
@@ -77,7 +77,7 @@ public final class MineralEvent implements IEvent {
 			build.append("n exposed");
 		}
 		build.append(" vein of ");
-		build.append(mineral.toString());
+		build.append(mineral);
 		build.append(" here");
 		if (exposed) {
 			build.append('.');
@@ -116,7 +116,7 @@ public final class MineralEvent implements IEvent {
 	 */
 	@Override
 	public String toString() {
-		return "A " + mineral.toString() + " deposit, "
+		return "A " + mineral + " deposit, "
 				+ (exposed ? "exposed" : "not exposed") + ", DC " + dc;
 	}
 	/**
@@ -125,7 +125,7 @@ public final class MineralEvent implements IEvent {
 	@Override
 	public String toXML() {
 		return new StringBuilder("<mineral mineral=\"")
-				.append(mineral.toString()).append("\" exposed=\"")
+				.append(mineral).append("\" exposed=\"")
 				.append(exposed).append("\" dc=\"").append(dc).append("\" />")
 				.toString();
 	}

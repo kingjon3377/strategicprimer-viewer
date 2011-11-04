@@ -2,7 +2,6 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.events.MineralEvent;
-import model.map.events.MineralKind;
 import controller.map.SPFormatException;
 
 /**
@@ -31,7 +30,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	public MineralEvent produce(final PlayerCollection players)
 			throws SPFormatException {
 		return new MineralEvent(
-				MineralKind.parseMineralKind(getProperty("mineral")),
+				getProperty("mineral"),
 				Boolean.parseBoolean(getProperty("exposed")),
 				Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
