@@ -64,8 +64,7 @@ public final class NodeFactory { // NOPMD
 	/**
 	 * A mapping from tags to classes, so we can instantiate them using reflection.
 	 */
-	private static final Map<Tag, Class<? extends AbstractChildNode<?>>> CLASSES = new EnumMap<Tag, Class<? extends AbstractChildNode<?>>>(
-			Tag.class);
+	private static final Map<Tag, Class<? extends AbstractChildNode<?>>> CLASSES;
 	/**
 	 * Set up a class.
 	 * @param tag a tag category
@@ -88,6 +87,8 @@ public final class NodeFactory { // NOPMD
 	 * remove a tag from FUTURE, we handle those before the tags we *do* handle.
 	 */
 	static {
+		CLASSES = new EnumMap<Tag, Class<? extends AbstractChildNode<?>>>(
+				Tag.class);
 		for (final String string : FUTURE) {
 			addTag(string, Tag.Skippable);
 		}
