@@ -37,7 +37,7 @@ public class MineChit extends Chit {
 	 */
 	public MineChit(final Mine mine, final MouseListener listener) {
 		super(listener, new FixtureTransferable(mine));
-		desc = "<html><p>" + mine.getStatus().toString() + " mine of " + mine.getProduct() + "</p></html>";
+		desc = "<html><p>" + mine.toString() + "</p></html>";
 	}
 	/**
 	 * The image that represents a mine.

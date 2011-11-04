@@ -55,4 +55,11 @@ public class Mine implements TileFixture, HasImage {
 	public String getImage() {
 		return "mine.png";
 	}
+	/**
+	 * @return a string representation of the mine
+	 */
+	@Override
+	public String toString() {
+		return getStatus().toString() + " mine of " + getProduct();
+	}
 }
