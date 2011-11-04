@@ -96,6 +96,10 @@ enum Tag {
 	 */
 	Grove,
 	/**
+	 * A mine.
+	 */
+	Mine,
+	/**
 	 * A town.
 	 */
 	Town;

@@ -5,7 +5,7 @@ import model.map.fixtures.Shrub;
 import controller.map.SPFormatException;
 
 /**
- * A Node to represent shrubs (or the aquatic equivalent) on the tile
+ * A Node to represent shrubs (or the aquatic equivalent) on the tile.
  * @author Jonathan Lovelace
  *
  */

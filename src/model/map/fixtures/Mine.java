@@ -1,0 +1,50 @@
+package model.map.fixtures;
+
+import model.map.TileFixture;
+import model.map.events.TownStatus;
+
+/**
+ * A mine---a source of mineral resources.
+ * @author Jonathan Lovelace
+ *
+ */
+public class Mine implements TileFixture {
+	/**
+	 * Constructor.
+	 * @param mineral what mineral this produces
+	 * @param stat the status of the mine
+	 */
+	public Mine(final String mineral, final TownStatus stat) {
+		product = mineral;
+		status = stat;
+	}
+	/**
+	 * What the mine produces.
+	 */
+	private final String product;
+	/**
+	 * The status of the mine.
+	 */
+	private final TownStatus status;
+	/**
+	 * @return what the mine produces
+	 */
+	public String getProduct() {
+		return product;
+	}
+	/**
+	 * @return the status of the mine
+	 */
+	public TownStatus getStatus() {
+		return status;
+	}
+	/**
+	 * @return an XML representation of the mine
+	 */
+	@Override
+	public String toXML() {
+		return new StringBuilder("<mine product=\"").append(product)
+				.append("\" status=\"").append(status.toString())
+				.append("\" />").toString();
+	}
+}
