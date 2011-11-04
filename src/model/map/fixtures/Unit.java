@@ -1,5 +1,6 @@
 package model.map.fixtures;
 
+import model.map.HasImage;
 import model.map.Player;
 import model.map.TileFixture;
 
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public class Unit implements Comparable<Unit>, TileFixture {
+public class Unit implements Comparable<Unit>, TileFixture, HasImage {
 	/**
 	 * The player that owns the unit.
 	 */
@@ -134,5 +135,13 @@ public class Unit implements Comparable<Unit>, TileFixture {
 		}
 		sbuild.append("\" />");
 		return sbuild.toString();
+	}
+	/**
+	 * TODO: Should be per-unit-type ...
+	 * @return the name of an image to represent the unit.
+	 */
+	@Override
+	public String getImage() {
+		return "unit.png";
 	}
 }

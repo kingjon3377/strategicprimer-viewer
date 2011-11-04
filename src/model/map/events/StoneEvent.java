@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.HasImage;
+
 
 /**
  * A deposit (always exposed for now) of stone.
@@ -7,7 +9,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class StoneEvent implements IEvent {
+public final class StoneEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 * 
@@ -97,5 +99,12 @@ public final class StoneEvent implements IEvent {
 	public String toXML() {
 		return new StringBuilder("<stone stone=\"").append(stone.toString())
 				.append("\" dc=\"").append(dc).append("\" />").toString();
+	}
+	/**
+	 * @return the name of an image to represent the event
+	 */
+	@Override
+	public String getImage() {
+		return "stone.png";
 	}
 }

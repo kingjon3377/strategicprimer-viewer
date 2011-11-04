@@ -1,5 +1,6 @@
 package model.map.fixtures;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 
 /**
@@ -7,7 +8,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Grove implements TileFixture {
+public class Grove implements TileFixture, HasImage {
 	/**
 	 * Whether this is a fruit orchard.
 	 */
@@ -66,5 +67,12 @@ public class Grove implements TileFixture {
 		builder.append(getTrees());
 		builder.append("\" />");
 		return builder.toString();
+	}
+	/**
+	 * @return the name of an image to represent the grove or orchard
+	 */
+	@Override
+	public String getImage() {
+		return orchard ? "orchard.png" : "grove.png";
 	}
 }

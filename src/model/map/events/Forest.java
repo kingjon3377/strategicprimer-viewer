@@ -1,5 +1,6 @@
 package model.map.events;
 
+import model.map.HasImage;
 import model.map.TerrainFixture;
 
 /**
@@ -7,7 +8,7 @@ import model.map.TerrainFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Forest implements TerrainFixture {
+public class Forest implements TerrainFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param kind what kind of trees dominate.
@@ -35,5 +36,13 @@ public class Forest implements TerrainFixture {
 		sbuild.append(trees);
 		sbuild.append("\" />");
 		return sbuild.toString();
+	}
+	/**
+	 * TODO: Should differ based on what kind of tree.
+	 * @return the name of an image to represent the forest.
+	 */
+	@Override
+	public String getImage() {
+		return "tree.png";
 	}
 }

@@ -1,5 +1,6 @@
 package model.map.fixtures;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.events.TownStatus;
 
@@ -8,7 +9,7 @@ import model.map.events.TownStatus;
  * @author Jonathan Lovelace
  *
  */
-public class Mine implements TileFixture {
+public class Mine implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param mineral what mineral this produces
@@ -46,5 +47,12 @@ public class Mine implements TileFixture {
 		return new StringBuilder("<mine product=\"").append(product)
 				.append("\" status=\"").append(status.toString())
 				.append("\" />").toString();
+	}
+	/**
+	 * @return the name of an image to represent the mine
+	 */
+	@Override
+	public String getImage() {
+		return "mine.png";
 	}
 }

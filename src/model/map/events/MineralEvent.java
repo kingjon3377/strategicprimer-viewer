@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.HasImage;
+
 
 /**
  * A vein of a mineral.
@@ -7,7 +9,7 @@ package model.map.events;
  * @author Jonathan Lovelace
  * 
  */
-public final class MineralEvent implements IEvent {
+public final class MineralEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 * 
@@ -128,5 +130,12 @@ public final class MineralEvent implements IEvent {
 				.append(mineral).append("\" exposed=\"")
 				.append(exposed).append("\" dc=\"").append(dc).append("\" />")
 				.toString();
+	}
+	/**
+	 * @return the name of an image to represent the event
+	 */
+	@Override
+	public String getImage() {
+		return "mineral.png";
 	}
 }

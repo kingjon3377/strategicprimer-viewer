@@ -1,12 +1,13 @@
 package model.map.fixtures;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
  * @author Jonathan Lovelace
  *
  */
-public class Ground implements TileFixture {
+public class Ground implements TileFixture, HasImage {
 	/**
 	 * @return an XML representation of the Fixture.
 	 */
@@ -44,5 +45,12 @@ public class Ground implements TileFixture {
 	 */
 	public String getDescription() {
 		return description;
+	}
+	/**
+	 * @return the name of an image to represent the ground.
+	 */
+	@Override
+	public String getImage() {
+		return exposed ? "expground.png" : "blank.png";
 	}
 }

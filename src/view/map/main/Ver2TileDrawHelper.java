@@ -15,24 +15,13 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.map.HasImage;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.events.AbstractTownEvent;
-import model.map.events.Forest;
 import model.map.events.IEvent;
-import model.map.events.MineralEvent;
-import model.map.events.StoneEvent;
-import model.map.fixtures.Fortress;
-import model.map.fixtures.Ground;
-import model.map.fixtures.Grove;
-import model.map.fixtures.Mine;
-import model.map.fixtures.Mountain;
-import model.map.fixtures.Oasis;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.Shrub;
-import model.map.fixtures.Unit;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
 /**
@@ -194,38 +183,12 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return an Image to draw to represent it.
 	 */
 	private Image getImageForFixture(final TileFixture fix) {
-		if (fix instanceof Mountain) {
-			return getImage("mountain.png"); // NOPMD
-		} else if (fix instanceof Forest) {
-			return getImage("tree.png"); // NOPMD // TODO: Should have different icons depending on the kind of tree.
-		} else if (fix instanceof AbstractTownEvent) {
-			return getImage("town.png"); // FIXME: Should be more granular // NOPMD:
-		} else if (fix instanceof StoneEvent) {
-			return getImage("stone.png"); // NOPMD
-		} else if (fix instanceof MineralEvent) {
-			return getImage("mineral.png"); // NOPMD
+		if (fix instanceof HasImage) {
+			return getImage(((HasImage) fix).getImage()); // NOPMD
 		} else if (fix instanceof IEvent) {
 			return getImage("event.png"); // NOPMD
-		} else if (fix instanceof Fortress) {
-			return getImage("fortress.png"); // NOPMD
-		} else if (fix instanceof Unit) {
-			return getImage("unit.png"); // TODO: Should eventually be more granular // NOPMD 
 		} else if (fix instanceof RiverFixture) { 
 			return getImage(riverFiles.get(((RiverFixture) fix).getRivers())); // NOPMD
-		} else if (fix instanceof Ground && ((Ground) fix).isExposed()) {
-			return getImage("expground.png"); // NOPMD)
-		} else if (fix instanceof Ground) {
-			return getImage("blank.png"); // NOPMD
-		} else if (fix instanceof Shrub) {
-			return getImage("shrub.png"); // NOPMD
-		} else if (fix instanceof Oasis) {
-			return getImage("oasis.png"); // NOPMD
-		} else if (fix instanceof Grove && ((Grove) fix).isOrchard()) {
-			return getImage("orchard.png"); // NOPMD
-		} else if (fix instanceof Grove) {
-			return getImage("grove.png"); // NOPMD
-		} else if (fix instanceof Mine) {
-			return getImage("mine.png"); // NOPMD
 		} else {
 			LOGGER.warning("Using the fallback image because this is an unanticipated kind of Fixture.");
 			return fallbackImage;

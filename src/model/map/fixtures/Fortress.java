@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import model.map.HasImage;
 import model.map.Player;
 import model.map.TileFixture;
 
@@ -16,7 +17,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements Comparable<Fortress>, TileFixture {
+public class Fortress implements Comparable<Fortress>, TileFixture, HasImage {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -161,5 +162,13 @@ public class Fortress implements Comparable<Fortress>, TileFixture {
 		}
 		sbuild.append("</fortress>");
 		return sbuild.toString();
+	}
+	/**
+	 * TODO: Should perhaps be more granular.
+	 * @return the name of an image to represent the fortress.
+	 */
+	@Override
+	public String getImage() {
+		return "fortress.png";
 	}
 }

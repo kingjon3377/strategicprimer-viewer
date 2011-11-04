@@ -1,5 +1,6 @@
 package model.map.fixtures;
 
+import model.map.HasImage;
 import model.map.TerrainFixture;
 
 /**
@@ -7,7 +8,7 @@ import model.map.TerrainFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Oasis implements TerrainFixture {
+public class Oasis implements TerrainFixture, HasImage {
 	/**
 	 * @return a String representation of the oasis.
 	 */
@@ -21,5 +22,12 @@ public class Oasis implements TerrainFixture {
 	@Override
 	public String toXML() {
 		return "<oasis />";
+	}
+	/**
+	 * @return the name of an image to represent the oasis.
+	 */
+	@Override
+	public String getImage() {
+		return "oasis.png";
 	}
 }

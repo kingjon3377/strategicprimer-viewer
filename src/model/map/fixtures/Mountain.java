@@ -1,5 +1,6 @@
 package model.map.fixtures;
 
+import model.map.HasImage;
 import model.map.TerrainFixture;
 
 /**
@@ -7,7 +8,7 @@ import model.map.TerrainFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Mountain implements TerrainFixture {
+public class Mountain implements TerrainFixture, HasImage {
 	/**
 	 * @return a String representation of the forest.
 	 */
@@ -21,5 +22,12 @@ public class Mountain implements TerrainFixture {
 	@Override
 	public String toXML() {
 		return "<mountain />";
+	}
+	/**
+	 * @return the name of an image to represent the mountain.
+	 */
+	@Override
+	public String getImage() {
+		return "mountain.png";
 	}
 }

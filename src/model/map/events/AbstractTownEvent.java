@@ -1,12 +1,14 @@
 package model.map.events;
 
+import model.map.HasImage;
+
 /**
  * An abstract superclass for towns etc.
  * 
  * @author Jonathan Lovelace
  */
 // ESCA-JAVA0011:
-public abstract class AbstractTownEvent implements IEvent {
+public abstract class AbstractTownEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 * 
@@ -119,5 +121,13 @@ public abstract class AbstractTownEvent implements IEvent {
 	 */
 	public EventKind kind() {
 		return kind;
+	}
+	/**
+	 * TODO: Should be more granular.
+	 * @return the name of an image to represent the event.
+	 */
+	@Override
+	public String getImage() {
+		return "town.png";
 	}
 }

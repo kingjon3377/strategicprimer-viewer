@@ -1,5 +1,6 @@
 package model.map.fixtures;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 
 /**
@@ -7,7 +8,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Shrub implements TileFixture {
+public class Shrub implements TileFixture, HasImage {
 	/**
 	 * @return an XML representation of the Fixture.
 	 */
@@ -32,5 +33,12 @@ public class Shrub implements TileFixture {
 	 */
 	public String getDescription() {
 		return description;
+	}
+	/**
+	 * @return the name of an image to represent the shrub.
+	 */
+	@Override
+	public String getImage() {
+		return "shrub.png";
 	}
 }
