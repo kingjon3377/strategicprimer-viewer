@@ -46,28 +46,31 @@ public final class ReflectionTestDriver {
 		for (String filename : args) {
 			SystemOut.SYS_OUT.print("Starting ");
 			SystemOut.SYS_OUT.println(filename);
+			long duration;
 			long start = System.nanoTime();
 			try {
 			for (int i = 0; i < REPS; i++) {
 					READER.readMap(filename);
 			}
 			long end = System.nanoTime();
+			duration = end - start;
 			SystemOut.SYS_OUT.print(filename);
 			SystemOut.SYS_OUT.print("\t\t\ttook ");
-			SystemOut.SYS_OUT.print((end - start));
+			SystemOut.SYS_OUT.print(duration);
 			SystemOut.SYS_OUT.print(" ns, average of ");
-			SystemOut.SYS_OUT.println(((end - start) / REPS));
+			SystemOut.SYS_OUT.println((duration / REPS));
 			start = System.nanoTime();
 			for (int i = 0; i < REPS; i++) {
 					READER.readMap(filename, true);
 			}
 			end = System.nanoTime();
+			duration = end - start;
 			SystemOut.SYS_OUT.print("With reflection, ");
 			SystemOut.SYS_OUT.print(filename);
 			SystemOut.SYS_OUT.print("\ttook ");
-			SystemOut.SYS_OUT.print((end - start));
+			SystemOut.SYS_OUT.print(duration);
 			SystemOut.SYS_OUT.print(" ns, average of ");
-			SystemOut.SYS_OUT.println(((end - start) / REPS));
+			SystemOut.SYS_OUT.println((duration / REPS));
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				break;
