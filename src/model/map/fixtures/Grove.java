@@ -75,4 +75,12 @@ public class Grove implements TileFixture, HasImage {
 	public String getImage() {
 		return orchard ? "orchard.png" : "grove.png";
 	}
+	/**
+	 * @return a String representation of the grove or orchard
+	 */
+	@Override
+	public String toString() {
+		return (isWild() ? "Wild " : "Cultivated ") + getTrees()
+				+ (isOrchard() ? " orchard" : " grove");
+	}
 }
