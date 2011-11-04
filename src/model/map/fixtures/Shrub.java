@@ -41,4 +41,11 @@ public class Shrub implements TileFixture, HasImage {
 	public String getImage() {
 		return "shrub.png";
 	}
+	/**
+	 * @return the description of the shrub
+	 */
+	@Override
+	public String toString() {
+		return getDescription();
+	}
 }
