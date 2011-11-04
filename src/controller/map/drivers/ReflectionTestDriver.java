@@ -73,19 +73,19 @@ public final class ReflectionTestDriver {
 			SystemOut.SYS_OUT.println((duration / REPS));
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
-				break;
+				continue;
 			} catch (FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
-				break;
+				continue;
 			} catch (IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error reading " + filename, e);
-				break;
+				continue;
 			} catch (XMLStreamException e) {
 				LOGGER.log(Level.SEVERE, "XML stream error reading " + filename, e);
-				break;
+				continue;
 			} catch (SPFormatException e) {
 				LOGGER.log(Level.SEVERE, "SP map format error reading " + filename, e);
-				break;
+				continue;
 			}
 		}
 	}
