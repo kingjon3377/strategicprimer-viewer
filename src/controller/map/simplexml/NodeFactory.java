@@ -155,10 +155,7 @@ public final class NodeFactory { // NOPMD
 	public static AbstractChildNode<?> createReflection(final String tag,
 			final int line) throws SPFormatException, InstantiationException,
 			IllegalAccessException {
-		if (!TAGS.containsKey(tag)) {
-			throw new SPFormatException("Unknown tag " + tag, line);
-		}
-		final Tag localtag = TAGS.get(tag); // NOPMD
+		final Tag localtag = getTag(tag, line);
 		if (!CLASSES.containsKey(localtag)) {
 			throw new IllegalStateException("Tag enum value " + localtag + " missing from CLASSES map");
 		}
@@ -199,6 +196,19 @@ public final class NodeFactory { // NOPMD
 		return node;
 	}
 	/**
+	 * @param tag An XML tag
+	 * @param line the line it occurs on
+	 * @return the Tag object representing it
+	 * @throws SPFormatException if there is no Tag object representing it
+	 */
+	protected static Tag getTag(final String tag, final int line)
+			throws SPFormatException {
+		if (!TAGS.containsKey(tag)) {
+			throw new SPFormatException("Unknown tag " + tag, line);
+		}
+		return TAGS.get(tag);
+	}
+	/**
 	 * Create a Node from a tag.
 	 * 
 	 * @param tag
@@ -211,13 +221,10 @@ public final class NodeFactory { // NOPMD
 	 */
 	public static AbstractChildNode<?> create(final String tag, final int line) // NOPMD
 			throws SPFormatException {
-		if (!TAGS.containsKey(tag)) {
-			throw new SPFormatException("Unknown tag " + tag, line);
-		}
 		// ESCA-JAVA0177:
 		final AbstractChildNode<?> node; // NOPMD
 		// ESCA-JAVA0040:
-		switch (TAGS.get(tag)) {
+		switch (getTag(tag, line)) {
 		case Battlefield:
 			node = new EventNode();
 			node.addProperty(EVENT_KIND_PROP, "battlefield");
