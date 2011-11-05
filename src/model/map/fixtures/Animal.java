@@ -10,15 +10,27 @@ import model.map.TileFixture;
  */
 public class Animal implements TileFixture, HasImage {
 	/**
+	 * Whether this is really the animal, or only traces.
+	 */
+	private final boolean traces;
+	/**
 	 * Kind of animal.
 	 */
 	private final String kind;
 	/**
 	 * Constructor.
 	 * @param animal what kind of animal
+	 * @param tracks whether this is really the animal, or only tracks
 	 */
-	public Animal(final String animal) {
+	public Animal(final String animal, final boolean tracks) {
 		kind = animal;
+		traces = tracks;
+	}
+	/**
+	 * @return true if this is only traces or tracks, false if this is really the animal
+	 */
+	public boolean isTraces() {
+		return traces;
 	}
 	/**
 	 * @return what kind of animal this is
@@ -31,15 +43,20 @@ public class Animal implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<animal kind=\"").append(kind)
-				.append("\" />").toString();
+		final StringBuilder sbuild = new StringBuilder("<animal kind=\"");
+		sbuild.append(kind);
+		if (isTraces()) {
+			sbuild.append("traces=\"");
+		}
+		sbuild.append("\" />");
+		return sbuild.toString();
 	}
 	/**
 	 * @return a String representation of the animal
 	 */
 	@Override
 	public String toString() {
-		return getAnimal();
+		return (isTraces() ? "traces of " : "") + getAnimal();
 	}
 	/**
 	 * TODO: Should depend on the kind of animal.

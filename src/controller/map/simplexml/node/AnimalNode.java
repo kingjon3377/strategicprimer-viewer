@@ -21,7 +21,7 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	@Override
 	public Animal produce(final PlayerCollection players)
 			throws SPFormatException {
-		return new Animal(getProperty("kind"));
+		return new Animal(getProperty("kind"), hasProperty("traces"));
 	}
 
 	/**
