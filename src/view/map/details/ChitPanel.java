@@ -8,6 +8,7 @@ import model.map.events.IEvent;
 import model.map.events.MineralEvent;
 import model.map.events.NothingEvent;
 import model.map.events.StoneEvent;
+import model.map.fixtures.Animal;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Grove;
@@ -69,7 +70,7 @@ public class ChitPanel extends JPanel {
 			return; // NOPMD
 		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
 				Oasis.class, Shrub.class, MineralEvent.class, StoneEvent.class,
-				Mountain.class, Forest.class)) {
+				Mountain.class, Forest.class, Animal.class)) {
 			add(new SimpleChit(fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));
