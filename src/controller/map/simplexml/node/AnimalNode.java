@@ -10,7 +10,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  * 
  */
-public class AnimalNode extends AbstractChildNode<Animal> {
+public class AnimalNode extends AbstractFixtureNode<Animal> {
 	/**
 	 * @param players
 	 *            ignored
