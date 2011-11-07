@@ -108,6 +108,10 @@ enum Tag {
 	 */
 	Meadow,
 	/**
+	 * A hill.
+	 */
+	Hill,
+	/**
 	 * A town.
 	 */
 	Town;

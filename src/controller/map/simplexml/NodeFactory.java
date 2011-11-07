@@ -13,6 +13,7 @@ import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.GroundNode;
 import controller.map.simplexml.node.GroveNode;
+import controller.map.simplexml.node.HillNode;
 import controller.map.simplexml.node.MapNode;
 import controller.map.simplexml.node.MeadowNode;
 import controller.map.simplexml.node.MineNode;
@@ -122,6 +123,7 @@ public final class NodeFactory { // NOPMD
 		addTag("animal", Tag.Animal);
 		addTag("field", Tag.Meadow);
 		addTag("meadow", Tag.Meadow);
+		addTag("hill", Tag.Hill);
 		addClass(Tag.Battlefield, EventNode.class);
 		addClass(Tag.Cave, EventNode.class);
 		addClass(Tag.City, EventNode.class);
@@ -147,6 +149,7 @@ public final class NodeFactory { // NOPMD
 		addClass(Tag.Mine, MineNode.class);
 		addClass(Tag.Animal, AnimalNode.class);
 		addClass(Tag.Meadow, MeadowNode.class);
+		addClass(Tag.Hill, HillNode.class);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -293,6 +296,9 @@ public final class NodeFactory { // NOPMD
 		case Meadow:
 			node = new MeadowNode();
 			node.addProperty("tag", tag);
+			break;
+		case Hill:
+			node = new HillNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

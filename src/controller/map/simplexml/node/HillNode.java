@@ -1,0 +1,33 @@
+package controller.map.simplexml.node;
+
+import controller.map.SPFormatException;
+import model.map.PlayerCollection;
+import model.map.fixtures.Hill;
+
+/**
+ * A Node to produce a Hill.
+ * @author Jonathan Lovelace
+ *
+ */
+public class HillNode extends AbstractFixtureNode<Hill> {
+	/**
+	 * @param players ignored
+	 * @return the Hill this represents
+	 * @throws SPFormatException never
+	 */
+	@Override
+	public Hill produce(final PlayerCollection players) throws SPFormatException {
+		return new Hill();
+	}
+	/**
+	 * check that the node is valid. A Hill is valid if it has no children. TODO: should it have attributes?
+	 * @throws SPFormatException if the node is invalid
+	 */
+	@Override
+	public void checkNode() throws SPFormatException {
+		if (iterator().hasNext()) {
+			throw new SPFormatException("Hill shouldn't have children", getLine());
+		}
+	}
+
+}
