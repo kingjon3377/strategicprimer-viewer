@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 
 import model.map.TileFixture;
 import model.map.events.AbstractTownEvent;
-import model.map.events.Forest;
 import model.map.events.IEvent;
+import model.map.fixtures.Forest;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Mountain;
 import model.map.fixtures.RiverFixture;

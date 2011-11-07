@@ -9,7 +9,7 @@ import java.util.Map;
 import model.map.SPMap;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.events.Forest;
+import model.map.fixtures.Forest;
 import model.map.fixtures.Mountain;
 import model.map.fixtures.Oasis;
 

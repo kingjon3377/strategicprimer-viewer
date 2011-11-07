@@ -2,7 +2,7 @@ package controller.map.simplexml.node;
 
 import controller.map.SPFormatException;
 import model.map.PlayerCollection;
-import model.map.events.Forest;
+import model.map.fixtures.Forest;
 /**
  * A Node that will produce a Forest.
  * @author Jonathan Lovelace

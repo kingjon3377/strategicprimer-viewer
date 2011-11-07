@@ -11,7 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import model.map.TileFixture;
-import model.map.events.Forest;
+import model.map.fixtures.Forest;
 import model.map.fixtures.Mountain;
 import view.map.main.Selectable;
 

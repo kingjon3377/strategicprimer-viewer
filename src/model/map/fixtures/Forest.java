@@ -1,4 +1,4 @@
-package model.map.events;
+package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TerrainFixture;

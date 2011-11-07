@@ -3,12 +3,12 @@ package view.map.details;
 import javax.swing.JPanel;
 
 import model.map.TileFixture;
-import model.map.events.Forest;
 import model.map.events.IEvent;
 import model.map.events.MineralEvent;
 import model.map.events.NothingEvent;
 import model.map.events.StoneEvent;
 import model.map.fixtures.Animal;
+import model.map.fixtures.Forest;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Grove;
