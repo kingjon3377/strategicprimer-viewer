@@ -104,6 +104,10 @@ enum Tag {
 	 */
 	Animal,
 	/**
+	 * A meadow or field. (A meadow is grass, and in forest.)
+	 */
+	Meadow,
+	/**
 	 * A town.
 	 */
 	Town;

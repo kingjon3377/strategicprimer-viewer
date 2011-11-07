@@ -14,6 +14,7 @@ import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.GroundNode;
 import controller.map.simplexml.node.GroveNode;
 import controller.map.simplexml.node.MapNode;
+import controller.map.simplexml.node.MeadowNode;
 import controller.map.simplexml.node.MineNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.OasisNode;
@@ -119,6 +120,8 @@ public final class NodeFactory { // NOPMD
 		addTag("orchard", Tag.Grove);
 		addTag("mine", Tag.Mine);
 		addTag("animal", Tag.Animal);
+		addTag("field", Tag.Meadow);
+		addTag("meadow", Tag.Meadow);
 		addClass(Tag.Battlefield, EventNode.class);
 		addClass(Tag.Cave, EventNode.class);
 		addClass(Tag.City, EventNode.class);
@@ -143,6 +146,7 @@ public final class NodeFactory { // NOPMD
 		addClass(Tag.Grove, GroveNode.class);
 		addClass(Tag.Mine, MineNode.class);
 		addClass(Tag.Animal, AnimalNode.class);
+		addClass(Tag.Meadow, MeadowNode.class);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -169,7 +173,7 @@ public final class NodeFactory { // NOPMD
 			node.addProperty(EVENT_KIND_PROP, tag);
 		} else if (Tag.Lake.equals(localtag)) {
 			node.addProperty("direction", "lake");
-		} else if (Tag.Grove.equals(localtag)) {
+		} else if (EqualsAny.equalsAny(localtag, Tag.Grove, Tag.Meadow)) {
 			node.addProperty("tag", tag);
 		}
 		node.addProperty("line", Integer.toString(line));
@@ -285,6 +289,10 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Animal:
 			node = new AnimalNode();
+			break;
+		case Meadow:
+			node = new MeadowNode();
+			node.addProperty("tag", tag);
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
