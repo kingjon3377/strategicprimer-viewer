@@ -18,7 +18,6 @@ import controller.map.IMapReader;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
-import controller.map.simplexml.node.TileNode;
 
 /**
  * An XML-map reader that just converts the XML into XMLNodes, which then
