@@ -6,6 +6,7 @@ import java.util.Set;
 
 import model.map.events.NothingEvent;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
 
 /**
  * A tile in a map.
@@ -88,7 +89,9 @@ public final class Tile implements XMLWritable {
 	 *            something new on the tile
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (!fix.equals(NothingEvent.NOTHING_EVENT)) {
+		if (!fix.equals(NothingEvent.NOTHING_EVENT)
+				&& !((fix instanceof TextFixture) && ((TextFixture) fix)
+						.getText().isEmpty())) {
 			if (fix instanceof RiverFixture) {
 				if (rivers == null) {
 					rivers = (RiverFixture) fix;

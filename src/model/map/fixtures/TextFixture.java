@@ -64,5 +64,10 @@ public class TextFixture implements TileFixture, HasImage {
 	public int getZValue() {
 		return 0;
 	}
-
+	/**
+	 * @return the text this fixture encapsulates
+	 */
+	public String getText() {
+		return text;
+	}
 }
