@@ -8,6 +8,7 @@ import util.EqualsAny;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AnimalNode;
+import controller.map.simplexml.node.CacheNode;
 import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
@@ -21,6 +22,7 @@ import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.OasisNode;
 import controller.map.simplexml.node.PlayerNode;
 import controller.map.simplexml.node.RiverNode;
+import controller.map.simplexml.node.SandbarNode;
 import controller.map.simplexml.node.ShrubNode;
 import controller.map.simplexml.node.SkippableNode;
 import controller.map.simplexml.node.TileNode;
@@ -126,6 +128,8 @@ public final class NodeFactory { // NOPMD
 		addTag("meadow", Tag.Meadow);
 		addTag("hill", Tag.Hill);
 		addTag("village", Tag.Village);
+		addTag("cache", Tag.Cache);
+		addTag("sandbar", Tag.Sandbar);
 		addClass(Tag.Battlefield, EventNode.class);
 		addClass(Tag.Cave, EventNode.class);
 		addClass(Tag.City, EventNode.class);
@@ -153,6 +157,8 @@ public final class NodeFactory { // NOPMD
 		addClass(Tag.Meadow, MeadowNode.class);
 		addClass(Tag.Hill, HillNode.class);
 		addClass(Tag.Village, VillageNode.class);
+		addClass(Tag.Cache, CacheNode.class);
+		addClass(Tag.Sandbar, SandbarNode.class);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -305,6 +311,12 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Village:
 			node = new VillageNode();
+			break;
+		case Cache:
+			node = new CacheNode();
+			break;
+		case Sandbar:
+			node = new SandbarNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

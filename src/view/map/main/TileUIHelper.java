@@ -12,6 +12,7 @@ import model.map.TileType;
 import model.map.fixtures.Forest;
 import model.map.fixtures.Mountain;
 import model.map.fixtures.Oasis;
+import model.map.fixtures.Sandbar;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.
@@ -66,6 +67,7 @@ public class TileUIHelper {
 		featureColors.put(Forest.class, new Color(0, 117, 0));
 		featureColors.put(Mountain.class, new Color(249, 137, 28));
 		featureColors.put(Oasis.class, new Color(72, 218, 164));
+		featureColors.put(Sandbar.class, new Color(249, 233, 28));
 	}
 
 	/**

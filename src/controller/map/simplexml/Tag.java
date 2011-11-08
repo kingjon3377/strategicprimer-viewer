@@ -116,6 +116,14 @@ enum Tag {
 	 */
 	Village,
 	/**
+	 * A (resource) cache (of vegetables, a hidden treasure, ...) on the tile.
+	 */
+	Cache,
+	/**
+	 * A sandbar.
+	 */
+	Sandbar,
+	/**
 	 * A town.
 	 */
 	Town;
