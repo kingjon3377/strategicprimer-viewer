@@ -25,6 +25,7 @@ import controller.map.simplexml.node.ShrubNode;
 import controller.map.simplexml.node.SkippableNode;
 import controller.map.simplexml.node.TileNode;
 import controller.map.simplexml.node.UnitNode;
+import controller.map.simplexml.node.VillageNode;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
@@ -124,6 +125,7 @@ public final class NodeFactory { // NOPMD
 		addTag("field", Tag.Meadow);
 		addTag("meadow", Tag.Meadow);
 		addTag("hill", Tag.Hill);
+		addTag("village", Tag.Village);
 		addClass(Tag.Battlefield, EventNode.class);
 		addClass(Tag.Cave, EventNode.class);
 		addClass(Tag.City, EventNode.class);
@@ -150,6 +152,7 @@ public final class NodeFactory { // NOPMD
 		addClass(Tag.Animal, AnimalNode.class);
 		addClass(Tag.Meadow, MeadowNode.class);
 		addClass(Tag.Hill, HillNode.class);
+		addClass(Tag.Village, VillageNode.class);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -299,6 +302,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Hill:
 			node = new HillNode();
+			break;
+		case Village:
+			node = new VillageNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

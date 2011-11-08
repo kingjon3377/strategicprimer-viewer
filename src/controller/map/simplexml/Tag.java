@@ -112,6 +112,10 @@ enum Tag {
 	 */
 	Hill,
 	/**
+	 * A village.
+	 */
+	Village,
+	/**
 	 * A town.
 	 */
 	Town;

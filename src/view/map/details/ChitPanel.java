@@ -20,6 +20,7 @@ import model.map.fixtures.Oasis;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.Shrub;
 import model.map.fixtures.Unit;
+import model.map.fixtures.Village;
 import util.EqualsAny;
 import view.map.main.SelectionListener;
 
@@ -72,7 +73,8 @@ public class ChitPanel extends JPanel {
 			return; // NOPMD
 		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
 				Oasis.class, Shrub.class, MineralEvent.class, StoneEvent.class,
-				Mountain.class, Forest.class, Animal.class, Meadow.class, Hill.class)) {
+				Mountain.class, Forest.class, Animal.class, Meadow.class,
+				Hill.class, Village.class)) {
 			add(new SimpleChit(fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));
