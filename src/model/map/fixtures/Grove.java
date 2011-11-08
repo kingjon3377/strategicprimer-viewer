@@ -83,4 +83,11 @@ public class Grove implements TileFixture, HasImage {
 		return (isWild() ? "Wild " : "Cultivated ") + getTrees()
 				+ (isOrchard() ? " orchard" : " grove");
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 35;
+	}
 }

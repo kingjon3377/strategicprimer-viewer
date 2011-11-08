@@ -49,4 +49,11 @@ public class Village implements TileFixture, HasImage {
 	public String getImage() {
 		return "village.png";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 45;
+	}
 }

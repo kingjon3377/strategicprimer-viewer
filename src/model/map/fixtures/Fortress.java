@@ -171,4 +171,11 @@ public class Fortress implements Comparable<Fortress>, TileFixture, HasImage {
 	public String getImage() {
 		return "fortress.png";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 60;
+	}
 }

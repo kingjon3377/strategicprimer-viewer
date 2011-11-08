@@ -53,4 +53,12 @@ public class Ground implements TileFixture, HasImage {
 	public String getImage() {
 		return exposed ? "expground.png" : "blank.png";
 	}
+	/**
+	 * TODO: Should perhaps depend on whether it's exposed or not.
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 0;
+	}
 }

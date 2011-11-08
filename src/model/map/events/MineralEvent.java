@@ -138,4 +138,11 @@ public final class MineralEvent implements IEvent, HasImage {
 	public String getImage() {
 		return "mineral.png";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 40;
+	}
 }

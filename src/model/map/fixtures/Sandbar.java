@@ -29,4 +29,11 @@ public class Sandbar implements TerrainFixture, HasImage {
 	public String getImage() {
 		return "sandbar.png";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 5;
+	}
 }

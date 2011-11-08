@@ -66,4 +66,12 @@ public class Animal implements TileFixture, HasImage {
 	public String getImage() {
 		return "animal.png";
 	}
+	/**
+	 * TODO: Should depend on the kind of animal ...
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 40;
+	}
 }

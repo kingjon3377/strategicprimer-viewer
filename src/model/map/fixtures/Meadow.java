@@ -94,4 +94,12 @@ public class Meadow implements TileFixture, HasImage {
 		}
 		return builder.toString();
 	}
+	/**
+	 * TODO: Should probably depend.
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 15;
+	}
 }

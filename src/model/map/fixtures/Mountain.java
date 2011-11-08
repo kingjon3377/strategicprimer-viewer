@@ -30,4 +30,11 @@ public class Mountain implements TerrainFixture, HasImage {
 	public String getImage() {
 		return "mountain.png";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 10;
+	}
 }

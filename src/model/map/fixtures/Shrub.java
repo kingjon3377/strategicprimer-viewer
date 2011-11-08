@@ -48,4 +48,11 @@ public class Shrub implements TileFixture, HasImage {
 	public String toString() {
 		return getDescription();
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 15;
+	}
 }

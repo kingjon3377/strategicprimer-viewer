@@ -60,4 +60,11 @@ public class Forest implements TerrainFixture, HasImage {
 	public boolean isRows() {
 		return rows;
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 20;
+	}
 }

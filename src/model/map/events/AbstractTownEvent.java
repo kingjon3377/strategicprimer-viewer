@@ -130,4 +130,11 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	public String getImage() {
 		return "town.png";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() { // NOPMD: It claims this is "empty" and should be abstract instead.
+		return 50;
+	}
 }

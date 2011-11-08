@@ -81,4 +81,11 @@ public class RiverFixture implements TileFixture, Iterable<River> {
 		rivers.addAll(source.getRivers());
 		rivers.retainAll(source.getRivers());
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 30;
+	}
 }

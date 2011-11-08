@@ -65,4 +65,11 @@ public class CacheFixture implements TileFixture, HasImage {
 		return new StringBuilder("a cache of ").append(kind)
 				.append(" containing ").append(contents).toString();
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 22;
+	}
 }

@@ -72,4 +72,11 @@ public final class NothingEvent implements IEvent {
 	public String toXML() {
 		return "";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 0;
+	}
 }

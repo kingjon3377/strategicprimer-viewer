@@ -144,4 +144,12 @@ public class Unit implements Comparable<Unit>, TileFixture, HasImage {
 	public String getImage() {
 		return "unit.png";
 	}
+	/**
+	 * TODO: But how to determine which unit?
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 70;
+	}
 }

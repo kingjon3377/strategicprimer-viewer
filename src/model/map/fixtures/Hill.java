@@ -32,4 +32,11 @@ public class Hill implements TerrainFixture, HasImage {
 	public String getImage() {
 		return "hill.png";
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 5;
+	}
 }

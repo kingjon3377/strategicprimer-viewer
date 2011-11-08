@@ -77,4 +77,11 @@ public final class BattlefieldEvent implements IEvent {
 	public String toXML() {
 		return new StringBuilder("<battlefield dc=\"").append(dc).append("\" />").toString();
 	}
+	/**
+	 * @return a z-value for use in determining the top fixture on a tile
+	 */
+	@Override
+	public int getZValue() {
+		return 40;
+	}
 }
