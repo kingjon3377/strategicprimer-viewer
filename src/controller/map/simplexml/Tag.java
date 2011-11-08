@@ -124,6 +124,10 @@ enum Tag {
 	 */
 	Sandbar,
 	/**
+	 * Arbitrary text. (That's being moved from the tile itself into fixtures.)
+	 */
+	Text,
+	/**
 	 * A town.
 	 */
 	Town;

@@ -117,8 +117,8 @@ public class SimpleXMLReader implements IMapReader {
 				stack.peek().addChild(node);
 				stack.push(node);
 			} else if (event.isCharacters()) {
-				if (stack.peek() instanceof TileNode) {
-					((TileNode) stack.peek()).addText(event.asCharacters()
+				if (stack.peek() instanceof ITextNode) {
+					((ITextNode) stack.peek()).addText(event.asCharacters()
 							.getData());
 				}
 			} else if (event.isEndElement()) {

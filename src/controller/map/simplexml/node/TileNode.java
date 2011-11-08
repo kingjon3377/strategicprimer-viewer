@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.TextFixture;
 import controller.map.SPFormatException;
+import controller.map.simplexml.ITextNode;
 
 /**
  * A Node to represent a Tile.
@@ -12,7 +14,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  * 
  */
-public class TileNode extends AbstractChildNode<Tile> {
+public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	/**
 	 * Produce the equivalent Tile.
 	 * 
@@ -37,7 +39,7 @@ public class TileNode extends AbstractChildNode<Tile> {
 						.produce(players));
 			}
 		}
-		tile.setTileText(sbuild.toString().trim());
+		tile.addFixture(new TextFixture(sbuild.toString().trim(), -1));
 		return tile;
 	}
 
@@ -82,6 +84,7 @@ public class TileNode extends AbstractChildNode<Tile> {
 	 * @param text
 	 *            the text to add
 	 */
+	@Override
 	public void addText(final String text) {
 		sbuild.append(text);
 	}

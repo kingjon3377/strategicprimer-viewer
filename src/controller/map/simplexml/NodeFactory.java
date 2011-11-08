@@ -25,6 +25,7 @@ import controller.map.simplexml.node.RiverNode;
 import controller.map.simplexml.node.SandbarNode;
 import controller.map.simplexml.node.ShrubNode;
 import controller.map.simplexml.node.SkippableNode;
+import controller.map.simplexml.node.TextNode;
 import controller.map.simplexml.node.TileNode;
 import controller.map.simplexml.node.UnitNode;
 import controller.map.simplexml.node.VillageNode;
@@ -130,6 +131,7 @@ public final class NodeFactory { // NOPMD
 		addTag("village", Tag.Village);
 		addTag("cache", Tag.Cache);
 		addTag("sandbar", Tag.Sandbar);
+		addTag("text", Tag.Text);
 		addClass(Tag.Battlefield, EventNode.class);
 		addClass(Tag.Cave, EventNode.class);
 		addClass(Tag.City, EventNode.class);
@@ -159,6 +161,7 @@ public final class NodeFactory { // NOPMD
 		addClass(Tag.Village, VillageNode.class);
 		addClass(Tag.Cache, CacheNode.class);
 		addClass(Tag.Sandbar, SandbarNode.class);
+		addClass(Tag.Text, TextNode.class);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -317,6 +320,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Sandbar:
 			node = new SandbarNode();
+			break;
+		case Text:
+			node = new TextNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
