@@ -16,7 +16,7 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	 */
 	@Override
 	public Forest produce(final PlayerCollection players) throws SPFormatException {
-		return new Forest(getProperty("kind"));
+		return new Forest(getProperty("kind"), hasProperty("rows"));
 	}
 	
 	/**

@@ -10,11 +10,17 @@ import model.map.TerrainFixture;
  */
 public class Forest implements TerrainFixture, HasImage {
 	/**
+	 * Whether this is "rows of" trees.
+	 */
+	private final boolean rows;
+	/**
 	 * Constructor.
 	 * @param kind what kind of trees dominate.
+	 * @param rowed whether the trees are in rows
 	 */
-	public Forest(final String kind) {
+	public Forest(final String kind, final boolean rowed) {
 		trees = kind;
+		rows = rowed;
 	}
 	/**
 	 * What kind of trees dominate the forest.
@@ -25,7 +31,7 @@ public class Forest implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "A " + trees + " forest.";
+		return rows ? "Rows of " + trees + " trees." : "A " + trees + " forest.";
 	}
 	/**
 	 * @return an XML representation of the forest.
@@ -34,6 +40,9 @@ public class Forest implements TerrainFixture, HasImage {
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<forest kind=\"");
 		sbuild.append(trees);
+		if (rows) {
+			sbuild.append("\" rows=\"true");
+		}
 		sbuild.append("\" />");
 		return sbuild.toString();
 	}
@@ -44,5 +53,11 @@ public class Forest implements TerrainFixture, HasImage {
 	@Override
 	public String getImage() {
 		return "tree.png";
+	}
+	/**
+	 * @return whether this is "rows of" trees.
+	 */
+	public boolean isRows() {
+		return rows;
 	}
 }
