@@ -131,10 +131,14 @@ public class Converter {
 	 * An exploration runner, to get forest and ground types from.
 	 */
 	private final ExplorationRunner runner = new ExplorationRunner();
+	
 	/**
 	 * Convert a tile. That is, change it from a forest or mountain type to the
-	 * proper replacement type plus the proper fixture.
-	 * @param tile the tile to convert
+	 * proper replacement type plus the proper fixture. Also, in any case, add
+	 * the proper Ground.
+	 * 
+	 * @param tile
+	 *            the tile to convert
 	 */
 	@SuppressWarnings("deprecation")
 	private void convertSubtile(final Tile tile) {
@@ -148,6 +152,7 @@ public class Converter {
 			tile.addFixture(new Forest(runner.getPrimaryRock(tile), false));
 			tile.setType(TileType.Steppe);
 		}
+		tile.addFixture(new Ground(runner.getPrimaryRock(tile), false));
 	}
 	/**
 	 * Determine whether a subtile is suitable for more fixtures. It's suitable
