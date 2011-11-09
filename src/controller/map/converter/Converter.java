@@ -1,12 +1,12 @@
 package controller.map.converter;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Logger;
-
-import controller.exploration.TableLoader;
 
 import model.exploration.ExplorationRunner;
 import model.map.Player;
@@ -27,6 +27,7 @@ import model.map.fixtures.Shrub;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.Village;
 import model.viewer.MapModel;
+import controller.exploration.TableLoader;
 
 /**
  * A class to convert a version-1 map to a version-2 map with greater resolution.
@@ -185,7 +186,8 @@ public class Converter {
 	 */
 	private static void changeFor(final Tile tile, final TileFixture fix) {
 		if (fix instanceof Village || fix instanceof AbstractTownEvent) {
-			for (TileFixture fixture : tile.getContents()) {
+			final Set<TileFixture> fixtures = new HashSet<TileFixture>(tile.getContents());
+			for (TileFixture fixture : fixtures) {
 				if (fixture instanceof Forest) {
 					tile.removeFixture(fixture);
 				}
