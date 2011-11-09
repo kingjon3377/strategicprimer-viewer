@@ -82,7 +82,7 @@ public final class ViewerStart {
 			final ExplorationRunner runner = new ExplorationRunner();
 			new TableLoader().loadAllTables("tables", runner);
 			final PropertyProxy proxy = new PropertyProxy(model);
-			final DetailPanel detailPanel = new DetailPanel(model.getMainMap().getVersion(), runner, proxy);
+			final DetailPanel detailPanel = new DetailPanel(model.getMainMap().getVersion(), proxy);
 			final ViewerFrame frame = new ViewerFrame(detailPanel, proxy,
 					model, new IOHandler(model, chooser).getMenu());
 			frame.setVisible(true);

@@ -6,7 +6,6 @@ import java.beans.PropertyChangeListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import model.exploration.ExplorationRunner;
 import util.PropertyChangeSource;
 import view.map.key.KeyPanel;
 
@@ -33,13 +32,11 @@ public class DetailPanel extends JPanel {
 	 * Constructor.
 	 * 
 	 * @param version the (initial) map version
-	 * @param runner
-	 *            an exploration runner
 	 * @param tileEventSources
 	 *            Sources of property-changing events we want sub-panels to
 	 *            listen to.
 	 */
-	public DetailPanel(final int version, final ExplorationRunner runner,
+	public DetailPanel(final int version,
 			final PropertyChangeSource... tileEventSources) {
 		super();
 		setMaximumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MAX_HT));
