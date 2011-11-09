@@ -11,7 +11,6 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.ExplorationRunner;
 import model.viewer.MapModel;
 import util.PropertyProxy;
-import view.map.details.DetailPanel;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
@@ -81,10 +80,8 @@ public final class ViewerStart {
 					new MapReaderAdapter().readMap(filename));
 			final ExplorationRunner runner = new ExplorationRunner();
 			new TableLoader().loadAllTables("tables", runner);
-			final PropertyProxy proxy = new PropertyProxy(model);
-			final DetailPanel detailPanel = new DetailPanel(model.getMainMap().getVersion(), proxy);
-			final ViewerFrame frame = new ViewerFrame(detailPanel, proxy,
-					model, new IOHandler(model, chooser).getMenu());
+			final ViewerFrame frame = new ViewerFrame(model, new IOHandler(
+					model, chooser).getMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {
 				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1]));

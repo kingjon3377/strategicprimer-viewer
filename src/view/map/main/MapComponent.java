@@ -18,7 +18,6 @@ import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
-import util.PropertyChangeSource;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -28,7 +27,7 @@ import util.PropertyChangeSource;
  * 
  */
 public final class MapComponent extends JComponent implements
-		PropertyChangeSource, MapGUI, PropertyChangeListener {
+		MapGUI, PropertyChangeListener {
 	/**
 	 * The map model encapsulating the map this represents, the secondary map,
 	 * and the selected tile.

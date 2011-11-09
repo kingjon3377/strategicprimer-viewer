@@ -2,6 +2,7 @@ package view.map.main;
 
 import model.map.SPMap;
 import model.viewer.MapModel;
+import util.PropertyChangeSource;
 
 /**
  * An interface for a UI representing a map.
@@ -9,7 +10,7 @@ import model.viewer.MapModel;
  * @author Jonathan Lovelace
  * 
  */
-public interface MapGUI {
+public interface MapGUI extends PropertyChangeSource {
 	/**
 	 * Load and draw a subset of a map.
 	 * 
