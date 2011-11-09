@@ -149,7 +149,7 @@ public class Converter {
 			tile.addFixture(new Forest(runner.getPrimaryTree(tile), false));
 			tile.setType(TileType.Plains);
 		} else if (TileType.BorealForest.equals(tile.getType())) {
-			tile.addFixture(new Forest(runner.getPrimaryRock(tile), false));
+			tile.addFixture(new Forest(runner.getPrimaryTree(tile), false));
 			tile.setType(TileType.Steppe);
 		}
 		tile.addFixture(new Ground(runner.getPrimaryRock(tile), false));
