@@ -82,7 +82,9 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	protected final void moveEverythingTo(
 			final AbstractChildNode<? extends T> dest) {
 		moveChildrenTo(dest);
-		dest.properties.putAll(properties);
+		for (String property : properties.keySet()) {
+			dest.addProperty(property, properties.get(property));
+		}
 		properties.clear();
 	}
 	/**
