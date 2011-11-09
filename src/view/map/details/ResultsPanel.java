@@ -8,7 +8,6 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
@@ -77,28 +76,10 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 		label.setMaximumSize(new Dimension(MAX_WIDTH, LABEL_MAX_HT));
 		add(label, BorderLayout.NORTH);
 
-		field.setLineWrap(true);
-		field.setEditable(true);
-		field.setWrapStyleWord(true);
 		final ResultsTextSaveButton button = new ResultsTextSaveButton(
 				MINIMUM_WIDTH, PREF_WIDTH, MAX_WIDTH);
 		button.addPropertyChangeListener(this);
 		add(button, BorderLayout.SOUTH);
-		final JScrollPane wrapper = new JScrollPane(field);
-		wrapper.setMinimumSize(new Dimension(MINIMUM_WIDTH, minHeight
-				- LABEL_MIN_HT - (int) button.getMinimumSize().getHeight()));
-		wrapper.setPreferredSize(new Dimension(PREF_WIDTH, height
-				- LABEL_HEIGHT - (int) button.getPreferredSize().getHeight()));
-		wrapper.setMaximumSize(new Dimension(MAX_WIDTH, maxHeight
-				- LABEL_MAX_HT - (int) button.getMaximumSize().getHeight()));
-		add(wrapper, BorderLayout.CENTER);
-	}
-
-	/**
-	 * Save changed results back to the tile.
-	 */
-	public void saveTileText() {
-		tile.setTileText(field.getText().trim());
 	}
 
 	/**
@@ -108,7 +89,6 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	public void setTile(final Tile newTile) {
 		if (!newTile.equals(tile)) {
 			tile = newTile;
-			field.setText(tile.getTileText());
 		}
 	}
 
@@ -116,15 +96,6 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 	 * The tile we get and save results from and to.
 	 */
 	private Tile tile;
-
-	/**
-	 * Run an encounter.
-	 */
-	public void runEncounter() {
-		field.setText(field.getText() + '\n'
-				+ runner.recursiveConsultTable("main", tile));
-		saveTileText();
-	}
 
 	/**
 	 * Handle a property change.
@@ -137,10 +108,6 @@ public class ResultsPanel extends JPanel implements PropertyChangeListener {
 		if ("tile".equals(evt.getPropertyName())) {
 			setTile((Tile) evt.getNewValue());
 			repaint();
-		} else if ("encounter".equals(evt.getPropertyName())) {
-			runEncounter();
-		} else if ("save-text".equals(evt.getPropertyName())) {
-			saveTileText();
-		}
+		} 
 	}
 }

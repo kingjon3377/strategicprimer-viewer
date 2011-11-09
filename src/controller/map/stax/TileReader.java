@@ -20,6 +20,7 @@ import model.map.events.TownEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
 import model.map.fixtures.Fortress;
+import model.map.fixtures.TextFixture;
 import model.map.fixtures.Unit;
 
 /**
@@ -77,10 +78,8 @@ public class TileReader {
 			if (event.isStartElement()) {
 				parseTileContents(event.asStartElement(), reader, tile, players);
 			} else if (event.isCharacters()) {
-				tile.setTileText(tile.getTileText()
-						+ event.asCharacters().getData());
+				tile.addFixture(new TextFixture(event.asCharacters().getData(), -1));
 			} else if (event.isEndElement()) {
-				tile.setTileText(tile.getTileText().trim());
 				break;
 			}
 		}

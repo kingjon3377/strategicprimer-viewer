@@ -79,16 +79,12 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether the tile has any events
 	 */
 	protected static boolean hasEvent(final Tile tile) {
-		if ("".equals(tile.getTileText())) {
 			for (final TileFixture fix : tile.getContents()) {
 				if (fix instanceof IEvent) {
 					return true; // NOPMD
 				}
 			}
 			return false; // NOPMD
-		} else {
-			return true;
-		}
 	}
 
 	/**

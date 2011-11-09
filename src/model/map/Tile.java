@@ -137,8 +137,7 @@ public final class Tile implements XMLWritable {
 						&& type.equals(((Tile) obj).type)
 						&& contents.equals(((Tile) obj).contents)
 						&& (rivers == null ? ((Tile) obj).rivers == null
-								: rivers.equals(((Tile) obj).rivers)) && tileText
-							.equals(((Tile) obj).tileText));
+								: rivers.equals(((Tile) obj).rivers)));
 	}
 
 	/**
@@ -148,7 +147,7 @@ public final class Tile implements XMLWritable {
 	@Override
 	public int hashCode() {
 		return row + col << 2 + type.ordinal() << 6 + contents.hashCode() << 8 + +rivers
-				.hashCode() << 10 + tileText.hashCode() << 14;
+				.hashCode() << 10;
 	}
 
 	/**
@@ -213,27 +212,6 @@ public final class Tile implements XMLWritable {
 	}
 
 	/**
-	 * Text associated with the tile: encounter results, for instance.
-	 */
-	private String tileText = "";
-
-	/**
-	 * @param text
-	 *            text associated with the tile
-	 */
-	public void setTileText(final String text) {
-		tileText = text;
-	}
-
-	/**
-	 * 
-	 * @return any text associated with the tile
-	 */
-	public String getTileText() {
-		return tileText;
-	}
-
-	/**
 	 * Update with data from a tile in another map.
 	 * 
 	 * @param tile
@@ -243,7 +221,6 @@ public final class Tile implements XMLWritable {
 		contents.addAll(tile.contents);
 		contents.retainAll(tile.contents);
 		rivers.update(tile.rivers);
-		tileText = tile.tileText;
 		type = tile.type;
 	}
 	/**
@@ -265,8 +242,6 @@ public final class Tile implements XMLWritable {
 			}
 			sbuild.append("\">");
 			if (hasContents()) {
-				sbuild.append(getTileText());
-				sbuild.append('\n');
 				for (final TileFixture fix : contents) {
 					sbuild.append("\t\t\t");
 					sbuild.append(fix.toXML());
@@ -287,6 +262,6 @@ public final class Tile implements XMLWritable {
 	 * @return whether the tile has any contents.
 	 */
 	private boolean hasContents() {
-		return (!"".equals(tileText)) || (!contents.isEmpty());
+		return (!contents.isEmpty());
 	}
 }
