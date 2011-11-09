@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
@@ -30,5 +31,13 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 		} else if (!hasProperty("product") || !hasProperty("status")) {
 			throw new SPFormatException("Mine should have \"product\" and \"status\" properties", getLine());
 		}
+	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "product", "status");
 	}
 }

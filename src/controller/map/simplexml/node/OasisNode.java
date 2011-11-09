@@ -29,4 +29,12 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 			throw new SPFormatException("Oasis shouldn't have children", getLine());
 		}
 	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return false;
+	}
 }

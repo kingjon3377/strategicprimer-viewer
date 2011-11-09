@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import controller.map.SPFormatException;
 import model.map.PlayerCollection;
 import model.map.fixtures.CacheFixture;
@@ -37,5 +38,12 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 					getLine());
 		}
 	}
-
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "kind", "contents");
+	}
 }

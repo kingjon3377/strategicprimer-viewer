@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
-import controller.map.SPFormatException;
 import model.map.PlayerCollection;
 import model.map.fixtures.Hill;
+import controller.map.SPFormatException;
 
 /**
  * A Node to produce a Hill.
@@ -29,5 +29,12 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 			throw new SPFormatException("Hill shouldn't have children", getLine());
 		}
 	}
-
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return false;
+	}
 }

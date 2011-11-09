@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import controller.map.SPFormatException;
 import model.map.PlayerCollection;
 import model.map.fixtures.Forest;
@@ -18,7 +19,15 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	public Forest produce(final PlayerCollection players) throws SPFormatException {
 		return new Forest(getProperty("kind"), hasProperty("rows"));
 	}
-	
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "kind", "rows");
+	}
+
 	/**
 	 * Check whether the node is valid. A forest is valid if it has a "kind"
 	 * property and no children. TODO: add further properties.

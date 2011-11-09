@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.events.BattlefieldEvent;
 import controller.map.SPFormatException;
@@ -51,6 +52,14 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 			throw new SPFormatException(
 					"Event must have \"kind\" and \"dc\" properties", getLine());
 		}
+	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, DC_PROPERTY);
 	}
 
 	/**

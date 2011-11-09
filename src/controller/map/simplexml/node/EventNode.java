@@ -37,7 +37,14 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 		return ((AbstractChildNode<? extends IEvent>) iterator().next())
 				.produce(players);
 	}
-
+	/**
+	 * @param property the name of a property
+	 * @return true---since we'll be moving everything to the implementing child anyway, it can do this check
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return true;
+	}
 	/**
 	 * Check that this Node contains entirely valid data. An Event is valid if
 	 * it has no children (thus towns, etc., shouldn't be Events much longer)

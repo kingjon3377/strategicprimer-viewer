@@ -3,6 +3,8 @@ package controller.map.simplexml.node;
 import java.util.HashMap;
 import java.util.Map;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import controller.map.SPFormatException;
 
@@ -31,8 +33,10 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	public final void addProperty(final String property, final String value) {
 		if ("line".equals(property)) {
 			setLine(Integer.valueOf(value));
-		} else {
+		} else if (canUse(property)) {
 			properties.put(property, value);
+		} else {
+			Warning.warn(new SPFormatException("Don't know how to use property " + property, getLine()));
 		}
 	}
 
@@ -81,4 +85,9 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 		dest.properties.putAll(properties);
 		properties.clear();
 	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	public abstract boolean canUse(final String property);
 }

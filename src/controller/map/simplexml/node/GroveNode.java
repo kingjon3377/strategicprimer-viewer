@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
 import controller.map.SPFormatException;
@@ -18,6 +19,14 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	public Grove produce(final PlayerCollection players) throws SPFormatException {
 		return new Grove("orchard".equals(getProperty("tag")),
 				Boolean.parseBoolean(getProperty("wild")), getProperty("tree"));
+	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "tag", "wild", "tree");
 	}
 	/**
 	 * Check whether the Node's data is valid. A Grove is valid if it has no

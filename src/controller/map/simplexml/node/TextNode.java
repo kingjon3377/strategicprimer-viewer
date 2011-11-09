@@ -1,9 +1,9 @@
 package controller.map.simplexml.node;
 
-import controller.map.SPFormatException;
-import controller.map.simplexml.ITextNode;
 import model.map.PlayerCollection;
 import model.map.fixtures.TextFixture;
+import controller.map.SPFormatException;
+import controller.map.simplexml.ITextNode;
 /**
  * A Node to produce a TextFixture.
  * @author Jonathan Lovelace
@@ -27,6 +27,14 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 	 */
 	private final StringBuilder sbuild = new StringBuilder("");
 
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return "turn".equals(property);
+	}
 	/**
 	 * Add text to the fixture.
 	 * 

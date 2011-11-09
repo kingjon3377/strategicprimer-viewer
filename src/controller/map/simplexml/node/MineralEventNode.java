@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.events.MineralEvent;
 import controller.map.SPFormatException;
@@ -33,6 +34,14 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 				getProperty("mineral"),
 				Boolean.parseBoolean(getProperty("exposed")),
 				Integer.parseInt(getProperty(DC_PROPERTY)));
+	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "mineral", "exposed", DC_PROPERTY, KIND_PROPERTY);
 	}
 
 	/**

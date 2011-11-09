@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
 import controller.map.SPFormatException;
@@ -18,7 +19,14 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	public Ground produce(final PlayerCollection players) throws SPFormatException {
 		return new Ground(getProperty("ground"), Boolean.parseBoolean(getProperty("exposed")));
 	}
-	
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "ground", "exposed");
+	}
 	/**
 	 * Check whether the node is valid. A Ground is valid if it has "ground" and "exposed"
 	 * properties and no children. TODO: add further properties.

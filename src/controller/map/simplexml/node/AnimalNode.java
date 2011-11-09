@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
 import controller.map.SPFormatException;
@@ -40,6 +41,14 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 			throw new SPFormatException("Animal must have \"kind\" property",
 					getLine());
 		}
+	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "kind", "traces");
 	}
 
 }

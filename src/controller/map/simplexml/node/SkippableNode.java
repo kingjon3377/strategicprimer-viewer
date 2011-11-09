@@ -79,4 +79,13 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	public String toString() {
 		return "SkippableNode";
 	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return false;
+	}
+
 }

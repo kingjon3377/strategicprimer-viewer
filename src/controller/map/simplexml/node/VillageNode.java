@@ -35,5 +35,13 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 			throw new SPFormatException("Village must have \"status\" property", getLine());
 		}
 	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return "status".equals(property);
+	}
 
 }

@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
+import util.EqualsAny;
 import util.Warning;
 import controller.map.SPFormatException;
 
@@ -36,6 +37,14 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 			}
 		}
 		return fort;
+	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "owner", "name");
 	}
 
 	/**

@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
-import controller.map.SPFormatException;
 import model.map.PlayerCollection;
 import model.map.fixtures.Mountain;
+import controller.map.SPFormatException;
 /**
  * A Node to produce a Mountain.
  * @author Jonathan Lovelace
@@ -30,5 +30,13 @@ public class MountainNode extends AbstractFixtureNode<Mountain> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Mountain shouldn't have children", getLine());
 		}
+	}
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return false;
 	}
 }

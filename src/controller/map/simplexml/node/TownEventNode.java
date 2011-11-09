@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.events.AbstractTownEvent;
 import model.map.events.CityEvent;
@@ -64,7 +65,14 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 		}
 		return event;
 	}
-
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, STATUS_PROP, SIZE_PROPERTY, DC_PROPERTY);
+	}
 	/**
 	 * Check the data for validity. A Town or similar is valid if it has no
 	 * children and "kind", "dc", "size', and "status" properties.

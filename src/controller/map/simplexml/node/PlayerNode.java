@@ -1,5 +1,6 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
 import model.map.Player;
 import model.map.PlayerCollection;
 import controller.map.SPFormatException;
@@ -47,7 +48,14 @@ public class PlayerNode extends AbstractChildNode<Player> {
 					getLine());
 		}
 	}
-
+	/**
+	 * @param property the name of a property
+	 * @return whether this kind of node can use the property
+	 */
+	@Override
+	public boolean canUse(final String property) {
+		return EqualsAny.equalsAny(property, "number", "code_name");
+	}
 	/**
 	 * 
 	 * @return a String representation of the object
