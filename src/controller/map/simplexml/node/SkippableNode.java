@@ -85,7 +85,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "index".equals(property);
 	}
 
 }
