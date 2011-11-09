@@ -48,9 +48,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	/**
 	 * Constructor.
 	 * 
-	 * @param list
-	 *            a listener to attach to the map UI's tile-selection etc.
-	 *            updates.
 	 * @param map
 	 *            The map model.
 	 * @param mapMenu
