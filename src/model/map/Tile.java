@@ -93,14 +93,11 @@ public final class Tile implements XMLWritable {
 				&& !((fix instanceof TextFixture) && ((TextFixture) fix)
 						.getText().isEmpty())) {
 			if (fix instanceof RiverFixture) {
-				if (rivers == null) {
-					rivers = (RiverFixture) fix;
-				} else {
-					for (River river : (RiverFixture) fix) {
-						rivers.addRiver(river);
+					for (River river : rivers) {
+						((RiverFixture) fix).addRiver(river);
 					}
+					rivers = (RiverFixture) fix;
 				}
-			}
 			contents.add(fix);
 		}
 	}
@@ -110,8 +107,8 @@ public final class Tile implements XMLWritable {
 	 *            something to remove from the tile
 	 */
 	public void removeFixture(final TileFixture fix) {
-		if (rivers != null && rivers.equals(fix)) {
-			rivers = null;
+		if (rivers.equals(fix)) {
+			rivers = new RiverFixture();
 		}
 		contents.remove(fix);
 	}
@@ -178,7 +175,7 @@ public final class Tile implements XMLWritable {
 	/**
 	 * The river-directions on this tile.
 	 */
-	private RiverFixture rivers = null;
+	private RiverFixture rivers = new RiverFixture();
 
 	/**
 	 * 
@@ -195,6 +192,8 @@ public final class Tile implements XMLWritable {
 	public void addRiver(final River river) {
 		if (rivers == null) {
 			rivers = new RiverFixture();
+		}
+		if (!contents.contains(rivers)) {
 			addFixture(rivers);
 		}
 		rivers.addRiver(river);
@@ -209,7 +208,6 @@ public final class Tile implements XMLWritable {
 			rivers.removeRiver(river);
 			if (rivers.getRivers().isEmpty()) {
 				removeFixture(rivers);
-				rivers = null;
 			}
 		}
 	}
