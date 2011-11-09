@@ -15,6 +15,7 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.events.AbstractTownEvent;
+import model.map.events.TownStatus;
 import model.map.fixtures.Forest;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Grove;
@@ -100,6 +101,7 @@ public class Converter {
 				convertSubtile(subtile);
 			}
 		}
+		tile.addFixture(new Village(TownStatus.Active));
 		final List<TileFixture> fixtures = new LinkedList<TileFixture>(tile.getContents());
 		final Random random = new Random(MapModel.getSeed(tile));
 		Collections.shuffle(initial, random);
