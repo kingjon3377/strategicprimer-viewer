@@ -236,4 +236,11 @@ public final class MapModel implements PropertyChangeSource {
 	public String toString() {
 		return "MapModel";
 	}
+	/**
+	 * @param tile a tile
+	 * @return a seed for the RNG for conversion based on the given tile 
+	 */
+	public static long getSeed(final Tile tile) {
+		return (long) (tile.getCol()) << 32L + tile.getRow();
+	}
 }
