@@ -90,4 +90,20 @@ public class Grove implements TileFixture, HasImage {
 	public int getZValue() {
 		return 35;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Grove && tree.equals(((Grove) obj).tree)
+				&& orchard == ((Grove) obj).orchard && wild == ((Grove) obj).wild;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return tree.hashCode() << ((orchard ? 1 : 0) + (wild ? 2 : 0));
+	}
 }

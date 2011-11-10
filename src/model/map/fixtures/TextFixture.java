@@ -70,4 +70,20 @@ public class TextFixture implements TileFixture, HasImage {
 	public String getText() {
 		return text;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof TextFixture && text.equals(((TextFixture) obj).text)
+				&& turn == ((TextFixture) obj).turn;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return text.hashCode() << turn;
+	}
 }

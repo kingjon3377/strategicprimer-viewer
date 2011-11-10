@@ -69,4 +69,20 @@ public class Mine implements TileFixture, HasImage {
 	public int getZValue() {
 		return 45;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Mine && product.equals(((Mine) obj).product)
+				&& status.equals(((Mine) obj).status);
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return product.hashCode() << status.hashCode();
+	}
 }

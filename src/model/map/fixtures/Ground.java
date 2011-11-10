@@ -61,4 +61,21 @@ public class Ground implements TileFixture, HasImage {
 	public int getZValue() {
 		return 0;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Ground && description.equals(((Ground) obj).description)
+				&& exposed == ((Ground) obj).exposed;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return description.hashCode() << (exposed ? 1 : 0);
+	}
+
 }

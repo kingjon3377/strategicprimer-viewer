@@ -55,4 +55,20 @@ public class Shrub implements TileFixture, HasImage {
 	public int getZValue() {
 		return 15;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Shrub && description.equals(((Shrub) obj).description);
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return description.hashCode();
+	}
+
 }

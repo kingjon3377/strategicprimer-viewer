@@ -37,4 +37,20 @@ public class Mountain implements TerrainFixture, HasImage {
 	public int getZValue() {
 		return 10;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Mountain;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return 1;
+	}
+
 }

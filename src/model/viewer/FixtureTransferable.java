@@ -82,4 +82,21 @@ public class FixtureTransferable implements Transferable {
 	public String toString() {
 		return "FixtureTransferable";
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof FixtureTransferable
+				&& data.equals(((FixtureTransferable) obj).data);
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return data.hashCode();
+	}
+
 }

@@ -37,4 +37,20 @@ public class Oasis implements TerrainFixture, HasImage {
 	public int getZValue() {
 		return 25;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Oasis;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return 2;
+	}
+
 }

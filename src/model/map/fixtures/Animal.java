@@ -74,4 +74,20 @@ public class Animal implements TileFixture, HasImage {
 	public int getZValue() {
 		return 40;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Animal && ((Animal) obj).kind.equals(kind)
+				&& ((Animal) obj).traces == traces;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return kind.hashCode() << (traces ? 1 : 0);
+	}
 }

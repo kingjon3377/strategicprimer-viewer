@@ -56,4 +56,20 @@ public class Village implements TileFixture, HasImage {
 	public int getZValue() {
 		return 45;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Village && status.equals(((Village) obj).status);
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return status.hashCode();
+	}
+
 }

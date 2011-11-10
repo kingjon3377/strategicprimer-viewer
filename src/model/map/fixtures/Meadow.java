@@ -102,4 +102,20 @@ public class Meadow implements TileFixture, HasImage {
 	public int getZValue() {
 		return 15;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Meadow && kind.equals(((Meadow) obj).kind)
+				&& field == ((Meadow) obj).field && cultivated == ((Meadow) obj).cultivated;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return kind.hashCode() << ((field ? 1 : 0) + (cultivated ? 2 : 0));
+	}
 }

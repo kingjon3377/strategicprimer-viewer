@@ -39,4 +39,19 @@ public class Hill implements TerrainFixture, HasImage {
 	public int getZValue() {
 		return 5;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Hill;
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return 0;
+	}
 }

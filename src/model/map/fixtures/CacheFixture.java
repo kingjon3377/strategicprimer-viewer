@@ -72,4 +72,21 @@ public class CacheFixture implements TileFixture, HasImage {
 	public int getZValue() {
 		return 22;
 	}
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof CacheFixture
+				&& kind.equals(((CacheFixture) obj).kind)
+				&& contents.equals(((CacheFixture) obj).contents);
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
+		return kind.hashCode() | contents.hashCode();
+	}
 }
