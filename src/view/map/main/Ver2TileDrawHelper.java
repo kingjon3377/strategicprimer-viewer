@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -203,13 +204,20 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		try {
 			return loader.loadImage(filename); // NOPMD
 		} catch (FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + " not found", e);
+			if (!missingFiles.contains(filename)) {
+				LOGGER.log(Level.SEVERE, filename + " not found", e);
+				missingFiles.add(filename);
+			}
 			return fallbackImage; // NOPMD
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image " + filename, e);
 			return fallbackImage;
 		}
 	}
+	/**
+	 * The images we've already determined aren't there.
+	 */
+	private final Set<String> missingFiles = new HashSet<String>();
 	/**
 	 * A mapping from river-sets to filenames.
 	 */
