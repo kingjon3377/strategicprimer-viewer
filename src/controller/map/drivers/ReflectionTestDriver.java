@@ -63,7 +63,18 @@ public final class ReflectionTestDriver {
 		final long end = System.nanoTime();
 		return end - start;
 	}
-
+	/**
+	 * Test correctness by comparing the results of the two reading methods.
+	 * @param filename the file containing map data to test with
+	 * @return whether the two methods returned identical results
+	 * @throws SPFormatException on map format error detected by one of the readers
+	 * @throws XMLStreamException on XML error detected by one of the readers
+	 * @throws IOException on I/O error detected by one o the readers
+	 */
+	private static boolean methodsAgree(final String filename)
+			throws IOException, XMLStreamException, SPFormatException {
+		return READER.readMap(filename, false).equals(READER.readMap(filename, true));
+	}
 	/**
 	 * @param args
 	 *            the list of filenames to check
@@ -77,6 +88,12 @@ public final class ReflectionTestDriver {
 			try {
 				SystemOut.SYS_OUT.print("Starting ");
 				SystemOut.SYS_OUT.println(filename);
+				SystemOut.SYS_OUT.print("Testing correctness ...\t\t\t");
+				if (methodsAgree(filename)) {
+					SystemOut.SYS_OUT.println("OK");
+				} else {
+					SystemOut.SYS_OUT.println("FAIL");
+				}
 				long duration = runTest(filename, REPS, false);
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.print("\t\t\ttook ");
