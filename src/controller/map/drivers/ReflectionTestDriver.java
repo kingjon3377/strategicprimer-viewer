@@ -31,7 +31,7 @@ public final class ReflectionTestDriver {
 	/**
 	 * How many reps to use on each file.
 	 */
-	private static final int REPS = 50;
+	private static final int REPS = 3;
 
 	/**
 	 * Do not instantiate.
