@@ -12,6 +12,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.IteratorWrapper;
 import controller.map.IMapReader;
@@ -126,7 +127,7 @@ public class SimpleXMLReader implements IMapReader {
 		}
 		root.canonicalize();
 		root.checkNode();
-		return root.getMapNode().produce(null);
+		return root.getMapNode().produce(new PlayerCollection());
 	}
 
 	/**

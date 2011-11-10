@@ -71,7 +71,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 		final List<TileNode> tiles = new LinkedList<TileNode>();
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
-				map.addPlayer(((PlayerNode) node).produce(null));
+				map.addPlayer(((PlayerNode) node).produce(players));
 			} else if (node instanceof TileNode) {
 				tiles.add((TileNode) node);
 			} else {
