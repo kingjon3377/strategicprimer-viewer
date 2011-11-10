@@ -115,7 +115,6 @@ public class MapReader implements IMapReader {
 		LOGGER.info("Started reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
 		SPMap map = null;
-		@SuppressWarnings("unchecked")
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
 		for (final XMLEvent event : eventReader) {

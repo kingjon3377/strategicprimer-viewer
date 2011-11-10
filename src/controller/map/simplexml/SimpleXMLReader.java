@@ -100,7 +100,6 @@ public class SimpleXMLReader implements IMapReader {
 		final RootNode root = new RootNode();
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
-		@SuppressWarnings("unchecked")
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
 		for (final XMLEvent event : eventReader) {
@@ -149,7 +148,6 @@ public class SimpleXMLReader implements IMapReader {
 						.getLocation().getLineNumber()) : NodeFactory.create(
 				element.getName().getLocalPart(), element.getLocation()
 						.getLineNumber()));
-		@SuppressWarnings("unchecked")
 		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(
 				element.getAttributes());
 		for (final Attribute att : attributes) {

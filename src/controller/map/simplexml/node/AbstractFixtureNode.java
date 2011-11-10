@@ -7,6 +7,7 @@ import model.map.TileFixture;
  * be directly instantiated.
  * 
  * @author Jonathan Lovelace
+ * @param <T> The Fixture type this will produce.
  * 
  */
 //ESCA-JAVA0024:

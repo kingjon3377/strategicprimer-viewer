@@ -59,13 +59,14 @@ public final class Pair<FIRST, SECOND> implements
 	/**
 	 * Create a pair without having to specify the types.
 	 * 
-	 * 
-	 * 
+	 * @param <FIRST>
+	 *            The type of the first element in the pair
+	 * @param <SECOND>
+	 *            The type of the second element in the pair
 	 * @param first
 	 *            The first element in the pair.
 	 * @param second
 	 *            The second element in the pair.
-	 * 
 	 * @return a pair containing the two elements
 	 */
 	public static <FIRST, SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD

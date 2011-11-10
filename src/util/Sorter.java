@@ -21,10 +21,10 @@ public final class Sorter {
 	/**
 	 * Sort a list, returning the sorted list but not modifying the parameter.
 	 * 
-	 * 
+	 * @param <T>
+	 *            the type of list
 	 * @param list
 	 *            A list
-	 * 
 	 * @return A sorted version of the list
 	 */
 	public static <T extends Comparable<T>> List<T> sort(

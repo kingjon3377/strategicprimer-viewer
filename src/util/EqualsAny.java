@@ -18,7 +18,8 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a number of other (generally constant) values.
 	 * 
-	 * 
+	 * @param <TYPE>
+	 *            the type of objects we'll be comparing
 	 * @param against
 	 *            the value to compare the others to
 	 * @param values
@@ -39,7 +40,8 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a collection of other (generally constant) values.
 	 * 
-	 * 
+	 * @param <TYPE>
+	 *            the type of objects we'll be comparing
 	 * @param against
 	 *            the value to compare the others to
 	 * @param values

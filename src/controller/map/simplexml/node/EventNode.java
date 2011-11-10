@@ -30,7 +30,6 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 	 * @throws SPFormatException
 	 *             if this Node contains invalid data.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public IEvent produce(final PlayerCollection players)
 			throws SPFormatException {
