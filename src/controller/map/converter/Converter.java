@@ -55,7 +55,7 @@ public class Converter {
 	/**
 	 * The number of subtiles per tile on each axis.
 	 */
-	private static final int SUBTILES_PER_TILE = 10;
+	private static final int SUBTILES_PER_TILE = 6;
 	/**
 	 * The maximum number of iterations per tile.
 	 */
