@@ -1,8 +1,5 @@
 package model.map;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * If a tile has a river, it could be in any one of several directions. This
@@ -17,48 +14,34 @@ public enum River implements XMLWritable {
 	/**
 	 * North.
 	 */
-	North,
+	North("north"),
 	/**
 	 * East.
 	 */
-	East,
+	East("east"),
 	/**
 	 * South.
 	 */
-	South,
+	South("south"),
 	/**
 	 * West.
 	 */
-	West,
+	West("west"),
 	/**
 	 * A lake (to be depicted as being in the center of the tile).
 	 */
-	Lake;
+	Lake("lake");
 	/**
-	 * Mapping from descriptive strings to directions.
+	 * A descriptive string representing the direction.
 	 */
-	private static final Map<String, River> RIVER_MAP = new HashMap<String, River>();
+	private final String desc;
 	/**
-	 * Mapping from directions to descriptive strings.
+	 * Constructor.
+	 * @param string a descriptive string representing the direction
 	 */
-	private static final Map<River, String> STR_MAP = new EnumMap<River, String>(River.class);
-	/**
-	 * Add a pairing to the maps.
-	 * @param str the descriptive string
-	 * @param river the direction
-	 */
-	private static void addToMaps(final String str, final River river) {
-		RIVER_MAP.put(str, river);
-		STR_MAP.put(river, str);
+	private River(final String string) {
+		desc = string;
 	}
-	static {
-		addToMaps("north", River.North);
-		addToMaps("south", River.South);
-		addToMaps("east", River.East);
-		addToMaps("west", River.West);
-		addToMaps("lake", River.Lake);
-	}
-
 	/**
 	 * Parse a river direction.
 	 * 
@@ -68,12 +51,13 @@ public enum River implements XMLWritable {
 	 * @return the river direction
 	 */
 	public static River getRiver(final String string) {
-		if (RIVER_MAP.containsKey(string)) {
-			return RIVER_MAP.get(string);
-		} else {
+		for (River river : values()) {
+			if (river.desc.equals(string)) {
+				return river;
+			}
+		}
 			throw new IllegalArgumentException(
 					"Unrecognized river direction string");
-		}
 	}
 	/**
 	 * @return an XML representation of the river.
@@ -84,7 +68,7 @@ public enum River implements XMLWritable {
 			return "<lake />"; // NOPMD
 		} else {
 			return new StringBuilder("<river direction=\"")
-					.append(STR_MAP.get(this)).append("\" />").toString();
+					.append(desc).append("\" />").toString();
 		}
 	}
 }
