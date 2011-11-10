@@ -3,7 +3,6 @@ package model.map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -20,52 +19,52 @@ public enum TileType implements XMLWritable {
 	/**
 	 * Tundra.
 	 */
-	Tundra(1, 2),
+	Tundra("tundra", 1, 2),
 	/**
 	 * Desert.
 	 */
-	Desert(1, 2),
+	Desert("desert", 1, 2),
 	/**
 	 * Mountain. Starting in version 2, this is represented as a plain, steppe,
 	 * or desert plus a mountain on the tile.
 	 */
 	@Deprecated
-	Mountain(1),
+	Mountain("mountain", 1),
 	/**
 	 * Boreal forest. Starting in version 2, this is represented as a steppe
 	 * plus a forest.
 	 */
 	@Deprecated
-	BorealForest(1),
+	BorealForest("boreal_forest", 1),
 	/**
 	 * Temperate forest. Starting in version 2, this is represented as a plain
 	 * plus a forest.
 	 */
 	@Deprecated
-	TemperateForest(1),
+	TemperateForest("temperate_forest", 1),
 	/**
 	 * Ocean.
 	 */
-	Ocean(1, 2),
+	Ocean("ocean", 1, 2),
 	/**
 	 * Plains.
 	 */
-	Plains(1, 2),
+	Plains("plains", 1, 2),
 	/**
 	 * Jungle.
 	 */
-	Jungle(1, 2),
+	Jungle("jungle", 1, 2),
 	/**
 	 * Steppe. This is like plains, but higher-latitude and colder. Beginning in
 	 * version 2, a temperate forest is plains plus forest, and a boreal forest
 	 * is steppe plus forest, while a mountain is either a desert, a plain, or a
 	 * steppe plus a mountain.
 	 */
-	Steppe(2),
+	Steppe("steppe", 2),
 	/**
 	 * Not visible.
 	 */
-	NotVisible(1, 2);
+	NotVisible("not_visible", 1, 2);
 	/**
 	 * The map versions that support the tile type as such. (For example,
 	 * version 2 and later replace forests as a tile type with forests as
@@ -96,10 +95,12 @@ public enum TileType implements XMLWritable {
 	}
 	/**
 	 * Constructor.
+	 * @param descr a descriptive string to represent the type.
 	 * @param vers the map versions that support the tile type.
 	 */
-	private TileType(final Integer... vers) {
+	private TileType(final String descr, final Integer... vers) {
 		versions = new ArrayList<Integer>(Arrays.asList(vers));
+		desc = descr;
 	}
 	/**
 	 * @param ver a map version
@@ -109,34 +110,18 @@ public enum TileType implements XMLWritable {
 		return versions.contains(ver);
 	}
 	/**
+	 * A descriptive string to represent the type.
+	 */
+	private final String desc;
+	/**
 	 * The mapping from descriptive strings to tile types. Used to make
 	 * multiple-return-points warnings go away.
 	 */
 	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>(); // NOPMD
-	/**
-	 * A mapping from tile types to descriptive strings as used in the XML.
-	 */
-	private static final Map<TileType, String> XML_TYPES = new EnumMap<TileType, String>(
-			TileType.class);
-	/**
-	 * Add an entry to each map.
-	 * @param string the string used to describe the type in XML
-	 * @param type the tile-type.
-	 */
-	private static void addToMaps(final String string, final TileType type) {
-		TILE_TYPE_MAP.put(string, type);
-		XML_TYPES.put(type, string);
-	}
 	static {
-		addToMaps("tundra", TileType.Tundra);
-		addToMaps("temperate_forest", TileType.TemperateForest);
-		addToMaps("boreal_forest", TileType.BorealForest);
-		addToMaps("ocean", TileType.Ocean);
-		addToMaps("desert", TileType.Desert);
-		addToMaps("plains", TileType.Plains);
-		addToMaps("jungle", TileType.Jungle);
-		addToMaps("mountain", TileType.Mountain);
-		addToMaps("steppe", TileType.Steppe);
+		for (TileType type : values()) {
+			TILE_TYPE_MAP.put(type.toXML(), type);
+		}
 	}
 
 	/**
@@ -158,6 +143,6 @@ public enum TileType implements XMLWritable {
 	 */
 	@Override
 	public String toXML() {
-		return XML_TYPES.get(this);
+		return desc;
 	}
 }
