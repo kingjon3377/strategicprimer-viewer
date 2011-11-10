@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationRunner;
+import model.exploration.MissingTableException;
 import model.map.SPMap;
 import model.map.Tile;
 import view.util.DriverQuit;
@@ -137,7 +138,11 @@ public final class ExplorationCLI {
 		final Tile tile = selectTile(map, reader, ostream);
 		ostream.print("Tile is ");
 		ostream.println(tile.getType());
-		ostream.println(runner.recursiveConsultTable("main", tile));
+		try {
+			ostream.println(runner.recursiveConsultTable("main", tile));
+		} catch (MissingTableException e) {
+			LOGGER.log(Level.SEVERE, "Missing table", e);
+		}
 	}
 
 	/**
@@ -156,7 +161,11 @@ public final class ExplorationCLI {
 	 */
 	private void fortressInfo(final SPMap map, final BufferedReader reader,
 			final PrintStream ostream) throws IOException {
-		ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
+		try {
+			ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
+		} catch (MissingTableException e) {
+			LOGGER.log(Level.SEVERE, "Missing table", e);
+		}
 	}
 
 	/**
@@ -236,7 +245,11 @@ public final class ExplorationCLI {
 	private void repeatedlyConsultTable(final String table, final Tile tile,
 			final int reps, final PrintStream ostream) {
 		for (int i = 0; i < reps; i++) {
-			ostream.println(runner.recursiveConsultTable(table, tile));
+			try {
+				ostream.println(runner.recursiveConsultTable(table, tile));
+			} catch (MissingTableException e) {
+				LOGGER.log(Level.SEVERE, "Missing table", e);
+			}
 		}
 	}
 

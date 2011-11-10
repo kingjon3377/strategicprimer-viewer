@@ -6,9 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.exploration.ExplorationRunner;
+import model.exploration.MissingTableException;
 import model.map.Player;
 import model.map.SPMap;
 import model.map.Tile;
@@ -145,6 +147,7 @@ public class Converter {
 	 */
 	@SuppressWarnings("deprecation")
 	private void convertSubtile(final Tile tile) {
+		try {
 		if (TileType.Mountain.equals(tile.getType())) {
 			tile.setType(TileType.Plains);
 			tile.addFixture(new Mountain());
@@ -156,6 +159,9 @@ public class Converter {
 			tile.setType(TileType.Steppe);
 		}
 		tile.addFixture(new Ground(runner.getPrimaryRock(tile), false));
+		} catch (MissingTableException e) {
+			LOGGER.log(Level.WARNING, "Missing table", e);
+		}
 	}
 	/**
 	 * Determine whether a subtile is suitable for more fixtures. It's suitable
@@ -201,6 +207,7 @@ public class Converter {
 	 * @param random the source of randomness (so this is repeatable with players' maps)
 	 */
 	private void perturb(final Tile tile, final SPMap map, final Random random) {
+		try {
 		if (!TileType.Ocean.equals(tile.getType())) { 
 			if (isAdjacentToTown(tile, map) && random.nextDouble() < SIXTY_PERCENT) {
 					if (random.nextBoolean()) {
@@ -216,6 +223,9 @@ public class Converter {
 				tile.addFixture(new Forest(runner.consultTable(
 						"temperate_major_tree", tile), false));
 			}
+		}
+		} catch (MissingTableException e) {
+			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}
 		tile.addFixture(new TextFixture("FIXME: Generate "
 				+ (int) Math.floor(Math.log(random.nextInt(405)))

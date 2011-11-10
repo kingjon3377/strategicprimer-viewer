@@ -67,9 +67,10 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Table.
+	 * @throws MissingTableException if the table is missing
 	 */
 	@Test
-	public void testGetPrimaryRock() {
+	public void testGetPrimaryRock() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
 		assertEquals("primary rock test",
 				runner.getPrimaryRock(new Tile(0, 0, TileType.Tundra)),
@@ -81,10 +82,11 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
+	 * @throws MissingTableException if a table is missing
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testGetPrimaryTree() {
+	public void testGetPrimaryTree() throws MissingTableException {
 		runner.loadTable("boreal_major_tree", new ConstantTable(
 				"boreal_major_test"));
 		runner.loadTable("temperate_major_tree", new ConstantTable(
@@ -100,9 +102,10 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test that getPrimaryTree objects to non-forest tiles.
+	 * @throws MissingTableException if a table is missing
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalGetPrimaryTree() {
+	public void testIllegalGetPrimaryTree() throws MissingTableException {
 		runner.getPrimaryTree(new Tile(0, 0, TileType.Tundra));
 		fail("gave a primary tree for non-forest");
 	}
@@ -112,9 +115,10 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
+	 * @throws MissingTableException if a table is missing
 	 */
 	@Test
-	public void testConsultTable() {
+	public void testConsultTable() throws MissingTableException {
 		runner.loadTable(TEST_TABLE_ONE, new ConstantTable("test_one"));
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
@@ -132,9 +136,10 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
+	 * @throws MissingTableException if a table is missing
 	 */
 	@Test
-	public void testRecursiveConsultTable() {
+	public void testRecursiveConsultTable() throws MissingTableException {
 		runner.loadTable(TEST_TABLE_ONE, new ConstantTable(
 				"( #test_table_two# )"));
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable(
@@ -157,10 +162,11 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the defaultResults() method.
+	 * @throws MissingTableException if a table is missing
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testDefaultResults() {
+	public void testDefaultResults() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("test_rock"));
 		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_tree"));
 		runner.loadTable("temperate_major_tree", new ConstantTable(

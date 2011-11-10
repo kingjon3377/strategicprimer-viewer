@@ -22,9 +22,10 @@ public class ExplorationRunner { // NOPMD
 	 *            a tile
 	 * 
 	 * @return what the owner of a fortress on the tile knows
+	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String defaultResults(final Tile tile) {
+	public String defaultResults(final Tile tile) throws MissingTableException {
 		final StringBuilder sb = new StringBuilder(// NOPMD
 				"The primary rock type here is ");
 		sb.append(getPrimaryRock(tile));
@@ -60,9 +61,10 @@ public class ExplorationRunner { // NOPMD
 	 *            a tile
 	 * 
 	 * @return the main kind of rock on the tile
+	 * @throws MissingTableException if table missing
 	 */
-	public String getPrimaryRock(final Tile tile) {
-		return tables.get("major_rock").generateEvent(tile);
+	public String getPrimaryRock(final Tile tile) throws MissingTableException {
+		return getTable("major_rock").generateEvent(tile);
 	}
 
 	/**
@@ -70,13 +72,14 @@ public class ExplorationRunner { // NOPMD
 	 *            a forest tile
 	 * 
 	 * @return the main kind of tree on the tile
+	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String getPrimaryTree(final Tile tile) {
+	public String getPrimaryTree(final Tile tile) throws MissingTableException {
 		if (TileType.BorealForest.equals(tile.getType())) {
-			return tables.get("boreal_major_tree").generateEvent(tile); // NOPMD
+			return getTable("boreal_major_tree").generateEvent(tile); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getType())) {
-			return tables.get("temperate_major_tree").generateEvent(tile);
+			return getTable("temperate_major_tree").generateEvent(tile);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
@@ -94,11 +97,24 @@ public class ExplorationRunner { // NOPMD
 	 *            the tile to refer to
 	 * 
 	 * @return the result of the consultation
+	 * @throws MissingTableException if the table is missing
 	 */
-	public String consultTable(final String table, final Tile tile) {
-		return tables.get(table).generateEvent(tile);
+	public String consultTable(final String table, final Tile tile) throws MissingTableException {
+		return getTable(table).generateEvent(tile);
 	}
-
+	/**
+	 * Get a table; guaranteed to return non-null (assuming a null wasn't explicitly added to the map).
+	 * @param name the name of the table we want
+	 * @return that table
+	 * @throws MissingTableException if the table isn't in the map of tables.
+	 */
+	private EncounterTable getTable(final String name) throws MissingTableException {
+		if (tables.containsKey(name)) {
+			return tables.get(name);
+		} else {
+			throw new MissingTableException(name);
+		}
+	}
 	/**
 	 * Consult a table, and if the result indicates recursion, perform it.
 	 * Recursion is indicated by hash-marks around the name of the table to
@@ -112,8 +128,9 @@ public class ExplorationRunner { // NOPMD
 	 *            the tile to refer to
 	 * 
 	 * @return the result of the consultation
+	 * @throws MissingTableException on missing table
 	 */
-	public String recursiveConsultTable(final String table, final Tile tile) {
+	public String recursiveConsultTable(final String table, final Tile tile) throws MissingTableException {
 		String result = consultTable(table, tile);
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
@@ -155,17 +172,22 @@ public class ExplorationRunner { // NOPMD
 	 *         exist.
 	 */
 	// $codepro.audit.disable booleanMethodNamingConvention
+	// ESCA-JAVA0049:
 	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {
 			return false; // NOPMD
 		} else {
 			state.add(table);
 			if (tables.keySet().contains(table)) {
-				for (final String value : tables.get(table).allEvents()) {
-					if (value.contains("#")
-							&& recursiveCheck(value.split("#", 3)[1], state)) {
-						return true; // NOPMD
+				try {
+					for (final String value : getTable(table).allEvents()) {
+						if (value.contains("#")
+								&& recursiveCheck(value.split("#", 3)[1], state)) {
+							return true; // NOPMD
+						}
 					}
+				} catch (MissingTableException e) {
+					return true; // NOPMD
 				}
 				return false; // NOPMD
 			} else {
@@ -216,16 +238,21 @@ public class ExplorationRunner { // NOPMD
 	 * @param state
 	 *            to prevent infinite recursion.
 	 */
+	// ESCA-JAVA0049:
 	private void verboseRecursiveCheck(final String table,
 			final PrintStream ostream, final Set<String> state) {
 		if (!state.contains(table)) {
 			state.add(table);
 			if (tables.keySet().contains(table)) {
-				for (final String value : tables.get(table).allEvents()) {
-					if (value.contains("#")) {
-						verboseRecursiveCheck(value.split("#", 3)[1], ostream,
-								state);
+				try {
+					for (final String value : getTable(table).allEvents()) {
+						if (value.contains("#")) {
+							verboseRecursiveCheck(value.split("#", 3)[1], ostream,
+									state);
+						}
 					}
+				} catch (MissingTableException e) {
+					ostream.println(e.getTable());
 				}
 			} else {
 				ostream.println(table);
