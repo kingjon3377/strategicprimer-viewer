@@ -308,6 +308,6 @@ public class Converter {
 	 * @return whether that tile has a river
 	 */
 	private static boolean hasRiver(final Tile tile) {
-		return (tile.getRivers() != null && !tile.getRivers().getRivers().isEmpty());
+		return !tile.getRivers().getRivers().isEmpty();
 	}
 }
