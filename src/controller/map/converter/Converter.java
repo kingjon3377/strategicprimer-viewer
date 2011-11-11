@@ -64,9 +64,10 @@ public class Converter {
 	private static final int MAX_ITERATIONS = 100;
 	/**
 	 * @param old a version-1 map
+	 * @param main whether the map is the main map (new encounter-type fixtures don't go on players' maps)
 	 * @return a version-2 equivalent with greater resolution
 	 */
-	public SPMap convert(final SPMap old) {
+	public SPMap convert(final SPMap old, final boolean main) {
 		final SPMap retval = new SPMap(2, old.rows()
 				* SUBTILES_PER_TILE, old.cols()
 				* SUBTILES_PER_TILE);
@@ -85,7 +86,7 @@ public class Converter {
 		final Random random = new Random(MAX_ITERATIONS);
 		Collections.shuffle(converted, random);
 		for (Tile tile : converted) {
-			perturb(tile, retval, random);
+			perturb(tile, retval, random, main);
 		}
 		return retval;
 	}
@@ -205,31 +206,47 @@ public class Converter {
 	 * @param tile the tile under consideration
 	 * @param map the map it's on, so we can consider adjacent tiles
 	 * @param random the source of randomness (so this is repeatable with players' maps)
+	 * @param main whether we should actually add the fixtures (i.e. is this the main map)
 	 */
-	private void perturb(final Tile tile, final SPMap map, final Random random) {
+	private void perturb(final Tile tile, final SPMap map, final Random random, final boolean main) {
 		try {
 		if (!TileType.Ocean.equals(tile.getType())) { 
 			if (isAdjacentToTown(tile, map) && random.nextDouble() < SIXTY_PERCENT) {
 					if (random.nextBoolean()) {
-						tile.addFixture(new Meadow(runner.consultTable("grain",
-								tile), true, true));
+						addFixture(tile, new Meadow(runner.consultTable("grain",
+								tile), true, true), main);
 					} else {
-						tile.addFixture(new Grove(true, false, runner
-								.consultTable("fruit_trees", tile)));
+						addFixture(tile, new Grove(true, false, runner
+								.consultTable("fruit_trees", tile)), main);
 					}
 			} else if (TileType.Desert.equals(tile.getType())) {
 				perturbDesert(tile, map, random);
 			} else if (random.nextDouble() < .1) {
-				tile.addFixture(new Forest(runner.consultTable(
-						"temperate_major_tree", tile), false));
+				addFixture(tile, new Forest(runner.consultTable(
+						"temperate_major_tree", tile), false), main);
 			}
 		}
 		} catch (MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}
-		tile.addFixture(new TextFixture("FIXME: Generate "
+		addFixture(tile, new TextFixture("FIXME: Generate "
 				+ (int) Math.floor(Math.log(random.nextInt(405)))
-				+ " encounters", NEXT_TURN));
+				+ " encounters", NEXT_TURN), main);
+	}
+	
+	/**
+	 * Add a fixture to a tile if this is the main map.
+	 * 
+	 * @param tile
+	 *            the tile to add the fixture to
+	 * @param fix
+	 *            the fixture to add
+	 * @param main whether this is the main map, i.e. should we actually add the fixture
+	 */
+	private static void addFixture(final Tile tile, final TileFixture fix, final boolean main) {
+		if (main) {
+			tile.addFixture(fix);
+		}
 	}
 	/**
 	 * Maybe turn a desert tile to plains---if it's adjacent to water.
