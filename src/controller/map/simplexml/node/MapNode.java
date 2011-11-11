@@ -16,6 +16,11 @@ import controller.map.SPFormatException;
  */
 public class MapNode extends AbstractChildNode<SPMap> {
 	/**
+	 * The (name of the) "version" property.
+	 */
+	private static final String VERSION_PROP = "version";
+
+	/**
 	 * Check the node. A Map is valid iff every child is either a Player or a
 	 * Tile and it includes version (greater than or equal to 1, for this
 	 * version of the reader), rows, and columns properties.
@@ -35,8 +40,8 @@ public class MapNode extends AbstractChildNode<SPMap> {
 						getLine());
 			}
 		}
-		if (!hasProperty("version")
-				|| Integer.parseInt(getProperty("version")) < SPMap.MAX_VERSION) {
+		if (!hasProperty(VERSION_PROP)
+				|| Integer.parseInt(getProperty(VERSION_PROP)) < SPMap.MAX_VERSION) {
 			throw new SPFormatException(
 					"This reader only accepts maps with a \"version\" property of at least "
 							+ SPMap.MAX_VERSION, getLine());
@@ -51,7 +56,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "version", "rows", "columns");
+		return EqualsAny.equalsAny(property, VERSION_PROP, "rows", "columns");
 	}
 	/**
 	 * 
@@ -65,7 +70,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	@Override
 	public SPMap produce(final PlayerCollection players)
 			throws SPFormatException {
-		final SPMap map = new SPMap(Integer.parseInt(getProperty("version")),
+		final SPMap map = new SPMap(Integer.parseInt(getProperty(VERSION_PROP)),
 				Integer.parseInt(getProperty("rows")),
 				Integer.parseInt(getProperty("columns")));
 		final List<TileNode> tiles = new LinkedList<TileNode>();

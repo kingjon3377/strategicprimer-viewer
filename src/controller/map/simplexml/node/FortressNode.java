@@ -13,6 +13,15 @@ import controller.map.SPFormatException;
  */
 public class FortressNode extends AbstractFixtureNode<Fortress> {
 	/**
+	 * The (name of) the "name" property.
+	 */
+	private static final String NAME_PROP = "name";
+	/**
+	 * The (name of) the "owner" property.
+	 */
+	private static final String OWNER_PROP = "owner";
+
+	/**
 	 * Produce the equivalent fortress.
 	 * 
 	 * @param players
@@ -25,9 +34,9 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	public Fortress produce(final PlayerCollection players)
 			throws SPFormatException {
 		final Fortress fort = new Fortress(
-				players.getPlayer(hasProperty("owner") ? Integer
-						.parseInt(getProperty("owner")) : -1),
-				hasProperty("name") ? getProperty("name") : "");
+				players.getPlayer(hasProperty(OWNER_PROP) ? Integer
+						.parseInt(getProperty(OWNER_PROP)) : -1),
+				hasProperty(NAME_PROP) ? getProperty(NAME_PROP) : "");
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof UnitNode) {
 				fort.addUnit(((UnitNode) node).produce(players));
@@ -44,7 +53,7 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "owner", "name");
+		return EqualsAny.equalsAny(property, OWNER_PROP, NAME_PROP);
 	}
 
 	/**
@@ -67,11 +76,11 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 						"Fortress should contain only units", getLine());
 			}
 		}
-		if (!hasProperty("owner")) {
+		if (!hasProperty(OWNER_PROP)) {
 			Warning.warn(new SPFormatException("Fortress should have an owner",
 					getLine()));
 		}
-		if (!hasProperty("name")) {
+		if (!hasProperty(NAME_PROP)) {
 			Warning.warn(new SPFormatException("Fortress should have a name",
 					getLine()));
 		}
