@@ -229,9 +229,6 @@ public class Converter {
 		} catch (MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}
-		addFixture(tile, new TextFixture("FIXME: Generate "
-				+ (int) Math.floor(Math.log(random.nextInt(405)))
-				+ " encounters", NEXT_TURN), main);
 	}
 	
 	/**
