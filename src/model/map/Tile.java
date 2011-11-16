@@ -242,6 +242,7 @@ public final class Tile implements XMLWritable {
 			}
 			sbuild.append("\">");
 			if (hasContents()) {
+				sbuild.append('\n');
 				for (final TileFixture fix : contents) {
 					sbuild.append("\t\t\t");
 					sbuild.append(fix.toXML());
