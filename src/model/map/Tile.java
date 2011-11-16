@@ -265,4 +265,11 @@ public final class Tile implements XMLWritable {
 	private boolean hasContents() {
 		return (!contents.isEmpty());
 	}
+	/**
+	 * A tile is "empty" if its tile type is NotVisible and it has no contents.
+	 * @return whether this tile is "empty".
+	 */
+	public boolean isEmpty() {
+		return TileType.NotVisible.equals(getType()) && getContents().isEmpty();
+	}
 }

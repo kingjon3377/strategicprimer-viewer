@@ -107,6 +107,7 @@ public class Converter {
 	 */
 	private List<Tile> convertTile(final Tile tile) {
 		final List<Tile> initial = new LinkedList<Tile>();
+		if (!tile.isEmpty()) {
 		for (int i = 0; i < SUBTILES_PER_TILE; i++) {
 			for (int j = 0; j < SUBTILES_PER_TILE; j++) {
 				final int row = tile.getRow() * SUBTILES_PER_TILE + i;
@@ -143,6 +144,7 @@ public class Converter {
 						NEXT_TURN));
 				initial.add(initial.remove(0));
 			}
+		}
 		}
 		return initial;
 	}
