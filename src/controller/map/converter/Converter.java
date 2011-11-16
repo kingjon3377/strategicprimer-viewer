@@ -245,12 +245,12 @@ public class Converter {
 						&& random.nextDouble() < SIXTY_PERCENT) {
 					if (random.nextBoolean()) {
 						addFixture(tile,
-								new Meadow(runner.consultTable("grain", tile),
+								new Meadow(runner.recursiveConsultTable("grain", tile),
 										true, true), main);
 					} else {
 						addFixture(
 								tile,
-								new Grove(true, false, runner.consultTable(
+								new Grove(true, false, runner.recursiveConsultTable(
 										"fruit_trees", tile)), main);
 					}
 				} else if (TileType.Desert.equals(tile.getType())) {
@@ -258,7 +258,7 @@ public class Converter {
 				} else if (random.nextDouble() < .1) {
 					addFixture(
 							tile,
-							new Forest(runner.consultTable(
+							new Forest(runner.recursiveConsultTable(
 									"temperate_major_tree", tile), false), main);
 				}
 			}
