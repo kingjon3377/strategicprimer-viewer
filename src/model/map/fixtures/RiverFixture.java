@@ -103,7 +103,7 @@ public class RiverFixture implements TileFixture, Iterable<River> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sbuild = new StringBuilder("RiverFixture with rivers: ");
+		final StringBuilder sbuild = new StringBuilder("RiverFixture with rivers: ");
 		for (River river : rivers) {
 			sbuild.append(river.toString());
 			sbuild.append(' ');
