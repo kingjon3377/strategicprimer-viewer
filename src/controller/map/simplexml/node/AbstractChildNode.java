@@ -1,12 +1,10 @@
 package controller.map.simplexml.node;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
