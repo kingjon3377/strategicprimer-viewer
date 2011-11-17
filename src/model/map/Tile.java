@@ -209,7 +209,7 @@ public final class Tile implements XMLWritable {
 	 */
 	@Override
 	public String toXML() {
-		if (TileType.NotVisible.equals(getType()) && !hasContents()) {
+		if (isEmpty()) {
 			return ""; // NOPMD
 		} else {
 			final StringBuilder sbuild = new StringBuilder("<tile row=\"");
@@ -221,7 +221,7 @@ public final class Tile implements XMLWritable {
 				sbuild.append(getType().toXML());
 			}
 			sbuild.append("\">");
-			if (hasContents()) {
+			if ((!contents.isEmpty())) {
 				sbuild.append('\n');
 				for (final TileFixture fix : contents) {
 					sbuild.append("\t\t\t");
@@ -233,12 +233,6 @@ public final class Tile implements XMLWritable {
 			sbuild.append("</tile>");
 			return sbuild.toString();
 		}
-	}
-	/**
-	 * @return whether the tile has any contents.
-	 */
-	private boolean hasContents() {
-		return (!contents.isEmpty());
 	}
 	/**
 	 * A tile is "empty" if its tile type is NotVisible and it has no contents.
