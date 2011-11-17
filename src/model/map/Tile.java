@@ -93,12 +93,23 @@ public final class Tile implements XMLWritable {
 				&& !((fix instanceof TextFixture) && ((TextFixture) fix)
 						.getText().isEmpty())) {
 			if (fix instanceof RiverFixture) {
+				if (rivers == null) {
+					rivers = (RiverFixture) fix;
+				} else if (hasRiver()) {
+					rivers = getRiver();
+					for (River river : (RiverFixture) fix) {
+						rivers.addRiver(river);
+					}
+				} else {
 					for (River river : rivers) {
 						((RiverFixture) fix).addRiver(river);
 					}
 					rivers = (RiverFixture) fix;
+					contents.add(fix);
 				}
-			contents.add(fix);
+			} else {
+				contents.add(fix);
+			}
 		}
 	}
 
@@ -189,13 +200,7 @@ public final class Tile implements XMLWritable {
 	 *            a river to add
 	 */
 	public void addRiver(final River river) {
-		if (rivers == null) {
-			rivers = new RiverFixture();
-		}
-		if (!contents.contains(rivers)) {
-			addFixture(rivers);
-		}
-		rivers.addRiver(river);
+		addFixture(new RiverFixture(river));
 	}
 
 	/**
@@ -271,5 +276,28 @@ public final class Tile implements XMLWritable {
 	 */
 	public boolean isEmpty() {
 		return TileType.NotVisible.equals(getType()) && getContents().isEmpty();
+	}
+	/**
+	 * @return whether we contain a RiverFixture
+	 */
+	private boolean hasRiver() {
+		for (final TileFixture fix : contents) {
+			if (fix instanceof RiverFixture) {
+				return true; // NOPMD
+			}
+		}
+		return false;
+	}
+	/**
+	 * Call hasRiver() before this, because this will throw IllegalStateException if we don't actually contain a river.
+	 * @return the RiverFixture that we contain
+	 */
+	private RiverFixture getRiver() {
+		for (final TileFixture fix : contents) {
+			if (fix instanceof RiverFixture) {
+				return (RiverFixture) fix;
+			}
+		}
+		throw new IllegalStateException("Didn't find a RiverFixture");
 	}
 }
