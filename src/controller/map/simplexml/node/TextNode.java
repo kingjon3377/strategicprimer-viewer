@@ -55,4 +55,11 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 			throw new SPFormatException("Text element shouldn't have child elements", getLine());
 		}
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "TextNode";
+	}
 }

@@ -36,4 +36,11 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	public boolean canUse(final String property) {
 		return false;
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "SandbarNode";
+	}
 }

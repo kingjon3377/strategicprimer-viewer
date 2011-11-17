@@ -46,4 +46,11 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	public boolean canUse(final String property) {
 		return EqualsAny.equalsAny(property, "kind", "contents");
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "CacheNode";
+	}
 }

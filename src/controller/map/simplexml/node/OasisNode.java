@@ -37,4 +37,11 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	public boolean canUse(final String property) {
 		return false;
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "OasisNode";
+	}
 }

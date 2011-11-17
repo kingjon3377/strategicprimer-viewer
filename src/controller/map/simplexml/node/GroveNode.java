@@ -51,4 +51,11 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 					getLine());
 		}
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "GroveNode";
+	}
 }

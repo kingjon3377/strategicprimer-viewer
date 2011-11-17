@@ -37,4 +37,11 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 	public boolean canUse(final String property) {
 		return false;
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "HillNode";
+	}
 }

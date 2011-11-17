@@ -39,4 +39,11 @@ public class MountainNode extends AbstractFixtureNode<Mountain> {
 	public boolean canUse(final String property) {
 		return false;
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "MountainNode";
+	}
 }

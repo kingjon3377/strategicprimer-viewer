@@ -54,5 +54,11 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 					getLine());
 		}
 	}
-
+	/**
+	 * @return a String representation of the Node
+	 */
+	@Override
+	public String toString() {
+		return "MeadowNode";
+	}
 }

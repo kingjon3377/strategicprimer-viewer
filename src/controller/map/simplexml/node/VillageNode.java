@@ -43,5 +43,11 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	public boolean canUse(final String property) {
 		return "status".equals(property);
 	}
-
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "VillageNode";
+	}
 }

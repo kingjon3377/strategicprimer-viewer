@@ -40,4 +40,11 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	public boolean canUse(final String property) {
 		return EqualsAny.equalsAny(property, "product", "status");
 	}
+	/**
+	 * @return a String representation of the node
+	 */
+	@Override
+	public String toString() {
+		return "MineNode";
+	}
 }

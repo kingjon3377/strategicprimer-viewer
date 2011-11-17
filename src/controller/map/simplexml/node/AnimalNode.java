@@ -50,5 +50,11 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	public boolean canUse(final String property) {
 		return EqualsAny.equalsAny(property, "kind", "traces");
 	}
-
+	/**
+	 * @return a String representation of the node.
+	 */
+	@Override
+	public String toString() {
+		return "AnimalNode";
+	}
 }
