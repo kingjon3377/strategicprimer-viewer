@@ -16,30 +16,37 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class SubsetDriver {
+public final class SubsetDriver {
+	/**
+	 * Do not instantiate.
+	 */
+	private SubsetDriver() {
+		// Do nothing
+	}
 	/**
 	 * @param args the files to check
 	 */
+	// ESCA-JAVA0177:
 	public static void main(final String[] args) {
 		if (args.length < 2) {
 			SystemOut.SYS_OUT.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final SPMap mainMap;
+		final SPMap mainMap; // NOPMD
 		try {
 			mainMap = reader.readMap(args[0]);
 		} catch (MapVersionException e) {
 			Warning.warn(e);
-			return;
+			return; // NOPMD
 		} catch (IOException e) {
 			Warning.warn(e);
-			return;
+			return; // NOPMD
 		} catch (XMLStreamException e) {
 			Warning.warn(e);
-			return;
+			return; // NOPMD
 		} catch (SPFormatException e) {
 			Warning.warn(e);
-			return;
+			return; // NOPMD
 		}
 		SystemOut.SYS_OUT.println("OK if strict subset, WARN if needs manual checking, FAIL if error in reading");
 		for (String arg : args) {
@@ -48,7 +55,7 @@ public class SubsetDriver {
 			}
 			SystemOut.SYS_OUT.print(arg);
 			SystemOut.SYS_OUT.print("\t...\t\t");
-			final SPMap map;
+			final SPMap map; // NOPMD
 			try {
 				map = reader.readMap(arg);
 			} catch (MapVersionException e) {
