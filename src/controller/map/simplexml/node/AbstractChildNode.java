@@ -93,25 +93,25 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 * @return whether this kind of node can use the property
 	 */
 	public abstract boolean canUse(final String property);
-	/**
-	 * @param obj an object
-	 * @return whether it's equal to this one
-	 */
-	@Override
-	public boolean equals(final Object obj) {
-		return super.equals(obj)
-				&& obj instanceof AbstractChildNode<?>
-				&& Arrays.equals(getClass().getTypeParameters(),
-						((AbstractChildNode<?>) obj).getClass()
-								.getTypeParameters()) && properties
-						.equals(((AbstractChildNode<?>) obj).properties);
-	}
-	/**
-	 * @return a hash value for this object
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode() | Arrays.hashCode(getClass().getTypeParameters())
-				| properties.hashCode();
-	}
+//	/**
+//	 * @param obj an object
+//	 * @return whether it's equal to this one
+//	 */
+//	@Override
+//	public boolean equals(final Object obj) {
+//		return super.equals(obj)
+//				&& obj instanceof AbstractChildNode<?>
+//				&& Arrays.equals(getClass().getTypeParameters(),
+//						((AbstractChildNode<?>) obj).getClass()
+//								.getTypeParameters()) && properties
+//						.equals(((AbstractChildNode<?>) obj).properties);
+//	}
+//	/**
+//	 * @return a hash value for this object
+//	 */
+//	@Override
+//	public int hashCode() {
+//		return super.hashCode() | Arrays.hashCode(getClass().getTypeParameters())
+//				| properties.hashCode();
+//	}
 }

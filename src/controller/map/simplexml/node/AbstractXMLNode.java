@@ -114,23 +114,23 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		dest.children.addAll(children);
 		children.clear();
 	}
-	/**
-	 * @param obj an object
-	 * @return whether it's equal to this one
-	 */
-	@Override
-	public boolean equals(final Object obj) {
-		return (obj instanceof AbstractXMLNode
-				&& getClass().equals(obj.getClass())
-				&& children.equals(((AbstractXMLNode) obj).children) && line == ((AbstractXMLNode) obj).line);
-	}
-	/**
-	 * @return a hash value for the object
-	 */
-	@Override
-	public int hashCode() {
-		return children.hashCode() | getClass().hashCode() | line;
-	}
+//	/**
+//	 * @param obj an object
+//	 * @return whether it's equal to this one
+//	 */
+//	@Override
+//	public boolean equals(final Object obj) {
+//		return (obj instanceof AbstractXMLNode
+//				&& getClass().equals(obj.getClass())
+//				&& children.equals(((AbstractXMLNode) obj).children) && line == ((AbstractXMLNode) obj).line);
+//	}
+//	/**
+//	 * @return a hash value for the object
+//	 */
+//	@Override
+//	public int hashCode() {
+//		return children.hashCode() | getClass().hashCode() | line;
+//	}
 	/**
 	 * Pretty-print the node.
 	 * @param depth how deep we are in the tree
