@@ -98,7 +98,7 @@ public final class Tile implements XMLWritable {
 					for (River river : (RiverFixture) fix) {
 						rivers.addRiver(river);
 					}
-				} else {
+				} else if (!((RiverFixture) fix).getRivers().isEmpty()) {
 					contents.add(fix);
 				}
 			} else {
