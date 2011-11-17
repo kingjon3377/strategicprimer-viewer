@@ -36,7 +36,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 				node.checkNode();
 			} else {
 				throw new SPFormatException(
-						"Map should only directly contain Tiles and Players.",
+						"Map should only directly contain Tiles and Players: unexpected child " + node.toString(),
 						getLine());
 			}
 		}
@@ -81,7 +81,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 				tiles.add((TileNode) node);
 			} else {
 				throw new SPFormatException(
-						"Unsupported direct child of <map>", node.getLine());
+						"Unsupported direct child of <map>: " + node.toString(), node.getLine());
 			}
 		}
 		for (final TileNode node : tiles) {

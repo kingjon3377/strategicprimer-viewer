@@ -1,6 +1,7 @@
 package controller.map.simplexml.node;
 
 import util.EqualsAny;
+import util.Warning;
 import model.map.PlayerCollection;
 import model.map.Tile;
 import model.map.TileFixture;
@@ -38,6 +39,10 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			} else if (node instanceof AbstractFixtureNode) {
 				tile.addFixture(((AbstractFixtureNode<? extends TileFixture>) node)
 						.produce(players));
+			} else {
+				Warning.warn(new SPFormatException(//NOPMD
+						"Unexpected TileNode child of type " + node.toString(),
+						getLine()));
 			}
 		}
 		tile.addFixture(new TextFixture(sbuild.toString().trim(), -1));
