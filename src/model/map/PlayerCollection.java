@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import view.util.SystemOut;
+
 /**
  * A collection of players. Using a simple List doesn't work when -1 is the
  * default index if one isn't given in the XML.
@@ -102,6 +104,7 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 	public boolean isSubset(final PlayerCollection obj) {
 		for (Player player : obj) {
 			if (!players.containsValue(player)) {
+				SystemOut.SYS_OUT.println("Extra player");
 				return false; // NOPMD
 			}
 		}

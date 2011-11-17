@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import view.util.SystemOut;
+
 import model.map.events.NothingEvent;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
@@ -274,8 +276,12 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 		if (row == obj.row && col == obj.col && type.equals(obj.type)) {
 			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
 			temp.removeAll(contents);
+			if (!temp.isEmpty()) {
+				SystemOut.SYS_OUT.println("Extra fixture in (" + row + ", " + col + ").");
+			}
 			return temp.isEmpty(); // NOPMD
 		} else {
+			SystemOut.SYS_OUT.println("Type of (" + row + ", " + col + ") wrong");
 			return false;
 		}
 	}
