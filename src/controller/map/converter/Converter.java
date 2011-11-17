@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.Player;
+import model.map.River;
 import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileFixture;
@@ -24,6 +25,7 @@ import model.map.fixtures.Grove;
 import model.map.fixtures.Hill;
 import model.map.fixtures.Meadow;
 import model.map.fixtures.Mountain;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.Sandbar;
 import model.map.fixtures.Shrub;
 import model.map.fixtures.TextFixture;
@@ -120,6 +122,13 @@ public class Converter {
 		tile.addFixture(new Village(TownStatus.Active));
 		final List<TileFixture> fixtures = new LinkedList<TileFixture>(
 				tile.getContents());
+		if (tile.hasRiver()) {
+			final RiverFixture rivers = tile.getRivers();
+			for (River river : rivers) {
+				addRiver(river, initial);
+			}
+			fixtures.remove(rivers);
+		}
 		final Random random = new Random(MapModel.getSeed(tile));
 		Collections.shuffle(initial, random);
 		Collections.shuffle(fixtures, random);
@@ -366,5 +375,47 @@ public class Converter {
 			}
 		}
 		return false;
+	}
+	/**
+	 * @param river a river
+	 * @param tiles the subtiles to apply it to
+	 */
+	// ESCA-JAVA0076:
+	@SuppressWarnings("unused")
+	private static void addRiver(final River river, final List<Tile> tiles) {
+		if (SUBTILES_PER_TILE != 4) {
+			throw new IllegalStateException("This function is tuned for 4 subtiles per tile per axis");
+		}
+		switch (river) {
+		case East:
+			tiles.get(10).addRiver(River.East);
+			tiles.get(11).addRiver(River.East);
+			tiles.get(11).addRiver(River.West);
+			break;
+		case Lake:
+			tiles.get(10).addRiver(River.Lake);
+			break;
+		case North:
+			tiles.get(2).addRiver(River.North);
+			tiles.get(2).addRiver(River.South);
+			tiles.get(6).addRiver(River.North);
+			tiles.get(6).addRiver(River.South);
+			tiles.get(10).addRiver(River.North);
+			break;
+		case South:
+			tiles.get(10).addRiver(River.South);
+			tiles.get(14).addRiver(River.South);
+			tiles.get(14).addRiver(River.North);
+			break;
+		case West:
+			tiles.get(8).addRiver(River.West);
+			tiles.get(8).addRiver(River.East);
+			tiles.get(9).addRiver(River.West);
+			tiles.get(9).addRiver(River.East);
+			tiles.get(10).addRiver(River.West);
+			break;
+		default:
+			throw new IllegalStateException("Unknown River");
+		}
 	}
 }
