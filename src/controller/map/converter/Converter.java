@@ -138,8 +138,7 @@ public class Converter {
 			while (!fixtures.isEmpty()) {
 				final Tile subtile = initial.get(0);
 				subtile.addFixture(fixtures.remove(0));
-				subtile.addFixture(new TextFixture(
-						// NOPMD
+				subtile.addFixture(new TextFixture(// NOPMD
 						"FIXME: A fixture herre was force-added after MAX_ITER",
 						NEXT_TURN));
 				initial.add(initial.remove(0));
