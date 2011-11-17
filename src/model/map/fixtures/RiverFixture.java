@@ -13,6 +13,16 @@ import model.map.TileFixture;
  */
 public class RiverFixture implements TileFixture, Iterable<River> {
 	/**
+	 * Constructor.
+	 * @param initial the initial state of the fixture
+	 */
+	public RiverFixture(final River... initial) {
+		super();
+		for (final River river : initial) {
+			rivers.add(river);
+		}
+	}
+	/**
 	 * The Set we're using to hold the Rivers.
 	 */
 	private final Set<River> rivers = EnumSet.noneOf(River.class);
