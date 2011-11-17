@@ -1,6 +1,5 @@
 package controller.map.simplexml;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,20 +69,6 @@ public final class NodeFactory { // NOPMD
 		TAGS.put(string, tag);
 	}
 	/**
-	 * A mapping from tags to classes, so we can instantiate them using reflection.
-	 */
-	private static final Map<Tag, Class<? extends AbstractChildNode<?>>> CLASSES;
-	/**
-	 * Set up a class.
-	 * @param tag a tag category
-	 * @param node a node Class it should produce
-	 */
-	private static void addClass(final Tag tag,
-			final Class<? extends AbstractChildNode<?>> node) {
-		CLASSES.put(tag, node);
-	}
-
-	/**
 	 * Tags we expect to use in the future; they are SkippableNodes for now and
 	 * we'll warn if they're used.
 	 */
@@ -95,8 +80,6 @@ public final class NodeFactory { // NOPMD
 	 * remove a tag from FUTURE, we handle those before the tags we *do* handle.
 	 */
 	static {
-		CLASSES = new EnumMap<Tag, Class<? extends AbstractChildNode<?>>>(
-				Tag.class);
 		for (final String string : FUTURE) {
 			addTag(string, Tag.Skippable);
 		}
@@ -132,36 +115,6 @@ public final class NodeFactory { // NOPMD
 		addTag("cache", Tag.Cache);
 		addTag("sandbar", Tag.Sandbar);
 		addTag("text", Tag.Text);
-		addClass(Tag.Battlefield, EventNode.class);
-		addClass(Tag.Cave, EventNode.class);
-		addClass(Tag.City, EventNode.class);
-		addClass(Tag.Event, EventNode.class);
-		addClass(Tag.Fortification, EventNode.class);
-		addClass(Tag.Fortress, FortressNode.class);
-		addClass(Tag.Lake, RiverNode.class);
-		addClass(Tag.Map, MapNode.class);
-		addClass(Tag.Mineral, EventNode.class);
-		addClass(Tag.Player, PlayerNode.class);
-		addClass(Tag.River, RiverNode.class);
-		addClass(Tag.Skippable, SkippableNode.class);
-		addClass(Tag.Stone, EventNode.class);
-		addClass(Tag.Tile, TileNode.class);
-		addClass(Tag.Town, EventNode.class);
-		addClass(Tag.Unit, UnitNode.class);
-		addClass(Tag.Forest, ForestNode.class);
-		addClass(Tag.Mountain, MountainNode.class);
-		addClass(Tag.Ground, GroundNode.class);
-		addClass(Tag.Shrub, ShrubNode.class);
-		addClass(Tag.Oasis, OasisNode.class);
-		addClass(Tag.Grove, GroveNode.class);
-		addClass(Tag.Mine, MineNode.class);
-		addClass(Tag.Animal, AnimalNode.class);
-		addClass(Tag.Meadow, MeadowNode.class);
-		addClass(Tag.Hill, HillNode.class);
-		addClass(Tag.Village, VillageNode.class);
-		addClass(Tag.Cache, CacheNode.class);
-		addClass(Tag.Sandbar, SandbarNode.class);
-		addClass(Tag.Text, TextNode.class);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -179,10 +132,7 @@ public final class NodeFactory { // NOPMD
 			final int line) throws SPFormatException, InstantiationException,
 			IllegalAccessException {
 		final Tag localtag = getTag(tag, line);
-		if (!CLASSES.containsKey(localtag)) {
-			throw new IllegalStateException("Tag enum value " + localtag + " missing from CLASSES map");
-		}
-		final AbstractChildNode<?> node = CLASSES.get(localtag).newInstance();
+		final AbstractChildNode<?> node = localtag.getTagClass().newInstance();
 		if (EqualsAny.equalsAny(localtag, Tag.Battlefield, Tag.Cave, Tag.City,
 				Tag.Fortification, Tag.Mineral, Tag.Stone, Tag.Town)) {
 			node.addProperty(EVENT_KIND_PROP, tag);
