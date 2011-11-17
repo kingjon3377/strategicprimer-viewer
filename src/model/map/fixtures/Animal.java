@@ -46,7 +46,7 @@ public class Animal implements TileFixture, HasImage {
 		final StringBuilder sbuild = new StringBuilder("<animal kind=\"");
 		sbuild.append(kind);
 		if (isTraces()) {
-			sbuild.append("traces=\"");
+			sbuild.append("\" traces=\"");
 		}
 		sbuild.append("\" />");
 		return sbuild.toString();
