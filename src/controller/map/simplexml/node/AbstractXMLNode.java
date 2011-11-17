@@ -126,4 +126,21 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	public int hashCode() {
 		return children.hashCode() | getClass().hashCode() | line;
 	}
+	/**
+	 * Pretty-print the node.
+	 * @param depth how deep we are in the tree
+	 * @return the pretty-printed version of the node
+	 */
+	public final String prettyPrint(final int depth) {
+		final StringBuilder sbuild = new StringBuilder();
+		for (int i = 0; i < depth; i++) {
+			sbuild.append('\t');
+		}
+		sbuild.append(toString());
+		sbuild.append('\n');
+		for (AbstractXMLNode node : children) {
+			sbuild.append(node.prettyPrint(depth + 1));
+		}
+		return sbuild.toString();
+	}
 }
