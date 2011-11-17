@@ -298,7 +298,7 @@ public class Converter {
 			final Random random) {
 		if (isAdjacentToWater(tile, map) && random.nextDouble() < .4) {
 			tile.setType(TileType.Plains);
-		} else if (hasRiver(tile) && random.nextDouble() < SIXTY_PERCENT) {
+		} else if (!tile.hasRiver() && random.nextDouble() < SIXTY_PERCENT) {
 			tile.setType(TileType.Plains);
 		}
 	}
@@ -342,21 +342,12 @@ public class Converter {
 				if (neighbor.equals(tile)) {
 					continue;
 				}
-				if (hasRiver(neighbor)
+				if (!neighbor.hasRiver()
 						|| TileType.Ocean.equals(neighbor.getType())) {
 					return true; // NOPMD
 				}
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * @param tile
-	 *            a tile
-	 * @return whether that tile has a river
-	 */
-	private static boolean hasRiver(final Tile tile) {
-		return !tile.getRivers().getRivers().isEmpty();
 	}
 }

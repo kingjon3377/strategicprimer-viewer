@@ -258,7 +258,7 @@ public final class Tile implements XMLWritable {
 	/**
 	 * @return whether we contain a RiverFixture
 	 */
-	private boolean hasRiver() {
+	public boolean hasRiver() {
 		for (final TileFixture fix : contents) {
 			if (fix instanceof RiverFixture) {
 				return true; // NOPMD
