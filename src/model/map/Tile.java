@@ -1,8 +1,8 @@
 package model.map;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import model.map.events.NothingEvent;
 import model.map.fixtures.RiverFixture;
@@ -29,7 +29,7 @@ public final class Tile implements XMLWritable {
 		row = tileRow;
 		col = tileCol;
 		type = tileType;
-		contents = new HashSet<TileFixture>();
+		contents = new TreeSet<TileFixture>();
 	}
 
 	/**
