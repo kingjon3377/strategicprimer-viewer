@@ -52,8 +52,10 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 		pen.drawRect(xCoord, yCoord, width, height);
 		if (!TileType.NotVisible.equals(tile.getType())) {
 			pen.setColor(Color.blue);
-			for (final River river : tile.getRivers()) {
-				drawRiver(pen, river, xCoord, yCoord, width, height);
+			if (tile.hasRiver()) {
+				for (final River river : tile.getRivers()) {
+					drawRiver(pen, river, xCoord, yCoord, width, height);
+				}
 			}
 			if (hasAnyForts(tile)) {
 				pen.setColor(FORT_COLOR);

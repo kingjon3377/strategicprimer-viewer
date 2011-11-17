@@ -94,7 +94,7 @@ public final class Tile implements XMLWritable {
 						.getText().isEmpty())) {
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {
-					final RiverFixture rivers = getRiver();
+					final RiverFixture rivers = getRivers();
 					for (River river : (RiverFixture) fix) {
 						rivers.addRiver(river);
 					}
@@ -171,14 +171,6 @@ public final class Tile implements XMLWritable {
 	}
 
 	/**
-	 * 
-	 * @return the river directions on this tile
-	 */
-	public RiverFixture getRivers() {
-		return hasRiver() ? getRiver() : new RiverFixture();
-	}
-
-	/**
 	 * @param river
 	 *            a river to add
 	 */
@@ -192,7 +184,7 @@ public final class Tile implements XMLWritable {
 	 */
 	public void removeRiver(final River river) {
 		if (hasRiver()) {
-			final RiverFixture rivers = getRiver();
+			final RiverFixture rivers = getRivers();
 			rivers.removeRiver(river);
 			if (rivers.getRivers().isEmpty()) {
 				removeFixture(rivers);
@@ -270,7 +262,7 @@ public final class Tile implements XMLWritable {
 	 * Call hasRiver() before this, because this will throw IllegalStateException if we don't actually contain a river.
 	 * @return the RiverFixture that we contain
 	 */
-	private RiverFixture getRiver() {
+	public RiverFixture getRivers() {
 		for (final TileFixture fix : contents) {
 			if (fix instanceof RiverFixture) {
 				return (RiverFixture) fix;

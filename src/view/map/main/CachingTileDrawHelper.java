@@ -126,8 +126,10 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 		pen2d.draw(backgroundShape);
 		if (!TileType.NotVisible.equals(tile.getType())) {
 			pen2d.setColor(Color.BLUE);
-			for (final River river : tile.getRivers()) {
-				pen2d.fill(rivers.get(river));
+			if (tile.hasRiver()) {
+				for (final River river : tile.getRivers()) {
+					pen2d.fill(rivers.get(river));
+				}
 			}
 			if (hasAnyForts(tile)) {
 				pen2d.setColor(FORT_COLOR);
