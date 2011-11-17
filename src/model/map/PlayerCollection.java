@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Jonathan Lovelace
  * 
  */
-public class PlayerCollection implements Iterable<Player> {
+public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCollection> {
 	/**
 	 * The collection this class wraps.
 	 */
@@ -93,5 +93,18 @@ public class PlayerCollection implements Iterable<Player> {
 	@Override
 	public String toString() {
 		return "PlayerCollection";
+	}
+	/**
+	 * @param obj another PlayerCollection
+	 * @return whether it's a strict subset of this one
+	 */
+	@Override
+	public boolean isSubset(final PlayerCollection obj) {
+		for (Player player : obj) {
+			if (!players.containsValue(player)) {
+				return false; // NOPMD
+			}
+		}
+		return true;
 	}
 }

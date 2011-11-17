@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Jonathan Lovelace
  * 
  */
-public final class TileCollection implements Iterable<Point> {
+public final class TileCollection implements Iterable<Point>, Subsettable<TileCollection> {
 	/**
 	 * The Map this is a wrapper around.
 	 */
@@ -84,5 +84,18 @@ public final class TileCollection implements Iterable<Point> {
 	@Override
 	public String toString() {
 		return "TileCollection";
+	}
+	/**
+	 * @param obj another TileCollection
+	 * @return whether it's a strict subset of this one
+	 */
+	@Override
+	public boolean isSubset(final TileCollection obj) {
+		for (Point point : obj) {
+			if (!tiles.containsKey(point) || !tiles.get(point).isSubset(obj.getTile(point))) {
+				return false; // NOPMD
+			}
+		}
+		return true;
 	}
 }

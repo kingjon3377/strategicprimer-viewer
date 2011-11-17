@@ -2,10 +2,13 @@ package model.map.fixtures;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import model.map.HasImage;
 import model.map.Player;
+import model.map.Subsettable;
 import model.map.TileFixture;
 
 /**
@@ -17,7 +20,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements TileFixture, HasImage {
+public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -177,5 +180,19 @@ public class Fortress implements TileFixture, HasImage {
 	@Override
 	public int getZValue() {
 		return 60;
+	}
+	/**
+	 * @param obj another Fortress
+	 * @return whether it's a strict subset of this one
+	 */
+	@Override
+	public boolean isSubset(final Fortress obj) {
+		if (name.equals(obj.name) && obj.owner.equals(owner)) {
+			final Set<Unit> temp = new HashSet<Unit>(obj.units);
+			temp.removeAll(units);
+			return temp.isEmpty(); // NOPMD
+		} else {
+			return false;
+		}
 	}
 }

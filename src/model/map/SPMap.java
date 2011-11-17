@@ -7,7 +7,7 @@ package model.map;
  * @author Jonathan Lovelace
  * 
  */
-public class SPMap implements XMLWritable {
+public class SPMap implements XMLWritable, Subsettable<SPMap> {
 	/**
 	 * Map max version.
 	 */
@@ -210,5 +210,14 @@ public class SPMap implements XMLWritable {
 		}
 		sbuild.append("</map>");
 		return sbuild.toString();
+	}
+	/**
+	 * @param obj another map
+	 * @return whether it's a strict subset of this one
+	 */
+	@Override
+	public boolean isSubset(final SPMap obj) {
+		return cols() == obj.cols() && rows() == obj.rows()
+				&& players.isSubset(obj.players) && tiles.isSubset(obj.tiles);
 	}
 }

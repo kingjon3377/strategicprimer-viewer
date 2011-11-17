@@ -1,6 +1,7 @@
 package model.map;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,7 +15,7 @@ import model.map.fixtures.TextFixture;
  * @author Jonathan Lovelace
  * 
  */
-public final class Tile implements XMLWritable {
+public final class Tile implements XMLWritable, Subsettable<Tile> {
 	/**
 	 * Constructor.
 	 * 
@@ -263,5 +264,19 @@ public final class Tile implements XMLWritable {
 			}
 		}
 		throw new IllegalStateException("Didn't find a RiverFixture");
+	}
+	/**
+	 * @param obj another Tile
+	 * @return whether it's a strict subset of this one, having no members this one doesn't
+	 */
+	@Override
+	public boolean isSubset(final Tile obj) {
+		if (row == obj.row && col == obj.col && type.equals(obj.type)) {
+			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
+			temp.removeAll(contents);
+			return temp.isEmpty(); // NOPMD
+		} else {
+			return false;
+		}
 	}
 }

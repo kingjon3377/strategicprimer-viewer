@@ -5,13 +5,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 import model.map.River;
+import model.map.Subsettable;
 import model.map.TileFixture;
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for rivers.
  * @author Jonathan Lovelace
  *
  */
-public class RiverFixture implements TileFixture, Iterable<River> {
+public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<RiverFixture> {
 	/**
 	 * Constructor.
 	 * @param initial the initial state of the fixture
@@ -119,5 +120,15 @@ public class RiverFixture implements TileFixture, Iterable<River> {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+	}
+	/**
+	 * @param obj another RiverFixture
+	 * @return whether it's a strict subset of this one, containing no rivers that this doesn't
+	 */
+	@Override
+	public boolean isSubset(final RiverFixture obj) {
+		final Set<River> temp = EnumSet.copyOf(obj.rivers);
+		temp.removeAll(rivers);
+		return temp.isEmpty();
 	}
 }
