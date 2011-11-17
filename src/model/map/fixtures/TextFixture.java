@@ -86,4 +86,14 @@ public class TextFixture implements TileFixture, HasImage {
 	public int hashCode() {
 		return text.hashCode() << turn;
 	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+	}
 }

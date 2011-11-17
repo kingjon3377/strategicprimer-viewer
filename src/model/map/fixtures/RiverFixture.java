@@ -88,4 +88,14 @@ public class RiverFixture implements TileFixture, Iterable<River> {
 	public int getZValue() {
 		return 30;
 	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+	}
 }

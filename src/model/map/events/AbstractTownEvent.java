@@ -1,6 +1,7 @@
 package model.map.events;
 
 import model.map.HasImage;
+import model.map.TileFixture;
 
 /**
  * An abstract superclass for towns etc.
@@ -136,5 +137,15 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	@Override
 	public int getZValue() { // NOPMD: It claims this is "empty" and should be abstract instead.
 		return 50;
+	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 }

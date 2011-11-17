@@ -5,7 +5,7 @@ package model.map;
  * 
  * @author Jonathan Lovelace
  */
-public interface TileFixture extends XMLWritable {
+public interface TileFixture extends XMLWritable, Comparable<TileFixture> {
 	// Marker interface; also, TODO: what members should this have?
 	/**
 	 * TODO: This should be user-configurable.

@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TerrainFixture;
+import model.map.TileFixture;
 
 /**
  * An oasis on the map.
@@ -52,5 +53,14 @@ public class Oasis implements TerrainFixture, HasImage {
 	public int hashCode() {
 		return 2;
 	}
-
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+	}
 }

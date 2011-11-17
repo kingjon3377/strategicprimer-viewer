@@ -1,6 +1,7 @@
 package model.map.events;
 
 import model.map.HasImage;
+import model.map.TileFixture;
 
 
 /**
@@ -144,5 +145,15 @@ public final class MineralEvent implements IEvent, HasImage {
 	@Override
 	public int getZValue() {
 		return 40;
+	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 }

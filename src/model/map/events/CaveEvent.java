@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.TileFixture;
+
 
 /**
  * "There are extensive caves beneath this tile".
@@ -83,5 +85,15 @@ public final class CaveEvent implements IEvent {
 	@Override
 	public int getZValue() {
 		return 40;
+	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 }

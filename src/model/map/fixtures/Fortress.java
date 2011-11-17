@@ -17,7 +17,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements Comparable<Fortress>, TileFixture, HasImage {
+public class Fortress implements TileFixture, HasImage {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -132,13 +132,13 @@ public class Fortress implements Comparable<Fortress>, TileFixture, HasImage {
 	}
 
 	/**
-	 * @param fort
-	 *            Another fortress
-	 * @return the result of a comparison with it
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final Fortress fort) {
-		return Integer.valueOf(hashCode()).compareTo(fort.hashCode());
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 	/**
 	 * @return an XML representation of the fortress.

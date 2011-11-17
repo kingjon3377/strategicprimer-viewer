@@ -85,4 +85,14 @@ public class Mine implements TileFixture, HasImage {
 	public int hashCode() {
 		return product.hashCode() << status.hashCode();
 	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+	}
 }

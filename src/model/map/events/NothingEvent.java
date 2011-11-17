@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.TileFixture;
+
 
 /**
  * "Nothing interesting here...".
@@ -78,5 +80,15 @@ public final class NothingEvent implements IEvent {
 	@Override
 	public int getZValue() {
 		return 0;
+	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 }

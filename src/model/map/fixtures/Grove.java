@@ -106,4 +106,14 @@ public class Grove implements TileFixture, HasImage {
 	public int hashCode() {
 		return tree.hashCode() << ((orchard ? 1 : 0) + (wild ? 2 : 0));
 	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+	}
 }

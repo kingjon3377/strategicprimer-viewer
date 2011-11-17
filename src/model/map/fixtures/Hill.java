@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TerrainFixture;
+import model.map.TileFixture;
 
 /**
  * A hill on the map. Should increase unit's effective vision by a small
@@ -53,5 +54,15 @@ public class Hill implements TerrainFixture, HasImage {
 	@Override
 	public int hashCode() {
 		return 0;
+	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 }

@@ -118,4 +118,14 @@ public class Meadow implements TileFixture, HasImage {
 	public int hashCode() {
 		return kind.hashCode() << ((field ? 1 : 0) + (cultivated ? 2 : 0));
 	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+	}
 }

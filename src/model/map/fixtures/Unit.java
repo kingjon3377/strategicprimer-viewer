@@ -10,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public class Unit implements Comparable<Unit>, TileFixture, HasImage {
+public class Unit implements TileFixture, HasImage {
 	/**
 	 * The player that owns the unit.
 	 */
@@ -109,14 +109,14 @@ public class Unit implements Comparable<Unit>, TileFixture, HasImage {
 	}
 
 	/**
-	 * @param unit
-	 *            A Unit to compare to
+	 * @param fix
+	 *            A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final Unit unit) {
-		return Integer.valueOf(hashCode()).compareTo(unit.hashCode());
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 	/**
 	 * @return an XML representation of the unit.

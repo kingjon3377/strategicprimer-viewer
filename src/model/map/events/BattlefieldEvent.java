@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.TileFixture;
+
 
 /**
  * "There are the signs of a long-ago battle here".
@@ -83,5 +85,15 @@ public final class BattlefieldEvent implements IEvent {
 	@Override
 	public int getZValue() {
 		return 40;
+	}
+	/**
+	 * @param fix
+	 *            A TileFixture to compare to
+	 * 
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final TileFixture fix) {
+		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
 	}
 }
