@@ -168,10 +168,15 @@ public class Converter {
 				tile.setType(TileType.Plains);
 				tile.addFixture(new Mountain());
 			} else if (TileType.TemperateForest.equals(tile.getType())) {
-				tile.addFixture(new Forest(runner.getPrimaryTree(tile), false));
+				if (!hasForest(tile)) {
+					tile.addFixture(new Forest(runner.getPrimaryTree(tile),
+							false));
+				}
 				tile.setType(TileType.Plains);
 			} else if (TileType.BorealForest.equals(tile.getType())) {
-				tile.addFixture(new Forest(runner.getPrimaryTree(tile), false));
+				if (!hasForest(tile)) {
+					tile.addFixture(new Forest(runner.getPrimaryTree(tile), false));
+				}
 				tile.setType(TileType.Steppe);
 			}
 			tile.addFixture(new Ground(runner.getPrimaryRock(tile), false));
@@ -346,6 +351,18 @@ public class Converter {
 						|| TileType.Ocean.equals(neighbor.getType())) {
 					return true; // NOPMD
 				}
+			}
+		}
+		return false;
+	}
+	/**
+	 * @param tile a tile
+	 * @return whether it already has a forest
+	 */
+	private static boolean hasForest(final Tile tile) {
+		for (TileFixture fix : tile.getContents()) {
+			if (fix instanceof Forest) {
+				return true; // NOPMD
 			}
 		}
 		return false;
