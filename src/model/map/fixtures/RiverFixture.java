@@ -89,6 +89,18 @@ public class RiverFixture implements TileFixture, Iterable<River> {
 		return 30;
 	}
 	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sbuild = new StringBuilder("RiverFixture with rivers: ");
+		for (River river : rivers) {
+			sbuild.append(river.toString());
+			sbuild.append(' ');
+		}
+		return sbuild.toString();
+	}
+	/**
 	 * @param fix
 	 *            A TileFixture to compare to
 	 * 
