@@ -277,11 +277,11 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
 			temp.removeAll(contents);
 			if (!temp.isEmpty()) {
-				SystemOut.SYS_OUT.println("Extra fixture in (" + row + ", " + col + ").");
+				SystemOut.SYS_OUT.print("Extra fixture in (" + row + ", " + col + ")\t");
 			}
 			return temp.isEmpty(); // NOPMD
 		} else {
-			SystemOut.SYS_OUT.println("Type of (" + row + ", " + col + ") wrong");
+			SystemOut.SYS_OUT.print("Type of (" + row + ", " + col + ") wrong\t");
 			return false;
 		}
 	}
