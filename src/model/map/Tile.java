@@ -1,15 +1,17 @@
 package model.map;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import view.util.SystemOut;
-
 import model.map.events.NothingEvent;
+import model.map.fixtures.CacheFixture;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import view.util.SystemOut;
 
 /**
  * A tile in a map.
@@ -276,6 +278,12 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 		if (row == obj.row && col == obj.col && type.equals(obj.type)) {
 			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
 			temp.removeAll(contents);
+			final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
+			for (TileFixture fix : tempList) {
+				if (fix instanceof CacheFixture) {
+					temp.remove(fix);
+				}
+			}
 			if (!temp.isEmpty()) {
 				SystemOut.SYS_OUT.print("Extra fixture in (" + row + ", " + col + ")\t");
 			}
