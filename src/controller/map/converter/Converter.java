@@ -88,7 +88,7 @@ public class Converter {
 		final List<Tile> converted = new LinkedList<Tile>();
 		for (int row = 0; row < old.rows(); row++) {
 			for (int col = 0; col < old.cols(); col++) {
-				for (Tile tile : convertTile(old.getTile(row, col))) {
+				for (Tile tile : convertTile(old.getTile(row, col), main)) {
 					retval.addTile(tile);
 					converted.add(tile);
 				}
@@ -105,9 +105,10 @@ public class Converter {
 	/**
 	 * @param tile
 	 *            a tile on the old map
+	 * @param main whether this is the main  map or a player's map
 	 * @return the equivalent higher-resolution tiles.
 	 */
-	private List<Tile> convertTile(final Tile tile) {
+	private List<Tile> convertTile(final Tile tile, final boolean main) {
 		final List<Tile> initial = new LinkedList<Tile>();
 		if (!tile.isEmpty()) {
 		for (int i = 0; i < SUBTILES_PER_TILE; i++) {
@@ -116,7 +117,7 @@ public class Converter {
 				final int col = tile.getCol() * SUBTILES_PER_TILE + j;
 				final Tile subtile = new Tile(row, col, tile.getType()); // NOPMD
 				initial.add(subtile);
-				convertSubtile(subtile);
+				convertSubtile(subtile, main);
 			}
 		}
 		tile.addFixture(new Village(TownStatus.Active));
@@ -169,9 +170,10 @@ public class Converter {
 	 * 
 	 * @param tile
 	 *            the tile to convert
+	 * @param main whether this is the main map or a player's map
 	 */
 	@SuppressWarnings("deprecation")
-	private void convertSubtile(final Tile tile) {
+	private void convertSubtile(final Tile tile, final boolean main) {
 		try {
 			if (TileType.Mountain.equals(tile.getType())) {
 				tile.setType(TileType.Plains);
@@ -188,7 +190,7 @@ public class Converter {
 				}
 				tile.setType(TileType.Steppe);
 			}
-			tile.addFixture(new Ground(runner.getPrimaryRock(tile), false));
+			addFixture(tile, new Ground(runner.getPrimaryRock(tile), false), main);
 		} catch (MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing table", e);
 		}
