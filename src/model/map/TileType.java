@@ -136,7 +136,7 @@ public enum TileType implements XMLWritable {
 		if (TILE_TYPE_MAP.containsKey(string)) {
 			return TILE_TYPE_MAP.get(string);
 		} // else
-		throw new IllegalArgumentException("Unrecognized terrain type string");
+		throw new IllegalArgumentException("Unrecognized terrain type string " + string);
 	}
 	/**
 	 * @return the XML representation of the tile type.
