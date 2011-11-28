@@ -204,8 +204,6 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 *            the same tile in another map.
 	 */
 	public void update(final Tile tile) {
-		contents.addAll(tile.contents);
-		contents.retainAll(tile.contents);
 		type = tile.type;
 	}
 	/**
