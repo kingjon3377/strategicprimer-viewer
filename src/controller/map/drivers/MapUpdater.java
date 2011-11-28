@@ -57,7 +57,7 @@ public final class MapUpdater {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				if (shouldUpdate(derived.getTile(i, j), master.getTile(i, j))) {
-					derived.addTile(master.getTile(i, j));
+					derived.getTile(i, j).update(master.getTile(i, j));
 				}
 			}
 		}
