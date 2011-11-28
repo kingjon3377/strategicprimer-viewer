@@ -38,7 +38,7 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 			sbuild.append(river.toXML());
 			sbuild.append('\n');
 		}
-		return sbuild.toString();
+		return sbuild.toString().trim();
 	}
 	/**
 	 * Add a river.
