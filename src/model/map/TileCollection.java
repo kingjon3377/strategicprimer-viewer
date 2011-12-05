@@ -91,11 +91,12 @@ public final class TileCollection implements Iterable<Point>, Subsettable<TileCo
 	 */
 	@Override
 	public boolean isSubset(final TileCollection obj) {
+		boolean retval = true;
 		for (Point point : obj) {
 			if (!tiles.containsKey(point) || !tiles.get(point).isSubset(obj.getTile(point))) {
-				return false; // NOPMD
+				retval = false; // NOPMD
 			}
 		}
-		return true;
+		return retval;
 	}
 }

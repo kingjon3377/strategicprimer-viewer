@@ -283,7 +283,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 				}
 			}
 			if (!temp.isEmpty()) {
-				SystemOut.SYS_OUT.print("Extra fixture in (" + row + ", " + col + ")\t");
+				SystemOut.SYS_OUT.print("\nExtra fixture in (" + row + ", " + col + ")\t");
 			}
 			return temp.isEmpty(); // NOPMD
 		} else {
