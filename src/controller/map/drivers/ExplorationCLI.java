@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,7 +37,10 @@ public final class ExplorationCLI {
 	 * The helper that actually runs the exploration.
 	 */
 	private final ExplorationRunner runner = new ExplorationRunner();
-
+	/**
+	 * Random number generator.
+	 */
+	private final Random random = new Random(System.currentTimeMillis());
 	/**
 	 * Constructor.
 	 * 
@@ -139,7 +143,10 @@ public final class ExplorationCLI {
 		ostream.print("Tile is ");
 		ostream.println(tile.getType());
 		try {
-			ostream.println(runner.recursiveConsultTable("main", tile));
+			final int reps = random.nextInt(6) + 1;
+			for (int i = 0; i < reps; i++) {
+				ostream.println(runner.recursiveConsultTable("main", tile));
+			}
 		} catch (MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 		}
