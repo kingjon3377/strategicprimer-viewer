@@ -108,7 +108,7 @@ public class ExplorationRunner { // NOPMD
 	 * @return that table
 	 * @throws MissingTableException if the table isn't in the map of tables.
 	 */
-	private EncounterTable getTable(final String name) throws MissingTableException {
+	public EncounterTable getTable(final String name) throws MissingTableException {
 		if (tables.containsKey(name)) {
 			return tables.get(name);
 		} else {
