@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
+import util.Pair;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
@@ -32,22 +33,11 @@ public final class SubsetDriver {
 			SystemOut.SYS_OUT.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final SPMap mainMap; // NOPMD
-		try {
-			mainMap = reader.readMap(args[0]);
-		} catch (MapVersionException e) {
-			Warning.warn(e);
-			return; // NOPMD
-		} catch (IOException e) {
-			Warning.warn(e);
-			return; // NOPMD
-		} catch (XMLStreamException e) {
-			Warning.warn(e);
-			return; // NOPMD
-		} catch (SPFormatException e) {
-			Warning.warn(e);
-			return; // NOPMD
+		final Pair<SPMap, Boolean> mainPair = safeLoadMap(reader, args[0]);
+		if (!mainPair.second()) {
+			return;
 		}
+		final SPMap mainMap = mainPair.first();
 		SystemOut.SYS_OUT.println("OK if strict subset, WARN if needs manual checking, FAIL if error in reading");
 		for (String arg : args) {
 			if (arg.equals(args[0])) {
@@ -55,26 +45,12 @@ public final class SubsetDriver {
 			}
 			SystemOut.SYS_OUT.print(arg);
 			SystemOut.SYS_OUT.print("\t...\t\t");
-			final SPMap map; // NOPMD
-			try {
-				map = reader.readMap(arg);
-			} catch (MapVersionException e) {
-				Warning.warn(e);
-				SystemOut.SYS_OUT.println("FAIL");
-				continue;
-			} catch (IOException e) {
-				Warning.warn(e);
-				SystemOut.SYS_OUT.println("FAIL");
-				continue;
-			} catch (XMLStreamException e) {
-				Warning.warn(e);
-				SystemOut.SYS_OUT.println("FAIL");
-				continue;
-			} catch (SPFormatException e) {
-				Warning.warn(e);
+			final Pair<SPMap, Boolean> pair = safeLoadMap(reader, arg);
+			if (!pair.second()) {
 				SystemOut.SYS_OUT.println("FAIL");
 				continue;
 			}
+			final SPMap map = pair.first(); // NOPMD
 			if (mainMap.isSubset(map)) {
 				SystemOut.SYS_OUT.println("OK");
 			} else {
@@ -82,4 +58,36 @@ public final class SubsetDriver {
 			}
 		}
 	}
+	
+	/**
+	 * Return the specified map (or null) *and* whether an exception was thrown.
+	 * Any thrown exceptions will additionally be warned about.
+	 * 
+	 * @param reader
+	 *            the map reader to use
+	 * @param filename
+	 *            the name of a map
+	 * @return a Pair of the map (or null) and whether an exception was thrown.
+	 */
+	private static Pair<SPMap, Boolean> safeLoadMap(final MapReaderAdapter reader, final String filename) {
+		SPMap map = null;
+		boolean flag = false;
+		try {
+			map = reader.readMap(filename);
+		} catch (MapVersionException e) {
+			Warning.warn(e);
+			flag = true;
+		} catch (IOException e) {
+			Warning.warn(e);
+			flag = true;
+		} catch (XMLStreamException e) {
+			Warning.warn(e);
+			flag = true;
+		} catch (SPFormatException e) {
+			Warning.warn(e);
+			flag = true;
+		}
+		return Pair.of(map, flag);
+	}
+	
 }
