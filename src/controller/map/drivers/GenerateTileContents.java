@@ -22,17 +22,79 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class GenerateTileContents {
+public final class GenerateTileContents {
+	/**
+	 * Singleton object.
+	 */
+	private static GenerateTileContents singleton = null;
+	/**
+	 * Object to synchronize on.
+	 */
+	private static final Object LOCK = "";
+	/**
+	 * @param map the map to refer to if we have to create a new object
+	 * @return the singleton
+	 */
+	public static GenerateTileContents getSingleton(final SPMap map) {
+		synchronized (LOCK) {
+			if (singleton == null) {
+				singleton = new GenerateTileContents(map);
+			}
+		}
+		return singleton;
+	}
+	/**
+	 * A kind of exception to throw if we need an argument.
+	 */
+	public static final class NotYetInitializedException extends Exception {
+		/**
+		 * Constructor.
+		 * @param message the message to give
+		 */
+		public NotYetInitializedException(final String message) {
+			super(message);
+		}
+	}
+	/**
+	 * @return the singleton, if it's already been initialized
+	 * @throws NotYetInitializedException if it hasn't already been initialized
+	 */
+	public static GenerateTileContents getSingleton() throws NotYetInitializedException {
+		synchronized (LOCK) {
+			if (singleton == null) {
+				throw new NotYetInitializedException("Singleton hasn't been initialized yet; pass in a map");
+			}
+		}
+		return singleton;
+	}
 	/**
 	 * The singleton map we'll be consulting.
 	 */
-	private static SPMap map = null;
+	private final SPMap map;
+	/**
+	 * Constructor.
+	 * @param theMap the map we'll be consulting.
+	 */
+	private GenerateTileContents(final SPMap theMap) {
+		map = theMap;
+		new TableLoader().loadAllTables("tables", runner);
+	}
 	/**
 	 * The singleton runner we'll be using.
 	 */
-	private static final ExplorationRunner RUNNER = new ExplorationRunner();
-	static {
-		new TableLoader().loadAllTables("tables", RUNNER);
+	private final ExplorationRunner runner = new ExplorationRunner();
+	/**
+	 * Generate the contents of a tile.
+	 * @param row the row of the tile
+	 * @param col the column of a tile
+	 * @throws MissingTableException if a missing table is referenced
+	 */
+	public void generateTileContents(final int row, final int col) throws MissingTableException {
+		final Tile tile = map.getTile(row, col);
+		final int reps = SingletonRandom.RANDOM.nextInt(6) + 1;
+		for (int i = 0; i < reps; i++) {
+			println(runner.recursiveConsultTable("main", tile));
+		}
 	}
 	/**
 	 * @param args the map to work from, the row, and the column
@@ -43,43 +105,32 @@ public class GenerateTileContents {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
 			try {
-				if (map == null) {
-					map = new MapReaderAdapter().readMap(args[0]);
+				// ESCA-JAVA0177:
+				GenerateTileContents generator; // NOPMD
+				try {
+					generator = getSingleton();
+				} catch (NotYetInitializedException e) {
+					generator = getSingleton(new MapReaderAdapter().readMap(args[0]));
 				}
-				Tile tile = map.getTile(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-			final int reps = SingletonRandom.RANDOM.nextInt(6) + 1;
-			for (int i = 0; i < reps; i++) {
-				println(RUNNER.recursiveConsultTable("main", tile));
-			}
+				generator.generateTileContents(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 			} catch (NumberFormatException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
-				e.printStackTrace();
-				e.printStackTrace(SystemOut.SYS_OUT);
 				System.exit(1);
 			} catch (MapVersionException e) {
 				logger.log(Level.SEVERE, "Unexpected map version", e);
-				e.printStackTrace();
-				e.printStackTrace(SystemOut.SYS_OUT);
 				System.exit(2);
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, "I/O error", e);
-				e.printStackTrace();
-				e.printStackTrace(SystemOut.SYS_OUT);
 				System.exit(3);
 			} catch (XMLStreamException e) {
 				logger.log(Level.SEVERE, "XML error", e);
-				e.printStackTrace();
-				e.printStackTrace(SystemOut.SYS_OUT);
 				System.exit(4);
 			} catch (SPFormatException e) {
 				logger.log(Level.SEVERE, "Bad SP XML format", e);
-				e.printStackTrace();
-				e.printStackTrace(SystemOut.SYS_OUT);
 				System.exit(5);
 			} catch (MissingTableException e) {
 				logger.log(Level.SEVERE, "Missing table", e);
-				e.printStackTrace();
-				e.printStackTrace(SystemOut.SYS_OUT);
+				// ESCA-JAVA0076:
 				System.exit(6);
 			}
 		}
