@@ -10,6 +10,7 @@ import controller.map.simplexml.node.AnimalNode;
 import controller.map.simplexml.node.CacheNode;
 import controller.map.simplexml.node.CentaurNode;
 import controller.map.simplexml.node.EventNode;
+import controller.map.simplexml.node.FairyNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.GroundNode;
@@ -117,6 +118,7 @@ public final class NodeFactory { // NOPMD
 		addTag("sandbar", Tag.Sandbar);
 		addTag("text", Tag.Text);
 		addTag("centaur", Tag.Centaur);
+		addTag("fairy", Tag.Fairy);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -278,6 +280,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Centaur:
 			node = new CentaurNode();
+			break;
+		case Fairy:
+			node = new FairyNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
