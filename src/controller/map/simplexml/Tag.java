@@ -3,6 +3,7 @@ package controller.map.simplexml;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AnimalNode;
 import controller.map.simplexml.node.CacheNode;
+import controller.map.simplexml.node.CentaurNode;
 import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
@@ -151,6 +152,10 @@ enum Tag {
 	 * Arbitrary text. (That's being moved from the tile itself into fixtures.)
 	 */
 	Text(TextNode.class),
+	/**
+	 * A centaur.
+	 */
+	Centaur(CentaurNode.class),
 	/**
 	 * A town.
 	 */
