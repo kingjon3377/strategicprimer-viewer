@@ -22,7 +22,9 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	@Override
 	public Animal produce(final PlayerCollection players)
 			throws SPFormatException {
-		return new Animal(getProperty("kind"), hasProperty("traces"));
+		return new Animal(getProperty("kind"), hasProperty("traces"),
+				hasProperty("talking")
+						&& Boolean.parseBoolean(getProperty("talking")));
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "kind", "traces");
+		return EqualsAny.equalsAny(property, "kind", "traces", "talking");
 	}
 	/**
 	 * @return a String representation of the node.

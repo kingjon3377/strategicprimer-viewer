@@ -18,19 +18,31 @@ public class Animal implements TileFixture, HasImage {
 	 */
 	private final String kind;
 	/**
+	 * Whether this is a talking animal.
+	 */
+	private final boolean talking;
+	/**
 	 * Constructor.
 	 * @param animal what kind of animal
 	 * @param tracks whether this is really the animal, or only tracks
+	 * @param talks whether this is a talking animal.
 	 */
-	public Animal(final String animal, final boolean tracks) {
+	public Animal(final String animal, final boolean tracks, final boolean talks) {
 		kind = animal;
 		traces = tracks;
+		talking = talks;
 	}
 	/**
 	 * @return true if this is only traces or tracks, false if this is really the animal
 	 */
 	public boolean isTraces() {
 		return traces;
+	}
+	/**
+	 * @return whether the animal is a talking animal
+	 */
+	public boolean isTalking() {
+		return talking;
 	}
 	/**
 	 * @return what kind of animal this is
@@ -48,6 +60,9 @@ public class Animal implements TileFixture, HasImage {
 		if (isTraces()) {
 			sbuild.append("\" traces=\"");
 		}
+		if (isTalking()) {
+			sbuild.append("\" talking=\"true");
+		}
 		sbuild.append("\" />");
 		return sbuild.toString();
 	}
@@ -56,7 +71,7 @@ public class Animal implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return (isTraces() ? "traces of " : "") + getAnimal();
+		return (isTraces() ? "traces of " : "") + (isTalking() ? "talking " : "") + getAnimal();
 	}
 	/**
 	 * TODO: Should depend on the kind of animal.
@@ -81,14 +96,14 @@ public class Animal implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Animal && ((Animal) obj).kind.equals(kind)
-				&& ((Animal) obj).traces == traces;
+				&& ((Animal) obj).traces == traces && ((Animal) obj).talking == talking;
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() << (traces ? 1 : 0);
+		return kind.hashCode() << (traces ? 1 : 0) << (talking ? 2 : 0);
 	}
 	/**
 	 * @param fix
