@@ -5,10 +5,12 @@ import controller.map.simplexml.node.AnimalNode;
 import controller.map.simplexml.node.CacheNode;
 import controller.map.simplexml.node.CentaurNode;
 import controller.map.simplexml.node.DjinnNode;
+import controller.map.simplexml.node.DragonNode;
 import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.FairyNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
+import controller.map.simplexml.node.GiantNode;
 import controller.map.simplexml.node.GroundNode;
 import controller.map.simplexml.node.GroveNode;
 import controller.map.simplexml.node.HillNode;
@@ -166,6 +168,14 @@ enum Tag {
 	 * A djinn.
 	 */
 	Djinn(DjinnNode.class),
+	/**
+	 * A dragon.
+	 */
+	Dragon(DragonNode.class),
+	/**
+	 * A giant.
+	 */
+	Giant(GiantNode.class),
 	/**
 	 * A town.
 	 */
