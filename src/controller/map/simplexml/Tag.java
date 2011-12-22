@@ -4,6 +4,7 @@ import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AnimalNode;
 import controller.map.simplexml.node.CacheNode;
 import controller.map.simplexml.node.CentaurNode;
+import controller.map.simplexml.node.DjinnNode;
 import controller.map.simplexml.node.EventNode;
 import controller.map.simplexml.node.FairyNode;
 import controller.map.simplexml.node.ForestNode;
@@ -161,6 +162,10 @@ enum Tag {
 	 * A fairy.
 	 */
 	Fairy(FairyNode.class),
+	/**
+	 * A djinn.
+	 */
+	Djinn(DjinnNode.class),
 	/**
 	 * A town.
 	 */
