@@ -12,7 +12,7 @@ import controller.map.SPFormatException;
 public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	/**
 	 * @param players ignored
-	 * @return the ogre this represents
+	 * @return the phoenix this represents
 	 * @throws SPFormatException never
 	 */
 	@Override

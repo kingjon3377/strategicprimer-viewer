@@ -21,7 +21,7 @@ public class Phoenix implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "ogre";
+		return "phoenix";
 	}
 	/**
 	 * @return the name of an image to represent the phoenix
@@ -43,7 +43,7 @@ public class Phoenix implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Ogre;
+		return obj instanceof Phoenix;
 	}
 	/**
 	 * @return a hash value for the object
