@@ -16,12 +16,14 @@ import controller.map.simplexml.node.FairyNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.GiantNode;
+import controller.map.simplexml.node.GriffinNode;
 import controller.map.simplexml.node.GroundNode;
 import controller.map.simplexml.node.GroveNode;
 import controller.map.simplexml.node.HillNode;
 import controller.map.simplexml.node.MapNode;
 import controller.map.simplexml.node.MeadowNode;
 import controller.map.simplexml.node.MineNode;
+import controller.map.simplexml.node.MinotaurNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.OasisNode;
 import controller.map.simplexml.node.PlayerNode;
@@ -125,6 +127,8 @@ public final class NodeFactory { // NOPMD
 		addTag("djinn", Tag.Djinn);
 		addTag("giant", Tag.Giant);
 		addTag("dragon", Tag.Dragon);
+		addTag("griffin", Tag.Griffin);
+		addTag("minotaur", Tag.Minotaur);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -298,6 +302,12 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Giant:
 			node = new GiantNode();
+			break;
+		case Griffin:
+			node = new GriffinNode();
+			break;
+		case Minotaur:
+			node = new MinotaurNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

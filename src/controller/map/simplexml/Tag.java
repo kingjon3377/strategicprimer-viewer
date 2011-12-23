@@ -11,12 +11,14 @@ import controller.map.simplexml.node.FairyNode;
 import controller.map.simplexml.node.ForestNode;
 import controller.map.simplexml.node.FortressNode;
 import controller.map.simplexml.node.GiantNode;
+import controller.map.simplexml.node.GriffinNode;
 import controller.map.simplexml.node.GroundNode;
 import controller.map.simplexml.node.GroveNode;
 import controller.map.simplexml.node.HillNode;
 import controller.map.simplexml.node.MapNode;
 import controller.map.simplexml.node.MeadowNode;
 import controller.map.simplexml.node.MineNode;
+import controller.map.simplexml.node.MinotaurNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.OasisNode;
 import controller.map.simplexml.node.PlayerNode;
@@ -176,6 +178,14 @@ enum Tag {
 	 * A giant.
 	 */
 	Giant(GiantNode.class),
+	/**
+	 * A griffin.
+	 */
+	Griffin(GriffinNode.class),
+	/**
+	 * A minotaur.
+	 */
+	Minotaur(MinotaurNode.class),
 	/**
 	 * A town.
 	 */
