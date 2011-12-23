@@ -27,9 +27,12 @@ import controller.map.simplexml.node.PlayerNode;
 import controller.map.simplexml.node.RiverNode;
 import controller.map.simplexml.node.SandbarNode;
 import controller.map.simplexml.node.ShrubNode;
+import controller.map.simplexml.node.SimurghNode;
 import controller.map.simplexml.node.SkippableNode;
+import controller.map.simplexml.node.SphinxNode;
 import controller.map.simplexml.node.TextNode;
 import controller.map.simplexml.node.TileNode;
+import controller.map.simplexml.node.TrollNode;
 import controller.map.simplexml.node.UnitNode;
 import controller.map.simplexml.node.VillageNode;
 
@@ -196,6 +199,18 @@ enum Tag {
 	 * A phoenix.
 	 */
 	Phoenix(PhoenixNode.class),
+	/**
+	 * A simurgh.
+	 */
+	Simurgh(SimurghNode.class),
+	/**
+	 * A sphinx.
+	 */
+	Sphinx(SphinxNode.class),
+	/**
+	 * A troll.
+	 */
+	Troll(TrollNode.class),
 	/**
 	 * A town.
 	 */

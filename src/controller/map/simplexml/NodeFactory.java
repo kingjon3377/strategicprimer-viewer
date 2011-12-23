@@ -32,9 +32,12 @@ import controller.map.simplexml.node.PlayerNode;
 import controller.map.simplexml.node.RiverNode;
 import controller.map.simplexml.node.SandbarNode;
 import controller.map.simplexml.node.ShrubNode;
+import controller.map.simplexml.node.SimurghNode;
 import controller.map.simplexml.node.SkippableNode;
+import controller.map.simplexml.node.SphinxNode;
 import controller.map.simplexml.node.TextNode;
 import controller.map.simplexml.node.TileNode;
+import controller.map.simplexml.node.TrollNode;
 import controller.map.simplexml.node.UnitNode;
 import controller.map.simplexml.node.VillageNode;
 
@@ -133,6 +136,9 @@ public final class NodeFactory { // NOPMD
 		addTag("minotaur", Tag.Minotaur);
 		addTag("ogre", Tag.Ogre);
 		addTag("phoenix", Tag.Phoenix);
+		addTag("simurgh", Tag.Simurgh);
+		addTag("sphinx", Tag.Sphinx);
+		addTag("troll", Tag.Troll);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -318,6 +324,15 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Phoenix:
 			node = new PhoenixNode();
+			break;
+		case Simurgh:
+			node = new SimurghNode();
+			break;
+		case Sphinx:
+			node = new SphinxNode();
+			break;
+		case Troll:
+			node = new TrollNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
