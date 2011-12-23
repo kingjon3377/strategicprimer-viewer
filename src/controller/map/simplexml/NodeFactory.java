@@ -26,6 +26,8 @@ import controller.map.simplexml.node.MineNode;
 import controller.map.simplexml.node.MinotaurNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.OasisNode;
+import controller.map.simplexml.node.OgreNode;
+import controller.map.simplexml.node.PhoenixNode;
 import controller.map.simplexml.node.PlayerNode;
 import controller.map.simplexml.node.RiverNode;
 import controller.map.simplexml.node.SandbarNode;
@@ -129,6 +131,8 @@ public final class NodeFactory { // NOPMD
 		addTag("dragon", Tag.Dragon);
 		addTag("griffin", Tag.Griffin);
 		addTag("minotaur", Tag.Minotaur);
+		addTag("ogre", Tag.Ogre);
+		addTag("phoenix", Tag.Phoenix);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -308,6 +312,12 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Minotaur:
 			node = new MinotaurNode();
+			break;
+		case Ogre:
+			node = new OgreNode();
+			break;
+		case Phoenix:
+			node = new PhoenixNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

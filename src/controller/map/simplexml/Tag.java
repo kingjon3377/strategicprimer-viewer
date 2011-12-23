@@ -21,6 +21,8 @@ import controller.map.simplexml.node.MineNode;
 import controller.map.simplexml.node.MinotaurNode;
 import controller.map.simplexml.node.MountainNode;
 import controller.map.simplexml.node.OasisNode;
+import controller.map.simplexml.node.OgreNode;
+import controller.map.simplexml.node.PhoenixNode;
 import controller.map.simplexml.node.PlayerNode;
 import controller.map.simplexml.node.RiverNode;
 import controller.map.simplexml.node.SandbarNode;
@@ -186,6 +188,14 @@ enum Tag {
 	 * A minotaur.
 	 */
 	Minotaur(MinotaurNode.class),
+	/**
+	 * An ogre.
+	 */
+	Ogre(OgreNode.class),
+	/**
+	 * A phoenix.
+	 */
+	Phoenix(PhoenixNode.class),
 	/**
 	 * A town.
 	 */
