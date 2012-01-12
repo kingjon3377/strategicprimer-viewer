@@ -78,7 +78,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 				&& evt.getNewValue() instanceof Tile) {
 			tile = (Tile) evt.getNewValue();
 		} else if ("version".equals(evt.getPropertyName())) {
-			updateForVersion((Integer) evt.getNewValue()); 
+			updateForVersion(((Integer) evt.getNewValue()).intValue()); 
 		}
 	}
 }

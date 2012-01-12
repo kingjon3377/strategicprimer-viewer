@@ -77,7 +77,11 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 		builder.append(' ');
 		builder.append(kind().toString());
 		builder.append(" here");
-		builder.append(TownStatus.Active.equals(status) ? " (roll it up)" : '.');
+		if (TownStatus.Active.equals(status)) {
+			builder.append(" (roll it up)");
+		} else {
+			builder.append('.');
+		}
 		return builder.toString();
 	}
 
@@ -146,6 +150,6 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+		return fix.getZValue() - getZValue();
 	}
 }

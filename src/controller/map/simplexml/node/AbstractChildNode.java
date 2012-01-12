@@ -31,7 +31,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 */
 	public final void addProperty(final String property, final String value) {
 		if ("line".equals(property)) {
-			setLine(Integer.valueOf(value));
+			setLine(Integer.parseInt(value));
 		} else if (canUse(property)) {
 			properties.put(property, value);
 		} else {

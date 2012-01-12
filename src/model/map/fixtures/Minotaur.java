@@ -58,6 +58,6 @@ public class Minotaur implements TileFixture, HasImage {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+		return fix.getZValue() - getZValue();
 	}
 }

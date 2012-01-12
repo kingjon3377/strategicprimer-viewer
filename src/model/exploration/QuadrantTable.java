@@ -53,7 +53,7 @@ public class QuadrantTable implements EncounterTable {
 			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
 				// System.out.println("Adding " + items.get(0) + " at (" + row +
 				// ", " + col +").");
-				quadrants.put(Pair.of(row, col), items.remove(0));
+				quadrants.put(Pair.of(Integer.valueOf(row), Integer.valueOf(col)), items.remove(0));
 			}
 		}
 		Pair.of(rows, cols);
@@ -67,8 +67,9 @@ public class QuadrantTable implements EncounterTable {
 	 * 
 	 * @return the result from the quadrant containing that tile.
 	 */
+	@SuppressWarnings("boxing")
 	public String getQuadrantValue(final int row, final int col) {
-		Pair<Integer, Integer> bestKey = Pair.of(-1, -1);
+		Pair<Integer, Integer> bestKey = Pair.of(Integer.valueOf(-1), Integer.valueOf(-1));
 		for (final Pair<Integer, Integer> iter : quadrants.keySet()) {
 			if (iter.first() <= row && iter.first() > bestKey.first()
 					&& iter.second() <= col && iter.second() > bestKey.second()) {

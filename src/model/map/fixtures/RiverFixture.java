@@ -119,7 +119,7 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return Integer.valueOf(getZValue()).compareTo(fix.getZValue());
+		return fix.getZValue() - getZValue();
 	}
 	/**
 	 * @param obj another RiverFixture

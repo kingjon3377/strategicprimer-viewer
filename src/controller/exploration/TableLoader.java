@@ -164,7 +164,7 @@ public final class TableLoader { // NOPMD
 					Logger.getLogger(TableLoader.class.getName()).severe(
 							"Line with no blanks, continuing ...");
 				} else {
-					list.add(Pair.of(Integer.parseInt(array[0]), array[1]));
+					list.add(Pair.of(Integer.valueOf(array[0]), array[1]));
 				}
 				line = reader.readLine();
 			}

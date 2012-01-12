@@ -34,7 +34,7 @@ public final class SubsetDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final Pair<SPMap, Boolean> mainPair = safeLoadMap(reader, args[0]);
-		if (!mainPair.second()) {
+		if (Boolean.FALSE.equals(mainPair.second())) {
 			return;
 		}
 		final SPMap mainMap = mainPair.first();
@@ -46,7 +46,7 @@ public final class SubsetDriver {
 			SystemOut.SYS_OUT.print(arg);
 			SystemOut.SYS_OUT.print("\t...\t\t");
 			final Pair<SPMap, Boolean> pair = safeLoadMap(reader, arg);
-			if (!pair.second()) {
+			if (Boolean.FALSE.equals(pair.second())) {
 				SystemOut.SYS_OUT.println("FAIL");
 				continue;
 			}
@@ -71,21 +71,21 @@ public final class SubsetDriver {
 	 */
 	private static Pair<SPMap, Boolean> safeLoadMap(final MapReaderAdapter reader, final String filename) {
 		SPMap map = null;
-		boolean flag = false;
+		Boolean flag = Boolean.FALSE;
 		try {
 			map = reader.readMap(filename);
 		} catch (MapVersionException e) {
 			Warning.warn(e);
-			flag = true;
+			flag = Boolean.TRUE;
 		} catch (IOException e) {
 			Warning.warn(e);
-			flag = true;
+			flag = Boolean.TRUE;
 		} catch (XMLStreamException e) {
 			Warning.warn(e);
-			flag = true;
+			flag = Boolean.TRUE;
 		} catch (SPFormatException e) {
 			Warning.warn(e);
-			flag = true;
+			flag = Boolean.TRUE;
 		}
 		return Pair.of(map, flag);
 	}

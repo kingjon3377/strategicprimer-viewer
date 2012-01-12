@@ -101,7 +101,7 @@ public final class ExplorationCLI {
 		case 'h':
 		case 'g':
 		case 'i':
-			repeatedlyConsultTable(ORDER_MAP.get(input),
+			repeatedlyConsultTable(ORDER_MAP.get(Character.valueOf(input)),
 					selectTile(map, reader, ostream), HUNTER_HOURS
 							* HOURLY_ENCOUNTERS, ostream);
 			break;
@@ -227,14 +227,21 @@ public final class ExplorationCLI {
 	 * A map from commands to tables. Hunters, fishermen, and Food Gatherers are
 	 * handled the same way, but with different tables.
 	 */
-	private static final Map<Character, String> ORDER_MAP = new HashMap<Character, String>();
-	static {
-		ORDER_MAP.put('h', "hunter");
-		ORDER_MAP.put('H', "hunter");
-		ORDER_MAP.put('g', "gatherer");
-		ORDER_MAP.put('G', "gatherer");
-		ORDER_MAP.put('i', "fisher");
-		ORDER_MAP.put('I', "fisher");
+	private static final Map<Character, String> ORDER_MAP = setUpOrders();
+	/**
+	 * Set up the map from commands to tables.
+	 * @return the map
+	 */
+	@SuppressWarnings("boxing")
+	private static Map<Character, String> setUpOrders() {
+		final Map<Character, String> map = new HashMap<Character, String>();
+		map.put('h', "hunter");
+		map.put('H', "hunter");
+		map.put('g', "gatherer");
+		map.put('G', "gatherer");
+		map.put('i', "fisher");
+		map.put('I', "fisher");
+		return map;
 	}
 
 	/**

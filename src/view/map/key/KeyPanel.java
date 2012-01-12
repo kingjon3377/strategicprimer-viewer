@@ -44,7 +44,7 @@ public class KeyPanel extends JPanel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("version".equals(evt.getPropertyName())) {
-			updateForVersion((Integer) evt.getNewValue());
+			updateForVersion(((Integer) evt.getNewValue()).intValue());
 		}
 	}
 }

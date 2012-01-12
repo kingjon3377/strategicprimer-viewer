@@ -26,7 +26,7 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 	 *            the player to add.
 	 */
 	public void addPlayer(final Player player) {
-		players.put(player.getId(), player);
+		players.put(Integer.valueOf(player.getId()), player);
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 	 *         don't have it.
 	 */
 	public Player getPlayer(final int player) {
-		return players.containsKey(player) ? players.get(player) : new Player(
+		return players.containsKey(Integer.valueOf(player)) ? players.get(Integer.valueOf(player)) : new Player(
 				player, "");
 	}
 

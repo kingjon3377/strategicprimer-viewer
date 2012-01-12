@@ -77,7 +77,7 @@ public class Player implements Comparable<Player>, XMLWritable {
 	 */
 	@Override
 	public int compareTo(final Player player) {
-		return Integer.valueOf(hashCode()).compareTo(player.hashCode());
+		return player.hashCode() - hashCode();
 	}
 
 	/**

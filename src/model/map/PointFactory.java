@@ -30,12 +30,14 @@ public final class PointFactory {
 	 * @return a Point representing this point.
 	 */
 	public static Point point(final int row, final int col) {
-		if (!CACHE.containsKey(row)) {
-			CACHE.put(row, new ConcurrentHashMap<Integer, Point>());
+		final Integer boxedRow = Integer.valueOf(row);
+		final Integer boxedCol = Integer.valueOf(col);
+		if (!CACHE.containsKey(boxedRow)) {
+			CACHE.put(boxedRow, new ConcurrentHashMap<Integer, Point>());
 		}
-		if (!CACHE.get(row).containsKey(col)) {
-			CACHE.get(row).put(col, new Point(row, col));
+		if (!CACHE.get(boxedRow).containsKey(boxedCol)) {
+			CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
 		}
-		return CACHE.get(row).get(col);
+		return CACHE.get(boxedRow).get(boxedCol);
 	}
 }
