@@ -43,16 +43,18 @@ public final class ExplorationCLI {
 	private final Random random = new Random(System.currentTimeMillis());
 	/**
 	 * Constructor.
-	 * 
-	 * @param map
-	 *            the map
 	 */
-	private ExplorationCLI(final SPMap map) {
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(
-				System.in));
-		// ESCA-JAVA0266:
-		final PrintStream ostream = SystemOut.SYS_OUT;
+	private ExplorationCLI() {
 		new TableLoader().loadAllTables("tables", runner);
+	}
+
+	/**
+	 * @param map the map to explore
+	 * @param reader the stream to read commands from
+	 * @param ostream the stream to write output to
+	 */
+	private void repl(final SPMap map, final BufferedReader reader,
+			final PrintStream ostream) {
 		try {
 			ostream.print("Command: ");
 			String input = reader.readLine();
@@ -273,7 +275,8 @@ public final class ExplorationCLI {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ExplorationCLI(new MapReaderAdapter().readMap(args[0]));
+			new ExplorationCLI().repl(new MapReaderAdapter().readMap(args[0]), new BufferedReader(new InputStreamReader(
+					System.in)), SystemOut.SYS_OUT);
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			DriverQuit.quit(1);
