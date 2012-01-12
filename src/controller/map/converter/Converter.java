@@ -103,15 +103,15 @@ public class Converter {
 	}
 
 	/**
-	 * @param tile
-	 *            a tile on the old map
-	 * @param main whether this is the main  map or a player's map
-	 * @return the equivalent higher-resolution tiles.
+	 * Create the initial list of subtiles for a tile.
+	 * @param tile the tile on the old map
+	 * @param main whether this is the main map or a player's map
+	 * @return the equivalent higher-resolution tiles, in initial form
 	 */
-	private List<Tile> convertTile(final Tile tile, final boolean main) {
+	private List<Tile> createInitialSubtiles(final Tile tile, final boolean main) {
 		final List<Tile> initial = new LinkedList<Tile>();
 		if (!tile.isEmpty()) {
-		for (int i = 0; i < SUBTILES_PER_TILE; i++) {
+			for (int i = 0; i < SUBTILES_PER_TILE; i++) {
 			for (int j = 0; j < SUBTILES_PER_TILE; j++) {
 				final int row = tile.getRow() * SUBTILES_PER_TILE + i;
 				final int col = tile.getCol() * SUBTILES_PER_TILE + j;
@@ -120,6 +120,18 @@ public class Converter {
 				convertSubtile(subtile, main);
 			}
 		}
+		}
+		return initial;
+	}
+	/**
+	 * @param tile
+	 *            a tile on the old map
+	 * @param main whether this is the main  map or a player's map
+	 * @return the equivalent higher-resolution tiles.
+	 */
+	private List<Tile> convertTile(final Tile tile, final boolean main) {
+		final List<Tile> initial = createInitialSubtiles(tile, main);
+		if (!tile.isEmpty()) {
 		tile.addFixture(new Village(TownStatus.Active));
 		final List<TileFixture> fixtures = new LinkedList<TileFixture>(
 				tile.getContents());
