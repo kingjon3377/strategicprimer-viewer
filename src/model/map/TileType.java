@@ -1,7 +1,6 @@
 package model.map;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -19,48 +18,40 @@ public enum TileType implements XMLWritable {
 	/**
 	 * Tundra.
 	 */
-	@SuppressWarnings("boxing")
 	Tundra("tundra", 1, 2),
 	/**
 	 * Desert.
 	 */
-	@SuppressWarnings("boxing")
 	Desert("desert", 1, 2),
 	/**
 	 * Mountain. Starting in version 2, this is represented as a plain, steppe,
 	 * or desert plus a mountain on the tile.
 	 */
-	@SuppressWarnings("boxing")
 	@Deprecated
 	Mountain("mountain", 1),
 	/**
 	 * Boreal forest. Starting in version 2, this is represented as a steppe
 	 * plus a forest.
 	 */
-	@SuppressWarnings("boxing")
 	@Deprecated
 	BorealForest("boreal_forest", 1),
 	/**
 	 * Temperate forest. Starting in version 2, this is represented as a plain
 	 * plus a forest.
 	 */
-	@SuppressWarnings("boxing")
 	@Deprecated
 	TemperateForest("temperate_forest", 1),
 	/**
 	 * Ocean.
 	 */
-	@SuppressWarnings("boxing")
 	Ocean("ocean", 1, 2),
 	/**
 	 * Plains.
 	 */
-	@SuppressWarnings("boxing")
 	Plains("plains", 1, 2),
 	/**
 	 * Jungle.
 	 */
-	@SuppressWarnings("boxing")
 	Jungle("jungle", 1, 2),
 	/**
 	 * Steppe. This is like plains, but higher-latitude and colder. Beginning in
@@ -68,12 +59,10 @@ public enum TileType implements XMLWritable {
 	 * is steppe plus forest, while a mountain is either a desert, a plain, or a
 	 * steppe plus a mountain.
 	 */
-	@SuppressWarnings("boxing")
 	Steppe("steppe", 2),
 	/**
 	 * Not visible.
 	 */
-	@SuppressWarnings("boxing")
 	NotVisible("not_visible", 1, 2);
 	/**
 	 * The map versions that support the tile type as such. (For example,
@@ -109,8 +98,11 @@ public enum TileType implements XMLWritable {
 	 * @param descr a descriptive string to represent the type.
 	 * @param vers the map versions that support the tile type.
 	 */
-	private TileType(final String descr, final Integer... vers) {
-		versions = new ArrayList<Integer>(Arrays.asList(vers));
+	private TileType(final String descr, final int... vers) {
+		versions = new ArrayList<Integer>();
+		for (int ver : vers) {
+			versions.add(Integer.valueOf(ver));
+		}
 		desc = descr;
 	}
 	/**
