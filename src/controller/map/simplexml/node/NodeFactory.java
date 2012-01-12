@@ -1,45 +1,10 @@
-package controller.map.simplexml;
+package controller.map.simplexml.node;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import util.EqualsAny;
 import controller.map.SPFormatException;
-import controller.map.simplexml.node.AbstractChildNode;
-import controller.map.simplexml.node.AnimalNode;
-import controller.map.simplexml.node.CacheNode;
-import controller.map.simplexml.node.CentaurNode;
-import controller.map.simplexml.node.DjinnNode;
-import controller.map.simplexml.node.DragonNode;
-import controller.map.simplexml.node.EventNode;
-import controller.map.simplexml.node.FairyNode;
-import controller.map.simplexml.node.ForestNode;
-import controller.map.simplexml.node.FortressNode;
-import controller.map.simplexml.node.GiantNode;
-import controller.map.simplexml.node.GriffinNode;
-import controller.map.simplexml.node.GroundNode;
-import controller.map.simplexml.node.GroveNode;
-import controller.map.simplexml.node.HillNode;
-import controller.map.simplexml.node.MapNode;
-import controller.map.simplexml.node.MeadowNode;
-import controller.map.simplexml.node.MineNode;
-import controller.map.simplexml.node.MinotaurNode;
-import controller.map.simplexml.node.MountainNode;
-import controller.map.simplexml.node.OasisNode;
-import controller.map.simplexml.node.OgreNode;
-import controller.map.simplexml.node.PhoenixNode;
-import controller.map.simplexml.node.PlayerNode;
-import controller.map.simplexml.node.RiverNode;
-import controller.map.simplexml.node.SandbarNode;
-import controller.map.simplexml.node.ShrubNode;
-import controller.map.simplexml.node.SimurghNode;
-import controller.map.simplexml.node.SkippableNode;
-import controller.map.simplexml.node.SphinxNode;
-import controller.map.simplexml.node.TextNode;
-import controller.map.simplexml.node.TileNode;
-import controller.map.simplexml.node.TrollNode;
-import controller.map.simplexml.node.UnitNode;
-import controller.map.simplexml.node.VillageNode;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
