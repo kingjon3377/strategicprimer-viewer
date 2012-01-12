@@ -281,7 +281,11 @@ public class Converter {
 										"fruit_trees", tile)), main);
 					}
 				} else if (TileType.Desert.equals(tile.getType())) {
-					perturbDesert(tile, map, random);
+					if (isAdjacentToWater(tile, map) && random.nextDouble() < .4) {
+						tile.setType(TileType.Plains);
+					} else if (!tile.hasRiver() && random.nextDouble() < SIXTY_PERCENT) {
+						tile.setType(TileType.Plains);
+					}
 				} else if (random.nextDouble() < .1) {
 					addFixture(
 							tile,
@@ -309,25 +313,6 @@ public class Converter {
 			final boolean main) {
 		if (main) {
 			tile.addFixture(fix);
-		}
-	}
-
-	/**
-	 * Maybe turn a desert tile to plains---if it's adjacent to water.
-	 * 
-	 * @param tile
-	 *            the tile
-	 * @param map
-	 *            the map it's in, so we can consult adjacent tiles
-	 * @param random
-	 *            the source of randomness
-	 */
-	protected void perturbDesert(final Tile tile, final SPMap map,
-			final Random random) {
-		if (isAdjacentToWater(tile, map) && random.nextDouble() < .4) {
-			tile.setType(TileType.Plains);
-		} else if (!tile.hasRiver() && random.nextDouble() < SIXTY_PERCENT) {
-			tile.setType(TileType.Plains);
 		}
 	}
 
