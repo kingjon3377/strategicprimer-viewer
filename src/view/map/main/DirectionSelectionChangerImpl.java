@@ -29,9 +29,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 	 */
 	@Override
 	public void up() { // NOPMD
-		if (model.getSelectedTile().getRow() > 0
-				&& model.getSelectedTile().getRow() > model.getDimensions()
-						.getMinimumRow()) {
+		if (model.getSelectedTile().getRow() > 0) {
 			model.setSelection(model.getSelectedTile().getRow() - 1, model
 					.getSelectedTile().getCol());
 		}
@@ -42,9 +40,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 	 */
 	@Override
 	public void left() {
-		if (model.getSelectedTile().getCol() > 0
-				&& model.getSelectedTile().getCol() > model.getDimensions()
-						.getMinimumCol()) {
+		if (model.getSelectedTile().getCol() > 0) {
 			model.setSelection(model.getSelectedTile().getRow(), model
 					.getSelectedTile().getCol() - 1);
 		}
@@ -55,9 +51,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 	 */
 	@Override
 	public void down() {
-		if (model.getSelectedTile().getRow() < model.getSizeRows() - 1
-				&& model.getSelectedTile().getRow() < model.getDimensions()
-						.getMaximumRow()) {
+		if (model.getSelectedTile().getRow() < model.getSizeRows() - 1) {
 			model.setSelection(model.getSelectedTile().getRow() + 1, model
 					.getSelectedTile().getCol());
 		}
@@ -68,9 +62,7 @@ public class DirectionSelectionChangerImpl implements DirectionSelectionChanger 
 	 */
 	@Override
 	public void right() {
-		if (model.getSelectedTile().getCol() < model.getSizeCols() - 1
-				&& model.getSelectedTile().getCol() < model.getDimensions()
-						.getMaximumCol()) {
+		if (model.getSelectedTile().getCol() < model.getSizeCols() - 1) {
 			model.setSelection(model.getSelectedTile().getRow(), model
 					.getSelectedTile().getCol() + 1);
 		}
