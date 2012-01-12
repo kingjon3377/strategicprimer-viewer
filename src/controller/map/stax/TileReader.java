@@ -78,7 +78,7 @@ public class TileReader {
 			if (event.isStartElement()) {
 				parseTileContents(event.asStartElement(), reader, tile, players);
 			} else if (event.isCharacters()) {
-				tile.addFixture(new TextFixture(event.asCharacters().getData(), -1));
+				tile.addFixture(new TextFixture(event.asCharacters().getData(), -1)); // NOPMD
 			} else if (event.isEndElement()) {
 				break;
 			}
