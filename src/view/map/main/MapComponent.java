@@ -62,12 +62,7 @@ public final class MapComponent extends JComponent implements
 			helper = new Ver2TileDrawHelper(this);
 		}
 		model = theMap;
-		final int tsize = TILE_SIZE.getSize(model.getMainMap().getVersion());
 		loadMap(theMap.getMainMap());
-		setMinimumSize(new Dimension(model.getSizeCols() * tsize,
-				model.getSizeRows() * tsize));
-		setPreferredSize(getMinimumSize());
-		setSize(getMinimumSize());
 		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
 		new ArrowKeyListener().setUpListeners(
@@ -96,15 +91,6 @@ public final class MapComponent extends JComponent implements
 					* tsize, BufferedImage.TYPE_INT_RGB);
 		}
 		drawMap(image.getGraphics());
-		setMinimumSize(new Dimension(
-				(getModel().getDimensions().getMaximumCol()
-						- getModel().getDimensions().getMinimumCol() + 1)
-						* tsize, (getModel().getDimensions()
-						.getMaximumRow()
-						- getModel().getDimensions().getMinimumRow() + 1)
-						* tsize));
-		setPreferredSize(getMinimumSize());
-		setSize(getMinimumSize());
 		revalidate();
 	}
 
