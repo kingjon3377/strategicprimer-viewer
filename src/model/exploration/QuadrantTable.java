@@ -56,7 +56,6 @@ public class QuadrantTable implements EncounterTable {
 				quadrants.put(Pair.of(Integer.valueOf(row), Integer.valueOf(col)), items.remove(0));
 			}
 		}
-		Pair.of(rows, cols);
 	}
 
 	/**
