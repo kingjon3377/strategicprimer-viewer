@@ -107,7 +107,7 @@ public final class ViewerFrame extends JFrame {
 	/**
 	 * @return this frame
 	 */
-	private Frame getFrame() {
+	public Frame getFrame() {
 		return this;
 	}
 }
