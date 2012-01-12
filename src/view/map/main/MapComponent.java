@@ -3,11 +3,8 @@ package view.map.main;
 import static util.EqualsAny.equalsAny;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -33,11 +30,6 @@ public final class MapComponent extends JComponent implements
 	 * and the selected tile.
 	 */
 	private final MapModel model;
-	/**
-	 * An image of the map.
-	 */
-	private transient Image image;
-
 	/**
 	 * Tile size.
 	 */
@@ -72,29 +64,6 @@ public final class MapComponent extends JComponent implements
 	}
 
 	/**
-	 * Creates the buffered image.
-	 */
-	public void createImage() {
-		final int tsize = TILE_SIZE.getSize(getModel().getMainMap().getVersion());
-		image = createImage(
-				(getModel().getDimensions().getMaximumCol() + 1 - getModel()
-						.getDimensions().getMinimumCol()) * tsize,
-				(getModel().getDimensions().getMaximumRow() + 1 - getModel()
-						.getDimensions().getMinimumRow()) * tsize);
-		if (image == null) {
-			image = new BufferedImage((getModel().getDimensions()
-					.getMaximumCol() + 1 - getModel().getDimensions()
-					.getMinimumCol())
-					* tsize, (getModel().getDimensions()
-					.getMaximumRow() + 1 - getModel().getDimensions()
-					.getMinimumRow())
-					* tsize, BufferedImage.TYPE_INT_RGB);
-		}
-		drawMap(image.getGraphics());
-		revalidate();
-	}
-
-	/**
 	 * Paint.
 	 * 
 	 * @param pen
@@ -103,11 +72,7 @@ public final class MapComponent extends JComponent implements
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-		if (image == null) {
-			drawMap(pen);
-			createImage();
-		}
-		pen.drawImage(image, 0, 0, this);
+		drawMap(pen);
 	}
 
 	/**
@@ -208,7 +173,7 @@ public final class MapComponent extends JComponent implements
 	@Override
 	public void loadMap(final SPMap newMap) {
 		model.setMainMap(newMap);
-		createImage();
+		repaint();
 	}
 
 	/**
@@ -234,7 +199,6 @@ public final class MapComponent extends JComponent implements
 			fixVisibility();
 		} 
 		if (equalsAny(evt.getPropertyName(), "map", "tile", "dimensions")) {
-			createImage();
 			repaint();
 		}
 	}
