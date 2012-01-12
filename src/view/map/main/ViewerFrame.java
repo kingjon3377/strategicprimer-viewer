@@ -12,7 +12,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
 import model.viewer.MapModel;
@@ -35,10 +34,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 	 * Default height of the Frame.
 	 */
 	private static final int DEFAULT_HEIGHT = 600;
-	/**
-	 * The map (view) itself.
-	 */
-	private final MapGUI mapPanel;
 	/**
 	 * File-choosing dialog. Used often, but immutable, so we don't want to have
 	 * to construct it every time.
@@ -82,9 +77,6 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		final MenuItemCreator creator = new MenuItemCreator();
 		final JMenuBar mbar = new JMenuBar();
 		mbar.add(mapMenu);
-		mbar.add(creator.createMenuItem("Restrict view", KeyEvent.VK_R,
-				KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
-				"Show only a subset of the map", this));
 		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0),
 				new Dimension(Integer.MAX_VALUE, 0)));
 		mbar.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
@@ -99,18 +91,4 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 				}));
 		setJMenuBar(mbar);
 	}
-
-	/**
-	 * Handle button presses and the like.
-	 * 
-	 * @param event
-	 *            the action we're handling
-	 */
-	@Override
-	public void actionPerformed(final ActionEvent event) {
-		if ("Restrict view".equals(event.getActionCommand())) {
-			new RestrictDialog(mapPanel).setVisible(true);
-		}
-	}
-
 }

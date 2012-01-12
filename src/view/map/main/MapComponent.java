@@ -17,7 +17,6 @@ import model.map.SPMap;
 import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
-import model.viewer.VisibleDimensions;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -213,30 +212,6 @@ public final class MapComponent extends JComponent implements
 	}
 
 	/**
-	 * Load and draw a subset of a map.
-	 * 
-	 * @param newMap
-	 *            the map to load.
-	 * @param minRow
-	 *            the first row to draw
-	 * @param maxRow
-	 *            the last row to draw
-	 * @param minCol
-	 *            the first column to draw
-	 * @param maxCol
-	 *            the last column to draw
-	 */
-	@Override
-	public void loadMap(final SPMap newMap, final int minRow, final int maxRow,
-			final int minCol, final int maxCol) {
-		model.setMainMap(newMap);
-		model.setDimensions(new VisibleDimensions(Math.max(0, minRow), Math
-				.min(model.getSizeRows(), maxRow + 1) - 1, Math.max(0, minCol),
-				Math.min(model.getSizeCols(), maxCol + 1) - 1));
-		createImage();
-	}
-
-	/**
 	 * Load and draw a map.
 	 * 
 	 * @param newMap
@@ -244,7 +219,8 @@ public final class MapComponent extends JComponent implements
 	 */
 	@Override
 	public void loadMap(final SPMap newMap) {
-		loadMap(newMap, 0, newMap.rows() - 1, 0, newMap.cols() - 1);
+		model.setMainMap(newMap);
+		createImage();
 	}
 
 	/**
