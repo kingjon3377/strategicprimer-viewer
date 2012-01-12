@@ -23,4 +23,13 @@ public final class IsNumeric {
 			return false;
 		}
 	}
+	/**
+	 * @param value a value
+	 * @param lower a lower bound
+	 * @param upper an upper bound
+	 * @return whether the value is between them
+	 */
+	public static boolean isBetween(final int value, final int lower, final int upper) {
+		return value >= lower && value < upper;
+	}
 }
