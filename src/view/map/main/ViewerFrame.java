@@ -25,7 +25,7 @@ import view.util.MenuItemCreator;
  * @author Jonathan Lovelace
  * 
  */
-public final class ViewerFrame extends JFrame implements ActionListener {
+public final class ViewerFrame extends JFrame {
 	/**
 	 * Default width of the Frame.
 	 */
@@ -54,10 +54,11 @@ public final class ViewerFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
-		mapPanel = new MapComponent(map);
+		final MapGUI mapPanel = new MapComponent(map);
 		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.SOUTH);
-		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
-		add(scroller, BorderLayout.CENTER);
+//		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
+//		add(scroller, BorderLayout.CENTER);
+		add((JComponent) mapPanel, BorderLayout.CENTER);
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));

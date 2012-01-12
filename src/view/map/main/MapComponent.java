@@ -17,6 +17,7 @@ import model.map.SPMap;
 import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
+import model.viewer.VisibleDimensions;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -72,6 +73,7 @@ public final class MapComponent extends JComponent implements
 		new ArrowKeyListener().setUpListeners(
 				new DirectionSelectionChangerImpl(model), getInputMap(),
 				getActionMap());
+		addComponentListener(new MapSizeListener(model));
 	}
 
 	/**
@@ -242,9 +244,63 @@ public final class MapComponent extends JComponent implements
 	public void propertyChange(final PropertyChangeEvent evt) {
 		firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
 				evt.getNewValue());
+		if ("tile".equals(evt.getPropertyName()) && !isSelectionVisible()) {
+			fixVisibility();
+		} 
 		if (equalsAny(evt.getPropertyName(), "map", "tile", "dimensions")) {
 			createImage();
 			repaint();
 		}
+	}
+	/**
+	 * @return whether the selected tile is either not in the map or visible in the current bounds.
+	 */
+	private boolean isSelectionVisible() {
+		final int selRow = getModel().getSelectedTile().getRow();
+		final int selCol = getModel().getSelectedTile().getCol();
+		final int minRow = getModel().getDimensions().getMinimumRow();
+		final int maxRow = getModel().getDimensions().getMaximumRow();
+		final int minCol = getModel().getDimensions().getMinimumCol();
+		final int maxCol = getModel().getDimensions().getMaximumCol();
+		return ((selRow <= 0 || selRow >= minRow)
+				&& (selRow >= getModel().getSizeRows() || selRow <= maxRow)
+				&& (selCol <= 0 || selCol >= minCol)
+				&& (selCol >= getModel().getSizeCols() || selCol <= maxCol));
+	}
+	/**
+	 * Fix the visible dimensions to include the selected tile.
+	 */
+	private void fixVisibility() {
+		final int selRow = getModel().getSelectedTile().getRow();
+		final int selCol = getModel().getSelectedTile().getCol();
+		int minRow = getModel().getDimensions().getMinimumRow();
+		int maxRow = getModel().getDimensions().getMaximumRow();
+		int minCol = getModel().getDimensions().getMinimumCol();
+		int maxCol = getModel().getDimensions().getMaximumCol();
+		while (selRow < minRow) {
+			minRow--;
+			maxRow--;
+		}
+		while (selRow > maxRow) {
+			minRow++;
+			maxRow++;
+		}
+		while (selCol < minCol) {
+			minCol--;
+			maxCol--;
+		}
+		while (selCol > maxCol) {
+			minCol++;
+			maxCol++;
+		}
+		getModel().setDimensions(
+				new VisibleDimensions(minRow, maxRow, minCol, maxCol));
+	}
+	/**
+	 * @return the size of each tile
+	 */
+	@Override
+	public int getTileSize() {
+		return TILE_SIZE.getSize(getModel().getMainMap().getVersion());
 	}
 }
