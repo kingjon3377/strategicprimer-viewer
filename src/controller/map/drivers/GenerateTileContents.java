@@ -91,9 +91,9 @@ public final class GenerateTileContents {
 	 */
 	public void generateTileContents(final int row, final int col) throws MissingTableException {
 		final Tile tile = map.getTile(row, col);
-		final int reps = SingletonRandom.RANDOM.nextInt(6) + 1;
+		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
-			println(runner.recursiveConsultTable("main", tile));
+			println(runner.recursiveConsultTable("fisher", tile));
 		}
 	}
 	/**
