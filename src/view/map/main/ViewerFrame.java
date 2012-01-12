@@ -2,6 +2,7 @@ package view.map.main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -63,7 +64,7 @@ public final class ViewerFrame extends JFrame {
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		createMenu(mapMenu);
+		createMenu(mapMenu, map);
 		pack();
 		repaint();
 	}
@@ -73,11 +74,22 @@ public final class ViewerFrame extends JFrame {
 	 * 
 	 * @param mapMenu
 	 *            the map menu
+	 * @param model the map model
 	 */
-	private void createMenu(final JMenu mapMenu) {
+	private void createMenu(final JMenu mapMenu, final MapModel model) {
 		final MenuItemCreator creator = new MenuItemCreator();
 		final JMenuBar mbar = new JMenuBar();
 		mbar.add(mapMenu);
+		mbar.add(creator.createMenuItem("Go to tile", KeyEvent.VK_G,
+				KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK),
+				"Go to a tile by coordinates", new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				if ("Go to tile".equals(event.getActionCommand())) {
+					new SelectTileDialog(getFrame(), model).setVisible(true);
+				}
+			}
+		}));
 		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0),
 				new Dimension(Integer.MAX_VALUE, 0)));
 		mbar.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
@@ -91,5 +103,11 @@ public final class ViewerFrame extends JFrame {
 					}
 				}));
 		setJMenuBar(mbar);
+	}
+	/**
+	 * @return this frame
+	 */
+	private Frame getFrame() {
+		return this;
 	}
 }
