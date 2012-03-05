@@ -30,7 +30,6 @@ import model.map.fixtures.Sandbar;
 import model.map.fixtures.Shrub;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.Village;
-import model.viewer.MapModel;
 import controller.exploration.TableLoader;
 
 /**
@@ -142,7 +141,7 @@ public class Converter {
 			}
 			fixtures.remove(rivers);
 		}
-		final Random random = new Random(MapModel.getSeed(tile));
+		final Random random = new Random(getSeed(tile));
 		Collections.shuffle(initial, random);
 		Collections.shuffle(fixtures, random);
 		int iterations = 0;
@@ -416,5 +415,12 @@ public class Converter {
 		default:
 			throw new IllegalStateException("Unknown River");
 		}
+	}
+	/**
+	 * @param tile a tile
+	 * @return a seed for the RNG for conversion based on the given tile 
+	 */
+	private static long getSeed(final Tile tile) {
+		return (long) (tile.getCol()) << 32L + tile.getRow();
 	}
 }
