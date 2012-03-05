@@ -6,7 +6,7 @@ package model.map;
  * @author Jonathan Lovelace
  * 
  */
-public class Point implements Comparable<Point> {
+public class Point implements Comparable<Point>, XMLWritable {
 	/**
 	 * The first coordinate.
 	 */
@@ -84,5 +84,12 @@ public class Point implements Comparable<Point> {
 	@Override
 	public String toString() {
 		return "(" + myRow + ", " + myCol + ")";
+	}
+	/**
+	 * @return an XML representation of the point
+	 */
+	@Override
+	public String toXML() {
+		return "row=\"" + myRow + "\" column=\"" + myCol + "\"";
 	}
 }

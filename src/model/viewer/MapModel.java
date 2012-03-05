@@ -149,8 +149,8 @@ public final class MapModel implements PropertyChangeSource {
 	 *            the tile to copy.
 	 */
 	public void copyTile(final Tile selection) {
-		secondaryMap.getTile(selection.getRow(), selection.getCol()).update(
-				map.getTile(selection.getRow(), selection.getCol()));
+		secondaryMap.getTile(selection.getLocation().row(), selection.getLocation().col()).update(
+				map.getTile(selection.getLocation().row(), selection.getLocation().col()));
 	}
 
 	/**

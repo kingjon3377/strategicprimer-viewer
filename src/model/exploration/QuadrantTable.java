@@ -85,7 +85,7 @@ public class QuadrantTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
-		return getQuadrantValue(tile.getRow(), tile.getCol());
+		return getQuadrantValue(tile.getLocation().row(), tile.getLocation().col());
 	}
 
 	/**

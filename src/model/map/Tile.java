@@ -31,38 +31,20 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 *            The tile type
 	 */
 	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
-		row = tileRow;
-		col = tileCol;
+		location = new Point(tileRow, tileCol);
 		type = tileType;
 		contents = new TreeSet<TileFixture>();
 	}
-
 	/**
-	 * The row number.
+	 * The tile's location.
 	 */
-	private final int row;
-
+	private final Point location;
 	/**
-	 * 
-	 * @return the row number
+	 * @return the tile's location
 	 */
-	public int getRow() {
-		return row;
+	public Point getLocation() {
+		return location;
 	}
-
-	/**
-	 * The column number.
-	 */
-	private final int col;
-
-	/**
-	 * 
-	 * @return the column number
-	 */
-	public int getCol() {
-		return col;
-	}
-
 	/**
 	 * The tile type.
 	 */
@@ -139,8 +121,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| ((obj instanceof Tile) && row == ((Tile) obj).row
-						&& col == ((Tile) obj).col
+				|| ((obj instanceof Tile) && location.equals(((Tile) obj).location)
 						&& type.equals(((Tile) obj).type)
 						&& contents.equals(((Tile) obj).contents));
 	}
@@ -151,7 +132,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 */
 	@Override
 	public int hashCode() {
-		return row + col << 2 + type.ordinal() << 6 + contents.hashCode() << 8;
+		return location.hashCode() + type.ordinal() << 6 + contents.hashCode() << 8;
 	}
 
 	/**
@@ -161,11 +142,8 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	@Override
 	public String toString() {
 		final StringBuilder sbuilder = new StringBuilder("");
-		sbuilder.append('(');
-		sbuilder.append(row);
-		sbuilder.append(", ");
-		sbuilder.append(col);
-		sbuilder.append("): ");
+		sbuilder.append(location.toString());
+		sbuilder.append(": ");
 		sbuilder.append(type);
 		sbuilder.append(". Contents:");
 		for (final TileFixture fix : contents) {
@@ -215,15 +193,14 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 		if (isEmpty()) {
 			return ""; // NOPMD
 		} else {
-			final StringBuilder sbuild = new StringBuilder("<tile row=\"");
-			sbuild.append(row);
-			sbuild.append("\" column=\"");
-			sbuild.append(col);
+			final StringBuilder sbuild = new StringBuilder("<tile ");
+			sbuild.append(location.toXML());
 			if (!(TileType.NotVisible.equals(getType()))) {
-				sbuild.append("\" type=\"");
+				sbuild.append("type=\"");
 				sbuild.append(getType().toXML());
+				sbuild.append("\"");
 			}
-			sbuild.append("\">");
+			sbuild.append(">");
 			if ((!contents.isEmpty())) {
 				sbuild.append('\n');
 				for (final TileFixture fix : contents) {
@@ -273,7 +250,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 */
 	@Override
 	public boolean isSubset(final Tile obj) {
-		if (row == obj.row && col == obj.col && type.equals(obj.type)) {
+		if (location.equals(obj.location) && type.equals(obj.type)) {
 			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
 			temp.removeAll(contents);
 			final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
@@ -283,11 +260,11 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 				}
 			}
 			if (!temp.isEmpty()) {
-				SystemOut.SYS_OUT.print("\nExtra fixture in (" + row + ", " + col + ")\t");
+				SystemOut.SYS_OUT.print("\nExtra fixture in " + location.toString() + "\t");
 			}
 			return temp.isEmpty(); // NOPMD
 		} else {
-			SystemOut.SYS_OUT.print("Type of (" + row + ", " + col + ") wrong\t");
+			SystemOut.SYS_OUT.print("Type of " + location.toString() + " wrong\t");
 			return false;
 		}
 	}

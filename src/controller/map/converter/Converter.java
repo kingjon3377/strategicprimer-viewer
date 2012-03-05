@@ -112,8 +112,8 @@ public class Converter {
 		if (!tile.isEmpty()) {
 			for (int i = 0; i < SUBTILES_PER_TILE; i++) {
 			for (int j = 0; j < SUBTILES_PER_TILE; j++) {
-				final int row = tile.getRow() * SUBTILES_PER_TILE + i;
-				final int col = tile.getCol() * SUBTILES_PER_TILE + j;
+				final int row = tile.getLocation().row() * SUBTILES_PER_TILE + i;
+				final int col = tile.getLocation().col() * SUBTILES_PER_TILE + j;
 				final Tile subtile = new Tile(row, col, tile.getType()); // NOPMD
 				initial.add(subtile);
 				convertSubtile(subtile, main);
@@ -155,7 +155,7 @@ public class Converter {
 		}
 		if (iterations == MAX_ITERATIONS) {
 			LOGGER.severe("Maximum number of iterations reached on tile ("
-					+ tile.getRow() + ", " + tile.getCol() + "); forcing ...");
+					+ tile.getLocation().row() + ", " + tile.getLocation().col() + "); forcing ...");
 			while (!fixtures.isEmpty()) {
 				final Tile subtile = initial.get(0);
 				subtile.addFixture(fixtures.remove(0));
@@ -323,8 +323,8 @@ public class Converter {
 	 * @return whether the tile is adjacent to a town.
 	 */
 	private static boolean isAdjacentToTown(final Tile tile, final SPMap map) {
-		for (int row = tile.getRow() - 1; row < tile.getRow() + 2; row++) {
-			for (int col = tile.getCol() - 1; col < tile.getCol() + 2; col++) {
+		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
+			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
 				final Tile neighbor = map.getTile(row, col);
 				if (neighbor.equals(tile)) {
 					continue;
@@ -348,8 +348,8 @@ public class Converter {
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
 	private static boolean isAdjacentToWater(final Tile tile, final SPMap map) {
-		for (int row = tile.getRow() - 1; row < tile.getRow() + 2; row++) {
-			for (int col = tile.getCol() - 1; col < tile.getCol() + 2; col++) {
+		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
+			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
 				final Tile neighbor = map.getTile(row, col);
 				if (neighbor.equals(tile)) {
 					continue;
@@ -421,6 +421,6 @@ public class Converter {
 	 * @return a seed for the RNG for conversion based on the given tile 
 	 */
 	private static long getSeed(final Tile tile) {
-		return (long) (tile.getCol()) << 32L + tile.getRow();
+		return (long) (tile.getLocation().col()) << 32L + tile.getLocation().row();
 	}
 }
