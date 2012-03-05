@@ -7,7 +7,7 @@ package model.map;
  * @author Jonathan Lovelace
  * 
  */
-public class SPMap implements XMLWritable, Subsettable<SPMap> {
+public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap> {
 	/**
 	 * Map max version.
 	 */
@@ -219,5 +219,14 @@ public class SPMap implements XMLWritable, Subsettable<SPMap> {
 	public boolean isSubset(final SPMap obj) {
 		return cols() == obj.cols() && rows() == obj.rows()
 				&& players.isSubset(obj.players) && tiles.isSubset(obj.tiles);
+	}
+	/**
+	 * Compare to another map.
+	 * @param other the other map
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(final SPMap other) {
+		return equals(other) ? 0 : hashCode() - other.hashCode();
 	}
 }

@@ -14,7 +14,7 @@ package util;
  * @param <SECOND>
  *            The second type in the pair.
  */
-public final class Pair<FIRST, SECOND> implements
+public final class Pair<FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>> implements
 		Comparable<Pair<FIRST, SECOND>> {
 	/**
 	 * The first item in the pair.
@@ -72,8 +72,8 @@ public final class Pair<FIRST, SECOND> implements
 	 *            The second element in the pair.
 	 * @return a pair containing the two elements
 	 */
-	public static <FIRST, SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD
-			final SECOND second) {
+	public static <FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>> Pair<FIRST, SECOND> of(// NOPMD
+			final FIRST first, final SECOND second) {
 		return new Pair<FIRST, SECOND>(first, second);
 	}
 
@@ -87,24 +87,8 @@ public final class Pair<FIRST, SECOND> implements
 	 */
 	@Override
 	public int compareTo(final Pair<FIRST, SECOND> other) {
-		final int cmp = compare(first, other.first);
-		return (cmp == 0) ? compare(second, other.second) : cmp;
-	}
-
-	/**
-	 * TODO: move this to a helper class.
-	 * 
-	 * @param one
-	 *            one object
-	 * @param two
-	 *            another
-	 * 
-	 * @return a comparison between the two objects.
-	 */
-	@SuppressWarnings("unchecked")
-	private static int compare(final Object one, final Object two) {
-		return (one == null) ? (two == null) ? 0 : -1 : (two == null) ? +1
-				: ((Comparable<Object>) one).compareTo(two);
+		final int cmp = first.compareTo(other.first);
+		return (cmp == 0) ? second.compareTo(other.second) : cmp;
 	}
 
 	/**
