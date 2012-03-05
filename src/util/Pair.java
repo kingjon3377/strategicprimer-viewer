@@ -52,6 +52,9 @@ public final class Pair<FIRST, SECOND> implements
 	 *            The second item in the pair.
 	 */
 	private Pair(final FIRST firstItem, final SECOND secondItem) {
+		if (firstItem == null || secondItem == null) {
+			throw new IllegalArgumentException("Pair refuses null arguments");
+		}
 		first = firstItem;
 		second = secondItem;
 	}
@@ -110,21 +113,7 @@ public final class Pair<FIRST, SECOND> implements
 	 */
 	@Override
 	public int hashCode() {
-		return 31 * hashcode(first) + hashcode(second);
-	}
-
-	// ESCA-JAVA0244:
-	// ESCA-JAVA0064:
-	/**
-	 * TODO: move this to a helper class.
-	 * 
-	 * @param obj
-	 *            an object
-	 * 
-	 * @return a hash code for it, or 0 if null.
-	 */
-	private static int hashcode(final Object obj) {
-		return (obj == null) ? 0 : obj.hashCode();
+		return 31 * first.hashCode() + second.hashCode();
 	}
 
 	/**
@@ -136,26 +125,11 @@ public final class Pair<FIRST, SECOND> implements
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(final Object obj) {
-		return (this == obj) ? true : (obj instanceof Pair) ? equal(first,
-				((Pair) obj).first) && equal(second, ((Pair) obj).second)
-				: false;
-	}
-
-	/**
-	 * TODO: move this to a helper class.
-	 * 
-	 * @param one
-	 *            One object
-	 * @param two
-	 *            Another object
-	 * 
-	 * @return whether the objects are equal
-	 */
-	private static boolean equal(final Object one, final Object two) {
-		return (one == null) ? two == null : (one == two || one.equals(two)); // NOPMD
-																				// //
-																				// $codepro.audit.disable
-																				// useEquals
+		return (this == obj) ? true
+				: (obj instanceof Pair) ? ((first == ((Pair) obj).first || first
+						.equals(((Pair) obj).first)))
+						&& ((second == ((Pair) obj).second || second
+								.equals(((Pair) obj).second))) : false;
 	}
 
 	/**
