@@ -27,7 +27,7 @@ public final class TileCollection implements Iterable<Point>, Subsettable<TileCo
 	 *            the tile to add.
 	 */
 	public void addTile(final Tile tile) {
-		tiles.put(PointFactory.point(tile.getLocation().row(), tile.getLocation().col()), tile);
+		tiles.put(tile.getLocation(), tile);
 	}
 
 	/**

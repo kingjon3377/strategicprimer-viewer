@@ -104,9 +104,15 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * @return the tile at those coordinates
 	 */
 	public final Tile getTile(final int row, final int col) {
-		return tiles.getTile(PointFactory.point(row, col));
+		return getTile(PointFactory.point(row, col));
 	}
-
+	/**
+	 * @param point a point
+	 * @return the tile at those coordinates
+	 */
+	public final Tile getTile(final Point point) {
+		return tiles.getTile(point);
+	}
 	/**
 	 * 
 	 * @return the players in the map
