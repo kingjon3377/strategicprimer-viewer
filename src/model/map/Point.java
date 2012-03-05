@@ -83,6 +83,6 @@ public class Point implements Comparable<Point> {
 	 */
 	@Override
 	public String toString() {
-		return "point (" + myRow + ", " + myCol + ")";
+		return "(" + myRow + ", " + myCol + ")";
 	}
 }
