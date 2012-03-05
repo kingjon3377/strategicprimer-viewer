@@ -50,5 +50,11 @@ public final class FortificationEvent extends AbstractTownEvent {
 				.append(size().toString()).append("\" dc=\"").append(dc)
 				.append("\" />").toString();
 	}
-
+	/**
+	 * @return the name of an image to represent the event.
+	 */
+	@Override
+	public String getImage() {
+		return "fortification.png";
+	}
 }
