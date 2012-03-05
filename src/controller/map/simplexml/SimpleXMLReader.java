@@ -25,6 +25,8 @@ import controller.map.simplexml.node.NodeFactory;
  * An XML-map reader that just converts the XML into XMLNodes, which then
  * convert themselves into the map.
  * 
+ * TODO: This whole system needs thorough tests.
+ * 
  * @author Jonathan Lovelace
  * 
  */
