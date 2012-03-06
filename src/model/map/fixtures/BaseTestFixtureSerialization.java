@@ -8,18 +8,21 @@ import model.map.XMLWritable;
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
+// ESCA-JAVA0011:
 /**
  * An abstract base class for this helper method.
  * 
  * @author Jonathan Lovelace
  * 
  */
-public abstract class BaseTestFixtureSerialization {
+public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * A helper method to simplify test boiler plate code.
 	 * 
 	 * @param <T>
 	 *            The type of the object
+	 * @param reader
+	 *            the reader to parse the serialized form.
 	 * @param orig
 	 *            the object to serialize
 	 * @param type
@@ -32,9 +35,10 @@ public abstract class BaseTestFixtureSerialization {
 	 * @throws XMLStreamException
 	 *             on XML reading problem
 	 */
-	protected <T extends XMLWritable> T helpSerialization(final SimpleXMLReader reader,
-			final T orig, final Class<T> type, final boolean reflection)
-			throws XMLStreamException, SPFormatException {
+	protected <T extends XMLWritable> T helpSerialization(
+			final SimpleXMLReader reader, final T orig, final Class<T> type,
+			final boolean reflection) throws XMLStreamException,
+			SPFormatException {
 		return reader.readXML(new StringReader(orig.toXML()), type, reflection);
 	}
 }

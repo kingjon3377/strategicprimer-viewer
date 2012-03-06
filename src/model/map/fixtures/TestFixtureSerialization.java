@@ -175,12 +175,12 @@ public final class TestFixtureSerialization extends BaseTestFixtureSerialization
 	@Test
 	public void testForestSerialization() throws XMLStreamException,
 			SPFormatException {
-		final Forest one = new Forest("one", false);
+		final Forest one = new Forest("firstForest", false);
 		assertEquals("First test of Forest serialization, reflection", one,
 				helpSerialization(reader, one, Forest.class, true));
 		assertEquals("First test of Forest serialization, non-reflection", one,
 				helpSerialization(reader, one, Forest.class, false));
-		final Forest two = new Forest("two", true);
+		final Forest two = new Forest("secondForest", true);
 		assertEquals("Second test of Forest serialization, reflection", two,
 				helpSerialization(reader, two, Forest.class, true));
 		assertEquals("Second test of Forest serialization, non-reflection",
