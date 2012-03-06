@@ -1,8 +1,8 @@
 package controller.map.simplexml;
 
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -45,15 +45,18 @@ public class SimpleXMLReader implements IMapReader {
 	@Override
 	public SPMap readMap(final String file) throws IOException,
 			XMLStreamException, SPFormatException {
-		final FileInputStream istream = new FileInputStream(file);
+		final FileReader istream = new FileReader(file);
 		try {
 			return readMap(istream);
 		} finally {
 			istream.close();
 		}
 	}
+
 	/**
-	 * @param reflection whether to try the reflection-based verion of the node factory method
+	 * @param reflection
+	 *            whether to try the reflection-based verion of the node factory
+	 *            method
 	 * @param file
 	 *            the name of a file
 	 * @return the map contained in that file
@@ -64,18 +67,19 @@ public class SimpleXMLReader implements IMapReader {
 	 * @throws SPFormatException
 	 *             if the data is invalid
 	 */
-	public SPMap readMap(final String file, final boolean reflection) throws IOException,
-			XMLStreamException, SPFormatException {
-		final FileInputStream istream = new FileInputStream(file);
+	public SPMap readMap(final String file, final boolean reflection)
+			throws IOException, XMLStreamException, SPFormatException {
+		final FileReader istream = new FileReader(file);
 		try {
 			return readMap(istream, reflection);
 		} finally {
 			istream.close();
 		}
 	}
+
 	/**
 	 * @param istream
-	 *            a stream
+	 *            a reader from which to read the XML
 	 * @return the map contained in that stream
 	 * @throws XMLStreamException
 	 *             if XML isn't well-formed.
@@ -83,24 +87,46 @@ public class SimpleXMLReader implements IMapReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public SPMap readMap(final InputStream istream) throws XMLStreamException,
+	public SPMap readMap(final Reader istream) throws XMLStreamException,
 			SPFormatException {
 		return readMap(istream, false);
 	}
 
 	/**
-	 * @param reflection whether to try the reflection-based verion of the node factory method
+	 * @param reflection
+	 *            whether to try the reflection-based verion of the node factory
+	 *            method
 	 * @param istream
-	 *            a stream
+	 *            a reader from which to read the XML
 	 * @return the map contained in that stream
 	 * @throws XMLStreamException
 	 *             if XML isn't well-formed.
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
-	public SPMap readMap(final InputStream istream, final boolean reflection)
+	public SPMap readMap(final Reader istream, final boolean reflection)
 			throws XMLStreamException, SPFormatException {
-		final RootNode<SPMap> root = new RootNode<SPMap>(SPMap.class);
+		return readXML(istream, SPMap.class, reflection);
+	}
+
+	/**
+	 * Use readMap if you want a map; this is public primarily for testing purposes. 
+	 * @param <T> The type of the object the XML represents
+	 * @param reflection
+	 *            whether to try the reflection-based verion of the node factory
+	 *            method
+	 * @param istream
+	 *            a reader from which to read the XML
+	 * @param type The type of the object the XML represents
+	 * @return the object contained in that stream
+	 * @throws XMLStreamException
+	 *             if XML isn't well-formed.
+	 * @throws SPFormatException
+	 *             if the data is invalid.
+	 */
+	public <T> T readXML(final Reader istream, final Class<T> type, final boolean reflection)
+			throws XMLStreamException, SPFormatException {
+		final RootNode<T> root = new RootNode<T>(type);
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
@@ -137,15 +163,20 @@ public class SimpleXMLReader implements IMapReader {
 	 * 
 	 * @param element
 	 *            the tag
-	 * @param reflection whether we should try the version of the NodeFactory method that uses reflection
+	 * @param reflection
+	 *            whether we should try the version of the NodeFactory method
+	 *            that uses reflection
 	 * @return the equivalent node.
 	 * @throws SPFormatException
 	 *             on unexpected or illegal XML.
-	 * @throws IllegalAccessException thrown by reflection
-	 * @throws InstantiationException thrown by reflection
+	 * @throws IllegalAccessException
+	 *             thrown by reflection
+	 * @throws InstantiationException
+	 *             thrown by reflection
 	 */
-	private static AbstractXMLNode parseTag(final StartElement element, final boolean reflection)
-			throws SPFormatException, InstantiationException, IllegalAccessException {
+	private static AbstractXMLNode parseTag(final StartElement element,
+			final boolean reflection) throws SPFormatException,
+			InstantiationException, IllegalAccessException {
 		final AbstractChildNode<?> node = (reflection ? NodeFactory
 				.createReflection(element.getName().getLocalPart(), element
 						.getLocation().getLineNumber()) : NodeFactory.create(
@@ -167,5 +198,4 @@ public class SimpleXMLReader implements IMapReader {
 	public String toString() {
 		return "SimpleXMLReader";
 	}
-
 }

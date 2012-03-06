@@ -1,7 +1,7 @@
 package controller.map;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -33,10 +33,10 @@ public interface IMapReader {
 			SPFormatException, MapVersionException;
 
 	/**
-	 * Read the map contained in an input stream.
+	 * Read the map contained in a reader.
 	 * 
 	 * @param istream
-	 *            the stream to read from
+	 *            the reader to read from
 	 * @return the map it contains
 	 * @throws XMLStreamException 
 	 *             if there are XML errors 
@@ -45,6 +45,6 @@ public interface IMapReader {
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */
-	SPMap readMap(final InputStream istream) throws XMLStreamException,
+	SPMap readMap(final Reader istream) throws XMLStreamException,
 			SPFormatException, MapVersionException;
 }

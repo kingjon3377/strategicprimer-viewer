@@ -1,8 +1,8 @@
 package controller.map.stax;
 
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,7 +69,7 @@ public class MapReader implements IMapReader {
 	@Override
 	public SPMap readMap(final String file) throws XMLStreamException,
 			IOException, MapVersionException {
-		final FileInputStream istream = new FileInputStream(file);
+		final FileReader istream = new FileReader(file);
 		try {
 			return readMap(istream);
 		} finally {
@@ -87,7 +87,7 @@ public class MapReader implements IMapReader {
 	 *             if the map is too old a version
 	 */
 	@Override
-	public SPMap readMap(final InputStream istream) throws XMLStreamException,
+	public SPMap readMap(final Reader istream) throws XMLStreamException,
 			MapVersionException {
 		try {
 			return readMapImpl(istream);
@@ -103,14 +103,14 @@ public class MapReader implements IMapReader {
 
 	/**
 	 * @param istream
-	 *            the stream to read from
+	 *            the reader to read from
 	 * @return the map
 	 * @throws XMLStreamException
 	 *             on XML error
 	 * @throws MapVersionException
 	 *             if the map version is one we can't handle
 	 */
-	private SPMap readMapImpl(final InputStream istream)
+	private SPMap readMapImpl(final Reader istream)
 			throws XMLStreamException, MapVersionException {
 		LOGGER.info("Started reading XML");
 		LOGGER.info(Long.toString(System.currentTimeMillis()));
