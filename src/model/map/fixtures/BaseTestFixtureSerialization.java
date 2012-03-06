@@ -1,0 +1,40 @@
+package model.map.fixtures;
+
+import java.io.StringReader;
+
+import javax.xml.stream.XMLStreamException;
+
+import model.map.XMLWritable;
+import controller.map.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
+
+/**
+ * An abstract base class for this helper method.
+ * 
+ * @author Jonathan Lovelace
+ * 
+ */
+public abstract class BaseTestFixtureSerialization {
+	/**
+	 * A helper method to simplify test boiler plate code.
+	 * 
+	 * @param <T>
+	 *            The type of the object
+	 * @param orig
+	 *            the object to serialize
+	 * @param type
+	 *            the type of the object
+	 * @param reflection
+	 *            whether to use reflection
+	 * @return the result of deserializing the serialized form
+	 * @throws SPFormatException
+	 *             on SP XML problem
+	 * @throws XMLStreamException
+	 *             on XML reading problem
+	 */
+	protected <T extends XMLWritable> T helpSerialization(final SimpleXMLReader reader,
+			final T orig, final Class<T> type, final boolean reflection)
+			throws XMLStreamException, SPFormatException {
+		return reader.readXML(new StringReader(orig.toXML()), type, reflection);
+	}
+}
