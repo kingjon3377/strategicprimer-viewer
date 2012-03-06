@@ -233,7 +233,7 @@ public final class TestFixtureSerialization {
 	}
 
 	/**
-	 * Test the serialization of Fortresses.
+	 * Test the serialization of Giants.
 	 * 
 	 * @throws SPFormatException
 	 *             on XML format error
