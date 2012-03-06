@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures; // NOPMD
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +17,8 @@ import controller.map.simplexml.SimpleXMLReader;
  * 
  * @author Jonathan Lovelace
  */
-public final class TestFixtureSerialization extends BaseTestFixtureSerialization {
+public final class TestFixtureSerialization extends
+		BaseTestFixtureSerialization {
 	/**
 	 * Constructor.
 	 */
@@ -302,6 +303,58 @@ public final class TestFixtureSerialization extends BaseTestFixtureSerialization
 				helpSerialization(reader, griffin, Griffin.class, true));
 		assertEquals("Test of Griffin serialization, non-reflection", griffin,
 				helpSerialization(reader, griffin, Griffin.class, false));
+		final Hill hill = new Hill();
+		assertEquals("Test of Hill serialization, reflection", hill,
+				helpSerialization(reader, hill, Hill.class, true));
+		assertEquals("Test of Hill serialization, non-reflection", hill,
+				helpSerialization(reader, hill, Hill.class, false));
+		final Minotaur minotaur = new Minotaur();
+		assertEquals("Test of Minotaur serialization, reflection", minotaur,
+				helpSerialization(reader, minotaur, Minotaur.class, true));
+		assertEquals("Test of Minotaur serialization, non-reflection",
+				minotaur,
+				helpSerialization(reader, minotaur, Minotaur.class, false));
+		final Mountain mountain = new Mountain();
+		assertEquals("Test of Mountain serialization, reflection", mountain,
+				helpSerialization(reader, mountain, Mountain.class, true));
+		assertEquals("Test of Mountain serialization, non-reflection",
+				mountain,
+				helpSerialization(reader, mountain, Mountain.class, false));
+		final Oasis oasis = new Oasis();
+		assertEquals("Test of Oasis serialization, reflection", oasis,
+				helpSerialization(reader, oasis, Oasis.class, true));
+		assertEquals("Test of Oasis serialization, non-reflection", oasis,
+				helpSerialization(reader, oasis, Oasis.class, false));
+		final Ogre ogre = new Ogre();
+		assertEquals("Test of Ogre serialization, reflection", ogre,
+				helpSerialization(reader, ogre, Ogre.class, true));
+		assertEquals("Test of Ogre serialization, non-reflection", ogre,
+				helpSerialization(reader, ogre, Ogre.class, false));
+		final Phoenix phoenix = new Phoenix();
+		assertEquals("Test of Phoenix serialization, reflection", phoenix,
+				helpSerialization(reader, phoenix, Phoenix.class, true));
+		assertEquals("Test of Phoenix serialization, non-reflection", phoenix,
+				helpSerialization(reader, phoenix, Phoenix.class, false));
+		final Sandbar sandbar = new Sandbar();
+		assertEquals("Test of Sandbar serialization, reflection", sandbar,
+				helpSerialization(reader, sandbar, Sandbar.class, true));
+		assertEquals("Test of Sandbar serialization, non-reflection", sandbar,
+				helpSerialization(reader, sandbar, Sandbar.class, false));
+		final Simurgh simurgh = new Simurgh();
+		assertEquals("Test of Simurgh serialization, reflection", simurgh,
+				helpSerialization(reader, simurgh, Simurgh.class, true));
+		assertEquals("Test of Simurgh serialization, non-reflection", simurgh,
+				helpSerialization(reader, simurgh, Simurgh.class, false));
+		final Sphinx sphinx = new Sphinx();
+		assertEquals("Test of Sphinx serialization, reflection", sphinx,
+				helpSerialization(reader, sphinx, Sphinx.class, true));
+		assertEquals("Test of Sphinx serialization, non-reflection", sphinx,
+				helpSerialization(reader, sphinx, Sphinx.class, false));
+		final Troll troll = new Troll();
+		assertEquals("Test of Troll serialization, reflection", troll,
+				helpSerialization(reader, troll, Troll.class, true));
+		assertEquals("Test of Troll serialization, non-reflection", troll,
+				helpSerialization(reader, troll, Troll.class, false));
 	}
 
 }
