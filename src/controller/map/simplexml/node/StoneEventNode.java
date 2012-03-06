@@ -14,6 +14,12 @@ import controller.map.SPFormatException;
  */
 public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	/**
+	 * Constructor.
+	 */
+	public StoneEventNode() {
+		super(StoneEvent.class);
+	}
+	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
 	private static final String DC_PROPERTY = "dc";

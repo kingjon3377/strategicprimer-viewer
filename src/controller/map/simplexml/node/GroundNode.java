@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class GroundNode extends AbstractFixtureNode<Ground> {
 	/**
+	 * Constructor.
+	 */
+	public GroundNode() {
+		super(Ground.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Ground this node represents.
 	 * @throws SPFormatException if the element was missing any required properties

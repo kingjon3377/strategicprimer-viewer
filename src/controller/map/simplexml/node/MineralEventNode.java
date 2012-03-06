@@ -12,6 +12,12 @@ import controller.map.SPFormatException;
  */
 public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	/**
+	 * Constructor.
+	 */
+	public MineralEventNode() {
+		super(MineralEvent.class);
+	}
+	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
 	private static final String DC_PROPERTY = "dc";

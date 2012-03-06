@@ -11,6 +11,12 @@ import model.map.fixtures.CacheFixture;
  */
 public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	/**
+	 * Constructor.
+	 */
+	public CacheNode() {
+		super(CacheFixture.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the cache this Node represents
 	 * @throws SPFormatException if missing essential properties.

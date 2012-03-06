@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	/**
+	 * Constructor.
+	 */
+	public MinotaurNode() {
+		super(Minotaur.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the minotaur this represents
 	 * @throws SPFormatException never

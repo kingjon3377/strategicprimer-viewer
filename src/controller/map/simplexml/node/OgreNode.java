@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class OgreNode extends AbstractFixtureNode<Ogre> {
 	/**
+	 * Constructor.
+	 */
+	public OgreNode() {
+		super(Ogre.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the ogre this represents
 	 * @throws SPFormatException never

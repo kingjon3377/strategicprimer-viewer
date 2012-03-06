@@ -3,47 +3,54 @@ package controller.map.simplexml;
 import java.util.Iterator;
 
 import controller.map.SPFormatException;
+import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
-import controller.map.simplexml.node.MapNode;
 
 /**
- * A node at the root of the hierarchy. Its only child should be a MapNode.
+ * A node at the root of the hierarchy. Its only child should be a ChildNode producing the type we want.
  * 
  * @author Jonathan Lovelace
+ * @param <T> The kind of child we want.
  * 
  */
-public final class RootNode extends AbstractXMLNode {
+public final class RootNode<T> extends AbstractXMLNode {
 	/**
 	 * Check whether the tree is valid. Since we can't check whether it has more
-	 * than one child, we only verify that it has at least one, which is a
-	 * MapNode.
+	 * than one child, we only verify that it has at least one, which is the child we want.
 	 * 
 	 * 
 	 * @throws SPFormatException
 	 *             if it isn't.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void checkNode() throws SPFormatException {
-		if (iterator().hasNext() && iterator().next() instanceof MapNode) {
-			iterator().next().checkNode();
+		if (iterator().hasNext()) {
+			final AbstractXMLNode child = iterator().next();
+			if (child instanceof AbstractChildNode && ((AbstractChildNode) child).getProduct().equals(product)) {
+				iterator().next().checkNode();
+			} else {
+				throw new SPFormatException("We want a node producing " + product.getSimpleName() + " as the top-level tag", 0);
+			}
 		} else {
-			throw new SPFormatException("<map> must be top-level tag", 0);
+			throw new SPFormatException("We want a node producing " + product.getSimpleName() + " as the top-level tag", 0);
 		}
 	}
 
 	/**
-	 * @return the map node, which should be our only child.
+	 * @return the root node, which should be our only child.
 	 * @throws SPFormatException
-	 *             if we don't have a child or it isn't a MapNode.
+	 *             if we don't have a child or it isn't what we wanted.
 	 */
-	public MapNode getMapNode() throws SPFormatException {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public AbstractChildNode<T> getRootNode() throws SPFormatException {
 		final Iterator<AbstractXMLNode> iterator = iterator();
 		if (iterator.hasNext()) {
 			final AbstractXMLNode child = iterator.next();
-			if (child instanceof MapNode) {
-				return (MapNode) child;
+			if (child instanceof AbstractChildNode && ((AbstractChildNode) child).getProduct().equals(product)) {
+				return (AbstractChildNode<T>) child;
 			} else {
-				throw new SPFormatException("First top-level tag isn't <map>",
+				throw new SPFormatException("First top-level tag won't produce a " + product.getSimpleName(),
 						0);
 			}
 		} else {
@@ -59,5 +66,16 @@ public final class RootNode extends AbstractXMLNode {
 	public String toString() {
 		return "RootNode";
 	}
-
+	/**
+	 * Constructor.
+	 * @param type the type of child we want to produce.
+	 */
+	public RootNode(final Class<T> type) {
+		super();
+		product = type;
+	}
+	/**
+	 * The type of child we want to produce.
+	 */
+	private final Class<T> product;
 }

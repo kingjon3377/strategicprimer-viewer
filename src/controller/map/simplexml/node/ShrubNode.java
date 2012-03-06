@@ -12,6 +12,12 @@ import controller.map.SPFormatException;
  */
 public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	/**
+	 * Constructor.
+	 */
+	public ShrubNode() {
+		super(Shrub.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Shrub this node represents
 	 * @throws SPFormatException if it doesn't have a "shrub" property.

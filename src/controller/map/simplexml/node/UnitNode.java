@@ -14,6 +14,12 @@ import controller.map.SPFormatException;
  */
 public class UnitNode extends AbstractFixtureNode<Unit> {
 	/**
+	 * Constructor.
+	 */
+	public UnitNode() {
+		super(Unit.class);
+	}
+	/**
 	 * The "name" attribute.
 	 */
 	private static final String NAME_ATTR = "name";

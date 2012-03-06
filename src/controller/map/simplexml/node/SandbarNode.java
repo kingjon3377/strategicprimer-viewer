@@ -10,6 +10,12 @@ import controller.map.SPFormatException;
  */
 public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	/**
+	 * Constructor.
+	 */
+	public SandbarNode() {
+		super(Sandbar.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Sandbar this Node represents
 	 * @throws SPFormatException never

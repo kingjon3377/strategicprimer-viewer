@@ -17,6 +17,14 @@ import controller.map.SPFormatException;
  */
 public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	/**
+	 * Constructor.
+	 * @param type the type of the object we'll produce.
+	 */
+	protected AbstractChildNode(final Class<T> type) {
+		super();
+		product = type;
+	}
+	/**
 	 * The properties on this node.
 	 */
 	private final Map<String, String> properties = new HashMap<String, String>();
@@ -91,6 +99,16 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 * @return whether this kind of node can use the property
 	 */
 	public abstract boolean canUse(final String property);
+	/**
+	 * The type of child we produce, or a supertype thereof.
+	 */
+	private final Class<T> product;
+	/**
+	 * @return the type of child we produce, or a supertype thereof.
+	 */
+	public Class<T> getProduct() {
+		return product;
+	}
 //	/**
 //	 * @param obj an object
 //	 * @return whether it's equal to this one

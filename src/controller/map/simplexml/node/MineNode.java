@@ -12,6 +12,12 @@ import controller.map.SPFormatException;
  */
 public class MineNode extends AbstractFixtureNode<Mine> {
 	/**
+	 * Constructor.
+	 */
+	public MineNode() {
+		super(Mine.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Mine this node represents
 	 * @throws SPFormatException if missing required properties

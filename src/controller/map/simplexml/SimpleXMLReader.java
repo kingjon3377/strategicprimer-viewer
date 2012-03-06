@@ -100,7 +100,7 @@ public class SimpleXMLReader implements IMapReader {
 	 */
 	public SPMap readMap(final InputStream istream, final boolean reflection)
 			throws XMLStreamException, SPFormatException {
-		final RootNode root = new RootNode();
+		final RootNode<SPMap> root = new RootNode<SPMap>(SPMap.class);
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
@@ -129,7 +129,7 @@ public class SimpleXMLReader implements IMapReader {
 		}
 		root.canonicalize();
 		root.checkNode();
-		return root.getMapNode().produce(new PlayerCollection());
+		return root.getRootNode().produce(new PlayerCollection());
 	}
 
 	/**

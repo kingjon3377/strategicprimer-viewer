@@ -11,6 +11,12 @@ import model.map.fixtures.Forest;
  */
 public class ForestNode extends AbstractFixtureNode<Forest> {
 	/**
+	 * Constructor.
+	 */
+	public ForestNode() {
+		super(Forest.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Forest this node represents.
 	 * @throws SPFormatException if the forest doesn't have a "kind" property.

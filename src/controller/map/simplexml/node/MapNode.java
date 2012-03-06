@@ -16,6 +16,12 @@ import controller.map.SPFormatException;
  */
 public class MapNode extends AbstractChildNode<SPMap> {
 	/**
+	 * Constructor.
+	 */
+	public MapNode() {
+		super(SPMap.class);
+	}
+	/**
 	 * The (name of the) "version" property.
 	 */
 	private static final String VERSION_PROP = "version";

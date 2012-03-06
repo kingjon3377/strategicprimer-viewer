@@ -13,6 +13,12 @@ import controller.map.SPFormatException;
  */
 public class PlayerNode extends AbstractChildNode<Player> {
 	/**
+	 * Constructor.
+	 */
+	public PlayerNode() {
+		super(Player.class);
+	}
+	/**
 	 * Produce the equivalent Player.
 	 * 
 	 * @param players

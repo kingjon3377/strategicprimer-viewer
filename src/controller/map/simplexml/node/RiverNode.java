@@ -12,6 +12,12 @@ import controller.map.SPFormatException;
  */
 public class RiverNode extends AbstractChildNode<River> {
 	/**
+	 * Constructor.
+	 */
+	public RiverNode() {
+		super(River.class);
+	}
+	/**
 	 * We don't *promise* to throw an exception here if there are unexpected
 	 * children---still need to call checkNode().
 	 * 

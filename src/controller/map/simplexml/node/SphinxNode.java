@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class SphinxNode extends AbstractFixtureNode<Sphinx> {
 	/**
+	 * Constructor.
+	 */
+	public SphinxNode() {
+		super(Sphinx.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Sphinx this represents
 	 * @throws SPFormatException never

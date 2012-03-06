@@ -15,4 +15,11 @@ import model.map.TileFixture;
 public abstract class AbstractFixtureNode<T extends TileFixture> extends AbstractChildNode<T> { // NOPMD
 	// This is a superclass to unite its subclasses, and abstract to avoid
 	// pointless code implementing the methods required by its superclass.
+	/**
+	 * Constructor.
+	 * @param type the type of child we're to produce
+	 */
+	protected AbstractFixtureNode(final Class<T> type) {
+		super(type);
+	}
 }

@@ -17,6 +17,12 @@ import controller.map.SPFormatException;
 public class EventNode extends AbstractFixtureNode<IEvent> implements
 		NeedsExtraCanonicalization {
 	/**
+	 * Constructor.
+	 */
+	public EventNode() {
+		super(IEvent.class);
+	}
+	/**
 	 * The property of an Event saying what kind of event it is.
 	 */
 	private static final String KIND_PROPERTY = "kind";

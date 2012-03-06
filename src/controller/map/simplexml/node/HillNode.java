@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class HillNode extends AbstractFixtureNode<Hill> {
 	/**
+	 * Constructor.
+	 */
+	public HillNode() {
+		super(Hill.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Hill this represents
 	 * @throws SPFormatException never

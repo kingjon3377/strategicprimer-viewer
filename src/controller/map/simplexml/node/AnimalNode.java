@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
+import util.EqualsAny;
 import controller.map.SPFormatException;
 
 /**
@@ -12,6 +12,12 @@ import controller.map.SPFormatException;
  * 
  */
 public class AnimalNode extends AbstractFixtureNode<Animal> {
+	/**
+	 * Constructor.
+	 */
+	public AnimalNode() {
+		super(Animal.class);
+	}
 	/**
 	 * @param players
 	 *            ignored

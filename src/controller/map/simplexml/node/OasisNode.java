@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class OasisNode extends AbstractFixtureNode<Oasis> {
 	/**
+	 * Constructor.
+	 */
+	public OasisNode() {
+		super(Oasis.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Oasis this represents
 	 * @throws SPFormatException never

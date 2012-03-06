@@ -18,6 +18,12 @@ import controller.map.simplexml.ITextNode;
  */
 public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	/**
+	 * Constructor.
+	 */
+	public TileNode() {
+		super(Tile.class);
+	}
+	/**
 	 * Produce the equivalent Tile.
 	 * 
 	 * @param players

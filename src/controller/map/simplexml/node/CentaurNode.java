@@ -10,6 +10,12 @@ import controller.map.SPFormatException;
  */
 public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	/**
+	 * Constructor.
+	 */
+	public CentaurNode() {
+		super(Centaur.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the centaur this represents
 	 * @throws SPFormatException

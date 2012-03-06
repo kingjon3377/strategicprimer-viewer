@@ -10,6 +10,12 @@ import controller.map.SPFormatException;
  */
 public class MountainNode extends AbstractFixtureNode<Mountain> {
 	/**
+	 * Constructor.
+	 */
+	public MountainNode() {
+		super(Mountain.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Mountain this represents
 	 * @throws SPFormatException never

@@ -12,6 +12,12 @@ import controller.map.SPFormatException;
  */
 public class VillageNode extends AbstractFixtureNode<Village> {
 	/**
+	 * Constructor.
+	 */
+	public VillageNode() {
+		super(Village.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Village this Node represents
 	 * @throws SPFormatException if missing required attribute.

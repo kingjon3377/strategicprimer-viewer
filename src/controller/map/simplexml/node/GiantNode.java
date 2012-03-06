@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class GiantNode extends AbstractFixtureNode<Giant> {
 	/**
+	 * Constructor.
+	 */
+	public GiantNode() {
+		super(Giant.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the giant this represents
 	 * @throws SPFormatException if missing a required attribute

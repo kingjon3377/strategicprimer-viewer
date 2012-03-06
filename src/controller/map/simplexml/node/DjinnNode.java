@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	/**
+	 * Constructor.
+	 */
+	public DjinnNode() {
+		super(Djinn.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the djinn this represents
 	 * @throws SPFormatException never

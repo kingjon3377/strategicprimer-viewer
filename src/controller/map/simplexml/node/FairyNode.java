@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class FairyNode extends AbstractFixtureNode<Fairy> {
 	/**
+	 * Constructor.
+	 */
+	public FairyNode() {
+		super(Fairy.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the fairy this represents
 	 * @throws SPFormatException if missing a required attribute

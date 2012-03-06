@@ -13,6 +13,12 @@ import controller.map.SPFormatException;
  */
 public class FortressNode extends AbstractFixtureNode<Fortress> {
 	/**
+	 * Constructor.
+	 */
+	public FortressNode() {
+		super(Fortress.class);
+	}
+	/**
 	 * The (name of) the "name" property.
 	 */
 	private static final String NAME_PROP = "name";

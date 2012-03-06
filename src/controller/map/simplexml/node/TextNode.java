@@ -11,6 +11,12 @@ import controller.map.simplexml.ITextNode;
  */
 public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextNode {
 	/**
+	 * Constructor.
+	 */
+	public TextNode() {
+		super(TextFixture.class);
+	}
+	/**
 	 * Produce the equivalent Fixture.
 	 * @param players ignored
 	 * @return the TextFixture this represents

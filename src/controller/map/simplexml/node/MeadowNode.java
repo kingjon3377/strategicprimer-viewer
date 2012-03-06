@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	/**
+	 * Constructor.
+	 */
+	public MeadowNode() {
+		super(Meadow.class);
+	}
+	/**
 	 * Produce the Node.
 	 * @param players ignored
 	 * @return the Meadow this represents

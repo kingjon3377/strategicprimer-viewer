@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class DragonNode extends AbstractFixtureNode<Dragon> {
 	/**
+	 * Constructor.
+	 */
+	public DragonNode() {
+		super(Dragon.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the dragon this represents
 	 * @throws SPFormatException if missing a required attribute

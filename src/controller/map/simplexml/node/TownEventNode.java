@@ -17,6 +17,12 @@ import controller.map.SPFormatException;
  */
 public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	/**
+	 * Constructor.
+	 */
+	public TownEventNode() {
+		super(AbstractTownEvent.class);
+	}
+	/**
 	 * The property of a town-like event saying how big it is.
 	 */
 	private static final String SIZE_PROPERTY = "size";

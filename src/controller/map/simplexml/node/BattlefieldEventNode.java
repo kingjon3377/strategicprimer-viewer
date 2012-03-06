@@ -13,6 +13,12 @@ import controller.map.SPFormatException;
  */
 public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> {
 	/**
+	 * Constructor.
+	 */
+	public BattlefieldEventNode() {
+		super(BattlefieldEvent.class);
+	}
+	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
 	private static final String DC_PROPERTY = "dc";

@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class GriffinNode extends AbstractFixtureNode<Griffin> {
 	/**
+	 * Constructor.
+	 */
+	public GriffinNode() {
+		super(Griffin.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the griffin this represents
 	 * @throws SPFormatException never

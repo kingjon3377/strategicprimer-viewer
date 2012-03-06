@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class TrollNode extends AbstractFixtureNode<Troll> {
 	/**
+	 * Constructor.
+	 */
+	public TrollNode() {
+		super(Troll.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the Troll this represents
 	 * @throws SPFormatException never

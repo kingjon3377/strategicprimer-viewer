@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	/**
+	 * Constructor.
+	 */
+	public PhoenixNode() {
+		super(Phoenix.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the phoenix this represents
 	 * @throws SPFormatException never

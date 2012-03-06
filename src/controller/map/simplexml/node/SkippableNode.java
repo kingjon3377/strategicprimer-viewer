@@ -19,7 +19,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * Required for reflection.
 	 */
 	public SkippableNode() {
-		super();
+		super(SkippableNode.class);
 	}
 	/**
 	 * Constructor. Warns if the tag isn't the one kind we routinely expect to
@@ -33,7 +33,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 *            the line of the file the tag occurs.
 	 */
 	public SkippableNode(final String tag, final int line) {
-		super();
+		super(SkippableNode.class);
 		if (!"row".equals(tag)) {
 			Warning.warn(new SPFormatException("Unexpected tag " + tag
 					+ ": probably a more recent map format than viewer.", line));

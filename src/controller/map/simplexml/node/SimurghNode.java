@@ -11,6 +11,12 @@ import controller.map.SPFormatException;
  */
 public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	/**
+	 * Constructor.
+	 */
+	public SimurghNode() {
+		super(Simurgh.class);
+	}
+	/**
 	 * @param players ignored
 	 * @return the simurgh this represents
 	 * @throws SPFormatException never
