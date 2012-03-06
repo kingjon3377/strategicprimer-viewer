@@ -6,6 +6,7 @@ import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.Player;
 import model.map.XMLWritable;
 
 import org.junit.Before;
@@ -88,12 +89,12 @@ public final class TestFixtureSerialization {
 	 */
 	@Test
 	public void testCentaurSerialization() throws XMLStreamException, SPFormatException {
-		final Centaur one = new Centaur("one");
+		final Centaur one = new Centaur("firstCentaur");
 		assertEquals("First test of Centaur serialization, reflection", one,
 				helpSerialization(one, Centaur.class, true));
 		assertEquals("First test of Centaur serialization, non-reflection", one,
 				helpSerialization(one, Centaur.class, false));
-		final Centaur two = new Centaur("two");
+		final Centaur two = new Centaur("secondCentaur");
 		assertEquals("Second test of Centaur serialization, reflection", two,
 				helpSerialization(two, Centaur.class, true));
 		assertEquals("Second test of Centaur serialization, non-reflection", two,
@@ -111,7 +112,7 @@ public final class TestFixtureSerialization {
 				helpSerialization(one, Dragon.class, true));
 		assertEquals("First test of Dragon serialization, non-reflection", one,
 				helpSerialization(one, Dragon.class, false));
-		final Dragon two = new Dragon("two");
+		final Dragon two = new Dragon("secondDragon");
 		assertEquals("Second test of Dragon serialization, reflection", two,
 				helpSerialization(two, Dragon.class, true));
 		assertEquals("Second test of Dragon serialization, non-reflection", two,
@@ -124,12 +125,12 @@ public final class TestFixtureSerialization {
 	 */
 	@Test
 	public void testFairySerialization() throws XMLStreamException, SPFormatException {
-		final Fairy one = new Fairy("one");
+		final Fairy one = new Fairy("oneFairy");
 		assertEquals("First test of Fairy serialization, reflection", one,
 				helpSerialization(one, Fairy.class, true));
 		assertEquals("First test of Fairy serialization, non-reflection", one,
 				helpSerialization(one, Fairy.class, false));
-		final Fairy two = new Fairy("two");
+		final Fairy two = new Fairy("twoFairy");
 		assertEquals("Second test of Fairy serialization, reflection", two,
 				helpSerialization(two, Fairy.class, true));
 		assertEquals("Second test of Fairy serialization, non-reflection", two,
@@ -153,6 +154,73 @@ public final class TestFixtureSerialization {
 		assertEquals("Second test of Forest serialization, non-reflection", two,
 				helpSerialization(two, Forest.class, false));
 	}
+
+	/**
+	 * Test the serialization of Fortresses.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testFortressSerialization() throws XMLStreamException,
+			SPFormatException {
+		// Can't give player names because our test environment doesn't let us
+		// pass a set of players in
+		final Player firstPlayer = new Player(1, "");
+		final Fortress one = new Fortress(firstPlayer, "one");
+		assertEquals("First test of Fortress serialization, reflection", one,
+				helpSerialization(one, Fortress.class, true));
+		assertEquals("First test of Fortress serialization, non-reflection",
+				one, helpSerialization(one, Fortress.class, false));
+		final Fortress two = new Fortress(firstPlayer, "two");
+		assertEquals("Second test of Fortress serialization, reflection", two,
+				helpSerialization(two, Fortress.class, true));
+		assertEquals("Second test of Fortress serialization, non-reflection",
+				two, helpSerialization(two, Fortress.class, false));
+		final Player secondPlayer = new Player(2, "");
+		final Fortress three = new Fortress(secondPlayer, "three");
+		assertEquals("Third test of Fortress serialization, reflection", three,
+				helpSerialization(three, Fortress.class, true));
+		assertEquals("Third test of Fortress serialization, non-reflection",
+				three, helpSerialization(three, Fortress.class, false));
+		final Fortress four = new Fortress(secondPlayer, "four");
+		assertEquals("Fourth test of Fortress serialization, reflection", four,
+				helpSerialization(four, Fortress.class, true));
+		assertEquals("Fourth test of Fortress serialization, non-reflection",
+				four, helpSerialization(four, Fortress.class, false));
+		final Fortress five = new Fortress(secondPlayer, "five");
+		five.addUnit(new Unit(secondPlayer, "unitOne", "unitTwo"));
+		assertEquals("Fifth test of Fortress serialization, reflection", five,
+				helpSerialization(five, Fortress.class, true));
+		assertEquals("Fifth test of Fortress serialization, non-reflection",
+				five, helpSerialization(five, Fortress.class, false));
+	}
+
+	/**
+	 * Test the serialization of Fortresses.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testGiantSerialization() throws XMLStreamException,
+			SPFormatException {
+		final Giant one = new Giant("one");
+		assertEquals("First test of Giant serialization, reflection", one,
+				helpSerialization(one, Giant.class, true));
+		assertEquals("First test of Giant serialization, non-reflection", one,
+				helpSerialization(one, Giant.class, false));
+		final Giant two = new Giant("two");
+		assertEquals("Second test of Giant serialization, reflection", two,
+				helpSerialization(two, Giant.class, true));
+		assertEquals("Second test of Giant serialization, non-reflection", two,
+				helpSerialization(two, Giant.class, false));
+	}
+
 	/**
 	 * Test the serialization of simple (no-parameter) fixtures.
 	 * @throws SPFormatException on XML format error
