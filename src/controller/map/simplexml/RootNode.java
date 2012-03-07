@@ -7,16 +7,19 @@ import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
 
 /**
- * A node at the root of the hierarchy. Its only child should be a ChildNode producing the type we want.
+ * A node at the root of the hierarchy. Its only child should be a ChildNode
+ * producing the type we want.
  * 
  * @author Jonathan Lovelace
- * @param <T> The kind of child we want.
+ * @param <T>
+ *            The kind of child we want.
  * 
  */
 public final class RootNode<T> extends AbstractXMLNode {
 	/**
 	 * Check whether the tree is valid. Since we can't check whether it has more
-	 * than one child, we only verify that it has at least one, which is the child we want.
+	 * than one child, we only verify that it has at least one, which is the
+	 * child we want.
 	 * 
 	 * 
 	 * @throws SPFormatException
@@ -38,10 +41,12 @@ public final class RootNode<T> extends AbstractXMLNode {
 									.getSimpleName(), 0);
 				}
 			} else {
-				throw new SPFormatException("We want a node producing " + product.getSimpleName() + " as the top-level tag", 0);
+				throw new SPFormatException("We want a node producing "
+						+ product.getSimpleName() + " as the top-level tag", 0);
 			}
 		} else {
-			throw new SPFormatException("We want a node producing " + product.getSimpleName() + " as the top-level tag", 0);
+			throw new SPFormatException("We want a node producing "
+					+ product.getSimpleName() + " as the top-level tag", 0);
 		}
 	}
 
@@ -55,11 +60,13 @@ public final class RootNode<T> extends AbstractXMLNode {
 		final Iterator<AbstractXMLNode> iterator = iterator();
 		if (iterator.hasNext()) {
 			final AbstractXMLNode child = iterator.next();
-			if (child instanceof AbstractChildNode && ((AbstractChildNode) child).getProduct().equals(product)) {
+			if (child instanceof AbstractChildNode
+					&& ((AbstractChildNode) child).getProduct().equals(product)) {
 				return (AbstractChildNode<T>) child;
 			} else {
-				throw new SPFormatException("First top-level tag won't produce a " + product.getSimpleName(),
-						0);
+				throw new SPFormatException(
+						"First top-level tag won't produce a "
+								+ product.getSimpleName(), 0);
 			}
 		} else {
 			throw new SPFormatException("No top-level tag", 0);
@@ -74,14 +81,18 @@ public final class RootNode<T> extends AbstractXMLNode {
 	public String toString() {
 		return "RootNode";
 	}
+
 	/**
 	 * Constructor.
-	 * @param type the type of child we want to produce.
+	 * 
+	 * @param type
+	 *            the type of child we want to produce.
 	 */
 	public RootNode(final Class<T> type) {
 		super();
 		product = type;
 	}
+
 	/**
 	 * The type of child we want to produce.
 	 */
