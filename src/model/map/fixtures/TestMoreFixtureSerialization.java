@@ -1,0 +1,238 @@
+package model.map.fixtures;
+
+import static org.junit.Assert.assertEquals;
+
+import javax.xml.stream.XMLStreamException;
+
+import model.map.River;
+import model.map.events.TownStatus;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import controller.map.SPFormatException;
+import controller.map.simplexml.SimpleXMLReader;
+
+/**
+ * Another class to test serialization of TileFixtures.
+ * 
+ * @author Jonathan Lovelace
+ */
+public final class TestMoreFixtureSerialization extends
+		BaseTestFixtureSerialization {
+	/**
+	 * Constructor.
+	 */
+	public TestMoreFixtureSerialization() {
+		super();
+		setUp();
+	}
+
+	/**
+	 * Set-up method.
+	 */
+	@Before
+	public void setUp() {
+		reader = new SimpleXMLReader();
+	}
+
+	/**
+	 * The XML reader we'll use to test.
+	 */
+	private SimpleXMLReader reader;
+
+	/**
+	 * Test serialization of Groves.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testGroveSerialization() throws XMLStreamException,
+			SPFormatException {
+		final Grove one = new Grove(true, true, "firstGrove");
+		assertEquals("First test of Grove serialization, reflection", one,
+				helpSerialization(reader, one, Grove.class, true));
+		assertEquals("First test of Grove serialization, non-reflection", one,
+				helpSerialization(reader, one, Grove.class, false));
+		final Grove two = new Grove(true, false, "secondGrove");
+		assertEquals("Second test of Grove serialization, reflection", two,
+				helpSerialization(reader, two, Grove.class, true));
+		assertEquals("Second test of Grove serialization, non-reflection", two,
+				helpSerialization(reader, two, Grove.class, false));
+		final Grove three = new Grove(false, true, "thirdGrove");
+		assertEquals("Third test of Grove serialization, reflection", three,
+				helpSerialization(reader, three, Grove.class, true));
+		assertEquals("Third test of Grove serialization, non-reflection",
+				three, helpSerialization(reader, three, Grove.class, false));
+		final Grove four = new Grove(false, false, "four");
+		assertEquals("Fourth test of Grove serialization, reflection", four,
+				helpSerialization(reader, four, Grove.class, true));
+		assertEquals("Fourth test of Grove serialization, non-reflection",
+				four, helpSerialization(reader, four, Grove.class, false));
+	}
+
+	/**
+	 * Test serialization of Meadows.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testMeadowSerialization() throws XMLStreamException,
+			SPFormatException {
+		final Meadow one = new Meadow("firstMeadow", true, true);
+		assertEquals("First test of Meadow serialization, reflection", one,
+				helpSerialization(reader, one, Meadow.class, true));
+		assertEquals("First test of Meadow serialization, non-reflection", one,
+				helpSerialization(reader, one, Meadow.class, false));
+		final Meadow two = new Meadow("secondMeadow", true, false);
+		assertEquals("Second test of Meadow serialization, reflection", two,
+				helpSerialization(reader, two, Meadow.class, true));
+		assertEquals("Second test of Meadow serialization, non-reflection",
+				two, helpSerialization(reader, two, Meadow.class, false));
+		final Meadow three = new Meadow("three", false, true);
+		assertEquals("Third test of Meadow serialization, reflection", three,
+				helpSerialization(reader, three, Meadow.class, true));
+		assertEquals("Third test of Meadow serialization, non-reflection",
+				three, helpSerialization(reader, three, Meadow.class, false));
+		final Meadow four = new Meadow("four", false, false);
+		assertEquals("Fourth test of Meadow serialization, reflection", four,
+				helpSerialization(reader, four, Meadow.class, true));
+		assertEquals("Fourth test of Meadow serialization, non-reflection",
+				four, helpSerialization(reader, four, Meadow.class, false));
+	}
+
+	/**
+	 * Test serialization of Mines.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testMineSerialization() throws XMLStreamException,
+			SPFormatException {
+		final Mine one = new Mine("one", TownStatus.Active);
+		assertEquals("First test of Mine serialization, reflection", one,
+				helpSerialization(reader, one, Mine.class, true));
+		assertEquals("First test of Mine serialization, non-reflection", one,
+				helpSerialization(reader, one, Mine.class, false));
+		final Mine two = new Mine("two", TownStatus.Abandoned);
+		assertEquals("Second test of Mine serialization, reflection", two,
+				helpSerialization(reader, two, Mine.class, true));
+		assertEquals("Second test of Mine serialization, non-reflection", two,
+				helpSerialization(reader, two, Mine.class, false));
+		final Mine three = new Mine("three", TownStatus.Burned);
+		assertEquals("Third test of Mine serialization, reflection", three,
+				helpSerialization(reader, three, Mine.class, true));
+		assertEquals("Third test of Mine serialization, non-reflection", three,
+				helpSerialization(reader, three, Mine.class, false));
+		final Mine four = new Mine("four", TownStatus.Ruined);
+		assertEquals("Fourth test of Mine serialization, reflection", four,
+				helpSerialization(reader, four, Mine.class, true));
+		assertEquals("Fourth test of Mine serialization, non-reflection", four,
+				helpSerialization(reader, four, Mine.class, false));
+	}
+
+//	/**
+//	 * Test serialization of RiverFixtures. Doesn't work because of the mangling that Tile does; we'll have to handle it in Tile's tests.
+//	 * 
+//	 * @throws SPFormatException
+//	 *             on XML format error
+//	 * @throws XMLStreamException
+//	 *             on XML reader error
+//	 */
+//	@Test
+//	public void testRiverSerialization() throws XMLStreamException,
+//			SPFormatException {
+//		// The XML reading code can't handle multiple rivers as top-level elements.
+//		final RiverFixture fix = new RiverFixture();
+//		fix.addRiver(River.East);
+//		assertEquals("First test of RiverFixture serialization, reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, true));
+//		assertEquals(
+//				"First test of RiverFixture serialization, non-reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, false));
+//		fix.removeRiver(River.East);
+//		fix.addRiver(River.Lake);
+//		assertEquals("Second test of RiverFixture serialization, reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, true));
+//		assertEquals(
+//				"Second test of RiverFixture serialization, non-reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, false));
+//		fix.removeRiver(River.Lake);
+//		fix.addRiver(River.North);
+//		assertEquals("Third test of RiverFixture serialization, reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, true));
+//		assertEquals(
+//				"Third test of RiverFixture serialization, non-reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, false));
+//		fix.removeRiver(River.North);
+//		fix.addRiver(River.South);
+//		assertEquals("Fourth test of RiverFixture serialization, reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, true));
+//		assertEquals(
+//				"Fourth test of RiverFixture serialization, non-reflection",
+//				fix, helpSerialization(reader, fix, RiverFixture.class, false));
+//	}
+
+	/**
+	 * Test serialization of Shrubs.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testShrubSerialization() throws XMLStreamException,
+			SPFormatException {
+		final Shrub one = new Shrub("one");
+		assertEquals("First test of Shrub serialization, reflection", one,
+				helpSerialization(reader, one, Shrub.class, true));
+		assertEquals("First test of Shrub serialization, non-reflection", one,
+				helpSerialization(reader, one, Shrub.class, false));
+		final Shrub two = new Shrub("two");
+		assertEquals("Second test of Shrub serialization, reflection", two,
+				helpSerialization(reader, two, Shrub.class, true));
+		assertEquals("Second test of Shrub serialization, non-reflection", two,
+				helpSerialization(reader, two, Shrub.class, false));
+	}
+
+	/**
+	 * Test serialization of TextFixtures.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testTextSerialization() throws XMLStreamException,
+			SPFormatException {
+		final TextFixture one = new TextFixture("one", -1);
+		assertEquals("First test of TextFixture serialization, reflection",
+				one, helpSerialization(reader, one, TextFixture.class, true));
+		assertEquals("First test of TextFixture serialization, non-reflection",
+				one, helpSerialization(reader, one, TextFixture.class, false));
+		final TextFixture two = new TextFixture("two", 2);
+		assertEquals("Second test of TextFixture serialization, reflection",
+				two, helpSerialization(reader, two, TextFixture.class, true));
+		assertEquals(
+				"Second test of TextFixture serialization, non-reflection",
+				two, helpSerialization(reader, two, TextFixture.class, false));
+		final TextFixture three = new TextFixture("three", 10);
+		assertEquals("Third test of TextFixture serialization, reflection",
+				three,
+				helpSerialization(reader, three, TextFixture.class, true));
+		assertEquals("Third test of TextFixture serialization, non-reflection",
+				three,
+				helpSerialization(reader, three, TextFixture.class, false));
+	}
+}
