@@ -1,10 +1,9 @@
-package model.map.fixtures;
+package model.map;
 
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.XMLWritable;
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 

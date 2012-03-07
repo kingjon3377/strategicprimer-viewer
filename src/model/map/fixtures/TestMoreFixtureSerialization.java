@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.BaseTestFixtureSerialization;
 import model.map.events.TownStatus;
 
 import org.junit.Before;
