@@ -27,8 +27,16 @@ public final class RootNode<T> extends AbstractXMLNode {
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
 			final AbstractXMLNode child = iterator().next();
-			if (child instanceof AbstractChildNode && ((AbstractChildNode) child).getProduct().equals(product)) {
-				iterator().next().checkNode();
+			if (child instanceof AbstractChildNode) {
+				if (((AbstractChildNode) child).getProduct().equals(product)) {
+					iterator().next().checkNode();
+				} else {
+					throw new SPFormatException("We want a node producing "
+							+ product.getSimpleName()
+							+ " as the top-level tag, not one producing "
+							+ ((AbstractChildNode) child).getProduct()
+									.getSimpleName(), 0);
+				}
 			} else {
 				throw new SPFormatException("We want a node producing " + product.getSimpleName() + " as the top-level tag", 0);
 			}
