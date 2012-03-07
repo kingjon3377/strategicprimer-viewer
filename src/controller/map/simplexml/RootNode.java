@@ -31,7 +31,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 		if (iterator().hasNext()) {
 			final AbstractXMLNode child = iterator().next();
 			if (child instanceof AbstractChildNode) {
-				if (((AbstractChildNode) child).getProduct().equals(product)) {
+				if (((AbstractChildNode) child).getProduct().isAssignableFrom(product)) {
 					iterator().next().checkNode();
 				} else {
 					throw new SPFormatException("We want a node producing "
@@ -61,7 +61,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 		if (iterator.hasNext()) {
 			final AbstractXMLNode child = iterator.next();
 			if (child instanceof AbstractChildNode
-					&& ((AbstractChildNode) child).getProduct().equals(product)) {
+					&& ((AbstractChildNode) child).getProduct().isAssignableFrom(product)) {
 				return (AbstractChildNode<T>) child;
 			} else {
 				throw new SPFormatException(
