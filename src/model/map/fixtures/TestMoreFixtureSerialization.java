@@ -140,50 +140,6 @@ public final class TestMoreFixtureSerialization extends
 				helpSerialization(reader, four, Mine.class, false));
 	}
 
-	// /**
-	// * Test serialization of RiverFixtures. Doesn't work because of the
-	// mangling that Tile does; we'll have to handle it in Tile's tests.
-	// *
-	// * @throws SPFormatException
-	// * on XML format error
-	// * @throws XMLStreamException
-	// * on XML reader error
-	// */
-	// @Test
-	// public void testRiverSerialization() throws XMLStreamException,
-	// SPFormatException {
-	// // The XML reading code can't handle multiple rivers as top-level
-	// elements.
-	// final RiverFixture fix = new RiverFixture();
-	// fix.addRiver(River.East);
-	// assertEquals("First test of RiverFixture serialization, reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, true));
-	// assertEquals(
-	// "First test of RiverFixture serialization, non-reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, false));
-	// fix.removeRiver(River.East);
-	// fix.addRiver(River.Lake);
-	// assertEquals("Second test of RiverFixture serialization, reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, true));
-	// assertEquals(
-	// "Second test of RiverFixture serialization, non-reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, false));
-	// fix.removeRiver(River.Lake);
-	// fix.addRiver(River.North);
-	// assertEquals("Third test of RiverFixture serialization, reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, true));
-	// assertEquals(
-	// "Third test of RiverFixture serialization, non-reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, false));
-	// fix.removeRiver(River.North);
-	// fix.addRiver(River.South);
-	// assertEquals("Fourth test of RiverFixture serialization, reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, true));
-	// assertEquals(
-	// "Fourth test of RiverFixture serialization, non-reflection",
-	// fix, helpSerialization(reader, fix, RiverFixture.class, false));
-	// }
-
 	/**
 	 * Test serialization of Shrubs.
 	 * 
