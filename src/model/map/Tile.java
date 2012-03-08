@@ -196,7 +196,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 			final StringBuilder sbuild = new StringBuilder("<tile ");
 			sbuild.append(location.toXML());
 			if (!(TileType.NotVisible.equals(getType()))) {
-				sbuild.append("type=\"");
+				sbuild.append(" type=\"");
 				sbuild.append(getType().toXML());
 				sbuild.append("\"");
 			}
