@@ -205,7 +205,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return loader.loadImage(filename); // NOPMD
 		} catch (FileNotFoundException e) {
 			if (!missingFiles.contains(filename)) {
-				LOGGER.log(Level.SEVERE, filename + " not found", e);
+//				LOGGER.log(Level.SEVERE, filename + " not found", e);
+				LOGGER.log(Level.SEVERE, filename + " not found");
 				missingFiles.add(filename);
 			}
 			return fallbackImage; // NOPMD
