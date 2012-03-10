@@ -235,8 +235,8 @@ public final class MapComponent extends JComponent implements
 	 * Fix the visible dimensions to include the selected tile.
 	 */
 	private void fixVisibility() {
-		final int selRow = getModel().getSelectedTile().getLocation().row();
-		final int selCol = getModel().getSelectedTile().getLocation().col();
+		final int selRow = Math.max(getModel().getSelectedTile().getLocation().row(), 0);
+		final int selCol = Math.max(getModel().getSelectedTile().getLocation().col(), 0);
 		int minRow = getModel().getDimensions().getMinimumRow();
 		int maxRow = getModel().getDimensions().getMaximumRow();
 		int minCol = getModel().getDimensions().getMinimumCol();
