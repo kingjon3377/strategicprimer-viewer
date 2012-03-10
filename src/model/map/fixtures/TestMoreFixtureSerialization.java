@@ -193,4 +193,33 @@ public final class TestMoreFixtureSerialization extends
 				three,
 				helpSerialization(reader, three, TextFixture.class, false));
 	}
+
+	/**
+	 * Test Village serialization.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 */
+	@Test
+	public void testVillageSerialization() throws XMLStreamException,
+			SPFormatException {
+		for (TownStatus status : TownStatus.values()) {
+			final Village one = new Village(status, "villageOne"); // NOPMD
+			assertEquals("First Village serialization test, reflection, "
+					+ status, one,
+					helpSerialization(reader, one, Village.class, true));
+			assertEquals("First Village serialization test, non-reflection, "
+					+ status, one,
+					helpSerialization(reader, one, Village.class, false));
+			final Village two = new Village(status, ""); // NOPMD
+			assertEquals("Second Village serialization test, reflection, "
+					+ status, two,
+					helpSerialization(reader, two, Village.class, true));
+			assertEquals("Second Village serialization test, non-reflection, "
+					+ status, two,
+					helpSerialization(reader, two, Village.class, false));
+		}
+	}
 }
