@@ -88,7 +88,7 @@ public class ChitPanel extends JPanel {
 		} else if (fix instanceof Ground) {
 			add(new GroundChit((Ground) fix, listener));
 		} else {
-			throw new IllegalStateException("We're missing a case here");
+			throw new IllegalStateException("We're missing a case here: " + fix.getClass().getSimpleName());
 		}
 	}
 }
