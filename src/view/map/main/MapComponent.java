@@ -242,20 +242,20 @@ public final class MapComponent extends JComponent implements
 		int minCol = getModel().getDimensions().getMinimumCol();
 		int maxCol = getModel().getDimensions().getMaximumCol();
 		if (selRow < minRow) {
-			int diff = minRow - selRow;
+			final int diff = minRow - selRow;
 			minRow -= diff;
 			maxRow -= diff;
 		} else if (selRow > maxRow) {
-			int diff = selRow - maxRow;
+			final int diff = selRow - maxRow;
 			minRow += diff;
 			maxRow += diff;
 		}
 		if (selCol < minCol) {
-			int diff = minCol - selCol;
+			final int diff = minCol - selCol;
 			minCol -= diff;
 			maxCol -= diff;
 		} else if (selCol > maxCol) {
-			int diff = selCol - maxCol;
+			final int diff = selCol - maxCol;
 			minCol += diff;
 			maxCol += diff;
 		}
