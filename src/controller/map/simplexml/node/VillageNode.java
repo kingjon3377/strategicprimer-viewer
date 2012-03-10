@@ -44,11 +44,13 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Village shouldn't have children", getLine());
-		} else if (!hasProperty("status")) {
+		} else if (hasProperty("status")) {
+			if (!hasProperty(NAME_PROPERTY)) {
+				Warning.warn(new SPFormatException(
+						"Village should have \"name\" property", getLine()));
+			}
+		} else {
 			throw new SPFormatException("Village must have \"status\" property", getLine());
-		} else if (!hasProperty(NAME_PROPERTY)) {
-			Warning.warn(new SPFormatException(
-					"Village should have \"name\" property", getLine()));
 		}
 	}
 	/**
