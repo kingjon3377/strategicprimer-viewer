@@ -1,5 +1,7 @@
 package controller.map.simplexml.node;
 
+import util.EqualsAny;
+import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Village;
@@ -11,6 +13,10 @@ import controller.map.SPFormatException;
  *
  */
 public class VillageNode extends AbstractFixtureNode<Village> {
+	/**
+	 * The "name" property.
+	 */
+	private static final String NAME_PROPERTY = "name";
 	/**
 	 * Constructor.
 	 */
@@ -24,7 +30,8 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 */
 	@Override
 	public Village produce(final PlayerCollection players) throws SPFormatException {
-		return new Village(TownStatus.parseTownStatus(getProperty("status")));
+		return new Village(TownStatus.parseTownStatus(getProperty("status")),
+				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "");
 	}
 	
 	/**
@@ -39,6 +46,9 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 			throw new SPFormatException("Village shouldn't have children", getLine());
 		} else if (!hasProperty("status")) {
 			throw new SPFormatException("Village must have \"status\" property", getLine());
+		} else if (!hasProperty(NAME_PROPERTY)) {
+			Warning.warn(new SPFormatException(
+					"Village should have \"name\" property", getLine()));
 		}
 	}
 	/**
@@ -47,7 +57,7 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return "status".equals(property);
+		return EqualsAny.equalsAny(property, "status", NAME_PROPERTY);
 	}
 	/**
 	 * @return a String representation of the node

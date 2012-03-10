@@ -131,7 +131,7 @@ public class Converter {
 	private List<Tile> convertTile(final Tile tile, final boolean main) {
 		final List<Tile> initial = createInitialSubtiles(tile, main);
 		if (!tile.isEmpty()) {
-		tile.addFixture(new Village(TownStatus.Active));
+		tile.addFixture(new Village(TownStatus.Active, ""));
 		final List<TileFixture> fixtures = new LinkedList<TileFixture>(
 				tile.getContents());
 		if (tile.hasRiver()) {

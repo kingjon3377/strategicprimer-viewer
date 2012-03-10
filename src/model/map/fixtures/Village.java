@@ -15,11 +15,17 @@ public class Village implements TileFixture, HasImage {
 	 */
 	private final TownStatus status;
 	/**
+	 * The name of the village.
+	 */
+	private final String name;
+	/**
 	 * Constructor.
 	 * @param vstatus the status of the village.
+	 * @param vName the name of the village
 	 */
-	public Village(final TownStatus vstatus) {
+	public Village(final TownStatus vstatus, final String vName) {
 		status = vstatus;
+		name = vName;
 	}
 	/**
 	 * @return the status of the village
@@ -32,8 +38,14 @@ public class Village implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<village status=\"")
-				.append(status.toString()).append("\" />").toString();
+		final StringBuilder sbuild = new StringBuilder("<village status=\"");
+		sbuild.append(status.toString());
+		if (!"".equals(name)) {
+			sbuild.append("\" name=\"");
+			sbuild.append(name);
+		}
+		sbuild.append("\" />");
+		return sbuild.toString();
 	}
 	/**
 	 * @return a String representation of the village
@@ -62,14 +74,15 @@ public class Village implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Village && status.equals(((Village) obj).status);
+		return obj instanceof Village && status.equals(((Village) obj).status)
+				&& name.equals(((Village) obj).name);
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return status.hashCode();
+		return status.hashCode() | name.hashCode();
 	}
 	/**
 	 * @param fix
