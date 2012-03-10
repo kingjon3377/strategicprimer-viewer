@@ -2,6 +2,8 @@ package view.map.main;
 
 import static util.EqualsAny.equalsAny;
 
+import java.awt.Adjustable;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -9,6 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollBar;
 
 import model.map.SPMap;
 import model.map.Tile;
@@ -38,7 +41,14 @@ public final class MapComponent extends JComponent implements
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
 	private TileDrawHelper helper;
-
+	/**
+	 * Horizontal scroll-bar.
+	 */
+	private final JScrollBar hbar = new JScrollBar(Adjustable.HORIZONTAL);
+	/**
+	 * Vertical scroll bar.
+	 */
+	private final JScrollBar vbar = new JScrollBar(Adjustable.VERTICAL);
 	/**
 	 * Constructor.
 	 * 
@@ -47,6 +57,10 @@ public final class MapComponent extends JComponent implements
 	 */
 	public MapComponent(final MapModel theMap) {
 		super();
+		setLayout(new BorderLayout());
+		add(hbar, BorderLayout.SOUTH);
+		add(vbar, BorderLayout.EAST);
+		new ScrollListener(theMap, hbar, vbar).setUpListeners();
 		setDoubleBuffered(true);
 		if (theMap.getMainMap().getVersion() == 1) {
 			helper = new DirectTileDrawHelper(); 
@@ -58,7 +72,7 @@ public final class MapComponent extends JComponent implements
 		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
 		new ArrowKeyListener().setUpListeners(
-				new DirectionSelectionChangerImpl(model), getInputMap(),
+				new DirectionSelectionChangerImpl(model), getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
 				getActionMap());
 		addComponentListener(new MapSizeListener(model));
 	}
@@ -71,8 +85,8 @@ public final class MapComponent extends JComponent implements
 	 */
 	@Override
 	public void paint(final Graphics pen) {
-		super.paint(pen);
 		drawMap(pen);
+		super.paint(pen);
 	}
 
 	/**

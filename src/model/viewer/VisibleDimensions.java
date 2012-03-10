@@ -87,4 +87,12 @@ public class VisibleDimensions {
 				.append(maximumRow).append(", ").append(maximumCol).append(')')
 				.toString();
 	}
+	/**
+	 * @param other another VisibleDimensions
+	 * @return whether it's the same size as this one.
+	 */
+	public boolean isSameSize(final VisibleDimensions other) {
+		return (maximumCol - minimumCol) == (other.maximumCol - other.minimumCol)
+				&& (maximumRow - minimumRow) == (other.maximumRow - other.minimumRow);
+	}
 }
