@@ -213,7 +213,7 @@ public final class TestMoreFixtureSerialization extends
 			assertEquals("First Village serialization test, non-reflection, "
 					+ status, one,
 					helpSerialization(reader, one, Village.class, false));
-			final Village two = new Village(status, ""); // NOPMD
+			final Village two = new Village(status, "villageTwo"); // NOPMD
 			assertEquals("Second Village serialization test, reflection, "
 					+ status, two,
 					helpSerialization(reader, two, Village.class, true));
@@ -221,5 +221,10 @@ public final class TestMoreFixtureSerialization extends
 					+ status, two,
 					helpSerialization(reader, two, Village.class, false));
 		}
+		final Village three = new Village(TownStatus.Abandoned, "");
+		assertEquals("Third Village serialization test, reflection", three,
+				helpSerialization(reader, three, Village.class, true));
+		assertEquals("Third Village serialization test, non-reflection", three,
+				helpSerialization(reader, three, Village.class, false));
 	}
 }
