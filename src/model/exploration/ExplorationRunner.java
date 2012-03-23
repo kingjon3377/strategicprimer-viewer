@@ -30,8 +30,8 @@ public class ExplorationRunner { // NOPMD
 				"The primary rock type here is ");
 		sb.append(getPrimaryRock(tile));
 		sb.append(".\n");
-		if (TileType.BorealForest.equals(tile.getType())
-				|| TileType.TemperateForest.equals(tile.getType())) {
+		if (TileType.BorealForest.equals(tile.getTerrain())
+				|| TileType.TemperateForest.equals(tile.getTerrain())) {
 			sb.append("The main kind of tree is ");
 			sb.append(getPrimaryTree(tile));
 			sb.append(".\n");
@@ -76,9 +76,9 @@ public class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String getPrimaryTree(final Tile tile) throws MissingTableException {
-		if (TileType.BorealForest.equals(tile.getType())) {
+		if (TileType.BorealForest.equals(tile.getTerrain())) {
 			return getTable("boreal_major_tree").generateEvent(tile); // NOPMD
-		} else if (TileType.TemperateForest.equals(tile.getType())) {
+		} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
 			return getTable("temperate_major_tree").generateEvent(tile);
 		} else {
 			throw new IllegalArgumentException(

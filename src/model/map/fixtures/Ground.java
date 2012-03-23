@@ -13,7 +13,7 @@ public class Ground implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<ground ground=\"").append(description)
+		return new StringBuilder("<ground kind=\"").append(kind)
 				.append("\" exposed=\"").append(exposed).append("\" />")
 				.toString();
 	}
@@ -23,13 +23,13 @@ public class Ground implements TileFixture, HasImage {
 	 * @param exp whether it's exposed. (If not, the tile should also include a grass or forest Fixture ...)  
 	 */
 	public Ground(final String desc, final boolean exp) {
-		description = desc;
+		kind = desc;
 		exposed = exp;
 	}
 	/**
-	 * A description of the ground (the kind of rock).
+	 * The kind of ground.
 	 */
-	private final String description;
+	private final String kind;
 	/**
 	 * Whether the ground is exposed.
 	 */
@@ -43,8 +43,8 @@ public class Ground implements TileFixture, HasImage {
 	/**
 	 * @return a description of the grond
 	 */
-	public String getDescription() {
-		return description;
+	public String getKind() {
+		return kind;
 	}
 	/**
 	 * @return the name of an image to represent the ground.
@@ -67,7 +67,7 @@ public class Ground implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Ground && description.equals(((Ground) obj).description)
+		return obj instanceof Ground && kind.equals(((Ground) obj).kind)
 				&& exposed == ((Ground) obj).exposed;
 	}
 	/**
@@ -75,7 +75,7 @@ public class Ground implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return description.hashCode() << (exposed ? 1 : 0);
+		return kind.hashCode() << (exposed ? 1 : 0);
 	}
 
 	/**

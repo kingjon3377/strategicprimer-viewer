@@ -1,6 +1,7 @@
 package controller.map.simplexml.node;
 
 import util.EqualsAny;
+import util.Warning;
 import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
 import controller.map.SPFormatException;
@@ -10,6 +11,10 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  */
 public class GroveNode extends AbstractFixtureNode<Grove> {
+	/**
+	 * The name of the property saying what kind of trees.
+	 */
+	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * Constructor.
 	 */
@@ -24,7 +29,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	@Override
 	public Grove produce(final PlayerCollection players) throws SPFormatException {
 		return new Grove("orchard".equals(getProperty("tag")),
-				Boolean.parseBoolean(getProperty("wild")), getProperty("tree"));
+				Boolean.parseBoolean(getProperty("wild")), getProperty(KIND_PROPERTY));
 	}
 	/**
 	 * @param property the name of a property
@@ -32,7 +37,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "tag", "wild", "tree");
+		return EqualsAny.equalsAny(property, "tag", "wild", KIND_PROPERTY, "tree");
 	}
 	/**
 	 * Check whether the Node's data is valid. A Grove is valid if it has no
@@ -46,9 +51,22 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 			throw new SPFormatException(
 					"Groves and orchards shouldn't have children", getLine());
 		} else if (hasProperty("tag")) {
-			if (!hasProperty("wild") || !hasProperty("tree")) {
+			if (hasProperty("wild")) {
+				if (!hasProperty(KIND_PROPERTY)) {
+					if (hasProperty("tree")) {
+						Warning.warn(new SPFormatException(
+								"Using \"tree\" property for the kind of tree is deprecated; use \"kind\" instead",
+								getLine()));
+						addProperty(KIND_PROPERTY, getProperty("tree"));
+					} else {
+						throw new SPFormatException(
+								"Groves and orchards must have \"wild\" and \"kind\" properties",
+								getLine());
+					}
+				}
+			} else {
 				throw new SPFormatException(
-						"Groves and orchards must have \"wild\" and \"tree\" properties",
+						"Groves and orchards must have \"wild\" and \"kind\" properties",
 						getLine());
 			}
 		} else {

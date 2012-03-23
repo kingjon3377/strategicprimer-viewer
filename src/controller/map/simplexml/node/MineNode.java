@@ -1,6 +1,7 @@
 package controller.map.simplexml.node;
 
 import util.EqualsAny;
+import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
@@ -11,6 +12,10 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  */
 public class MineNode extends AbstractFixtureNode<Mine> {
+	/**
+	 * The name of the property saying what kind of thing is mined in this mine.
+	 */
+	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * Constructor.
 	 */
@@ -24,7 +29,7 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	 */
 	@Override
 	public Mine produce(final PlayerCollection players) throws SPFormatException {
-		return new Mine(getProperty("product"), TownStatus.parseTownStatus(getProperty("status")));
+		return new Mine(getProperty(KIND_PROPERTY), TownStatus.parseTownStatus(getProperty("status")));
 	}
 	/**
 	 * Check the data for validity. A Mine is valid if it has no children and "product" and "status" properties.
@@ -34,8 +39,19 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Mine should not have children", getLine());
-		} else if (!hasProperty("product") || !hasProperty("status")) {
-			throw new SPFormatException("Mine should have \"product\" and \"status\" properties", getLine());
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (!hasProperty("status")) {
+				throw new SPFormatException("Mine should have \"kind\" and \"status\" properties", getLine());
+			}
+		} else {
+			if (hasProperty("product")) {
+				Warning.warn(new SPFormatException(
+						"Use of property \"product\" to designate mine product is deprecated; use \"kind\" instead",
+						getLine()));
+				addProperty(KIND_PROPERTY, getProperty("product"));
+			} else {
+				throw new SPFormatException("Mine should have \"kind\" and \"status\" properties", getLine());
+			}
 		}
 	}
 	/**
@@ -44,7 +60,7 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "product", "status");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "product", "status");
 	}
 	/**
 	 * @return a String representation of the node

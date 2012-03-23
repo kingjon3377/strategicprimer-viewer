@@ -16,13 +16,13 @@ public class Mine implements TileFixture, HasImage {
 	 * @param stat the status of the mine
 	 */
 	public Mine(final String mineral, final TownStatus stat) {
-		product = mineral;
+		kind = mineral;
 		status = stat;
 	}
 	/**
 	 * What the mine produces.
 	 */
-	private final String product;
+	private final String kind;
 	/**
 	 * The status of the mine.
 	 */
@@ -30,8 +30,8 @@ public class Mine implements TileFixture, HasImage {
 	/**
 	 * @return what the mine produces
 	 */
-	public String getProduct() {
-		return product;
+	public String getKind() {
+		return kind;
 	}
 	/**
 	 * @return the status of the mine
@@ -44,7 +44,7 @@ public class Mine implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<mine product=\"").append(product)
+		return new StringBuilder("<mine kind=\"").append(kind)
 				.append("\" status=\"").append(status.toString())
 				.append("\" />").toString();
 	}
@@ -60,7 +60,7 @@ public class Mine implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return getStatus().toString() + " mine of " + getProduct();
+		return getStatus().toString() + " mine of " + getKind();
 	}
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
@@ -75,7 +75,7 @@ public class Mine implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Mine && product.equals(((Mine) obj).product)
+		return obj instanceof Mine && kind.equals(((Mine) obj).kind)
 				&& status.equals(((Mine) obj).status);
 	}
 	/**
@@ -83,7 +83,7 @@ public class Mine implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return product.hashCode() << status.hashCode();
+		return kind.hashCode() << status.hashCode();
 	}
 	/**
 	 * @param fix

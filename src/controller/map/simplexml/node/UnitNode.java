@@ -19,6 +19,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	public UnitNode() {
 		super(Unit.class);
 	}
+
 	/**
 	 * The "name" attribute.
 	 */
@@ -26,7 +27,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	/**
 	 * The "type" attribute.
 	 */
-	private static final String TYPE_ATTR = "type";
+	private static final String TYPE_ATTR = "kind";
 	/**
 	 * The "owner" attribute.
 	 */
@@ -53,7 +54,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	/**
 	 * Check whether we contain any invalid data. At present, this merely means
 	 * that the unit can't have any children, as neither of the properties we
-	 * recognize ("owner" and "type") do we require, and for forward
+	 * recognize ("owner" and "kind") do we require, and for forward
 	 * compatibility we don't object to properties we don't recognize. But if at
 	 * some point we should start requiring properties, that condition should be
 	 * checked here.
@@ -73,22 +74,32 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 					getLine()));
 		}
 		if (!hasProperty(TYPE_ATTR) || "".equals(getProperty(TYPE_ATTR))) {
-			Warning.warn(new SPFormatException("Unit should have a type",
-					getLine()));
+			if (hasProperty("type")) {
+				addProperty(TYPE_ATTR, getProperty("type"));
+				Warning.warn(new SPFormatException(
+						"Use of property \"type\" to designate kind of unit is deprecated; use \"kind\" instead",
+						getLine()));
+			} else {
+				Warning.warn(new SPFormatException("Unit should have a kind",
+						getLine()));
+			}
 		}
 		if (!hasProperty(NAME_ATTR) || "".equals(getProperty(NAME_ATTR))) {
 			Warning.warn(new SPFormatException("Unit should have a name",
 					getLine()));
 		}
 	}
+
 	/**
-	 * @param property the name of a property
+	 * @param property
+	 *            the name of a property
 	 * @return whether this kind of node can use the property
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, OWNER_ATTR, TYPE_ATTR, NAME_ATTR);
+		return EqualsAny.equalsAny(property, OWNER_ATTR, TYPE_ATTR, NAME_ATTR, "type");
 	}
+
 	/**
 	 * 
 	 * @return a String representation of the object

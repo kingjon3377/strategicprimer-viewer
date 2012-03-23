@@ -43,7 +43,7 @@ public class TerrainTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
-		return mapping.get(tile.getType());
+		return mapping.get(tile.getTerrain());
 	}
 
 	/**

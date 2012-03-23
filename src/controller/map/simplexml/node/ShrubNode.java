@@ -1,8 +1,9 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.fixtures.Shrub;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -12,6 +13,10 @@ import controller.map.SPFormatException;
  */
 public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	/**
+	 * The name of the property telling what kind of shrub.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public ShrubNode() {
@@ -20,11 +25,11 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	/**
 	 * @param players ignored
 	 * @return the Shrub this node represents
-	 * @throws SPFormatException if it doesn't have a "shrub" property.
+	 * @throws SPFormatException if it doesn't have a "kind" property.
 	 */
 	@Override
 	public Shrub produce(final PlayerCollection players) throws SPFormatException {
-		return new Shrub(getProperty("shrub"));
+		return new Shrub(getProperty(KIND_PROPERTY));
 	}
 	/**
 	 * Check whether the node is valid. A Shrub is valid if it has a "shrub"
@@ -35,7 +40,12 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Shrub shouldn't have children", getLine());
-		} else if (!hasProperty("shrub")) {
+		} else if (hasProperty("shrub")) {
+			Warning.warn(new SPFormatException(
+					"Use of property \"shrub\" to give kind of shrub is deprecated; use \"kind\" instead",
+					getLine()));
+			addProperty(KIND_PROPERTY, getProperty("shrub"));
+		} else if (!hasProperty(KIND_PROPERTY)) {
 			throw new SPFormatException("Shrub must have \"shrub\" property", getLine());
 		}
 	}
@@ -45,7 +55,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "shrub");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "shrub");
 	}
 	/**
 	 * @return a String representation of the object

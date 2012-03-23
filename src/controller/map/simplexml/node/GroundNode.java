@@ -1,8 +1,9 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 /**
  * A Node to produce a Ground fixture.
@@ -10,6 +11,10 @@ import controller.map.SPFormatException;
  *
  */
 public class GroundNode extends AbstractFixtureNode<Ground> {
+	/**
+	 * The name of the property for what kind of ground.
+	 */
+	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * Constructor.
 	 */
@@ -23,7 +28,7 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	 */
 	@Override
 	public Ground produce(final PlayerCollection players) throws SPFormatException {
-		return new Ground(getProperty("ground"), Boolean.parseBoolean(getProperty("exposed")));
+		return new Ground(getProperty(KIND_PROPERTY), Boolean.parseBoolean(getProperty("exposed")));
 	}
 	/**
 	 * @param property the name of a property
@@ -31,7 +36,7 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "ground", "exposed");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "exposed", "ground");
 	}
 	/**
 	 * Check whether the node is valid. A Ground is valid if it has "ground" and "exposed"
@@ -44,8 +49,21 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	public void checkNode() throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Ground shouldn't have children", getLine());
-		} else if (!hasProperty("ground") || !hasProperty("exposed")) {
-			throw new SPFormatException("Ground must have \"ground\" and \"exposed\" properties", getLine());
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (!hasProperty("exposed")) {
+				throw new SPFormatException("Ground must have \"kind\" and \"exposed\" properties", getLine());
+			}
+		} else {
+			if (hasProperty("ground")) {
+				Warning.warn(new SPFormatException(
+						"Use of \"ground\" property to designate kind of ground is deprecated; use \"kind\" instead",
+						getLine()));
+				addProperty(KIND_PROPERTY, getProperty("ground"));
+			} else {
+				throw new SPFormatException(
+						"Ground must have \"kind\" and \"exposed\" properties",
+						getLine());
+			}
 		}
 	}
 	/**

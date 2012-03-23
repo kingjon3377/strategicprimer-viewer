@@ -114,7 +114,7 @@ public class Converter {
 			for (int j = 0; j < SUBTILES_PER_TILE; j++) {
 				final int row = tile.getLocation().row() * SUBTILES_PER_TILE + i;
 				final int col = tile.getLocation().col() * SUBTILES_PER_TILE + j;
-				final Tile subtile = new Tile(row, col, tile.getType()); // NOPMD
+				final Tile subtile = new Tile(row, col, tile.getTerrain()); // NOPMD
 				initial.add(subtile);
 				convertSubtile(subtile, main);
 			}
@@ -186,20 +186,20 @@ public class Converter {
 	@SuppressWarnings("deprecation")
 	private void convertSubtile(final Tile tile, final boolean main) {
 		try {
-			if (TileType.Mountain.equals(tile.getType())) {
-				tile.setType(TileType.Plains);
+			if (TileType.Mountain.equals(tile.getTerrain())) {
+				tile.setTerrain(TileType.Plains);
 				tile.addFixture(new Mountain());
-			} else if (TileType.TemperateForest.equals(tile.getType())) {
+			} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
 					tile.addFixture(new Forest(runner.getPrimaryTree(tile),
 							false));
 				}
-				tile.setType(TileType.Plains);
-			} else if (TileType.BorealForest.equals(tile.getType())) {
+				tile.setTerrain(TileType.Plains);
+			} else if (TileType.BorealForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
 					tile.addFixture(new Forest(runner.getPrimaryTree(tile), false));
 				}
-				tile.setType(TileType.Steppe);
+				tile.setTerrain(TileType.Steppe);
 			}
 			addFixture(tile, new Ground(runner.getPrimaryRock(tile), false), main);
 		} catch (MissingTableException e) {
@@ -266,7 +266,7 @@ public class Converter {
 	private void perturb(final Tile tile, final SPMap map, final Random random,
 			final boolean main) {
 		try {
-			if (!TileType.Ocean.equals(tile.getType())) {
+			if (!TileType.Ocean.equals(tile.getTerrain())) {
 				if (isAdjacentToTown(tile, map)
 						&& random.nextDouble() < SIXTY_PERCENT) {
 					if (random.nextBoolean()) {
@@ -279,11 +279,11 @@ public class Converter {
 								new Grove(true, false, runner.recursiveConsultTable(
 										"fruit_trees", tile)), main);
 					}
-				} else if (TileType.Desert.equals(tile.getType())) {
+				} else if (TileType.Desert.equals(tile.getTerrain())) {
 					if (isAdjacentToWater(tile, map) && random.nextDouble() < .4) {
-						tile.setType(TileType.Plains);
+						tile.setTerrain(TileType.Plains);
 					} else if (!tile.hasRiver() && random.nextDouble() < SIXTY_PERCENT) {
-						tile.setType(TileType.Plains);
+						tile.setTerrain(TileType.Plains);
 					}
 				} else if (random.nextDouble() < .1) {
 					addFixture(
@@ -355,7 +355,7 @@ public class Converter {
 					continue;
 				}
 				if (!neighbor.hasRiver()
-						|| TileType.Ocean.equals(neighbor.getType())) {
+						|| TileType.Ocean.equals(neighbor.getTerrain())) {
 					return true; // NOPMD
 				}
 			}

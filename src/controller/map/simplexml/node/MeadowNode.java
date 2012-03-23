@@ -7,6 +7,8 @@ import controller.map.SPFormatException;
 /**
  * A Node to produce a Meadow.
  * @author Jonathan Lovelace
+ * 
+ * FIXME: Groves have "wild", meadows have "cultivated".
  *
  */
 public class MeadowNode extends AbstractFixtureNode<Meadow> {

@@ -28,7 +28,7 @@ public class GroundChit extends Chit {
 	 */
 	public GroundChit(final Ground ground, final MouseListener listener) {
 		super(listener, new FixtureTransferable(ground));
-		desc = "<html><p>" + ground.getDescription()
+		desc = "<html><p>" + ground.getKind()
 				+ (ground.isExposed() ? " (exposed)" : " (not exposed)")
 				+ "</p></html>";
 		// ESCA-JAVA0177:

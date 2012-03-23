@@ -13,6 +13,9 @@ import controller.map.SPFormatException;
 /**
  * A Node that produces a TownEvent.
  * 
+ * TODO: The AbstractTownEvent hierarchy should be dismantled, and this with it.
+ * TODO: Towns (at least active ones) should have names.
+ * 
  * @author Jonathan Lovelace
  */
 public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {

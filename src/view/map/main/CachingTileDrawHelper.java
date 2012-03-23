@@ -120,11 +120,11 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					"CachingTileDrawHelper requires Graphics2D, not an old Graphics");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
-		pen2d.setColor(getTileColor(version, tile.getType()));
+		pen2d.setColor(getTileColor(version, tile.getTerrain()));
 		pen2d.fill(backgroundShape);
 		pen2d.setColor(Color.BLACK);
 		pen2d.draw(backgroundShape);
-		if (!TileType.NotVisible.equals(tile.getType())) {
+		if (!TileType.NotVisible.equals(tile.getTerrain())) {
 			pen2d.setColor(Color.BLUE);
 			if (tile.hasRiver()) {
 				for (final River river : tile.getRivers()) {

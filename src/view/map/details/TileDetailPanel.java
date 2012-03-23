@@ -50,7 +50,7 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 		coordLabel.setText("<html>Coordinates: "
 				+ tile.getLocation().toString() + "</html>");
 		typeLabel.setText("<html>Tile type: "
-				+ TUI_HELPER.getDescription(tile.getType()) + "</html>");
+				+ TUI_HELPER.getDescription(tile.getTerrain()) + "</html>");
 	}
 
 	/**

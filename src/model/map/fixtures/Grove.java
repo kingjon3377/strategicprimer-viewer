@@ -20,17 +20,17 @@ public class Grove implements TileFixture, HasImage {
 	/**
 	 * Kind of tree.
 	 */
-	private final String tree;
+	private final String kind;
 	/**
 	 * Constructor.
 	 * @param fruit whether the trees are fruit trees
 	 * @param wildGrove whether the trees are wild
-	 * @param kind what kind of trees are in the grove
+	 * @param tree what kind of trees are in the grove
 	 */
-	public Grove(final boolean fruit, final boolean wildGrove, final String kind) {
+	public Grove(final boolean fruit, final boolean wildGrove, final String tree) {
 		orchard = fruit;
 		wild = wildGrove;
-		tree = kind;
+		kind = tree;
 	}
 	/**
 	 * @return true if this is an orchard, false otherwise
@@ -47,8 +47,8 @@ public class Grove implements TileFixture, HasImage {
 	/**
 	 * @return what kind of trees are in the grove
 	 */
-	public String getTrees() {
-		return tree;
+	public String getKind() {
+		return kind;
 	}
 	/**
 	 * @return an XML representation of the Fixture.
@@ -63,8 +63,8 @@ public class Grove implements TileFixture, HasImage {
 		}
 		builder.append(" wild=\"");
 		builder.append(isWild());
-		builder.append("\" tree=\"");
-		builder.append(getTrees());
+		builder.append("\" kind=\"");
+		builder.append(getKind());
 		builder.append("\" />");
 		return builder.toString();
 	}
@@ -80,7 +80,7 @@ public class Grove implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return (isWild() ? "Wild " : "Cultivated ") + getTrees()
+		return (isWild() ? "Wild " : "Cultivated ") + getKind()
 				+ (isOrchard() ? " orchard" : " grove");
 	}
 	/**
@@ -96,7 +96,7 @@ public class Grove implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Grove && tree.equals(((Grove) obj).tree)
+		return obj instanceof Grove && kind.equals(((Grove) obj).kind)
 				&& orchard == ((Grove) obj).orchard && wild == ((Grove) obj).wild;
 	}
 	/**
@@ -104,7 +104,7 @@ public class Grove implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return tree.hashCode() << ((orchard ? 1 : 0) + (wild ? 2 : 0));
+		return kind.hashCode() << ((orchard ? 1 : 0) + (wild ? 2 : 0));
 	}
 	/**
 	 * @param fix

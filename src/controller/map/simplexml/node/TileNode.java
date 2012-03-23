@@ -1,12 +1,12 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
-import util.Warning;
 import model.map.PlayerCollection;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.TextFixture;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.simplexml.ITextNode;
 
@@ -17,6 +17,11 @@ import controller.map.simplexml.ITextNode;
  * 
  */
 public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
+	/**
+	 * The name of the terrain-type property.
+	 */
+	private static final String TERRAIN_PROPERTY = "kind";
+
 	/**
 	 * Constructor.
 	 */
@@ -38,7 +43,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			throws SPFormatException {
 		final Tile tile = new Tile(Integer.parseInt(getProperty("row")),
 				Integer.parseInt(getProperty("column")),
-				TileType.getTileType(getProperty("type")));
+				TileType.getTileType(getProperty(TERRAIN_PROPERTY)));
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
 				tile.addRiver(((RiverNode) node).produce(players));
@@ -57,8 +62,8 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 
 	/**
 	 * Check whether we contain invalid data. A Tile is valid if it has row,
-	 * column, and type properties and contains only valid units, fortresses,
-	 * rivers, and events. For forward compatibility, we do not object to
+	 * column, and kind properties and contains only valid fixtures (units, fortresses,
+	 * rivers, events, etc.). For forward compatibility, we do not object to
 	 * properties we ignore. (But TODO: should we object to "event" tags, since
 	 * those *used* to be valid?)
 	 * 
@@ -68,19 +73,30 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 */
 	@Override
 	public void checkNode() throws SPFormatException {
-		if (hasProperty("row") && hasProperty("column") && hasProperty("type")) {
-			for (final AbstractXMLNode node : this) {
-				if (node instanceof AbstractFixtureNode
-						|| node instanceof RiverNode) {
-					node.checkNode();
-				} else {
-					throw new SPFormatException("Unexpected child in tile.",
-							getLine());
+		if (hasProperty("row") && hasProperty("column")) {
+			if (!hasProperty(TERRAIN_PROPERTY) && hasProperty("type")) {
+				Warning.warn(new SPFormatException(
+						"Designating tile's terrain-type by \"type\" property is deprecated; use \"kind\" instead.",
+						getLine()));
+				addProperty(TERRAIN_PROPERTY, getProperty("type"));
+			} else if (hasProperty(TERRAIN_PROPERTY)) {
+				for (final AbstractXMLNode node : this) {
+					if (node instanceof AbstractFixtureNode
+							|| node instanceof RiverNode) {
+						node.checkNode();
+					} else {
+						throw new SPFormatException("Unexpected child in tile.",
+								getLine());
+					}
 				}
+			} else {
+				throw new SPFormatException(
+						"Tile must contain \"row\", \"column\", and \"kind\" properties.",
+						getLine());
 			}
 		} else {
 			throw new SPFormatException(
-					"Tile must contain \"row\", \"column\", and \"type\" properties.",
+					"Tile must contain \"row\", \"column\", and \"kind\" properties.",
 					getLine());
 		}
 	}
@@ -90,7 +106,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "row", "column", "type");
+		return EqualsAny.equalsAny(property, "row", "column", TERRAIN_PROPERTY, "type");
 	}
 	/**
 	 * The text associated with the tile.

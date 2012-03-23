@@ -52,17 +52,17 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 
 	/**
 	 * 
-	 * @return the tile type
+	 * @return the kind of tile 
 	 */
-	public TileType getType() {
+	public TileType getTerrain() {
 		return type;
 	}
 
 	/**
 	 * @param ttype
-	 *            the tile's new type
+	 *            the tile's new terrain type
 	 */
-	public void setType(final TileType ttype) {
+	public void setTerrain(final TileType ttype) {
 		type = ttype;
 	}
 
@@ -195,9 +195,9 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 		} else {
 			final StringBuilder sbuild = new StringBuilder("<tile ");
 			sbuild.append(location.toXML());
-			if (!(TileType.NotVisible.equals(getType()))) {
-				sbuild.append(" type=\"");
-				sbuild.append(getType().toXML());
+			if (!(TileType.NotVisible.equals(getTerrain()))) {
+				sbuild.append(" kind=\"");
+				sbuild.append(getTerrain().toXML());
 				sbuild.append("\"");
 			}
 			sbuild.append(">");
@@ -219,7 +219,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 * @return whether this tile is "empty".
 	 */
 	public boolean isEmpty() {
-		return TileType.NotVisible.equals(getType()) && getContents().isEmpty();
+		return TileType.NotVisible.equals(getTerrain()) && getContents().isEmpty();
 	}
 	/**
 	 * @return whether we contain a RiverFixture

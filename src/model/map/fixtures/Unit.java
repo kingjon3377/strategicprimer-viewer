@@ -18,7 +18,7 @@ public class Unit implements TileFixture, HasImage {
 	/**
 	 * What kind of unit this is.
 	 */
-	private final String type;
+	private final String kind;
 	/**
 	 * The name of this unit.
 	 */
@@ -30,7 +30,7 @@ public class Unit implements TileFixture, HasImage {
 	 * @param unitOwner
 	 *            the unit's owner
 	 * @param unitType
-	 *            the unit's type
+	 *            the kind of unit
 	 * @param unitName
 	 *            the unit's name
 	 */
@@ -47,7 +47,7 @@ public class Unit implements TileFixture, HasImage {
 	public Unit(final Player unitOwner, final String unitType,
 			final String unitName) {
 		owner = unitOwner;
-		type = unitType;
+		kind = unitType;
 		name = unitName;
 	}
 
@@ -61,10 +61,10 @@ public class Unit implements TileFixture, HasImage {
 
 	/**
 	 * 
-	 * @return the type of unit
+	 * @return the kind of unit
 	 */
-	public final String getType() {
-		return type;
+	public final String getKind() {
+		return kind;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class Unit implements TileFixture, HasImage {
 	public boolean equals(final Object obj) {
 		return this == obj
 				|| (obj instanceof Unit && ((Unit) obj).owner.equals(owner)
-						&& (((Unit) obj).type.equals(type)) && (((Unit) obj).name
+						&& (((Unit) obj).kind.equals(kind)) && (((Unit) obj).name
 							.equals(name)));
 	}
 
@@ -95,7 +95,7 @@ public class Unit implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (type.hashCode()) + owner.hashCode() << 2 + (name.hashCode()) << 4;
+		return (kind.hashCode()) + owner.hashCode() << 2 + (name.hashCode()) << 4;
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class Unit implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "Unit of type " + type + ", belonging to player " + owner
+		return "Unit of type " + kind + ", belonging to player " + owner
 				+ ", named " + name;
 	}
 
@@ -125,9 +125,9 @@ public class Unit implements TileFixture, HasImage {
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<unit owner=\"");
 		sbuild.append(owner.getId());
-		if (!"".equals(type)) {
-			sbuild.append("\" type=\"");
-			sbuild.append(type);
+		if (!"".equals(kind)) {
+			sbuild.append("\" kind=\"");
+			sbuild.append(kind);
 		}
 		if (!"".equals(name)) {
 			sbuild.append("\" name=\"");

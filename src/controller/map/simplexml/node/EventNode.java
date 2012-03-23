@@ -10,6 +10,7 @@ import controller.map.SPFormatException;
 /**
  * A Node that will produce an Event.
  * 
+ * FIXME: Get rid of this.
  * @see IEvent
  * @author Jonathan Lovelace
  * 

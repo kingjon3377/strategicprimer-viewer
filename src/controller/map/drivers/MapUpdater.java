@@ -72,8 +72,8 @@ public final class MapUpdater {
 	 * @return whether the derived map needs updating in this tile
 	 */
 	public boolean shouldUpdate(final Tile masterTile, final Tile tile) {
-		return !TileType.NotVisible.equals(tile.getType())
-				&& !TileType.NotVisible.equals(masterTile.getType())
+		return !TileType.NotVisible.equals(tile.getTerrain())
+				&& !TileType.NotVisible.equals(masterTile.getTerrain())
 				&& !tile.equals(masterTile);
 	}
 

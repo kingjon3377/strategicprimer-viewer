@@ -14,7 +14,7 @@ public class Shrub implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<shrub shrub=\"").append(description)
+		return new StringBuilder("<shrub kind=\"").append(description)
 				.append("\" />").toString();
 	}
 	/**

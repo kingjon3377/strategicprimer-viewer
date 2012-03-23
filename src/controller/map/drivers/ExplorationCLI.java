@@ -143,7 +143,7 @@ public final class ExplorationCLI {
 			final PrintStream ostream) throws IOException {
 		final Tile tile = selectTile(map, reader, ostream);
 		ostream.print("Tile is ");
-		ostream.println(tile.getType());
+		ostream.println(tile.getTerrain());
 		try {
 			final int reps = random.nextInt(6) + 1;
 			for (int i = 0; i < reps; i++) {

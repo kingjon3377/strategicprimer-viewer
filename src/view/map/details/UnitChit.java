@@ -33,9 +33,9 @@ public class UnitChit extends Chit {
 			sbuild.append(unit.getName());
 			sbuild.append(", ");
 		}
-		if (!"".equals(unit.getType())) {
+		if (!"".equals(unit.getKind())) {
 			sbuild.append("of type ");
-			sbuild.append(unit.getType());
+			sbuild.append(unit.getKind());
 			sbuild.append(", ");
 		}
 		sbuild.append("owned by player ");

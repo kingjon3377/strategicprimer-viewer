@@ -93,7 +93,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
 		final Color save = pen.getColor();
-		pen.setColor((needFixtureColor(tile) ? getFixtureColor(tile) : getTileColor(version, tile.getType())));
+		pen.setColor((needFixtureColor(tile) ? getFixtureColor(tile) : getTileColor(version, tile.getTerrain())));
 		pen.fillRect(xCoord, yCoord, width, height);
 		if (hasFixture(tile)) {
 			pen.drawImage(getImageForFixture(getTopFixture(tile)), xCoord, yCoord, width, height, observer);
@@ -173,7 +173,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return getHelper().getFeatureColor(fix); // NOPMD
 			}
 		}
-		return getTileColor(2, tile.getType());
+		return getTileColor(2, tile.getTerrain());
 	}
 	/**
 	 * Image cache.

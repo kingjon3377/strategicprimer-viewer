@@ -46,11 +46,11 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
 		final Color save = pen.getColor();
-		pen.setColor(getTileColor(version, tile.getType()));
+		pen.setColor(getTileColor(version, tile.getTerrain()));
 		pen.fillRect(xCoord, yCoord, width, height);
 		pen.setColor(Color.black);
 		pen.drawRect(xCoord, yCoord, width, height);
-		if (!TileType.NotVisible.equals(tile.getType())) {
+		if (!TileType.NotVisible.equals(tile.getTerrain())) {
 			pen.setColor(Color.blue);
 			if (tile.hasRiver()) {
 				for (final River river : tile.getRivers()) {
