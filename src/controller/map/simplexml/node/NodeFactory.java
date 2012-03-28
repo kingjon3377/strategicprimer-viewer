@@ -122,8 +122,8 @@ public final class NodeFactory { // NOPMD
 			IllegalAccessException {
 		final Tag localtag = getTag(tag, line);
 		final AbstractChildNode<?> node = localtag.getTagClass().newInstance();
-		if (EqualsAny.equalsAny(localtag, Tag.Battlefield, Tag.Cave, Tag.City,
-				Tag.Fortification, Tag.Mineral, Tag.Stone, Tag.Town)) {
+		if (EqualsAny.equalsAny(localtag, Tag.City,
+				Tag.Fortification, Tag.Town)) {
 			node.addProperty(EVENT_KIND_PROP, tag);
 		} else if (Tag.Lake.equals(localtag)) {
 			node.addProperty("direction", "lake");
@@ -164,22 +164,19 @@ public final class NodeFactory { // NOPMD
 		// ESCA-JAVA0040:
 		switch (getTag(tag, line)) {
 		case Battlefield:
-			node = new EventNode();
-			node.addProperty(EVENT_KIND_PROP, "battlefield");
+			node = new BattlefieldEventNode();
 			break;
 		case Cave:
-			node = new EventNode();
-			node.addProperty(EVENT_KIND_PROP, "cave");
+			node = new CaveEventNode();
 			break;
 		case City:
-			node = new EventNode();
+			node = new TownEventNode();
 			node.addProperty(EVENT_KIND_PROP, "city");
 			break;
 		case Event:
-			node = new EventNode();
-			break;
+			throw new SPFormatException("<event> tags are no longer supported", line);
 		case Fortification:
-			node = new EventNode();
+			node = new TownEventNode();
 			node.addProperty(EVENT_KIND_PROP, "fortification");
 			break;
 		case Fortress:
@@ -193,8 +190,7 @@ public final class NodeFactory { // NOPMD
 			node = new MapNode();
 			break;
 		case Mineral:
-			node = new EventNode();
-			node.addProperty(EVENT_KIND_PROP, "mineral");
+			node = new MineralEventNode();
 			break;
 		case Player:
 			node = new PlayerNode();
@@ -206,14 +202,13 @@ public final class NodeFactory { // NOPMD
 			node = new SkippableNode(tag, line);
 			break;
 		case Stone:
-			node = new EventNode();
-			node.addProperty(EVENT_KIND_PROP, "stone");
+			node = new StoneEventNode();
 			break;
 		case Tile:
 			node = new TileNode();
 			break;
 		case Town:
-			node = new EventNode();
+			node = new TownEventNode();
 			node.addProperty(EVENT_KIND_PROP, "town");
 			break;
 		case Unit:

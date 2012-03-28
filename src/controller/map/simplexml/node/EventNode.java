@@ -15,6 +15,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class EventNode extends AbstractFixtureNode<IEvent> implements
 		NeedsExtraCanonicalization {
 	/**

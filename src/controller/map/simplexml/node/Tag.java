@@ -46,32 +46,33 @@ public enum Tag {
 	/**
 	 * An Event.
 	 */
+	@Deprecated
 	Event(EventNode.class),
 	/**
 	 * A battlefield.
 	 */
-	Battlefield(EventNode.class),
+	Battlefield(BattlefieldEventNode.class),
 	/**
 	 * A cave.
 	 */
-	Cave(EventNode.class),
+	Cave(CaveEventNode.class),
 	/**
 	 * A city.
 	 */
-	City(EventNode.class),
+	City(TownEventNode.class),
 	/**
 	 * A fortification. FIXME: Again, we want this to use the Fortress tag
 	 * instead, eventually.
 	 */
-	Fortification(EventNode.class),
+	Fortification(TownEventNode.class),
 	/**
 	 * A stone deposit.
 	 */
-	Stone(EventNode.class),
+	Stone(StoneEventNode.class),
 	/**
 	 * A non-stone mineral deposit.
 	 */
-	Mineral(EventNode.class),
+	Mineral(MineralEventNode.class),
 	/**
 	 * A forest.
 	 */
@@ -179,7 +180,7 @@ public enum Tag {
 	/**
 	 * A town.
 	 */
-	Town(EventNode.class);
+	Town(TownEventNode.class);
 	/**
 	 * Constructor.
 	 * @param tclass the Class of the kind of Node that this tag indicates.

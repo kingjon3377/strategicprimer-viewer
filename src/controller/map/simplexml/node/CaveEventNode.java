@@ -23,11 +23,6 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	 */
 	private static final String DC_PROPERTY = "dc";
 	/**
-	 * The property of an Event saying what kind of event it is.
-	 */
-	private static final String KIND_PROPERTY = "kind";
-
-	/**
 	 * @param players
 	 *            the players on the map
 	 * @return the equivalent event
@@ -53,9 +48,9 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Event shouldn't have children",
 					getLine());
-		} else if (!hasProperty(KIND_PROPERTY) || !hasProperty(DC_PROPERTY)) {
+		} else if (!hasProperty(DC_PROPERTY)) {
 			throw new SPFormatException(
-					"Event must have \"kind\" and \"dc\" properties", getLine());
+					"Cave must have \"dc\" property", getLine());
 		}
 	}
 	/**
@@ -64,7 +59,7 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, DC_PROPERTY);
+		return EqualsAny.equalsAny(property, DC_PROPERTY);
 	}
 	/**
 	 * 

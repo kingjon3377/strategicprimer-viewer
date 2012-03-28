@@ -98,7 +98,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<stone stone=\"").append(stone.toString())
+		return new StringBuilder("<stone kind=\"").append(stone.toString())
 				.append("\" dc=\"").append(dc).append("\" />").toString();
 	}
 	/**

@@ -127,7 +127,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<mineral mineral=\"")
+		return new StringBuilder("<mineral kind=\"")
 				.append(mineral).append("\" exposed=\"")
 				.append(exposed).append("\" dc=\"").append(dc).append("\" />")
 				.toString();

@@ -1,9 +1,10 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -24,9 +25,9 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	 */
 	private static final String DC_PROPERTY = "dc";
 	/**
-	 * The property of an Event saying what kind of event it is.
+	 * The property saying what kind of stone this is.
 	 */
-	private static final String KIND_PROPERTY = "kind";
+	private static final String STONE_PROPERTY = "kind";
 
 	/**
 	 * @param players
@@ -38,7 +39,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	@Override
 	public StoneEvent produce(final PlayerCollection players)
 			throws SPFormatException {
-		return new StoneEvent(StoneKind.parseStoneKind(getProperty("stone")),
+		return new StoneEvent(StoneKind.parseStoneKind(getProperty(STONE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
 
@@ -55,14 +56,22 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Event shouldn't have children",
 					getLine());
-		} else if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {
-			if (!hasProperty("stone")) {
+		} else if (hasProperty(STONE_PROPERTY)) {
+			if (!hasProperty(DC_PROPERTY)) {
 				throw new SPFormatException(
-						"Stone events must have \"stone\" property.", getLine());
+						"Event must have \"kind\" and \"dc\" properties", getLine());
 			}
 		} else {
-			throw new SPFormatException(
-					"Event must have \"kind\" and \"dc\" properties", getLine());
+			if (hasProperty("stone")) {
+				Warning.warn(new SPFormatException(
+						"Use of \"stone\" property to specify kind of stone is deprecated; use \"kind\" instead",
+						getLine()));
+				addProperty(STONE_PROPERTY, getProperty("stone"));
+			} else {
+				throw new SPFormatException(
+						"Event must have \"kind\" and \"dc\" properties",
+						getLine());
+			}
 		}
 	}
 	/**
@@ -71,7 +80,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, DC_PROPERTY, "stone");
+		return EqualsAny.equalsAny(property, STONE_PROPERTY, DC_PROPERTY, "stone");
 	}
 
 	/**

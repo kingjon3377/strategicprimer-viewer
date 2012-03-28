@@ -1,8 +1,9 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.events.MineralEvent;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -22,9 +23,9 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	 */
 	private static final String DC_PROPERTY = "dc";
 	/**
-	 * The property of an Event saying what kind of event it is.
+	 * The property saying what kind of mineral this is.
 	 */
-	private static final String KIND_PROPERTY = "kind";
+	private static final String MINERAL_PROPERTY = "kind";
 
 	/**
 	 * @param players
@@ -37,7 +38,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	public MineralEvent produce(final PlayerCollection players)
 			throws SPFormatException {
 		return new MineralEvent(
-				getProperty("mineral"),
+				getProperty(MINERAL_PROPERTY),
 				Boolean.parseBoolean(getProperty("exposed")),
 				Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
@@ -47,13 +48,12 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "mineral", "exposed", DC_PROPERTY, KIND_PROPERTY);
+		return EqualsAny.equalsAny(property, "mineral", "exposed", DC_PROPERTY, MINERAL_PROPERTY);
 	}
 
 	/**
 	 * Check whether the Node's data is valid. A MineralNode is valid if it has
-	 * no children and "kind", "dc", "mineral", and "exposed" properties.
-	 * 
+	 * no children and "kind", "dc", and "exposed" properties.
 	 * 
 	 * @throws SPFormatException
 	 *             if the data is invalid.
@@ -63,15 +63,27 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Event shouldn't have children",
 					getLine());
-		} else if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {
-			if (!hasProperty("mineral") || !hasProperty("exposed")) {
+		} else if (hasProperty(MINERAL_PROPERTY)) {
+			if (hasProperty(DC_PROPERTY)) {
+				if (!hasProperty("exposed")) {
+					throw new SPFormatException(
+							"Mineral events must have \"exposed\" property.",
+							getLine());
+				}
+			} else {
 				throw new SPFormatException(
-						"Mineral events must have \"mineral\" and \"exposed\" properties.",
-						getLine());
+						"Event must have \"kind\" and \"dc\" properties", getLine());
 			}
 		} else {
-			throw new SPFormatException(
+			if (hasProperty("mineral")) {
+				Warning.warn(new SPFormatException(
+						"Use of \"mineral\" property to specify kind of mineral is deprecated; use \"kind\" instead",
+						getLine()));
+				addProperty(MINERAL_PROPERTY, getProperty("mineral"));
+			} else {
+				throw new SPFormatException(
 					"Event must have \"kind\" and \"dc\" properties", getLine());
+			}
 		}
 	}
 
