@@ -20,10 +20,12 @@ public final class FortificationEvent extends AbstractTownEvent {
 	 *            The size of the fortification
 	 * @param discdc
 	 *            The DC to discover it.
+	 * @param tName
+	 *            the name of the town, fortress, or city
 	 */
 	public FortificationEvent(final TownStatus tStatus, final TownSize tSize,
-			final int discdc) {
-		super(EventKind.Fortification, tStatus, tSize);
+			final int discdc, final String tName) {
+		super(EventKind.Fortification, tStatus, tSize, tName);
 		dc = discdc;
 	}
 
@@ -45,10 +47,14 @@ public final class FortificationEvent extends AbstractTownEvent {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<fortification status=\"")
+		final StringBuilder sbuild = new StringBuilder("<fortification status=\"")
 				.append(status().toString()).append("\" size=\"")
-				.append(size().toString()).append("\" dc=\"").append(dc)
-				.append("\" />").toString();
+				.append(size().toString()).append("\" dc=\"").append(dc);
+		if (!"".equals(name())) {
+			sbuild.append("\" name=\"");
+			sbuild.append(name());
+		}
+		return sbuild.append("\" />").toString();
 	}
 	/**
 	 * @return the name of an image to represent the event.

@@ -17,10 +17,12 @@ public final class CityEvent extends AbstractTownEvent {
 	 *            The size of the city
 	 * @param discdc
 	 *            The DC to discover it.
+	 * @param tName
+	 *            the name of the town, fortress, or city
 	 */
 	public CityEvent(final TownStatus tStatus, final TownSize tSize,
-			final int discdc) {
-		super(EventKind.City, tStatus, tSize);
+			final int discdc, final String tName) {
+		super(EventKind.City, tStatus, tSize, tName);
 		dc = discdc;
 	}
 
@@ -42,9 +44,14 @@ public final class CityEvent extends AbstractTownEvent {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<city status=\"").append(status().toString())
+		final StringBuilder sbuilder = new StringBuilder("<city status=\"").append(status().toString())
 				.append("\" size=\"").append(size().toString())
-				.append("\" dc=\"").append(dc).append("\" />").toString();
+				.append("\" dc=\"").append(dc);
+		if (!"".equals(name())) {
+			sbuilder.append("\" name=\"");
+			sbuilder.append(name());
+		}
+		return sbuilder.append("\" />").toString();
 	}
 
 }

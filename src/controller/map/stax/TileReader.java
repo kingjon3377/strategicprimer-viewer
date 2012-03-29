@@ -153,13 +153,15 @@ public class TileReader {
 			retval = new CityEvent(TownStatus.parseTownStatus(helper
 					.getAttribute(elem, "status")),
 					TownSize.parseTownSize(helper.getAttribute(elem, "size")),
-					Integer.parseInt(helper.getAttribute(elem, "dc")));
+					Integer.parseInt(helper.getAttribute(elem, "dc")),
+					helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE, ""));
 			break;
 		case Fortification:
 			retval = new FortificationEvent(TownStatus.parseTownStatus(helper
 					.getAttribute(elem, "status")),
 					TownSize.parseTownSize(helper.getAttribute(elem, "size")),
-					Integer.parseInt(helper.getAttribute(elem, "dc")));
+					Integer.parseInt(helper.getAttribute(elem, "dc")),
+					helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE, ""));
 			break;
 		case Mineral:
 			retval = new MineralEvent(helper.getAttribute(elem, "mineral"),
@@ -175,7 +177,8 @@ public class TileReader {
 			retval = new TownEvent(TownStatus.parseTownStatus(helper
 					.getAttribute(elem, "status")),
 					TownSize.parseTownSize(helper.getAttribute(elem, "size")),
-					Integer.parseInt(helper.getAttribute(elem, "dc")));
+					Integer.parseInt(helper.getAttribute(elem, "dc")),
+					helper.getAttributeWithDefault(elem, NAME_ATTRIBUTE, ""));
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown event type");

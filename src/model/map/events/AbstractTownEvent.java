@@ -19,15 +19,27 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 *            the size of the town, fortress, or city
 	 * @param tStatus
 	 *            the status of the town, fortress, or city
+	 * @param tName
+	 *            the name of the town, fortress, or city
 	 */
 	protected AbstractTownEvent(final EventKind eKind,
-			final TownStatus tStatus, final TownSize tSize) {
+			final TownStatus tStatus, final TownSize tSize, final String tName) {
 		super();
 		kind = eKind;
 		status = tStatus;
 		size = tSize;
+		name = tName;
 	}
-
+	/**
+	 * The name of this town, fortress, or city.
+	 */
+	private final String name;
+	/**
+	 * @return the name of the town, fortress, or city.
+	 */
+	public String name() {
+		return name;
+	}
 	/**
 	 * The status of the town, fortress, or city.
 	 */
@@ -76,8 +88,13 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 		}
 		builder.append(' ');
 		builder.append(kind().toString());
+		if (!"".equals(name)) {
+			builder.append(", ");
+			builder.append(name);
+			builder.append(',');
+		}
 		builder.append(" here");
-		if (TownStatus.Active.equals(status)) {
+		if (TownStatus.Active.equals(status) && "".equals(name)) {
 			builder.append(" (roll it up)");
 		} else {
 			builder.append('.');
@@ -97,6 +114,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 				|| (obj instanceof AbstractTownEvent
 						&& ((AbstractTownEvent) obj).kind().equals(kind())
 						&& ((AbstractTownEvent) obj).size.equals(size)
+						&& ((AbstractTownEvent) obj).name.equals(name)
 						&& ((AbstractTownEvent) obj).status.equals(status) && ((AbstractTownEvent) obj)
 						.getDC() == getDC());
 	}
@@ -107,7 +125,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return kind().hashCode() + size.hashCode() << 4 + status.hashCode() << 8 + getDC() << 12;
+		return kind().hashCode() + size.hashCode() << 4 + status.hashCode() << 8 + getDC() << 12 + name.hashCode() << 16;
 	}
 
 	/**
@@ -117,7 +135,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	@Override
 	public String toString() {
 		return "A " + size.toString() + status.toString() + kind().toString()
-				+ " of DC " + getDC();
+				+ " of DC " + getDC() + ("".equals(name) ? " with no name" : " with name " + name);
 	}
 
 	/**

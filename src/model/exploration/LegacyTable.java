@@ -42,9 +42,9 @@ public class LegacyTable implements EncounterTable {
 		data.add(new CaveEvent(0).getText());
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
-				data.add(new CityEvent(status, size, 0).getText()); // NOPMD
-				data.add(new FortificationEvent(status, size, 0).getText()); // NOPMD
-				data.add(new TownEvent(status, size, 0).getText()); // NOPMD
+				data.add(new CityEvent(status, size, 0, "").getText()); // NOPMD
+				data.add(new FortificationEvent(status, size, 0, "").getText()); // NOPMD
+				data.add(new TownEvent(status, size, 0, "").getText()); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {

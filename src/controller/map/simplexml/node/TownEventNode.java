@@ -1,6 +1,7 @@
 package controller.map.simplexml.node;
 
 import util.EqualsAny;
+import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.AbstractTownEvent;
 import model.map.events.CityEvent;
@@ -41,6 +42,10 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	 * The property of an Event saying what kind of event it is.
 	 */
 	private static final String KIND_PROPERTY = "kind";
+	/**
+	 * The property giving the town's name.
+	 */
+	private static final String NAME_PROPERTY = "name";
 
 	/**
 	 * @param players
@@ -58,17 +63,23 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 			event = new CityEvent(
 					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
 					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
+					Integer.parseInt(getProperty(DC_PROPERTY)),
+					hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
+							: "");
 		} else if ("fortification".equals(getProperty(KIND_PROPERTY))) {
 			event = new FortificationEvent(
 					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
 					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
+					Integer.parseInt(getProperty(DC_PROPERTY)),
+					hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
+							: "");
 		} else if ("town".equals(getProperty(KIND_PROPERTY))) {
 			event = new TownEvent(
 					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
 					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
-					Integer.parseInt(getProperty(DC_PROPERTY)));
+					Integer.parseInt(getProperty(DC_PROPERTY)),
+					hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
+							: "");
 		} else {
 			throw new SPFormatException("Unknown kind of event", getLine());
 		}
@@ -80,7 +91,7 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, STATUS_PROP, SIZE_PROPERTY, DC_PROPERTY);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, STATUS_PROP, SIZE_PROPERTY, DC_PROPERTY, NAME_PROPERTY);
 	}
 	/**
 	 * Check the data for validity. A Town or similar is valid if it has no
@@ -93,7 +104,11 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	@Override
 	public void checkNode() throws SPFormatException {
 		if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {
-			if (!hasProperty(SIZE_PROPERTY) || !hasProperty(STATUS_PROP)) {
+			if (hasProperty(SIZE_PROPERTY) && hasProperty(STATUS_PROP)) {
+				if (!hasProperty(NAME_PROPERTY)) {
+					Warning.warn(new SPFormatException("Town-related events should have \"name\" property", getLine()));
+				}
+			} else {
 				throw new SPFormatException(
 						"Town-related events must have \"size\" and \"status\" properties",
 						getLine());

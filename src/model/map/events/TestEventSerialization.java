@@ -107,7 +107,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
-				final CityEvent one = new CityEvent(status, size, 10); // NOPMD
+				final CityEvent one = new CityEvent(status, size, 10, "one"); // NOPMD
 				assertEquals(
 						"First CityEvent serialization test, reflection, status "
 								+ status + " and size " + size, one, // NOPMD
@@ -116,7 +116,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						"First CityEvent serialization test, non-reflection, status "
 								+ status + " and size " + size, one,
 						helpSerialization(reader, one, CityEvent.class, false));
-				final CityEvent two = new CityEvent(status, size, 40); // NOPMD
+				final CityEvent two = new CityEvent(status, size, 40, "two"); // NOPMD
 				assertEquals(
 						"Second CityEvent serialization test, reflection, status "
 								+ status + " and size " + size, two,
@@ -143,7 +143,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
 				final FortificationEvent one = new FortificationEvent(status, // NOPMD
-						size, 10);
+						size, 10, "one");
 				assertEquals(
 						"First CityEvent serialization test, reflection, status "
 								+ status + " and size " + size,
@@ -157,7 +157,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						helpSerialization(reader, one,
 								FortificationEvent.class, false));
 				final FortificationEvent two = new FortificationEvent(status, // NOPMD
-						size, 40);
+						size, 40, "two");
 				assertEquals(
 						"Second CityEvent serialization test, reflection, status "
 								+ status + " and size " + size,
@@ -238,7 +238,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
-				final TownEvent one = new TownEvent(status, size, 10); // NOPMD
+				final TownEvent one = new TownEvent(status, size, 10, "one"); // NOPMD
 				assertEquals(
 						"First TownEvent serialization test, reflection, status "
 								+ status + " and size " + size, one, // NOPMD
@@ -247,7 +247,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						"First TownEvent serialization test, non-reflection, status "
 								+ status + " and size " + size, one,
 						helpSerialization(reader, one, TownEvent.class, false));
-				final TownEvent two = new TownEvent(status, size, 40); // NOPMD
+				final TownEvent two = new TownEvent(status, size, 40, "two"); // NOPMD
 				assertEquals(
 						"Second TownEvent serialization test, reflection, status "
 								+ status + " and size " + size, two,
