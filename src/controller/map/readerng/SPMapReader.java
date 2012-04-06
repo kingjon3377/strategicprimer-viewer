@@ -2,7 +2,7 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
-import static controller.map.readerng.XMLHelper.hasAttribute;
+import static controller.map.readerng.XMLHelper.hasAttributes;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -42,8 +42,7 @@ public class SPMapReader implements INodeReader<SPMap> {
 	public SPMap parse(final StartElement element,
 			final Iterable<XMLEvent> stream) throws SPFormatException {
 		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
-			if (!hasAttribute(element, "rows")
-					|| !hasAttribute(element, "columns")) {
+			if (!hasAttributes(element, "rows", "columns")) {
 				throw new SPFormatException(
 						"<map> tag must have 'rows' and 'columns' attributes",
 						element.getLocation().getLineNumber());
@@ -56,7 +55,6 @@ public class SPMapReader implements INodeReader<SPMap> {
 				element, "version", "1")), Integer.parseInt(getAttribute(
 				element, "rows")), Integer.parseInt(getAttribute(element,
 				"columns")));
-		boolean inRow = false;
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
@@ -65,11 +63,8 @@ public class SPMapReader implements INodeReader<SPMap> {
 					map.addPlayer(ReaderFactory.createReader(Player.class)
 							.parse(elem, stream));
 				} else if ("row".equalsIgnoreCase(type)) {
-					if (inRow) {
-						throw new SPFormatException("Rows can't be nested", elem.getLocation().getLineNumber());
-					} else {
-						inRow = true;
-					}
+					// deliberately ignore
+					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
 							elem, stream));
@@ -78,12 +73,10 @@ public class SPMapReader implements INodeReader<SPMap> {
 							"<map> can only directly contain <player>s, <row>s, and <tile>s.",
 							elem.getLocation().getLineNumber());
 				}
-			} else if (event.isEndElement()) {
-				if (inRow) {
-					inRow = false;
-				} else {
-					break;
-				}
+			} else if (event.isEndElement()
+					&& "map".equalsIgnoreCase(event.asEndElement().getName()
+							.getLocalPart())) {
+				break;
 			}
 		}
 		return map;
