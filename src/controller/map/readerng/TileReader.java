@@ -41,7 +41,7 @@ public class TileReader implements INodeReader<Tile> {
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttribute(element, "type")));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && equalsAny(event.asStartElement().getName().getLocalPart(), "")) {
+			if (event.isStartElement() && FixtureReader.supports(event.asStartElement().getName().getLocalPart())) {
 				tile.addFixture(ReaderFactory.createReader(TileFixture.class)
 						.parse(event.asStartElement(), stream));
 			} else if (event.isCharacters()) {
