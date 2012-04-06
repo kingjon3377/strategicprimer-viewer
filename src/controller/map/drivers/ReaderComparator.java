@@ -12,8 +12,8 @@ import model.map.SPMap;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
+import controller.map.readerng.MapReaderNG;
 import controller.map.simplexml.SimpleXMLReader;
-import controller.map.stax.MapReader;
 
 /**
  * A driver for comparing map readers.
@@ -30,7 +30,7 @@ public class ReaderComparator {
 	 *            The maps to test the two readers on.
 	 */
 	public static void main(final String[] args) {
-		new ReaderComparator(SystemOut.SYS_OUT, new MapReader(),
+		new ReaderComparator(SystemOut.SYS_OUT, new MapReaderNG(),
 				new SimpleXMLReader()).compareReaders(args,
 				Logger.getLogger(ReaderComparator.class.getName()));
 	}
@@ -82,7 +82,7 @@ public class ReaderComparator {
 	 *            the second reader
 	 */
 	public ReaderComparator(final PrintStream ostream,
-			final MapReader readerOne, final SimpleXMLReader readerTwo) {
+			final MapReaderNG readerOne, final SimpleXMLReader readerTwo) {
 		out = ostream;
 		one = readerOne;
 		two = readerTwo;
@@ -95,7 +95,7 @@ public class ReaderComparator {
 	/**
 	 * The first reader.
 	 */
-	private final MapReader one;
+	private final MapReaderNG one;
 	/**
 	 * The second reader.
 	 */
