@@ -10,6 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import controller.map.SPFormatException;
 /**
@@ -50,6 +51,11 @@ public class TileReader implements INodeReader<Tile> {
 					&& "tile".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
 				break;
+			} else if (event.isStartElement()
+					&& "river".equalsIgnoreCase(event.asStartElement()
+							.getName().getLocalPart())) {
+				tile.addFixture(ReaderFactory.createReader(RiverFixture.class)
+						.parse(event.asStartElement(), stream));
 			}
 		}
 		return tile;
