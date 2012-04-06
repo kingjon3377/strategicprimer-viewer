@@ -36,7 +36,7 @@ public final class ReaderFactory {
 		}
 	}
 	static {
-		factoryMulti(new SPMapReader());
+		factoryMulti(new SPMapReader(), new PlayerReader());
 	}
 	/**
 	 * @param <T> the type of reader wanted
