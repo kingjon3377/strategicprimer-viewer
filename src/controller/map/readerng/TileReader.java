@@ -2,7 +2,6 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static java.lang.Integer.parseInt;
-import static util.EqualsAny.equalsAny;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
