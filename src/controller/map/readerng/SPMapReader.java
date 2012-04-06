@@ -56,6 +56,7 @@ public class SPMapReader implements INodeReader<SPMap> {
 				element, "version", "1")), Integer.parseInt(getAttribute(
 				element, "rows")), Integer.parseInt(getAttribute(element,
 				"columns")));
+		boolean inRow = false;
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
@@ -64,8 +65,11 @@ public class SPMapReader implements INodeReader<SPMap> {
 					map.addPlayer(ReaderFactory.createReader(Player.class)
 							.parse(elem, stream));
 				} else if ("row".equalsIgnoreCase(type)) {
-					// deliberately ignore
-					continue;
+					if (inRow) {
+						throw new SPFormatException("Rows can't be nested", elem.getLocation().getLineNumber());
+					} else {
+						inRow = true;
+					}
 				} else if ("tile".equalsIgnoreCase(type)) {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
 							elem, stream));
@@ -73,6 +77,12 @@ public class SPMapReader implements INodeReader<SPMap> {
 					throw new SPFormatException(
 							"<map> can only directly contain <player>s, <row>s, and <tile>s.",
 							elem.getLocation().getLineNumber());
+				}
+			} else if (event.isEndElement()) {
+				if (inRow) {
+					inRow = false;
+				} else {
+					break;
 				}
 			}
 		}
