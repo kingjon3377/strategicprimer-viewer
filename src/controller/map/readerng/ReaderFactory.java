@@ -39,7 +39,13 @@ public final class ReaderFactory {
 		factoryMulti(new SPMapReader(), new PlayerReader(), new TileReader(),
 				new FixtureReader(), new AnimalReader(), new CacheReader(),
 				new CentaurReader(), new DjinnReader(), new DragonReader(),
-				new FairyReader(), new ForestReader(), new FortressReader());
+				new FairyReader(), new ForestReader(), new FortressReader(),
+				new GiantReader(), new GriffinReader(), new GroundReader(),
+				new GroveReader(), new HillReader(), new MeadowReader(),
+				new MineReader(), new MinotaurReader(), new MountainReader(),
+				new OasisReader(), new OgreReader(), new PhoenixReader(),
+				new SandbarReader(), new ShrubReader(), new SimurghReader(),
+				new SphinxReader(), new TrollReader(), new TextReader());
 	}
 	/**
 	 * @param <T> the type of reader wanted
