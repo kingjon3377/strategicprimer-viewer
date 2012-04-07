@@ -6,6 +6,7 @@ import static java.lang.Integer.parseInt;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -33,16 +34,15 @@ public class TileReader implements INodeReader<Tile> {
 	 *            the element to start with
 	 * @param stream
 	 *            the stream to get more elements from
+	 * @param players the collection of players
 	 * @return the tile we're at in the stream
 	 * @throws SPFormatException
 	 *             on map format error
-	 * 
-	 * @see controller.map.readerng.INodeReader#parse(javax.xml.stream.events.StartElement,
-	 *      java.lang.Iterable)
 	 */
 	@Override
 	public Tile parse(final StartElement element,
-			final Iterable<XMLEvent> stream) throws SPFormatException {
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			throws SPFormatException {
 		final Tile tile = new Tile(parseInt(getAttribute(element, "row")),
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttribute(element, "type")));
@@ -51,7 +51,7 @@ public class TileReader implements INodeReader<Tile> {
 					&& FixtureReader.supports(event.asStartElement().getName()
 							.getLocalPart())) {
 				tile.addFixture(ReaderFactory.createReader(TileFixture.class)
-						.parse(event.asStartElement(), stream));
+						.parse(event.asStartElement(), stream, players));
 			} else if (event.isCharacters()) {
 				tile.addFixture(new TextFixture(event.asCharacters().getData(), // NOPMD
 						-1));
@@ -63,7 +63,7 @@ public class TileReader implements INodeReader<Tile> {
 					&& "river".equalsIgnoreCase(event.asStartElement()
 							.getName().getLocalPart())) {
 				tile.addFixture(ReaderFactory.createReader(RiverFixture.class)
-						.parse(event.asStartElement(), stream));
+						.parse(event.asStartElement(), stream, players));
 			}
 		}
 		return tile;

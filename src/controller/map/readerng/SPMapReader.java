@@ -8,6 +8,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.map.SPMap;
 import model.map.Tile;
 import controller.map.SPFormatException;
@@ -34,13 +35,15 @@ public class SPMapReader implements INodeReader<SPMap> {
 	 *            the eleent to start parsing with
 	 * @param stream
 	 *            the XML tags and such
+	 * @param players the collection of players, most likely null at this point
 	 * @return the produced type
 	 * @throws SPFormatException
 	 *             on format problems
 	 */
 	@Override
 	public SPMap parse(final StartElement element,
-			final Iterable<XMLEvent> stream) throws SPFormatException {
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			throws SPFormatException {
 		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
 			if (!hasAttributes(element, "rows", "columns")) {
 				throw new SPFormatException(
@@ -61,13 +64,13 @@ public class SPMapReader implements INodeReader<SPMap> {
 				final String type = elem.getName().getLocalPart();
 				if ("player".equalsIgnoreCase(type)) {
 					map.addPlayer(ReaderFactory.createReader(Player.class)
-							.parse(elem, stream));
+							.parse(elem, stream, map.getPlayers()));
 				} else if ("row".equalsIgnoreCase(type)) {
 					// deliberately ignore
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
-							elem, stream));
+							elem, stream, map.getPlayers()));
 				} else {
 					throw new SPFormatException(
 							"<map> can only directly contain <player>s, <row>s, and <tile>s.",

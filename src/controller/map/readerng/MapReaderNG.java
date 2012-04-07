@@ -57,7 +57,7 @@ public class MapReaderNG implements IMapReader {
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
 		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				return ReaderFactory.createReader(SPMap.class).parse(event.asStartElement(), eventReader);
+				return ReaderFactory.createReader(SPMap.class).parse(event.asStartElement(), eventReader, null);
 			}
 		}
 		throw new XMLStreamException("XML stream didn't contain a start element");

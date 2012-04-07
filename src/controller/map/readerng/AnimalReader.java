@@ -3,6 +3,7 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
 import controller.map.SPFormatException;
 /**
@@ -21,11 +22,13 @@ public class AnimalReader implements INodeReader<Animal> {
 	/**
 	 * @param element the element containing an animal
 	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
 	 * @return the animal
 	 * @throws SPFormatException if the data is invalid
 	 */
 	@Override
-	public Animal parse(final StartElement element, final Iterable<XMLEvent> stream)
+	public Animal parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
 			throws SPFormatException {
 		final Animal animal = new Animal(
 				XMLHelper.getAttribute(element, "kind"),

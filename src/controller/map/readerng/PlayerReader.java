@@ -5,6 +5,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.Player;
+import model.map.PlayerCollection;
 import controller.map.SPFormatException;
 /**
  * A reader to produce Players.
@@ -23,13 +24,13 @@ public class PlayerReader implements INodeReader<Player> {
 	 * Parse a player from the XML.
 	 * @param element the start element to read from
 	 * @param stream the stream to get more elements from
+	 * @param players the collection of players
 	 * @return the player produced
 	 * @throws SPFormatException on SP format problems
-	 *
-	 * @see controller.map.readerng.INodeReader#parse(javax.xml.stream.events.StartElement, java.lang.Iterable)
 	 */
 	@Override
-	public Player parse(final StartElement element, final Iterable<XMLEvent> stream)
+	public Player parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {

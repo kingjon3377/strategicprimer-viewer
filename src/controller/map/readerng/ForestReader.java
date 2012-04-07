@@ -3,6 +3,7 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
 import model.map.fixtures.Forest;
 import controller.map.SPFormatException;
 /**
@@ -22,11 +23,13 @@ public class ForestReader implements INodeReader<Forest> {
 	 * Parse a forest.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
 	 * @return the forest represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Forest parse(final StartElement element, final Iterable<XMLEvent> stream)
+	public Forest parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
 			throws SPFormatException {
 		final Forest fix = new Forest(XMLHelper.getAttribute(element, "kind"),
 				XMLHelper.hasAttribute(element, "rows"));

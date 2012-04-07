@@ -3,6 +3,7 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
 import model.map.fixtures.Dragon;
 import controller.map.SPFormatException;
 /**
@@ -22,11 +23,13 @@ public class DragonReader implements INodeReader<Dragon> {
 	 * Parse a dragon.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
 	 * @return the dragon represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Dragon parse(final StartElement element, final Iterable<XMLEvent> stream)
+	public Dragon parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
 			throws SPFormatException {
 		final Dragon fix = new Dragon(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {

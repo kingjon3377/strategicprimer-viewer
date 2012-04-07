@@ -3,8 +3,9 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import controller.map.SPFormatException;
+import model.map.PlayerCollection;
 import model.map.fixtures.Djinn;
+import controller.map.SPFormatException;
 /**
  * A reader for djinn.
  * @author Jonathan Lovelace
@@ -22,11 +23,13 @@ public class DjinnReader implements INodeReader<Djinn> {
 	 * Parse a djinn.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
 	 * @return the djinn represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Djinn parse(final StartElement element, final Iterable<XMLEvent> stream)
+	public Djinn parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {

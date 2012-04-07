@@ -3,8 +3,9 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import controller.map.SPFormatException;
+import model.map.PlayerCollection;
 import model.map.fixtures.CacheFixture;
+import controller.map.SPFormatException;
 
 /**
  * A reader for CacheFixtures.
@@ -23,11 +24,13 @@ public class CacheReader implements INodeReader<CacheFixture> {
 	 * Parse a cache.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
 	 * @return the cache represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public CacheFixture parse(final StartElement element, final Iterable<XMLEvent> stream)
+	public CacheFixture parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players)
 			throws SPFormatException {
 		final CacheFixture fix = new CacheFixture(XMLHelper.getAttribute(
 				element, "kind"), XMLHelper.getAttribute(element, "contents"));
