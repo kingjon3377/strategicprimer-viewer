@@ -148,4 +148,5 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		}
 		return sbuild.toString();
 	}
+	
 }

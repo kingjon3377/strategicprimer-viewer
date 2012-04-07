@@ -46,7 +46,7 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 			throw new SPFormatException("Village shouldn't have children", getLine());
 		} else if (hasProperty("status")) {
 			if (!hasProperty(NAME_PROPERTY)) {
-				Warning.warn(new SPFormatException(
+				Warning.INSTANCE.warn(new SPFormatException(
 						"Village should have \"name\" property", getLine()));
 			}
 		} else {

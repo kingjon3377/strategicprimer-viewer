@@ -83,11 +83,11 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 			}
 		}
 		if (!hasProperty(OWNER_PROP)) {
-			Warning.warn(new SPFormatException("Fortress should have an owner",
+			Warning.INSTANCE.warn(new SPFormatException("Fortress should have an owner",
 					getLine()));
 		}
 		if (!hasProperty(NAME_PROP)) {
-			Warning.warn(new SPFormatException("Fortress should have a name",
+			Warning.INSTANCE.warn(new SPFormatException("Fortress should have a name",
 					getLine()));
 		}
 	}

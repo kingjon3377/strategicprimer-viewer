@@ -35,7 +35,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	public SkippableNode(final String tag, final int line) {
 		super(SkippableNode.class);
 		if (!"row".equals(tag)) {
-			Warning.warn(new SPFormatException("Unexpected tag " + tag
+			Warning.INSTANCE.warn(new SPFormatException("Unexpected tag " + tag
 					+ ": probably a more recent map format than viewer.", line));
 		}
 	}

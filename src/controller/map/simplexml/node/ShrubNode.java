@@ -41,7 +41,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Shrub shouldn't have children", getLine());
 		} else if (hasProperty("shrub")) {
-			Warning.warn(new SPFormatException(
+			Warning.INSTANCE.warn(new SPFormatException(
 					"Use of property \"shrub\" to give kind of shrub is deprecated; use \"kind\" instead",
 					getLine()));
 			addProperty(KIND_PROPERTY, getProperty("shrub"));

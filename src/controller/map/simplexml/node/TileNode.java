@@ -51,7 +51,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 				tile.addFixture(((AbstractFixtureNode<? extends TileFixture>) node)
 						.produce(players));
 			} else {
-				Warning.warn(new SPFormatException(//NOPMD
+				Warning.INSTANCE.warn(new SPFormatException(//NOPMD
 						"Unexpected TileNode child of type " + node.toString(),
 						getLine()));
 			}
@@ -75,7 +75,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	public void checkNode() throws SPFormatException {
 		if (hasProperty("row") && hasProperty("column")) {
 			if (!hasProperty(TERRAIN_PROPERTY) && hasProperty("type")) {
-				Warning.warn(new SPFormatException(
+				Warning.INSTANCE.warn(new SPFormatException(
 						"Designating tile's terrain-type by \"type\" property is deprecated; use \"kind\" instead.",
 						getLine()));
 				addProperty(TERRAIN_PROPERTY, getProperty("type"));

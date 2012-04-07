@@ -76,7 +76,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 			}
 		} else {
 			if (hasProperty("mineral")) {
-				Warning.warn(new SPFormatException(
+				Warning.INSTANCE.warn(new SPFormatException(
 						"Use of \"mineral\" property to specify kind of mineral is deprecated; use \"kind\" instead",
 						getLine()));
 				addProperty(MINERAL_PROPERTY, getProperty("mineral"));

@@ -55,7 +55,7 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 			}
 		} else {
 			if (hasProperty("ground")) {
-				Warning.warn(new SPFormatException(
+				Warning.INSTANCE.warn(new SPFormatException(
 						"Use of \"ground\" property to designate kind of ground is deprecated; use \"kind\" instead",
 						getLine()));
 				addProperty(KIND_PROPERTY, getProperty("ground"));

@@ -70,22 +70,22 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 					getLine());
 		}
 		if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
-			Warning.warn(new SPFormatException("Unit should have an owner",
+			Warning.INSTANCE.warn(new SPFormatException("Unit should have an owner",
 					getLine()));
 		}
 		if (!hasProperty(TYPE_ATTR) || "".equals(getProperty(TYPE_ATTR))) {
 			if (hasProperty("type")) {
 				addProperty(TYPE_ATTR, getProperty("type"));
-				Warning.warn(new SPFormatException(
+				Warning.INSTANCE.warn(new SPFormatException(
 						"Use of property \"type\" to designate kind of unit is deprecated; use \"kind\" instead",
 						getLine()));
 			} else {
-				Warning.warn(new SPFormatException("Unit should have a kind",
+				Warning.INSTANCE.warn(new SPFormatException("Unit should have a kind",
 						getLine()));
 			}
 		}
 		if (!hasProperty(NAME_ATTR) || "".equals(getProperty(NAME_ATTR))) {
-			Warning.warn(new SPFormatException("Unit should have a name",
+			Warning.INSTANCE.warn(new SPFormatException("Unit should have a name",
 					getLine()));
 		}
 	}

@@ -54,7 +54,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 			if (hasProperty("wild")) {
 				if (!hasProperty(KIND_PROPERTY)) {
 					if (hasProperty("tree")) {
-						Warning.warn(new SPFormatException(
+						Warning.INSTANCE.warn(new SPFormatException(
 								"Using \"tree\" property for the kind of tree is deprecated; use \"kind\" instead",
 								getLine()));
 						addProperty(KIND_PROPERTY, getProperty("tree"));

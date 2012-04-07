@@ -63,7 +63,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 			}
 		} else {
 			if (hasProperty("stone")) {
-				Warning.warn(new SPFormatException(
+				Warning.INSTANCE.warn(new SPFormatException(
 						"Use of \"stone\" property to specify kind of stone is deprecated; use \"kind\" instead",
 						getLine()));
 				addProperty(STONE_PROPERTY, getProperty("stone"));

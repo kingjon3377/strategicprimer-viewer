@@ -75,16 +75,16 @@ public final class SubsetDriver {
 		try {
 			map = reader.readMap(filename);
 		} catch (MapVersionException e) {
-			Warning.warn(e);
+			Warning.INSTANCE.warn(e);
 			flag = Boolean.TRUE;
 		} catch (IOException e) {
-			Warning.warn(e);
+			Warning.INSTANCE.warn(e);
 			flag = Boolean.TRUE;
 		} catch (XMLStreamException e) {
-			Warning.warn(e);
+			Warning.INSTANCE.warn(e);
 			flag = Boolean.TRUE;
 		} catch (SPFormatException e) {
-			Warning.warn(e);
+			Warning.INSTANCE.warn(e);
 			flag = Boolean.TRUE;
 		}
 		return Pair.of(map, flag);

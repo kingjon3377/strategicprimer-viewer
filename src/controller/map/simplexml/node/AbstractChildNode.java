@@ -43,7 +43,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 		} else if (canUse(property)) {
 			properties.put(property, value);
 		} else {
-			Warning.warn(new SPFormatException("Don't know how to use property " + property, getLine()));
+			Warning.INSTANCE.warn(new SPFormatException("Don't know how to use property " + property, getLine()));
 		}
 	}
 

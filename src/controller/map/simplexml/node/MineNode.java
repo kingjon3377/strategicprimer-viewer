@@ -45,7 +45,7 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 			}
 		} else {
 			if (hasProperty("product")) {
-				Warning.warn(new SPFormatException(
+				Warning.INSTANCE.warn(new SPFormatException(
 						"Use of property \"product\" to designate mine product is deprecated; use \"kind\" instead",
 						getLine()));
 				addProperty(KIND_PROPERTY, getProperty("product"));
