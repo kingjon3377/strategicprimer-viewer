@@ -1,10 +1,10 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
-import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Village;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -38,15 +38,16 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 * Check the node for invalid data. A Village is valid if it has no children
 	 * and a "status" field.
 	 * 
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node is invalid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Village shouldn't have children", getLine());
 		} else if (hasProperty("status")) {
 			if (!hasProperty(NAME_PROPERTY)) {
-				Warning.INSTANCE.warn(new SPFormatException(
+				warner.warn(new SPFormatException(
 						"Village should have \"name\" property", getLine()));
 			}
 		} else {

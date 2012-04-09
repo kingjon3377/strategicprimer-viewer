@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Simurgh;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -27,10 +28,11 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	}
 	/**
 	 * Check the node for invalid data. A Simurgh is valid if it has no children.
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node contains invalid data
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Simurgh shouldn't have children", getLine());
 		}

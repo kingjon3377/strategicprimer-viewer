@@ -42,11 +42,12 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	 * Check whether the node is valid. A Ground is valid if it has "ground" and "exposed"
 	 * properties and no children. TODO: add further properties.
 	 * 
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if any required properties are missing.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Ground shouldn't have children", getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
@@ -55,10 +56,10 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 			}
 		} else {
 			if (hasProperty("ground")) {
-				Warning.INSTANCE.warn(new SPFormatException(
+				warner.warn(new SPFormatException(
 						"Use of \"ground\" property to designate kind of ground is deprecated; use \"kind\" instead",
 						getLine()));
-				addProperty(KIND_PROPERTY, getProperty("ground"));
+				addProperty(KIND_PROPERTY, getProperty("ground"), warner);
 			} else {
 				throw new SPFormatException(
 						"Ground must have \"kind\" and \"exposed\" properties",

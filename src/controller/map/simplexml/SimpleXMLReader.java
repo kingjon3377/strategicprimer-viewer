@@ -15,6 +15,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.IteratorWrapper;
+import util.Warning;
 import controller.map.IMapReader;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
@@ -106,7 +107,7 @@ public class SimpleXMLReader implements IMapReader {
 	 */
 	public SPMap readMap(final Reader istream, final boolean reflection)
 			throws XMLStreamException, SPFormatException {
-		return readXML(istream, SPMap.class, reflection);
+		return readXML(istream, SPMap.class, reflection, Warning.INSTANCE);
 	}
 
 	/**
@@ -118,13 +119,14 @@ public class SimpleXMLReader implements IMapReader {
 	 * @param istream
 	 *            a reader from which to read the XML
 	 * @param type The type of the object the XML represents
+	 * @param warner a Warning instance to use for warnings
 	 * @return the object contained in that stream
 	 * @throws XMLStreamException
 	 *             if XML isn't well-formed.
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
-	public <T> T readXML(final Reader istream, final Class<T> type, final boolean reflection)
+	public <T> T readXML(final Reader istream, final Class<T> type, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final RootNode<T> root = new RootNode<T>(type);
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
@@ -136,7 +138,7 @@ public class SimpleXMLReader implements IMapReader {
 				// ESCA-JAVA0177:
 				AbstractXMLNode node;
 				try {
-					node = parseTag(event.asStartElement(), reflection);
+					node = parseTag(event.asStartElement(), reflection, warner);
 				} catch (InstantiationException e) {
 					throw new IllegalStateException(e);
 				} catch (IllegalAccessException e) {
@@ -154,7 +156,7 @@ public class SimpleXMLReader implements IMapReader {
 			}
 		}
 		root.canonicalize();
-		root.checkNode();
+		root.checkNode(warner);
 		return root.getRootNode().produce(new PlayerCollection());
 	}
 
@@ -166,6 +168,7 @@ public class SimpleXMLReader implements IMapReader {
 	 * @param reflection
 	 *            whether we should try the version of the NodeFactory method
 	 *            that uses reflection
+	 * @param warner a Warning instance to use if necessary
 	 * @return the equivalent node.
 	 * @throws SPFormatException
 	 *             on unexpected or illegal XML.
@@ -175,17 +178,17 @@ public class SimpleXMLReader implements IMapReader {
 	 *             thrown by reflection
 	 */
 	private static AbstractXMLNode parseTag(final StartElement element,
-			final boolean reflection) throws SPFormatException,
+			final boolean reflection, final Warning warner) throws SPFormatException,
 			InstantiationException, IllegalAccessException {
 		final AbstractChildNode<?> node = (reflection ? NodeFactory
 				.createReflection(element.getName().getLocalPart(), element
-						.getLocation().getLineNumber()) : NodeFactory.create(
+						.getLocation().getLineNumber(), warner) : NodeFactory.create(
 				element.getName().getLocalPart(), element.getLocation()
-						.getLineNumber()));
+						.getLineNumber(), warner));
 		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(
 				element.getAttributes());
 		for (final Attribute att : attributes) {
-			node.addProperty(att.getName().getLocalPart(), att.getValue());
+			node.addProperty(att.getName().getLocalPart(), att.getValue(), warner);
 		}
 		return node;
 	}

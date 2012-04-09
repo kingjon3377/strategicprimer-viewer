@@ -1,9 +1,10 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
-import controller.map.SPFormatException;
 import model.map.PlayerCollection;
 import model.map.fixtures.Forest;
+import util.EqualsAny;
+import util.Warning;
+import controller.map.SPFormatException;
 /**
  * A Node that will produce a Forest.
  * @author Jonathan Lovelace
@@ -38,11 +39,13 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	 * Check whether the node is valid. A forest is valid if it has a "kind"
 	 * property and no children. TODO: add further properties.
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if any required properties are missing.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Forest shouldn't have children", getLine());
 		} else if (!hasProperty("kind")) {

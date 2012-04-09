@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Mountain;
+import util.Warning;
 import controller.map.SPFormatException;
 /**
  * A Node to produce a Mountain.
@@ -29,10 +30,11 @@ public class MountainNode extends AbstractFixtureNode<Mountain> {
 	 * Check that the node is valid. A Mountain is valid if it has no children.
 	 * TODO: should it have attributes?
 	 * 
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node isn't valid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Mountain shouldn't have children", getLine());
 		}

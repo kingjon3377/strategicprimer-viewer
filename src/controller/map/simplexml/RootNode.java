@@ -2,6 +2,7 @@ package controller.map.simplexml;
 
 import java.util.Iterator;
 
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
@@ -21,18 +22,19 @@ public final class RootNode<T> extends AbstractXMLNode {
 	 * than one child, we only verify that it has at least one, which is the
 	 * child we want.
 	 * 
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if it isn't.
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			final AbstractXMLNode child = iterator().next();
 			if (child instanceof AbstractChildNode) {
 				if (((AbstractChildNode) child).getProduct().isAssignableFrom(product)) {
-					iterator().next().checkNode();
+					iterator().next().checkNode(warner);
 				} else {
 					throw new SPFormatException("We want a node producing "
 							+ product.getSimpleName()

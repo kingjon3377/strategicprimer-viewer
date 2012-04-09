@@ -1,8 +1,9 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
 import model.map.PlayerCollection;
 import model.map.events.BattlefieldEvent;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -41,11 +42,13 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	 * compatibility) and no children.
 	 * 
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the data is invalid
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Event shouldn't have children",
 					getLine());

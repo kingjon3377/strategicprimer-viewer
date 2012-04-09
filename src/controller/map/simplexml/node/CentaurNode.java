@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Centaur;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -25,14 +26,18 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	public Centaur produce(final PlayerCollection players) throws SPFormatException {
 		return new Centaur(getProperty("kind"));
 	}
+	
 	/**
-	 * Check the node for invalid data. A Centaur is valid if it has no children and has a "kind" property.
+	 * Check the node for invalid data. A Centaur is valid if it has no children
+	 * and has a "kind" property.
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the node contains invalid data.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Centaur shouldn't have children", getLine());
 		} else if (!hasProperty("kind")) {

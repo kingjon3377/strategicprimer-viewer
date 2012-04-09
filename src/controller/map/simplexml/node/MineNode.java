@@ -33,10 +33,11 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	}
 	/**
 	 * Check the data for validity. A Mine is valid if it has no children and "product" and "status" properties.
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node is invalid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Mine should not have children", getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
@@ -45,10 +46,10 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 			}
 		} else {
 			if (hasProperty("product")) {
-				Warning.INSTANCE.warn(new SPFormatException(
+				warner.warn(new SPFormatException(
 						"Use of property \"product\" to designate mine product is deprecated; use \"kind\" instead",
 						getLine()));
-				addProperty(KIND_PROPERTY, getProperty("product"));
+				addProperty(KIND_PROPERTY, getProperty("product"), warner);
 			} else {
 				throw new SPFormatException("Mine should have \"kind\" and \"status\" properties", getLine());
 			}

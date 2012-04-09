@@ -62,28 +62,30 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 
 	/**
 	 * Check whether we contain invalid data. A Tile is valid if it has row,
-	 * column, and kind properties and contains only valid fixtures (units, fortresses,
-	 * rivers, events, etc.). For forward compatibility, we do not object to
-	 * properties we ignore. (But TODO: should we object to "event" tags, since
-	 * those *used* to be valid?)
+	 * column, and kind properties and contains only valid fixtures (units,
+	 * fortresses, rivers, events, etc.). For forward compatibility, we do not
+	 * object to properties we ignore. (But TODO: should we object to "event"
+	 * tags, since those *used* to be valid?)
 	 * 
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if contain invalid data.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (hasProperty("row") && hasProperty("column")) {
 			if (!hasProperty(TERRAIN_PROPERTY) && hasProperty("type")) {
-				Warning.INSTANCE.warn(new SPFormatException(
+				warner.warn(new SPFormatException(
 						"Designating tile's terrain-type by \"type\" property is deprecated; use \"kind\" instead.",
 						getLine()));
-				addProperty(TERRAIN_PROPERTY, getProperty("type"));
+				addProperty(TERRAIN_PROPERTY, getProperty("type"), warner);
 			} else if (hasProperty(TERRAIN_PROPERTY)) {
 				for (final AbstractXMLNode node : this) {
 					if (node instanceof AbstractFixtureNode
 							|| node instanceof RiverNode) {
-						node.checkNode();
+						node.checkNode(warner);
 					} else {
 						throw new SPFormatException("Unexpected child in tile.",
 								getLine());

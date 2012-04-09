@@ -69,25 +69,27 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	 * should change to check those conditions.
 	 * 
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if we don't.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof UnitNode) {
-				node.checkNode();
+				node.checkNode(warner);
 			} else {
 				throw new SPFormatException(
 						"Fortress should contain only units", getLine());
 			}
 		}
 		if (!hasProperty(OWNER_PROP)) {
-			Warning.INSTANCE.warn(new SPFormatException("Fortress should have an owner",
+			warner.warn(new SPFormatException("Fortress should have an owner",
 					getLine()));
 		}
 		if (!hasProperty(NAME_PROP)) {
-			Warning.INSTANCE.warn(new SPFormatException("Fortress should have a name",
+			warner.warn(new SPFormatException("Fortress should have a name",
 					getLine()));
 		}
 	}

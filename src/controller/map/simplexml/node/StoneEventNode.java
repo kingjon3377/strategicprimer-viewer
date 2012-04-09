@@ -47,12 +47,13 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	 * Check whether the node is valid. A Stone Node is valid if it has no
 	 * children and "kind", "dc", and "stone" properties.
 	 * 
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Event shouldn't have children",
 					getLine());
@@ -63,10 +64,10 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 			}
 		} else {
 			if (hasProperty("stone")) {
-				Warning.INSTANCE.warn(new SPFormatException(
+				warner.warn(new SPFormatException(
 						"Use of \"stone\" property to specify kind of stone is deprecated; use \"kind\" instead",
 						getLine()));
-				addProperty(STONE_PROPERTY, getProperty("stone"));
+				addProperty(STONE_PROPERTY, getProperty("stone"), warner);
 			} else {
 				throw new SPFormatException(
 						"Event must have \"kind\" and \"dc\" properties",

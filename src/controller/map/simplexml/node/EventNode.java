@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import model.map.PlayerCollection;
 import model.map.events.IEvent;
+import util.Warning;
 import controller.map.NeedsExtraCanonicalization;
 import controller.map.SPFormatException;
 
@@ -52,6 +53,7 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 	public boolean canUse(final String property) {
 		return true;
 	}
+	
 	/**
 	 * Check that this Node contains entirely valid data. An Event is valid if
 	 * it has no children (thus towns, etc., shouldn't be Events much longer)
@@ -61,18 +63,20 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 	 * we do not object to unknown properties.
 	 * 
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if it contains any invalid data.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		final Iterator<AbstractXMLNode> iter = iterator();
 		if (!iter.hasNext()) {
 			throw new SPFormatException(
 					"Doesn't have the child that actually holds the Event",
 					getLine());
 		}
-		iter.next().checkNode();
+		iter.next().checkNode(warner);
 		if (iter.hasNext()) {
 			throw new SPFormatException(
 					"EventNode shouldn't have more than the one child",
@@ -84,11 +88,13 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 	 * Convert this node into a wrapper around a more specific Node.
 	 * 
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             on format error uncovered by this process
 	 */
 	@Override
-	public void canonicalizeImpl() throws SPFormatException {
+	public void canonicalizeImpl(final Warning warner) throws SPFormatException {
 		// ESCA-JAVA0177:
 		final AbstractChildNode<? extends IEvent> child; // NOPMD
 		if ("battlefield".equals(getProperty(KIND_PROPERTY))) {
@@ -109,7 +115,7 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 			throw new SPFormatException("Event must have a \"kind\" property",
 					getLine());
 		}
-		moveEverythingTo(child);
+		moveEverythingTo(child, warner);
 		addChild(child);
 	}
 

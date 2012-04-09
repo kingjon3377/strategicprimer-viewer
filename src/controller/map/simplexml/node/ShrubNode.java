@@ -34,17 +34,18 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	/**
 	 * Check whether the node is valid. A Shrub is valid if it has a "shrub"
 	 * property and no children.
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the required property is missing
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Shrub shouldn't have children", getLine());
 		} else if (hasProperty("shrub")) {
-			Warning.INSTANCE.warn(new SPFormatException(
+			warner.warn(new SPFormatException(
 					"Use of property \"shrub\" to give kind of shrub is deprecated; use \"kind\" instead",
 					getLine()));
-			addProperty(KIND_PROPERTY, getProperty("shrub"));
+			addProperty(KIND_PROPERTY, getProperty("shrub"), warner);
 		} else if (!hasProperty(KIND_PROPERTY)) {
 			throw new SPFormatException("Shrub must have \"shrub\" property", getLine());
 		}

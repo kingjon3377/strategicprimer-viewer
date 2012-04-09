@@ -6,6 +6,7 @@ import java.util.List;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -31,15 +32,16 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 * Tile and it includes version (greater than or equal to 1, for this
 	 * version of the reader), rows, and columns properties.
 	 * 
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if all is not well.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof TileNode || node instanceof PlayerNode) {
-				node.checkNode();
+				node.checkNode(warner);
 			} else {
 				throw new SPFormatException(
 						"Map should only directly contain Tiles and Players: unexpected child " + node.toString(),

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -111,6 +112,7 @@ public final class NodeFactory { // NOPMD
 	 *            the tag.
 	 * @param line
 	 *            the line of the file it's on ... just in case.
+	 * @param warner the Warning instance to use if we need to propagate a warning
 	 * @return a Node representing the tag, but not its contents yet.
 	 * @throws SPFormatException
 	 *             on unrecognized tag
@@ -118,19 +120,19 @@ public final class NodeFactory { // NOPMD
 	 * @throws InstantiationException thrown by reflection
 	 */
 	public static AbstractChildNode<?> createReflection(final String tag,
-			final int line) throws SPFormatException, InstantiationException,
+			final int line, final Warning warner) throws SPFormatException, InstantiationException,
 			IllegalAccessException {
 		final Tag localtag = getTag(tag, line);
 		final AbstractChildNode<?> node = localtag.getTagClass().newInstance();
 		if (EqualsAny.equalsAny(localtag, Tag.City,
 				Tag.Fortification, Tag.Town)) {
-			node.addProperty(EVENT_KIND_PROP, tag);
+			node.addProperty(EVENT_KIND_PROP, tag, warner);
 		} else if (Tag.Lake.equals(localtag)) {
-			node.addProperty("direction", "lake");
+			node.addProperty("direction", "lake", warner);
 		} else if (EqualsAny.equalsAny(localtag, Tag.Grove, Tag.Meadow)) {
-			node.addProperty("tag", tag);
+			node.addProperty("tag", tag, warner);
 		}
-		node.addProperty("line", Integer.toString(line));
+		node.addProperty("line", Integer.toString(line), warner);
 		return node;
 	}
 	/**
@@ -153,11 +155,13 @@ public final class NodeFactory { // NOPMD
 	 *            the tag.
 	 * @param line
 	 *            the line of the file it's on ... just in case.
+	 * @param warner the warning instance to use if necessary 
 	 * @return a Node representing the tag, but not its contents yet.
 	 * @throws SPFormatException
 	 *             on unrecognized tag
 	 */
-	public static AbstractChildNode<?> create(final String tag, final int line) // NOPMD
+	public static AbstractChildNode<?> create(final String tag, final int line, // NOPMD
+			final Warning warner)
 			throws SPFormatException {
 		// ESCA-JAVA0177:
 		final AbstractChildNode<?> node; // NOPMD
@@ -171,20 +175,20 @@ public final class NodeFactory { // NOPMD
 			break;
 		case City:
 			node = new TownEventNode();
-			node.addProperty(EVENT_KIND_PROP, "city");
+			node.addProperty(EVENT_KIND_PROP, "city", warner);
 			break;
 		case Event:
 			throw new SPFormatException("<event> tags are no longer supported", line);
 		case Fortification:
 			node = new TownEventNode();
-			node.addProperty(EVENT_KIND_PROP, "fortification");
+			node.addProperty(EVENT_KIND_PROP, "fortification", warner);
 			break;
 		case Fortress:
 			node = new FortressNode();
 			break;
 		case Lake:
 			node = new RiverNode();
-			node.addProperty("direction", "lake");
+			node.addProperty("direction", "lake", warner);
 			break;
 		case Map:
 			node = new MapNode();
@@ -209,7 +213,7 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Town:
 			node = new TownEventNode();
-			node.addProperty(EVENT_KIND_PROP, "town");
+			node.addProperty(EVENT_KIND_PROP, "town", warner);
 			break;
 		case Unit:
 			node = new UnitNode();
@@ -231,7 +235,7 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Grove:
 			node = new GroveNode();
-			node.addProperty("tag", tag);
+			node.addProperty("tag", tag, warner);
 			break;
 		case Mine:
 			node = new MineNode();
@@ -241,7 +245,7 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Meadow:
 			node = new MeadowNode();
-			node.addProperty("tag", tag);
+			node.addProperty("tag", tag, warner);
 			break;
 		case Hill:
 			node = new HillNode();
@@ -297,7 +301,7 @@ public final class NodeFactory { // NOPMD
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
 		}
-		node.addProperty("line", Integer.toString(line));
+		node.addProperty("line", Integer.toString(line), warner);
 		return node;
 	}
 }

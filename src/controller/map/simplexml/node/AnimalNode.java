@@ -3,6 +3,7 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
 import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -37,11 +38,13 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	 * Check the node for invalid data. An Animal is valid if it has no children
 	 * and has a "kind" property.
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the node contains invalid data.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Animal shouldn't have children",
 					getLine());

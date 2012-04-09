@@ -36,14 +36,17 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 *            the property to add.
 	 * @param value
 	 *            its value
+	 * @param warner
+	 *            the warning instance to use if this node doesn't know how to
+	 *            use the property.
 	 */
-	public final void addProperty(final String property, final String value) {
+	public final void addProperty(final String property, final String value, final Warning warner) {
 		if ("line".equals(property)) {
 			setLine(Integer.parseInt(value));
 		} else if (canUse(property)) {
 			properties.put(property, value);
 		} else {
-			Warning.INSTANCE.warn(new SPFormatException("Don't know how to use property " + property, getLine()));
+			warner.warn(new SPFormatException("Don't know how to use property " + property, getLine()));
 		}
 	}
 
@@ -85,12 +88,13 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 * 
 	 * @param dest
 	 *            the destination node.
+	 * @param warner the Warning instance to use if necessary
 	 */
 	protected final void moveEverythingTo(
-			final AbstractChildNode<? extends T> dest) {
+			final AbstractChildNode<? extends T> dest, final Warning warner) {
 		moveChildrenTo(dest);
 		for (String property : properties.keySet()) {
-			dest.addProperty(property, properties.get(property));
+			dest.addProperty(property, properties.get(property), warner);
 		}
 		properties.clear();
 	}

@@ -55,11 +55,13 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	 * Check whether the Node's data is valid. A MineralNode is valid if it has
 	 * no children and "kind", "dc", and "exposed" properties.
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Event shouldn't have children",
 					getLine());
@@ -76,10 +78,10 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 			}
 		} else {
 			if (hasProperty("mineral")) {
-				Warning.INSTANCE.warn(new SPFormatException(
+				warner.warn(new SPFormatException(
 						"Use of \"mineral\" property to specify kind of mineral is deprecated; use \"kind\" instead",
 						getLine()));
-				addProperty(MINERAL_PROPERTY, getProperty("mineral"));
+				addProperty(MINERAL_PROPERTY, getProperty("mineral"), warner);
 			} else {
 				throw new SPFormatException(
 					"Event must have \"kind\" and \"dc\" properties", getLine());

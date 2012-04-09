@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Djinn;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -27,10 +28,11 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	}
 	/**
 	 * Check the node for invalid data. A Djinn is valid i it has no children.
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node contains invalid data
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Djinn shouldn't have children", getLine());
 		}

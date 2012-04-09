@@ -62,12 +62,13 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * SkippableNode in the node-tree at the point that we're checking the data
 	 * for validity is a sign that something's wrong.
 	 * 
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             never
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}
 

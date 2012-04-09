@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Oasis;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -27,10 +28,11 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	}
 	/**
 	 * Check that the noe is valid. An Oasis is valid if it has no children. TODO: should it have attributes?
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node isn't valid
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Oasis shouldn't have children", getLine());
 		}

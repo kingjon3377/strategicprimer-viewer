@@ -93,20 +93,22 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	public boolean canUse(final String property) {
 		return EqualsAny.equalsAny(property, KIND_PROPERTY, STATUS_PROP, SIZE_PROPERTY, DC_PROPERTY, NAME_PROPERTY);
 	}
+	
 	/**
 	 * Check the data for validity. A Town or similar is valid if it has no
 	 * children and "kind", "dc", "size', and "status" properties.
 	 * 
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the data are invalid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {
 			if (hasProperty(SIZE_PROPERTY) && hasProperty(STATUS_PROP)) {
 				if (!hasProperty(NAME_PROPERTY)) {
-					Warning.INSTANCE.warn(new SPFormatException("Town-related events should have \"name\" property", getLine()));
+					warner.warn(new SPFormatException("Town-related events should have \"name\" property", getLine()));
 				}
 			} else {
 				throw new SPFormatException(

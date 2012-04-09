@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import util.Warning;
 import controller.map.NeedsExtraCanonicalization;
 import controller.map.SPFormatException;
 
@@ -49,11 +50,12 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	/**
 	 * Check that the data is legal---no tiles outside the map, for example.
 	 * 
+	 * @param warner a Warning instance to use for warnings
 	 * 
 	 * @throws SPFormatException
 	 *             if the data isn't legal.
 	 */
-	public abstract void checkNode() throws SPFormatException;
+	public abstract void checkNode(Warning warner) throws SPFormatException;
 
 	/**
 	 * 
@@ -88,7 +90,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		final List<AbstractXMLNode> nodesToKeep = new LinkedList<AbstractXMLNode>();
 		for (final AbstractXMLNode node : children) {
 			if (node instanceof NeedsExtraCanonicalization) {
-				((NeedsExtraCanonicalization) node).canonicalizeImpl();
+				((NeedsExtraCanonicalization) node).canonicalizeImpl(Warning.INSTANCE);
 			}
 			node.canonicalize();
 			if (node instanceof SkippableNode) {

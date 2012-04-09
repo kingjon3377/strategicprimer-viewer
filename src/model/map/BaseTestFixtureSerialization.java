@@ -4,6 +4,7 @@ import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -38,6 +39,16 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final SimpleXMLReader reader, final T orig, final Class<T> type,
 			final boolean reflection) throws XMLStreamException,
 			SPFormatException {
-		return reader.readXML(new StringReader(orig.toXML()), type, reflection);
+		return reader.readXML(new StringReader(orig.toXML()), type, reflection, warner);
+	}
+	/**
+	 * Warning instance that makes warnings fatal.
+	 */
+	private final Warning warner = new Warning();
+	/**
+	 * Constructor.
+	 */
+	protected BaseTestFixtureSerialization() {
+		warner.setFatal(true);
 	}
 }

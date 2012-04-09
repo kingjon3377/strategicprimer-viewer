@@ -1,9 +1,10 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
-import controller.map.SPFormatException;
 import model.map.PlayerCollection;
 import model.map.fixtures.CacheFixture;
+import util.EqualsAny;
+import util.Warning;
+import controller.map.SPFormatException;
 /**
  * A Node to represent a cache on a tile.
  * @author Jonathan Lovelace
@@ -31,11 +32,13 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	 * Check a node for validity. A Cache is valid if it has "kind" and
 	 * "contents" properties and no children.
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the node is invalid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Cache shouldn't have children", getLine());
 		} else if (!hasProperty("kind") || !hasProperty("contents")) {

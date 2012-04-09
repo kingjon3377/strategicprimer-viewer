@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.River;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -38,11 +39,13 @@ public class RiverNode extends AbstractChildNode<River> {
 	 * units or even fortresses, etc., in rivers.) A river is valid iff it has
 	 * no children and has a direction.
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if the River contains anythig.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("River has sub-tags", getLine());
 		} else if (!hasProperty("direction")) {

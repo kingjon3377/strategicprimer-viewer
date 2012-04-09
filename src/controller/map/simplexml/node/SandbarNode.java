@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Sandbar;
+import util.Warning;
 import controller.map.SPFormatException;
 /**
  * A Node to produce a Sandbar.
@@ -26,10 +27,11 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	}
 	/**
 	 * Check this node for validity. A Sandbar is valid if it has no children.
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node is invalid.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Sandbar shouldn't have children", getLine());
 		}

@@ -2,6 +2,7 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Troll;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -27,10 +28,11 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	}
 	/**
 	 * Check the node for invalid data. A Troll is valid if it has no children.
+	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException if the node contains invalid data
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Troll shouldn't have children", getLine());
 		}

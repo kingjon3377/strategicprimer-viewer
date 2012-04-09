@@ -1,8 +1,9 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
 import model.map.Player;
 import model.map.PlayerCollection;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -39,12 +40,13 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	 * children and contains number and code_name properties. For forward
 	 * compatibility, we do not object to properties we don't check.
 	 * 
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if we contain invalid data.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException(
 					"A Player shouldn't contain other tags.", getLine());

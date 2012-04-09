@@ -60,32 +60,34 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	 * checked here.
 	 * 
 	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             if contain invalid data.
 	 */
 	@Override
-	public void checkNode() throws SPFormatException {
+	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Unit should't contain anything",
 					getLine());
 		}
 		if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
-			Warning.INSTANCE.warn(new SPFormatException("Unit should have an owner",
+			warner.warn(new SPFormatException("Unit should have an owner",
 					getLine()));
 		}
 		if (!hasProperty(TYPE_ATTR) || "".equals(getProperty(TYPE_ATTR))) {
 			if (hasProperty("type")) {
-				addProperty(TYPE_ATTR, getProperty("type"));
-				Warning.INSTANCE.warn(new SPFormatException(
+				addProperty(TYPE_ATTR, getProperty("type"), warner);
+				warner.warn(new SPFormatException(
 						"Use of property \"type\" to designate kind of unit is deprecated; use \"kind\" instead",
 						getLine()));
 			} else {
-				Warning.INSTANCE.warn(new SPFormatException("Unit should have a kind",
+				warner.warn(new SPFormatException("Unit should have a kind",
 						getLine()));
 			}
 		}
 		if (!hasProperty(NAME_ATTR) || "".equals(getProperty(NAME_ATTR))) {
-			Warning.INSTANCE.warn(new SPFormatException("Unit should have a name",
+			warner.warn(new SPFormatException("Unit should have a name",
 					getLine()));
 		}
 	}
