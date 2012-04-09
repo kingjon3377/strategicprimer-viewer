@@ -34,10 +34,10 @@ public class FairyReader implements INodeReader<Fairy> {
 		final Fairy fix = new Fairy(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Centaur can't have child node",
+				throw new SPFormatException("Fairy can't have child node",
 						event.getLocation().getLineNumber());
 			} else if (event.isEndElement()
-					&& "centaur".equalsIgnoreCase(event.asEndElement().getName()
+					&& "fairy".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
 				break;
 			}
