@@ -46,7 +46,9 @@ public final class ReaderFactory {
 				new OasisReader(), new OgreReader(), new PhoenixReader(),
 				new SandbarReader(), new ShrubReader(), new SimurghReader(),
 				new SphinxReader(), new TrollReader(), new TextReader(),
-				new UnitReader());
+				new UnitReader(), new VillageReader(), new BattlefieldReader(),
+				new CaveReader(), new CityReader(), new FortificationReader(),
+				new TownReader(), new MineralReader(), new StoneReader());
 	}
 	/**
 	 * @param <T> the type of reader wanted
