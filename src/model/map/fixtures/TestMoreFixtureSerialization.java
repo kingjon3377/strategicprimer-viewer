@@ -309,16 +309,15 @@ public final class TestMoreFixtureSerialization extends
 					"Warning on deserialization of Unit with no kind, reflection",
 					except.getCause() instanceof SPFormatException);
 		}
-		final Unit one = new Unit(new Player(1, "playerName"), "", "unitName");
 		try {
-			helpSerialization(reader, one, Unit.class, false);
+			reader.readXML(new StringReader("<unit owner=\"1\" kind=\"\" />"), Unit.class, false, warner());
 		} catch (FatalWarning except) {
 			assertTrue(
 					"Warning on deserialization of Unit with empty kind, non-reflection",
 					except.getCause() instanceof SPFormatException);
 		}
 		try {
-			helpSerialization(reader, one, Unit.class, true);
+			reader.readXML(new StringReader("<unit owner=\"1\" kind=\"\" />"), Unit.class, true, warner());
 		} catch (FatalWarning except) {
 			assertTrue(
 					"Warning on deserialization of Unit with empty kind, reflection",
