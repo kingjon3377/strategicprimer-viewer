@@ -35,10 +35,10 @@ public class ForestReader implements INodeReader<Forest> {
 				XMLHelper.hasAttribute(element, "rows"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Centaur can't have child node",
+				throw new SPFormatException("Forest can't have child node",
 						event.getLocation().getLineNumber());
 			} else if (event.isEndElement()
-					&& "centaur".equalsIgnoreCase(event.asEndElement().getName()
+					&& "forest".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
 				break;
 			}
