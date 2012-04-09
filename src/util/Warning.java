@@ -43,7 +43,7 @@ public final class Warning {
 	 */
 	public void warn(final Exception warning) {
 		if (fatal) {
-			throw new RuntimeException(warning); // NOPMD
+			throw new FatalWarning(warning); // NOPMD
 		} else {
 			Logger.getLogger(warning.getStackTrace()[0].getClass().getName()).log(
 					Level.WARNING, "Warning: ", warning);
