@@ -72,8 +72,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 		if (iterator().hasNext()) {
 			throw new SPFormatException("Unit should't contain anything",
 					getLine());
-		}
-		if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
+		} else if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
 			warner.warn(new SPFormatException("Unit should have an owner",
 					getLine()));
 		}
