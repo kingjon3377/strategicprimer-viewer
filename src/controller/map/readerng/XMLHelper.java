@@ -5,6 +5,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.SPFormatException;
+
 /**
  * A class for helper methods.
  * @author Jonathan Lovelace
@@ -24,14 +26,17 @@ public final class XMLHelper {
 	 *            the attribute we want
 	 * 
 	 * @return the value of that attribute.
+	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttribute(final StartElement startElement,
-			final String attribute) {
+			final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
 		if (attr == null) {
-			throw new IllegalArgumentException(
-					"Element doesn't contain that attribute");
+			throw new SPFormatException("Element "
+					+ startElement.getName().getLocalPart()
+					+ " doesn't contain attribute " + attribute, startElement
+					.getLocation().getLineNumber());
 		}
 		return attr.getValue();
 	}
@@ -52,8 +57,8 @@ public final class XMLHelper {
 	 */
 	public static String getAttributeWithDefault(final StartElement elem,
 			final String attr, final String defaultValue) {
-		return (elem.getAttributeByName(new QName(attr)) == null) ? defaultValue
-				: getAttribute(elem, attr);
+		final Attribute value = elem.getAttributeByName(new QName(attr));
+		return (value == null) ? defaultValue : value.getValue();
 	}
 	/**
 	 * @param elem an element
