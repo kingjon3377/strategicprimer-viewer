@@ -51,4 +51,10 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	protected BaseTestFixtureSerialization() {
 		warner.setFatal(true);
 	}
+	/**
+	 * @return the warning instance
+	 */
+	protected Warning warner() {
+		return warner;
+	}
 }

@@ -9,6 +9,7 @@ import java.io.StringReader;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
+import model.map.Player;
 import model.map.events.TownStatus;
 
 import org.junit.Before;
@@ -250,6 +251,77 @@ public final class TestMoreFixtureSerialization extends
 		} catch (FatalWarning except) {
 			assertTrue(
 					"Warning on deserialization of Village without name, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+	}
+	/**
+	 * Test that a Unit should have an owner.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testUnitWarnings() throws XMLStreamException, SPFormatException {
+		try {
+			reader.readXML(new StringReader("<unit />"), Unit.class, true, warner());
+			fail("Expected objection to unit without owner");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit without owner, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader("<unit />"), Unit.class, false, warner());
+			fail("Expected objection to unit without owner");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit without owner, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader("<unit owner=\"\" />"), Unit.class, false, warner());
+			fail("Expected objection to unit with empty owner");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit with empty owner, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader("<unit owner=\"\" />"), Unit.class, true, warner());
+			fail("Expected objection to unit with empty owner");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit with empty owner, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader("<unit owner=\"1\" />"), Unit.class, false, warner());
+			fail("Expected objection to unit with no kind");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit with no kind, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader("<unit owner=\"1\" />"), Unit.class, true, warner());
+			fail("Expected objection to unit with no kind");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit with no kind, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		final Unit one = new Unit(new Player(1, "playerName"), "", "unitName");
+		try {
+			helpSerialization(reader, one, Unit.class, false);
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit with empty kind, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			helpSerialization(reader, one, Unit.class, true);
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Unit with empty kind, reflection",
 					except.getCause() instanceof SPFormatException);
 		}
 	}
