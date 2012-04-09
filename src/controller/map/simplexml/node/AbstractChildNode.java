@@ -109,25 +109,4 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	public Class<T> getProduct() {
 		return product;
 	}
-//	/**
-//	 * @param obj an object
-//	 * @return whether it's equal to this one
-//	 */
-//	@Override
-//	public boolean equals(final Object obj) {
-//		return super.equals(obj)
-//				&& obj instanceof AbstractChildNode<?>
-//				&& Arrays.equals(getClass().getTypeParameters(),
-//						((AbstractChildNode<?>) obj).getClass()
-//								.getTypeParameters()) && properties
-//						.equals(((AbstractChildNode<?>) obj).properties);
-//	}
-//	/**
-//	 * @return a hash value for this object
-//	 */
-//	@Override
-//	public int hashCode() {
-//		return super.hashCode() | Arrays.hashCode(getClass().getTypeParameters())
-//				| properties.hashCode();
-//	}
 }
