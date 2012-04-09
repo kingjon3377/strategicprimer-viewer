@@ -1,6 +1,10 @@
 package model.map.fixtures;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -10,6 +14,8 @@ import model.map.events.TownStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+import util.FatalWarning;
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -222,9 +228,29 @@ public final class TestMoreFixtureSerialization extends
 					helpSerialization(reader, two, Village.class, false));
 		}
 		final Village three = new Village(TownStatus.Abandoned, "");
-		assertEquals("Third Village serialization test, reflection", three,
-				helpSerialization(reader, three, Village.class, true));
-		assertEquals("Third Village serialization test, non-reflection", three,
-				helpSerialization(reader, three, Village.class, false));
+		assertEquals(
+				"Serialization of village with no or empty name does The Right Thing, reflection",
+				three, reader.readXML(new StringReader(three.toXML()), Village.class,
+						true, Warning.INSTANCE));
+		assertEquals(
+				"Serialization of village with no or empty name does The Right Thing, non-reflection",
+				three, reader.readXML(new StringReader(three.toXML()), Village.class,
+						false, Warning.INSTANCE));
+		try {
+			helpSerialization(reader, three, Village.class, true);
+			fail("Expected warning on deserialization of Village without name");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Village without name, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			helpSerialization(reader, three, Village.class, false);
+			fail("Expected warning on deserialization of Village without name");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning on deserialization of Village without name, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
 	}
 }
