@@ -59,7 +59,7 @@ public final class ReaderFactory {
 		if (CACHE.containsKey(desiredClass)) { 
 			return (INodeReader<T>) CACHE.get(desiredClass);
 		} else {
-			throw new IllegalArgumentException("We don't have a reader for that");
+			throw new IllegalArgumentException("We don't have a reader for " + desiredClass.getSimpleName());
 		}
 	}
 }
