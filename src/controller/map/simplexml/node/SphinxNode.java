@@ -19,11 +19,12 @@ public class SphinxNode extends AbstractFixtureNode<Sphinx> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Sphinx this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Sphinx produce(final PlayerCollection players) throws SPFormatException {
+	public Sphinx produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Sphinx();
 	}
 	/**

@@ -80,19 +80,20 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 * validity-checking should go here. We do this in a separate method because
 	 * validity-checking should be side-effect-free.
 	 * 
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @throws SPFormatException
 	 *             on format errors uncovered in this process
 	 */
-	public final void canonicalize() throws SPFormatException {
+	public final void canonicalize(final Warning warner) throws SPFormatException {
 		final List<AbstractXMLNode> nodesToRemove = new LinkedList<AbstractXMLNode>();
 		final List<AbstractXMLNode> nodesToAdd = new LinkedList<AbstractXMLNode>();
 		final List<AbstractXMLNode> nodesToKeep = new LinkedList<AbstractXMLNode>();
 		for (final AbstractXMLNode node : children) {
 			if (node instanceof NeedsExtraCanonicalization) {
-				((NeedsExtraCanonicalization) node).canonicalizeImpl(Warning.INSTANCE);
+				((NeedsExtraCanonicalization) node).canonicalizeImpl(warner);
 			}
-			node.canonicalize();
+			node.canonicalize(warner);
 			if (node instanceof SkippableNode) {
 				nodesToAdd.addAll(node.children);
 				nodesToRemove.add(node);

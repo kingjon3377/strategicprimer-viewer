@@ -19,11 +19,12 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the phoenix this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Phoenix produce(final PlayerCollection players) throws SPFormatException {
+	public Phoenix produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Phoenix();
 	}
 	/**

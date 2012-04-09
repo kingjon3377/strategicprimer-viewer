@@ -25,11 +25,12 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Village this Node represents
 	 * @throws SPFormatException if missing required attribute.
 	 */
 	@Override
-	public Village produce(final PlayerCollection players) throws SPFormatException {
+	public Village produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Village(TownStatus.parseTownStatus(getProperty("status")),
 				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "");
 	}

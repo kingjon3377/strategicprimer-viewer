@@ -23,11 +23,12 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Ground this node represents.
 	 * @throws SPFormatException if the element was missing any required properties
 	 */
 	@Override
-	public Ground produce(final PlayerCollection players) throws SPFormatException {
+	public Ground produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Ground(getProperty(KIND_PROPERTY), Boolean.parseBoolean(getProperty("exposed")));
 	}
 	/**

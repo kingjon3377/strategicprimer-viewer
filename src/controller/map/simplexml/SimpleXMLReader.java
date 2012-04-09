@@ -155,9 +155,9 @@ public class SimpleXMLReader implements IMapReader {
 				stack.pop();
 			}
 		}
-		root.canonicalize();
+		root.canonicalize(warner);
 		root.checkNode(warner);
-		return root.getRootNode().produce(new PlayerCollection());
+		return root.getRootNode().produce(new PlayerCollection(), warner);
 	}
 
 	/**

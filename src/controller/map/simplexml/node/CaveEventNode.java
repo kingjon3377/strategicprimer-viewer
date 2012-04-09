@@ -23,15 +23,18 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	 * The property of an event saying how difficult it is to find it.
 	 */
 	private static final String DC_PROPERTY = "dc";
+	
 	/**
 	 * @param players
 	 *            the players on the map
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return the equivalent event
 	 * @throws SPFormatException
 	 *             if this includes invalid data
 	 */
 	@Override
-	public CaveEvent produce(final PlayerCollection players)
+	public CaveEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 	}

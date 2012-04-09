@@ -32,12 +32,13 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	/**
 	 * @param players
 	 *            the players on the map
+	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent event
 	 * @throws SPFormatException
 	 *             if this includes invalid data
 	 */
 	@Override
-	public StoneEvent produce(final PlayerCollection players)
+	public StoneEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return new StoneEvent(StoneKind.parseStoneKind(getProperty(STONE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)));

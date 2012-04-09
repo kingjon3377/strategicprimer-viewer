@@ -19,11 +19,12 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the giant this represents
 	 * @throws SPFormatException if missing a required attribute
 	 */
 	@Override
-	public Giant produce(final PlayerCollection players) throws SPFormatException {
+	public Giant produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Giant(getProperty("kind"));
 	}
 	/**

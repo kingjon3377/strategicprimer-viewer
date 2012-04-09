@@ -26,12 +26,13 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	/**
 	 * @param players
 	 *            the players on the map
+	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent event
 	 * @throws SPFormatException
 	 *             if this includes invalid data
 	 */
 	@Override
-	public BattlefieldEvent produce(final PlayerCollection players)
+	public BattlefieldEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
 	}

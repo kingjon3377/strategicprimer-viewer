@@ -203,7 +203,7 @@ public final class NodeFactory { // NOPMD
 			node = new RiverNode();
 			break;
 		case Skippable:
-			node = new SkippableNode(tag, line);
+			node = new SkippableNode(tag, line, warner);
 			break;
 		case Stone:
 			node = new StoneEventNode();

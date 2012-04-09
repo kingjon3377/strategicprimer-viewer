@@ -19,11 +19,12 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Oasis this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Oasis produce(final PlayerCollection players) throws SPFormatException {
+	public Oasis produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Oasis();
 	}
 	/**

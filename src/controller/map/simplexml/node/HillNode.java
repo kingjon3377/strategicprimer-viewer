@@ -19,11 +19,12 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Hill this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Hill produce(final PlayerCollection players) throws SPFormatException {
+	public Hill produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Hill();
 	}
 	/**

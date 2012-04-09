@@ -35,15 +35,17 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 	 * 
 	 * @param players
 	 *            ignored
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return the equivalent event
 	 * @throws SPFormatException
 	 *             if this Node contains invalid data.
 	 */
 	@Override
-	public IEvent produce(final PlayerCollection players)
+	public IEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return ((AbstractChildNode<? extends IEvent>) iterator().next())
-				.produce(players);
+				.produce(players, warner);
 	}
 	/**
 	 * @param property the name of a property

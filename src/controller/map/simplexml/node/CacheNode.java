@@ -19,11 +19,12 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the cache this Node represents
 	 * @throws SPFormatException if missing essential properties.
 	 */
 	@Override
-	public CacheFixture produce(final PlayerCollection players)
+	public CacheFixture produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return new CacheFixture(getProperty("kind"), getProperty("contents"));
 	}

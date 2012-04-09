@@ -20,11 +20,12 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 	/**
 	 * Produce the equivalent Fixture.
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the TextFixture this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public TextFixture produce(final PlayerCollection players) throws SPFormatException {
+	public TextFixture produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new TextFixture(sbuild.toString().trim(),
 				hasProperty("turn") ? Integer.parseInt(getProperty("turn"))
 						: -1);

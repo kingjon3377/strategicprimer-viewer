@@ -22,12 +22,13 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	/**
 	 * @param players
 	 *            ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the animal this represents
 	 * @throws SPFormatException
 	 *             if it's missing a required attribute
 	 */
 	@Override
-	public Animal produce(final PlayerCollection players)
+	public Animal produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return new Animal(getProperty("kind"), hasProperty("traces"),
 				hasProperty("talking")

@@ -19,11 +19,12 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the djinn this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Djinn produce(final PlayerCollection players) throws SPFormatException {
+	public Djinn produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Djinn();
 	}
 	/**

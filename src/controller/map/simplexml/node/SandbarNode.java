@@ -18,11 +18,12 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Sandbar this Node represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Sandbar produce(final PlayerCollection players) throws SPFormatException {
+	public Sandbar produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Sandbar();
 	}
 	/**

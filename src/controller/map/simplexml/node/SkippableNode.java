@@ -31,11 +31,12 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 *            the text of the tag name.
 	 * @param line
 	 *            the line of the file the tag occurs.
+	 * @param warner a Warning instance to warn about future-proofed tags with
 	 */
-	public SkippableNode(final String tag, final int line) {
+	public SkippableNode(final String tag, final int line, final Warning warner) {
 		super(SkippableNode.class);
 		if (!"row".equals(tag)) {
-			Warning.INSTANCE.warn(new SPFormatException("Unexpected tag " + tag
+			warner.warn(new SPFormatException("Unexpected tag " + tag
 					+ ": probably a more recent map format than viewer.", line));
 		}
 	}
@@ -46,13 +47,15 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * 
 	 * @param players
 	 *            ignored
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return nothing
 	 * @throws SPFormatException
 	 *             never
 	 */
 	@Deprecated
 	@Override
-	public SkippableNode produce(final PlayerCollection players)
+	public SkippableNode produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}

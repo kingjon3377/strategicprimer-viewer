@@ -18,18 +18,21 @@ public class RiverNode extends AbstractChildNode<River> {
 	public RiverNode() {
 		super(River.class);
 	}
+	
 	/**
 	 * We don't *promise* to throw an exception here if there are unexpected
 	 * children---still need to call checkNode().
 	 * 
 	 * @param players
 	 *            ignored
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return a River equivalent to this.
 	 * @throws SPFormatException
 	 *             if this has unexpected children or doesn't have needed data
 	 */
 	@Override
-	public River produce(final PlayerCollection players)
+	public River produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return River.getRiver(getProperty("direction"));
 	}

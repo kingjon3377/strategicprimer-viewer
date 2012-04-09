@@ -33,25 +33,26 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 * 
 	 * @param players
 	 *            the players in the map
+	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent Tile.
 	 * @throws SPFormatException
 	 *             if we contain invalid data.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Tile produce(final PlayerCollection players)
+	public Tile produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Tile tile = new Tile(Integer.parseInt(getProperty("row")),
 				Integer.parseInt(getProperty("column")),
 				TileType.getTileType(getProperty(TERRAIN_PROPERTY)));
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
-				tile.addRiver(((RiverNode) node).produce(players));
+				tile.addRiver(((RiverNode) node).produce(players, warner));
 			} else if (node instanceof AbstractFixtureNode) {
 				tile.addFixture(((AbstractFixtureNode<? extends TileFixture>) node)
-						.produce(players));
+						.produce(players, warner));
 			} else {
-				Warning.INSTANCE.warn(new SPFormatException(//NOPMD
+				warner.warn(new SPFormatException(//NOPMD
 						"Unexpected TileNode child of type " + node.toString(),
 						getLine()));
 			}

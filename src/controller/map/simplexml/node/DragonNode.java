@@ -19,11 +19,12 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the dragon this represents
 	 * @throws SPFormatException if missing a required attribute
 	 */
 	@Override
-	public Dragon produce(final PlayerCollection players) throws SPFormatException {
+	public Dragon produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Dragon(getProperty("kind"));
 	}
 	/**

@@ -24,11 +24,12 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Shrub this node represents
 	 * @throws SPFormatException if it doesn't have a "kind" property.
 	 */
 	@Override
-	public Shrub produce(final PlayerCollection players) throws SPFormatException {
+	public Shrub produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Shrub(getProperty(KIND_PROPERTY));
 	}
 	/**

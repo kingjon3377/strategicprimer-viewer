@@ -19,11 +19,12 @@ public class GriffinNode extends AbstractFixtureNode<Griffin> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the griffin this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Griffin produce(final PlayerCollection players) throws SPFormatException {
+	public Griffin produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Griffin();
 	}
 	/**

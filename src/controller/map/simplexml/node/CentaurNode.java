@@ -18,12 +18,13 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the centaur this represents
 	 * @throws SPFormatException
 	 *             if it's missing a required attribute
 	 */
 	@Override
-	public Centaur produce(final PlayerCollection players) throws SPFormatException {
+	public Centaur produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Centaur(getProperty("kind"));
 	}
 	

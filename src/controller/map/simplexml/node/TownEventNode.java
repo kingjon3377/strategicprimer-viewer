@@ -50,12 +50,14 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	/**
 	 * @param players
 	 *            the players in the map
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return the TownEvent equivalent to this Node.
 	 * @throws SPFormatException
 	 *             if it includes malformed data
 	 */
 	@Override
-	public AbstractTownEvent produce(final PlayerCollection players)
+	public AbstractTownEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		// ESCA-JAVA0177:
 		final AbstractTownEvent event; // NOPMD

@@ -19,17 +19,20 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	public PlayerNode() {
 		super(Player.class);
 	}
+	
 	/**
 	 * Produce the equivalent Player.
 	 * 
 	 * @param players
 	 *            ignored
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return the equivalent Player.
 	 * @throws SPFormatException
 	 *             if we contain invalid data.
 	 */
 	@Override
-	public Player produce(final PlayerCollection players)
+	public Player produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return new Player(Integer.parseInt(getProperty("number")),
 				getProperty("code_name"));

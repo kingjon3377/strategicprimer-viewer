@@ -19,11 +19,12 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Troll this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Troll produce(final PlayerCollection players) throws SPFormatException {
+	public Troll produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Troll();
 	}
 	/**

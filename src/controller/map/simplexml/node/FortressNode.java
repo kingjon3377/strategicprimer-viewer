@@ -32,12 +32,14 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	 * 
 	 * @param players
 	 *            the players in the map
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return the equivalent fortress.
 	 * @throws SPFormatException
 	 *             if this node contains invalid data.
 	 */
 	@Override
-	public Fortress produce(final PlayerCollection players)
+	public Fortress produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Fortress fort = new Fortress(
 				players.getPlayer(hasProperty(OWNER_PROP) ? Integer
@@ -45,7 +47,7 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 				hasProperty(NAME_PROP) ? getProperty(NAME_PROP) : "");
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof UnitNode) {
-				fort.addUnit(((UnitNode) node).produce(players));
+				fort.addUnit(((UnitNode) node).produce(players, warner));
 			} else {
 				throw new SPFormatException(
 						"Fortress should contain only units", node.getLine());

@@ -19,11 +19,12 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Forest this node represents.
 	 * @throws SPFormatException if the forest doesn't have a "kind" property.
 	 */
 	@Override
-	public Forest produce(final PlayerCollection players) throws SPFormatException {
+	public Forest produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Forest(getProperty("kind"), hasProperty("rows"));
 	}
 	/**

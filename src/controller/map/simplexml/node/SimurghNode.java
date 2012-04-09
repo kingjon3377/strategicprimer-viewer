@@ -19,11 +19,12 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the simurgh this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Simurgh produce(final PlayerCollection players) throws SPFormatException {
+	public Simurgh produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Simurgh();
 	}
 	/**

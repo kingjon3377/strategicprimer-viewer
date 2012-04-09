@@ -24,11 +24,12 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Mine this node represents
 	 * @throws SPFormatException if missing required properties
 	 */
 	@Override
-	public Mine produce(final PlayerCollection players) throws SPFormatException {
+	public Mine produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Mine(getProperty(KIND_PROPERTY), TownStatus.parseTownStatus(getProperty("status")));
 	}
 	/**

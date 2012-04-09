@@ -76,11 +76,12 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 * @param players
 	 *            the players in the map. May be null for Nodes that don't use
 	 *            it.
+	 * @param warner a Warning instance to use for warnings
 	 * @return the business-logic object represented by the node.
 	 * @throws SPFormatException
 	 *             if the data isn't legal.
 	 */
-	public abstract T produce(final PlayerCollection players)
+	public abstract T produce(final PlayerCollection players, Warning warner)
 			throws SPFormatException;
 
 	/**

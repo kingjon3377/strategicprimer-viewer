@@ -22,11 +22,12 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	/**
 	 * Produce the Node.
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the Meadow this represents
 	 * @throws SPFormatException if a required attribute is missing.
 	 */
 	@Override
-	public Meadow produce(final PlayerCollection players) throws SPFormatException {
+	public Meadow produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Meadow(getProperty("kind"),
 				"field".equals(getProperty("tag")),
 				Boolean.parseBoolean(getProperty("cultivated")));

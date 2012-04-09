@@ -19,11 +19,12 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the ogre this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Ogre produce(final PlayerCollection players) throws SPFormatException {
+	public Ogre produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Ogre();
 	}
 	/**

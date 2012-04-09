@@ -38,12 +38,14 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	 * 
 	 * @param players
 	 *            the players in the map
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return the equivalent Unit.
 	 * @throws SPFormatException
 	 *             if we contain invalid data.
 	 */
 	@Override
-	public Unit produce(final PlayerCollection players)
+	public Unit produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		return new Unit(players.getPlayer(hasProperty(OWNER_ATTR) ? Integer
 				.parseInt(getProperty(OWNER_ATTR)) : -1),

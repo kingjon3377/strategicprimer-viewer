@@ -66,17 +66,19 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	public boolean canUse(final String property) {
 		return EqualsAny.equalsAny(property, VERSION_PROP, "rows", "columns");
 	}
+	
 	/**
 	 * 
 	 * @param players
 	 *            will be null, and is ignored
-	 * 
+	 * @param warner
+	 *            a Warning instance to use for warnings
 	 * @return the map the XML represented
 	 * @throws SPFormatException
 	 *             if something's wrong with the format.
 	 */
 	@Override
-	public SPMap produce(final PlayerCollection players)
+	public SPMap produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final SPMap map = new SPMap(Integer.parseInt(getProperty(VERSION_PROP)),
 				Integer.parseInt(getProperty("rows")),
@@ -84,7 +86,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 		final List<TileNode> tiles = new LinkedList<TileNode>();
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
-				map.addPlayer(((PlayerNode) node).produce(players));
+				map.addPlayer(((PlayerNode) node).produce(players, warner));
 			} else if (node instanceof TileNode) {
 				tiles.add((TileNode) node);
 			} else {
@@ -93,7 +95,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			}
 		}
 		for (final TileNode node : tiles) {
-			map.addTile(node.produce(map.getPlayers()));
+			map.addTile(node.produce(map.getPlayers(), warner));
 		}
 		if (hasProperty("current_player")) {
 			map.getPlayers()

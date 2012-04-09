@@ -19,11 +19,12 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	}
 	/**
 	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the fairy this represents
 	 * @throws SPFormatException if missing a required attribute
 	 */
 	@Override
-	public Fairy produce(final PlayerCollection players) throws SPFormatException {
+	public Fairy produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Fairy(getProperty("kind"));
 	}
 	/**
