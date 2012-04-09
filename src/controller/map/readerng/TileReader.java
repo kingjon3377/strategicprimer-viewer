@@ -45,7 +45,7 @@ public class TileReader implements INodeReader<Tile> {
 			throws SPFormatException {
 		final Tile tile = new Tile(parseInt(getAttribute(element, "row")),
 				parseInt(getAttribute(element, "column")),
-				TileType.getTileType(getAttribute(element, "type")));
+				TileType.getTileType(getAttribute(element, "kind")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& FixtureReader.supports(event.asStartElement().getName()
