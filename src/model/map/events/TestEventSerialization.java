@@ -145,13 +145,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				final FortificationEvent one = new FortificationEvent(status, // NOPMD
 						size, 10, "one");
 				assertEquals(
-						"First CityEvent serialization test, reflection, status "
+						"First FortificationEvent serialization test, reflection, status "
 								+ status + " and size " + size,
 						one, // NOPMD
 						helpSerialization(reader, one,
 								FortificationEvent.class, true));
 				assertEquals(
-						"First CityEvent serialization test, non-reflection, status "
+						"First FortificationEvent serialization test, non-reflection, status "
 								+ status + " and size " + size,
 						one,
 						helpSerialization(reader, one,
@@ -159,13 +159,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				final FortificationEvent two = new FortificationEvent(status, // NOPMD
 						size, 40, "two");
 				assertEquals(
-						"Second CityEvent serialization test, reflection, status "
+						"Second FortificationEvent serialization test, reflection, status "
 								+ status + " and size " + size,
 						two,
 						helpSerialization(reader, two,
 								FortificationEvent.class, true));
 				assertEquals(
-						"Second CityEvent serialization test, non-reflection, status "
+						"Second FortificationEvent serialization test, non-reflection, status "
 								+ status + " and size " + size,
 						two,
 						helpSerialization(reader, two,
