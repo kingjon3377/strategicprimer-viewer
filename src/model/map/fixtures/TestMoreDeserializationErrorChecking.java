@@ -150,5 +150,28 @@ public final class TestMoreDeserializationErrorChecking {
 				new StringReader("<tile row=\"0\" column=\"0\" />"),
 				Tile.class, true, warner);
 	}
-
+	/**
+	 * Test that a tile objects to non-fixture child.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader(
+						"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>"),
+				Tile.class, false, warner);
+	}
+	/**
+	 * Test that a tile objects to non-fixture child.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader(
+						"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>"),
+				Tile.class, true, warner);
+	}
 }

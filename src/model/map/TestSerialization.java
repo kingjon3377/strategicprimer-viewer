@@ -1,6 +1,10 @@
 package model.map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -12,6 +16,9 @@ import model.map.fixtures.Unit;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import util.FatalWarning;
+import util.Warning;
 
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
@@ -161,5 +168,25 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				helpSerialization(reader, four, Tile.class, true));
 		assertEquals("Fourth Tile serialization test, non-reflection", four,
 				helpSerialization(reader, four, Tile.class, false));
+		final Tile five = new Tile(4, 4, TileType.Plains);
+		final String xml = five.toXML().replace("kind", "type");
+		assertEquals("Test Tile deserialization of deprecated tile-type idiom, non-reflection", five,
+				reader.readXML(new StringReader(xml), Tile.class, false, Warning.INSTANCE));
+		assertEquals("Test Tile deserialization of deprecated tile-type idiom, reflection", five,
+				reader.readXML(new StringReader(xml), Tile.class, true, Warning.INSTANCE));
+		try {
+			reader.readXML(new StringReader(xml), Tile.class, true, warner());
+			fail("Should have warned about deprecated tile-type idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warned about deprecated tile-type idiom, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(xml), Tile.class, false, warner());
+			fail("Should have warned about deprecated tile-type idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warned about deprecated tile-type idiom, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
 	}
 }
