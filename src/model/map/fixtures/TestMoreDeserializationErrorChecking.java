@@ -283,7 +283,7 @@ public final class TestMoreDeserializationErrorChecking { // NOPMD
 	@Test(expected = SPFormatException.class)
 	public void testMeadowChild() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<meadow><troll /></meadow>"),
-				Mine.class, false, warner);
+				Meadow.class, false, warner);
 	}
 	/**
 	 * Test that a Meadow can't have any children.
