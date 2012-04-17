@@ -275,4 +275,64 @@ public final class TestMoreDeserializationErrorChecking { // NOPMD
 		reader.readXML(new StringReader("<mine kind=\"gold\" />"),
 				Mine.class, true, warner);
 	}
+	/**
+	 * Test that a Meadow can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMeadowChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<meadow><troll /></meadow>"),
+				Mine.class, false, warner);
+	}
+	/**
+	 * Test that a Meadow can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMeadowChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<meadow><troll /></meadow>"),
+				Meadow.class, true, warner);
+	}
+	/**
+	 * Test that a Meadow must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMeadowKind() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<meadow cultivated=\"false\" />"),
+				Meadow.class, false, warner);
+	}
+	/**
+	 * Test that a Meadow must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMeadowKindReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<meadow cultivated=\"false\" />"),
+				Meadow.class, true, warner);
+	}
+	/**
+	 * Test that a Meadow must have a 'cultivated' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMeadowCultivated() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<meadow kind=\"flax\" />"),
+				Meadow.class, false, warner);
+	}
+	/**
+	 * Test that a Meadow must have a 'cultivated' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMeadowCultivatedReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<meadow kind=\"flax\" />"),
+				Meadow.class, true, warner);
+	}
 }
