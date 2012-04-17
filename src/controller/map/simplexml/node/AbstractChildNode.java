@@ -91,6 +91,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 *            the destination node.
 	 * @param warner the Warning instance to use if necessary
 	 */
+	@Deprecated
 	protected final void moveEverythingTo(
 			final AbstractChildNode<? extends T> dest, final Warning warner) {
 		moveChildrenTo(dest);
