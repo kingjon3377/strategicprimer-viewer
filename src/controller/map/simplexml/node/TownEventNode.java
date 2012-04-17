@@ -107,7 +107,7 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	 */
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
-		if (hasProperty(KIND_PROPERTY) && hasProperty(DC_PROPERTY)) {
+		if (hasProperty(DC_PROPERTY)) {
 			if (hasProperty(SIZE_PROPERTY) && hasProperty(STATUS_PROP)) {
 				if (!hasProperty(NAME_PROPERTY)) {
 					warner.warn(new SPFormatException("Town-related events should have \"name\" property", getLine()));
@@ -119,7 +119,7 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 			}
 		} else {
 			throw new SPFormatException(
-					"Event must have \"kind\" and \"dc\" properties", getLine());
+					"Event must have \"dc\" property", getLine());
 		}
 	}
 
