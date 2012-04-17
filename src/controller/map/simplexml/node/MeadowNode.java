@@ -63,7 +63,7 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 			}
 		} else {
 			throw new SPFormatException(
-					"The Nodeactory should have generated a \"tag\" property to tell whether this is a field or a meadow",
+					"The NodeFactory should have generated a \"tag\" property to tell whether this is a field or a meadow",
 					getLine());
 		}
 	}
