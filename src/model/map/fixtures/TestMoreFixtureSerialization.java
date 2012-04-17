@@ -260,7 +260,7 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws XMLStreamException never
 	 */
 	@Test
-	public void testUnitWarnings() throws XMLStreamException, SPFormatException {
+	public void testUnitWarnings() throws XMLStreamException, SPFormatException { // NOPMD
 		try {
 			reader.readXML(new StringReader("<unit />"), Unit.class, true, warner());
 			fail("Expected objection to unit without owner");
@@ -323,5 +323,90 @@ public final class TestMoreFixtureSerialization extends
 					"Warning on deserialization of Unit with empty kind, reflection",
 					except.getCause() instanceof SPFormatException);
 		}
+	}
+	/**
+	 * Test more Unit warnings.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testMoreUnitWarnings() throws XMLStreamException, SPFormatException {
+		final Unit one = new Unit(new Player(1, ""), "unitType", "unitName");
+		final String oneXMLMangled = one.toXML().replace("kind", "type");
+		assertEquals(
+				"Deserialize properly with deprecated use of 'type' for unit kind, non-reflection",
+				one, reader.readXML(
+						new StringReader(oneXMLMangled),
+						Unit.class, false, Warning.INSTANCE));
+		assertEquals(
+				"Deserialize properly with deprecated use of 'type' for unit kind, reflection",
+				one, reader.readXML(
+						new StringReader(oneXMLMangled),
+						Unit.class, true, Warning.INSTANCE));
+		try {
+			reader.readXML(new StringReader(oneXMLMangled), Unit.class, false, warner());
+			fail("Should have warned about deprecated use of 'type' for unit kind: non-reflection");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning about deprecated use of 'type' for unit kind: non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(oneXMLMangled), Unit.class, true, warner());
+			fail("Should have warned about deprecated use of 'type' for unit kind: reflection");
+		} catch (FatalWarning except) {
+			assertTrue(
+					"Warning about deprecated use of 'type' for unit kind: reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(
+					"<unit owner=\"2\" kind=\"unit\" />"), Unit.class, false,
+					warner());
+			fail("Should have warned about missing 'name'");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about missing unit 'name': non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(
+					"<unit owner=\"2\" kind=\"unit\" />"), Unit.class, true,
+					warner());
+			fail("Should have warned about missing 'name'");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about missing unit 'name': reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		final Unit two = new Unit(new Player(2, ""), "", "name");
+		assertEquals("Deserialize unit with no kind properly, reflection", two,
+				reader.readXML(new StringReader(two.toXML()), Unit.class, true,
+						Warning.INSTANCE));
+		assertEquals("Deserialize unit with no kind properly, non-reflection", two,
+				reader.readXML(new StringReader(two.toXML()), Unit.class, false,
+						Warning.INSTANCE));
+		final Unit three = new Unit(new Player(-1, ""), "kind", "unitThree");
+		assertEquals("Deserialize unit with no owner properly, reflection",
+				three, reader.readXML(new StringReader(
+						"<unit kind=\"kind\" name=\"unitThree\" />"),
+						Unit.class, true, Warning.INSTANCE));
+		assertEquals("Deserialize unit with no owner properly, non-reflection",
+				three, reader.readXML(new StringReader(
+						"<unit kind=\"kind\" name=\"unitThree\" />"),
+						Unit.class, false, Warning.INSTANCE));
+		final Unit four = new Unit(new Player(3, ""), "unitKind", "");
+		assertEquals("Deserialize unit with no name properly, reflection",
+				four, reader.readXML(new StringReader(four.toXML()),
+						Unit.class, true, Warning.INSTANCE));
+		assertEquals("Deserialize unit with no name properly, non-reflection",
+				four, reader.readXML(new StringReader(four.toXML()),
+						Unit.class, false, Warning.INSTANCE));
+		assertEquals("Deserialize unit with empty name properly, reflection",
+				four, reader.readXML(new StringReader(
+						"<unit owner=\"3\" kind=\"unitKind\" name=\"\" />"),
+						Unit.class, true, Warning.INSTANCE));
+		assertEquals("Deserialize unit with empty name properly, non-reflection",
+				four, reader.readXML(new StringReader(
+						"<unit owner=\"3\" kind=\"unitKind\" name=\"\" />"),
+						Unit.class, false, Warning.INSTANCE));
 	}
 }

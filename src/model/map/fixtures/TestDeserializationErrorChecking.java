@@ -4,6 +4,8 @@ import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.events.AbstractTownEvent;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -96,5 +98,41 @@ public final class TestDeserializationErrorChecking {
 	@Test(expected = SPFormatException.class)
 	public void testUnitChildrenReflection() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<unit><unit /></unit>"), Unit.class, true, warner);
+	}
+	/**
+	 * Test that a Troll shouldn't have children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTrollChildren() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<troll><troll /></troll>"), Troll.class, false, warner);
+	}
+	/**
+	 * Test that a Troll shouldn't have children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTrollChildrenReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<troll><troll /></troll>"), Troll.class, true, warner);
+	}
+	/**
+	 * Test that a town must have a DC.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTownDC() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<town />"), AbstractTownEvent.class, false, warner);
+	}
+	/**
+	 * Test that a town must have a DC.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTownDCReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<town />"), AbstractTownEvent.class, true, warner);
 	}
 }
