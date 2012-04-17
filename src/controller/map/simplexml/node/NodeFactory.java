@@ -50,7 +50,7 @@ public final class NodeFactory { // NOPMD
 	 * Tags we expect to use in the future; they are SkippableNodes for now and
 	 * we'll warn if they're used.
 	 */
-	private static final String[] FUTURE = { "include", "worker", "explorer",
+	private static final String[] FUTURE = { "future", "include", "worker", "explorer",
 			"building", "resource", "animal", "changeset", "change",
 			"move", "work", "discover" };
 	/**
