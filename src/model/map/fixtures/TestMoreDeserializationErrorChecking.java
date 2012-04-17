@@ -19,7 +19,7 @@ import controller.map.simplexml.SimpleXMLReader;
  * @author Jonathan Lovelace
  *
  */
-public final class TestMoreDeserializationErrorChecking {
+public final class TestMoreDeserializationErrorChecking { // NOPMD
 	/**
 	 * Constructor, to appease static-analysis plugins.
 	 */
@@ -173,5 +173,45 @@ public final class TestMoreDeserializationErrorChecking {
 				new StringReader(
 						"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>"),
 				Tile.class, true, warner);
+	}
+	/**
+	 * Test that a Minotaur can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMinotaurChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<minotaur><troll /></minotaur>"),
+				Minotaur.class, false, warner);
+	}
+	/**
+	 * Test that a Minotaur can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMinotaurChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<minotaur><troll /></minotaur>"),
+				Minotaur.class, true, warner);
+	}
+	/**
+	 * Test that a Mountain can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMountainChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mountain><troll /></mountain>"),
+				Ogre.class, false, warner);
+	}
+	/**
+	 * Test that a Mountain can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMountainChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mountain><troll /></mountain>"),
+				Mountain.class, true, warner);
 	}
 }

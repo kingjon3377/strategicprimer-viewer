@@ -248,6 +248,27 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				helpSerialization(reader, two, MineralEvent.class, true));
 		assertEquals("Second MineralEvent serialization test, non-reflection",
 				two, helpSerialization(reader, two, MineralEvent.class, false));
+		final String xml = two.toXML().replace("kind", "mineral");
+		assertEquals("Deserialization of deprecated Mineral idiom, reflection",
+				two, reader.readXML(new StringReader(xml), MineralEvent.class,
+						true, Warning.INSTANCE));
+		assertEquals("Deserialization of deprecated Mineral idiom, non-reflection",
+				two, reader.readXML(new StringReader(xml), MineralEvent.class,
+						false, Warning.INSTANCE));
+		try {
+			reader.readXML(new StringReader(xml), MineralEvent.class, true, warner());
+			fail("Should warn about deprecated Mineral idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warned about deprecated Mineral idiom, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(xml), MineralEvent.class, false, warner());
+			fail("Should warn about deprecated Mineral idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warned about deprecated Mineral idiom, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
 	}
 
 	/**

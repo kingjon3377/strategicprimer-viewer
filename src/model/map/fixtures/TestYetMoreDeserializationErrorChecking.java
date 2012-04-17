@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.Player;
 import model.map.Tile;
+import model.map.events.MineralEvent;
 import model.map.events.StoneEvent;
 
 import org.junit.Before;
@@ -335,5 +336,151 @@ public final class TestYetMoreDeserializationErrorChecking { //NOPMD
 	public void testPlayerNameReflection() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<player number=\"1\" />"),
 				Player.class, true, warner);
+	}
+	/**
+	 * Test that a Phoenix can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testPhoenixChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<phoenix><troll /></phoenix>"),
+				Phoenix.class, false, warner);
+	}
+	/**
+	 * Test that a Phoenix can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testPhoenixChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<phoenix><troll /></phoenix>"),
+				Phoenix.class, true, warner);
+	}
+	/**
+	 * Test that an Ogre can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testOgreChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<ogre><troll /></ogre>"),
+				Ogre.class, false, warner);
+	}
+	/**
+	 * Test that an Ogre can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testOgreChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<ogre><troll /></ogre>"),
+				Ogre.class, true, warner);
+	}
+	/**
+	 * Test that an Oasis can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testOasisChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<oasis><troll /></oasis>"),
+				Oasis.class, false, warner);
+	}
+	/**
+	 * Test that an Oasis can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testOasisChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<oasis><troll /></oasis>"),
+				Oasis.class, true, warner);
+	}
+	/**
+	 * Test that a MineralEvent can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mineral><troll /></mineral>"),
+				MineralEvent.class, false, warner);
+	}
+	/**
+	 * Test that a MineralEvent can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mineral><troll /></mineral>"),
+				MineralEvent.class, true, warner);
+	}
+	/**
+	 * Test that a MineralEvent must have a 'kind' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralKind() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader(
+				"<mineral dc=\"0\" exposed=\"false\" />"), MineralEvent.class,
+				false, warner);
+	}
+	/**
+	 * Test that a MineralEvent must have a 'kind' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralKindReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader(
+				"<mineral dc=\"0\" exposed=\"false\" />"), MineralEvent.class,
+				true, warner);
+	}
+	/**
+	 * Test that a MineralEvent must have a 'dc' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralDC() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader(
+				"<mineral kind=\"gold\" exposed=\"false\" />"), MineralEvent.class,
+				false, warner);
+	}
+	/**
+	 * Test that a MineralEvent must have a 'dc' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralDCReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader(
+				"<mineral kind=\"gold\" exposed=\"false\" />"), MineralEvent.class,
+				true, warner);
+	}
+	/**
+	 * Test that a MineralEvent must have an 'exposed' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralExposed() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader(
+				"<mineral dc=\"0\" kind=\"gold\" />"), MineralEvent.class,
+				false, warner);
+	}
+	/**
+	 * Test that a MineralEvent must have an 'exposed' property.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineralExposedReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader(
+				"<mineral dc=\"0\" kind=\"gold\" />"), MineralEvent.class,
+				true, warner);
 	}
 }
