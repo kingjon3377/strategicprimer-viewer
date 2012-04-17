@@ -145,6 +145,25 @@ public final class TestMoreFixtureSerialization extends
 				helpSerialization(reader, four, Mine.class, true));
 		assertEquals("Fourth test of Mine serialization, non-reflection", four,
 				helpSerialization(reader, four, Mine.class, false));
+		final String xml = four.toXML().replace("kind", "product"); // NOPMD
+		assertEquals("Deprecated Mine idiom, reflection", four, reader.readXML(
+				new StringReader(xml), Mine.class, true, Warning.INSTANCE));
+		assertEquals("Deprecated Mine idiom, non-reflection", four, reader.readXML(
+				new StringReader(xml), Mine.class, false, Warning.INSTANCE));
+		try {
+			reader.readXML(new StringReader(xml), Mine.class, false, warner());
+			fail("Should warn about deprecated Mine idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warned about deprecated Mine idiom",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(xml), Mine.class, true, warner());
+			fail("Should warn about deprecated Mine idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warned about deprecated Mine idiom",
+					except.getCause() instanceof SPFormatException);
+		}
 	}
 
 	/**

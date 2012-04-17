@@ -19,6 +19,7 @@ import controller.map.simplexml.SimpleXMLReader;
  * @author Jonathan Lovelace
  *
  */
+//ESCA-JAVA0136:
 public final class TestMoreDeserializationErrorChecking { // NOPMD
 	/**
 	 * Constructor, to appease static-analysis plugins.
@@ -213,5 +214,65 @@ public final class TestMoreDeserializationErrorChecking { // NOPMD
 	public void testMountainChildReflection() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<mountain><troll /></mountain>"),
 				Mountain.class, true, warner);
+	}
+	/**
+	 * Test that a Mine can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mine><troll /></mine>"),
+				Mine.class, false, warner);
+	}
+	/**
+	 * Test that a Mine can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mine><troll /></mine>"),
+				Mine.class, true, warner);
+	}
+	/**
+	 * Test that a Mine must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineKind() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mine status=\"active\"/>"),
+				Mine.class, false, warner);
+	}
+	/**
+	 * Test that a Mine must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineKindReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mine status=\"active\" />"),
+				Mine.class, true, warner);
+	}
+	/**
+	 * Test that a Mine must have a status.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineStatus() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mine kind=\"gold\"/>"),
+				Mine.class, false, warner);
+	}
+	/**
+	 * Test that a Mine must have a status.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testMineStatusReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<mine kind=\"gold\" />"),
+				Mine.class, true, warner);
 	}
 }
