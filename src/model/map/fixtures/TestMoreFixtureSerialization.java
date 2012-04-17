@@ -168,6 +168,27 @@ public final class TestMoreFixtureSerialization extends
 				helpSerialization(reader, two, Shrub.class, true));
 		assertEquals("Second test of Shrub serialization, non-reflection", two,
 				helpSerialization(reader, two, Shrub.class, false));
+		final String xml = two.toXML().replace("kind", "shrub");
+		assertEquals("Deserialization of mangled shrub, reflection", two,
+				reader.readXML(new StringReader(xml), Shrub.class, true,
+						Warning.INSTANCE));
+		assertEquals("Deserialization of mangled shrub, non-reflection", two,
+				reader.readXML(new StringReader(xml), Shrub.class, true,
+						Warning.INSTANCE));
+		try {
+			reader.readXML(new StringReader(xml), Shrub.class, false, warner());
+			fail("Should have warned about depreated shrub idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about deprecated shrub idiom, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(xml), Shrub.class, true, warner());
+			fail("Should have warned about depreated shrub idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about deprecated shrub idiom, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
 	}
 
 	/**
