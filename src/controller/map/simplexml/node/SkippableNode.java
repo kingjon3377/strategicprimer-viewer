@@ -18,6 +18,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	/**
 	 * Required for reflection.
 	 */
+	@Deprecated
 	public SkippableNode() {
 		super(SkippableNode.class);
 	}
