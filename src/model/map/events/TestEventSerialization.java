@@ -1,6 +1,10 @@
 package model.map.events;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -8,6 +12,9 @@ import model.map.BaseTestFixtureSerialization;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import util.FatalWarning;
+import util.Warning;
 
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
@@ -127,6 +134,29 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						helpSerialization(reader, two, CityEvent.class, false));
 			}
 		}
+		final CityEvent three = new CityEvent(TownStatus.Active, TownSize.Small, 30, "");
+		assertEquals(
+				"Serialization of CityEvent without a name, reflection",
+				three,
+				reader.readXML(new StringReader(three.toXML()), CityEvent.class, true, Warning.INSTANCE));
+		assertEquals(
+				"Serialization of CityEvent without a name, non-reflection",
+				three,
+				reader.readXML(new StringReader(three.toXML()), CityEvent.class, false, Warning.INSTANCE));
+		try {
+			helpSerialization(reader, three, CityEvent.class, true);
+			fail("Should have warned about CityEvent without a name");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about CityEvent without a name",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			helpSerialization(reader, three, CityEvent.class, false);
+			fail("Should have warned about CityEvent without a name");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about CityEvent without a name",
+					except.getCause() instanceof SPFormatException);
+		}
 	}
 
 	/**
@@ -171,6 +201,29 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						helpSerialization(reader, two,
 								FortificationEvent.class, false));
 			}
+		}
+		final FortificationEvent three = new FortificationEvent(TownStatus.Active, TownSize.Small, 30, "");
+		assertEquals(
+				"Serialization of FortificationEvent without a name, reflection",
+				three,
+				reader.readXML(new StringReader(three.toXML()), FortificationEvent.class, true, Warning.INSTANCE));
+		assertEquals(
+				"Serialization of FortificationEvent without a name, non-reflection",
+				three,
+				reader.readXML(new StringReader(three.toXML()), FortificationEvent.class, false, Warning.INSTANCE));
+		try {
+			helpSerialization(reader, three, FortificationEvent.class, true);
+			fail("Should have warned about FortificationEvent without a name");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about FortificationEvent without a name",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			helpSerialization(reader, three, FortificationEvent.class, false);
+			fail("Should have warned about FortificationEvent without a name");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about FortificationEvent without a name",
+					except.getCause() instanceof SPFormatException);
 		}
 	}
 
@@ -257,6 +310,29 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 								+ status + " and size " + size, two,
 						helpSerialization(reader, two, TownEvent.class, false));
 			}
+		}
+		final TownEvent three = new TownEvent(TownStatus.Active, TownSize.Small, 30, "");
+		assertEquals(
+				"Serialization of TownEvent without a name, reflection",
+				three,
+				reader.readXML(new StringReader(three.toXML()), TownEvent.class, true, Warning.INSTANCE));
+		assertEquals(
+				"Serialization of TownEvent without a name, non-reflection",
+				three,
+				reader.readXML(new StringReader(three.toXML()), TownEvent.class, false, Warning.INSTANCE));
+		try {
+			helpSerialization(reader, three, TownEvent.class, true);
+			fail("Should have warned about TownEvent without a name");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about TownEvent without a name",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			helpSerialization(reader, three, TownEvent.class, false);
+			fail("Should have warned about TownEvent without a name");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about TownEvent without a name",
+					except.getCause() instanceof SPFormatException);
 		}
 	}
 }
