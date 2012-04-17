@@ -123,7 +123,13 @@ public final class NodeFactory { // NOPMD
 			final int line, final Warning warner) throws SPFormatException, InstantiationException,
 			IllegalAccessException {
 		final Tag localtag = getTag(tag, line);
-		final AbstractChildNode<?> node = localtag.getTagClass().newInstance();
+		// ESCA-JAVA0177:
+		final AbstractChildNode<?> node; //NOPMD
+		if (Tag.Skippable.equals(localtag)) {
+			node = new SkippableNode(tag, line, warner);
+		} else {
+			node = localtag.getTagClass().newInstance();
+		}
 		if (EqualsAny.equalsAny(localtag, Tag.City,
 				Tag.Fortification, Tag.Town)) {
 			node.addProperty(EVENT_KIND_PROP, tag, warner);
