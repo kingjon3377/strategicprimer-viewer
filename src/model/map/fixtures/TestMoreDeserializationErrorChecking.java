@@ -335,4 +335,24 @@ public final class TestMoreDeserializationErrorChecking { // NOPMD
 		reader.readXML(new StringReader("<meadow kind=\"flax\" />"),
 				Meadow.class, true, warner);
 	}
+	/**
+	 * Test that an Animal can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testAnimalChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<animal><troll /></animal>"),
+				Animal.class, false, warner);
+	}
+	/**
+	 * Test that an Animal can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testAnimalChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<animal><troll /></animal>"),
+				Animal.class, true, warner);
+	}
 }
