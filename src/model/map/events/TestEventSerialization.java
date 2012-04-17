@@ -276,6 +276,28 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 					+ kind, two,
 					helpSerialization(reader, two, StoneEvent.class, false));
 		}
+		final StoneEvent three = new StoneEvent(StoneKind.Marble, 10);
+		final String xml = three.toXML().replace("kind", "stone");
+		assertEquals("Deserialization of deprecated stone idiom, reflection",
+				three, reader.readXML(new StringReader(xml), StoneEvent.class,
+						true, Warning.INSTANCE));
+		assertEquals("Deserialization of deprecated stone idiom, non-reflection",
+				three, reader.readXML(new StringReader(xml), StoneEvent.class,
+						false, Warning.INSTANCE));
+		try {
+			reader.readXML(new StringReader(xml), StoneEvent.class, true, warner());
+			fail("Should have warned about deprecated stone idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about deprecated stone idiom, reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(new StringReader(xml), StoneEvent.class, false, warner());
+			fail("Should have warned about deprecated stone idiom");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about deprecated stone idiom, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
 	}
 
 	/**

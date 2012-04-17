@@ -19,7 +19,6 @@ import org.junit.Test;
 
 import util.FatalWarning;
 import util.Warning;
-
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -186,6 +185,73 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			fail("Should have warned about deprecated tile-type idiom");
 		} catch (FatalWarning except) {
 			assertTrue("Warned about deprecated tile-type idiom, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+	}
+	/**
+	 * Test that row nodes are ignored, and that "future" tags are skipped but warned about.
+	 * @throws SPFormatException
+	 *             on SP format error
+	 * @throws XMLStreamException
+	 *             on XML reading error
+	 */
+	@Test
+	public void testSkppableSerialization() throws XMLStreamException,
+			SPFormatException {
+		assertEquals(
+				"Two maps, one with row tags, one without, non-reflection",
+				reader.readXML(new StringReader(
+						"<map rows=\"1\" columns=\"1\" version=\"2\" />"),
+						SPMap.class, false, Warning.INSTANCE),
+				reader.readXML(
+						new StringReader(
+								"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>"),
+						SPMap.class, false, Warning.INSTANCE));
+		assertEquals(
+				"Two maps, one with row tags, one without, reflection",
+				reader.readXML(new StringReader(
+						"<map rows=\"1\" columns=\"1\" version=\"2\" />"),
+						SPMap.class, true, Warning.INSTANCE),
+				reader.readXML(
+						new StringReader(
+								"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>"),
+						SPMap.class, true, Warning.INSTANCE));
+		assertEquals(
+				"Two maps, one with future tag, one without, non-reflection",
+				reader.readXML(new StringReader(
+						"<map rows=\"1\" columns=\"1\" version=\"2\" />"),
+						SPMap.class, false, Warning.INSTANCE),
+				reader.readXML(
+						new StringReader(
+								"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>"),
+						SPMap.class, false, Warning.INSTANCE));
+		assertEquals(
+				"Two maps, one with future tag, one without, reflection",
+				reader.readXML(new StringReader(
+						"<map rows=\"1\" columns=\"2\" version=\"2\" />"),
+						SPMap.class, true, Warning.INSTANCE),
+				reader.readXML(
+						new StringReader(
+								"<map rows=\"1\" columns=\"2\" version=\"2\"><future /></map>"),
+						SPMap.class, true, Warning.INSTANCE));
+		try {
+			reader.readXML(
+					new StringReader(
+							"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>"),
+					SPMap.class, false, warner());
+			fail("Should have warned about 'future' tag");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about 'future' tag, non-reflection",
+					except.getCause() instanceof SPFormatException);
+		}
+		try {
+			reader.readXML(
+					new StringReader(
+							"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>"),
+					SPMap.class, true, warner());
+			fail("Should have warned about 'future' tag");
+		} catch (FatalWarning except) {
+			assertTrue("Warning about 'future' tag, reflection",
 					except.getCause() instanceof SPFormatException);
 		}
 	}
