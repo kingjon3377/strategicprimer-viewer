@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.Tile;
 import model.map.events.AbstractTownEvent;
+import model.map.events.BattlefieldEvent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -354,5 +355,65 @@ public final class TestMoreDeserializationErrorChecking { // NOPMD
 	public void testAnimalChildReflection() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<animal><troll /></animal>"),
 				Animal.class, true, warner);
+	}
+	/**
+	 * Test that an Animal must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testAnimalKind() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<animal />"),
+				Animal.class, false, warner);
+	}
+	/**
+	 * Test that an Animal must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testAnimalKindReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<animal />"),
+				Animal.class, true, warner);
+	}
+	/**
+	 * Test that a Battlefield can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testBattlefieldChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<battlefield><troll /></battlefield>"),
+				BattlefieldEvent.class, false, warner);
+	}
+	/**
+	 * Test that a Battlefield can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testBattlefieldChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<battlefield><troll /></battlefield>"),
+				BattlefieldEvent.class, true, warner);
+	}
+	/**
+	 * Test that a Battlefield must have a DC.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testBattlefieldDC() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<battlefield />"),
+				BattlefieldEvent.class, false, warner);
+	}
+	/**
+	 * Test that a Battlefield must have a DC.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testBattlefieldDCReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<battlefield />"),
+				BattlefieldEvent.class, true, warner);
 	}
 }
