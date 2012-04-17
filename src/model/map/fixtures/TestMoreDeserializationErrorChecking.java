@@ -4,6 +4,7 @@ import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.Tile;
 import model.map.events.AbstractTownEvent;
 
 import org.junit.Before;
@@ -83,4 +84,71 @@ public final class TestMoreDeserializationErrorChecking {
 		reader.readXML(new StringReader("<town dc=\"0\" size=\"small\" />"),
 				AbstractTownEvent.class, true, warner);
 	}
+	/**
+	 * Test that a tile must have a row.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileRow() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader("<tile column=\"0\" kind=\"plains\" />"),
+				Tile.class, false, warner);
+	}
+	/**
+	 * Test that a tile must have a row.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileRowReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader("<tile column=\"0\" kind=\"plains\" />"),
+				Tile.class, true, warner);
+	}
+	/**
+	 * Test that a tile must have a column.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileColumn() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader("<tile row=\"0\" kind=\"plains\" />"),
+				Tile.class, false, warner);
+	}
+	/**
+	 * Test that a tile must have a column.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileColumnReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader("<tile row=\"0\" kind=\"plains\" />"),
+				Tile.class, true, warner);
+	}
+	/**
+	 * Test that a tile must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileKind() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader("<tile row=\"0\" column=\"0\" />"),
+				Tile.class, false, warner);
+	}
+	/**
+	 * Test that a tile must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testTileKindReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(
+				new StringReader("<tile row=\"0\" column=\"0\" />"),
+				Tile.class, true, warner);
+	}
+
 }
