@@ -139,7 +139,7 @@ public final class TestYetMoreDeserializationErrorChecking {
 				Sphinx.class, false, warner);
 	}
 	/**
-	 * Test that a StoneEvent doesn't have any children.
+	 * Test that a Sphinx doesn't have any children.
 	 * @throws SPFormatException always
 	 * @throws XMLStreamException never
 	 */
