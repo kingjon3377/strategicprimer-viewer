@@ -9,7 +9,9 @@ import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.Tile;
 import model.map.events.AbstractTownEvent;
+import model.map.events.BattlefieldEvent;
 import model.map.events.CaveEvent;
 
 import org.junit.Before;
@@ -202,7 +204,7 @@ public final class TestDeserializationErrorChecking { // NOPMD
 	}
 
 	/**
-	 * Test that a town must have a DC.
+	 * Test that a town must have a DC, a size, and a status.
 	 * 
 	 * @throws SPFormatException
 	 *             always
@@ -210,11 +212,19 @@ public final class TestDeserializationErrorChecking { // NOPMD
 	 *             never
 	 */
 	@Test
-	public void testTownDC() throws XMLStreamException, SPFormatException {
+	public void testTownErrors() throws XMLStreamException, SPFormatException {
 		assertMissingProperty(reader, "<town />", AbstractTownEvent.class,
 				"dc", false, false);
 		assertMissingProperty(reader, "<town />", AbstractTownEvent.class,
 				"dc", true, false);
+		assertMissingProperty(reader, "<town dc=\"0\" status=\"active\" />",
+				AbstractTownEvent.class, "size", false, false);
+		assertMissingProperty(reader, "<town dc=\"0\" status=\"active\" />",
+				AbstractTownEvent.class, "size", true, false);
+		assertMissingProperty(reader, "<town dc=\"0\" size=\"small\" />",
+				AbstractTownEvent.class, "status", false, false);
+		assertMissingProperty(reader, "<town dc=\"0\" size=\"small\" />",
+				AbstractTownEvent.class, "status", true, false);
 	}
 
 	/**
@@ -267,5 +277,159 @@ public final class TestDeserializationErrorChecking { // NOPMD
 				false, false);
 		assertUnwantedChild(reader, "<djinn><troll /></djinn>", Djinn.class,
 				true, false);
+	}
+	
+	/**
+	 * Test that a tile must have a row, a column, and a kind, and objects to
+	 * non-fixture children.
+	 * 
+	 * @throws SPFormatException
+	 *             always
+	 * @throws XMLStreamException
+	 *             never
+	 */
+	@Test
+	public void testTileErrors() throws XMLStreamException, SPFormatException {
+		assertMissingProperty(reader, "<tile column=\"0\" kind=\"plains\" />",
+				Tile.class, "row", false, false);
+		assertMissingProperty(reader, "<tile column=\"0\" kind=\"plains\" />",
+				Tile.class, "row", true, false);
+		assertMissingProperty(reader, "<tile row=\"0\" kind=\"plains\" />",
+				Tile.class, "column", false, false);
+		assertMissingProperty(reader, "<tile row=\"0\" kind=\"plains\" />",
+				Tile.class, "column", true, false);
+		assertMissingProperty(reader, "<tile row=\"0\" column=\"0\" />",
+				Tile.class, "kind", false, false);
+		assertMissingProperty(reader, "<tile row=\"0\" column=\"0\" />",
+				Tile.class, "kind", true, false);
+		assertUnwantedChild(
+				reader,
+				"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
+				Tile.class, false, false);
+		assertUnwantedChild(
+				reader,
+				"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
+				Tile.class, true, false);
+	}
+	/**
+	 * Test that a Minotaur can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testMinotaurChild() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<minotaur><troll /></minotaur>",
+				Minotaur.class, false, false);
+		assertUnwantedChild(reader, "<minotaur><troll /></minotaur>",
+				Minotaur.class, true, false);
+	}
+	/**
+	 * Test that a Mountain can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testMountainChild() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<mountain><troll /></mountain>",
+				Mountain.class, false, false);
+		assertUnwantedChild(reader, "<mountain><troll /></mountain>",
+				Mountain.class, true, false);
+	}
+	/**
+	 * Test that a Mine can't have any children and must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testMineErrors() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<mine><troll /></mine>",
+				Mine.class, false, false);
+		assertUnwantedChild(reader, "<mine><troll /></mine>",
+				Mine.class, true, false);
+		assertMissingProperty(reader, "<mine status=\"active\"/>",
+				Mine.class, "kind", false, false);
+		assertMissingProperty(reader, "<mine status=\"active\"/>",
+				Mine.class, "kind", true, false);
+		assertMissingProperty(reader, "<mine kind=\"gold\"/>",
+				Mine.class, "status", false, false);
+		assertMissingProperty(reader, "<mine kind=\"gold\"/>",
+				Mine.class, "status", true, false);
+	}
+	/**
+	 * Test that a Meadow can't have any children and must have 'kind' and 'cultivated' properties.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testMeadowErrors() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<meadow><troll /></meadow>",
+				Meadow.class, false, false);
+		assertUnwantedChild(reader, "<meadow><troll /></meadow>",
+				Meadow.class, true, false);
+		assertMissingProperty(reader, "<meadow cultivated=\"false\" />",
+				Meadow.class, "kind", false, false);
+		assertMissingProperty(reader, "<meadow cultivated=\"false\" />",
+				Meadow.class, "kind", true, false);
+		assertMissingProperty(reader, "<meadow kind=\"flax\" />",
+				Meadow.class, "cultivated", false, false);
+		assertMissingProperty(reader, "<meadow kind=\"flax\" />",
+				Meadow.class, "cultivated", true, false);
+	}
+	/**
+	 * Test that an Animal can't have any children and must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testAnimalErrors() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<animal><troll /></animal>",
+				Animal.class, false, false);
+		assertUnwantedChild(reader, "<animal><troll /></animal>",
+				Animal.class, true, false);
+		assertMissingProperty(reader, "<animal />",
+				Animal.class, "kind", false, false);
+		assertMissingProperty(reader, "<animal />",
+				Animal.class, "kind", true, false);
+	}
+	/**
+	 * Test that a Battlefield can't have any children and must have a DC.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testBattlefieldErrors() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<battlefield><troll /></battlefield>",
+				BattlefieldEvent.class, false, false);
+		assertUnwantedChild(reader, "<battlefield><troll /></battlefield>",
+				BattlefieldEvent.class, true, false);
+		assertMissingProperty(reader, "<battlefield />",
+				BattlefieldEvent.class, "dc", false, false);
+		assertMissingProperty(reader, "<battlefield />",
+				BattlefieldEvent.class, "dc", true, false);
+	}
+	
+	/**
+	 * Test that a Cache can't have any children and must have 'kind' and
+	 * 'contents' properties.
+	 * 
+	 * @throws SPFormatException
+	 *             always
+	 * @throws XMLStreamException
+	 *             never
+	 */
+	@Test
+	public void testCacheChild() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<cache><troll /></cache>",
+				CacheFixture.class, false, false);
+		assertUnwantedChild(reader, "<cache><troll /></cache>",
+				CacheFixture.class, true, false);
+		assertMissingProperty(reader, "<cache contents=\"contents\" />",
+				CacheFixture.class, "kind", false, false);
+		assertMissingProperty(reader, "<cache contents=\"contents\" />",
+				CacheFixture.class, "kind", true, false);
+		assertMissingProperty(reader, "<cache kind=\"kind\" />",
+				CacheFixture.class, "contents", false, false);
+		assertMissingProperty(reader, "<cache kind=\"kind\" />",
+				CacheFixture.class, "contents", true, false);
 	}
 }
