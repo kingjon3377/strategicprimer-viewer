@@ -197,13 +197,21 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 					}
 				}
 			}
+	
 	/**
-	 * Assert that the serialized form of the given object will deserialize without error using both the reflection and non-reflection methods.
-	 * @param <T> the type of the object
-	 * @param message the message to use
-	 * @param reader the reader to parse the serialized form
-	 * @param obj the object to serialize
-	 * @param type its type
+	 * Assert that the serialized form of the given object will deserialize
+	 * without error using both the reflection and non-reflection methods.
+	 * 
+	 * @param <T>
+	 *            the type of the object
+	 * @param message
+	 *            the message to use
+	 * @param reader
+	 *            the reader to parse the serialized form
+	 * @param obj
+	 *            the object to serialize
+	 * @param type
+	 *            its type
 	 * @throws SPFormatException
 	 *             on SP XML problem
 	 * @throws XMLStreamException
