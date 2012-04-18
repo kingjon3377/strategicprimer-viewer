@@ -19,6 +19,7 @@ import controller.map.simplexml.SimpleXMLReader;
  * @author Jonathan Lovelace
  *
  */
+//ESCA-JAVA0136:
 public final class TestDeserializationErrorChecking { // NOPMD
 	/**
 	 * Constructor, to appease static-analysis plugins.
@@ -147,7 +148,7 @@ public final class TestDeserializationErrorChecking { // NOPMD
 				CaveEvent.class, false, warner);
 	}
 	/**
-	 * Test that a Cache can't have any children.
+	 * Test that a Cave can't have any children.
 	 * @throws SPFormatException always
 	 * @throws XMLStreamException never
 	 */
@@ -155,5 +156,85 @@ public final class TestDeserializationErrorChecking { // NOPMD
 	public void testCaveChildReflection() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<cave><troll /></cave>"),
 				CaveEvent.class, true, warner);
+	}
+	/**
+	 * Test that a Cave must have a DC.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCaveDC() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cave />"),
+				CaveEvent.class, false, warner);
+	}
+	/**
+	 * Test that a Cave must have a DC.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCaveDCReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cave />"),
+				CaveEvent.class, true, warner);
+	}
+	/**
+	 * Test that a Centaur can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCentaurChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<centaur><troll /></centaur>"),
+				Centaur.class, false, warner);
+	}
+	/**
+	 * Test that a Centaur can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCentaurChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<centaur><troll /></centaur>"),
+				Centaur.class, true, warner);
+	}
+	/**
+	 * Test that a Centaur must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCentaurKind() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<centaur />"),
+				Centaur.class, false, warner);
+	}
+	/**
+	 * Test that a Centaur must have a kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCentaurKindReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<centaur />"),
+				Centaur.class, true, warner);
+	}
+	/**
+	 * Test that a Djinn can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testDjinnChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<djinn><troll /></djinn>"),
+				Djinn.class, false, warner);
+	}
+	/**
+	 * Test that a Djinn can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testDjinnChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<djinn><troll /></djinn>"),
+				Djinn.class, true, warner);
 	}
 }
