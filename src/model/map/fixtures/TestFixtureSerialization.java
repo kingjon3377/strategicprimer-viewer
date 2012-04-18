@@ -126,7 +126,7 @@ public final class TestFixtureSerialization extends
 			SPFormatException {
 		assertSerialization("First test of Dragon serialization", reader,
 				new Dragon(""), Dragon.class);
-		assertSerialization("Second test of Dragon serialization, reflection",
+		assertSerialization("Second test of Dragon serialization",
 				reader, new Dragon("secondDragon"), Dragon.class);
 		// TODO: errors.
 	}
@@ -142,9 +142,9 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testFairySerialization() throws XMLStreamException,
 			SPFormatException {
-		assertSerialization("First test of Fairy serialization, reflection",
+		assertSerialization("First test of Fairy serialization",
 				reader, new Fairy("oneFairy"), Fairy.class);
-		assertSerialization("Second test of Fairy serialization, reflection",
+		assertSerialization("Second test of Fairy serialization",
 				reader, new Fairy("twoFairy"), Fairy.class);
 		// TODO: errors
 	}
@@ -160,9 +160,9 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testForestSerialization() throws XMLStreamException,
 			SPFormatException {
-		assertSerialization("First test of Forest serialization, reflection",
+		assertSerialization("First test of Forest serialization",
 				reader, new Forest("firstForest", false), Forest.class);
-		assertSerialization("Second test of Forest serialization, reflection",
+		assertSerialization("Second test of Forest serialization",
 				reader, new Forest("secondForest", true), Forest.class);
 		// TODO: errors
 	}
@@ -189,7 +189,7 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Third test of Fortress serialization", reader,
 				new Fortress(secondPlayer, "three"), Fortress.class);
 		assertSerialization(
-				"Fourth test of Fortress serialization, reflection", reader,
+				"Fourth test of Fortress serialization", reader,
 				new Fortress(secondPlayer, "four"), Fortress.class);
 		final Fortress five = new Fortress(secondPlayer, "five");
 		five.addUnit(new Unit(secondPlayer, "unitOne", "unitTwo"));
@@ -209,9 +209,9 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testGiantSerialization() throws XMLStreamException,
 			SPFormatException {
-		assertSerialization("First test of Giant serialization, reflection",
+		assertSerialization("First test of Giant serialization",
 				reader, new Giant("one"), Giant.class);
-		assertSerialization("Second test of Giant serialization, reflection",
+		assertSerialization("Second test of Giant serialization",
 				reader, new Giant("two"), Giant.class);
 		// TODO: errors
 	}
@@ -227,11 +227,11 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testGroundSerialization() throws XMLStreamException,
 			SPFormatException {
-		assertSerialization("First test of Ground serialization, reflection",
+		assertSerialization("First test of Ground serialization",
 				reader, new Ground("one", true), Ground.class);
-		assertSerialization("Second test of Ground serialization, reflection",
+		assertSerialization("Second test of Ground serialization",
 				reader, new Ground("two", true), Ground.class);
-		assertSerialization("Third test of Ground serialization, reflection",
+		assertSerialization("Third test of Ground serialization",
 				reader, new Ground("three", false), Ground.class);
 		// TODO: errors
 	}
@@ -247,49 +247,49 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testSimpleSerialization() throws XMLStreamException,
 			SPFormatException {
-		assertSerialization("Test of Djinn serialization, reflection", reader,
+		assertSerialization("Test of Djinn serialization", reader,
 				new Djinn(), Djinn.class);
 		assertUnwantedChild(reader, "<djinn><troll /></djinn>", Djinn.class,
 				false);
-		assertSerialization("Test of Griffin serialization, reflection",
+		assertSerialization("Test of Griffin serialization",
 				reader, new Griffin(), Griffin.class);
 		// TODO: errors
-		assertSerialization("Test of Hill serialization, reflection", reader,
+		assertSerialization("Test of Hill serialization", reader,
 				new Hill(), Hill.class);
 		// TODO: errors
-		assertSerialization("Test of Minotaur serialization, reflection",
+		assertSerialization("Test of Minotaur serialization",
 				reader, new Minotaur(), Minotaur.class);
 		assertUnwantedChild(reader, "<minotaur><troll /></minotaur>",
 				Minotaur.class, false);
-		assertSerialization("Test of Mountain serialization, reflection",
+		assertSerialization("Test of Mountain serialization",
 				reader, new Mountain(), Mountain.class);
 		assertUnwantedChild(reader, "<mountain><troll /></mountain>",
 				Mountain.class, false);
-		assertSerialization("Test of Oasis serialization, reflection", reader,
+		assertSerialization("Test of Oasis serialization", reader,
 				new Oasis(), Oasis.class);
 		assertUnwantedChild(reader, "<oasis><troll /></oasis>", Oasis.class,
 				false);
-		assertSerialization("Test of Ogre serialization, reflection", reader,
+		assertSerialization("Test of Ogre serialization", reader,
 				new Ogre(), Ogre.class);
 		assertUnwantedChild(reader, "<ogre><troll /></ogre>", Ogre.class,
 				false);
-		assertSerialization("Test of Phoenix serialization, reflection",
+		assertSerialization("Test of Phoenix serialization",
 				reader, new Phoenix(), Phoenix.class);
 		assertUnwantedChild(reader, "<phoenix><troll /></phoenix>",
 				Phoenix.class, false);
-		assertSerialization("Test of Sandbar serialization, reflection",
+		assertSerialization("Test of Sandbar serialization",
 				reader, new Sandbar(), Sandbar.class);
 		assertUnwantedChild(reader, "<sandbar><troll /></sandbar>",
 				Sandbar.class, false);
-		assertSerialization("Test of Simurgh serialization, reflection",
+		assertSerialization("Test of Simurgh serialization",
 				reader, new Simurgh(), Simurgh.class);
 		assertUnwantedChild(reader, "<simurgh><troll /></simurgh>",
 				Simurgh.class, false);
-		assertSerialization("Test of Sphinx serialization, reflection", reader,
+		assertSerialization("Test of Sphinx serialization", reader,
 				new Sphinx(), Sphinx.class);
 		assertUnwantedChild(reader, "<sphinx><troll /></sphinx>", Sphinx.class,
 				false);
-		assertSerialization("Test of Troll serialization, reflection", reader,
+		assertSerialization("Test of Troll serialization", reader,
 				new Troll(), Troll.class);
 		assertUnwantedChild(reader, "<troll><troll /></troll>", Troll.class,
 				false);
