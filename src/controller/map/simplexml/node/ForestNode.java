@@ -14,6 +14,10 @@ import controller.map.UnwantedChildException;
  */
 public class ForestNode extends AbstractFixtureNode<Forest> {
 	/**
+	 * The name of the property saying what kind of trees.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public ForestNode() {
@@ -27,7 +31,7 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	 */
 	@Override
 	public Forest produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Forest(getProperty("kind"), hasProperty("rows"));
+		return new Forest(getProperty(KIND_PROPERTY), hasProperty("rows"));
 	}
 	/**
 	 * @param property the name of a property
@@ -35,7 +39,7 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "kind", "rows");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "rows");
 	}
 
 	/**
@@ -52,8 +56,8 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("forest", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("kind")) {
-			throw new MissingParameterException("forest", "kind", getLine());
+		} else if (!hasProperty(KIND_PROPERTY)) {
+			throw new MissingParameterException("forest", KIND_PROPERTY, getLine());
 		}
 	}
 	/**
