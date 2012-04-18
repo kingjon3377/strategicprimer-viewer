@@ -278,6 +278,32 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, true, new Warning(Action.Die)));
 	}
 	/**
+	 * Assert that the serialized form of the given object will deserialize
+	 * without error using both the reflection and non-reflection methods.
+	 * 
+	 * @param <T>
+	 *            the type of the object
+	 * @param message
+	 *            the message to use
+	 * @param reader
+	 *            the reader to parse the serialized form
+	 * @param obj
+	 *            the object to serialize
+	 * @param type
+	 *            its type
+	 * @param warner the warning instance to use
+	 * @throws SPFormatException
+	 *             on SP XML problem
+	 * @throws XMLStreamException
+	 *             on XML reading problem
+	 */
+	public static <T extends XMLWritable> void assertSerialization(final String message,
+			final SimpleXMLReader reader, final T obj, final Class<T> type, final Warning warner)
+			throws XMLStreamException, SPFormatException {
+		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, false, warner));
+		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, true, warner));
+	}
+	/**
 	 * A helper method to simplify test boiler plate code.
 	 * 
 	 * @param <T>

@@ -1,8 +1,6 @@
 package model.map.events;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.StringReader;
 
@@ -13,9 +11,7 @@ import model.map.BaseTestFixtureSerialization;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.FatalWarning;
 import util.Warning;
-
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -26,6 +22,14 @@ import controller.map.simplexml.SimpleXMLReader;
  * 
  */
 public final class TestEventSerialization extends BaseTestFixtureSerialization {
+	/**
+	 * Extracted constant.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
+	 * Extracted constant.
+	 */
+	private static final String STATUS_PROPERTY = "status";
 	/**
 	 * Constructor.
 	 */
@@ -48,7 +52,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	private SimpleXMLReader reader;
 
 	/**
-	 * Test serialization of BattlefieldEvents.
+	 * Test serialization of BattlefieldEvents, including error-checking.
 	 * 
 	 * @throws SPFormatException
 	 *             on SP format problems
@@ -58,22 +62,18 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testBattefieldSerialization() throws XMLStreamException,
 			SPFormatException {
-		final BattlefieldEvent one = new BattlefieldEvent(10);
-		assertEquals("First BattlefieldEvent serialization test, reflection",
-				one,
-				helpSerialization(reader, one, BattlefieldEvent.class, true));
-		assertEquals(
-				"First BattlefieldEvent serialization test, non-reflection",
-				one,
-				helpSerialization(reader, one, BattlefieldEvent.class, false));
-		final BattlefieldEvent two = new BattlefieldEvent(30);
-		assertEquals("Second BattlefieldEvent serialization test, reflection",
-				two,
-				helpSerialization(reader, two, BattlefieldEvent.class, true));
-		assertEquals(
-				"Second BattlefieldEvent serialization test, non-reflection",
-				two,
-				helpSerialization(reader, two, BattlefieldEvent.class, false));
+		// ESCA-JAVA0076:
+		assertSerialization(
+				"First BattlefieldEvent serialization test, reflection",
+				reader, new BattlefieldEvent(10), BattlefieldEvent.class);
+		// ESCA-JAVA0076:
+		assertSerialization(
+				"Second BattlefieldEvent serialization test, reflection",
+				reader, new BattlefieldEvent(30), BattlefieldEvent.class);
+		assertUnwantedChild(reader, "<battlefield><troll /></battlefield>",
+				BattlefieldEvent.class, false);
+		assertMissingProperty(reader, "<battlefield />",
+				BattlefieldEvent.class, "dc", false);
 	}
 
 	/**
@@ -87,18 +87,14 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testCaveSerialization() throws XMLStreamException,
 			SPFormatException {
-		final CaveEvent one = new CaveEvent(10);
-		assertEquals("First CaveEvent serialization test, reflection", one,
-				helpSerialization(reader, one, CaveEvent.class, true));
-		assertEquals(
-				"First BattlefieldEvent serialization test, non-reflection",
-				one, helpSerialization(reader, one, CaveEvent.class, false));
-		final CaveEvent two = new CaveEvent(30);
-		assertEquals("Second BattlefieldEvent serialization test, reflection",
-				two, helpSerialization(reader, two, CaveEvent.class, true));
-		assertEquals(
-				"Second BattlefieldEvent serialization test, non-reflection",
-				two, helpSerialization(reader, two, CaveEvent.class, false));
+		assertSerialization("First CaveEvent serialization test, reflection",
+				reader, new CaveEvent(10), CaveEvent.class);
+		assertSerialization(
+				"Second BattlefieldEvent serialization test, reflection",
+				reader, new CaveEvent(30), CaveEvent.class);
+		assertUnwantedChild(reader, "<cave><troll /></cave>", CaveEvent.class,
+				false);
+		assertMissingProperty(reader, "<cave />", CaveEvent.class, "dc", false);
 	}
 
 	/**
@@ -114,49 +110,23 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
-				final CityEvent one = new CityEvent(status, size, 10, "one"); // NOPMD
-				assertEquals(
+				// ESCA-JAVA0076:
+				assertSerialization(
 						"First CityEvent serialization test, reflection, status "
-								+ status + " and size " + size, one, // NOPMD
-						helpSerialization(reader, one, CityEvent.class, true));
-				assertEquals(
-						"First CityEvent serialization test, non-reflection, status "
-								+ status + " and size " + size, one,
-						helpSerialization(reader, one, CityEvent.class, false));
-				final CityEvent two = new CityEvent(status, size, 40, "two"); // NOPMD
-				assertEquals(
+								+ status + " and size " + size, reader,
+						new CityEvent(status, size, 10, "one"), CityEvent.class); // NOPMD
+				// ESCA-JAVA0076:
+				assertSerialization(
 						"Second CityEvent serialization test, reflection, status "
-								+ status + " and size " + size, two,
-						helpSerialization(reader, two, CityEvent.class, true));
-				assertEquals(
-						"Second CityEvent serialization test, non-reflection, status "
-								+ status + " and size " + size, two,
-						helpSerialization(reader, two, CityEvent.class, false));
+								+ status + " and size " + size, reader,
+						new CityEvent(status, size, 40, "two"), CityEvent.class); // NOPMD
 			}
 		}
 		final CityEvent three = new CityEvent(TownStatus.Active, TownSize.Small, 30, "");
-		assertEquals(
+		assertSerialization(
 				"Serialization of CityEvent without a name, reflection",
-				three,
-				reader.readXML(new StringReader(three.toXML()), CityEvent.class, true, Warning.INSTANCE));
-		assertEquals(
-				"Serialization of CityEvent without a name, non-reflection",
-				three,
-				reader.readXML(new StringReader(three.toXML()), CityEvent.class, false, Warning.INSTANCE));
-		try {
-			helpSerialization(reader, three, CityEvent.class, true);
-			fail("Should have warned about CityEvent without a name");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about CityEvent without a name",
-					except.getCause() instanceof SPFormatException);
-		}
-		try {
-			helpSerialization(reader, three, CityEvent.class, false);
-			fail("Should have warned about CityEvent without a name");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about CityEvent without a name",
-					except.getCause() instanceof SPFormatException);
-		}
+				reader, three, CityEvent.class, new Warning(Warning.Action.Ignore));
+		assertMissingProperty(reader, three.toXML(), CityEvent.class, "name", true);
 	}
 
 	/**
@@ -172,59 +142,24 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
-				final FortificationEvent one = new FortificationEvent(status, // NOPMD
-						size, 10, "one");
-				assertEquals(
+				assertSerialization(
 						"First FortificationEvent serialization test, reflection, status "
-								+ status + " and size " + size,
-						one, // NOPMD
-						helpSerialization(reader, one,
-								FortificationEvent.class, true));
-				assertEquals(
-						"First FortificationEvent serialization test, non-reflection, status "
-								+ status + " and size " + size,
-						one,
-						helpSerialization(reader, one,
-								FortificationEvent.class, false));
-				final FortificationEvent two = new FortificationEvent(status, // NOPMD
-						size, 40, "two");
-				assertEquals(
+								+ status + " and size " + size, reader,
+						new FortificationEvent(status, size, 10, "one"), // NOPMD
+						FortificationEvent.class);
+				assertSerialization(
 						"Second FortificationEvent serialization test, reflection, status "
-								+ status + " and size " + size,
-						two,
-						helpSerialization(reader, two,
-								FortificationEvent.class, true));
-				assertEquals(
-						"Second FortificationEvent serialization test, non-reflection, status "
-								+ status + " and size " + size,
-						two,
-						helpSerialization(reader, two,
-								FortificationEvent.class, false));
+								+ status + " and size " + size, reader,
+						new FortificationEvent(status, size, 40, "two"), // NOPMD
+						FortificationEvent.class);
 			}
 		}
 		final FortificationEvent three = new FortificationEvent(TownStatus.Active, TownSize.Small, 30, "");
-		assertEquals(
+		assertSerialization(
 				"Serialization of FortificationEvent without a name, reflection",
-				three,
-				reader.readXML(new StringReader(three.toXML()), FortificationEvent.class, true, Warning.INSTANCE));
-		assertEquals(
-				"Serialization of FortificationEvent without a name, non-reflection",
-				three,
-				reader.readXML(new StringReader(three.toXML()), FortificationEvent.class, false, Warning.INSTANCE));
-		try {
-			helpSerialization(reader, three, FortificationEvent.class, true);
-			fail("Should have warned about FortificationEvent without a name");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about FortificationEvent without a name",
-					except.getCause() instanceof SPFormatException);
-		}
-		try {
-			helpSerialization(reader, three, FortificationEvent.class, false);
-			fail("Should have warned about FortificationEvent without a name");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about FortificationEvent without a name",
-					except.getCause() instanceof SPFormatException);
-		}
+				reader, three, FortificationEvent.class, new Warning(
+						Warning.Action.Ignore));
+		assertMissingProperty(reader, three.toXML(), FortificationEvent.class, "name", true);
 	}
 
 	/**
@@ -238,37 +173,31 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testMineralSerialization() throws XMLStreamException,
 			SPFormatException {
-		final MineralEvent one = new MineralEvent("one", true, 10);
-		assertEquals("First MineralEvent serialization test, reflection", one,
-				helpSerialization(reader, one, MineralEvent.class, true));
-		assertEquals("First MineralEvent serialization test, non-reflection",
-				one, helpSerialization(reader, one, MineralEvent.class, false));
+		assertSerialization(
+				"First MineralEvent serialization test, reflection", reader,
+				new MineralEvent("one", true, 10), MineralEvent.class);
 		final MineralEvent two = new MineralEvent("two", false, 35);
-		assertEquals("Second MineralEvent serialization test, reflection", two,
-				helpSerialization(reader, two, MineralEvent.class, true));
-		assertEquals("Second MineralEvent serialization test, non-reflection",
-				two, helpSerialization(reader, two, MineralEvent.class, false));
+		assertSerialization(
+				"Second MineralEvent serialization test, reflection", reader,
+				two, MineralEvent.class);
 		final String xml = two.toXML().replace("kind", "mineral");
 		assertEquals("Deserialization of deprecated Mineral idiom, reflection",
 				two, reader.readXML(new StringReader(xml), MineralEvent.class,
-						true, Warning.INSTANCE));
+						true, new Warning(Warning.Action.Ignore)));
 		assertEquals("Deserialization of deprecated Mineral idiom, non-reflection",
 				two, reader.readXML(new StringReader(xml), MineralEvent.class,
-						false, Warning.INSTANCE));
-		try {
-			reader.readXML(new StringReader(xml), MineralEvent.class, true, warner());
-			fail("Should warn about deprecated Mineral idiom");
-		} catch (FatalWarning except) {
-			assertTrue("Warned about deprecated Mineral idiom, reflection",
-					except.getCause() instanceof SPFormatException);
-		}
-		try {
-			reader.readXML(new StringReader(xml), MineralEvent.class, false, warner());
-			fail("Should warn about deprecated Mineral idiom");
-		} catch (FatalWarning except) {
-			assertTrue("Warned about deprecated Mineral idiom, non-reflection",
-					except.getCause() instanceof SPFormatException);
-		}
+						false, new Warning(Warning.Action.Ignore)));
+		assertDeprecatedProperty(reader, xml, MineralEvent.class, "mineral",
+				true);
+		assertUnwantedChild(reader, "<mineral><troll /></mineral>",
+				MineralEvent.class, false);
+		assertMissingProperty(reader, "<mineral dc=\"0\" exposed=\"false\" />",
+				MineralEvent.class, KIND_PROPERTY, false);
+		assertMissingProperty(reader,
+				"<mineral kind=\"gold\" exposed=\"false\" />",
+				MineralEvent.class, "dc", false);
+		assertMissingProperty(reader, "<mineral dc=\"0\" kind=\"gold\" />",
+				MineralEvent.class, "exposed", false);
 	}
 
 	/**
@@ -283,42 +212,27 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	public void testStoneSerialization() throws XMLStreamException,
 			SPFormatException {
 		for (StoneKind kind : StoneKind.values()) {
-			final StoneEvent one = new StoneEvent(kind, 8); // NOPMD
-			assertEquals("First StoneEvent test, reflection, kind: " + kind,
-					one, helpSerialization(reader, one, StoneEvent.class, true));
-			assertEquals(
-					"First StoneEvent test, non-reflection, kind: " + kind,
-					one,
-					helpSerialization(reader, one, StoneEvent.class, false));
-			final StoneEvent two = new StoneEvent(kind, 15); // NOPMD
-			assertEquals("Second StoneEvent test, reflection, kind: " + kind,
-					two, helpSerialization(reader, two, StoneEvent.class, true));
-			assertEquals("Second StoneEvent test, non-reflection, kind: "
-					+ kind, two,
-					helpSerialization(reader, two, StoneEvent.class, false));
+			assertSerialization("First StoneEvent test, reflection, kind: "
+					+ kind, reader, new StoneEvent(kind, 8), StoneEvent.class); // NOPMD
+			assertSerialization("Second StoneEvent test, reflection, kind: "
+					+ kind, reader, new StoneEvent(kind, 15), StoneEvent.class); // NOPMD
 		}
 		final StoneEvent three = new StoneEvent(StoneKind.Marble, 10);
 		final String xml = three.toXML().replace("kind", "stone");
 		assertEquals("Deserialization of deprecated stone idiom, reflection",
 				three, reader.readXML(new StringReader(xml), StoneEvent.class,
-						true, Warning.INSTANCE));
+						true, new Warning(Warning.Action.Ignore)));
 		assertEquals("Deserialization of deprecated stone idiom, non-reflection",
 				three, reader.readXML(new StringReader(xml), StoneEvent.class,
-						false, Warning.INSTANCE));
-		try {
-			reader.readXML(new StringReader(xml), StoneEvent.class, true, warner());
-			fail("Should have warned about deprecated stone idiom");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about deprecated stone idiom, reflection",
-					except.getCause() instanceof SPFormatException);
-		}
-		try {
-			reader.readXML(new StringReader(xml), StoneEvent.class, false, warner());
-			fail("Should have warned about deprecated stone idiom");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about deprecated stone idiom, non-reflection",
-					except.getCause() instanceof SPFormatException);
-		}
+						false, new Warning(Warning.Action.Ignore)));
+		assertDeprecatedProperty(reader, xml, StoneEvent.class, "stone", true);
+		assertUnwantedChild(reader, 
+				"<stone kind=\"stone\" dc=\"10\"><troll /></stone>",
+				StoneEvent.class, false);
+		assertMissingProperty(reader, "<stone kind=\"stone\" />",
+				StoneEvent.class, "dc", false);
+		assertMissingProperty(reader, "<stone dc=\"10\" />",
+				StoneEvent.class, KIND_PROPERTY, false);
 	}
 
 	/**
@@ -334,48 +248,26 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
-				final TownEvent one = new TownEvent(status, size, 10, "one"); // NOPMD
-				assertEquals(
+				assertSerialization(
 						"First TownEvent serialization test, reflection, status "
-								+ status + " and size " + size, one, // NOPMD
-						helpSerialization(reader, one, TownEvent.class, true));
-				assertEquals(
-						"First TownEvent serialization test, non-reflection, status "
-								+ status + " and size " + size, one,
-						helpSerialization(reader, one, TownEvent.class, false));
-				final TownEvent two = new TownEvent(status, size, 40, "two"); // NOPMD
-				assertEquals(
+								+ status + " and size " + size, reader,
+						new TownEvent(status, size, 10, "one"), TownEvent.class); // NOPMD
+				assertSerialization(
 						"Second TownEvent serialization test, reflection, status "
-								+ status + " and size " + size, two,
-						helpSerialization(reader, two, TownEvent.class, true));
-				assertEquals(
-						"Second TownEvent serialization test, non-reflection, status "
-								+ status + " and size " + size, two,
-						helpSerialization(reader, two, TownEvent.class, false));
+								+ status + " and size " + size, reader,
+						new TownEvent(status, size, 40, "two"), TownEvent.class); // NOPMD
 			}
 		}
 		final TownEvent three = new TownEvent(TownStatus.Active, TownSize.Small, 30, "");
-		assertEquals(
+		assertSerialization(
 				"Serialization of TownEvent without a name, reflection",
-				three,
-				reader.readXML(new StringReader(three.toXML()), TownEvent.class, true, Warning.INSTANCE));
-		assertEquals(
-				"Serialization of TownEvent without a name, non-reflection",
-				three,
-				reader.readXML(new StringReader(three.toXML()), TownEvent.class, false, Warning.INSTANCE));
-		try {
-			helpSerialization(reader, three, TownEvent.class, true);
-			fail("Should have warned about TownEvent without a name");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about TownEvent without a name",
-					except.getCause() instanceof SPFormatException);
-		}
-		try {
-			helpSerialization(reader, three, TownEvent.class, false);
-			fail("Should have warned about TownEvent without a name");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about TownEvent without a name",
-					except.getCause() instanceof SPFormatException);
-		}
+				reader, three, TownEvent.class, new Warning(Warning.Action.Ignore));
+		assertMissingProperty(reader, three.toXML(), TownEvent.class, "name", true);
+		assertMissingProperty(reader, "<town />", AbstractTownEvent.class,
+				"dc", false);
+		assertMissingProperty(reader, "<town dc=\"0\" status=\"active\" />",
+				AbstractTownEvent.class, "size", false);
+		assertMissingProperty(reader, "<town dc=\"0\" size=\"small\" />",
+				AbstractTownEvent.class, STATUS_PROPERTY, false);
 	}
 }
