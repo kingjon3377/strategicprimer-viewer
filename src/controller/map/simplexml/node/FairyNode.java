@@ -14,6 +14,10 @@ import controller.map.UnwantedChildException;
  */
 public class FairyNode extends AbstractFixtureNode<Fairy> {
 	/**
+	 * The name of the property saying what kind of fairy.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public FairyNode() {
@@ -27,7 +31,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	 */
 	@Override
 	public Fairy produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Fairy(getProperty("kind"));
+		return new Fairy(getProperty(KIND_PROPERTY));
 	}
 	/**
 	 * Check the node for invalid data. A Fairy is valid if it has no children and has a "kind" property.
@@ -39,8 +43,8 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("fairy", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("kind")) {
-			throw new MissingParameterException("fairy", "kind", getLine());
+		} else if (!hasProperty(KIND_PROPERTY)) {
+			throw new MissingParameterException("fairy", KIND_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -49,7 +53,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return "kind".equals(property);
+		return KIND_PROPERTY.equals(property);
 	}
 	/**
 	 * @return a String representation of the node.
