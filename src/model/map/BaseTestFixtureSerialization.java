@@ -29,6 +29,31 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that reading the given XML will produce an UnwantedChildException.
 	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but fail with warnings made fatal. This version runs
+	 * against both the reflection and non-reflection versions.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param warning
+	 *            whether this is supposed to be a warning only
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public static void assertUnwantedChild(final SimpleXMLReader reader, final String xml,
+			final Class<?> desideratum, final boolean warning) throws XMLStreamException,
+			SPFormatException {
+		assertUnwantedChild(reader, xml, desideratum, true, warning);
+		assertUnwantedChild(reader, xml, desideratum, false, warning);
+	}
+	/**
+	 * Assert that reading the given XML will produce an UnwantedChildException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
 	 * warnings disabled but fail with warnings made fatal.
 	 * 
 	 * @param reader

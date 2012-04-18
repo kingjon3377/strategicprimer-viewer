@@ -64,9 +64,7 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Fourth test of Animal serialization", reader,
 				four, Animal.class);
 		assertUnwantedChild(reader, "<animal><troll /></animal>",
-				Animal.class, false, false);
-		assertUnwantedChild(reader, "<animal><troll /></animal>",
-				Animal.class, true, false);
+				Animal.class, false);
 		assertMissingProperty(reader, "<animal />",
 				Animal.class, KIND_PROPERTY, false, false);
 		assertMissingProperty(reader, "<animal />",
@@ -89,9 +87,7 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Second test of Cache serialization", reader,
 				new CacheFixture("kindTwo", "contentsTwo"), CacheFixture.class);
 		assertUnwantedChild(reader, "<cache><troll /></cache>",
-				CacheFixture.class, false, false);
-		assertUnwantedChild(reader, "<cache><troll /></cache>",
-				CacheFixture.class, true, false);
+				CacheFixture.class, false);
 		assertMissingProperty(reader, "<cache contents=\"contents\" />",
 				CacheFixture.class, KIND_PROPERTY, false, false);
 		assertMissingProperty(reader, "<cache contents=\"contents\" />",
@@ -118,9 +114,7 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Second test of Centaur serialization", reader,
 				new Centaur("secondCentaur"), Centaur.class);
 		assertUnwantedChild(reader, "<centaur><troll /></centaur>",
-				Centaur.class, false, false);
-		assertUnwantedChild(reader, "<centaur><troll /></centaur>",
-				Centaur.class, true, false);
+				Centaur.class, false);
 		assertMissingProperty(reader, "<centaur />", Centaur.class, KIND_PROPERTY,
 				false, false);
 		assertMissingProperty(reader, "<centaur />", Centaur.class, KIND_PROPERTY,
@@ -264,9 +258,7 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Test of Djinn serialization, reflection", reader,
 				new Djinn(), Djinn.class);
 		assertUnwantedChild(reader, "<djinn><troll /></djinn>", Djinn.class,
-				false, false);
-		assertUnwantedChild(reader, "<djinn><troll /></djinn>", Djinn.class,
-				true, false);
+				false);
 		assertSerialization("Test of Griffin serialization, reflection",
 				reader, new Griffin(), Griffin.class);
 		// TODO: errors
@@ -276,57 +268,39 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Test of Minotaur serialization, reflection",
 				reader, new Minotaur(), Minotaur.class);
 		assertUnwantedChild(reader, "<minotaur><troll /></minotaur>",
-				Minotaur.class, false, false);
-		assertUnwantedChild(reader, "<minotaur><troll /></minotaur>",
-				Minotaur.class, true, false);
+				Minotaur.class, false);
 		assertSerialization("Test of Mountain serialization, reflection",
 				reader, new Mountain(), Mountain.class);
 		assertUnwantedChild(reader, "<mountain><troll /></mountain>",
-				Mountain.class, false, false);
-		assertUnwantedChild(reader, "<mountain><troll /></mountain>",
-				Mountain.class, true, false);
+				Mountain.class, false);
 		assertSerialization("Test of Oasis serialization, reflection", reader,
 				new Oasis(), Oasis.class);
 		assertUnwantedChild(reader, "<oasis><troll /></oasis>", Oasis.class,
-				false, false);
-		assertUnwantedChild(reader, "<oasis><troll /></oasis>", Oasis.class,
-				true, false);
+				false);
 		assertSerialization("Test of Ogre serialization, reflection", reader,
 				new Ogre(), Ogre.class);
 		assertUnwantedChild(reader, "<ogre><troll /></ogre>", Ogre.class,
-				false, false);
-		assertUnwantedChild(reader, "<ogre><troll /></ogre>", Ogre.class, true,
 				false);
 		assertSerialization("Test of Phoenix serialization, reflection",
 				reader, new Phoenix(), Phoenix.class);
 		assertUnwantedChild(reader, "<phoenix><troll /></phoenix>",
-				Phoenix.class, false, false);
-		assertUnwantedChild(reader, "<phoenix><troll /></phoenix>",
-				Phoenix.class, true, false);
+				Phoenix.class, false);
 		assertSerialization("Test of Sandbar serialization, reflection",
 				reader, new Sandbar(), Sandbar.class);
 		assertUnwantedChild(reader, "<sandbar><troll /></sandbar>",
-				Sandbar.class, false, false);
-		assertUnwantedChild(reader, "<sandbar><troll /></sandbar>",
-				Sandbar.class, true, false);
+				Sandbar.class, false);
 		assertSerialization("Test of Simurgh serialization, reflection",
 				reader, new Simurgh(), Simurgh.class);
 		assertUnwantedChild(reader, "<simurgh><troll /></simurgh>",
-				Simurgh.class, false, false);
-		assertUnwantedChild(reader, "<simurgh><troll /></simurgh>",
-				Simurgh.class, true, false);
+				Simurgh.class, false);
 		assertSerialization("Test of Sphinx serialization, reflection", reader,
 				new Sphinx(), Sphinx.class);
 		assertUnwantedChild(reader, "<sphinx><troll /></sphinx>", Sphinx.class,
-				false, false);
-		assertUnwantedChild(reader, "<sphinx><troll /></sphinx>", Sphinx.class,
-				true, false);
+				false);
 		assertSerialization("Test of Troll serialization, reflection", reader,
 				new Troll(), Troll.class);
 		assertUnwantedChild(reader, "<troll><troll /></troll>", Troll.class,
-				false, false);
-		assertUnwantedChild(reader, "<troll><troll /></troll>", Troll.class,
-				true, false);
+				false);
 	}
 
 }
