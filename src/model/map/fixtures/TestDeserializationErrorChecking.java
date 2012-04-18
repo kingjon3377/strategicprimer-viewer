@@ -5,6 +5,7 @@ import java.io.StringReader;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.events.AbstractTownEvent;
+import model.map.events.CaveEvent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import controller.map.simplexml.SimpleXMLReader;
  * @author Jonathan Lovelace
  *
  */
-public final class TestDeserializationErrorChecking {
+public final class TestDeserializationErrorChecking { // NOPMD
 	/**
 	 * Constructor, to appease static-analysis plugins.
 	 */
@@ -134,5 +135,25 @@ public final class TestDeserializationErrorChecking {
 	@Test(expected = SPFormatException.class)
 	public void testTownDCReflection() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<town />"), AbstractTownEvent.class, true, warner);
+	}
+	/**
+	 * Test that a Cave can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCaveChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cave><troll /></cave>"),
+				CaveEvent.class, false, warner);
+	}
+	/**
+	 * Test that a Cache can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCaveChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cave><troll /></cave>"),
+				CaveEvent.class, true, warner);
 	}
 }

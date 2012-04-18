@@ -416,4 +416,64 @@ public final class TestMoreDeserializationErrorChecking { // NOPMD
 		reader.readXML(new StringReader("<battlefield />"),
 				BattlefieldEvent.class, true, warner);
 	}
+	/**
+	 * Test that a Cache can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCacheChild() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cache><troll /></cache>"),
+				CacheFixture.class, false, warner);
+	}
+	/**
+	 * Test that a Cache can't have any children.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCacheChildReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cache><troll /></cache>"),
+				CacheFixture.class, true, warner);
+	}
+	/**
+	 * Test that a Cache must have a 'kind'.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCacheKind() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cache contents=\"contents\" />"),
+				CacheFixture.class, false, warner);
+	}
+	/**
+	 * Test that a Cache must have a 'kind'.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCacheKindReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cache contents=\"contents\" />"),
+				CacheFixture.class, true, warner);
+	}
+	/**
+	 * Test that a Cache must have a 'contents'.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCacheContents() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cache kind=\"kind\" />"),
+				CacheFixture.class, false, warner);
+	}
+	/**
+	 * Test that a Cache must have a 'contents'.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test(expected = SPFormatException.class)
+	public void testCacheContentsReflection() throws XMLStreamException, SPFormatException {
+		reader.readXML(new StringReader("<cache kind=\"kind\" />"),
+				CacheFixture.class, true, warner);
+	}
 }
