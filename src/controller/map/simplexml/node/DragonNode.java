@@ -14,6 +14,10 @@ import controller.map.UnwantedChildException;
  */
 public class DragonNode extends AbstractFixtureNode<Dragon> {
 	/**
+	 * The name of the property saying what kind of dragon.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public DragonNode() {
@@ -27,7 +31,7 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 	 */
 	@Override
 	public Dragon produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Dragon(getProperty("kind"));
+		return new Dragon(getProperty(KIND_PROPERTY));
 	}
 	/**
 	 * Check the node for invalid data. A Dragon is valid if it has no children and has a "kind" property.
@@ -39,8 +43,8 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("dragon", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("kind")) {
-			throw new MissingParameterException("dragon", "kind", getLine());
+		} else if (!hasProperty(KIND_PROPERTY)) {
+			throw new MissingParameterException("dragon", KIND_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -49,7 +53,7 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return "kind".equals(property);
+		return KIND_PROPERTY.equals(property);
 	}
 	/**
 	 * @return a String representation of the node.
