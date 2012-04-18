@@ -54,44 +54,6 @@ public final class TestDeserializationErrorChecking extends // NOPMD
 	 * The reader we'll test.
 	 */
 	private SimpleXMLReader reader;
-	
-	/**
-	 * Test that a Village shouldn't have children and must have a 'status'
-	 * property.
-	 * 
-	 * @throws SPFormatException
-	 *             never
-	 * @throws XMLStreamException
-	 *             never
-	 */
-	@Test
-	public void testVillageErrors() throws XMLStreamException,
-			SPFormatException {
-		assertUnwantedChild(reader, "<village><village /></village>",
-				Village.class, false, false);
-		assertUnwantedChild(reader, "<village><village /></village>",
-				Village.class, true, false);
-		assertMissingProperty(reader, "<village />", Village.class, STATUS_PROPERTY,
-				false, false);
-		assertMissingProperty(reader, "<village />", Village.class, STATUS_PROPERTY,
-				true, false);
-	}
-
-	/**
-	 * Test that a Unit mustn't have children.
-	 * 
-	 * @throws SPFormatException
-	 *             never
-	 * @throws XMLStreamException
-	 *             never
-	 */
-	@Test
-	public void testUnitChildren() throws XMLStreamException, SPFormatException {
-		assertUnwantedChild(reader, "<unit><unit /></unit>", Unit.class, false,
-				false);
-		assertUnwantedChild(reader, "<unit><unit /></unit>", Unit.class, true,
-				false);
-	}
 
 	/**
 	 * Test that a town must have a DC, a size, and a status.
@@ -170,46 +132,6 @@ public final class TestDeserializationErrorChecking extends // NOPMD
 				Tile.class, true, false);
 	}
 	/**
-	 * Test that a Mine can't have any children and must have a kind.
-	 * @throws SPFormatException always
-	 * @throws XMLStreamException never
-	 */
-	@Test
-	public void testMineErrors() throws XMLStreamException, SPFormatException {
-		assertUnwantedChild(reader, "<mine><troll /></mine>",
-				Mine.class, false, false);
-		assertUnwantedChild(reader, "<mine><troll /></mine>",
-				Mine.class, true, false);
-		assertMissingProperty(reader, "<mine status=\"active\"/>",
-				Mine.class, KIND_PROPERTY, false, false);
-		assertMissingProperty(reader, "<mine status=\"active\"/>",
-				Mine.class, KIND_PROPERTY, true, false);
-		assertMissingProperty(reader, "<mine kind=\"gold\"/>",
-				Mine.class, STATUS_PROPERTY, false, false);
-		assertMissingProperty(reader, "<mine kind=\"gold\"/>",
-				Mine.class, STATUS_PROPERTY, true, false);
-	}
-	/**
-	 * Test that a Meadow can't have any children and must have 'kind' and 'cultivated' properties.
-	 * @throws SPFormatException always
-	 * @throws XMLStreamException never
-	 */
-	@Test
-	public void testMeadowErrors() throws XMLStreamException, SPFormatException {
-		assertUnwantedChild(reader, "<meadow><troll /></meadow>",
-				Meadow.class, false, false);
-		assertUnwantedChild(reader, "<meadow><troll /></meadow>",
-				Meadow.class, true, false);
-		assertMissingProperty(reader, "<meadow cultivated=\"false\" />",
-				Meadow.class, KIND_PROPERTY, false, false);
-		assertMissingProperty(reader, "<meadow cultivated=\"false\" />",
-				Meadow.class, KIND_PROPERTY, true, false);
-		assertMissingProperty(reader, "<meadow kind=\"flax\" />",
-				Meadow.class, "cultivated", false, false);
-		assertMissingProperty(reader, "<meadow kind=\"flax\" />",
-				Meadow.class, "cultivated", true, false);
-	}
-	/**
 	 * Test that a Battlefield can't have any children and must have a DC.
 	 * @throws SPFormatException always
 	 * @throws XMLStreamException never
@@ -226,18 +148,6 @@ public final class TestDeserializationErrorChecking extends // NOPMD
 				BattlefieldEvent.class, "dc", true, false);
 	}
 	
-	/**
-	 * Test that a text node shouldn't have child nodes.
-	 * @throws SPFormatException always
-	 * @throws XMLStreamException never
-	 */
-	@Test
-	public void testTextChild() throws XMLStreamException, SPFormatException {
-		assertUnwantedChild(reader, "<text turn=\"1\"><troll /></text>",
-				TextFixture.class, false, false);
-		assertUnwantedChild(reader, "<text turn=\"1\"><troll /></text>",
-				TextFixture.class, true, false);
-	}
 	/**
 	 * Test that a StoneEvent doesn't have any children and must have a DC and a kind.
 	 * @throws SPFormatException always
@@ -259,20 +169,6 @@ public final class TestDeserializationErrorChecking extends // NOPMD
 				StoneEvent.class, KIND_PROPERTY, false, false);
 		assertMissingProperty(reader, "<stone dc=\"10\" />",
 				StoneEvent.class, KIND_PROPERTY, true, false);
-	}
-	/**
-	 * Test that a Shrub can't have any children and must have a kind.
-	 * @throws SPFormatException always
-	 * @throws XMLStreamException never
-	 */
-	@Test
-	public void testShrubChild() throws XMLStreamException, SPFormatException {
-		assertUnwantedChild(reader, "<shrub><troll /></shrub>",
-				Shrub.class, false, false);
-		assertUnwantedChild(reader, "<shrub><troll /></shrub>",
-				Shrub.class, true, false);
-		assertMissingProperty(reader, "<shrub />", Shrub.class, KIND_PROPERTY, false, false);
-		assertMissingProperty(reader, "<shrub />", Shrub.class, KIND_PROPERTY, true, false);
 	}
 	/**
 	 * Test that a River can't have any children and must have a direction.

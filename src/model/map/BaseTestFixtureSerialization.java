@@ -177,6 +177,32 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that reading the given XML will give a DeprecatedPropertyException.
 	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but object with them made fatal. This version tests both reflection and non-reflection versions.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param deprecated
+	 *            the deprecated property
+	 * @param warning
+	 *            whether this is supposed to be only a warning
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public static void assertDeprecatedProperty(final SimpleXMLReader reader, final String xml,
+			final Class<?> desideratum, final String deprecated, final boolean warning)
+			throws XMLStreamException, SPFormatException {
+		assertDeprecatedProperty(reader, xml, desideratum, deprecated, true, warning);
+		assertDeprecatedProperty(reader, xml, desideratum, deprecated, false, warning);
+	}
+	/**
+	 * Assert that reading the given XML will give a DeprecatedPropertyException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
 	 * warnings disabled but object with them made fatal.
 	 * 
 	 * @param reader
