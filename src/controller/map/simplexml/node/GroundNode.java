@@ -15,6 +15,18 @@ import controller.map.UnwantedChildException;
  */
 public class GroundNode extends AbstractFixtureNode<Ground> {
 	/**
+	 * The tag.
+	 */
+	private static final String TAG = "ground";
+	/**
+	 * The old, deprecated name of the property telling what kind of ground.
+	 */
+	private static final String OLD_KIND_PARAM = "ground";
+	/**
+	 * The name of the property that tells whether the ground is exposed or not.
+	 */
+	private static final String EXPOSED_PARAM = "exposed";
+	/**
 	 * The name of the property for what kind of ground.
 	 */
 	private static final String KIND_PROPERTY = "kind";
@@ -32,7 +44,7 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	 */
 	@Override
 	public Ground produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Ground(getProperty(KIND_PROPERTY), Boolean.parseBoolean(getProperty("exposed")));
+		return new Ground(getProperty(KIND_PROPERTY), Boolean.parseBoolean(getProperty(EXPOSED_PARAM)));
 	}
 	/**
 	 * @param property the name of a property
@@ -40,7 +52,7 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, "exposed", "ground");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, EXPOSED_PARAM, OLD_KIND_PARAM);
 	}
 	/**
 	 * Check whether the node is valid. A Ground is valid if it has "ground" and "exposed"
@@ -53,20 +65,20 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("ground", iterator().next()
+			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
-			if (!hasProperty("exposed")) {
-				throw new MissingParameterException("ground", "exposed",
+			if (!hasProperty(EXPOSED_PARAM)) {
+				throw new MissingParameterException(TAG, EXPOSED_PARAM,
 						getLine());
 			}
 		} else {
 			if (hasProperty("ground")) {
-				warner.warn(new DeprecatedPropertyException("ground", "ground",
+				warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PARAM,
 						KIND_PROPERTY, getLine()));
-				addProperty(KIND_PROPERTY, getProperty("ground"), warner);
+				addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PARAM), warner);
 			} else {
-				throw new MissingParameterException("ground", KIND_PROPERTY,
+				throw new MissingParameterException(TAG, KIND_PROPERTY,
 						getLine());
 			}
 		}
