@@ -76,7 +76,6 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty(reader, "<grove />", Grove.class, "wild", false);
 		assertMissingProperty(reader, "<grove wild=\"false\" />", Grove.class, "kind", false);
 		assertDeprecatedProperty(reader, "<grove wild=\"true\" tree=\"tree\" />", Grove.class, "tree", true);
-		// TODO: errors
 	}
 
 	/**

@@ -233,7 +233,15 @@ public final class TestFixtureSerialization extends
 				reader, new Ground("two", true), Ground.class);
 		assertSerialization("Third test of Ground serialization",
 				reader, new Ground("three", false), Ground.class);
-		// TODO: errors
+		assertUnwantedChild(reader, "<ground><hill /></ground>", Ground.class,
+				false);
+		assertMissingProperty(reader, "<ground />", Ground.class,
+				KIND_PROPERTY, false);
+		assertMissingProperty(reader, "<ground kind=\"ground\" />",
+				Ground.class, "exposed", false);
+		assertDeprecatedProperty(reader,
+				"<ground ground=\"ground\" exposed=\"true\" />", Ground.class,
+				"ground", true);
 	}
 
 	/**
@@ -253,10 +261,11 @@ public final class TestFixtureSerialization extends
 				false);
 		assertSerialization("Test of Griffin serialization",
 				reader, new Griffin(), Griffin.class);
-		// TODO: errors
+		assertUnwantedChild(reader, "<griffin><djinn /></griffin>",
+				Griffin.class, false);
 		assertSerialization("Test of Hill serialization", reader,
 				new Hill(), Hill.class);
-		// TODO: errors
+		assertUnwantedChild(reader, "<hill><griffin /></hill>", Hill.class, false);
 		assertSerialization("Test of Minotaur serialization",
 				reader, new Minotaur(), Minotaur.class);
 		assertUnwantedChild(reader, "<minotaur><troll /></minotaur>",
