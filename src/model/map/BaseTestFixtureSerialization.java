@@ -95,6 +95,34 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 					}
 				}
 			}
+	
+	/**
+	 * Assert that reading the given XML will give a MissingPropertyException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but object with them made fatal. This version runs both
+	 * with and without reflection.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param property
+	 *            the missing property
+	 * @param warning
+	 *            whether this is supposed to be only a warning
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public static void assertMissingProperty(final SimpleXMLReader reader, final String xml,
+			final Class<?> desideratum, final String property, final boolean warning)
+			throws XMLStreamException, SPFormatException {
+		assertMissingProperty(reader, xml, desideratum, property, true, warning);
+		assertMissingProperty(reader, xml, desideratum, property, false, warning);
+	}
 	/**
 	 * Assert that reading the given XML will give a MissingPropertyException.
 	 * If it's only supposed to be a warning, assert that it'll pass with

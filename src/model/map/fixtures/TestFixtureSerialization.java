@@ -66,9 +66,7 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild(reader, "<animal><troll /></animal>",
 				Animal.class, false);
 		assertMissingProperty(reader, "<animal />",
-				Animal.class, KIND_PROPERTY, false, false);
-		assertMissingProperty(reader, "<animal />",
-				Animal.class, KIND_PROPERTY, true, false);
+				Animal.class, KIND_PROPERTY, false);
 	}
 
 	/**
@@ -89,13 +87,9 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild(reader, "<cache><troll /></cache>",
 				CacheFixture.class, false);
 		assertMissingProperty(reader, "<cache contents=\"contents\" />",
-				CacheFixture.class, KIND_PROPERTY, false, false);
-		assertMissingProperty(reader, "<cache contents=\"contents\" />",
-				CacheFixture.class, KIND_PROPERTY, true, false);
+				CacheFixture.class, KIND_PROPERTY, false);
 		assertMissingProperty(reader, "<cache kind=\"kind\" />",
-				CacheFixture.class, "contents", false, false);
-		assertMissingProperty(reader, "<cache kind=\"kind\" />",
-				CacheFixture.class, "contents", true, false);
+				CacheFixture.class, "contents", false);
 	}
 
 	/**
@@ -116,9 +110,7 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild(reader, "<centaur><troll /></centaur>",
 				Centaur.class, false);
 		assertMissingProperty(reader, "<centaur />", Centaur.class, KIND_PROPERTY,
-				false, false);
-		assertMissingProperty(reader, "<centaur />", Centaur.class, KIND_PROPERTY,
-				true, false);
+				false);
 	}
 
 	/**
