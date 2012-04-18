@@ -44,13 +44,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Warning instance that makes warnings fatal.
 	 */
-	private final Warning warner = new Warning();
-	/**
-	 * Constructor.
-	 */
-	protected BaseTestFixtureSerialization() {
-		warner.setFatal(true);
-	}
+	private final Warning warner = new Warning(Warning.Action.Die);
 	/**
 	 * @return the warning instance
 	 */

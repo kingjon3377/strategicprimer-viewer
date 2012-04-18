@@ -15,25 +15,38 @@ public final class Warning {
 	 */
 	public static final Warning INSTANCE = new Warning();
 	/**
-	 * Whether warnings should be fatal (i.e. the exception thrown) or merely logged.
+	 * An enumeration of possible states.
 	 */
-	private boolean fatal = false;
-	/**
-	 * @return whether warnings are set to be fatal
-	 */
-	public boolean isFatal() {
-		return fatal;
+	public enum Action {
+		/**
+		 * Don't do anything with a warning.
+		 */
+		Ignore,
+		/**
+		 * Default: Log each warning, but let them pass.
+		 */
+		Warn,
+		/**
+		 * Treat warnings as errors: Throw them as runtime exceptions.
+		 */
+		Die;
 	}
 	/**
-	 * Set the "fatal" flag---but only if this isn't the global instance.
-	 * @param die whether warnings should be fatal
+	 * How we should deal with warnings.
 	 */
-	public void setFatal(final boolean die) {
-		if (this == INSTANCE) {
-			throw new IllegalArgumentException(
-					"Don't call setFatal() on the singleton; construct your own instance");
-		}
-		fatal = die;
+	private final Action state;
+	/**
+	 * Constructor.
+	 * @param action what action to take with each warning
+	 */
+	public Warning(final Action action) {
+		state = action;
+	}
+	/**
+	 * Constructor. Only warn on warnings.
+	 */
+	public Warning() {
+		this(Action.Warn);
 	}
 	/**
 	 * Log a warning, e.g. if a particular map-format construct is deprecated.
@@ -42,11 +55,18 @@ public final class Warning {
 	 *            the warning
 	 */
 	public void warn(final Exception warning) {
-		if (fatal) {
+		switch (state) {
+		case Die:
 			throw new FatalWarning(warning); // NOPMD
-		} else {
+		case Warn:
 			Logger.getLogger(warning.getStackTrace()[0].getClass().getName()).log(
 					Level.WARNING, "Warning: ", warning);
+			break;
+		case Ignore:
+			break;
+		default:
+			throw new IllegalStateException(
+					"Default case of an enum-switch that isn't missing any cases");
 		}
 	}
 

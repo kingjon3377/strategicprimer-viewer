@@ -38,8 +38,7 @@ public final class TestYetMoreDeserializationErrorChecking { //NOPMD
 	@Before
 	public void setUp() {
 		reader = new SimpleXMLReader();
-		warner = new Warning();
-		warner.setFatal(true);
+		warner = new Warning(Warning.Action.Die);
 	}
 	/**
 	 * The reader we'll test.
