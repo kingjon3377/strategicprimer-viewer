@@ -146,7 +146,8 @@ public final class TestFixtureSerialization extends
 				reader, new Fairy("oneFairy"), Fairy.class);
 		assertSerialization("Second test of Fairy serialization",
 				reader, new Fairy("twoFairy"), Fairy.class);
-		// TODO: errors
+		assertUnwantedChild(reader, "<fairy><hill /></fairy>", Fairy.class, false);
+		assertMissingProperty(reader, "<fairy />", Fairy.class, KIND_PROPERTY, false);
 	}
 
 	/**
