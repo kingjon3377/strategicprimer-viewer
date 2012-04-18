@@ -203,7 +203,7 @@ public final class TestMoreDeserializationErrorChecking { // NOPMD
 	@Test(expected = SPFormatException.class)
 	public void testMountainChild() throws XMLStreamException, SPFormatException {
 		reader.readXML(new StringReader("<mountain><troll /></mountain>"),
-				Ogre.class, false, warner);
+				Mountain.class, false, warner);
 	}
 	/**
 	 * Test that a Mountain can't have any children.
