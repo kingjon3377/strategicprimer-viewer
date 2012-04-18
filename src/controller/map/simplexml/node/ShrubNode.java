@@ -51,7 +51,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 					KIND_PROPERTY, getLine()));
 			addProperty(KIND_PROPERTY, getProperty("shrub"), warner);
 		} else if (!hasProperty(KIND_PROPERTY)) {
-			throw new MissingParameterException("shrub", "shrub", getLine());
+			throw new MissingParameterException("shrub", KIND_PROPERTY, getLine());
 		}
 	}
 	/**
