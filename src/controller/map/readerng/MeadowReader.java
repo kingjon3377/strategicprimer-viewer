@@ -5,7 +5,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Meadow;
-import util.EqualsAny;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 /**
@@ -43,8 +42,7 @@ public class MeadowReader implements INodeReader<Meadow> {
 						.getLocalPart(), event.asStartElement().getName()
 						.getLocalPart(), event.getLocation().getLineNumber());
 			} else if (event.isEndElement()
-					&& EqualsAny.equalsAny(event.asEndElement().getName()
-							.getLocalPart(), "field", "meadow")) {
+					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
