@@ -128,7 +128,8 @@ public final class TestFixtureSerialization extends
 				new Dragon(""), Dragon.class);
 		assertSerialization("Second test of Dragon serialization",
 				reader, new Dragon("secondDragon"), Dragon.class);
-		// TODO: errors.
+		assertUnwantedChild(reader, "<dragon><hill /></dragon>", Dragon.class, false);
+		assertMissingProperty(reader, "<dragon />", Dragon.class, KIND_PROPERTY, false);
 	}
 
 	/**
