@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 
 import util.FatalWarning;
 import util.Warning;
+import util.Warning.Action;
 import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
@@ -171,6 +172,24 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 					}
 				}
 			}
+	/**
+	 * Assert that the serialized form of the given object will deserialize without error using both the reflection and non-reflection methods.
+	 * @param <T> the type of the object
+	 * @param message the message to use
+	 * @param reader the reader to parse the serialized form
+	 * @param obj the object to serialize
+	 * @param type its type
+	 * @throws SPFormatException
+	 *             on SP XML problem
+	 * @throws XMLStreamException
+	 *             on XML reading problem
+	 */
+	public static <T extends XMLWritable> void assertSerialization(final String message,
+			final SimpleXMLReader reader, final T obj, final Class<T> type)
+			throws XMLStreamException, SPFormatException {
+		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, false, new Warning(Action.Die)));
+		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, true, new Warning(Action.Die)));
+	}
 	/**
 	 * A helper method to simplify test boiler plate code.
 	 * 
