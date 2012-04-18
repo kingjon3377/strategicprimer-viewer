@@ -15,6 +15,7 @@ import util.Warning.Action;
 import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -51,6 +52,74 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		assertUnwantedChild(reader, xml, desideratum, true, warning);
 		assertUnwantedChild(reader, xml, desideratum, false, warning);
 	}
+	/**
+	 * Assert that reading the given XML will produce an UnsupportedTagException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but fail with warnings made fatal. This version uses both reflection and non-reflection readers.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param tag the unsupported tag
+	 * @param warning
+	 *            whether this is supposed to be a warning only
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public static void assertUnsupportedTag(final SimpleXMLReader reader, final String xml,
+			final Class<?> desideratum, final String tag, final boolean warning) throws XMLStreamException,
+			SPFormatException {
+		assertUnsupportedTag(reader, xml, desideratum, tag, true, warning);
+		assertUnsupportedTag(reader, xml, desideratum, tag, false, warning);
+	}
+	/**
+	 * Assert that reading the given XML will produce an UnsupportedTagException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but fail with warnings made fatal.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param tag the unsupported tag
+	 * @param reflection
+	 *            whether to use the reflection version or not
+	 * @param warning
+	 *            whether this is supposed to be a warning only
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public static void assertUnsupportedTag(final SimpleXMLReader reader,
+			final String xml, final Class<?> desideratum, final String tag,
+			final boolean reflection, final boolean warning)
+			throws XMLStreamException, SPFormatException {
+		if (warning) {
+			reader.readXML(new StringReader(xml), desideratum, reflection, new Warning(Warning.Action.Ignore));
+			try {
+				reader.readXML(new StringReader(xml), desideratum, reflection, new Warning(Warning.Action.Die));
+			} catch (FatalWarning except) {
+				assertTrue("Unsupported tag", except.getCause() instanceof UnsupportedTagException);
+				assertEquals("The tag we expected", tag, ((UnsupportedTagException) except.getCause()).getTag());
+			}
+		} else {
+			try {
+				reader.readXML(new StringReader(xml), desideratum, reflection, new Warning(Warning.Action.Ignore));
+				fail("Expected an UnsupportedTagException");
+			} catch (UnsupportedTagException except) {
+				assertEquals("The tag we expected", tag, except.getTag());
+			}
+		}
+	}
+
 	/**
 	 * Assert that reading the given XML will produce an UnwantedChildException.
 	 * If it's only supposed to be a warning, assert that it'll pass with

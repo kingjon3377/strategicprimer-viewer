@@ -1,8 +1,6 @@
 package model.map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.StringReader;
 
@@ -17,7 +15,6 @@ import model.map.fixtures.Unit;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.FatalWarning;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
@@ -29,6 +26,10 @@ import controller.map.simplexml.SimpleXMLReader;
  * 
  */
 public final class TestSerialization extends BaseTestFixtureSerialization {
+	/**
+	 * Extracted constant.
+	 */
+	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * XML reader we'll be using.
 	 */
@@ -61,16 +62,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testPlayerSerialization() throws XMLStreamException,
 			SPFormatException {
-		final Player one = new Player(1, "one");
-		assertEquals("First Player serialization test, reflection", one,
-				helpSerialization(reader, one, Player.class, true));
-		assertEquals("First Player serialization test, non-reflection", one,
-				helpSerialization(reader, one, Player.class, false));
-		final Player two = new Player(2, "two");
-		assertEquals("Second Player serialization test, reflection", two,
-				helpSerialization(reader, two, Player.class, true));
-		assertEquals("Second Player serialization test, non-reflection", two,
-				helpSerialization(reader, two, Player.class, false));
+		assertSerialization("First Player serialization test, reflection",
+				reader, new Player(1, "one"), Player.class);
+		assertSerialization("Second Player serialization test, reflection",
+				reader, new Player(2, "two"), Player.class);
+		assertUnwantedChild(reader, "<player><troll /></player>",
+				Player.class, false);
+		assertMissingProperty(reader, "<player code_name=\"one\" />",
+				Player.class, "number", false);
+		assertMissingProperty(reader, "<player number=\"1\" />",
+				Player.class, "code_name", false);
 	}
 
 	/**
@@ -85,49 +86,25 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testRiverSerializationOne() throws XMLStreamException,
 			SPFormatException {
 		for (River river : River.values()) {
-			assertEquals("First River serialization test, reflection", river,
-					helpSerialization(reader, river, River.class, true));
-			assertEquals("First River serialization test, non-reflection",
-					river, helpSerialization(reader, river, River.class, false));
+			assertSerialization("First River serialization test, reflection",
+					reader, river, River.class);
 		}
-	}
-
-	/**
-	 * Further test River serialization.
-	 * 
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
-	 */
-	@Test
-	public void testRiverSerializationTwo() throws XMLStreamException,
-			SPFormatException {
 		final Tile tile = new Tile(0, 0, TileType.Plains);
 		tile.addRiver(River.East);
-		assertEquals("Second River serialization test, reflection", tile,
-				helpSerialization(reader, tile, Tile.class, true));
-		assertEquals("Second River serialization test, non-reflection", tile,
-				helpSerialization(reader, tile, Tile.class, false));
+		assertSerialization("Second River serialization test, reflection", reader, tile, Tile.class);
 		tile.removeRiver(River.East);
 		tile.addRiver(River.Lake);
-		assertEquals("Third River serialization test, reflection", tile,
-				helpSerialization(reader, tile, Tile.class, true));
-		assertEquals("Third River serialization test, non-reflection", tile,
-				helpSerialization(reader, tile, Tile.class, false));
+		assertSerialization("Third River serialization test, reflection", reader, tile, Tile.class);
 		tile.removeRiver(River.Lake);
 		tile.addRiver(River.North);
-		assertEquals("Fourth River serialization test, reflection", tile,
-				helpSerialization(reader, tile, Tile.class, true));
-		assertEquals("Fourth River serialization test, non-reflection", tile,
-				helpSerialization(reader, tile, Tile.class, false));
+		assertSerialization("Fourth River serialization test, reflection", reader, tile, Tile.class);
 		tile.addRiver(River.South);
-		assertEquals("Fifth River serialization test, reflection", tile,
-				helpSerialization(reader, tile, Tile.class, true));
-		assertEquals("Fifth River serialization test, non-reflection", tile,
-				helpSerialization(reader, tile, Tile.class, false));
+		assertSerialization("Fifth River serialization test, reflection", reader, tile, Tile.class);
+		assertUnwantedChild(reader, "<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
+				Tile.class, false);
+		assertMissingProperty(reader, "<tile row=\"1\" column=\"\" kind=\"plains\"><river /></tile>",
+				Tile.class, "direction", false);
 	}
-
 	/**
 	 * Test Tile serialization.
 	 * 
@@ -139,54 +116,40 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testTileSerialization() throws XMLStreamException,
 			SPFormatException {
-		final Tile one = new Tile(0, 0, TileType.Desert);
-		assertEquals("First Tile serialization test, reflection", one,
-				helpSerialization(reader, one, Tile.class, true));
-		assertEquals("First Tile serialization test, non-reflection", one,
-				helpSerialization(reader, one, Tile.class, false));
+		assertSerialization("First Tile serialization test, reflection",
+				reader, new Tile(0, 0, TileType.Desert), Tile.class);
 		final Tile two = new Tile(1, 1, TileType.Plains);
 		two.addFixture(new Griffin());
-		assertEquals("Second Tile serialization test, reflection", two,
-				helpSerialization(reader, two, Tile.class, true));
-		assertEquals("Second Tile serialization test, non-reflection", two,
-				helpSerialization(reader, two, Tile.class, false));
+		assertSerialization("Second Tile serialization test, reflection",
+				reader, two, Tile.class);
 		final Tile three = new Tile(2, 2, TileType.Steppe);
 		three.addFixture(new Unit(new Player(1, ""), "unitOne", "firstUnit"));
 		three.addFixture(new Forest("forestKind", true));
-		assertEquals("Third Tile serialization test, reflection", three,
-				helpSerialization(reader, three, Tile.class, true));
-		assertEquals("Third Tile serialization test, non-reflection", three,
-				helpSerialization(reader, three, Tile.class, false));
+		assertSerialization("Third Tile serialization test, reflection", reader, three, Tile.class);
 		final Tile four = new Tile(3, 3, TileType.Jungle);
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne");
 		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit"));
 		four.addFixture(fort);
 		four.addFixture(new TextFixture("Random text here", 5));
 		four.addRiver(River.Lake);
-		assertEquals("Fourth Tile serialization test, reflection", four,
-				helpSerialization(reader, four, Tile.class, true));
-		assertEquals("Fourth Tile serialization test, non-reflection", four,
-				helpSerialization(reader, four, Tile.class, false));
+		assertSerialization("Fourth Tile serialization test, reflection", reader, four, Tile.class);
 		final Tile five = new Tile(4, 4, TileType.Plains);
 		final String xml = five.toXML().replace("kind", "type");
 		assertEquals("Test Tile deserialization of deprecated tile-type idiom, non-reflection", five,
-				reader.readXML(new StringReader(xml), Tile.class, false, Warning.INSTANCE));
+				reader.readXML(new StringReader(xml), Tile.class, false, new Warning(Warning.Action.Ignore)));
 		assertEquals("Test Tile deserialization of deprecated tile-type idiom, reflection", five,
-				reader.readXML(new StringReader(xml), Tile.class, true, Warning.INSTANCE));
-		try {
-			reader.readXML(new StringReader(xml), Tile.class, true, warner());
-			fail("Should have warned about deprecated tile-type idiom");
-		} catch (FatalWarning except) {
-			assertTrue("Warned about deprecated tile-type idiom, reflection",
-					except.getCause() instanceof SPFormatException);
-		}
-		try {
-			reader.readXML(new StringReader(xml), Tile.class, false, warner());
-			fail("Should have warned about deprecated tile-type idiom");
-		} catch (FatalWarning except) {
-			assertTrue("Warned about deprecated tile-type idiom, non-reflection",
-					except.getCause() instanceof SPFormatException);
-		}
+				reader.readXML(new StringReader(xml), Tile.class, true, new Warning(Warning.Action.Ignore)));
+		assertDeprecatedProperty(reader, xml, Tile.class, "type", true);
+		assertMissingProperty(reader, "<tile column=\"0\" kind=\"plains\" />",
+				Tile.class, "row", false);
+		assertMissingProperty(reader, "<tile row=\"0\" kind=\"plains\" />",
+				Tile.class, "column", false);
+		assertMissingProperty(reader, "<tile row=\"0\" column=\"0\" />",
+				Tile.class, KIND_PROPERTY, false);
+		assertUnwantedChild(
+				reader,
+				"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
+				Tile.class, false);
 	}
 	/**
 	 * Test that row nodes are ignored, and that "future" tags are skipped but warned about.
@@ -220,39 +183,22 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"Two maps, one with future tag, one without, non-reflection",
 				reader.readXML(new StringReader(
 						"<map rows=\"1\" columns=\"1\" version=\"2\" />"),
-						SPMap.class, false, Warning.INSTANCE),
+						SPMap.class, false, new Warning(Warning.Action.Ignore)),
 				reader.readXML(
 						new StringReader(
 								"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>"),
-						SPMap.class, false, Warning.INSTANCE));
+						SPMap.class, false, new Warning(Warning.Action.Ignore)));
 		assertEquals(
 				"Two maps, one with future tag, one without, reflection",
 				reader.readXML(new StringReader(
 						"<map rows=\"1\" columns=\"2\" version=\"2\" />"),
-						SPMap.class, true, Warning.INSTANCE),
+						SPMap.class, true, new Warning(Warning.Action.Ignore)),
 				reader.readXML(
 						new StringReader(
 								"<map rows=\"1\" columns=\"2\" version=\"2\"><future /></map>"),
-						SPMap.class, true, Warning.INSTANCE));
-		try {
-			reader.readXML(
-					new StringReader(
-							"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>"),
-					SPMap.class, false, warner());
-			fail("Should have warned about 'future' tag");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about 'future' tag, non-reflection",
-					except.getCause() instanceof SPFormatException);
-		}
-		try {
-			reader.readXML(
-					new StringReader(
-							"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>"),
-					SPMap.class, true, warner());
-			fail("Should have warned about 'future' tag");
-		} catch (FatalWarning except) {
-			assertTrue("Warning about 'future' tag, reflection",
-					except.getCause() instanceof SPFormatException);
-		}
+						SPMap.class, true, new Warning(Warning.Action.Ignore)));
+		assertUnsupportedTag(reader,
+				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
+				SPMap.class, "future", true);
 	}
 }
