@@ -72,6 +72,10 @@ public final class TestMoreFixtureSerialization extends
 				reader, new Grove(false, true, "thirdGrove"), Grove.class);
 		assertSerialization("Fourth test of Grove serialization, reflection",
 				reader, new Grove(false, false, "four"), Grove.class);
+		assertUnwantedChild(reader, "<grove><troll /></grove>", Grove.class, false);
+		assertMissingProperty(reader, "<grove />", Grove.class, "wild", false);
+		assertMissingProperty(reader, "<grove wild=\"false\" />", Grove.class, "kind", false);
+		assertDeprecatedProperty(reader, "<grove wild=\"true\" tree=\"tree\" />", Grove.class, "tree", true);
 		// TODO: errors
 	}
 
