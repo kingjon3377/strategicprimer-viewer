@@ -5,7 +5,9 @@ import model.map.events.TownStatus;
 import model.map.fixtures.Village;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to produce a Village.
@@ -45,14 +47,15 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Village shouldn't have children", getLine());
+			throw new UnwantedChildException("village", iterator().next()
+					.toString(), getLine());
 		} else if (hasProperty("status")) {
 			if (!hasProperty(NAME_PROPERTY)) {
-				warner.warn(new SPFormatException(
-						"Village should have \"name\" property", getLine()));
+				warner.warn(new MissingParameterException("village",
+						NAME_PROPERTY, getLine()));
 			}
 		} else {
-			throw new SPFormatException("Village must have \"status\" property", getLine());
+			throw new MissingParameterException("village", "status", getLine());
 		}
 	}
 	/**

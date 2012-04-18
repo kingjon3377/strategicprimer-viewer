@@ -3,7 +3,9 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Giant;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a giant.
@@ -35,9 +37,10 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Giant shouldn't have children", getLine());
+			throw new UnwantedChildException("giant", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty("kind")) {
-			throw new SPFormatException("Giant must have \"kind\" property", getLine());
+			throw new MissingParameterException("giant", "kind", getLine());
 		}
 	}
 	/**

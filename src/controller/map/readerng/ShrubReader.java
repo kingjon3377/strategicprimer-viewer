@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Shrub;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for Shrubs.
  * @author Jonathan Lovelace
@@ -34,8 +35,9 @@ public class ShrubReader implements INodeReader<Shrub> {
 		final Shrub fix = new Shrub(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Shrub can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("shrub", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "shrub".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

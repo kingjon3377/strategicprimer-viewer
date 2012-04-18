@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
 import util.EqualsAny;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for Groves.
  * @author Jonathan Lovelace
@@ -38,8 +39,9 @@ public class GroveReader implements INodeReader<Grove> {
 				element, "kind"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Grove can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException(element.getName()
+						.getLocalPart(), event.asStartElement().getName()
+						.getLocalPart(), event.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& EqualsAny.equalsAny(event.asEndElement().getName()
 							.getLocalPart(), "grove", "orchard")) {

@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Meadow;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A Node to produce a Meadow.
  * @author Jonathan Lovelace
@@ -54,17 +56,23 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Fields and meadows shouldn't have children", getLine());
+			// FIXME: This should go after we've ensured that we have a 'tag'
+			// property.
+			throw new UnwantedChildException(getProperty("tag"), iterator().next()
+					.toString(), getLine());
 		} else if (hasProperty("tag")) {
-			if (!hasProperty("cultivated") || !hasProperty("kind")) {
-				throw new SPFormatException(
-						"Fields and meadows must have \"cultivated\" and \"kind\" properties",
+			if (!hasProperty("cultivated")) {
+				throw new MissingParameterException(getProperty("tag"),
+						"cultivated", getLine());
+			} else if (!hasProperty("kind")) {
+				throw new MissingParameterException(getProperty("tag"), "kind",
 						getLine());
 			}
 		} else {
-			throw new SPFormatException(
-					"The NodeFactory should have generated a \"tag\" property to tell whether this is a field or a meadow",
-					getLine());
+			// The 'tag' property is supposed to be added by the NodeFactory; if
+			// it isn't present, something is *very* wrong.
+			throw new IllegalStateException(new MissingParameterException(
+					"meadow or field", "tag", getLine()));
 		}
 	}
 	/**

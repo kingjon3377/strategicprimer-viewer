@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.events.BattlefieldEvent;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node representing a BattlefieldEvent.
@@ -51,11 +53,10 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Event shouldn't have children",
-					getLine());
+			throw new UnwantedChildException("battlefield", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty(DC_PROPERTY)) {
-			throw new SPFormatException(
-					"Battlefield must have \"dc\" property", getLine());
+			throw new MissingParameterException("battlefield", "dc", getLine());
 		}
 	}
 	/**

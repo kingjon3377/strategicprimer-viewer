@@ -3,7 +3,9 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Dragon;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a dragon.
@@ -35,9 +37,10 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Dragon shouldn't have children", getLine());
+			throw new UnwantedChildException("dragon", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty("kind")) {
-			throw new SPFormatException("Dragon must have \"kind\" property", getLine());
+			throw new MissingParameterException("dragon", "kind", getLine());
 		}
 	}
 	/**

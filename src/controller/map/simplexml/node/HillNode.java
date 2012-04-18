@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Hill;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to produce a Hill.
@@ -35,7 +36,7 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Hill shouldn't have children", getLine());
+			throw new UnwantedChildException("hill", iterator().next().toString(), getLine());
 		}
 	}
 	/**

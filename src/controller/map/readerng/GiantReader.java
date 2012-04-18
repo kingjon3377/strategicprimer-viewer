@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Giant;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for Giants.
  * @author Jonathan Lovelace
@@ -34,8 +35,9 @@ public class GiantReader implements INodeReader<Giant> {
 		final Giant fix = new Giant(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Giant can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("giant", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "giant".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

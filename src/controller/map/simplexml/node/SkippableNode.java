@@ -3,6 +3,7 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedTagException;
 
 /**
  * A Node for tags we'd rather skip. This is an AbstractChildNode because
@@ -37,8 +38,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	public SkippableNode(final String tag, final int line, final Warning warner) {
 		super(SkippableNode.class);
 		if (!"row".equals(tag)) {
-			warner.warn(new SPFormatException("Unexpected tag " + tag
-					+ ": probably a more recent map format than viewer.", line));
+			warner.warn(new UnsupportedTagException(tag, line));
 		}
 	}
 

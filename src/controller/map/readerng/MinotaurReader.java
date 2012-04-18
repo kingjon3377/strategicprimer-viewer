@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Minotaur;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for minotaurs.
@@ -34,8 +35,9 @@ public class MinotaurReader implements INodeReader<Minotaur> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Minotaur can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("minotaur", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "minotaur".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

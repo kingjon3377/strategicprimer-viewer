@@ -3,6 +3,7 @@ package controller.map.simplexml;
 import java.util.Iterator;
 
 import util.Warning;
+import controller.map.MissingChildException;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
@@ -36,19 +37,19 @@ public final class RootNode<T> extends AbstractXMLNode {
 				if (((AbstractChildNode) child).getProduct().isAssignableFrom(product)) {
 					iterator().next().checkNode(warner);
 				} else {
-					throw new SPFormatException("We want a node producing "
+					throw new IllegalArgumentException("We want a node producing "
 							+ product.getSimpleName()
 							+ " as the top-level tag, not one producing "
 							+ ((AbstractChildNode) child).getProduct()
-									.getSimpleName(), 0);
+									.getSimpleName());
 				}
 			} else {
-				throw new SPFormatException("We want a node producing "
-						+ product.getSimpleName() + " as the top-level tag", 0);
+				throw new IllegalArgumentException("We want a node producing "
+						+ product.getSimpleName() + " as the top-level tag");
 			}
 		} else {
-			throw new SPFormatException("We want a node producing "
-					+ product.getSimpleName() + " as the top-level tag", 0);
+			throw new IllegalArgumentException("We want a node producing "
+					+ product.getSimpleName() + " as the top-level tag");
 		}
 	}
 
@@ -66,12 +67,12 @@ public final class RootNode<T> extends AbstractXMLNode {
 					&& ((AbstractChildNode) child).getProduct().isAssignableFrom(product)) {
 				return (AbstractChildNode<T>) child;
 			} else {
-				throw new SPFormatException(
+				throw new IllegalArgumentException(
 						"First top-level tag won't produce a "
-								+ product.getSimpleName(), 0);
+								+ product.getSimpleName());
 			}
 		} else {
-			throw new SPFormatException("No top-level tag", 0);
+			throw new MissingChildException("root", 0);
 		}
 	}
 

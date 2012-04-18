@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Sphinx;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Sphinxes.
@@ -34,8 +35,9 @@ public class SphinxReader implements INodeReader<Sphinx> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Sphinx can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("sphinx", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "sphinx".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Djinn;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for djinn.
  * @author Jonathan Lovelace
@@ -33,8 +34,9 @@ public class DjinnReader implements INodeReader<Djinn> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Djinn can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("djinn", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "djinn".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

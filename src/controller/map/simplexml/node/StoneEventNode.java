@@ -5,7 +5,10 @@ import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a StoneEvent.
@@ -56,23 +59,19 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Event shouldn't have children",
+			throw new UnwantedChildException("stone", iterator().next().toString(),
 					getLine());
 		} else if (hasProperty(STONE_PROPERTY)) {
 			if (!hasProperty(DC_PROPERTY)) {
-				throw new SPFormatException(
-						"Event must have \"kind\" and \"dc\" properties", getLine());
+				throw new MissingParameterException("stone", "dc", getLine());
 			}
 		} else {
 			if (hasProperty("stone")) {
-				warner.warn(new SPFormatException(
-						"Use of \"stone\" property to specify kind of stone is deprecated; use \"kind\" instead",
-						getLine()));
+				warner.warn(new DeprecatedPropertyException("stone", "stone",
+						STONE_PROPERTY, getLine()));
 				addProperty(STONE_PROPERTY, getProperty("stone"), warner);
 			} else {
-				throw new SPFormatException(
-						"Event must have \"kind\" and \"dc\" properties",
-						getLine());
+				throw new MissingParameterException("stone", STONE_PROPERTY, getLine());
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Oasis;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Oases.
@@ -34,8 +35,9 @@ public class OasisReader implements INodeReader<Oasis> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Oasis can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("oasis", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "oasis".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

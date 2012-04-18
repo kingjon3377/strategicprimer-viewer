@@ -4,7 +4,10 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Shrub;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent shrubs (or the aquatic equivalent) on the tile.
@@ -41,14 +44,14 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Shrub shouldn't have children", getLine());
+			throw new UnwantedChildException("shrub", iterator().next()
+					.toString(), getLine());
 		} else if (hasProperty("shrub")) {
-			warner.warn(new SPFormatException(
-					"Use of property \"shrub\" to give kind of shrub is deprecated; use \"kind\" instead",
-					getLine()));
+			warner.warn(new DeprecatedPropertyException("shrub", "shrub",
+					KIND_PROPERTY, getLine()));
 			addProperty(KIND_PROPERTY, getProperty("shrub"), warner);
 		} else if (!hasProperty(KIND_PROPERTY)) {
-			throw new SPFormatException("Shrub must have \"shrub\" property", getLine());
+			throw new MissingParameterException("shrub", "shrub", getLine());
 		}
 	}
 	/**

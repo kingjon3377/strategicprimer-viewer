@@ -5,6 +5,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 
 /**
@@ -33,10 +34,9 @@ public final class XMLHelper {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
 		if (attr == null) {
-			throw new SPFormatException("Element "
-					+ startElement.getName().getLocalPart()
-					+ " doesn't contain attribute " + attribute, startElement
-					.getLocation().getLineNumber());
+			throw new MissingParameterException(startElement.getName()
+					.getLocalPart(), attribute, startElement.getLocation()
+					.getLineNumber());
 		}
 		return attr.getValue();
 	}

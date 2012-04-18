@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Stones.
@@ -39,8 +40,9 @@ public class StoneReader implements INodeReader<StoneEvent> {
 				element, "dc")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Stone can't have child tag",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("stone", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "stone".equalsIgnoreCase(event.asEndElement()
 							.getName().getLocalPart())) {

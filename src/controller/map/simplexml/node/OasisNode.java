@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Oasis;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to produce an Oasis.
@@ -35,7 +36,8 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Oasis shouldn't have children", getLine());
+			throw new UnwantedChildException("oasis", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

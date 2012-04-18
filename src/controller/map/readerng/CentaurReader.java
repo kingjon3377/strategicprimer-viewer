@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Centaur;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for Centaurs.
  * @author Jonathan Lovelace
@@ -34,8 +35,9 @@ public class CentaurReader implements INodeReader<Centaur> {
 		final Centaur fix = new Centaur(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Centaur can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("centaur", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "centaur".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

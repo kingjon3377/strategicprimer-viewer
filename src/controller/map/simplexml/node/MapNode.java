@@ -7,7 +7,10 @@ import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MapVersionException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A node generated from the <map> tag.
@@ -43,19 +46,19 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			if (node instanceof TileNode || node instanceof PlayerNode) {
 				node.checkNode(warner);
 			} else {
-				throw new SPFormatException(
-						"Map should only directly contain Tiles and Players: unexpected child " + node.toString(),
+				throw new UnwantedChildException("map", node.toString(),
 						getLine());
 			}
 		}
 		if (!hasProperty(VERSION_PROP)
 				|| Integer.parseInt(getProperty(VERSION_PROP)) < SPMap.MAX_VERSION) {
-			throw new SPFormatException(
+			throw new MapVersionException(
 					"This reader only accepts maps with a \"version\" property of at least "
 							+ SPMap.MAX_VERSION, getLine());
-		} else if (!hasProperty("rows") || !hasProperty("columns")) {
-			throw new SPFormatException(
-					"Map must specify number of rows and columns.", getLine());
+		} else if (!hasProperty("rows")) {
+			throw new MissingParameterException("map", "rows", getLine());
+		} else if (!hasProperty("columns")) {
+			throw new MissingParameterException("map", "columns", getLine());
 		}
 	}
 	/**
@@ -90,8 +93,8 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			} else if (node instanceof TileNode) {
 				tiles.add((TileNode) node);
 			} else {
-				throw new SPFormatException(
-						"Unsupported direct child of <map>: " + node.toString(), node.getLine());
+				throw new UnwantedChildException("map", node.toString(),
+						node.getLine());
 			}
 		}
 		for (final TileNode node : tiles) {

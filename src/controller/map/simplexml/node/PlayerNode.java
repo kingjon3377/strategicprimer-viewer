@@ -4,7 +4,9 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a Player.
@@ -51,11 +53,12 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException(
-					"A Player shouldn't contain other tags.", getLine());
-		} else if (!hasProperty("number") || !hasProperty("code_name")) {
-			throw new SPFormatException(
-					"A Player must specify \"number\" and \"code_name\" properties.",
+			throw new UnwantedChildException("player", iterator().next()
+					.toString(), getLine());
+		} else if (!hasProperty("number")) {
+			throw new MissingParameterException("player", "number", getLine());
+		} else if (!hasProperty("code_name")) {
+			throw new MissingParameterException("player", "code_name",
 					getLine());
 		}
 	}

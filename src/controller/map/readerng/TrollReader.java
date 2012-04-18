@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Troll;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Trolls.
@@ -34,8 +35,9 @@ public class TrollReader implements INodeReader<Troll> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Troll can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("troll", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "troll".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

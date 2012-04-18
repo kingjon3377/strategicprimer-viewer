@@ -5,8 +5,12 @@ import java.util.Iterator;
 import model.map.PlayerCollection;
 import model.map.events.IEvent;
 import util.Warning;
+import controller.map.MissingChildException;
+import controller.map.MissingParameterException;
 import controller.map.NeedsExtraCanonicalization;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedTagException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node that will produce an Event.
@@ -74,15 +78,12 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 	public void checkNode(final Warning warner) throws SPFormatException {
 		final Iterator<AbstractXMLNode> iter = iterator();
 		if (!iter.hasNext()) {
-			throw new SPFormatException(
-					"Doesn't have the child that actually holds the Event",
-					getLine());
+			throw new MissingChildException(getProperty("kind"), getLine());
 		}
 		iter.next().checkNode(warner);
 		if (iter.hasNext()) {
-			throw new SPFormatException(
-					"EventNode shouldn't have more than the one child",
-					getLine());
+			throw new UnwantedChildException(getProperty("kind"), iter.next()
+					.toString(), getLine());
 		}
 	}
 
@@ -112,10 +113,9 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 		} else if ("stone".equals(getProperty(KIND_PROPERTY))) {
 			child = new StoneEventNode();
 		} else if (hasProperty(KIND_PROPERTY)) {
-			throw new SPFormatException("Unknown kind of event", getLine());
+			throw new UnsupportedTagException(getProperty(KIND_PROPERTY), getLine());
 		} else {
-			throw new SPFormatException("Event must have a \"kind\" property",
-					getLine());
+			throw new MissingParameterException("event", "kind", getLine());
 		}
 		moveEverythingTo(child, warner);
 		addChild(child);

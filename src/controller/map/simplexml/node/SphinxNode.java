@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Sphinx;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a Sphinx.
@@ -35,7 +36,8 @@ public class SphinxNode extends AbstractFixtureNode<Sphinx> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Sphinx shouldn't have children", getLine());
+			throw new UnwantedChildException("sphinx", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

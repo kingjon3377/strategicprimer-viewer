@@ -3,7 +3,9 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Fairy;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a fairy or group of fairies.
@@ -35,9 +37,10 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Fairy shouldn't have children", getLine());
+			throw new UnwantedChildException("fairy", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty("kind")) {
-			throw new SPFormatException("Fairy must have \"kind\" property", getLine());
+			throw new MissingParameterException("fairy", "kind", getLine());
 		}
 	}
 	/**

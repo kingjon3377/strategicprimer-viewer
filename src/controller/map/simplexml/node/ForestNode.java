@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Forest;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A Node that will produce a Forest.
  * @author Jonathan Lovelace
@@ -48,9 +50,10 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Forest shouldn't have children", getLine());
+			throw new UnwantedChildException("forest", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty("kind")) {
-			throw new SPFormatException("Forest must have \"kind\" property", getLine());
+			throw new MissingParameterException("forest", "kind", getLine());
 		}
 	}
 	/**

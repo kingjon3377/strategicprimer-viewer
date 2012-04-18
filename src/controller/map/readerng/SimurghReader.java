@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Simurgh;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Simurghs.
@@ -34,8 +35,9 @@ public class SimurghReader implements INodeReader<Simurgh> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Simurgh can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("simurgh", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "simurgh".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

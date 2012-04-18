@@ -3,7 +3,9 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.River;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A node representing a river XML tag.
@@ -50,10 +52,10 @@ public class RiverNode extends AbstractChildNode<River> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("River has sub-tags", getLine());
+			throw new UnwantedChildException("river", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty("direction")) {
-			throw new SPFormatException("River should have a direction",
-					getLine());
+			throw new MissingParameterException("river", "direction", getLine());
 		}
 	}
 

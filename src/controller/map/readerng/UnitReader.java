@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Unit;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Units.
@@ -45,9 +46,9 @@ public class UnitReader implements INodeReader<Unit> {
 				XMLHelper.getAttributeWithDefault(element, "name", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException(
-						"Unit can't have child elements (yet)", event
-								.getLocation().getLineNumber());
+				throw new UnwantedChildException("unit", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			} else if (event.isEndElement()
 					&& "unit".equals(event.asEndElement().getName()
 							.getLocalPart())) {

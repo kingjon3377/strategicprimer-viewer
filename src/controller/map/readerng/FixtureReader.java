@@ -45,6 +45,7 @@ import model.map.fixtures.Troll;
 import model.map.fixtures.Unit;
 import model.map.fixtures.Village;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedTagException;
 
 /**
  * A reader for TileFixtures. It actually only figures out what kind of fixture,
@@ -126,7 +127,8 @@ public class FixtureReader implements INodeReader<TileFixture> {
 							.toLowerCase(Locale.ENGLISH))).parse(element,
 					stream, players);
 		} else {
-			throw new SPFormatException("Not a fixture we know how to parse", element.getLocation().getLineNumber());
+			throw new UnsupportedTagException(element.getName().getLocalPart(),
+					element.getLocation().getLineNumber());
 		}
 	}
 	/**

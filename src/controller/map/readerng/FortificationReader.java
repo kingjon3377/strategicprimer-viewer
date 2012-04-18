@@ -8,6 +8,7 @@ import model.map.events.FortificationEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for fortifications.
@@ -42,8 +43,9 @@ public class FortificationReader implements INodeReader<FortificationEvent> {
 						XMLHelper.getAttributeWithDefault(element, "name", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Fortifiction can't (yet) have child tag",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("fortifiction", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "fortification".equalsIgnoreCase(event.asEndElement()
 							.getName().getLocalPart())) {

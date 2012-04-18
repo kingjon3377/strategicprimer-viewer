@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Sandbar;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A Node to produce a Sandbar.
  * @author Jonathan Lovelace
@@ -34,7 +35,8 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Sandbar shouldn't have children", getLine());
+			throw new UnwantedChildException("sandbar", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

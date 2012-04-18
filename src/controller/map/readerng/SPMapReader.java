@@ -2,6 +2,7 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+import static controller.map.readerng.XMLHelper.hasAttribute;
 import static controller.map.readerng.XMLHelper.hasAttributes;
 
 import javax.xml.stream.events.StartElement;
@@ -11,7 +12,10 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import model.map.Tile;
+import controller.map.MissingChildException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader to produce SPMaps.
@@ -45,13 +49,15 @@ public class SPMapReader implements INodeReader<SPMap> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players)
 			throws SPFormatException {
 		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
-			if (!hasAttributes(element, "rows", "columns")) {
-				throw new SPFormatException(
-						"<map> tag must have 'rows' and 'columns' attributes",
-						element.getLocation().getLineNumber());
+			if (!hasAttribute(element, "rows")) {
+				throw new MissingParameterException("map", "rows", element
+						.getLocation().getLineNumber());
+			} else if (!hasAttribute(element, "columns")) {
+				throw new MissingParameterException("map", "columns", element
+						.getLocation().getLineNumber());
 			}
 		} else {
-			throw new SPFormatException("Map must begin with <map> tag",
+			throw new MissingChildException("root",
 					element.getLocation().getLineNumber());
 		}
 		final SPMap map = new SPMap(Integer.parseInt(getAttributeWithDefault(
@@ -72,9 +78,8 @@ public class SPMapReader implements INodeReader<SPMap> {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
 							elem, stream, map.getPlayers()));
 				} else {
-					throw new SPFormatException(
-							"<map> can only directly contain <player>s, <row>s, and <tile>s.",
-							elem.getLocation().getLineNumber());
+					throw new UnwantedChildException("map", elem.getName()
+							.getLocalPart(), elem.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& "map".equalsIgnoreCase(event.asEndElement().getName()

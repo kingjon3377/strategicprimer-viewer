@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Simurgh;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a simurgh.
@@ -35,7 +36,7 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Simurgh shouldn't have children", getLine());
+			throw new UnwantedChildException("simurgh", iterator().next().toString(), getLine());
 		}
 	}
 	/**

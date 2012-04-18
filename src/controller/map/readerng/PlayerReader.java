@@ -7,6 +7,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.Player;
 import model.map.PlayerCollection;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader to produce Players.
  * @author Jonathan Lovelace
@@ -34,8 +35,9 @@ public class PlayerReader implements INodeReader<Player> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Player can't contain other tags",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("player", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement() && "player".equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
 				break;
 			}

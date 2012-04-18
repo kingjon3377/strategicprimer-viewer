@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Ogre;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent an ogre.
@@ -35,7 +36,8 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Ogre shouldn't have children", getLine());
+			throw new UnwantedChildException("ogre", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

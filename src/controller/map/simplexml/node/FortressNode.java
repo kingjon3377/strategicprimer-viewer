@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A node to produce a Fortress.
@@ -49,8 +51,8 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 			if (node instanceof UnitNode) {
 				fort.addUnit(((UnitNode) node).produce(players, warner));
 			} else {
-				throw new SPFormatException(
-						"Fortress should contain only units", node.getLine());
+				throw new UnwantedChildException(
+						"fortress", node.toString(), node.getLine());
 			}
 		}
 		return fort;
@@ -82,16 +84,16 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 			if (node instanceof UnitNode) {
 				node.checkNode(warner);
 			} else {
-				throw new SPFormatException(
-						"Fortress should contain only units", getLine());
+				throw new UnwantedChildException("fortress", node.toString(),
+						getLine());
 			}
 		}
 		if (!hasProperty(OWNER_PROP)) {
-			warner.warn(new SPFormatException("Fortress should have an owner",
+			warner.warn(new MissingParameterException("fortress", OWNER_PROP,
 					getLine()));
 		}
 		if (!hasProperty(NAME_PROP)) {
-			warner.warn(new SPFormatException("Fortress should have a name",
+			warner.warn(new MissingParameterException("fortress", NAME_PROP,
 					getLine()));
 		}
 	}

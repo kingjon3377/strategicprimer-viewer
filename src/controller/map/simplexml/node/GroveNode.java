@@ -4,7 +4,10 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to produce a Grove.
@@ -50,31 +53,30 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException(
-					"Groves and orchards shouldn't have children", getLine());
+			throw new UnwantedChildException(getProperty("tag"), iterator()
+					.next().toString(), getLine());
 		} else if (hasProperty("tag")) {
 			if (hasProperty("wild")) {
 				if (!hasProperty(KIND_PROPERTY)) {
 					if (hasProperty("tree")) {
-						warner.warn(new SPFormatException(
-								"Using \"tree\" property for the kind of tree is deprecated; use \"kind\" instead",
+						warner.warn(new DeprecatedPropertyException(
+								getProperty("tag"), "tree", KIND_PROPERTY,
 								getLine()));
 						addProperty(KIND_PROPERTY, getProperty("tree"), warner);
 					} else {
-						throw new SPFormatException(
-								"Groves and orchards must have \"wild\" and \"kind\" properties",
-								getLine());
+						throw new MissingParameterException(getProperty("tag"),
+								"kind", getLine());
 					}
 				}
 			} else {
-				throw new SPFormatException(
-						"Groves and orchards must have \"wild\" and \"kind\" properties",
+				throw new MissingParameterException(getProperty("tag"), "wild",
 						getLine());
 			}
 		} else {
-			throw new SPFormatException(
-					"The NodeFactory should have generated a \"tag\" property to tell whether this is a grove or an orchard",
-					getLine());
+			// The NodeFactory is supposed to create the 'tag' property; if it's
+			// not there, something is *very* wrong.
+			throw new IllegalStateException(new MissingParameterException(
+					"grove or orchard", "tag", getLine()));
 		}
 	}
 	/**

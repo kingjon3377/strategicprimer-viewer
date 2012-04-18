@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Sandbar;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Sandbars.
@@ -34,8 +35,9 @@ public class SandbarReader implements INodeReader<Sandbar> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Sandbar can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("sandbar", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "sandbar".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

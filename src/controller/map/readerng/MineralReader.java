@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.events.MineralEvent;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Minerals.
@@ -38,8 +39,9 @@ public class MineralReader implements INodeReader<MineralEvent> {
 				element, "dc")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Mineral can't have child tag",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("mineral", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "mineral".equalsIgnoreCase(event.asEndElement()
 							.getName().getLocalPart())) {

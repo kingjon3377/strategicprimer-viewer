@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Djinn;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a djinn or group of djinni.
@@ -35,7 +36,8 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Djinn shouldn't have children", getLine());
+			throw new UnwantedChildException("djinn", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

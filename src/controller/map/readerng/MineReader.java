@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Mines.
@@ -38,8 +39,9 @@ public class MineReader implements INodeReader<Mine> {
 						"status")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Mine can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("mine", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			} else if (event.isEndElement()
 					&& "mine".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Mountain;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Mountains.
@@ -34,8 +35,9 @@ public class MountainReader implements INodeReader<Mountain> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Mountain can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("mountain", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "mountain".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

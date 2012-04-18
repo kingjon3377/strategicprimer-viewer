@@ -15,4 +15,16 @@ public final class MapVersionException extends SPFormatException {
 	public MapVersionException(final String message) {
 		super(message, 0);
 	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param message
+	 *            the message to show the user if this isn't caught.
+	 * @param line
+	 *            the line of the map tag.
+	 */
+	public MapVersionException(final String message, final int line) {
+		super(message, line);
+	}
 }

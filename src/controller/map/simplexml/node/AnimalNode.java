@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a(n) (group of) animal(s).
@@ -47,10 +49,10 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Animal shouldn't have children",
+			throw new UnwantedChildException("animal", iterator().next().toString(),
 					getLine());
 		} else if (!hasProperty("kind")) {
-			throw new SPFormatException("Animal must have \"kind\" property",
+			throw new MissingParameterException("animal", "kind",
 					getLine());
 		}
 	}

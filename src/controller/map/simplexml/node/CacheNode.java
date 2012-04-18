@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.fixtures.CacheFixture;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A Node to represent a cache on a tile.
  * @author Jonathan Lovelace
@@ -41,11 +43,12 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Cache shouldn't have children", getLine());
-		} else if (!hasProperty("kind") || !hasProperty("contents")) {
-			throw new SPFormatException(
-					"Cache must have \"kind\" and \"contents\" properties",
-					getLine());
+			throw new UnwantedChildException("cache", iterator().next()
+					.toString(), getLine());
+		} else if (!hasProperty("kind")) {
+			throw new MissingParameterException("cache", "kind", getLine());
+		} else if (!hasProperty("contents")) {
+			throw new MissingParameterException("cache", "contents", getLine());
 		}
 	}
 	/**

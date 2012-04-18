@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.CacheFixture;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for CacheFixtures.
@@ -36,8 +37,9 @@ public class CacheReader implements INodeReader<CacheFixture> {
 				element, "kind"), XMLHelper.getAttribute(element, "contents"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Cache can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("cache", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "cache".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

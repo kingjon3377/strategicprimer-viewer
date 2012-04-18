@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Phoenix;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a phoenix.
@@ -35,7 +36,8 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Phoenix shouldn't have children", getLine());
+			throw new UnwantedChildException("phoenix", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

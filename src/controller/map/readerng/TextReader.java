@@ -4,6 +4,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 import model.map.PlayerCollection;
 import model.map.fixtures.TextFixture;
 /**
@@ -34,8 +35,9 @@ public class TextReader implements INodeReader<TextFixture> {
 		final StringBuilder sbuild = new StringBuilder("");
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("<text> can't contain child nodes",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("text", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			} else if (event.isEndElement()
 					&& "text".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

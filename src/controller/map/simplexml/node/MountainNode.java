@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Mountain;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A Node to produce a Mountain.
  * @author Jonathan Lovelace
@@ -37,7 +38,8 @@ public class MountainNode extends AbstractFixtureNode<Mountain> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Mountain shouldn't have children", getLine());
+			throw new UnwantedChildException("mountain", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

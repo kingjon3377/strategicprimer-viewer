@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Minotaur;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a minotaur or group of minotaurs.
@@ -35,7 +36,8 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Minotaur shouldn't have children", getLine());
+			throw new UnwantedChildException("minotaur", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

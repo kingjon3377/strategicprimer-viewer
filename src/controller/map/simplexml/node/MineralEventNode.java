@@ -4,7 +4,10 @@ import model.map.PlayerCollection;
 import model.map.events.MineralEvent;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a MineralEvent.
@@ -65,28 +68,25 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Event shouldn't have children",
-					getLine());
+			throw new UnwantedChildException("mineral", iterator().next()
+					.toString(), getLine());
 		} else if (hasProperty(MINERAL_PROPERTY)) {
 			if (hasProperty(DC_PROPERTY)) {
 				if (!hasProperty("exposed")) {
-					throw new SPFormatException(
-							"Mineral events must have \"exposed\" property.",
+					throw new MissingParameterException("mineral", "exposed",
 							getLine());
 				}
 			} else {
-				throw new SPFormatException(
-						"Event must have \"kind\" and \"dc\" properties", getLine());
+				throw new MissingParameterException("mineral", "dc", getLine());
 			}
 		} else {
 			if (hasProperty("mineral")) {
-				warner.warn(new SPFormatException(
-						"Use of \"mineral\" property to specify kind of mineral is deprecated; use \"kind\" instead",
-						getLine()));
+				warner.warn(new DeprecatedPropertyException("mineral",
+						"mineral", MINERAL_PROPERTY, getLine()));
 				addProperty(MINERAL_PROPERTY, getProperty("mineral"), warner);
 			} else {
-				throw new SPFormatException(
-					"Event must have \"kind\" and \"dc\" properties", getLine());
+				throw new MissingParameterException("mineral", "kind",
+						getLine());
 			}
 		}
 	}

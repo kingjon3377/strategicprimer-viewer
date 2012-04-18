@@ -4,7 +4,10 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A Node to produce a Ground fixture.
  * @author Jonathan Lovelace
@@ -50,20 +53,20 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Ground shouldn't have children", getLine());
+			throw new UnwantedChildException("ground", iterator().next()
+					.toString(), getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
 			if (!hasProperty("exposed")) {
-				throw new SPFormatException("Ground must have \"kind\" and \"exposed\" properties", getLine());
+				throw new MissingParameterException("ground", "exposed",
+						getLine());
 			}
 		} else {
 			if (hasProperty("ground")) {
-				warner.warn(new SPFormatException(
-						"Use of \"ground\" property to designate kind of ground is deprecated; use \"kind\" instead",
-						getLine()));
+				warner.warn(new DeprecatedPropertyException("ground", "ground",
+						KIND_PROPERTY, getLine()));
 				addProperty(KIND_PROPERTY, getProperty("ground"), warner);
 			} else {
-				throw new SPFormatException(
-						"Ground must have \"kind\" and \"exposed\" properties",
+				throw new MissingParameterException("ground", KIND_PROPERTY,
 						getLine());
 			}
 		}

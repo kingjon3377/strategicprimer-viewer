@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Phoenix;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Phoenixes.
@@ -34,8 +35,9 @@ public class PhoenixReader implements INodeReader<Phoenix> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Phoenix can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("phoenix", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "phoenix".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

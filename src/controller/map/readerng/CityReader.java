@@ -8,6 +8,7 @@ import model.map.events.CityEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for cities.
@@ -41,8 +42,9 @@ public class CityReader implements INodeReader<CityEvent> {
 						XMLHelper.getAttributeWithDefault(element, "name", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("City can't (yet) have child tag",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("city", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			} else if (event.isEndElement()
 					&& "city".equalsIgnoreCase(event.asEndElement()
 							.getName().getLocalPart())) {

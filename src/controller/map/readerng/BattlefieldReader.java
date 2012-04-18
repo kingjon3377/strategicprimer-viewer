@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.events.BattlefieldEvent;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Battlefields.
@@ -36,8 +37,9 @@ public class BattlefieldReader implements INodeReader<BattlefieldEvent> {
 				Integer.parseInt(XMLHelper.getAttribute(element, "dc")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Battlefield can't have child tag",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("battlefield", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "battlefield".equalsIgnoreCase(event.asEndElement()
 							.getName().getLocalPart())) {

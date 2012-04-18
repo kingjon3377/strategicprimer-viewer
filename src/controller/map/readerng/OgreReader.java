@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Ogre;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Ogres.
@@ -34,8 +35,9 @@ public class OgreReader implements INodeReader<Ogre> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Ogre can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("ogre", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			} else if (event.isEndElement()
 					&& "ogre".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

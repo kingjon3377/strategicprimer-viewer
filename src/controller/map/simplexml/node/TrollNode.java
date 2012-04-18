@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Troll;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a Troll.
@@ -35,7 +36,8 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Troll shouldn't have children", getLine());
+			throw new UnwantedChildException("troll", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

@@ -9,7 +9,9 @@ import model.map.events.FortificationEvent;
 import model.map.events.TownEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedTagException;
 
 /**
  * A Node that produces a TownEvent.
@@ -83,7 +85,7 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 					hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
 							: "");
 		} else {
-			throw new SPFormatException("Unknown kind of event", getLine());
+			throw new UnsupportedTagException(getProperty(KIND_PROPERTY), getLine());
 		}
 		return event;
 	}
@@ -108,18 +110,23 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (hasProperty(DC_PROPERTY)) {
-			if (hasProperty(SIZE_PROPERTY) && hasProperty(STATUS_PROP)) {
-				if (!hasProperty(NAME_PROPERTY)) {
-					warner.warn(new SPFormatException("Town-related events should have \"name\" property", getLine()));
+			if (hasProperty(SIZE_PROPERTY)) {
+				if (hasProperty(STATUS_PROP)) {
+					if (!hasProperty(NAME_PROPERTY)) {
+						warner.warn(new MissingParameterException(
+								getProperty(KIND_PROPERTY), "name", getLine()));
+					}
+				} else {
+					throw new MissingParameterException(
+							getProperty(KIND_PROPERTY), STATUS_PROP, getLine());
 				}
 			} else {
-				throw new SPFormatException(
-						"Town-related events must have \"size\" and \"status\" properties",
-						getLine());
+				throw new MissingParameterException(getProperty(KIND_PROPERTY),
+						SIZE_PROPERTY, getLine());
 			}
 		} else {
-			throw new SPFormatException(
-					"Event must have \"dc\" property", getLine());
+			throw new MissingParameterException(getProperty(KIND_PROPERTY),
+					DC_PROPERTY, getLine());
 		}
 	}
 

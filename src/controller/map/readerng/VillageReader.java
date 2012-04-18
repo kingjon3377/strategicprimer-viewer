@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Village;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Villages.
@@ -38,8 +39,9 @@ public class VillageReader implements INodeReader<Village> {
 				XMLHelper.getAttributeWithDefault(element, "name", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Village can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("village", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "village".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

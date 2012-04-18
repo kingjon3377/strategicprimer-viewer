@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Hill;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Hills.
@@ -34,8 +35,9 @@ public class HillReader implements INodeReader<Hill> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Hills can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("hill", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			} else if (event.isEndElement()
 					&& "hill".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

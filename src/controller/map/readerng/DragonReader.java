@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Dragon;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for Dragons.
  * @author Jonathan Lovelace
@@ -34,8 +35,9 @@ public class DragonReader implements INodeReader<Dragon> {
 		final Dragon fix = new Dragon(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Dragon can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("dragon", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "dragon".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

@@ -7,7 +7,10 @@ import model.map.TileType;
 import model.map.fixtures.TextFixture;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 import controller.map.simplexml.ITextNode;
 
 /**
@@ -52,8 +55,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 				tile.addFixture(((AbstractFixtureNode<? extends TileFixture>) node)
 						.produce(players, warner));
 			} else {
-				warner.warn(new SPFormatException(//NOPMD
-						"Unexpected TileNode child of type " + node.toString(),
+				warner.warn(new UnwantedChildException("tile", node.toString(), // NOPMD
 						getLine()));
 			}
 		}
@@ -76,11 +78,14 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 */
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
-		if (hasProperty("row") && hasProperty("column")) {
+		if (!hasProperty("row")) {
+			throw new MissingParameterException("tile", "row", getLine());
+		} else if (!hasProperty("column")) {
+			throw new MissingParameterException("tile", "column", getLine());
+		} else {
 			if (!hasProperty(TERRAIN_PROPERTY) && hasProperty("type")) {
-				warner.warn(new SPFormatException(
-						"Designating tile's terrain-type by \"type\" property is deprecated; use \"kind\" instead.",
-						getLine()));
+				warner.warn(new DeprecatedPropertyException("tile", "type",
+						"kind", getLine()));
 				addProperty(TERRAIN_PROPERTY, getProperty("type"), warner);
 			} else if (hasProperty(TERRAIN_PROPERTY)) {
 				for (final AbstractXMLNode node : this) {
@@ -88,19 +93,13 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 							|| node instanceof RiverNode) {
 						node.checkNode(warner);
 					} else {
-						throw new SPFormatException("Unexpected child in tile.",
-								getLine());
+						throw new UnwantedChildException("tile",
+								node.toString(), getLine());
 					}
 				}
 			} else {
-				throw new SPFormatException(
-						"Tile must contain \"row\", \"column\", and \"kind\" properties.",
-						getLine());
+				throw new MissingParameterException("tile", "kind", getLine());
 			}
-		} else {
-			throw new SPFormatException(
-					"Tile must contain \"row\", \"column\", and \"kind\" properties.",
-					getLine());
 		}
 	}
 	/**

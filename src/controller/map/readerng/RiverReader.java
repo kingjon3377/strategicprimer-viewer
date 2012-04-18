@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import model.map.River;
 import model.map.fixtures.RiverFixture;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Rivers.
@@ -39,8 +40,9 @@ public class RiverReader implements INodeReader<RiverFixture> {
 								"direction")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("River can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("river", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "river".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

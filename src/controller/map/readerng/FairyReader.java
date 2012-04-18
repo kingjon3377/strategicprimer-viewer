@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Fairy;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for Fairies.
  * @author Jonathan Lovelace
@@ -34,8 +35,9 @@ public class FairyReader implements INodeReader<Fairy> {
 		final Fairy fix = new Fairy(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Fairy can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("fairy", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "fairy".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

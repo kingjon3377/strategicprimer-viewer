@@ -5,7 +5,10 @@ import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node that will produce a Mine.
@@ -40,19 +43,19 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Mine should not have children", getLine());
+			throw new UnwantedChildException("mine", iterator().next()
+					.toString(), getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
 			if (!hasProperty("status")) {
-				throw new SPFormatException("Mine should have \"kind\" and \"status\" properties", getLine());
+				throw new MissingParameterException("mine", "status", getLine());
 			}
 		} else {
 			if (hasProperty("product")) {
-				warner.warn(new SPFormatException(
-						"Use of property \"product\" to designate mine product is deprecated; use \"kind\" instead",
-						getLine()));
+				warner.warn(new DeprecatedPropertyException("mine", "product",
+						KIND_PROPERTY, getLine()));
 				addProperty(KIND_PROPERTY, getProperty("product"), warner);
 			} else {
-				throw new SPFormatException("Mine should have \"kind\" and \"status\" properties", getLine());
+				throw new MissingParameterException("mine", KIND_PROPERTY, getLine());
 			}
 		}
 	}

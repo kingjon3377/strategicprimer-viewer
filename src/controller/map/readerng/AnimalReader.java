@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for Animals.
  * @author Jonathan Lovelace
@@ -37,8 +38,9 @@ public class AnimalReader implements INodeReader<Animal> {
 						"talking", "false")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Animal can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("animal", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "animal".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

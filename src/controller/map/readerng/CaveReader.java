@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.events.CaveEvent;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Caves.
@@ -36,8 +37,9 @@ public class CaveReader implements INodeReader<CaveEvent> {
 				Integer.parseInt(XMLHelper.getAttribute(element, "dc")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Cave can't have child tag",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("cave", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			} else if (event.isEndElement()
 					&& "cave".equalsIgnoreCase(event.asEndElement()
 							.getName().getLocalPart())) {

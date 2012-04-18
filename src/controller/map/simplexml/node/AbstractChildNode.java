@@ -6,6 +6,7 @@ import java.util.Map;
 import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedPropertyException;
 
 /**
  * A class representing an XML tag and its descendants.
@@ -46,7 +47,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 		} else if (canUse(property)) {
 			properties.put(property, value);
 		} else {
-			warner.warn(new SPFormatException("Don't know how to use property " + property, getLine()));
+			warner.warn(new UnsupportedPropertyException(toString(), property, getLine()));
 		}
 	}
 

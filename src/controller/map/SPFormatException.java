@@ -28,7 +28,7 @@ public class SPFormatException extends Exception {
 	 * @param errorLine
 	 *            the line containing the error.
 	 */
-	public SPFormatException(final String message, final int errorLine) {
+	protected SPFormatException(final String message, final int errorLine) {
 		super("Incorrect SP XML at line " + errorLine + ": " + message);
 		line = errorLine;
 	}

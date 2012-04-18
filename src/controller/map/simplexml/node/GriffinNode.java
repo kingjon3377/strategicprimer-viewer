@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Griffin;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a griffin or group of griffins.
@@ -35,7 +36,8 @@ public class GriffinNode extends AbstractFixtureNode<Griffin> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Griffin shouldn't have children", getLine());
+			throw new UnwantedChildException("griffin", iterator().next()
+					.toString(), getLine());
 		}
 	}
 	/**

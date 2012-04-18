@@ -3,7 +3,9 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Centaur;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a centaur or group of centaurs.
@@ -40,9 +42,10 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Centaur shouldn't have children", getLine());
+			throw new UnwantedChildException("centaur", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty("kind")) {
-			throw new SPFormatException("Centaur must have \"kind\" property", getLine());
+			throw new MissingParameterException("centaur", "kind", getLine());
 		}
 	}
 	/**

@@ -4,7 +4,9 @@ import model.map.PlayerCollection;
 import model.map.events.CaveEvent;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node representing a CaveEvent.
@@ -52,11 +54,10 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Event shouldn't have children",
+			throw new UnwantedChildException("cave", iterator().next().toString(),
 					getLine());
 		} else if (!hasProperty(DC_PROPERTY)) {
-			throw new SPFormatException(
-					"Cave must have \"dc\" property", getLine());
+			throw new MissingParameterException("cave", "dc", getLine());
 		}
 	}
 	/**

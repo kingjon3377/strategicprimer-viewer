@@ -10,6 +10,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Unit;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 /**
  * A reader for fortresses.
  * @author Jonathan Lovelace
@@ -46,9 +47,10 @@ public class FortressReader implements INodeReader<Fortress> {
 			} else if (event.isEndElement() && "fortress".equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
 				break;
 			} else if (event.isStartElement()) {
-				throw new SPFormatException(
-						"Fortress can only have units as children", event
-								.getLocation().getLineNumber());
+				throw new UnwantedChildException(
+						"fortress can only have units as children", event
+								.asStartElement().getName().getLocalPart(),
+						event.getLocation().getLineNumber());
 			}
 		}
 		return fort;

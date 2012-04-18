@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Griffin;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for griffins.
@@ -34,8 +35,9 @@ public class GriffinReader implements INodeReader<Griffin> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Griffins can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("griffin", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "griffin".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {

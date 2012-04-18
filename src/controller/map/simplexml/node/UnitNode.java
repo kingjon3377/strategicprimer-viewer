@@ -4,7 +4,10 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Unit;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A Node to represent a Unit.
@@ -70,25 +73,24 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new SPFormatException("Unit should't contain anything",
-					getLine());
+			throw new UnwantedChildException("unit", iterator().next()
+					.toString(), getLine());
 		} else if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
-			warner.warn(new SPFormatException("Unit should have an owner",
+			warner.warn(new MissingParameterException("unit", OWNER_ATTR,
 					getLine()));
 		}
 		if (!hasProperty(TYPE_ATTR) || "".equals(getProperty(TYPE_ATTR))) {
 			if (hasProperty("type")) {
 				addProperty(TYPE_ATTR, getProperty("type"), warner);
-				warner.warn(new SPFormatException(
-						"Use of property \"type\" to designate kind of unit is deprecated; use \"kind\" instead",
+				warner.warn(new DeprecatedPropertyException("unit", "type", TYPE_ATTR,
 						getLine()));
 			} else {
-				warner.warn(new SPFormatException("Unit should have a kind",
+				warner.warn(new MissingParameterException("unit", TYPE_ATTR,
 						getLine()));
 			}
 		}
 		if (!hasProperty(NAME_ATTR) || "".equals(getProperty(NAME_ATTR))) {
-			warner.warn(new SPFormatException("Unit should have a name",
+			warner.warn(new MissingParameterException("unit", NAME_ATTR,
 					getLine()));
 		}
 	}

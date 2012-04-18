@@ -5,7 +5,9 @@ import java.util.Map;
 
 import util.EqualsAny;
 import util.Warning;
+import controller.map.MapVersionException;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedTagException;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
@@ -150,7 +152,7 @@ public final class NodeFactory { // NOPMD
 	protected static Tag getTag(final String tag, final int line)
 			throws SPFormatException {
 		if (!TAGS.containsKey(tag)) {
-			throw new SPFormatException("Unknown tag " + tag, line);
+			throw new UnsupportedTagException(tag, line);
 		}
 		return TAGS.get(tag);
 	}
@@ -184,7 +186,7 @@ public final class NodeFactory { // NOPMD
 			node.addProperty(EVENT_KIND_PROP, "city", warner);
 			break;
 		case Event:
-			throw new SPFormatException("<event> tags are no longer supported", line);
+			throw new MapVersionException("<event> tags are no longer supported", line);
 		case Fortification:
 			node = new TownEventNode();
 			node.addProperty(EVENT_KIND_PROP, "fortification", warner);

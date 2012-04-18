@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Ground.
@@ -37,8 +38,9 @@ public class GroundReader implements INodeReader<Ground> {
 				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new SPFormatException("Ground can't have child node",
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException("ground", event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& "ground".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
