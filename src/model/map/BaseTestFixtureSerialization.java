@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 
 import util.FatalWarning;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
@@ -116,6 +117,57 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						assertEquals(
 								"Missing property should be the one we're expecting",
 								property, except.getParam());
+					}
+				}
+			}
+	/**
+	 * Assert that reading the given XML will give a DeprecatedPropertyException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but object with them made fatal.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param deprecated
+	 *            the deprecated property
+	 * @param reflection
+	 *            whether to use the reflection version of the reader or not
+	 * @param warning
+	 *            whether this is supposed to be only a warning
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public static void assertDeprecatedProperty(final SimpleXMLReader reader, final String xml,
+			final Class<?> desideratum, final String deprecated, final boolean reflection, final boolean warning)
+			throws XMLStreamException, SPFormatException {
+				if (warning) {
+					reader.readXML(new StringReader(xml), desideratum, reflection,
+							new Warning(Warning.Action.Ignore));
+					try {
+						reader.readXML(new StringReader(xml), desideratum, reflection,
+								new Warning(Warning.Action.Die));
+						fail("We were expecting a MissingParameterException");
+					} catch (FatalWarning except) {
+						assertTrue("Missing property",
+								except.getCause() instanceof DeprecatedPropertyException);
+						assertEquals(
+								"The missing property should be the one we're expecting",
+								deprecated, ((DeprecatedPropertyException) except
+										.getCause()).getOld());
+					}
+				} else {
+					try {
+						reader.readXML(new StringReader(xml), desideratum, reflection,
+								new Warning(Warning.Action.Ignore));
+					} catch (DeprecatedPropertyException except) {
+						assertEquals(
+								"Missing property should be the one we're expecting",
+								deprecated, except.getOld());
 					}
 				}
 			}
