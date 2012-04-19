@@ -102,6 +102,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			assertSerialization("First River serialization test, reflection",
 					reader, river, River.class);
 		}
+		assertUnwantedChild(reader, "<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
+				Tile.class, false);
+		assertMissingProperty(reader, "<tile row=\"1\" column=\"\" kind=\"plains\"><river /></tile>",
+				Tile.class, "direction", false);
 		assertSerialization("Second River serialization test, reflection",
 				reader, addRivers(new Tile(0, 0, TileType.Plains), River.East),
 				Tile.class);
@@ -117,10 +121,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				reader,
 				addRivers(new Tile(0, 0, TileType.Plains), River.North,
 						River.South), Tile.class);
-		assertUnwantedChild(reader, "<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
-				Tile.class, false);
-		assertMissingProperty(reader, "<tile row=\"1\" column=\"\" kind=\"plains\"><river /></tile>",
-				Tile.class, "direction", false);
 	}
 	/**
 	 * Test Tile serialization.
