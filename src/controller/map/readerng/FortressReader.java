@@ -11,6 +11,7 @@ import util.Warning;
 import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Unit;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 /**
@@ -39,6 +40,14 @@ public class FortressReader implements INodeReader<Fortress> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner)
 			throws SPFormatException {
+		if ("".equals(getAttributeWithDefault(element, "owner", ""))) {
+			warner.warn(new MissingParameterException("fortress", "owner", element
+					.getLocation().getLineNumber()));
+		}
+		if ("".equals(getAttributeWithDefault(element, "name", ""))) {
+			warner.warn(new MissingParameterException("fortress", "name",
+					element.getLocation().getLineNumber()));
+		}
 		final Fortress fort = new Fortress(
 				players.getPlayer(parseInt(getAttributeWithDefault(element,
 						"owner", "-1"))), getAttributeWithDefault(element,
