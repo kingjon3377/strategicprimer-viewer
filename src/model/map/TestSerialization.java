@@ -76,6 +76,18 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
+	 * A factory to add rivers to a tile in-line.
+	 * @param tile the tile to use
+	 * @param rivers the rivers to add
+	 * @return the tile, set up.
+	 */
+	private static Tile addRivers(final Tile tile, final River... rivers) {
+		for (River river : rivers) {
+			tile.addRiver(river);
+		}
+		return tile;
+	}
+	/**
 	 * Test River serialization.
 	 * 
 	 * @throws SPFormatException
@@ -90,17 +102,21 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			assertSerialization("First River serialization test, reflection",
 					reader, river, River.class);
 		}
-		final Tile tile = new Tile(0, 0, TileType.Plains);
-		tile.addRiver(River.East);
-		assertSerialization("Second River serialization test, reflection", reader, tile, Tile.class);
-		tile.removeRiver(River.East);
-		tile.addRiver(River.Lake);
-		assertSerialization("Third River serialization test, reflection", reader, tile, Tile.class);
-		tile.removeRiver(River.Lake);
-		tile.addRiver(River.North);
-		assertSerialization("Fourth River serialization test, reflection", reader, tile, Tile.class);
-		tile.addRiver(River.South);
-		assertSerialization("Fifth River serialization test, reflection", reader, tile, Tile.class);
+		assertSerialization("Second River serialization test, reflection",
+				reader, addRivers(new Tile(0, 0, TileType.Plains), River.East),
+				Tile.class);
+		assertSerialization("Third River serialization test, reflection",
+				reader, addRivers(new Tile(0, 0, TileType.Plains), River.Lake),
+				Tile.class);
+		assertSerialization("Fourth River serialization test, reflection",
+				reader,
+				addRivers(new Tile(0, 0, TileType.Plains), River.North),
+				Tile.class);
+		assertSerialization(
+				"Fifth River serialization test, reflection",
+				reader,
+				addRivers(new Tile(0, 0, TileType.Plains), River.North,
+						River.South), Tile.class);
 		assertUnwantedChild(reader, "<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
 				Tile.class, false);
 		assertMissingProperty(reader, "<tile row=\"1\" column=\"\" kind=\"plains\"><river /></tile>",
