@@ -166,7 +166,8 @@ public final class TestFixtureSerialization extends
 				reader, new Forest("firstForest", false), Forest.class);
 		assertSerialization("Second test of Forest serialization",
 				reader, new Forest("secondForest", true), Forest.class);
-		// TODO: errors
+		assertUnwantedChild(reader, "<forest><hill /></forest>", Forest.class, false);
+		assertMissingProperty(reader, "<forest />", Forest.class, KIND_PROPERTY, false);
 	}
 
 	/**
@@ -197,7 +198,9 @@ public final class TestFixtureSerialization extends
 		five.addUnit(new Unit(secondPlayer, "unitOne", "unitTwo"));
 		assertSerialization("Fifth test of Fortress serialization", reader,
 				five, Fortress.class);
-		// TODO: errors
+		assertUnwantedChild(reader, "<fortress><hill /></fortress>", Fortress.class, false);
+		assertMissingProperty(reader, "<fortress />", Fortress.class, "owner", true);
+		assertMissingProperty(reader, "<fortress owner=\"1\" />", Fortress.class, "name", true);
 	}
 
 	/**
