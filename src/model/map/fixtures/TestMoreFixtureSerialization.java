@@ -132,7 +132,7 @@ public final class TestMoreFixtureSerialization extends
 		assertEquals("Deprecated Mine idiom, non-reflection", four, reader.readXML(
 				new StringReader(xml), Mine.class, false, new Warning(Warning.Action.Ignore)));
 		assertDeprecatedProperty(reader, xml, Mine.class, "product", true);
-		assertUnwantedChild(reader, "<mine><troll /></mine>",
+		assertUnwantedChild(reader, "<mine kind=\"gold\" status=\"active\"><troll /></mine>",
 				Mine.class, false);
 		assertMissingProperty(reader, "<mine status=\"active\"/>",
 				Mine.class, KIND_PROPERTY, false);
