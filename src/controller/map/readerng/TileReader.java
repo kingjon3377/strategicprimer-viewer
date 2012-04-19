@@ -15,6 +15,7 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A reader for Tiles.
@@ -69,6 +70,10 @@ public class TileReader implements INodeReader<Tile> {
 									.getLocalPart()))) {
 				tile.addFixture(new RiverFixture(ReaderFactory.createReader(River.class) // NOPMD
 						.parse(event.asStartElement(), stream, players, warner)));
+			} else if (event.isStartElement()) {
+				throw new UnwantedChildException("tile", event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
 			}
 		}
 		return tile;
