@@ -124,6 +124,8 @@ public class ReaderComparator {
 			FileNotFoundException, IOException, SPFormatException,
 			MapVersionException {
 		final Warning warner = new Warning(Warning.Action.Warn);
+		out.print(arg);
+		out.println(':');
 		final long startOne = System.nanoTime();
 		final SPMap map1 = one.readMap(arg, warner);
 		final long endOne = System.nanoTime();
