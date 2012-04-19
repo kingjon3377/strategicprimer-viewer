@@ -47,7 +47,7 @@ public class RiverReader implements INodeReader<RiverFixture> {
 						.asStartElement().getName().getLocalPart(), event
 						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
-					&& "river".equalsIgnoreCase(event.asEndElement().getName()
+					&& element.getName().getLocalPart().equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
 				break;
 			}
