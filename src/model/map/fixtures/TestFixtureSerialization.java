@@ -218,7 +218,10 @@ public final class TestFixtureSerialization extends
 				reader, new Giant("one"), Giant.class);
 		assertSerialization("Second test of Giant serialization",
 				reader, new Giant("two"), Giant.class);
-		// TODO: errors
+		assertUnwantedChild(reader, "<giant><hill /></giant>", Giant.class,
+				false);
+		assertMissingProperty(reader, "<giant />", Giant.class, KIND_PROPERTY,
+				false);
 	}
 
 	/**
