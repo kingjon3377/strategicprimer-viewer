@@ -92,6 +92,6 @@ public class Forest implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return fix.getZValue() - getZValue();
+		return fix.hashCode() - hashCode();
 	}
 }

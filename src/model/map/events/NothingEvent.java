@@ -89,6 +89,6 @@ public final class NothingEvent implements IEvent {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return fix.getZValue() - getZValue();
+		return fix.hashCode() - hashCode();
 	}
 }

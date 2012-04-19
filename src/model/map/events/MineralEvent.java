@@ -154,6 +154,6 @@ public final class MineralEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return fix.getZValue() - getZValue();
+		return fix.hashCode() - hashCode();
 	}
 }

@@ -116,7 +116,7 @@ public class Unit implements TileFixture, HasImage {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return fix.getZValue() - getZValue();
+		return fix.hashCode() - hashCode();
 	}
 	/**
 	 * @return an XML representation of the unit.

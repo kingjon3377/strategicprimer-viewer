@@ -75,6 +75,6 @@ public class Fairy implements TileFixture, HasImage {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return fix.getZValue() - getZValue();
+		return fix.hashCode() - hashCode();
 	}
 }

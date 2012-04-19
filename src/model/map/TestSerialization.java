@@ -175,7 +175,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" />\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" />\n")
-				.append("</tile>")
+				.append("\t\t</tile>")
 				.toString(); 
 		assertEquals("Multiple units should come through", xmlTwo, six.toXML());
 	}

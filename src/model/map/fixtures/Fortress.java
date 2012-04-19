@@ -141,7 +141,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
-		return fix.getZValue() - getZValue();
+		return fix.hashCode() - hashCode();
 	}
 	/**
 	 * @return an XML representation of the fortress.
