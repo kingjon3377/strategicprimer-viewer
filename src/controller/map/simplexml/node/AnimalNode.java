@@ -16,6 +16,10 @@ import controller.map.UnwantedChildException;
  */
 public class AnimalNode extends AbstractFixtureNode<Animal> {
 	/**
+	 * The name of the property saying what kind of animal this is.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public AnimalNode() {
@@ -32,7 +36,7 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	@Override
 	public Animal produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new Animal(getProperty("kind"), hasProperty("traces"),
+		return new Animal(getProperty(KIND_PROPERTY), hasProperty("traces"),
 				hasProperty("talking")
 						&& Boolean.parseBoolean(getProperty("talking")));
 	}
@@ -51,8 +55,8 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("animal", iterator().next().toString(),
 					getLine());
-		} else if (!hasProperty("kind")) {
-			throw new MissingParameterException("animal", "kind",
+		} else if (!hasProperty(KIND_PROPERTY)) {
+			throw new MissingParameterException("animal", KIND_PROPERTY,
 					getLine());
 		}
 	}
@@ -62,7 +66,7 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "kind", "traces", "talking");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "traces", "talking");
 	}
 	/**
 	 * @return a String representation of the node.

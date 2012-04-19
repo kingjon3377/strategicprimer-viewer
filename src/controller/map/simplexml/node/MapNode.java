@@ -20,6 +20,19 @@ import controller.map.UnwantedChildException;
  */
 public class MapNode extends AbstractChildNode<SPMap> {
 	/**
+	 * The name of the property saying how many rows.
+	 */
+	private static final String ROWS_PROPERTY = "rows";
+	/**
+	 * The name of the property saying how many columns.
+	 */
+	private static final String COLUMNS_PROPERTY = "columns";
+	/**
+	 * The tag.
+	 */
+	private static final String TAG = "map";
+
+	/**
 	 * Constructor.
 	 */
 	public MapNode() {
@@ -46,7 +59,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			if (node instanceof TileNode || node instanceof PlayerNode) {
 				node.checkNode(warner);
 			} else {
-				throw new UnwantedChildException("map", node.toString(),
+				throw new UnwantedChildException(TAG, node.toString(),
 						getLine());
 			}
 		}
@@ -55,10 +68,12 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			throw new MapVersionException(
 					"This reader only accepts maps with a \"version\" property of at least "
 							+ SPMap.MAX_VERSION, getLine());
-		} else if (!hasProperty("rows")) {
-			throw new MissingParameterException("map", "rows", getLine());
-		} else if (!hasProperty("columns")) {
-			throw new MissingParameterException("map", "columns", getLine());
+		} else if (hasProperty(ROWS_PROPERTY)) {
+			if (!hasProperty(COLUMNS_PROPERTY)) {
+				throw new MissingParameterException(TAG, COLUMNS_PROPERTY, getLine());
+			}
+		} else {
+			throw new MissingParameterException(TAG, ROWS_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -67,7 +82,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, VERSION_PROP, "rows", "columns");
+		return EqualsAny.equalsAny(property, VERSION_PROP, ROWS_PROPERTY, COLUMNS_PROPERTY);
 	}
 	
 	/**
@@ -84,8 +99,8 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	public SPMap produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final SPMap map = new SPMap(Integer.parseInt(getProperty(VERSION_PROP)),
-				Integer.parseInt(getProperty("rows")),
-				Integer.parseInt(getProperty("columns")));
+				Integer.parseInt(getProperty(ROWS_PROPERTY)),
+				Integer.parseInt(getProperty(COLUMNS_PROPERTY)));
 		final List<TileNode> tiles = new LinkedList<TileNode>();
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
@@ -93,7 +108,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			} else if (node instanceof TileNode) {
 				tiles.add((TileNode) node);
 			} else {
-				throw new UnwantedChildException("map", node.toString(),
+				throw new UnwantedChildException(TAG, node.toString(),
 						node.getLine());
 			}
 		}

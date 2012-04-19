@@ -14,6 +14,10 @@ import controller.map.UnwantedChildException;
  */
 public class GiantNode extends AbstractFixtureNode<Giant> {
 	/**
+	 * The name of the property saying what kind of giant this is.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public GiantNode() {
@@ -27,7 +31,7 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	 */
 	@Override
 	public Giant produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Giant(getProperty("kind"));
+		return new Giant(getProperty(KIND_PROPERTY));
 	}
 	/**
 	 * Check the node for invalid data. A Giant is valid if it has no children and has a "kind" property.
@@ -39,8 +43,8 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("giant", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("kind")) {
-			throw new MissingParameterException("giant", "kind", getLine());
+		} else if (!hasProperty(KIND_PROPERTY)) {
+			throw new MissingParameterException("giant", KIND_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -49,7 +53,7 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return "kind".equals(property);
+		return KIND_PROPERTY.equals(property);
 	}
 	/**
 	 * @return a String representation of the node.
