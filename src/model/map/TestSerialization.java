@@ -17,8 +17,8 @@ import org.junit.Test;
 
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.readerng.MapReaderNG;
 import controller.map.simplexml.ISPReader;
-import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.
@@ -41,7 +41,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Before
 	public void setUp() {
-		reader = new SimpleXMLReader();
+		reader = new MapReaderNG();
 	}
 
 	/**

@@ -15,8 +15,8 @@ import org.junit.Test;
 
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.readerng.MapReaderNG;
 import controller.map.simplexml.ISPReader;
-import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * Another class to test serialization of TileFixtures.
@@ -46,7 +46,7 @@ public final class TestMoreFixtureSerialization extends
 	 */
 	@Before
 	public void setUp() {
-		reader = new SimpleXMLReader();
+		reader = new MapReaderNG();
 	}
 
 	/**
