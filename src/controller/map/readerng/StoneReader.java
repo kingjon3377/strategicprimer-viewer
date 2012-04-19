@@ -39,8 +39,9 @@ public class StoneReader implements INodeReader<StoneEvent> {
 			throws SPFormatException {
 		final StoneEvent fix = new StoneEvent(
 				StoneKind.parseStoneKind(XMLHelper
-						.getAttribute(element, "kind")), Integer.parseInt(XMLHelper.getAttribute(
-				element, "dc")));
+						.getAttributeWithDeprecatedForm(element, "kind",
+								"stone", warner)), Integer.parseInt(XMLHelper
+						.getAttribute(element, "dc")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("stone", event

@@ -36,8 +36,9 @@ public class MineralReader implements INodeReader<MineralEvent> {
 	public MineralEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final MineralEvent fix = new MineralEvent(XMLHelper.getAttribute(
-				element, "kind"), Boolean.parseBoolean(XMLHelper.getAttribute(
+		final MineralEvent fix = new MineralEvent(
+				XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "mineral", warner),
+				Boolean.parseBoolean(XMLHelper.getAttribute(
 				element, "exposed")), Integer.parseInt(XMLHelper.getAttribute(
 				element, "dc")));
 		for (final XMLEvent event : stream) {
