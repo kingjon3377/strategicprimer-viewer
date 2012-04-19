@@ -57,7 +57,7 @@ public class TileReader implements INodeReader<Tile> {
 				tile.addFixture(ReaderFactory.createReader(TileFixture.class)
 						.parse(event.asStartElement(), stream, players, warner));
 			} else if (event.isCharacters()) {
-				tile.addFixture(new TextFixture(event.asCharacters().getData(), // NOPMD
+				tile.addFixture(new TextFixture(event.asCharacters().getData().trim(), // NOPMD
 						-1));
 			} else if (event.isEndElement()
 					&& "tile".equalsIgnoreCase(event.asEndElement().getName()
