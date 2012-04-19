@@ -78,11 +78,11 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 	public void checkNode(final Warning warner) throws SPFormatException {
 		final Iterator<AbstractXMLNode> iter = iterator();
 		if (!iter.hasNext()) {
-			throw new MissingChildException(getProperty("kind"), getLine());
+			throw new MissingChildException(getProperty(KIND_PROPERTY), getLine());
 		}
 		iter.next().checkNode(warner);
 		if (iter.hasNext()) {
-			throw new UnwantedChildException(getProperty("kind"), iter.next()
+			throw new UnwantedChildException(getProperty(KIND_PROPERTY), iter.next()
 					.toString(), getLine());
 		}
 	}
@@ -115,7 +115,7 @@ public class EventNode extends AbstractFixtureNode<IEvent> implements
 		} else if (hasProperty(KIND_PROPERTY)) {
 			throw new UnsupportedTagException(getProperty(KIND_PROPERTY), getLine());
 		} else {
-			throw new MissingParameterException("event", "kind", getLine());
+			throw new MissingParameterException("event", KIND_PROPERTY, getLine());
 		}
 		moveEverythingTo(child, warner);
 		addChild(child);

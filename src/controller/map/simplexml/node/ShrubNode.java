@@ -16,6 +16,14 @@ import controller.map.UnwantedChildException;
  */
 public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	/**
+	 * The current tag.
+	 */
+	private static final String TAG = "srub";
+	/**
+	 * The old, deprecated name for what is now KIND_PROPERTY.
+	 */
+	private static final String OLD_KIND_PROPERTY = "shrub";
+	/**
 	 * The name of the property telling what kind of shrub.
 	 */
 	private static final String KIND_PROPERTY = "kind";
@@ -44,14 +52,14 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("shrub", iterator().next()
+			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty("shrub")) {
-			warner.warn(new DeprecatedPropertyException("shrub", "shrub",
+			warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PROPERTY,
 					KIND_PROPERTY, getLine()));
-			addProperty(KIND_PROPERTY, getProperty("shrub"), warner);
+			addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
 		} else if (!hasProperty(KIND_PROPERTY)) {
-			throw new MissingParameterException("shrub", KIND_PROPERTY, getLine());
+			throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -60,7 +68,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, "shrub");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY);
 	}
 	/**
 	 * @return a String representation of the object

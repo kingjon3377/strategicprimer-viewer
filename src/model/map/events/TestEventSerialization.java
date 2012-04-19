@@ -114,12 +114,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"First CityEvent serialization test, reflection, status "
-								+ status + " and size " + size, reader,
+								+ status + ", size " + size, reader,
 						new CityEvent(status, size, 10, "one"), CityEvent.class); // NOPMD
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"Second CityEvent serialization test, reflection, status "
-								+ status + " and size " + size, reader,
+								+ status + ", size " + size, reader,
 						new CityEvent(status, size, 40, "two"), CityEvent.class); // NOPMD
 			}
 		}
@@ -145,7 +145,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			for (TownSize size : TownSize.values()) {
 				assertSerialization(
 						"First FortificationEvent serialization test, reflection, status "
-								+ status + " and size " + size, reader,
+								+ status + ", size " + size, reader,
 						new FortificationEvent(status, size, 10, "one"), // NOPMD
 						FortificationEvent.class);
 				assertSerialization(

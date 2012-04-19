@@ -16,6 +16,18 @@ import controller.map.UnwantedChildException;
  */
 public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	/**
+	 * The name of the property saying whether or not the field or meadow is cultivated.
+	 */
+	private static final String CULTIVATED_PARAM = "cultivated";
+	/**
+	 * The name of the (factory-generated) property saying whether this is a meadow or a field. 
+	 */
+	private static final String TAG_PROPERTY = "tag";
+	/**
+	 * The name of the property saying what kind of meadow or field it is.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public MeadowNode() {
@@ -30,9 +42,9 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	 */
 	@Override
 	public Meadow produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Meadow(getProperty("kind"),
-				"field".equals(getProperty("tag")),
-				Boolean.parseBoolean(getProperty("cultivated")));
+		return new Meadow(getProperty(KIND_PROPERTY),
+				"field".equals(getProperty(TAG_PROPERTY)),
+				Boolean.parseBoolean(getProperty(CULTIVATED_PARAM)));
 	}
 	/**
 	 * @param property the name of a property
@@ -40,7 +52,7 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "kind", "tag", "cultivated");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, TAG_PROPERTY, CULTIVATED_PARAM);
 	}
 	
 	/**
@@ -58,21 +70,23 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 		if (iterator().hasNext()) {
 			// FIXME: This should go after we've ensured that we have a 'tag'
 			// property.
-			throw new UnwantedChildException(getProperty("tag"), iterator().next()
+			throw new UnwantedChildException(getProperty(TAG_PROPERTY), iterator().next()
 					.toString(), getLine());
-		} else if (hasProperty("tag")) {
-			if (!hasProperty("cultivated")) {
-				throw new MissingParameterException(getProperty("tag"),
-						"cultivated", getLine());
-			} else if (!hasProperty("kind")) {
-				throw new MissingParameterException(getProperty("tag"), "kind",
-						getLine());
+		} else if (hasProperty(TAG_PROPERTY)) {
+			if (hasProperty(CULTIVATED_PARAM)) {
+				if (!hasProperty(KIND_PROPERTY)) {
+					throw new MissingParameterException(getProperty(TAG_PROPERTY), KIND_PROPERTY,
+							getLine());
+				}
+			} else {
+				throw new MissingParameterException(getProperty(TAG_PROPERTY),
+						CULTIVATED_PARAM, getLine());
 			}
 		} else {
 			// The 'tag' property is supposed to be added by the NodeFactory; if
 			// it isn't present, something is *very* wrong.
 			throw new IllegalStateException(new MissingParameterException(
-					"meadow or field", "tag", getLine()));
+					"meadow or field", TAG_PROPERTY, getLine()));
 		}
 	}
 	/**

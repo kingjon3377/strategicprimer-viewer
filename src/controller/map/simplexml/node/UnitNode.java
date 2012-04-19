@@ -17,6 +17,15 @@ import controller.map.UnwantedChildException;
  */
 public class UnitNode extends AbstractFixtureNode<Unit> {
 	/**
+	 * The old, deprecated name for what is now TYPE_ATTR.
+	 */
+	private static final String OLD_TYPE_ATTR = "type";
+	/**
+	 * The tag.
+	 */
+	private static final String TAG = "unit";
+
+	/**
 	 * Constructor.
 	 */
 	public UnitNode() {
@@ -74,24 +83,24 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("unit", iterator().next()
+			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
 		} else if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
-			warner.warn(new MissingParameterException("unit", OWNER_ATTR,
+			warner.warn(new MissingParameterException(TAG, OWNER_ATTR,
 					getLine()));
 		}
 		if (!hasProperty(TYPE_ATTR) || "".equals(getProperty(TYPE_ATTR))) {
-			if (hasProperty("type")) {
-				addProperty(TYPE_ATTR, getProperty("type"), warner);
-				warner.warn(new DeprecatedPropertyException("unit", "type", TYPE_ATTR,
+			if (hasProperty(OLD_TYPE_ATTR)) {
+				addProperty(TYPE_ATTR, getProperty(OLD_TYPE_ATTR), warner);
+				warner.warn(new DeprecatedPropertyException(TAG, OLD_TYPE_ATTR, TYPE_ATTR,
 						getLine()));
 			} else {
-				warner.warn(new MissingParameterException("unit", TYPE_ATTR,
+				warner.warn(new MissingParameterException(TAG, TYPE_ATTR,
 						getLine()));
 			}
 		}
 		if (!hasProperty(NAME_ATTR) || "".equals(getProperty(NAME_ATTR))) {
-			warner.warn(new MissingParameterException("unit", NAME_ATTR,
+			warner.warn(new MissingParameterException(TAG, NAME_ATTR,
 					getLine()));
 		}
 	}
@@ -103,7 +112,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, OWNER_ATTR, TYPE_ATTR, NAME_ATTR, "type");
+		return EqualsAny.equalsAny(property, OWNER_ATTR, TYPE_ATTR, NAME_ATTR, OLD_TYPE_ATTR);
 	}
 
 	/**

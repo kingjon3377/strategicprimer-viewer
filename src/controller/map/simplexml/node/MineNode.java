@@ -16,6 +16,18 @@ import controller.map.UnwantedChildException;
  */
 public class MineNode extends AbstractFixtureNode<Mine> {
 	/**
+	 * The old, deprecated name for what is now KIND_PROPERTY.
+	 */
+	private static final String OLD_KIND_PROPERTY = "product";
+	/**
+	 * The tag.
+	 */
+	private static final String TAG = "mine";
+	/**
+	 * The name of the property giving the mine's status.
+	 */
+	private static final String STATUS_PROPERTY = "status";
+	/**
 	 * The name of the property saying what kind of thing is mined in this mine.
 	 */
 	private static final String KIND_PROPERTY = "kind";
@@ -33,7 +45,8 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	 */
 	@Override
 	public Mine produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Mine(getProperty(KIND_PROPERTY), TownStatus.parseTownStatus(getProperty("status")));
+		return new Mine(getProperty(KIND_PROPERTY),
+				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)));
 	}
 	/**
 	 * Check the data for validity. A Mine is valid if it has no children and "product" and "status" properties.
@@ -43,19 +56,19 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("mine", iterator().next()
+			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
-			if (!hasProperty("status")) {
-				throw new MissingParameterException("mine", "status", getLine());
+			if (!hasProperty(STATUS_PROPERTY)) {
+				throw new MissingParameterException(TAG, STATUS_PROPERTY, getLine());
 			}
 		} else {
-			if (hasProperty("product")) {
-				warner.warn(new DeprecatedPropertyException("mine", "product",
+			if (hasProperty(OLD_KIND_PROPERTY)) {
+				warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PROPERTY,
 						KIND_PROPERTY, getLine()));
-				addProperty(KIND_PROPERTY, getProperty("product"), warner);
+				addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
 			} else {
-				throw new MissingParameterException("mine", KIND_PROPERTY, getLine());
+				throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
 			}
 		}
 	}
@@ -65,7 +78,7 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, "product", "status");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY, STATUS_PROPERTY);
 	}
 	/**
 	 * @return a String representation of the node

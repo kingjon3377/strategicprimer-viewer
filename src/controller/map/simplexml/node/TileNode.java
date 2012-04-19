@@ -21,6 +21,18 @@ import controller.map.simplexml.ITextNode;
  */
 public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	/**
+	 * The deprecated version of KIND_PROPERTY.
+	 */
+	private static final String OLD_KIND_PROPERTY = "type";
+	/**
+	 * The name of the property saying what column this is.
+	 */
+	private static final String COL_PROPERTY = "column";
+	/**
+	 * The name of the property saying what row this is.
+	 */
+	private static final String ROW_PROPERTY = "row";
+	/**
 	 * The name of the terrain-type property.
 	 */
 	private static final String TERRAIN_PROPERTY = "kind";
@@ -45,8 +57,8 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	@Override
 	public Tile produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Tile tile = new Tile(Integer.parseInt(getProperty("row")),
-				Integer.parseInt(getProperty("column")),
+		final Tile tile = new Tile(Integer.parseInt(getProperty(ROW_PROPERTY)),
+				Integer.parseInt(getProperty(COL_PROPERTY)),
 				TileType.getTileType(getProperty(TERRAIN_PROPERTY)));
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
@@ -78,28 +90,30 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 */
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
-		if (!hasProperty("row")) {
-			throw new MissingParameterException("tile", "row", getLine());
-		} else if (!hasProperty("column")) {
-			throw new MissingParameterException("tile", "column", getLine());
-		} else {
-			if (!hasProperty(TERRAIN_PROPERTY) && hasProperty("type")) {
-				warner.warn(new DeprecatedPropertyException("tile", "type",
-						"kind", getLine()));
-				addProperty(TERRAIN_PROPERTY, getProperty("type"), warner);
-			} else if (hasProperty(TERRAIN_PROPERTY)) {
-				for (final AbstractXMLNode node : this) {
-					if (node instanceof AbstractFixtureNode
-							|| node instanceof RiverNode) {
-						node.checkNode(warner);
-					} else {
-						throw new UnwantedChildException("tile",
-								node.toString(), getLine());
+		if (hasProperty(ROW_PROPERTY)) {
+			if (hasProperty(COL_PROPERTY)) {
+				if (!hasProperty(TERRAIN_PROPERTY) && hasProperty(OLD_KIND_PROPERTY)) {
+					warner.warn(new DeprecatedPropertyException("tile", OLD_KIND_PROPERTY,
+							"kind", getLine()));
+					addProperty(TERRAIN_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
+				} else if (hasProperty(TERRAIN_PROPERTY)) {
+					for (final AbstractXMLNode node : this) {
+						if (node instanceof AbstractFixtureNode // ESCA-JAVA0049:
+								|| node instanceof RiverNode) { 
+							node.checkNode(warner);
+						} else {
+							throw new UnwantedChildException("tile",
+									node.toString(), getLine());
+						}
 					}
+				} else {
+					throw new MissingParameterException("tile", "kind", getLine());
 				}
 			} else {
-				throw new MissingParameterException("tile", "kind", getLine());
+				throw new MissingParameterException("tile", COL_PROPERTY, getLine());
 			}
+		} else {
+			throw new MissingParameterException("tile", ROW_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -108,7 +122,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "row", "column", TERRAIN_PROPERTY, "type");
+		return EqualsAny.equalsAny(property, ROW_PROPERTY, COL_PROPERTY, TERRAIN_PROPERTY, OLD_KIND_PROPERTY);
 	}
 	/**
 	 * The text associated with the tile.

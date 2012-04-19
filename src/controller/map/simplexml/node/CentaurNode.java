@@ -13,6 +13,10 @@ import controller.map.UnwantedChildException;
  */
 public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	/**
+	 * The name of the property saying what kind of centaur.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public CentaurNode() {
@@ -27,7 +31,7 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	 */
 	@Override
 	public Centaur produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Centaur(getProperty("kind"));
+		return new Centaur(getProperty(KIND_PROPERTY));
 	}
 	
 	/**
@@ -44,8 +48,8 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("centaur", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("kind")) {
-			throw new MissingParameterException("centaur", "kind", getLine());
+		} else if (!hasProperty(KIND_PROPERTY)) {
+			throw new MissingParameterException("centaur", KIND_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -54,7 +58,7 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return "kind".equals(property);
+		return KIND_PROPERTY.equals(property);
 	}
 	/**
 	 * @return a String representation of the node.

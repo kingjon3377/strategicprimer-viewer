@@ -16,6 +16,18 @@ import controller.map.UnwantedChildException;
  */
 public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	/**
+	 * The name of the property saying whether the deposit is exposed.
+	 */
+	private static final String EXPOSED_PROPERTY = "exposed";
+	/**
+	 * The old, deprecated name for what is now MINERAL_PROPERTY.
+	 */
+	private static final String OLD_MINERAL_PROP = "mineral";
+	/**
+	 * The tag.
+	 */
+	private static final String TAG = "mineral";
+	/**
 	 * Constructor.
 	 */
 	public MineralEventNode() {
@@ -44,7 +56,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 			throws SPFormatException {
 		return new MineralEvent(
 				getProperty(MINERAL_PROPERTY),
-				Boolean.parseBoolean(getProperty("exposed")),
+				Boolean.parseBoolean(getProperty(EXPOSED_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)));
 	}
 	/**
@@ -53,7 +65,8 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "mineral", "exposed", DC_PROPERTY, MINERAL_PROPERTY);
+		return EqualsAny.equalsAny(property, OLD_MINERAL_PROP, EXPOSED_PROPERTY, DC_PROPERTY,
+				MINERAL_PROPERTY);
 	}
 
 	/**
@@ -68,24 +81,24 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("mineral", iterator().next()
+			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty(MINERAL_PROPERTY)) {
 			if (hasProperty(DC_PROPERTY)) {
-				if (!hasProperty("exposed")) {
-					throw new MissingParameterException("mineral", "exposed",
+				if (!hasProperty(EXPOSED_PROPERTY)) {
+					throw new MissingParameterException(TAG, EXPOSED_PROPERTY,
 							getLine());
 				}
 			} else {
-				throw new MissingParameterException("mineral", "dc", getLine());
+				throw new MissingParameterException(TAG, DC_PROPERTY, getLine());
 			}
 		} else {
-			if (hasProperty("mineral")) {
-				warner.warn(new DeprecatedPropertyException("mineral",
-						"mineral", MINERAL_PROPERTY, getLine()));
-				addProperty(MINERAL_PROPERTY, getProperty("mineral"), warner);
+			if (hasProperty(OLD_MINERAL_PROP)) {
+				warner.warn(new DeprecatedPropertyException(TAG,
+						OLD_MINERAL_PROP, MINERAL_PROPERTY, getLine()));
+				addProperty(MINERAL_PROPERTY, getProperty(OLD_MINERAL_PROP), warner);
 			} else {
-				throw new MissingParameterException("mineral", "kind",
+				throw new MissingParameterException(TAG, "kind",
 						getLine());
 			}
 		}

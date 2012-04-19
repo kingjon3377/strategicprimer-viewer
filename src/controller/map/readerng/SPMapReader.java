@@ -3,17 +3,15 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.hasAttribute;
-import static controller.map.readerng.XMLHelper.hasAttributes;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import util.Warning;
 
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import model.map.Tile;
+import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
@@ -26,6 +24,11 @@ import controller.map.UnwantedChildException;
  * 
  */
 public class SPMapReader implements INodeReader<SPMap> {
+	/**
+	 * The tag we read.
+	 */
+	private static final String TAG = "map";
+
 	/**
 	 * @return the type this will produce
 	 */
@@ -51,12 +54,14 @@ public class SPMapReader implements INodeReader<SPMap> {
 	public SPMap parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
-			if (!hasAttribute(element, "rows")) {
-				throw new MissingParameterException("map", "rows", element
-						.getLocation().getLineNumber());
-			} else if (!hasAttribute(element, "columns")) {
-				throw new MissingParameterException("map", "columns", element
+		if (TAG.equalsIgnoreCase(element.getName().getLocalPart())) {
+			if (hasAttribute(element, "rows")) {
+				if (!hasAttribute(element, "columns")) {
+					throw new MissingParameterException(TAG, "columns", element
+							.getLocation().getLineNumber());
+				}
+			} else {
+				throw new MissingParameterException(TAG, "rows", element
 						.getLocation().getLineNumber());
 			}
 		} else {
@@ -81,11 +86,11 @@ public class SPMapReader implements INodeReader<SPMap> {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
 							elem, stream, map.getPlayers(), warner));
 				} else {
-					throw new UnwantedChildException("map", elem.getName()
+					throw new UnwantedChildException(TAG, elem.getName()
 							.getLocalPart(), elem.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
-					&& "map".equalsIgnoreCase(event.asEndElement().getName()
+					&& TAG.equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
 				break;
 			}

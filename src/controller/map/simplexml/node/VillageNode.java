@@ -16,6 +16,10 @@ import controller.map.UnwantedChildException;
  */
 public class VillageNode extends AbstractFixtureNode<Village> {
 	/**
+	 * The name of the property giving the village status.
+	 */
+	private static final String STATUS_PROPERTY = "status";
+	/**
 	 * The "name" property.
 	 */
 	private static final String NAME_PROPERTY = "name";
@@ -33,7 +37,7 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 */
 	@Override
 	public Village produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Village(TownStatus.parseTownStatus(getProperty("status")),
+		return new Village(TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
 				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "");
 	}
 	
@@ -49,13 +53,13 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("village", iterator().next()
 					.toString(), getLine());
-		} else if (hasProperty("status")) {
+		} else if (hasProperty(STATUS_PROPERTY)) {
 			if (!hasProperty(NAME_PROPERTY)) {
 				warner.warn(new MissingParameterException("village",
 						NAME_PROPERTY, getLine()));
 			}
 		} else {
-			throw new MissingParameterException("village", "status", getLine());
+			throw new MissingParameterException("village", STATUS_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -64,7 +68,7 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "status", NAME_PROPERTY);
+		return EqualsAny.equalsAny(property, STATUS_PROPERTY, NAME_PROPERTY);
 	}
 	/**
 	 * @return a String representation of the node

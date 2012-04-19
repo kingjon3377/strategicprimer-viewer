@@ -14,6 +14,14 @@ import controller.map.UnwantedChildException;
  */
 public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	/**
+	 * The name of the property saying what's in the cache.
+	 */
+	private static final String CONTENTS_PROPERTY = "contents";
+	/**
+	 * The name of the property saying what kind of thing is in the cache. 
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * Constructor.
 	 */
 	public CacheNode() {
@@ -28,7 +36,7 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	@Override
 	public CacheFixture produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new CacheFixture(getProperty("kind"), getProperty("contents"));
+		return new CacheFixture(getProperty(KIND_PROPERTY), getProperty(CONTENTS_PROPERTY));
 	}
 	
 	/**
@@ -45,10 +53,12 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("cache", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("kind")) {
-			throw new MissingParameterException("cache", "kind", getLine());
-		} else if (!hasProperty("contents")) {
-			throw new MissingParameterException("cache", "contents", getLine());
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (!hasProperty(CONTENTS_PROPERTY)) {
+				throw new MissingParameterException("cache", CONTENTS_PROPERTY, getLine());
+			}
+		} else {
+			throw new MissingParameterException("cache", KIND_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -57,7 +67,7 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "kind", "contents");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, CONTENTS_PROPERTY);
 	}
 	/**
 	 * @return a String representation of the node

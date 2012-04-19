@@ -15,6 +15,10 @@ import controller.map.UnwantedChildException;
  */
 public class RiverNode extends AbstractChildNode<River> {
 	/**
+	 * The name of the property giving the direction of the river.
+	 */
+	private static final String DIRECTION_PARAM = "direction";
+	/**
 	 * Constructor.
 	 */
 	public RiverNode() {
@@ -36,7 +40,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	@Override
 	public River produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return River.getRiver(getProperty("direction"));
+		return River.getRiver(getProperty(DIRECTION_PARAM));
 	}
 
 	/**
@@ -54,8 +58,8 @@ public class RiverNode extends AbstractChildNode<River> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("river", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("direction")) {
-			throw new MissingParameterException("river", "direction", getLine());
+		} else if (!hasProperty(DIRECTION_PARAM)) {
+			throw new MissingParameterException("river", DIRECTION_PARAM, getLine());
 		}
 	}
 
@@ -73,7 +77,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return "direction".equals(property);
+		return DIRECTION_PARAM.equals(property);
 	}
 
 }

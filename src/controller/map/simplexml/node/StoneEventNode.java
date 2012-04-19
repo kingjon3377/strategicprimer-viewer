@@ -18,6 +18,14 @@ import controller.map.UnwantedChildException;
  */
 public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	/**
+	 * The current tag.
+	 */
+	private static final String TAG = "stone";
+	/**
+	 * The old, deprecated name for what is now STONE_PROPERTY.
+	 */
+	private static final String OLD_STONE_PROP = "stone";
+	/**
 	 * Constructor.
 	 */
 	public StoneEventNode() {
@@ -59,19 +67,19 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("stone", iterator().next().toString(),
+			throw new UnwantedChildException(TAG, iterator().next().toString(),
 					getLine());
 		} else if (hasProperty(STONE_PROPERTY)) {
 			if (!hasProperty(DC_PROPERTY)) {
-				throw new MissingParameterException("stone", "dc", getLine());
+				throw new MissingParameterException(TAG, DC_PROPERTY, getLine());
 			}
 		} else {
 			if (hasProperty("stone")) {
-				warner.warn(new DeprecatedPropertyException("stone", "stone",
+				warner.warn(new DeprecatedPropertyException(TAG, OLD_STONE_PROP,
 						STONE_PROPERTY, getLine()));
-				addProperty(STONE_PROPERTY, getProperty("stone"), warner);
+				addProperty(STONE_PROPERTY, getProperty(OLD_STONE_PROP), warner);
 			} else {
-				throw new MissingParameterException("stone", STONE_PROPERTY, getLine());
+				throw new MissingParameterException(TAG, STONE_PROPERTY, getLine());
 			}
 		}
 	}
@@ -81,7 +89,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, STONE_PROPERTY, DC_PROPERTY, "stone");
+		return EqualsAny.equalsAny(property, STONE_PROPERTY, DC_PROPERTY, OLD_STONE_PROP);
 	}
 
 	/**

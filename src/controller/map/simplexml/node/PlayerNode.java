@@ -16,6 +16,14 @@ import controller.map.UnwantedChildException;
  */
 public class PlayerNode extends AbstractChildNode<Player> {
 	/**
+	 * The name of the property giving the player's code name.
+	 */
+	private static final String NAME_PROPERTY = "code_name";
+	/**
+	 * The name of the property giving the player's number.
+	 */
+	private static final String NUMBER_PROPERTY = "number";
+	/**
 	 * Constructor.
 	 */
 	public PlayerNode() {
@@ -36,8 +44,8 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	@Override
 	public Player produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new Player(Integer.parseInt(getProperty("number")),
-				getProperty("code_name"));
+		return new Player(Integer.parseInt(getProperty(NUMBER_PROPERTY)),
+				getProperty(NAME_PROPERTY));
 	}
 
 	/**
@@ -55,11 +63,13 @@ public class PlayerNode extends AbstractChildNode<Player> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("player", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty("number")) {
-			throw new MissingParameterException("player", "number", getLine());
-		} else if (!hasProperty("code_name")) {
-			throw new MissingParameterException("player", "code_name",
-					getLine());
+		} else if (hasProperty(NUMBER_PROPERTY)) {
+			if (!hasProperty(NAME_PROPERTY)) {
+				throw new MissingParameterException("player", NAME_PROPERTY,
+						getLine());
+			}
+		} else {
+			throw new MissingParameterException("player", NUMBER_PROPERTY, getLine());
 		}
 	}
 	/**
@@ -68,7 +78,7 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, "number", "code_name");
+		return EqualsAny.equalsAny(property, NUMBER_PROPERTY, NAME_PROPERTY);
 	}
 	/**
 	 * 
