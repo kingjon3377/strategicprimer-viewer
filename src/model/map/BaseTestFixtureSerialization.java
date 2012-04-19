@@ -368,7 +368,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on XML reading problem
 	 */
 	public static <T extends XMLWritable> void assertSerialization(final String message,
-			final SimpleXMLReader reader, final T obj, final Class<T> type, final Warning warner)
+			final ISPReader reader, final T obj, final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, false, warner));
 		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, true, warner));
