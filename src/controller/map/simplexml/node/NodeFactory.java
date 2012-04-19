@@ -65,7 +65,6 @@ public final class NodeFactory { // NOPMD
 		addTag("unit", Tag.Unit);
 		addTag("river", Tag.River);
 		addTag("lake", Tag.Lake);
-		addTag("event", Tag.Event);
 		addTag("battlefield", Tag.Battlefield);
 		addTag("cave", Tag.Cave);
 		addTag("city", Tag.City);
@@ -179,8 +178,6 @@ public final class NodeFactory { // NOPMD
 			node = new TownEventNode();
 			node.addProperty(EVENT_KIND_PROP, "city", warner);
 			break;
-		case Event:
-			throw new MapVersionException("<event> tags are no longer supported", line);
 		case Fortification:
 			node = new TownEventNode();
 			node.addProperty(EVENT_KIND_PROP, "fortification", warner);

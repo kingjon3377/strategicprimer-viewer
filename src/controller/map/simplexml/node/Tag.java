@@ -44,11 +44,6 @@ public enum Tag {
 	 */
 	Lake(RiverNode.class),
 	/**
-	 * An Event.
-	 */
-	@Deprecated
-	Event(EventNode.class),
-	/**
 	 * A battlefield.
 	 */
 	Battlefield(BattlefieldEventNode.class),
