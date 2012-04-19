@@ -6,14 +6,14 @@ import static java.lang.Integer.parseInt;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
+import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -65,8 +65,8 @@ public class TileReader implements INodeReader<Tile> {
 			} else if (event.isStartElement()
 					&& "river".equalsIgnoreCase(event.asStartElement()
 							.getName().getLocalPart())) {
-				tile.addFixture(ReaderFactory.createReader(RiverFixture.class)
-						.parse(event.asStartElement(), stream, players, warner));
+				tile.addFixture(new RiverFixture(ReaderFactory.createReader(River.class) // NOPMD
+						.parse(event.asStartElement(), stream, players, warner)));
 			}
 		}
 		return tile;

@@ -3,11 +3,9 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.River;
-import model.map.fixtures.RiverFixture;
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 
@@ -16,13 +14,13 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
-public class RiverReader implements INodeReader<RiverFixture> {
+public class RiverReader implements INodeReader<River> {
 	/**
 	 * @return the class this produces
 	 */
 	@Override
-	public Class<RiverFixture> represents() {
-		return RiverFixture.class;
+	public Class<River> represents() {
+		return River.class;
 	}
 	/**
 	 * Parse a river.
@@ -34,13 +32,13 @@ public class RiverReader implements INodeReader<RiverFixture> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public RiverFixture parse(final StartElement element,
+	public River parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final RiverFixture fix = new RiverFixture(
+		final River fix = 
 				"lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
 						: River.getRiver(XMLHelper.getAttribute(element,
-								"direction")));
+								"direction"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("river", event
