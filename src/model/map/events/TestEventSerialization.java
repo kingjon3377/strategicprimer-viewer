@@ -264,7 +264,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Serialization of TownEvent without a name, reflection",
 				reader, three, TownEvent.class, new Warning(Warning.Action.Ignore));
 		assertMissingProperty(reader, three.toXML(), TownEvent.class, "name", true);
-		assertMissingProperty(reader, "<town />", TownEvent.class,
+		assertMissingProperty(reader, "<town status=\"active\" size=\"small\"/>", TownEvent.class,
 				"dc", false);
 		assertMissingProperty(reader, "<town dc=\"0\" status=\"active\" />",
 				TownEvent.class, "size", false);
