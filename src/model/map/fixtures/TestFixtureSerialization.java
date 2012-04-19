@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.readerng.MapReaderNG;
+import controller.map.simplexml.ISPReader;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**
@@ -40,13 +42,13 @@ public final class TestFixtureSerialization extends
 	 */
 	@Before
 	public void setUp() {
-		reader = new SimpleXMLReader();
+		reader = new MapReaderNG();
 	}
 
 	/**
 	 * The XML reader we'll use to test.
 	 */
-	private SimpleXMLReader reader;
+	private ISPReader reader;
 
 	/**
 	 * Test the serialization of Animal, including catching format errors.
