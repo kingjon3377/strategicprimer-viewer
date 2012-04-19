@@ -57,7 +57,6 @@ public class SPMapReader implements INodeReader<SPMap> {
 	public SPMap parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		if (TAG.equalsIgnoreCase(element.getName().getLocalPart())) {
 			if (hasAttribute(element, "rows")) {
 				if (!hasAttribute(element, "columns")) {
 					throw new MissingParameterException(TAG, "columns", element
@@ -67,10 +66,6 @@ public class SPMapReader implements INodeReader<SPMap> {
 				throw new MissingParameterException(TAG, "rows", element
 						.getLocation().getLineNumber());
 			}
-		} else {
-			throw new MissingChildException("root",
-					element.getLocation().getLineNumber());
-		}
 		final SPMap map = new SPMap(Integer.parseInt(getAttributeWithDefault(
 				element, "version", "1")), Integer.parseInt(getAttribute(
 				element, "rows")), Integer.parseInt(getAttribute(element,
@@ -89,7 +84,7 @@ public class SPMapReader implements INodeReader<SPMap> {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
 							elem, stream, map.getPlayers(), warner));
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) { 
-					warner.warn(new UnsupportedTagException(type, event
+					warner.warn(new UnsupportedTagException(type, event // NOPMD
 							.getLocation().getLineNumber()));
 				} else {
 					throw new UnwantedChildException(TAG, elem.getName()
