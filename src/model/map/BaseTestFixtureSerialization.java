@@ -18,7 +18,6 @@ import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
 import controller.map.simplexml.ISPReader;
-import controller.map.simplexml.SimpleXMLReader;
 
 // ESCA-JAVA0011:
 /**
@@ -393,7 +392,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on XML reading problem
 	 */
 	protected <T extends XMLWritable> T helpSerialization(
-			final SimpleXMLReader reader, final T orig, final Class<T> type,
+			final ISPReader reader, final T orig, final Class<T> type,
 			final boolean reflection) throws XMLStreamException,
 			SPFormatException {
 		return reader.readXML(new StringReader(orig.toXML()), type, reflection, warner);
