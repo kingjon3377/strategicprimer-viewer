@@ -1,13 +1,11 @@
 package controller.map.readerng;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.Player;
 import model.map.PlayerCollection;
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 /**
@@ -45,9 +43,8 @@ public class PlayerReader implements INodeReader<Player> {
 				break;
 			}
 		}
-		return new Player(Integer.parseInt(element.getAttributeByName(
-				new QName("number")).getValue()), element.getAttributeByName(
-				new QName("code_name")).getValue());
+		return new Player(Integer.parseInt(XMLHelper.getAttribute(element,
+				"number")), XMLHelper.getAttribute(element, "code_name"));
 	}
 
 }
