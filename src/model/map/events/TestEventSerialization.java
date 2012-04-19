@@ -190,7 +190,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						false, new Warning(Warning.Action.Ignore)));
 		assertDeprecatedProperty(reader, xml, MineralEvent.class, "mineral",
 				true);
-		assertUnwantedChild(reader, "<mineral><troll /></mineral>",
+		assertUnwantedChild(reader, "<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
 				MineralEvent.class, false);
 		assertMissingProperty(reader, "<mineral dc=\"0\" exposed=\"false\" />",
 				MineralEvent.class, KIND_PROPERTY, false);
