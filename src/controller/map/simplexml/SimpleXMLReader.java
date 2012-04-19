@@ -31,7 +31,7 @@ import controller.map.simplexml.node.NodeFactory;
  * @author Jonathan Lovelace
  * 
  */
-public class SimpleXMLReader implements IMapReader {
+public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param file
 	 *            the name of a file
@@ -109,7 +109,24 @@ public class SimpleXMLReader implements IMapReader {
 			throws XMLStreamException, SPFormatException {
 		return readXML(istream, SPMap.class, reflection, Warning.INSTANCE);
 	}
-
+	/**
+	 * Use readMap if you want a map; this is public primarily for testing purposes. 
+	 * @param <T> The type of the object the XML represents
+	 * @param istream
+	 *            a reader from which to read the XML
+	 * @param type The type of the object the XML represents
+	 * @param warner a Warning instance to use for warnings
+	 * @return the object contained in that stream
+	 * @throws XMLStreamException
+	 *             if XML isn't well-formed.
+	 * @throws SPFormatException
+	 *             if the data is invalid.
+	 */
+	@Override
+	public <T> T readXML(final Reader istream, final Class<T> type, final Warning warner)
+			throws XMLStreamException, SPFormatException {
+		return readXML(istream, type, true, warner);
+	}
 	/**
 	 * Use readMap if you want a map; this is public primarily for testing purposes. 
 	 * @param <T> The type of the object the XML represents

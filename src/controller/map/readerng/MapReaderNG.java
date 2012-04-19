@@ -8,11 +8,14 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.IteratorWrapper;
+import util.Warning;
 import controller.map.IMapReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
+import controller.map.simplexml.ISPReader;
 
 /**
  * An XML-map reader that calls a tree of per-node XML readers, similar to the
@@ -23,7 +26,7 @@ import controller.map.SPFormatException;
  * 
  * @author Jonathan Lovelace
  */
-public class MapReaderNG implements IMapReader {
+public class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * @param file the name of a file
 	 * @return the map contained in that file
@@ -53,11 +56,31 @@ public class MapReaderNG implements IMapReader {
 	@Override
 	public SPMap readMap(final Reader istream) throws XMLStreamException,
 			SPFormatException, MapVersionException {
+		return readXML(istream, SPMap.class, Warning.INSTANCE);
+	}
+	/**
+	 * @param <T> The type of the object the XML represents
+	 * @param istream
+	 *            a reader from which to read the XML
+	 * @param type The type of the object the XML represents
+	 * @param warner a Warning instance to use for warnings
+	 * @return the object contained in that stream
+	 * @throws XMLStreamException
+	 *             if XML isn't well-formed.
+	 * @throws SPFormatException
+	 *             if the data is invalid.
+	 */
+	@Override
+	public <T> T readXML(final Reader istream, final Class<T> type, final Warning warner)
+			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
+		final PlayerCollection dummyPlayers = new PlayerCollection();
 		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				return ReaderFactory.createReader(SPMap.class).parse(event.asStartElement(), eventReader, null);
+				return ReaderFactory.createReader(type).parse(
+						event.asStartElement(), eventReader,
+						dummyPlayers);
 			}
 		}
 		throw new XMLStreamException("XML stream didn't contain a start element");
