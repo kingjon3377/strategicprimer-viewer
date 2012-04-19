@@ -16,7 +16,6 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.readerng.MapReaderNG;
 import controller.map.simplexml.ISPReader;
-import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A class to test serialization of TileFixtures.
@@ -70,7 +69,7 @@ public final class TestFixtureSerialization extends
 		final Animal four = new Animal("animalFour", true, true);
 		assertSerialization("Fourth test of Animal serialization", reader,
 				four, Animal.class);
-		assertUnwantedChild(reader, "<animal><troll /></animal>",
+		assertUnwantedChild(reader, "<animal kind=\"animal\"><troll /></animal>",
 				Animal.class, false);
 		assertMissingProperty(reader, "<animal />",
 				Animal.class, KIND_PROPERTY, false);
@@ -101,7 +100,7 @@ public final class TestFixtureSerialization extends
 				new CacheFixture("kindOne", "contentsOne"), CacheFixture.class);
 		assertSerialization("Second test of Cache serialization", reader,
 				new CacheFixture("kindTwo", "contentsTwo"), CacheFixture.class);
-		assertUnwantedChild(reader, "<cache><troll /></cache>",
+		assertUnwantedChild(reader, "<cache kind=\"kind\" contents=\"cont\"><troll /></cache>",
 				CacheFixture.class, false);
 		assertMissingProperty(reader, "<cache contents=\"contents\" />",
 				CacheFixture.class, KIND_PROPERTY, false);
@@ -124,7 +123,7 @@ public final class TestFixtureSerialization extends
 				new Centaur("firstCentaur"), Centaur.class);
 		assertSerialization("Second test of Centaur serialization", reader,
 				new Centaur("secondCentaur"), Centaur.class);
-		assertUnwantedChild(reader, "<centaur><troll /></centaur>",
+		assertUnwantedChild(reader, "<centaur kind=\"forest\"><troll /></centaur>",
 				Centaur.class, false);
 		assertMissingProperty(reader, "<centaur />", Centaur.class, KIND_PROPERTY,
 				false);
@@ -145,7 +144,7 @@ public final class TestFixtureSerialization extends
 				new Dragon(""), Dragon.class);
 		assertSerialization("Second test of Dragon serialization",
 				reader, new Dragon("secondDragon"), Dragon.class);
-		assertUnwantedChild(reader, "<dragon><hill /></dragon>", Dragon.class, false);
+		assertUnwantedChild(reader, "<dragon kind=\"ice\"><hill /></dragon>", Dragon.class, false);
 		assertMissingProperty(reader, "<dragon />", Dragon.class, KIND_PROPERTY, false);
 	}
 
@@ -164,7 +163,7 @@ public final class TestFixtureSerialization extends
 				reader, new Fairy("oneFairy"), Fairy.class);
 		assertSerialization("Second test of Fairy serialization",
 				reader, new Fairy("twoFairy"), Fairy.class);
-		assertUnwantedChild(reader, "<fairy><hill /></fairy>", Fairy.class, false);
+		assertUnwantedChild(reader, "<fairy kind=\"great\"><hill /></fairy>", Fairy.class, false);
 		assertMissingProperty(reader, "<fairy />", Fairy.class, KIND_PROPERTY, false);
 	}
 
@@ -183,7 +182,7 @@ public final class TestFixtureSerialization extends
 				reader, new Forest("firstForest", false), Forest.class);
 		assertSerialization("Second test of Forest serialization",
 				reader, new Forest("secondForest", true), Forest.class);
-		assertUnwantedChild(reader, "<forest><hill /></forest>", Forest.class, false);
+		assertUnwantedChild(reader, "<forest kind=\"trees\"><hill /></forest>", Forest.class, false);
 		assertMissingProperty(reader, "<forest />", Forest.class, KIND_PROPERTY, false);
 	}
 
@@ -235,7 +234,7 @@ public final class TestFixtureSerialization extends
 				reader, new Giant("one"), Giant.class);
 		assertSerialization("Second test of Giant serialization",
 				reader, new Giant("two"), Giant.class);
-		assertUnwantedChild(reader, "<giant><hill /></giant>", Giant.class,
+		assertUnwantedChild(reader, "<giant kind=\"hill\"><hill /></giant>", Giant.class,
 				false);
 		assertMissingProperty(reader, "<giant />", Giant.class, KIND_PROPERTY,
 				false);
@@ -258,7 +257,7 @@ public final class TestFixtureSerialization extends
 				reader, new Ground("two", true), Ground.class);
 		assertSerialization("Third test of Ground serialization",
 				reader, new Ground("three", false), Ground.class);
-		assertUnwantedChild(reader, "<ground><hill /></ground>", Ground.class,
+		assertUnwantedChild(reader, "<ground kind=\"sand\" exposed=\"true\"><hill /></ground>", Ground.class,
 				false);
 		assertMissingProperty(reader, "<ground />", Ground.class,
 				KIND_PROPERTY, false);
