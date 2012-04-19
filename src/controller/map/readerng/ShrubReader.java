@@ -35,7 +35,7 @@ public class ShrubReader implements INodeReader<Shrub> {
 	public Shrub parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Shrub fix = new Shrub(XMLHelper.getAttribute(element, "kind"));
+		final Shrub fix = new Shrub(XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "shrub", warner));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("shrub", event
