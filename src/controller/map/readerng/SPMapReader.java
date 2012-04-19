@@ -11,11 +11,14 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import model.map.Tile;
+import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
+import controller.map.simplexml.ISPReader;
 
 /**
  * A reader to produce SPMaps.
@@ -85,6 +88,9 @@ public class SPMapReader implements INodeReader<SPMap> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
 							elem, stream, map.getPlayers(), warner));
+				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) { 
+					warner.warn(new UnsupportedTagException(type, event
+							.getLocation().getLineNumber()));
 				} else {
 					throw new UnwantedChildException(TAG, elem.getName()
 							.getLocalPart(), elem.getLocation().getLineNumber());
