@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
 import view.util.SystemOut;
+import controller.map.IMapReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.readerng.MapReaderNG;
@@ -30,8 +31,8 @@ public class ReaderComparator {
 	 *            The maps to test the two readers on.
 	 */
 	public static void main(final String[] args) {
-		new ReaderComparator(SystemOut.SYS_OUT, new MapReaderNG(),
-				new SimpleXMLReader()).compareReaders(args,
+		new ReaderComparator(SystemOut.SYS_OUT, new SimpleXMLReader(),
+				new MapReaderNG()).compareReaders(args,
 				Logger.getLogger(ReaderComparator.class.getName()));
 	}
 
@@ -82,7 +83,7 @@ public class ReaderComparator {
 	 *            the second reader
 	 */
 	public ReaderComparator(final PrintStream ostream,
-			final MapReaderNG readerOne, final SimpleXMLReader readerTwo) {
+			final IMapReader readerOne, final IMapReader readerTwo) {
 		out = ostream;
 		one = readerOne;
 		two = readerTwo;
@@ -95,11 +96,11 @@ public class ReaderComparator {
 	/**
 	 * The first reader.
 	 */
-	private final MapReaderNG one;
+	private final IMapReader one;
 	/**
 	 * The second reader.
 	 */
-	private final SimpleXMLReader two;
+	private final IMapReader two;
 
 	/**
 	 * Compare the two readers on a file.
