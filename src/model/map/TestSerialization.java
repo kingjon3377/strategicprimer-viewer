@@ -201,4 +201,22 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
 				SPMap.class, "future", true);
 	}
+	/**
+	 * Test Map serialization ... primarily errors.
+	 * @throws SPFormatException
+	 *             on SP format error
+	 * @throws XMLStreamException
+	 *             on XML reading error
+	 */
+	@Test
+	public void testMapSerialization() throws XMLStreamException, SPFormatException {
+		assertUnwantedChild(reader, "<map><hill /></map>", SPMap.class, false);
+		final SPMap one = new SPMap(2, 1, 1);
+		one.addPlayer(new Player(1, "playerOne"));
+		one.getPlayers().getPlayer(1).setCurrent(true);
+		one.addTile(new Tile(0, 0, TileType.Plains));
+		assertSerialization("Simple Map serialization", reader, one, SPMap.class);
+		assertMissingProperty(reader, "<map version=\"2\" columns=\"1\" />", SPMap.class, "rows", false);
+		assertMissingProperty(reader, "<map version=\"2\" rows=\"1\" />", SPMap.class, "columns", false);
+	}
 }
