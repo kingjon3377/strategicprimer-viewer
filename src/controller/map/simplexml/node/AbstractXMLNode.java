@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import util.Warning;
-import controller.map.NeedsExtraCanonicalization;
 import controller.map.SPFormatException;
 
 /**
@@ -90,9 +89,6 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		final List<AbstractXMLNode> nodesToAdd = new LinkedList<AbstractXMLNode>();
 		final List<AbstractXMLNode> nodesToKeep = new LinkedList<AbstractXMLNode>();
 		for (final AbstractXMLNode node : children) {
-			if (node instanceof NeedsExtraCanonicalization) {
-				((NeedsExtraCanonicalization) node).canonicalizeImpl(warner);
-			}
 			node.canonicalize(warner);
 			if (node instanceof SkippableNode) {
 				nodesToAdd.addAll(node.children);
@@ -107,16 +103,6 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		children.addAll(nodesToAdd);
 	}
 
-	/**
-	 * Move all children to another Node.
-	 * 
-	 * @param dest
-	 *            the destination Node.
-	 */
-	protected final void moveChildrenTo(final AbstractXMLNode dest) {
-		dest.children.addAll(children);
-		children.clear();
-	}
 //	/**
 //	 * @param obj an object
 //	 * @return whether it's equal to this one

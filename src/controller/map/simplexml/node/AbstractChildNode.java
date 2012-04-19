@@ -86,22 +86,6 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 			throws SPFormatException;
 
 	/**
-	 * Move everything---properties and children---to another Node.
-	 * 
-	 * @param dest
-	 *            the destination node.
-	 * @param warner the Warning instance to use if necessary
-	 */
-	@Deprecated
-	protected final void moveEverythingTo(
-			final AbstractChildNode<? extends T> dest, final Warning warner) {
-		moveChildrenTo(dest);
-		for (String property : properties.keySet()) {
-			dest.addProperty(property, properties.get(property), warner);
-		}
-		properties.clear();
-	}
-	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
 	 */
