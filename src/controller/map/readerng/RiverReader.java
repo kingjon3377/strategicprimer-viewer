@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.River;
 import model.map.fixtures.RiverFixture;
@@ -27,12 +29,13 @@ public class RiverReader implements INodeReader<RiverFixture> {
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public RiverFixture parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final RiverFixture fix = new RiverFixture(
 				"lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake

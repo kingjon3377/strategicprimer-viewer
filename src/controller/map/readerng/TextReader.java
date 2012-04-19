@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import model.map.PlayerCollection;
@@ -25,12 +27,13 @@ public class TextReader implements INodeReader<TextFixture> {
 	 * @param element the element to parse
 	 * @param stream the stream to get more elements (in this case, the text) from
 	 * @param players ignored
+	 * @param warner the Warning instance to use for warnings
 	 * @return the TextFixture
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public TextFixture parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final StringBuilder sbuild = new StringBuilder("");
 		for (final XMLEvent event : stream) {

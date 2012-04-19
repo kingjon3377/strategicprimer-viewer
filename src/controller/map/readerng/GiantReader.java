@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.Giant;
 import controller.map.SPFormatException;
@@ -25,12 +27,13 @@ public class GiantReader implements INodeReader<Giant> {
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the giant represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Giant parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Giant fix = new Giant(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {

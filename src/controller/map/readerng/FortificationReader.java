@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.events.FortificationEvent;
 import model.map.events.TownSize;
@@ -28,12 +30,13 @@ public class FortificationReader implements INodeReader<FortificationEvent> {
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the parsed city
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public FortificationEvent parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final FortificationEvent fix = new FortificationEvent(
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,

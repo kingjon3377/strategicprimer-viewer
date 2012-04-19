@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.TileFixture;
 import model.map.events.BattlefieldEvent;
@@ -114,18 +116,19 @@ public class FixtureReader implements INodeReader<TileFixture> {
 	 * @param element the element
 	 * @param stream the stream
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the fixture the element represents
 	 * @throws SPFormatException if it's not one we know how to parse
 	 */
 	@Override
 	public TileFixture parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		if (supports(element.getName().getLocalPart())) {
 			return ReaderFactory.createReader(
 					TAGS.get(element.getName().getLocalPart()
 							.toLowerCase(Locale.ENGLISH))).parse(element,
-					stream, players);
+					stream, players, warner);
 		} else {
 			throw new UnsupportedTagException(element.getName().getLocalPart(),
 					element.getLocation().getLineNumber());

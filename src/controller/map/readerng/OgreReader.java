@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.Ogre;
 import controller.map.SPFormatException;
@@ -26,12 +28,13 @@ public class OgreReader implements INodeReader<Ogre> {
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the ogre represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Ogre parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {

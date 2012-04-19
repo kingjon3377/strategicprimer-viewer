@@ -4,6 +4,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.Player;
 import model.map.PlayerCollection;
 import controller.map.SPFormatException;
@@ -26,12 +28,13 @@ public class PlayerReader implements INodeReader<Player> {
 	 * @param element the start element to read from
 	 * @param stream the stream to get more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the player produced
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Player parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {

@@ -6,6 +6,8 @@ import static java.lang.Integer.parseInt;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Unit;
@@ -28,11 +30,14 @@ public class FortressReader implements INodeReader<Fortress> {
 	 * @param element the element to start with
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the fortress
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Fortress parse(final StartElement element, final Iterable<XMLEvent> stream, final PlayerCollection players)
+	public Fortress parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner)
 			throws SPFormatException {
 		final Fortress fort = new Fortress(
 				players.getPlayer(parseInt(getAttributeWithDefault(element,
@@ -43,7 +48,7 @@ public class FortressReader implements INodeReader<Fortress> {
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
 				fort.addUnit(ReaderFactory.createReader(Unit.class).parse(
-						event.asStartElement(), stream, players));
+						event.asStartElement(), stream, players, warner));
 			} else if (event.isEndElement() && "fortress".equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
 				break;
 			} else if (event.isStartElement()) {

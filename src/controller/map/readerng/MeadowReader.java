@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.Meadow;
 import controller.map.SPFormatException;
@@ -25,12 +27,13 @@ public class MeadowReader implements INodeReader<Meadow> {
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the meadow represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Meadow parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Meadow fix = new Meadow(XMLHelper.getAttribute(
 				element, "kind"), "field".equalsIgnoreCase(element

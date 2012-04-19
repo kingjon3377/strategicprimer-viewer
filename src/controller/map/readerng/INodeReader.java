@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import controller.map.SPFormatException;
 
@@ -22,9 +24,10 @@ public interface INodeReader<T> {
 	 * @param element the eleent to start parsing with
 	 * @param stream to get more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the produced type
 	 * @throws SPFormatException on map format problems
 	 */
 	T parse(StartElement element, Iterable<XMLEvent> stream,
-			PlayerCollection players) throws SPFormatException;
+			PlayerCollection players, Warning warner) throws SPFormatException;
 }

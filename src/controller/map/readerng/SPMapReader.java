@@ -8,6 +8,8 @@ import static controller.map.readerng.XMLHelper.hasAttributes;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMap;
@@ -40,13 +42,14 @@ public class SPMapReader implements INodeReader<SPMap> {
 	 * @param stream
 	 *            the XML tags and such
 	 * @param players the collection of players, most likely null at this point
+	 * @param warner the Warning instance to use for warnings
 	 * @return the produced type
 	 * @throws SPFormatException
 	 *             on format problems
 	 */
 	@Override
 	public SPMap parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
 			if (!hasAttribute(element, "rows")) {
@@ -70,13 +73,13 @@ public class SPMapReader implements INodeReader<SPMap> {
 				final String type = elem.getName().getLocalPart();
 				if ("player".equalsIgnoreCase(type)) {
 					map.addPlayer(ReaderFactory.createReader(Player.class)
-							.parse(elem, stream, map.getPlayers()));
+							.parse(elem, stream, map.getPlayers(), warner));
 				} else if ("row".equalsIgnoreCase(type)) {
 					// deliberately ignore
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					map.addTile(ReaderFactory.createReader(Tile.class).parse(
-							elem, stream, map.getPlayers()));
+							elem, stream, map.getPlayers(), warner));
 				} else {
 					throw new UnwantedChildException("map", elem.getName()
 							.getLocalPart(), elem.getLocation().getLineNumber());

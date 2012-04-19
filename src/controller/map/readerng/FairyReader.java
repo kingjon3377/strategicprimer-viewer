@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.Fairy;
 import controller.map.SPFormatException;
@@ -26,11 +28,12 @@ public class FairyReader implements INodeReader<Fairy> {
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @return the fairy represented by the element
+	 * @param warner the Warning instance to use for warnings
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Fairy parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Fairy fix = new Fairy(XMLHelper.getAttribute(element, "kind"));
 		for (final XMLEvent event : stream) {

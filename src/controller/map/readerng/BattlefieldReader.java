@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.events.BattlefieldEvent;
 import controller.map.SPFormatException;
@@ -26,12 +28,13 @@ public class BattlefieldReader implements INodeReader<BattlefieldEvent> {
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the parsed battlefield
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public BattlefieldEvent parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final BattlefieldEvent fix = new BattlefieldEvent(
 				Integer.parseInt(XMLHelper.getAttribute(element, "dc")));

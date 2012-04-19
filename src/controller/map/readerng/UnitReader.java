@@ -3,6 +3,8 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.Unit;
 import controller.map.SPFormatException;
@@ -32,13 +34,14 @@ public class UnitReader implements INodeReader<Unit> {
 	 *            the stream to read more elements from
 	 * @param players
 	 *            the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the fortress
 	 * @throws SPFormatException
 	 *             on SP format error
 	 */
 	@Override
 	public Unit parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Unit fix = new Unit(players.getPlayer(Integer.parseInt(XMLHelper
 				.getAttributeWithDefault(element, "owner", "-1"))),

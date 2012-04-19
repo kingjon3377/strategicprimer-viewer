@@ -6,6 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
 import util.EqualsAny;
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 /**
@@ -26,12 +27,13 @@ public class GroveReader implements INodeReader<Grove> {
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
+	 * @param warner the Warning instance to use for warnings
 	 * @return the grove represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Grove parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players)
+			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Grove fix = new Grove("orchard".equalsIgnoreCase(element
 				.getName().getLocalPart()), Boolean.parseBoolean(XMLHelper

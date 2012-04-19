@@ -80,7 +80,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			if (event.isStartElement()) {
 				return ReaderFactory.createReader(type).parse(
 						event.asStartElement(), eventReader,
-						dummyPlayers);
+						dummyPlayers, warner);
 			}
 		}
 		throw new XMLStreamException("XML stream didn't contain a start element");
