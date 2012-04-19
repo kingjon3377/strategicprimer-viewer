@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
+import util.Warning;
 import view.util.SystemOut;
 import controller.map.IMapReader;
 import controller.map.MapVersionException;
@@ -122,14 +123,15 @@ public class ReaderComparator {
 	public void compareReaders(final String arg) throws XMLStreamException,
 			FileNotFoundException, IOException, SPFormatException,
 			MapVersionException {
+		final Warning warner = new Warning(Warning.Action.Warn);
 		final long startOne = System.nanoTime();
-		final SPMap map1 = one.readMap(arg);
+		final SPMap map1 = one.readMap(arg, warner);
 		final long endOne = System.nanoTime();
 		out.print("Old method took ");
 		out.print((endOne - startOne));
 		out.println(" time-units.");
 		final long startTwo = System.nanoTime();
-		final SPMap map2 = two.readMap(arg);
+		final SPMap map2 = two.readMap(arg, warner);
 		final long endTwo = System.nanoTime();
 		out.print("New method took ");
 		out.print((endTwo - startTwo));

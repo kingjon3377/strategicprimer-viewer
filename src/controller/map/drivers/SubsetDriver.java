@@ -73,7 +73,7 @@ public final class SubsetDriver {
 		SPMap map = null;
 		Boolean flag = Boolean.FALSE;
 		try {
-			map = reader.readMap(filename);
+			map = reader.readMap(filename, new Warning(Warning.Action.Warn));
 		} catch (MapVersionException e) {
 			Warning.INSTANCE.warn(e);
 			flag = Boolean.TRUE;

@@ -15,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
 import model.viewer.MapModel;
+import util.Warning;
 import view.util.ErrorShower;
 import view.util.MenuItemCreator;
 import controller.map.SPFormatException;
@@ -75,14 +76,14 @@ public final class IOHandler implements ActionListener {
 			if ("Load".equals(event.getActionCommand())) {
 				if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
 					filename = chooser.getSelectedFile().getPath();
-					panel.setMainMap(readMap(filename));
+					panel.setMainMap(readMap(filename, Warning.INSTANCE));
 				}
 			} else if ("Save As".equals(event.getActionCommand())) {
 				saveMap(panel.getMainMap());
 			} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 				if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
 					filename = chooser.getSelectedFile().getPath();
-					panel.setSecondaryMap(readMap(filename));
+					panel.setSecondaryMap(readMap(filename, Warning.INSTANCE));
 				}
 			} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
 				saveMap(panel.getSecondaryMap());
@@ -164,6 +165,7 @@ public final class IOHandler implements ActionListener {
 	/**
 	 * @param filename
 	 *            a file to load a map from
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map in that file
 	 * @throws IOException
 	 *             on other I/O error
@@ -172,9 +174,9 @@ public final class IOHandler implements ActionListener {
 	 * @throws SPFormatException
 	 *             if the file contains invalid data
 	 */
-	private static SPMap readMap(final String filename) throws IOException,
+	private static SPMap readMap(final String filename, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException {
-		return new MapReaderAdapter().readMap(filename);
+		return new MapReaderAdapter().readMap(filename, warner);
 	}
 
 	/**

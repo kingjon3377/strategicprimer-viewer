@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
@@ -58,7 +59,7 @@ public final class ReflectionTestDriver {
 			final boolean reflection) throws IOException, XMLStreamException, SPFormatException {
 		final long start = System.nanoTime();
 		for (int i = 0; i < runs; i++) {
-			READER.readMap(filename, reflection);
+			READER.readMap(filename, reflection, Warning.INSTANCE);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -73,7 +74,7 @@ public final class ReflectionTestDriver {
 	 */
 	private static boolean methodsAgree(final String filename)
 			throws IOException, XMLStreamException, SPFormatException {
-		return READER.readMap(filename, false).equals(READER.readMap(filename, true));
+		return READER.readMap(filename, false, Warning.INSTANCE).equals(READER.readMap(filename, true, Warning.INSTANCE));
 	}
 	/**
 	 * @param args

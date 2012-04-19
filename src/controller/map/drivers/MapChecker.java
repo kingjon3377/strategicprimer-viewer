@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import util.Warning;
 import view.util.SystemOut;
 
 import controller.map.MapVersionException;
@@ -44,7 +45,7 @@ public final class MapChecker {
 			SystemOut.SYS_OUT.print("Starting ");
 			SystemOut.SYS_OUT.println(filename);
 			try {
-				READER.readMap(filename);
+				READER.readMap(filename, Warning.INSTANCE); // new Warning(Warning.Action.Warn)
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				continue;

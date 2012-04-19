@@ -16,6 +16,7 @@ import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.SPMap;
 import model.map.Tile;
+import util.Warning;
 import view.util.DriverQuit;
 import view.util.SystemOut;
 import controller.exploration.TableLoader;
@@ -275,8 +276,9 @@ public final class ExplorationCLI {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ExplorationCLI().repl(new MapReaderAdapter().readMap(args[0]), new BufferedReader(new InputStreamReader(
-					System.in)), SystemOut.SYS_OUT);
+			new ExplorationCLI().repl(new MapReaderAdapter().readMap(args[0],
+					new Warning(Warning.Action.Warn)), new BufferedReader(
+					new InputStreamReader(System.in)), SystemOut.SYS_OUT);
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, "XML parsing error", e);
 			DriverQuit.quit(1);

@@ -29,6 +29,7 @@ import controller.map.simplexml.ISPReader;
 public class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * @param file the name of a file
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that file
 	 * @throws IOException on I/O error
 	 * @throws XMLStreamException if the XML isn't well-formed
@@ -36,11 +37,11 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws MapVersionException if the format isn't one we support
 	 */
 	@Override
-	public SPMap readMap(final String file) throws IOException, XMLStreamException,
+	public SPMap readMap(final String file, final Warning warner) throws IOException, XMLStreamException,
 			SPFormatException, MapVersionException {
 		final FileReader istream = new FileReader(file);
 		try {
-			return readMap(istream);
+			return readMap(istream, warner);
 		} finally {
 			istream.close();
 		}
@@ -48,15 +49,16 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * 
 	 * @param istream a reader from which to read the XML
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that stream
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException if the data is invalid
 	 * @throws MapVersionException if the map version isn't one we support
 	 */
 	@Override
-	public SPMap readMap(final Reader istream) throws XMLStreamException,
+	public SPMap readMap(final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException, MapVersionException {
-		return readXML(istream, SPMap.class, Warning.INSTANCE);
+		return readXML(istream, SPMap.class, warner);
 	}
 	/**
 	 * @param <T> The type of the object the XML represents

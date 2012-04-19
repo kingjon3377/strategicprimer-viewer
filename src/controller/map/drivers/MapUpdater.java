@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
+import util.Warning;
 import view.util.DriverQuit;
 import controller.map.SPFormatException;
 import controller.map.XMLWriter;
@@ -134,7 +135,7 @@ public final class MapUpdater {
 	 */
 	private static SPMap loadMap(final String filename) {
 		try {
-			return new MapReaderAdapter().readMap(filename);
+			return new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Warn));
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE,
 					buildString("File ", filename, " not found"), e);

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
+import util.Warning;
 import controller.map.IMapReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
@@ -33,6 +34,7 @@ public class MapReaderAdapter {
 	/**
 	 * @param filename
 	 *            the file to open
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map it contains
 	 * @throws IOException
 	 *             on I/O error opening the file
@@ -43,8 +45,8 @@ public class MapReaderAdapter {
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */
-	public SPMap readMap(final String filename) throws IOException,
+	public SPMap readMap(final String filename, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException, MapVersionException {
-		return reader.readMap(filename);
+		return reader.readMap(filename, warner);
 	}
 }

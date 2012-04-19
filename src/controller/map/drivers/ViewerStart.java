@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.MapModel;
+import util.Warning;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
@@ -74,12 +75,12 @@ public final class ViewerStart {
 		}
 		try {
 			final MapModel model = new MapModel(
-					new MapReaderAdapter().readMap(filename));
+					new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Warn)));
 			final ViewerFrame frame = new ViewerFrame(model, new IOHandler(
 					model, chooser).getMenu());
 			frame.setVisible(true);
 			if (args.length > 1) {
-				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1]));
+				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1], new Warning(Warning.Action.Warn)));
 			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);

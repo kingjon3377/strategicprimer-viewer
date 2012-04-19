@@ -35,6 +35,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param file
 	 *            the name of a file
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that file
 	 * @throws IOException
 	 *             on I/O error
@@ -44,11 +45,11 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             if the data is invalid
 	 */
 	@Override
-	public SPMap readMap(final String file) throws IOException,
+	public SPMap readMap(final String file, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException {
 		final FileReader istream = new FileReader(file);
 		try {
-			return readMap(istream);
+			return readMap(istream, warner);
 		} finally {
 			istream.close();
 		}
@@ -60,6 +61,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *            method
 	 * @param file
 	 *            the name of a file
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that file
 	 * @throws IOException
 	 *             on I/O error
@@ -68,11 +70,11 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException
 	 *             if the data is invalid
 	 */
-	public SPMap readMap(final String file, final boolean reflection)
+	public SPMap readMap(final String file, final boolean reflection, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		final FileReader istream = new FileReader(file);
 		try {
-			return readMap(istream, reflection);
+			return readMap(istream, reflection, warner);
 		} finally {
 			istream.close();
 		}
@@ -81,6 +83,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param istream
 	 *            a reader from which to read the XML
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that stream
 	 * @throws XMLStreamException
 	 *             if XML isn't well-formed.
@@ -88,9 +91,9 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public SPMap readMap(final Reader istream) throws XMLStreamException,
+	public SPMap readMap(final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException {
-		return readMap(istream, false);
+		return readMap(istream, false, warner);
 	}
 
 	/**
@@ -99,15 +102,16 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *            method
 	 * @param istream
 	 *            a reader from which to read the XML
+	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that stream
 	 * @throws XMLStreamException
 	 *             if XML isn't well-formed.
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
-	public SPMap readMap(final Reader istream, final boolean reflection)
+	public SPMap readMap(final Reader istream, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		return readXML(istream, SPMap.class, reflection, Warning.INSTANCE);
+		return readXML(istream, SPMap.class, reflection, warner);
 	}
 	/**
 	 * Use readMap if you want a map; this is public primarily for testing purposes. 

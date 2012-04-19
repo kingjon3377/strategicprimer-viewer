@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
 import model.viewer.TileViewSize;
+import util.Warning;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
@@ -187,7 +188,7 @@ public class DrawHelperComparator {
 		final DrawHelperComparator comp; // NOPMD
 		try {
 			comp = new DrawHelperComparator(
-					new MapReaderAdapter().readMap(args[0]), 50);
+					new MapReaderAdapter().readMap(args[0], Warning.INSTANCE), 50);
 		} catch (final IOException e) {
 			logger.log(Level.SEVERE, "I/O error reading map", e);
 			return; // NOPMD

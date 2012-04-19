@@ -11,6 +11,7 @@ import model.exploration.MissingTableException;
 import model.map.SPMap;
 import model.map.Tile;
 import util.SingletonRandom;
+import util.Warning;
 import view.util.SystemOut;
 import controller.exploration.TableLoader;
 import controller.map.MapVersionException;
@@ -110,7 +111,7 @@ public final class GenerateTileContents {
 				try {
 					generator = getSingleton();
 				} catch (NotYetInitializedException e) {
-					generator = getSingleton(new MapReaderAdapter().readMap(args[0]));
+					generator = getSingleton(new MapReaderAdapter().readMap(args[0], Warning.INSTANCE));
 				}
 				generator.generateTileContents(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 			} catch (NumberFormatException e) {

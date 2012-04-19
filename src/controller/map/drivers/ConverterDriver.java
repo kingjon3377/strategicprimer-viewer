@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.SPMap;
+import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
@@ -55,7 +56,7 @@ public final class ConverterDriver {
 			SystemOut.SYS_OUT.print("Starting ");
 			SystemOut.SYS_OUT.println(filename);
 			try {
-				final SPMap old = READER.readMap(filename);
+				final SPMap old = READER.readMap(filename, Warning.INSTANCE);
 				final SPMap map = CONV.convert(old, main);
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.print(filename);
