@@ -73,7 +73,7 @@ public final class TestMoreFixtureSerialization extends
 				reader, new Grove(false, true, "thirdGrove"), Grove.class);
 		assertSerialization("Fourth test of Grove serialization, reflection",
 				reader, new Grove(false, false, "four"), Grove.class);
-		assertUnwantedChild(reader, "<grove><troll /></grove>", Grove.class, false);
+		assertUnwantedChild(reader, "<grove wild=\"true\" kind=\"kind\"><troll /></grove>", Grove.class, false);
 		assertMissingProperty(reader, "<grove />", Grove.class, "wild", false);
 		assertMissingProperty(reader, "<grove wild=\"false\" />", Grove.class, "kind", false);
 		assertDeprecatedProperty(reader, "<grove wild=\"true\" tree=\"tree\" />", Grove.class, "tree", true);
@@ -98,7 +98,7 @@ public final class TestMoreFixtureSerialization extends
 				reader, new Meadow("three", false, true), Meadow.class);
 		assertSerialization("Fourth test of Meadow serialization, reflection",
 				reader, new Meadow("four", false, false), Meadow.class);
-		assertUnwantedChild(reader, "<meadow><troll /></meadow>",
+		assertUnwantedChild(reader, "<meadow kind=\"flax\" cultivated=\"false\"><troll /></meadow>",
 				Meadow.class, false);
 		assertMissingProperty(reader, "<meadow cultivated=\"false\" />",
 				Meadow.class, KIND_PROPERTY, false);

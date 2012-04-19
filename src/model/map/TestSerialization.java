@@ -211,7 +211,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testMapSerialization() throws XMLStreamException, SPFormatException {
-		assertUnwantedChild(reader, "<map><hill /></map>", SPMap.class, false);
+		assertUnwantedChild(reader, "<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>", SPMap.class, false);
 		final SPMap one = new SPMap(2, 1, 1);
 		one.addPlayer(new Player(1, "playerOne"));
 		one.getPlayers().getPlayer(1).setCurrent(true);

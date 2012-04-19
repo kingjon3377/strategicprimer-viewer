@@ -71,7 +71,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Second BattlefieldEvent serialization test, reflection",
 				reader, new BattlefieldEvent(30), BattlefieldEvent.class);
-		assertUnwantedChild(reader, "<battlefield><troll /></battlefield>",
+		assertUnwantedChild(reader, "<battlefield dc=\"10\"><troll /></battlefield>",
 				BattlefieldEvent.class, false);
 		assertMissingProperty(reader, "<battlefield />",
 				BattlefieldEvent.class, "dc", false);
@@ -93,7 +93,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Second BattlefieldEvent serialization test, reflection",
 				reader, new CaveEvent(30), CaveEvent.class);
-		assertUnwantedChild(reader, "<cave><troll /></cave>", CaveEvent.class,
+		assertUnwantedChild(reader, "<cave dc=\"10\"><troll /></cave>", CaveEvent.class,
 				false);
 		assertMissingProperty(reader, "<cave />", CaveEvent.class, "dc", false);
 	}
