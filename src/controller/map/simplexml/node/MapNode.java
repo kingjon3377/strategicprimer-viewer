@@ -82,7 +82,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, VERSION_PROP, ROWS_PROPERTY, COLUMNS_PROPERTY);
+		return EqualsAny.equalsAny(property, VERSION_PROP, ROWS_PROPERTY, COLUMNS_PROPERTY, "current_player");
 	}
 	
 	/**
