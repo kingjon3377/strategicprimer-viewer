@@ -242,9 +242,9 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty(reader, "<unit />", Unit.class, "owner", true);
 		assertMissingProperty(reader, "<unit owner=\"\" />", Unit.class,
 				"owner", true);
-		assertMissingProperty(reader, "<unit owner=\"1\" />", Unit.class,
+		assertMissingProperty(reader, "<unit owner=\"1\" name=\"name\" />", Unit.class,
 				KIND_PROPERTY, true);
-		assertMissingProperty(reader, "<unit owner=\"1\" kind=\"\" />",
+		assertMissingProperty(reader, "<unit owner=\"1\" kind=\"\" name=\"name\" />",
 				Unit.class, KIND_PROPERTY, true);
 		assertUnwantedChild(reader, "<unit><unit /></unit>", Unit.class, false);
 		final Unit one = new Unit(new Player(1, ""), "unitType", "unitName");
