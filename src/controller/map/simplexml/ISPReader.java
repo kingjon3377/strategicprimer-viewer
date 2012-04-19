@@ -12,7 +12,13 @@ import controller.map.SPFormatException;
  *
  */
 public interface ISPReader {
-
+	/**
+	 * Tags we expect to use in the future; they are skipped for now and
+	 * we'll warn if they're used.
+	 */
+	String[] FUTURE = { "future", "include", "worker", "explorer",
+			"building", "resource", "animal", "changeset", "change",
+			"move", "work", "discover" };
 	/**
 	 * @param <T> The type of the object the XML represents
 	 * @param istream

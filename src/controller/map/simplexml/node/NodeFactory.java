@@ -8,6 +8,7 @@ import util.Warning;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
+import controller.map.simplexml.ISPReader;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
@@ -49,18 +50,11 @@ public final class NodeFactory { // NOPMD
 		TAGS.put(string, tag);
 	}
 	/**
-	 * Tags we expect to use in the future; they are SkippableNodes for now and
-	 * we'll warn if they're used.
-	 */
-	private static final String[] FUTURE = { "future", "include", "worker", "explorer",
-			"building", "resource", "animal", "changeset", "change",
-			"move", "work", "discover" };
-	/**
 	 * Set up the mappings from tags to node types. And just in case we didn't
 	 * remove a tag from FUTURE, we handle those before the tags we *do* handle.
 	 */
 	static {
-		for (final String string : FUTURE) {
+		for (final String string : ISPReader.FUTURE) {
 			addTag(string, Tag.Skippable);
 		}
 		addTag("map", Tag.Map);
