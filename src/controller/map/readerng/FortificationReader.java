@@ -9,6 +9,7 @@ import model.map.PlayerCollection;
 import model.map.events.FortificationEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 
@@ -38,6 +39,11 @@ public class FortificationReader implements INodeReader<FortificationEvent> {
 	public FortificationEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
+		if ("".equals(XMLHelper.getAttributeWithDefault(element, "name", ""))) {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "name", element.getLocation()
+					.getLineNumber()));
+		}
 		final FortificationEvent fix = new FortificationEvent(
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
 						"status")), TownSize.parseTownSize(XMLHelper
