@@ -85,4 +85,22 @@ public class MapReaderNG implements IMapReader, ISPReader {
 		}
 		throw new XMLStreamException("XML stream didn't contain a start element");
 	}
+	/**
+	 * @param <T> The type of the object the XML represents
+	 * @param istream
+	 *            a reader from which to read the XML
+	 * @param type The type of the object the XML represents
+	 * @param warner a Warning instance to use for warnings
+	 * @param reflection ignored
+	 * @return the object contained in that stream
+	 * @throws XMLStreamException
+	 *             if XML isn't well-formed.
+	 * @throws SPFormatException
+	 *             if the data is invalid.
+	 */
+	@Override
+	public <T> T readXML(final Reader istream, final Class<T> type, final boolean reflection,
+			final Warning warner) throws XMLStreamException, SPFormatException {
+		return readXML(istream, type, warner);
+	}
 }
