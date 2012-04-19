@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.simplexml.ISPReader;
 import controller.map.simplexml.SimpleXMLReader;
 
 /**
@@ -49,7 +50,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * The XML reader we'll use to test.
 	 */
-	private SimpleXMLReader reader;
+	private ISPReader reader;
 
 	/**
 	 * Test serialization of BattlefieldEvents, including error-checking.
