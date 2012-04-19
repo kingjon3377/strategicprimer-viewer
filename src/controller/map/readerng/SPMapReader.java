@@ -13,7 +13,6 @@ import model.map.SPMap;
 import model.map.Tile;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingChildException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
@@ -73,23 +72,7 @@ public class SPMapReader implements INodeReader<SPMap> {
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
-				final String type = elem.getName().getLocalPart();
-				if ("player".equalsIgnoreCase(type)) {
-					map.addPlayer(ReaderFactory.createReader(Player.class)
-							.parse(elem, stream, map.getPlayers(), warner));
-				} else if ("row".equalsIgnoreCase(type)) {
-					// deliberately ignore
-					continue;
-				} else if ("tile".equalsIgnoreCase(type)) {
-					map.addTile(ReaderFactory.createReader(Tile.class).parse(
-							elem, stream, map.getPlayers(), warner));
-				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) { 
-					warner.warn(new UnsupportedTagException(type, event // NOPMD
-							.getLocation().getLineNumber()));
-				} else {
-					throw new UnwantedChildException(TAG, elem.getName()
-							.getLocalPart(), elem.getLocation().getLineNumber());
-				}
+				parseChild(stream, warner, map, elem); 
 			} else if (event.isEndElement()
 					&& TAG.equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
@@ -97,6 +80,36 @@ public class SPMapReader implements INodeReader<SPMap> {
 			}
 		}
 		return map;
+	}
+
+	/** Parse a child element.
+	 * @param stream the stream we're reading from---only here to pass to children
+	 * @param warner the Warning instance to use.
+	 * @param map the map we're building.
+	 * @param elem the current tag.
+	 * @throws SPFormatException on SP map format error
+	 */
+	private static void parseChild(final Iterable<XMLEvent> stream,
+			final Warning warner, final SPMap map, 
+			final StartElement elem) throws SPFormatException {
+		final String type = elem.getName().getLocalPart();
+		if ("player".equalsIgnoreCase(type)) {
+			map.addPlayer(ReaderFactory.createReader(Player.class)
+					.parse(elem, stream, map.getPlayers(), warner));
+		} else if (!"row".equalsIgnoreCase(type)) {
+			// We deliberately ignore "row"; that had been a "continue",
+			// but we want to extract this as a method.
+			if ("tile".equalsIgnoreCase(type)) {
+				map.addTile(ReaderFactory.createReader(Tile.class).parse(
+						elem, stream, map.getPlayers(), warner));
+			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) { 
+				warner.warn(new UnsupportedTagException(type, elem // NOPMD
+						.getLocation().getLineNumber()));
+			} else {
+				throw new UnwantedChildException(TAG, elem.getName()
+						.getLocalPart(), elem.getLocation().getLineNumber());
+			}
+		}
 	}
 
 }

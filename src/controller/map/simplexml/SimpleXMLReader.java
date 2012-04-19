@@ -143,6 +143,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
+	@Override
 	public <T> T readXML(final Reader istream, final Class<T> type, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final RootNode<T> root = new RootNode<T>(type);

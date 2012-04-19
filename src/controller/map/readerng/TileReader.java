@@ -52,11 +52,21 @@ public class TileReader implements INodeReader<Tile> {
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttributeWithDeprecatedForm(element, "kind", "type", warner)));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()
-					&& FixtureReader.supports(event.asStartElement().getName()
-							.getLocalPart())) {
-				tile.addFixture(ReaderFactory.createReader(TileFixture.class)
-						.parse(event.asStartElement(), stream, players, warner));
+			if (event.isStartElement()) {
+				if (FixtureReader.supports(event.asStartElement().getName()
+						.getLocalPart())) {
+					tile.addFixture(ReaderFactory.createReader(
+							TileFixture.class).parse(event.asStartElement(),
+							stream, players, warner));
+				} else if (isRiver(event.asStartElement()
+								.getName().getLocalPart())) {
+					tile.addFixture(new RiverFixture(ReaderFactory.createReader(River.class) // NOPMD
+							.parse(event.asStartElement(), stream, players, warner)));
+				} else {
+					throw new UnwantedChildException("tile", event.asStartElement()
+							.getName().getLocalPart(), event.getLocation()
+							.getLineNumber());
+				}
 			} else if (event.isCharacters()) {
 				tile.addFixture(new TextFixture(event.asCharacters().getData().trim(), // NOPMD
 						-1));
@@ -64,20 +74,15 @@ public class TileReader implements INodeReader<Tile> {
 					&& "tile".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
 				break;
-			} else if (event.isStartElement()
-					&& ("river".equalsIgnoreCase(event.asStartElement()
-							.getName().getLocalPart()) || "lake"
-							.equalsIgnoreCase(event.asStartElement().getName()
-									.getLocalPart()))) {
-				tile.addFixture(new RiverFixture(ReaderFactory.createReader(River.class) // NOPMD
-						.parse(event.asStartElement(), stream, players, warner)));
-			} else if (event.isStartElement()) {
-				throw new UnwantedChildException("tile", event.asStartElement()
-						.getName().getLocalPart(), event.getLocation()
-						.getLineNumber());
 			}
 		}
 		return tile;
 	}
-
+	/**
+	 * @param tag a tag
+	 * @return whether it's a river tag.
+	 */
+	private static boolean isRiver(final String tag) {
+		return "river".equalsIgnoreCase(tag) || "lake".equalsIgnoreCase(tag);
+	}
 }

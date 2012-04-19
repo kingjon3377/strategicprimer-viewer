@@ -20,6 +20,10 @@ import controller.map.UnwantedChildException;
  */
 public class UnitReader implements INodeReader<Unit> {
 	/**
+	 * The name of the property telling what kind of unit.
+	 */
+	private static final String KIND_PROPERTY = "kind";
+	/**
 	 * @return the class this produces.
 	 */
 	@Override
@@ -45,28 +49,9 @@ public class UnitReader implements INodeReader<Unit> {
 	public Unit parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		if (!XMLHelper.hasAttribute(element, "owner") || "".equals(XMLHelper.getAttribute(element, "owner"))) {
+		if ("".equals(XMLHelper.getAttributeWithDefault(element, "owner", ""))) {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "owner", element.getLocation()
-					.getLineNumber()));
-		}
-		String kind = "";
-		if (XMLHelper.hasAttribute(element, "kind")) {
-			kind = XMLHelper.getAttribute(element, "kind");
-			if ("".equals(kind)) {
-				warner.warn(new MissingParameterException(element.getName()
-						.getLocalPart(), "kind", element.getLocation()
-						.getLineNumber()));
-			}
-		} else if (XMLHelper.hasAttribute(element, "type")) {
-			kind = XMLHelper.getAttribute(element, "type");
-			warner.warn(new DeprecatedPropertyException(element.getName()
-					.getLocalPart(), "type", "kind", element.getLocation()
-					.getLineNumber()));
-			
-		} else {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "kind", element.getLocation()
 					.getLineNumber()));
 		}
 		if ("".equals(XMLHelper.getAttributeWithDefault(element, "name", ""))) {
@@ -76,7 +61,7 @@ public class UnitReader implements INodeReader<Unit> {
 		}
 		final Unit fix = new Unit(players.getPlayer(Integer.parseInt(ensureNumeric(XMLHelper
 				.getAttributeWithDefault(element, "owner", "-1")))),
-				kind,
+				parseKind(element, warner),
 				XMLHelper.getAttributeWithDefault(element, "name", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -90,6 +75,37 @@ public class UnitReader implements INodeReader<Unit> {
 			}
 		}
 		return fix;
+	}
+
+	/**
+	 * Parse the kind of unit, from the "kind" or "type" parameter---default the empty string. 
+	 * @param element the current element
+	 * @param warner the Warning instance to use
+	 * @return the kind of unit
+	 * @throws SPFormatException on SP format error.
+	 */
+	private static String parseKind(final StartElement element, final Warning warner)
+			throws SPFormatException {
+		String kind = "";
+		if (XMLHelper.hasAttribute(element, KIND_PROPERTY)) {
+			kind = XMLHelper.getAttribute(element, KIND_PROPERTY);
+			if ("".equals(kind)) {
+				warner.warn(new MissingParameterException(element.getName()
+						.getLocalPart(), KIND_PROPERTY, element.getLocation()
+						.getLineNumber()));
+			}
+		} else if (XMLHelper.hasAttribute(element, "type")) {
+			kind = XMLHelper.getAttribute(element, "type");
+			warner.warn(new DeprecatedPropertyException(element.getName()
+					.getLocalPart(), "type", KIND_PROPERTY, element.getLocation()
+					.getLineNumber()));
+			
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), KIND_PROPERTY, element.getLocation()
+					.getLineNumber()));
+		}
+		return kind;
 	}
 	/**
 	 * @param string a string that may be either numeric or empty.
