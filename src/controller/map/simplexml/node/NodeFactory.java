@@ -5,7 +5,6 @@ import java.util.Map;
 
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.simplexml.ISPReader;
