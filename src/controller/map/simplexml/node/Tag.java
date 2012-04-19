@@ -8,6 +8,7 @@ package controller.map.simplexml.node;
  * @author kingjon
  * 
  */
+@Deprecated
 public enum Tag {
 	/**
 	 * The main map tag.

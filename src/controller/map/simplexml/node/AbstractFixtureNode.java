@@ -12,6 +12,7 @@ import model.map.TileFixture;
  */
 //ESCA-JAVA0024:
 //ESCA-JAVA0011:
+@Deprecated
 public abstract class AbstractFixtureNode<T extends TileFixture> extends AbstractChildNode<T> { // NOPMD
 	// This is a superclass to unite its subclasses, and abstract to avoid
 	// pointless code implementing the methods required by its superclass.

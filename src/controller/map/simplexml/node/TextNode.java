@@ -11,6 +11,7 @@ import controller.map.simplexml.ITextNode;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextNode {
 	/**
 	 * Constructor.

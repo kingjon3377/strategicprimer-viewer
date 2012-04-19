@@ -12,6 +12,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class DragonNode extends AbstractFixtureNode<Dragon> {
 	/**
 	 * The name of the property saying what kind of dragon.

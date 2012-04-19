@@ -15,6 +15,7 @@ import controller.map.UnwantedChildException;
  * @author kingjon
  * 
  */
+@Deprecated
 public class UnitNode extends AbstractFixtureNode<Unit> {
 	/**
 	 * The old, deprecated name for what is now TYPE_ATTR.

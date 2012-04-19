@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * 
  * @author Jonathan Lovelace
  */
+@Deprecated
 public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	/**
 	 * The name of the property saying whether the deposit is exposed.

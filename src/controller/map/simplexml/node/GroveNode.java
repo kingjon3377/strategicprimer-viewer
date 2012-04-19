@@ -13,6 +13,7 @@ import controller.map.UnwantedChildException;
  * A Node to produce a Grove.
  * @author Jonathan Lovelace
  */
+@Deprecated
 public class GroveNode extends AbstractFixtureNode<Grove> {
 	/**
 	 * The former, deprecated, name of the parameter telling what kind of trees.

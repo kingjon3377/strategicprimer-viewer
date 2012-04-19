@@ -19,6 +19,7 @@ import controller.map.simplexml.SimpleXMLReader;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public final class ReflectionTestDriver {
 	/**
 	 * Logger.

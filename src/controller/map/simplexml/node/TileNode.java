@@ -19,6 +19,7 @@ import controller.map.simplexml.ITextNode;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	/**
 	 * The deprecated version of KIND_PROPERTY.

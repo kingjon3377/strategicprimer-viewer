@@ -16,6 +16,7 @@ import controller.map.UnsupportedPropertyException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	/**
 	 * Constructor.

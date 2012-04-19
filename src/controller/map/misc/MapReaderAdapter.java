@@ -9,7 +9,7 @@ import util.Warning;
 import controller.map.IMapReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.simplexml.SimpleXMLReader;
+import controller.map.readerng.MapReaderNG;
 
 /**
  * An adapter, so that classes using map readers don't have to change whenever
@@ -28,7 +28,7 @@ public class MapReaderAdapter {
 	 * Constructor.
 	 */
 	public MapReaderAdapter() {
-		reader = new SimpleXMLReader();
+		reader = new MapReaderNG();
 	}
 
 	/**

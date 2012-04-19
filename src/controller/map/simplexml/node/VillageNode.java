@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class VillageNode extends AbstractFixtureNode<Village> {
 	/**
 	 * The name of the property giving the village status.

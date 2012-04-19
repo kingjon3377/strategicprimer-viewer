@@ -17,6 +17,7 @@ import controller.map.simplexml.node.AbstractXMLNode;
  *            The kind of child we want.
  * 
  */
+@Deprecated
 public final class RootNode<T> extends AbstractXMLNode {
 	/**
 	 * Check whether the tree is valid. Since we can't check whether it has more

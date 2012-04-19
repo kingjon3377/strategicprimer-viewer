@@ -17,6 +17,7 @@ import controller.map.UnsupportedTagException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public final class NodeFactory { // NOPMD
 	/**
 	 * The name for the property for what kind of event an event is. We create

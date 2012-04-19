@@ -11,6 +11,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class OgreNode extends AbstractFixtureNode<Ogre> {
 	/**
 	 * Constructor.

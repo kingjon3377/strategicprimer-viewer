@@ -13,6 +13,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class RiverNode extends AbstractChildNode<River> {
 	/**
 	 * The name of the property giving the direction of the river.

@@ -18,6 +18,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class MapNode extends AbstractChildNode<SPMap> {
 	/**
 	 * The name of the property saying how many rows.

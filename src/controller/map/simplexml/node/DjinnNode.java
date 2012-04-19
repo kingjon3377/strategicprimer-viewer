@@ -11,6 +11,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	/**
 	 * Constructor.

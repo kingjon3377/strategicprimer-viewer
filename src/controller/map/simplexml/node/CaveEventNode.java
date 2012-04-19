@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * @author kingjon
  * 
  */
+@Deprecated
 public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	/**
 	 * Constructor.

@@ -13,6 +13,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class GroundNode extends AbstractFixtureNode<Ground> {
 	/**
 	 * The tag.

@@ -4,6 +4,7 @@ package controller.map.simplexml;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public interface ITextNode {
 	/**
 	 * Add text to the node.

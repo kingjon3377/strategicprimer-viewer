@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> {
 	/**
 	 * Constructor.

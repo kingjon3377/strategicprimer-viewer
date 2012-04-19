@@ -12,6 +12,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class GiantNode extends AbstractFixtureNode<Giant> {
 	/**
 	 * The name of the property saying what kind of giant this is.

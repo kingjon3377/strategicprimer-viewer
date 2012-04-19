@@ -13,6 +13,7 @@ import controller.map.UnwantedChildException;
  * 
  * @author Jonathan Lovelace
  */
+@Deprecated
 public class FortressNode extends AbstractFixtureNode<Fortress> {
 	/**
 	 * Constructor.

@@ -15,6 +15,7 @@ import controller.map.UnsupportedTagException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	/**
 	 * Constructor. Warns if the tag isn't the one kind we routinely expect to

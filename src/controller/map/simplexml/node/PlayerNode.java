@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class PlayerNode extends AbstractChildNode<Player> {
 	/**
 	 * The name of the property giving the player's code name.

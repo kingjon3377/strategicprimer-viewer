@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class AnimalNode extends AbstractFixtureNode<Animal> {
 	/**
 	 * The name of the property saying what kind of animal this is.

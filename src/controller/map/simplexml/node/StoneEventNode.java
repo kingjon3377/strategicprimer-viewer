@@ -16,6 +16,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	/**
 	 * The current tag.

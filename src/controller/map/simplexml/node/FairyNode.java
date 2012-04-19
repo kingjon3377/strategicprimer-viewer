@@ -12,6 +12,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class FairyNode extends AbstractFixtureNode<Fairy> {
 	/**
 	 * The name of the property saying what kind of fairy.

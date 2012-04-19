@@ -10,6 +10,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class MountainNode extends AbstractFixtureNode<Mountain> {
 	/**
 	 * Constructor.

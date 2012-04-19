@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * A Node that will produce a Mine.
  * @author Jonathan Lovelace
  */
+@Deprecated
 public class MineNode extends AbstractFixtureNode<Mine> {
 	/**
 	 * The old, deprecated name for what is now KIND_PROPERTY.

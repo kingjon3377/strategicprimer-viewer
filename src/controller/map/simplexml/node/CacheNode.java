@@ -12,6 +12,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	/**
 	 * The name of the property saying what's in the cache.

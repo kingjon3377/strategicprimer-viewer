@@ -21,6 +21,7 @@ import controller.map.UnsupportedTagException;
  * 
  * @author Jonathan Lovelace
  */
+@Deprecated
 public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	/**
 	 * Constructor.

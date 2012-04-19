@@ -16,6 +16,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 
 	/**

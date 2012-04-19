@@ -12,6 +12,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class ForestNode extends AbstractFixtureNode<Forest> {
 	/**
 	 * The name of the property saying what kind of trees.

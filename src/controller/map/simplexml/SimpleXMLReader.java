@@ -32,6 +32,7 @@ import controller.map.simplexml.node.NodeFactory;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param file

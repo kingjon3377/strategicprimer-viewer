@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * FIXME: Groves have "wild", meadows have "cultivated".
  *
  */
+@Deprecated
 public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	/**
 	 * The name of the property saying whether or not the field or meadow is cultivated.

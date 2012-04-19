@@ -14,6 +14,7 @@ import controller.map.UnwantedChildException;
  * @author Jonathan Lovelace
  *
  */
+@Deprecated
 public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	/**
 	 * The current tag.

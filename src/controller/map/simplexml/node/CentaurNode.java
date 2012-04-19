@@ -11,6 +11,7 @@ import controller.map.UnwantedChildException;
  * A Node to represent a centaur or group of centaurs.
  * @author Jonathan Lovelace
  */
+@Deprecated
 public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	/**
 	 * The name of the property saying what kind of centaur.
