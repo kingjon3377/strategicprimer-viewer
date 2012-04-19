@@ -63,8 +63,10 @@ public class TileReader implements INodeReader<Tile> {
 							.getLocalPart())) {
 				break;
 			} else if (event.isStartElement()
-					&& "river".equalsIgnoreCase(event.asStartElement()
-							.getName().getLocalPart())) {
+					&& ("river".equalsIgnoreCase(event.asStartElement()
+							.getName().getLocalPart()) || "lake"
+							.equalsIgnoreCase(event.asStartElement().getName()
+									.getLocalPart()))) {
 				tile.addFixture(new RiverFixture(ReaderFactory.createReader(River.class) // NOPMD
 						.parse(event.asStartElement(), stream, players, warner)));
 			}
