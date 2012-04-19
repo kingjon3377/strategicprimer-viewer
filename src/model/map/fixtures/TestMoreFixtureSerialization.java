@@ -164,7 +164,7 @@ public final class TestMoreFixtureSerialization extends
 				reader.readXML(new StringReader(xml), Shrub.class, true,
 						new Warning(Warning.Action.Ignore)));
 		assertDeprecatedProperty(reader, xml, Shrub.class, "shrub", true);
-		assertUnwantedChild(reader, "<shrub><troll /></shrub>",
+		assertUnwantedChild(reader, "<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
 		assertMissingProperty(reader, "<shrub />", Shrub.class, KIND_PROPERTY, false);
 	}
