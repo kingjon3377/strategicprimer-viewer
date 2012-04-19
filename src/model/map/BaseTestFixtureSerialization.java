@@ -17,6 +17,7 @@ import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
+import controller.map.readerng.MapReaderNG;
 import controller.map.simplexml.ISPReader;
 
 // ESCA-JAVA0011:
@@ -406,5 +407,14 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 */
 	protected Warning warner() {
 		return warner;
+	}
+	/**
+	 * Create a reader. This is here so we only have to change it in
+	 * <em>one</em> place to switch back and forth.
+	 * 
+	 * @return a reader
+	 */
+	protected ISPReader createReader() {
+		return new MapReaderNG();
 	}
 }

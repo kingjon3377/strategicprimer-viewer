@@ -14,7 +14,6 @@ import org.junit.Test;
 
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.readerng.MapReaderNG;
 import controller.map.simplexml.ISPReader;
 
 /**
@@ -41,7 +40,7 @@ public final class TestFixtureSerialization extends
 	 */
 	@Before
 	public void setUp() {
-		reader = new MapReaderNG();
+		reader = createReader();
 	}
 
 	/**
