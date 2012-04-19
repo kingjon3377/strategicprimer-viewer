@@ -222,7 +222,7 @@ public final class TestMoreFixtureSerialization extends
 				three, reader.readXML(new StringReader(three.toXML()), Village.class,
 						false, new Warning(Warning.Action.Ignore)));
 		assertMissingProperty(reader, three.toXML(), Village.class, "name", true);
-		assertUnwantedChild(reader, "<village><village /></village>",
+		assertUnwantedChild(reader, "<village status=\"active\"><village /></village>",
 				Village.class, false);
 		assertMissingProperty(reader, "<village />", Village.class, STATUS_PROPERTY,
 				false);
