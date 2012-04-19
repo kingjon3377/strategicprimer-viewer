@@ -60,6 +60,34 @@ public final class XMLHelper {
 		final Attribute value = elem.getAttributeByName(new QName(attr));
 		return (value == null) ? defaultValue : value.getValue();
 	}
+	
+	/**
+	 * @param element
+	 *            the element
+	 * @param preferred
+	 *            the preferred name of the attribute
+	 * @param deprecated
+	 *            the deprecated name of the attribute * @throws
+	 *            SPFormatException if the element doesn't have that attribute
+	 * @return the value of the attribute, gotten from the preferred form if it
+	 *         has it, and from the deprecated form if the preferred form isn't
+	 *         there but it is.
+	 * @throws SPFormatException
+	 *             if the element doesn't have that attribute
+	 */
+	public static String getAttributeWithDeprecatedForm(
+			final StartElement element, final String preferred,
+			final String deprecated) throws SPFormatException {
+		final Attribute prefAttr = element.getAttributeByName(new QName(preferred));
+		final Attribute deprAttr = element.getAttributeByName(new QName(deprecated));
+		if (prefAttr == null && deprAttr == null) {
+			throw new MissingParameterException(element.getName().getLocalPart(), preferred, element.getLocation().getLineNumber());
+		} else if (prefAttr == null) {
+			return deprAttr.getValue(); // NOPMD
+		} else {
+			return prefAttr.getValue();
+		}
+	}
 	/**
 	 * @param elem an element
 	 * @param attr the attribute we want
