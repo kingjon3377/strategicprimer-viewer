@@ -37,7 +37,7 @@ public class GroundReader implements INodeReader<Ground> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Ground fix = new Ground(
-				XMLHelper.getAttribute(element, "kind"),
+				XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "ground", warner),
 				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
