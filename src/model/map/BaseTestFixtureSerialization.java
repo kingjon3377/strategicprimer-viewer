@@ -13,12 +13,12 @@ import util.FatalWarning;
 import util.Warning;
 import util.Warning.Action;
 import controller.map.DeprecatedPropertyException;
+import controller.map.ISPReader;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
 import controller.map.readerng.MapReaderNG;
-import controller.map.simplexml.ISPReader;
 
 // ESCA-JAVA0011:
 /**

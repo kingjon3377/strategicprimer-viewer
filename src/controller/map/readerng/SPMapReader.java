@@ -13,11 +13,11 @@ import model.map.SPMap;
 import model.map.Tile;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.ISPReader;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
-import controller.map.simplexml.ISPReader;
 
 /**
  * A reader to produce SPMaps.

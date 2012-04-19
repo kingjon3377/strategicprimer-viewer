@@ -13,9 +13,9 @@ import model.map.SPMap;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.IMapReader;
+import controller.map.ISPReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.simplexml.ISPReader;
 
 /**
  * An XML-map reader that calls a tree of per-node XML readers, similar to the

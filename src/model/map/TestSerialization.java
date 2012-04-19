@@ -16,8 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import util.Warning;
+import controller.map.ISPReader;
 import controller.map.SPFormatException;
-import controller.map.simplexml.ISPReader;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.

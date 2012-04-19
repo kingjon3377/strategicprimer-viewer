@@ -17,6 +17,7 @@ import model.map.SPMap;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.IMapReader;
+import controller.map.ISPReader;
 import controller.map.SPFormatException;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;

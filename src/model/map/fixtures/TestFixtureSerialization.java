@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import util.Warning;
+import controller.map.ISPReader;
 import controller.map.SPFormatException;
-import controller.map.simplexml.ISPReader;
 
 /**
  * A class to test serialization of TileFixtures.

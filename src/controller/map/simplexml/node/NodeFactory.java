@@ -5,9 +5,9 @@ import java.util.Map;
 
 import util.EqualsAny;
 import util.Warning;
+import controller.map.ISPReader;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
-import controller.map.simplexml.ISPReader;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on

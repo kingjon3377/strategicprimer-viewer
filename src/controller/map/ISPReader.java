@@ -1,11 +1,10 @@
-package controller.map.simplexml;
+package controller.map;
 
 import java.io.Reader;
 
 import javax.xml.stream.XMLStreamException;
 
 import util.Warning;
-import controller.map.SPFormatException;
 /**
  * An interface for readers of any SP model type.
  * @author Jonathan Lovelace
