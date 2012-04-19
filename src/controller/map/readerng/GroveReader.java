@@ -38,7 +38,7 @@ public class GroveReader implements INodeReader<Grove> {
 		final Grove fix = new Grove("orchard".equalsIgnoreCase(element
 				.getName().getLocalPart()), Boolean.parseBoolean(XMLHelper
 				.getAttribute(element, "wild")),
-				XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "tree"));
+				XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "tree", warner));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(element.getName()

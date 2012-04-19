@@ -5,6 +5,9 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Warning;
+
+import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 
@@ -69,6 +72,7 @@ public final class XMLHelper {
 	 * @param deprecated
 	 *            the deprecated name of the attribute * @throws
 	 *            SPFormatException if the element doesn't have that attribute
+	 * @param warner the warning instance to use
 	 * @return the value of the attribute, gotten from the preferred form if it
 	 *         has it, and from the deprecated form if the preferred form isn't
 	 *         there but it is.
@@ -77,12 +81,15 @@ public final class XMLHelper {
 	 */
 	public static String getAttributeWithDeprecatedForm(
 			final StartElement element, final String preferred,
-			final String deprecated) throws SPFormatException {
+			final String deprecated, final Warning warner) throws SPFormatException {
 		final Attribute prefAttr = element.getAttributeByName(new QName(preferred));
 		final Attribute deprAttr = element.getAttributeByName(new QName(deprecated));
 		if (prefAttr == null && deprAttr == null) {
 			throw new MissingParameterException(element.getName().getLocalPart(), preferred, element.getLocation().getLineNumber());
 		} else if (prefAttr == null) {
+			warner.warn(new DeprecatedPropertyException(element.getName()
+					.getLocalPart(), deprecated, preferred, element
+					.getLocation().getLineNumber()));
 			return deprAttr.getValue(); // NOPMD
 		} else {
 			return prefAttr.getValue();

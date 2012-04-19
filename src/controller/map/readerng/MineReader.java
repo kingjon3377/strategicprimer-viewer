@@ -37,7 +37,7 @@ public class MineReader implements INodeReader<Mine> {
 	public Mine parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Mine fix = new Mine(XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "product"),
+		final Mine fix = new Mine(XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "product", warner),
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
 						"status")));
 		for (final XMLEvent event : stream) {
