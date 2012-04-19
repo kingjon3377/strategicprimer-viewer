@@ -50,10 +50,7 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof UnitNode) {
 				fort.addUnit(((UnitNode) node).produce(players, warner));
-			} else {
-				throw new UnwantedChildException(
-						"fortress", node.toString(), node.getLine());
-			}
+			} 
 		}
 		return fort;
 	}
