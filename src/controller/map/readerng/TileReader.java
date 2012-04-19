@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static java.lang.Integer.parseInt;
 
 import javax.xml.stream.events.StartElement;
@@ -49,7 +50,7 @@ public class TileReader implements INodeReader<Tile> {
 			throws SPFormatException {
 		final Tile tile = new Tile(parseInt(getAttribute(element, "row")),
 				parseInt(getAttribute(element, "column")),
-				TileType.getTileType(getAttribute(element, "kind")));
+				TileType.getTileType(getAttributeWithDeprecatedForm(element, "kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& FixtureReader.supports(event.asStartElement().getName()
