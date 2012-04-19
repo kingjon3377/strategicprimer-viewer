@@ -107,10 +107,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 				map.addPlayer(((PlayerNode) node).produce(players, warner));
 			} else if (node instanceof TileNode) {
 				tiles.add((TileNode) node);
-			} else {
-				throw new UnwantedChildException(TAG, node.toString(),
-						node.getLine());
-			}
+			} 
 		}
 		for (final TileNode node : tiles) {
 			map.addTile(node.produce(map.getPlayers(), warner));
