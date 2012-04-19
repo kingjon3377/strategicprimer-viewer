@@ -1,5 +1,9 @@
 package model.map.fixtures; // NOPMD
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.StringReader;
+
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
@@ -8,6 +12,7 @@ import model.map.Player;
 import org.junit.Before;
 import org.junit.Test;
 
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.simplexml.SimpleXMLReader;
 
@@ -67,6 +72,16 @@ public final class TestFixtureSerialization extends
 				Animal.class, false);
 		assertMissingProperty(reader, "<animal />",
 				Animal.class, KIND_PROPERTY, false);
+		assertEquals("Forward-looking XML in re talking, reflection",
+				new Animal("animalFive", false, false),
+				reader.readXML(new StringReader(
+						"<animal kind=\"animalFive\" talking=\"false\" />"),
+						Animal.class, true, new Warning(Warning.Action.Ignore)));
+		assertEquals("Forward-looking XML in re talking, non-reflection",
+				new Animal("animalFive", false, false),
+				reader.readXML(new StringReader(
+						"<animal kind=\"animalFive\" talking=\"false\" />"),
+						Animal.class, false, new Warning(Warning.Action.Ignore)));
 	}
 
 	/**
