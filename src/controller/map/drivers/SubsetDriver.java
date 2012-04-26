@@ -34,7 +34,7 @@ public final class SubsetDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final Pair<SPMap, Boolean> mainPair = safeLoadMap(reader, args[0]);
-		if (Boolean.FALSE.equals(mainPair.second())) {
+		if (Boolean.TRUE.equals(mainPair.second())) {
 			System.err.println("Error loading main map");
 			System.exit(1);
 			return;
@@ -48,7 +48,7 @@ public final class SubsetDriver {
 			SystemOut.SYS_OUT.print(arg);
 			SystemOut.SYS_OUT.print("\t...\t\t");
 			final Pair<SPMap, Boolean> pair = safeLoadMap(reader, arg);
-			if (Boolean.FALSE.equals(pair.second())) {
+			if (Boolean.TRUE.equals(pair.second())) {
 				SystemOut.SYS_OUT.println("FAIL");
 				continue;
 			}
