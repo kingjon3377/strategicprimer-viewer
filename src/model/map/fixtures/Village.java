@@ -82,7 +82,7 @@ public class Village implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return status.ordinal() | name.hashCode();
+		return name.hashCode() << status.ordinal();
 	}
 	/**
 	 * @param fix
