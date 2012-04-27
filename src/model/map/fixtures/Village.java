@@ -52,7 +52,7 @@ public class Village implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return status.toString() + " village";
+		return status.toString() + " village" + ("".equals(name) ? name : " named " + name);
 	}
 	/**
 	 * @return the name of an image to represent the village
