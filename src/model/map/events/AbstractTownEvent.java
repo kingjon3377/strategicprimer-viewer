@@ -115,8 +115,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 						&& ((AbstractTownEvent) obj).kind().equals(kind())
 						&& ((AbstractTownEvent) obj).size.equals(size)
 						&& ((AbstractTownEvent) obj).name.equals(name)
-						&& ((AbstractTownEvent) obj).status.equals(status) && ((AbstractTownEvent) obj)
-						.getDC() == getDC());
+						&& ((AbstractTownEvent) obj).status.equals(status));
 	}
 
 	/**
@@ -125,7 +124,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return kind().hashCode() + size.hashCode() << 4 + status.hashCode() << 8 + getDC() << 12 + name.hashCode() << 16;
+		return kind().hashCode() + size.hashCode() << 4 + status.hashCode() << 8 + name.hashCode() << 16;
 	}
 
 	/**

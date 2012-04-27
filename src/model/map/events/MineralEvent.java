@@ -101,7 +101,7 @@ public final class MineralEvent implements IEvent, HasImage {
 		return this == obj
 				|| (obj instanceof MineralEvent
 						&& ((MineralEvent) obj).mineral.equals(mineral)
-						&& ((MineralEvent) obj).exposed == exposed && ((MineralEvent) obj).dc == dc);
+						&& ((MineralEvent) obj).exposed == exposed);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return mineral.hashCode() + Boolean.valueOf(exposed).hashCode() << 3 + dc << 5;
+		return mineral.hashCode() + Boolean.valueOf(exposed).hashCode() << 3;
 	}
 
 	/**

@@ -72,8 +72,8 @@ public final class StoneEvent implements IEvent, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof StoneEvent
-						&& ((StoneEvent) obj).stone.equals(stone) && ((StoneEvent) obj).dc == dc);
+				|| obj instanceof StoneEvent
+						&& ((StoneEvent) obj).stone.equals(stone);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return stone.hashCode() + dc << 3;
+		return stone.hashCode();
 	}
 
 	/**
