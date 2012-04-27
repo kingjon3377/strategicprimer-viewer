@@ -124,7 +124,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return kind().hashCode() + size.hashCode() << 4 + status.hashCode() << 8 + name.hashCode() << 16;
+		return kind().ordinal() + size.ordinal() << 4 + status.ordinal() << 8 + name.hashCode() << 16;
 	}
 
 	/**

@@ -82,7 +82,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return stone.hashCode();
+		return stone.ordinal();
 	}
 
 	/**

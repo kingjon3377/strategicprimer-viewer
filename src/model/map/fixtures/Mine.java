@@ -83,7 +83,7 @@ public class Mine implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() << status.hashCode();
+		return kind.hashCode() << status.ordinal();
 	}
 	/**
 	 * @param fix
