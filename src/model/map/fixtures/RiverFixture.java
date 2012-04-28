@@ -79,14 +79,11 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 	}
 	/**
 	 * @return a hash value for the object
+	 * Because of Java bug #6579200, this has to return a constant.
 	 */
 	@Override
 	public int hashCode() {
-		return (rivers.contains(River.East) ? 1 : 0)
-				+ (rivers.contains(River.Lake) ? 2 : 0)
-				+ (rivers.contains(River.North) ? 4 : 0)
-				+ (rivers.contains(River.South) ? 8 : 0)
-				+ (rivers.contains(River.West) ? 16 : 0);
+		return 0;
 	}
 	/**
 	 * Update to match the rivers in another RiverFixture.
