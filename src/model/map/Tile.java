@@ -33,6 +33,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
 		location = new Point(tileRow, tileCol);
 		type = tileType;
+		// Can't be an otherwise-preferable TreeSet because of Java bug #7030899: TreeSet ignores equals() entirely.
 		contents = new HashSet<TileFixture>();
 	}
 	/**
