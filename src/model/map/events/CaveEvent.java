@@ -52,16 +52,17 @@ public final class CaveEvent implements IEvent {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof CaveEvent && ((CaveEvent) obj).dc == dc);
+				|| (obj instanceof CaveEvent);
 	}
 
 	/**
 	 * 
-	 * @return a hash value for the event.
+	 * @return a hash value for the event. Constant, as our only state is DC, and that's zeroed in players' maps.
 	 */
 	@Override
 	public int hashCode() {
-		return dc;
+		// ESCA-JAVA0076:
+		return 40;
 	}
 
 	/**
