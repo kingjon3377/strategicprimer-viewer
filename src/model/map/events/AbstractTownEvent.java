@@ -133,7 +133,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "A " + size.toString() + status.toString() + kind().toString()
+		return "A " + size.toString() + ' ' + status.toString() + ' ' + kind().toString()
 				+ " of DC " + getDC() + ("".equals(name) ? " with no name" : " with name " + name);
 	}
 
