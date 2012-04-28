@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.events.NothingEvent;
+import model.map.fixtures.Animal;
 import model.map.fixtures.CacheFixture;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
@@ -258,7 +259,8 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 			temp.removeAll(contents);
 			final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
 			for (TileFixture fix : tempList) {
-				if (fix instanceof CacheFixture) {
+				if (fix instanceof CacheFixture || fix instanceof TextFixture
+						|| (fix instanceof Animal && ((Animal) fix).isTraces())) {
 					temp.remove(fix);
 				}
 			}
