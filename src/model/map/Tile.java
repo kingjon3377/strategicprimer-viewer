@@ -260,8 +260,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 			temp.removeAll(contents);
 			final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
 			for (TileFixture fix : tempList) {
-				if (fix instanceof CacheFixture || fix instanceof TextFixture
-						|| (fix instanceof Animal && ((Animal) fix).isTraces())) {
+				if (shouldSkip(fix)) {
 					temp.remove(fix);
 				}
 			}
@@ -276,5 +275,14 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 			SystemOut.SYS_OUT.print("Type of " + location.toString() + " wrong\t");
 			return false;
 		}
+	}
+
+	/**
+	 * @param fix a fixture
+	 * @return whether strict-subset calculations should skip it.
+	 */
+	private static boolean shouldSkip(final TileFixture fix) {
+		return fix instanceof CacheFixture || fix instanceof TextFixture
+				|| (fix instanceof Animal && ((Animal) fix).isTraces());
 	}
 }
