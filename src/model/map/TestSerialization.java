@@ -3,12 +3,16 @@ package model.map;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.fixtures.Forest;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Griffin;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.Unit;
 
@@ -115,6 +119,44 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				reader,
 				addRivers(new Tile(0, 0, TileType.Plains), River.North),
 				Tile.class);
+		final EnumSet<River> setOne = EnumSet.noneOf(River.class);
+		final EnumSet<River> setTwo = EnumSet.noneOf(River.class);
+		assertEquals("Empty sets are equal", setOne, setTwo);
+		setOne.add(River.North);
+		setOne.add(River.South);
+		setTwo.add(River.South);
+		setTwo.add(River.North);
+		assertEquals("Rivers added in different order to set", setOne, setTwo);
+		assertEquals("Rivers added in different order to fixture",
+				new RiverFixture(River.North, River.South), new RiverFixture(
+						River.South, River.North));
+		final RiverFixture fixOne = new RiverFixture(River.North);
+		final RiverFixture fixTwo = new RiverFixture(River.South);
+		fixOne.addRiver(River.South);
+		fixTwo.addRiver(River.North);
+		assertEquals("Rivers added separately", fixOne, fixTwo);
+		final Set<TileFixture> hsetOne = new HashSet<TileFixture>();
+		hsetOne.add(fixOne);
+		final Set<TileFixture> hsetTwo = new HashSet<TileFixture>();
+		hsetTwo.add(fixTwo);
+		assertEquals("Check Set.equals()", fixOne, fixTwo);
+		final Tile tone = new Tile(0, 0, TileType.Plains);
+		tone.addFixture(fixOne);
+		final Tile ttwo = new Tile(0, 0, TileType.Plains);
+		ttwo.addFixture(fixTwo);
+		assertEquals("Tile.equals(), RiverFixtures constructed separately", tone, ttwo);
+		assertEquals(
+				"Make sure equals() works properly for rivers",
+				addRivers(new Tile(0, 0, TileType.Plains), River.North,
+						River.South),
+				addRivers(new Tile(0, 0, TileType.Plains), River.North,
+						River.South));
+		assertEquals(
+				"Make sure equals() works properly if rivers added in different order",
+				addRivers(new Tile(0, 0, TileType.Plains), River.North,
+						River.South),
+				addRivers(new Tile(0, 0, TileType.Plains), River.South,
+						River.North));
 		assertSerialization(
 				"Fifth River serialization test, reflection",
 				reader,
