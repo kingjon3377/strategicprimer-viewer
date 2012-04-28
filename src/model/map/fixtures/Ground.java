@@ -88,4 +88,11 @@ public class Ground implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+	/**
+	 * @return a String representation of the Ground.
+	 */
+	@Override
+	public String toString() {
+		return (exposed ? "Exposed " : "Unexposed ") + "ground of kind " + kind;
+	}
 }
