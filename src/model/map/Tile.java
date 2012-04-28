@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import model.map.events.NothingEvent;
 import model.map.fixtures.CacheFixture;
@@ -33,7 +32,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
 		location = new Point(tileRow, tileCol);
 		type = tileType;
-		contents = new TreeSet<TileFixture>();
+		contents = new HashSet<TileFixture>();
 	}
 	/**
 	 * The tile's location.

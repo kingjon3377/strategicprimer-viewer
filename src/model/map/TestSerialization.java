@@ -173,11 +173,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Multiple units should come through", reader, six, Tile.class);
 		final String xmlTwo = new StringBuilder(
 				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" />\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" />\n")
+				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" />\n")
 				.append("\t\t</tile>")
 				.toString(); 
 		assertEquals("Multiple units should come through", xmlTwo, six.toXML());
+		assertEquals("Shouldn't print empty not-visible tiles", "", new Tile(0, 0, TileType.NotVisible).toXML());
 	}
 	/**
 	 * Test that row nodes are ignored, and that "future" tags are skipped but warned about.
