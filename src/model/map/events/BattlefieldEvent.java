@@ -52,7 +52,7 @@ public final class BattlefieldEvent implements IEvent {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof BattlefieldEvent && ((BattlefieldEvent) obj).dc == dc);
+				|| obj instanceof BattlefieldEvent;
 	}
 
 	/**
@@ -61,7 +61,7 @@ public final class BattlefieldEvent implements IEvent {
 	 */
 	@Override
 	public int hashCode() {
-		return dc;
+		return 15;
 	}
 
 	/**
