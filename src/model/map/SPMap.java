@@ -1,5 +1,7 @@
 package model.map;
 
+import view.util.SystemOut;
+
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
  * tile; each unit is either in a fortress or on a tile directly.
@@ -223,8 +225,12 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 */
 	@Override
 	public boolean isSubset(final SPMap obj) {
-		return cols() == obj.cols() && rows() == obj.rows()
-				&& players.isSubset(obj.players) && tiles.isSubset(obj.tiles);
+		if (cols() == obj.cols() && rows() == obj.rows()) {
+			return players.isSubset(obj.players) && tiles.isSubset(obj.tiles); // NOPMD
+		} else {
+			SystemOut.SYS_OUT.println("Sizes differ");
+			return false;
+		}
 	}
 	/**
 	 * Compare to another map.
