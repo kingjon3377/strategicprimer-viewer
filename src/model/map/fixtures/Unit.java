@@ -95,7 +95,7 @@ public class Unit implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (kind.hashCode()) + owner.hashCode() << 2 + (name.hashCode()) << 4;
+		return (kind.hashCode()) + (name.hashCode()) << 16 + owner.hashCode() << 30;
 	}
 
 	/**

@@ -65,7 +65,7 @@ public class Player implements Comparable<Player>, XMLWritable {
 	 */
 	@Override
 	public int hashCode() {
-		return playerID | playerName.hashCode();
+		return playerID;
 	}
 
 	/**
