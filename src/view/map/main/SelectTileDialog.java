@@ -95,52 +95,86 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		}
 	}
 	/**
+	 * Possible states.
+	 */
+	private enum State {
+		/**
+		 * Valid.
+		 */
+		Valid,
+		/**
+		 * Nonnumeric.
+		 */
+		Nonnumeric,
+		/**
+		 * Negative.
+		 */
+		Negative,
+		/**
+		 * Too large.
+		 */
+		Overflow;
+	}
+	/**
+	 * @param text a String to test, representing a number
+	 * @param bound its maximum value
+	 * @return a State representing any problems with it.
+	 */
+	private static State checkNumber(final String text, final int bound) {
+		if (IsNumeric.isNumeric(text)) {
+			if (Integer.parseInt(text) < 0) {
+				return State.Negative; // NOPMD
+			} else if (Integer.parseInt(text) > bound) {
+				return State.Overflow; // NOPMD
+			} else {
+				return State.Valid; // NOPMD
+			}
+		} else {
+			return State.Nonnumeric; // NOPMD
+		}
+	}
+	/**
+	 * Set text for an error.
+	 * @param state the state to give an error message for
+	 * @param bound the upper bound, for the overflow case.
+	 * @return a suitable message for that error, suitable for following "row" or "column".
+	 */
+	private static String getErrorMessage(final State state, final int bound) {
+		switch (state) {
+		case Negative:
+			return " must be positive. "; // NOPMD
+		case Nonnumeric:
+			return " must be a whole number. "; // NOPMD
+		case Overflow:
+			return " must be less than " + Integer.toString(bound); // NOPMD
+		case Valid:
+			return "";
+		default:
+			throw new IllegalStateException("Default case of enum switch");
+		}
+	}
+	/**
 	 * Handle the OK button.
 	 * @param rowText the text in the row box
 	 * @param colText the text in the column box 
 	 */
 	private void handleOK(final String rowText, final String colText) {
-		boolean valid = true;
 		errorLabel.setText("");
-		if (!IsNumeric.isNumeric(colText)) { // NOPMD
-			errorLabel.setText(errorLabel.getText()
-					+ "Column must be a whole number. ");
+		final State colState = checkNumber(colText, map.getSizeCols() - 1);
+		if (!(colState == State.Valid)) {
+			errorLabel.setText(errorLabel.getText() + "Column "
+					+ getErrorMessage(colState, map.getSizeCols()));
 			column.setText("-1");
 			column.selectAll();
-			valid = false;
-		} else if (Integer.parseInt(colText) < 0) {
-			errorLabel.setText(errorLabel.getText()
-					+ "Column must be positive. ");
-			column.setText("-1");
-			column.selectAll();
-			valid = false;
-		} else if (Integer.parseInt(colText) >= map.getSizeCols()) {
-			errorLabel.setText(errorLabel.getText()
-					+ "Column must be less than "
-					+ Integer.toString(map.getSizeCols()));
-			column.setText("-1");
-			column.selectAll();
-			valid = false;
 		}
-		if (!IsNumeric.isNumeric(rowText)) { // NOPMD
-			errorLabel.setText(errorLabel.getText()
-					+ "Row must be a whole number. ");
+		final State rowState = checkNumber(rowText, map.getSizeRows() - 1);
+		if (!(rowState == State.Valid)) {
+			errorLabel.setText(errorLabel.getText() + "Row "
+					+ getErrorMessage(rowState, map.getSizeRows()));
 			row.setText("-1");
 			row.selectAll();
-			valid = false;
-		} else if (Integer.parseInt(rowText) < 0) {
-			errorLabel.setText(errorLabel.getText() + "Row must be positive. ");
-			row.setText("-1");
-			row.selectAll();
-			valid = false;
-		} else if (Integer.parseInt(rowText) >= map.getSizeRows()) {
-			errorLabel.setText(errorLabel.getText() + "Row must be less than "
-					+ Integer.toString(map.getSizeRows()));
-			row.setText("-1");
-			row.selectAll();
-			valid = false;
 		}
-		if (valid) {
+		if (rowState == State.Valid && colState == State.Valid) {
 			map.setSelection(Integer.parseInt(rowText),
 					Integer.parseInt(colText));
 			setVisible(false);

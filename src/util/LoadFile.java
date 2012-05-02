@@ -50,15 +50,14 @@ public class LoadFile {
 			throws FileNotFoundException {
 		InputStream inputStream;
 		try {
-			inputStream = new FileInputStream(fileName); // $codepro.audit.disable
+			inputStream = new FileInputStream(fileName); // NOPMD // $codepro.audit.disable
 															// closeWhereCreated
 		} catch (final FileNotFoundException fe) {
 			// failed, so try to load it from resources in class path
 			inputStream = LoadFile.class.getClassLoader().getResourceAsStream(
 					fileName); // NOPMD
 			if (inputStream == null) {
-				throw new FileNotFoundException("could not find file: " // NOPMD
-						+ fileName);
+				throw fe;
 			}
 		}
 		return inputStream;

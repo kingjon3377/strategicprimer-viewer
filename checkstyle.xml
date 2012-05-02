@@ -5,9 +5,8 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: internal
-    Description: 
-My modified copy
+    Checkstyle-Configuration: Custom
+    Description: none
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -33,6 +32,7 @@ My modified copy
       <property name="severity" value="ignore"/>
       <property name="max" value="100"/>
       <property name="tabWidth" value="4"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
@@ -41,6 +41,7 @@ My modified copy
     <module name="MethodParamPad"/>
     <module name="NoWhitespaceAfter">
       <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="NoWhitespaceBefore"/>
     <module name="OperatorWrap"/>
@@ -57,6 +58,7 @@ My modified copy
     <module name="RightCurly"/>
     <module name="AvoidInlineConditionals">
       <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="DoubleCheckedLocking"/>
     <module name="EmptyStatement"/>
@@ -66,15 +68,21 @@ My modified copy
     <module name="InnerAssignment"/>
     <module name="MagicNumber">
       <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
-    <module name="MissingSwitchDefault"/>
+    <module name="MissingSwitchDefault">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="RedundantThrows">
       <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="SimplifyBooleanExpression"/>
     <module name="SimplifyBooleanReturn"/>
     <module name="DesignForExtension">
       <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor"/>
@@ -84,21 +92,25 @@ My modified copy
     <module name="FinalParameters"/>
     <module name="TodoComment">
       <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="UpperEll"/>
   </module>
   <module name="JavadocPackage">
     <property name="severity" value="ignore"/>
+    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
   <module name="NewlineAtEndOfFile"/>
   <module name="Translation"/>
   <module name="FileLength"/>
   <module name="FileTabCharacter">
     <property name="severity" value="ignore"/>
+    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
   <module name="RegexpSingleline">
     <property name="severity" value="ignore"/>
     <property name="format" value="\s+$"/>
     <property name="message" value="Line has trailing spaces."/>
+    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
 </module>

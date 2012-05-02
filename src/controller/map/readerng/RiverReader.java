@@ -7,7 +7,6 @@ import model.map.PlayerCollection;
 import model.map.River;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 
 /**
  * A reader for Rivers.
@@ -39,17 +38,7 @@ public class RiverReader implements INodeReader<River> {
 				"lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
 						: River.getRiver(XMLHelper.getAttribute(element,
 								"direction"));
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("river", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& element.getName().getLocalPart().equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName().getLocalPart(), stream);
 		return fix;
 	}
 }

@@ -72,24 +72,22 @@ public final class SubsetDriver {
 	 * @return a Pair of the map (or null) and whether an exception was thrown.
 	 */
 	private static Pair<SPMap, Boolean> safeLoadMap(final MapReaderAdapter reader, final String filename) {
-		SPMap map = null;
-		Boolean flag = Boolean.FALSE; // NOPMD
 		try {
-			map = reader.readMap(filename, new Warning(Warning.Action.Ignore));
+			return Pair.of(reader.readMap(filename, new Warning(// NOPMD
+					Warning.Action.Ignore)), Boolean.FALSE);
 		} catch (MapVersionException e) {
 			Warning.INSTANCE.warn(e);
-			flag = Boolean.TRUE; // NOPMD
+			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
 		} catch (IOException e) {
 			Warning.INSTANCE.warn(e);
-			flag = Boolean.TRUE; // NOPMD
+			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
 		} catch (XMLStreamException e) {
 			Warning.INSTANCE.warn(e);
-			flag = Boolean.TRUE; // NOPMD
+			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
 		} catch (SPFormatException e) {
 			Warning.INSTANCE.warn(e);
-			flag = Boolean.TRUE;
+			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
 		}
-		return Pair.of(map, flag);
 	}
 	
 }

@@ -54,7 +54,7 @@ public final class MapUpdater {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
 		final int rows = master.rows();
-		final int cols = master.cols();
+		final int cols = master.cols(); // NOPMD
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				if (shouldUpdate(derived.getTile(i, j), master.getTile(i, j))) {

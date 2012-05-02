@@ -202,11 +202,14 @@ public class ZeroToOneConverter {
 		addXML("<cave dc=\"0\" />", 253, 254, 255);
 	}
 	/**
+	 * Singleton instance, for use in the main method.
+	 */
+	private static final ZeroToOneConverter CONVERTER = new ZeroToOneConverter();
+	/**
 	 * Driver.
 	 * @param args the filenames to try it on. Prints results to stdout.
 	 */
 	public static void main(final String[] args) {
-		final ZeroToOneConverter conv = new ZeroToOneConverter();
 		for (String arg : args) {
 			// ESCA-JAVA0177:
 			final Reader reader; // NOPMD
@@ -217,7 +220,7 @@ public class ZeroToOneConverter {
 				continue;
 			}
 			try {
-				System.out.println(conv
+				System.out.println(CONVERTER
 						.convert(new IteratorWrapper<XMLEvent>(XMLInputFactory // NOPMD
 								.newInstance().createXMLEventReader(reader))));
 			} catch (final XMLStreamException except) {

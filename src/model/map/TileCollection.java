@@ -85,13 +85,19 @@ public final class TileCollection implements Iterable<Point>, Subsettable<TileCo
 	public String toString() {
 		return "TileCollection";
 	}
+	
 	/**
-	 * @param obj another TileCollection
+	 * We don't replace the "retval = false" with "return false" because
+	 * {@link Tile#isSubset(Tile)} has the side effect of printing what makes it
+	 * *not* a subset; we want that done for *all* relevant tiles.
+	 * 
+	 * @param obj
+	 *            another TileCollection
 	 * @return whether it's a strict subset of this one
 	 */
 	@Override
 	public boolean isSubset(final TileCollection obj) {
-		boolean retval = true;
+		boolean retval = true; // NOPMD
 		for (Point point : obj) {
 			if (!tiles.containsKey(point) || !tiles.get(point).isSubset(obj.getTile(point))) {
 				retval = false; // NOPMD

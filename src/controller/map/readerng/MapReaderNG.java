@@ -77,12 +77,11 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
-		final PlayerCollection dummyPlayers = new PlayerCollection();
 		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				return ReaderFactory.createReader(type).parse(
 						event.asStartElement(), eventReader,
-						dummyPlayers, warner);
+						new PlayerCollection(), warner); // NOPMD
 			}
 		}
 		throw new XMLStreamException("XML stream didn't contain a start element");

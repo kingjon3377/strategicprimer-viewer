@@ -3,13 +3,11 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A reader for Animals.
@@ -52,17 +50,7 @@ public class AnimalReader implements INodeReader<Animal> {
 				XMLHelper.hasAttribute(element, "traces"),
 				Boolean.parseBoolean(XMLHelper.getAttributeWithDefault(element,
 						"talking", "false")), id);
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("animal", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "animal".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd("animal", stream);
 		return animal;
 	}
 

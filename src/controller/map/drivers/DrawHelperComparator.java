@@ -137,7 +137,7 @@ public class DrawHelperComparator {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics();
+			final Graphics pen = image.createGraphics(); // NOPMD
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), tsize, tsize);
@@ -162,7 +162,7 @@ public class DrawHelperComparator {
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics();
+			final Graphics pen = image.createGraphics(); // NOPMD
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), i * tsize, j
@@ -187,7 +187,7 @@ public class DrawHelperComparator {
 		// ESCA-JAVA0177:
 		final DrawHelperComparator comp; // NOPMD
 		try {
-			comp = new DrawHelperComparator(
+			comp = new DrawHelperComparator(// NOPMD
 					new MapReaderAdapter().readMap(args[0], Warning.INSTANCE), 50);
 		} catch (final IOException e) {
 			logger.log(Level.SEVERE, "I/O error reading map", e);
