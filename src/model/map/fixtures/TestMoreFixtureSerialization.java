@@ -21,6 +21,10 @@ public final class TestMoreFixtureSerialization extends
 	/**
 	 * Extracted constant.
 	 */
+	private static final String NAME_PROPERTY = "name";
+	/**
+	 * Extracted constant.
+	 */
 	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * Extracted constant.
@@ -188,7 +192,7 @@ public final class TestMoreFixtureSerialization extends
 		final Village three = new Village(TownStatus.Abandoned, "", 3);
 		assertMissingPropertyDeserialization(
 				"Serialization of village with no or empty name does The Right Thing",
-				three, three.toXML(), Village.class, "name");
+				three, three.toXML(), Village.class, NAME_PROPERTY);
 		assertUnwantedChild("<village status=\"active\"><village /></village>",
 				Village.class, false);
 		assertMissingProperty("<village />", Village.class, STATUS_PROPERTY,
@@ -223,10 +227,10 @@ public final class TestMoreFixtureSerialization extends
 				"Deserialize properly with deprecated use of 'type' for unit kind",
 				one, oneXMLMangled,
 						Unit.class, "type");
-		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class, "name", true);
+		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class, NAME_PROPERTY, true);
 		assertSerialization(
 				"Deserialize unit with no kind properly, reflection", new Unit(
-						new Player(2, ""), "", "name", 2), Unit.class,
+						new Player(2, ""), "", NAME_PROPERTY, 2), Unit.class,
 				new Warning(Warning.Action.Ignore));
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no owner properly", new Unit(new Player(
@@ -236,11 +240,11 @@ public final class TestMoreFixtureSerialization extends
 		final Unit four = new Unit(new Player(3, ""), "unitKind", "", 4);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no name properly", four, four.toXML(),
-				Unit.class, "name");
+				Unit.class, NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with empty name properly", four,
 				"<unit owner=\"3\" kind=\"unitKind\" name=\"\" id=\"4\" />",
-				Unit.class, "name");
+				Unit.class, NAME_PROPERTY);
 		assertMissingProperty(
 				"<unit owner=\"1\" kind=\"kind\" name=\"name\" />", Unit.class,
 				"id", true);
