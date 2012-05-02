@@ -1,6 +1,9 @@
 package controller.map.drivers;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,48 +28,29 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class GenerateTileContents {
 	/**
-	 * Singleton object.
+	 * A mapping from filenames containing maps to instances handling those maps.
 	 */
-	private static GenerateTileContents singleton = null;
+	private static final Map<String, GenerateTileContents> INSTANCES = Collections
+			.synchronizedMap(new HashMap<String, GenerateTileContents>());
 	/**
-	 * Object to synchronize on.
+	 * The map reader to use.
 	 */
-	private static final Object LOCK = "";
+	private static final MapReaderAdapter READER = new MapReaderAdapter();
 	/**
-	 * @param map the map to refer to if we have to create a new object
-	 * @return the singleton
+	 * @param filename the name of a map
+	 * @return an instance to generate the contents of a tile on it
+	 * @throws SPFormatException on SP format error in the map file
+	 * @throws XMLStreamException on XML error in the map file
+	 * @throws IOException on I/O error reading the file
+	 * @throws MapVersionException if the reader doesn't support that map version 
 	 */
-	public static GenerateTileContents getSingleton(final SPMap map) {
-		synchronized (LOCK) {
-			if (singleton == null) {
-				singleton = new GenerateTileContents(map);
-			}
+	public static GenerateTileContents getInstance(final String filename)
+			throws MapVersionException, IOException, XMLStreamException,
+			SPFormatException {
+		if (!INSTANCES.containsKey(filename)) {
+			INSTANCES.put(filename, new GenerateTileContents(READER.readMap(filename, Warning.INSTANCE)));
 		}
-		return singleton;
-	}
-	/**
-	 * A kind of exception to throw if we need an argument.
-	 */
-	public static final class NotYetInitializedException extends Exception {
-		/**
-		 * Constructor.
-		 * @param message the message to give
-		 */
-		public NotYetInitializedException(final String message) {
-			super(message);
-		}
-	}
-	/**
-	 * @return the singleton, if it's already been initialized
-	 * @throws NotYetInitializedException if it hasn't already been initialized
-	 */
-	public static GenerateTileContents getSingleton() throws NotYetInitializedException {
-		synchronized (LOCK) {
-			if (singleton == null) {
-				throw new NotYetInitializedException("Singleton hasn't been initialized yet; pass in a map");
-			}
-		}
-		return singleton;
+		return INSTANCES.get(filename);
 	}
 	/**
 	 * The singleton map we'll be consulting.
@@ -91,7 +75,15 @@ public final class GenerateTileContents {
 	 * @throws MissingTableException if a missing table is referenced
 	 */
 	public void generateTileContents(final int row, final int col) throws MissingTableException {
-		final Tile tile = map.getTile(row, col);
+		generateTileContents(map.getTile(row, col));
+	}
+	/**
+	 * Generate the contents of a tile.
+	 * @param tile the tile
+	 * @throws MissingTableException if a missing table is referenced
+	 */
+	private void generateTileContents(final Tile tile)
+			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
 			println(runner.recursiveConsultTable("fisher", tile));
@@ -106,14 +98,8 @@ public final class GenerateTileContents {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
 			try {
-				// ESCA-JAVA0177:
-				GenerateTileContents generator; // NOPMD
-				try {
-					generator = getSingleton();
-				} catch (NotYetInitializedException e) {
-					generator = getSingleton(new MapReaderAdapter().readMap(args[0], Warning.INSTANCE));
-				}
-				generator.generateTileContents(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+				getInstance(args[0]).generateTileContents(
+						Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 			} catch (NumberFormatException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
 				System.exit(1);

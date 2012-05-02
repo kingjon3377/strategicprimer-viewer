@@ -150,18 +150,24 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 *         (like a forest or mountain)
 	 */
 	private boolean needFixtureColor(final Tile tile) {
-		boolean hasTerrainFixture = false;
-		for (TileFixture fix : tile.getContents()) {
-			if (fix instanceof TerrainFixture) {
-				hasTerrainFixture = true;
-			}
-		}
-		if (hasTerrainFixture) {
+		if (hasTerrainFixture(tile)) {
 			final TileFixture fix = getTopFixture(tile);
 			return !(fix instanceof TerrainFixture); // NOPMD
 		} else {
 			return false;
 		}
+	}
+	/**
+	 * @param tile a tile
+	 * @return whether it has a TerrainFixture.
+	 */
+	private static boolean hasTerrainFixture(final Tile tile) {
+		for (TileFixture fix : tile.getContents()) {
+			if (fix instanceof TerrainFixture) {
+				return true; // NOPMD
+			}
+		}
+		return false;
 	}
 	/**
 	 * @param tile a tile

@@ -61,7 +61,34 @@ public final class IOHandler implements ActionListener {
 	 * The helper to create menu items for us.
 	 */
 	private final MenuItemCreator creator = new MenuItemCreator();
-
+	/**
+	 * Handle the "load" menu item.
+	 */
+	private void handleLoadMenu() {
+		if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
+			final String filename = chooser.getSelectedFile().getPath();
+			// ESCA-JAVA0166:
+			try {
+				panel.setMainMap(readMap(filename, Warning.INSTANCE));
+			} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
+				handleError(e, filename);
+			}
+		}
+	}
+	/**
+	 * Handle the "load secondary map" menu item.
+	 */
+	private void handleLoadAltMenu() {
+		if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
+			final String filename = chooser.getSelectedFile().getPath();
+			// ESCA-JAVA0166:
+			try {
+				panel.setSecondaryMap(readMap(filename, Warning.INSTANCE));
+			} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
+				handleError(e, filename);
+			}
+		}
+	}
 	/**
 	 * Handle menu selections.
 	 * 
@@ -70,28 +97,16 @@ public final class IOHandler implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		String filename = "";
-		// ESCA-JAVA0166:
-		try {
-			if ("Load".equals(event.getActionCommand())) {
-				if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
-					filename = chooser.getSelectedFile().getPath();
-					panel.setMainMap(readMap(filename, Warning.INSTANCE));
-				}
-			} else if ("Save As".equals(event.getActionCommand())) {
-				saveMap(panel.getMainMap());
-			} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-				if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
-					filename = chooser.getSelectedFile().getPath();
-					panel.setSecondaryMap(readMap(filename, Warning.INSTANCE));
-				}
-			} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-				saveMap(panel.getSecondaryMap());
-			} else if ("Switch maps".equals(event.getActionCommand())) {
-				panel.swapMaps();
-			}
-		} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
-			handleError(e, filename);
+		if ("Load".equals(event.getActionCommand())) {
+			handleLoadMenu();
+		} else if ("Save As".equals(event.getActionCommand())) {
+			saveMap(panel.getMainMap());
+		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
+			handleLoadAltMenu();
+		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
+			saveMap(panel.getSecondaryMap());
+		} else if ("Switch maps".equals(event.getActionCommand())) {
+			panel.swapMaps();
 		}
 	}
 

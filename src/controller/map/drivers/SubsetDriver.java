@@ -73,18 +73,18 @@ public final class SubsetDriver {
 	 */
 	private static Pair<SPMap, Boolean> safeLoadMap(final MapReaderAdapter reader, final String filename) {
 		SPMap map = null;
-		Boolean flag = Boolean.FALSE;
+		Boolean flag = Boolean.FALSE; // NOPMD
 		try {
 			map = reader.readMap(filename, new Warning(Warning.Action.Ignore));
 		} catch (MapVersionException e) {
 			Warning.INSTANCE.warn(e);
-			flag = Boolean.TRUE;
+			flag = Boolean.TRUE; // NOPMD
 		} catch (IOException e) {
 			Warning.INSTANCE.warn(e);
-			flag = Boolean.TRUE;
+			flag = Boolean.TRUE; // NOPMD
 		} catch (XMLStreamException e) {
 			Warning.INSTANCE.warn(e);
-			flag = Boolean.TRUE;
+			flag = Boolean.TRUE; // NOPMD
 		} catch (SPFormatException e) {
 			Warning.INSTANCE.warn(e);
 			flag = Boolean.TRUE;
