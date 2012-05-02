@@ -18,7 +18,6 @@ import controller.map.SPFormatException;
 import controller.map.TestReaderFactory;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
-import controller.map.readerng.MapReaderNG;
 
 // ESCA-JAVA0011:
 /**
@@ -620,49 +619,5 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		assertEquals(message, newReader.readXML(new StringReader(one), type,
 				false, new Warning(warningLevel)), newReader.readXML(
 				new StringReader(two), type, false, new Warning(warningLevel)));
-	}
-	/**
-	 * A helper method to simplify test boiler plate code.
-	 * 
-	 * @param <T>
-	 *            The type of the object
-	 * @param reader
-	 *            the reader to parse the serialized form.
-	 * @param orig
-	 *            the object to serialize
-	 * @param type
-	 *            the type of the object
-	 * @param reflection
-	 *            whether to use reflection
-	 * @return the result of deserializing the serialized form
-	 * @throws SPFormatException
-	 *             on SP XML problem
-	 * @throws XMLStreamException
-	 *             on XML reading problem
-	 */
-	protected <T extends XMLWritable> T helpSerialization(
-			final ISPReader reader, final T orig, final Class<T> type,
-			final boolean reflection) throws XMLStreamException,
-			SPFormatException {
-		return reader.readXML(new StringReader(orig.toXML()), type, reflection, warner);
-	}
-	/**
-	 * Warning instance that makes warnings fatal.
-	 */
-	private final Warning warner = new Warning(Warning.Action.Die);
-	/**
-	 * @return the warning instance
-	 */
-	protected Warning warner() {
-		return warner;
-	}
-	/**
-	 * Create a reader. This is here so we only have to change it in
-	 * <em>one</em> place to switch back and forth.
-	 * 
-	 * @return a reader
-	 */
-	protected ISPReader createReader() {
-		return new MapReaderNG();
 	}
 }
