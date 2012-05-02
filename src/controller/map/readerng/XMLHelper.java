@@ -137,4 +137,26 @@ public final class XMLHelper {
 			}
 		}
 	}
+	/**
+	 * Throw an exception (or warn) if the specified parameter is missing or empty.
+	 * @param element the current element
+	 * @param parameter the parameter to check
+	 * @param mandatory whether we should throw or just warn
+	 * @param warner the Warning instance to use if not mandatory 
+	 * @throws SPFormatException if the parameter is mandatory and missing
+	 */
+	public static void requireNonEmptyParameter(final StartElement element,
+			final String parameter, final boolean mandatory,
+			final Warning warner) throws SPFormatException {
+		if ("".equals(getAttributeWithDefault(element, parameter, ""))) {
+			final SPFormatException except = new MissingParameterException(
+					element.getName().getLocalPart(), parameter, element
+							.getLocation().getLineNumber());
+			if (mandatory) {
+				throw except;
+			} else {
+				warner.warn(except);
+			}
+		}
+	}
 }

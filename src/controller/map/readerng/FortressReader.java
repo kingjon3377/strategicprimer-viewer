@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static java.lang.Integer.parseInt;
 
 import javax.xml.stream.events.StartElement;
@@ -41,14 +42,8 @@ public class FortressReader implements INodeReader<Fortress> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner)
 			throws SPFormatException {
-		if ("".equals(getAttributeWithDefault(element, "owner", ""))) {
-			warner.warn(new MissingParameterException("fortress", "owner", element
-					.getLocation().getLineNumber()));
-		}
-		if ("".equals(getAttributeWithDefault(element, "name", ""))) {
-			warner.warn(new MissingParameterException("fortress", "name",
-					element.getLocation().getLineNumber()));
-		}
+		requireNonEmptyParameter(element, "owner", false, warner);
+		requireNonEmptyParameter(element, "name", false, warner);
 		// ESCA-JAVA0177:
 		long id; // NOPMD
 		if (XMLHelper.hasAttribute(element, "id")) {
