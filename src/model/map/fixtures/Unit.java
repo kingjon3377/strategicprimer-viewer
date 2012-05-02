@@ -23,18 +23,9 @@ public class Unit implements TileFixture, HasImage {
 	 * The name of this unit.
 	 */
 	private final String name;
-
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
 	 * 
-	 * @param unitOwner
-	 *            the unit's owner
-	 * @param unitType
-	 *            the kind of unit
-	 * @param unitName
-	 *            the unit's name
-	 */
-	/**
 	 * Constructor.
 	 * 
 	 * @param unitOwner
