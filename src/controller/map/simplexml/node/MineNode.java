@@ -9,6 +9,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node that will produce a Mine.
@@ -47,7 +48,8 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	@Override
 	public Mine produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Mine(getProperty(KIND_PROPERTY),
-				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)));
+				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
+				Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the data for validity. A Mine is valid if it has no children and "product" and "status" properties.
@@ -72,6 +74,12 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 				throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
 			}
 		}
+		if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException(TAG, "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+		}
 	}
 	/**
 	 * @param property the name of a property
@@ -79,7 +87,8 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY, STATUS_PROPERTY);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY,
+				STATUS_PROPERTY, "id");
 	}
 	/**
 	 * @return a String representation of the node

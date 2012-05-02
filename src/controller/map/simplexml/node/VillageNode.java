@@ -8,6 +8,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce a Village.
@@ -38,8 +39,10 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 */
 	@Override
 	public Village produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Village(TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
-				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "");
+		return new Village(
+				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
+				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "",
+				Long.parseLong(getProperty("id")));
 	}
 	
 	/**
@@ -59,6 +62,12 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 				warner.warn(new MissingParameterException("village",
 						NAME_PROPERTY, getLine()));
 			}
+			if (hasProperty("id")) {
+				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			} else {
+				warner.warn(new MissingParameterException("village", "id", getLine()));
+				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			}
 		} else {
 			throw new MissingParameterException("village", STATUS_PROPERTY, getLine());
 		}
@@ -69,7 +78,7 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, STATUS_PROPERTY, NAME_PROPERTY);
+		return EqualsAny.equalsAny(property, STATUS_PROPERTY, NAME_PROPERTY, "id");
 	}
 	/**
 	 * @return a String representation of the node

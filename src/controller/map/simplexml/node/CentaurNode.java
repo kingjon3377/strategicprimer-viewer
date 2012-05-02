@@ -2,10 +2,12 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Centaur;
+import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a centaur or group of centaurs.
@@ -32,7 +34,7 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	 */
 	@Override
 	public Centaur produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Centaur(getProperty(KIND_PROPERTY));
+		return new Centaur(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
 	}
 	
 	/**
@@ -49,7 +51,14 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("centaur", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty(KIND_PROPERTY)) {
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (hasProperty("id")) {
+				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			} else {
+				warner.warn(new MissingParameterException("centaur", "id", getLine()));
+				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			}
+		} else {
 			throw new MissingParameterException("centaur", KIND_PROPERTY, getLine());
 		}
 	}
@@ -59,7 +68,7 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return KIND_PROPERTY.equals(property);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "id");
 	}
 	/**
 	 * @return a String representation of the node.

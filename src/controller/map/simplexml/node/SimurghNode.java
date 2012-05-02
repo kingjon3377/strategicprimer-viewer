@@ -3,8 +3,10 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Simurgh;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a simurgh.
@@ -27,7 +29,7 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	 */
 	@Override
 	public Simurgh produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Simurgh();
+		return new Simurgh(Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the node for invalid data. A Simurgh is valid if it has no children.
@@ -38,6 +40,11 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("simurgh", iterator().next().toString(), getLine());
+		} else if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("simurgh", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 	/**
@@ -46,7 +53,7 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "id".equals(property);
 	}
 	/**
 	 * @return a String representation of the node.

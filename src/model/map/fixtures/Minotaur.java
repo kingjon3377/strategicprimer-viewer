@@ -10,11 +10,18 @@ import model.map.TileFixture;
  */
 public class Minotaur implements TileFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Minotaur(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return an XML representation of the minotaur
 	 */
 	@Override
 	public String toXML() {
-		return "<minotaur />";
+		return new StringBuilder("<minotaur id=\"").append(id).append("\" />")
+				.toString();
 	}
 	/**
 	 * @return a String representation of the minotaur
@@ -43,14 +50,14 @@ public class Minotaur implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Minotaur;
+		return obj instanceof Minotaur && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return "minotaur".hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -59,5 +66,16 @@ public class Minotaur implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

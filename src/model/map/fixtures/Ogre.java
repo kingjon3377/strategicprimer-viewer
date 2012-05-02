@@ -10,11 +10,18 @@ import model.map.TileFixture;
  */
 public class Ogre implements TileFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Ogre(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return an XML representation of the ogre
 	 */
 	@Override
 	public String toXML() {
-		return "<ogre />";
+		return new StringBuilder("<ogre id=\"").append(id).append("\" />")
+				.toString();
 	}
 	/**
 	 * @return a String representation of the ogre
@@ -43,14 +50,14 @@ public class Ogre implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Ogre;
+		return obj instanceof Ogre && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return "ogre".hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -59,5 +66,16 @@ public class Ogre implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

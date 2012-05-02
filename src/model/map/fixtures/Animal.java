@@ -10,6 +10,17 @@ import model.map.TileFixture;
  */
 public class Animal implements TileFixture, HasImage {
 	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
+	}
+	/**
 	 * Whether this is really the animal, or only traces.
 	 */
 	private final boolean traces;
@@ -26,11 +37,13 @@ public class Animal implements TileFixture, HasImage {
 	 * @param animal what kind of animal
 	 * @param tracks whether this is really the animal, or only tracks
 	 * @param talks whether this is a talking animal.
+	 * @param idNum the ID number.
 	 */
-	public Animal(final String animal, final boolean tracks, final boolean talks) {
+	public Animal(final String animal, final boolean tracks, final boolean talks, final long idNum) {
 		kind = animal;
 		traces = tracks;
 		talking = talks;
+		id = idNum;
 	}
 	/**
 	 * @return true if this is only traces or tracks, false if this is really the animal
@@ -63,6 +76,8 @@ public class Animal implements TileFixture, HasImage {
 		if (isTalking()) {
 			sbuild.append("\" talking=\"true");
 		}
+		sbuild.append("\" id=\"");
+		sbuild.append(id);
 		sbuild.append("\" />");
 		return sbuild.toString();
 	}
@@ -96,14 +111,16 @@ public class Animal implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Animal && ((Animal) obj).kind.equals(kind)
-				&& ((Animal) obj).traces == traces && ((Animal) obj).talking == talking;
+				&& ((Animal) obj).traces == traces
+				&& ((Animal) obj).talking == talking
+				&& ((TileFixture) obj).getID() == id;
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() << (traces ? 1 : 0) << (talking ? 2 : 0);
+		return (int) id;
 	}
 	/**
 	 * @param fix

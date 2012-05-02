@@ -41,11 +41,13 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 *            the player that owns the fortress
 	 * @param fortName
 	 *            the name of the fortress
+	 * @param idNum the ID number.
 	 */
-	public Fortress(final Player fortOwner, final String fortName) {
+	public Fortress(final Player fortOwner, final String fortName, final long idNum) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<Unit>();
+		id = idNum;
 	}
 
 	/**
@@ -104,7 +106,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 				|| (obj instanceof Fortress
 						&& (name.equals(((Fortress) obj).name))
 						&& ((Fortress) obj).owner.equals(owner) && ((Fortress) obj).units
-							.equals(units));
+							.equals(units) && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -113,7 +115,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 */
 	@Override
 	public int hashCode() {
-		return (name.hashCode()) + owner.hashCode() << 2 + units.hashCode() << 4;
+		return (int) id;
 	}
 
 	/**
@@ -154,6 +156,8 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 			sbuild.append("\" name=\"");
 			sbuild.append(name);
 		}
+		sbuild.append("\" id=\"");
+		sbuild.append(id);
 		sbuild.append("\">");
 		if (!units.isEmpty()) {
 			sbuild.append('\n');
@@ -194,5 +198,16 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		} else {
 			return false;
 		}
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

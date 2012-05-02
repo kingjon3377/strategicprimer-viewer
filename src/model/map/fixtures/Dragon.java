@@ -16,9 +16,11 @@ public class Dragon implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param dKind the kind of dragon
+	 * @param idNum the ID number.
 	 */
-	public Dragon(final String dKind) {
+	public Dragon(final String dKind, final long idNum) {
 		kind = dKind;
+		id = idNum;
 	}
 	/**
 	 * @return the kind of dragon
@@ -31,7 +33,8 @@ public class Dragon implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<dragon kind=\"").append(kind).append("\" />").toString();
+		return new StringBuilder("<dragon kind=\"").append(kind)
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * @return a String representation of the dragon
@@ -60,14 +63,15 @@ public class Dragon implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Dragon && ((Dragon) obj).kind.equals(kind);
+		return obj instanceof Dragon && ((Dragon) obj).kind.equals(kind)
+				&& ((TileFixture) obj).getID() == id;
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -76,5 +80,16 @@ public class Dragon implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

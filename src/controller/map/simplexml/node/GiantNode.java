@@ -2,10 +2,12 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Giant;
+import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a giant.
@@ -32,7 +34,7 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	 */
 	@Override
 	public Giant produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Giant(getProperty(KIND_PROPERTY));
+		return new Giant(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the node for invalid data. A Giant is valid if it has no children and has a "kind" property.
@@ -44,7 +46,14 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("giant", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty(KIND_PROPERTY)) {
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (hasProperty("id")) {
+				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			} else {
+				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+				warner.warn(new MissingParameterException("giant", "id", getLine()));
+			}
+		} else {
 			throw new MissingParameterException("giant", KIND_PROPERTY, getLine());
 		}
 	}
@@ -54,7 +63,7 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return KIND_PROPERTY.equals(property);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "id");
 	}
 	/**
 	 * @return a String representation of the node.

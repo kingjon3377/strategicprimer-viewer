@@ -3,8 +3,10 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Phoenix;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a phoenix.
@@ -27,7 +29,7 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	 */
 	@Override
 	public Phoenix produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Phoenix();
+		return new Phoenix(Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the node for invalid data. A Phoenix is valid if it has no children.
@@ -39,6 +41,11 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("phoenix", iterator().next()
 					.toString(), getLine());
+		} else if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("phoenix", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 	/**
@@ -47,7 +54,7 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "id".equals(property);
 	}
 	/**
 	 * @return a String representation of the node.

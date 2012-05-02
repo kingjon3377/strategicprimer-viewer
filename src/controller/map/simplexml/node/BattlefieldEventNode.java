@@ -7,6 +7,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node representing a BattlefieldEvent.
@@ -37,7 +38,8 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	@Override
 	public BattlefieldEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)));
+		return new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)),
+				Long.parseLong(getProperty("id")));
 	}
 
 	/**
@@ -56,7 +58,14 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("battlefield", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty(DC_PROPERTY)) {
+		} else if (hasProperty(DC_PROPERTY)) {
+			if (hasProperty("id")) {
+				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			} else {
+				warner.warn(new MissingParameterException("battlefield", "id", getLine()));
+				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			}
+		} else {
 			throw new MissingParameterException("battlefield", "dc", getLine());
 		}
 	}
@@ -66,7 +75,7 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, DC_PROPERTY);
+		return EqualsAny.equalsAny(property, DC_PROPERTY, "id");
 	}
 
 	/**

@@ -15,7 +15,7 @@ public class Shrub implements TileFixture, HasImage {
 	@Override
 	public String toXML() {
 		return new StringBuilder("<shrub kind=\"").append(description)
-				.append("\" />").toString();
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * A description of what kind of shrub this is.
@@ -24,9 +24,11 @@ public class Shrub implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param desc a description of the shrub.
+	 * @param idNum the ID number.
 	 */
-	public Shrub(final String desc) {
+	public Shrub(final String desc, final long idNum) {
 		description = desc;
+		id = idNum;
 	}
 	/**
 	 * @return a description of the shrub
@@ -61,14 +63,16 @@ public class Shrub implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Shrub && description.equals(((Shrub) obj).description);
+		return obj instanceof Shrub
+				&& description.equals(((Shrub) obj).description)
+				&& id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return description.hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -79,5 +83,16 @@ public class Shrub implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

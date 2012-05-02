@@ -14,10 +14,12 @@ public class Mine implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param mineral what mineral this produces
 	 * @param stat the status of the mine
+	 * @param idNum the ID number.
 	 */
-	public Mine(final String mineral, final TownStatus stat) {
+	public Mine(final String mineral, final TownStatus stat, final long idNum) {
 		kind = mineral;
 		status = stat;
+		id = idNum;
 	}
 	/**
 	 * What the mine produces.
@@ -46,6 +48,7 @@ public class Mine implements TileFixture, HasImage {
 	public String toXML() {
 		return new StringBuilder("<mine kind=\"").append(kind)
 				.append("\" status=\"").append(status.toString())
+				.append("\" id=\"").append(id)
 				.append("\" />").toString();
 	}
 	/**
@@ -76,14 +79,14 @@ public class Mine implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Mine && kind.equals(((Mine) obj).kind)
-				&& status.equals(((Mine) obj).status);
+				&& status.equals(((Mine) obj).status) && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() << status.ordinal();
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -94,5 +97,16 @@ public class Mine implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

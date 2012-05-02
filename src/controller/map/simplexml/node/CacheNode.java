@@ -7,6 +7,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A Node to represent a cache on a tile.
  * @author Jonathan Lovelace
@@ -37,7 +38,9 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	@Override
 	public CacheFixture produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new CacheFixture(getProperty(KIND_PROPERTY), getProperty(CONTENTS_PROPERTY));
+		return new CacheFixture(getProperty(KIND_PROPERTY),
+				getProperty(CONTENTS_PROPERTY),
+				Long.parseLong(getProperty("id")));
 	}
 	
 	/**
@@ -55,7 +58,14 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 			throw new UnwantedChildException("cache", iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
-			if (!hasProperty(CONTENTS_PROPERTY)) {
+			if (hasProperty(CONTENTS_PROPERTY)) {
+				if (hasProperty("id")) {
+					IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+				} else {
+					warner.warn(new MissingParameterException("cache", "id", getLine()));
+					addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+				}
+			} else {
 				throw new MissingParameterException("cache", CONTENTS_PROPERTY, getLine());
 			}
 		} else {
@@ -68,7 +78,7 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, CONTENTS_PROPERTY);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, CONTENTS_PROPERTY, "id");
 	}
 	/**
 	 * @return a String representation of the node

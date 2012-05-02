@@ -8,6 +8,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a Unit.
@@ -64,7 +65,8 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 				.equals(getProperty(OWNER_ATTR))) ? Integer
 				.parseInt(getProperty(OWNER_ATTR)) : -1),
 				hasProperty(TYPE_ATTR) ? getProperty(TYPE_ATTR) : "",
-				hasProperty(NAME_ATTR) ? getProperty(NAME_ATTR) : "");
+				hasProperty(NAME_ATTR) ? getProperty(NAME_ATTR) : "",
+				Long.parseLong(getProperty("id")));
 	}
 
 	/**
@@ -104,6 +106,12 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 			warner.warn(new MissingParameterException(TAG, NAME_ATTR,
 					getLine()));
 		}
+		if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("unit", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+		}
 	}
 
 	/**
@@ -113,7 +121,8 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, OWNER_ATTR, TYPE_ATTR, NAME_ATTR, OLD_TYPE_ATTR);
+		return EqualsAny.equalsAny(property, OWNER_ATTR, TYPE_ATTR, NAME_ATTR,
+				OLD_TYPE_ATTR, "id");
 	}
 
 	/**

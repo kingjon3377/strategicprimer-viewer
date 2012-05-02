@@ -1,7 +1,5 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
-import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.AbstractTownEvent;
 import model.map.events.CityEvent;
@@ -9,9 +7,12 @@ import model.map.events.FortificationEvent;
 import model.map.events.TownEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node that produces a TownEvent.
@@ -49,7 +50,10 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	 * The property giving the town's name.
 	 */
 	private static final String NAME_PROPERTY = "name";
-
+	/**
+	 * The property giving the ID number of the event.
+	 */
+	private static final String ID_PROPERTY = "id";
 	/**
 	 * @param players
 	 *            the players in the map
@@ -70,21 +74,21 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 					Integer.parseInt(getProperty(DC_PROPERTY)),
 					hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
-							: "");
+							: "", Long.parseLong(getProperty(ID_PROPERTY)));
 		} else if ("fortification".equals(getProperty(KIND_PROPERTY))) {
 			event = new FortificationEvent(
 					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
 					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 					Integer.parseInt(getProperty(DC_PROPERTY)),
 					hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
-							: "");
+							: "", Long.parseLong(getProperty(ID_PROPERTY)));
 		} else if ("town".equals(getProperty(KIND_PROPERTY))) {
 			event = new TownEvent(
 					TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
 					TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 					Integer.parseInt(getProperty(DC_PROPERTY)),
 					hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
-							: "");
+							: "", Long.parseLong(getProperty(ID_PROPERTY)));
 		} else {
 			throw new UnsupportedTagException(getProperty(KIND_PROPERTY), getLine());
 		}
@@ -96,7 +100,7 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, STATUS_PROP, SIZE_PROPERTY, DC_PROPERTY, NAME_PROPERTY);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, STATUS_PROP, SIZE_PROPERTY, DC_PROPERTY, NAME_PROPERTY, ID_PROPERTY);
 	}
 	
 	/**
@@ -116,6 +120,16 @@ public class TownEventNode extends AbstractFixtureNode<AbstractTownEvent> {
 					if (!hasProperty(NAME_PROPERTY)) {
 						warner.warn(new MissingParameterException(
 								getProperty(KIND_PROPERTY), "name", getLine()));
+					}
+					if (hasProperty(ID_PROPERTY)) {
+						IDFactory.FACTORY.register(
+								Long.parseLong(getProperty(ID_PROPERTY)));
+					} else {
+						warner.warn(new MissingParameterException(
+								getProperty(KIND_PROPERTY), "id", getLine()));
+						addProperty(ID_PROPERTY,
+								Long.toString(IDFactory.FACTORY.getID()),
+								warner);
 					}
 				} else {
 					throw new MissingParameterException(

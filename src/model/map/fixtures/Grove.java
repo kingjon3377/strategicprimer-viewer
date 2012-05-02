@@ -26,11 +26,14 @@ public class Grove implements TileFixture, HasImage {
 	 * @param fruit whether the trees are fruit trees
 	 * @param wildGrove whether the trees are wild
 	 * @param tree what kind of trees are in the grove
+	 * @param idNum the ID number.
 	 */
-	public Grove(final boolean fruit, final boolean wildGrove, final String tree) {
+	public Grove(final boolean fruit, final boolean wildGrove,
+			final String tree, final long idNum) {
 		orchard = fruit;
 		wild = wildGrove;
 		kind = tree;
+		id = idNum;
 	}
 	/**
 	 * @return true if this is an orchard, false otherwise
@@ -51,6 +54,7 @@ public class Grove implements TileFixture, HasImage {
 		return kind;
 	}
 	/**
+	 * TODO: inline.
 	 * @return an XML representation of the Fixture.
 	 */
 	@Override
@@ -65,6 +69,8 @@ public class Grove implements TileFixture, HasImage {
 		builder.append(isWild());
 		builder.append("\" kind=\"");
 		builder.append(getKind());
+		builder.append("\" id=\"");
+		builder.append(id);
 		builder.append("\" />");
 		return builder.toString();
 	}
@@ -97,14 +103,16 @@ public class Grove implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Grove && kind.equals(((Grove) obj).kind)
-				&& orchard == ((Grove) obj).orchard && wild == ((Grove) obj).wild;
+				&& orchard == ((Grove) obj).orchard
+				&& wild == ((Grove) obj).wild
+				&& id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() << ((orchard ? 1 : 0) + (wild ? 2 : 0));
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -115,5 +123,16 @@ public class Grove implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

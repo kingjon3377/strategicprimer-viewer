@@ -11,6 +11,12 @@ import model.map.TileFixture;
  */
 public class Oasis implements TerrainFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Oasis(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return a String representation of the oasis.
 	 */
 	@Override
@@ -22,7 +28,8 @@ public class Oasis implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return "<oasis />";
+		return new StringBuilder("<oasis id=\"").append(id).append("\" />")
+				.toString();
 	}
 	/**
 	 * @return the name of an image to represent the oasis.
@@ -44,14 +51,14 @@ public class Oasis implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Oasis;
+		return obj instanceof Oasis && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return 2;
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -62,5 +69,16 @@ public class Oasis implements TerrainFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

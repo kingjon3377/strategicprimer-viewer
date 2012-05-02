@@ -16,9 +16,11 @@ public class Centaur implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param centKind the kind of centaur
+	 * @param idNum the ID number.
 	 */
-	public Centaur(final String centKind) {
+	public Centaur(final String centKind, final long idNum) {
 		kind = centKind;
+		id = idNum;
 	}
 	/**
 	 * @return the kind of centaur
@@ -31,7 +33,8 @@ public class Centaur implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<centaur kind=\"").append(kind).append("\" />").toString();
+		return new StringBuilder("<centaur kind=\"").append(kind)
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * @return a String representation of the centaur
@@ -60,14 +63,15 @@ public class Centaur implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Centaur && ((Centaur) obj).kind.equals(kind);
+		return obj instanceof Centaur && ((Centaur) obj).kind.equals(kind)
+				&& ((TileFixture) obj).getID() == id;
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -77,5 +81,15 @@ public class Centaur implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
+	}
 }
-

@@ -22,10 +22,12 @@ public class Village implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param vstatus the status of the village.
 	 * @param vName the name of the village
+	 * @param idNum the ID number.
 	 */
-	public Village(final TownStatus vstatus, final String vName) {
+	public Village(final TownStatus vstatus, final String vName, final long idNum) {
 		status = vstatus;
 		name = vName;
+		id = idNum;
 	}
 	/**
 	 * @return the status of the village
@@ -44,6 +46,8 @@ public class Village implements TileFixture, HasImage {
 			sbuild.append("\" name=\"");
 			sbuild.append(name);
 		}
+		sbuild.append("\" id=\"");
+		sbuild.append(id);
 		sbuild.append("\" />");
 		return sbuild.toString();
 	}
@@ -75,14 +79,14 @@ public class Village implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Village && status.equals(((Village) obj).status)
-				&& name.equals(((Village) obj).name);
+				&& name.equals(((Village) obj).name) && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return name.hashCode() << status.ordinal();
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -93,5 +97,16 @@ public class Village implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

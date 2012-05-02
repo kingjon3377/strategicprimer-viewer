@@ -3,8 +3,10 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Djinn;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a djinn or group of djinni.
@@ -27,7 +29,7 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	 */
 	@Override
 	public Djinn produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Djinn();
+		return new Djinn(Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the node for invalid data. A Djinn is valid i it has no children.
@@ -39,6 +41,11 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("djinn", iterator().next()
 					.toString(), getLine());
+		} else if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("djinn", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 	/**
@@ -47,7 +54,7 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "id".equals(property);
 	}
 	/**
 	 * @return a String representation of the node.

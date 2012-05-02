@@ -7,8 +7,10 @@ import util.Warning;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Shrub;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A reader for Shrubs.
  * @author Jonathan Lovelace
@@ -35,7 +37,19 @@ public class ShrubReader implements INodeReader<Shrub> {
 	public Shrub parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Shrub fix = new Shrub(XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "shrub", warner));
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
+		final Shrub fix = new Shrub(XMLHelper.getAttributeWithDeprecatedForm(
+				element, "kind", "shrub", warner), id);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("shrub", event

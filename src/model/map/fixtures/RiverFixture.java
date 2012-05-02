@@ -132,4 +132,15 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 		temp.removeAll(rivers);
 		return temp.isEmpty();
 	}
+	
+	/**
+	 * @return an ID for the fixture. This is constant because it's really a
+	 *         container for a ollection of rivers. Perhaps (TODO: investigate
+	 *         how FreeCol does it) rivers should have IDs (and names ..),
+	 *         though.
+	 */
+	@Override
+	public long getID() {
+		return -1;
+	}
 }

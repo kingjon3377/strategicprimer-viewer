@@ -94,4 +94,12 @@ public class Forest implements TerrainFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+	/**
+	 * TODO: support different IDs for different instances.
+	 * @return an ID for the object
+	 */
+	@Override
+	public long getID() {
+		return -1;
+	}
 }

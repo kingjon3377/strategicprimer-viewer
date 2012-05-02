@@ -26,11 +26,14 @@ public class Meadow implements TileFixture, HasImage {
 	 * @param grain the kind of grass or grain growing in the field or meadow
 	 * @param fld whether this is a field (as opposed to a meadow)
 	 * @param cult whether it's under cultivation
+	 * @param idNum the ID number.
 	 */
-	public Meadow(final String grain, final boolean fld, final boolean cult) {
+	public Meadow(final String grain, final boolean fld, final boolean cult,
+			final long idNum) {
 		kind = grain;
 		field = fld;
 		cultivated = cult;
+		id = idNum;
 	}
 	/**
 	 * @return the kind of grass or grain growing in the meadow or field
@@ -51,6 +54,7 @@ public class Meadow implements TileFixture, HasImage {
 		return field;
 	}
 	/**
+	 * TODO: inline.
 	 * @return an XML representation of the Fixture.
 	 */
 	@Override
@@ -65,6 +69,8 @@ public class Meadow implements TileFixture, HasImage {
 		builder.append(kind);
 		builder.append("\" cultivated=\"");
 		builder.append(cultivated);
+		builder.append("\" id=\"");
+		builder.append(id);
 		builder.append("\" />");
 		return builder.toString();
 	}
@@ -109,14 +115,16 @@ public class Meadow implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Meadow && kind.equals(((Meadow) obj).kind)
-				&& field == ((Meadow) obj).field && cultivated == ((Meadow) obj).cultivated;
+				&& field == ((Meadow) obj).field
+				&& cultivated == ((Meadow) obj).cultivated
+				&& id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() << ((field ? 1 : 0) + (cultivated ? 2 : 0));
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -127,5 +135,16 @@ public class Meadow implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

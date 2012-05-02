@@ -8,6 +8,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce a Grove.
@@ -47,7 +48,8 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	@Override
 	public Grove produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Grove("orchard".equals(getProperty(TAG_PARAM)),
-				Boolean.parseBoolean(getProperty(WILD_PARAM)), getProperty(KIND_PROPERTY));
+				Boolean.parseBoolean(getProperty(WILD_PARAM)),
+				getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * @param property the name of a property
@@ -55,7 +57,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, TAG_PARAM, WILD_PARAM, KIND_PROPERTY, OLD_KIND_PARAM);
+		return EqualsAny.equalsAny(property, TAG_PARAM, WILD_PARAM, KIND_PROPERTY, OLD_KIND_PARAM, "id");
 	}
 	/**
 	 * Check whether the Node's data is valid. A Grove is valid if it has no
@@ -81,6 +83,12 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 						throw new MissingParameterException(getProperty(TAG_PARAM),
 								"kind", getLine());
 					}
+				}
+				if (hasProperty("id")) {
+					IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+				} else {
+					warner.warn(new MissingParameterException(getProperty(TAG_PARAM), "id", getLine()));
+					addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 				}
 			} else {
 				throw new MissingParameterException(getProperty(TAG_PARAM), WILD_PARAM,

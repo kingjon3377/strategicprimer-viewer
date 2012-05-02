@@ -23,10 +23,12 @@ public class CacheFixture implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param category what kind of things this is a cache of
 	 * @param cont what this cache contains
+	 * @param idNum the ID number.
 	 */
-	public CacheFixture(final String category, final String cont) {
+	public CacheFixture(final String category, final String cont, final long idNum) {
 		kind = category;
 		contents = cont;
+		id = idNum;
 	}
 	/**
 	 * @return what kind of things this is a cache of
@@ -46,8 +48,8 @@ public class CacheFixture implements TileFixture, HasImage {
 	@Override
 	public String toXML() {
 		return new StringBuilder("<cache kind=\"").append(kind)
-				.append("\" contents=\"").append(contents).append("\" />")
-				.toString();
+				.append("\" contents=\"").append(contents).append("\" id=\"")
+				.append(id).append("\" />").toString();
 	}
 	/**
 	 * TODO: should be more granular.
@@ -80,14 +82,15 @@ public class CacheFixture implements TileFixture, HasImage {
 	public boolean equals(final Object obj) {
 		return obj instanceof CacheFixture
 				&& kind.equals(((CacheFixture) obj).kind)
-				&& contents.equals(((CacheFixture) obj).contents);
+				&& contents.equals(((CacheFixture) obj).contents)
+				&& id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() | contents.hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -98,5 +101,16 @@ public class CacheFixture implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

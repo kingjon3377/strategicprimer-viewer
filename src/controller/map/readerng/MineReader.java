@@ -8,8 +8,10 @@ import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A reader for Mines.
@@ -37,9 +39,20 @@ public class MineReader implements INodeReader<Mine> {
 	public Mine parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
 		final Mine fix = new Mine(XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "product", warner),
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
-						"status")));
+						"status")), id);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("mine", event.asStartElement()

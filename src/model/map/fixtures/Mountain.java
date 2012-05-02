@@ -63,4 +63,12 @@ public class Mountain implements TerrainFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+	/**
+	 * TODO: Perhaps make this per-mountain?
+	 * @return an ID number
+	 */
+	@Override
+	public long getID() {
+		return -1;
+	}
 }

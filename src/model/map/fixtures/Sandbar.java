@@ -10,6 +10,12 @@ import model.map.TileFixture;
  */
 public class Sandbar implements TerrainFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Sandbar(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return a String representation of the sandbar.
 	 */
 	@Override
@@ -21,7 +27,8 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return "<sandbar />";
+		return new StringBuilder("<sandbar id=\"").append(id).append("\" />")
+				.toString();
 	}
 	/**
 	 * @return the name o an image to represent the sandbar.
@@ -43,14 +50,14 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Sandbar;
+		return obj instanceof Sandbar && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return 5;
+		return (int) id;
 	}
 	/**
 	 * @param fix
@@ -61,5 +68,16 @@ public class Sandbar implements TerrainFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

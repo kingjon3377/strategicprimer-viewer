@@ -10,11 +10,18 @@ import model.map.TileFixture;
  */
 public class Griffin implements TileFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Griffin(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return an XML representation of the griffin.
 	 */
 	@Override
 	public String toXML() {
-		return "<griffin />";
+		return new StringBuilder("<griffin id=\"").append(id).append("\" />")
+				.toString();
 	}
 	/**
 	 * @return a String representation of the griffin
@@ -43,14 +50,14 @@ public class Griffin implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Griffin;
+		return obj instanceof Griffin && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return "griffin".hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -59,5 +66,16 @@ public class Griffin implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

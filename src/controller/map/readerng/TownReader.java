@@ -12,6 +12,7 @@ import model.map.events.TownStatus;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A reader for towns.
@@ -44,12 +45,23 @@ public class TownReader implements INodeReader<TownEvent> {
 					.getLocalPart(), "name", element.getLocation()
 					.getLineNumber()));
 		}
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
 		final TownEvent fix = new TownEvent(
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
 						"status")), TownSize.parseTownSize(XMLHelper
 						.getAttribute(element, "size")), Integer
 						.parseInt(XMLHelper.getAttribute(element, "dc")),
-						XMLHelper.getAttributeWithDefault(element, "name", ""));
+						XMLHelper.getAttributeWithDefault(element, "name", ""), id);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(element.getName()

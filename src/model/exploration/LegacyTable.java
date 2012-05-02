@@ -38,22 +38,22 @@ public class LegacyTable implements EncounterTable {
 	 */
 	public LegacyTable() {
 		data = new ArrayList<String>();
-		data.add(new BattlefieldEvent(0).getText());
-		data.add(new CaveEvent(0).getText());
+		data.add(new BattlefieldEvent(0, -1).getText());
+		data.add(new CaveEvent(0, -1).getText());
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
-				data.add(new CityEvent(status, size, 0, "").getText()); // NOPMD
-				data.add(new FortificationEvent(status, size, 0, "").getText()); // NOPMD
-				data.add(new TownEvent(status, size, 0, "").getText()); // NOPMD
+				data.add(new CityEvent(status, size, 0, "", 0).getText()); // NOPMD
+				data.add(new FortificationEvent(status, size, 0, "", 0).getText()); // NOPMD
+				data.add(new TownEvent(status, size, 0, "", 0).getText()); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
-			data.add(new MineralEvent(mineral.toString(), true, 0).getText()); // NOPMD
-			data.add(new MineralEvent(mineral.toString(), false, 0).getText()); // NOPMD
+			data.add(new MineralEvent(mineral.toString(), true, 0, 0).getText()); // NOPMD
+			data.add(new MineralEvent(mineral.toString(), false, 0, 0).getText()); // NOPMD
 		}
 		data.add(NothingEvent.NOTHING_EVENT.getText());
 		for (final StoneKind stone : StoneKind.values()) {
-			data.add(new StoneEvent(stone, 0).getText()); // NOPMD
+			data.add(new StoneEvent(stone, 0, 0).getText()); // NOPMD
 		}
 	}
 

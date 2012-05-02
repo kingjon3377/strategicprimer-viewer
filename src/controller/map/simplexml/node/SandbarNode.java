@@ -3,8 +3,10 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Sandbar;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A Node to produce a Sandbar.
  * @author Jonathan Lovelace
@@ -26,7 +28,7 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	 */
 	@Override
 	public Sandbar produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Sandbar();
+		return new Sandbar(Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check this node for validity. A Sandbar is valid if it has no children.
@@ -38,6 +40,11 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("sandbar", iterator().next()
 					.toString(), getLine());
+		} else if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("sandbar", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 	/**
@@ -46,7 +53,7 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "id".equals(property);
 	}
 	/**
 	 * @return a String representation of the node

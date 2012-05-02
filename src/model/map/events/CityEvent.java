@@ -19,11 +19,13 @@ public final class CityEvent extends AbstractTownEvent {
 	 *            The DC to discover it.
 	 * @param tName
 	 *            the name of the town, fortress, or city
+	 * @param idNum the ID number.
 	 */
 	public CityEvent(final TownStatus tStatus, final TownSize tSize,
-			final int discdc, final String tName) {
+			final int discdc, final String tName, final long idNum) {
 		super(EventKind.City, tStatus, tSize, tName);
 		dc = discdc;
+		id = idNum;
 	}
 
 	/**
@@ -51,7 +53,19 @@ public final class CityEvent extends AbstractTownEvent {
 			sbuilder.append("\" name=\"");
 			sbuilder.append(name());
 		}
+		sbuilder.append("\" id=\"");
+		sbuilder.append(id);
 		return sbuilder.append("\" />").toString();
 	}
-
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
+	}
 }

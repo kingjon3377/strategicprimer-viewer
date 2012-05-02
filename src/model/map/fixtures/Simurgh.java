@@ -10,11 +10,18 @@ import model.map.TileFixture;
  */
 public class Simurgh implements TileFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Simurgh(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return an XML representation of the simurgh
 	 */
 	@Override
 	public String toXML() {
-		return "<simurgh />";
+		return new StringBuilder("<simurgh id=\"").append(id).append("\" />")
+				.toString();
 	}
 	/**
 	 * @return a String representation of the djinn
@@ -43,14 +50,14 @@ public class Simurgh implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Simurgh;
+		return obj instanceof Simurgh && ((TileFixture) obj).getID() == id;
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return "simurgh".hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -59,5 +66,16 @@ public class Simurgh implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

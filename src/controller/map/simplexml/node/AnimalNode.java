@@ -7,6 +7,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a(n) (group of) animal(s).
@@ -39,7 +40,8 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 			throws SPFormatException {
 		return new Animal(getProperty(KIND_PROPERTY), hasProperty("traces"),
 				hasProperty("talking")
-						&& Boolean.parseBoolean(getProperty("talking")));
+						&& Boolean.parseBoolean(getProperty("talking")),
+				Long.parseLong(getProperty("id")));
 	}
 
 	/**
@@ -56,7 +58,14 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("animal", iterator().next().toString(),
 					getLine());
-		} else if (!hasProperty(KIND_PROPERTY)) {
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (hasProperty("id")) {
+				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			} else {
+				warner.warn(new MissingParameterException("animal", "id", getLine()));
+				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			}
+		} else {
 			throw new MissingParameterException("animal", KIND_PROPERTY,
 					getLine());
 		}
@@ -67,7 +76,7 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, "traces", "talking");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "traces", "talking", "id");
 	}
 	/**
 	 * @return a String representation of the node.

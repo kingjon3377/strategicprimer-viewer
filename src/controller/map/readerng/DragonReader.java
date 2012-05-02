@@ -3,12 +3,13 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Dragon;
+import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A reader for Dragons.
  * @author Jonathan Lovelace
@@ -35,7 +36,18 @@ public class DragonReader implements INodeReader<Dragon> {
 	public Dragon parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Dragon fix = new Dragon(XMLHelper.getAttribute(element, "kind"));
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
+		final Dragon fix = new Dragon(XMLHelper.getAttribute(element, "kind"), id);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("dragon", event

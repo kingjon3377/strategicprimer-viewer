@@ -10,11 +10,18 @@ import model.map.TileFixture;
  */
 public class Phoenix implements TileFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Phoenix(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return an XML representation of the phoenix
 	 */
 	@Override
 	public String toXML() {
-		return "<phoenix />";
+		return new StringBuilder().append("<phoenix id=\"").append(id)
+				.append("\" />").toString();
 	}
 	/**
 	 * @return a String representation of the djinn
@@ -43,14 +50,14 @@ public class Phoenix implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Phoenix;
+		return obj instanceof Phoenix && id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return "phoenix".hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -59,5 +66,16 @@ public class Phoenix implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

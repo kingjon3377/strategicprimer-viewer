@@ -10,14 +10,20 @@ import model.map.TileFixture;
  */
 public final class BattlefieldEvent implements IEvent {
 	/**
+	 * A (U)ID.
+	 */
+	private final long id; // NOPMD
+	/**
 	 * Constructor.
 	 * 
 	 * @param discdc
 	 *            the DC to discover the battlefield.
+	 * @param idNum the ID number for the event.
 	 */
-	public BattlefieldEvent(final int discdc) {
+	public BattlefieldEvent(final int discdc, final long idNum) {
 		super();
 		dc = discdc;
+		id = idNum;
 	}
 
 	/**
@@ -52,7 +58,8 @@ public final class BattlefieldEvent implements IEvent {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| obj instanceof BattlefieldEvent;
+				|| (obj instanceof BattlefieldEvent && ((TileFixture) obj)
+						.getID() == id);
 	}
 
 	/**
@@ -61,7 +68,7 @@ public final class BattlefieldEvent implements IEvent {
 	 */
 	@Override
 	public int hashCode() {
-		return 15;
+		return (int) id;
 	}
 
 	/**
@@ -77,7 +84,8 @@ public final class BattlefieldEvent implements IEvent {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<battlefield dc=\"").append(dc).append("\" />").toString();
+		return new StringBuilder("<battlefield dc=\"").append(dc)
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
@@ -95,5 +103,12 @@ public final class BattlefieldEvent implements IEvent {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * @return the ID number for the event.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

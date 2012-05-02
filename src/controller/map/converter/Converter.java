@@ -31,6 +31,7 @@ import model.map.fixtures.Shrub;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.Village;
 import controller.exploration.TableLoader;
+import controller.map.misc.IDFactory;
 
 /**
  * A class to convert a version-1 map to a version-2 map with greater
@@ -131,7 +132,7 @@ public class Converter {
 	private List<Tile> convertTile(final Tile tile, final boolean main) {
 		final List<Tile> initial = createInitialSubtiles(tile, main);
 		if (!tile.isEmpty()) {
-		tile.addFixture(new Village(TownStatus.Active, ""));
+		tile.addFixture(new Village(TownStatus.Active, "", IDFactory.FACTORY.getID()));
 		final List<TileFixture> fixtures = new LinkedList<TileFixture>(
 				tile.getContents());
 		if (tile.hasRiver()) {
@@ -272,12 +273,14 @@ public class Converter {
 					if (random.nextBoolean()) {
 						addFixture(tile,
 								new Meadow(runner.recursiveConsultTable("grain", tile),
-										true, true), main);
+										true, true, IDFactory.FACTORY.getID()), main);
 					} else {
 						addFixture(
 								tile,
-								new Grove(true, false, runner.recursiveConsultTable(
-										"fruit_trees", tile)), main);
+								new Grove(true, false, runner
+										.recursiveConsultTable("fruit_trees",
+												tile), IDFactory.FACTORY
+										.getID()), main);
 					}
 				} else if (TileType.Desert.equals(tile.getTerrain())) {
 					if (isAdjacentToWater(tile, map) && random.nextDouble() < .4) {

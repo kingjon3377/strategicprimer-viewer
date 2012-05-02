@@ -16,9 +16,11 @@ public class Giant implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param gKind the kind of giant
+	 * @param idNum the ID number.
 	 */
-	public Giant(final String gKind) {
+	public Giant(final String gKind, final long idNum) {
 		kind = gKind;
+		id = idNum;
 	}
 	/**
 	 * @return the kind of giant
@@ -31,7 +33,8 @@ public class Giant implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<giant kind=\"").append(kind).append("\" />").toString();
+		return new StringBuilder("<giant kind=\"").append(kind)
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * @return a String representation of the giant
@@ -60,14 +63,15 @@ public class Giant implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Giant && ((Giant) obj).kind.equals(kind);
+		return obj instanceof Giant && ((Giant) obj).kind.equals(kind)
+				&& id == ((TileFixture) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -76,5 +80,16 @@ public class Giant implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

@@ -7,6 +7,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A Node to produce a Meadow.
  * @author Jonathan Lovelace
@@ -45,7 +46,7 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	public Meadow produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		return new Meadow(getProperty(KIND_PROPERTY),
 				"field".equals(getProperty(TAG_PROPERTY)),
-				Boolean.parseBoolean(getProperty(CULTIVATED_PARAM)));
+				Boolean.parseBoolean(getProperty(CULTIVATED_PARAM)), Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * @param property the name of a property
@@ -53,7 +54,7 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, TAG_PROPERTY, CULTIVATED_PARAM);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, TAG_PROPERTY, CULTIVATED_PARAM, "id");
 	}
 	
 	/**
@@ -75,7 +76,14 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 					.toString(), getLine());
 		} else if (hasProperty(TAG_PROPERTY)) {
 			if (hasProperty(CULTIVATED_PARAM)) {
-				if (!hasProperty(KIND_PROPERTY)) {
+				if (hasProperty(KIND_PROPERTY)) {
+					if (hasProperty("id")) {
+						IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+					} else {
+						warner.warn(new MissingParameterException(getProperty(TAG_PROPERTY), "id", getLine()));
+						addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+					}
+				} else {
 					throw new MissingParameterException(getProperty(TAG_PROPERTY), KIND_PROPERTY,
 							getLine());
 				}

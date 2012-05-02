@@ -177,16 +177,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("First Tile serialization test, reflection",
 				reader, new Tile(0, 0, TileType.Desert), Tile.class);
 		final Tile two = new Tile(1, 1, TileType.Plains);
-		two.addFixture(new Griffin());
+		two.addFixture(new Griffin(1));
 		assertSerialization("Second Tile serialization test, reflection",
 				reader, two, Tile.class);
 		final Tile three = new Tile(2, 2, TileType.Steppe);
-		three.addFixture(new Unit(new Player(1, ""), "unitOne", "firstUnit"));
+		three.addFixture(new Unit(new Player(1, ""), "unitOne", "firstUnit", 1));
 		three.addFixture(new Forest("forestKind", true));
 		assertSerialization("Third Tile serialization test, reflection", reader, three, Tile.class);
 		final Tile four = new Tile(3, 3, TileType.Jungle);
-		final Fortress fort = new Fortress(new Player(2, ""), "fortOne");
-		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit"));
+		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
+		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
 		four.addFixture(fort);
 		four.addFixture(new TextFixture("Random text here", 5));
 		four.addRiver(River.Lake);
@@ -209,14 +209,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
 				Tile.class, false);
 		final Tile six = new Tile(2, 3, TileType.Jungle);
-		six.addFixture(new Unit(new Player(2, ""), "explorer", "name one"));
-		six.addFixture(new Unit(new Player(2, ""), "explorer", "name two"));
+		six.addFixture(new Unit(new Player(2, ""), "explorer", "name one", 1));
+		six.addFixture(new Unit(new Player(2, ""), "explorer", "name two", 2));
 		assertEquals("Just checking ...", 2, six.getContents().size());
 		assertSerialization("Multiple units should come through", reader, six, Tile.class);
 		final String xmlTwo = new StringBuilder(
 				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" />\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" />\n")
+				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
+				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
 				.append("\t\t</tile>")
 				.toString(); 
 		assertEquals("Multiple units should come through", xmlTwo, six.toXML());

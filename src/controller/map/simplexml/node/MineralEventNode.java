@@ -8,6 +8,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a MineralEvent.
@@ -55,10 +56,10 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	@Override
 	public MineralEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new MineralEvent(
-				getProperty(MINERAL_PROPERTY),
+		return new MineralEvent(getProperty(MINERAL_PROPERTY),
 				Boolean.parseBoolean(getProperty(EXPOSED_PROPERTY)),
-				Integer.parseInt(getProperty(DC_PROPERTY)));
+				Integer.parseInt(getProperty(DC_PROPERTY)),
+				Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * @param property the name of a property
@@ -67,7 +68,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	@Override
 	public boolean canUse(final String property) {
 		return EqualsAny.equalsAny(property, OLD_MINERAL_PROP, EXPOSED_PROPERTY, DC_PROPERTY,
-				MINERAL_PROPERTY);
+				MINERAL_PROPERTY, "id");
 	}
 
 	/**
@@ -102,6 +103,12 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 				throw new MissingParameterException(TAG, "kind",
 						getLine());
 			}
+		}
+		if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException(TAG, "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 

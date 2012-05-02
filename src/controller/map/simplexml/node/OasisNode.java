@@ -3,8 +3,10 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Oasis;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce an Oasis.
@@ -27,7 +29,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	 */
 	@Override
 	public Oasis produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Oasis();
+		return new Oasis(Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check that the noe is valid. An Oasis is valid if it has no children. TODO: should it have attributes?
@@ -39,6 +41,11 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("oasis", iterator().next()
 					.toString(), getLine());
+		} else if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("oasis", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 	/**
@@ -47,7 +54,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "id".equals(property);
 	}
 	/**
 	 * @return a String representation of the node

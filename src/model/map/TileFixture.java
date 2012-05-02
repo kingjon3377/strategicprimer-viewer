@@ -12,4 +12,9 @@ public interface TileFixture extends XMLWritable, Comparable<TileFixture> {
 	 * @return a z-value for determining which fixture should be uppermost on a tile.
 	 */
 	int getZValue();
+	/**
+	 * @return an ID (UID for most fixtures, though perhaps not for things like
+	 *         mountains and hills) for the fixture.
+	 */
+	long getID();
 }

@@ -34,12 +34,14 @@ public class Unit implements TileFixture, HasImage {
 	 *            the type of unit
 	 * @param unitName
 	 *            the name of this unit
+	 * @param idNum the ID number.
 	 */
 	public Unit(final Player unitOwner, final String unitType,
-			final String unitName) {
+			final String unitName, final long idNum) {
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;
+		id = idNum;
 	}
 
 	/**
@@ -77,7 +79,7 @@ public class Unit implements TileFixture, HasImage {
 		return this == obj
 				|| (obj instanceof Unit && ((Unit) obj).owner.equals(owner)
 						&& (((Unit) obj).kind.equals(kind)) && (((Unit) obj).name
-							.equals(name)));
+							.equals(name)) && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -86,7 +88,7 @@ public class Unit implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (kind.hashCode()) + (name.hashCode()) << 16 + owner.hashCode() << 30;
+		return (int) id;
 	}
 
 	/**
@@ -124,6 +126,8 @@ public class Unit implements TileFixture, HasImage {
 			sbuild.append("\" name=\"");
 			sbuild.append(name);
 		}
+		sbuild.append("\" id=\"");
+		sbuild.append(id);
 		sbuild.append("\" />");
 		return sbuild.toString();
 	}
@@ -142,5 +146,16 @@ public class Unit implements TileFixture, HasImage {
 	@Override
 	public int getZValue() {
 		return 70;
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

@@ -2,10 +2,12 @@ package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Fairy;
+import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a fairy or group of fairies.
@@ -32,7 +34,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	 */
 	@Override
 	public Fairy produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Fairy(getProperty(KIND_PROPERTY));
+		return new Fairy(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the node for invalid data. A Fairy is valid if it has no children and has a "kind" property.
@@ -44,7 +46,14 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("fairy", iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty(KIND_PROPERTY)) {
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (hasProperty("id")) {
+				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			} else {
+				warner.warn(new MissingParameterException("fairy", "id", getLine()));
+				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			}
+		} else {
 			throw new MissingParameterException("fairy", KIND_PROPERTY, getLine());
 		}
 	}
@@ -54,7 +63,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return KIND_PROPERTY.equals(property);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, "id");
 	}
 	/**
 	 * @return a String representation of the node.

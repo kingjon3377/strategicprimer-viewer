@@ -15,10 +15,12 @@ public final class CaveEvent implements IEvent {
 	 * 
 	 * @param discdc
 	 *            the DC to discover the caves
+	 * @param idNum the ID number for the event.
 	 */
-	public CaveEvent(final int discdc) {
+	public CaveEvent(final int discdc, final long idNum) {
 		super();
 		dc = discdc;
+		id = idNum;
 	}
 
 	/**
@@ -52,7 +54,7 @@ public final class CaveEvent implements IEvent {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof CaveEvent);
+				|| (obj instanceof CaveEvent && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -61,8 +63,7 @@ public final class CaveEvent implements IEvent {
 	 */
 	@Override
 	public int hashCode() {
-		// ESCA-JAVA0076:
-		return 40;
+		return (int) id;
 	}
 
 	/**
@@ -78,7 +79,8 @@ public final class CaveEvent implements IEvent {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<cave dc=\"").append(dc).append("\" />").toString();
+		return new StringBuilder("<cave dc=\"").append(dc).append("\" id=\"")
+				.append(id).append("\" />").toString();
 	}
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
@@ -96,5 +98,16 @@ public final class CaveEvent implements IEvent {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * The event's ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return the event's ID number.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

@@ -20,13 +20,15 @@ public final class MineralEvent implements IEvent, HasImage {
 	 *            whether the vein is exposed
 	 * @param discdc
 	 *            the dc to discover the vein
+	 * @param idNum the ID number.
 	 */
 	public MineralEvent(final String minkind, final boolean exp,
-			final int discdc) {
+			final int discdc, final long idNum) {
 		super();
 		mineral = minkind;
 		exposed = exp;
 		dc = discdc;
+		id = idNum;
 	}
 
 	/**
@@ -101,7 +103,7 @@ public final class MineralEvent implements IEvent, HasImage {
 		return this == obj
 				|| (obj instanceof MineralEvent
 						&& ((MineralEvent) obj).mineral.equals(mineral)
-						&& ((MineralEvent) obj).exposed == exposed);
+						&& ((MineralEvent) obj).exposed == exposed && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -110,7 +112,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return mineral.hashCode() + Boolean.valueOf(exposed).hashCode() << 3;
+		return (int) id;
 	}
 
 	/**
@@ -127,9 +129,9 @@ public final class MineralEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public String toXML() {
-		return new StringBuilder("<mineral kind=\"")
-				.append(mineral).append("\" exposed=\"")
-				.append(exposed).append("\" dc=\"").append(dc).append("\" />")
+		return new StringBuilder("<mineral kind=\"").append(mineral)
+				.append("\" exposed=\"").append(exposed).append("\" dc=\"")
+				.append(dc).append("\" id=\"").append(id).append("\" />")
 				.toString();
 	}
 	/**
@@ -155,5 +157,16 @@ public final class MineralEvent implements IEvent, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

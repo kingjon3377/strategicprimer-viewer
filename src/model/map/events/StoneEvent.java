@@ -18,11 +18,13 @@ public final class StoneEvent implements IEvent, HasImage {
 	 *            the kind of stone
 	 * @param discdc
 	 *            the dc to discover the stone.
+	 * @param idNum the ID number.
 	 */
-	public StoneEvent(final StoneKind skind, final int discdc) {
+	public StoneEvent(final StoneKind skind, final int discdc, final long idNum) {
 		super();
 		stone = skind;
 		dc = discdc;
+		id = idNum;
 	}
 
 	/**
@@ -73,7 +75,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	public boolean equals(final Object obj) {
 		return this == obj
 				|| obj instanceof StoneEvent
-						&& ((StoneEvent) obj).stone.equals(stone);
+						&& ((StoneEvent) obj).stone.equals(stone) && ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -82,7 +84,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return stone.ordinal();
+		return (int) id;
 	}
 
 	/**
@@ -99,7 +101,8 @@ public final class StoneEvent implements IEvent, HasImage {
 	@Override
 	public String toXML() {
 		return new StringBuilder("<stone kind=\"").append(stone.toString())
-				.append("\" dc=\"").append(dc).append("\" />").toString();
+				.append("\" dc=\"").append(dc).append("\" id=\"").append(id)
+				.append("\" />").toString();
 	}
 	/**
 	 * @return the name of an image to represent the event
@@ -124,5 +127,16 @@ public final class StoneEvent implements IEvent, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

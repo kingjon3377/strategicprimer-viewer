@@ -115,7 +115,8 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 						&& ((AbstractTownEvent) obj).kind().equals(kind())
 						&& ((AbstractTownEvent) obj).size.equals(size)
 						&& ((AbstractTownEvent) obj).name.equals(name)
-						&& ((AbstractTownEvent) obj).status.equals(status));
+						&& ((AbstractTownEvent) obj).status.equals(status)
+						&& ((TileFixture) obj).getID() == getID());
 	}
 
 	/**
@@ -124,7 +125,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return kind().ordinal() + size.ordinal() << 4 + status.ordinal() << 8 + name.hashCode() << 16;
+		return (int) getID();
 	}
 
 	/**

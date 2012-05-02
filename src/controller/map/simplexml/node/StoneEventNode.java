@@ -9,6 +9,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a StoneEvent.
@@ -52,8 +53,10 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	@Override
 	public StoneEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new StoneEvent(StoneKind.parseStoneKind(getProperty(STONE_PROPERTY)),
-				Integer.parseInt(getProperty(DC_PROPERTY)));
+		return new StoneEvent(
+				StoneKind.parseStoneKind(getProperty(STONE_PROPERTY)),
+				Integer.parseInt(getProperty(DC_PROPERTY)),
+				Long.parseLong(getProperty("id")));
 	}
 
 	/**
@@ -83,6 +86,12 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 				throw new MissingParameterException(TAG, STONE_PROPERTY, getLine());
 			}
 		}
+		if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException(TAG, "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+		}
 	}
 	/**
 	 * @param property the name of a property
@@ -90,7 +99,8 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, STONE_PROPERTY, DC_PROPERTY, OLD_STONE_PROP);
+		return EqualsAny.equalsAny(property, STONE_PROPERTY, DC_PROPERTY,
+				OLD_STONE_PROP, "id");
 	}
 
 	/**

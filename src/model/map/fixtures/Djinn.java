@@ -10,11 +10,17 @@ import model.map.TileFixture;
  */
 public class Djinn implements TileFixture, HasImage {
 	/**
+	 * @param idNum the ID number.
+	 */
+	public Djinn(final long idNum) {
+		id = idNum;
+	}
+	/**
 	 * @return an XML representation of the djinn
 	 */
 	@Override
 	public String toXML() {
-		return "<djinn />";
+		return new StringBuilder("<djinn id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * @return a String representation of the djinn
@@ -43,14 +49,14 @@ public class Djinn implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Djinn;
+		return obj instanceof Djinn && ((TileFixture) obj).getID() == id;
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		return "djinn".hashCode();
+		return (int) id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -59,5 +65,16 @@ public class Djinn implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * ID number.
+	 */
+	private final long id; // NOPMD
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public long getID() {
+		return id;
 	}
 }

@@ -7,8 +7,10 @@ import util.Warning;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Hill;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A reader for Hills.
@@ -36,6 +38,17 @@ public class HillReader implements INodeReader<Hill> {
 	public Hill parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("hill", event.asStartElement()
@@ -47,6 +60,6 @@ public class HillReader implements INodeReader<Hill> {
 				break;
 			}
 		}
-		return new Hill();
+		return new Hill(id);
 	}
 }

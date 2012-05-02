@@ -8,6 +8,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent shrubs (or the aquatic equivalent) on the tile.
@@ -42,7 +43,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	 */
 	@Override
 	public Shrub produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Shrub(getProperty(KIND_PROPERTY));
+		return new Shrub(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check whether the node is valid. A Shrub is valid if it has a "shrub"
@@ -55,11 +56,19 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
-		} else if (hasProperty("shrub")) {
+		} else if (hasProperty(OLD_KIND_PROPERTY)) {
+			// FIXME: This should go below the "kind" property check ...
 			warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PROPERTY,
 					KIND_PROPERTY, getLine()));
 			addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
-		} else if (!hasProperty(KIND_PROPERTY)) {
+		} else if (hasProperty(KIND_PROPERTY)) {
+			if (hasProperty("id")) {
+				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			} else {
+				warner.warn(new MissingParameterException("shrub", "id", getLine()));
+				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			}
+		} else {
 			throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
 		}
 	}
@@ -69,7 +78,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY);
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY, "id");
 	}
 	/**
 	 * @return a String representation of the object

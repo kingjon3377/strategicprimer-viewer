@@ -7,8 +7,10 @@ import util.Warning;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Giant;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A reader for Giants.
  * @author Jonathan Lovelace
@@ -35,7 +37,18 @@ public class GiantReader implements INodeReader<Giant> {
 	public Giant parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Giant fix = new Giant(XMLHelper.getAttribute(element, "kind"));
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
+		final Giant fix = new Giant(XMLHelper.getAttribute(element, "kind"), id);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("giant", event

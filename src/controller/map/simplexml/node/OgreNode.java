@@ -3,8 +3,10 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Ogre;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent an ogre.
@@ -27,7 +29,7 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 	 */
 	@Override
 	public Ogre produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Ogre();
+		return new Ogre(Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the node for invalid data. An Ogre is valid if it has no children.
@@ -39,6 +41,11 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("ogre", iterator().next()
 					.toString(), getLine());
+		} else if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("ogre", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 	/**
@@ -47,7 +54,7 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "id".equals(property);
 	}
 	/**
 	 * @return a String representation of the node.

@@ -3,8 +3,10 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Minotaur;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a minotaur or group of minotaurs.
@@ -27,7 +29,7 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	 */
 	@Override
 	public Minotaur produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Minotaur();
+		return new Minotaur(Long.parseLong(getProperty("id")));
 	}
 	/**
 	 * Check the node for invalid data. A Minotaur is valid if it has no children.
@@ -39,6 +41,11 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("minotaur", iterator().next()
 					.toString(), getLine());
+		} else if (hasProperty("id")) {
+			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException("minotaur", "id", getLine()));
+			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}
 	/**
@@ -47,7 +54,7 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return false;
+		return "id".equals(property);
 	}
 	/**
 	 * @return a String representation of the node.

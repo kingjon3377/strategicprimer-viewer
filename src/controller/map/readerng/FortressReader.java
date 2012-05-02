@@ -14,6 +14,7 @@ import model.map.fixtures.Unit;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A reader for fortresses.
  * @author Jonathan Lovelace
@@ -48,10 +49,21 @@ public class FortressReader implements INodeReader<Fortress> {
 			warner.warn(new MissingParameterException("fortress", "name",
 					element.getLocation().getLineNumber()));
 		}
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
 		final Fortress fort = new Fortress(
 				players.getPlayer(parseInt(getAttributeWithDefault(element,
 						"owner", "-1"))), getAttributeWithDefault(element,
-						"name", ""));
+						"name", ""), id);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()

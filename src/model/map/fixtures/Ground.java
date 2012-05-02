@@ -95,4 +95,12 @@ public class Ground implements TileFixture, HasImage {
 	public String toString() {
 		return (exposed ? "Exposed " : "Unexposed ") + "ground of kind " + kind;
 	}
+	/**
+	 * TODO: make this different between instances.
+	 * @return an ID number.
+	 */
+	@Override
+	public long getID() {
+		return -1;
+	}
 }

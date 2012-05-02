@@ -91,4 +91,11 @@ public final class NothingEvent implements IEvent {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+	/**
+	 * @return an ID number for the event.
+	 */
+	@Override
+	public long getID() {
+		return 0;
+	}
 }

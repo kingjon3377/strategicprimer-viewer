@@ -11,6 +11,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A reader for Units.
@@ -59,10 +60,21 @@ public class UnitReader implements INodeReader<Unit> {
 					.getLocalPart(), "name", element.getLocation()
 					.getLineNumber()));
 		}
+		// ESCA-JAVA0177:
+		long id; // NOPMD
+		if (XMLHelper.hasAttribute(element, "id")) {
+			id = IDFactory.FACTORY.register(
+					Long.parseLong(XMLHelper.getAttribute(element, "id")));
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			id = IDFactory.FACTORY.getID();
+		}
 		final Unit fix = new Unit(players.getPlayer(Integer.parseInt(ensureNumeric(XMLHelper
 				.getAttributeWithDefault(element, "owner", "-1")))),
 				parseKind(element, warner),
-				XMLHelper.getAttributeWithDefault(element, "name", ""));
+				XMLHelper.getAttributeWithDefault(element, "name", ""), id);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("unit", event.asStartElement()
