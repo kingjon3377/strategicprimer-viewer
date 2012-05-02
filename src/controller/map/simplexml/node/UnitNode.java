@@ -64,8 +64,8 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 		return new Unit(players.getPlayer((hasProperty(OWNER_ATTR) && !""
 				.equals(getProperty(OWNER_ATTR))) ? Integer
 				.parseInt(getProperty(OWNER_ATTR)) : -1),
-				hasProperty(TYPE_ATTR) ? getProperty(TYPE_ATTR) : "",
-				hasProperty(NAME_ATTR) ? getProperty(NAME_ATTR) : "",
+				getPropertyWithDefault(TYPE_ATTR, ""),
+				getPropertyWithDefault(NAME_ATTR, ""),
 				Long.parseLong(getProperty("id")));
 	}
 
@@ -88,11 +88,11 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
-		} else if (!hasProperty(OWNER_ATTR) || "".equals(getProperty(OWNER_ATTR))) {
+		} else if ("".equals(getPropertyWithDefault(OWNER_ATTR, ""))) {
 			warner.warn(new MissingParameterException(TAG, OWNER_ATTR,
 					getLine()));
 		}
-		if (!hasProperty(TYPE_ATTR) || "".equals(getProperty(TYPE_ATTR))) {
+		if ("".equals(getPropertyWithDefault(TYPE_ATTR, ""))) {
 			if (hasProperty(OLD_TYPE_ATTR)) {
 				addProperty(TYPE_ATTR, getProperty(OLD_TYPE_ATTR), warner);
 				warner.warn(new DeprecatedPropertyException(TAG, OLD_TYPE_ATTR, TYPE_ATTR,

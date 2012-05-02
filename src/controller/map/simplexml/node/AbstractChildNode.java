@@ -71,7 +71,14 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	public final String getProperty(final String property) {
 		return properties.get(property);
 	}
-
+	/**
+	 * @param property a property
+	 * @param defaultValue what to return if we don't have that property
+	 * @return the value of the property, or the default if we don't have it.
+	 */
+	protected final String getPropertyWithDefault(final String property, final String defaultValue) {
+		return hasProperty(property) ? getProperty(property) : defaultValue;
+	}
 	/**
 	 * Convert the Node to its equivalent business-logic type.
 	 * 

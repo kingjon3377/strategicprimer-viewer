@@ -18,6 +18,10 @@ import controller.map.misc.IDFactory;
 @Deprecated
 public class VillageNode extends AbstractFixtureNode<Village> {
 	/**
+	 * The tag.
+	 */
+	private static final String TAG = "village";
+	/**
 	 * The name of the property giving the village status.
 	 */
 	private static final String STATUS_PROPERTY = "status";
@@ -55,21 +59,21 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("village", iterator().next()
+			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty(STATUS_PROPERTY)) {
 			if (!hasProperty(NAME_PROPERTY)) {
-				warner.warn(new MissingParameterException("village",
+				warner.warn(new MissingParameterException(TAG,
 						NAME_PROPERTY, getLine()));
 			}
 			if (hasProperty("id")) {
 				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
 			} else {
-				warner.warn(new MissingParameterException("village", "id", getLine()));
+				warner.warn(new MissingParameterException(TAG, "id", getLine()));
 				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 			}
 		} else {
-			throw new MissingParameterException("village", STATUS_PROPERTY, getLine());
+			throw new MissingParameterException(TAG, STATUS_PROPERTY, getLine());
 		}
 	}
 	/**

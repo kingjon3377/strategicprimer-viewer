@@ -17,6 +17,11 @@ import controller.map.misc.IDFactory;
 @Deprecated
 public class FortressNode extends AbstractFixtureNode<Fortress> {
 	/**
+	 * The tag.
+	 */
+	private static final String TAG = "fortress";
+
+	/**
 	 * Constructor.
 	 */
 	public FortressNode() {
@@ -84,22 +89,22 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 			if (node instanceof UnitNode) {
 				node.checkNode(warner);
 			} else {
-				throw new UnwantedChildException("fortress", node.toString(),
+				throw new UnwantedChildException(TAG, node.toString(),
 						getLine());
 			}
 		}
 		if (!hasProperty(OWNER_PROP)) {
-			warner.warn(new MissingParameterException("fortress", OWNER_PROP,
+			warner.warn(new MissingParameterException(TAG, OWNER_PROP,
 					getLine()));
 		}
 		if (!hasProperty(NAME_PROP)) {
-			warner.warn(new MissingParameterException("fortress", NAME_PROP,
+			warner.warn(new MissingParameterException(TAG, NAME_PROP,
 					getLine()));
 		}
 		if (hasProperty("id")) {
 			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
 		} else {
-			warner.warn(new MissingParameterException("fortress", "id", getLine()));
+			warner.warn(new MissingParameterException(TAG, "id", getLine()));
 			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 		}
 	}

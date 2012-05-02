@@ -16,6 +16,10 @@ import controller.map.misc.IDFactory;
 @Deprecated
 public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	/**
+	 * The tag.
+	 */
+	private static final String TAG = "cache";
+	/**
 	 * The name of the property saying what's in the cache.
 	 */
 	private static final String CONTENTS_PROPERTY = "contents";
@@ -55,21 +59,21 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	@Override
 	public void checkNode(final Warning warner) throws SPFormatException {
 		if (iterator().hasNext()) {
-			throw new UnwantedChildException("cache", iterator().next()
+			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
 			if (hasProperty(CONTENTS_PROPERTY)) {
 				if (hasProperty("id")) {
 					IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
 				} else {
-					warner.warn(new MissingParameterException("cache", "id", getLine()));
+					warner.warn(new MissingParameterException(TAG, "id", getLine()));
 					addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
 				}
 			} else {
-				throw new MissingParameterException("cache", CONTENTS_PROPERTY, getLine());
+				throw new MissingParameterException(TAG, CONTENTS_PROPERTY, getLine());
 			}
 		} else {
-			throw new MissingParameterException("cache", KIND_PROPERTY, getLine());
+			throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
 		}
 	}
 	/**
