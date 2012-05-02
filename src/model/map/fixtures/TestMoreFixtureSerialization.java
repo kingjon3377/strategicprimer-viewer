@@ -65,18 +65,18 @@ public final class TestMoreFixtureSerialization extends
 	public void testGroveSerialization() throws XMLStreamException,
 			SPFormatException {
 		assertSerialization("First test of Grove serialization, reflection",
-				reader, new Grove(true, true, "firstGrove", 1), Grove.class);
+				new Grove(true, true, "firstGrove", 1), Grove.class);
 		assertSerialization("Second test of Grove serialization, reflection",
-				reader, new Grove(true, false, "secondGrove", 2), Grove.class);
+				new Grove(true, false, "secondGrove", 2), Grove.class);
 		assertSerialization("Third test of Grove serialization, reflection",
-				reader, new Grove(false, true, "thirdGrove", 3), Grove.class);
+				new Grove(false, true, "thirdGrove", 3), Grove.class);
 		assertSerialization("Fourth test of Grove serialization, reflection",
-				reader, new Grove(false, false, "four", 4), Grove.class);
-		assertUnwantedChild(reader, "<grove wild=\"true\" kind=\"kind\"><troll /></grove>", Grove.class, false);
-		assertMissingProperty(reader, "<grove />", Grove.class, "wild", false);
-		assertMissingProperty(reader, "<grove wild=\"false\" />", Grove.class, "kind", false);
-		assertDeprecatedProperty(reader, "<grove wild=\"true\" tree=\"tree\" id=\"0\" />", Grove.class, "tree", true);
-		assertMissingProperty(reader, "<grove wild=\"true\" kind=\"kind\" />", Grove.class, "id", true);
+				new Grove(false, false, "four", 4), Grove.class);
+		assertUnwantedChild("<grove wild=\"true\" kind=\"kind\"><troll /></grove>", Grove.class, false);
+		assertMissingProperty("<grove />", Grove.class, "wild", false);
+		assertMissingProperty("<grove wild=\"false\" />", Grove.class, "kind", false);
+		assertDeprecatedProperty("<grove wild=\"true\" tree=\"tree\" id=\"0\" />", Grove.class, "tree", true);
+		assertMissingProperty("<grove wild=\"true\" kind=\"kind\" />", Grove.class, "id", true);
 	}
 
 	/**
@@ -91,20 +91,20 @@ public final class TestMoreFixtureSerialization extends
 	public void testMeadowSerialization() throws XMLStreamException,
 			SPFormatException {
 		assertSerialization("First test of Meadow serialization, reflection",
-				reader, new Meadow("firstMeadow", true, true, 1), Meadow.class);
+				new Meadow("firstMeadow", true, true, 1), Meadow.class);
 		assertSerialization("Second test of Meadow serialization, reflection",
-				reader, new Meadow("secondMeadow", true, false, 2), Meadow.class);
+				new Meadow("secondMeadow", true, false, 2), Meadow.class);
 		assertSerialization("Third test of Meadow serialization, reflection",
-				reader, new Meadow("three", false, true, 3), Meadow.class);
+				new Meadow("three", false, true, 3), Meadow.class);
 		assertSerialization("Fourth test of Meadow serialization, reflection",
-				reader, new Meadow("four", false, false, 4), Meadow.class);
-		assertUnwantedChild(reader, "<meadow kind=\"flax\" cultivated=\"false\"><troll /></meadow>",
+				new Meadow("four", false, false, 4), Meadow.class);
+		assertUnwantedChild("<meadow kind=\"flax\" cultivated=\"false\"><troll /></meadow>",
 				Meadow.class, false);
-		assertMissingProperty(reader, "<meadow cultivated=\"false\" />",
+		assertMissingProperty("<meadow cultivated=\"false\" />",
 				Meadow.class, KIND_PROPERTY, false);
-		assertMissingProperty(reader, "<meadow kind=\"flax\" />",
+		assertMissingProperty("<meadow kind=\"flax\" />",
 				Meadow.class, "cultivated", false);
-		assertMissingProperty(reader,
+		assertMissingProperty(
 				"<field kind=\"kind\" cultivated=\"true\" />", Meadow.class,
 				"id", true);
 	}
@@ -121,27 +121,27 @@ public final class TestMoreFixtureSerialization extends
 	public void testMineSerialization() throws XMLStreamException,
 			SPFormatException {
 		assertSerialization("First test of Mine serialization, reflection",
-				reader, new Mine("one", TownStatus.Active, 1), Mine.class);
+				new Mine("one", TownStatus.Active, 1), Mine.class);
 		assertSerialization("Second test of Mine serialization, reflection",
-				reader, new Mine("two", TownStatus.Abandoned, 2), Mine.class);
+				new Mine("two", TownStatus.Abandoned, 2), Mine.class);
 		assertSerialization("Third test of Mine serialization, reflection",
-				reader, new Mine("three", TownStatus.Burned, 3), Mine.class);
+				new Mine("three", TownStatus.Burned, 3), Mine.class);
 		final Mine four = new Mine("four", TownStatus.Ruined, 4);
 		assertSerialization("Fourth test of Mine serialization, reflection",
-				reader, four, Mine.class);
+				four, Mine.class);
 		final String xml = four.toXML().replace(KIND_PROPERTY, "product");
 		assertEquals("Deprecated Mine idiom, reflection", four, reader.readXML(
 				new StringReader(xml), Mine.class, true, new Warning(Warning.Action.Ignore)));
 		assertEquals("Deprecated Mine idiom, non-reflection", four, reader.readXML(
 				new StringReader(xml), Mine.class, false, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(reader, xml, Mine.class, "product", true);
-		assertUnwantedChild(reader, "<mine kind=\"gold\" status=\"active\"><troll /></mine>",
+		assertDeprecatedProperty(xml, Mine.class, "product", true);
+		assertUnwantedChild("<mine kind=\"gold\" status=\"active\"><troll /></mine>",
 				Mine.class, false);
-		assertMissingProperty(reader, "<mine status=\"active\"/>",
+		assertMissingProperty("<mine status=\"active\"/>",
 				Mine.class, KIND_PROPERTY, false);
-		assertMissingProperty(reader, "<mine kind=\"gold\"/>",
+		assertMissingProperty("<mine kind=\"gold\"/>",
 				Mine.class, STATUS_PROPERTY, false);
-		assertMissingProperty(reader,
+		assertMissingProperty(
 				"<mine kind=\"kind\" status=\"active\" />", Mine.class, "id",
 				true);
 	}
@@ -158,10 +158,10 @@ public final class TestMoreFixtureSerialization extends
 	public void testShrubSerialization() throws XMLStreamException,
 			SPFormatException {
 		assertSerialization("First test of Shrub serialization, reflection",
-				reader, new Shrub("one", 1), Shrub.class);
+				new Shrub("one", 1), Shrub.class);
 		final Shrub two = new Shrub("two", 2);
 		assertSerialization("Second test of Shrub serialization, reflection",
-				reader, two, Shrub.class);
+				two, Shrub.class);
 		final String xml = two.toXML().replace(KIND_PROPERTY, "shrub");
 		assertEquals("Deserialization of mangled shrub, reflection", two,
 				reader.readXML(new StringReader(xml), Shrub.class, true,
@@ -169,11 +169,11 @@ public final class TestMoreFixtureSerialization extends
 		assertEquals("Deserialization of mangled shrub, non-reflection", two,
 				reader.readXML(new StringReader(xml), Shrub.class, true,
 						new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(reader, xml, Shrub.class, "shrub", true);
-		assertUnwantedChild(reader, "<shrub kind=\"shrub\"><troll /></shrub>",
+		assertDeprecatedProperty(xml, Shrub.class, "shrub", true);
+		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
-		assertMissingProperty(reader, "<shrub />", Shrub.class, KIND_PROPERTY, false);
-		assertMissingProperty(reader, "<shrub kind=\"kind\" />", Shrub.class, "id", true);
+		assertMissingProperty("<shrub />", Shrub.class, KIND_PROPERTY, false);
+		assertMissingProperty("<shrub kind=\"kind\" />", Shrub.class, "id", true);
 	}
 
 	/**
@@ -189,14 +189,14 @@ public final class TestMoreFixtureSerialization extends
 			SPFormatException {
 		final TextFixture one = new TextFixture("one", -1);
 		assertSerialization("First test of TextFixture serialization, reflection",
-				reader, one, TextFixture.class);
+				one, TextFixture.class);
 		final TextFixture two = new TextFixture("two", 2);
 		assertSerialization("Second test of TextFixture serialization, reflection",
-				reader, two, TextFixture.class);
+				two, TextFixture.class);
 		final TextFixture three = new TextFixture("three", 10);
 		assertSerialization("Third test of TextFixture serialization, reflection",
-				reader, three, TextFixture.class);
-		assertUnwantedChild(reader, "<text turn=\"1\"><troll /></text>",
+				three, TextFixture.class);
+		assertUnwantedChild("<text turn=\"1\"><troll /></text>",
 				TextFixture.class, false);
 	}
 
@@ -214,10 +214,10 @@ public final class TestMoreFixtureSerialization extends
 		for (TownStatus status : TownStatus.values()) {
 			final Village one = new Village(status, "villageOne", 1); // NOPMD
 			assertSerialization("First Village serialization test, reflection, "
-					+ status, reader, one, Village.class);
+					+ status, one, Village.class);
 			final Village two = new Village(status, "villageTwo", 2); // NOPMD
 			assertSerialization("Second Village serialization test, reflection, "
-					+ status, reader, two, Village.class);
+					+ status, two, Village.class);
 		}
 		final Village three = new Village(TownStatus.Abandoned, "", 3);
 		assertEquals(
@@ -228,12 +228,12 @@ public final class TestMoreFixtureSerialization extends
 				"Serialization of village with no or empty name does The Right Thing, non-reflection",
 				three, reader.readXML(new StringReader(three.toXML()), Village.class,
 						false, new Warning(Warning.Action.Ignore)));
-		assertMissingProperty(reader, three.toXML(), Village.class, "name", true);
-		assertUnwantedChild(reader, "<village status=\"active\"><village /></village>",
+		assertMissingProperty(three.toXML(), Village.class, "name", true);
+		assertUnwantedChild("<village status=\"active\"><village /></village>",
 				Village.class, false);
-		assertMissingProperty(reader, "<village />", Village.class, STATUS_PROPERTY,
+		assertMissingProperty("<village />", Village.class, STATUS_PROPERTY,
 				false);
-		assertMissingProperty(reader,
+		assertMissingProperty(
 				"<village name=\"name\" status=\"active\" />", Village.class,
 				"id", true);
 	}
@@ -249,14 +249,14 @@ public final class TestMoreFixtureSerialization extends
 	 */
 	@Test
 	public void testUnitWarnings() throws XMLStreamException, SPFormatException { // NOPMD
-		assertMissingProperty(reader, "<unit />", Unit.class, "owner", true);
-		assertMissingProperty(reader, "<unit owner=\"\" />", Unit.class,
+		assertMissingProperty("<unit />", Unit.class, "owner", true);
+		assertMissingProperty("<unit owner=\"\" />", Unit.class,
 				"owner", true);
-		assertMissingProperty(reader, "<unit owner=\"1\" name=\"name\" id=\"0\" />", Unit.class,
+		assertMissingProperty("<unit owner=\"1\" name=\"name\" id=\"0\" />", Unit.class,
 				KIND_PROPERTY, true);
-		assertMissingProperty(reader, "<unit owner=\"1\" kind=\"\" name=\"name\" id=\"0\" />",
+		assertMissingProperty("<unit owner=\"1\" kind=\"\" name=\"name\" id=\"0\" />",
 				Unit.class, KIND_PROPERTY, true);
-		assertUnwantedChild(reader, "<unit><unit /></unit>", Unit.class, false);
+		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
 		final Unit one = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		final String oneXMLMangled = one.toXML().replace(KIND_PROPERTY, "type");
 		assertEquals(
@@ -269,8 +269,8 @@ public final class TestMoreFixtureSerialization extends
 				one, reader.readXML(
 						new StringReader(oneXMLMangled),
 						Unit.class, true, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(reader, oneXMLMangled, Unit.class, "type", true);
-		assertMissingProperty(reader, "<unit owner=\"2\" kind=\"unit\" />", Unit.class, "name", true);
+		assertDeprecatedProperty(oneXMLMangled, Unit.class, "type", true);
+		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class, "name", true);
 		final Unit two = new Unit(new Player(2, ""), "", "name", 2);
 		assertEquals("Deserialize unit with no kind properly, reflection", two,
 				reader.readXML(new StringReader(two.toXML()), Unit.class, true,
@@ -302,7 +302,7 @@ public final class TestMoreFixtureSerialization extends
 				four, reader.readXML(new StringReader(
 						"<unit owner=\"3\" kind=\"unitKind\" name=\"\" id=\"4\"/>"),
 						Unit.class, false, new Warning(Warning.Action.Ignore)));
-		assertMissingProperty(reader,
+		assertMissingProperty(
 				"<unit owner=\"1\" kind=\"kind\" name=\"name\" />", Unit.class,
 				"id", true);
 	}

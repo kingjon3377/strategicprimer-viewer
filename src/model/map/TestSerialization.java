@@ -67,14 +67,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testPlayerSerialization() throws XMLStreamException,
 			SPFormatException {
 		assertSerialization("First Player serialization test, reflection",
-				reader, new Player(1, "one"), Player.class);
+				new Player(1, "one"), Player.class);
 		assertSerialization("Second Player serialization test, reflection",
-				reader, new Player(2, "two"), Player.class);
-		assertUnwantedChild(reader, "<player><troll /></player>",
+				new Player(2, "two"), Player.class);
+		assertUnwantedChild("<player><troll /></player>",
 				Player.class, false);
-		assertMissingProperty(reader, "<player code_name=\"one\" />",
+		assertMissingProperty("<player code_name=\"one\" />",
 				Player.class, "number", false);
-		assertMissingProperty(reader, "<player number=\"1\" />",
+		assertMissingProperty("<player number=\"1\" />",
 				Player.class, "code_name", false);
 	}
 
@@ -103,20 +103,19 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			SPFormatException {
 		for (River river : River.values()) {
 			assertSerialization("First River serialization test, reflection",
-					reader, river, River.class);
+					river, River.class);
 		}
-		assertUnwantedChild(reader, "<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
+		assertUnwantedChild("<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
 				Tile.class, false);
-		assertMissingProperty(reader, "<tile row=\"1\" column=\"1\" kind=\"plains\"><river /></tile>",
+		assertMissingProperty("<tile row=\"1\" column=\"1\" kind=\"plains\"><river /></tile>",
 				Tile.class, "direction", false);
 		assertSerialization("Second River serialization test, reflection",
-				reader, addRivers(new Tile(0, 0, TileType.Plains), River.East),
+				addRivers(new Tile(0, 0, TileType.Plains), River.East),
 				Tile.class);
 		assertSerialization("Third River serialization test, reflection",
-				reader, addRivers(new Tile(0, 0, TileType.Plains), River.Lake),
+				addRivers(new Tile(0, 0, TileType.Plains), River.Lake),
 				Tile.class);
 		assertSerialization("Fourth River serialization test, reflection",
-				reader,
 				addRivers(new Tile(0, 0, TileType.Plains), River.North),
 				Tile.class);
 		final EnumSet<River> setOne = EnumSet.noneOf(River.class);
@@ -159,7 +158,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						River.North));
 		assertSerialization(
 				"Fifth River serialization test, reflection",
-				reader,
 				addRivers(new Tile(0, 0, TileType.Plains), River.North,
 						River.South), Tile.class);
 	}
@@ -175,44 +173,43 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testTileSerialization() throws XMLStreamException,
 			SPFormatException {
 		assertSerialization("First Tile serialization test, reflection",
-				reader, new Tile(0, 0, TileType.Desert), Tile.class);
+				new Tile(0, 0, TileType.Desert), Tile.class);
 		final Tile two = new Tile(1, 1, TileType.Plains);
 		two.addFixture(new Griffin(1));
 		assertSerialization("Second Tile serialization test, reflection",
-				reader, two, Tile.class);
+				two, Tile.class);
 		final Tile three = new Tile(2, 2, TileType.Steppe);
 		three.addFixture(new Unit(new Player(1, ""), "unitOne", "firstUnit", 1));
 		three.addFixture(new Forest("forestKind", true));
-		assertSerialization("Third Tile serialization test, reflection", reader, three, Tile.class);
+		assertSerialization("Third Tile serialization test, reflection", three, Tile.class);
 		final Tile four = new Tile(3, 3, TileType.Jungle);
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
 		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
 		four.addFixture(fort);
 		four.addFixture(new TextFixture("Random text here", 5));
 		four.addRiver(River.Lake);
-		assertSerialization("Fourth Tile serialization test, reflection", reader, four, Tile.class);
+		assertSerialization("Fourth Tile serialization test, reflection", four, Tile.class);
 		final Tile five = new Tile(4, 4, TileType.Plains);
 		final String xml = five.toXML().replace("kind", "type");
 		assertEquals("Test Tile deserialization of deprecated tile-type idiom, non-reflection", five,
 				reader.readXML(new StringReader(xml), Tile.class, false, new Warning(Warning.Action.Ignore)));
 		assertEquals("Test Tile deserialization of deprecated tile-type idiom, reflection", five,
 				reader.readXML(new StringReader(xml), Tile.class, true, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(reader, xml, Tile.class, "type", true);
-		assertMissingProperty(reader, "<tile column=\"0\" kind=\"plains\" />",
+		assertDeprecatedProperty(xml, Tile.class, "type", true);
+		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
-		assertMissingProperty(reader, "<tile row=\"0\" kind=\"plains\" />",
+		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />",
 				Tile.class, "column", false);
-		assertMissingProperty(reader, "<tile row=\"0\" column=\"0\" />",
+		assertMissingProperty("<tile row=\"0\" column=\"0\" />",
 				Tile.class, KIND_PROPERTY, false);
 		assertUnwantedChild(
-				reader,
 				"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
 				Tile.class, false);
 		final Tile six = new Tile(2, 3, TileType.Jungle);
 		six.addFixture(new Unit(new Player(2, ""), "explorer", "name one", 1));
 		six.addFixture(new Unit(new Player(2, ""), "explorer", "name two", 2));
 		assertEquals("Just checking ...", 2, six.getContents().size());
-		assertSerialization("Multiple units should come through", reader, six, Tile.class);
+		assertSerialization("Multiple units should come through", six, Tile.class);
 		final String xmlTwo = new StringBuilder(
 				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
@@ -268,7 +265,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						new StringReader(
 								"<map rows=\"1\" columns=\"2\" version=\"2\"><future /></map>"),
 						SPMap.class, true, new Warning(Warning.Action.Ignore)));
-		assertUnsupportedTag(reader,
+		assertUnsupportedTag(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
 				SPMap.class, "future", true);
 	}
@@ -281,13 +278,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testMapSerialization() throws XMLStreamException, SPFormatException {
-		assertUnwantedChild(reader, "<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>", SPMap.class, false);
+		assertUnwantedChild("<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>", SPMap.class, false);
 		final SPMap one = new SPMap(2, 1, 1);
 		one.addPlayer(new Player(1, "playerOne"));
 		one.getPlayers().getPlayer(1).setCurrent(true);
 		one.addTile(new Tile(0, 0, TileType.Plains));
-		assertSerialization("Simple Map serialization", reader, one, SPMap.class);
-		assertMissingProperty(reader, "<map version=\"2\" columns=\"1\" />", SPMap.class, "rows", false);
-		assertMissingProperty(reader, "<map version=\"2\" rows=\"1\" />", SPMap.class, "columns", false);
+		assertSerialization("Simple Map serialization", one, SPMap.class);
+		assertMissingProperty("<map version=\"2\" columns=\"1\" />", SPMap.class, "rows", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMap.class, "columns", false);
 	}
 }
