@@ -1,19 +1,12 @@
 package model.map.fixtures; // NOPMD
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import util.Warning;
-import controller.map.ISPReader;
 import controller.map.SPFormatException;
 
 /**
@@ -27,27 +20,6 @@ public final class TestFixtureSerialization extends
 	 * Extracted constant.
 	 */
 	private static final String KIND_PROPERTY = "kind";
-	/**
-	 * Constructor.
-	 */
-	public TestFixtureSerialization() {
-		super();
-		setUp();
-	}
-
-	/**
-	 * Set-up method.
-	 */
-	@Before
-	public void setUp() {
-		reader = createReader();
-	}
-
-	/**
-	 * The XML reader we'll use to test.
-	 */
-	private ISPReader reader;
-
 	/**
 	 * Test the serialization of Animal, including catching format errors.
 	 * 
@@ -72,16 +44,11 @@ public final class TestFixtureSerialization extends
 				Animal.class, false);
 		assertMissingProperty("<animal />",
 				Animal.class, KIND_PROPERTY, false);
-		assertEquals("Forward-looking XML in re talking, reflection",
-				new Animal("animalFive", false, false, 3),
-				reader.readXML(new StringReader(
-						"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />"),
-						Animal.class, true, new Warning(Warning.Action.Ignore)));
-		assertEquals("Forward-looking XML in re talking, non-reflection",
-				new Animal("animalFive", false, false, 4),
-				reader.readXML(new StringReader(
-						"<animal kind=\"animalFive\" talking=\"false\" id=\"4\" />"),
-						Animal.class, false, new Warning(Warning.Action.Ignore)));
+		assertForwardDeserialization(
+				"Forward-looking XML in re talking, reflection", new Animal(
+						"animalFive", false, false, 3),
+				"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />",
+				Animal.class);
 		assertMissingProperty(
 				"<animal kind=\"animalSix\" talking=\"true\" />", Animal.class,
 				"id", true);

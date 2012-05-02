@@ -1,18 +1,12 @@
 package model.map.events;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import util.Warning;
-import controller.map.ISPReader;
 import controller.map.SPFormatException;
 
 /**
@@ -30,27 +24,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * Extracted constant.
 	 */
 	private static final String STATUS_PROPERTY = "status";
-	/**
-	 * Constructor.
-	 */
-	public TestEventSerialization() {
-		super();
-		setUp();
-	}
-
-	/**
-	 * Set-up method.
-	 */
-	@Before
-	public void setUp() {
-		reader = createReader();
-	}
-
-	/**
-	 * The XML reader we'll use to test.
-	 */
-	private ISPReader reader;
-
 	/**
 	 * Test serialization of BattlefieldEvents, including error-checking.
 	 * 
@@ -191,14 +164,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Second MineralEvent serialization test, reflection",
 				two, MineralEvent.class);
 		final String xml = two.toXML().replace("kind", "mineral");
-		assertEquals("Deserialization of deprecated Mineral idiom, reflection",
-				two, reader.readXML(new StringReader(xml), MineralEvent.class,
-						true, new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialization of deprecated Mineral idiom, non-reflection",
-				two, reader.readXML(new StringReader(xml), MineralEvent.class,
-						false, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(xml, MineralEvent.class, "mineral",
-				true);
+		assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
+				two, xml, MineralEvent.class, "mineral");
 		assertUnwantedChild("<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
 				MineralEvent.class, false);
 		assertMissingProperty("<mineral dc=\"0\" exposed=\"false\" />",
@@ -232,13 +199,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		}
 		final StoneEvent three = new StoneEvent(StoneKind.Marble, 10, 3);
 		final String xml = three.toXML().replace("kind", "stone");
-		assertEquals("Deserialization of deprecated stone idiom, reflection",
-				three, reader.readXML(new StringReader(xml), StoneEvent.class,
-						true, new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialization of deprecated stone idiom, non-reflection",
-				three, reader.readXML(new StringReader(xml), StoneEvent.class,
-						false, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(xml, StoneEvent.class, "stone", true);
+		assertDeprecatedDeserialization(
+				"Deserialization of deprecated stone idiom", three, xml,
+				StoneEvent.class, "stone");
 		assertUnwantedChild(
 				"<stone kind=\"stone\" dc=\"10\"><troll /></stone>",
 				StoneEvent.class, false);

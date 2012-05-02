@@ -497,6 +497,131 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		assertEquals(message, obj, reader.readXML(new StringReader(obj.toXML()), type, true, warner));
 	}
 	/**
+	 * Assert that a deprecated idiom deserializes properly if warnings are ignored, but is warned about.
+	 * @param <T> the type
+	 * @param message the message to pass to JUnit
+	 * @param expected the object we expect the deserialized form to equal
+	 * @param xml the serialized form
+	 * @param type the type of object
+	 * @param property the deprecated property
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML format error
+	 */
+	public <T extends XMLWritable> void assertDeprecatedDeserialization(
+			final String message, final T expected, final String xml,
+			final Class<T> type, final String property) throws XMLStreamException, SPFormatException {
+		assertEquals(message, expected, oldReader.readXML(
+				new StringReader(xml), type, true, new Warning(
+						Warning.Action.Ignore)));
+		assertEquals(message, expected, oldReader.readXML(
+				new StringReader(xml), type, false, new Warning(
+						Warning.Action.Ignore)));
+		assertEquals(message, expected, newReader.readXML(
+				new StringReader(xml), type, true, new Warning(
+						Warning.Action.Ignore)));
+		assertEquals(message, expected, newReader.readXML(
+				new StringReader(xml), type, false, new Warning(
+						Warning.Action.Ignore)));
+		assertDeprecatedProperty(xml, type, property, true);
+	}
+	
+	/**
+	 * Assert that a serialized form with a recommended but not required
+	 * property missing deserializes properly if warnings are ignored, but is
+	 * warned about.
+	 * 
+	 * @param <T>
+	 *            the type
+	 * @param message
+	 *            the message to pass to JUnit
+	 * @param expected
+	 *            the object we expect the deserialized form to equal
+	 * @param xml
+	 *            the serialized form
+	 * @param type
+	 *            the type of object
+	 * @param property
+	 *            the missing property
+	 * @throws SPFormatException
+	 *             on SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public <T extends XMLWritable> void assertMissingPropertyDeserialization(
+			final String message, final T expected, final String xml,
+			final Class<T> type, final String property) throws XMLStreamException, SPFormatException {
+		assertEquals(message, expected, oldReader.readXML(
+				new StringReader(xml), type, true, new Warning(
+						Warning.Action.Ignore)));
+		assertEquals(message, expected, oldReader.readXML(
+				new StringReader(xml), type, false, new Warning(
+						Warning.Action.Ignore)));
+		assertEquals(message, expected, newReader.readXML(
+				new StringReader(xml), type, true, new Warning(
+						Warning.Action.Ignore)));
+		assertEquals(message, expected, newReader.readXML(
+				new StringReader(xml), type, false, new Warning(
+						Warning.Action.Ignore)));
+		assertMissingProperty(xml, type, property, true);
+	}
+	
+	/**
+	 * Assert that a "forward idiom"---an idiom that we do not yet produce, but
+	 * want to accept---will be deserialized properly by both readers, both with
+	 * and without reflection.
+	 * @param <T> the type
+	 * @param message the message to pass to JUnit
+	 * @param expected the object we expect the deserialized form to equal
+	 * @param xml the serialized form
+	 * @param type the type of object
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML format error
+	 */
+	public <T extends XMLWritable> void assertForwardDeserialization(
+			final String message, final T expected, final String xml,
+			final Class<T> type) throws XMLStreamException, SPFormatException {
+		assertEquals(message, expected, oldReader.readXML(
+				new StringReader(xml), type, false, new Warning(
+						Warning.Action.Die)));
+		assertEquals(message, expected, oldReader.readXML(
+				new StringReader(xml), type, true, new Warning(
+						Warning.Action.Die)));
+		assertEquals(message, expected, newReader.readXML(
+				new StringReader(xml), type, false, new Warning(
+						Warning.Action.Die)));
+		assertEquals(message, expected, newReader.readXML(
+				new StringReader(xml), type, true, new Warning(
+						Warning.Action.Die)));
+	}
+	/**
+	 * Assert that two deserialzed forms are equivalent, using both readers, both with and without reflection.
+	 * @param <T> the type they'll deserialize to.
+	 * @param message the message to pass to JUnit
+	 * @param one the first form
+	 * @param two the second form
+	 * @param type the type
+	 * @param warningLevel the warning level to set.
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML format error
+	 */
+	public <T extends XMLWritable> void assertEquivalentForms(
+			final String message, final String one, final String two,
+			final Class<T> type, final Warning.Action warningLevel)
+			throws SPFormatException, XMLStreamException {
+		assertEquals(message, oldReader.readXML(new StringReader(one), type,
+				true, new Warning(warningLevel)), oldReader.readXML(
+				new StringReader(two), type, true, new Warning(warningLevel)));
+		assertEquals(message, oldReader.readXML(new StringReader(one), type,
+				false, new Warning(warningLevel)), oldReader.readXML(
+				new StringReader(two), type, false, new Warning(warningLevel)));
+		assertEquals(message, newReader.readXML(new StringReader(one), type,
+				true, new Warning(warningLevel)), newReader.readXML(
+				new StringReader(two), type, true, new Warning(warningLevel)));
+		assertEquals(message, newReader.readXML(new StringReader(one), type,
+				false, new Warning(warningLevel)), newReader.readXML(
+				new StringReader(two), type, false, new Warning(warningLevel)));
+	}
+	/**
 	 * A helper method to simplify test boiler plate code.
 	 * 
 	 * @param <T>

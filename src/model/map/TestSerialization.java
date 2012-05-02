@@ -2,7 +2,6 @@ package model.map;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.StringReader;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,11 +15,9 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.Unit;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import util.Warning;
-import controller.map.ISPReader;
 import controller.map.SPFormatException;
 
 /**
@@ -34,26 +31,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * Extracted constant.
 	 */
 	private static final String KIND_PROPERTY = "kind";
-	/**
-	 * XML reader we'll be using.
-	 */
-	private ISPReader reader;
-
-	/**
-	 * Set-up method.
-	 */
-	@Before
-	public void setUp() {
-		reader = createReader();
-	}
-
-	/**
-	 * Constructor.
-	 */
-	public TestSerialization() {
-		super();
-		setUp();
-	}
 
 	/**
 	 * Test Player serialization.
@@ -191,11 +168,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Fourth Tile serialization test, reflection", four, Tile.class);
 		final Tile five = new Tile(4, 4, TileType.Plains);
 		final String xml = five.toXML().replace("kind", "type");
-		assertEquals("Test Tile deserialization of deprecated tile-type idiom, non-reflection", five,
-				reader.readXML(new StringReader(xml), Tile.class, false, new Warning(Warning.Action.Ignore)));
-		assertEquals("Test Tile deserialization of deprecated tile-type idiom, reflection", five,
-				reader.readXML(new StringReader(xml), Tile.class, true, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(xml, Tile.class, "type", true);
+		assertDeprecatedDeserialization(
+				"Test Tile deserialization of deprecated tile-type idiom",
+				five, xml, Tile.class, "type");
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
 		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />",
@@ -229,42 +204,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testSkppableSerialization() throws XMLStreamException,
 			SPFormatException {
-		assertEquals(
-				"Two maps, one with row tags, one without, non-reflection",
-				reader.readXML(new StringReader(
-						"<map rows=\"1\" columns=\"1\" version=\"2\" />"),
-						SPMap.class, false, Warning.INSTANCE),
-				reader.readXML(
-						new StringReader(
-								"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>"),
-						SPMap.class, false, Warning.INSTANCE));
-		assertEquals(
-				"Two maps, one with row tags, one without, reflection",
-				reader.readXML(new StringReader(
-						"<map rows=\"1\" columns=\"1\" version=\"2\" />"),
-						SPMap.class, true, Warning.INSTANCE),
-				reader.readXML(
-						new StringReader(
-								"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>"),
-						SPMap.class, true, Warning.INSTANCE));
-		assertEquals(
-				"Two maps, one with future tag, one without, non-reflection",
-				reader.readXML(new StringReader(
-						"<map rows=\"1\" columns=\"1\" version=\"2\" />"),
-						SPMap.class, false, new Warning(Warning.Action.Ignore)),
-				reader.readXML(
-						new StringReader(
-								"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>"),
-						SPMap.class, false, new Warning(Warning.Action.Ignore)));
-		assertEquals(
-				"Two maps, one with future tag, one without, reflection",
-				reader.readXML(new StringReader(
-						"<map rows=\"1\" columns=\"2\" version=\"2\" />"),
-						SPMap.class, true, new Warning(Warning.Action.Ignore)),
-				reader.readXML(
-						new StringReader(
-								"<map rows=\"1\" columns=\"2\" version=\"2\"><future /></map>"),
-						SPMap.class, true, new Warning(Warning.Action.Ignore)));
+		assertEquivalentForms("Two maps, one with row tags, one without",
+				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
+				"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>",
+				SPMap.class, Warning.Action.Die);
+		assertEquivalentForms("Two maps, one with future tag, one without",
+				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
+				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
+				SPMap.class, Warning.Action.Ignore);
 		assertUnsupportedTag(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
 				SPMap.class, "future", true);

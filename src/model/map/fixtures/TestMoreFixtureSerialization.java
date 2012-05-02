@@ -1,20 +1,14 @@
 package model.map.fixtures;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.StringReader;
-
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
 import model.map.events.TownStatus;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import util.Warning;
-import controller.map.ISPReader;
 import controller.map.SPFormatException;
 
 /**
@@ -32,27 +26,6 @@ public final class TestMoreFixtureSerialization extends
 	 * Extracted constant.
 	 */
 	private static final String STATUS_PROPERTY = "status";
-	/**
-	 * Constructor.
-	 */
-	public TestMoreFixtureSerialization() {
-		super();
-		setUp();
-	}
-
-	/**
-	 * Set-up method.
-	 */
-	@Before
-	public void setUp() {
-		reader = createReader();
-	}
-
-	/**
-	 * The XML reader we'll use to test.
-	 */
-	private ISPReader reader;
-
 	/**
 	 * Test serialization of Groves.
 	 * 
@@ -130,11 +103,8 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Fourth test of Mine serialization, reflection",
 				four, Mine.class);
 		final String xml = four.toXML().replace(KIND_PROPERTY, "product");
-		assertEquals("Deprecated Mine idiom, reflection", four, reader.readXML(
-				new StringReader(xml), Mine.class, true, new Warning(Warning.Action.Ignore)));
-		assertEquals("Deprecated Mine idiom, non-reflection", four, reader.readXML(
-				new StringReader(xml), Mine.class, false, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(xml, Mine.class, "product", true);
+		assertDeprecatedDeserialization("Deprecated Mine idiom", four, xml,
+				Mine.class, "product");
 		assertUnwantedChild("<mine kind=\"gold\" status=\"active\"><troll /></mine>",
 				Mine.class, false);
 		assertMissingProperty("<mine status=\"active\"/>",
@@ -163,13 +133,9 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Second test of Shrub serialization, reflection",
 				two, Shrub.class);
 		final String xml = two.toXML().replace(KIND_PROPERTY, "shrub");
-		assertEquals("Deserialization of mangled shrub, reflection", two,
-				reader.readXML(new StringReader(xml), Shrub.class, true,
-						new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialization of mangled shrub, non-reflection", two,
-				reader.readXML(new StringReader(xml), Shrub.class, true,
-						new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(xml, Shrub.class, "shrub", true);
+		assertDeprecatedDeserialization(
+				"Deserialization of mangled shrub, reflection", two, xml,
+				Shrub.class, "shrub");
 		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
 		assertMissingProperty("<shrub />", Shrub.class, KIND_PROPERTY, false);
@@ -220,15 +186,9 @@ public final class TestMoreFixtureSerialization extends
 					+ status, two, Village.class);
 		}
 		final Village three = new Village(TownStatus.Abandoned, "", 3);
-		assertEquals(
-				"Serialization of village with no or empty name does The Right Thing, reflection",
-				three, reader.readXML(new StringReader(three.toXML()), Village.class,
-						true, new Warning(Warning.Action.Ignore)));
-		assertEquals(
-				"Serialization of village with no or empty name does The Right Thing, non-reflection",
-				three, reader.readXML(new StringReader(three.toXML()), Village.class,
-						false, new Warning(Warning.Action.Ignore)));
-		assertMissingProperty(three.toXML(), Village.class, "name", true);
+		assertMissingPropertyDeserialization(
+				"Serialization of village with no or empty name does The Right Thing",
+				three, three.toXML(), Village.class, "name");
 		assertUnwantedChild("<village status=\"active\"><village /></village>",
 				Village.class, false);
 		assertMissingProperty("<village />", Village.class, STATUS_PROPERTY,
@@ -259,49 +219,28 @@ public final class TestMoreFixtureSerialization extends
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
 		final Unit one = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		final String oneXMLMangled = one.toXML().replace(KIND_PROPERTY, "type");
-		assertEquals(
-				"Deserialize properly with deprecated use of 'type' for unit kind, non-reflection",
-				one, reader.readXML(
-						new StringReader(oneXMLMangled),
-						Unit.class, false, new Warning(Warning.Action.Ignore)));
-		assertEquals(
-				"Deserialize properly with deprecated use of 'type' for unit kind, reflection",
-				one, reader.readXML(
-						new StringReader(oneXMLMangled),
-						Unit.class, true, new Warning(Warning.Action.Ignore)));
-		assertDeprecatedProperty(oneXMLMangled, Unit.class, "type", true);
+		assertDeprecatedDeserialization(
+				"Deserialize properly with deprecated use of 'type' for unit kind",
+				one, oneXMLMangled,
+						Unit.class, "type");
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class, "name", true);
-		final Unit two = new Unit(new Player(2, ""), "", "name", 2);
-		assertEquals("Deserialize unit with no kind properly, reflection", two,
-				reader.readXML(new StringReader(two.toXML()), Unit.class, true,
-						new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialize unit with no kind properly, non-reflection", two,
-				reader.readXML(new StringReader(two.toXML()), Unit.class, false,
-						new Warning(Warning.Action.Ignore)));
-		final Unit three = new Unit(new Player(-1, ""), "kind", "unitThree", 3);
-		assertEquals("Deserialize unit with no owner properly, reflection",
-				three, reader.readXML(new StringReader(
-						"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />"),
-						Unit.class, true, new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialize unit with no owner properly, non-reflection",
-				three, reader.readXML(new StringReader(
-						"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />"),
-						Unit.class, false, new Warning(Warning.Action.Ignore)));
+		assertSerialization(
+				"Deserialize unit with no kind properly, reflection", new Unit(
+						new Player(2, ""), "", "name", 2), Unit.class,
+				new Warning(Warning.Action.Ignore));
+		assertMissingPropertyDeserialization(
+				"Deserialize unit with no owner properly", new Unit(new Player(
+						-1, ""), "kind", "unitThree", 3),
+				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />",
+				Unit.class, "owner");
 		final Unit four = new Unit(new Player(3, ""), "unitKind", "", 4);
-		assertEquals("Deserialize unit with no name properly, reflection",
-				four, reader.readXML(new StringReader(four.toXML()),
-						Unit.class, true, new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialize unit with no name properly, non-reflection",
-				four, reader.readXML(new StringReader(four.toXML()),
-						Unit.class, false, new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialize unit with empty name properly, reflection",
-				four, reader.readXML(new StringReader(
-						"<unit owner=\"3\" kind=\"unitKind\" name=\"\" id=\"4\" />"),
-						Unit.class, true, new Warning(Warning.Action.Ignore)));
-		assertEquals("Deserialize unit with empty name properly, non-reflection",
-				four, reader.readXML(new StringReader(
-						"<unit owner=\"3\" kind=\"unitKind\" name=\"\" id=\"4\"/>"),
-						Unit.class, false, new Warning(Warning.Action.Ignore)));
+		assertMissingPropertyDeserialization(
+				"Deserialize unit with no name properly", four, four.toXML(),
+				Unit.class, "name");
+		assertMissingPropertyDeserialization(
+				"Deserialize unit with empty name properly", four,
+				"<unit owner=\"3\" kind=\"unitKind\" name=\"\" id=\"4\" />",
+				Unit.class, "name");
 		assertMissingProperty(
 				"<unit owner=\"1\" kind=\"kind\" name=\"name\" />", Unit.class,
 				"id", true);
