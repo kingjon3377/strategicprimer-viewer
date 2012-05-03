@@ -3,13 +3,11 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Phoenix;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -49,17 +47,7 @@ public class PhoenixReader implements INodeReader<Phoenix> {
 					.getLineNumber()));
 			id = IDFactory.FACTORY.getID();
 		}
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("phoenix", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "phoenix".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return new Phoenix(id);
 	}
 }

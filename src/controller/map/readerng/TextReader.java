@@ -35,18 +35,17 @@ public class TextReader implements INodeReader<TextFixture> {
 	public TextFixture parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final StringBuilder sbuild = new StringBuilder("");
+		final StringBuilder sbuild = new StringBuilder(""); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("text", event.asStartElement()
 						.getName().getLocalPart(), event.getLocation()
 						.getLineNumber());
-			} else if (event.isEndElement()
-					&& "text".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
+			} else if (event.isEndElement()
+					&& element.getName().equals(event.asEndElement().getName())) {
+				break;
 			}
 		}
 		return new TextFixture(sbuild.toString().trim(),

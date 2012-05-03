@@ -3,13 +3,11 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Giant;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A reader for Giants.
@@ -49,17 +47,7 @@ public class GiantReader implements INodeReader<Giant> {
 			id = IDFactory.FACTORY.getID();
 		}
 		final Giant fix = new Giant(XMLHelper.getAttribute(element, "kind"), id);
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("giant", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "giant".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 

@@ -162,7 +162,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 				// ESCA-JAVA0177:
 				AbstractXMLNode node;
 				try {
-					node = parseTag(event.asStartElement(), reflection, warner);
+					node = parseTag(event.asStartElement(), reflection, warner); // NOPMD
 				} catch (InstantiationException e) {
 					throw new IllegalStateException(e);
 				} catch (IllegalAccessException e) {

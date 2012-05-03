@@ -44,7 +44,7 @@ public final class EchoDriver {
 		// ESCA-JAVA0177:
 		final SPMap map; // NOPMD
 		try {
-			map = new MapReaderAdapter().readMap(args[0], new Warning(
+			map = new MapReaderAdapter().readMap(args[0], new Warning(//NOPMD
 					Warning.Action.Ignore));
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE, "Unsupported map version", except);

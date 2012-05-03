@@ -3,13 +3,11 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.events.CaveEvent;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -51,17 +49,7 @@ public class CaveReader implements INodeReader<CaveEvent> {
 		}
 		final CaveEvent fix = new CaveEvent(
 				Integer.parseInt(XMLHelper.getAttribute(element, "dc")), id);
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("cave", event.asStartElement()
-						.getName().getLocalPart(), event.getLocation()
-						.getLineNumber());
-			} else if (event.isEndElement()
-					&& "cave".equalsIgnoreCase(event.asEndElement()
-							.getName().getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 }

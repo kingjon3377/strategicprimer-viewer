@@ -3,13 +3,11 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Djinn;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A reader for djinn.
@@ -48,17 +46,7 @@ public class DjinnReader implements INodeReader<Djinn> {
 					.getLineNumber()));
 			id = IDFactory.FACTORY.getID();
 		}
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("djinn", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "djinn".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return new Djinn(id);
 	}
 

@@ -38,7 +38,7 @@ public class RiverReader implements INodeReader<River> {
 				"lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
 						: River.getRiver(XMLHelper.getAttribute(element,
 								"direction"));
-		XMLHelper.spinUntilEnd(element.getName().getLocalPart(), stream);
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 }

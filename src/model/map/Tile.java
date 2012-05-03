@@ -83,9 +83,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {
 					final RiverFixture rivers = getRivers();
-					for (River river : (RiverFixture) fix) {
-						rivers.addRiver(river);
-					}
+					rivers.addRivers((RiverFixture) fix);
 				} else if (!((RiverFixture) fix).getRivers().isEmpty()) {
 					contents.add(fix);
 				}

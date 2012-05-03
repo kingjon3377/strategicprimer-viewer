@@ -143,4 +143,13 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 	public long getID() {
 		return -1;
 	}
+	/**
+	 * Add rivers from another RiverFixture to this one.
+	 * @param collection the rivers to add
+	 */
+	public void addRivers(final Iterable<River> collection) {
+		for (River river : collection) {
+			addRiver(river);
+		}
+	}
 }

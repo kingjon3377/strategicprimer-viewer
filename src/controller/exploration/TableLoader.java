@@ -316,7 +316,7 @@ public final class TableLoader { // NOPMD
 	 *            the runner to add them to
 	 */
 	public void loadAllTables(final String path, final ExplorationRunner runner) {
-		final TableLoader loader = new TableLoader();
+		final TableLoader loader = new TableLoader(); // NOPMD
 		final File dir = new File(path);
 		final String[] children = dir.list();
 		if (children != null) {

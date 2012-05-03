@@ -5,11 +5,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
-import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A reader for Groves.
@@ -53,17 +51,7 @@ public class GroveReader implements INodeReader<Grove> {
 				.getAttribute(element, "wild")),
 				XMLHelper.getAttributeWithDeprecatedForm(element, "kind",
 						"tree", warner), id);
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException(element.getName()
-						.getLocalPart(), event.asStartElement().getName()
-						.getLocalPart(), event.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& EqualsAny.equalsAny(event.asEndElement().getName()
-							.getLocalPart(), "grove", "orchard")) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 }

@@ -3,13 +3,11 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Hill;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -49,17 +47,7 @@ public class HillReader implements INodeReader<Hill> {
 					.getLineNumber()));
 			id = IDFactory.FACTORY.getID();
 		}
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("hill", event.asStartElement()
-						.getName().getLocalPart(), event.getLocation()
-						.getLineNumber());
-			} else if (event.isEndElement()
-					&& "hill".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return new Hill(id);
 	}
 }

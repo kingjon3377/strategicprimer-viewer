@@ -3,14 +3,12 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -53,17 +51,7 @@ public class MineReader implements INodeReader<Mine> {
 		final Mine fix = new Mine(XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "product", warner),
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
 						"status")), id);
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("mine", event.asStartElement()
-						.getName().getLocalPart(), event.getLocation()
-						.getLineNumber());
-			} else if (event.isEndElement()
-					&& "mine".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
-	}
+}

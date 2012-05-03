@@ -35,7 +35,7 @@ public class ForestReader implements INodeReader<Forest> {
 			throws SPFormatException {
 		final Forest fix = new Forest(XMLHelper.getAttribute(element, "kind"),
 				XMLHelper.hasAttribute(element, "rows"));
-		XMLHelper.spinUntilEnd("forest", stream);
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 

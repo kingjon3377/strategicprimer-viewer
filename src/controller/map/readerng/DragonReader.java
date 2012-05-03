@@ -8,7 +8,6 @@ import model.map.fixtures.Dragon;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A reader for Dragons.
@@ -48,17 +47,7 @@ public class DragonReader implements INodeReader<Dragon> {
 			id = IDFactory.FACTORY.getID();
 		}
 		final Dragon fix = new Dragon(XMLHelper.getAttribute(element, "kind"), id);
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("dragon", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "dragon".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 

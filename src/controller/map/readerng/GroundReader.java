@@ -3,12 +3,10 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
+import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 
 /**
  * A reader for Ground.
@@ -39,17 +37,7 @@ public class GroundReader implements INodeReader<Ground> {
 		final Ground fix = new Ground(
 				XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "ground", warner),
 				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")));
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("ground", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "ground".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 }

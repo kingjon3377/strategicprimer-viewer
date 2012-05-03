@@ -48,7 +48,7 @@ public class TileReader implements INodeReader<Tile> {
 	public Tile parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Tile tile = new Tile(parseInt(getAttribute(element, "row")),
+		final Tile tile = new Tile(parseInt(getAttribute(element, "row")), //NOPMD
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttributeWithDeprecatedForm(element, "kind", "type", warner)));
 		for (final XMLEvent event : stream) {

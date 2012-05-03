@@ -24,7 +24,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  * 
  */
-public class DrawHelperComparator {
+public class DrawHelperComparator { // NOPMD
 	/**
 	 * Label to put before every direct-helper test result.
 	 */
@@ -84,6 +84,18 @@ public class DrawHelperComparator {
 		final BufferedImage image = new BufferedImage(tsize, tsize,
 				BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
+		firstBody(helper, image);
+		final long end = System.nanoTime();
+		return end - start;
+	}
+
+	/**
+	 * The body of the first test.
+	 * @param helper the helper to test
+	 * @param image the image used in the test.
+	 */
+	private void firstBody(final TileDrawHelper helper,
+			final BufferedImage image) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (int i = 0; i < rows; i++) {
@@ -93,8 +105,6 @@ public class DrawHelperComparator {
 				}
 			}
 		}
-		final long end = System.nanoTime();
-		return end - start;
 	}
 
 	/**
@@ -109,6 +119,18 @@ public class DrawHelperComparator {
 		final BufferedImage image = new BufferedImage(tsize * spmap.cols(),
 				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
+		secondBody(helper, image);
+		final long end = System.nanoTime();
+		return end - start;
+	}
+
+	/**
+	 * The body of the second test.
+	 * @param helper the helper to test
+	 * @param image the image used in the test.
+	 */
+	private void secondBody(final TileDrawHelper helper,
+			final BufferedImage image) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (int i = 0; i < rows; i++) {
@@ -119,8 +141,6 @@ public class DrawHelperComparator {
 				}
 			}
 		}
-		final long end = System.nanoTime();
-		return end - start;
 	}
 
 	/**
@@ -132,20 +152,29 @@ public class DrawHelperComparator {
 	 * @return how long the test took, in ns.
 	 */
 	public long third(final TileDrawHelper helper) {
-		final BufferedImage image = new BufferedImage(tsize, tsize,
+		final BufferedImage image = new BufferedImage(tsize, tsize, // NOPMD
 				BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics(); // NOPMD
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < cols; j++) {
-					helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), tsize, tsize);
-				}
-			}
+			final Graphics pen = image.createGraphics();
+			thirdBody(helper, pen);
 		}
 		final long end = System.nanoTime();
 		return end - start;
+	}
+
+	/**
+	 * The body of the third test.
+	 * @param helper the helper being tested
+	 * @param pen the Graphics used to draw to the image
+	 */
+	private void thirdBody(final TileDrawHelper helper, final Graphics pen) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), tsize, tsize);
+			}
+		}
 	}
 
 	/**
@@ -157,21 +186,30 @@ public class DrawHelperComparator {
 	 * @return how long the test took, in ns.
 	 */
 	public long fourth(final TileDrawHelper helper) {
-		final BufferedImage image = new BufferedImage(tsize * spmap.cols(),
+		final BufferedImage image = new BufferedImage(tsize * spmap.cols(), // NOPMD
 				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics(); // NOPMD
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < cols; j++) {
-					helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), i * tsize, j
-							* tsize, tsize, tsize);
-				}
-			}
+			final Graphics pen = image.createGraphics();
+			fourthBody(helper, pen);
 		}
 		final long end = System.nanoTime();
 		return end - start;
+	}
+
+	/**
+	 * The body of the fourth test.
+	 * @param helper the helper being tested
+	 * @param pen the Graphics used to draw to the image
+	 */
+	private void fourthBody(final TileDrawHelper helper, final Graphics pen) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), i * tsize, j
+						* tsize, tsize, tsize);
+			}
+		}
 	}
 
 	/**

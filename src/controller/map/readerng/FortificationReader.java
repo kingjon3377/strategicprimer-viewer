@@ -3,15 +3,13 @@ package controller.map.readerng;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.events.FortificationEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -62,17 +60,7 @@ public class FortificationReader implements INodeReader<FortificationEvent> {
 						.getAttribute(element, "size")), Integer
 						.parseInt(XMLHelper.getAttribute(element, "dc")),
 						XMLHelper.getAttributeWithDefault(element, "name", ""), id);
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("fortifiction", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "fortification".equalsIgnoreCase(event.asEndElement()
-							.getName().getLocalPart())) {
-				break;
-			}
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
 }

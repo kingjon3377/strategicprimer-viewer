@@ -6,10 +6,10 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import util.Warning;
-
 import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 
 /**
  * A class for helper methods.
@@ -43,11 +43,6 @@ public final class XMLHelper {
 		}
 		return attr.getValue();
 	}
-	/**
-	 * Error message for unexpected tag.
-	 */
-	private static final String UNEXPECTED_TAG = "Unexpected tag ";
-
 	/**
 	 * @param elem
 	 *            the element
@@ -125,14 +120,16 @@ public final class XMLHelper {
 	 *            what kind of tag we're in (for the error message)
 	 * @param reader
 	 *            the XML stream we're reading from
+	 * @throws SPFormatException on unwanted child
 	 */
-	public static void spinUntilEnd(final String tag, final Iterable<XMLEvent> reader) {
+	public static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new IllegalStateException(UNEXPECTED_TAG
-						+ event.asStartElement().getName().getLocalPart()
-						+ ": " + tag + " can't contain anything yet");
-			} else if (event.isEndElement()) {
+				throw new UnwantedChildException(tag.getLocalPart(), event.asStartElement()
+						.getName().getLocalPart(), event.getLocation()
+						.getLineNumber());
+			} else if (event.isEndElement()
+					&& tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}

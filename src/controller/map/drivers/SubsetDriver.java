@@ -39,7 +39,7 @@ public final class SubsetDriver {
 			System.exit(1);
 			return;
 		}
-		final SPMap mainMap = mainPair.first();
+		final SPMap mainMap = mainPair.first(); // NOPMD
 		SystemOut.SYS_OUT.println("OK if strict subset, WARN if needs manual checking, FAIL if error in reading");
 		for (String arg : args) {
 			if (arg.equals(args[0])) {

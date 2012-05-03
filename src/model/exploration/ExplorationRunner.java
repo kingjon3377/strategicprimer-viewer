@@ -209,7 +209,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	public boolean recursiveCheck() { // $codepro.audit.disable
 										// booleanMethodNamingConvention
-		final Set<String> state = new HashSet<String>();
+		final Set<String> state = new HashSet<String>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			if (recursiveCheck(table, state)) {
 				return true; // NOPMD;
@@ -225,7 +225,7 @@ public class ExplorationRunner { // NOPMD
 	 *            The stream to print results on.
 	 */
 	public void verboseRecursiveCheck(final PrintStream ostream) {
-		final Set<String> state = new HashSet<String>();
+		final Set<String> state = new HashSet<String>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			verboseRecursiveCheck(table, ostream, state);
 		}

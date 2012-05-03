@@ -1,4 +1,4 @@
-package controller.map.converter;
+package controller.map.converter; // NOPMD
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -40,7 +40,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  * 
  */
-public class Converter {
+public class Converter { // NOPMD
 	/**
 	 * Constructor.
 	 */
@@ -266,40 +266,79 @@ public class Converter {
 	 */
 	private void perturb(final Tile tile, final SPMap map, final Random random,
 			final boolean main) {
-		try {
-			if (!TileType.Ocean.equals(tile.getTerrain())) {
-				if (isAdjacentToTown(tile, map)
-						&& random.nextDouble() < SIXTY_PERCENT) {
-					if (random.nextBoolean()) {
-						addFixture(tile,
-								new Meadow(runner.recursiveConsultTable("grain", tile),
-										true, true, IDFactory.FACTORY.getID()), main);
-					} else {
-						addFixture(
-								tile,
-								new Grove(true, false, runner
-										.recursiveConsultTable("fruit_trees",
-												tile), IDFactory.FACTORY
-										.getID()), main);
-					}
-				} else if (TileType.Desert.equals(tile.getTerrain())) {
-					if (isAdjacentToWater(tile, map) && random.nextDouble() < .4) {
-						tile.setTerrain(TileType.Plains);
-					} else if (!tile.hasRiver() && random.nextDouble() < SIXTY_PERCENT) {
-						tile.setTerrain(TileType.Plains);
-					}
-				} else if (random.nextDouble() < .1) {
-					addFixture(
-							tile,
-							new Forest(runner.recursiveConsultTable(
-									"temperate_major_tree", tile), false), main);
-				}
+		if (!TileType.Ocean.equals(tile.getTerrain())) {
+			if (isAdjacentToTown(tile, map)
+					&& random.nextDouble() < SIXTY_PERCENT) {
+				addFieldOrOrchard(random.nextBoolean(), tile, main);
+			} else if (TileType.Desert.equals(tile.getTerrain())) {
+				final boolean watered = isAdjacentToWater(tile, map);
+				waterDesert(tile, random, watered);
+			} else if (random.nextDouble() < .1) {
+				addForest(tile, main);
 			}
+		}
+	}
+
+	/**
+	 * Make changes to a desert tile based on water.
+	 * @param tile the tile
+	 * @param random the source of randomness
+	 * @param watered whether the tile is adjacent to water
+	 */
+	private static void waterDesert(final Tile tile, final Random random,
+			final boolean watered) {
+		if (watered && random.nextDouble() < .4) {
+			tile.setTerrain(TileType.Plains);
+		} else if (!tile.hasRiver()
+				&& random.nextDouble() < SIXTY_PERCENT) {
+			tile.setTerrain(TileType.Plains);
+		}
+	}
+	/**
+	 * Add a suitable field or orchard to a tile.
+	 * @param field if true, a field; if false, an orchard.
+	 * @param tile
+	 *            the tile under consideration
+	 * @param main
+	 *            whether we should actually add the fixtures (i.e. is this the
+	 *            main map)
+	 */
+	private void addFieldOrOrchard(final boolean field, final Tile tile, final boolean main) {
+		try {
+			if (field) {
+				addFixture(tile,
+						new Meadow(runner.recursiveConsultTable("grain", tile),
+								true, true, IDFactory.FACTORY.getID()), main);
+			} else {
+				addFixture(
+						tile,
+						new Grove(true, false, runner
+								.recursiveConsultTable("fruit_trees",
+										tile), IDFactory.FACTORY
+								.getID()), main);
+			}
+		} catch (final MissingTableException e) {
+			LOGGER.log(Level.WARNING, "Missing encounter table", e);
+		}
+	}
+	/**
+	 * Add a forest.
+	 * @param tile
+	 *            the tile under consideration
+	 * @param main
+	 *            whether we should actually add the fixtures (i.e. is this the
+	 *            main map)
+	 */
+	private void addForest(final Tile tile, final boolean main) {
+		try {
+			addFixture(
+					tile,
+					new Forest(runner.recursiveConsultTable(
+							"temperate_major_tree", tile), false), main);
 		} catch (MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}
 	}
-
 	/**
 	 * Add a fixture to a tile if this is the main map.
 	 * 
@@ -378,13 +417,16 @@ public class Converter {
 		return false;
 	}
 	/**
+	 * @return How many subtiles per tile the addRiver() algorithm is optimized for.
+	 */
+	private static int optSubtilesPerTile() { return 4; }
+	/**
 	 * @param river a river
 	 * @param tiles the subtiles to apply it to
 	 */
 	// ESCA-JAVA0076:
-	@SuppressWarnings("unused")
 	private static void addRiver(final River river, final List<Tile> tiles) {
-		if (SUBTILES_PER_TILE != 4) {
+		if (SUBTILES_PER_TILE != optSubtilesPerTile()) {
 			throw new IllegalStateException("This function is tuned for 4 subtiles per tile per axis");
 		}
 		switch (river) {

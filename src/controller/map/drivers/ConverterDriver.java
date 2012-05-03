@@ -51,7 +51,7 @@ public final class ConverterDriver {
 		if (args.length < 1) {
 			SystemOut.SYS_OUT.println("Usage: ConverterDriver filename [filename ...]");
 		}
-		boolean main = true;
+		boolean main = true; // NOPMD
 		for (final String filename : args) {
 			SystemOut.SYS_OUT.print("Starting ");
 			SystemOut.SYS_OUT.println(filename);
@@ -77,7 +77,7 @@ public final class ConverterDriver {
 				LOGGER.log(Level.SEVERE, "SP map format error reading " + filename, e);
 				continue;
 			}
-			main = false;
+			main = false; // NOPMD
 		}
 	}
 }

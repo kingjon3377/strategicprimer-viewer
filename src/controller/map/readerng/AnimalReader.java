@@ -50,7 +50,7 @@ public class AnimalReader implements INodeReader<Animal> {
 				XMLHelper.hasAttribute(element, "traces"),
 				Boolean.parseBoolean(XMLHelper.getAttributeWithDefault(element,
 						"talking", "false")), id);
-		XMLHelper.spinUntilEnd("animal", stream);
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return animal;
 	}
 

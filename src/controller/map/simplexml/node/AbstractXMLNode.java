@@ -103,6 +103,9 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		children.addAll(nodesToKeep);
 		children.addAll(nodesToAdd);
 	}
+	/**
+	 * A class to help 
+	 */
 
 //	/**
 //	 * @param obj an object

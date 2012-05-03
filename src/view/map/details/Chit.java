@@ -95,7 +95,6 @@ public abstract class Chit extends Selectable { // NOPMD
 		final int imageSize = 24; // NOPMD
 		final BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
-		final Color saveColor = pen.getColor();
 		if (fix instanceof Mountain) {
 			pen.setColor(Color.orange);
 			// ESCA-JAVA0076:
@@ -105,6 +104,7 @@ public abstract class Chit extends Selectable { // NOPMD
 			// ESCA-JAVA0076:
 			pen.fillPolygon(new int[] { 8, 12, 16 }, new int[] { 24, 0, 24 }, 3);
 		} else {
+			final Color saveColor = pen.getColor();
 			pen.setColor(Color.RED);
 			pen.fillRoundRect(((int) (imageSize * margin)) + 1,
 					((int) (imageSize * margin)) + 1,
