@@ -86,26 +86,20 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 *             on format errors uncovered in this process
 	 */
 	public final void canonicalize(final Warning warner) throws SPFormatException {
-		final List<AbstractXMLNode> nodesToRemove = new LinkedList<AbstractXMLNode>();
 		final List<AbstractXMLNode> nodesToAdd = new LinkedList<AbstractXMLNode>();
 		final List<AbstractXMLNode> nodesToKeep = new LinkedList<AbstractXMLNode>();
 		for (final AbstractXMLNode node : children) {
 			node.canonicalize(warner);
 			if (node instanceof SkippableNode) {
 				nodesToAdd.addAll(node.children);
-				nodesToRemove.add(node);
 			} else {
 				nodesToKeep.add(node);
 			}
 		}
-//		children.removeAll(nodesToRemove);
 		children.clear();
 		children.addAll(nodesToKeep);
 		children.addAll(nodesToAdd);
 	}
-	/**
-	 * A class to help 
-	 */
 
 //	/**
 //	 * @param obj an object
