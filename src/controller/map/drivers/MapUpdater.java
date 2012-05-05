@@ -1,6 +1,7 @@
 package controller.map.drivers;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -91,15 +92,26 @@ public final class MapUpdater {
 		}
 		// ESCA-JAVA0177:
 		final MapUpdater updater = new MapUpdater(loadMap(args[0]));
-		// ESCA-JAVA0177:
-		final SPMap derived = loadMap(args[1]);
-		updater.update(derived);
-		// ESCA-JAVA0266:
-		final PrintWriter writer = new PrintWriter(System.out);
-		try {
-			new XMLWriter(writer).write(derived);
-		} finally {
-			writer.close();
+		for (String arg : args) {
+			if (arg.equals(args[0])) {
+				continue;
+			}
+			// ESCA-JAVA0177:
+			final SPMap derived = loadMap(arg);
+			updater.update(derived);
+			// ESCA-JAVA0266:
+			PrintWriter writer;
+			try {
+				writer = new PrintWriter(new FileWriter(arg)); // NOPMD
+			} catch (final IOException e) {
+				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
+				continue;
+			}
+			try {
+				new XMLWriter(writer).write(derived); // NOPMD
+			} finally {
+				writer.close();
+			}
 		}
 	}
 
