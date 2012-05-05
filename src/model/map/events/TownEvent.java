@@ -1,6 +1,7 @@
 package model.map.events;
 
 
+
 /**
  * An abandoned, ruined, or burned-out town.
  * 

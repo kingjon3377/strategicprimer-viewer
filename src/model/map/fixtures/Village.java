@@ -109,4 +109,14 @@ public class Village implements TileFixture, HasImage {
 	public long getID() {
 		return id;
 	}
+	/**
+	 * 
+	 * @param fix a fixture
+	 * @return whether it's an identical-but-for-ID village.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return fix instanceof Village && status.equals(((Village) fix).status)
+				&& name.equals(((Village) fix).name);
+	}
 }

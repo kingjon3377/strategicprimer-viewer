@@ -118,7 +118,19 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 						&& ((AbstractTownEvent) obj).status.equals(status)
 						&& ((TileFixture) obj).getID() == getID());
 	}
-
+	/**
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return this == fix
+				|| (fix instanceof AbstractTownEvent
+						&& ((AbstractTownEvent) fix).kind().equals(kind())
+						&& ((AbstractTownEvent) fix).size.equals(size)
+						&& ((AbstractTownEvent) fix).name.equals(name)
+						&& ((AbstractTownEvent) fix).status.equals(status));
+	}
 	/**
 	 * 
 	 * @return a hash value for the object

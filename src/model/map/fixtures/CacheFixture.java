@@ -113,4 +113,14 @@ public class CacheFixture implements TileFixture, HasImage {
 	public long getID() {
 		return id;
 	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return fix instanceof CacheFixture
+				&& kind.equals(((CacheFixture) fix).kind)
+				&& contents.equals(((CacheFixture) fix).contents);
+	}
 }

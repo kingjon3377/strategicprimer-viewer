@@ -158,4 +158,16 @@ public class Unit implements TileFixture, HasImage {
 	public long getID() {
 		return id;
 	}
+	/**
+	 * 
+	 * @param fix a fixture
+	 * @return whether it's an identical-except-ID unit.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return this == fix
+				|| (fix instanceof Unit && ((Unit) fix).owner.equals(owner)
+						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
+							.equals(name)));
+	}
 }

@@ -169,4 +169,14 @@ public final class MineralEvent implements IEvent, HasImage {
 	public long getID() {
 		return id;
 	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return this == fix
+				|| (fix instanceof MineralEvent
+						&& ((MineralEvent) fix).mineral.equals(mineral) && ((MineralEvent) fix).exposed == exposed);
+	}
 }

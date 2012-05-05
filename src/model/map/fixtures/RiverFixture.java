@@ -152,4 +152,12 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 			addRiver(river);
 		}
 	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return equals(fix);
+	}
 }

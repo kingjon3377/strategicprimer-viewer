@@ -95,4 +95,13 @@ public class Shrub implements TileFixture, HasImage {
 	public long getID() {
 		return id;
 	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return fix instanceof Shrub
+				&& description.equals(((Shrub) fix).description);
+	}
 }

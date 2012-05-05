@@ -98,4 +98,12 @@ public final class NothingEvent implements IEvent {
 	public long getID() {
 		return 0;
 	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return equals(fix);
+	}
 }

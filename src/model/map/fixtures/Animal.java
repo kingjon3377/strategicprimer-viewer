@@ -132,4 +132,14 @@ public class Animal implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return fix instanceof Animal && ((Animal) fix).kind.equals(kind)
+				&& ((Animal) fix).traces == traces
+				&& ((Animal) fix).talking == talking;
+	}
 }

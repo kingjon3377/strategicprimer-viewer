@@ -210,4 +210,17 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	public long getID() {
 		return id;
 	}
+	/**
+	 * FIXME: Uses equals() to compare units.
+	 * @param fix a fixture
+	 * @return whether it's identical to this except ID and DC.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final TileFixture fix) {
+		return this == fix
+				|| (fix instanceof Fortress
+						&& (name.equals(((Fortress) fix).name))
+						&& ((Fortress) fix).owner.equals(owner) && ((Fortress) fix).units
+							.equals(units));
+	}
 }

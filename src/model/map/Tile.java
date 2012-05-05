@@ -186,6 +186,17 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 */
 	public void update(final Tile tile) {
 		type = tile.type;
+		final Set<TileFixture> unmatchedContents = new HashSet<TileFixture>(contents);
+		unmatchedContents.removeAll(tile.contents);
+		for (TileFixture local : unmatchedContents) {
+			for (TileFixture remote : tile.getContents()) {
+				if (local.equalsIgnoringID(remote)) {
+					removeFixture(local);
+					addFixture(remote);
+					break;
+				}
+			}
+		}
 	}
 	/**
 	 * Write the tile to XML. Returns the empty string if the tile isn't visible and contains nothing.
