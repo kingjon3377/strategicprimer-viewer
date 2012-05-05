@@ -96,9 +96,14 @@ public final class MapUpdater {
 			if (arg.equals(args[0])) {
 				continue;
 			}
+			System.out.print(arg);
+			System.out.print(": ");
+			System.out.print("Reading ");
 			// ESCA-JAVA0177:
 			final SPMap derived = loadMap(arg);
+			System.out.print("Updating ");
 			updater.update(derived);
+			System.out.print("Writing ");
 			// ESCA-JAVA0266:
 			PrintWriter writer;
 			try {
@@ -112,6 +117,7 @@ public final class MapUpdater {
 			} finally {
 				writer.close();
 			}
+			System.out.println("Finished");
 		}
 	}
 
