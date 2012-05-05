@@ -90,8 +90,12 @@ public final class MapUpdater {
 		if (args.length < 2) {
 			throw new IllegalArgumentException("Not enough arguments");
 		}
+		System.out.print("Base ");
+		System.out.print(args[0]);
+		System.out.print(": Reading ");
 		// ESCA-JAVA0177:
 		final MapUpdater updater = new MapUpdater(loadMap(args[0]));
+		System.out.println("Finished");
 		for (String arg : args) {
 			if (arg.equals(args[0])) {
 				continue;
