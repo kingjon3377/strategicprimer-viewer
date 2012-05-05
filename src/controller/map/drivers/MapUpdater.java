@@ -153,7 +153,7 @@ public final class MapUpdater {
 	 */
 	private static SPMap loadMap(final String filename) {
 		try {
-			return new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Warn));
+			return new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Ignore));
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE,
 					buildString("File ", filename, " not found"), e);
