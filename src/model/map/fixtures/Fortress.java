@@ -105,7 +105,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		return this == obj
 				|| (obj instanceof Fortress
 						&& (name.equals(((Fortress) obj).name))
-						&& ((Fortress) obj).owner.equals(owner) && ((Fortress) obj).units
+						&& ((Fortress) obj).owner.getId() == owner.getId() && ((Fortress) obj).units
 							.equals(units) && ((TileFixture) obj).getID() == id);
 	}
 
@@ -191,7 +191,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 */
 	@Override
 	public boolean isSubset(final Fortress obj) {
-		if (name.equals(obj.name) && obj.owner.equals(owner)) {
+		if (name.equals(obj.name) && obj.owner.getId() == owner.getId()) {
 			final Set<Unit> temp = new HashSet<Unit>(obj.units);
 			temp.removeAll(units);
 			return temp.isEmpty(); // NOPMD
@@ -220,7 +220,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		return this == fix
 				|| (fix instanceof Fortress
 						&& (name.equals(((Fortress) fix).name))
-						&& ((Fortress) fix).owner.equals(owner) && ((Fortress) fix).units
+						&& ((Fortress) fix).owner.getId() == owner.getId() && ((Fortress) fix).units
 							.equals(units));
 	}
 }

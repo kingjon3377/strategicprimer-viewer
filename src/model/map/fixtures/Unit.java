@@ -77,7 +77,7 @@ public class Unit implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof Unit && ((Unit) obj).owner.equals(owner)
+				|| (obj instanceof Unit && ((Unit) obj).owner.getId() == owner.getId()
 						&& (((Unit) obj).kind.equals(kind)) && (((Unit) obj).name
 							.equals(name)) && ((TileFixture) obj).getID() == id);
 	}
@@ -166,7 +166,7 @@ public class Unit implements TileFixture, HasImage {
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return this == fix
-				|| (fix instanceof Unit && ((Unit) fix).owner.equals(owner)
+				|| (fix instanceof Unit && ((Unit) fix).owner.getId() == owner.getId()
 						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
 							.equals(name)));
 	}
