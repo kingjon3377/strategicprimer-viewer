@@ -85,13 +85,20 @@ public class UnitReader implements INodeReader<Unit> {
 	 */
 	private static String parseKind(final StartElement element, final Warning warner)
 			throws SPFormatException {
+		String retval = "";
 		try {
-			return XMLHelper.getAttributeWithDeprecatedForm(element, // NOPMD
+			retval = XMLHelper.getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
 		} catch (final MissingParameterException except) {
 			warner.warn(except);
-			return "";
+			return ""; // NOPMD
 		}
+		if (retval.isEmpty()) {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), KIND_PROPERTY, element.getLocation()
+					.getLineNumber()));
+		}
+		return retval;
 	}
 	/**
 	 * @param string a string that may be either numeric or empty.
