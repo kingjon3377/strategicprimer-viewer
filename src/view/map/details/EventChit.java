@@ -64,7 +64,7 @@ public class EventChit extends Chit {
 	 *            the graphics context
 	 */
 	@Override
-	public void paint(final Graphics pen) {
+	public final void paint(final Graphics pen) {
 		super.paint(pen);
 		paintChit(pen);
 	}
