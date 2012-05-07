@@ -71,12 +71,16 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			fallbackImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		}
 	}
+	
 	/**
-	 * Draw a tile at the specified coordinates.
+	 * Draw a tile at the specified coordinates. Because this is at present only
+	 * called in a loop that's the last thing before the context is disposed, we
+	 * alter the state freely and don't restore it.
 	 * 
 	 * @param pen
 	 *            the graphics context.
-	 * @param version the map version
+	 * @param version
+	 *            the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param xCoord
@@ -92,7 +96,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
-		final Color save = pen.getColor();
 		pen.setColor((needFixtureColor(tile) ? getFixtureColor(tile) : getTileColor(version, tile.getTerrain())));
 		pen.fillRect(xCoord, yCoord, width, height);
 		if (hasFixture(tile)) {
@@ -100,7 +103,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 		pen.setColor(Color.black);
 		pen.drawRect(xCoord, yCoord, width, height);
-		pen.setColor(save);
 	}
 
 	/**

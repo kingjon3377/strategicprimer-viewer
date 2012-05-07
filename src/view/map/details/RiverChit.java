@@ -60,12 +60,15 @@ public class RiverChit extends Chit {
 	 */
 	@Override
 	public void paint(final Graphics pen) {
-		final Color save = pen.getColor();
-		pen.setColor(Color.blue);
-		for (River river : fix) {
-			drawRiver(pen, river);
+		final Graphics copy = pen.create();
+		try {
+			copy.setColor(Color.blue);
+			for (River river : fix) {
+				drawRiver(copy, river);
+			}
+		} finally {
+			copy.dispose();
 		}
-		pen.setColor(save);
 		super.paint(pen);
 	}
 	/**

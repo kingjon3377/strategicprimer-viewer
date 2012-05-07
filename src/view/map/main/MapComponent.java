@@ -94,10 +94,11 @@ public final class MapComponent extends JComponent implements
 	 *            the graphics context
 	 */
 	private void drawMap(final Graphics pen) {
-		final Color save = pen.getColor();
-		pen.setColor(Color.white);
-		pen.fillRect(0, 0, getWidth(), getHeight());
-		final Rectangle bounds = bounds(pen.getClipBounds());
+		final Graphics context = pen.create();
+		try {
+		context.setColor(Color.white);
+		context.fillRect(0, 0, getWidth(), getHeight());
+		final Rectangle bounds = bounds(context.getClipBounds());
 		final int tsize = TILE_SIZE.getSize(model.getMainMap().getVersion());
 		final int minX = (int) (bounds.getMinX() / tsize);
 		final int minY = (int) (bounds.getMinY() / tsize);
@@ -105,8 +106,10 @@ public final class MapComponent extends JComponent implements
 				model.getSizeCols());
 		final int maxY = Math.min((int) (bounds.getMaxY() / tsize + 1),
 				model.getSizeRows());
-		drawMapPortion(pen, minX, minY, maxX, maxY);
-		pen.setColor(save);
+		drawMapPortion(context, minX, minY, maxX, maxY);
+		} finally {
+			context.dispose();
+		}
 	}
 
 	/**
@@ -166,16 +169,19 @@ public final class MapComponent extends JComponent implements
 	 */
 	private void paintTile(final Graphics pen, final int version, final Tile tile, final int row,
 			final int col) {
-		final Color saveColor = pen.getColor();
 		final int tsize = TILE_SIZE.getSize(getModel().getMainMap().getVersion());
 		helper.drawTile(pen, version, tile, col * tsize, row * tsize,
 				tsize, tsize);
 		if (model.getSelectedTile().equals(tile)) {
-			pen.setColor(Color.black);
-			pen.drawRect(col * tsize + 1, row * tsize + 1,
+			final Graphics context = pen.create();
+			try {
+			context.setColor(Color.black);
+			context.drawRect(col * tsize + 1, row * tsize + 1,
 					tsize - 2, tsize - 2);
+			} finally {
+				context.dispose();
+			}
 		}
-		pen.setColor(saveColor);
 	}
 
 	/**

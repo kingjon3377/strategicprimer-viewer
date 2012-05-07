@@ -99,11 +99,14 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Draw a tile. The graphics context needs to be translated so that its
-	 * origin is the tile's upper-left-hand corner.
+	 * origin is the tile's upper-left-hand corner. Note that this makes few
+	 * assumptions about the graphics context's initial state, but unlike Chits
+	 * it makes no attempt to save and restore that state either.
 	 * 
 	 * @param pen
 	 *            the graphics context
-	 * @param version the map version
+	 * @param version
+	 *            the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -186,7 +189,12 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
-		drawTile(pen.create(xCoord, yCoord, width, height), version, tile, width, height);
+		final Graphics context = pen.create(xCoord, yCoord, width, height);
+		try {
+			drawTile(context, version, tile, width, height);
+		} finally {
+			context.dispose();
+		}
 	}
 
 	/**

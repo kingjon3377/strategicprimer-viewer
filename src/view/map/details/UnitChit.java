@@ -69,13 +69,16 @@ public class UnitChit extends Chit {
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-		final Color saveColor = pen.getColor();
-		pen.setColor(UNIT_COLOR);
-		pen.fillOval(((int) (getWidth() * MARGIN)) + 1,
-				((int) (getHeight() * MARGIN)) + 1,
-				((int) (getWidth() * (1.0 - MARGIN * 2.0))),
-				((int) (getHeight() * (1.0 - MARGIN * 2.0))));
-		pen.setColor(saveColor);
+		final Graphics copy = pen.create();
+		try {
+			copy.setColor(UNIT_COLOR);
+			copy.fillOval(((int) (getWidth() * MARGIN)) + 1,
+					((int) (getHeight() * MARGIN)) + 1,
+					((int) (getWidth() * (1.0 - MARGIN * 2.0))),
+					((int) (getHeight() * (1.0 - MARGIN * 2.0))));
+		} finally {
+			copy.dispose();
+		}
 	}
 
 	/**

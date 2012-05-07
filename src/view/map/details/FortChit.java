@@ -64,13 +64,16 @@ public class FortChit extends Chit {
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-		final Color saveColor = pen.getColor();
-		pen.setColor(FORT_COLOR);
-		pen.fillRect(((int) (getWidth() * MARGIN)) + 1,
+		final Graphics copy = pen.create();
+		try {
+			copy.setColor(FORT_COLOR);
+			copy.fillRect(((int) (getWidth() * MARGIN)) + 1,
 				((int) (getHeight() * MARGIN)) + 1,
 				((int) (getWidth() * (1.0 - MARGIN * 2.0))),
 				((int) (getHeight() * (1.0 - MARGIN * 2.0))));
-		pen.setColor(saveColor);
+		} finally {
+			copy.dispose();
+		}
 	}
 
 	/**

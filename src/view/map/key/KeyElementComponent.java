@@ -31,7 +31,11 @@ public final class KeyElementComponent extends JComponent {
 	@Override
 	public void paint(final Graphics pen) {
 		final Graphics context = pen.create();
-		context.setColor(color);
-		context.fillRect(0, 0, getWidth(), getHeight());
+		try {
+			context.setColor(color);
+			context.fillRect(0, 0, getWidth(), getHeight());
+		} finally {
+			context.dispose();
+		}
 	}
 }

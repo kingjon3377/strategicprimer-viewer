@@ -24,11 +24,14 @@ public abstract class Selectable extends JComponent { // NOPMD
 	@Override
 	public void paint(final Graphics pen) {
 		if (selected) {
-			final Color saveColor = pen.getColor();
-			pen.setColor(Color.BLACK);
-			pen.drawRect(0, 0, getWidth(), getHeight());
-			pen.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
-			pen.setColor(saveColor);
+			final Graphics context = pen.create();
+			try {
+				context.setColor(Color.BLACK);
+				context.drawRect(0, 0, getWidth(), getHeight());
+				context.drawRect(1, 1, getWidth() - 2, getHeight() - 2);
+			} finally {
+				context.dispose();
+			}
 		}
 	}
 

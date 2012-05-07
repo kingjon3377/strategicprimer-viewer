@@ -45,40 +45,43 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
 			final int yCoord, final int width, final int height) {
-		final Color save = pen.getColor();
-		pen.setColor(getTileColor(version, tile.getTerrain()));
-		pen.fillRect(xCoord, yCoord, width, height);
-		pen.setColor(Color.black);
-		pen.drawRect(xCoord, yCoord, width, height);
-		if (!TileType.NotVisible.equals(tile.getTerrain())) {
-			pen.setColor(Color.blue);
-			if (tile.hasRiver()) {
-				for (final River river : tile.getRivers()) {
-					drawRiver(pen, river, xCoord, yCoord, width, height);
+		final Graphics context = pen.create();
+		try {
+			context.setColor(getTileColor(version, tile.getTerrain()));
+			context.fillRect(xCoord, yCoord, width, height);
+			context.setColor(Color.black);
+			context.drawRect(xCoord, yCoord, width, height);
+			if (!TileType.NotVisible.equals(tile.getTerrain())) {
+				context.setColor(Color.blue);
+				if (tile.hasRiver()) {
+					for (final River river : tile.getRivers()) {
+						drawRiver(context, river, xCoord, yCoord, width, height);
+					}
+				}
+				if (hasAnyForts(tile)) {
+					context.setColor(FORT_COLOR);
+					context.fillRect((int) (width * TWO_THIRDS) - 1 + xCoord,
+							(int) (height * TWO_THIRDS) - 1 + yCoord,
+							(int) (width / THREE), (int) (height / THREE));
+				}
+				if (hasAnyUnits(tile)) {
+					context.setColor(UNIT_COLOR);
+					context.fillOval(((int) (width / FOUR)) + xCoord,
+							((int) (height / FOUR)) + yCoord,
+							((int) (width / FOUR)), ((int) (height / FOUR)));
+				} else if (hasEvent(tile)) {
+					context.setColor(EVENT_COLOR);
+					context.fillPolygon(new int[] {
+							(int) (width * THREE_QUARTERS) + xCoord,
+							(int) (width / TWO) + xCoord, width + xCoord },
+							new int[] { yCoord, (int) (height / TWO) + yCoord,
+									(int) (height / TWO) + yCoord },
+							MISC_EVENT_SIDES);
 				}
 			}
-			if (hasAnyForts(tile)) {
-				pen.setColor(FORT_COLOR);
-				pen.fillRect((int) (width * TWO_THIRDS) - 1 + xCoord,
-						(int) (height * TWO_THIRDS) - 1 + yCoord,
-						(int) (width / THREE), (int) (height / THREE));
-			}
-			if (hasAnyUnits(tile)) {
-				pen.setColor(UNIT_COLOR);
-				pen.fillOval(((int) (width / FOUR)) + xCoord,
-						((int) (height / FOUR)) + yCoord,
-						((int) (width / FOUR)), ((int) (height / FOUR)));
-			} else if (hasEvent(tile)) {
-				pen.setColor(EVENT_COLOR);
-				pen.fillPolygon(new int[] {
-						(int) (width * THREE_QUARTERS) + xCoord,
-						(int) (width / TWO) + xCoord, width + xCoord },
-						new int[] { yCoord, (int) (height / TWO) + yCoord,
-								(int) (height / TWO) + yCoord },
-						MISC_EVENT_SIDES);
-			}
+		} finally {
+			context.dispose();
 		}
-		pen.setColor(save);
 	}
 
 	/**
