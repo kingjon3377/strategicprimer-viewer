@@ -3,6 +3,7 @@ package controller.map.simplexml;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -49,7 +50,13 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	@Override
 	public SPMap readMap(final String file, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException {
-		final FileReader istream = new FileReader(file);
+		// ESCA-JAVA0177:
+		final Reader istream; // NOPMD
+		if (file.contains("string:<")) {
+			istream = new StringReader(file.substring(7));
+		} else {
+			istream = new FileReader(file);
+		}
 		try {
 			return readMap(istream, warner);
 		} finally {

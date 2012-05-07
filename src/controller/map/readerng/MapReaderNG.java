@@ -3,6 +3,7 @@ package controller.map.readerng;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -39,7 +40,13 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	@Override
 	public SPMap readMap(final String file, final Warning warner) throws IOException, XMLStreamException,
 			SPFormatException, MapVersionException {
-		final FileReader istream = new FileReader(file);
+		// ESCA-JAVA0177:
+		final Reader istream; // NOPMD
+		if (file.contains("string:<")) {
+			istream = new StringReader(file.substring(7));
+		} else {
+			istream = new FileReader(file);
+		}
 		try {
 			return readMap(istream, warner);
 		} finally {
