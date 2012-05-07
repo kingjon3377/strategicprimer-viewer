@@ -186,7 +186,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 		sbuild.append(rows());
 		sbuild.append("\" columns=\"");
 		sbuild.append(cols());
-		if (!"".equals(players.getCurrentPlayer().getName())) {
+		if (!players.getCurrentPlayer().getName().isEmpty()) {
 			sbuild.append("\" current_player=\"");
 			sbuild.append(players.getCurrentPlayer().getId());
 		}
@@ -200,13 +200,13 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 			boolean anyTiles = false;
 			for (int j = 0; j < myCols; j++) {
 				final String tileXML = getTile(i, j).toXML();
-				if (!anyTiles && !"".equals(tileXML)) {
+				if (!anyTiles && !tileXML.isEmpty()) {
 					anyTiles = true;
 					sbuild.append("\t<row index=\"");
 					sbuild.append(i);
 					sbuild.append("\">\n");
 				}
-				if (!"".equals(tileXML)) {
+				if (!tileXML.isEmpty()) {
 					sbuild.append("\t\t");
 					sbuild.append(tileXML);
 					sbuild.append('\n');

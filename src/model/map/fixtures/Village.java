@@ -42,7 +42,7 @@ public class Village implements TileFixture, HasImage {
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<village status=\"");
 		sbuild.append(status.toString());
-		if (!"".equals(name)) {
+		if (!name.isEmpty()) {
 			sbuild.append("\" name=\"");
 			sbuild.append(name);
 		}
@@ -56,7 +56,7 @@ public class Village implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return status.toString() + " village" + ("".equals(name) ? name : " named " + name);
+		return status.toString() + " village" + (name.isEmpty() ? name : " named " + name);
 	}
 	/**
 	 * @return the name of an image to represent the village

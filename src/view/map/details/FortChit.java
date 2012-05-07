@@ -29,7 +29,7 @@ public class FortChit extends Chit {
 	public FortChit(final Fortress fort, final MouseListener listener) {
 		super(listener, new FixtureTransferable(fort));
 		final StringBuilder sbuild = new StringBuilder("<html><p>Fortress ");
-		if (!"".equals(fort.getName())) {
+		if (!fort.getName().isEmpty()) {
 			sbuild.append(fort.getName());
 			sbuild.append(", ");
 		}

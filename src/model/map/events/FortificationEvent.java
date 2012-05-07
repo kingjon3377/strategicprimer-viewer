@@ -52,7 +52,7 @@ public final class FortificationEvent extends AbstractTownEvent {
 		final StringBuilder sbuild = new StringBuilder("<fortification status=\"")
 				.append(status().toString()).append("\" size=\"")
 				.append(size().toString()).append("\" dc=\"").append(dc);
-		if (!"".equals(name())) {
+		if (!name().isEmpty()) {
 			sbuild.append("\" name=\"");
 			sbuild.append(name());
 		}

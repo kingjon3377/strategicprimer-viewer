@@ -88,11 +88,11 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
-		} else if ("".equals(getPropertyWithDefault(OWNER_ATTR, ""))) {
+		} else if (getPropertyWithDefault(OWNER_ATTR, "").isEmpty()) {
 			warner.warn(new MissingParameterException(TAG, OWNER_ATTR,
 					getLine()));
 		}
-		if ("".equals(getPropertyWithDefault(TYPE_ATTR, ""))) {
+		if (getPropertyWithDefault(TYPE_ATTR, "").isEmpty()) {
 			if (hasProperty(OLD_TYPE_ATTR)) {
 				addProperty(TYPE_ATTR, getProperty(OLD_TYPE_ATTR), warner);
 				warner.warn(new DeprecatedPropertyException(TAG, OLD_TYPE_ATTR, TYPE_ATTR,
@@ -102,7 +102,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 						getLine()));
 			}
 		}
-		if (!hasProperty(NAME_ATTR) || "".equals(getProperty(NAME_ATTR))) {
+		if (!hasProperty(NAME_ATTR) || getProperty(NAME_ATTR).isEmpty()) {
 			warner.warn(new MissingParameterException(TAG, NAME_ATTR,
 					getLine()));
 		}

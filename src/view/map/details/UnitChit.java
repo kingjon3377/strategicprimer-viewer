@@ -29,11 +29,11 @@ public class UnitChit extends Chit {
 	public UnitChit(final Unit unit, final MouseListener listener) {
 		super(listener, new FixtureTransferable(unit));
 		final StringBuilder sbuild = new StringBuilder("<html><p>Unit ");
-		if (!"".equals(unit.getName())) {
+		if (!unit.getName().isEmpty()) {
 			sbuild.append(unit.getName());
 			sbuild.append(", ");
 		}
-		if (!"".equals(unit.getKind())) {
+		if (!unit.getKind().isEmpty()) {
 			sbuild.append("of type ");
 			sbuild.append(unit.getKind());
 			sbuild.append(", ");

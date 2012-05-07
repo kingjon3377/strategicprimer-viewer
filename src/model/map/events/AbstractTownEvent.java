@@ -88,13 +88,13 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 		}
 		builder.append(' ');
 		builder.append(kind().toString());
-		if (!"".equals(name)) {
+		if (!name.isEmpty()) {
 			builder.append(", ");
 			builder.append(name);
 			builder.append(',');
 		}
 		builder.append(" here");
-		if (TownStatus.Active.equals(status) && "".equals(name)) {
+		if (TownStatus.Active.equals(status) && name.isEmpty()) {
 			builder.append(" (roll it up)");
 		} else {
 			builder.append('.');
@@ -147,7 +147,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	@Override
 	public String toString() {
 		return "A " + size.toString() + ' ' + status.toString() + ' ' + kind().toString()
-				+ " of DC " + getDC() + ("".equals(name) ? " with no name" : " with name " + name);
+				+ " of DC " + getDC() + (name.isEmpty() ? " with no name" : " with name " + name);
 	}
 
 	/**

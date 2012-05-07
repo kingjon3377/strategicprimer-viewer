@@ -145,7 +145,7 @@ public final class XMLHelper {
 	public static void requireNonEmptyParameter(final StartElement element,
 			final String parameter, final boolean mandatory,
 			final Warning warner) throws SPFormatException {
-		if ("".equals(getAttributeWithDefault(element, parameter, ""))) {
+		if (getAttributeWithDefault(element, parameter, "").isEmpty()) {
 			final SPFormatException except = new MissingParameterException(
 					element.getName().getLocalPart(), parameter, element
 							.getLocation().getLineNumber());

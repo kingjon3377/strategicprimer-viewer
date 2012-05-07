@@ -118,11 +118,11 @@ public class Unit implements TileFixture, HasImage {
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<unit owner=\"");
 		sbuild.append(owner.getId());
-		if (!"".equals(kind)) {
+		if (!kind.isEmpty()) {
 			sbuild.append("\" kind=\"");
 			sbuild.append(kind);
 		}
-		if (!"".equals(name)) {
+		if (!name.isEmpty()) {
 			sbuild.append("\" name=\"");
 			sbuild.append(name);
 		}

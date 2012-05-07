@@ -47,12 +47,12 @@ public class UnitReader implements INodeReader<Unit> {
 	public Unit parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		if ("".equals(XMLHelper.getAttributeWithDefault(element, "owner", ""))) {
+		if (XMLHelper.getAttributeWithDefault(element, "owner", "").isEmpty()) {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "owner", element.getLocation()
 					.getLineNumber()));
 		}
-		if ("".equals(XMLHelper.getAttributeWithDefault(element, "name", ""))) {
+		if (XMLHelper.getAttributeWithDefault(element, "name", "").isEmpty()) {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "name", element.getLocation()
 					.getLineNumber()));
@@ -105,6 +105,6 @@ public class UnitReader implements INodeReader<Unit> {
 	 * @return it, or "-1" if it's empty.
 	 */
 	private static String ensureNumeric(final String string) {
-		return "".equals(string) ? "-1" : string;
+		return string.isEmpty() ? "-1" : string;
 	}
 }

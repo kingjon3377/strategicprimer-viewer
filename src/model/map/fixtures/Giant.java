@@ -41,7 +41,7 @@ public class Giant implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return kind + ("".equals(kind) ? "giant"  : " giant");
+		return kind + (kind.isEmpty() ? "giant"  : " giant");
 	}
 	/**
 	 * @return the name of an image to represent the fairy

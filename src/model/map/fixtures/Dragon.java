@@ -41,7 +41,7 @@ public class Dragon implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return kind + ("".equals(kind) ? "dragon"  : " dragon");
+		return kind + (kind.isEmpty() ? "dragon"  : " dragon");
 	}
 	/**
 	 * @return the name of an image to represent the fairy

@@ -37,7 +37,7 @@ public class CityReader implements INodeReader<CityEvent> {
 	public CityEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		if ("".equals(XMLHelper.getAttributeWithDefault(element, "name", ""))) {
+		if (XMLHelper.getAttributeWithDefault(element, "name", "").isEmpty()) {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "name", element.getLocation()
 					.getLineNumber()));

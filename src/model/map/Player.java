@@ -86,7 +86,7 @@ public class Player implements Comparable<Player>, XMLWritable {
 	 */
 	@Override
 	public String toString() {
-		return "".equals(playerName) ? "player #" + playerID : playerName;
+		return playerName.isEmpty() ? "player #" + playerID : playerName;
 	}
 
 	/**

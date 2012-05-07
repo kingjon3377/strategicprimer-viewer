@@ -152,7 +152,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<fortress owner=\"");
 		sbuild.append(owner.getId());
-		if (!"".equals(name)) {
+		if (!name.isEmpty()) {
 			sbuild.append("\" name=\"");
 			sbuild.append(name);
 		}

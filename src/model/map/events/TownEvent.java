@@ -50,7 +50,7 @@ public final class TownEvent extends AbstractTownEvent {
 		final StringBuilder sbuild = new StringBuilder("<town status=\"").append(status().toString())
 				.append("\" size=\"").append(size().toString())
 				.append("\" dc=\"").append(dc);
-		if (!"".equals(name())) {
+		if (!name().isEmpty()) {
 			sbuild.append("\" name=\"");
 			sbuild.append(name());
 		}
