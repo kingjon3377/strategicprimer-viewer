@@ -88,7 +88,29 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		}
 		return retval;
 	}
-
+	/**
+	 * A NoSuchElementException that takes a custom cause, unlike its superclass.
+	 */
+	// ESCA-JAVA0051:
+	public static class NoSuchElementBecauseException extends NoSuchElementException {
+		/**
+		 * Constructor.
+		 * @param message the message
+		 * @param cause the cause
+		 */
+		public NoSuchElementBecauseException(final String message, final Throwable cause) {
+			super(message);
+			super.initCause(cause);
+		}
+		/**
+		 * Constructor.
+		 * @param cause the cause
+		 */
+		public NoSuchElementBecauseException(final Throwable cause) {
+			super();
+			super.initCause(cause);
+		}
+	}
 	/**
 	 * Handle an "include" tag by adding an iterator for the contents of the
 	 * file it references to the top of the stack.
@@ -102,29 +124,14 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 					new FileOpener().createReader(XMLHelper.getAttribute(
 							tag.asStartElement(), "file"))));
 		} catch (final FileNotFoundException e) {
-			throw new NoSuchElementException(// NOPMD
-					"File referenced by <include> not found") {
-				@Override
-				public Throwable getCause() {
-					return e;
-				}
-			};
+			throw new NoSuchElementBecauseException(
+					"File referenced by <include> not found", e);
 		} catch (final XMLStreamException e) {
-			throw new NoSuchElementException(// NOPMD
-					"XML stream error parsing <include> tag or opening file") {
-				@Override
-				public Throwable getCause() {
-					return e;
-				}
-			};
+			throw new NoSuchElementBecauseException(
+					"XML stream error parsing <include> tag or opening file", e);
 		} catch (final SPFormatException e) {
-			throw new NoSuchElementException(// NOPMD
-					"SP format problem in <include>") {
-				@Override
-				public Throwable getCause() {
-					return e;
-				}
-			};
+			throw new NoSuchElementBecauseException(
+					"SP format problem in <include>", e);
 		}
 	}
 
