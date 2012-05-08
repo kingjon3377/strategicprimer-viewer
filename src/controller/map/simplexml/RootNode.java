@@ -35,15 +35,8 @@ public final class RootNode<T> extends AbstractXMLNode {
 		if (iterator().hasNext()) {
 			final AbstractXMLNode child = iterator().next();
 			if (child instanceof AbstractChildNode) {
-				// One half or the other of this is plainly incorrect (or at
-				// least an awful hack), but the first, IIRC, is needed to let
-				// TownEventNode supply all the subclasses of AbstractTownEvent
-				// (TODO: split that up and try removing it), while the second
-				// is needed to let IncludeNode work at all. 
 				if (((AbstractChildNode) child).getProduct().isAssignableFrom(
-						product)
-						|| product.isAssignableFrom(((AbstractChildNode) child)
-								.getProduct())) {
+						product)) {
 					iterator().next().checkNode(warner);
 				} else {
 					throw new IllegalArgumentException("We want a node producing "
@@ -72,17 +65,9 @@ public final class RootNode<T> extends AbstractXMLNode {
 		final Iterator<AbstractXMLNode> iterator = iterator();
 		if (iterator.hasNext()) {
 			final AbstractXMLNode child = iterator.next();
-			// One half or the other of this isAssignableFrom test is plainly
-			// incorrect (or at
-			// least an awful hack), but the first, IIRC, is needed to let
-			// TownEventNode supply all the subclasses of AbstractTownEvent
-			// (TODO: split that up and try removing it), while the second
-			// is needed to let IncludeNode work at all. 
 			if (child instanceof AbstractChildNode
 					&& (((AbstractChildNode) child).getProduct()
-							.isAssignableFrom(product) || product
-							.isAssignableFrom(((AbstractChildNode) child)
-									.getProduct()))) {
+							.isAssignableFrom(product))) {
 				return (AbstractChildNode<T>) child;
 			} else {
 				throw new IllegalArgumentException(
