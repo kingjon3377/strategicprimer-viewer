@@ -77,7 +77,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	public <T> T readXML(final Reader istream, final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
-				XMLInputFactory.newInstance().createXMLEventReader(istream));
+				new IncludingIterator(XMLInputFactory.newInstance().createXMLEventReader(istream)));
 		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final XMLWritable retval = new ReaderAdapter().parse(//NOPMD
