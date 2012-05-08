@@ -1,7 +1,7 @@
 package controller.map;
 
 /**
- * A custom exception for XML format errors. TODO: Make more machine-parseable, for better tests.
+ * A custom exception for XML format errors.
  * 
  * @author Jonathan Lovelace
  * 

@@ -23,8 +23,6 @@ import controller.map.misc.FileOpener;
  * SimpleXMLReader but allowing for more complex types that don't map 1:1 to the
  * XML.
  *
- * TODO: tests
- * 
  * @author Jonathan Lovelace
  */
 public class MapReaderNG implements IMapReader, ISPReader {
