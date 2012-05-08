@@ -31,15 +31,6 @@ public class SPMapReader implements INodeReader<SPMap> {
 	 * The tag we read.
 	 */
 	private static final String TAG = "map";
-
-	/**
-	 * @return the type this will produce
-	 */
-	@Override
-	public Class<SPMap> represents() {
-		return SPMap.class;
-	}
-
 	/**
 	 * Parse a map from XML.
 	 * 

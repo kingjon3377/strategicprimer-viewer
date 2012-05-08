@@ -22,13 +22,6 @@ import controller.map.misc.IDFactory;
  */
 public class TownReader implements INodeReader<TownEvent> {
 	/**
-	 * @return the type we produce.
-	 */
-	@Override
-	public Class<TownEvent> represents() {
-		return TownEvent.class;
-	}
-	/**
 	 * Parse a town.
 	 * @param element the element to read from
 	 * @param stream a stream of more elements

@@ -23,13 +23,6 @@ import controller.map.misc.IDFactory;
  */
 public class FortressReader implements INodeReader<Fortress> {
 	/**
-	 * @return the type we produce.
-	 */
-	@Override
-	public Class<Fortress> represents() {
-		return Fortress.class;
-	}
-	/**
 	 * Parse a fortress. 
 	 * @param element the element to start with
 	 * @param stream the stream to read more elements from

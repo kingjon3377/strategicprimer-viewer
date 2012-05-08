@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class CacheReader implements INodeReader<CacheFixture> {
 	/**
-	 * @return the type this will produce.
-	 */
-	@Override
-	public Class<CacheFixture> represents() {
-		return CacheFixture.class;
-	}
-	/**
 	 * Parse a cache.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

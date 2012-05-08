@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class MineralReader implements INodeReader<MineralEvent> {
 	/**
-	 * @return the type we produce.
-	 */
-	@Override
-	public Class<MineralEvent> represents() {
-		return MineralEvent.class;
-	}
-	/**
 	 * Parse a Mineral.
 	 * @param element the element to read from
 	 * @param stream a stream of more elements

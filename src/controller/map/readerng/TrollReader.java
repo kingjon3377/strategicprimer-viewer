@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class TrollReader implements INodeReader<Troll> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Troll> represents() {
-		return Troll.class;
-	}
-	/**
 	 * Parse a troll.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

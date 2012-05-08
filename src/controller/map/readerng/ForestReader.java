@@ -17,13 +17,6 @@ import controller.map.SPFormatException;
  */
 public class ForestReader implements INodeReader<Forest> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Forest> represents() {
-		return Forest.class;
-	}
-	/**
 	 * Parse a forest.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

@@ -18,13 +18,6 @@ import controller.map.UnwantedChildException;
  */
 public class PlayerReader implements INodeReader<Player> {
 	/**
-	 * @return the type this will produce
-	 */
-	@Override
-	public Class<Player> represents() {
-		return Player.class;
-	}
-	/**
 	 * Parse a player from the XML.
 	 * @param element the start element to read from
 	 * @param stream the stream to get more elements from

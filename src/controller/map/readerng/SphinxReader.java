@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class SphinxReader implements INodeReader<Sphinx> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Sphinx> represents() {
-		return Sphinx.class;
-	}
-	/**
 	 * Parse a sphinx.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

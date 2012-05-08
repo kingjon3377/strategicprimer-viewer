@@ -21,13 +21,6 @@ import controller.map.misc.IDFactory;
  */
 public class VillageReader implements INodeReader<Village> {
 	/**
-	 * @return the type this produces.
-	 */
-	@Override
-	public Class<Village> represents() {
-		return Village.class;
-	}
-	/**
 	 * Parse a village.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class MinotaurReader implements INodeReader<Minotaur> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Minotaur> represents() {
-		return Minotaur.class;
-	}
-	/**
 	 * Parse a minotaur.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

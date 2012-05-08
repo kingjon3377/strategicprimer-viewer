@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class SandbarReader implements INodeReader<Sandbar> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Sandbar> represents() {
-		return Sandbar.class;
-	}
-	/**
 	 * Parse a sandbar.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class AnimalReader implements INodeReader<Animal> {
 	/**
-	 * @return the type we produce
-	 */
-	@Override
-	public Class<Animal> represents() {
-		return Animal.class;
-	}
-	/**
 	 * @param element the element containing an animal
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players

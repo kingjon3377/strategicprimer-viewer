@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class DragonReader implements INodeReader<Dragon> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Dragon> represents() {
-		return Dragon.class;
-	}
-	/**
 	 * Parse a dragon.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

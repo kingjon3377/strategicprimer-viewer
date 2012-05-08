@@ -21,13 +21,6 @@ import controller.map.misc.IDFactory;
  */
 public class StoneReader implements INodeReader<StoneEvent> {
 	/**
-	 * @return the type we produce.
-	 */
-	@Override
-	public Class<StoneEvent> represents() {
-		return StoneEvent.class;
-	}
-	/**
 	 * Parse a Stone.
 	 * @param element the element to read from
 	 * @param stream a stream of more elements

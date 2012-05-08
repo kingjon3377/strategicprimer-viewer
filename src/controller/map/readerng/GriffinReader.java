@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class GriffinReader implements INodeReader<Griffin> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Griffin> represents() {
-		return Griffin.class;
-	}
-	/**
 	 * Parse a griffin.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

@@ -17,10 +17,6 @@ import controller.map.SPFormatException;
  */
 public interface INodeReader<T> {
 	/**
-	 * @return the data type that the reader will produce.
-	 */
-	Class<T> represents();
-	/**
 	 * @return a list of the tags the reader can handle.
 	 */
 	List<String> understands();

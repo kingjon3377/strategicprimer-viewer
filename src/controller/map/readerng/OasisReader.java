@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class OasisReader implements INodeReader<Oasis> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Oasis> represents() {
-		return Oasis.class;
-	}
-	/**
 	 * Parse an oasis.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

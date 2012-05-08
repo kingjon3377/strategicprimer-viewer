@@ -21,13 +21,6 @@ import controller.map.misc.IDFactory;
  */
 public class MineReader implements INodeReader<Mine> {
 	/**
-	 * @return The type this will produce.
-	 */
-	@Override
-	public Class<Mine> represents() {
-		return Mine.class;
-	}
-	/**
 	 * Parse a mine.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

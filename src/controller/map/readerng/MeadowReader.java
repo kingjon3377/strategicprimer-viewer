@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class MeadowReader implements INodeReader<Meadow> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Meadow> represents() {
-		return Meadow.class;
-	}
-	/**
 	 * Parse a meadow.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

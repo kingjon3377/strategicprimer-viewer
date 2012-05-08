@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class SimurghReader implements INodeReader<Simurgh> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Simurgh> represents() {
-		return Simurgh.class;
-	}
-	/**
 	 * Parse a simurgh.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

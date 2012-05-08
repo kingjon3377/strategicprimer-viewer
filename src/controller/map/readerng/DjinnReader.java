@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class DjinnReader implements INodeReader<Djinn> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Djinn> represents() {
-		return Djinn.class;
-	}
-	/**
 	 * Parse a djinn.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

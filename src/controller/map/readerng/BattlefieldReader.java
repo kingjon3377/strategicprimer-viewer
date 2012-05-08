@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class BattlefieldReader implements INodeReader<BattlefieldEvent> {
 	/**
-	 * @return the type we produce.
-	 */
-	@Override
-	public Class<BattlefieldEvent> represents() {
-		return BattlefieldEvent.class;
-	}
-	/**
 	 * Parse a battlefield.
 	 * @param element the element to read from
 	 * @param stream a stream of more elements

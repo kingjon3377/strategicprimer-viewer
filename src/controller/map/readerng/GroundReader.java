@@ -18,13 +18,6 @@ import controller.map.SPFormatException;
  */
 public class GroundReader implements INodeReader<Ground> {
 	/**
-	 * @return the type this produces.
-	 */
-	@Override
-	public Class<Ground> represents() {
-		return Ground.class;
-	}
-	/**
 	 * Parse ground.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

@@ -18,13 +18,6 @@ import controller.map.SPFormatException;
  */
 public class RiverReader implements INodeReader<River> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<River> represents() {
-		return River.class;
-	}
-	/**
 	 * Parse a river.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

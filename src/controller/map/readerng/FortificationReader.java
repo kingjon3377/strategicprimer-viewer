@@ -22,13 +22,6 @@ import controller.map.misc.IDFactory;
  */
 public class FortificationReader implements INodeReader<FortificationEvent> {
 	/**
-	 * @return the type we produce.
-	 */
-	@Override
-	public Class<FortificationEvent> represents() {
-		return FortificationEvent.class;
-	}
-	/**
 	 * Parse a city.
 	 * @param element the element to read from
 	 * @param stream a stream of more elements

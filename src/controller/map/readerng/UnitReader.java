@@ -25,14 +25,6 @@ public class UnitReader implements INodeReader<Unit> {
 	 */
 	private static final String KIND_PROPERTY = "kind";
 	/**
-	 * @return the class this produces.
-	 */
-	@Override
-	public Class<Unit> represents() {
-		return Unit.class;
-	}
-
-	/**
 	 * Parse a unit.
 	 * 
 	 * @param element

@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class OgreReader implements INodeReader<Ogre> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Ogre> represents() {
-		return Ogre.class;
-	}
-	/**
 	 * Parse an ogre.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

@@ -29,14 +29,6 @@ import controller.map.UnwantedChildException;
  */
 public class TileReader implements INodeReader<Tile> {
 	/**
-	 * @return the type we produce
-	 */
-	@Override
-	public Class<Tile> represents() {
-		return Tile.class;
-	}
-
-	/**
 	 * @param element
 	 *            the element to start with
 	 * @param stream

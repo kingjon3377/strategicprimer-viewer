@@ -19,13 +19,6 @@ import model.map.fixtures.TextFixture;
  */
 public class TextReader implements INodeReader<TextFixture> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<TextFixture> represents() {
-		return TextFixture.class;
-	}
-	/**
 	 * Parse a TextFixture.
 	 * @param element the element to parse
 	 * @param stream the stream to get more elements (in this case, the text) from

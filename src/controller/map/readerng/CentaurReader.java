@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class CentaurReader implements INodeReader<Centaur> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Centaur> represents() {
-		return Centaur.class;
-	}
-	/**
 	 * Parse a centaur.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

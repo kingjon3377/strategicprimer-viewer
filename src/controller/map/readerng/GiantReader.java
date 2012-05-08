@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class GiantReader implements INodeReader<Giant> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Giant> represents() {
-		return Giant.class;
-	}
-	/**
 	 * Parse a giant.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

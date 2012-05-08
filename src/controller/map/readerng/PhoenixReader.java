@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class PhoenixReader implements INodeReader<Phoenix> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Phoenix> represents() {
-		return Phoenix.class;
-	}
-	/**
 	 * Parse a phoenix.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class GroveReader implements INodeReader<Grove> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Grove> represents() {
-		return Grove.class;
-	}
-	/**
 	 * Parse a grove.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

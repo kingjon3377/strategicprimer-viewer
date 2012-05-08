@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class HillReader implements INodeReader<Hill> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Hill> represents() {
-		return Hill.class;
-	}
-	/**
 	 * Parse a hill.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

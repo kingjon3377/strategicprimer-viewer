@@ -19,13 +19,6 @@ import controller.map.UnwantedChildException;
  */
 public class MountainReader implements INodeReader<Mountain> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Mountain> represents() {
-		return Mountain.class;
-	}
-	/**
 	 * Parse a mountain.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

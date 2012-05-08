@@ -20,13 +20,6 @@ import controller.map.misc.IDFactory;
  */
 public class CaveReader implements INodeReader<CaveEvent> {
 	/**
-	 * @return the type we produce.
-	 */
-	@Override
-	public Class<CaveEvent> represents() {
-		return CaveEvent.class;
-	}
-	/**
 	 * Parse a cave.
 	 * @param element the element to read from
 	 * @param stream a stream of more elements

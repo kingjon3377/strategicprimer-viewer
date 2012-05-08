@@ -19,13 +19,6 @@ import controller.map.misc.IDFactory;
  */
 public class FairyReader implements INodeReader<Fairy> {
 	/**
-	 * @return the class this produces
-	 */
-	@Override
-	public Class<Fairy> represents() {
-		return Fairy.class;
-	}
-	/**
 	 * Parse a fairy.
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from

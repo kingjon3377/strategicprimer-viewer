@@ -24,13 +24,6 @@ import controller.map.UnwantedChildException;
  */
 public class ReaderAdapter implements INodeReader<XMLWritable> {
 	/**
-	 * @return the class this represents.
-	 */
-	@Override
-	public Class<XMLWritable> represents() {
-		return XMLWritable.class;
-	}
-	/**
 	 * Parse an element.
 	 * @param element the element to parse
 	 * @param stream the stream to get more elements from
