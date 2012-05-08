@@ -222,5 +222,26 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 						&& (name.equals(((Fortress) fix).name))
 						&& ((Fortress) fix).owner.getId() == owner.getId() && ((Fortress) fix).units
 							.equals(units));
+//		if (this == fix) {
+//			return true;
+//		} else if (fix instanceof Fortress
+//						&& (name.equals(((Fortress) fix).name))
+//						&& ((Fortress) fix).owner.getId() == owner.getId()) {
+//			final Set<Unit> ours = Collections.synchronizedSet(new HashSet<Unit>(units));
+//			final Set<Unit> theirs = Collections.synchronizedSet(new HashSet<Unit>(((Fortress) fix).units));
+//			ours.removeAll(((Fortress) fix).units);
+//			theirs.removeAll(units);
+//			for (Unit one : ours) {
+//				for (Unit two : theirs) {
+//					if (one.equalsIgnoringID(two)) {
+//						ours.remove(one);
+//						theirs.remove(two);
+//					}
+//				}
+//			}
+//			return ours.isEmpty() && theirs.isEmpty();
+//		} else {
+//			return false;
+//		}	
 	}
 }
