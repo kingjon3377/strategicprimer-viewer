@@ -54,25 +54,14 @@ public class Meadow implements TileFixture, HasImage {
 		return field;
 	}
 	/**
-	 * TODO: inline.
 	 * @return an XML representation of the Fixture.
 	 */
 	@Override
 	public String toXML() {
-		final StringBuilder builder = new StringBuilder();
-		if (field) {
-			builder.append("<field");
-		} else {
-			builder.append("<meadow");
-		}
-		builder.append(" kind=\"");
-		builder.append(kind);
-		builder.append("\" cultivated=\"");
-		builder.append(cultivated);
-		builder.append("\" id=\"");
-		builder.append(id);
-		builder.append("\" />");
-		return builder.toString();
+		return new StringBuilder(field ? "<field" : "<meadow")
+				.append(" kind=\"").append(kind).append("\" cultivated=\"")
+				.append(cultivated).append("\" id=\"").append(id)
+				.append("\" />").toString();
 	}
 	/**
 	 * TODO: This should be more granular based on the kind of field.

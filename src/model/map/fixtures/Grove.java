@@ -54,25 +54,13 @@ public class Grove implements TileFixture, HasImage {
 		return kind;
 	}
 	/**
-	 * TODO: inline.
 	 * @return an XML representation of the Fixture.
 	 */
 	@Override
 	public String toXML() {
-		final StringBuilder builder = new StringBuilder();
-		if (orchard) {
-			builder.append("<orchard");
-		} else {
-			builder.append("<grove");
-		}
-		builder.append(" wild=\"");
-		builder.append(isWild());
-		builder.append("\" kind=\"");
-		builder.append(getKind());
-		builder.append("\" id=\"");
-		builder.append(id);
-		builder.append("\" />");
-		return builder.toString();
+		return new StringBuilder(orchard ? "<orchard"
+				: "<grove").append(" wild=\"").append(isWild())
+				.append("\" kind=\"").append(getKind()).append("\" id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * @return the name of an image to represent the grove or orchard
