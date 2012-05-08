@@ -20,13 +20,6 @@ import controller.map.UnsupportedTagException;
 @Deprecated
 public final class NodeFactory { // NOPMD
 	/**
-	 * The name for the property for what kind of event an event is. We create
-	 * this property when setting up nodes for events that had their own unique
-	 * tags.
-	 */
-	private static final String EVENT_KIND_PROP = "kind";
-
-	/**
 	 * Do not instantiate.
 	 */
 	private NodeFactory() {
@@ -126,10 +119,7 @@ public final class NodeFactory { // NOPMD
 		} else {
 			node = localtag.getTagClass().newInstance();
 		}
-		if (EqualsAny.equalsAny(localtag, Tag.City,
-				Tag.Fortification, Tag.Town)) {
-			node.addProperty(EVENT_KIND_PROP, tag, warner);
-		} else if (Tag.Lake.equals(localtag)) {
+		if (Tag.Lake.equals(localtag)) {
 			node.addProperty("direction", "lake", warner);
 		} else if (EqualsAny.equalsAny(localtag, Tag.Grove, Tag.Meadow)) {
 			node.addProperty("tag", tag, warner);
@@ -176,12 +166,10 @@ public final class NodeFactory { // NOPMD
 			node = new CaveEventNode();
 			break;
 		case City:
-			node = new TownEventNode();
-			node.addProperty(EVENT_KIND_PROP, "city", warner);
+			node = new CityNode();
 			break;
 		case Fortification:
-			node = new TownEventNode();
-			node.addProperty(EVENT_KIND_PROP, "fortification", warner);
+			node = new FortificationNode();
 			break;
 		case Fortress:
 			node = new FortressNode();
@@ -212,8 +200,7 @@ public final class NodeFactory { // NOPMD
 			node = new TileNode();
 			break;
 		case Town:
-			node = new TownEventNode();
-			node.addProperty(EVENT_KIND_PROP, "town", warner);
+			node = new TownNode();
 			break;
 		case Unit:
 			node = new UnitNode();

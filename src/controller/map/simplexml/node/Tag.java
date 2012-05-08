@@ -55,12 +55,12 @@ public enum Tag {
 	/**
 	 * A city.
 	 */
-	City(TownEventNode.class),
+	City(CityNode.class),
 	/**
 	 * A fortification. FIXME: Again, we want this to use the Fortress tag
 	 * instead, eventually.
 	 */
-	Fortification(TownEventNode.class),
+	Fortification(FortificationNode.class),
 	/**
 	 * A stone deposit.
 	 */
@@ -180,7 +180,7 @@ public enum Tag {
 	/**
 	 * A town.
 	 */
-	Town(TownEventNode.class);
+	Town(TownNode.class);
 	/**
 	 * Constructor.
 	 * @param tclass the Class of the kind of Node that this tag indicates.
