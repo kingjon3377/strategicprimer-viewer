@@ -25,76 +25,113 @@ import controller.map.UnwantedChildException;
 public class ReaderAdapter implements INodeReader<XMLWritable> {
 	/**
 	 * Parse an element.
-	 * @param element the element to parse
-	 * @param stream the stream to get more elements from
-	 * @param players the collection of players to use if needed
-	 * @param warner the Warning instance to use
+	 * 
+	 * @param element
+	 *            the element to parse
+	 * @param stream
+	 *            the stream to get more elements from
+	 * @param players
+	 *            the collection of players to use if needed
+	 * @param warner
+	 *            the Warning instance to use
 	 * @return the result of parsing the element
-	 * @throws SPFormatException on SP format problems.
+	 * @throws SPFormatException
+	 *             on SP format problems.
 	 */
 	@Override
-	public XMLWritable parse(final StartElement element, final Iterable<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner) throws SPFormatException {
+	public XMLWritable parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner) throws SPFormatException {
 		if (CACHE.containsKey(element.getName().getLocalPart())) {
-			return CACHE.get(element.getName().getLocalPart()).parse(element, stream, players, warner);
+			return CACHE.get(element.getName().getLocalPart()).parse(element,
+					stream, players, warner);
 		} else {
 			throw new UnwantedChildException("unknown", element.getName()
 					.getLocalPart(), element.getLocation().getLineNumber());
 		}
 	}
+
 	/**
-	 * Map from tags to readers. Initializer moved to static block below because here it made the line *way* too long.
+	 * Map from tags to readers. Initializer moved to static block below because
+	 * here it made the line *way* too long.
 	 */
 	private static final Map<String, INodeReader<? extends XMLWritable>> CACHE;
+
 	/**
 	 * Add a reader to the cache.
-	 * @param reader the reader to add
+	 * 
+	 * @param reader
+	 *            the reader to add
 	 */
 	private static void factory(final INodeReader<? extends XMLWritable> reader) {
 		for (String tag : reader.understands()) {
 			CACHE.put(tag, reader);
 		}
 	}
-	/**
-	 * Add a bunch of readers to the cache.
-	 * @param readers the readers to add
-	 */
-	private static void factoryMulti(final INodeReader<? extends XMLWritable>... readers) {
-		for (INodeReader<? extends XMLWritable> reader : readers) {
-			factory(reader);
-		}
-	}
+
 	static {
 		CACHE = new TreeMap<String, INodeReader<? extends XMLWritable>>(
 				String.CASE_INSENSITIVE_ORDER);
-		factoryMulti(new SPMapReader(), new PlayerReader(), new TileReader(),
-				new AnimalReader(), new CacheReader(), new CentaurReader(),
-				new DjinnReader(), new DragonReader(), new FairyReader(),
-				new ForestReader(), new FortressReader(), new GiantReader(),
-				new GriffinReader(), new GroundReader(), new GroveReader(),
-				new HillReader(), new MeadowReader(), new MineReader(),
-				new MinotaurReader(), new MountainReader(), new OasisReader(),
-				new OgreReader(), new PhoenixReader(), new SandbarReader(),
-				new ShrubReader(), new SimurghReader(), new SphinxReader(),
-				new TrollReader(), new TextReader(), new UnitReader(),
-				new VillageReader(), new BattlefieldReader(), new CaveReader(),
-				new CityReader(), new FortificationReader(), new TownReader(),
-				new MineralReader(), new StoneReader(), new RiverReader());
+		factory(new SPMapReader());
+		factory(new PlayerReader());
+		factory(new TileReader());
+		factory(new AnimalReader());
+		factory(new CacheReader());
+		factory(new CentaurReader());
+		factory(new DjinnReader());
+		factory(new DragonReader());
+		factory(new FairyReader());
+		factory(new ForestReader());
+		factory(new FortressReader());
+		factory(new GiantReader());
+		factory(new GriffinReader());
+		factory(new GroundReader());
+		factory(new GroveReader());
+		factory(new HillReader());
+		factory(new MeadowReader());
+		factory(new MineReader());
+		factory(new MinotaurReader());
+		factory(new MountainReader());
+		factory(new OasisReader());
+		factory(new OgreReader());
+		factory(new PhoenixReader());
+		factory(new SandbarReader());
+		factory(new ShrubReader());
+		factory(new SimurghReader());
+		factory(new SphinxReader());
+		factory(new TrollReader());
+		factory(new TextReader());
+		factory(new UnitReader());
+		factory(new VillageReader());
+		factory(new BattlefieldReader());
+		factory(new CaveReader());
+		factory(new CityReader());
+		factory(new FortificationReader());
+		factory(new TownReader());
+		factory(new MineralReader());
+		factory(new StoneReader());
+		factory(new RiverReader());
 	}
-	
+
 	/**
 	 * @return nothing, as this method always throws IllegalStateException---if
 	 *         it gets called, we're adding it to its own cache.
 	 */
 	@Override
 	public List<String> understands() {
-		throw new IllegalStateException("ReaderAdapter#understands() should never be called");
+		throw new IllegalStateException(
+				"ReaderAdapter#understands() should never be called");
 	}
+
 	/**
-	 * @param <T> a type
-	 * @param obj an object
-	 * @param type a type
-	 * @return obj, if it is assignable to the specified type; throw an exception otherwise. 
+	 * @param <T>
+	 *            a type
+	 * @param obj
+	 *            an object
+	 * @param type
+	 *            a type
+	 * @return obj, if it is assignable to the specified type; throw an
+	 *         exception otherwise.
 	 */
 	@SuppressWarnings("unchecked")
 	// The point here is that we *are* checking ... but you can't do that
