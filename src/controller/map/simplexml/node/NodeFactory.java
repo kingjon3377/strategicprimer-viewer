@@ -11,8 +11,7 @@ import controller.map.UnsupportedTagException;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
- * the tags that represent them. TODO: Actually implement <include>---and that
- * will entail making this no longer Singleton.
+ * the tags that represent them. 
  * 
  * @author Jonathan Lovelace
  * 

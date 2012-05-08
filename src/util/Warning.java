@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A class to log warnings. TODO: Add a way to turn warnings off.
+ * A class to log warnings.
  * 
  * @author Jonathan Lovelace
  * 
