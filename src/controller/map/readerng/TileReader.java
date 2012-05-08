@@ -52,29 +52,8 @@ public class TileReader implements INodeReader<Tile> {
 					tile.addFixture(new RiverFixture(new RiverReader().parse(// NOPMD
 							event.asStartElement(), stream, players, warner)));
 				} else {
-					try {
-						tile.addFixture(checkedCast(new ReaderAdapter().parse(//NOPMD
-							event.asStartElement(), stream, players, warner),
-							TileFixture.class));
-					} catch (final UnwantedChildException except) {
-						// ESCA-JAVA0049:
-						if ("unknown".equals(except.getTag())) {
-							throw new UnwantedChildException(element.getName()//NOPMD
-									.getLocalPart(), except.getChild(), element
-									.getLocation().getLineNumber());
-						} else {
-							throw except;
-						}
-					} catch (final IllegalStateException except) {
-						if (except.getMessage().matches("^Wanted [^ ]*, was [^ ]*$")) {
-							throw new UnwantedChildException(element.getName()//NOPMD
-									.getLocalPart(), event.asStartElement()
-									.getName().getLocalPart(), event
-									.getLocation().getLineNumber());
-						} else {
-							throw except;
-						}
-					}
+					perhapsAddFixture(stream, players, warner, tile, event,
+							element.getName().getLocalPart());
 				} 
 			} else if (event.isCharacters()) {
 				tile.addFixture(new TextFixture(event.asCharacters().getData().trim(), // NOPMD
@@ -86,6 +65,44 @@ public class TileReader implements INodeReader<Tile> {
 			}
 		}
 		return tile;
+	}
+	/**
+	 * We expect the next start element to be a TileFixture. If it is, parse and add it.
+	 * @param stream the stream to read events from
+	 * @param players the players collection (required by the spec of the methods we call)
+	 * @param warner the Warning instance
+	 * @param tile the tile under construction.
+	 * @param event the tag to be parsed
+	 * @param tag the tile's tag
+	 * @throws SPFormatException on SP format problems
+	 */
+	private static void perhapsAddFixture(final Iterable<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final Tile tile, final XMLEvent event, final String tag)
+			throws SPFormatException {
+		try {
+			tile.addFixture(checkedCast(new ReaderAdapter().parse(//NOPMD
+				event.asStartElement(), stream, players, warner),
+				TileFixture.class));
+		} catch (final UnwantedChildException except) {
+			// ESCA-JAVA0049:
+			if ("unknown".equals(except.getTag())) {
+				throw new UnwantedChildException(tag, //NOPMD
+						except.getChild(), event
+						.getLocation().getLineNumber());
+			} else {
+				throw except;
+			}
+		} catch (final IllegalStateException except) {
+			if (except.getMessage().matches("^Wanted [^ ]*, was [^ ]*$")) {
+				throw new UnwantedChildException(tag, //NOPMD
+						event.asStartElement()
+						.getName().getLocalPart(), event
+						.getLocation().getLineNumber());
+			} else {
+				throw except;
+			}
+		}
 	}
 	/**
 	 * @param tag a tag
