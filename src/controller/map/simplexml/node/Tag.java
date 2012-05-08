@@ -174,10 +174,6 @@ public enum Tag {
 	 */
 	Troll(TrollNode.class),
 	/**
-	 * A tag including another file by reference.
-	 */
-	Include(IncludeNode.class),
-	/**
 	 * A town.
 	 */
 	Town(TownNode.class);

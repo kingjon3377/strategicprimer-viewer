@@ -20,6 +20,7 @@ import controller.map.IMapReader;
 import controller.map.ISPReader;
 import controller.map.SPFormatException;
 import controller.map.misc.FileOpener;
+import controller.map.readerng.IncludingIterator;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
 import controller.map.simplexml.node.NodeFactory;
@@ -157,7 +158,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
-				XMLInputFactory.newInstance().createXMLEventReader(istream));
+				new IncludingIterator(XMLInputFactory.newInstance().createXMLEventReader(istream)));
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				// ESCA-JAVA0177:
