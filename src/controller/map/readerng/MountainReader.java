@@ -1,12 +1,14 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Mountain;
+import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 
@@ -48,5 +50,12 @@ public class MountainReader implements INodeReader<Mountain> {
 			}
 		}
 		return new Mountain();
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("mountain");
 	}
 }

@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -53,5 +56,12 @@ public class GroveReader implements INodeReader<Grove> {
 						"tree", warner), id);
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Arrays.asList("grove", "orchard");
 	}
 }

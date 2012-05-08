@@ -4,6 +4,9 @@ import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static java.lang.Integer.parseInt;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -75,6 +78,13 @@ public class FortressReader implements INodeReader<Fortress> {
 			}
 		}
 		return fort;
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("fortress");
 	}
 
 }

@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -49,5 +52,12 @@ public class PhoenixReader implements INodeReader<Phoenix> {
 		}
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return new Phoenix(id);
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("phoenix");
 	}
 }

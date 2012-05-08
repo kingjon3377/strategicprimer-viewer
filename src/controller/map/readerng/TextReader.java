@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -51,5 +54,12 @@ public class TextReader implements INodeReader<TextFixture> {
 		return new TextFixture(sbuild.toString().trim(),
 				Integer.parseInt(XMLHelper.getAttributeWithDefault(element,
 						"turn", "-1")));
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("text");
 	}
 }

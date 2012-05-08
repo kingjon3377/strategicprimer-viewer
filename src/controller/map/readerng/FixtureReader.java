@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -104,5 +105,12 @@ public class FixtureReader implements INodeReader<TileFixture> {
 	 */
 	public static boolean supports(final String name) {
 		return TAGS.containsKey(name.toLowerCase(Locale.ENGLISH));
+	}
+	/**
+	 * @return nothing, as this method should never be called
+	 */
+	@Override
+	public List<String> understands() {
+		throw new IllegalStateException("FixtureReader should be obsolete");
 	}
 }

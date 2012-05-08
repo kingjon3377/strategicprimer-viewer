@@ -1,11 +1,12 @@
 package controller.map.readerng;
 
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
+import util.Warning;
 import controller.map.SPFormatException;
 
 /**
@@ -19,6 +20,10 @@ public interface INodeReader<T> {
 	 * @return the data type that the reader will produce.
 	 */
 	Class<T> represents();
+	/**
+	 * @return a list of the tags the reader can handle.
+	 */
+	List<String> understands();
 	/**
 	 * Parse an instance of the type from XML.
 	 * @param element the eleent to start parsing with

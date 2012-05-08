@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -106,5 +109,12 @@ public class UnitReader implements INodeReader<Unit> {
 	 */
 	private static String ensureNumeric(final String string) {
 		return string.isEmpty() ? "-1" : string;
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("unit");
 	}
 }

@@ -4,6 +4,9 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.hasAttribute;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -110,6 +113,13 @@ public class SPMapReader implements INodeReader<SPMap> {
 						.getLocalPart(), elem.getLocation().getLineNumber());
 			}
 		}
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("map");
 	}
 
 }

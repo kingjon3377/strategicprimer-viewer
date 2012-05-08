@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -49,6 +52,13 @@ public class FairyReader implements INodeReader<Fairy> {
 		final Fairy fix = new Fairy(XMLHelper.getAttribute(element, "kind"), id);
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("fairy");
 	}
 
 }

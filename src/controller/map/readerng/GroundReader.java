@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -39,5 +42,12 @@ public class GroundReader implements INodeReader<Ground> {
 				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("ground");
 	}
 }

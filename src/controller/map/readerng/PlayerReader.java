@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -45,6 +48,13 @@ public class PlayerReader implements INodeReader<Player> {
 		}
 		return new Player(Integer.parseInt(XMLHelper.getAttribute(element,
 				"number")), XMLHelper.getAttribute(element, "code_name"));
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("player");
 	}
 
 }

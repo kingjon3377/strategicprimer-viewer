@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -48,6 +51,13 @@ public class DjinnReader implements INodeReader<Djinn> {
 		}
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return new Djinn(id);
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("djinn");
 	}
 
 }

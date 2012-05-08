@@ -4,6 +4,9 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static java.lang.Integer.parseInt;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -84,5 +87,12 @@ public class TileReader implements INodeReader<Tile> {
 	 */
 	private static boolean isRiver(final String tag) {
 		return "river".equalsIgnoreCase(tag) || "lake".equalsIgnoreCase(tag);
+	}
+	/**
+	 * @return a list of the tags this reader understands
+	 */
+	@Override
+	public List<String> understands() {
+		return Collections.singletonList("tile");
 	}
 }
