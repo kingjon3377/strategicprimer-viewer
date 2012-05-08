@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.fixtures.Forest;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Griffin;
+import model.map.fixtures.Ogre;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.Unit;
@@ -233,5 +234,18 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Simple Map serialization", one, SPMap.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />", SPMap.class, "rows", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMap.class, "columns", false);
+	}
+	/**
+	 * Test the <include> tag.
+	 * @throws SPFormatException
+	 *             on SP format error
+	 * @throws XMLStreamException
+	 *             on XML reading error
+	 */
+	@Test
+	public void testInclude() throws XMLStreamException, SPFormatException {
+		assertForwardDeserialization("Reading Ogre via <include>",
+				new Ogre(1), "<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />",
+				Ogre.class);
 	}
 }
