@@ -1,5 +1,6 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.ReaderAdapter.checkedCast;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static java.lang.Integer.parseInt;
@@ -11,7 +12,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -56,20 +56,34 @@ public class TileReader implements INodeReader<Tile> {
 				TileType.getTileType(getAttributeWithDeprecatedForm(element, "kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if (FixtureReader.supports(event.asStartElement().getName()
-						.getLocalPart())) {
-					tile.addFixture(ReaderFactory.createReader(
-							TileFixture.class).parse(event.asStartElement(),
-							stream, players, warner));
-				} else if (isRiver(event.asStartElement()
-								.getName().getLocalPart())) {
-					tile.addFixture(new RiverFixture(ReaderFactory.createReader(River.class) // NOPMD
-							.parse(event.asStartElement(), stream, players, warner)));
+				if (isRiver(event.asStartElement().getName().getLocalPart())) {
+					tile.addFixture(new RiverFixture(new RiverReader().parse(// NOPMD
+							event.asStartElement(), stream, players, warner)));
 				} else {
-					throw new UnwantedChildException("tile", event.asStartElement()
-							.getName().getLocalPart(), event.getLocation()
-							.getLineNumber());
-				}
+					try {
+						tile.addFixture(checkedCast(new ReaderAdapter().parse(//NOPMD
+							event.asStartElement(), stream, players, warner),
+							TileFixture.class));
+					} catch (final UnwantedChildException except) {
+						// ESCA-JAVA0049:
+						if ("unknown".equals(except.getTag())) {
+							throw new UnwantedChildException(element.getName()//NOPMD
+									.getLocalPart(), except.getChild(), element
+									.getLocation().getLineNumber());
+						} else {
+							throw except;
+						}
+					} catch (final IllegalStateException except) {
+						if (except.getMessage().matches("^Wanted [^ ]*, was [^ ]*$")) {
+							throw new UnwantedChildException(element.getName()//NOPMD
+									.getLocalPart(), event.asStartElement()
+									.getName().getLocalPart(), event
+									.getLocation().getLineNumber());
+						} else {
+							throw except;
+						}
+					}
+				} 
 			} else if (event.isCharacters()) {
 				tile.addFixture(new TextFixture(event.asCharacters().getData().trim(), // NOPMD
 						-1));

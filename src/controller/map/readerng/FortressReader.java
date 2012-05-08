@@ -10,11 +10,9 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import util.Warning;
-
 import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
-import model.map.fixtures.Unit;
+import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
@@ -66,8 +64,8 @@ public class FortressReader implements INodeReader<Fortress> {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
-				fort.addUnit(ReaderFactory.createReader(Unit.class).parse(
-						event.asStartElement(), stream, players, warner));
+				fort.addUnit(new UnitReader().parse(event.asStartElement(), //NOPMD
+						stream, players, warner));
 			} else if (event.isEndElement() && "fortress".equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
 				break;
 			} else if (event.isStartElement()) {

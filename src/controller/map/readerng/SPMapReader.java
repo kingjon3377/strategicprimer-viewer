@@ -10,10 +10,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMap;
-import model.map.Tile;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.ISPReader;
@@ -97,13 +95,13 @@ public class SPMapReader implements INodeReader<SPMap> {
 			final StartElement elem) throws SPFormatException {
 		final String type = elem.getName().getLocalPart();
 		if ("player".equalsIgnoreCase(type)) {
-			map.addPlayer(ReaderFactory.createReader(Player.class)
+			map.addPlayer(new PlayerReader()
 					.parse(elem, stream, map.getPlayers(), warner));
 		} else if (!"row".equalsIgnoreCase(type)) {
 			// We deliberately ignore "row"; that had been a "continue",
 			// but we want to extract this as a method.
 			if ("tile".equalsIgnoreCase(type)) {
-				map.addTile(ReaderFactory.createReader(Tile.class).parse(
+				map.addTile(new TileReader().parse(
 						elem, stream, map.getPlayers(), warner));
 			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) { 
 				warner.warn(new UnsupportedTagException(type, elem // NOPMD

@@ -9,6 +9,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.SPMap;
+import model.map.XMLWritable;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.IMapReader;
@@ -79,13 +80,40 @@ public class MapReaderNG implements IMapReader, ISPReader {
 				XMLInputFactory.newInstance().createXMLEventReader(istream));
 		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				return ReaderFactory.createReader(type).parse(
+				final XMLWritable retval = new ReaderAdapter().parse(//NOPMD
 						event.asStartElement(), eventReader,
 						new PlayerCollection(), warner); // NOPMD
+				return checkType(retval, type);
 			}
 		}
 		throw new XMLStreamException("XML stream didn't contain a start element");
 	}
+	
+	/**
+	 * Helper method: check that an XMLWritable is in fact assignable to the
+	 * specified type. Return it if so; if not throw IllegalArgumentException.
+	 * 
+	 * @param <T>
+	 *            the type to check the object against.
+	 * @param obj
+	 *            the object to check
+	 * @param type
+	 *            the type to check it against.
+	 * @return the object, if it matches the desired type.
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T> T checkType(final XMLWritable obj, final Class<T> type) {
+		if (type.isAssignableFrom(obj.getClass())) {
+			return (T) obj;
+		} else {
+			throw new IllegalArgumentException(
+					"We want a node producing " + type.getSimpleName()
+							+ ", not "
+							+ obj.getClass().getSimpleName()
+							+ ", as the top-level tag");
+		}
+	}
+	
 	/**
 	 * @param <T> The type of the object the XML represents
 	 * @param istream
