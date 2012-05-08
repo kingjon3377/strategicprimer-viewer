@@ -117,7 +117,7 @@ public final class MapUpdater {
 				continue;
 			}
 			try {
-				new XMLWriter(writer).write(derived); // NOPMD
+				new XMLWriter().write(writer, derived); // NOPMD
 			} finally {
 				writer.close();
 			}

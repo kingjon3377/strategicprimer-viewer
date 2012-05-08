@@ -170,7 +170,7 @@ public final class IOHandler implements ActionListener {
 	private void saveMap(final SPMap map) {
 		if (chooser.showSaveDialog(menu) == JFileChooser.APPROVE_OPTION) {
 			try {
-				new XMLWriter(chooser.getSelectedFile().getPath()).write(map);
+				new XMLWriter().write(chooser.getSelectedFile().getPath(), map);
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}

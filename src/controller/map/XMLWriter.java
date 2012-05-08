@@ -16,46 +16,32 @@ import model.map.SPMap;
  */
 public class XMLWriter { // NOPMD
 	/**
-	 * The writer we'll write to.
+	 * Write a map.
+	 * @param filename the file to write to
+	 * @param map the map to write. 
+	 * @throws IOException on error opening the file
 	 */
-	private final PrintWriter writer;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param filename
-	 *            the file to write to
-	 * 
-	 * @throws IOException
-	 *             on I/O error opening the file
-	 */
-	public XMLWriter(final String filename) throws IOException {
-		this(new FileWriter(filename)); // $codepro.audit.disable
-										// closeWhereCreated
-	}
-
-	/**
-	 * Constructor. FIXME: The writer (or filename) should be a parameter to
-	 * write(), not an instance variable.
-	 * 
-	 * @param out
-	 *            the writer to write to
-	 */
-	public XMLWriter(final Writer out) {
-		writer = new PrintWriter(new BufferedWriter(out)); // $codepro.audit.disable
-															// closeWhereCreated
+	public void write(final String filename, final SPMap map) throws IOException {
+		final FileWriter writer = new FileWriter(filename);
+		try {
+			write(writer, map);
+		} finally {
+			writer.close();
+		}
 	}
 
 	/**
 	 * Write a map.
 	 * 
+	 * @param out the writer to write to
 	 * @param map
 	 *            the map to write
 	 */
-	public void write(final SPMap map) {
+	public void write(final Writer out, final SPMap map) {
+		final PrintWriter writer = new PrintWriter(new BufferedWriter(out));
 		try {
 			writer.print("<?xml version=");
-			printQuoted("1.0");
+			printQuoted(writer, "1.0");
 			writer.println("?>");
 			writer.println(map.toXML());
 		} finally {
@@ -65,11 +51,11 @@ public class XMLWriter { // NOPMD
 
 	/**
 	 * Prints a string in quotation marks.
-	 * 
+	 * @param writer the Writer to write to
 	 * @param text
 	 *            the string to print
 	 */
-	private void printQuoted(final String text) {
+	private static void printQuoted(final PrintWriter writer, final String text) {
 		writer.print('"');
 		writer.print(text);
 		writer.print('"');

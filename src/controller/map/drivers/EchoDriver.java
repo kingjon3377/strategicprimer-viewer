@@ -64,7 +64,7 @@ public final class EchoDriver {
 			return; // NOPMD
 		}
 		try {
-			new XMLWriter(args[1]).write(map);
+			new XMLWriter().write(args[1], map);
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error writing " + args[1], except);
 		}
