@@ -31,10 +31,9 @@ public class ForestReader implements INodeReader<Forest> {
 	public Forest parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Forest fix = new Forest(XMLHelper.getAttribute(element, "kind"),
-				XMLHelper.hasAttribute(element, "rows"));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
+		return new Forest(XMLHelper.getAttribute(element, "kind"),
+				XMLHelper.hasAttribute(element, "rows"));
 	}
 	/**
 	 * @return a list of the tags this reader understands

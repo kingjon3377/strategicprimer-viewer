@@ -33,13 +33,12 @@ public class GroveReader implements INodeReader<Grove> {
 	public Grove parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Grove fix = new Grove("orchard".equalsIgnoreCase(element
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new Grove("orchard".equalsIgnoreCase(element
 				.getName().getLocalPart()), Boolean.parseBoolean(XMLHelper
 				.getAttribute(element, "wild")),
 				XMLHelper.getAttributeWithDeprecatedForm(element, "kind",
 						"tree", warner), getOrGenerateID(element, warner, idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

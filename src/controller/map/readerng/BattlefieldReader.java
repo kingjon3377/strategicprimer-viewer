@@ -34,11 +34,10 @@ public class BattlefieldReader implements INodeReader<BattlefieldEvent> {
 	public BattlefieldEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final BattlefieldEvent fix = new BattlefieldEvent(
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new BattlefieldEvent(
 				Integer.parseInt(XMLHelper.getAttribute(element, "dc")),
 				getOrGenerateID(element, warner, idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

@@ -32,12 +32,10 @@ public class RiverReader implements INodeReader<River> {
 	public River parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final River fix = 
-				"lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
-						: River.getRiver(XMLHelper.getAttribute(element,
-								"direction"));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
+		return "lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
+				: River.getRiver(XMLHelper.getAttribute(element,
+						"direction"));
 	}
 	/**
 	 * @return a list of the tags this reader understands

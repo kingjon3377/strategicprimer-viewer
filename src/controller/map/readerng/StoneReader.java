@@ -35,14 +35,13 @@ public class StoneReader implements INodeReader<StoneEvent> {
 	public StoneEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final StoneEvent fix = new StoneEvent(
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new StoneEvent(
 				StoneKind.parseStoneKind(XMLHelper
 						.getAttributeWithDeprecatedForm(element, "kind",
 								"stone", warner)), Integer.parseInt(XMLHelper
 						.getAttribute(element, "dc")), getOrGenerateID(element,
 						warner, idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

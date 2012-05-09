@@ -32,11 +32,10 @@ public class GroundReader implements INodeReader<Ground> {
 	public Ground parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Ground fix = new Ground(
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new Ground(
 				XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "ground", warner),
 				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

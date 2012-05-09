@@ -36,12 +36,11 @@ public class VillageReader implements INodeReader<Village> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
-		final Village fix = new Village(TownStatus.parseTownStatus(XMLHelper
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new Village(TownStatus.parseTownStatus(XMLHelper
 				.getAttribute(element, "status")),
 				XMLHelper.getAttributeWithDefault(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

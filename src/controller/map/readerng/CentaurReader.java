@@ -33,11 +33,10 @@ public class CentaurReader implements INodeReader<Centaur> {
 	public Centaur parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Centaur fix = new Centaur(
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new Centaur(
 				XMLHelper.getAttribute(element, "kind"), getOrGenerateID(
 						element, warner, idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

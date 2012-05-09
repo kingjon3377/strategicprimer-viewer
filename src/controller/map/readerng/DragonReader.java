@@ -33,10 +33,9 @@ public class DragonReader implements INodeReader<Dragon> {
 	public Dragon parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Dragon fix = new Dragon(XMLHelper.getAttribute(element, "kind"),
-				getOrGenerateID(element, warner, idFactory));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
+		return new Dragon(XMLHelper.getAttribute(element, "kind"),
+				getOrGenerateID(element, warner, idFactory));
 	}
 	/**
 	 * @return a list of the tags this reader understands

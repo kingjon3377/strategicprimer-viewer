@@ -34,11 +34,10 @@ public class CaveReader implements INodeReader<CaveEvent> {
 	public CaveEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final CaveEvent fix = new CaveEvent(Integer.parseInt(XMLHelper
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new CaveEvent(Integer.parseInt(XMLHelper
 				.getAttribute(element, "dc")), getOrGenerateID(element, warner,
 				idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

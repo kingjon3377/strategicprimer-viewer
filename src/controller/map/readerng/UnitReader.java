@@ -48,13 +48,12 @@ public class UnitReader implements INodeReader<Unit> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
-		final Unit fix = new Unit(players.getPlayer(Integer
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new Unit(players.getPlayer(Integer
 				.parseInt(ensureNumeric(XMLHelper.getAttributeWithDefault(
 						element, "owner", "-1")))), parseKind(element, warner),
 				XMLHelper.getAttributeWithDefault(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 
 	/**

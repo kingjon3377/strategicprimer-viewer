@@ -32,14 +32,13 @@ public class AnimalReader implements INodeReader<Animal> {
 	public Animal parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Animal animal = new Animal(
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new Animal(
 				XMLHelper.getAttribute(element, "kind"),
 				XMLHelper.hasAttribute(element, "traces"),
 				Boolean.parseBoolean(XMLHelper.getAttributeWithDefault(element,
 						"talking", "false")), getOrGenerateID(element, warner,
 						idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return animal;
 	}
 	/**
 	 * @return a list of the tags this reader understands

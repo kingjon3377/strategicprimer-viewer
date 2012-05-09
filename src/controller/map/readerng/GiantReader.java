@@ -33,10 +33,9 @@ public class GiantReader implements INodeReader<Giant> {
 	public Giant parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Giant fix = new Giant(XMLHelper.getAttribute(element, "kind"),
-				getOrGenerateID(element, warner, idFactory));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
+		return new Giant(XMLHelper.getAttribute(element, "kind"),
+				getOrGenerateID(element, warner, idFactory));
 	}
 	/**
 	 * @return a list of the tags this reader understands

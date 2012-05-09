@@ -33,13 +33,12 @@ public class MeadowReader implements INodeReader<Meadow> {
 	public Meadow parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Meadow fix = new Meadow(XMLHelper.getAttribute(element, "kind"),
+		XMLHelper.spinUntilEnd(element.getName(), stream);
+		return new Meadow(XMLHelper.getAttribute(element, "kind"),
 				"field".equalsIgnoreCase(element.getName().getLocalPart()),
 				Boolean.parseBoolean(XMLHelper.getAttribute(element,
 						"cultivated")), getOrGenerateID(element, warner,
 						idFactory));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

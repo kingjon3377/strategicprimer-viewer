@@ -33,10 +33,9 @@ public class FairyReader implements INodeReader<Fairy> {
 	public Fairy parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Fairy fix = new Fairy(XMLHelper.getAttribute(element, "kind"),
-				getOrGenerateID(element, warner, idFactory));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return fix;
+		return new Fairy(XMLHelper.getAttribute(element, "kind"),
+				getOrGenerateID(element, warner, idFactory));
 	}
 	/**
 	 * @return a list of the tags this reader understands
