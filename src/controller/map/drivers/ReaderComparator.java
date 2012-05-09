@@ -1,8 +1,12 @@
 package controller.map.drivers;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringReader;
+import java.nio.CharBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -126,14 +130,24 @@ public class ReaderComparator {
 		final Warning warner = new Warning(Warning.Action.Ignore);
 		out.print(arg);
 		out.println(':');
+		final File file = new File(arg);
+		final FileReader reader = new FileReader(file);
+		final CharBuffer buffer = CharBuffer.allocate((int) file.length());
+		try {
+		reader.read(buffer);
+		} finally {
+		reader.close();
+		}
+		buffer.position(0);
+		final String contents = buffer.toString();
 		final long startOne = System.nanoTime();
-		final SPMap map1 = one.readMap(arg, warner);
+		final SPMap map1 = one.readMap(new StringReader(contents), warner);
 		final long endOne = System.nanoTime();
 		out.print("Old method took ");
 		out.print((endOne - startOne));
 		out.println(" time-units.");
 		final long startTwo = System.nanoTime();
-		final SPMap map2 = two.readMap(arg, warner);
+		final SPMap map2 = two.readMap(new StringReader(contents), warner);
 		final long endTwo = System.nanoTime();
 		out.print("New method took ");
 		out.print((endTwo - startTwo));
