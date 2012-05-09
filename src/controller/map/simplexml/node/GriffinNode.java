@@ -3,7 +3,6 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Griffin;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -40,12 +39,7 @@ public class GriffinNode extends AbstractFixtureNode<Griffin> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("griffin");
-		if (hasProperty("id")) {
-			idFactory.register(Long.parseLong(getProperty("id")));
-		} else {
-			warner.warn(new MissingParameterException("griffin", "id", getLine()));
-			addProperty("id", Long.toString(idFactory.getID()), warner);
-		}
+		registerOrCreateID("griffin", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

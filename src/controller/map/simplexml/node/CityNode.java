@@ -96,16 +96,7 @@ public class CityNode extends AbstractFixtureNode<CityEvent> {
 						warner.warn(new MissingParameterException(
 								TAG, "name", getLine()));
 					}
-					if (hasProperty(ID_PROPERTY)) {
-						idFactory.register(
-								Long.parseLong(getProperty(ID_PROPERTY)));
-					} else {
-						warner.warn(new MissingParameterException(
-								TAG, "id", getLine()));
-						addProperty(ID_PROPERTY,
-								Long.toString(idFactory.getID()),
-								warner);
-					}
+					registerOrCreateID(TAG, idFactory, warner);
 				} else {
 					throw new MissingParameterException(
 							TAG, STATUS_PROP, getLine());

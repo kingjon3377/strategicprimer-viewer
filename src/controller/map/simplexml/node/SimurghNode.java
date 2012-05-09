@@ -3,7 +3,6 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Simurgh;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -40,12 +39,7 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("simurgh");
-		if (hasProperty("id")) {
-			idFactory.register(Long.parseLong(getProperty("id")));
-		} else {
-			warner.warn(new MissingParameterException("simurgh", "id", getLine()));
-			addProperty("id", Long.toString(idFactory.getID()), warner);
-		}
+		registerOrCreateID("simurgh", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

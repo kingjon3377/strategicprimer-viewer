@@ -3,7 +3,6 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.fixtures.Sandbar;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 /**
@@ -39,12 +38,7 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("sandbar");
-		if (hasProperty("id")) {
-			idFactory.register(Long.parseLong(getProperty("id")));
-		} else {
-			warner.warn(new MissingParameterException("sandbar", "id", getLine()));
-			addProperty("id", Long.toString(idFactory.getID()), warner);
-		}
+		registerOrCreateID("sandbar", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

@@ -105,12 +105,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 			warner.warn(new MissingParameterException(TAG, NAME_ATTR,
 					getLine()));
 		}
-		if (hasProperty("id")) {
-			idFactory.register(Long.parseLong(getProperty("id")));
-		} else {
-			warner.warn(new MissingParameterException("unit", "id", getLine()));
-			addProperty("id", Long.toString(idFactory.getID()), warner);
-		}
+		registerOrCreateID("unit", idFactory, warner);
 	}
 
 	/**

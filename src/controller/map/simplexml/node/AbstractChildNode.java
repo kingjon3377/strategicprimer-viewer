@@ -5,9 +5,11 @@ import java.util.Map;
 
 import model.map.PlayerCollection;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedPropertyException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A class representing an XML tag and its descendants.
@@ -117,6 +119,27 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	protected void forbidChildren(final String tag) throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException(tag, iterator().next().toString(), getLine());
+		}
+	}
+	
+	/**
+	 * A helper method to register the ID if present or generate a new one (and
+	 * save it in the appropriate parameter) if not.
+	 * 
+	 * @param tag
+	 *            the current tag
+	 * @param idFactory
+	 *            the factory to register the ID with or generate a new one
+	 *            from.
+	 * @param warner
+	 *            the Waring instance to use if necessary.
+	 */
+	protected void registerOrCreateID(final String tag, final IDFactory idFactory, final Warning warner) {
+		if (hasProperty("id")) {
+			idFactory.register(Long.parseLong(getProperty("id")));
+		} else {
+			warner.warn(new MissingParameterException(tag, "id", getLine()));
+			addProperty("id", Long.toString(idFactory.getID()), warner);
 		}
 	}
 }

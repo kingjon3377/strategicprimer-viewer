@@ -61,12 +61,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 					KIND_PROPERTY, getLine()));
 			addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
 		} else if (hasProperty(KIND_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException("shrub", "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID("shrub", idFactory, warner);
 		} else {
 			throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
 		}

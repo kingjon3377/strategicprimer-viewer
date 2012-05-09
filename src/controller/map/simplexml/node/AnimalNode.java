@@ -58,12 +58,7 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 			throws SPFormatException {
 		forbidChildren("animal");
 		if (hasProperty(KIND_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException("animal", "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID("animal", idFactory, warner);
 		} else {
 			throw new MissingParameterException("animal", KIND_PROPERTY,
 					getLine());

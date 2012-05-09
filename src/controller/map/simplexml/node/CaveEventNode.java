@@ -59,12 +59,7 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 			throws SPFormatException {
 		forbidChildren("cave");
 		if (hasProperty(DC_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException("cave", "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID("cave", idFactory, warner);
 		} else {
 			throw new MissingParameterException("cave", "dc", getLine());
 		}

@@ -58,12 +58,7 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 			throws SPFormatException {
 		forbidChildren("battlefield");
 		if (hasProperty(DC_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException("battlefield", "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID("battlefield", idFactory, warner);
 		} else {
 			throw new MissingParameterException("battlefield", "dc", getLine());
 		}

@@ -46,12 +46,7 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 			throws SPFormatException {
 		forbidChildren("giant");
 		if (hasProperty(KIND_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-				warner.warn(new MissingParameterException("giant", "id", getLine()));
-			}
+			registerOrCreateID("giant", idFactory, warner);
 		} else {
 			throw new MissingParameterException("giant", KIND_PROPERTY, getLine());
 		}

@@ -85,12 +85,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 				throw new MissingParameterException(TAG, STONE_PROPERTY, getLine());
 			}
 		}
-		if (hasProperty("id")) {
-			idFactory.register(Long.parseLong(getProperty("id")));
-		} else {
-			warner.warn(new MissingParameterException(TAG, "id", getLine()));
-			addProperty("id", Long.toString(idFactory.getID()), warner);
-		}
+		registerOrCreateID(TAG, idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

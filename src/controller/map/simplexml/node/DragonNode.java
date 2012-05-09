@@ -46,12 +46,7 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 			throws SPFormatException {
 		forbidChildren("dragon");
 		if (hasProperty(KIND_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException("dragon", "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID("dragon", idFactory, warner);
 		} else {
 			throw new MissingParameterException("dragon", KIND_PROPERTY, getLine());
 		}

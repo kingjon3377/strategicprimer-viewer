@@ -51,12 +51,7 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 			throws SPFormatException {
 		forbidChildren("centaur");
 		if (hasProperty(KIND_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException("centaur", "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID("centaur", idFactory, warner);
 		} else {
 			throw new MissingParameterException("centaur", KIND_PROPERTY, getLine());
 		}

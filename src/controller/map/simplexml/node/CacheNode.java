@@ -62,12 +62,7 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 		forbidChildren(TAG);
 		if (hasProperty(KIND_PROPERTY)) {
 			if (hasProperty(CONTENTS_PROPERTY)) {
-				if (hasProperty("id")) {
-					idFactory.register(Long.parseLong(getProperty("id")));
-				} else {
-					warner.warn(new MissingParameterException(TAG, "id", getLine()));
-					addProperty("id", Long.toString(idFactory.getID()), warner);
-				}
+				registerOrCreateID(TAG, idFactory, warner);
 			} else {
 				throw new MissingParameterException(TAG, CONTENTS_PROPERTY, getLine());
 			}

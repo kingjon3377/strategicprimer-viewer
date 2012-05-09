@@ -76,12 +76,7 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 		if (hasProperty(TAG_PROPERTY)) {
 			if (hasProperty(CULTIVATED_PARAM)) {
 				if (hasProperty(KIND_PROPERTY)) {
-					if (hasProperty("id")) {
-						idFactory.register(Long.parseLong(getProperty("id")));
-					} else {
-						warner.warn(new MissingParameterException(getProperty(TAG_PROPERTY), "id", getLine()));
-						addProperty("id", Long.toString(idFactory.getID()), warner);
-					}
+					registerOrCreateID(getProperty(TAG_PROPERTY), idFactory, warner);
 				} else {
 					throw new MissingParameterException(getProperty(TAG_PROPERTY), KIND_PROPERTY,
 							getLine());

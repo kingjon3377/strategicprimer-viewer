@@ -65,12 +65,7 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 				warner.warn(new MissingParameterException(TAG,
 						NAME_PROPERTY, getLine()));
 			}
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException(TAG, "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID(TAG, idFactory, warner);
 		} else {
 			throw new MissingParameterException(TAG, STATUS_PROPERTY, getLine());
 		}

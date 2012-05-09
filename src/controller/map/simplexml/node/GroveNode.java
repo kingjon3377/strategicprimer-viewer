@@ -83,12 +83,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 								"kind", getLine());
 					}
 				}
-				if (hasProperty("id")) {
-					idFactory.register(Long.parseLong(getProperty("id")));
-				} else {
-					warner.warn(new MissingParameterException(getProperty(TAG_PARAM), "id", getLine()));
-					addProperty("id", Long.toString(idFactory.getID()), warner);
-				}
+				registerOrCreateID(getProperty(TAG_PARAM), idFactory, warner);
 			} else {
 				throw new MissingParameterException(getProperty(TAG_PARAM), WILD_PARAM,
 						getLine());

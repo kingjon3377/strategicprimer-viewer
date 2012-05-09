@@ -46,12 +46,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 			throws SPFormatException {
 		forbidChildren("fairy");
 		if (hasProperty(KIND_PROPERTY)) {
-			if (hasProperty("id")) {
-				idFactory.register(Long.parseLong(getProperty("id")));
-			} else {
-				warner.warn(new MissingParameterException("fairy", "id", getLine()));
-				addProperty("id", Long.toString(idFactory.getID()), warner);
-			}
+			registerOrCreateID("fairy", idFactory, warner);
 		} else {
 			throw new MissingParameterException("fairy", KIND_PROPERTY, getLine());
 		}
