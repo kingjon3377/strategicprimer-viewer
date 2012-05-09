@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,10 +13,8 @@ import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Village;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
 /**
  * A reader for Villages.
  * @author Jonathan Lovelace
@@ -34,11 +35,7 @@ public class VillageReader implements INodeReader<Village> {
 	public Village parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		if (!XMLHelper.hasAttribute(element, "name")) {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "name", element.getLocation()
-					.getLineNumber()));
-		}
+		requireNonEmptyParameter(element, "name", false, warner);
 		final Village fix = new Village(TownStatus.parseTownStatus(XMLHelper
 				.getAttribute(element, "status")),
 				XMLHelper.getAttributeWithDefault(element, "name", ""),

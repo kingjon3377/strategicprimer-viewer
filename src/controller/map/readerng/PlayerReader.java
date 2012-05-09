@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +12,6 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A reader to produce Players.
@@ -32,15 +33,7 @@ public class PlayerReader implements INodeReader<Player> {
 	public Player parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("player", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement() && "player".equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
-				break;
-			}
-		}
+		spinUntilEnd(element.getName(), stream);
 		return new Player(Integer.parseInt(XMLHelper.getAttribute(element,
 				"number")), XMLHelper.getAttribute(element, "code_name"));
 	}

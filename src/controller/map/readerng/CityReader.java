@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,6 @@ import model.map.events.CityEvent;
 import model.map.events.TownSize;
 import model.map.events.TownStatus;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -36,11 +36,7 @@ public class CityReader implements INodeReader<CityEvent> {
 	public CityEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		if (XMLHelper.getAttributeWithDefault(element, "name", "").isEmpty()) {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "name", element.getLocation()
-					.getLineNumber()));
-		}
+		requireNonEmptyParameter(element, "name", false, warner);
 		final CityEvent fix = new CityEvent(
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
 						"status")), TownSize.parseTownSize(XMLHelper

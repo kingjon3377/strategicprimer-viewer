@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,9 +12,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Mountain;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-
 /**
  * A reader for Mountains.
  * @author Jonathan Lovelace
@@ -33,17 +33,7 @@ public class MountainReader implements INodeReader<Mountain> {
 	public Mountain parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				throw new UnwantedChildException("mountain", event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
-			} else if (event.isEndElement()
-					&& "mountain".equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
+		spinUntilEnd(element.getName(), stream);
 		return new Mountain();
 	}
 	/**

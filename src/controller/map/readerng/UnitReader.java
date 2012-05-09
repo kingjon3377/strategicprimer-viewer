@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,16 +46,8 @@ public class UnitReader implements INodeReader<Unit> {
 	public Unit parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		if (XMLHelper.getAttributeWithDefault(element, "owner", "").isEmpty()) {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "owner", element.getLocation()
-					.getLineNumber()));
-		}
-		if (XMLHelper.getAttributeWithDefault(element, "name", "").isEmpty()) {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "name", element.getLocation()
-					.getLineNumber()));
-		}
+		requireNonEmptyParameter(element, "owner", false, warner);
+		requireNonEmptyParameter(element, "name", false, warner);
 		final Unit fix = new Unit(players.getPlayer(Integer
 				.parseInt(ensureNumeric(XMLHelper.getAttributeWithDefault(
 						element, "owner", "-1")))), parseKind(element, warner),
