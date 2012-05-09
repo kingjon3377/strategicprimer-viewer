@@ -1,4 +1,4 @@
-package controller.map.readerng;
+package controller.map.misc;
 
 import java.io.FileNotFoundException;
 import java.util.Deque;
@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import controller.map.SPFormatException;
-import controller.map.misc.FileOpener;
+import controller.map.readerng.XMLHelper;
 
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that

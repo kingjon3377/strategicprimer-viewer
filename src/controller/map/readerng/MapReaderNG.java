@@ -18,6 +18,7 @@ import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.misc.FileOpener;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * An XML-map reader that calls a tree of per-node XML readers, similar to the
