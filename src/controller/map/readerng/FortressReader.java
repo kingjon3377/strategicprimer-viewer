@@ -53,7 +53,7 @@ public class FortressReader implements INodeReader<Fortress> {
 				break;
 			} else if (event.isStartElement()) {
 				throw new UnwantedChildException(
-						"fortress can only have units as children", event
+						"fortress", event
 								.asStartElement().getName().getLocalPart(),
 						event.getLocation().getLineNumber());
 			}
