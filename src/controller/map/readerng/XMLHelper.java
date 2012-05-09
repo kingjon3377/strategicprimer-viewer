@@ -100,20 +100,6 @@ public final class XMLHelper {
 		return !(elem.getAttributeByName(new QName(attr)) == null); 
 	}
 	/**
-	 * @param elem an element
-	 * @param attrs a list of attributes
-	 * @return false if at least one of them is missing, true otherwise
-	 */
-	public static boolean hasAttributes(final StartElement elem, final String... attrs) {
-		for (String attr : attrs) {
-			if (!hasAttribute(elem, attr)) {
-				return false; // NOPMD
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * Move along the stream until we hit an end element, but object to any
 	 * start elements.
 	 * 
