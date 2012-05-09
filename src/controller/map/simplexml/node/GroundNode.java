@@ -4,8 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 /**
@@ -68,18 +66,8 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(KIND_PROPERTY)) {
-			demandProperty(TAG, EXPOSED_PARAM, warner, false, false);
-		} else {
-			if (hasProperty("ground")) {
-				warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PARAM,
-						KIND_PROPERTY, getLine()));
-				addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PARAM), warner);
-			} else {
-				throw new MissingParameterException(TAG, KIND_PROPERTY,
-						getLine());
-			}
-		}
+		handleDeprecatedProperty(TAG, KIND_PROPERTY, OLD_KIND_PARAM, warner, true, false);
+		demandProperty(TAG, EXPOSED_PARAM, warner, false, false);
 	}
 	/**
 	 * @return a String representation of the object

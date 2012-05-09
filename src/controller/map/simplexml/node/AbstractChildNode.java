@@ -5,6 +5,7 @@ import java.util.Map;
 
 import model.map.PlayerCollection;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedPropertyException;
@@ -162,5 +163,33 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 				throw except;
 			}
 		}
+	}
+	/**
+	 * Handle deprecated name for a property.
+	 * @param tag the current tag
+	 * @param preferred the preferred name for the tag
+	 * @param deprecated the deprecated name for the tag
+	 * @param warner the Warning instance to use
+	 * @param required whether the node *must* have one of the properties
+	 * @param emptyValid whether to treat empty values as valid values
+	 * @throws SPFormatException if the property is required but absent
+	 */
+	protected void handleDeprecatedProperty(final String tag,
+			final String preferred, final String deprecated,
+			final Warning warner, final boolean required,
+			final boolean emptyValid) throws SPFormatException {
+		if (!hasProperty(preferred) || (!emptyValid && getProperty(preferred).isEmpty())) {
+			if (hasProperty(deprecated) && (emptyValid || !getProperty(deprecated).isEmpty())) {
+				warner.warn(new DeprecatedPropertyException(tag, deprecated, preferred, getLine()));
+				addProperty(preferred, getProperty(deprecated), warner);
+			} else {
+				final SPFormatException except = new MissingParameterException(tag, preferred, getLine());
+				if (required) {
+					throw except;
+				} else {
+					warner.warn(except);
+				}
+			}
+		} 
 	}
 }

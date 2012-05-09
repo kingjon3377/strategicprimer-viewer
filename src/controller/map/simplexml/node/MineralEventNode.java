@@ -4,8 +4,6 @@ import model.map.PlayerCollection;
 import model.map.events.MineralEvent;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -84,19 +82,9 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(MINERAL_PROPERTY)) {
-			demandProperty(TAG, DC_PROPERTY, warner, false, false);
-			demandProperty(TAG, EXPOSED_PROPERTY, warner, false, false);
-		} else {
-			if (hasProperty(OLD_MINERAL_PROP)) {
-				warner.warn(new DeprecatedPropertyException(TAG,
-						OLD_MINERAL_PROP, MINERAL_PROPERTY, getLine()));
-				addProperty(MINERAL_PROPERTY, getProperty(OLD_MINERAL_PROP), warner);
-			} else {
-				throw new MissingParameterException(TAG, "kind",
-						getLine());
-			}
-		}
+		handleDeprecatedProperty(TAG, MINERAL_PROPERTY, OLD_MINERAL_PROP, warner, true, false);
+		demandProperty(TAG, DC_PROPERTY, warner, false, false);
+		demandProperty(TAG, EXPOSED_PROPERTY, warner, false, false);
 		registerOrCreateID(TAG, idFactory, warner);
 	}
 

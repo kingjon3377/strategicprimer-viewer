@@ -5,8 +5,6 @@ import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -72,17 +70,8 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(STONE_PROPERTY)) {
-			demandProperty(TAG, DC_PROPERTY, warner, false, false);
-		} else {
-			if (hasProperty("stone")) {
-				warner.warn(new DeprecatedPropertyException(TAG, OLD_STONE_PROP,
-						STONE_PROPERTY, getLine()));
-				addProperty(STONE_PROPERTY, getProperty(OLD_STONE_PROP), warner);
-			} else {
-				throw new MissingParameterException(TAG, STONE_PROPERTY, getLine());
-			}
-		}
+		handleDeprecatedProperty(TAG, STONE_PROPERTY, OLD_STONE_PROP, warner, true, false);
+		demandProperty(TAG, DC_PROPERTY, warner, false, false);
 		registerOrCreateID(TAG, idFactory, warner);
 	}
 	/**

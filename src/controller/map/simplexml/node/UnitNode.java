@@ -4,8 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Unit;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -88,16 +86,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 			throws SPFormatException {
 		forbidChildren(TAG);
 		demandProperty(TAG, OWNER_ATTR, warner, true, false);
-		if (getPropertyWithDefault(TYPE_ATTR, "").isEmpty()) {
-			if (hasProperty(OLD_TYPE_ATTR)) {
-				addProperty(TYPE_ATTR, getProperty(OLD_TYPE_ATTR), warner);
-				warner.warn(new DeprecatedPropertyException(TAG, OLD_TYPE_ATTR, TYPE_ATTR,
-						getLine()));
-			} else {
-				warner.warn(new MissingParameterException(TAG, TYPE_ATTR,
-						getLine()));
-			}
-		}
+		handleDeprecatedProperty(TAG, TYPE_ATTR, OLD_TYPE_ATTR, warner, false, false);
 		demandProperty(TAG, NAME_ATTR, warner, true, false);
 		registerOrCreateID("unit", idFactory, warner);
 	}

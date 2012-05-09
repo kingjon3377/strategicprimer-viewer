@@ -7,8 +7,6 @@ import model.map.TileType;
 import model.map.fixtures.TextFixture;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -96,23 +94,15 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			throws SPFormatException {
 		demandProperty("tile", ROW_PROPERTY, warner, false, false);
 		demandProperty("tile", COL_PROPERTY, warner, false, false);
-		if (!hasProperty(TERRAIN_PROPERTY) && hasProperty(OLD_KIND_PROPERTY)) {
-			warner.warn(new DeprecatedPropertyException("tile",
-					OLD_KIND_PROPERTY, "kind", getLine()));
-			addProperty(TERRAIN_PROPERTY, getProperty(OLD_KIND_PROPERTY),
-					warner);
-		} else if (hasProperty(TERRAIN_PROPERTY)) {
-			for (final AbstractXMLNode node : this) {
-				if (node instanceof AbstractFixtureNode // ESCA-JAVA0049:
-						|| node instanceof RiverNode) {
-					node.checkNode(warner, idFactory);
-				} else {
-					throw new UnwantedChildException("tile", node.toString(),
-							getLine());
-				}
+		handleDeprecatedProperty("tile", TERRAIN_PROPERTY, OLD_KIND_PROPERTY, warner, true, false);
+		for (final AbstractXMLNode node : this) {
+			if (node instanceof AbstractFixtureNode // ESCA-JAVA0049:
+					|| node instanceof RiverNode) {
+				node.checkNode(warner, idFactory);
+			} else {
+				throw new UnwantedChildException("tile", node.toString(),
+						getLine());
 			}
-		} else {
-			throw new MissingParameterException("tile", "kind", getLine());
 		}
 	}
 	/**

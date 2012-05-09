@@ -5,8 +5,6 @@ import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -60,17 +58,8 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(KIND_PROPERTY)) {
-			demandProperty(TAG, STATUS_PROPERTY, warner, false, false);
-		} else {
-			if (hasProperty(OLD_KIND_PROPERTY)) {
-				warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PROPERTY,
-						KIND_PROPERTY, getLine()));
-				addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
-			} else {
-				throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
-			}
-		}
+		handleDeprecatedProperty(TAG, KIND_PROPERTY, OLD_KIND_PROPERTY, warner, true, false);
+		demandProperty(TAG, STATUS_PROPERTY, warner, false, false);
 		registerOrCreateID(TAG, idFactory, warner);
 	}
 	/**

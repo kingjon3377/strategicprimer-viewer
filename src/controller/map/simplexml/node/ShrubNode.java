@@ -4,8 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Shrub;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -55,16 +53,8 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(OLD_KIND_PROPERTY)) {
-			// FIXME: This should go below the "kind" property check ...
-			warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PROPERTY,
-					KIND_PROPERTY, getLine()));
-			addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
-		} else if (hasProperty(KIND_PROPERTY)) {
-			registerOrCreateID("shrub", idFactory, warner);
-		} else {
-			throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
-		}
+		handleDeprecatedProperty(TAG, KIND_PROPERTY, OLD_KIND_PROPERTY, warner, true, false);
+		registerOrCreateID("shrub", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

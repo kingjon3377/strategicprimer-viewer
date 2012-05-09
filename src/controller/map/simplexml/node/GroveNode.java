@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -78,17 +77,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 		}
 		forbidChildren(getProperty(TAG_PARAM));
 		demandProperty(getProperty(TAG_PARAM), WILD_PARAM, warner, false, false);
-		if (!hasProperty(KIND_PROPERTY)) {
-			if (hasProperty(OLD_KIND_PARAM)) {
-				warner.warn(new DeprecatedPropertyException(
-						getProperty(TAG_PARAM), OLD_KIND_PARAM, KIND_PROPERTY,
-						getLine()));
-				addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PARAM), warner);
-			} else {
-				throw new MissingParameterException(getProperty(TAG_PARAM),
-						"kind", getLine());
-			}
-		}
+		handleDeprecatedProperty(getProperty(TAG_PARAM), KIND_PROPERTY, OLD_KIND_PARAM, warner, true, false);
 		registerOrCreateID(getProperty(TAG_PARAM), idFactory, warner);
 	}
 	/**
