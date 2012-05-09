@@ -106,6 +106,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				CityEvent.class, "id", true);
+		assertUnwantedChild(
+				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></city>",
+				CityEvent.class, false);
 	}
 
 	/**
@@ -143,6 +146,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				FortificationEvent.class, "id", true);
+		assertUnwantedChild(
+				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></fortification>",
+				FortificationEvent.class, false);
 	}
 
 	/**
@@ -250,5 +256,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<town dc=\"0\" size=\"small\" status=\"active\" name=\"name\" />",
 				TownEvent.class, "id", true);
+		assertUnwantedChild(
+				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></town>",
+				TownEvent.class, false);
 	}
 }

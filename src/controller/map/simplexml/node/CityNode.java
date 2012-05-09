@@ -88,6 +88,7 @@ public class CityNode extends AbstractFixtureNode<CityEvent> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
+		forbidChildren(TAG);
 		if (hasProperty(DC_PROPERTY)) {
 			if (hasProperty(SIZE_PROPERTY)) {
 				if (hasProperty(STATUS_PROP)) {
