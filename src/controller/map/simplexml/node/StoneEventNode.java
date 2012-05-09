@@ -73,9 +73,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 			throws SPFormatException {
 		forbidChildren(TAG);
 		if (hasProperty(STONE_PROPERTY)) {
-			if (!hasProperty(DC_PROPERTY)) {
-				throw new MissingParameterException(TAG, DC_PROPERTY, getLine());
-			}
+			demandProperty(TAG, DC_PROPERTY, warner, false, false);
 		} else {
 			if (hasProperty("stone")) {
 				warner.warn(new DeprecatedPropertyException(TAG, OLD_STONE_PROP,
