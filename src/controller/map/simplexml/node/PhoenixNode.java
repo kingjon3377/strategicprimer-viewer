@@ -5,7 +5,6 @@ import model.map.fixtures.Phoenix;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**

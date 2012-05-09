@@ -1,14 +1,13 @@
 package controller.map.simplexml.node;
 
-import util.EqualsAny;
-import util.Warning;
 import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
+import util.EqualsAny;
+import util.Warning;
 import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**

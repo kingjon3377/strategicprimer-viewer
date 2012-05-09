@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Mountain;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A Node to produce a Mountain.
