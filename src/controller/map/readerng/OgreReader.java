@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -9,7 +11,6 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Ogre;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -33,19 +34,8 @@ public class OgreReader implements INodeReader<Ogre> {
 	public Ogre parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		// ESCA-JAVA0177:
-		long id; // NOPMD
-		if (XMLHelper.hasAttribute(element, "id")) {
-			id = idFactory.register(
-					Long.parseLong(XMLHelper.getAttribute(element, "id")));
-		} else {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
-			id = idFactory.getID();
-		}
 		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new Ogre(id);
+		return new Ogre(getOrGenerateID(element, warner, idFactory));
 	}
 	/**
 	 * @return a list of the tags this reader understands

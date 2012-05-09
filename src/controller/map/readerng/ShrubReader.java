@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -9,7 +11,6 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Shrub;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 /**
@@ -32,19 +33,8 @@ public class ShrubReader implements INodeReader<Shrub> {
 	public Shrub parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		// ESCA-JAVA0177:
-		long id; // NOPMD
-		if (XMLHelper.hasAttribute(element, "id")) {
-			id = idFactory.register(
-					Long.parseLong(XMLHelper.getAttribute(element, "id")));
-		} else {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
-			id = idFactory.getID();
-		}
 		final Shrub fix = new Shrub(XMLHelper.getAttributeWithDeprecatedForm(
-				element, "kind", "shrub", warner), id);
+				element, "kind", "shrub", warner), getOrGenerateID(element, warner, idFactory));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}

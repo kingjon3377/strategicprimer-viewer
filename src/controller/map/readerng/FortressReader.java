@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static java.lang.Integer.parseInt;
 
@@ -13,7 +14,6 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -38,21 +38,11 @@ public class FortressReader implements INodeReader<Fortress> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
-		// ESCA-JAVA0177:
-		long id; // NOPMD
-		if (XMLHelper.hasAttribute(element, "id")) {
-			id = idFactory.register(
-					Long.parseLong(XMLHelper.getAttribute(element, "id")));
-		} else {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
-			id = idFactory.getID();
-		}
 		final Fortress fort = new Fortress(
 				players.getPlayer(parseInt(getAttributeWithDefault(element,
 						"owner", "-1"))), getAttributeWithDefault(element,
-						"name", ""), id);
+						"name", ""),
+				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()

@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -40,23 +42,13 @@ public class FortificationReader implements INodeReader<FortificationEvent> {
 					.getLocalPart(), "name", element.getLocation()
 					.getLineNumber()));
 		}
-		// ESCA-JAVA0177:
-		long id; // NOPMD
-		if (XMLHelper.hasAttribute(element, "id")) {
-			id = idFactory.register(
-					Long.parseLong(XMLHelper.getAttribute(element, "id")));
-		} else {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
-			id = idFactory.getID();
-		}
 		final FortificationEvent fix = new FortificationEvent(
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
 						"status")), TownSize.parseTownSize(XMLHelper
-						.getAttribute(element, "size")), Integer
-						.parseInt(XMLHelper.getAttribute(element, "dc")),
-						XMLHelper.getAttributeWithDefault(element, "name", ""), id);
+						.getAttribute(element, "size")),
+				Integer.parseInt(XMLHelper.getAttribute(element, "dc")),
+				XMLHelper.getAttributeWithDefault(element, "name", ""),
+				getOrGenerateID(element, warner, idFactory));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}

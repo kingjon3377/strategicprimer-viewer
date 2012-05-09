@@ -10,6 +10,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A class for helper methods.
@@ -154,6 +155,26 @@ public final class XMLHelper {
 			} else {
 				warner.warn(except);
 			}
+		}
+	}
+	/**
+	 * If the specified tag has an ID as a property, return it; otherwise warn
+	 * about its absence and generate one.
+	 * @param element the tag we're working with
+	 * @param warner the Warning instance to send the warning on if the tag doesn't specify an ID
+	 * @param idFactory the factory to register an existing ID with or get a new one from
+	 * @return the ID the tag has if it has one, or otherwise a generated one.
+	 * @throws SPFormatException on SP format problems reading the attribute
+	 */
+	public static long getOrGenerateID(final StartElement element,
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+		if (hasAttribute(element, "id")) {
+			return idFactory.register(Long.parseLong(getAttribute(element, "id"))); // NOPMD
+		} else {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), "id", element.getLocation()
+					.getLineNumber()));
+			return idFactory.getID();
 		}
 	}
 }

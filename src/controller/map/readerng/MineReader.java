@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +12,6 @@ import model.map.PlayerCollection;
 import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -34,20 +35,10 @@ public class MineReader implements INodeReader<Mine> {
 	public Mine parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		// ESCA-JAVA0177:
-		long id; // NOPMD
-		if (XMLHelper.hasAttribute(element, "id")) {
-			id = idFactory.register(
-					Long.parseLong(XMLHelper.getAttribute(element, "id")));
-		} else {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
-			id = idFactory.getID();
-		}
-		final Mine fix = new Mine(XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "product", warner),
+		final Mine fix = new Mine(XMLHelper.getAttributeWithDeprecatedForm(
+				element, "kind", "product", warner),
 				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
-						"status")), id);
+						"status")), getOrGenerateID(element, warner, idFactory));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}

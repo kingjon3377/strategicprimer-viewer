@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +12,6 @@ import model.map.PlayerCollection;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -34,22 +35,12 @@ public class StoneReader implements INodeReader<StoneEvent> {
 	public StoneEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		// ESCA-JAVA0177:
-		long id; // NOPMD
-		if (XMLHelper.hasAttribute(element, "id")) {
-			id = idFactory.register(
-					Long.parseLong(XMLHelper.getAttribute(element, "id")));
-		} else {
-			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
-			id = idFactory.getID();
-		}
 		final StoneEvent fix = new StoneEvent(
 				StoneKind.parseStoneKind(XMLHelper
 						.getAttributeWithDeprecatedForm(element, "kind",
 								"stone", warner)), Integer.parseInt(XMLHelper
-						.getAttribute(element, "dc")), id);
+						.getAttribute(element, "dc")), getOrGenerateID(element,
+						warner, idFactory));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return fix;
 	}
