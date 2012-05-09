@@ -5,7 +5,6 @@ import model.map.events.TownStatus;
 import model.map.fixtures.Village;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -60,15 +59,9 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(STATUS_PROPERTY)) {
-			if (!hasProperty(NAME_PROPERTY)) {
-				warner.warn(new MissingParameterException(TAG,
-						NAME_PROPERTY, getLine()));
-			}
-			registerOrCreateID(TAG, idFactory, warner);
-		} else {
-			throw new MissingParameterException(TAG, STATUS_PROPERTY, getLine());
-		}
+		demandProperty(TAG, STATUS_PROPERTY, warner, false, false);
+		demandProperty(TAG, NAME_PROPERTY, warner, true, false);
+		registerOrCreateID(TAG, idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

@@ -69,31 +69,27 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		forbidChildren(getProperty(TAG_PARAM));
-		if (hasProperty(TAG_PARAM)) {
-			if (hasProperty(WILD_PARAM)) {
-				if (!hasProperty(KIND_PROPERTY)) {
-					if (hasProperty(OLD_KIND_PARAM)) {
-						warner.warn(new DeprecatedPropertyException(
-								getProperty(TAG_PARAM), OLD_KIND_PARAM, KIND_PROPERTY,
-								getLine()));
-						addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PARAM), warner);
-					} else {
-						throw new MissingParameterException(getProperty(TAG_PARAM),
-								"kind", getLine());
-					}
-				}
-				registerOrCreateID(getProperty(TAG_PARAM), idFactory, warner);
-			} else {
-				throw new MissingParameterException(getProperty(TAG_PARAM), WILD_PARAM,
-						getLine());
-			}
-		} else {
+		try {
+			demandProperty("grove or orchard", TAG_PARAM, warner, false, false);
+		} catch (final MissingParameterException except) {
 			// The NodeFactory is supposed to create the 'tag' property; if it's
 			// not there, something is *very* wrong.
-			throw new IllegalStateException(new MissingParameterException(
-					"grove or orchard", TAG_PARAM, getLine()));
+			throw new IllegalStateException(except);
 		}
+		forbidChildren(getProperty(TAG_PARAM));
+		demandProperty(getProperty(TAG_PARAM), WILD_PARAM, warner, false, false);
+		if (!hasProperty(KIND_PROPERTY)) {
+			if (hasProperty(OLD_KIND_PARAM)) {
+				warner.warn(new DeprecatedPropertyException(
+						getProperty(TAG_PARAM), OLD_KIND_PARAM, KIND_PROPERTY,
+						getLine()));
+				addProperty(KIND_PROPERTY, getProperty(OLD_KIND_PARAM), warner);
+			} else {
+				throw new MissingParameterException(getProperty(TAG_PARAM),
+						"kind", getLine());
+			}
+		}
+		registerOrCreateID(getProperty(TAG_PARAM), idFactory, warner);
 	}
 	/**
 	 * @return a String representation of the node

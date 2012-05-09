@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.CacheFixture;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 /**
@@ -60,15 +59,9 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(KIND_PROPERTY)) {
-			if (hasProperty(CONTENTS_PROPERTY)) {
-				registerOrCreateID(TAG, idFactory, warner);
-			} else {
-				throw new MissingParameterException(TAG, CONTENTS_PROPERTY, getLine());
-			}
-		} else {
-			throw new MissingParameterException(TAG, KIND_PROPERTY, getLine());
-		}
+		demandProperty(TAG, KIND_PROPERTY, warner, false, false);
+		demandProperty(TAG, CONTENTS_PROPERTY, warner, false, false);
+		registerOrCreateID(TAG, idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

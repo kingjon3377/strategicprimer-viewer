@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -95,14 +94,8 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 						getLine());
 			}
 		}
-		if (!hasProperty(OWNER_PROP)) {
-			warner.warn(new MissingParameterException(TAG, OWNER_PROP,
-					getLine()));
-		}
-		if (!hasProperty(NAME_PROP)) {
-			warner.warn(new MissingParameterException(TAG, NAME_PROP,
-					getLine()));
-		}
+		demandProperty(TAG, OWNER_PROP, warner, true, false);
+		demandProperty(TAG, NAME_PROP, warner, true, false);
 		registerOrCreateID(TAG, idFactory, warner);
 	}
 

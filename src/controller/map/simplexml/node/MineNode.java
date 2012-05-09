@@ -61,9 +61,7 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 			throws SPFormatException {
 		forbidChildren(TAG);
 		if (hasProperty(KIND_PROPERTY)) {
-			if (!hasProperty(STATUS_PROPERTY)) {
-				throw new MissingParameterException(TAG, STATUS_PROPERTY, getLine());
-			}
+			demandProperty(TAG, STATUS_PROPERTY, warner, false, false);
 		} else {
 			if (hasProperty(OLD_KIND_PROPERTY)) {
 				warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PROPERTY,

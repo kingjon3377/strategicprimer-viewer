@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Giant;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -45,11 +44,8 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("giant");
-		if (hasProperty(KIND_PROPERTY)) {
-			registerOrCreateID("giant", idFactory, warner);
-		} else {
-			throw new MissingParameterException("giant", KIND_PROPERTY, getLine());
-		}
+		demandProperty("giant", KIND_PROPERTY, warner, false, true);
+		registerOrCreateID("giant", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

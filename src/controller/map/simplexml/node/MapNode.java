@@ -8,7 +8,6 @@ import model.map.SPMap;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.MapVersionException;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -67,18 +66,15 @@ public class MapNode extends AbstractChildNode<SPMap> {
 						getLine());
 			}
 		}
+		// TODO: This shouldn't be coupled to SPMap.MAX_VERSION, esp. since it's the deprecated implementation.
 		if (!hasProperty(VERSION_PROP)
 				|| Integer.parseInt(getProperty(VERSION_PROP)) < SPMap.MAX_VERSION) {
 			throw new MapVersionException(
 					"This reader only accepts maps with a \"version\" property of at least "
 							+ SPMap.MAX_VERSION, getLine());
-		} else if (hasProperty(ROWS_PROPERTY)) {
-			if (!hasProperty(COLUMNS_PROPERTY)) {
-				throw new MissingParameterException(TAG, COLUMNS_PROPERTY, getLine());
-			}
-		} else {
-			throw new MissingParameterException(TAG, ROWS_PROPERTY, getLine());
-		}
+		} 
+		demandProperty(TAG, ROWS_PROPERTY, warner, false, false);
+		demandProperty(TAG, COLUMNS_PROPERTY, warner, false, false);
 	}
 	/**
 	 * @param property the name of a property

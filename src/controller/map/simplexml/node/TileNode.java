@@ -94,30 +94,25 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (hasProperty(ROW_PROPERTY)) {
-			if (hasProperty(COL_PROPERTY)) {
-				if (!hasProperty(TERRAIN_PROPERTY) && hasProperty(OLD_KIND_PROPERTY)) {
-					warner.warn(new DeprecatedPropertyException("tile", OLD_KIND_PROPERTY,
-							"kind", getLine()));
-					addProperty(TERRAIN_PROPERTY, getProperty(OLD_KIND_PROPERTY), warner);
-				} else if (hasProperty(TERRAIN_PROPERTY)) {
-					for (final AbstractXMLNode node : this) {
-						if (node instanceof AbstractFixtureNode // ESCA-JAVA0049:
-								|| node instanceof RiverNode) { 
-							node.checkNode(warner, idFactory);
-						} else {
-							throw new UnwantedChildException("tile",
-									node.toString(), getLine());
-						}
-					}
+		demandProperty("tile", ROW_PROPERTY, warner, false, false);
+		demandProperty("tile", COL_PROPERTY, warner, false, false);
+		if (!hasProperty(TERRAIN_PROPERTY) && hasProperty(OLD_KIND_PROPERTY)) {
+			warner.warn(new DeprecatedPropertyException("tile",
+					OLD_KIND_PROPERTY, "kind", getLine()));
+			addProperty(TERRAIN_PROPERTY, getProperty(OLD_KIND_PROPERTY),
+					warner);
+		} else if (hasProperty(TERRAIN_PROPERTY)) {
+			for (final AbstractXMLNode node : this) {
+				if (node instanceof AbstractFixtureNode // ESCA-JAVA0049:
+						|| node instanceof RiverNode) {
+					node.checkNode(warner, idFactory);
 				} else {
-					throw new MissingParameterException("tile", "kind", getLine());
+					throw new UnwantedChildException("tile", node.toString(),
+							getLine());
 				}
-			} else {
-				throw new MissingParameterException("tile", COL_PROPERTY, getLine());
 			}
 		} else {
-			throw new MissingParameterException("tile", ROW_PROPERTY, getLine());
+			throw new MissingParameterException("tile", "kind", getLine());
 		}
 	}
 	/**

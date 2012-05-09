@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.events.BattlefieldEvent;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -57,11 +56,8 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("battlefield");
-		if (hasProperty(DC_PROPERTY)) {
-			registerOrCreateID("battlefield", idFactory, warner);
-		} else {
-			throw new MissingParameterException("battlefield", "dc", getLine());
-		}
+		demandProperty("battlefield", DC_PROPERTY, warner, false, false);
+		registerOrCreateID("battlefield", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

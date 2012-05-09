@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.events.CaveEvent;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -58,11 +57,8 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("cave");
-		if (hasProperty(DC_PROPERTY)) {
-			registerOrCreateID("cave", idFactory, warner);
-		} else {
-			throw new MissingParameterException("cave", "dc", getLine());
-		}
+		demandProperty("cave", DC_PROPERTY, warner, false, false);
+		registerOrCreateID("cave", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

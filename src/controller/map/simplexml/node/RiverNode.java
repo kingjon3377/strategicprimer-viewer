@@ -3,7 +3,6 @@ package controller.map.simplexml.node;
 import model.map.PlayerCollection;
 import model.map.River;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -59,9 +58,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("river");
-		if (!hasProperty(DIRECTION_PARAM)) {
-			throw new MissingParameterException("river", DIRECTION_PARAM, getLine());
-		}
+		demandProperty("river", DIRECTION_PARAM, warner, false, false);
 	}
 
 	/**

@@ -69,10 +69,7 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 			throws SPFormatException {
 		forbidChildren(TAG);
 		if (hasProperty(KIND_PROPERTY)) {
-			if (!hasProperty(EXPOSED_PARAM)) {
-				throw new MissingParameterException(TAG, EXPOSED_PARAM,
-						getLine());
-			}
+			demandProperty(TAG, EXPOSED_PARAM, warner, false, false);
 		} else {
 			if (hasProperty("ground")) {
 				warner.warn(new DeprecatedPropertyException(TAG, OLD_KIND_PARAM,

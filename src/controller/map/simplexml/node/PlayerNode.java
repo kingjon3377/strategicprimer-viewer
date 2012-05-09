@@ -4,7 +4,6 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -64,14 +63,8 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("player");
-		if (hasProperty(NUMBER_PROPERTY)) {
-			if (!hasProperty(NAME_PROPERTY)) {
-				throw new MissingParameterException("player", NAME_PROPERTY,
-						getLine());
-			}
-		} else {
-			throw new MissingParameterException("player", NUMBER_PROPERTY, getLine());
-		}
+		demandProperty("player", NUMBER_PROPERTY, warner, false, false);
+		demandProperty("player", NAME_PROPERTY, warner, false, false);
 	}
 	/**
 	 * @param property the name of a property

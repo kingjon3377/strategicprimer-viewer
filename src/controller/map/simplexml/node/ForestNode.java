@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Forest;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 /**
@@ -57,9 +56,7 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("forest");
-		if (!hasProperty(KIND_PROPERTY)) {
-			throw new MissingParameterException("forest", KIND_PROPERTY, getLine());
-		}
+		demandProperty("forest", KIND_PROPERTY, warner, false, false);
 	}
 	/**
 	 * @return a String representation of the object

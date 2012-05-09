@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Dragon;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -45,11 +44,8 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("dragon");
-		if (hasProperty(KIND_PROPERTY)) {
-			registerOrCreateID("dragon", idFactory, warner);
-		} else {
-			throw new MissingParameterException("dragon", KIND_PROPERTY, getLine());
-		}
+		demandProperty("dragon", KIND_PROPERTY, warner, false, true);
+		registerOrCreateID("dragon", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

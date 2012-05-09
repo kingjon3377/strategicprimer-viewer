@@ -70,27 +70,18 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		// FIXME: This should go after we've ensured that we have a 'tag'
-		// property.
-		forbidChildren(getProperty(TAG_PROPERTY));
-		if (hasProperty(TAG_PROPERTY)) {
-			if (hasProperty(CULTIVATED_PARAM)) {
-				if (hasProperty(KIND_PROPERTY)) {
-					registerOrCreateID(getProperty(TAG_PROPERTY), idFactory, warner);
-				} else {
-					throw new MissingParameterException(getProperty(TAG_PROPERTY), KIND_PROPERTY,
-							getLine());
-				}
-			} else {
-				throw new MissingParameterException(getProperty(TAG_PROPERTY),
-						CULTIVATED_PARAM, getLine());
-			}
-		} else {
+		try {
+			demandProperty("meadow or field", TAG_PROPERTY, warner, false, false);
+		} catch (final MissingParameterException except) {
 			// The 'tag' property is supposed to be added by the NodeFactory; if
 			// it isn't present, something is *very* wrong.
-			throw new IllegalStateException(new MissingParameterException(
-					"meadow or field", TAG_PROPERTY, getLine()));
+			throw new IllegalStateException(except);
 		}
+		forbidChildren(getProperty(TAG_PROPERTY));
+		demandProperty(getProperty(TAG_PROPERTY), CULTIVATED_PARAM, warner,
+				false, false);
+		demandProperty(getProperty(TAG_PROPERTY), KIND_PROPERTY, warner, false, false);
+		registerOrCreateID(getProperty(TAG_PROPERTY), idFactory, warner);
 	}
 	/**
 	 * @return a String representation of the Node

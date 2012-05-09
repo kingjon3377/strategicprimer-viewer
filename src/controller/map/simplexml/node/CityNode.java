@@ -6,7 +6,6 @@ import model.map.events.TownSize;
 import model.map.events.TownStatus;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -89,26 +88,11 @@ public class CityNode extends AbstractFixtureNode<CityEvent> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (hasProperty(DC_PROPERTY)) {
-			if (hasProperty(SIZE_PROPERTY)) {
-				if (hasProperty(STATUS_PROP)) {
-					if (!hasProperty(NAME_PROPERTY)) {
-						warner.warn(new MissingParameterException(
-								TAG, "name", getLine()));
-					}
-					registerOrCreateID(TAG, idFactory, warner);
-				} else {
-					throw new MissingParameterException(
-							TAG, STATUS_PROP, getLine());
-				}
-			} else {
-				throw new MissingParameterException(TAG,
-						SIZE_PROPERTY, getLine());
-			}
-		} else {
-			throw new MissingParameterException(TAG,
-					DC_PROPERTY, getLine());
-		}
+		demandProperty(TAG, DC_PROPERTY, warner, false, false);
+		demandProperty(TAG, SIZE_PROPERTY, warner, false, false);
+		demandProperty(TAG, STATUS_PROP, warner, false, false);
+		demandProperty(TAG, NAME_PROPERTY, warner, true, false);
+		registerOrCreateID(TAG, idFactory, warner);
 	}
 
 	/**

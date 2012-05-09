@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Animal;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -57,12 +56,8 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("animal");
-		if (hasProperty(KIND_PROPERTY)) {
-			registerOrCreateID("animal", idFactory, warner);
-		} else {
-			throw new MissingParameterException("animal", KIND_PROPERTY,
-					getLine());
-		}
+		demandProperty("animal", KIND_PROPERTY, warner, false, false);
+		registerOrCreateID("animal", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

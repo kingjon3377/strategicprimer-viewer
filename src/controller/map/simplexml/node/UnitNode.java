@@ -87,10 +87,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		if (getPropertyWithDefault(OWNER_ATTR, "").isEmpty()) {
-			warner.warn(new MissingParameterException(TAG, OWNER_ATTR,
-					getLine()));
-		}
+		demandProperty(TAG, OWNER_ATTR, warner, true, false);
 		if (getPropertyWithDefault(TYPE_ATTR, "").isEmpty()) {
 			if (hasProperty(OLD_TYPE_ATTR)) {
 				addProperty(TYPE_ATTR, getProperty(OLD_TYPE_ATTR), warner);
@@ -101,10 +98,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 						getLine()));
 			}
 		}
-		if (!hasProperty(NAME_ATTR) || getProperty(NAME_ATTR).isEmpty()) {
-			warner.warn(new MissingParameterException(TAG, NAME_ATTR,
-					getLine()));
-		}
+		demandProperty(TAG, NAME_ATTR, warner, true, false);
 		registerOrCreateID("unit", idFactory, warner);
 	}
 

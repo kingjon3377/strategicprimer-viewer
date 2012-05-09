@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Centaur;
 import util.EqualsAny;
 import util.Warning;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -50,11 +49,8 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren("centaur");
-		if (hasProperty(KIND_PROPERTY)) {
-			registerOrCreateID("centaur", idFactory, warner);
-		} else {
-			throw new MissingParameterException("centaur", KIND_PROPERTY, getLine());
-		}
+		demandProperty("centaur", KIND_PROPERTY, warner, false, false);
+		registerOrCreateID("centaur", idFactory, warner);
 	}
 	/**
 	 * @param property the name of a property

@@ -142,4 +142,25 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 			addProperty("id", Long.toString(idFactory.getID()), warner);
 		}
 	}
+	/**
+	 * Object (warn or throw an exception) if the specified property is missing.
+	 * @param tag the current tag
+	 * @param property the property to look for
+	 * @param warner the Warning instance to use if necessary
+	 * @param warning whether to just warn (as opposed to aborting)
+	 * @param emptyOK whether an empty value is OK (if not, they count as missing)
+	 * @throws SPFormatException if the property is missing and warning is false
+	 */
+	protected void demandProperty(final String tag, final String property,
+			final Warning warner, final boolean warning, final boolean emptyOK)
+			throws SPFormatException {
+		if (!hasProperty(property) || ((!emptyOK) && getProperty(property).isEmpty())) {
+			final SPFormatException except = new MissingParameterException(tag, property, getLine());
+			if (warning) {
+				warner.warn(except);
+			} else {
+				throw except;
+			}
+		}
+	}
 }

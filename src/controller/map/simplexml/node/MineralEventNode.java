@@ -85,14 +85,8 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 			throws SPFormatException {
 		forbidChildren(TAG);
 		if (hasProperty(MINERAL_PROPERTY)) {
-			if (hasProperty(DC_PROPERTY)) {
-				if (!hasProperty(EXPOSED_PROPERTY)) {
-					throw new MissingParameterException(TAG, EXPOSED_PROPERTY,
-							getLine());
-				}
-			} else {
-				throw new MissingParameterException(TAG, DC_PROPERTY, getLine());
-			}
+			demandProperty(TAG, DC_PROPERTY, warner, false, false);
+			demandProperty(TAG, EXPOSED_PROPERTY, warner, false, false);
 		} else {
 			if (hasProperty(OLD_MINERAL_PROP)) {
 				warner.warn(new DeprecatedPropertyException(TAG,
