@@ -2,7 +2,6 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
-import static controller.map.readerng.XMLHelper.hasAttribute;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +14,6 @@ import model.map.SPMap;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.ISPReader;
-import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
@@ -50,15 +48,6 @@ public class SPMapReader implements INodeReader<SPMap> {
 	public SPMap parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-			if (hasAttribute(element, "rows")) {
-				if (!hasAttribute(element, "columns")) {
-					throw new MissingParameterException(TAG, "columns", element
-							.getLocation().getLineNumber());
-				}
-			} else {
-				throw new MissingParameterException(TAG, "rows", element
-						.getLocation().getLineNumber());
-			}
 		final SPMap map = new SPMap(Integer.parseInt(getAttributeWithDefault(
 				element, "version", "1")), Integer.parseInt(getAttribute(
 				element, "rows")), Integer.parseInt(getAttribute(element,
