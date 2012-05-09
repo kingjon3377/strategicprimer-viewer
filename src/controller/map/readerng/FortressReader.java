@@ -28,26 +28,26 @@ public class FortressReader implements INodeReader<Fortress> {
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the fortress
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Fortress parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner)
-			throws SPFormatException {
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		// ESCA-JAVA0177:
 		long id; // NOPMD
 		if (XMLHelper.hasAttribute(element, "id")) {
-			id = IDFactory.FACTORY.register(
+			id = idFactory.register(
 					Long.parseLong(XMLHelper.getAttribute(element, "id")));
 		} else {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "id", element.getLocation()
 					.getLineNumber()));
-			id = IDFactory.FACTORY.getID();
+			id = idFactory.getID();
 		}
 		final Fortress fort = new Fortress(
 				players.getPlayer(parseInt(getAttributeWithDefault(element,
@@ -58,7 +58,7 @@ public class FortressReader implements INodeReader<Fortress> {
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
 				fort.addUnit(new UnitReader().parse(event.asStartElement(), //NOPMD
-						stream, players, warner));
+						stream, players, warner, idFactory));
 			} else if (event.isEndElement() && "fortress".equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
 				break;
 			} else if (event.isStartElement()) {

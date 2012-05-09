@@ -12,6 +12,7 @@ import model.map.XMLWritable;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * An alternative approach, to hopefully replace the ReaderFactory---instead of
@@ -34,6 +35,7 @@ public class ReaderAdapter implements INodeReader<XMLWritable> {
 	 *            the collection of players to use if needed
 	 * @param warner
 	 *            the Warning instance to use
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the result of parsing the element
 	 * @throws SPFormatException
 	 *             on SP format problems.
@@ -41,10 +43,10 @@ public class ReaderAdapter implements INodeReader<XMLWritable> {
 	@Override
 	public XMLWritable parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		if (CACHE.containsKey(element.getName().getLocalPart())) {
 			return CACHE.get(element.getName().getLocalPart()).parse(element,
-					stream, players, warner);
+					stream, players, warner, idFactory);
 		} else {
 			throw new UnwantedChildException("unknown", element.getName()
 					.getLocalPart(), element.getLocation().getLineNumber());

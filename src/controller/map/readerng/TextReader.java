@@ -10,6 +10,7 @@ import util.Warning;
 
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import model.map.PlayerCollection;
 import model.map.fixtures.TextFixture;
 /**
@@ -24,13 +25,14 @@ public class TextReader implements INodeReader<TextFixture> {
 	 * @param stream the stream to get more elements (in this case, the text) from
 	 * @param players ignored
 	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the TextFixture
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public TextFixture parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		final StringBuilder sbuild = new StringBuilder(""); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {

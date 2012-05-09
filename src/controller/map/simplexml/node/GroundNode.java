@@ -8,6 +8,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A Node to produce a Ground fixture.
  * @author Jonathan Lovelace
@@ -60,11 +61,13 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	 * properties and no children. TODO: add further properties.
 	 * 
 	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if any required properties are missing.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());

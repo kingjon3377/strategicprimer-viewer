@@ -54,10 +54,12 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 * and a "status" field.
 	 * 
 	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException if the node is invalid.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException(TAG, iterator().next()
 					.toString(), getLine());
@@ -67,10 +69,10 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 						NAME_PROPERTY, getLine()));
 			}
 			if (hasProperty("id")) {
-				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+				idFactory.register(Long.parseLong(getProperty("id")));
 			} else {
 				warner.warn(new MissingParameterException(TAG, "id", getLine()));
-				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+				addProperty("id", Long.toString(idFactory.getID()), warner);
 			}
 		} else {
 			throw new MissingParameterException(TAG, STATUS_PROPERTY, getLine());

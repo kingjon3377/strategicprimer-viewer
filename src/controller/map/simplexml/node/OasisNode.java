@@ -34,18 +34,20 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	/**
 	 * Check that the noe is valid. An Oasis is valid if it has no children. TODO: should it have attributes?
 	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException if the node isn't valid
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("oasis", iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty("id")) {
-			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("oasis", "id", getLine()));
-			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			addProperty("id", Long.toString(idFactory.getID()), warner);
 		}
 	}
 	/**

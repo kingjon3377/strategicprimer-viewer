@@ -20,6 +20,7 @@ import model.map.fixtures.TextFixture;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A reader for Tiles.
@@ -35,14 +36,15 @@ public class TileReader implements INodeReader<Tile> {
 	 *            the stream to get more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the tile we're at in the stream
 	 * @throws SPFormatException
 	 *             on map format error
 	 */
 	@Override
 	public Tile parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		final Tile tile = new Tile(parseInt(getAttribute(element, "row")), //NOPMD
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttributeWithDeprecatedForm(element, "kind", "type", warner)));
@@ -50,10 +52,10 @@ public class TileReader implements INodeReader<Tile> {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName().getLocalPart())) {
 					tile.addFixture(new RiverFixture(new RiverReader().parse(// NOPMD
-							event.asStartElement(), stream, players, warner)));
+							event.asStartElement(), stream, players, warner, idFactory)));
 				} else {
 					perhapsAddFixture(stream, players, warner, tile, event,
-							element.getName().getLocalPart());
+							element.getName().getLocalPart(), idFactory);
 				} 
 			} else if (event.isCharacters()) {
 				tile.addFixture(new TextFixture(event.asCharacters().getData().trim(), // NOPMD
@@ -66,6 +68,7 @@ public class TileReader implements INodeReader<Tile> {
 		}
 		return tile;
 	}
+	// ESCA-JAVA0138:
 	/**
 	 * We expect the next start element to be a TileFixture. If it is, parse and add it.
 	 * @param stream the stream to read events from
@@ -74,15 +77,16 @@ public class TileReader implements INodeReader<Tile> {
 	 * @param tile the tile under construction.
 	 * @param event the tag to be parsed
 	 * @param tag the tile's tag
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static void perhapsAddFixture(final Iterable<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
-			final Tile tile, final XMLEvent event, final String tag)
+			final Tile tile, final XMLEvent event, final String tag, final IDFactory idFactory)
 			throws SPFormatException {
 		try {
 			tile.addFixture(checkedCast(new ReaderAdapter().parse(//NOPMD
-				event.asStartElement(), stream, players, warner),
+				event.asStartElement(), stream, players, warner, idFactory),
 				TileFixture.class));
 		} catch (final UnwantedChildException except) {
 			// ESCA-JAVA0049:

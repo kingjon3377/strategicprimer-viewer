@@ -11,6 +11,7 @@ import controller.map.MapVersionException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A node generated from the <map> tag.
@@ -51,14 +52,16 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if all is not well.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof TileNode || node instanceof PlayerNode) {
-				node.checkNode(warner);
+				node.checkNode(warner, idFactory);
 			} else {
 				throw new UnwantedChildException(TAG, node.toString(),
 						getLine());

@@ -10,6 +10,7 @@ import model.map.PlayerCollection;
 import model.map.River;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.misc.IDFactory;
 
 /**
  * A reader for Rivers.
@@ -23,13 +24,14 @@ public class RiverReader implements INodeReader<River> {
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public River parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		final River fix = 
 				"lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
 						: River.getRiver(XMLHelper.getAttribute(element,

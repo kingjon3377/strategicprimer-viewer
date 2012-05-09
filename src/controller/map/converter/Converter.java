@@ -47,7 +47,6 @@ public class Converter { // NOPMD
 	public Converter() {
 		new TableLoader().loadAllTables("tables", runner);
 	}
-
 	/**
 	 * Sixty percent. Our probability for a couple of perturbations.
 	 */
@@ -80,6 +79,7 @@ public class Converter { // NOPMD
 	 * @return a version-2 equivalent with greater resolution
 	 */
 	public SPMap convert(final SPMap old, final boolean main) {
+		final IDFactory idFactory = new IDFactory();
 		final SPMap retval = new SPMap(2, old.rows() * SUBTILES_PER_TILE,
 				old.cols() * SUBTILES_PER_TILE);
 		for (Player player : old.getPlayers()) {
@@ -88,7 +88,7 @@ public class Converter { // NOPMD
 		final List<Tile> converted = new LinkedList<Tile>();
 		for (int row = 0; row < old.rows(); row++) {
 			for (int col = 0; col < old.cols(); col++) {
-				for (Tile tile : convertTile(old.getTile(row, col), main)) {
+				for (Tile tile : convertTile(old.getTile(row, col), main, idFactory)) {
 					retval.addTile(tile);
 					converted.add(tile);
 				}
@@ -97,7 +97,7 @@ public class Converter { // NOPMD
 		final Random random = new Random(MAX_ITERATIONS);
 		Collections.shuffle(converted, random);
 		for (Tile tile : converted) {
-			perturb(tile, retval, random, main);
+			perturb(tile, retval, random, main, idFactory);
 		}
 		return retval;
 	}
@@ -127,12 +127,13 @@ public class Converter { // NOPMD
 	 * @param tile
 	 *            a tile on the old map
 	 * @param main whether this is the main  map or a player's map
+	 * @param idFactory the IDFactory to use to get IDs.
 	 * @return the equivalent higher-resolution tiles.
 	 */
-	private List<Tile> convertTile(final Tile tile, final boolean main) {
+	private List<Tile> convertTile(final Tile tile, final boolean main, final IDFactory idFactory) {
 		final List<Tile> initial = createInitialSubtiles(tile, main);
 		if (!tile.isEmpty()) {
-		tile.addFixture(new Village(TownStatus.Active, "", IDFactory.FACTORY.getID()));
+		tile.addFixture(new Village(TownStatus.Active, "", idFactory.getID()));
 		final List<TileFixture> fixtures = new LinkedList<TileFixture>(
 				tile.getContents());
 		if (tile.hasRiver()) {
@@ -263,13 +264,14 @@ public class Converter { // NOPMD
 	 * @param main
 	 *            whether we should actually add the fixtures (i.e. is this the
 	 *            main map)
+	 * @param idFactory the factory to use to create ID numbers
 	 */
 	private void perturb(final Tile tile, final SPMap map, final Random random,
-			final boolean main) {
+			final boolean main, final IDFactory idFactory) {
 		if (!TileType.Ocean.equals(tile.getTerrain())) {
 			if (isAdjacentToTown(tile, map)
 					&& random.nextDouble() < SIXTY_PERCENT) {
-				addFieldOrOrchard(random.nextBoolean(), tile, main);
+				addFieldOrOrchard(random.nextBoolean(), tile, main, idFactory);
 			} else if (TileType.Desert.equals(tile.getTerrain())) {
 				final boolean watered = isAdjacentToWater(tile, map);
 				waterDesert(tile, random, watered);
@@ -302,19 +304,21 @@ public class Converter { // NOPMD
 	 * @param main
 	 *            whether we should actually add the fixtures (i.e. is this the
 	 *            main map)
+	 * @param idFactory the factory to use to create ID numbers.
 	 */
-	private void addFieldOrOrchard(final boolean field, final Tile tile, final boolean main) {
+	private void addFieldOrOrchard(final boolean field, final Tile tile,
+			final boolean main, final IDFactory idFactory) {
 		try {
 			if (field) {
 				addFixture(tile,
 						new Meadow(runner.recursiveConsultTable("grain", tile),
-								true, true, IDFactory.FACTORY.getID()), main);
+								true, true, idFactory.getID()), main);
 			} else {
 				addFixture(
 						tile,
 						new Grove(true, false, runner
 								.recursiveConsultTable("fruit_trees",
-										tile), IDFactory.FACTORY
+										tile), idFactory
 								.getID()), main);
 			}
 		} catch (final MissingTableException e) {

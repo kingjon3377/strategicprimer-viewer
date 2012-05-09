@@ -8,6 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.misc.IDFactory;
 
 /**
  * An interface for *stateless* per-class XML readers. 
@@ -26,9 +27,10 @@ public interface INodeReader<T> {
 	 * @param stream to get more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the produced type
 	 * @throws SPFormatException on map format problems
 	 */
 	T parse(StartElement element, Iterable<XMLEvent> stream,
-			PlayerCollection players, Warning warner) throws SPFormatException;
+			PlayerCollection players, Warning warner, IDFactory idFactory) throws SPFormatException;
 }

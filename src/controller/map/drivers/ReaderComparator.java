@@ -123,7 +123,7 @@ public class ReaderComparator {
 	public void compareReaders(final String arg) throws XMLStreamException,
 			FileNotFoundException, IOException, SPFormatException,
 			MapVersionException {
-		final Warning warner = new Warning(Warning.Action.Warn);
+		final Warning warner = new Warning(Warning.Action.Ignore);
 		out.print(arg);
 		out.println(':');
 		final long startOne = System.nanoTime();

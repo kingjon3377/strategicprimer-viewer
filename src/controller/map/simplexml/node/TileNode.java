@@ -11,6 +11,7 @@ import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import controller.map.simplexml.ITextNode;
 
 /**
@@ -86,11 +87,13 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if contain invalid data.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (hasProperty(ROW_PROPERTY)) {
 			if (hasProperty(COL_PROPERTY)) {
 				if (!hasProperty(TERRAIN_PROPERTY) && hasProperty(OLD_KIND_PROPERTY)) {
@@ -101,7 +104,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 					for (final AbstractXMLNode node : this) {
 						if (node instanceof AbstractFixtureNode // ESCA-JAVA0049:
 								|| node instanceof RiverNode) { 
-							node.checkNode(warner);
+							node.checkNode(warner, idFactory);
 						} else {
 							throw new UnwantedChildException("tile",
 									node.toString(), getLine());

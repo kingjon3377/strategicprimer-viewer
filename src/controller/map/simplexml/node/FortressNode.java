@@ -80,14 +80,16 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if we don't.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof UnitNode) {
-				node.checkNode(warner);
+				node.checkNode(warner, idFactory);
 			} else {
 				throw new UnwantedChildException(TAG, node.toString(),
 						getLine());
@@ -102,10 +104,10 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 					getLine()));
 		}
 		if (hasProperty("id")) {
-			IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException(TAG, "id", getLine()));
-			addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+			addProperty("id", Long.toString(idFactory.getID()), warner);
 		}
 	}
 

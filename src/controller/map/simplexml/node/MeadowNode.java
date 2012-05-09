@@ -64,11 +64,13 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             on invalid data
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			// FIXME: This should go after we've ensured that we have a 'tag'
 			// property.
@@ -78,10 +80,10 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 			if (hasProperty(CULTIVATED_PARAM)) {
 				if (hasProperty(KIND_PROPERTY)) {
 					if (hasProperty("id")) {
-						IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+						idFactory.register(Long.parseLong(getProperty("id")));
 					} else {
 						warner.warn(new MissingParameterException(getProperty(TAG_PROPERTY), "id", getLine()));
-						addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+						addProperty("id", Long.toString(idFactory.getID()), warner);
 					}
 				} else {
 					throw new MissingParameterException(getProperty(TAG_PROPERTY), KIND_PROPERTY,

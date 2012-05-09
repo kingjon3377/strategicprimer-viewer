@@ -26,23 +26,24 @@ public class StoneReader implements INodeReader<StoneEvent> {
 	 * @param stream a stream of more elements
 	 * @param players the list of players
 	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the parsed stone
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public StoneEvent parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		// ESCA-JAVA0177:
 		long id; // NOPMD
 		if (XMLHelper.hasAttribute(element, "id")) {
-			id = IDFactory.FACTORY.register(
+			id = idFactory.register(
 					Long.parseLong(XMLHelper.getAttribute(element, "id")));
 		} else {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "id", element.getLocation()
 					.getLineNumber()));
-			id = IDFactory.FACTORY.getID();
+			id = idFactory.getID();
 		}
 		final StoneEvent fix = new StoneEvent(
 				StoneKind.parseStoneKind(XMLHelper

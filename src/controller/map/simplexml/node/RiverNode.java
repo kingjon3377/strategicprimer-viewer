@@ -6,6 +6,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A node representing a river XML tag.
@@ -51,11 +52,13 @@ public class RiverNode extends AbstractChildNode<River> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if the River contains anythig.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("river", iterator().next()
 					.toString(), getLine());

@@ -17,6 +17,7 @@ import controller.map.ISPReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.misc.FileOpener;
+import controller.map.misc.IDFactory;
 
 /**
  * An XML-map reader that calls a tree of per-node XML readers, similar to the
@@ -80,7 +81,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			if (event.isStartElement()) {
 				final XMLWritable retval = new ReaderAdapter().parse(//NOPMD
 						event.asStartElement(), eventReader,
-						new PlayerCollection(), warner); // NOPMD
+						new PlayerCollection(), warner, new IDFactory()); // NOPMD
 				return checkType(retval, type);
 			}
 		}

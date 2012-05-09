@@ -11,6 +11,7 @@ import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A reader to produce Players.
  * @author Jonathan Lovelace
@@ -23,13 +24,14 @@ public class PlayerReader implements INodeReader<Player> {
 	 * @param stream the stream to get more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @return the player produced
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public Player parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("player", event

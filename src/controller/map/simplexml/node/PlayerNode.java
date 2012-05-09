@@ -7,6 +7,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a Player.
@@ -56,11 +57,13 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if we contain invalid data.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("player", iterator().next()
 					.toString(), getLine());

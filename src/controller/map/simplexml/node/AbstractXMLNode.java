@@ -8,6 +8,7 @@ import java.util.Set;
 
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.misc.IDFactory;
 
 /**
  * A class representing an XML tag and its descendants---except not necessarily
@@ -51,11 +52,12 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 * Check that the data is legal---no tiles outside the map, for example.
 	 * 
 	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * 
 	 * @throws SPFormatException
 	 *             if the data isn't legal.
 	 */
-	public abstract void checkNode(Warning warner) throws SPFormatException;
+	public abstract void checkNode(Warning warner, IDFactory idFactory) throws SPFormatException;
 
 	/**
 	 * 

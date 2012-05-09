@@ -5,6 +5,7 @@ import model.map.fixtures.TextFixture;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import controller.map.simplexml.ITextNode;
 /**
  * A Node to produce a TextFixture.
@@ -58,10 +59,12 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 	/**
 	 * Check whether we contain invalid data. A TextNode is valid if it has no child nodes.
 	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException on invalid data
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("text", iterator().next()
 					.toString(), getLine());

@@ -7,6 +7,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
+import controller.map.misc.IDFactory;
 /**
  * A Node that will produce a Forest.
  * @author Jonathan Lovelace
@@ -49,11 +50,13 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if any required properties are missing.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("forest", iterator().next()
 					.toString(), getLine());

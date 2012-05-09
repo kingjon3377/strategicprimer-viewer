@@ -5,6 +5,7 @@ import java.util.Iterator;
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.SPFormatException;
+import controller.map.misc.IDFactory;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
 
@@ -26,18 +27,20 @@ public final class RootNode<T> extends AbstractXMLNode {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if it isn't.
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			final AbstractXMLNode child = iterator().next();
 			if (child instanceof AbstractChildNode) {
 				if (((AbstractChildNode) child).getProduct().isAssignableFrom(
 						product)) {
-					iterator().next().checkNode(warner);
+					iterator().next().checkNode(warner, idFactory);
 				} else {
 					throw new IllegalArgumentException("We want a node producing "
 							+ product.getSimpleName()

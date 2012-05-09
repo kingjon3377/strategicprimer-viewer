@@ -81,11 +81,13 @@ public class FortificationNode extends AbstractFixtureNode<FortificationEvent> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             if the data are invalid.
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (hasProperty(DC_PROPERTY)) {
 			if (hasProperty(SIZE_PROPERTY)) {
 				if (hasProperty(STATUS_PROP)) {
@@ -94,13 +96,13 @@ public class FortificationNode extends AbstractFixtureNode<FortificationEvent> {
 								TAG, "name", getLine()));
 					}
 					if (hasProperty(ID_PROPERTY)) {
-						IDFactory.FACTORY.register(
+						idFactory.register(
 								Long.parseLong(getProperty(ID_PROPERTY)));
 					} else {
 						warner.warn(new MissingParameterException(
 								TAG, "id", getLine()));
 						addProperty(ID_PROPERTY,
-								Long.toString(IDFactory.FACTORY.getID()),
+								Long.toString(idFactory.getID()),
 								warner);
 					}
 				} else {

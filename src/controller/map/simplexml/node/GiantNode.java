@@ -39,18 +39,20 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	/**
 	 * Check the node for invalid data. A Giant is valid if it has no children and has a "kind" property.
 	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException if the node contains invalid data
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (iterator().hasNext()) {
 			throw new UnwantedChildException("giant", iterator().next()
 					.toString(), getLine());
 		} else if (hasProperty(KIND_PROPERTY)) {
 			if (hasProperty("id")) {
-				IDFactory.FACTORY.register(Long.parseLong(getProperty("id")));
+				idFactory.register(Long.parseLong(getProperty("id")));
 			} else {
-				addProperty("id", Long.toString(IDFactory.FACTORY.getID()), warner);
+				addProperty("id", Long.toString(idFactory.getID()), warner);
 				warner.warn(new MissingParameterException("giant", "id", getLine()));
 			}
 		} else {

@@ -20,6 +20,7 @@ import controller.map.IMapReader;
 import controller.map.ISPReader;
 import controller.map.SPFormatException;
 import controller.map.misc.FileOpener;
+import controller.map.misc.IDFactory;
 import controller.map.readerng.IncludingIterator;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
@@ -180,7 +181,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 			}
 		}
 		root.canonicalize(warner);
-		root.checkNode(warner);
+		root.checkNode(warner, new IDFactory());
 		return root.getRootNode().produce(new PlayerCollection(), warner);
 	}
 

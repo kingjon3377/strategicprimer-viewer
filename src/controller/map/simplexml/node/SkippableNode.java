@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
+import controller.map.misc.IDFactory;
 
 /**
  * A Node for tags we'd rather skip. This is an AbstractChildNode because
@@ -62,11 +63,13 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * 
 	 * @param warner
 	 *            a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
 	 * @throws SPFormatException
 	 *             never
 	 */
 	@Override
-	public void checkNode(final Warning warner) throws SPFormatException {
+	public void checkNode(final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}
 

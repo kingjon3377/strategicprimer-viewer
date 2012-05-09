@@ -13,19 +13,9 @@ import java.util.Set;
  */
 public final class IDFactory {
 	/**
-	 * Instance.
-	 */
-	public static final IDFactory FACTORY = new IDFactory();
-	/**
 	 * The set of IDs used already.
 	 */
 	private final Set<Long> usedIDs = new HashSet<Long>(); 
-	/**
-	 * Singleton.
-	 */
-	private IDFactory() {
-		// Singleton.
-	}
 	/**
 	 * Register an ID. 
 	 * @param id the ID to register.
