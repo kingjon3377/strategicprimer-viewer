@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedPropertyException;
+import controller.map.UnwantedChildException;
 
 /**
  * A class representing an XML tag and its descendants.
@@ -107,5 +108,15 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 */
 	public Class<T> getProduct() {
 		return product;
+	}
+	/**
+	 * A helper method that throws an exception if there are any child nodes.
+	 * @param tag the current tag (for use in constructing the exception to throw)
+	 * @throws SPFormatException if there is a child
+	 */
+	protected void forbidChildren(final String tag) throws SPFormatException {
+		if (iterator().hasNext()) {
+			throw new UnwantedChildException(tag, iterator().next().toString(), getLine());
+		}
 	}
 }

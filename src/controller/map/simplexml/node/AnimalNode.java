@@ -6,7 +6,6 @@ import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -57,10 +56,8 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("animal", iterator().next().toString(),
-					getLine());
-		} else if (hasProperty(KIND_PROPERTY)) {
+		forbidChildren("animal");
+		if (hasProperty(KIND_PROPERTY)) {
 			if (hasProperty("id")) {
 				idFactory.register(Long.parseLong(getProperty("id")));
 			} else {

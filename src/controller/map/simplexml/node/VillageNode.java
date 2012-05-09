@@ -60,10 +60,8 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException(TAG, iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty(STATUS_PROPERTY)) {
+		forbidChildren(TAG);
+		if (hasProperty(STATUS_PROPERTY)) {
 			if (!hasProperty(NAME_PROPERTY)) {
 				warner.warn(new MissingParameterException(TAG,
 						NAME_PROPERTY, getLine()));

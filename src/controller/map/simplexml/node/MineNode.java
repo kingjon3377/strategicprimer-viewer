@@ -60,10 +60,8 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException(TAG, iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty(KIND_PROPERTY)) {
+		forbidChildren(TAG);
+		if (hasProperty(KIND_PROPERTY)) {
 			if (!hasProperty(STATUS_PROPERTY)) {
 				throw new MissingParameterException(TAG, STATUS_PROPERTY, getLine());
 			}

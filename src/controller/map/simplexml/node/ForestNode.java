@@ -6,7 +6,6 @@ import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A Node that will produce a Forest.
@@ -57,10 +56,8 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("forest", iterator().next()
-					.toString(), getLine());
-		} else if (!hasProperty(KIND_PROPERTY)) {
+		forbidChildren("forest");
+		if (!hasProperty(KIND_PROPERTY)) {
 			throw new MissingParameterException("forest", KIND_PROPERTY, getLine());
 		}
 	}

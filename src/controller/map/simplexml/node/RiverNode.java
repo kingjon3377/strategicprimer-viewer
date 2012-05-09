@@ -5,7 +5,6 @@ import model.map.River;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -59,10 +58,8 @@ public class RiverNode extends AbstractChildNode<River> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("river", iterator().next()
-					.toString(), getLine());
-		} else if (!hasProperty(DIRECTION_PARAM)) {
+		forbidChildren("river");
+		if (!hasProperty(DIRECTION_PARAM)) {
 			throw new MissingParameterException("river", DIRECTION_PARAM, getLine());
 		}
 	}

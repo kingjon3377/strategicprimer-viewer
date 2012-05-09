@@ -41,10 +41,7 @@ public class MountainNode extends AbstractFixtureNode<Mountain> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("mountain", iterator().next()
-					.toString(), getLine());
-		}
+		forbidChildren("mountain");
 	}
 	/**
 	 * @param property the name of a property

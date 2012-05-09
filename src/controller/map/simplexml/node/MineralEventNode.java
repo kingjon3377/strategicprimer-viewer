@@ -84,10 +84,8 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException(TAG, iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty(MINERAL_PROPERTY)) {
+		forbidChildren(TAG);
+		if (hasProperty(MINERAL_PROPERTY)) {
 			if (hasProperty(DC_PROPERTY)) {
 				if (!hasProperty(EXPOSED_PROPERTY)) {
 					throw new MissingParameterException(TAG, EXPOSED_PROPERTY,

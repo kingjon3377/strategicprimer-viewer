@@ -50,10 +50,8 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("centaur", iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty(KIND_PROPERTY)) {
+		forbidChildren("centaur");
+		if (hasProperty(KIND_PROPERTY)) {
 			if (hasProperty("id")) {
 				idFactory.register(Long.parseLong(getProperty("id")));
 			} else {

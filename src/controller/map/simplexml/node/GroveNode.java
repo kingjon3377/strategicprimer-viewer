@@ -7,7 +7,6 @@ import util.Warning;
 import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -70,10 +69,8 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException(getProperty(TAG_PARAM), iterator()
-					.next().toString(), getLine());
-		} else if (hasProperty(TAG_PARAM)) {
+		forbidChildren(getProperty(TAG_PARAM));
+		if (hasProperty(TAG_PARAM)) {
 			if (hasProperty(WILD_PARAM)) {
 				if (!hasProperty(KIND_PROPERTY)) {
 					if (hasProperty(OLD_KIND_PARAM)) {

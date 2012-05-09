@@ -5,7 +5,6 @@ import model.map.fixtures.Sandbar;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A Node to produce a Sandbar.
@@ -39,10 +38,8 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("sandbar", iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty("id")) {
+		forbidChildren("sandbar");
+		if (hasProperty("id")) {
 			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("sandbar", "id", getLine()));

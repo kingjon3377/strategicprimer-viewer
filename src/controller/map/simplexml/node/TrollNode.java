@@ -5,7 +5,6 @@ import model.map.fixtures.Troll;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -40,10 +39,8 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("troll", iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty("id")) {
+		forbidChildren("troll");
+		if (hasProperty("id")) {
 			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("troll", "id", getLine()));

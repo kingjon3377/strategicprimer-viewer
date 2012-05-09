@@ -5,7 +5,6 @@ import model.map.fixtures.Djinn;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -40,10 +39,8 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("djinn", iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty("id")) {
+		forbidChildren("djinn");
+		if (hasProperty("id")) {
 			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("djinn", "id", getLine()));

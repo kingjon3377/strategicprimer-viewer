@@ -40,10 +40,8 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("minotaur", iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty("id")) {
+		forbidChildren("minotaur");
+		if (hasProperty("id")) {
 			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("minotaur", "id", getLine()));

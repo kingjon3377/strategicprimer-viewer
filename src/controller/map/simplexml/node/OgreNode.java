@@ -40,10 +40,8 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("ogre", iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty("id")) {
+		forbidChildren("ogre");
+		if (hasProperty("id")) {
 			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("ogre", "id", getLine()));

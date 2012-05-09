@@ -4,7 +4,6 @@ import model.map.PlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.Warning;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.simplexml.ITextNode;
 /**
@@ -65,10 +64,7 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("text", iterator().next()
-					.toString(), getLine());
-		}
+		forbidChildren("text");
 	}
 	/**
 	 * @return a String representation of the node

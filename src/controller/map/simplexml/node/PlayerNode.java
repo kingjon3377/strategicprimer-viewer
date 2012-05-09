@@ -6,7 +6,6 @@ import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -64,10 +63,8 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("player", iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty(NUMBER_PROPERTY)) {
+		forbidChildren("player");
+		if (hasProperty(NUMBER_PROPERTY)) {
 			if (!hasProperty(NAME_PROPERTY)) {
 				throw new MissingParameterException("player", NAME_PROPERTY,
 						getLine());

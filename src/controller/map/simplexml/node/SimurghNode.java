@@ -5,7 +5,6 @@ import model.map.fixtures.Simurgh;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -40,9 +39,8 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("simurgh", iterator().next().toString(), getLine());
-		} else if (hasProperty("id")) {
+		forbidChildren("simurgh");
+		if (hasProperty("id")) {
 			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("simurgh", "id", getLine()));

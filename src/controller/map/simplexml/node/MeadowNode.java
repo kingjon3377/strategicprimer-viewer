@@ -6,7 +6,6 @@ import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A Node to produce a Meadow.
@@ -71,12 +70,10 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			// FIXME: This should go after we've ensured that we have a 'tag'
-			// property.
-			throw new UnwantedChildException(getProperty(TAG_PROPERTY), iterator().next()
-					.toString(), getLine());
-		} else if (hasProperty(TAG_PROPERTY)) {
+		// FIXME: This should go after we've ensured that we have a 'tag'
+		// property.
+		forbidChildren(getProperty(TAG_PROPERTY));
+		if (hasProperty(TAG_PROPERTY)) {
 			if (hasProperty(CULTIVATED_PARAM)) {
 				if (hasProperty(KIND_PROPERTY)) {
 					if (hasProperty("id")) {

@@ -5,7 +5,6 @@ import model.map.fixtures.Hill;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -40,9 +39,8 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (iterator().hasNext()) {
-			throw new UnwantedChildException("hill", iterator().next().toString(), getLine());
-		} else if (hasProperty("id")) {
+		forbidChildren("hill");
+		if (hasProperty("id")) {
 			idFactory.register(Long.parseLong(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException("hill", "id", getLine()));
