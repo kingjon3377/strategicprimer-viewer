@@ -1,5 +1,7 @@
 package controller.map.misc;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+
 import java.io.FileNotFoundException;
 import java.util.Deque;
 import java.util.Iterator;
@@ -11,8 +13,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import controller.map.SPFormatException;
-import controller.map.readerng.XMLHelper;
-
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
  * automatically handles "include" tags. TODO: We need something to map tags to
@@ -121,7 +121,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	private void handleInclude(final XMLEvent tag) {
 		try {
 			stack.addFirst(XMLInputFactory.newInstance().createXMLEventReader(
-					new FileOpener().createReader(XMLHelper.getAttribute(
+					new FileOpener().createReader(getAttribute(
 							tag.asStartElement(), "file"))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(

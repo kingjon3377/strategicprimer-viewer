@@ -1,7 +1,10 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,13 +40,13 @@ public class CityReader implements INodeReader<CityEvent> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new CityEvent(
-				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
+				TownStatus.parseTownStatus(getAttribute(element,
 						"status")), TownSize.parseTownSize(XMLHelper
 						.getAttribute(element, "size")),
-				Integer.parseInt(XMLHelper.getAttribute(element, "dc")),
-				XMLHelper.getAttributeWithDefault(element, "name", ""),
+				Integer.parseInt(getAttribute(element, "dc")),
+				getAttributeWithDefault(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
 	}
 	/**

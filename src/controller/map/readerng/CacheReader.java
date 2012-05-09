@@ -1,6 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,9 +36,9 @@ public class CacheReader implements INodeReader<CacheFixture> {
 	public CacheFixture parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new CacheFixture(XMLHelper.getAttribute(
-				element, "kind"), XMLHelper.getAttribute(element, "contents"),
+		spinUntilEnd(element.getName(), stream);
+		return new CacheFixture(getAttribute(
+				element, "kind"), getAttribute(element, "contents"),
 				getOrGenerateID(element, warner, idFactory));
 	}
 	/**

@@ -1,5 +1,9 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.hasAttribute;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -31,9 +35,9 @@ public class ForestReader implements INodeReader<Forest> {
 	public Forest parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new Forest(XMLHelper.getAttribute(element, "kind"),
-				XMLHelper.hasAttribute(element, "rows"));
+		spinUntilEnd(element.getName(), stream);
+		return new Forest(getAttribute(element, "kind"),
+				hasAttribute(element, "rows"));
 	}
 	/**
 	 * @return a list of the tags this reader understands

@@ -1,7 +1,10 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,11 +51,11 @@ public class UnitReader implements INodeReader<Unit> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new Unit(players.getPlayer(Integer
-				.parseInt(ensureNumeric(XMLHelper.getAttributeWithDefault(
+				.parseInt(ensureNumeric(getAttributeWithDefault(
 						element, "owner", "-1")))), parseKind(element, warner),
-				XMLHelper.getAttributeWithDefault(element, "name", ""),
+				getAttributeWithDefault(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
 	}
 
@@ -67,7 +70,7 @@ public class UnitReader implements INodeReader<Unit> {
 			throws SPFormatException {
 		String retval = "";
 		try {
-			retval = XMLHelper.getAttributeWithDeprecatedForm(element, // NOPMD
+			retval = getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
 		} catch (final MissingParameterException except) {
 			warner.warn(except);

@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,7 @@ public class CaveReader implements INodeReader<CaveEvent> {
 	public CaveEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new CaveEvent(Integer.parseInt(XMLHelper
 				.getAttribute(element, "dc")), getOrGenerateID(element, warner,
 				idFactory));

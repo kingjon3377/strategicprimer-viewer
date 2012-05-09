@@ -1,6 +1,10 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.hasAttribute;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,11 +36,11 @@ public class AnimalReader implements INodeReader<Animal> {
 	public Animal parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new Animal(
-				XMLHelper.getAttribute(element, "kind"),
-				XMLHelper.hasAttribute(element, "traces"),
-				Boolean.parseBoolean(XMLHelper.getAttributeWithDefault(element,
+				getAttribute(element, "kind"),
+				hasAttribute(element, "traces"),
+				Boolean.parseBoolean(getAttributeWithDefault(element,
 						"talking", "false")), getOrGenerateID(element, warner,
 						idFactory));
 	}

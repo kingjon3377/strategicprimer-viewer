@@ -1,6 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,9 +35,9 @@ public class CentaurReader implements INodeReader<Centaur> {
 	public Centaur parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new Centaur(
-				XMLHelper.getAttribute(element, "kind"), getOrGenerateID(
+				getAttribute(element, "kind"), getOrGenerateID(
 						element, warner, idFactory));
 	}
 	/**

@@ -1,18 +1,19 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+
 import java.util.Collections;
 import java.util.List;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
+import model.map.fixtures.TextFixture;
 import util.Warning;
-
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import model.map.PlayerCollection;
-import model.map.fixtures.TextFixture;
 /**
  * A reader for text elements.
  * @author Jonathan Lovelace
@@ -47,7 +48,7 @@ public class TextReader implements INodeReader<TextFixture> {
 			}
 		}
 		return new TextFixture(sbuild.toString().trim(),
-				Integer.parseInt(XMLHelper.getAttributeWithDefault(element,
+				Integer.parseInt(getAttributeWithDefault(element,
 						"turn", "-1")));
 	}
 	/**

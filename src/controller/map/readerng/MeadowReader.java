@@ -1,6 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,10 +35,10 @@ public class MeadowReader implements INodeReader<Meadow> {
 	public Meadow parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new Meadow(XMLHelper.getAttribute(element, "kind"),
+		spinUntilEnd(element.getName(), stream);
+		return new Meadow(getAttribute(element, "kind"),
 				"field".equalsIgnoreCase(element.getName().getLocalPart()),
-				Boolean.parseBoolean(XMLHelper.getAttribute(element,
+				Boolean.parseBoolean(getAttribute(element,
 						"cultivated")), getOrGenerateID(element, warner,
 						idFactory));
 	}

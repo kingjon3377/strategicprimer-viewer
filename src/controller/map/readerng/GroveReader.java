@@ -1,6 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,11 +35,11 @@ public class GroveReader implements INodeReader<Grove> {
 	public Grove parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new Grove("orchard".equalsIgnoreCase(element
 				.getName().getLocalPart()), Boolean.parseBoolean(XMLHelper
 				.getAttribute(element, "wild")),
-				XMLHelper.getAttributeWithDeprecatedForm(element, "kind",
+				getAttributeWithDeprecatedForm(element, "kind",
 						"tree", warner), getOrGenerateID(element, warner, idFactory));
 	}
 	/**

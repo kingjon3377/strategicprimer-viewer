@@ -1,5 +1,9 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -11,7 +15,6 @@ import model.map.fixtures.Ground;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-
 /**
  * A reader for Ground.
  * @author Jonathan Lovelace
@@ -32,10 +35,10 @@ public class GroundReader implements INodeReader<Ground> {
 	public Ground parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new Ground(
-				XMLHelper.getAttributeWithDeprecatedForm(element, "kind", "ground", warner),
-				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")));
+				getAttributeWithDeprecatedForm(element, "kind", "ground", warner),
+				Boolean.parseBoolean(getAttribute(element, "exposed")));
 	}
 	/**
 	 * @return a list of the tags this reader understands

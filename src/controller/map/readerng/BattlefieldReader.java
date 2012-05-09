@@ -1,6 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,9 +36,9 @@ public class BattlefieldReader implements INodeReader<BattlefieldEvent> {
 	public BattlefieldEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new BattlefieldEvent(
-				Integer.parseInt(XMLHelper.getAttribute(element, "dc")),
+				Integer.parseInt(getAttribute(element, "dc")),
 				getOrGenerateID(element, warner, idFactory));
 	}
 	/**

@@ -1,6 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +35,8 @@ public class ShrubReader implements INodeReader<Shrub> {
 	public Shrub parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new Shrub(XMLHelper.getAttributeWithDeprecatedForm(
+		spinUntilEnd(element.getName(), stream);
+		return new Shrub(getAttributeWithDeprecatedForm(
 				element, "kind", "shrub", warner), getOrGenerateID(element, warner, idFactory));
 	}
 	/**

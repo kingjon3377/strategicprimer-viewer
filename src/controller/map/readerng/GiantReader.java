@@ -1,6 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +35,8 @@ public class GiantReader implements INodeReader<Giant> {
 	public Giant parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new Giant(XMLHelper.getAttribute(element, "kind"),
+		spinUntilEnd(element.getName(), stream);
+		return new Giant(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
 	}
 	/**

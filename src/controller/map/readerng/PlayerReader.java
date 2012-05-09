@@ -1,5 +1,6 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
@@ -34,8 +35,8 @@ public class PlayerReader implements INodeReader<Player> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Player(Integer.parseInt(XMLHelper.getAttribute(element,
-				"number")), XMLHelper.getAttribute(element, "code_name"));
+		return new Player(Integer.parseInt(getAttribute(element,
+				"number")), getAttribute(element, "code_name"));
 	}
 	/**
 	 * @return a list of the tags this reader understands

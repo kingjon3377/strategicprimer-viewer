@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +14,6 @@ import model.map.River;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-
 /**
  * A reader for Rivers.
  * @author Jonathan Lovelace
@@ -32,9 +34,9 @@ public class RiverReader implements INodeReader<River> {
 	public River parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return "lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
-				: River.getRiver(XMLHelper.getAttribute(element,
+				: River.getRiver(getAttribute(element,
 						"direction"));
 	}
 	/**

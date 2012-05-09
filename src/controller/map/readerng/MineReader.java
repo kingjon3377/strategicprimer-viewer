@@ -1,6 +1,9 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,10 +38,10 @@ public class MineReader implements INodeReader<Mine> {
 	public Mine parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new Mine(XMLHelper.getAttributeWithDeprecatedForm(
+		spinUntilEnd(element.getName(), stream);
+		return new Mine(getAttributeWithDeprecatedForm(
 				element, "kind", "product", warner),
-				TownStatus.parseTownStatus(XMLHelper.getAttribute(element,
+				TownStatus.parseTownStatus(getAttribute(element,
 						"status")), getOrGenerateID(element, warner, idFactory));
 	}
 	/**

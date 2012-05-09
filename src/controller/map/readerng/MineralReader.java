@@ -1,6 +1,9 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,12 +37,12 @@ public class MineralReader implements INodeReader<MineralEvent> {
 	public MineralEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(element.getName(), stream);
 		return new MineralEvent(
-				XMLHelper.getAttributeWithDeprecatedForm(element, "kind",
+				getAttributeWithDeprecatedForm(element, "kind",
 						"mineral", warner), Boolean.parseBoolean(XMLHelper
 						.getAttribute(element, "exposed")),
-				Integer.parseInt(XMLHelper.getAttribute(element, "dc")),
+				Integer.parseInt(getAttribute(element, "dc")),
 				getOrGenerateID(element, warner, idFactory));
 	}
 	/**
