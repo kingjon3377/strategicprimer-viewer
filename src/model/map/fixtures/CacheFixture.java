@@ -46,6 +46,7 @@ public class CacheFixture implements TileFixture, HasImage {
 	 * @return an XML representation of the cache.
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		return new StringBuilder("<cache kind=\"").append(kind)
 				.append("\" contents=\"").append(contents).append("\" id=\"")
@@ -123,4 +124,22 @@ public class CacheFixture implements TileFixture, HasImage {
 				&& kind.equals(((CacheFixture) fix).kind)
 				&& contents.equals(((CacheFixture) fix).contents);
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

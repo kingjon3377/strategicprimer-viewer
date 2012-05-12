@@ -32,6 +32,7 @@ public class Giant implements TileFixture, HasImage {
 	 * @return an XML representation of the giant
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		return new StringBuilder("<giant kind=\"").append(kind)
 				.append("\" id=\"").append(id).append("\" />").toString();
@@ -100,4 +101,22 @@ public class Giant implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

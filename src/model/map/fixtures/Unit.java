@@ -115,6 +115,7 @@ public class Unit implements TileFixture, HasImage {
 	 * @return an XML representation of the unit.
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<unit owner=\"");
 		sbuild.append(owner.getId());
@@ -170,4 +171,22 @@ public class Unit implements TileFixture, HasImage {
 						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
 							.equals(name)));
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

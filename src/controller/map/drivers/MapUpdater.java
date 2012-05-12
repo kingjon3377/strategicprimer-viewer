@@ -15,7 +15,7 @@ import model.map.TileType;
 import util.Warning;
 import view.util.DriverQuit;
 import controller.map.SPFormatException;
-import controller.map.XMLWriter;
+import controller.map.SimpleXMLWriter;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -117,7 +117,7 @@ public final class MapUpdater {
 				continue;
 			}
 			try {
-				new XMLWriter().write(writer, derived); // NOPMD
+				new SimpleXMLWriter().write(writer, derived); // NOPMD
 			} finally {
 				writer.close();
 			}

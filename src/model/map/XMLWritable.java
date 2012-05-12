@@ -15,5 +15,14 @@ public interface XMLWritable {
 	 * Write the object to XML.
 	 * @return the XML representation of the object.
 	 */
+	@Deprecated
 	String toXML();
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	String getFile();
+	/**
+	 * @param file the name of the file this should be written to.
+	 */
+	void setFile(final String file);
 }

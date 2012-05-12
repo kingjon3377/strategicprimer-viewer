@@ -99,6 +99,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 * @return an XML representation of the event
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		return new StringBuilder("<stone kind=\"").append(stone.toString())
 				.append("\" dc=\"").append(dc).append("\" id=\"").append(id)
@@ -148,4 +149,22 @@ public final class StoneEvent implements IEvent, HasImage {
 		return this == fix || (fix instanceof StoneEvent
 				&& ((StoneEvent) fix).stone.equals(stone));
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

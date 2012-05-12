@@ -114,9 +114,28 @@ public class Player implements Comparable<Player>, XMLWritable {
 	 * @return an XML representation of the player.
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		return new StringBuilder("<player number=\"").append(getId())
 				.append("\" code_name=\"").append(getName()).append("\" />")
 				.toString();
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

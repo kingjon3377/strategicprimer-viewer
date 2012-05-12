@@ -19,7 +19,7 @@ import util.Warning;
 import view.util.ErrorShower;
 import view.util.MenuItemCreator;
 import controller.map.SPFormatException;
-import controller.map.XMLWriter;
+import controller.map.SimpleXMLWriter;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -170,7 +170,7 @@ public final class IOHandler implements ActionListener {
 	private void saveMap(final SPMap map) {
 		if (chooser.showSaveDialog(menu) == JFileChooser.APPROVE_OPTION) {
 			try {
-				new XMLWriter().write(chooser.getSelectedFile().getPath(), map);
+				new SimpleXMLWriter().write(chooser.getSelectedFile().getPath(), map);
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}

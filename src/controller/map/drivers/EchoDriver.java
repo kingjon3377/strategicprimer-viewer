@@ -10,7 +10,7 @@ import model.map.SPMap;
 import util.Warning;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.XMLWriter;
+import controller.map.SimpleXMLWriter;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -64,7 +64,7 @@ public final class EchoDriver {
 			return; // NOPMD
 		}
 		try {
-			new XMLWriter().write(args[1], map);
+			new SimpleXMLWriter().write(args[1], map);
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error writing " + args[1], except);
 		}

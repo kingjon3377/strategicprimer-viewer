@@ -203,6 +203,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 * @return an XML representation of the tile.
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		if (isEmpty()) {
 			return ""; // NOPMD
@@ -294,4 +295,22 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 		return fix instanceof CacheFixture || fix instanceof TextFixture
 				|| (fix instanceof Animal && ((Animal) fix).isTraces());
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

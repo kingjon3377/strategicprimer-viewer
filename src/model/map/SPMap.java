@@ -179,6 +179,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * @return an XML representation of the map.
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<map version=\"");
 		sbuild.append(getVersion());
@@ -241,4 +242,22 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	public int compareTo(final SPMap other) {
 		return equals(other) ? 0 : hashCode() - other.hashCode();
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

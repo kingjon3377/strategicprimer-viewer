@@ -12,7 +12,7 @@ import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.XMLWriter;
+import controller.map.SimpleXMLWriter;
 import controller.map.converter.Converter;
 import controller.map.misc.MapReaderAdapter;
 
@@ -61,7 +61,7 @@ public final class ConverterDriver {
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.println(".new");
-				new XMLWriter().write(filename + ".new", map); // NOPMD
+				new SimpleXMLWriter().write(filename + ".new", map); // NOPMD
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				continue;

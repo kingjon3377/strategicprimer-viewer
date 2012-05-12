@@ -14,7 +14,7 @@ import model.map.SPMap;
  * @author JOnathan Lovelace
  * 
  */
-public class XMLWriter { // NOPMD
+public class SimpleXMLWriter { // NOPMD
 	/**
 	 * Write a map.
 	 * @param filename the file to write to

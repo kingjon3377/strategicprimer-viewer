@@ -45,6 +45,7 @@ public class Mine implements TileFixture, HasImage {
 	 * @return an XML representation of the mine
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		return new StringBuilder("<mine kind=\"").append(kind)
 				.append("\" status=\"").append(status.toString())
@@ -118,4 +119,22 @@ public class Mine implements TileFixture, HasImage {
 		return fix instanceof Mine && kind.equals(((Mine) fix).kind)
 				&& status.equals(((Mine) fix).status);
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }

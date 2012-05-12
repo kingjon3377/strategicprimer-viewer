@@ -71,6 +71,7 @@ public final class NothingEvent implements IEvent {
 	 * @return an XML representation of the event: the empty string.
 	 */
 	@Override
+	@Deprecated
 	public String toXML() {
 		return "";
 	}
@@ -106,4 +107,22 @@ public final class NothingEvent implements IEvent {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
+	/**
+	 * @return The name of the file this is to be written to.
+	 */
+	@Override
+	public String getFile() {
+		return file;
+	}
+	/**
+	 * @param fileName the name of the file this should be written to.
+	 */
+	@Override
+	public void setFile(final String fileName) {
+		file = fileName;
+	}
+	/**
+	 * The name of the file this is to be written to.
+	 */
+	private String file;
 }
