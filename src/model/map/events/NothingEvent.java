@@ -9,6 +9,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
+@Deprecated
 public final class NothingEvent implements IEvent {
 	/**
 	 * A singleton to compare with.
