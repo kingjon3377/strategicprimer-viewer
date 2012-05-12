@@ -1,6 +1,6 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
@@ -53,9 +53,9 @@ public class UnitReader implements INodeReader<Unit> {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
 		return new Unit(players.getPlayer(Integer
-				.parseInt(ensureNumeric(getAttributeWithDefault(
+				.parseInt(ensureNumeric(getAttribute(
 						element, "owner", "-1")))), parseKind(element, warner),
-				getAttributeWithDefault(element, "name", ""),
+				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
 	}
 

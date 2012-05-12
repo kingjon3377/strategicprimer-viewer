@@ -1,6 +1,6 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static java.lang.Integer.parseInt;
@@ -39,8 +39,8 @@ public class FortressReader implements INodeReader<Fortress> {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		final Fortress fort = new Fortress(
-				players.getPlayer(parseInt(getAttributeWithDefault(element,
-						"owner", "-1"))), getAttributeWithDefault(element,
+				players.getPlayer(parseInt(getAttribute(element,
+						"owner", "-1"))), getAttribute(element,
 						"name", ""),
 				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {

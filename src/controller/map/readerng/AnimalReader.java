@@ -1,7 +1,6 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.hasAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -40,7 +39,7 @@ public class AnimalReader implements INodeReader<Animal> {
 		return new Animal(
 				getAttribute(element, "kind"),
 				hasAttribute(element, "traces"),
-				Boolean.parseBoolean(getAttributeWithDefault(element,
+				Boolean.parseBoolean(getAttribute(element,
 						"talking", "false")), getOrGenerateID(element, warner,
 						idFactory));
 	}

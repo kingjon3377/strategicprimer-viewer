@@ -1,8 +1,6 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class SPMapReader implements INodeReader<SPMap> {
 	public SPMap parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final SPMap map = new SPMap(Integer.parseInt(getAttributeWithDefault(
+		final SPMap map = new SPMap(Integer.parseInt(getAttribute(
 				element, "version", "1")), Integer.parseInt(getAttribute(
 				element, "rows")), Integer.parseInt(getAttribute(element,
 				"columns")));

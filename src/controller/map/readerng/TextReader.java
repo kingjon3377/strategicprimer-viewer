@@ -1,6 +1,6 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
+import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +48,7 @@ public class TextReader implements INodeReader<TextFixture> {
 			}
 		}
 		return new TextFixture(sbuild.toString().trim(),
-				Integer.parseInt(getAttributeWithDefault(element,
+				Integer.parseInt(getAttribute(element,
 						"turn", "-1")));
 	}
 	/**

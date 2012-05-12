@@ -1,7 +1,6 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -46,7 +45,7 @@ public class CityReader implements INodeReader<CityEvent> {
 						"status")), TownSize.parseTownSize(XMLHelper
 						.getAttribute(element, "size")),
 				Integer.parseInt(getAttribute(element, "dc")),
-				getAttributeWithDefault(element, "name", ""),
+				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
 	}
 	/**

@@ -44,7 +44,11 @@ public final class XMLHelper {
 		}
 		return attr.getValue();
 	}
+	
 	/**
+	 * A variant of getAttribute() that returns a specified default value if the
+	 * attribute is missing, instead of throwing an exception.
+	 * 
 	 * @param elem
 	 *            the element
 	 * @param attr
@@ -54,7 +58,7 @@ public final class XMLHelper {
 	 * 
 	 * @return the value of attribute if it exists, or the default
 	 */
-	public static String getAttributeWithDefault(final StartElement elem,
+	public static String getAttribute(final StartElement elem,
 			final String attr, final String defaultValue) {
 		final Attribute value = elem.getAttributeByName(new QName(attr));
 		return (value == null) ? defaultValue : value.getValue();
@@ -132,7 +136,7 @@ public final class XMLHelper {
 	public static void requireNonEmptyParameter(final StartElement element,
 			final String parameter, final boolean mandatory,
 			final Warning warner) throws SPFormatException {
-		if (getAttributeWithDefault(element, parameter, "").isEmpty()) {
+		if (getAttribute(element, parameter, "").isEmpty()) {
 			final SPFormatException except = new MissingParameterException(
 					element.getName().getLocalPart(), parameter, element
 							.getLocation().getLineNumber());

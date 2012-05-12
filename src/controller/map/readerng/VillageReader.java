@@ -1,7 +1,6 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getAttributeWithDefault;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -41,7 +40,7 @@ public class VillageReader implements INodeReader<Village> {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
 		return new Village(TownStatus.parseTownStatus(getAttribute(element, "status")),
-				getAttributeWithDefault(element, "name", ""),
+				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
 	}
 	/**
