@@ -3,6 +3,8 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +23,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class StoneReader implements INodeReader<StoneEvent> {
+public class StoneReader implements INodeHandler<StoneEvent> {
 	/**
 	 * Parse a Stone.
 	 * @param element the element to read from
@@ -50,5 +52,37 @@ public class StoneReader implements INodeReader<StoneEvent> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("stone");
+	}
+	/**
+	 * @return The class we know how to write.
+	 */
+	@Override
+	public Class<StoneEvent> writes() {
+		return StoneEvent.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends StoneEvent> void write(final S obj, final Writer writer,
+			final boolean inclusion) throws IOException {
+		writer.write("<stone kind=\"");
+		writer.write(obj.stone().toString());
+		writer.write("\" dc=\"");
+		writer.write(obj.getDC());
+		writer.write("\" id=\"");
+		writer.write(Long.toString(obj.getID()));
+		writer.write("\" />");
 	}
 }

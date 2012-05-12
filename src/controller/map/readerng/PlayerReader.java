@@ -3,6 +3,8 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerReader implements INodeReader<Player> {
+public class PlayerReader implements INodeHandler<Player> {
 	/**
 	 * Parse a player from the XML.
 	 * @param element the start element to read from
@@ -44,6 +46,36 @@ public class PlayerReader implements INodeReader<Player> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("player");
+	}
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<Player> writes() {
+		return Player.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Player> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.write("<player number=\"");
+		writer.write(obj.getId());
+		writer.write("\" code_name=\"");
+		writer.write(obj.getName());
+		writer.write("\" />");
 	}
 
 }

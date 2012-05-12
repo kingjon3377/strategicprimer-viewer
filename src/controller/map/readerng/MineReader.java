@@ -5,6 +5,8 @@ import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +25,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class MineReader implements INodeReader<Mine> {
+public class MineReader implements INodeHandler<Mine> {
 	/**
 	 * Parse a mine.
 	 * @param element the element to read from
@@ -50,5 +52,38 @@ public class MineReader implements INodeReader<Mine> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("mine");
+	}
+
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<Mine> writes() {
+		return Mine.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Mine> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.write("<mine kind=\"");
+		writer.write(obj.getKind());
+		writer.write("\" status=\"");
+		writer.write(obj.getStatus().toString());
+		writer.write("\" id=\"");
+		writer.write(Long.toString(obj.getID()));
+		writer.write("\" />");
 	}
 }

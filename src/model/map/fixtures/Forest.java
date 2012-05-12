@@ -11,6 +11,12 @@ import model.map.TileFixture;
  */
 public class Forest implements TerrainFixture, HasImage {
 	/**
+	 * @return what kind of trees
+	 */
+	public String getKind() {
+		return trees;
+	}
+	/**
 	 * Whether this is "rows of" trees.
 	 */
 	private final boolean rows;

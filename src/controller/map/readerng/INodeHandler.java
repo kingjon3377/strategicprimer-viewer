@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 import javax.xml.stream.events.StartElement;
@@ -11,12 +13,16 @@ import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
- * An interface for *stateless* per-class XML readers. 
+ * An interface for *stateless* per-class XML readers/writers. 
  * @author Jonathan Lovelace
  * @param <T> The type of object the reader knows how to read
  *
  */
-public interface INodeReader<T> {
+public interface INodeHandler<T> {
+	/**
+	 * @return the class this can write to a writer.
+	 */
+	Class<T> writes();
 	/**
 	 * @return a list of the tags the reader can handle.
 	 */
@@ -33,4 +39,20 @@ public interface INodeReader<T> {
 	 */
 	T parse(StartElement element, Iterable<XMLEvent> stream,
 			PlayerCollection players, Warning warner, IDFactory idFactory) throws SPFormatException;
+	
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	<S extends T> void write(S obj, Writer writer, boolean inclusion) throws IOException;
 }

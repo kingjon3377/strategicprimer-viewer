@@ -5,6 +5,8 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static java.lang.Integer.parseInt;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,7 +30,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  * 
  */
-public class TileReader implements INodeReader<Tile> {
+public class TileReader implements INodeHandler<Tile> {
 	/**
 	 * @param element
 	 *            the element to start with
@@ -121,5 +123,56 @@ public class TileReader implements INodeReader<Tile> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("tile");
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Tile> void write(final S obj, final Writer writer,
+			final boolean inclusion) throws IOException {
+		if (!obj.isEmpty()) {
+			writer.write("<tile row=\"");
+			writer.write(Integer.toString(obj.getLocation().row()));
+			writer.write("\" column=\"");
+			writer.write(Integer.toString(obj.getLocation().col()));
+			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
+				writer.write("\" kind=\"");
+				writer.write(obj.getTerrain().toXML());
+			}
+			writer.append("\">");
+			if (!obj.getContents().isEmpty()) {
+				writer.write('\n');
+				final ReaderAdapter adapter = new ReaderAdapter();
+				for (final TileFixture fix : obj.getContents()) {
+					writer.append("\t\t\t");
+					if (!inclusion || fix.getFile().equals(obj.getFile())) {
+						adapter.write(fix, writer, inclusion);
+					} else {
+						writer.write("<include file=\"");
+						writer.write(adapter.writeForInclusion(fix));
+						writer.write("\" />");
+					}
+					writer.write('\n');
+				}
+			}
+		}
+	}
+	/**
+	 * @return the type of object we know how to write.
+	 */
+	@Override
+	public Class<Tile> writes() {
+		return Tile.class;
 	}
 }

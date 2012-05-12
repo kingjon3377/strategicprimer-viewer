@@ -19,6 +19,12 @@ public class Village implements TileFixture, HasImage {
 	 */
 	private final String name;
 	/**
+	 * @return the name of the village
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
 	 * Constructor.
 	 * @param vstatus the status of the village.
 	 * @param vName the name of the village

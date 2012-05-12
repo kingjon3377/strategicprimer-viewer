@@ -3,6 +3,8 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class OgreReader implements INodeReader<Ogre> {
+public class OgreReader implements INodeHandler<Ogre> {
 	/**
 	 * Parse an ogre.
 	 * @param element the element to read from
@@ -44,5 +46,34 @@ public class OgreReader implements INodeReader<Ogre> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("ogre");
+	}
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<Ogre> writes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Ogre> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.write("<ogre id=\"");
+		writer.write(Long.toString(obj.getID()));
+		writer.write("\" />");
 	}
 }

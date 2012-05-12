@@ -125,6 +125,12 @@ public final class MineralEvent implements IEvent, HasImage {
 				+ (exposed ? "exposed" : "not exposed") + ", DC " + dc;
 	}
 	/**
+	 * @return the kind of mineral
+	 */
+	public String getKind() {
+		return mineral;
+	}
+	/**
 	 * @return an XML representation of the event.
 	 */
 	@Override

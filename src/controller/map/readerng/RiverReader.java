@@ -3,6 +3,8 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class RiverReader implements INodeReader<River> {
+public class RiverReader implements INodeHandler<River> {
 	/**
 	 * Parse a river.
 	 * @param element the element to read from
@@ -45,5 +47,37 @@ public class RiverReader implements INodeReader<River> {
 	@Override
 	public List<String> understands() {
 		return Arrays.asList("river", "lake");
+	}
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<River> writes() {
+		return River.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends River> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		if (River.Lake.equals(obj)) {
+			writer.write("<lake />");
+		} else {
+			writer.write("<river direction=\"");
+			writer.write(obj.getDescription());
+			writer.write("\" />");
+		}
 	}
 }

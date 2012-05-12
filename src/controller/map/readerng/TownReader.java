@@ -5,6 +5,8 @@ import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class TownReader implements INodeReader<TownEvent> {
+public class TownReader implements INodeHandler<TownEvent> {
 	/**
 	 * Parse a town.
 	 * @param element the element to read from
@@ -55,5 +57,42 @@ public class TownReader implements INodeReader<TownEvent> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("town");
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * @param <S> the actual type of the object
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends TownEvent> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.append("<town status=\"");
+		writer.append(obj.status().toString());
+		writer.append("\" size=\"");
+		writer.append(obj.size().toString());
+		writer.append("\" dc=\"");
+		writer.append(Integer.toString(obj.getDC()));
+		if (!obj.name().isEmpty()) {
+			writer.append("\" name=\"");
+			writer.append(obj.name());
+		}
+		writer.append("\" id=\"");
+		writer.append(Long.toString(obj.getID()));
+		writer.append("\" />");
+	}
+	/**
+	 * @return the class we can write
+	 */
+	@Override
+	public Class<TownEvent> writes() {
+		return TownEvent.class;
 	}
 }

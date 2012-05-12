@@ -4,6 +4,8 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class DragonReader implements INodeReader<Dragon> {
+public class DragonReader implements INodeHandler<Dragon> {
 	/**
 	 * Parse a dragon.
 	 * @param element the element to read from
@@ -45,6 +47,34 @@ public class DragonReader implements INodeReader<Dragon> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("dragon");
+	}
+	/** @return the class we know how to write */
+	@Override
+	public Class<Dragon> writes() {
+		return Dragon.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Dragon> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.write("<dragon kind=\"");
+		writer.write(obj.getKind());
+		writer.write("\" id=\"");
+		writer.write(Long.toString(obj.getID()));
+		writer.write("\" />");
 	}
 
 }

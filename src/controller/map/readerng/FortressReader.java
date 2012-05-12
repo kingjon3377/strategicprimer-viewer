@@ -5,6 +5,8 @@ import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static java.lang.Integer.parseInt;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
+import model.map.fixtures.Unit;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
@@ -21,7 +24,7 @@ import controller.map.misc.IDFactory;
  * A reader for fortresses.
  * @author Jonathan Lovelace
  */
-public class FortressReader implements INodeReader<Fortress> {
+public class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * Parse a fortress. 
 	 * @param element the element to start with
@@ -66,6 +69,57 @@ public class FortressReader implements INodeReader<Fortress> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("fortress");
+	}
+	
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<Fortress> writes() {
+		return Fortress.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Fortress> void write(final S obj, final Writer writer,
+			final boolean inclusion) throws IOException {
+		writer.write("<fortress owner=\"");
+		writer.write(obj.getOwner().getId());
+		if (!obj.getName().isEmpty()) {
+			writer.write("\" name=\"");
+			writer.write(obj.getName());
+		}
+		writer.write("\" id=\"");
+		writer.write(Long.toString(obj.getID()));
+		writer.write("\">");
+		if (!obj.getUnits().isEmpty()) {
+			writer.write('\n');
+			final ReaderAdapter adapter = new ReaderAdapter();
+			for (Unit unit : obj.getUnits()) {
+				writer.write("\t\t\t\t");
+				if (!inclusion || unit.getFile().equals(obj.getFile())) {
+					adapter.write(unit, writer, inclusion);
+				} else {
+					writer.write("<include file=\"");
+					writer.write(adapter.writeForInclusion(unit));
+					writer.write("\" />\n");
+				}
+			}
+			writer.write("\t\t\t");
+		}
+		writer.write("</fortress>");
 	}
 
 }

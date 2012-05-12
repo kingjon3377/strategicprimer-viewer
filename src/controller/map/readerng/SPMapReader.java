@@ -1,14 +1,20 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
+
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMap;
+import model.map.Tile;
+import model.map.XMLWritable;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.ISPReader;
@@ -23,7 +29,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  * 
  */
-public class SPMapReader implements INodeReader<SPMap> {
+public class SPMapReader implements INodeHandler<SPMap> {
 	/**
 	 * The tag we read.
 	 */
@@ -100,5 +106,88 @@ public class SPMapReader implements INodeReader<SPMap> {
 	public List<String> understands() {
 		return Collections.singletonList("map");
 	}
-
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<SPMap> writes() {
+		return SPMap.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends SPMap> void write(final S obj, final Writer writer,
+			final boolean inclusion) throws IOException {
+		final ReaderAdapter adapter = new ReaderAdapter();
+		writer.write("<map version=\"");
+		writer.write(obj.getVersion());
+		writer.write("\" rows=\"");
+		writer.write(obj.rows());
+		writer.write("\" columns=\"");
+		writer.write(obj.cols());
+		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
+			writer.write("\" current_player=\"");
+			writer.write(obj.getPlayers().getCurrentPlayer().getId());
+		}
+		writer.write("\">\n");
+		for (Player player : obj.getPlayers()) {
+			writer.write('\t');
+			writeOrInclude(player, adapter, writer, inclusion, obj.getFile());
+			writer.write('\n');
+		}
+		for (int i = 0; i < obj.rows(); i++) {
+			boolean anyTiles = false;
+			for (int j = 0; j < obj.cols(); j++) {
+				final Tile tile = obj.getTile(i, j);
+				if (!anyTiles && !tile.isEmpty()) {
+					anyTiles = true;
+					writer.write("\t<row index=\"");
+					writer.write(i);
+					writer.write("\">\n");
+				}
+				if (!tile.isEmpty()) {
+					writer.write("\t\t");
+					writeOrInclude(tile, adapter, writer, inclusion, obj.getFile());
+					writer.write('\n');
+				}
+			}
+			if (anyTiles) {
+				writer.write("\t</row>\n");
+			}
+		}
+		writer.write("</map>");
+	}
+	/**
+	 * Write something to this Writer or to its own if appropriate.
+	 * @param <T> the type of object
+	 * @param obj the object
+	 * @param adapter the adapter to get the write helper to do the actual writing
+	 * @param writer the writer to write it, or the 'include' tag, to
+	 * @param inclusion whether we're even doing inclusion
+	 * @param file the file we're in now
+	 * @throws IOException on I/O error
+	 */
+	private static <T extends XMLWritable> void writeOrInclude(final T obj,
+			final ReaderAdapter adapter, final Writer writer,
+			final boolean inclusion, final String file) throws IOException {
+		if (!inclusion || obj.getFile().equals(file)) {
+			adapter.write(obj, writer, inclusion);
+		} else {
+			writer.write("<include file=\"");
+			writer.write(adapter.writeForInclusion(obj));
+			writer.write("\" />");
+		}
+	}
 }

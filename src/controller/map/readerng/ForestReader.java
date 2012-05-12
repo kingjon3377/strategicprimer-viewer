@@ -4,6 +4,8 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.hasAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class ForestReader implements INodeReader<Forest> {
+public class ForestReader implements INodeHandler<Forest> {
 	/**
 	 * Parse a forest.
 	 * @param element the element to read from
@@ -45,6 +47,35 @@ public class ForestReader implements INodeReader<Forest> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("forest");
+	}
+	/** @return the class we know how to write */
+	@Override
+	public Class<Forest> writes() {
+		return Forest.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Forest> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.write("<forest kind=\"");
+		writer.write(obj.getKind());
+		if (obj.isRows()) {
+			writer.write("\" rows=\"true");
+		}
+		writer.write("\" />");
 	}
 
 }

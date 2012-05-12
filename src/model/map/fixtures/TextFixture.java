@@ -43,6 +43,12 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	private final int turn;
 	/**
+	 * @return the turn this is associated with
+	 */
+	public int getTurn() {
+		return turn;
+	}
+	/**
 	 * @return an XML representation of the fixture
 	 */
 	@Override

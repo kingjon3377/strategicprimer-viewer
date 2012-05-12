@@ -60,6 +60,12 @@ public enum River implements XMLWritable {
 					"Unrecognized river direction string");
 	}
 	/**
+	 * @return a description of the direction of the river
+	 */
+	public String getDescription() {
+		return desc;
+	}
+	/**
 	 * @return an XML representation of the river.
 	 */
 	@Override

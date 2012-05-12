@@ -1,5 +1,9 @@
 package controller.map.readerng;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,6 +17,7 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.XMLEscapingStringWriter;
 
 /**
  * An alternative approach, to hopefully replace the ReaderFactory---instead of
@@ -23,7 +28,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  * 
  */
-public class ReaderAdapter implements INodeReader<XMLWritable> {
+public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	/**
 	 * Parse an element.
 	 * 
@@ -44,8 +49,8 @@ public class ReaderAdapter implements INodeReader<XMLWritable> {
 	public XMLWritable parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		if (CACHE.containsKey(element.getName().getLocalPart())) {
-			return CACHE.get(element.getName().getLocalPart()).parse(element,
+		if (READ_CACHE.containsKey(element.getName().getLocalPart())) {
+			return READ_CACHE.get(element.getName().getLocalPart()).parse(element,
 					stream, players, warner, idFactory);
 		} else {
 			throw new UnwantedChildException("unknown", element.getName()
@@ -57,23 +62,28 @@ public class ReaderAdapter implements INodeReader<XMLWritable> {
 	 * Map from tags to readers. Initializer moved to static block below because
 	 * here it made the line *way* too long.
 	 */
-	private static final Map<String, INodeReader<? extends XMLWritable>> CACHE;
-
+	private static final Map<String, INodeHandler<? extends XMLWritable>> READ_CACHE;
+	/**
+	 * Map from writable objects to writers. Initializer in static block below.
+	 */
+	private static final Map<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>> WRITE_CACHE;
 	/**
 	 * Add a reader to the cache.
 	 * 
 	 * @param reader
 	 *            the reader to add
 	 */
-	private static void factory(final INodeReader<? extends XMLWritable> reader) {
+	private static void factory(final INodeHandler<? extends XMLWritable> reader) {
 		for (String tag : reader.understands()) {
-			CACHE.put(tag, reader);
+			READ_CACHE.put(tag, reader);
 		}
+		WRITE_CACHE.put(reader.writes(), reader);
 	}
 
 	static {
-		CACHE = new TreeMap<String, INodeReader<? extends XMLWritable>>(
+		READ_CACHE = new TreeMap<String, INodeHandler<? extends XMLWritable>>(
 				String.CASE_INSENSITIVE_ORDER);
+		WRITE_CACHE = new HashMap<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>>();
 		factory(new SPMapReader());
 		factory(new PlayerReader());
 		factory(new TileReader());
@@ -144,6 +154,61 @@ public class ReaderAdapter implements INodeReader<XMLWritable> {
 		} else {
 			throw new IllegalStateException("Wanted " + type.getSimpleName()
 					+ ", was " + obj.getClass().getSimpleName());
+		}
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends XMLWritable> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		if (WRITE_CACHE.containsKey(obj.getClass())) {
+			((INodeHandler<S>) WRITE_CACHE.get(obj.getClass())).write(obj, writer, inclusion);
+		} else {
+			throw new IllegalArgumentException("Writable type this adapter can't handle");
+		}
+	}
+	/**
+	 * @return nothing---this should never be called, so we object with an exception.
+	 */
+	@Override
+	public Class<XMLWritable> writes() {
+		throw new IllegalStateException("This should never be called.");
+	}
+	
+	/**
+	 * Write an object to a *new* file that it specifies, and return the name of
+	 * that file---or a String containing the XML-encoded object for inline
+	 * purposes.
+	 * 
+	 * @param fix the object to write
+	 * @return the filename or "filename" written to
+	 * @throws IOException on I/O error in writing
+	 */
+	public String writeForInclusion(final XMLWritable fix) throws IOException {
+		if ("string:".equals(fix.getFile())) {
+			final XMLEscapingStringWriter writer = new XMLEscapingStringWriter();
+			write(fix, writer, true);
+			return new StringBuilder(fix.getFile()).append(writer.asText()).toString(); // NOPMD
+		} else {
+			final Writer writer = new FileWriter(fix.getFile());
+			try {
+				write(fix, writer, true);
+			} finally {
+				writer.close();
+			}
+			return fix.getFile();
 		}
 	}
 }

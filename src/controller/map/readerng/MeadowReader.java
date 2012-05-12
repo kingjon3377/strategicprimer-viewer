@@ -4,6 +4,8 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class MeadowReader implements INodeReader<Meadow> {
+public class MeadowReader implements INodeHandler<Meadow> {
 	/**
 	 * Parse a meadow.
 	 * @param element the element to read from
@@ -48,5 +50,42 @@ public class MeadowReader implements INodeReader<Meadow> {
 	@Override
 	public List<String> understands() {
 		return Arrays.asList("meadow", "field");
+	}
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<Meadow> writes() {
+		return Meadow.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Meadow> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		if (obj.isField()) {
+			writer.write("<field");
+		} else {
+			writer.write("<meadow");
+		}
+		writer.write(" kind=\"");
+		writer.write(obj.getKind());
+		writer.write("\" cultivated=\"");
+		writer.write(Boolean.toString(obj.isCultivated()));
+		writer.write("\" id=\"");
+		writer.write(Long.toString(obj.getID()));
+		writer.write("\" />");
 	}
 }

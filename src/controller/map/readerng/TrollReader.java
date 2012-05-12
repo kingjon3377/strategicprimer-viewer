@@ -3,6 +3,8 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class TrollReader implements INodeReader<Troll> {
+public class TrollReader implements INodeHandler<Troll> {
 	/**
 	 * Parse a troll.
 	 * @param element the element to read from
@@ -44,5 +46,32 @@ public class TrollReader implements INodeReader<Troll> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("troll");
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * @param <S> the actual type of the object being written
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Troll> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.append("<troll id=\"");
+		writer.append(Long.toString(obj.getID()));
+		writer.append("\" />");
+	}
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<Troll> writes() {
+		return Troll.class;
 	}
 }

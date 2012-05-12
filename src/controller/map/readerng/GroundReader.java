@@ -4,6 +4,8 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class GroundReader implements INodeReader<Ground> {
+public class GroundReader implements INodeHandler<Ground> {
 	/**
 	 * Parse ground.
 	 * @param element the element to read from
@@ -46,5 +48,36 @@ public class GroundReader implements INodeReader<Ground> {
 	@Override
 	public List<String> understands() {
 		return Collections.singletonList("ground");
+	}
+	
+	/**
+	 * @return the class we know how to write
+	 */
+	@Override
+	public Class<Ground> writes() {
+		return Ground.class;
+	}
+	/**
+	 * Write an instance of the type to a Writer.
+	 * 
+	 * @param <S> the actual type of the object to write
+	 * @param obj
+	 *            the object to write
+	 * @param writer
+	 *            the Writer we're currently writing to
+	 * @param inclusion
+	 *            whether to create 'include' tags and separate files for
+	 *            elements whose 'file' is different from that of their parents
+	 * @throws IOException
+	 *             on I/O error while writing
+	 */
+	@Override
+	public <S extends Ground> void write(final S obj, final Writer writer, final boolean inclusion)
+			throws IOException {
+		writer.write("<ground kind=\"");
+		writer.write(obj.getKind());
+		writer.write("\" exposed=\"");
+		writer.write(Boolean.toString(obj.isExposed()));
+		writer.write("\" />");
 	}
 }
