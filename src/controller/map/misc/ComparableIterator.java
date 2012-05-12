@@ -1,0 +1,69 @@
+package controller.map.misc;
+
+import java.util.Iterator;
+
+/**
+ * @author Jonathan Lovelace
+ * A wrapper around Iterator implementing Comparable, so we can put it in a Pair.
+ * @param <T> the type of thing being iterated over
+ */
+public class ComparableIterator<T> implements Iterator<T>, Comparable<ComparableIterator<T>> {
+	/**
+	 * The Iterator we're wrapping.
+	 */
+	private final Iterator<T> wrapped;
+	/**
+	 * Constructor.
+	 * @param iter the Iterator to wrap.
+	 */
+	public ComparableIterator(final Iterator<T> iter) {
+		wrapped = iter;
+	}
+	/**
+	 * @param obj another iterator
+	 * @return the result of a comparison between them.
+	 */
+	@Override
+	public int compareTo(final ComparableIterator<T> obj) {
+		return obj.hashCode() - hashCode();
+	}
+	/**
+	 * @return whether there's a next element.
+	 */
+	@Override
+	public boolean hasNext() {
+		return wrapped.hasNext();
+	}
+	// ESCA-JAVA0277:
+	/**
+	 * @return the next element
+	 */
+	@Override
+	public T next() {
+		return wrapped.next();
+	}
+	/**
+	 * Remove the next element.
+	 */
+	@Override
+	public void remove() {
+		wrapped.remove();
+	}
+	/**
+	 * @return the hash code of the wrapped iterator.
+	 */
+	@Override
+	public int hashCode() {
+		return wrapped.hashCode();
+	}
+	/**
+	 * @param obj an object
+	 * @return whether it equals this one
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof ComparableIterator
+				&& ((ComparableIterator) obj).wrapped.equals(wrapped);
+	}
+}

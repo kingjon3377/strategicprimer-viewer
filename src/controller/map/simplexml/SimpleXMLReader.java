@@ -52,7 +52,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 			XMLStreamException, SPFormatException {
 		final Reader istream = new FileOpener().createReader(file);
 		try {
-			return readMap(istream, warner);
+			return readMap(file, istream, warner);
 		} finally {
 			istream.close();
 		}
@@ -77,13 +77,14 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 			throws IOException, XMLStreamException, SPFormatException {
 		final FileReader istream = new FileReader(file);
 		try {
-			return readMap(istream, reflection, warner);
+			return readMap(file, istream, reflection, warner);
 		} finally {
 			istream.close();
 		}
 	}
 
 	/**
+	 * @param file the name of the file being read from
 	 * @param istream
 	 *            a reader from which to read the XML
 	 * @param warner the Warning instance to use for warnings.
@@ -94,15 +95,16 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public SPMap readMap(final Reader istream, final Warning warner) throws XMLStreamException,
+	public SPMap readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException {
-		return readMap(istream, false, warner);
+		return readMap(file, istream, false, warner);
 	}
 
 	/**
 	 * @param reflection
 	 *            whether to try the reflection-based verion of the node factory
 	 *            method
+	 * @param file the name of the file being read from
 	 * @param istream
 	 *            a reader from which to read the XML
 	 * @param warner the Warning instance to use for warnings.
@@ -112,13 +114,14 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
-	public SPMap readMap(final Reader istream, final boolean reflection, final Warning warner)
+	public SPMap readMap(final String file, final Reader istream, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		return readXML(istream, SPMap.class, reflection, warner);
+		return readXML(file, istream, SPMap.class, reflection, warner);
 	}
 	/**
 	 * Use readMap if you want a map; this is public primarily for testing purposes. 
 	 * @param <T> The type of the object the XML represents
+	 * @param file the name of the file being read from
 	 * @param istream
 	 *            a reader from which to read the XML
 	 * @param type The type of the object the XML represents
@@ -130,9 +133,9 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final Reader istream, final Class<T> type, final Warning warner)
+	public <T> T readXML(final String file, final Reader istream, final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		return readXML(istream, type, true, warner);
+		return readXML(file, istream, type, true, warner);
 	}
 	/**
 	 * Use readMap if you want a map; this is public primarily for testing purposes. 
@@ -140,6 +143,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @param reflection
 	 *            whether to try the reflection-based verion of the node factory
 	 *            method
+	 * @param file the name of the file being read from
 	 * @param istream
 	 *            a reader from which to read the XML
 	 * @param type The type of the object the XML represents
@@ -151,13 +155,14 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final Reader istream, final Class<T> type, final boolean reflection, final Warning warner)
+	public <T> T readXML(final String file, final Reader istream,
+			final Class<T> type, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final RootNode<T> root = new RootNode<T>(type);
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
-				new IncludingIterator(XMLInputFactory.newInstance().createXMLEventReader(istream)));
+				new IncludingIterator(file, XMLInputFactory.newInstance().createXMLEventReader(istream)));
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				// ESCA-JAVA0177:

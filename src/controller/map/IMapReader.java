@@ -37,6 +37,7 @@ public interface IMapReader {
 	/**
 	 * Read the map contained in a reader.
 	 * 
+	 * @param file the name of the file the stream represents
 	 * @param istream
 	 *            the reader to read from
 	 * @param warner the Warning instance to use for warnings.
@@ -48,6 +49,6 @@ public interface IMapReader {
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */
-	SPMap readMap(final Reader istream, final Warning warner) throws XMLStreamException,
+	SPMap readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException, MapVersionException;
 }

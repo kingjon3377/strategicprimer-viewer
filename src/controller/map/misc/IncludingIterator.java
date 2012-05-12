@@ -12,6 +12,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import util.Pair;
 import controller.map.SPFormatException;
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
@@ -26,17 +27,19 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	/**
 	 * Constructor.
 	 * 
+	 * @param file the name of the file we're reading
 	 * @param iter
 	 *            the iterator we'll start with.
 	 */
-	public IncludingIterator(final Iterator<XMLEvent> iter) {
-		stack.addFirst(iter);
+	public IncludingIterator(final String file, final Iterator<XMLEvent> iter) {
+		stack = new LinkedList<Pair<String, ComparableIterator<XMLEvent>>>();
+		stack.addFirst(Pair.of(file, new ComparableIterator<XMLEvent>(iter)));
 	}
 
 	/**
 	 * The stack of iterators we're working with.
 	 */
-	private final Deque<Iterator<XMLEvent>> stack = new LinkedList<Iterator<XMLEvent>>();
+	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
 
 	/**
 	 * Note that this method removes any empty iterators from the top of the
@@ -54,7 +57,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * Remove any empty iterators from the top of the stack.
 	 */
 	private void removeEmptyIterators() {
-		while (!stack.isEmpty() && !stack.peekFirst().hasNext()) {
+		while (!stack.isEmpty() && !stack.peekFirst().second().hasNext()) {
 			stack.removeFirst();
 		}
 	}
@@ -75,7 +78,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		if (stack.isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		XMLEvent retval = stack.peekFirst().next();
+		XMLEvent retval = stack.peekFirst().second().next();
 		while (retval.isStartElement()
 				&& "include".equals(retval.asStartElement().getName()
 						.getLocalPart())) {
@@ -84,7 +87,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			if (stack.isEmpty()) {
 				throw new NoSuchElementException();
 			}
-			retval = stack.peekFirst().next();
+			retval = stack.peekFirst().second().next();
 		}
 		return retval;
 	}
@@ -120,9 +123,13 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 */
 	private void handleInclude(final XMLEvent tag) {
 		try {
-			stack.addFirst(XMLInputFactory.newInstance().createXMLEventReader(
-					new FileOpener().createReader(getAttribute(
-							tag.asStartElement(), "file"))));
+			final String file = getAttribute(
+					tag.asStartElement(), "file");
+			stack.addFirst(Pair.of(
+					file,
+					new ComparableIterator<XMLEvent>(XMLInputFactory.newInstance()
+							.createXMLEventReader(
+									new FileOpener().createReader(file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
 					"File referenced by <include> not found", e);
@@ -146,8 +153,17 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		if (stack.isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		stack.peekFirst().remove();
+		stack.peekFirst().second().remove();
 		removeEmptyIterators();
 	}
-
+	/**
+	 * @return the file we're *currently* reading from.
+	 */
+	public String getFile() {
+		removeEmptyIterators();
+		if (stack.isEmpty()) {
+			throw new NoSuchElementException("We're not reading at all");
+		}
+		return stack.peekFirst().first();
+	}
 }

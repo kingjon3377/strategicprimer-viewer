@@ -141,13 +141,13 @@ public class ReaderComparator {
 		buffer.position(0);
 		final String contents = buffer.toString();
 		final long startOne = System.nanoTime();
-		final SPMap map1 = one.readMap(new StringReader(contents), warner);
+		final SPMap map1 = one.readMap(arg, new StringReader(contents), warner);
 		final long endOne = System.nanoTime();
 		out.print("Old method took ");
 		out.print((endOne - startOne));
 		out.println(" time-units.");
 		final long startTwo = System.nanoTime();
-		final SPMap map2 = two.readMap(new StringReader(contents), warner);
+		final SPMap map2 = two.readMap(arg, new StringReader(contents), warner);
 		final long endTwo = System.nanoTime();
 		out.print("New method took ");
 		out.print((endTwo - startTwo));

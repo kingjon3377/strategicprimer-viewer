@@ -42,13 +42,14 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			SPFormatException, MapVersionException {
 		final Reader istream = new FileOpener().createReader(file);
 		try {
-			return readMap(istream, warner);
+			return readMap(file, istream, warner);
 		} finally {
 			istream.close();
 		}
 	}
 	/**
 	 * 
+	 * @param file the name of the file being read from
 	 * @param istream a reader from which to read the XML
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that stream
@@ -57,12 +58,13 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws MapVersionException if the map version isn't one we support
 	 */
 	@Override
-	public SPMap readMap(final Reader istream, final Warning warner) throws XMLStreamException,
+	public SPMap readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException, MapVersionException {
-		return readXML(istream, SPMap.class, warner);
+		return readXML(file, istream, SPMap.class, warner);
 	}
 	/**
 	 * @param <T> The type of the object the XML represents
+	 * @param file the name of the file from which we're reading
 	 * @param istream
 	 *            a reader from which to read the XML
 	 * @param type The type of the object the XML represents
@@ -74,10 +76,10 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final Reader istream, final Class<T> type, final Warning warner)
+	public <T> T readXML(final String file, final Reader istream, final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
-				new IncludingIterator(XMLInputFactory.newInstance().createXMLEventReader(istream)));
+				new IncludingIterator(file, XMLInputFactory.newInstance().createXMLEventReader(istream)));
 		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final XMLWritable retval = new ReaderAdapter().parse(//NOPMD
@@ -116,6 +118,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	
 	/**
 	 * @param <T> The type of the object the XML represents
+	 * @param file the name of the file being read from
 	 * @param istream
 	 *            a reader from which to read the XML
 	 * @param type The type of the object the XML represents
@@ -128,8 +131,8 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final Reader istream, final Class<T> type, final boolean reflection,
+	public <T> T readXML(final String file, final Reader istream, final Class<T> type, final boolean reflection,
 			final Warning warner) throws XMLStreamException, SPFormatException {
-		return readXML(istream, type, warner);
+		return readXML(file, istream, type, warner);
 	}
 }
