@@ -14,6 +14,7 @@ import model.map.SPMap;
  * @author JOnathan Lovelace
  * 
  */
+@Deprecated
 public class SimpleXMLWriter { // NOPMD
 	/**
 	 * Write a map.
