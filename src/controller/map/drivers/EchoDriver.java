@@ -10,8 +10,8 @@ import model.map.SPMap;
 import util.Warning;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.SimpleXMLWriter;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.simplexml.SimpleXMLWriter;
 
 /**
  * A driver that reads in maps and then writes them out again---this is

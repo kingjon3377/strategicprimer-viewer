@@ -12,9 +12,9 @@ import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.SimpleXMLWriter;
 import controller.map.converter.Converter;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.simplexml.SimpleXMLWriter;
 
 /**
  * A driver to convert maps to the new format.

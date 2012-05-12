@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.simplexml;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

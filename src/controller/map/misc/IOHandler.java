@@ -19,7 +19,7 @@ import util.Warning;
 import view.util.ErrorShower;
 import view.util.MenuItemCreator;
 import controller.map.SPFormatException;
-import controller.map.SimpleXMLWriter;
+import controller.map.simplexml.SimpleXMLWriter;
 
 /**
  * An ActionListener to dispatch file I/O.

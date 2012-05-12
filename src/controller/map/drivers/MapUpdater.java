@@ -15,8 +15,8 @@ import model.map.TileType;
 import util.Warning;
 import view.util.DriverQuit;
 import controller.map.SPFormatException;
-import controller.map.SimpleXMLWriter;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.simplexml.SimpleXMLWriter;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
