@@ -16,7 +16,7 @@ import util.Warning;
 import view.util.DriverQuit;
 import controller.map.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.simplexml.SimpleXMLWriter;
+import controller.map.readerng.MapWriterNG;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
@@ -113,11 +113,13 @@ public final class MapUpdater {
 			try {
 				writer = new PrintWriter(new FileWriter(arg)); // NOPMD
 			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
+				LOGGER.log(Level.SEVERE, "I/O error creating writer for updated map", e);
 				continue;
 			}
 			try {
-				new SimpleXMLWriter().write(writer, derived, true); // NOPMD
+				new MapWriterNG().write(writer, derived, true); // NOPMD
+			} catch (final IOException e) {
+				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
 			} finally {
 				writer.close();
 			}

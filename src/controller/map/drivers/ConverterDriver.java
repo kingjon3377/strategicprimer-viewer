@@ -14,7 +14,7 @@ import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.converter.Converter;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.simplexml.SimpleXMLWriter;
+import controller.map.readerng.MapWriterNG;
 
 /**
  * A driver to convert maps to the new format.
@@ -61,7 +61,7 @@ public final class ConverterDriver {
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.println(".new");
-				new SimpleXMLWriter().write(filename + ".new", map, false); // NOPMD
+				new MapWriterNG().write(filename + ".new", map, false); // NOPMD
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				continue;
