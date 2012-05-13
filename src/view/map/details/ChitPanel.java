@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import model.map.TileFixture;
 import model.map.events.IEvent;
 import model.map.events.MineralEvent;
-import model.map.events.NothingEvent;
 import model.map.events.StoneEvent;
 import model.map.fixtures.Animal;
 import model.map.fixtures.CacheFixture;
@@ -72,10 +71,6 @@ public class ChitPanel extends JPanel {
 			add(new FortChit((Fortress) fix, listener));
 		} else if (fix instanceof Unit) {
 			add(new UnitChit((Unit) fix, listener));
-		} else if (fix instanceof NothingEvent) {
-			// NothingEvents represent the absence of all events, and should
-			// never actually occur.
-			return; // NOPMD
 		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
 				Oasis.class, Shrub.class, MineralEvent.class, StoneEvent.class,
 				Mountain.class, Forest.class, Animal.class, Meadow.class,

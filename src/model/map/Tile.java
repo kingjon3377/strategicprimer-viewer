@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.map.events.NothingEvent;
 import model.map.fixtures.Animal;
 import model.map.fixtures.CacheFixture;
 import model.map.fixtures.RiverFixture;
@@ -77,8 +76,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 	 *            something new on the tile
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (!fix.equals(NothingEvent.NOTHING_EVENT)
-				&& !((fix instanceof TextFixture) && ((TextFixture) fix)
+		if (!((fix instanceof TextFixture) && ((TextFixture) fix)
 						.getText().isEmpty())) {
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {

@@ -7,14 +7,13 @@ import java.util.Set;
 
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 import model.map.events.BattlefieldEvent;
 import model.map.events.CaveEvent;
 import model.map.events.CityEvent;
 import model.map.events.FortificationEvent;
+import model.map.events.IEvent;
 import model.map.events.MineralEvent;
 import model.map.events.MineralKind;
-import model.map.events.NothingEvent;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
 import model.map.events.TownEvent;
@@ -51,7 +50,7 @@ public class LegacyTable implements EncounterTable {
 			data.add(new MineralEvent(mineral.toString(), true, 0, 0).getText()); // NOPMD
 			data.add(new MineralEvent(mineral.toString(), false, 0, 0).getText()); // NOPMD
 		}
-		data.add(NothingEvent.NOTHING_EVENT.getText());
+		data.add("Nothing interesting here ...");
 		for (final StoneKind stone : StoneKind.values()) {
 			data.add(new StoneEvent(stone, 0, 0).getText()); // NOPMD
 		}
@@ -69,7 +68,7 @@ public class LegacyTable implements EncounterTable {
 				return ((IEvent) fix).getText(); // NOPMD
 			}
 		}
-		return NothingEvent.NOTHING_EVENT.getText();
+		return "Nothing interesting here ...";
 	}
 
 	/**
