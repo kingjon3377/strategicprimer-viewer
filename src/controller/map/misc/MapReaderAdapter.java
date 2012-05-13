@@ -9,11 +9,13 @@ import util.Warning;
 import controller.map.IMapReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
+import controller.map.SPWriter;
 import controller.map.readerng.MapReaderNG;
+import controller.map.readerng.MapWriterNG;
 
 /**
- * An adapter, so that classes using map readers don't have to change whenever
- * the map reader is replaced.
+ * An adapter, so that classes using map readers and writers don't have to change whenever
+ * the map reader or writer is replaced.
  * 
  * @author Jonathan Lovelace
  * 
@@ -23,12 +25,16 @@ public class MapReaderAdapter {
 	 * The implementation we use under the hood.
 	 */
 	private final IMapReader reader;
-
+	/**
+	 * The map writer implementation we use under the hood.
+	 */
+	private final SPWriter writer;
 	/**
 	 * Constructor.
 	 */
 	public MapReaderAdapter() {
 		reader = new MapReaderNG();
+		writer = new MapWriterNG();
 	}
 
 	/**
@@ -49,4 +55,14 @@ public class MapReaderAdapter {
 			XMLStreamException, SPFormatException, MapVersionException {
 		return reader.readMap(filename, warner);
 	}
+	/**
+	 * Write a map.
+	 * @param filename the file to write to
+	 * @param map the map to write. 
+	 * @throws IOException on error opening the file
+	 */
+	public void write(final String filename, final SPMap map) throws IOException {
+		writer.write(filename, map, true);
+	}
+
 }
