@@ -36,10 +36,14 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 	@Override
 	public Animal produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new Animal(getProperty(KIND_PROPERTY), hasProperty("traces"),
+		final Animal fix = new Animal(getProperty(KIND_PROPERTY), hasProperty("traces"),
 				hasProperty("talking")
 						&& Boolean.parseBoolean(getProperty("talking")),
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 
 	/**

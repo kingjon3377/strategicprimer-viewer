@@ -32,7 +32,11 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	 */
 	@Override
 	public Giant produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Giant(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		final Giant fix = new Giant(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check the node for invalid data. A Giant is valid if it has no children and has a "kind" property.

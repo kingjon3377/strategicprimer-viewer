@@ -26,7 +26,11 @@ public class SandbarNode extends AbstractFixtureNode<Sandbar> {
 	 */
 	@Override
 	public Sandbar produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Sandbar(Long.parseLong(getProperty("id")));
+		final Sandbar fix = new Sandbar(Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check this node for validity. A Sandbar is valid if it has no children.

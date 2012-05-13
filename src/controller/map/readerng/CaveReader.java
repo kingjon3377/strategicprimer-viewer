@@ -16,6 +16,7 @@ import model.map.events.CaveEvent;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Caves.
@@ -38,9 +39,13 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new CaveEvent(Integer.parseInt(XMLHelper
+		final CaveEvent fix = new CaveEvent(Integer.parseInt(XMLHelper
 				.getAttribute(element, "dc")), getOrGenerateID(element, warner,
 				idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands
@@ -72,7 +77,7 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 	public <S extends CaveEvent> void write(final S obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<cave dc=\"");
-		writer.write(obj.getDC());
+		writer.write(Integer.toString(obj.getDC()));
 		writer.write("\" id=\"");
 		writer.write(Long.toString(obj.getID()));
 		writer.write("\" />");

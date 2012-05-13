@@ -43,7 +43,11 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	 */
 	@Override
 	public Ground produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Ground(getProperty(KIND_PROPERTY), Boolean.parseBoolean(getProperty(EXPOSED_PARAM)));
+		final Ground fix = new Ground(getProperty(KIND_PROPERTY), Boolean.parseBoolean(getProperty(EXPOSED_PARAM)));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * @param property the name of a property

@@ -20,6 +20,7 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Units.
@@ -54,11 +55,15 @@ public class UnitReader implements INodeHandler<Unit> {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new Unit(players.getPlayer(Integer
+		final Unit fix = new Unit(players.getPlayer(Integer
 				.parseInt(ensureNumeric(getAttribute(
 						element, "owner", "-1")))), parseKind(element, warner),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 
 	/**

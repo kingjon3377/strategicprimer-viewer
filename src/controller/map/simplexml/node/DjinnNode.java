@@ -27,7 +27,11 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	 */
 	@Override
 	public Djinn produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Djinn(Long.parseLong(getProperty("id")));
+		final Djinn fix = new Djinn(Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check the node for invalid data. A Djinn is valid i it has no children.

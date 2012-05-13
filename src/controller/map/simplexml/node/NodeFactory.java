@@ -99,6 +99,7 @@ public final class NodeFactory { // NOPMD
 	 *            the tag.
 	 * @param line
 	 *            the line of the file it's on ... just in case.
+	 * @param file the file it's taken from
 	 * @param warner the Warning instance to use if we need to propagate a warning
 	 * @return a Node representing the tag, but not its contents yet.
 	 * @throws SPFormatException
@@ -107,7 +108,7 @@ public final class NodeFactory { // NOPMD
 	 * @throws InstantiationException thrown by reflection
 	 */
 	public static AbstractChildNode<?> createReflection(final String tag,
-			final int line, final Warning warner) throws SPFormatException, InstantiationException,
+			final int line, final String file, final Warning warner) throws SPFormatException, InstantiationException,
 			IllegalAccessException {
 		final Tag localtag = getTag(tag, line);
 		// ESCA-JAVA0177:
@@ -123,6 +124,7 @@ public final class NodeFactory { // NOPMD
 			node.addProperty("tag", tag, warner);
 		}
 		node.addProperty("line", Integer.toString(line), warner);
+		node.addProperty("file", file, warner);
 		return node;
 	}
 	/**
@@ -145,13 +147,14 @@ public final class NodeFactory { // NOPMD
 	 *            the tag.
 	 * @param line
 	 *            the line of the file it's on ... just in case.
+	 * @param file the file we read it from
 	 * @param warner the warning instance to use if necessary 
 	 * @return a Node representing the tag, but not its contents yet.
 	 * @throws SPFormatException
 	 *             on unrecognized tag
 	 */
 	public static AbstractChildNode<?> create(final String tag, final int line, // NOPMD
-			final Warning warner)
+			final String file, final Warning warner)
 			throws SPFormatException {
 		// ESCA-JAVA0177:
 		final AbstractChildNode<?> node; // NOPMD
@@ -287,6 +290,7 @@ public final class NodeFactory { // NOPMD
 			throw new IllegalStateException("Shouldn't get here!");
 		}
 		node.addProperty("line", Integer.toString(line), warner);
+		node.addProperty("file", file, warner);
 		return node;
 	}
 }

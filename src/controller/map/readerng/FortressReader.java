@@ -20,6 +20,7 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 /**
  * A reader for fortresses.
  * @author Jonathan Lovelace
@@ -61,6 +62,9 @@ public class FortressReader implements INodeHandler<Fortress> {
 						event.getLocation().getLineNumber());
 			}
 		}
+		if (stream.iterator() instanceof IncludingIterator) {
+			fort.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
 		return fort;
 	}
 	/**
@@ -96,7 +100,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	public <S extends Fortress> void write(final S obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<fortress owner=\"");
-		writer.write(obj.getOwner().getId());
+		writer.write(Integer.toString(obj.getOwner().getId()));
 		if (!obj.getName().isEmpty()) {
 			writer.write("\" name=\"");
 			writer.write(obj.getName());

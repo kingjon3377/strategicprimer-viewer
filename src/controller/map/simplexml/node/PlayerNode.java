@@ -44,8 +44,12 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	@Override
 	public Player produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new Player(Integer.parseInt(getProperty(NUMBER_PROPERTY)),
+		final Player player = new Player(Integer.parseInt(getProperty(NUMBER_PROPERTY)),
 				getProperty(NAME_PROPERTY));
+		if (hasProperty("file")) {
+			player.setFile(getProperty("file"));
+		}
+		return player;
 	}
 
 	/**

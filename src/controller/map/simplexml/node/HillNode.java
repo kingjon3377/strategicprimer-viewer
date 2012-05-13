@@ -27,7 +27,11 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 	 */
 	@Override
 	public Hill produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Hill(Long.parseLong(getProperty("id")));
+		final Hill fix = new Hill(Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * check that the node is valid. A Hill is valid if it has no children. TODO: should it have attributes?

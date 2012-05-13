@@ -22,6 +22,7 @@ import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader to produce SPMaps.
@@ -65,6 +66,9 @@ public class SPMapReader implements INodeHandler<SPMap> {
 							.getLocalPart())) {
 				break;
 			}
+		}
+		if (stream.iterator() instanceof IncludingIterator) {
+			map.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return map;
 	}
@@ -132,14 +136,14 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final boolean inclusion) throws IOException {
 		final ReaderAdapter adapter = new ReaderAdapter();
 		writer.write("<map version=\"");
-		writer.write(obj.getVersion());
+		writer.write(Integer.toString(obj.getVersion()));
 		writer.write("\" rows=\"");
-		writer.write(obj.rows());
+		writer.write(Integer.toString(obj.rows()));
 		writer.write("\" columns=\"");
-		writer.write(obj.cols());
+		writer.write(Integer.toString(obj.cols()));
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
 			writer.write("\" current_player=\"");
-			writer.write(obj.getPlayers().getCurrentPlayer().getId());
+			writer.write(Integer.toString(obj.getPlayers().getCurrentPlayer().getId()));
 		}
 		writer.write("\">\n");
 		for (Player player : obj.getPlayers()) {
@@ -154,7 +158,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				if (!anyTiles && !tile.isEmpty()) {
 					anyTiles = true;
 					writer.write("\t<row index=\"");
-					writer.write(i);
+					writer.write(Integer.toString(i));
 					writer.write("\">\n");
 				}
 				if (!tile.isEmpty()) {

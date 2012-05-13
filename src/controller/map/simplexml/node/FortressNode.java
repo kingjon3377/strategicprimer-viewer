@@ -59,6 +59,9 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 				fort.addUnit(((UnitNode) node).produce(players, warner));
 			} 
 		}
+		if (hasProperty("file")) {
+			fort.setFile(getProperty("file"));
+		}
 		return fort;
 	}
 	/**

@@ -16,6 +16,7 @@ import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 /**
  * A reader to produce Players.
  * @author Jonathan Lovelace
@@ -37,8 +38,12 @@ public class PlayerReader implements INodeHandler<Player> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Player(Integer.parseInt(getAttribute(element,
+		final Player player = new Player(Integer.parseInt(getAttribute(element,
 				"number")), getAttribute(element, "code_name"));
+		if (stream.iterator() instanceof IncludingIterator) {
+			player.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return player;
 	}
 	/**
 	 * @return a list of the tags this reader understands
@@ -72,7 +77,7 @@ public class PlayerReader implements INodeHandler<Player> {
 	public <S extends Player> void write(final S obj, final Writer writer, final boolean inclusion)
 			throws IOException {
 		writer.write("<player number=\"");
-		writer.write(obj.getId());
+		writer.write(Integer.toString(obj.getId()));
 		writer.write("\" code_name=\"");
 		writer.write(obj.getName());
 		writer.write("\" />");

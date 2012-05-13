@@ -41,10 +41,14 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 	 */
 	@Override
 	public Village produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Village(
+		final Village fix = new Village(
 				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
 				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "",
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	
 	/**

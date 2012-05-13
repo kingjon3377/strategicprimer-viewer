@@ -44,9 +44,13 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	 */
 	@Override
 	public Mine produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Mine(getProperty(KIND_PROPERTY),
+		final Mine fix = new Mine(getProperty(KIND_PROPERTY),
 				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check the data for validity. A Mine is valid if it has no children and "product" and "status" properties.

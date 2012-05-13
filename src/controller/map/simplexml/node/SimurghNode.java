@@ -27,7 +27,11 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	 */
 	@Override
 	public Simurgh produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Simurgh(Long.parseLong(getProperty("id")));
+		final Simurgh fix = new Simurgh(Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check the node for invalid data. A Simurgh is valid if it has no children.

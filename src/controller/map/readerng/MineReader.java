@@ -19,6 +19,7 @@ import model.map.fixtures.Mine;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Mines.
@@ -41,10 +42,14 @@ public class MineReader implements INodeHandler<Mine> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Mine(getAttributeWithDeprecatedForm(
+		final Mine fix = new Mine(getAttributeWithDeprecatedForm(
 				element, "kind", "product", warner),
 				TownStatus.parseTownStatus(getAttribute(element,
 						"status")), getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

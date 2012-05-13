@@ -17,6 +17,7 @@ import model.map.fixtures.Dragon;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 /**
  * A reader for Dragons.
  * @author Jonathan Lovelace
@@ -38,8 +39,12 @@ public class DragonReader implements INodeHandler<Dragon> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Dragon(getAttribute(element, "kind"),
+		final Dragon fix = new Dragon(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

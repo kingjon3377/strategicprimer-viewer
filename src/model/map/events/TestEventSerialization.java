@@ -1,5 +1,7 @@
 package model.map.events;
 
+import java.io.IOException;
+
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
@@ -31,10 +33,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on SP format problems
 	 * @throws XMLStreamException
 	 *             on XML reading problems
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testBattefieldSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		// ESCA-JAVA0076:
 		assertSerialization(
 				"First BattlefieldEvent serialization test, reflection",
@@ -58,10 +61,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on SP format problems
 	 * @throws XMLStreamException
 	 *             on XML reading problems
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testCaveSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First CaveEvent serialization test, reflection",
 				new CaveEvent(10, 0), CaveEvent.class);
 		assertSerialization(
@@ -80,10 +84,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on SP format problems
 	 * @throws XMLStreamException
 	 *             on XML reading problems
+	 * @throws IOException on I/O error creating serialized form
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testCitySerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
 				// ESCA-JAVA0076:
@@ -103,6 +109,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Serialization of CityEvent without a name, reflection",
 				three, CityEvent.class, new Warning(Warning.Action.Ignore));
 		assertMissingProperty(three.toXML(), CityEvent.class, "name", true);
+		assertMissingProperty(createSerializedForm(three), CityEvent.class, "name", true);
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				CityEvent.class, "id", true);
@@ -118,10 +125,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on SP format problems
 	 * @throws XMLStreamException
 	 *             on XML reading problems
+	 * @throws IOException on I/O error creating serialized form
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testFortificationSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
 				assertSerialization(
@@ -143,6 +152,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				three, FortificationEvent.class, new Warning(
 						Warning.Action.Ignore));
 		assertMissingProperty(three.toXML(), FortificationEvent.class, "name", true);
+		assertMissingProperty(createSerializedForm(three), FortificationEvent.class, "name", true);
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				FortificationEvent.class, "id", true);
@@ -158,10 +168,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on SP format problems
 	 * @throws XMLStreamException
 	 *             on XML reading problems
+	 * @throws IOException on I/O error creating serialized form
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testMineralSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization(
 				"First MineralEvent serialization test, reflection",
 				new MineralEvent("one", true, 10, 1), MineralEvent.class);
@@ -169,9 +181,10 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Second MineralEvent serialization test, reflection",
 				two, MineralEvent.class);
-		final String xml = two.toXML().replace("kind", "mineral");
 		assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
-				two, xml, MineralEvent.class, "mineral");
+				two, two.toXML().replace("kind", "mineral"), MineralEvent.class, "mineral");
+		assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
+				two, createSerializedForm(two).replace("kind", "mineral"), MineralEvent.class, "mineral");
 		assertUnwantedChild("<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
 				MineralEvent.class, false);
 		assertMissingProperty("<mineral dc=\"0\" exposed=\"false\" />",
@@ -193,10 +206,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on SP format problems
 	 * @throws XMLStreamException
 	 *             on XML reading problems
+	 * @throws IOException on I/O error creating serialized form
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testStoneSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		for (StoneKind kind : StoneKind.values()) {
 			assertSerialization("First StoneEvent test, reflection, kind: "
 					+ kind, new StoneEvent(kind, 8, 1), StoneEvent.class); // NOPMD
@@ -204,9 +219,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 					+ kind, new StoneEvent(kind, 15, 2), StoneEvent.class); // NOPMD
 		}
 		final StoneEvent three = new StoneEvent(StoneKind.Marble, 10, 3);
-		final String xml = three.toXML().replace("kind", "stone");
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom", three, xml,
+				"Deserialization of deprecated stone idiom", three, three
+						.toXML().replace("kind", "stone"), StoneEvent.class,
+				"stone");
+		assertDeprecatedDeserialization(
+				"Deserialization of deprecated stone idiom", three,
+				createSerializedForm(three).replace("kind", "stone"),
 				StoneEvent.class, "stone");
 		assertUnwantedChild(
 				"<stone kind=\"stone\" dc=\"10\"><troll /></stone>",
@@ -226,10 +245,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on SP format problems
 	 * @throws XMLStreamException
 	 *             on XML reading problems
+	 * @throws IOException on I/O error creating serialized form
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testTownSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		for (TownStatus status : TownStatus.values()) {
 			for (TownSize size : TownSize.values()) {
 				assertSerialization(
@@ -247,6 +268,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Serialization of TownEvent without a name, reflection",
 				three, TownEvent.class, new Warning(Warning.Action.Ignore));
 		assertMissingProperty(three.toXML(), TownEvent.class, "name", true);
+		assertMissingProperty(createSerializedForm(three), TownEvent.class, "name", true);
 		assertMissingProperty("<town status=\"active\" size=\"small\"/>", TownEvent.class,
 				"dc", false);
 		assertMissingProperty("<town dc=\"0\" status=\"active\" />",

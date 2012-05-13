@@ -16,6 +16,7 @@ import model.map.River;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 /**
  * A reader for Rivers.
  * @author Jonathan Lovelace
@@ -37,9 +38,13 @@ public class RiverReader implements INodeHandler<River> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return "lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
+		final River fix = "lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
 				: River.getRiver(getAttribute(element,
 						"direction"));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

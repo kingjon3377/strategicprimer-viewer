@@ -50,10 +50,14 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	@Override
 	public StoneEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new StoneEvent(
+		final StoneEvent fix = new StoneEvent(
 				StoneKind.parseStoneKind(getProperty(STONE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 
 	/**

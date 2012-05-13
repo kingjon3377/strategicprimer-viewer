@@ -32,7 +32,11 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 	 */
 	@Override
 	public Dragon produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Dragon(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		final Dragon fix = new Dragon(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check the node for invalid data. A Dragon is valid if it has no children and has a "kind" property.

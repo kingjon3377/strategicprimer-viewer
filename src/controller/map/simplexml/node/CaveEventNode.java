@@ -38,8 +38,12 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	@Override
 	public CaveEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)),
+		final CaveEvent fix = new CaveEvent(Integer.parseInt(getProperty(DC_PROPERTY)),
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 
 	/**

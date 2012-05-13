@@ -72,6 +72,9 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			}
 		}
 		tile.addFixture(new TextFixture(sbuild.toString().trim(), -1));
+		if (hasProperty("file")) {
+			tile.setFile(getProperty("file"));
+		}
 		return tile;
 	}
 

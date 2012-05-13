@@ -58,12 +58,16 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	@Override
 	public Unit produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new Unit(players.getPlayer((hasProperty(OWNER_ATTR) && !""
+		final Unit fix = new Unit(players.getPlayer((hasProperty(OWNER_ATTR) && !""
 				.equals(getProperty(OWNER_ATTR))) ? Integer
 				.parseInt(getProperty(OWNER_ATTR)) : -1),
 				getPropertyWithDefault(TYPE_ATTR, ""),
 				getPropertyWithDefault(NAME_ATTR, ""),
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 
 	/**

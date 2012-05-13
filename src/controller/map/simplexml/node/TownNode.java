@@ -58,12 +58,16 @@ public class TownNode extends AbstractFixtureNode<TownEvent> {
 	@Override
 	public TownEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new TownEvent(
+		final TownEvent fix = new TownEvent(
 				TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
 				TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
 				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "",
 				Long.parseLong(getProperty(ID_PROPERTY)));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * @param property the name of a property

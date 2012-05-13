@@ -20,6 +20,7 @@ import model.map.events.TownStatus;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for towns.
@@ -43,13 +44,17 @@ public class TownReader implements INodeHandler<TownEvent> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new TownEvent(
+		final TownEvent fix = new TownEvent(
 				TownStatus.parseTownStatus(getAttribute(element,
 						"status")), TownSize.parseTownSize(XMLHelper
 						.getAttribute(element, "size")),
 				Integer.parseInt(getAttribute(element, "dc")),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

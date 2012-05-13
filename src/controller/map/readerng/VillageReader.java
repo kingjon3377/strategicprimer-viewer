@@ -19,6 +19,7 @@ import model.map.fixtures.Village;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 /**
  * A reader for Villages.
  * @author Jonathan Lovelace
@@ -41,9 +42,13 @@ public class VillageReader implements INodeHandler<Village> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new Village(TownStatus.parseTownStatus(getAttribute(element, "status")),
+		final Village fix = new Village(TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands
@@ -71,7 +76,7 @@ public class VillageReader implements INodeHandler<Village> {
 			final boolean inclusion) throws IOException {
 		writer.append("<village status=\"");
 		writer.append(obj.getStatus().toString());
-		if (obj.getName().isEmpty()) {
+		if (!obj.getName().isEmpty()) {
 			writer.append("\" name=\"");
 			writer.append(obj.getName());
 		}

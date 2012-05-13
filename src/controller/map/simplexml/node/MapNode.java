@@ -117,6 +117,9 @@ public class MapNode extends AbstractChildNode<SPMap> {
 					.getPlayer(Integer.parseInt(getProperty("current_player")))
 					.setCurrent(true);
 		}
+		if (hasProperty("file")) {
+			map.setFile(getProperty("file"));
+		}
 		return map;
 	}
 

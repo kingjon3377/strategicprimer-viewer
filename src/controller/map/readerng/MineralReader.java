@@ -18,6 +18,7 @@ import model.map.events.MineralEvent;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Minerals.
@@ -40,12 +41,16 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new MineralEvent(
+		final MineralEvent fix = new MineralEvent(
 				getAttributeWithDeprecatedForm(element, "kind",
 						"mineral", warner), Boolean.parseBoolean(XMLHelper
 						.getAttribute(element, "exposed")),
 				Integer.parseInt(getAttribute(element, "dc")),
 				getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands
@@ -59,8 +64,7 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	 */
 	@Override
 	public Class<MineralEvent> writes() {
-		// TODO Auto-generated method stub
-		return null;
+		return MineralEvent.class;
 	}
 	/**
 	 * Write an instance of the type to a Writer.
@@ -84,7 +88,7 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 		writer.write("\" exposed=\"");
 		writer.write(Boolean.toString(obj.isExposed()));
 		writer.write("\" dc=\"");
-		writer.write(obj.getDC());
+		writer.write(Integer.toString(obj.getDC()));
 		writer.write("\" id=\"");
 		writer.write(Long.toString(obj.getID()));
 		writer.write("\" />");

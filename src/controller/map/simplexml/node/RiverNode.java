@@ -40,7 +40,11 @@ public class RiverNode extends AbstractChildNode<River> {
 	@Override
 	public River produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return River.getRiver(getProperty(DIRECTION_PARAM));
+		final River fix = River.getRiver(getProperty(DIRECTION_PARAM));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 
 	/**

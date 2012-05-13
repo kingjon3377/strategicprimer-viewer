@@ -5,7 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -18,6 +20,7 @@ import controller.map.SPFormatException;
 import controller.map.TestReaderFactory;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
+import controller.map.readerng.ReaderAdapter;
 
 // ESCA-JAVA0011:
 /**
@@ -443,10 +446,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on SP XML problem
 	 * @throws XMLStreamException
 	 *             on XML reading problem
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	public <T extends XMLWritable> void assertSerialization(final String message,
 			final T obj, final Class<T> type)
-			throws XMLStreamException, SPFormatException {
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization(message, obj, type, new Warning(Warning.Action.Die));
 	}
 	/**
@@ -466,10 +470,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on SP XML problem
 	 * @throws XMLStreamException
 	 *             on XML reading problem
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	public <T extends XMLWritable> void assertSerialization(final String message,
 			final T obj, final Class<T> type, final Warning warning)
-			throws XMLStreamException, SPFormatException {
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization(message, oldReader, obj, type, warning);
 		assertSerialization(message, newReader, obj, type, warning);
 	}
@@ -492,12 +497,16 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on SP XML problem
 	 * @throws XMLStreamException
 	 *             on XML reading problem
+	 * @throws IOException on I/O error creating serialized form
 	 */
+	@SuppressWarnings("deprecation")
 	private static <T extends XMLWritable> void assertSerialization(final String message,
 			final ISPReader reader, final T obj, final Class<T> type, final Warning warner)
-			throws XMLStreamException, SPFormatException {
+			throws XMLStreamException, SPFormatException, IOException {
 		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(obj.toXML()), type, false, warner));
 		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(obj.toXML()), type, true, warner));
+		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(createSerializedForm(obj)), type, false, warner));
+		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(createSerializedForm(obj)), type, true, warner));
 	}
 	/**
 	 * Assert that a deprecated idiom deserializes properly if warnings are ignored, but is warned about.
@@ -623,5 +632,24 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		assertEquals(message, newReader.readXML(FAKE_FILENAME, new StringReader(one), type,
 				false, new Warning(warningLevel)), newReader.readXML(FAKE_FILENAME,
 				new StringReader(two), type, false, new Warning(warningLevel)));
+	}
+	/**
+	 * @param obj an object
+	 * @return its serialized form
+	 * @throws IOException on I/O error creating it
+	 */
+	public static String createSerializedForm(final XMLWritable obj) throws IOException {
+		final StringWriter writer = new StringWriter();
+		new ReaderAdapter().write(obj, writer, true);
+		return writer.toString();
+	}
+	/**
+	 * @param <T> the type of the object
+	 * @param obj an object
+	 * @return it, with its file set to "string"
+	 */
+	public static <T extends XMLWritable> T setFileOnObject(final T obj) {
+		obj.setFile("string");
+		return obj;
 	}
 }

@@ -20,6 +20,7 @@ import model.map.events.TownStatus;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for cities.
@@ -42,13 +43,17 @@ public class CityReader implements INodeHandler<CityEvent> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new CityEvent(
+		final CityEvent fix = new CityEvent(
 				TownStatus.parseTownStatus(getAttribute(element,
 						"status")), TownSize.parseTownSize(XMLHelper
 						.getAttribute(element, "size")),
 				Integer.parseInt(getAttribute(element, "dc")),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands
@@ -85,7 +90,9 @@ public class CityReader implements INodeHandler<CityEvent> {
 		writer.write(obj.status().toString());
 		writer.write("\" size=\"");
 		writer.write(obj.size().toString());
-		if (obj.name().isEmpty()) {
+		writer.write("\" dc=\"");
+		writer.write(Integer.toString(obj.getDC()));
+		if (!obj.name().isEmpty()) {
 			writer.write("\" name=\"");
 			writer.write(obj.name());
 		}

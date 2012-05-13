@@ -53,10 +53,14 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	@Override
 	public MineralEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new MineralEvent(getProperty(MINERAL_PROPERTY),
+		final MineralEvent fix = new MineralEvent(getProperty(MINERAL_PROPERTY),
 				Boolean.parseBoolean(getProperty(EXPOSED_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * @param property the name of a property

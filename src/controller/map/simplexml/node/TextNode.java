@@ -28,9 +28,13 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 	 */
 	@Override
 	public TextFixture produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new TextFixture(sbuild.toString().trim(),
+		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
 				hasProperty("turn") ? Integer.parseInt(getProperty("turn"))
 						: -1);
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * The text the fixture encapsulates.

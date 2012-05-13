@@ -17,6 +17,7 @@ import model.map.fixtures.Meadow;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 /**
  * A reader for Meadows.
  * @author Jonathan Lovelace
@@ -38,11 +39,15 @@ public class MeadowReader implements INodeHandler<Meadow> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Meadow(getAttribute(element, "kind"),
+		final Meadow fix = new Meadow(getAttribute(element, "kind"),
 				"field".equalsIgnoreCase(element.getName().getLocalPart()),
 				Boolean.parseBoolean(getAttribute(element,
 						"cultivated")), getOrGenerateID(element, warner,
 						idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands

@@ -49,7 +49,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	public final void addProperty(final String property, final String value, final Warning warner) {
 		if ("line".equals(property)) {
 			setLine(Integer.parseInt(value));
-		} else if (canUse(property)) {
+		} else if ("file".equals(property) || canUse(property)) {
 			properties.put(property, value);
 		} else {
 			warner.warn(new UnsupportedPropertyException(toString(), property, getLine()));

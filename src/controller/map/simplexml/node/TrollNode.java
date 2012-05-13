@@ -27,7 +27,11 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	 */
 	@Override
 	public Troll produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Troll(Long.parseLong(getProperty("id")));
+		final Troll fix = new Troll(Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check the node for invalid data. A Troll is valid if it has no children.

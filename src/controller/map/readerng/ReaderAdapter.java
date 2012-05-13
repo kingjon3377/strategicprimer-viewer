@@ -176,7 +176,9 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 		if (WRITE_CACHE.containsKey(obj.getClass())) {
 			((INodeHandler<S>) WRITE_CACHE.get(obj.getClass())).write(obj, writer, inclusion);
 		} else {
-			throw new IllegalArgumentException("Writable type this adapter can't handle");
+			throw new IllegalArgumentException(
+					"Writable type this adapter can't handle: "
+							+ obj.getClass().getSimpleName());
 		}
 	}
 	/**

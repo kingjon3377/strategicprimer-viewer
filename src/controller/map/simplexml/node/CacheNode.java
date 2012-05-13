@@ -40,9 +40,13 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	@Override
 	public CacheFixture produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new CacheFixture(getProperty(KIND_PROPERTY),
+		final CacheFixture fix = new CacheFixture(getProperty(KIND_PROPERTY),
 				getProperty(CONTENTS_PROPERTY),
 				Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	
 	/**

@@ -168,7 +168,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 				// ESCA-JAVA0177:
 				AbstractXMLNode node;
 				try {
-					node = parseTag(event.asStartElement(), reflection, warner); // NOPMD
+					node = parseTag(event.asStartElement(), reflection, getFileName(eventReader), warner); // NOPMD
 				} catch (InstantiationException e) {
 					throw new IllegalStateException(e);
 				} catch (IllegalAccessException e) {
@@ -198,6 +198,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @param reflection
 	 *            whether we should try the version of the NodeFactory method
 	 *            that uses reflection
+	 * @param file the current filename
 	 * @param warner a Warning instance to use if necessary
 	 * @return the equivalent node.
 	 * @throws SPFormatException
@@ -208,13 +209,13 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             thrown by reflection
 	 */
 	private static AbstractXMLNode parseTag(final StartElement element,
-			final boolean reflection, final Warning warner) throws SPFormatException,
+			final boolean reflection, final String file, final Warning warner) throws SPFormatException,
 			InstantiationException, IllegalAccessException {
 		final AbstractChildNode<?> node = (reflection ? NodeFactory
 				.createReflection(element.getName().getLocalPart(), element
-						.getLocation().getLineNumber(), warner) : NodeFactory.create(
+						.getLocation().getLineNumber(), file, warner) : NodeFactory.create(
 				element.getName().getLocalPart(), element.getLocation()
-						.getLineNumber(), warner));
+						.getLineNumber(), file, warner));
 		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(
 				element.getAttributes());
 		for (final Attribute att : attributes) {
@@ -230,5 +231,16 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	@Override
 	public String toString() {
 		return "SimpleXMLReader";
+	}
+	/**
+	 * @param stream an Iterable
+	 * @return the file name we're working from, if its iterator is an IncludingIterator, or the empty string.
+	 */
+	private static String getFileName(final Iterable<XMLEvent> stream) {
+		if (stream.iterator() instanceof IncludingIterator) {
+			return ((IncludingIterator) stream.iterator()).getFile(); // NOPMD
+		} else {
+			return "";
+		}
 	}
 }

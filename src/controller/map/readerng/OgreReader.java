@@ -16,6 +16,7 @@ import model.map.fixtures.Ogre;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Ogres.
@@ -38,7 +39,11 @@ public class OgreReader implements INodeHandler<Ogre> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Ogre(getOrGenerateID(element, warner, idFactory));
+		final Ogre fix = new Ogre(getOrGenerateID(element, warner, idFactory));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands
@@ -52,8 +57,7 @@ public class OgreReader implements INodeHandler<Ogre> {
 	 */
 	@Override
 	public Class<Ogre> writes() {
-		// TODO Auto-generated method stub
-		return null;
+		return Ogre.class;
 	}
 	/**
 	 * Write an instance of the type to a Writer.

@@ -45,9 +45,13 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	 */
 	@Override
 	public Grove produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Grove("orchard".equals(getProperty(TAG_PARAM)),
+		final Grove fix = new Grove("orchard".equals(getProperty(TAG_PARAM)),
 				Boolean.parseBoolean(getProperty(WILD_PARAM)),
 				getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * @param property the name of a property

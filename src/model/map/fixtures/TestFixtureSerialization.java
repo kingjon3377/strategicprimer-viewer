@@ -1,5 +1,7 @@
 package model.map.fixtures; // NOPMD
 
+import java.io.IOException;
+
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
@@ -27,10 +29,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testAnimalSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Animal serialization",
 				new Animal("animalOne", false, false, 0), Animal.class);
 		assertSerialization("Second test of Animal serialization",
@@ -61,10 +64,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testCacheSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Cache serialization",
 				new CacheFixture("kindOne", "contentsOne", 1), CacheFixture.class);
 		assertSerialization("Second test of Cache serialization",
@@ -87,10 +91,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testCentaurSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Centaur serialization",
 				new Centaur("firstCentaur", 0), Centaur.class);
 		assertSerialization("Second test of Centaur serialization",
@@ -110,10 +115,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testDragonSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Dragon serialization",
 				new Dragon("", 1), Dragon.class);
 		assertSerialization("Second test of Dragon serialization",
@@ -130,10 +136,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testFairySerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Fairy serialization",
 				new Fairy("oneFairy", 1), Fairy.class);
 		assertSerialization("Second test of Fairy serialization",
@@ -150,10 +157,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testForestSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Forest serialization",
 				new Forest("firstForest", false), Forest.class);
 		assertSerialization("Second test of Forest serialization",
@@ -169,10 +177,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testFortressSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		// Can't give player names because our test environment doesn't let us
 		// pass a set of players in
 		final Player firstPlayer = new Player(1, "");
@@ -181,13 +190,15 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Second test of Fortress serialization",
 				new Fortress(firstPlayer, "two", 2), Fortress.class);
 		final Player secondPlayer = new Player(2, "");
+		secondPlayer.setFile("string");
 		assertSerialization("Third test of Fortress serialization",
 				new Fortress(secondPlayer, "three", 3), Fortress.class);
 		assertSerialization(
 				"Fourth test of Fortress serialization",
 				new Fortress(secondPlayer, "four", 4), Fortress.class);
 		final Fortress five = new Fortress(secondPlayer, "five", 5);
-		five.addUnit(new Unit(secondPlayer, "unitOne", "unitTwo", 1));
+		five.setFile("string");
+		five.addUnit(setFileOnObject(new Unit(secondPlayer, "unitOne", "unitTwo", 1)));
 		assertSerialization("Fifth test of Fortress serialization",
 				five, Fortress.class);
 		assertUnwantedChild("<fortress><hill /></fortress>", Fortress.class, false);
@@ -204,10 +215,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testGiantSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Giant serialization",
 				new Giant("one", 1), Giant.class);
 		assertSerialization("Second test of Giant serialization",
@@ -226,10 +238,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testGroundSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("First test of Ground serialization",
 				new Ground("one", true), Ground.class);
 		assertSerialization("Second test of Ground serialization",
@@ -254,10 +267,11 @@ public final class TestFixtureSerialization extends
 	 *             on XML format error
 	 * @throws XMLStreamException
 	 *             on XML reader error
+	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testSimpleSerialization() throws XMLStreamException,
-			SPFormatException {
+			SPFormatException, IOException {
 		assertSerialization("Test of Djinn serialization",
 				new Djinn(1), Djinn.class);
 		assertSerialization("Test of Djinn serialization",

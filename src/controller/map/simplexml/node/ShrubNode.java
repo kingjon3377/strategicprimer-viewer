@@ -40,7 +40,11 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	 */
 	@Override
 	public Shrub produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Shrub(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		final Shrub fix = new Shrub(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * Check whether the node is valid. A Shrub is valid if it has a "shrub"

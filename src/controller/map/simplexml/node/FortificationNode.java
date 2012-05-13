@@ -58,12 +58,16 @@ public class FortificationNode extends AbstractFixtureNode<FortificationEvent> {
 	@Override
 	public FortificationEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		return new FortificationEvent(
+		final FortificationEvent fix = new FortificationEvent(
 				TownStatus.parseTownStatus(getProperty(STATUS_PROP)),
 				TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
 				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
 						: "", Long.parseLong(getProperty(ID_PROPERTY)));
+		if (hasProperty("file")) {
+			fix.setFile(getProperty("file"));
+		}
+		return fix;
 	}
 	/**
 	 * @param property the name of a property

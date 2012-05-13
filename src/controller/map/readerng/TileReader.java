@@ -14,6 +14,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -23,6 +24,7 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Tiles.
@@ -67,6 +69,9 @@ public class TileReader implements INodeHandler<Tile> {
 							.getLocalPart())) {
 				break;
 			}
+		}
+		if (stream.iterator() instanceof IncludingIterator) {
+			tile.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return tile;
 	}
@@ -156,16 +161,24 @@ public class TileReader implements INodeHandler<Tile> {
 				final ReaderAdapter adapter = new ReaderAdapter();
 				for (final TileFixture fix : obj.getContents()) {
 					writer.append("\t\t\t");
-					if (!inclusion || fix.getFile().equals(obj.getFile())) {
-						adapter.write(fix, writer, inclusion);
+					if (fix instanceof RiverFixture) {
+						for (River river : (RiverFixture) fix) {
+							adapter.write(river, writer, inclusion);
+						}
 					} else {
-						writer.write("<include file=\"");
-						writer.write(adapter.writeForInclusion(fix));
-						writer.write("\" />");
+						if (!inclusion || fix.getFile().equals(obj.getFile())) {
+							adapter.write(fix, writer, inclusion);
+						} else {
+							writer.write("<include file=\"");
+							writer.write(adapter.writeForInclusion(fix));
+							writer.write("\" />");
+						}
 					}
 					writer.write('\n');
 				}
+				writer.write("\t\t");
 			}
+			writer.write("</tile>");
 		}
 	}
 	/**

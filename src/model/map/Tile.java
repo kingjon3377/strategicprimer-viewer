@@ -161,6 +161,7 @@ public final class Tile implements XMLWritable, Subsettable<Tile> {
 			getRivers().addRiver(river);
 		} else {
 			addFixture(new RiverFixture(river));
+			getRivers().setFile(getFile());
 		}
 	}
 

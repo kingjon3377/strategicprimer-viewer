@@ -16,6 +16,7 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 /**
  * A reader for text elements.
  * @author Jonathan Lovelace
@@ -49,9 +50,13 @@ public class TextReader implements INodeHandler<TextFixture> {
 				break;
 			}
 		}
-		return new TextFixture(sbuild.toString().trim(),
+		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
 				Integer.parseInt(getAttribute(element,
 						"turn", "-1")));
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
+		return fix;
 	}
 	/**
 	 * @return a list of the tags this reader understands
