@@ -62,7 +62,6 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -74,7 +73,7 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends CaveEvent> void write(final S obj, final Writer writer,
+	public void write(final CaveEvent obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<cave dc=\"");
 		writer.write(Integer.toString(obj.getDC()));

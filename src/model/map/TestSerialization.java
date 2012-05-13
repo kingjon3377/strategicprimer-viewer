@@ -158,17 +158,17 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("First Tile serialization test, reflection",
 				new Tile(0, 0, TileType.Desert), Tile.class);
 		final Tile two = new Tile(1, 1, TileType.Plains);
-		two.setFile("string");
+		two.setFile(FAKE_FILENAME);
 		two.addFixture(setFileOnObject(new Griffin(1)));
 		assertSerialization("Second Tile serialization test, reflection",
 				two, Tile.class);
 		final Tile three = new Tile(2, 2, TileType.Steppe);
-		three.setFile("string");
+		three.setFile(FAKE_FILENAME);
 		three.addFixture(setFileOnObject(new Unit(setFileOnObject(new Player(1, "")), "unitOne", "firstUnit", 1)));
 		three.addFixture(setFileOnObject(new Forest("forestKind", true)));
 		assertSerialization("Third Tile serialization test, reflection", three, Tile.class);
 		final Tile four = new Tile(3, 3, TileType.Jungle);
-		four.setFile("string");
+		four.setFile(FAKE_FILENAME);
 		final Fortress fort = setFileOnObject(new Fortress(new Player(2, ""), "fortOne", 1));
 		fort.addUnit(setFileOnObject(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2)));
 		four.addFixture(fort);
@@ -176,12 +176,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		four.addRiver(River.Lake);
 		assertSerialization("Fourth Tile serialization test, reflection", four, Tile.class);
 		final Tile five = new Tile(4, 4, TileType.Plains);
+		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five, five.toXML().replace("kind", "type"), Tile.class, "type");
+				five, five.toXML().replace("kind", oldKindProperty), Tile.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five, createSerializedForm(five).replace("kind", "type"), Tile.class, "type");
+				five, createSerializedForm(five).replace("kind", oldKindProperty), Tile.class, oldKindProperty);
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
 		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />",
@@ -194,7 +195,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Tile six = new Tile(2, 3, TileType.Jungle);
 		six.addFixture(setFileOnObject(new Unit(new Player(2, ""), "explorer", "name one", 1)));
 		six.addFixture(setFileOnObject(new Unit(new Player(2, ""), "explorer", "name two", 2)));
-		six.setFile("string");
+		six.setFile(FAKE_FILENAME);
 		assertEquals("Just checking ...", 2, six.getContents().size());
 		assertSerialization("Multiple units should come through", six, Tile.class);
 		final String xmlTwo = new StringBuilder(
@@ -245,7 +246,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testMapSerialization() throws XMLStreamException, SPFormatException, IOException {
 		assertUnwantedChild("<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>", SPMap.class, false);
 		final SPMap one = new SPMap(2, 1, 1);
-		one.setFile("string");
+		one.setFile(FAKE_FILENAME);
 		one.addPlayer(setFileOnObject(new Player(1, "playerOne")));
 		one.getPlayers().getPlayer(1).setCurrent(true);
 		one.addTile(setFileOnObject(new Tile(0, 0, TileType.Plains)));

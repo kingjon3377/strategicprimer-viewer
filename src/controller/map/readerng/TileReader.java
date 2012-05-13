@@ -132,7 +132,6 @@ public class TileReader implements INodeHandler<Tile> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -144,7 +143,7 @@ public class TileReader implements INodeHandler<Tile> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends Tile> void write(final S obj, final Writer writer,
+	public void write(final Tile obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		if (!obj.isEmpty()) {
 			writer.write("<tile row=\"");

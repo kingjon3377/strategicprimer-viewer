@@ -68,7 +68,6 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -80,7 +79,7 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends StoneEvent> void write(final S obj, final Writer writer,
+	public void write(final StoneEvent obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<stone kind=\"");
 		writer.write(obj.stone().toString());

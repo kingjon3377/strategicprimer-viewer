@@ -74,7 +74,6 @@ public class FortificationReader implements INodeHandler<FortificationEvent> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -86,7 +85,7 @@ public class FortificationReader implements INodeHandler<FortificationEvent> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends FortificationEvent> void write(final S obj, final Writer writer,
+	public void write(final FortificationEvent obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<fortification status=\"");
 		writer.write(obj.status().toString());

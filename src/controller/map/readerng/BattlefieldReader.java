@@ -63,7 +63,6 @@ public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -75,7 +74,7 @@ public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends BattlefieldEvent> void write(final S obj, final Writer writer,
+	public void write(final BattlefieldEvent obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<battlefield dc=\"");
 		writer.write(Integer.toString(obj.getDC()));

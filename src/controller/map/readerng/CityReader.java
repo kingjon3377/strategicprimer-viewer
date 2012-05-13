@@ -72,7 +72,6 @@ public class CityReader implements INodeHandler<CityEvent> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -84,7 +83,7 @@ public class CityReader implements INodeHandler<CityEvent> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends CityEvent> void write(final S obj, final Writer writer,
+	public void write(final CityEvent obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<city status=\"");
 		writer.write(obj.status().toString());

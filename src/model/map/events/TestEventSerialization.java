@@ -21,6 +21,10 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Extracted constant.
 	 */
+	private static final String NAME_PROPERTY = "name";
+	/**
+	 * Extracted constant.
+	 */
 	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * Extracted constant.
@@ -108,8 +112,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Serialization of CityEvent without a name, reflection",
 				three, CityEvent.class, new Warning(Warning.Action.Ignore));
-		assertMissingProperty(three.toXML(), CityEvent.class, "name", true);
-		assertMissingProperty(createSerializedForm(three), CityEvent.class, "name", true);
+		assertMissingProperty(three.toXML(), CityEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three), CityEvent.class, NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				CityEvent.class, "id", true);
@@ -151,8 +155,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Serialization of FortificationEvent without a name, reflection",
 				three, FortificationEvent.class, new Warning(
 						Warning.Action.Ignore));
-		assertMissingProperty(three.toXML(), FortificationEvent.class, "name", true);
-		assertMissingProperty(createSerializedForm(three), FortificationEvent.class, "name", true);
+		assertMissingProperty(three.toXML(), FortificationEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three), FortificationEvent.class, NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				FortificationEvent.class, "id", true);
@@ -181,10 +185,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Second MineralEvent serialization test, reflection",
 				two, MineralEvent.class);
+		final String oldKindProperty = "mineral"; // NOPMD
 		assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
-				two, two.toXML().replace("kind", "mineral"), MineralEvent.class, "mineral");
+				two, two.toXML().replace(KIND_PROPERTY, oldKindProperty), MineralEvent.class, oldKindProperty);
 		assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
-				two, createSerializedForm(two).replace("kind", "mineral"), MineralEvent.class, "mineral");
+				two, createSerializedForm(two).replace(KIND_PROPERTY, oldKindProperty), MineralEvent.class, oldKindProperty);
 		assertUnwantedChild("<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
 				MineralEvent.class, false);
 		assertMissingProperty("<mineral dc=\"0\" exposed=\"false\" />",
@@ -219,14 +224,15 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 					+ kind, new StoneEvent(kind, 15, 2), StoneEvent.class); // NOPMD
 		}
 		final StoneEvent three = new StoneEvent(StoneKind.Marble, 10, 3);
+		final String oldKindProperty = "stone"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three, three
-						.toXML().replace("kind", "stone"), StoneEvent.class,
-				"stone");
+						.toXML().replace(KIND_PROPERTY, oldKindProperty), StoneEvent.class,
+				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
-				createSerializedForm(three).replace("kind", "stone"),
-				StoneEvent.class, "stone");
+				createSerializedForm(three).replace(KIND_PROPERTY, oldKindProperty),
+				StoneEvent.class, oldKindProperty);
 		assertUnwantedChild(
 				"<stone kind=\"stone\" dc=\"10\"><troll /></stone>",
 				StoneEvent.class, false);
@@ -267,8 +273,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Serialization of TownEvent without a name, reflection",
 				three, TownEvent.class, new Warning(Warning.Action.Ignore));
-		assertMissingProperty(three.toXML(), TownEvent.class, "name", true);
-		assertMissingProperty(createSerializedForm(three), TownEvent.class, "name", true);
+		assertMissingProperty(three.toXML(), TownEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three), TownEvent.class, NAME_PROPERTY, true);
 		assertMissingProperty("<town status=\"active\" size=\"small\"/>", TownEvent.class,
 				"dc", false);
 		assertMissingProperty("<town dc=\"0\" status=\"active\" />",

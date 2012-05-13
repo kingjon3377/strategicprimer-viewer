@@ -112,12 +112,13 @@ public final class TestMoreFixtureSerialization extends
 		final Mine four = new Mine("four", TownStatus.Ruined, 4);
 		assertSerialization("Fourth test of Mine serialization, reflection",
 				four, Mine.class);
+		final String oldKindProperty = "product"; // NOPMD
 		assertDeprecatedDeserialization("Deprecated Mine idiom", four, four
-				.toXML().replace(KIND_PROPERTY, "product"), Mine.class,
-				"product");
+				.toXML().replace(KIND_PROPERTY, oldKindProperty), Mine.class,
+				oldKindProperty);
 		assertDeprecatedDeserialization("Deprecated Mine idiom", four,
-				createSerializedForm(four).replace(KIND_PROPERTY, "product"),
-				Mine.class, "product");
+				createSerializedForm(four).replace(KIND_PROPERTY, oldKindProperty),
+				Mine.class, oldKindProperty);
 		assertUnwantedChild("<mine kind=\"gold\" status=\"active\"><troll /></mine>",
 				Mine.class, false);
 		assertMissingProperty("<mine status=\"active\"/>",
@@ -147,14 +148,15 @@ public final class TestMoreFixtureSerialization extends
 		final Shrub two = new Shrub("two", 2);
 		assertSerialization("Second test of Shrub serialization, reflection",
 				two, Shrub.class);
+		final String oldKindProperty = "shrub"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of mangled shrub, reflection", two, two
-						.toXML().replace(KIND_PROPERTY, "shrub"), Shrub.class,
-				"shrub");
+						.toXML().replace(KIND_PROPERTY, oldKindProperty), Shrub.class,
+				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of mangled shrub, reflection", two,
-				createSerializedForm(two).replace(KIND_PROPERTY, "shrub"),
-				Shrub.class, "shrub");
+				createSerializedForm(two).replace(KIND_PROPERTY, oldKindProperty),
+				Shrub.class, oldKindProperty);
 		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
 		assertMissingProperty("<shrub />", Shrub.class, KIND_PROPERTY, false);
@@ -245,14 +247,15 @@ public final class TestMoreFixtureSerialization extends
 				Unit.class, KIND_PROPERTY, true);
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
 		final Unit one = new Unit(new Player(1, ""), "unitType", "unitName", 1);
+		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				one, one.toXML().replace(KIND_PROPERTY, "type"),
-						Unit.class, "type");
+				one, one.toXML().replace(KIND_PROPERTY, oldKindProperty),
+						Unit.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				one, createSerializedForm(one).replace(KIND_PROPERTY, "type"),
-						Unit.class, "type");
+				one, createSerializedForm(one).replace(KIND_PROPERTY, oldKindProperty),
+						Unit.class, oldKindProperty);
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class, NAME_PROPERTY, true);
 		assertSerialization(
 				"Deserialize unit with no kind properly, reflection", new Unit(

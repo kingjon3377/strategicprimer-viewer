@@ -69,7 +69,6 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -81,7 +80,7 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends MineralEvent> void write(final S obj, final Writer writer,
+	public void write(final MineralEvent obj, final Writer writer,
 			final boolean inclusion) throws IOException {
 		writer.write("<mineral kind=\"");
 		writer.write(obj.getKind());

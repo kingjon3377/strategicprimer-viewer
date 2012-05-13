@@ -63,7 +63,6 @@ public class RiverReader implements INodeHandler<River> {
 	/**
 	 * Write an instance of the type to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
 	 * @param obj
 	 *            the object to write
 	 * @param writer
@@ -75,7 +74,7 @@ public class RiverReader implements INodeHandler<River> {
 	 *             on I/O error while writing
 	 */
 	@Override
-	public <S extends River> void write(final S obj, final Writer writer, final boolean inclusion)
+	public void write(final River obj, final Writer writer, final boolean inclusion)
 			throws IOException {
 		if (River.Lake.equals(obj)) {
 			writer.write("<lake />");
