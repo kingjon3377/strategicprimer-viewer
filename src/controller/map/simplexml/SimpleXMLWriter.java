@@ -22,13 +22,14 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 	 * Write a map.
 	 * @param filename the file to write to
 	 * @param map the map to write. 
+	 * @param inclusion ignored
 	 * @throws IOException on error opening the file
 	 */
 	@Override
-	public void write(final String filename, final SPMap map) throws IOException {
+	public void write(final String filename, final SPMap map, final boolean inclusion) throws IOException {
 		final FileWriter writer = new FileWriter(filename);
 		try {
-			write(writer, map);
+			write(writer, map, inclusion);
 		} finally {
 			writer.close();
 		}
@@ -40,9 +41,10 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 	 * @param out the writer to write to
 	 * @param map
 	 *            the map to write
+	 * @param inclusion ignored
 	 */
 	@Override
-	public void write(final Writer out, final SPMap map) {
+	public void write(final Writer out, final SPMap map, final boolean inclusion) {
 		final PrintWriter writer = new PrintWriter(new BufferedWriter(out));
 		try {
 			writer.print("<?xml version=");

@@ -64,7 +64,7 @@ public final class EchoDriver {
 			return; // NOPMD
 		}
 		try {
-			new SimpleXMLWriter().write(args[1], map);
+			new SimpleXMLWriter().write(args[1], map, true);
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error writing " + args[1], except);
 		}

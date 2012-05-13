@@ -61,7 +61,7 @@ public final class ConverterDriver {
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.println(".new");
-				new SimpleXMLWriter().write(filename + ".new", map); // NOPMD
+				new SimpleXMLWriter().write(filename + ".new", map, false); // NOPMD
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				continue;
