@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import controller.map.SPWriter;
+
 import model.map.SPMap;
 
 /**
@@ -15,13 +17,14 @@ import model.map.SPMap;
  * 
  */
 @Deprecated
-public class SimpleXMLWriter { // NOPMD
+public class SimpleXMLWriter implements SPWriter { // NOPMD
 	/**
 	 * Write a map.
 	 * @param filename the file to write to
 	 * @param map the map to write. 
 	 * @throws IOException on error opening the file
 	 */
+	@Override
 	public void write(final String filename, final SPMap map) throws IOException {
 		final FileWriter writer = new FileWriter(filename);
 		try {
@@ -38,6 +41,7 @@ public class SimpleXMLWriter { // NOPMD
 	 * @param map
 	 *            the map to write
 	 */
+	@Override
 	public void write(final Writer out, final SPMap map) {
 		final PrintWriter writer = new PrintWriter(new BufferedWriter(out));
 		try {
