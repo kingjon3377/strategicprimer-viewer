@@ -54,7 +54,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 							.getLocalPart())) {
 				fort.addUnit(new UnitReader().parse(event.asStartElement(), //NOPMD
 						stream, players, warner, idFactory));
-			} else if (event.isEndElement() && "fortress".equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
+			} else if (event.isEndElement()
+					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			} else if (event.isStartElement()) {
 				throw new UnwantedChildException(
