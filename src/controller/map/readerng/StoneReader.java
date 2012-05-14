@@ -3,8 +3,6 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -66,27 +65,18 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 		return StoneEvent.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void write(final StoneEvent obj, final Writer writer,
-			final boolean inclusion) throws IOException {
-		writer.write("<stone kind=\"");
-		writer.write(obj.stone().toString());
-		writer.write("\" dc=\"");
-		writer.write(Integer.toString(obj.getDC()));
-		writer.write("\" id=\"");
-		writer.write(Long.toString(obj.getID()));
-		writer.write("\" />");
+	public SPIntermediateRepresentation write(final StoneEvent obj) {
+		return new SPIntermediateRepresentation("stone", Pair.of("kind", obj
+				.stone().toString()), Pair.of("dc",
+				Integer.toString(obj.getDC())), Pair.of("id",
+				Long.toString(obj.getID())));
 	}
 }

@@ -65,6 +65,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @return the tile, set up.
 	 */
 	private static Tile addRivers(final Tile tile, final River... rivers) {
+		setFileOnObject(tile);
 		for (River river : rivers) {
 			tile.addRiver(BaseTestFixtureSerialization.setFileOnObject(river));
 		}
@@ -200,11 +201,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Multiple units should come through", six, Tile.class);
 		final String xmlTwo = new StringBuilder(
 				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
-				.append("\t\t</tile>")
+				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
+				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
+				.append("</tile>")
 				.toString(); 
-		assertEquals("Multiple units should come through", xmlTwo, six.toXML());
+		// This is hackish, but we're using the same expected string with two
+		// serialization frameworks, one of which is much smarter about
+		// indentation.
+		assertEquals("Multiple units should come through", xmlTwo, six.toXML().replace("\t\t", "")); 
 		assertEquals("Multiple units should come through", xmlTwo,
 				createSerializedForm(six));
 		assertEquals("Shouldn't print empty not-visible tiles", "", new Tile(0,

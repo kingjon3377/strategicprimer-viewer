@@ -3,8 +3,6 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Troll;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -53,24 +52,18 @@ public class TrollReader implements INodeHandler<Troll> {
 		return Collections.singletonList("troll");
 	}
 	/**
-	 * Write an instance of the type to a Writer.
-	 * @param <S> the actual type of the object being written
+	 * Create an intermediate representation to write to a Writer.
+	 * 
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <S extends Troll> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		writer.append("<troll id=\"");
-		writer.append(Long.toString(obj.getID()));
-		writer.append("\" />");
+	public <S extends Troll> SPIntermediateRepresentation write(final S obj) {
+		return new SPIntermediateRepresentation("troll", Pair.of("id",
+				Long.toString(obj.getID())));
 	}
 	/**
 	 * @return the class we know how to write

@@ -1,8 +1,5 @@
 package controller.map.readerng;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +14,6 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.XMLEscapingStringWriter;
 
 /**
  * An alternative approach, to hopefully replace the ReaderFactory---instead of
@@ -157,24 +153,17 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 		}
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
 	 * @param <S> the actual type of the object
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends XMLWritable> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
+	public <S extends XMLWritable> SPIntermediateRepresentation write(final S obj) {
 		if (WRITE_CACHE.containsKey(obj.getClass())) {
-			((INodeHandler<S>) WRITE_CACHE.get(obj.getClass())).write(obj, writer, inclusion);
+			return ((INodeHandler<S>) WRITE_CACHE.get(obj.getClass())).write(obj);
 		} else {
 			throw new IllegalArgumentException(
 					"Writable type this adapter can't handle: "
@@ -187,30 +176,5 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	@Override
 	public Class<XMLWritable> writes() {
 		throw new IllegalStateException("This should never be called.");
-	}
-	
-	/**
-	 * Write an object to a *new* file that it specifies, and return the name of
-	 * that file---or a String containing the XML-encoded object for inline
-	 * purposes.
-	 * 
-	 * @param fix the object to write
-	 * @return the filename or "filename" written to
-	 * @throws IOException on I/O error in writing
-	 */
-	public String writeForInclusion(final XMLWritable fix) throws IOException {
-		if ("string:".equals(fix.getFile())) {
-			final XMLEscapingStringWriter writer = new XMLEscapingStringWriter();
-			write(fix, writer, true);
-			return new StringBuilder(fix.getFile()).append(writer.asText()).toString(); // NOPMD
-		} else {
-			final Writer writer = new FileWriter(fix.getFile());
-			try {
-				write(fix, writer, true);
-			} finally {
-				writer.close();
-			}
-			return fix.getFile();
-		}
 	}
 }

@@ -4,8 +4,6 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Meadow;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -64,33 +63,19 @@ public class MeadowReader implements INodeHandler<Meadow> {
 		return Meadow.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <S extends Meadow> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		if (obj.isField()) {
-			writer.write("<field");
-		} else {
-			writer.write("<meadow");
-		}
-		writer.write(" kind=\"");
-		writer.write(obj.getKind());
-		writer.write("\" cultivated=\"");
-		writer.write(Boolean.toString(obj.isCultivated()));
-		writer.write("\" id=\"");
-		writer.write(Long.toString(obj.getID()));
-		writer.write("\" />");
+	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
+		return new SPIntermediateRepresentation(obj.isField() ? "field"
+				: "meadow", Pair.of("kind", obj.getKind()), Pair.of(
+				"cultivated", Boolean.toString(obj.isCultivated())), Pair.of(
+				"id", Long.toString(obj.getID())));
 	}
 }

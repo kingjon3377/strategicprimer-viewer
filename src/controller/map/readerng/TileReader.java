@@ -5,10 +5,10 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static java.lang.Integer.parseInt;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -18,6 +18,7 @@ import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.XMLWritable;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.Warning;
@@ -130,54 +131,64 @@ public class TileReader implements INodeHandler<Tile> {
 		return Collections.singletonList("tile");
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public void write(final Tile obj, final Writer writer,
-			final boolean inclusion) throws IOException {
-		if (!obj.isEmpty()) {
-			writer.write("<tile row=\"");
-			writer.write(Integer.toString(obj.getLocation().row()));
-			writer.write("\" column=\"");
-			writer.write(Integer.toString(obj.getLocation().col()));
+	public SPIntermediateRepresentation write(final Tile obj) {
+		if (obj.isEmpty()) {
+			return new SPIntermediateRepresentation(""); // NOPMD
+		} else {
+			final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("tile");
+			retval.addAttribute("row", Integer.toString(obj.getLocation().row()));
+			retval.addAttribute("column", Integer.toString(obj.getLocation().col()));
 			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
-				writer.write("\" kind=\"");
-				writer.write(obj.getTerrain().toXML());
+				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
-			writer.append("\">");
 			if (!obj.getContents().isEmpty()) {
-				writer.write('\n');
 				final ReaderAdapter adapter = new ReaderAdapter();
+				final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
+				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj.getContents()) {
-					writer.append("\t\t\t");
 					if (fix instanceof RiverFixture) {
 						for (River river : (RiverFixture) fix) {
-							adapter.write(river, writer, inclusion);
+							addChild(tagMap, river, adapter, retval);
 						}
 					} else {
-						if (!inclusion || fix.getFile().equals(obj.getFile())) {
-							adapter.write(fix, writer, inclusion);
-						} else {
-							writer.write("<include file=\"");
-							writer.write(adapter.writeForInclusion(fix));
-							writer.write("\" />");
-						}
+						addChild(tagMap, fix, adapter, retval);
 					}
-					writer.write('\n');
 				}
-				writer.write("\t\t");
+				tagMap.remove(obj.getFile());
+				for (SPIntermediateRepresentation child : tagMap.values()) {
+					retval.addChild(child);
+				}
 			}
-			writer.write("</tile>");
+			return retval;
+		}
+	}
+	/**
+	 * Add a child node to a node---the parent node, or an 'include' node representing its chosen file.
+	 * @param map the mapping from filenames to IRs.
+	 * @param obj the object we're handling
+	 * @param adapter the adapter to use to call the right handler.
+	 * @param parent the parent node, so we can add any include nodes created to it
+	 */
+	private static void addChild(final Map<String, SPIntermediateRepresentation> map,
+			final XMLWritable obj, final ReaderAdapter adapter, final SPIntermediateRepresentation parent) {
+		if (obj.getFile() == null) {
+			parent.addChild(adapter.write(obj));
+		} else {
+			if (!map.containsKey(obj.getFile())) {
+				final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
+						"include");
+				includeTag.addAttribute("file", obj.getFile());
+				parent.addChild(includeTag);
+				map.put(obj.getFile(), includeTag);
+			}
+			map.get(obj.getFile()).addChild(adapter.write(obj));
 		}
 	}
 	/**

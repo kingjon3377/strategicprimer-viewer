@@ -3,8 +3,6 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Hill;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -60,24 +59,17 @@ public class HillReader implements INodeHandler<Hill> {
 		return Hill.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <S extends Hill> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		writer.write("<hill id=\"");
-		writer.write(Long.toString(obj.getID()));
-		writer.write("\" />");
+	public <S extends Hill> SPIntermediateRepresentation write(final S obj) {
+		return new SPIntermediateRepresentation("hill", Pair.of("id",
+				Long.toString(obj.getID())));
 	}
 }

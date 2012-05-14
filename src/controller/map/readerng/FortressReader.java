@@ -5,15 +5,16 @@ import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static java.lang.Integer.parseInt;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.XMLWritable;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Unit;
 import util.Warning;
@@ -83,47 +84,45 @@ public class FortressReader implements INodeHandler<Fortress> {
 		return Fortress.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends Fortress> void write(final S obj, final Writer writer,
-			final boolean inclusion) throws IOException {
-		writer.write("<fortress owner=\"");
-		writer.write(Integer.toString(obj.getOwner().getId()));
+	public <S extends Fortress> SPIntermediateRepresentation write(final S obj) {
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("fortress");
+		retval.addAttribute("owner", Integer.toString(obj.getOwner().getId()));
 		if (!obj.getName().isEmpty()) {
-			writer.write("\" name=\"");
-			writer.write(obj.getName());
+			retval.addAttribute("name", obj.getName());
 		}
-		writer.write("\" id=\"");
-		writer.write(Long.toString(obj.getID()));
-		writer.write("\">");
+		retval.addAttribute("id", Long.toString(obj.getID()));
+		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
+		tagMap.put(obj.getFile(), retval);
 		if (!obj.getUnits().isEmpty()) {
-			writer.write('\n');
 			final ReaderAdapter adapter = new ReaderAdapter();
 			for (Unit unit : obj.getUnits()) {
-				writer.write("\t\t\t\t");
-				if (!inclusion || unit.getFile().equals(obj.getFile())) {
-					adapter.write(unit, writer, inclusion);
-				} else {
-					writer.write("<include file=\"");
-					writer.write(adapter.writeForInclusion(unit));
-					writer.write("\" />\n");
-				}
+				addChild(tagMap, unit, adapter, retval);
 			}
-			writer.write("\t\t\t");
 		}
-		writer.write("</fortress>");
+		return retval;
 	}
-
+	/**
+	 * Add a child node to a node---the parent node, or an 'include' node representing its chosen file.
+	 * @param map the mapping from filenames to IRs.
+	 * @param obj the object we're handling
+	 * @param adapter the adapter to use to call the right handler.
+	 * @param parent the parent node, so we can add any include nodes created to it
+	 */
+	private static void addChild(final Map<String, SPIntermediateRepresentation> map,
+			final XMLWritable obj, final ReaderAdapter adapter, final SPIntermediateRepresentation parent) {
+		if (!map.containsKey(obj.getFile())) {
+			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation("include");
+			includeTag.addAttribute("file", obj.getFile());
+			parent.addChild(includeTag);
+		}
+		map.get(obj.getFile()).addChild(adapter.write(obj));
+	}
 }

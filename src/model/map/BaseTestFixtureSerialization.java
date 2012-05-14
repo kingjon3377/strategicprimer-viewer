@@ -640,7 +640,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 */
 	public static String createSerializedForm(final XMLWritable obj) throws IOException {
 		final StringWriter writer = new StringWriter();
-		new ReaderAdapter().write(obj, writer, true);
+		new ReaderAdapter().write(obj).write(writer, true, 0);
 		return writer.toString();
 	}
 	/**

@@ -6,8 +6,6 @@ import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -106,33 +104,25 @@ public class UnitReader implements INodeHandler<Unit> {
 	}
 
 	/**
-	 * Write an instance of the type to a Writer.
-	 * @param <S> the actual type of the object
+	 * Create an intermediate representation to write to a Writer.
+	 * 
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            ignored
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends Unit> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		writer.append("<unit owner=\"");
-		writer.append(Integer.toString(obj.getOwner().getId()));
+	public <S extends Unit> SPIntermediateRepresentation write(final S obj) {
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("unit");
+		retval.addAttribute("owner", Integer.toString(obj.getOwner().getId()));
 		if (!obj.getKind().isEmpty()) {
-			writer.append("\" kind=\"");
-			writer.append(obj.getKind());
+			retval.addAttribute("kind", obj.getKind());
 		}
 		if (!obj.getName().isEmpty()) {
-			writer.append("\" name=\"");
-			writer.append(obj.getName());
+			retval.addAttribute("name", obj.getName());
 		}
-		writer.append("\" id=\"");
-		writer.append(Long.toString(obj.getID()));
-		writer.append("\" />");
+		retval.addAttribute("id", Long.toString(obj.getID()));
+		return retval;
 	}
 	/**
 	 * @return The type we know how to write

@@ -4,8 +4,6 @@ import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Grove;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -64,33 +63,19 @@ public class GroveReader implements INodeHandler<Grove> {
 		return Grove.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <S extends Grove> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		if (obj.isOrchard()) {
-			writer.write("<orchard");
-		} else {
-			writer.write("<grove");
-		}
-		writer.write(" wild=\"");
-		writer.write(Boolean.toString(obj.isWild()));
-		writer.write("\" kind=\"");
-		writer.write(obj.getKind());
-		writer.write("\" id=\"");
-		writer.write(Long.toString(obj.getID()));
-		writer.write("\" />");
+	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
+		return new SPIntermediateRepresentation(obj.isOrchard() ? "orchard"
+				: "grove", Pair.of("wild", Boolean.toString(obj.isWild())),
+				Pair.of("kind", obj.getKind()), Pair.of("id",
+						Long.toString(obj.getID())));
 	}
 }

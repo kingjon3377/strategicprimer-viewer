@@ -5,8 +5,6 @@ import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,33 +62,23 @@ public class TownReader implements INodeHandler<TownEvent> {
 		return Collections.singletonList("town");
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
+	 * 
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public void write(final TownEvent obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		writer.append("<town status=\"");
-		writer.append(obj.status().toString());
-		writer.append("\" size=\"");
-		writer.append(obj.size().toString());
-		writer.append("\" dc=\"");
-		writer.append(Integer.toString(obj.getDC()));
+	public SPIntermediateRepresentation write(final TownEvent obj) {
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("town");
+		retval.addAttribute("status", obj.status().toString());
+		retval.addAttribute("size", obj.size().toString());
+		retval.addAttribute("dc", Integer.toString(obj.getDC()));
 		if (!obj.name().isEmpty()) {
-			writer.append("\" name=\"");
-			writer.append(obj.name());
+			retval.addAttribute("name", obj.name());
 		}
-		writer.append("\" id=\"");
-		writer.append(Long.toString(obj.getID()));
-		writer.append("\" />");
+		retval.addAttribute("id", Long.toString(obj.getID()));
+		return retval;
 	}
 	/**
 	 * @return the class we can write

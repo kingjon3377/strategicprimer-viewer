@@ -5,8 +5,6 @@ import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.hasAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,33 +61,25 @@ public class AnimalReader implements INodeHandler<Animal> {
 		return Animal.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends Animal> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		writer.write("<animal kind=\"");
-		writer.write(obj.getAnimal());
+	public <S extends Animal> SPIntermediateRepresentation write(final S obj) {
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("animal");
+		retval.addAttribute("kind", obj.getAnimal());
 		if (obj.isTraces()) {
-			writer.write("\" traces=\"");
+			retval.addAttribute("traces", "");
 		}
 		if (obj.isTalking()) {
-			writer.write("\" talking=\"true");
+			retval.addAttribute("talking", "true");
 		}
-		writer.write("\" id=\"");
-		writer.write(Long.toString(obj.getID()));
-		writer.write("\" />");
+		retval.addAttribute("id", Long.toString(obj.getID()));
+		return retval;
 	}
 
 }

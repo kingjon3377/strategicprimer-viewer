@@ -4,8 +4,6 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.events.BattlefieldEvent;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -61,25 +60,17 @@ public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 		return BattlefieldEvent.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void write(final BattlefieldEvent obj, final Writer writer,
-			final boolean inclusion) throws IOException {
-		writer.write("<battlefield dc=\"");
-		writer.write(Integer.toString(obj.getDC()));
-		writer.write("\" id=\"");
-		writer.write(Long.toString(obj.getID()));
-		writer.write("\" />");
+	public SPIntermediateRepresentation write(final BattlefieldEvent obj) {
+		return new SPIntermediateRepresentation("battlefield", Pair.of("dc",
+				Integer.toString(obj.getDC())), Pair.of("id",
+				Long.toString(obj.getID())));
 	}
 }

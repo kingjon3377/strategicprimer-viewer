@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 
 import javax.xml.stream.events.StartElement;
@@ -41,18 +39,12 @@ public interface INodeHandler<T> {
 			PlayerCollection players, Warning warner, IDFactory idFactory) throws SPFormatException;
 	
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
 	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
-	<S extends T> void write(S obj, Writer writer, boolean inclusion) throws IOException;
+	<S extends T> SPIntermediateRepresentation write(S obj);
 }

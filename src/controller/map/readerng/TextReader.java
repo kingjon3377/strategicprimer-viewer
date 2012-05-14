@@ -2,8 +2,6 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -73,30 +71,20 @@ public class TextReader implements INodeHandler<TextFixture> {
 		return TextFixture.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends TextFixture> void write(final S obj, final Writer writer,
-			final boolean inclusion) throws IOException {
-		if (obj.getTurn() == -1) {
-			writer.append("<text>");
-		} else {
-			writer.append("<text turn=\"");
-			writer.append(Integer.toString(obj.getTurn()));
-			writer.append("\">");
+	public <S extends TextFixture> SPIntermediateRepresentation write(final S obj) {
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("text");
+		if (obj.getTurn() != -1) {
+			retval.addAttribute("turn", Integer.toString(obj.getTurn()));
 		}
-		writer.append(obj.getText().trim());
-		writer.append("</text>");
+		retval.addAttribute("text-contents", obj.getText().trim());
+		return retval;
 	}
 }

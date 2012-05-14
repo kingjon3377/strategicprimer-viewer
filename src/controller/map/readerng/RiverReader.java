@@ -3,8 +3,6 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.River;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -61,27 +60,17 @@ public class RiverReader implements INodeHandler<River> {
 		return River.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void write(final River obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		if (River.Lake.equals(obj)) {
-			writer.write("<lake />");
-		} else {
-			writer.write("<river direction=\"");
-			writer.write(obj.getDescription());
-			writer.write("\" />");
-		}
+	public SPIntermediateRepresentation write(final River obj) {
+		return River.Lake.equals(obj) ? new SPIntermediateRepresentation("lake")
+				: new SPIntermediateRepresentation("river", Pair.of(
+						"direction", obj.getDescription()));
 	}
 }

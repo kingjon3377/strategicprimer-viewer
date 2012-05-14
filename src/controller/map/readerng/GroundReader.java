@@ -4,8 +4,6 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -63,26 +62,18 @@ public class GroundReader implements INodeHandler<Ground> {
 		return Ground.class;
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <S extends Ground> void write(final S obj, final Writer writer, final boolean inclusion)
-			throws IOException {
-		writer.write("<ground kind=\"");
-		writer.write(obj.getKind());
-		writer.write("\" exposed=\"");
-		writer.write(Boolean.toString(obj.isExposed()));
-		writer.write("\" />");
+	public <S extends Ground> SPIntermediateRepresentation write(final S obj) {
+		return new SPIntermediateRepresentation("ground", Pair.of("kind",
+				obj.getKind()), Pair.of("exposed",
+				Boolean.toString(obj.isExposed())));
 	}
 }

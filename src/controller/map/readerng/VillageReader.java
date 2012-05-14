@@ -5,8 +5,6 @@ import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,31 +56,22 @@ public class VillageReader implements INodeHandler<Village> {
 		return Collections.singletonList("village");
 	}
 	/**
-	 * Write an instance of the type to a Writer.
+	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the actual type of the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
 	 * @param obj
 	 *            the object to write
-	 * @param writer
-	 *            the Writer we're currently writing to
-	 * @param inclusion
-	 *            whether to create 'include' tags and separate files for
-	 *            elements whose 'file' is different from that of their parents
-	 * @throws IOException
-	 *             on I/O error while writing
+	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends Village> void write(final S obj, final Writer writer,
-			final boolean inclusion) throws IOException {
-		writer.append("<village status=\"");
-		writer.append(obj.getStatus().toString());
+	public <S extends Village> SPIntermediateRepresentation write(final S obj) {
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("village");
+		retval.addAttribute("status", obj.getStatus().toString());
 		if (!obj.getName().isEmpty()) {
-			writer.append("\" name=\"");
-			writer.append(obj.getName());
+			retval.addAttribute("name", obj.getName());
 		}
-		writer.append("\" id=\"");
-		writer.append(Long.toString(obj.getID()));
-		writer.append("\" />");
+		retval.addAttribute("id", Long.toString(obj.getID()));
+		return retval;
 	}
 	/**
 	 * @return The class we know how to parse
