@@ -3,6 +3,8 @@ package util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import controller.map.SPFormatException;
+
 /**
  * A class to log warnings.
  * 
@@ -59,8 +61,15 @@ public final class Warning {
 		case Die:
 			throw new FatalWarning(warning); // NOPMD
 		case Warn:
-			Logger.getLogger(warning.getStackTrace()[0].getClass().getName()).log(
-					Level.WARNING, "Warning: ", warning);
+			if (warning instanceof SPFormatException) {
+				Logger.getLogger(
+						warning.getStackTrace()[0].getClass().getName())
+						.warning("Warning: " + warning.getMessage());
+			} else {
+				Logger.getLogger(
+						warning.getStackTrace()[0].getClass().getName()).log(
+						Level.WARNING, "Warning: ", warning);
+			}
 			break;
 		case Ignore:
 			break;
