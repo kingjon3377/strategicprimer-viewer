@@ -14,6 +14,7 @@ import util.Warning;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
+import view.util.Coordinate;
 import view.util.SystemOut;
 import controller.map.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -131,13 +132,14 @@ public class DrawHelperComparator { // NOPMD
 	 */
 	private void secondBody(final TileDrawHelper helper,
 			final BufferedImage image) {
+		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
-					helper.drawTile(image.createGraphics(),
-							spmap.getVersion(), spmap.getTile(i, j), i * tsize, j * tsize, tsize,
-							tsize);
+					helper.drawTile(image.createGraphics(), spmap.getVersion(),
+							spmap.getTile(i, j), new Coordinate(i * tsize, j // NOPMD
+									* tsize), dimensions);
 				}
 			}
 		}
@@ -204,10 +206,11 @@ public class DrawHelperComparator { // NOPMD
 	 * @param pen the Graphics used to draw to the image
 	 */
 	private void fourthBody(final TileDrawHelper helper, final Graphics pen) {
+		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), i * tsize, j
-						* tsize, tsize, tsize);
+				helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j),
+						new Coordinate(i * tsize, j * tsize), dimensions); // NOPMD
 			}
 		}
 	}

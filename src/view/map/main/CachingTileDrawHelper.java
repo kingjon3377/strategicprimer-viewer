@@ -19,6 +19,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
 
+import view.util.Coordinate;
+
 import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
@@ -176,22 +178,19 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
-	 * @param xCoord
-	 *            the tile's left boundary
-	 * @param yCoord
-	 *            the tile's right boundary
-	 * @param width
-	 *            the tile's width
-	 * @param height
-	 *            the tile's height
+	 * @param coordinates
+	 *            the coordinates of the tile's upper-left corner
+	 * @param dimensions
+	 *            the width (X) and height (Y) of the tile
 	 */
-	// ESCA-JAVA0138:
 	@Override
-	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
-			final int yCoord, final int width, final int height) {
-		final Graphics context = pen.create(xCoord, yCoord, width, height);
+	public void drawTile(final Graphics pen, final int version,
+			final Tile tile, final Coordinate coordinates,
+			final Coordinate dimensions) {
+		final Graphics context = pen.create(coordinates.x, coordinates.y,
+				dimensions.x, dimensions.y);
 		try {
-			drawTile(context, version, tile, width, height);
+			drawTile(context, version, tile, dimensions.x, dimensions.y);
 		} finally {
 			context.dispose();
 		}

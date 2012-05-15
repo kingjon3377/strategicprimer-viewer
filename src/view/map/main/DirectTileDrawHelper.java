@@ -11,6 +11,8 @@ import static view.util.DrawingNumericConstants.TWO_THIRDS;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import view.util.Coordinate;
+
 import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
@@ -32,50 +34,46 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
-	 * @param xCoord
-	 *            the tile's left boundary
-	 * @param yCoord
-	 *            the tile's right boundary
-	 * @param width
-	 *            the tile's width
-	 * @param height
-	 *            the tile's height
+	 * @param coordinates
+	 *            the coordinates of the tile's upper-left corner
+	 * @param dimensions
+	 *            the width (X) and height (Y) of the tile
 	 */
 	// ESCA-JAVA0138:
 	@Override
-	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
-			final int yCoord, final int width, final int height) {
-		final Graphics context = pen.create();
+	public void drawTile(final Graphics pen, final int version, final Tile tile, final Coordinate coordinates,
+			final Coordinate dimensions) {
+		 final Graphics context = pen.create();
 		try {
 			context.setColor(getTileColor(version, tile.getTerrain()));
-			context.fillRect(xCoord, yCoord, width, height);
+			context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 			context.setColor(Color.black);
-			context.drawRect(xCoord, yCoord, width, height);
+			context.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 			if (!TileType.NotVisible.equals(tile.getTerrain())) {
 				context.setColor(Color.blue);
 				if (tile.hasRiver()) {
 					for (final River river : tile.getRivers()) {
-						drawRiver(context, river, xCoord, yCoord, width, height);
+						drawRiver(context, river, coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 					}
 				}
 				if (hasAnyForts(tile)) {
 					context.setColor(FORT_COLOR);
-					context.fillRect((int) (width * TWO_THIRDS) - 1 + xCoord,
-							(int) (height * TWO_THIRDS) - 1 + yCoord,
-							(int) (width / THREE), (int) (height / THREE));
+					context.fillRect((int) (dimensions.x * TWO_THIRDS) - 1 + coordinates.x,
+							(int) (dimensions.y * TWO_THIRDS) - 1 + coordinates.y,
+							(int) (dimensions.x / THREE), (int) (dimensions.y / THREE));
 				}
 				if (hasAnyUnits(tile)) {
 					context.setColor(UNIT_COLOR);
-					context.fillOval(((int) (width / FOUR)) + xCoord,
-							((int) (height / FOUR)) + yCoord,
-							((int) (width / FOUR)), ((int) (height / FOUR)));
+					context.fillOval(((int) (dimensions.x / FOUR)) + coordinates.x,
+							((int) (dimensions.y / FOUR)) + coordinates.y,
+							((int) (dimensions.x / FOUR)), ((int) (dimensions.y / FOUR)));
 				} else if (hasEvent(tile)) {
 					context.setColor(EVENT_COLOR);
 					context.fillPolygon(new int[] {
-							(int) (width * THREE_QUARTERS) + xCoord,
-							(int) (width / TWO) + xCoord, width + xCoord },
-							new int[] { yCoord, (int) (height / TWO) + yCoord,
-									(int) (height / TWO) + yCoord },
+							(int) (dimensions.x * THREE_QUARTERS) + coordinates.x,
+							(int) (dimensions.x / TWO) + coordinates.x, dimensions.x + coordinates.x },
+							new int[] { coordinates.y, (int) (dimensions.y / TWO) + coordinates.y,
+									(int) (dimensions.y / TWO) + coordinates.y },
 							MISC_EVENT_SIDES);
 				}
 			}
@@ -101,7 +99,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
 			final int height) {
-		drawTile(pen, version, tile, 0, 0, width, height);
+		drawTile(pen, version, tile, new Coordinate(0, 0), new Coordinate(width, height));
 	}
 
 	/**

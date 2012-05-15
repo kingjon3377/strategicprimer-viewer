@@ -18,6 +18,7 @@ import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+import view.util.Coordinate;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -170,8 +171,8 @@ public final class MapComponent extends JComponent implements
 	private void paintTile(final Graphics pen, final int version, final Tile tile, final int row,
 			final int col) {
 		final int tsize = TILE_SIZE.getSize(getModel().getMainMap().getVersion());
-		helper.drawTile(pen, version, tile, col * tsize, row * tsize,
-				tsize, tsize);
+		helper.drawTile(pen, version, tile, new Coordinate(col * tsize, row * tsize),
+				new Coordinate(tsize, tsize));
 		if (model.getSelectedTile().equals(tile)) {
 			final Graphics context = pen.create();
 			try {

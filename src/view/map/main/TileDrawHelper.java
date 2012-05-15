@@ -3,6 +3,7 @@ package view.map.main;
 import java.awt.Graphics;
 
 import model.map.Tile;
+import view.util.Coordinate;
 
 /**
  * A helper to do the actual drawing of a tile. Now an interface so we can
@@ -35,18 +36,15 @@ public interface TileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
-	 * @param version the map version           
+	 * @param version
+	 *            the map version
 	 * @param tile
 	 *            the tile to draw
-	 * @param xCoord
-	 *            the tile's left-hand edge
-	 * @param yCoord
-	 *            the tile's upper edge
-	 * @param width
-	 *            the tile's width
-	 * @param height
-	 *            the tile's height
+	 * @param coordinates
+	 *            the coordinates of the tile's upper-left corner
+	 * @param dimensions
+	 *            the width (X) and height (Y) of the tile
 	 */
-	void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
-			final int yCoord, final int width, final int height);
+	void drawTile(final Graphics pen, final int version, final Tile tile,
+			final Coordinate coordinates, final Coordinate dimensions);
 }

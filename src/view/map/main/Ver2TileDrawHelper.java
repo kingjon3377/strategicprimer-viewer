@@ -25,6 +25,7 @@ import model.map.events.IEvent;
 import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
+import view.util.Coordinate;
 /**
  * A TileDrawHelper for the new map version.
  * @author Jonathan Lovelace
@@ -83,26 +84,25 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 *            the map version
 	 * @param tile
 	 *            the tile to draw
-	 * @param xCoord
-	 *            the tile's left boundary
-	 * @param yCoord
-	 *            the tile's right boundary
-	 * @param width
-	 *            the tile's width
-	 * @param height
-	 *            the tile's height
+	 * @param coordinates
+	 *            the coordinates of the tile's upper-left corner
+	 * @param dimensions
+	 *            the width (X) and height (Y) of the tile
 	 */
-	// ESCA-JAVA0138:
 	@Override
-	public void drawTile(final Graphics pen, final int version, final Tile tile, final int xCoord,
-			final int yCoord, final int width, final int height) {
-		pen.setColor((needFixtureColor(tile) ? getFixtureColor(tile) : getTileColor(version, tile.getTerrain())));
-		pen.fillRect(xCoord, yCoord, width, height);
+	public void drawTile(final Graphics pen, final int version,
+			final Tile tile, final Coordinate coordinates,
+			final Coordinate dimensions) {
+		pen.setColor((needFixtureColor(tile) ? getFixtureColor(tile)
+				: getTileColor(version, tile.getTerrain())));
+		pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 		if (hasFixture(tile)) {
-			pen.drawImage(getImageForFixture(getTopFixture(tile)), xCoord, yCoord, width, height, observer);
+			pen.drawImage(getImageForFixture(getTopFixture(tile)),
+					coordinates.x, coordinates.y, dimensions.x, dimensions.y,
+					observer);
 		}
 		pen.setColor(Color.black);
-		pen.drawRect(xCoord, yCoord, width, height);
+		pen.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
 			final int height) {
-		drawTile(pen, version, tile, 0, 0, width, height);
+		drawTile(pen, version, tile, new Coordinate(0, 0), new Coordinate(width, height));
 	}
 	/**
 	 * @param tile a tile
