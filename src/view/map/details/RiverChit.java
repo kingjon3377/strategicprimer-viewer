@@ -83,26 +83,26 @@ public class RiverChit extends Chit {
 	private void drawRiver(final Graphics pen, final River river) {
 		switch (river) {
 		case East:
-			pen.fillRect((int) (getWidth() / TWO),
-					(int) (getHeight() * SEVEN_SIXTEENTHS),
-					(int) (getWidth() / TWO), (int) (getHeight() / EIGHT));
+			pen.fillRect((int) Math.round(getWidth() / TWO),
+					(int) Math.round(getHeight() * SEVEN_SIXTEENTHS),
+					(int) Math.round(getWidth() / TWO), (int) Math.round(getHeight() / EIGHT));
 			break;
 		case Lake:
-			pen.fillOval((int) (getWidth() / FOUR), (int) (getHeight() / FOUR), 
-					(int) (getWidth() / TWO), (int) (getHeight() / TWO));
+			pen.fillOval((int) Math.round(getWidth() / FOUR), (int) Math.round(getHeight() / FOUR), 
+					(int) Math.round(getWidth() / TWO), (int) Math.round(getHeight() / TWO));
 			break;
 		case North:
-			pen.fillRect((int) (getWidth() * SEVEN_SIXTEENTHS), 0,
-					(int) (getWidth() / EIGHT), (int) (getHeight() / TWO));
+			pen.fillRect((int) Math.round(getWidth() * SEVEN_SIXTEENTHS), 0,
+					(int) Math.round(getWidth() / EIGHT), (int) Math.round(getHeight() / TWO));
 			break;
 		case South:
-			pen.fillRect((int) (getWidth() * SEVEN_SIXTEENTHS),
-					(int) (getHeight() / TWO), (int) (getWidth() / EIGHT),
-					(int) (getHeight() / TWO));
+			pen.fillRect((int) Math.round(getWidth() * SEVEN_SIXTEENTHS),
+					(int) Math.round(getHeight() / TWO), (int) Math.round(getWidth() / EIGHT),
+					(int) Math.round(getHeight() / TWO));
 			break;
 		case West:
-			pen.fillRect(0, (int) (getHeight() * SEVEN_SIXTEENTHS),
-					(int) (getWidth() / TWO), (int) (getHeight() / EIGHT));
+			pen.fillRect(0, (int) Math.round(getHeight() * SEVEN_SIXTEENTHS),
+					(int) Math.round(getWidth() / TWO), (int) Math.round(getHeight() / EIGHT));
 			break;
 		default:
 			// Shouldn't get here, but let's ignore it anyway

@@ -106,18 +106,18 @@ public abstract class Chit extends Selectable { // NOPMD
 		} else {
 			final Color saveColor = pen.getColor();
 			pen.setColor(Color.RED);
-			pen.fillRoundRect(((int) (imageSize * margin)) + 1,
-					((int) (imageSize * margin)) + 1,
-					((int) (imageSize * (1.0 - margin * 2.0))),
-					((int) (imageSize * (1.0 - margin * 2.0))),
-					((int) (imageSize * (margin / 2.0))),
-					((int) (imageSize * (margin / 2.0))));
+			pen.fillRoundRect((int) Math.round((imageSize * margin)) + 1,
+					((int) Math.round(imageSize * margin)) + 1,
+					((int) Math.round(imageSize * (1.0 - margin * 2.0))),
+					((int) Math.round(imageSize * (1.0 - margin * 2.0))),
+					((int) Math.round(imageSize * (margin / 2.0))),
+					((int) Math.round(imageSize * (margin / 2.0))));
 			pen.setColor(saveColor);
-			pen.fillRoundRect(((int) (imageSize / 2.0 - imageSize * margin)) + 1,
-					((int) (imageSize / 2.0 - imageSize * margin)) + 1,
-					((int) (imageSize * margin * 2.0)), ((int) (imageSize
-							* margin * 2.0)), ((int) (imageSize * margin / 2.0)),
-							((int) (imageSize * margin / 2.0)));
+			pen.fillRoundRect(((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+					((int) Math.round(imageSize * margin * 2.0)), ((int) Math.round(imageSize
+							* margin * 2.0)), ((int) Math.round(imageSize * margin / 2.0)),
+							((int) Math.round(imageSize * margin / 2.0)));
 		}
 		return temp;
 	}

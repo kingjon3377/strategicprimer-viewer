@@ -92,9 +92,9 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					* TWO_THIRDS - 1.0, width / THREE, height / THREE);
 			unit = new Ellipse2D.Double(width / FOUR, height / FOUR, width
 					/ FOUR, height / FOUR);
-			event = new Polygon(new int[] { (int) (width * THREE_QUARTERS),
-					(int) (width / TWO), width }, new int[] { 0,
-					(int) (height / TWO), (int) (height / TWO) },
+			event = new Polygon(new int[] { (int) Math.round(width * THREE_QUARTERS),
+					(int) Math.round(width / TWO), width }, new int[] { 0,
+					(int) Math.round(height / TWO), (int) Math.round(height / TWO) },
 					MISC_EVENT_SIDES);
 		}
 	}

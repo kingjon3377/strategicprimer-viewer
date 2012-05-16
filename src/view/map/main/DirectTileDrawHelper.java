@@ -58,22 +58,22 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 				}
 				if (hasAnyForts(tile)) {
 					context.setColor(FORT_COLOR);
-					context.fillRect((int) (dimensions.x * TWO_THIRDS) - 1 + coordinates.x,
-							(int) (dimensions.y * TWO_THIRDS) - 1 + coordinates.y,
-							(int) (dimensions.x / THREE), (int) (dimensions.y / THREE));
+					context.fillRect((int) Math.round(dimensions.x * TWO_THIRDS) - 1 + coordinates.x,
+							(int) Math.round(dimensions.y * TWO_THIRDS) - 1 + coordinates.y,
+							(int) Math.round(dimensions.x / THREE), (int) Math.round(dimensions.y / THREE));
 				}
 				if (hasAnyUnits(tile)) {
 					context.setColor(UNIT_COLOR);
-					context.fillOval(((int) (dimensions.x / FOUR)) + coordinates.x,
-							((int) (dimensions.y / FOUR)) + coordinates.y,
-							((int) (dimensions.x / FOUR)), ((int) (dimensions.y / FOUR)));
+					context.fillOval(((int) Math.round(dimensions.x / FOUR)) + coordinates.x,
+							((int) Math.round(dimensions.y / FOUR)) + coordinates.y,
+							((int) Math.round(dimensions.x / FOUR)), ((int) Math.round(dimensions.y / FOUR)));
 				} else if (hasEvent(tile)) {
 					context.setColor(EVENT_COLOR);
 					context.fillPolygon(new int[] {
-							(int) (dimensions.x * THREE_QUARTERS) + coordinates.x,
-							(int) (dimensions.x / TWO) + coordinates.x, dimensions.x + coordinates.x },
-							new int[] { coordinates.y, (int) (dimensions.y / TWO) + coordinates.y,
-									(int) (dimensions.y / TWO) + coordinates.y },
+							(int) Math.round(dimensions.x * THREE_QUARTERS) + coordinates.x,
+							(int) Math.round(dimensions.x / TWO) + coordinates.x, dimensions.x + coordinates.x },
+							new int[] { coordinates.y, (int) Math.round(dimensions.y / TWO) + coordinates.y,
+									(int) Math.round(dimensions.y / TWO) + coordinates.y },
 							MISC_EVENT_SIDES);
 				}
 			}
@@ -124,26 +124,26 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			final int height) {
 		switch (river) {
 		case East:
-			pen.fillRect((int) (width / TWO) + xCoord,
-					(int) (height * SEVEN_SIXTEENTHS) + yCoord,
-					(int) (width / TWO), (int) (height / EIGHT));
+			pen.fillRect((int) Math.round(width / TWO) + xCoord,
+					(int) Math.round(height * SEVEN_SIXTEENTHS) + yCoord,
+					(int) Math.round(width / TWO), (int) Math.round(height / EIGHT));
 			break;
 		case Lake:
-			pen.fillOval((int) (width / FOUR) + xCoord, (int) (height / FOUR)
-					+ yCoord, (int) (width / TWO), (int) (height / TWO));
+			pen.fillOval((int) Math.round(width / FOUR) + xCoord, (int) Math.round(height / FOUR)
+					+ yCoord, (int) Math.round(width / TWO), (int) Math.round(height / TWO));
 			break;
 		case North:
-			pen.fillRect((int) (width * SEVEN_SIXTEENTHS) + xCoord, yCoord,
-					(int) (width / EIGHT), (int) (height / TWO));
+			pen.fillRect((int) Math.round(width * SEVEN_SIXTEENTHS) + xCoord, yCoord,
+					(int) Math.round(width / EIGHT), (int) Math.round(height / TWO));
 			break;
 		case South:
-			pen.fillRect((int) (width * SEVEN_SIXTEENTHS) + xCoord,
-					(int) (height / TWO) + yCoord, (int) (width / EIGHT),
-					(int) (height / TWO));
+			pen.fillRect((int) Math.round(width * SEVEN_SIXTEENTHS) + xCoord,
+					(int) Math.round(height / TWO) + yCoord, (int) Math.round(width / EIGHT),
+					(int) Math.round(height / TWO));
 			break;
 		case West:
-			pen.fillRect(xCoord, (int) (height * SEVEN_SIXTEENTHS) + yCoord,
-					(int) (width / TWO), (int) (height / EIGHT));
+			pen.fillRect(xCoord, (int) Math.round(height * SEVEN_SIXTEENTHS) + yCoord,
+					(int) Math.round(width / TWO), (int) Math.round(height / EIGHT));
 			break;
 		default:
 			// Shouldn't get here, but let's ignore it anyway

@@ -78,17 +78,17 @@ public class EventChit extends Chit {
 	protected void paintChit(final Graphics pen) {
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
-		pen.fillRoundRect(((int) (getWidth() * MARGIN)) + 1,
-				((int) (getHeight() * MARGIN)) + 1,
-				((int) (getWidth() * (1.0 - MARGIN * 2.0))),
-				((int) (getHeight() * (1.0 - MARGIN * 2.0))),
-				((int) (getWidth() * (MARGIN / 2.0))),
-				((int) (getHeight() * (MARGIN / 2.0))));
+		pen.fillRoundRect(((int) Math.round(getWidth() * MARGIN)) + 1,
+				((int) Math.round(getHeight() * MARGIN)) + 1,
+				((int) Math.round(getWidth() * (1.0 - MARGIN * 2.0))),
+				((int) Math.round(getHeight() * (1.0 - MARGIN * 2.0))),
+				((int) Math.round(getWidth() * (MARGIN / 2.0))),
+				((int) Math.round(getHeight() * (MARGIN / 2.0))));
 		pen.setColor(saveColor);
-		pen.fillRoundRect(((int) (getWidth() / 2.0 - getWidth() * MARGIN)) + 1,
-				((int) (getHeight() / 2.0 - getHeight() * MARGIN)) + 1,
-				((int) (getWidth() * MARGIN * 2.0)), ((int) (getHeight()
-						* MARGIN * 2.0)), ((int) (getWidth() * MARGIN / 2.0)),
-				((int) (getHeight() * MARGIN / 2.0)));
+		pen.fillRoundRect(((int) Math.round(getWidth() / 2.0 - getWidth() * MARGIN)) + 1,
+				((int) Math.round(getHeight() / 2.0 - getHeight() * MARGIN)) + 1,
+				((int) Math.round(getWidth() * MARGIN * 2.0)), ((int) Math.round(getHeight()
+						* MARGIN * 2.0)), ((int) Math.round(getWidth() * MARGIN / 2.0)),
+				((int) Math.round(getHeight() * MARGIN / 2.0)));
 	}
 }

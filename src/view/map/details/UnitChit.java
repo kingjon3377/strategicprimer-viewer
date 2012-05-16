@@ -72,10 +72,10 @@ public class UnitChit extends Chit {
 		final Graphics copy = pen.create();
 		try {
 			copy.setColor(UNIT_COLOR);
-			copy.fillOval(((int) (getWidth() * MARGIN)) + 1,
-					((int) (getHeight() * MARGIN)) + 1,
-					((int) (getWidth() * (1.0 - MARGIN * 2.0))),
-					((int) (getHeight() * (1.0 - MARGIN * 2.0))));
+			copy.fillOval(((int) Math.round(getWidth() * MARGIN)) + 1,
+					((int) Math.round(getHeight() * MARGIN)) + 1,
+					((int) Math.round(getWidth() * (1.0 - MARGIN * 2.0))),
+					((int) Math.round(getHeight() * (1.0 - MARGIN * 2.0))));
 		} finally {
 			copy.dispose();
 		}
