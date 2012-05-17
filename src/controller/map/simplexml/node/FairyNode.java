@@ -32,7 +32,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	 */
 	@Override
 	public Fairy produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Fairy fix = new Fairy(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		final Fairy fix = new Fairy(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

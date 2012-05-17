@@ -12,7 +12,7 @@ public class Djinn implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 */
-	public Djinn(final long idNum) {
+	public Djinn(final int idNum) {
 		id = idNum;
 	}
 	/**
@@ -57,7 +57,7 @@ public class Djinn implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -70,12 +70,12 @@ public class Djinn implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

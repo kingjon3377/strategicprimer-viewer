@@ -20,7 +20,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 *            the dc to discover the stone.
 	 * @param idNum the ID number.
 	 */
-	public StoneEvent(final StoneKind skind, final int discdc, final long idNum) {
+	public StoneEvent(final StoneKind skind, final int discdc, final int idNum) {
 		super();
 		stone = skind;
 		dc = discdc;
@@ -84,7 +84,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 
 	/**
@@ -132,12 +132,12 @@ public final class StoneEvent implements IEvent, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

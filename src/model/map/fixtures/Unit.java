@@ -37,7 +37,7 @@ public class Unit implements TileFixture, HasImage {
 	 * @param idNum the ID number.
 	 */
 	public Unit(final Player unitOwner, final String unitType,
-			final String unitName, final long idNum) {
+			final String unitName, final int idNum) {
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;
@@ -88,7 +88,7 @@ public class Unit implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 
 	/**
@@ -151,12 +151,12 @@ public class Unit implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

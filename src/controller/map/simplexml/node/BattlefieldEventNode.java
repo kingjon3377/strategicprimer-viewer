@@ -37,7 +37,7 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	public BattlefieldEvent produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final BattlefieldEvent fix = new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)),
-				Long.parseLong(getProperty("id")));
+				Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

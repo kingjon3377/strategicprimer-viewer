@@ -46,7 +46,7 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	public Mine produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		final Mine fix = new Mine(getProperty(KIND_PROPERTY),
 				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
-				Long.parseLong(getProperty("id")));
+				Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

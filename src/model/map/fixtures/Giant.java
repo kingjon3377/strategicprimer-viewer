@@ -18,7 +18,7 @@ public class Giant implements TileFixture, HasImage {
 	 * @param gKind the kind of giant
 	 * @param idNum the ID number.
 	 */
-	public Giant(final String gKind, final long idNum) {
+	public Giant(final String gKind, final int idNum) {
 		kind = gKind;
 		id = idNum;
 	}
@@ -72,7 +72,7 @@ public class Giant implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -85,12 +85,12 @@ public class Giant implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

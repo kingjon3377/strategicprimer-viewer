@@ -16,7 +16,7 @@ public class Mine implements TileFixture, HasImage {
 	 * @param stat the status of the mine
 	 * @param idNum the ID number.
 	 */
-	public Mine(final String mineral, final TownStatus stat, final long idNum) {
+	public Mine(final String mineral, final TownStatus stat, final int idNum) {
 		kind = mineral;
 		status = stat;
 		id = idNum;
@@ -87,7 +87,7 @@ public class Mine implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -102,12 +102,12 @@ public class Mine implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

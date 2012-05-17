@@ -22,7 +22,7 @@ public final class CityEvent extends AbstractTownEvent {
 	 * @param idNum the ID number.
 	 */
 	public CityEvent(final TownStatus tStatus, final TownSize tSize,
-			final int discdc, final String tName, final long idNum) {
+			final int discdc, final String tName, final int idNum) {
 		super(EventKind.City, tStatus, tSize, tName);
 		dc = discdc;
 		id = idNum;
@@ -61,12 +61,12 @@ public final class CityEvent extends AbstractTownEvent {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

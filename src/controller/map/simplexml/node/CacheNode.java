@@ -42,7 +42,7 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 			throws SPFormatException {
 		final CacheFixture fix = new CacheFixture(getProperty(KIND_PROPERTY),
 				getProperty(CONTENTS_PROPERTY),
-				Long.parseLong(getProperty("id")));
+				Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

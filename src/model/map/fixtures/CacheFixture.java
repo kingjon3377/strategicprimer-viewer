@@ -25,7 +25,7 @@ public class CacheFixture implements TileFixture, HasImage {
 	 * @param cont what this cache contains
 	 * @param idNum the ID number.
 	 */
-	public CacheFixture(final String category, final String cont, final long idNum) {
+	public CacheFixture(final String category, final String cont, final int idNum) {
 		kind = category;
 		contents = cont;
 		id = idNum;
@@ -91,7 +91,7 @@ public class CacheFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -106,12 +106,12 @@ public class CacheFixture implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

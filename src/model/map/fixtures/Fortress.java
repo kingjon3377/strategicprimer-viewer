@@ -43,7 +43,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 *            the name of the fortress
 	 * @param idNum the ID number.
 	 */
-	public Fortress(final Player fortOwner, final String fortName, final long idNum) {
+	public Fortress(final Player fortOwner, final String fortName, final int idNum) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<Unit>();
@@ -115,7 +115,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 
 	/**
@@ -203,12 +203,12 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

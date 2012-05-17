@@ -56,7 +56,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 		final MineralEvent fix = new MineralEvent(getProperty(MINERAL_PROPERTY),
 				Boolean.parseBoolean(getProperty(EXPOSED_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
-				Long.parseLong(getProperty("id")));
+				Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

@@ -53,7 +53,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 		final StoneEvent fix = new StoneEvent(
 				StoneKind.parseStoneKind(getProperty(STONE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
-				Long.parseLong(getProperty("id")));
+				Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

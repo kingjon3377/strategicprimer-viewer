@@ -106,7 +106,7 @@ public class Forest implements TerrainFixture, HasImage {
 	 * @return an ID for the object
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return -1;
 	}
 	/**

@@ -137,10 +137,10 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	 */
 	protected void registerOrCreateID(final String tag, final IDFactory idFactory, final Warning warner) {
 		if (hasProperty("id")) {
-			idFactory.register(Long.parseLong(getProperty("id")));
+			idFactory.register(Integer.parseInt(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException(tag, "id", getLine()));
-			addProperty("id", Long.toString(idFactory.getID()), warner);
+			addProperty("id", Integer.toString(idFactory.getID()), warner);
 		}
 	}
 	/**

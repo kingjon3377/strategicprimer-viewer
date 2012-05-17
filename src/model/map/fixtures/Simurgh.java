@@ -12,7 +12,7 @@ public class Simurgh implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 */
-	public Simurgh(final long idNum) {
+	public Simurgh(final int idNum) {
 		id = idNum;
 	}
 	/**
@@ -58,7 +58,7 @@ public class Simurgh implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -71,12 +71,12 @@ public class Simurgh implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

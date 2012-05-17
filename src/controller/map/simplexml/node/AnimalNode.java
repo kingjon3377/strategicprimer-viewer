@@ -39,7 +39,7 @@ public class AnimalNode extends AbstractFixtureNode<Animal> {
 		final Animal fix = new Animal(getProperty(KIND_PROPERTY), hasProperty("traces"),
 				hasProperty("talking")
 						&& Boolean.parseBoolean(getProperty("talking")),
-				Long.parseLong(getProperty("id")));
+						Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

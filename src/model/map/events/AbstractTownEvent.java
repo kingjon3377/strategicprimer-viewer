@@ -137,7 +137,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) getID();
+		return getID();
 	}
 
 	/**

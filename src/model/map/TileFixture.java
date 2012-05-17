@@ -16,7 +16,7 @@ public interface TileFixture extends XMLWritable, Comparable<TileFixture> {
 	 * @return an ID (UID for most fixtures, though perhaps not for things like
 	 *         mountains and hills) for the fixture.
 	 */
-	long getID();
+	int getID();
 	/**
 	 * @param fix a fixture
 	 * @return whether it's equal, ignoring ID (and DC for events), to this one 

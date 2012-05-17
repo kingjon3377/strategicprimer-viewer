@@ -12,7 +12,7 @@ public final class BattlefieldEvent implements IEvent {
 	/**
 	 * A (U)ID.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * Constructor.
 	 * 
@@ -20,7 +20,7 @@ public final class BattlefieldEvent implements IEvent {
 	 *            the DC to discover the battlefield.
 	 * @param idNum the ID number for the event.
 	 */
-	public BattlefieldEvent(final int discdc, final long idNum) {
+	public BattlefieldEvent(final int discdc, final int idNum) {
 		super();
 		dc = discdc;
 		id = idNum;
@@ -68,7 +68,7 @@ public final class BattlefieldEvent implements IEvent {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public final class BattlefieldEvent implements IEvent {
 	 * @return the ID number for the event.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

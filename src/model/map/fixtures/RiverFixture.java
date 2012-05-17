@@ -141,7 +141,7 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 	 *         though.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return -1;
 	}
 	/**

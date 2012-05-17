@@ -23,7 +23,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	 * @param idNum the ID number.
 	 */
 	public MineralEvent(final String minkind, final boolean exp,
-			final int discdc, final long idNum) {
+			final int discdc, final int idNum) {
 		super();
 		mineral = minkind;
 		exposed = exp;
@@ -112,7 +112,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 
 	/**
@@ -168,12 +168,12 @@ public final class MineralEvent implements IEvent, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

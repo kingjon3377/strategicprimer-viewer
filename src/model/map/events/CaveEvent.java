@@ -17,7 +17,7 @@ public final class CaveEvent implements IEvent {
 	 *            the DC to discover the caves
 	 * @param idNum the ID number for the event.
 	 */
-	public CaveEvent(final int discdc, final long idNum) {
+	public CaveEvent(final int discdc, final int idNum) {
 		super();
 		dc = discdc;
 		id = idNum;
@@ -63,7 +63,7 @@ public final class CaveEvent implements IEvent {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 
 	/**
@@ -103,12 +103,12 @@ public final class CaveEvent implements IEvent {
 	/**
 	 * The event's ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return the event's ID number.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

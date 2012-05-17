@@ -18,7 +18,7 @@ public class Dragon implements TileFixture, HasImage {
 	 * @param dKind the kind of dragon
 	 * @param idNum the ID number.
 	 */
-	public Dragon(final String dKind, final long idNum) {
+	public Dragon(final String dKind, final int idNum) {
 		kind = dKind;
 		id = idNum;
 	}
@@ -72,7 +72,7 @@ public class Dragon implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix a TileFixture to compare to
@@ -85,12 +85,12 @@ public class Dragon implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

@@ -13,7 +13,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 */
-	public Oasis(final long idNum) {
+	public Oasis(final int idNum) {
 		id = idNum;
 	}
 	/**
@@ -59,7 +59,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -74,12 +74,12 @@ public class Oasis implements TerrainFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

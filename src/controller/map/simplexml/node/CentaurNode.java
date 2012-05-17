@@ -32,7 +32,7 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	 */
 	@Override
 	public Centaur produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Centaur fix = new Centaur(getProperty(KIND_PROPERTY), Long.parseLong(getProperty("id")));
+		final Centaur fix = new Centaur(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

@@ -27,7 +27,7 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 	 */
 	@Override
 	public Hill produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Hill fix = new Hill(Long.parseLong(getProperty("id")));
+		final Hill fix = new Hill(Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

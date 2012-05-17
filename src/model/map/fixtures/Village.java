@@ -30,7 +30,7 @@ public class Village implements TileFixture, HasImage {
 	 * @param vName the name of the village
 	 * @param idNum the ID number.
 	 */
-	public Village(final TownStatus vstatus, final String vName, final long idNum) {
+	public Village(final TownStatus vstatus, final String vName, final int idNum) {
 		status = vstatus;
 		name = vName;
 		id = idNum;
@@ -93,7 +93,7 @@ public class Village implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -108,12 +108,12 @@ public class Village implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

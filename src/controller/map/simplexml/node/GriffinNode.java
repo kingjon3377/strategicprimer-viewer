@@ -27,7 +27,7 @@ public class GriffinNode extends AbstractFixtureNode<Griffin> {
 	 */
 	@Override
 	public Griffin produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Griffin fix = new Griffin(Long.parseLong(getProperty("id")));
+		final Griffin fix = new Griffin(Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

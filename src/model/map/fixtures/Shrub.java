@@ -27,7 +27,7 @@ public class Shrub implements TileFixture, HasImage {
 	 * @param desc a description of the shrub.
 	 * @param idNum the ID number.
 	 */
-	public Shrub(final String desc, final long idNum) {
+	public Shrub(final String desc, final int idNum) {
 		description = desc;
 		id = idNum;
 	}
@@ -73,7 +73,7 @@ public class Shrub implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -88,12 +88,12 @@ public class Shrub implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

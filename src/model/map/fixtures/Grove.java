@@ -29,7 +29,7 @@ public class Grove implements TileFixture, HasImage {
 	 * @param idNum the ID number.
 	 */
 	public Grove(final boolean fruit, final boolean wildGrove,
-			final String tree, final long idNum) {
+			final String tree, final int idNum) {
 		orchard = fruit;
 		wild = wildGrove;
 		kind = tree;
@@ -101,7 +101,7 @@ public class Grove implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -116,12 +116,12 @@ public class Grove implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

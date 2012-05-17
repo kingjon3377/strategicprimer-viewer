@@ -111,7 +111,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return -1;
 	}
 	/**

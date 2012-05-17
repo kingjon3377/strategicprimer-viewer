@@ -29,7 +29,7 @@ public class Meadow implements TileFixture, HasImage {
 	 * @param idNum the ID number.
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
-			final long idNum) {
+			final int idNum) {
 		kind = grain;
 		field = fld;
 		cultivated = cult;
@@ -114,7 +114,7 @@ public class Meadow implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -129,12 +129,12 @@ public class Meadow implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

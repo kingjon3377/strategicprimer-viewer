@@ -12,7 +12,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 */
-	public Sandbar(final long idNum) {
+	public Sandbar(final int idNum) {
 		id = idNum;
 	}
 	/**
@@ -58,7 +58,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix
@@ -73,12 +73,12 @@ public class Sandbar implements TerrainFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**

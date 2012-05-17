@@ -44,7 +44,7 @@ public class VillageNode extends AbstractFixtureNode<Village> {
 		final Village fix = new Village(
 				TownStatus.parseTownStatus(getProperty(STATUS_PROPERTY)),
 				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY) : "",
-				Long.parseLong(getProperty("id")));
+				Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

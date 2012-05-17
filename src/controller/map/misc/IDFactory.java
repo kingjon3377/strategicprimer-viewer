@@ -15,26 +15,26 @@ public final class IDFactory {
 	/**
 	 * The set of IDs used already.
 	 */
-	private final Set<Long> usedIDs = new HashSet<Long>(); 
+	private final Set<Integer> usedIDs = new HashSet<Integer>(); 
 	/**
 	 * Register an ID. 
 	 * @param id the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
-	public long register(final long id) { // NOPMD
-		usedIDs.add(Long.valueOf(id));
+	public int register(final int id) { // NOPMD
+		usedIDs.add(Integer.valueOf(id));
 		return id;
 	}
 	/**
 	 * Generate and register an id that hasn't been previously registered.
 	 * @return the generated id 
 	 */
-	public long getID() {
-		for (long i = 0; i < Long.MAX_VALUE; i++) {
-			if (!usedIDs.contains(Long.valueOf(i))) {
+	public int getID() {
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			if (!usedIDs.contains(Integer.valueOf(i))) {
 				return register(i);
 			}
 		}
-		throw new IllegalStateException("Exhausted all longs ...");
+		throw new IllegalStateException("Exhausted all ints ...");
 	}
 }

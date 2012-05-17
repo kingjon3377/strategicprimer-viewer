@@ -12,12 +12,12 @@ public class Animal implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
-	private final long id; // NOPMD
+	private final int id; // NOPMD
 	/**
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return id;
 	}
 	/**
@@ -39,7 +39,7 @@ public class Animal implements TileFixture, HasImage {
 	 * @param talks whether this is a talking animal.
 	 * @param idNum the ID number.
 	 */
-	public Animal(final String animal, final boolean tracks, final boolean talks, final long idNum) {
+	public Animal(final String animal, final boolean tracks, final boolean talks, final int idNum) {
 		kind = animal;
 		traces = tracks;
 		talking = talks;
@@ -121,7 +121,7 @@ public class Animal implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return (int) id;
+		return id;
 	}
 	/**
 	 * @param fix

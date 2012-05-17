@@ -69,7 +69,7 @@ public class Mountain implements TerrainFixture, HasImage {
 	 * @return an ID number
 	 */
 	@Override
-	public long getID() {
+	public int getID() {
 		return -1;
 	}
 	/**

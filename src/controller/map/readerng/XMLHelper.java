@@ -156,10 +156,10 @@ public final class XMLHelper {
 	 * @return the ID the tag has if it has one, or otherwise a generated one.
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
-	public static long getOrGenerateID(final StartElement element,
+	public static int getOrGenerateID(final StartElement element,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		if (hasAttribute(element, "id")) {
-			return idFactory.register(Long.parseLong(getAttribute(element, "id"))); // NOPMD
+			return idFactory.register(Integer.parseInt(getAttribute(element, "id"))); // NOPMD
 		} else {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "id", element.getLocation()

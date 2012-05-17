@@ -27,7 +27,7 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	 */
 	@Override
 	public Minotaur produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Minotaur fix = new Minotaur(Long.parseLong(getProperty("id")));
+		final Minotaur fix = new Minotaur(Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}

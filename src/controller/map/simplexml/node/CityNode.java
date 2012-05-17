@@ -63,7 +63,7 @@ public class CityNode extends AbstractFixtureNode<CityEvent> {
 				TownSize.parseTownSize(getProperty(SIZE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
 				hasProperty(NAME_PROPERTY) ? getProperty(NAME_PROPERTY)
-						: "", Long.parseLong(getProperty(ID_PROPERTY)));
+						: "", Integer.parseInt(getProperty(ID_PROPERTY)));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
 		}
