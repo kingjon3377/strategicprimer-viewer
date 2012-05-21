@@ -476,14 +476,21 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	private static <T extends XMLWritable> void assertSerialization(final String message,
 			final ISPReader reader, final T obj, final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException, IOException {
-		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(obj.toXML()), type, false, warner));
-		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(obj.toXML()), type, true, warner));
-		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(createSerializedForm(obj)), type, false, warner));
-		assertEquals(message, obj, reader.readXML(FAKE_FILENAME, new StringReader(createSerializedForm(obj)), type, true, warner));
+		assertEquals(message, obj, reader.readXML(FAKE_FILENAME,
+				new StringReader(createSerializedForm(obj, true)), type, false,
+				warner));
+		assertEquals(message, obj, reader.readXML(FAKE_FILENAME,
+				new StringReader(createSerializedForm(obj, true)), type, true,
+				warner));
+		assertEquals(message, obj, reader.readXML(FAKE_FILENAME,
+				new StringReader(createSerializedForm(obj, false)), type,
+				false, warner));
+		assertEquals(message, obj, reader.readXML(FAKE_FILENAME,
+				new StringReader(createSerializedForm(obj, false)), type, true,
+				warner));
 	}
 	/**
 	 * Assert that a deprecated idiom deserializes properly if warnings are ignored, but is warned about.
@@ -612,13 +619,19 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	}
 	/**
 	 * @param obj an object
+	 * @param deprecated whether to use the deprecated XML-serialization idiom
 	 * @return its serialized form
 	 * @throws IOException on I/O error creating it
 	 */
-	public static String createSerializedForm(final XMLWritable obj) throws IOException {
-		final StringWriter writer = new StringWriter();
-		new ReaderAdapter().write(obj).write(writer, true, 0);
-		return writer.toString();
+	@SuppressWarnings("deprecation")
+	public static String createSerializedForm(final XMLWritable obj, final boolean deprecated) throws IOException {
+		if (deprecated) {
+			return obj.toXML(); // NOPMD
+		} else {
+			final StringWriter writer = new StringWriter();
+			new ReaderAdapter().write(obj).write(writer, true, 0);
+			return writer.toString();
+		}
 	}
 	/**
 	 * @param <T> the type of the object

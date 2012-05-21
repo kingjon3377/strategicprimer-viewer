@@ -90,7 +90,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testCitySerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -112,8 +111,10 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Serialization of CityEvent without a name, reflection",
 				three, CityEvent.class, new Warning(Warning.Action.Ignore));
-		assertMissingProperty(three.toXML(), CityEvent.class, NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three), CityEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, true),
+				CityEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, false),
+				CityEvent.class, NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				CityEvent.class, "id", true);
@@ -131,7 +132,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testFortificationSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -155,8 +155,10 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Serialization of FortificationEvent without a name, reflection",
 				three, FortificationEvent.class, new Warning(
 						Warning.Action.Ignore));
-		assertMissingProperty(three.toXML(), FortificationEvent.class, NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three), FortificationEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, true),
+				FortificationEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, false),
+				FortificationEvent.class, NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				FortificationEvent.class, "id", true);
@@ -174,7 +176,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testMineralSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -187,9 +188,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				two, MineralEvent.class);
 		final String oldKindProperty = "mineral"; // NOPMD
 		assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
-				two, two.toXML().replace(KIND_PROPERTY, oldKindProperty), MineralEvent.class, oldKindProperty);
+				two, createSerializedForm(two, true).replace(KIND_PROPERTY, oldKindProperty), MineralEvent.class, oldKindProperty);
 		assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
-				two, createSerializedForm(two).replace(KIND_PROPERTY, oldKindProperty), MineralEvent.class, oldKindProperty);
+				two, createSerializedForm(two, false).replace(KIND_PROPERTY, oldKindProperty), MineralEvent.class, oldKindProperty);
 		assertUnwantedChild("<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
 				MineralEvent.class, false);
 		assertMissingProperty("<mineral dc=\"0\" exposed=\"false\" />",
@@ -213,7 +214,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testStoneSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -226,12 +226,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		final StoneEvent three = new StoneEvent(StoneKind.Marble, 10, 3);
 		final String oldKindProperty = "stone"; // NOPMD
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom", three, three
-						.toXML().replace(KIND_PROPERTY, oldKindProperty), StoneEvent.class,
-				oldKindProperty);
+				"Deserialization of deprecated stone idiom",
+				three,
+				createSerializedForm(three, true).replace(KIND_PROPERTY,
+						oldKindProperty), StoneEvent.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
-				createSerializedForm(three).replace(KIND_PROPERTY, oldKindProperty),
+				createSerializedForm(three, false).replace(KIND_PROPERTY, oldKindProperty),
 				StoneEvent.class, oldKindProperty);
 		assertUnwantedChild(
 				"<stone kind=\"stone\" dc=\"10\"><troll /></stone>",
@@ -253,7 +254,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 *             on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testTownSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -273,8 +273,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization(
 				"Serialization of TownEvent without a name, reflection",
 				three, TownEvent.class, new Warning(Warning.Action.Ignore));
-		assertMissingProperty(three.toXML(), TownEvent.class, NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three), TownEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, true), TownEvent.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, false), TownEvent.class, NAME_PROPERTY, true);
 		assertMissingProperty("<town status=\"active\" size=\"small\"/>", TownEvent.class,
 				"dc", false);
 		assertMissingProperty("<town dc=\"0\" status=\"active\" />",

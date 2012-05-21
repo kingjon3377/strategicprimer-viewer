@@ -152,7 +152,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 *             on XML reading error
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testTileSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -180,10 +179,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five, five.toXML().replace("kind", oldKindProperty), Tile.class, oldKindProperty);
+				five, createSerializedForm(five, true).replace("kind",
+						oldKindProperty), Tile.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five, createSerializedForm(five).replace("kind", oldKindProperty), Tile.class, oldKindProperty);
+				five, createSerializedForm(five, false).replace("kind", oldKindProperty), Tile.class, oldKindProperty);
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
 		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />",
@@ -208,13 +208,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		// This is hackish, but we're using the same expected string with two
 		// serialization frameworks, one of which is much smarter about
 		// indentation.
-		assertEquals("Multiple units should come through", xmlTwo, six.toXML().replace("\t\t", "")); 
 		assertEquals("Multiple units should come through", xmlTwo,
-				createSerializedForm(six));
-		assertEquals("Shouldn't print empty not-visible tiles", "", new Tile(0,
-				0, TileType.NotVisible).toXML());
+				createSerializedForm(six, true).replace("\t\t", ""));
+		assertEquals("Multiple units should come through", xmlTwo,
+				createSerializedForm(six, false));
 		assertEquals("Shouldn't print empty not-visible tiles", "",
-				createSerializedForm(new Tile(0, 0, TileType.NotVisible)));
+				createSerializedForm(new Tile(0, 0, TileType.NotVisible), true));
+		assertEquals("Shouldn't print empty not-visible tiles", "",
+				createSerializedForm(new Tile(0, 0, TileType.NotVisible), false));
 	}
 	/**
 	 * Test that row nodes are ignored, and that "future" tags are skipped but warned about.

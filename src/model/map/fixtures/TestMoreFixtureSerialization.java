@@ -99,7 +99,6 @@ public final class TestMoreFixtureSerialization extends
 	 *             on XML reader error
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testMineSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -113,11 +112,13 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Fourth test of Mine serialization, reflection",
 				four, Mine.class);
 		final String oldKindProperty = "product"; // NOPMD
-		assertDeprecatedDeserialization("Deprecated Mine idiom", four, four
-				.toXML().replace(KIND_PROPERTY, oldKindProperty), Mine.class,
-				oldKindProperty);
+		assertDeprecatedDeserialization(
+				"Deprecated Mine idiom",
+				four,
+				createSerializedForm(four, true).replace(KIND_PROPERTY,
+						oldKindProperty), Mine.class, oldKindProperty);
 		assertDeprecatedDeserialization("Deprecated Mine idiom", four,
-				createSerializedForm(four).replace(KIND_PROPERTY, oldKindProperty),
+				createSerializedForm(four, false).replace(KIND_PROPERTY, oldKindProperty),
 				Mine.class, oldKindProperty);
 		assertUnwantedChild("<mine kind=\"gold\" status=\"active\"><troll /></mine>",
 				Mine.class, false);
@@ -139,7 +140,6 @@ public final class TestMoreFixtureSerialization extends
 	 *             on XML reader error
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testShrubSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -150,12 +150,13 @@ public final class TestMoreFixtureSerialization extends
 				two, Shrub.class);
 		final String oldKindProperty = "shrub"; // NOPMD
 		assertDeprecatedDeserialization(
-				"Deserialization of mangled shrub, reflection", two, two
-						.toXML().replace(KIND_PROPERTY, oldKindProperty), Shrub.class,
-				oldKindProperty);
+				"Deserialization of mangled shrub, reflection",
+				two,
+				createSerializedForm(two, true).replace(KIND_PROPERTY,
+						oldKindProperty), Shrub.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of mangled shrub, reflection", two,
-				createSerializedForm(two).replace(KIND_PROPERTY, oldKindProperty),
+				createSerializedForm(two, false).replace(KIND_PROPERTY, oldKindProperty),
 				Shrub.class, oldKindProperty);
 		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
@@ -197,7 +198,6 @@ public final class TestMoreFixtureSerialization extends
 	 *             on XML reader error
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testVillageSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
@@ -212,10 +212,11 @@ public final class TestMoreFixtureSerialization extends
 		final Village three = new Village(TownStatus.Abandoned, "", 3);
 		assertMissingPropertyDeserialization(
 				"Serialization of village with no or empty name does The Right Thing",
-				three, three.toXML(), Village.class, NAME_PROPERTY);
+				three, createSerializedForm(three, true), Village.class,
+				NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
 				"Serialization of village with no or empty name does The Right Thing",
-				three, createSerializedForm(three), Village.class, NAME_PROPERTY);
+				three, createSerializedForm(three, false), Village.class, NAME_PROPERTY);
 		assertUnwantedChild("<village status=\"active\"><village /></village>",
 				Village.class, false);
 		assertMissingProperty("<village />", Village.class, STATUS_PROPERTY,
@@ -235,7 +236,6 @@ public final class TestMoreFixtureSerialization extends
 	 *             never
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testUnitWarnings() throws XMLStreamException, SPFormatException, IOException { // NOPMD
 		assertMissingProperty("<unit />", Unit.class, "owner", true);
@@ -250,11 +250,11 @@ public final class TestMoreFixtureSerialization extends
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				one, one.toXML().replace(KIND_PROPERTY, oldKindProperty),
+				one, createSerializedForm(one, true).replace(KIND_PROPERTY, oldKindProperty),
 						Unit.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				one, createSerializedForm(one).replace(KIND_PROPERTY, oldKindProperty),
+				one, createSerializedForm(one, false).replace(KIND_PROPERTY, oldKindProperty),
 						Unit.class, oldKindProperty);
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class, NAME_PROPERTY, true);
 		assertSerialization(
@@ -268,10 +268,10 @@ public final class TestMoreFixtureSerialization extends
 				Unit.class, "owner");
 		final Unit four = new Unit(new Player(3, ""), "unitKind", "", 4);
 		assertMissingPropertyDeserialization(
-				"Deserialize unit with no name properly", four, four.toXML(),
-				Unit.class, NAME_PROPERTY);
+				"Deserialize unit with no name properly", four,
+				createSerializedForm(four, true), Unit.class, NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
-				"Deserialize unit with no name properly", four, createSerializedForm(four),
+				"Deserialize unit with no name properly", four, createSerializedForm(four, false),
 				Unit.class, NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with empty name properly", four,
