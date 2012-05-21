@@ -88,7 +88,7 @@ public final class TileCollection implements Iterable<Point>, Subsettable<TileCo
 	
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(Tile)} has the side effect of printing what makes it
+	 * {@link Tile#isSubset(SimpleTile)} has the side effect of printing what makes it
 	 * *not* a subset; we want that done for *all* relevant tiles.
 	 * 
 	 * @param obj
