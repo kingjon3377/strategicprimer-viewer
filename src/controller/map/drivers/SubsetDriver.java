@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.SPMap;
+import model.map.IMap;
 import util.Pair;
 import util.Warning;
 import view.util.SystemOut;
@@ -33,13 +33,13 @@ public final class SubsetDriver {
 			SystemOut.SYS_OUT.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final Pair<SPMap, Boolean> mainPair = safeLoadMap(reader, args[0]);
+		final Pair<IMap, Boolean> mainPair = safeLoadMap(reader, args[0]);
 		if (Boolean.TRUE.equals(mainPair.second())) {
 			System.err.println("Error loading main map");
 			System.exit(1);
 			return;
 		}
-		final SPMap mainMap = mainPair.first(); // NOPMD
+		final IMap mainMap = mainPair.first(); // NOPMD
 		SystemOut.SYS_OUT.println("OK if strict subset, WARN if needs manual checking, FAIL if error in reading");
 		for (String arg : args) {
 			if (arg.equals(args[0])) {
@@ -47,12 +47,12 @@ public final class SubsetDriver {
 			}
 			SystemOut.SYS_OUT.print(arg);
 			SystemOut.SYS_OUT.print("\t...\t\t");
-			final Pair<SPMap, Boolean> pair = safeLoadMap(reader, arg);
+			final Pair<IMap, Boolean> pair = safeLoadMap(reader, arg);
 			if (Boolean.TRUE.equals(pair.second())) {
 				SystemOut.SYS_OUT.println("FAIL");
 				continue;
 			}
-			final SPMap map = pair.first(); // NOPMD
+			final IMap map = pair.first(); // NOPMD
 			if (mainMap.isSubset(map)) {
 				SystemOut.SYS_OUT.println("OK");
 			} else {
@@ -71,22 +71,22 @@ public final class SubsetDriver {
 	 *            the name of a map
 	 * @return a Pair of the map (or null) and whether an exception was thrown.
 	 */
-	private static Pair<SPMap, Boolean> safeLoadMap(final MapReaderAdapter reader, final String filename) {
+	private static Pair<IMap, Boolean> safeLoadMap(final MapReaderAdapter reader, final String filename) {
 		try {
-			return Pair.of(reader.readMap(filename, new Warning(// NOPMD
+			return Pair.of((IMap) reader.readMap(filename, new Warning(// NOPMD
 					Warning.Action.Ignore)), Boolean.FALSE);
 		} catch (MapVersionException e) {
 			Warning.INSTANCE.warn(e);
-			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
+			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
 		} catch (IOException e) {
 			Warning.INSTANCE.warn(e);
-			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
+			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
 		} catch (XMLStreamException e) {
 			Warning.INSTANCE.warn(e);
-			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
+			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
 		} catch (SPFormatException e) {
 			Warning.INSTANCE.warn(e);
-			return Pair.of((SPMap) null, Boolean.TRUE); // NOPMD
+			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
 		}
 	}
 	

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.SPMap;
+import model.map.IMap;
 import model.viewer.TileViewSize;
 import util.Warning;
 import view.map.main.CachingTileDrawHelper;
@@ -43,7 +43,7 @@ public class DrawHelperComparator { // NOPMD
 	 * @param repetitions
 	 *            how many times to repeat each test
 	 */
-	public DrawHelperComparator(final SPMap map, final int repetitions) {
+	public DrawHelperComparator(final IMap map, final int repetitions) {
 		spmap = map;
 		rows = spmap.rows();
 		cols = spmap.cols();
@@ -54,7 +54,7 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * The map.
 	 */
-	private final SPMap spmap;
+	private final IMap spmap;
 	/**
 	 * The size of the map in rows.
 	 */

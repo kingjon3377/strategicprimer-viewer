@@ -29,5 +29,5 @@ public interface Changeset {
 	 * Apply the changeset to a map. TODO: Should this possibly take different arguments?
 	 * @param map the map to apply it to.
 	 */
-	void apply(SPMap map);
+	void apply(IMap map);
 }

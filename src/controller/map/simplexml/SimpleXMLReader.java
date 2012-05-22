@@ -12,6 +12,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMap;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.IteratorWrapper;
@@ -73,7 +74,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException
 	 *             if the data is invalid
 	 */
-	public SPMap readMap(final String file, final boolean reflection, final Warning warner)
+	public IMap readMap(final String file, final boolean reflection, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		final FileReader istream = new FileReader(file);
 		try {

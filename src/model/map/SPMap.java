@@ -9,7 +9,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  * 
  */
-public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap> {
+public class SPMap implements IMap {
 	/**
 	 * Map max version.
 	 */
@@ -21,6 +21,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	/**
 	 * @return the map version
 	 */
+	@Override
 	public int getVersion() {
 		return version;
 	}
@@ -65,6 +66,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * 
 	 * @return how many rows the map has.
 	 */
+	@Override
 	public final int rows() {
 		return myRows;
 	}
@@ -73,6 +75,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * 
 	 * @return how many columns the map has
 	 */
+	@Override
 	public final int cols() {
 		return myCols;
 	}
@@ -93,6 +96,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * @param player
 	 *            the player to add
 	 */
+	@Override
 	public final void addPlayer(final Player player) {
 		players.addPlayer(player);
 	}
@@ -105,6 +109,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * 
 	 * @return the tile at those coordinates
 	 */
+	@Override
 	public final Tile getTile(final int row, final int col) {
 		return getTile(PointFactory.point(row, col));
 	}
@@ -112,6 +117,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * @param point a point
 	 * @return the tile at those coordinates
 	 */
+	@Override
 	public final Tile getTile(final Point point) {
 		return tiles.getTile(point);
 	}
@@ -119,6 +125,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * 
 	 * @return the players in the map
 	 */
+	@Override
 	public PlayerCollection getPlayers() {
 		return players;
 	}
@@ -132,9 +139,9 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof SPMap && myCols == ((SPMap) obj).cols()
-						&& myRows == ((SPMap) obj).rows()
-						&& players.equals(((SPMap) obj).getPlayers()) && tiles
+				|| (obj instanceof SPMap && myCols == ((IMap) obj).cols()
+						&& myRows == ((IMap) obj).rows()
+						&& players.equals(((IMap) obj).getPlayers()) && tiles
 							.equals(((SPMap) obj).tiles));
 	}
 
@@ -225,9 +232,9 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * @return whether it's a strict subset of this one
 	 */
 	@Override
-	public boolean isSubset(final SPMap obj) {
+	public boolean isSubset(final IMap obj) {
 		if (cols() == obj.cols() && rows() == obj.rows()) {
-			return players.isSubset(obj.players) && tiles.isSubset(obj.tiles); // NOPMD
+			return players.isSubset(obj.getPlayers()) && tiles.isSubset(obj.getTiles()); // NOPMD
 		} else {
 			SystemOut.SYS_OUT.println("Sizes differ");
 			return false;
@@ -239,7 +246,7 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final SPMap other) {
+	public int compareTo(final IMap other) {
 		return equals(other) ? 0 : hashCode() - other.hashCode();
 	}
 	/**
@@ -260,4 +267,11 @@ public class SPMap implements XMLWritable, Subsettable<SPMap>, Comparable<SPMap>
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return the collection of tiles
+	 */
+	@Override
+	public TileCollection getTiles() {
+		return tiles;
+	}
 }

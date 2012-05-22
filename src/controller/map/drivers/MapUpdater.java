@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.IMap;
 import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
@@ -33,14 +34,14 @@ public final class MapUpdater {
 	/**
 	 * The master map.
 	 */
-	private final SPMap master;
+	private final IMap master;
 
 	/**
 	 * 
 	 * @param masterMap
 	 *            the master map
 	 */
-	public MapUpdater(final SPMap masterMap) {
+	public MapUpdater(final IMap masterMap) {
 		master = masterMap;
 	}
 
@@ -50,7 +51,7 @@ public final class MapUpdater {
 	 * @param derived
 	 *            the derived map to update.
 	 */
-	public void update(final SPMap derived) {
+	public void update(final IMap derived) {
 		if (master.rows() != derived.rows() || master.cols() != derived.cols()) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}

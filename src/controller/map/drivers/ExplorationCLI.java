@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
-import model.map.SPMap;
+import model.map.IMap;
 import model.map.Tile;
 import util.Warning;
 import view.util.DriverQuit;
@@ -54,7 +54,7 @@ public final class ExplorationCLI {
 	 * @param reader the stream to read commands from
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final SPMap map, final BufferedReader reader,
+	private void repl(final IMap map, final BufferedReader reader,
 			final PrintStream ostream) {
 		try {
 			ostream.print("Command: ");
@@ -89,7 +89,7 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	public void handleCommand(final SPMap map, final BufferedReader reader,
+	public void handleCommand(final IMap map, final BufferedReader reader,
 			final PrintStream ostream, final char input) throws IOException {
 		switch (input) {
 		case 'x':
@@ -140,7 +140,7 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	private void explore(final SPMap map, final BufferedReader reader,
+	private void explore(final IMap map, final BufferedReader reader,
 			final PrintStream ostream) throws IOException {
 		final Tile tile = selectTile(map, reader, ostream);
 		ostream.print("Tile is ");
@@ -169,7 +169,7 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	private void fortressInfo(final SPMap map, final BufferedReader reader,
+	private void fortressInfo(final IMap map, final BufferedReader reader,
 			final PrintStream ostream) throws IOException {
 		try {
 			ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
@@ -210,7 +210,7 @@ public final class ExplorationCLI {
 	 * @throws IOException
 	 *             on I/O error
 	 */
-	private static Tile selectTile(final SPMap map,
+	private static Tile selectTile(final IMap map,
 			final BufferedReader reader, final PrintStream ostream)
 			throws IOException {
 		return map.getTile(getInteger(reader, ostream, "Row: "),

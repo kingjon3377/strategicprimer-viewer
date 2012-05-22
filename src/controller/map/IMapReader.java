@@ -5,6 +5,7 @@ import java.io.Reader;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.IMap;
 import model.map.SPMap;
 import util.Warning;
 
@@ -49,6 +50,6 @@ public interface IMapReader {
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */
-	SPMap readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
+	IMap readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException, MapVersionException;
 }

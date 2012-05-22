@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
+import model.map.IMap;
 import model.map.Player;
 import model.map.River;
 import model.map.SPMap;
@@ -78,7 +79,7 @@ public class Converter { // NOPMD
 	 *            don't go on players' maps)
 	 * @return a version-2 equivalent with greater resolution
 	 */
-	public SPMap convert(final SPMap old, final boolean main) {
+	public SPMap convert(final IMap old, final boolean main) {
 		final IDFactory idFactory = new IDFactory();
 		final SPMap retval = new SPMap(2, old.rows() * SUBTILES_PER_TILE,
 				old.cols() * SUBTILES_PER_TILE);
@@ -266,7 +267,7 @@ public class Converter { // NOPMD
 	 *            main map)
 	 * @param idFactory the factory to use to create ID numbers
 	 */
-	private void perturb(final Tile tile, final SPMap map, final Random random,
+	private void perturb(final Tile tile, final IMap map, final Random random,
 			final boolean main, final IDFactory idFactory) {
 		if (!TileType.Ocean.equals(tile.getTerrain())) {
 			if (isAdjacentToTown(tile, map)
@@ -368,7 +369,7 @@ public class Converter { // NOPMD
 	 *            the map it's in
 	 * @return whether the tile is adjacent to a town.
 	 */
-	private static boolean isAdjacentToTown(final Tile tile, final SPMap map) {
+	private static boolean isAdjacentToTown(final Tile tile, final IMap map) {
 		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
 			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
 				final Tile neighbor = map.getTile(row, col);
@@ -393,7 +394,7 @@ public class Converter { // NOPMD
 	 *            the map it's in
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
-	private static boolean isAdjacentToWater(final Tile tile, final SPMap map) {
+	private static boolean isAdjacentToWater(final Tile tile, final IMap map) {
 		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
 			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
 				final Tile neighbor = map.getTile(row, col);

@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
-import model.map.SPMap;
+import model.map.IMap;
 import model.map.Tile;
 import util.SingletonRandom;
 import util.Warning;
@@ -55,12 +55,12 @@ public final class GenerateTileContents {
 	/**
 	 * The singleton map we'll be consulting.
 	 */
-	private final SPMap map;
+	private final IMap map;
 	/**
 	 * Constructor.
 	 * @param theMap the map we'll be consulting.
 	 */
-	private GenerateTileContents(final SPMap theMap) {
+	private GenerateTileContents(final IMap theMap) {
 		map = theMap;
 		new TableLoader().loadAllTables("tables", runner);
 	}
