@@ -15,6 +15,7 @@ import util.FatalWarning;
 import util.Warning;
 import controller.map.DeprecatedPropertyException;
 import controller.map.ISPReader;
+import controller.map.MissingChildException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.TestReaderFactory;
@@ -642,4 +643,96 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		obj.setFile("string");
 		return obj;
 	}
+	/**
+	 * Assert that reading the given XML will give a MissingChildException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but object with them made fatal. This version tests
+	 * both old and new readers.
+	 * 
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param warning
+	 *            whether this is supposed to be only a warning
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	public void assertMissingChild(final String xml,
+			final Class<?> desideratum, final boolean warning)
+			throws XMLStreamException, SPFormatException {
+		assertMissingChild(oldReader, xml, desideratum, warning);
+		assertMissingChild(newReader, xml, desideratum, warning);
+	}
+	/**
+	 * Assert that reading the given XML will give a MissingChildException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but object with them made fatal. This version runs both
+	 * with and without reflection.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param warning
+	 *            whether this is supposed to be only a warning
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	private static void assertMissingChild(final ISPReader reader,
+			final String xml, final Class<?> desideratum, final boolean warning)
+			throws XMLStreamException, SPFormatException {
+		assertMissingChild(reader, xml, desideratum, true, warning);
+		assertMissingChild(reader, xml, desideratum, false, warning);
+	}
+	/**
+	 * Assert that reading the given XML will give a MissingChildException.
+	 * If it's only supposed to be a warning, assert that it'll pass with
+	 * warnings disabled but object with them made fatal.
+	 * 
+	 * @param reader
+	 *            the reader to do the reading
+	 * @param xml
+	 *            the XML to read
+	 * @param desideratum
+	 *            the class it would produce if it weren't erroneous
+	 * @param reflection
+	 *            whether to use the reflection version of the reader or not
+	 * @param warning
+	 *            whether this is supposed to be only a warning
+	 * @throws SPFormatException
+	 *             on unexpected SP format error
+	 * @throws XMLStreamException
+	 *             on XML format error
+	 */
+	private static void assertMissingChild(final ISPReader reader, final String xml,
+			final Class<?> desideratum, final boolean reflection, final boolean warning)
+			throws XMLStreamException, SPFormatException {
+				if (warning) {
+					reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum, reflection,
+							new Warning(Warning.Action.Ignore));
+					try {
+						reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum, reflection,
+								new Warning(Warning.Action.Die));
+						fail("We were expecting a MissingChildException");
+					} catch (FatalWarning except) {
+						assertTrue("Missing property",
+								except.getCause() instanceof MissingChildException);
+					}
+				} else {
+					try {
+						reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum, reflection,
+								new Warning(Warning.Action.Ignore));
+						fail("We were expecting a MissingParameterException");
+					} catch (MissingChildException except) {
+						assertTrue(true);
+					}
+				}
+			}
 }

@@ -92,6 +92,7 @@ public final class NodeFactory { // NOPMD
 		addTag("simurgh", Tag.Simurgh);
 		addTag("sphinx", Tag.Sphinx);
 		addTag("troll", Tag.Troll);
+		addTag("view", Tag.View);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -285,6 +286,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case Troll:
 			node = new TrollNode();
+			break;
+		case View:
+			node = new ViewNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");

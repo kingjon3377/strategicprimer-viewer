@@ -11,6 +11,10 @@ package controller.map.simplexml.node;
 @Deprecated
 public enum Tag {
 	/**
+	 * A view of a map. 
+	 */
+	View(ViewNode.class),
+	/**
 	 * The main map tag.
 	 */
 	Map(MapNode.class),

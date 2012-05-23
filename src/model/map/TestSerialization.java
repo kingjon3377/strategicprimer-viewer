@@ -260,6 +260,38 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMap.class, "columns", false);
 	}
 	/**
+	 * Test view serialization.
+	 * @throws SPFormatException
+	 *             on SP format error
+	 * @throws XMLStreamException
+	 *             on XML reading error
+	 * @throws IOException on I/O error creating serialized form
+	 */
+	@Test
+	public void testViewSerialization() throws XMLStreamException, SPFormatException, IOException {
+		final SPMap mOne = setFileOnObject(new SPMap(2, 1, 1));
+		mOne.addPlayer(setFileOnObject(new Player(1, "playerOne")));
+		mOne.addTile(setFileOnObject(new Tile(0, 0, TileType.Steppe)));
+		final MapView one = setFileOnObject(new MapView(mOne, 1, 0));
+		assertSerialization("MapView serialization", one, MapView.class);
+		assertMissingProperty(
+				"<view current_turn=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+				MapView.class, "current_player", false);
+		assertMissingProperty(
+				"<view current_player=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+				MapView.class, "current_turn", false);
+		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />", MapView.class, false);
+		assertUnwantedChild(
+				new StringBuilder(
+						"<view current_player=\"0\" current_turn=\"0\">")
+						.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
+						.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
+						.append("</view>").toString(), MapView.class, false);
+		assertUnwantedChild(
+				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
+				MapView.class, false);
+	}
+	/**
 	 * Test the <include> tag.
 	 * @throws SPFormatException
 	 *             on SP format error

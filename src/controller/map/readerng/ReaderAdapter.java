@@ -119,6 +119,7 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 		factory(new MineralReader());
 		factory(new StoneReader());
 		factory(new RiverReader());
+		factory(new ViewReader());
 	}
 
 	/**
