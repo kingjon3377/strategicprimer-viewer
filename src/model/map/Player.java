@@ -34,7 +34,7 @@ public class Player implements Comparable<Player>, XMLWritable {
 	 * 
 	 * @return the player's number
 	 */
-	public final int getId() {
+	public final int getPlayerId() {
 		return playerID;
 	}
 
@@ -55,7 +55,7 @@ public class Player implements Comparable<Player>, XMLWritable {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof Player && playerID == ((Player) obj).getId() && playerName
+				|| (obj instanceof Player && playerID == ((Player) obj).getPlayerId() && playerName
 						.equals(((Player) obj).getName()));
 	}
 
@@ -116,7 +116,7 @@ public class Player implements Comparable<Player>, XMLWritable {
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<player number=\"").append(getId())
+		return new StringBuilder("<player number=\"").append(getPlayerId())
 				.append("\" code_name=\"").append(getName()).append("\" />")
 				.toString();
 	}

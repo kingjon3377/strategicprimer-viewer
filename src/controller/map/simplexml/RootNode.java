@@ -93,7 +93,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 						Integer.toString(((AbstractChildNode<SPMap>) child)
 								.produce(new PlayerCollection(),
 										new Warning(Warning.Action.Die))
-								.getPlayers().getCurrentPlayer().getId()),
+								.getPlayers().getCurrentPlayer().getPlayerId()),
 						new Warning(Warning.Action.Die));
 				root.addProperty("current_turn", "0", new Warning(Warning.Action.Die));
 				return (AbstractChildNode<T>) root;

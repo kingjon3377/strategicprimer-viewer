@@ -41,7 +41,7 @@ public class ResolutionDecreaseConverter {
 		for (Player player : old.getPlayers()) {
 			newMap.addPlayer(player);
 		}
-		final MapView retval = new MapView(newMap, newMap.getPlayers().getCurrentPlayer().getId(), 0);
+		final MapView retval = new MapView(newMap, newMap.getPlayers().getCurrentPlayer().getPlayerId(), 0);
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				retval.getMap().addTile(

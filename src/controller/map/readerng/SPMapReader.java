@@ -143,7 +143,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			retval.addAttribute(
 					"current_player",
 					Integer.toString(obj.getPlayers().getCurrentPlayer()
-							.getId()));
+							.getPlayerId()));
 		}
 		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 		tagMap.put(obj.getFile(), retval);

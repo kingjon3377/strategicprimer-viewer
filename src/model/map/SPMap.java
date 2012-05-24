@@ -196,7 +196,7 @@ public class SPMap implements IMap {
 		sbuild.append(cols());
 		if (!players.getCurrentPlayer().getName().isEmpty()) {
 			sbuild.append("\" current_player=\"");
-			sbuild.append(players.getCurrentPlayer().getId());
+			sbuild.append(players.getCurrentPlayer().getPlayerId());
 		}
 		sbuild.append("\">\n");
 		for (Player player : players) {

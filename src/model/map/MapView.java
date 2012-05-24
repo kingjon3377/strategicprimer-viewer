@@ -46,7 +46,7 @@ public class MapView implements IMap {
 	@Override
 	public String toXML() {
 		final StringBuilder builder = new StringBuilder("<view current_player=\"");
-		builder.append(player.getId());
+		builder.append(player.getPlayerId());
 		builder.append("\" current_turn=\"");
 		builder.append(turn);
 		builder.append("\">\n");

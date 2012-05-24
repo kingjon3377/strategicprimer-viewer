@@ -114,7 +114,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	@Override
 	public <S extends Unit> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("unit");
-		retval.addAttribute("owner", Integer.toString(obj.getOwner().getId()));
+		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
 		if (!obj.getKind().isEmpty()) {
 			retval.addAttribute("kind", obj.getKind());
 		}

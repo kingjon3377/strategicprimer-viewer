@@ -77,7 +77,7 @@ public class Unit implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof Unit && ((Unit) obj).owner.getId() == owner.getId()
+				|| (obj instanceof Unit && ((Unit) obj).owner.getPlayerId() == owner.getPlayerId()
 						&& (((Unit) obj).kind.equals(kind)) && (((Unit) obj).name
 							.equals(name)) && ((TileFixture) obj).getID() == id);
 	}
@@ -118,7 +118,7 @@ public class Unit implements TileFixture, HasImage {
 	@Deprecated
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<unit owner=\"");
-		sbuild.append(owner.getId());
+		sbuild.append(owner.getPlayerId());
 		if (!kind.isEmpty()) {
 			sbuild.append("\" kind=\"");
 			sbuild.append(kind);
@@ -167,7 +167,7 @@ public class Unit implements TileFixture, HasImage {
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return this == fix
-				|| (fix instanceof Unit && ((Unit) fix).owner.getId() == owner.getId()
+				|| (fix instanceof Unit && ((Unit) fix).owner.getPlayerId() == owner.getPlayerId()
 						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
 							.equals(name)));
 	}

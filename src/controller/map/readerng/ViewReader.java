@@ -157,7 +157,7 @@ public class ViewReader implements INodeHandler<MapView> {
 		retval.addAttribute(
 				"current_player",
 				Integer.toString(obj.getPlayers().getCurrentPlayer()
-						.getId()));
+						.getPlayerId()));
 		retval.addAttribute("current_turn", Integer.toString(obj.getCurrentTurn()));
 		retval.addChild(adapter.write(obj.getMap()));
 		for (Entry<Point, SPMap> submap : obj.getSubmapIterator()) {

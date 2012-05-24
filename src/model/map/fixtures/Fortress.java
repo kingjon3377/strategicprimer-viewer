@@ -105,7 +105,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		return this == obj
 				|| (obj instanceof Fortress
 						&& (name.equals(((Fortress) obj).name))
-						&& ((Fortress) obj).owner.getId() == owner.getId() && ((Fortress) obj).units
+						&& ((Fortress) obj).owner.getPlayerId() == owner.getPlayerId() && ((Fortress) obj).units
 							.equals(units) && ((TileFixture) obj).getID() == id);
 	}
 
@@ -152,7 +152,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	@Deprecated
 	public String toXML() {
 		final StringBuilder sbuild = new StringBuilder("<fortress owner=\"");
-		sbuild.append(owner.getId());
+		sbuild.append(owner.getPlayerId());
 		if (!name.isEmpty()) {
 			sbuild.append("\" name=\"");
 			sbuild.append(name);
@@ -192,7 +192,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 */
 	@Override
 	public boolean isSubset(final Fortress obj) {
-		if (name.equals(obj.name) && obj.owner.getId() == owner.getId()) {
+		if (name.equals(obj.name) && obj.owner.getPlayerId() == owner.getPlayerId()) {
 			final Set<Unit> temp = new HashSet<Unit>(obj.units);
 			temp.removeAll(units);
 			return temp.isEmpty(); // NOPMD
@@ -221,7 +221,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		return this == fix
 				|| (fix instanceof Fortress
 						&& (name.equals(((Fortress) fix).name))
-						&& ((Fortress) fix).owner.getId() == owner.getId() && ((Fortress) fix).units
+						&& ((Fortress) fix).owner.getPlayerId() == owner.getPlayerId() && ((Fortress) fix).units
 							.equals(units));
 //		if (this == fix) {
 //			return true;

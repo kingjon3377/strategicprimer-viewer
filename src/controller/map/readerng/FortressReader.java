@@ -95,7 +95,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	@Override
 	public <S extends Fortress> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("fortress");
-		retval.addAttribute("owner", Integer.toString(obj.getOwner().getId()));
+		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}

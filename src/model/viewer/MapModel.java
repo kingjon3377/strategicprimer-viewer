@@ -82,7 +82,7 @@ public final class MapModel implements PropertyChangeSource {
 		pcs.firePropertyChange("version", (map == null ? 0 : map.getVersion()), newMap.getVersion());
 		map = newMap;
 		setSecondaryMap(new MapView(new SPMap(map.getVersion(), map.rows(),
-				map.cols()), map.getPlayers().getCurrentPlayer().getId(),
+				map.cols()), map.getPlayers().getCurrentPlayer().getPlayerId(),
 				map.getCurrentTurn()));
 		setSelection(-1, -1);
 		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0,
