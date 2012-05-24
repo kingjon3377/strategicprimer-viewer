@@ -7,6 +7,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import model.map.XMLWritable;
@@ -106,7 +107,9 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	@SuppressWarnings("unchecked")
 	private static <T> T checkType(final XMLWritable obj, final Class<T> type) {
 		if (type.isAssignableFrom(obj.getClass())) {
-			return (T) obj;
+			return (T) obj; // NOPMD
+		} else if (type.equals(MapView.class) && obj instanceof SPMap) {
+			return (T) new MapView((SPMap) obj, -2, 0);
 		} else {
 			throw new IllegalArgumentException(
 					"We want a node producing " + type.getSimpleName()

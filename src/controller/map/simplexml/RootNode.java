@@ -2,12 +2,17 @@ package controller.map.simplexml;
 
 import java.util.Iterator;
 
+import model.map.MapView;
+import model.map.PlayerCollection;
+import model.map.SPMap;
+
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 import controller.map.simplexml.node.AbstractChildNode;
 import controller.map.simplexml.node.AbstractXMLNode;
+import controller.map.simplexml.node.ViewNode;
 
 /**
  * A node at the root of the hierarchy. Its only child should be a ChildNode
@@ -39,7 +44,9 @@ public final class RootNode<T> extends AbstractXMLNode {
 			final AbstractXMLNode child = iterator().next();
 			if (child instanceof AbstractChildNode) {
 				if (((AbstractChildNode) child).getProduct().isAssignableFrom(
-						product)) {
+						product)
+						|| (product.equals(MapView.class) && ((AbstractChildNode) child)
+								.getProduct().equals(SPMap.class))) {
 					iterator().next().checkNode(warner, idFactory);
 				} else {
 					throw new IllegalArgumentException("We want a node producing "
@@ -71,7 +78,25 @@ public final class RootNode<T> extends AbstractXMLNode {
 			if (child instanceof AbstractChildNode
 					&& (((AbstractChildNode) child).getProduct()
 							.isAssignableFrom(product))) {
-				return (AbstractChildNode<T>) child;
+				return (AbstractChildNode<T>) child; // NOPMD
+			} else if (child instanceof AbstractChildNode
+					&& product.equals(MapView.class)
+					&& ((AbstractChildNode) child).getProduct().equals(
+							SPMap.class)) {
+				final AbstractChildNode<MapView> root = new ViewNode();
+				root.addChild(child);
+				// FIXME: We "deserialize" from the intermediate-representation
+				// twice, because we can't get at the child's properties from
+				// here.
+				root.addProperty(
+						"current_player",
+						Integer.toString(((AbstractChildNode<SPMap>) child)
+								.produce(new PlayerCollection(),
+										new Warning(Warning.Action.Die))
+								.getPlayers().getCurrentPlayer().getId()),
+						new Warning(Warning.Action.Die));
+				root.addProperty("current_turn", "0", new Warning(Warning.Action.Die));
+				return (AbstractChildNode<T>) root;
 			} else {
 				throw new IllegalArgumentException(
 						"First top-level tag won't produce a "
