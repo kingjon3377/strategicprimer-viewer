@@ -13,8 +13,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
+import model.map.MapView;
 import model.map.PlayerCollection;
-import model.map.SPMap;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.IMapReader;
@@ -49,7 +49,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             if the data is invalid
 	 */
 	@Override
-	public SPMap readMap(final String file, final Warning warner) throws IOException,
+	public MapView readMap(final String file, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException {
 		final Reader istream = new FileOpener().createReader(file);
 		try {
@@ -96,7 +96,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 *             if the data is invalid.
 	 */
 	@Override
-	public SPMap readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
+	public MapView readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException {
 		return readMap(file, istream, false, warner);
 	}
@@ -115,9 +115,9 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException
 	 *             if the data is invalid.
 	 */
-	public SPMap readMap(final String file, final Reader istream, final boolean reflection, final Warning warner)
+	public MapView readMap(final String file, final Reader istream, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		return readXML(file, istream, SPMap.class, reflection, warner);
+		return readXML(file, istream, MapView.class, reflection, warner);
 	}
 	/**
 	 * Use readMap if you want a map; this is public primarily for testing purposes. 

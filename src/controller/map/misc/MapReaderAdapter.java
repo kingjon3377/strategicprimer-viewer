@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.SPMap;
+import model.map.IMap;
+import model.map.MapView;
 import util.Warning;
 import controller.map.IMapReader;
 import controller.map.MapVersionException;
@@ -51,7 +52,7 @@ public class MapReaderAdapter {
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */
-	public SPMap readMap(final String filename, final Warning warner) throws IOException,
+	public MapView readMap(final String filename, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException, MapVersionException {
 		return reader.readMap(filename, warner);
 	}
@@ -61,7 +62,7 @@ public class MapReaderAdapter {
 	 * @param map the map to write. 
 	 * @throws IOException on error opening the file
 	 */
-	public void write(final String filename, final SPMap map) throws IOException {
+	public void write(final String filename, final IMap map) throws IOException {
 		writer.write(filename, map, true);
 	}
 

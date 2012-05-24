@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.SPMap;
+import model.map.IMap;
 import util.Warning;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
@@ -41,7 +41,7 @@ public final class EchoDriver {
 			System.exit(1);
 		}
 		// ESCA-JAVA0177:
-		final SPMap map; // NOPMD
+		final IMap map; // NOPMD
 		try {
 			map = new MapReaderAdapter().readMap(args[0], new Warning(//NOPMD
 					Warning.Action.Ignore));

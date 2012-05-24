@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
-import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 import util.Warning;
@@ -105,7 +104,7 @@ public final class MapUpdater {
 			System.out.print(": ");
 			System.out.print("Reading ");
 			// ESCA-JAVA0177:
-			final SPMap derived = loadMap(arg);
+			final IMap derived = loadMap(arg);
 			System.out.print("Updating ");
 			updater.update(derived);
 			System.out.print("Writing ");
@@ -158,7 +157,7 @@ public final class MapUpdater {
 	 * 
 	 * @return the map
 	 */
-	private static SPMap loadMap(final String filename) {
+	private static IMap loadMap(final String filename) {
 		try {
 			return new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Ignore));
 		} catch (final FileNotFoundException e) {

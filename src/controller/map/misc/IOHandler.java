@@ -13,7 +13,8 @@ import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.SPMap;
+import model.map.IMap;
+import model.map.MapView;
 import model.viewer.MapModel;
 import util.Warning;
 import view.util.ErrorShower;
@@ -166,7 +167,7 @@ public final class IOHandler implements ActionListener {
 	 * @param map
 	 *            the map to save.
 	 */
-	private void saveMap(final SPMap map) {
+	private void saveMap(final IMap map) {
 		if (chooser.showSaveDialog(menu) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new MapReaderAdapter().write(chooser.getSelectedFile().getPath(), map);
@@ -188,7 +189,7 @@ public final class IOHandler implements ActionListener {
 	 * @throws SPFormatException
 	 *             if the file contains invalid data
 	 */
-	private static SPMap readMap(final String filename, final Warning warner) throws IOException,
+	private static MapView readMap(final String filename, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException {
 		return new MapReaderAdapter().readMap(filename, warner);
 	}

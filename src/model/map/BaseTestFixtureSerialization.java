@@ -14,7 +14,9 @@ import javax.xml.stream.XMLStreamException;
 import util.FatalWarning;
 import util.Warning;
 import controller.map.DeprecatedPropertyException;
+import controller.map.IMapReader;
 import controller.map.ISPReader;
+import controller.map.MapVersionException;
 import controller.map.MissingChildException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
@@ -735,4 +737,23 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 					}
 				}
 			}
+	/**
+	 * Assert that a map is properly deserialized (by the main map-deserialization methods) into a view.
+	 * @param message the message to use in JUnit calls
+	 * @param expected the object to test against
+	 * @param xml the XML to deserialize it into.
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML format error
+	 * @throws MapVersionException if map format too old or new for a reader
+	 */
+	public void assertMapDeserialization(final String message,
+			final MapView expected, final String xml)
+			throws MapVersionException, XMLStreamException, SPFormatException {
+		assertEquals(message, expected, ((IMapReader) oldReader).readMap(
+				"string", new StringReader(xml),
+				new Warning(Warning.Action.Die)));
+		assertEquals(message, expected, ((IMapReader) newReader).readMap(
+				"string", new StringReader(xml),
+				new Warning(Warning.Action.Die)));
+	}
 }

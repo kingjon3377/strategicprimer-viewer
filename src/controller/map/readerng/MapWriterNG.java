@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import model.map.SPMap;
+import model.map.IMap;
 import model.map.XMLWritable;
 import controller.map.SPWriter;
 
@@ -22,7 +22,7 @@ public class MapWriterNG implements SPWriter {
 	 * @throws IOException on error opening the file
 	 */
 	@Override
-	public void write(final String filename, final SPMap map, final boolean inclusion)
+	public void write(final String filename, final IMap map, final boolean inclusion)
 			throws IOException {
 		writeObject(filename, map, inclusion);
 	}
@@ -34,7 +34,7 @@ public class MapWriterNG implements SPWriter {
 	 * @throws IOException on I/O error in writing
 	 */
 	@Override
-	public void write(final Writer out, final SPMap map, final boolean inclusion) throws IOException {
+	public void write(final Writer out, final IMap map, final boolean inclusion) throws IOException {
 		writeObject(out, map, inclusion);
 	}
 	/**

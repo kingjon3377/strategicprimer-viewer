@@ -6,7 +6,7 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
-import model.map.SPMap;
+import model.map.MapView;
 import util.Warning;
 
 /**
@@ -17,12 +17,12 @@ import util.Warning;
  */
 public interface IMapReader {
 	/**
-	 * Read the map contained in a file.
+	 * Read the map view contained in a file.
 	 * 
 	 * @param file
 	 *            the name of the file to read
 	 * @param warner the Warning instance to use for warnings.
-	 * @return the map it contains
+	 * @return the map view it contains
 	 * @throws IOException 
 	 *             if there are other I/O errors, i.e. opening the file 
 	 * @throws XMLStreamException 
@@ -32,7 +32,7 @@ public interface IMapReader {
 	 * @throws MapVersionException
 	 *             if the reader can't handle this map version
 	 */
-	SPMap readMap(final String file, final Warning warner) throws IOException, XMLStreamException,
+	MapView readMap(final String file, final Warning warner) throws IOException, XMLStreamException,
 			SPFormatException, MapVersionException;
 
 	/**

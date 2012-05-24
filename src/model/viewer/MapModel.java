@@ -3,6 +3,7 @@ package model.viewer;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import model.map.MapView;
 import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
@@ -25,7 +26,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param firstMap
 	 *            the initial map
 	 */
-	public MapModel(final SPMap firstMap) {
+	public MapModel(final MapView firstMap) {
 		setMainMap(firstMap);
 	}
 
@@ -59,11 +60,11 @@ public final class MapModel implements PropertyChangeSource {
 	/**
 	 * The main map.
 	 */
-	private SPMap map;
+	private MapView map;
 	/**
 	 * The secondary map.
 	 */
-	private SPMap secondaryMap;
+	private MapView secondaryMap;
 	/**
 	 * The currently selected tile in the main map.
 	 */
@@ -77,10 +78,12 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap
 	 *            the new map
 	 */
-	public void setMainMap(final SPMap newMap) {
+	public void setMainMap(final MapView newMap) {
 		pcs.firePropertyChange("version", (map == null ? 0 : map.getVersion()), newMap.getVersion());
 		map = newMap;
-		setSecondaryMap(new SPMap(map.getVersion(), map.rows(), map.cols()));
+		setSecondaryMap(new MapView(new SPMap(map.getVersion(), map.rows(),
+				map.cols()), map.getPlayers().getCurrentPlayer().getId(),
+				map.getCurrentTurn()));
 		setSelection(-1, -1);
 		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0,
 				getSizeCols() - 1));
@@ -91,7 +94,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap
 	 *            the new secondary map
 	 */
-	public void setSecondaryMap(final SPMap newMap) {
+	public void setSecondaryMap(final MapView newMap) {
 		if (newMap.rows() == map.rows() && newMap.cols() == map.cols()) {
 			pcs.firePropertyChange("secondary-map", secondaryMap, newMap);
 			secondaryMap = newMap;
@@ -137,7 +140,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * Swap the maps.
 	 */
 	public void swapMaps() {
-		final SPMap temp = map;
+		final MapView temp = map;
 		setMainMap(secondaryMap);
 		setSecondaryMap(temp);
 	}
@@ -185,7 +188,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * 
 	 * @return the main map
 	 */
-	public SPMap getMainMap() {
+	public MapView getMainMap() {
 		return map;
 	}
 
@@ -193,7 +196,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * 
 	 * @return the secondary map
 	 */
-	public SPMap getSecondaryMap() {
+	public MapView getSecondaryMap() {
 		return secondaryMap;
 	}
 

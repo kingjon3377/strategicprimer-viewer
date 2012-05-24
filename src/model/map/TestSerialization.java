@@ -273,6 +273,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		mOne.addPlayer(setFileOnObject(new Player(1, "playerOne")));
 		mOne.addTile(setFileOnObject(new Tile(0, 0, TileType.Steppe)));
 		final MapView one = setFileOnObject(new MapView(mOne, 1, 0));
+		System.out.println(one.toXML());
 		assertSerialization("MapView serialization", one, MapView.class);
 		assertMissingProperty(
 				"<view current_turn=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
@@ -290,6 +291,15 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
 				MapView.class, false);
+		assertMapDeserialization(
+				"Proper deserialization of map into view",
+				one,
+				new StringBuilder(
+						"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">")
+						.append("<player number=\"1\" code_name=\"playerOne\" />")
+						.append("<row index=\"0\">")
+						.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")
+						.append("</row>").append("</map>").toString());
 	}
 	/**
 	 * Test the <include> tag.

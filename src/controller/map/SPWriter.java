@@ -3,7 +3,7 @@ package controller.map;
 import java.io.IOException;
 import java.io.Writer;
 
-import model.map.SPMap;
+import model.map.IMap;
 /**
  * An interface for map (and other SP XML) writers.
  * @author Jonathan Lovelace
@@ -18,7 +18,7 @@ public interface SPWriter {
 	 * @param inclusion whether to write to other files if sub-objects came from 'include' tags.
 	 * @throws IOException on error opening the file
 	 */
-	void write(final String filename, final SPMap map, final boolean inclusion) throws IOException;
+	void write(final String filename, final IMap map, final boolean inclusion) throws IOException;
 
 	/**
 	 * Write a map.
@@ -29,6 +29,6 @@ public interface SPWriter {
 	 * @param inclusion whether to write to other files if sub-objects came from 'include' tags.
 	 * @throws IOException on error in writing
 	 */
-	void write(final Writer out, final SPMap map, final boolean inclusion) throws IOException;
+	void write(final Writer out, final IMap map, final boolean inclusion) throws IOException;
 
 }

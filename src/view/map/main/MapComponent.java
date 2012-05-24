@@ -13,7 +13,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 
-import model.map.SPMap;
+import model.map.MapView;
 import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
@@ -192,7 +192,7 @@ public final class MapComponent extends JComponent implements
 	 *            the map to load
 	 */
 	@Override
-	public void loadMap(final SPMap newMap) {
+	public void loadMap(final MapView newMap) {
 		model.setMainMap(newMap);
 		repaint();
 	}

@@ -39,7 +39,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws MapVersionException if the format isn't one we support
 	 */
 	@Override
-	public SPMap readMap(final String file, final Warning warner) throws IOException, XMLStreamException,
+	public MapView readMap(final String file, final Warning warner) throws IOException, XMLStreamException,
 			SPFormatException, MapVersionException {
 		final Reader istream = new FileOpener().createReader(file);
 		try {
@@ -59,9 +59,9 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws MapVersionException if the map version isn't one we support
 	 */
 	@Override
-	public SPMap readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
+	public MapView readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
 			SPFormatException, MapVersionException {
-		return readXML(file, istream, SPMap.class, warner);
+		return readXML(file, istream, MapView.class, warner);
 	}
 	/**
 	 * @param <T> The type of the object the XML represents
@@ -109,7 +109,8 @@ public class MapReaderNG implements IMapReader, ISPReader {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj; // NOPMD
 		} else if (type.equals(MapView.class) && obj instanceof SPMap) {
-			return (T) new MapView((SPMap) obj, -2, 0);
+			return (T) new MapView((SPMap) obj, ((SPMap) obj).getPlayers()
+					.getCurrentPlayer().getId(), 0);
 		} else {
 			throw new IllegalArgumentException(
 					"We want a node producing " + type.getSimpleName()

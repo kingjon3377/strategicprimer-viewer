@@ -1,6 +1,6 @@
 package view.map.main;
 
-import model.map.SPMap;
+import model.map.MapView;
 import model.viewer.MapModel;
 import util.PropertyChangeSource;
 
@@ -17,7 +17,7 @@ public interface MapGUI extends PropertyChangeSource {
 	 * @param newMap
 	 *            the map to load
 	 */
-	void loadMap(final SPMap newMap);
+	void loadMap(final MapView newMap);
 
 	/**
 	 * 

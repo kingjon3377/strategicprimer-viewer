@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import model.map.IMap;
 import controller.map.SPWriter;
-
-import model.map.SPMap;
 
 /**
  * A class to write a map to file.
@@ -26,7 +25,7 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 	 * @throws IOException on error opening the file
 	 */
 	@Override
-	public void write(final String filename, final SPMap map, final boolean inclusion) throws IOException {
+	public void write(final String filename, final IMap map, final boolean inclusion) throws IOException {
 		final FileWriter writer = new FileWriter(filename);
 		try {
 			write(writer, map, inclusion);
@@ -44,7 +43,7 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 	 * @param inclusion ignored
 	 */
 	@Override
-	public void write(final Writer out, final SPMap map, final boolean inclusion) {
+	public void write(final Writer out, final IMap map, final boolean inclusion) {
 		final PrintWriter writer = new PrintWriter(new BufferedWriter(out));
 		try {
 			writer.print("<?xml version=");
