@@ -68,6 +68,12 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				break;
 			}
 		}
+		if (XMLHelper.hasAttribute(element, "current_player")) {
+			map.getPlayers()
+					.getPlayer(
+							Integer.parseInt(getAttribute(element,
+									"current_player"))).setCurrent(true);
+		}
 		if (stream.iterator() instanceof IncludingIterator) {
 			map.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
