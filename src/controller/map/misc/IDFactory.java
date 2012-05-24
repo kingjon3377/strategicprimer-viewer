@@ -29,7 +29,7 @@ public final class IDFactory {
 	 * Generate and register an id that hasn't been previously registered.
 	 * @return the generated id 
 	 */
-	public int getID() {
+	public int createID() {
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
 			if (!usedIDs.contains(Integer.valueOf(i))) {
 				return register(i);

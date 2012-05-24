@@ -164,7 +164,7 @@ public final class XMLHelper {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "id", element.getLocation()
 					.getLineNumber()));
-			return idFactory.getID();
+			return idFactory.createID();
 		}
 	}
 }

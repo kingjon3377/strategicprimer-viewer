@@ -140,7 +140,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 			idFactory.register(Integer.parseInt(getProperty("id")));
 		} else {
 			warner.warn(new MissingParameterException(tag, "id", getLine()));
-			addProperty("id", Integer.toString(idFactory.getID()), warner);
+			addProperty("id", Integer.toString(idFactory.createID()), warner);
 		}
 	}
 	/**

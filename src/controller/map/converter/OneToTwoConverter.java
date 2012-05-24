@@ -134,7 +134,7 @@ public class OneToTwoConverter { // NOPMD
 	private List<Tile> convertTile(final Tile tile, final boolean main, final IDFactory idFactory) {
 		final List<Tile> initial = createInitialSubtiles(tile, main);
 		if (!tile.isEmpty()) {
-		tile.addFixture(new Village(TownStatus.Active, "", idFactory.getID()));
+		tile.addFixture(new Village(TownStatus.Active, "", idFactory.createID()));
 		final List<TileFixture> fixtures = new LinkedList<TileFixture>(
 				tile.getContents());
 		if (tile.hasRiver()) {
@@ -313,14 +313,14 @@ public class OneToTwoConverter { // NOPMD
 			if (field) {
 				addFixture(tile,
 						new Meadow(runner.recursiveConsultTable("grain", tile),
-								true, true, idFactory.getID()), main);
+								true, true, idFactory.createID()), main);
 			} else {
 				addFixture(
 						tile,
 						new Grove(true, false, runner
 								.recursiveConsultTable("fruit_trees",
 										tile), idFactory
-								.getID()), main);
+								.createID()), main);
 			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
