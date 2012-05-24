@@ -41,11 +41,11 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  * 
  */
-public class Converter { // NOPMD
+public class OneToTwoConverter { // NOPMD
 	/**
 	 * Constructor.
 	 */
-	public Converter() {
+	public OneToTwoConverter() {
 		new TableLoader().loadAllTables("tables", runner);
 	}
 	/**
@@ -60,7 +60,7 @@ public class Converter { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(Converter.class
+	private static final Logger LOGGER = Logger.getLogger(OneToTwoConverter.class
 			.getName());
 	/**
 	 * The number of subtiles per tile on each axis.

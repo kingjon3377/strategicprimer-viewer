@@ -13,7 +13,7 @@ import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.converter.Converter;
+import controller.map.converter.OneToTwoConverter;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.readerng.MapWriterNG;
 
@@ -36,7 +36,7 @@ public final class ConverterDriver {
 	/**
 	 * The converter to use.
 	 */
-	private static final Converter CONV = new Converter(); 
+	private static final OneToTwoConverter CONV = new OneToTwoConverter(); 
 	/**
 	 * The map reader we'll use.
 	 */
