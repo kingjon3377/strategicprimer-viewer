@@ -195,4 +195,13 @@ public class MapView implements IMap {
 	public SPMap getMap() {
 		return map;
 	}
+	/**
+	 * @return a String representation of the view.
+	 */
+	@Override
+	public String toString() {
+		return new StringBuilder("Map view at turn ").append(turn)
+				.append(":\nCurrent player:").append(player).append("\nMap:\n")
+				.append(map).toString();
+	}
 }
