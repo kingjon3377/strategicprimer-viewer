@@ -224,13 +224,21 @@ public class MapView implements IMap {
 	 * A collection of submaps.
 	 */
 	private final Map<Point, SPMap> submaps = new HashMap<Point, SPMap>();
+	
 	/**
-	 * Add a submap.
-	 * @param point the location of a tile
-	 * @param submap the submap of that tile
+	 * Add a submap. But we only add it if it corresponds to a (non-empty) tile
+	 * in the map (so players can't learn stuff they shouldn't know about tiles
+	 * they can't see).
+	 * 
+	 * @param point
+	 *            the location of a tile
+	 * @param submap
+	 *            the submap of that tile
 	 */
 	public void addSubmap(final Point point, final SPMap submap) {
-		submaps.put(point, submap);
+		if (!map.getTile(point).isEmpty()) {
+			submaps.put(point, submap);
+		}
 	}
 	/**
 	 * Get a submap.
