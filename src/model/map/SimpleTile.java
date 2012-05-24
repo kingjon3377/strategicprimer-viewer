@@ -125,6 +125,6 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile> {
 	public boolean equals(final Object obj) {
 		return this == obj || obj instanceof SimpleTile
 				&& getLocation().equals(((SimpleTile) obj).getLocation())
-				&& getTerrain().equals(((Tile) obj).getTerrain());
+				&& getTerrain().equals(((SimpleTile) obj).getTerrain());
 	}
 }
