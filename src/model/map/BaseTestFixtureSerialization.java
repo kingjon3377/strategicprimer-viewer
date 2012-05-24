@@ -642,7 +642,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @return it, with its file set to "string"
 	 */
 	public static <T extends XMLWritable> T setFileOnObject(final T obj) {
-		obj.setFile("string");
+		obj.setFile(FAKE_FILENAME);
 		return obj;
 	}
 	/**
@@ -750,10 +750,10 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final MapView expected, final String xml)
 			throws MapVersionException, XMLStreamException, SPFormatException {
 		assertEquals(message, expected, ((IMapReader) oldReader).readMap(
-				"string", new StringReader(xml),
+				FAKE_FILENAME, new StringReader(xml),
 				new Warning(Warning.Action.Die)));
 		assertEquals(message, expected, ((IMapReader) newReader).readMap(
-				"string", new StringReader(xml),
+				FAKE_FILENAME, new StringReader(xml),
 				new Warning(Warning.Action.Die)));
 	}
 }

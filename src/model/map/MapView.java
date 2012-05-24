@@ -1,5 +1,11 @@
 package model.map;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import util.IteratorWrapper;
+
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
  * current turn, the current player, links to submaps, and eventually
@@ -39,11 +45,21 @@ public class MapView implements IMap {
 	@Deprecated
 	@Override
 	public String toXML() {
-		// TODO: Add submaps and changesets.
-		return new StringBuilder("<view current_player=\"")
-				.append(player.getId()).append("\" current_turn=\"")
-				.append(turn).append("\">\n").append(map.toXML())
-				.append("\n</view>").toString();
+		final StringBuilder builder = new StringBuilder("<view current_player=\"");
+		builder.append(player.getId());
+		builder.append("\" current_turn=\"");
+		builder.append(turn);
+		builder.append("\">\n");
+		builder.append(map.toXML());
+		for (Point point : submaps.keySet()) {
+			builder.append("\n<submap ");
+			builder.append(point.toXML());
+			builder.append(">\n");
+			builder.append(submaps.get(point).toXML());
+			builder.append("</submap>");
+		}
+		builder.append("\n</view>");
+		return builder.toString();
 	}
 	/**
 	 * The file this view was read from.
@@ -170,7 +186,7 @@ public class MapView implements IMap {
 	public boolean equals(final Object obj) {
 		return obj instanceof MapView && map.equals(((MapView) obj).map)
 				&& player.equals(((MapView) obj).player)
-				&& turn == ((MapView) obj).turn;
+				&& turn == ((MapView) obj).turn && submaps.equals(((MapView) obj).submaps);
 	}
 	/**
 	 * @return a hash code for the object
@@ -203,5 +219,31 @@ public class MapView implements IMap {
 		return new StringBuilder("Map view at turn ").append(turn)
 				.append(":\nCurrent player:").append(player).append("\nMap:\n")
 				.append(map).toString();
+	}
+	/**
+	 * A collection of submaps.
+	 */
+	private final Map<Point, SPMap> submaps = new HashMap<Point, SPMap>();
+	/**
+	 * Add a submap.
+	 * @param point the location of a tile
+	 * @param submap the submap of that tile
+	 */
+	public void addSubmap(final Point point, final SPMap submap) {
+		submaps.put(point, submap);
+	}
+	/**
+	 * Get a submap.
+	 * @param point the location of a tile
+	 * @return the submap representing that tile 
+	 */
+	public SPMap getSubmap(final Point point) {
+		return submaps.get(point);
+	}
+	/**
+	 * @return an iterator over point-submap pairs.
+	 */
+	public Iterable<Entry<Point, SPMap>> getSubmapIterator() {
+		return new IteratorWrapper<Entry<Point, SPMap>>(submaps.entrySet().iterator());
 	}
 }

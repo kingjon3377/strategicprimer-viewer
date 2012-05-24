@@ -2,7 +2,6 @@ package controller.map.simplexml.node;
 
 import model.map.MapView;
 import model.map.PlayerCollection;
-import model.map.SPMap;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingChildException;
@@ -36,11 +35,27 @@ public class ViewNode extends AbstractChildNode<MapView> {
 	@Override
 	public MapView produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
+		MapNode map = null;
+		for (AbstractXMLNode child : this) {
+			if (child instanceof MapNode) {
+				map = (MapNode) child;
+				break;
+			}
+		}
+		if (map == null) {
+			throw new MissingChildException(TAG, getLine());
+		}
 		final MapView retval = new MapView(
-				((AbstractChildNode<SPMap>) iterator().next()).produce(players,
+				map.produce(players,
 						warner),
 				Integer.parseInt(getProperty("current_player")),
 				Integer.parseInt(getProperty("current_turn")));
+		for (AbstractXMLNode child : this) {
+			if (child instanceof SubmapNode) {
+				final SubmapNode.Submap submap = ((SubmapNode) child).produce(players, warner);
+				retval.addSubmap(submap.getLocation(), submap.getMap());
+			}
+		}
 		if (hasProperty("file")) {
 			retval.setFile(getProperty("file"));
 		}
@@ -66,17 +81,21 @@ public class ViewNode extends AbstractChildNode<MapView> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		boolean first = true;
+		System.out.println(this.prettyPrint(0));
+		int mapnodes = 0;
 		if (!iterator().hasNext()) {
 			throw new MissingChildException(TAG, getLine());
 		}
 		for (final AbstractXMLNode node : this) {
-			if (first && node instanceof MapNode) {
+			if (mapnodes == 0 && node instanceof MapNode) {
+				node.checkNode(warner, idFactory);
+				mapnodes++;
+			} else if (node instanceof SubmapNode) {
 				node.checkNode(warner, idFactory);
 			} else {
-				throw new UnwantedChildException(TAG, node.toString(), getLine());
+				throw new UnwantedChildException(TAG, node.toString(),
+						getLine());
 			}
-			first = false;
 		}
 		demandProperty(TAG, "current_player", warner, false, false);
 		demandProperty(TAG, "current_turn", warner, false, false);

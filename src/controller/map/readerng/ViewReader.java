@@ -4,12 +4,16 @@ import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.MapView;
 import model.map.PlayerCollection;
+import model.map.Point;
+import model.map.SPMap;
+import util.Pair;
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.SPFormatException;
@@ -67,6 +71,16 @@ public class ViewReader implements INodeHandler<MapView> {
 							idFactory), Integer.parseInt(getAttribute(element,
 							"current_player")), Integer.parseInt(getAttribute(
 							element, "current_turn")));
+				} else if ("submap".equalsIgnoreCase(event.asStartElement()
+						.getName().getLocalPart())
+						&& view != null) {
+					view.addSubmap(
+							new Point(Integer.parseInt(getAttribute(//NOPMD
+									event.asStartElement(), "row")), Integer
+									.parseInt(getAttribute(
+											event.asStartElement(), "column"))),
+							parseSubmap(stream, players, warner, idFactory,
+									event.asStartElement()));
 				} else {
 					throw new UnwantedChildException(element.getName()
 							.getLocalPart(), event.asStartElement().getName()
@@ -85,6 +99,50 @@ public class ViewReader implements INodeHandler<MapView> {
 		}
 		return view;
 	}
+	
+	/**
+	 * Parse a submap. We've already parsed the 'submap' tag itself to get the
+	 * coordinates of the tile the submap represents.
+	 * 
+	 * @param stream
+	 *            the stream of tags
+	 * @param players
+	 *            the collection of players to use
+	 * @param warner
+	 *            the Warning instance to use
+	 * @param idFactory
+	 *            the ID factory to use
+	 * @param parent
+	 *            the parent ('submap') tag, needed for its location on error and to spin-until-end on.
+	 * @return the submap
+	 * @throws SPFormatException on SP format problems
+	 */
+	private static SPMap parseSubmap(final Iterable<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory, final StartElement parent)
+			throws SPFormatException {
+		StartElement element = null;
+		for (XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				element = event.asStartElement();
+				break;
+			}
+		}
+		if (element == null) {
+			throw new MissingChildException("submap", parent.getLocation().getLineNumber());
+		}
+		// ESCA-JAVA0177:
+		final SPMap retval; // NOPMD
+		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
+			retval = new SPMapReader().parse(element, stream, players, warner, idFactory);
+		} else {
+			throw new UnwantedChildException("submap", element.getName()
+					.getLocalPart(), element.getLocation().getLineNumber());
+		}
+		XMLHelper.spinUntilEnd(parent.getName(), stream);
+		return retval;
+	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer. TODO: submaps, changesets
 	 * @param <S> the type of the object
@@ -101,6 +159,15 @@ public class ViewReader implements INodeHandler<MapView> {
 						.getId()));
 		retval.addAttribute("current_turn", Integer.toString(obj.getCurrentTurn()));
 		retval.addChild(adapter.write(obj.getMap()));
+		for (Entry<Point, SPMap> submap : obj.getSubmapIterator()) {
+			@SuppressWarnings("unchecked")
+			final SPIntermediateRepresentation child = new SPIntermediateRepresentation(//NOPMD
+					"submap", Pair.of("row",
+							Integer.toString(submap.getKey().row())), Pair.of(
+							"column", Integer.toString(submap.getKey().col())));
+			child.addChild(adapter.write(submap.getValue()));
+			retval.addChild(child);
+		}
 		return retval;
 	}
 }

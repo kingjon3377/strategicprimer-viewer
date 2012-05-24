@@ -93,6 +93,7 @@ public final class NodeFactory { // NOPMD
 		addTag("sphinx", Tag.Sphinx);
 		addTag("troll", Tag.Troll);
 		addTag("view", Tag.View);
+		addTag("submap", Tag.Submap);
 	}
 	/**
 	 * Create a Node from a tag using reflection.
@@ -289,6 +290,9 @@ public final class NodeFactory { // NOPMD
 			break;
 		case View:
 			node = new ViewNode();
+			break;
+		case Submap:
+			node = new SubmapNode();
 			break;
 		default:
 			throw new IllegalStateException("Shouldn't get here!");
