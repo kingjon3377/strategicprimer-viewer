@@ -89,7 +89,27 @@ public class MapView implements IMap {
 	 */
 	@Override
 	public boolean isSubset(final IMap obj) {
-		return map.isSubset(obj);
+		if (map.isSubset(obj)) {
+			if (obj instanceof MapView) {
+				final MapView other = (MapView) obj;
+				boolean retval = true;
+				System.out.print("Considering submaps:");
+				for (Point represented : submaps.keySet()) {
+					if (other.submaps.containsKey(represented)) {
+						System.out.print("\nSubmap for tile ");
+						System.out.print(represented);
+						System.out.print(": ");
+						retval &= getSubmap(represented).isSubset(
+								other.getSubmap(represented));
+					}
+				}
+				return retval; // NOPMD
+			} else {
+				return true; // NOPMD
+			}
+		} else {
+			return false;
+		}
 	}
 	/**
 	 * @param obj another map.
