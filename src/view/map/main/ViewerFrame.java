@@ -28,6 +28,23 @@ import view.util.MenuItemCreator;
  */
 public final class ViewerFrame extends JFrame {
 	/**
+	 * A listener for the Quit menu item.
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	static final class QuitListener implements ActionListener {
+		/**
+		 * Handle the menu "button" press.
+		 * @param event the event to handle
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent event) {
+			if ("Quit".equals(event.getActionCommand())) {
+				DriverQuit.quit(0);
+			}
+		}
+	}
+	/**
 	 * Default width of the Frame.
 	 */
 	private static final int DEFAULT_WIDTH = 800;
@@ -94,14 +111,7 @@ public final class ViewerFrame extends JFrame {
 				new Dimension(Integer.MAX_VALUE, 0)));
 		mbar.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
-				"Quit the viewer", new ActionListener() {
-					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Quit".equals(event.getActionCommand())) {
-							DriverQuit.quit(0);
-						}
-					}
-				}));
+				"Quit the viewer", new QuitListener()));
 		setJMenuBar(mbar);
 	}
 	/**
