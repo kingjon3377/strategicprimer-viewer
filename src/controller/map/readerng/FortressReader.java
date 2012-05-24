@@ -14,7 +14,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.XMLWritable;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Unit;
 import util.Warning;
@@ -103,9 +102,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 		tagMap.put(obj.getFile(), retval);
 		if (!obj.getUnits().isEmpty()) {
-			final ReaderAdapter adapter = new ReaderAdapter();
 			for (Unit unit : obj.getUnits()) {
-				addChild(tagMap, unit, adapter, retval);
+				addChild(tagMap, unit, retval);
 			}
 		}
 		return retval;
@@ -114,16 +112,15 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 * Add a child node to a node---the parent node, or an 'include' node representing its chosen file.
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
-	 * @param adapter the adapter to use to call the right handler.
 	 * @param parent the parent node, so we can add any include nodes created to it
 	 */
 	private static void addChild(final Map<String, SPIntermediateRepresentation> map,
-			final XMLWritable obj, final ReaderAdapter adapter, final SPIntermediateRepresentation parent) {
+			final Unit obj, final SPIntermediateRepresentation parent) {
 		if (!map.containsKey(obj.getFile())) {
 			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation("include");
 			includeTag.addAttribute("file", obj.getFile());
 			parent.addChild(includeTag);
 		}
-		map.get(obj.getFile()).addChild(adapter.write(obj));
+		map.get(obj.getFile()).addChild(new UnitReader().write(obj));
 	}
 }

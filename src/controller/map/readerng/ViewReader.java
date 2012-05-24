@@ -153,20 +153,20 @@ public class ViewReader implements INodeHandler<MapView> {
 	@Override
 	public <S extends MapView> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(TAG);
-		final ReaderAdapter adapter = new ReaderAdapter();
 		retval.addAttribute(
 				"current_player",
 				Integer.toString(obj.getPlayers().getCurrentPlayer()
 						.getPlayerId()));
 		retval.addAttribute("current_turn", Integer.toString(obj.getCurrentTurn()));
-		retval.addChild(adapter.write(obj.getMap()));
+		final SPMapReader reader = new SPMapReader();
+		retval.addChild(reader.write(obj.getMap()));
 		for (Entry<Point, SPMap> submap : obj.getSubmapIterator()) {
 			@SuppressWarnings("unchecked")
 			final SPIntermediateRepresentation child = new SPIntermediateRepresentation(//NOPMD
 					"submap", Pair.of("row",
 							Integer.toString(submap.getKey().row())), Pair.of(
 							"column", Integer.toString(submap.getKey().col())));
-			child.addChild(adapter.write(submap.getValue()));
+			child.addChild(reader.write(submap.getValue()));
 			retval.addChild(child);
 		}
 		return retval;

@@ -14,7 +14,6 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import model.map.Tile;
-import model.map.XMLWritable;
 import util.EqualsAny;
 import util.Pair;
 import util.Warning;
@@ -135,7 +134,6 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	@Override
 	public <S extends SPMap> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("map");
-		final ReaderAdapter adapter = new ReaderAdapter();
 		retval.addAttribute("version", Integer.toString(obj.getVersion()));
 		retval.addAttribute("rows", Integer.toString(obj.rows()));
 		retval.addAttribute("columns", Integer.toString(obj.cols()));
@@ -148,7 +146,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 		tagMap.put(obj.getFile(), retval);
 		for (Player player : obj.getPlayers()) {
-			addChild(tagMap, player, adapter, retval);
+			addPlayerChild(tagMap, player, retval);
 		}
 		for (int i = 0; i < obj.rows(); i++) {
 			@SuppressWarnings("unchecked")
@@ -159,26 +157,40 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				final Tile tile = obj.getTile(i, j);
 				if (!tile.isEmpty()) {
 					retval.addChild(row);
-					addChild(tagMap, tile, adapter, row);
+					addTileChild(tagMap, tile, row);
 				}
 			}
 		}
 		return retval;
 	}
 	/**
-	 * Add a child node to a node---the parent node, or an 'include' node representing its chosen file.
+	 * Add a child node for a tile to a node---the parent node, or an 'include' node representing its chosen file.
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
-	 * @param adapter the adapter to use to call the right handler.
 	 * @param parent the parent node, so we can add any include nodes created to it
 	 */
-	private static void addChild(final Map<String, SPIntermediateRepresentation> map,
-			final XMLWritable obj, final ReaderAdapter adapter, final SPIntermediateRepresentation parent) {
+	private static void addTileChild(final Map<String, SPIntermediateRepresentation> map,
+			final Tile obj, final SPIntermediateRepresentation parent) {
 		if (!map.containsKey(obj.getFile())) {
 			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation("include");
 			includeTag.addAttribute("file", obj.getFile());
 			parent.addChild(includeTag);
 		}
-		map.get(obj.getFile()).addChild(adapter.write(obj));
+		map.get(obj.getFile()).addChild(new TileReader().write(obj));
+	}
+	/**
+	 * Add a child node for a player to a node---the parent node, or an 'include' node representing its chosen file.
+	 * @param map the mapping from filenames to IRs.
+	 * @param obj the object we're handling
+	 * @param parent the parent node, so we can add any include nodes created to it
+	 */
+	private static void addPlayerChild(final Map<String, SPIntermediateRepresentation> map,
+			final Player obj, final SPIntermediateRepresentation parent) {
+		if (!map.containsKey(obj.getFile())) {
+			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation("include");
+			includeTag.addAttribute("file", obj.getFile());
+			parent.addChild(includeTag);
+		}
+		map.get(obj.getFile()).addChild(new PlayerReader().write(obj));
 	}
 }
