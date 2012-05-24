@@ -30,7 +30,7 @@ public final class Tile extends SimpleTile {
 	 *            The tile type
 	 */
 	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
-		super(new Point(tileRow, tileCol), tileType);
+		super(PointFactory.point(tileRow, tileCol), tileType);
 		// Can't be an otherwise-preferable TreeSet because of Java bug #7030899: TreeSet ignores equals() entirely.
 		contents = new HashSet<TileFixture>();
 	}

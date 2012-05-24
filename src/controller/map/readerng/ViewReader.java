@@ -12,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.Point;
+import model.map.PointFactory;
 import model.map.SPMap;
 import util.Pair;
 import util.Warning;
@@ -75,7 +76,7 @@ public class ViewReader implements INodeHandler<MapView> {
 						.getName().getLocalPart())
 						&& view != null) {
 					view.addSubmap(
-							new Point(Integer.parseInt(getAttribute(//NOPMD
+							PointFactory.point(Integer.parseInt(getAttribute(//NOPMD
 									event.asStartElement(), "row")), Integer
 									.parseInt(getAttribute(
 											event.asStartElement(), "column"))),
