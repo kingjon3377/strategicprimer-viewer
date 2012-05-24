@@ -300,7 +300,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")
 						.append("</row>").append("</map>").toString());
 		one.addSubmap(PointFactory.point(0, 0), setFileOnObject(new SPMap(2, 0, 0)));
-		System.out.println(one.toXML());
 		assertSerialization("Serialization of map-view containing submaps", one, MapView.class);
 	}
 	/**

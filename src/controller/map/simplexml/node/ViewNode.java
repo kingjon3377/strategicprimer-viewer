@@ -81,7 +81,6 @@ public class ViewNode extends AbstractChildNode<MapView> {
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		System.out.println(this.prettyPrint(0));
 		int mapnodes = 0;
 		if (!iterator().hasNext()) {
 			throw new MissingChildException(TAG, getLine());
