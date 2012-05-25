@@ -191,7 +191,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		map.get(obj.getFile()).addChild(PLAYER_READER.write(obj));
 	}
 	/**
-	 * The reader to use to parse players
+	 * The reader to use to parse players.
 	 */
 	private static final PlayerReader PLAYER_READER = new PlayerReader();
 	/**
