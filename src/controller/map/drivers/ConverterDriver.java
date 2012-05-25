@@ -56,10 +56,12 @@ public final class ConverterDriver {
 			SystemOut.SYS_OUT.println("Usage: ConverterDriver filename [filename ...]");
 		}
 		for (final String filename : args) {
-			SystemOut.SYS_OUT.print("Starting ");
-			SystemOut.SYS_OUT.println(filename);
+			SystemOut.SYS_OUT.print("Reading ");
+			SystemOut.SYS_OUT.print(filename);
+			SystemOut.SYS_OUT.print(" ... ");
 			try {
 				final IMap old = READER.readMap(filename, Warning.INSTANCE);
+				SystemOut.SYS_OUT.println(" ... Converting ... ");
 				final MapView map = CONV.convert(old);
 				map.setFile(filename + ".new");
 				map.setFileOnChildren(filename + ".new");
