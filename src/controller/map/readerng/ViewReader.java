@@ -16,14 +16,12 @@ import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
-import model.map.XMLWritable;
 import util.Pair;
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader to read map views from XML and turn them into XML. TODO: submaps, changesets.
  * @author Jonathan Lovelace
@@ -77,8 +75,7 @@ public class ViewReader implements INodeHandler<MapView> {
 									"current_player")),
 							Integer.parseInt(getAttribute(element,
 									"current_turn")),
-							(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-									.iterator()).getFile() : ""));
+							XMLHelper.getFile(stream));
 				} else if ("submap".equalsIgnoreCase(event.asStartElement()
 						.getName().getLocalPart())
 						&& view != null) {

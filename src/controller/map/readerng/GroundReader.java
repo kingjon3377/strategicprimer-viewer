@@ -16,7 +16,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Ground.
  * @author Jonathan Lovelace
@@ -42,8 +41,7 @@ public class GroundReader implements INodeHandler<Ground> {
 				getAttributeWithDeprecatedForm(element, "kind", "ground",
 						warner),
 				Boolean.parseBoolean(getAttribute(element, "exposed")),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

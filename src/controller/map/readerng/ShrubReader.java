@@ -16,7 +16,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Shrubs.
  * @author Jonathan Lovelace
@@ -41,8 +40,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 		final Shrub fix = new Shrub(
 				getAttributeWithDeprecatedForm(element, "kind", "shrub", warner),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

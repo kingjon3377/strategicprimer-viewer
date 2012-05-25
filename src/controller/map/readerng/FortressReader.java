@@ -20,7 +20,6 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for fortresses.
  * @author Jonathan Lovelace
@@ -46,8 +45,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 				players.getPlayer(parseInt(getAttribute(element, "owner", "-1"))),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()

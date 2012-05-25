@@ -16,7 +16,6 @@ import model.map.fixtures.Animal;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Animals.
  * @author Jonathan Lovelace
@@ -42,8 +41,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 				hasAttribute(element, "traces"),
 				Boolean.parseBoolean(getAttribute(element, "talking", "false")),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

@@ -15,7 +15,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Oases.
@@ -40,8 +39,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 		spinUntilEnd(element.getName(), stream);
 		final Oasis fix = new Oasis(
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

@@ -15,7 +15,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for minotaurs.
@@ -38,10 +37,8 @@ public class MinotaurReader implements INodeHandler<Minotaur> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Minotaur fix = new Minotaur(
-				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+		final Minotaur fix = new Minotaur(getOrGenerateID(element, warner,
+				idFactory), XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

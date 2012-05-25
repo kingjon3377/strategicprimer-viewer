@@ -22,7 +22,6 @@ import controller.map.SPFormatException;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader to produce SPMaps.
@@ -57,8 +56,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				Integer.parseInt(getAttribute(element, "version", "1")),
 				Integer.parseInt(getAttribute(element, "rows")),
 				Integer.parseInt(getAttribute(element, "columns")),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();

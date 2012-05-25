@@ -13,7 +13,6 @@ import model.map.fixtures.Mountain;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Mountains.
  * @author Jonathan Lovelace
@@ -35,9 +34,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Mountain fix = new Mountain(
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+		final Mountain fix = new Mountain(XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

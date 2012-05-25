@@ -17,7 +17,6 @@ import model.map.fixtures.Village;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Villages.
  * @author Jonathan Lovelace
@@ -44,8 +43,7 @@ public class VillageReader implements INodeHandler<Village> {
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

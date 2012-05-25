@@ -18,7 +18,6 @@ import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Units.
@@ -59,8 +58,7 @@ public class UnitReader implements INodeHandler<Unit> {
 				parseKind(element, warner),
 				getAttribute(element, "name", ""),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 

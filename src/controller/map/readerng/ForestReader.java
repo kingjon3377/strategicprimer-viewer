@@ -15,7 +15,6 @@ import model.map.fixtures.Forest;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Forests.
  * @author Jonathan Lovelace
@@ -40,8 +39,7 @@ public class ForestReader implements INodeHandler<Forest> {
 		final Forest fix = new Forest(
 				getAttribute(element, "kind"),
 				hasAttribute(element, "rows"),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

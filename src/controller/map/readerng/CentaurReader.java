@@ -16,7 +16,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Centaurs.
  * @author Jonathan Lovelace
@@ -41,8 +40,7 @@ public class CentaurReader implements INodeHandler<Centaur> {
 		final Centaur fix = new Centaur(
 				getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

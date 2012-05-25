@@ -15,7 +15,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for griffins.
@@ -40,8 +39,7 @@ public class GriffinReader implements INodeHandler<Griffin> {
 		spinUntilEnd(element.getName(), stream);
 		final Griffin fix = new Griffin(
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

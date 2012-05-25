@@ -15,7 +15,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for djinn.
  * @author Jonathan Lovelace
@@ -39,8 +38,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 		spinUntilEnd(element.getName(), stream);
 		final Djinn fix = new Djinn(
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

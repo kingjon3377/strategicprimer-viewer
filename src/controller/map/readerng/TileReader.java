@@ -25,7 +25,6 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Tiles.
@@ -55,8 +54,7 @@ public class TileReader implements INodeHandler<Tile> {
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttributeWithDeprecatedForm(element,
 						"kind", "type", warner)),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+						XMLHelper.getFile(stream));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName().getLocalPart())) {

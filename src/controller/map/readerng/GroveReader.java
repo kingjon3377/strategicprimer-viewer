@@ -16,7 +16,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader for Groves.
  * @author Jonathan Lovelace
@@ -43,8 +42,7 @@ public class GroveReader implements INodeHandler<Grove> {
 				Boolean.parseBoolean(XMLHelper.getAttribute(element, "wild")),
 				getAttributeWithDeprecatedForm(element, "kind", "tree", warner),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return fix;
 	}
 	/**

@@ -11,6 +11,7 @@ import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A class for helper methods.
@@ -166,5 +167,14 @@ public final class XMLHelper {
 					.getLineNumber()));
 			return idFactory.createID();
 		}
+	}
+	/**
+	 * @param stream a source of XMLEvents
+	 * @return the file currently being read from if it's an
+	 *         {@link IncludingIterator}, or the empty string otherwise.
+	 */
+	public static String getFile(final Iterable<XMLEvent> stream) {
+		return stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+				.iterator()).getFile() : "";
 	}
 }

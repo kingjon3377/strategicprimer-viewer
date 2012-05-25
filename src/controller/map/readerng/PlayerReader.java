@@ -15,7 +15,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 /**
  * A reader to produce Players.
  * @author Jonathan Lovelace
@@ -40,8 +39,7 @@ public class PlayerReader implements INodeHandler<Player> {
 		final Player player = new Player(
 				Integer.parseInt(getAttribute(element, "number")),
 				getAttribute(element, "code_name"),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				XMLHelper.getFile(stream));
 		return player;
 	}
 	/**
