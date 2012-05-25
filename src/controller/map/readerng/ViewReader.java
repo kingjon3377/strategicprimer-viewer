@@ -67,7 +67,8 @@ public class ViewReader implements INodeHandler<MapView> {
 		MapView view = null;
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if ("map".equalsIgnoreCase(event.asStartElement().getName().getLocalPart()) && view == null) {
+				if (view == null) {
+					requireMapTag(event.asStartElement(), element);
 					view = new MapView(// NOPMD
 							MAP_READER.parse(event.asStartElement(),
 									stream, players, warner, idFactory),
@@ -77,8 +78,7 @@ public class ViewReader implements INodeHandler<MapView> {
 									"current_turn")),
 							XMLHelper.getFile(stream));
 				} else if ("submap".equalsIgnoreCase(event.asStartElement()
-						.getName().getLocalPart())
-						&& view != null) {
+						.getName().getLocalPart())) {
 					view.addSubmap(
 							PointFactory.point(Integer.parseInt(getAttribute(//NOPMD
 									event.asStartElement(), "row")), Integer
@@ -202,4 +202,18 @@ public class ViewReader implements INodeHandler<MapView> {
 	 * A map reader to use.
 	 */
 	private static final SPMapReader MAP_READER = new SPMapReader();
+	/**
+	 * Assert that the specified tag is a "map" tag.
+	 * @param element the tag to check
+	 * @param context the parent tag
+	 * @throws SPFormatException if it isn't
+	 */
+	private static void requireMapTag(final StartElement element, final StartElement context) throws SPFormatException {
+		if (!"map".equalsIgnoreCase(element.getName().getLocalPart())) {
+			throw new UnwantedChildException(context.getName()
+					.getLocalPart(), element.asStartElement().getName()
+					.getLocalPart(), element.getLocation()
+					.getLineNumber());
+		}
+	}
 }
