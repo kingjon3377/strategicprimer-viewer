@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.TileFixture;
+
 
 /**
  * An abandoned, ruined, or burned-out city.
@@ -87,4 +89,13 @@ public final class CityEvent extends AbstractTownEvent {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final CityEvent retval = new CityEvent(status(), size(), getDC(), name(), getID());
+		retval.setFile(getFile());
+		return retval;
+	}
 }

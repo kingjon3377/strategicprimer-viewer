@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.TileFixture;
+
 
 
 /**
@@ -88,4 +90,13 @@ public final class TownEvent extends AbstractTownEvent {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final TownEvent retval = new TownEvent(status(), size(), getDC(), name(), getID());
+		retval.setFile(getFile());
+		return retval;
+	}
 }

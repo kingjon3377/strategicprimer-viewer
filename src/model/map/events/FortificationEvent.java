@@ -1,5 +1,7 @@
 package model.map.events;
 
+import model.map.TileFixture;
+
 
 /**
  * An abandoned, ruined, or burned-out fortification.
@@ -97,4 +99,13 @@ public final class FortificationEvent extends AbstractTownEvent {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final FortificationEvent retval = new FortificationEvent(status(), size(), getDC(), name(), getID());
+		retval.setFile(getFile());
+		return retval;
+	}
 }

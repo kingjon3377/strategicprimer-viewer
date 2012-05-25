@@ -6,7 +6,7 @@ package model.map;
  * @author jsl7
  * 
  */
-public class Player implements Comparable<Player>, XMLWritable {
+public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Player> {
 	/**
 	 * The player's number.
 	 */
@@ -140,4 +140,11 @@ public class Player implements Comparable<Player>, XMLWritable {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of the player
+	 */
+	@Override
+	public Player deepCopy() {
+		return new Player(getPlayerId(), getName(), getFile());
+	}
 }

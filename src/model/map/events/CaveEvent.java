@@ -137,4 +137,13 @@ public final class CaveEvent implements IEvent {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final CaveEvent retval = new CaveEvent(getDC(), getID());
+		retval.setFile(file);
+		return retval;
+	}
 }

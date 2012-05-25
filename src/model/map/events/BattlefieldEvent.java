@@ -138,4 +138,13 @@ public final class BattlefieldEvent implements IEvent {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final BattlefieldEvent retval = new BattlefieldEvent(getDC(), getID());
+		retval.setFile(getFile());
+		return retval;
+	}
 }

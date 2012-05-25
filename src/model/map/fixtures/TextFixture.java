@@ -140,4 +140,13 @@ public class TextFixture implements TileFixture, HasImage {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final TextFixture retval = new TextFixture(getText(), getTurn());
+		retval.setFile(getFile());
+		return retval;
+	}
 }

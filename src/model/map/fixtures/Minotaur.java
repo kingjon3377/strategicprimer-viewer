@@ -107,4 +107,11 @@ public class Minotaur implements TileFixture, HasImage {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		return new Minotaur(getID(), file);
+	}
 }

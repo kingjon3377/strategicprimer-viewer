@@ -276,4 +276,17 @@ public class MapView implements IMap {
 	public Iterable<Entry<Point, SPMap>> getSubmapIterator() {
 		return new IteratorWrapper<Entry<Point, SPMap>>(submaps.entrySet().iterator());
 	}
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public IMap deepCopy() {
+		final MapView retval = new MapView((SPMap) map.deepCopy(), getPlayers()
+				.getCurrentPlayer().getPlayerId(), getCurrentTurn(), getFile());
+		for (Point point : submaps.keySet()) {
+			retval.submaps.put(point, (SPMap) submaps.get(point).deepCopy());
+		}
+		// TODO: changesets
+		return retval;
+	}
 }

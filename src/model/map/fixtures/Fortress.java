@@ -265,4 +265,16 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final Fortress retval = new Fortress(getOwner().deepCopy(), getName(),
+				getID(), getFile());
+		for (Unit unit : units) {
+			retval.addUnit((Unit) unit.deepCopy());
+		}
+		return retval;
+	}
 }

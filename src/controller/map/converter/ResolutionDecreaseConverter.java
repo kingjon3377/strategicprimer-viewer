@@ -239,11 +239,20 @@ public class ResolutionDecreaseConverter {
 			final int maxCol) {
 		for (int i = minRow; i < maxRow; i++) {
 			for (int j = minCol; j < maxCol; j++) {
-				map.getTile(i, j).addFixture(fix);
+				map.getTile(i, j).addFixture(setFile(map.getFile(), fix.deepCopy()));
 			}
 		}
 	}
-	
+	/**
+	 * Set the filename on a TileFixture.
+	 * @param filename the filename to set
+	 * @param fix the fixture to operate on
+	 * @return the fixture
+	 */
+	private static TileFixture setFile(final String filename, final TileFixture fix) {
+		fix.setFile(filename);
+		return fix;
+	}
 	/**
 	 * Paint a river over a region of a map. Most "lakes" should actually be
 	 * changed to ocean tiles, but we need to do that by hand so fixtures don't

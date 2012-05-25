@@ -167,4 +167,13 @@ public final class StoneEvent implements IEvent, HasImage {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final StoneEvent retval = new StoneEvent(stone(), getDC(), getID());
+		retval.setFile(getFile());
+		return retval;
+	}
 }

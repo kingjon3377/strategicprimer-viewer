@@ -272,4 +272,16 @@ public final class Tile extends SimpleTile {
 		return fix instanceof CacheFixture || fix instanceof TextFixture
 				|| (fix instanceof Animal && ((Animal) fix).isTraces());
 	}
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public SimpleTile deepCopy() {
+		final Tile retval = new Tile(getLocation().row(), getLocation().col(),
+				getTerrain(), getFile());
+		for (TileFixture fix : contents) {
+			retval.contents.add(fix.deepCopy());
+		}
+		return retval;
+	}
 }

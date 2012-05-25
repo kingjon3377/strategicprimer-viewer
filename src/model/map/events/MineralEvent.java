@@ -204,4 +204,13 @@ public final class MineralEvent implements IEvent, HasImage {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final MineralEvent retval = new MineralEvent(getKind(), isExposed(), getDC(), getID());
+		retval.setFile(getFile());
+		return retval;
+	}
 }

@@ -146,4 +146,11 @@ public class Village implements TileFixture, HasImage {
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		return new Village(getStatus(), getName(), getID(), getFile());
+	}
 }

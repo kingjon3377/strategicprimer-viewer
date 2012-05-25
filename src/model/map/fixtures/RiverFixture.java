@@ -180,4 +180,14 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+	/**
+	 * @return a clone of this object
+	 */
+	@Override
+	public TileFixture deepCopy() {
+		final RiverFixture retval = new RiverFixture();
+		retval.addRivers(this);
+		retval.setFile(file);
+		return retval;
+	}
 }
