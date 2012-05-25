@@ -34,6 +34,10 @@ import util.IteratorWrapper;
  */
 public class ResolutionDecreaseConverter {
 	/**
+	 * The size of a submap.
+	 */
+	private static final int SUBMAP_SIZE = 10;
+	/**
 	 * Convert a map. It needs to have an even number of rows and columns.
 	 * @param old the map to convert.
 	 * @return an equivalent MapView.
@@ -176,12 +180,12 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static SPMap createSubmap(final Tile upperLeft,
 			final Tile upperRight, final Tile lowerLeft, final Tile lowerRight, final String filename) {
-		final SPMap retval = new SPMap(2, 10, 10, filename);
-		paintAndFillTiles(upperLeft, retval, 0, 5, 0, 5);
+		final SPMap retval = new SPMap(2, SUBMAP_SIZE, SUBMAP_SIZE, filename);
+		paintAndFillTiles(upperLeft, retval, 0, SUBMAP_SIZE / 2, 0, SUBMAP_SIZE / 2);
 		// ESCA-JAVA0076:
-		paintAndFillTiles(upperRight, retval, 0, 5, 5, 10);
-		paintAndFillTiles(lowerLeft, retval, 5, 10, 0, 5);
-		paintAndFillTiles(lowerRight, retval, 5, 10, 5, 10);
+		paintAndFillTiles(upperRight, retval, 0, SUBMAP_SIZE / 2, SUBMAP_SIZE / 2, SUBMAP_SIZE);
+		paintAndFillTiles(lowerLeft, retval, SUBMAP_SIZE / 2, SUBMAP_SIZE, 0, SUBMAP_SIZE / 2);
+		paintAndFillTiles(lowerRight, retval, SUBMAP_SIZE / 2, SUBMAP_SIZE, SUBMAP_SIZE / 2, SUBMAP_SIZE);
 		retval.setFileOnChildren(filename);
 		return retval;
 	}
