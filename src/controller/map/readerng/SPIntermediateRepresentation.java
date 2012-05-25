@@ -117,7 +117,7 @@ public class SPIntermediateRepresentation {
 					writeIfTagNotEmpty(writer, text);
 					writeIfTagNotEmpty(writer, "</");
 					writeIfTagNotEmpty(writer, tag);
-					writeIfTagNotEmpty(writer, ">");
+					writeIfTagNotEmpty(writer, ">\n");
 				} else {
 					writeIfTagNotEmpty(writer, " />\n");
 				}
@@ -163,7 +163,7 @@ public class SPIntermediateRepresentation {
 			}
 			writeIfTagNotEmpty(writer, "<include file=\"");
 			writeIfTagNotEmpty(writer, attrs.get(FILE_ATTR));
-			writeIfTagNotEmpty(writer, "\" />");
+			writeIfTagNotEmpty(writer, "\" />\n");
 		} else {
 			for (SPIntermediateRepresentation child : children) {
 				child.write(writer, inclusion, indentationLevel);
