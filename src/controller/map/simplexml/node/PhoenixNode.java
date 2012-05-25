@@ -27,10 +27,7 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	 */
 	@Override
 	public Phoenix produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Phoenix fix = new Phoenix(Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Phoenix fix = new Phoenix(Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

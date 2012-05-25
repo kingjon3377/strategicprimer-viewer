@@ -53,14 +53,14 @@ public class UnitReader implements INodeHandler<Unit> {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final Unit fix = new Unit(players.getPlayer(Integer
-				.parseInt(ensureNumeric(getAttribute(
-						element, "owner", "-1")))), parseKind(element, warner),
+		final Unit fix = new Unit(
+				players.getPlayer(Integer.parseInt(ensureNumeric(getAttribute(
+						element, "owner", "-1")))),
+				parseKind(element, warner),
 				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+				getOrGenerateID(element, warner, idFactory),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 

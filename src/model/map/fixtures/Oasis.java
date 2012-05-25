@@ -12,9 +12,11 @@ import model.map.TileFixture;
 public class Oasis implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Oasis(final int idNum) {
+	public Oasis(final int idNum, final String fileName) {
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return a String representation of the oasis.

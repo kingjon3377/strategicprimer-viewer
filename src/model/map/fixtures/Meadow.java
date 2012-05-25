@@ -27,13 +27,15 @@ public class Meadow implements TileFixture, HasImage {
 	 * @param fld whether this is a field (as opposed to a meadow)
 	 * @param cult whether it's under cultivation
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
-			final int idNum) {
+			final int idNum, final String fileName) {
 		kind = grain;
 		field = fld;
 		cultivated = cult;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return the kind of grass or grain growing in the meadow or field

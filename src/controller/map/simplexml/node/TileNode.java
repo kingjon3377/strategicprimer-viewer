@@ -59,7 +59,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			throws SPFormatException {
 		final Tile tile = new Tile(Integer.parseInt(getProperty(ROW_PROPERTY)),
 				Integer.parseInt(getProperty(COL_PROPERTY)),
-				TileType.getTileType(getProperty(TERRAIN_PROPERTY)));
+				TileType.getTileType(getProperty(TERRAIN_PROPERTY)), getProperty("file"));
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
 				tile.addRiver(((RiverNode) node).produce(players, warner));
@@ -72,9 +72,6 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			}
 		}
 		tile.addFixture(new TextFixture(sbuild.toString().trim(), -1));
-		if (hasProperty("file")) {
-			tile.setFile(getProperty("file"));
-		}
 		return tile;
 	}
 

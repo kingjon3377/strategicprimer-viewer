@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -23,9 +24,13 @@ import util.IteratorStack;
 import util.IteratorWrapper;
 
 /**
- * A class to convert a map to an equivalent half-resolution one, also creating hundred-tile submaps for each.
+ * A class to convert a map to an equivalent half-resolution one, also creating
+ * hundred-tile submaps for each. Submaps will be stored in separate files and
+ * included by reference, but be warned that this will quite probably break if
+ * any tiles in the original map are so referenced.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class ResolutionDecreaseConverter {
 	/**
@@ -37,11 +42,12 @@ public class ResolutionDecreaseConverter {
 		checkRequirements(old);
 		final int newRows = old.rows() / 2;
 		final int newCols = old.cols() / 2;
-		final SPMap newMap = new SPMap(2, newRows, newCols);
+		final SPMap newMap = new SPMap(2, newRows, newCols, old.getFile());
 		for (Player player : old.getPlayers()) {
 			newMap.addPlayer(player);
 		}
-		final MapView retval = new MapView(newMap, newMap.getPlayers().getCurrentPlayer().getPlayerId(), 0);
+		final MapView retval = new MapView(newMap, newMap.getPlayers()
+				.getCurrentPlayer().getPlayerId(), 0, old.getFile());
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				retval.getMap().addTile(
@@ -54,7 +60,7 @@ public class ResolutionDecreaseConverter {
 								old.getTile(row * 2 + 1, col * 2),
 								old.getTile(row * 2 + 1, col * 2 + 1)));
 				retval.getSubmap(PointFactory.point(row, col)).setFile(
-						old.getFile().replaceAll(
+						Objects.toString(old.getFile(), ".xml").replaceAll(
 								".xml$",
 								String.format("_%d_%d.xml",
 										Integer.valueOf(row),
@@ -86,8 +92,10 @@ public class ResolutionDecreaseConverter {
 		final RiverFixture lowerLeftRivers = lowerLeft.getRivers();
 		final RiverFixture lowerRightRivers = lowerRight.getRivers();
 		final Tile retval = new Tile(upperLeft.getLocation().row() / 2,
-				upperLeft.getLocation().col() / 2, consensus(upperLeft.getTerrain(),
-						upperRight.getTerrain(), lowerLeft.getTerrain(), lowerRight.getTerrain()));
+				upperLeft.getLocation().col() / 2, consensus(
+						upperLeft.getTerrain(), upperRight.getTerrain(),
+						lowerLeft.getTerrain(), lowerRight.getTerrain()),
+				upperLeft.getFile());
 		@SuppressWarnings("unchecked")
 		final Iterable<TileFixture> iter = new IteratorWrapper<TileFixture>(
 				new IteratorStack<TileFixture>(upperLeft.getContents(),
@@ -164,7 +172,7 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static SPMap createSubmap(final Tile upperLeft,
 			final Tile upperRight, final Tile lowerLeft, final Tile lowerRight) {
-		final SPMap retval = new SPMap(2, 10, 10);
+		final SPMap retval = new SPMap(2, 10, 10, upperLeft.getFile());
 		paintAndFillTiles(upperLeft, retval, 0, 5, 0, 5);
 		// ESCA-JAVA0076:
 		paintAndFillTiles(upperRight, retval, 0, 5, 5, 10);
@@ -195,7 +203,7 @@ public class ResolutionDecreaseConverter {
 			final int maxCol) {
 		for (int i = minRow; i < maxRow; i++) {
 			for (int j = minCol; j < maxCol; j++) {
-				map.addTile(new Tile(i, j, tile.getTerrain())); // NOPMD
+				map.addTile(new Tile(i, j, tile.getTerrain(), map.getFile())); // NOPMD
 			}
 		}
 		final Random random = new Random();

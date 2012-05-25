@@ -39,10 +39,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Shrub fix = new Shrub(getAttributeWithDeprecatedForm(
-				element, "kind", "shrub", warner), getOrGenerateID(element, warner, idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+				element, "kind", "shrub", warner), getOrGenerateID(element, warner, idFactory), (stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

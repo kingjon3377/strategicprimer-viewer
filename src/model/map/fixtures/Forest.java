@@ -24,10 +24,12 @@ public class Forest implements TerrainFixture, HasImage {
 	 * Constructor.
 	 * @param kind what kind of trees dominate.
 	 * @param rowed whether the trees are in rows
+	 * @param fileName the file this was loaded from
 	 */
-	public Forest(final String kind, final boolean rowed) {
+	public Forest(final String kind, final boolean rowed, final String fileName) {
 		trees = kind;
 		rows = rowed;
+		file = fileName;
 	}
 	/**
 	 * What kind of trees dominate the forest.

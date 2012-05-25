@@ -16,6 +16,17 @@ import java.util.Map;
  */
 public final class TileCollection implements Iterable<Point>, Subsettable<TileCollection> {
 	/**
+	 * The default filename for tiles we create to avoid returning null.
+	 */
+	private final String file;
+	/**
+	 * Constructor.
+	 * @param filename the default filename for tiles we create to avoid returning null
+	 */
+	public TileCollection(final String filename) {
+		file = filename;
+	}
+	/**
 	 * The Map this is a wrapper around.
 	 */
 	private final Map<Point, Tile> tiles = new HashMap<Point, Tile>();
@@ -42,7 +53,7 @@ public final class TileCollection implements Iterable<Point>, Subsettable<TileCo
 	public Tile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
 			tiles.put(point, new Tile(point.row(), point.col(),
-					TileType.NotVisible));
+					TileType.NotVisible, file));
 		}
 		return tiles.get(point);
 	}

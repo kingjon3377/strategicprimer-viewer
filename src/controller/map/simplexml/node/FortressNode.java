@@ -53,14 +53,11 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 				players.getPlayer(hasProperty(OWNER_PROP) ? Integer
 						.parseInt(getProperty(OWNER_PROP)) : -1),
 				hasProperty(NAME_PROP) ? getProperty(NAME_PROP) : "",
-						Integer.parseInt(getProperty("id")));
+						Integer.parseInt(getProperty("id")), getProperty("file"));
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof UnitNode) {
 				fort.addUnit(((UnitNode) node).produce(players, warner));
 			} 
-		}
-		if (hasProperty("file")) {
-			fort.setFile(getProperty("file"));
 		}
 		return fort;
 	}

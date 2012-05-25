@@ -43,10 +43,11 @@ public class FortressReader implements INodeHandler<Fortress> {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		final Fortress fort = new Fortress(
-				players.getPlayer(parseInt(getAttribute(element,
-						"owner", "-1"))), getAttribute(element,
-						"name", ""),
-				getOrGenerateID(element, warner, idFactory));
+				players.getPlayer(parseInt(getAttribute(element, "owner", "-1"))),
+				getAttribute(element, "name", ""),
+				getOrGenerateID(element, warner, idFactory),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
@@ -62,9 +63,6 @@ public class FortressReader implements INodeHandler<Fortress> {
 								.asStartElement().getName().getLocalPart(),
 						event.getLocation().getLineNumber());
 			}
-		}
-		if (stream.iterator() instanceof IncludingIterator) {
-			fort.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return fort;
 	}

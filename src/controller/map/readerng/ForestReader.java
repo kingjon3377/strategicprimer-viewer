@@ -37,11 +37,11 @@ public class ForestReader implements INodeHandler<Forest> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Forest fix = new Forest(getAttribute(element, "kind"),
-				hasAttribute(element, "rows"));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+		final Forest fix = new Forest(
+				getAttribute(element, "kind"),
+				hasAttribute(element, "rows"),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

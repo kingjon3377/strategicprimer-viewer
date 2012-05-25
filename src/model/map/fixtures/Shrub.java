@@ -26,10 +26,12 @@ public class Shrub implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param desc a description of the shrub.
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Shrub(final String desc, final int idNum) {
+	public Shrub(final String desc, final int idNum, final String fileName) {
 		description = desc;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return a description of the shrub

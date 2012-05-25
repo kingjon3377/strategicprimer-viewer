@@ -27,10 +27,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	 */
 	@Override
 	public Oasis produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Oasis fix = new Oasis(Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Oasis fix = new Oasis(Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

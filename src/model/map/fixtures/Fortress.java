@@ -42,12 +42,14 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 * @param fortName
 	 *            the name of the fortress
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Fortress(final Player fortOwner, final String fortName, final int idNum) {
+	public Fortress(final Player fortOwner, final String fortName, final int idNum, final String fileName) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<Unit>();
 		id = idNum;
+		file = fileName;
 	}
 
 	/**

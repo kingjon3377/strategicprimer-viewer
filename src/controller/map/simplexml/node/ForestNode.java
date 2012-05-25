@@ -31,10 +31,7 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	 */
 	@Override
 	public Forest produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Forest fix = new Forest(getProperty(KIND_PROPERTY), hasProperty("rows"));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Forest fix = new Forest(getProperty(KIND_PROPERTY), hasProperty("rows"), getProperty("file"));
 		return fix;
 	}
 	/**

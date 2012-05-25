@@ -27,10 +27,7 @@ public class SimurghNode extends AbstractFixtureNode<Simurgh> {
 	 */
 	@Override
 	public Simurgh produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Simurgh fix = new Simurgh(Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Simurgh fix = new Simurgh(Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

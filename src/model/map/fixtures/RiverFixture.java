@@ -165,6 +165,7 @@ public class RiverFixture implements TileFixture, Iterable<River>, Subsettable<R
 	 * @return The name of the file this is to be written to.
 	 */
 	@Override
+	@Deprecated
 	public String getFile() {
 		return file;
 	}

@@ -27,10 +27,7 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	 */
 	@Override
 	public Djinn produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Djinn fix = new Djinn(Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Djinn fix = new Djinn(Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

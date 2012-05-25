@@ -67,11 +67,17 @@ public class ViewReader implements INodeHandler<MapView> {
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("map".equalsIgnoreCase(event.asStartElement().getName().getLocalPart()) && view == null) {
-					view = new MapView(new SPMapReader().parse(//NOPMD
-							event.asStartElement(), stream, players, warner,
-							idFactory), Integer.parseInt(getAttribute(element,
-							"current_player")), Integer.parseInt(getAttribute(
-							element, "current_turn")));
+					view = new MapView(
+							new SPMapReader().parse(
+									// NOPMD
+									event.asStartElement(), stream, players,
+									warner, idFactory),
+							Integer.parseInt(getAttribute(element,
+									"current_player")),
+							Integer.parseInt(getAttribute(element,
+									"current_turn")),
+							(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+									.iterator()).getFile() : ""));
 				} else if ("submap".equalsIgnoreCase(event.asStartElement()
 						.getName().getLocalPart())
 						&& view != null) {
@@ -94,9 +100,6 @@ public class ViewReader implements INodeHandler<MapView> {
 		}
 		if (view == null) {
 			throw new MissingChildException(TAG, element.getLocation().getLineNumber());
-		}
-		if (stream.iterator() instanceof IncludingIterator) {
-			view.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return view;
 	}

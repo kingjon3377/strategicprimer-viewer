@@ -50,9 +50,13 @@ public class TileReader implements INodeHandler<Tile> {
 	public Tile parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Tile tile = new Tile(parseInt(getAttribute(element, "row")), //NOPMD
+		final Tile tile = new Tile(
+				parseInt(getAttribute(element, "row")), // NOPMD
 				parseInt(getAttribute(element, "column")),
-				TileType.getTileType(getAttributeWithDeprecatedForm(element, "kind", "type", warner)));
+				TileType.getTileType(getAttributeWithDeprecatedForm(element,
+						"kind", "type", warner)),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName().getLocalPart())) {
@@ -70,9 +74,6 @@ public class TileReader implements INodeHandler<Tile> {
 							.getLocalPart())) {
 				break;
 			}
-		}
-		if (stream.iterator() instanceof IncludingIterator) {
-			tile.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return tile;
 	}

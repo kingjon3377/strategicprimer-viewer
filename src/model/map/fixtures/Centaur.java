@@ -17,10 +17,12 @@ public class Centaur implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param centKind the kind of centaur
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Centaur(final String centKind, final int idNum) {
+	public Centaur(final String centKind, final int idNum, final String fileName) {
 		kind = centKind;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return the kind of centaur

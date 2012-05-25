@@ -27,13 +27,15 @@ public class Grove implements TileFixture, HasImage {
 	 * @param wildGrove whether the trees are wild
 	 * @param tree what kind of trees are in the grove
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
 	public Grove(final boolean fruit, final boolean wildGrove,
-			final String tree, final int idNum) {
+			final String tree, final int idNum, final String fileName) {
 		orchard = fruit;
 		wild = wildGrove;
 		kind = tree;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return true if this is an orchard, false otherwise

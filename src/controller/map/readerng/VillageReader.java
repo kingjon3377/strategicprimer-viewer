@@ -40,12 +40,12 @@ public class VillageReader implements INodeHandler<Village> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final Village fix = new Village(TownStatus.parseTownStatus(getAttribute(element, "status")),
+		final Village fix = new Village(
+				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+				getOrGenerateID(element, warner, idFactory),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

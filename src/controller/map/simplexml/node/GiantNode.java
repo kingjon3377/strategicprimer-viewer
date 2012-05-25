@@ -32,10 +32,7 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	 */
 	@Override
 	public Giant produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Giant fix = new Giant(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Giant fix = new Giant(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

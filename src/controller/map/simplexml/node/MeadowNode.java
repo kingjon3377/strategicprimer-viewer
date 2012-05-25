@@ -45,10 +45,8 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	public Meadow produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
 		final Meadow fix = new Meadow(getProperty(KIND_PROPERTY),
 				"field".equals(getProperty(TAG_PROPERTY)),
-				Boolean.parseBoolean(getProperty(CULTIVATED_PARAM)), Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+				Boolean.parseBoolean(getProperty(CULTIVATED_PARAM)),
+				Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

@@ -38,12 +38,15 @@ public class Animal implements TileFixture, HasImage {
 	 * @param tracks whether this is really the animal, or only tracks
 	 * @param talks whether this is a talking animal.
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Animal(final String animal, final boolean tracks, final boolean talks, final int idNum) {
+	public Animal(final String animal, final boolean tracks,
+			final boolean talks, final int idNum, final String fileName) {
 		kind = animal;
 		traces = tracks;
 		talking = talks;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return true if this is only traces or tracks, false if this is really the animal

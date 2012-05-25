@@ -39,11 +39,11 @@ public class GroundReader implements INodeHandler<Ground> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Ground fix = new Ground(
-				getAttributeWithDeprecatedForm(element, "kind", "ground", warner),
-				Boolean.parseBoolean(getAttribute(element, "exposed")));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+				getAttributeWithDeprecatedForm(element, "kind", "ground",
+						warner),
+				Boolean.parseBoolean(getAttribute(element, "exposed")),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

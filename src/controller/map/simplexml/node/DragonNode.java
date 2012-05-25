@@ -32,10 +32,7 @@ public class DragonNode extends AbstractFixtureNode<Dragon> {
 	 */
 	@Override
 	public Dragon produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Dragon fix = new Dragon(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Dragon fix = new Dragon(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

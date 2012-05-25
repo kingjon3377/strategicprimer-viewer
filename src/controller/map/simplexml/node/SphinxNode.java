@@ -27,10 +27,7 @@ public class SphinxNode extends AbstractFixtureNode<Sphinx> {
 	 */
 	@Override
 	public Sphinx produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Sphinx fix = new Sphinx(Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Sphinx fix = new Sphinx(Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

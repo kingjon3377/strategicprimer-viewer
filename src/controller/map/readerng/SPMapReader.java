@@ -53,10 +53,12 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public SPMap parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final SPMap map = new SPMap(Integer.parseInt(getAttribute(
-				element, "version", "1")), Integer.parseInt(getAttribute(
-				element, "rows")), Integer.parseInt(getAttribute(element,
-				"columns")));
+		final SPMap map = new SPMap(
+				Integer.parseInt(getAttribute(element, "version", "1")),
+				Integer.parseInt(getAttribute(element, "rows")),
+				Integer.parseInt(getAttribute(element, "columns")),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
@@ -72,9 +74,6 @@ public class SPMapReader implements INodeHandler<SPMap> {
 					.getPlayer(
 							Integer.parseInt(getAttribute(element,
 									"current_player"))).setCurrent(true);
-		}
-		if (stream.iterator() instanceof IncludingIterator) {
-			map.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return map;
 	}

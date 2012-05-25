@@ -24,11 +24,13 @@ public class CacheFixture implements TileFixture, HasImage {
 	 * @param category what kind of things this is a cache of
 	 * @param cont what this cache contains
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public CacheFixture(final String category, final String cont, final int idNum) {
+	public CacheFixture(final String category, final String cont, final int idNum, final String fileName) {
 		kind = category;
 		contents = cont;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return what kind of things this is a cache of

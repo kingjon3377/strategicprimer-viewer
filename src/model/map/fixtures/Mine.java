@@ -15,11 +15,13 @@ public class Mine implements TileFixture, HasImage {
 	 * @param mineral what mineral this produces
 	 * @param stat the status of the mine
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Mine(final String mineral, final TownStatus stat, final int idNum) {
+	public Mine(final String mineral, final TownStatus stat, final int idNum, final String fileName) {
 		kind = mineral;
 		status = stat;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * What the mine produces.

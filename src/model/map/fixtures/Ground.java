@@ -22,10 +22,12 @@ public class Ground implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param desc a description of the ground (the type of rock)
 	 * @param exp whether it's exposed. (If not, the tile should also include a grass or forest Fixture ...)  
+	 * @param fileName the file this was loaded from
 	 */
-	public Ground(final String desc, final boolean exp) {
+	public Ground(final String desc, final boolean exp, final String fileName) {
 		kind = desc;
 		exposed = exp;
+		file = fileName;
 	}
 	/**
 	 * The kind of ground.

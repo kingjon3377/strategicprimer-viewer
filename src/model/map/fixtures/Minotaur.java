@@ -11,9 +11,11 @@ import model.map.TileFixture;
 public class Minotaur implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Minotaur(final int idNum) {
+	public Minotaur(final int idNum, final String fileName) {
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return an XML representation of the minotaur

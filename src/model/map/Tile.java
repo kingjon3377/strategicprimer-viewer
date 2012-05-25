@@ -28,9 +28,11 @@ public final class Tile extends SimpleTile {
 	 *            The column number
 	 * @param tileType
 	 *            The tile type
+	 * @param filename
+	 *            the file this was loaded from
 	 */
-	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
-		super(PointFactory.point(tileRow, tileCol), tileType);
+	public Tile(final int tileRow, final int tileCol, final TileType tileType, final String filename) {
+		super(PointFactory.point(tileRow, tileCol), tileType, filename);
 		// Can't be an otherwise-preferable TreeSet because of Java bug #7030899: TreeSet ignores equals() entirely.
 		contents = new HashSet<TileFixture>();
 	}

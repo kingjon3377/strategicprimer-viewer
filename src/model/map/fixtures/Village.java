@@ -29,11 +29,13 @@ public class Village implements TileFixture, HasImage {
 	 * @param vstatus the status of the village.
 	 * @param vName the name of the village
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Village(final TownStatus vstatus, final String vName, final int idNum) {
+	public Village(final TownStatus vstatus, final String vName, final int idNum, final String fileName) {
 		status = vstatus;
 		name = vName;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return the status of the village

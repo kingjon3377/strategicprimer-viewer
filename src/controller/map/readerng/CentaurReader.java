@@ -39,11 +39,10 @@ public class CentaurReader implements INodeHandler<Centaur> {
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Centaur fix = new Centaur(
-				getAttribute(element, "kind"), getOrGenerateID(
-						element, warner, idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+				getAttribute(element, "kind"),
+				getOrGenerateID(element, warner, idFactory),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

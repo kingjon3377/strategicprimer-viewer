@@ -100,7 +100,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			throws SPFormatException {
 		final SPMap map = new SPMap(Integer.parseInt(getProperty(VERSION_PROP)),
 				Integer.parseInt(getProperty(ROWS_PROPERTY)),
-				Integer.parseInt(getProperty(COLUMNS_PROPERTY)));
+				Integer.parseInt(getProperty(COLUMNS_PROPERTY)), getProperty("file"));
 		final List<TileNode> tiles = new LinkedList<TileNode>();
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
@@ -116,9 +116,6 @@ public class MapNode extends AbstractChildNode<SPMap> {
 			map.getPlayers()
 					.getPlayer(Integer.parseInt(getProperty("current_player")))
 					.setCurrent(true);
-		}
-		if (hasProperty("file")) {
-			map.setFile(getProperty("file"));
 		}
 		return map;
 	}

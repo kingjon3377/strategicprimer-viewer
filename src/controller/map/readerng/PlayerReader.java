@@ -37,11 +37,11 @@ public class PlayerReader implements INodeHandler<Player> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Player player = new Player(Integer.parseInt(getAttribute(element,
-				"number")), getAttribute(element, "code_name"));
-		if (stream.iterator() instanceof IncludingIterator) {
-			player.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+		final Player player = new Player(
+				Integer.parseInt(getAttribute(element, "number")),
+				getAttribute(element, "code_name"),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return player;
 	}
 	/**

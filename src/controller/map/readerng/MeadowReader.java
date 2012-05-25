@@ -38,14 +38,13 @@ public class MeadowReader implements INodeHandler<Meadow> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Meadow fix = new Meadow(getAttribute(element, "kind"),
+		final Meadow fix = new Meadow(
+				getAttribute(element, "kind"),
 				"field".equalsIgnoreCase(element.getName().getLocalPart()),
-				Boolean.parseBoolean(getAttribute(element,
-						"cultivated")), getOrGenerateID(element, warner,
-						idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+				Boolean.parseBoolean(getAttribute(element, "cultivated")),
+				getOrGenerateID(element, warner, idFactory),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

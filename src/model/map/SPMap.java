@@ -35,13 +35,15 @@ public class SPMap implements IMap {
 	 *            the number of rows
 	 * @param cols
 	 *            the number of columns
+	 * @param fileName the file this was loaded from
 	 */
-	public SPMap(final int ver, final int rows, final int cols) {
-		tiles = new TileCollection();
+	public SPMap(final int ver, final int rows, final int cols, final String fileName) {
+		tiles = new TileCollection(fileName);
 		players = new PlayerCollection();
 		myRows = rows;
 		myCols = cols;
 		version = ver;
+		file = fileName;
 	}
 
 	/**

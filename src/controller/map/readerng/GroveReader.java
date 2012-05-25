@@ -38,14 +38,13 @@ public class GroveReader implements INodeHandler<Grove> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Grove fix = new Grove("orchard".equalsIgnoreCase(element
-				.getName().getLocalPart()), Boolean.parseBoolean(XMLHelper
-				.getAttribute(element, "wild")),
-				getAttributeWithDeprecatedForm(element, "kind",
-						"tree", warner), getOrGenerateID(element, warner, idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+		final Grove fix = new Grove(
+				"orchard".equalsIgnoreCase(element.getName().getLocalPart()),
+				Boolean.parseBoolean(XMLHelper.getAttribute(element, "wild")),
+				getAttributeWithDeprecatedForm(element, "kind", "tree", warner),
+				getOrGenerateID(element, warner, idFactory),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

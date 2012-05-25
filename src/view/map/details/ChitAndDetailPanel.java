@@ -91,7 +91,7 @@ public class ChitAndDetailPanel extends JPanel implements
 	/**
 	 * The tile the chits are on.
 	 */
-	private Tile tile = new Tile(-1, -1, TileType.NotVisible);
+	private Tile tile = new Tile(-1, -1, TileType.NotVisible, "");
 
 	/**
 	 * @param fix

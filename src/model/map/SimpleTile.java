@@ -9,10 +9,12 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile> {
 	 * Constructor.
 	 * @param loc the tile's location
 	 * @param tileType the tile type
+	 * @param filename the file this is read from
 	 */
-	public SimpleTile(final Point loc, final TileType tileType) {
+	public SimpleTile(final Point loc, final TileType tileType, final String filename) {
 		location = loc;
 		type = tileType;
+		file = filename;
 	}
 	/**
 	 * @param obj another tile

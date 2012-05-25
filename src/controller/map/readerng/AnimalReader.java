@@ -40,12 +40,10 @@ public class AnimalReader implements INodeHandler<Animal> {
 		final Animal fix = new Animal(
 				getAttribute(element, "kind"),
 				hasAttribute(element, "traces"),
-				Boolean.parseBoolean(getAttribute(element,
-						"talking", "false")), getOrGenerateID(element, warner,
-						idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
+				Boolean.parseBoolean(getAttribute(element, "talking", "false")),
+				getOrGenerateID(element, warner, idFactory),
+				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : ""));
 		return fix;
 	}
 	/**

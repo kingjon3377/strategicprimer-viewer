@@ -38,7 +38,7 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 	 */
 	public Player getPlayer(final int player) {
 		return players.containsKey(Integer.valueOf(player)) ? players.get(Integer.valueOf(player)) : new Player(
-				player, "");
+				player, "", "");
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 				return player; // NOPMD
 			}
 		}
-		return new Player(-1, "");
+		return new Player(-1, "", "");
 	}
 
 	/**

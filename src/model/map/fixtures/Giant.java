@@ -17,10 +17,12 @@ public class Giant implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param gKind the kind of giant
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Giant(final String gKind, final int idNum) {
+	public Giant(final String gKind, final int idNum, final String fileName) {
 		kind = gKind;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return the kind of giant

@@ -17,10 +17,12 @@ public class Dragon implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param dKind the kind of dragon
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Dragon(final String dKind, final int idNum) {
+	public Dragon(final String dKind, final int idNum, final String fileName) {
 		kind = dKind;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return the kind of dragon

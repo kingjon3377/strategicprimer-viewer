@@ -27,10 +27,7 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 	 */
 	@Override
 	public Ogre produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Ogre fix = new Ogre(Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+		final Ogre fix = new Ogre(Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 	/**

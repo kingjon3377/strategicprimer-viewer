@@ -23,11 +23,13 @@ public class Player implements Comparable<Player>, XMLWritable {
 	 *            the player's number
 	 * @param name
 	 *            the player's code name
+	 * @param fileName the file this was loaded from
 	 */
-	public Player(final int idNum, final String name) {
+	public Player(final int idNum, final String name, final String fileName) {
 		playerID = idNum;
 		playerName = name;
 		setCurrent(false);
+		file = fileName;
 	}
 
 	/**

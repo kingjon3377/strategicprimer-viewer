@@ -20,12 +20,14 @@ public class MapView implements IMap {
 	 * @param wrapped the map this wraps
 	 * @param curPlayer the current player's number
 	 * @param curTurn the current turn
+	 * @param filename the file this is loaded from
 	 */
-	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn) {
+	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn, final String filename) {
 		map = wrapped;
 		player = map.getPlayers().getPlayer(curPlayer);
 		player.setCurrent(true);
 		turn = curTurn;
+		file = filename;
 	}
 	/**
 	 * The map we wrap.

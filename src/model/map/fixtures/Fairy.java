@@ -17,10 +17,12 @@ public class Fairy implements TileFixture, HasImage {
 	 * Constructor.
 	 * @param fKind the kind of fairy
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Fairy(final String fKind, final int idNum) {
+	public Fairy(final String fKind, final int idNum, final String fileName) {
 		kind = fKind;
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return the kind of fairy

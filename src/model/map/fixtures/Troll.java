@@ -12,9 +12,11 @@ public class Troll implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Troll(final int idNum) {
+	public Troll(final int idNum, final String fileName) {
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return an XML representation of the troll

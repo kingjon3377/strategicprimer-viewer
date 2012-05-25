@@ -14,9 +14,11 @@ import model.map.TileFixture;
 public class Hill implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Hill(final int idNum) {
+	public Hill(final int idNum, final String fileName) {
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return a String representation of the hill.

@@ -63,10 +63,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 				.parseInt(getProperty(OWNER_ATTR)) : -1),
 				getPropertyWithDefault(TYPE_ATTR, ""),
 				getPropertyWithDefault(NAME_ATTR, ""),
-				Integer.parseInt(getProperty("id")));
-		if (hasProperty("file")) {
-			fix.setFile(getProperty("file"));
-		}
+				Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
 	}
 

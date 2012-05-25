@@ -49,15 +49,12 @@ public class ViewNode extends AbstractChildNode<MapView> {
 				map.produce(players,
 						warner),
 				Integer.parseInt(getProperty("current_player")),
-				Integer.parseInt(getProperty("current_turn")));
+				Integer.parseInt(getProperty("current_turn")), getProperty("file"));
 		for (AbstractXMLNode child : this) {
 			if (child instanceof SubmapNode) {
 				final SubmapNode.Submap submap = ((SubmapNode) child).produce(players, warner);
 				retval.addSubmap(submap.getLocation(), submap.getMap());
 			}
-		}
-		if (hasProperty("file")) {
-			retval.setFile(getProperty("file"));
 		}
 		return retval;
 	}

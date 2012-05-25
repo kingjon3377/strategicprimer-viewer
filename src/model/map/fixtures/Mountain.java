@@ -11,6 +11,13 @@ import model.map.TileFixture;
  */
 public class Mountain implements TerrainFixture, HasImage {
 	/**
+	 * Constructor.
+	 * @param fileName the file this was loaded from
+	 */
+	public Mountain(final String fileName) {
+		file = fileName;
+	}
+	/**
 	 * @return a String representation of the forest.
 	 */
 	@Override

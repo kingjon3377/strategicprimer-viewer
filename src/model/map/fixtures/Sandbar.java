@@ -11,9 +11,11 @@ import model.map.TileFixture;
 public class Sandbar implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Sandbar(final int idNum) {
+	public Sandbar(final int idNum, final String fileName) {
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return a String representation of the sandbar.

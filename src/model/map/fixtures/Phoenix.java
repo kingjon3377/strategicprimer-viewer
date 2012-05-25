@@ -11,9 +11,11 @@ import model.map.TileFixture;
 public class Phoenix implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Phoenix(final int idNum) {
+	public Phoenix(final int idNum, final String fileName) {
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return an XML representation of the phoenix

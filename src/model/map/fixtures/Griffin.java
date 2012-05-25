@@ -11,9 +11,11 @@ import model.map.TileFixture;
 public class Griffin implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
-	public Griffin(final int idNum) {
+	public Griffin(final int idNum, final String fileName) {
 		id = idNum;
+		file = fileName;
 	}
 	/**
 	 * @return an XML representation of the griffin.

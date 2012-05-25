@@ -35,13 +35,15 @@ public class Unit implements TileFixture, HasImage {
 	 * @param unitName
 	 *            the name of this unit
 	 * @param idNum the ID number.
+	 * @param fileName the file this was loaded from
 	 */
 	public Unit(final Player unitOwner, final String unitType,
-			final String unitName, final int idNum) {
+			final String unitName, final int idNum, final String fileName) {
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;
 		id = idNum;
+		file = fileName;
 	}
 
 	/**

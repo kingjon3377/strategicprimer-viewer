@@ -93,9 +93,15 @@ public class Point implements Comparable<Point>, XMLWritable {
 	public String toXML() {
 		return "row=\"" + myRow + "\" column=\"" + myCol + "\"";
 	}
+	
 	/**
+	 * Note that this shouldn't ever be called; Points aren't represented by
+	 * tags, they're an implementation detail that shouldn't be exposed to
+	 * serialization.
+	 * 
 	 * @return The name of the file this is to be written to.
 	 */
+	@Deprecated
 	@Override
 	public String getFile() {
 		return file;
