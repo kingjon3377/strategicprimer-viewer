@@ -119,11 +119,10 @@ public class ResolutionDecreaseConverter {
 		lowerLeftRivers.removeRiver(River.North);
 		lowerRightRivers.removeRiver(River.West);
 		lowerRightRivers.removeRiver(River.North);
-		@SuppressWarnings("unchecked")
-		final IteratorWrapper<River> riverIter = new IteratorWrapper<River>(new IteratorStack<River>(
-				upperLeftRivers, upperRightRivers, lowerLeftRivers,
-				lowerRightRivers));
-		combined.addRivers(riverIter);
+		combined.addRivers(upperLeftRivers);
+		combined.addRivers(upperRightRivers);
+		combined.addRivers(lowerLeftRivers);
+		combined.addRivers(lowerRightRivers);
 		retval.addFixture(combined);
 		return retval;
 	}
