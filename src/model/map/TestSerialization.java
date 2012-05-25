@@ -212,7 +212,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquals("Multiple units should come through", xmlTwo,
 				createSerializedForm(six, true).replace("\t\t", ""));
 		assertEquals("Multiple units should come through", xmlTwo,
-				createSerializedForm(six, false));
+				createSerializedForm(six, false).trim());
 		assertEquals("Shouldn't print empty not-visible tiles", "",
 				createSerializedForm(new Tile(0, 0, TileType.NotVisible, FAKE_FILENAME), true));
 		assertEquals("Shouldn't print empty not-visible tiles", "",
