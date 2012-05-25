@@ -8,12 +8,10 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
-import model.map.SPMap;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
-import controller.map.converter.OneToTwoConverter;
 import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.readerng.MapWriterNG;
