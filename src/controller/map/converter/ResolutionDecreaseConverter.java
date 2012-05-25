@@ -36,7 +36,7 @@ public class ResolutionDecreaseConverter {
 	/**
 	 * The size of a submap.
 	 */
-	private static final int SUBMAP_SIZE = 10;
+	private static final int SUBMAP_SIZE = 6;
 	/**
 	 * Convert a map. It needs to have an even number of rows and columns.
 	 * @param old the map to convert.
