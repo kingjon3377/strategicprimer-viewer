@@ -14,7 +14,8 @@ import java.util.Map;
  * @author Jonathan Lovelace
  * 
  */
-public final class TileCollection implements Iterable<Point>, Subsettable<TileCollection>, DeepCloneable<TileCollection>, HasChildren {
+public final class TileCollection implements Iterable<Point>,
+		Subsettable<TileCollection>, DeepCloneable<TileCollection>, HasChildren {
 	/**
 	 * The default filename for tiles we create to avoid returning null.
 	 */
