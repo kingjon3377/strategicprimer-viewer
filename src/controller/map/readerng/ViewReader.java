@@ -3,7 +3,9 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.stream.events.StartElement;
@@ -14,6 +16,7 @@ import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
+import model.map.XMLWritable;
 import util.Pair;
 import util.Warning;
 import controller.map.MissingChildException;
@@ -160,16 +163,42 @@ public class ViewReader implements INodeHandler<MapView> {
 						.getPlayerId()));
 		retval.addAttribute("current_turn", Integer.toString(obj.getCurrentTurn()));
 		final SPMapReader reader = new SPMapReader();
-		retval.addChild(reader.write(obj.getMap()));
+		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
+		tagMap.put(obj.getFile(), retval);
+		addChild(tagMap, obj.getMap(), retval, reader);
 		for (Entry<Point, SPMap> submap : obj.getSubmapIterator()) {
+			tagMap.clear();
 			@SuppressWarnings("unchecked")
 			final SPIntermediateRepresentation child = new SPIntermediateRepresentation(//NOPMD
 					"submap", Pair.of("row",
 							Integer.toString(submap.getKey().row())), Pair.of(
 							"column", Integer.toString(submap.getKey().col())));
-			child.addChild(reader.write(submap.getValue()));
+			tagMap.put(obj.getFile(), child);
+			addChild(tagMap, submap.getValue(), child, reader);
 			retval.addChild(child);
 		}
 		return retval;
+	}
+	/**
+	 * Add a child node to a node---the parent node, or an 'include' node representing its chosen file.
+	 * @param map the mapping from filenames to IRs.
+	 * @param obj the object we're handling
+	 * @param parent the parent node, so we can add any include nodes created to it
+	 * @param reader the reader to use to handle the object
+	 */
+	private static void addChild(final Map<String, SPIntermediateRepresentation> map,
+			final SPMap obj, final SPIntermediateRepresentation parent, final SPMapReader reader) {
+		if (obj.getFile() == null) {
+			parent.addChild(reader.write(obj));
+		} else {
+			if (!map.containsKey(obj.getFile())) {
+				final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
+						"include");
+				includeTag.addAttribute("file", obj.getFile());
+				parent.addChild(includeTag);
+				map.put(obj.getFile(), includeTag);
+			}
+			map.get(obj.getFile()).addChild(reader.write(obj));
+		}
 	}
 }

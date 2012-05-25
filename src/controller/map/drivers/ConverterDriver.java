@@ -2,12 +2,16 @@ package controller.map.drivers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.MapView;
+import model.map.Point;
+import model.map.SPMap;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
@@ -56,7 +60,18 @@ public final class ConverterDriver {
 			SystemOut.SYS_OUT.println(filename);
 			try {
 				final IMap old = READER.readMap(filename, Warning.INSTANCE);
-				final IMap map = CONV.convert(old);
+				final MapView map = CONV.convert(old);
+				map.setFile(filename + ".new");
+				map.setFileOnChildren(filename + ".new");
+				for (Entry<Point, SPMap> entry : map.getSubmapIterator()) {
+					final String submapFilename = filename.replaceAll(
+									".xml$",
+									String.format("_%d_%d.xml",
+											Integer.valueOf(entry.getKey().row()),
+											Integer.valueOf(entry.getKey().col())));
+					entry.getValue().setFile(submapFilename);
+					entry.getValue().setFileOnChildren(submapFilename);
+				}
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.println(".new");
