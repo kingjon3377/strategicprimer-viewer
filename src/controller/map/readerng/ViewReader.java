@@ -29,6 +29,10 @@ import controller.map.misc.IDFactory;
  */
 public class ViewReader implements INodeHandler<MapView> {
 	/**
+	 * The tag indicating a submap.
+	 */
+	private static final String SUBMAP_TAG = "submap";
+	/**
 	 * The (main) tag we deal with.
 	 */
 	private static final String TAG = "view";
@@ -77,7 +81,7 @@ public class ViewReader implements INodeHandler<MapView> {
 							Integer.parseInt(getAttribute(element,
 									"current_turn")),
 							XMLHelper.getFile(stream));
-				} else if ("submap".equalsIgnoreCase(event.asStartElement()
+				} else if (SUBMAP_TAG.equalsIgnoreCase(event.asStartElement()
 						.getName().getLocalPart())) {
 					view.addSubmap(
 							PointFactory.point(Integer.parseInt(getAttribute(//NOPMD
@@ -131,14 +135,14 @@ public class ViewReader implements INodeHandler<MapView> {
 			}
 		}
 		if (element == null) {
-			throw new MissingChildException("submap", parent.getLocation().getLineNumber());
+			throw new MissingChildException(SUBMAP_TAG, parent.getLocation().getLineNumber());
 		}
 		// ESCA-JAVA0177:
 		final SPMap retval; // NOPMD
 		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
 			retval = MAP_READER.parse(element, stream, players, warner, idFactory);
 		} else {
-			throw new UnwantedChildException("submap", element.getName()
+			throw new UnwantedChildException(SUBMAP_TAG, element.getName()
 					.getLocalPart(), element.getLocation().getLineNumber());
 		}
 		XMLHelper.spinUntilEnd(parent.getName(), stream);
@@ -167,7 +171,7 @@ public class ViewReader implements INodeHandler<MapView> {
 			tagMap.clear();
 			@SuppressWarnings("unchecked")
 			final SPIntermediateRepresentation child = new SPIntermediateRepresentation(//NOPMD
-					"submap", Pair.of("row",
+					SUBMAP_TAG, Pair.of("row",
 							Integer.toString(submap.getKey().row())), Pair.of(
 							"column", Integer.toString(submap.getKey().col())));
 			tagMap.put(obj.getFile(), child);

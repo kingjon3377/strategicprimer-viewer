@@ -34,8 +34,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Mountain fix = new Mountain(XMLHelper.getFile(stream));
-		return fix;
+		return new Mountain(XMLHelper.getFile(stream));
 	}
 	/**
 	 * @return a list of the tags this reader understands
