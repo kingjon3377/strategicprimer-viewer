@@ -14,6 +14,7 @@ import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.converter.OneToTwoConverter;
+import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.readerng.MapWriterNG;
 
@@ -36,7 +37,7 @@ public final class ConverterDriver {
 	/**
 	 * The converter to use.
 	 */
-	private static final OneToTwoConverter CONV = new OneToTwoConverter(); 
+	private static final ResolutionDecreaseConverter CONV = new ResolutionDecreaseConverter(); 
 	/**
 	 * The map reader we'll use.
 	 */
@@ -52,13 +53,12 @@ public final class ConverterDriver {
 		if (args.length < 1) {
 			SystemOut.SYS_OUT.println("Usage: ConverterDriver filename [filename ...]");
 		}
-		boolean main = true; // NOPMD
 		for (final String filename : args) {
 			SystemOut.SYS_OUT.print("Starting ");
 			SystemOut.SYS_OUT.println(filename);
 			try {
 				final IMap old = READER.readMap(filename, Warning.INSTANCE);
-				final SPMap map = CONV.convert(old, main);
+				final IMap map = CONV.convert(old);
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.println(".new");
@@ -78,7 +78,6 @@ public final class ConverterDriver {
 				LOGGER.log(Level.SEVERE, "SP map format error reading " + filename, e);
 				continue;
 			}
-			main = false; // NOPMD
 		}
 	}
 }
