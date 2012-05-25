@@ -5,7 +5,8 @@ package model.map;
  *
  */
 //ESCA-JAVA0237:
-public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>, DeepCloneable<IMap> {
+public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>,
+		DeepCloneable<IMap>, HasChildren {
 
 	/**
 	 * @return the map version

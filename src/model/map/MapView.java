@@ -289,4 +289,17 @@ public class MapView implements IMap {
 		// TODO: changesets
 		return retval;
 	}
+	/**
+	 * Set all children's file property to the specified value, recursively.
+	 * @param value the value to set
+	 */
+	@Override
+	public void setFileOnChildren(final String value) {
+		map.setFile(value);
+		map.setFileOnChildren(value);
+		for (SPMap submap : submaps.values()) {
+			submap.setFile(value);
+			submap.setFileOnChildren(value);
+		}
+	}
 }

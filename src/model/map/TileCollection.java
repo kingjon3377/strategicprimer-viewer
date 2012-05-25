@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Jonathan Lovelace
  * 
  */
-public final class TileCollection implements Iterable<Point>, Subsettable<TileCollection>, DeepCloneable<TileCollection> {
+public final class TileCollection implements Iterable<Point>, Subsettable<TileCollection>, DeepCloneable<TileCollection>, HasChildren {
 	/**
 	 * The default filename for tiles we create to avoid returning null.
 	 */
@@ -126,5 +126,16 @@ public final class TileCollection implements Iterable<Point>, Subsettable<TileCo
 			retval.tiles.put(point, (Tile) tiles.get(point).deepCopy());
 		}
 		return retval;
+	}
+	/**
+	 * Set all children's file property to the specified value, recursively.
+	 * @param value the value to set
+	 */
+	@Override
+	public void setFileOnChildren(final String value) {
+		for (Tile tile : tiles.values()) {
+			tile.setFile(value);
+			tile.setFileOnChildren(value);
+		}
 	}
 }

@@ -183,6 +183,7 @@ public class ResolutionDecreaseConverter {
 		paintAndFillTiles(upperRight, retval, 0, 5, 5, 10);
 		paintAndFillTiles(lowerLeft, retval, 5, 10, 0, 5);
 		paintAndFillTiles(lowerRight, retval, 5, 10, 5, 10);
+		retval.setFileOnChildren(filename);
 		return retval;
 	}
 	
@@ -221,7 +222,9 @@ public class ResolutionDecreaseConverter {
 					extendRiver(river, map, minRow, maxRow, minCol, maxCol);
 				}
 			} else {
-				map.getTile(random.nextInt(maxRow - minRow) + minRow, random.nextInt(maxCol - minCol) + minCol).addFixture(fix);
+				map.getTile(random.nextInt(maxRow - minRow) + minRow,
+						random.nextInt(maxCol - minCol) + minCol).addFixture(
+						setFile(map.getFile(), fix.deepCopy()));
 			}
 		}
 	}

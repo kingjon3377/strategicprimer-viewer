@@ -13,7 +13,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  * 
  */
-public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCollection> {
+public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCollection>, HasChildren {
 	/**
 	 * The collection this class wraps.
 	 */
@@ -109,5 +109,15 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 			}
 		}
 		return true;
+	}
+	/**
+	 * Set all children's file property to the specified value, recursively.
+	 * @param value the value to set
+	 */
+	@Override
+	public void setFileOnChildren(final String value) {
+		for (final Player player : players.values()) {
+			player.setFile(value);
+		}
 	}
 }

@@ -288,4 +288,13 @@ public class SPMap implements IMap {
 		retval.tiles = tiles.deepCopy();
 		return retval;
 	}
+	/**
+	 * Set all children's file property to the specified value, recursively.
+	 * @param value the value to set
+	 */
+	@Override
+	public void setFileOnChildren(final String value) {
+		players.setFileOnChildren(value);
+		tiles.setFileOnChildren(value);
+	}
 }
