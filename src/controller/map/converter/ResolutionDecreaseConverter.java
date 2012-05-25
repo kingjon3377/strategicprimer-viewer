@@ -90,10 +90,11 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static Tile convertTile(final Tile upperLeft,
 			final Tile upperRight, final Tile lowerLeft, final Tile lowerRight) {
-		final RiverFixture upperLeftRivers = upperLeft.getRivers();
-		final RiverFixture upperRightRivers = upperRight.getRivers();
-		final RiverFixture lowerLeftRivers = lowerLeft.getRivers();
-		final RiverFixture lowerRightRivers = lowerRight.getRivers();
+		final RiverFixture empty = new RiverFixture();
+		final RiverFixture upperLeftRivers = (upperLeft.hasRiver() ? upperLeft.getRivers() : empty);
+		final RiverFixture upperRightRivers = (upperRight.hasRiver() ? upperRight.getRivers() : empty);
+		final RiverFixture lowerLeftRivers = (lowerLeft.hasRiver() ? lowerLeft.getRivers() : empty);
+		final RiverFixture lowerRightRivers = (lowerRight.hasRiver() ? lowerRight.getRivers() : empty);
 		final Tile retval = new Tile(upperLeft.getLocation().row() / 2,
 				upperLeft.getLocation().col() / 2, consensus(
 						upperLeft.getTerrain(), upperRight.getTerrain(),
