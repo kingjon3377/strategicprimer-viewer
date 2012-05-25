@@ -60,7 +60,7 @@ public final class ConverterDriver {
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.println(".new");
-				new MapWriterNG().write(filename + ".new", map, false); // NOPMD
+				new MapWriterNG().write(filename + ".new", map, true); // NOPMD
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				continue;
