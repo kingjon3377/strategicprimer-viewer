@@ -61,6 +61,6 @@ public class MapWriterNG implements SPWriter {
 	 * @throws IOException on I/O error in writing
 	 */
 	public void writeObject(final Writer out, final XMLWritable obj, final boolean inclusion) throws IOException {
-		new ReaderAdapter().write(obj).write(out, inclusion, 0);
+		ReaderAdapter.ADAPTER.write(obj).write(out, inclusion, 0);
 	}
 }

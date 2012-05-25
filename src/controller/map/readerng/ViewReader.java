@@ -69,7 +69,7 @@ public class ViewReader implements INodeHandler<MapView> {
 			if (event.isStartElement()) {
 				if ("map".equalsIgnoreCase(event.asStartElement().getName().getLocalPart()) && view == null) {
 					view = new MapView(// NOPMD
-							new SPMapReader().parse(event.asStartElement(),
+							MAP_READER.parse(event.asStartElement(),
 									stream, players, warner, idFactory),
 							Integer.parseInt(getAttribute(element,
 									"current_player")),
@@ -136,7 +136,7 @@ public class ViewReader implements INodeHandler<MapView> {
 		// ESCA-JAVA0177:
 		final SPMap retval; // NOPMD
 		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
-			retval = new SPMapReader().parse(element, stream, players, warner, idFactory);
+			retval = MAP_READER.parse(element, stream, players, warner, idFactory);
 		} else {
 			throw new UnwantedChildException("submap", element.getName()
 					.getLocalPart(), element.getLocation().getLineNumber());
@@ -159,7 +159,7 @@ public class ViewReader implements INodeHandler<MapView> {
 				Integer.toString(obj.getPlayers().getCurrentPlayer()
 						.getPlayerId()));
 		retval.addAttribute("current_turn", Integer.toString(obj.getCurrentTurn()));
-		final SPMapReader reader = new SPMapReader();
+		final SPMapReader reader = MAP_READER;
 		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 		tagMap.put(obj.getFile(), retval);
 		addChild(tagMap, obj.getMap(), retval, reader);
@@ -198,4 +198,8 @@ public class ViewReader implements INodeHandler<MapView> {
 			map.get(obj.getFile()).addChild(reader.write(obj));
 		}
 	}
+	/**
+	 * A map reader to use.
+	 */
+	private static final SPMapReader MAP_READER = new SPMapReader();
 }

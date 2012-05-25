@@ -58,7 +58,7 @@ public class TileReader implements INodeHandler<Tile> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName().getLocalPart())) {
-					tile.addFixture(new RiverFixture(new RiverReader().parse(// NOPMD
+					tile.addFixture(new RiverFixture(READER.parse(// NOPMD
 							event.asStartElement(), stream, players, warner, idFactory)));
 				} else {
 					perhapsAddFixture(stream, players, warner, tile, event,
@@ -92,7 +92,7 @@ public class TileReader implements INodeHandler<Tile> {
 			final Tile tile, final XMLEvent event, final String tag, final IDFactory idFactory)
 			throws SPFormatException {
 		try {
-			tile.addFixture(checkedCast(new ReaderAdapter().parse(//NOPMD
+			tile.addFixture(checkedCast(ReaderAdapter.ADAPTER.parse(//NOPMD
 				event.asStartElement(), stream, players, warner, idFactory),
 				TileFixture.class));
 		} catch (final UnwantedChildException except) {
@@ -148,17 +148,15 @@ public class TileReader implements INodeHandler<Tile> {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
 			if (!obj.getContents().isEmpty()) {
-				final ReaderAdapter adapter = new ReaderAdapter();
-				final RiverReader riverAdapter = new RiverReader();
 				final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj.getContents()) {
 					if (fix instanceof RiverFixture) {
 						for (River river : (RiverFixture) fix) {
-							retval.addChild(riverAdapter.write(river));
+							retval.addChild(READER.write(river));
 						}
 					} else {
-						addChild(tagMap, fix, adapter, retval);
+						addChild(tagMap, fix, ReaderAdapter.ADAPTER, retval);
 					}
 				}
 				tagMap.remove(obj.getFile());
@@ -198,4 +196,8 @@ public class TileReader implements INodeHandler<Tile> {
 	public Class<Tile> writes() {
 		return Tile.class;
 	}
+	/**
+	 * A reader to use to parse and write Rivers.
+	 */
+	private static final RiverReader READER = new RiverReader();
 }

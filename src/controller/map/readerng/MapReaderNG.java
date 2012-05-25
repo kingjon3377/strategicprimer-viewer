@@ -83,7 +83,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 				new IncludingIterator(file, XMLInputFactory.newInstance().createXMLEventReader(istream)));
 		for (XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final XMLWritable retval = new ReaderAdapter().parse(//NOPMD
+				final XMLWritable retval = ReaderAdapter.ADAPTER.parse(//NOPMD
 						event.asStartElement(), eventReader,
 						new PlayerCollection(), warner, new IDFactory()); // NOPMD
 				return checkType(retval, type);

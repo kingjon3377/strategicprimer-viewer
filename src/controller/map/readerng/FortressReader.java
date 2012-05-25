@@ -50,7 +50,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
-				fort.addUnit(new UnitReader().parse(event.asStartElement(), //NOPMD
+				fort.addUnit(UNIT_READER.parse(event.asStartElement(), //NOPMD
 						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
@@ -117,6 +117,10 @@ public class FortressReader implements INodeHandler<Fortress> {
 			includeTag.addAttribute("file", obj.getFile());
 			parent.addChild(includeTag);
 		}
-		map.get(obj.getFile()).addChild(new UnitReader().write(obj));
+		map.get(obj.getFile()).addChild(UNIT_READER.write(obj));
 	}
+	/**
+	 * The reader to use to parse units.
+	 */
+	private static final UnitReader UNIT_READER = new UnitReader();
 }

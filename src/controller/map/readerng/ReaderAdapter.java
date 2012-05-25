@@ -178,4 +178,8 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	public Class<XMLWritable> writes() {
 		throw new IllegalStateException("This should never be called.");
 	}
+	/**
+	 * A singleton. Provided for performance; this is, after all, stateless.
+	 */
+	public static final ReaderAdapter ADAPTER = new ReaderAdapter();
 }

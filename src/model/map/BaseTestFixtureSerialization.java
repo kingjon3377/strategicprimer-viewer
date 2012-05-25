@@ -632,7 +632,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			return obj.toXML(); // NOPMD
 		} else {
 			final StringWriter writer = new StringWriter();
-			new ReaderAdapter().write(obj).write(writer, true, 0);
+			ReaderAdapter.ADAPTER.write(obj).write(writer, true, 0);
 			return writer.toString();
 		}
 	}

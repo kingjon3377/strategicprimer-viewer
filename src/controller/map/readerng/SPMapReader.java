@@ -89,13 +89,13 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final StartElement elem, final IDFactory idFactory) throws SPFormatException {
 		final String type = elem.getName().getLocalPart();
 		if ("player".equalsIgnoreCase(type)) {
-			map.addPlayer(new PlayerReader()
+			map.addPlayer(PLAYER_READER
 					.parse(elem, stream, map.getPlayers(), warner, idFactory));
 		} else if (!"row".equalsIgnoreCase(type)) {
 			// We deliberately ignore "row"; that had been a "continue",
 			// but we want to extract this as a method.
 			if ("tile".equalsIgnoreCase(type)) {
-				map.addTile(new TileReader().parse(
+				map.addTile(TILE_READER.parse(
 						elem, stream, map.getPlayers(), warner, idFactory));
 			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) { 
 				warner.warn(new UnsupportedTagException(type, elem // NOPMD
@@ -173,7 +173,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			includeTag.addAttribute("file", obj.getFile());
 			parent.addChild(includeTag);
 		}
-		map.get(obj.getFile()).addChild(new TileReader().write(obj));
+		map.get(obj.getFile()).addChild(TILE_READER.write(obj));
 	}
 	/**
 	 * Add a child node for a player to a node---the parent node, or an 'include' node representing its chosen file.
@@ -188,6 +188,14 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			includeTag.addAttribute("file", obj.getFile());
 			parent.addChild(includeTag);
 		}
-		map.get(obj.getFile()).addChild(new PlayerReader().write(obj));
+		map.get(obj.getFile()).addChild(PLAYER_READER.write(obj));
 	}
+	/**
+	 * The reader to use to parse players
+	 */
+	private static final PlayerReader PLAYER_READER = new PlayerReader();
+	/**
+	 * The reader to use to parse tiles.
+	 */
+	private static final TileReader TILE_READER = new TileReader();
 }
