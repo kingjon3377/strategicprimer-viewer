@@ -94,11 +94,10 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static Tile convertTile(final Tile upperLeft,
 			final Tile upperRight, final Tile lowerLeft, final Tile lowerRight) {
-		final RiverFixture empty = new RiverFixture();
-		final RiverFixture upperLeftRivers = (upperLeft.hasRiver() ? upperLeft.getRivers() : empty);
-		final RiverFixture upperRightRivers = (upperRight.hasRiver() ? upperRight.getRivers() : empty);
-		final RiverFixture lowerLeftRivers = (lowerLeft.hasRiver() ? lowerLeft.getRivers() : empty);
-		final RiverFixture lowerRightRivers = (lowerRight.hasRiver() ? lowerRight.getRivers() : empty);
+		final RiverFixture upperLeftRivers = getRivers(upperLeft);
+		final RiverFixture upperRightRivers = getRivers(upperRight);
+		final RiverFixture lowerLeftRivers = getRivers(lowerLeft);
+		final RiverFixture lowerRightRivers = getRivers(lowerRight);
 		final Tile retval = new Tile(upperLeft.getLocation().row() / 2,
 				upperLeft.getLocation().col() / 2, consensus(
 						upperLeft.getTerrain(), upperRight.getTerrain(),
@@ -115,20 +114,36 @@ public class ResolutionDecreaseConverter {
 			}
 		}
 		final RiverFixture combined = new RiverFixture();
-		upperLeftRivers.removeRiver(River.East);
-		upperLeftRivers.removeRiver(River.South);
-		upperRightRivers.removeRiver(River.West);
-		upperRightRivers.removeRiver(River.South);
-		lowerLeftRivers.removeRiver(River.East);
-		lowerLeftRivers.removeRiver(River.North);
-		lowerRightRivers.removeRiver(River.West);
-		lowerRightRivers.removeRiver(River.North);
+		removeRivers(upperLeftRivers, River.East, River.South);
+		removeRivers(upperRightRivers, River.West, River.South);
+		removeRivers(lowerLeftRivers, River.East, River.North);
+		removeRivers(lowerRightRivers, River.West, River.North);
 		combined.addRivers(upperLeftRivers);
 		combined.addRivers(upperRightRivers);
 		combined.addRivers(lowerLeftRivers);
 		combined.addRivers(lowerRightRivers);
 		retval.addFixture(combined);
 		return retval;
+	}
+	/**
+	 * @param tile a tile
+	 * @return its RiverFixture, or an empty one if it doesn't have one
+	 */
+	private static RiverFixture getRivers(final Tile tile) {
+		if (tile.hasRiver()) {
+			return tile.getRivers(); // NOPMD
+		} else {
+			return new RiverFixture();
+		}
+	}
+	/**
+	 * @param fix a RiverFixture
+	 * @param rivers a series of rivers to remove from it
+	 */
+	private static void removeRivers(final RiverFixture fix, final River... rivers) {
+		for (River river : rivers) {
+			fix.removeRiver(river);
+		}
 	}
 	/**
 	 * @param one
