@@ -27,8 +27,7 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 	 */
 	@Override
 	public Ogre produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Ogre fix = new Ogre(Integer.parseInt(getProperty("id")), getProperty("file"));
-		return fix;
+		return new Ogre(Integer.parseInt(getProperty("id")), getProperty("file"));
 	}
 	/**
 	 * Check the node for invalid data. An Ogre is valid if it has no children.

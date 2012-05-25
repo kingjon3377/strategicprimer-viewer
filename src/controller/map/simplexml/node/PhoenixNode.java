@@ -27,8 +27,7 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	 */
 	@Override
 	public Phoenix produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Phoenix fix = new Phoenix(Integer.parseInt(getProperty("id")), getProperty("file"));
-		return fix;
+		return new Phoenix(Integer.parseInt(getProperty("id")), getProperty("file"));
 	}
 	/**
 	 * Check the node for invalid data. A Phoenix is valid if it has no children.

@@ -27,8 +27,7 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	 */
 	@Override
 	public Minotaur produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Minotaur fix = new Minotaur(Integer.parseInt(getProperty("id")), getProperty("file"));
-		return fix;
+		return new Minotaur(Integer.parseInt(getProperty("id")), getProperty("file"));
 	}
 	/**
 	 * Check the node for invalid data. A Minotaur is valid if it has no children.

@@ -67,11 +67,9 @@ public class ViewReader implements INodeHandler<MapView> {
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("map".equalsIgnoreCase(event.asStartElement().getName().getLocalPart()) && view == null) {
-					view = new MapView(
-							new SPMapReader().parse(
-									// NOPMD
-									event.asStartElement(), stream, players,
-									warner, idFactory),
+					view = new MapView(// NOPMD
+							new SPMapReader().parse(event.asStartElement(),
+									stream, players, warner, idFactory),
 							Integer.parseInt(getAttribute(element,
 									"current_player")),
 							Integer.parseInt(getAttribute(element,

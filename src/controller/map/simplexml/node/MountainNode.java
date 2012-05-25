@@ -26,8 +26,7 @@ public class MountainNode extends AbstractFixtureNode<Mountain> {
 	 */
 	@Override
 	public Mountain produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Mountain fix = new Mountain(getProperty("file"));
-		return fix;
+		return new Mountain(getProperty("file"));
 	}
 	
 	/**

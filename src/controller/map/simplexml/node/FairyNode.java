@@ -32,8 +32,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	 */
 	@Override
 	public Fairy produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Fairy fix = new Fairy(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")), getProperty("file"));
-		return fix;
+		return new Fairy(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")), getProperty("file"));
 	}
 	/**
 	 * Check the node for invalid data. A Fairy is valid if it has no children and has a "kind" property.

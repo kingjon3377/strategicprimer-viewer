@@ -27,8 +27,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	 */
 	@Override
 	public Oasis produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Oasis fix = new Oasis(Integer.parseInt(getProperty("id")), getProperty("file"));
-		return fix;
+		return new Oasis(Integer.parseInt(getProperty("id")), getProperty("file"));
 	}
 	/**
 	 * Check that the noe is valid. An Oasis is valid if it has no children. TODO: should it have attributes?

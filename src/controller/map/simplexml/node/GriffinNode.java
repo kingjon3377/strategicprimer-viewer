@@ -27,8 +27,7 @@ public class GriffinNode extends AbstractFixtureNode<Griffin> {
 	 */
 	@Override
 	public Griffin produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		final Griffin fix = new Griffin(Integer.parseInt(getProperty("id")), getProperty("file"));
-		return fix;
+		return new Griffin(Integer.parseInt(getProperty("id")), getProperty("file"));
 	}
 	/**
 	 * Check the node for invalid data. A Griffin is valid if it has no children.
