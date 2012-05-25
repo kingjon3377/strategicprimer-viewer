@@ -4,10 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import util.EqualsAny;
 import util.Pair;
@@ -41,7 +40,8 @@ public class SPIntermediateRepresentation {
 	public SPIntermediateRepresentation(final String name, final Pair<String, String>... attributes) {
 		this(name);
 		for (Pair<String, String> attr : attributes) {
-			addAttribute(attr.first(), attr.second());
+//			addAttribute(attr.first(), attr.second());
+			attrs.add(attr);
 		}
 	}
 	/**
@@ -51,20 +51,22 @@ public class SPIntermediateRepresentation {
 	/**
 	 * The map of attributes.
 	 */
-	private final Map<String, String> attrs = new LinkedHashMap<String, String>();
+//	private final Map<String, String> attrs = new LinkedHashMap<String, String>();
+	private final List<Pair<String, String>> attrs = new ArrayList<Pair<String, String>>();
 	/**
 	 * Add an attribute.
 	 * @param name the name of the attribute
 	 * @param value its value
 	 */
 	public final void addAttribute(final String name, final String value) {
-		attrs.put(name, value);
+//		attrs.put(name, value);
+		attrs.add(Pair.of(name, value));
 	}
 	/**
 	 * The set of child tags.
 	 */
-	private final Set<SPIntermediateRepresentation> children = new LinkedHashSet<SPIntermediateRepresentation>();
-	
+//	private final Set<SPIntermediateRepresentation> children = new LinkedHashSet<SPIntermediateRepresentation>();
+	private final List<SPIntermediateRepresentation> children = new LinkedList<SPIntermediateRepresentation>();
 	/**
 	 * Add a child tag. If the child's tag is the empty string, we do nothing
 	 * instead---this is so we can handle empty tiles more easily.
@@ -76,6 +78,22 @@ public class SPIntermediateRepresentation {
 		if (!"".equals(child.tag)) {
 			children.add(child);
 		}
+	}
+	/**
+	 * Remove an attribute and return its value.
+	 * @param name an attribute name
+	 * @return its value, or "" if it's not there
+	 */
+	private String removeAttribute(final String name) {
+		Pair<String, String> retval = Pair.of(name, "");
+		for (Pair<String, String> pair : attrs) {
+			if (pair.first().equals(name)) {
+				retval = pair;
+				break;
+			}
+		}
+		attrs.remove(retval);
+		return retval.second();
 	}
 	
 	/**
@@ -102,13 +120,18 @@ public class SPIntermediateRepresentation {
 		} else {
 			writeIfTagNotEmpty(writer, "<");
 			writeIfTagNotEmpty(writer, tag);
-			final String text = "text".equals(tag) ? attrs
-					.remove("text-contents") : "";
-			for (String attr : attrs.keySet()) {
+//			final String text = "text".equals(tag) ? attrs
+//					.remove("text-contents") : "";
+			final String text = "text".equals(tag) ? removeAttribute("text-contents")
+					: "";
+//			for (String attr : attrs.keySet()) {
+			for (Pair<String, String> attr : attrs) {
 				writeIfTagNotEmpty(writer, " ");
-				writeIfTagNotEmpty(writer, attr);
+//				writeIfTagNotEmpty(writer, attr);
+				writeIfTagNotEmpty(writer, attr.first());
 				writeIfTagNotEmpty(writer, "=\"");
-				writeIfTagNotEmpty(writer, attrs.get(attr));
+//				writeIfTagNotEmpty(writer, attrs.get(attr));
+				writeIfTagNotEmpty(writer, attr.second());
 				writeIfTagNotEmpty(writer, "\"");
 			}
 			if (children.isEmpty()) {
@@ -136,6 +159,18 @@ public class SPIntermediateRepresentation {
 		}
 	}
 	/**
+	 * @param name an attribute name
+	 * @return whether we have an attribute by that name
+	 */
+	private boolean hasAttribute(final String name) {
+		for (Pair<String, String> pair : attrs) {
+			if (pair.first().equals(name)) {
+				return true; // NOPMD
+			}
+		}
+		return false;
+	}
+	/**
 	 * Write an 'include' tag to the Writer, and if we're doing inclusion its contents to its own.
 	 * @param writer the writer
 	 * @param inclusion whether we're doing inclusion
@@ -144,15 +179,18 @@ public class SPIntermediateRepresentation {
 	 */
 	private void writeInclude(final Writer writer, final boolean inclusion, final int indentationLevel)
 			throws IOException {
-		if (attrs.containsKey(FILE_ATTR) && inclusion) {
-			if ("string:".equals(attrs.get(FILE_ATTR))) {
+//		if (attrs.containsKey(FILE_ATTR) && inclusion) {
+		if (hasAttribute(FILE_ATTR) && inclusion) {
+			final String file = removeAttribute(FILE_ATTR);
+			if ("string:".equals(file)) {
 				final StringWriter swriter = new StringWriter();
 				for (SPIntermediateRepresentation child : children) {
 					child.write(swriter, inclusion, 0);
 				}
-				attrs.put(FILE_ATTR, xmlEncode(swriter.toString()));
+				attrs.add(Pair.of(FILE_ATTR, xmlEncode(swriter.toString())));
 			} else {
-				final FileWriter fwriter = new FileWriter(attrs.get(FILE_ATTR));
+				attrs.add(Pair.of(FILE_ATTR, file));
+				final FileWriter fwriter = new FileWriter(file);
 				try {
 				for (SPIntermediateRepresentation child : children) {
 					child.write(fwriter, inclusion, 0);
@@ -162,7 +200,7 @@ public class SPIntermediateRepresentation {
 				}
 			}
 			writeIfTagNotEmpty(writer, "<include file=\"");
-			writeIfTagNotEmpty(writer, attrs.get(FILE_ATTR));
+			writeIfTagNotEmpty(writer, removeAttribute(FILE_ATTR));
 			writeIfTagNotEmpty(writer, "\" />\n");
 		} else {
 			for (SPIntermediateRepresentation child : children) {
