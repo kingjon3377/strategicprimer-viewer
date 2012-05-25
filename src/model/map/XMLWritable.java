@@ -1,6 +1,5 @@
 package model.map;
 
-import javax.annotation.CheckForNull;
 
 /**
  * An interface for model objects that can be written to XML. I know this is
@@ -22,7 +21,6 @@ public interface XMLWritable {
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
-	@CheckForNull
 	String getFile();
 	/**
 	 * @param file the name of the file this should be written to.
