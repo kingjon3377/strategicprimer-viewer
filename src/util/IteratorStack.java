@@ -1,9 +1,9 @@
 package util;
 
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 
 /**
  * A stack of iterators. Useful for when we have several collections of things
@@ -20,15 +20,16 @@ public class IteratorStack<T> implements Iterator<T> {
 	/**
 	 * The queue of iterators.
 	 */
-	private final Queue<Iterator<T>> queue = new LinkedList<Iterator<T>>();
+	private final Deque<Iterator<T>> queue = new LinkedList<Iterator<T>>();
 	/**
 	 * Constructor.
 	 * @param iters sources for iterators to put in the queue.
 	 */
 	public IteratorStack(final Iterable<T>... iters) {
 		for (Iterable<T> iter : iters) {
-			queue.add(iter.iterator());
+			queue.addFirst(iter.iterator());
 		}
+		removeEmptyIterators();
 	}
 	/**
 	 * Constructor.
@@ -36,15 +37,16 @@ public class IteratorStack<T> implements Iterator<T> {
 	 */
 	public IteratorStack(final Iterator<T>... iters) {
 		for (Iterator<T> iter : iters) {
-			queue.add(iter);
+			queue.addFirst(iter);
 		}
+		removeEmptyIterators();
 	}
 	/**
 	 * Remove any empty iterators from the front of the queue.
 	 */
 	private void removeEmptyIterators() {
-		while ((!queue.isEmpty()) && !(queue.peek().hasNext())) {
-			queue.remove();
+		while (!queue.isEmpty() && !queue.peekFirst().hasNext()) {
+			queue.removeFirst();
 		}
 	}
 	/**
@@ -64,7 +66,9 @@ public class IteratorStack<T> implements Iterator<T> {
 		if (queue.isEmpty()) {
 			throw new NoSuchElementException("No elements left in any of the iterators");
 		} else {
-			return queue.peek().next();
+			final T retval = queue.peekFirst().next();
+			removeEmptyIterators();
+			return retval;
 		}
 	}
 	/**
@@ -76,7 +80,7 @@ public class IteratorStack<T> implements Iterator<T> {
 		if (queue.isEmpty()) {
 			throw new NoSuchElementException("No elements left in any of the iterators");
 		} else {
-			queue.peek().remove();
+			queue.peekFirst().remove();
 		}
 		removeEmptyIterators();
 	}
