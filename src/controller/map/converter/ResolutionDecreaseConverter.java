@@ -55,16 +55,19 @@ public class ResolutionDecreaseConverter {
 								old.getTile(row * 2, col * 2 + 1),
 								old.getTile(row * 2 + 1, col * 2),
 								old.getTile(row * 2 + 1, col * 2 + 1)));
-				retval.addSubmap(PointFactory.point(row, col), createSubmap(old.getTile(row * 2, col * 2),
+				retval.addSubmap(
+						PointFactory.point(row, col),
+						createSubmap(
+								old.getTile(row * 2, col * 2),
 								old.getTile(row * 2, col * 2 + 1),
 								old.getTile(row * 2 + 1, col * 2),
-								old.getTile(row * 2 + 1, col * 2 + 1)));
-				retval.getSubmap(PointFactory.point(row, col)).setFile(
-						Objects.toString(old.getFile(), ".xml").replaceAll(
-								".xml$",
-								String.format("_%d_%d.xml",
-										Integer.valueOf(row),
-										Integer.valueOf(col))));
+								old.getTile(row * 2 + 1, col * 2 + 1),
+								Objects.toString(old.getFile(), ".xml")
+										.replaceAll(
+												".xml$",
+												String.format("_%d_%d.xml",
+														Integer.valueOf(row),
+														Integer.valueOf(col)))));
 			}
 		}
 		return retval;
@@ -168,11 +171,12 @@ public class ResolutionDecreaseConverter {
 	 * @param upperRight the upper-right tile of a group of four
 	 * @param lowerLeft the lower-left tile of a group of four
 	 * @param lowerRight the lower-right tile of a group of four.
+	 * @param filename the file to store the submap in
 	 * @return a submap representing them on the lower-resolution map
 	 */
 	private static SPMap createSubmap(final Tile upperLeft,
-			final Tile upperRight, final Tile lowerLeft, final Tile lowerRight) {
-		final SPMap retval = new SPMap(2, 10, 10, upperLeft.getFile());
+			final Tile upperRight, final Tile lowerLeft, final Tile lowerRight, final String filename) {
+		final SPMap retval = new SPMap(2, 10, 10, filename);
 		paintAndFillTiles(upperLeft, retval, 0, 5, 0, 5);
 		// ESCA-JAVA0076:
 		paintAndFillTiles(upperRight, retval, 0, 5, 5, 10);
