@@ -131,7 +131,7 @@ public class SPIntermediateRepresentation {
 				}
 				writeIfTagNotEmpty(writer, "</");
 				writeIfTagNotEmpty(writer, tag);
-				writeIfTagNotEmpty(writer, ">");
+				writeIfTagNotEmpty(writer, ">\n");
 			}
 		}
 	}
