@@ -151,12 +151,13 @@ public class TileReader implements INodeHandler<Tile> {
 			}
 			if (!obj.getContents().isEmpty()) {
 				final ReaderAdapter adapter = new ReaderAdapter();
+				final RiverReader riverAdapter = new RiverReader();
 				final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj.getContents()) {
 					if (fix instanceof RiverFixture) {
 						for (River river : (RiverFixture) fix) {
-							addChild(tagMap, river, adapter, retval);
+							retval.addChild(riverAdapter.write(river));
 						}
 					} else {
 						addChild(tagMap, fix, adapter, retval);
