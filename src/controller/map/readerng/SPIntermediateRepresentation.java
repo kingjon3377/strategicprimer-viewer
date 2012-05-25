@@ -40,8 +40,8 @@ public class SPIntermediateRepresentation {
 	public SPIntermediateRepresentation(final String name, final Pair<String, String>... attributes) {
 		this(name);
 		for (Pair<String, String> attr : attributes) {
-//			addAttribute(attr.first(), attr.second());
-			attrs.add(attr);
+			addAttribute(attr.first(), attr.second());
+//			attrs.add(attr);
 		}
 	}
 	/**
@@ -49,10 +49,15 @@ public class SPIntermediateRepresentation {
 	 */
 	private final String tag;
 	/**
-	 * The map of attributes.
+	 * The list of attributes.
 	 */
 //	private final Map<String, String> attrs = new LinkedHashMap<String, String>();
-	private final List<Pair<String, String>> attrs = new ArrayList<Pair<String, String>>();
+//	private final List<Pair<String, String>> attrs = new ArrayList<Pair<String, String>>();
+	private final List<String> attrs = new ArrayList<String>();
+	/**
+	 * The list of attribute values.
+	 */
+	private final List<String> vals = new ArrayList<String>();
 	/**
 	 * Add an attribute.
 	 * @param name the name of the attribute
@@ -60,7 +65,13 @@ public class SPIntermediateRepresentation {
 	 */
 	public final void addAttribute(final String name, final String value) {
 //		attrs.put(name, value);
-		attrs.add(Pair.of(name, value));
+//		attrs.add(Pair.of(name, value));
+		if (attrs.contains(name)) {
+			vals.set(attrs.indexOf(name), value);
+		} else {
+			attrs.add(name);
+			vals.add(value);
+		}
 	}
 	/**
 	 * The set of child tags.
@@ -85,15 +96,22 @@ public class SPIntermediateRepresentation {
 	 * @return its value, or "" if it's not there
 	 */
 	private String removeAttribute(final String name) {
-		Pair<String, String> retval = Pair.of(name, "");
-		for (Pair<String, String> pair : attrs) {
-			if (pair.first().equals(name)) {
-				retval = pair;
-				break;
-			}
+		if (attrs.contains(name)) {
+			final int index = attrs.indexOf(name);
+			attrs.remove(index);
+			return vals.remove(index); // NOPMD
+		} else {
+			return "";
 		}
-		attrs.remove(retval);
-		return retval.second();
+//		Pair<String, String> retval = Pair.of(name, "");
+//		for (Pair<String, String> pair : attrs) {
+//			if (pair.first().equals(name)) {
+//				retval = pair;
+//				break;
+//			}
+//		}
+//		attrs.remove(retval);
+//		return retval.second();
 	}
 	
 	/**
@@ -125,13 +143,16 @@ public class SPIntermediateRepresentation {
 			final String text = "text".equals(tag) ? removeAttribute("text-contents")
 					: "";
 //			for (String attr : attrs.keySet()) {
-			for (Pair<String, String> attr : attrs) {
+//			for (Pair<String, String> attr : attrs) {
+			for (int index = 0; index < attrs.size(); index++) {
 				writeIfTagNotEmpty(writer, " ");
 //				writeIfTagNotEmpty(writer, attr);
-				writeIfTagNotEmpty(writer, attr.first());
+//				writeIfTagNotEmpty(writer, attr.first());
+				writeIfTagNotEmpty(writer, attrs.get(index));
 				writeIfTagNotEmpty(writer, "=\"");
 //				writeIfTagNotEmpty(writer, attrs.get(attr));
-				writeIfTagNotEmpty(writer, attr.second());
+//				writeIfTagNotEmpty(writer, attr.second());
+				writeIfTagNotEmpty(writer, vals.get(index));
 				writeIfTagNotEmpty(writer, "\"");
 			}
 			if (children.isEmpty()) {
@@ -163,12 +184,13 @@ public class SPIntermediateRepresentation {
 	 * @return whether we have an attribute by that name
 	 */
 	private boolean hasAttribute(final String name) {
-		for (Pair<String, String> pair : attrs) {
-			if (pair.first().equals(name)) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+//		for (Pair<String, String> pair : attrs) {
+//			if (pair.first().equals(name)) {
+//				return true; // NOPMD
+//			}
+//		}
+//		return false;
+		return attrs.contains(name);
 	}
 	/**
 	 * Write an 'include' tag to the Writer, and if we're doing inclusion its contents to its own.
@@ -181,15 +203,16 @@ public class SPIntermediateRepresentation {
 			throws IOException {
 //		if (attrs.containsKey(FILE_ATTR) && inclusion) {
 		if (hasAttribute(FILE_ATTR) && inclusion) {
-			final String file = removeAttribute(FILE_ATTR);
+			String file = removeAttribute(FILE_ATTR);
 			if ("string:".equals(file)) {
 				final StringWriter swriter = new StringWriter();
 				for (SPIntermediateRepresentation child : children) {
 					child.write(swriter, inclusion, 0);
 				}
-				attrs.add(Pair.of(FILE_ATTR, xmlEncode(swriter.toString())));
+//				attrs.add(Pair.of(FILE_ATTR, xmlEncode(swriter.toString())));
+				file = xmlEncode(swriter.toString());
 			} else {
-				attrs.add(Pair.of(FILE_ATTR, file));
+//				attrs.add(Pair.of(FILE_ATTR, file));
 				final FileWriter fwriter = new FileWriter(file);
 				try {
 				for (SPIntermediateRepresentation child : children) {
@@ -200,7 +223,8 @@ public class SPIntermediateRepresentation {
 				}
 			}
 			writeIfTagNotEmpty(writer, "<include file=\"");
-			writeIfTagNotEmpty(writer, removeAttribute(FILE_ATTR));
+//			writeIfTagNotEmpty(writer, removeAttribute(FILE_ATTR));
+			writeIfTagNotEmpty(writer, file);
 			writeIfTagNotEmpty(writer, "\" />\n");
 		} else {
 			for (SPIntermediateRepresentation child : children) {
