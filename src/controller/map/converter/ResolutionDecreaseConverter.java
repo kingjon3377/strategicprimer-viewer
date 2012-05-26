@@ -103,16 +103,10 @@ public class ResolutionDecreaseConverter {
 						upperLeft.getTerrain(), upperRight.getTerrain(),
 						lowerLeft.getTerrain(), lowerRight.getTerrain()),
 				upperLeft.getFile());
-		@SuppressWarnings("unchecked")
-		final Iterable<TileFixture> iter = new IteratorWrapper<TileFixture>(
-				new IteratorStack<TileFixture>(upperLeft.getContents(),
-						upperRight.getContents(), lowerLeft.getContents(),
-						lowerRight.getContents()));
-		for (TileFixture fix : iter) {
-			if (!(fix instanceof RiverFixture)) {
-				retval.addFixture(fix);
-			}
-		}
+		addAllFixtures(upperLeft, retval);
+		addAllFixtures(upperRight, retval);
+		addAllFixtures(lowerLeft, retval);
+		addAllFixtures(lowerRight, retval);
 		final RiverFixture combined = new RiverFixture();
 		removeRivers(upperLeftRivers, River.East, River.South);
 		removeRivers(upperRightRivers, River.West, River.South);
@@ -124,6 +118,18 @@ public class ResolutionDecreaseConverter {
 		combined.addRivers(lowerRightRivers);
 		retval.addFixture(combined);
 		return retval;
+	}
+	/**
+	 * Add all non-river fixtures from the source to the destination tile.
+	 * @param source a source tile
+	 * @param dest a destination tile
+	 */
+	private static void addAllFixtures(final Tile source, final Tile dest) {
+		for (TileFixture fix : source.getContents()) {
+			if (!(fix instanceof RiverFixture)) {
+				dest.addFixture(fix);
+			}
+		}
 	}
 	/**
 	 * @param tile a tile

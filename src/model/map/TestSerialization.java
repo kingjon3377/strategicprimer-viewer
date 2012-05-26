@@ -1,6 +1,7 @@
 package model.map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -9,6 +10,8 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.fixtures.Animal;
+import model.map.fixtures.CacheFixture;
 import model.map.fixtures.Forest;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Griffin;
@@ -21,6 +24,7 @@ import org.junit.Test;
 
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.converter.ResolutionDecreaseConverter;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.
@@ -315,5 +319,57 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertForwardDeserialization("Reading Ogre via <include>",
 				new Ogre(1, FAKE_FILENAME), "<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />",
 				Ogre.class);
+	}
+	/**
+	 * Test conversion.
+	 */
+	@Test
+	public void testConversion() {
+		final SPMap start = new SPMap(2, 2, 2, FAKE_FILENAME);
+		final Tile tileOne = new Tile(0, 0, TileType.Steppe, FAKE_FILENAME);
+		final Animal fixture = new Animal("animal", false, true, 1,
+				FAKE_FILENAME);
+		tileOne.addFixture(fixture);
+		start.addTile(tileOne);
+		final Tile tileTwo = new Tile(0, 1, TileType.Ocean, FAKE_FILENAME);
+		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
+				2, FAKE_FILENAME);
+		tileTwo.addFixture(fixtureTwo);
+		start.addTile(tileTwo);
+		final Tile tileThree = new Tile(1, 0, TileType.Plains, FAKE_FILENAME);
+		final Unit fixtureThree = new Unit(new Player(0, "A. Player",
+				FAKE_FILENAME), "legion", "eagles", 3, FAKE_FILENAME);
+		tileThree.addFixture(fixtureThree);
+		start.addTile(tileThree);
+		final Tile tileFour = new Tile(1, 1, TileType.Jungle, FAKE_FILENAME);
+		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player",
+				FAKE_FILENAME), "HQ", 4, FAKE_FILENAME);
+		tileFour.addFixture(fixtureFour);
+		start.addTile(tileFour);
+		final ResolutionDecreaseConverter converter = new ResolutionDecreaseConverter();
+		final MapView converted = converter.convert(start);
+		assertTrue("Combined tile should contain fixtures from tile one",
+				converted.getTile(0, 0).getContents().contains(fixture));
+		assertTrue("Combined tile should contain fixtures from tile two",
+				converted.getTile(0, 0).getContents().contains(fixtureTwo));
+		assertTrue("Combined tile should contain fixtures from tile three",
+				converted.getTile(0, 0).getContents().contains(fixtureThree));
+		assertTrue("Combined tile should contain fixtures from tile four",
+				converted.getTile(0, 0).getContents().contains(fixtureFour));
+		// We got these locations from printing the submap to screen; they're
+		// selected within that quadrant by a Random instance seeded with their
+		// ID. What's important is that they're all *somewhere* in the map.
+		assertTrue("Submap should contain fixtures from tile one", converted
+				.getSubmap(PointFactory.point(0, 0)).getTile(0, 1)
+				.getContents().contains(fixture));
+		assertTrue("Submap should contain fixtures from tile two", converted
+				.getSubmap(PointFactory.point(0, 0)).getTile(1, 3)
+				.getContents().contains(fixtureTwo));
+		assertTrue("Submap should contain fixtures from tile three", converted
+				.getSubmap(PointFactory.point(0, 0)).getTile(5, 2)
+				.getContents().contains(fixtureThree));
+		assertTrue("Submap should contain fixtures from tile four", converted
+				.getSubmap(PointFactory.point(0, 0)).getTile(5, 4)
+				.getContents().contains(fixtureFour));
 	}
 }
