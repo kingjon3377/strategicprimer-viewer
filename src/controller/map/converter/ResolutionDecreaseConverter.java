@@ -20,8 +20,6 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.RiverFixture;
 import util.EnumCounter;
-import util.IteratorStack;
-import util.IteratorWrapper;
 
 /**
  * A class to convert a map to an equivalent half-resolution one, also creating
