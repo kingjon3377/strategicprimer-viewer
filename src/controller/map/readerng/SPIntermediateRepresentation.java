@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import util.EqualsAny;
 import util.Pair;
@@ -76,8 +77,8 @@ public class SPIntermediateRepresentation {
 	/**
 	 * The set of child tags.
 	 */
-//	private final Set<SPIntermediateRepresentation> children = new LinkedHashSet<SPIntermediateRepresentation>();
-	private final List<SPIntermediateRepresentation> children = new LinkedList<SPIntermediateRepresentation>();
+	private final Set<SPIntermediateRepresentation> children = new LinkedHashSet<SPIntermediateRepresentation>();
+//	private final List<SPIntermediateRepresentation> children = new LinkedList<SPIntermediateRepresentation>();
 	/**
 	 * Add a child tag. If the child's tag is the empty string, we do nothing
 	 * instead---this is so we can handle empty tiles more easily.
