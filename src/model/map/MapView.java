@@ -238,9 +238,22 @@ public class MapView implements IMap {
 	 */
 	@Override
 	public String toString() {
-		return new StringBuilder("Map view at turn ").append(turn)
-				.append(":\nCurrent player:").append(player).append("\nMap:\n")
-				.append(map).toString();
+		StringBuilder builder = new StringBuilder("Map view at turn ");
+		builder.append(turn);
+		builder.append(":\nCurrent player:");
+		builder.append(player);
+		builder.append("\nMap:\n");
+		builder.append(map);
+		if (!submaps.isEmpty()) {
+			builder.append("Submaps:\n");
+			for (Entry<Point, SPMap> entry : getSubmapIterator()) {
+				builder.append("Submap for ");
+				builder.append(entry.getKey().toString());
+				builder.append(":\n");
+				builder.append(entry.getValue().toString());
+			}
+		}
+		return builder.toString();
 	}
 	/**
 	 * A collection of submaps.
