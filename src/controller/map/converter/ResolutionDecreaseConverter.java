@@ -8,6 +8,9 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
+import controller.map.converter.SubmapCreator.Quadrant;
+import controller.map.misc.IDFactory;
+
 import model.map.IMap;
 import model.map.MapView;
 import model.map.Player;
@@ -70,6 +73,56 @@ public class ResolutionDecreaseConverter {
 												String.format("_%d_%d.xml",
 														Integer.valueOf(row),
 														Integer.valueOf(col)))));
+			}
+		}
+		return retval;
+	}
+	
+	/**
+	 * Check that all fixtures in a map would go the proper quadrants of a
+	 * submap generated from just their tile in the new map. Output to stdout
+	 * any changes that should be made.
+	 * @param old the map that would be converted
+	 * @param factory the ID factory used to load the map
+	 * @return whether all fixtures would end up where we want them
+	 */
+	public boolean checkSubmapPreconditions(final IMap old, final IDFactory factory) {
+		checkRequirements(old);
+		boolean retval = true;
+		final int newRows = old.rows() / 2;
+		final int newCols = old.cols() / 2;
+		final SubmapCreator helper = new SubmapCreator();
+		for (int row = 0; row < newRows; row++) {
+			for (int col = 0; col < newCols; col++) {
+				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2, col * 2), Quadrant.UpperLeft, helper, factory);
+				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2, col * 2 + 1), Quadrant.UpperRight, helper, factory);
+				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2 + 1, col * 2), Quadrant.LowerLeft, helper, factory);
+				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2 + 1, col * 2 + 1), Quadrant.LowerRight, helper, factory);
+			}
+		}
+		return retval;
+	}
+	/**
+	 * Check that all fixtures in a tile would go the proper quadrants of a
+	 * submap generated from just their tile in the new map. Output to stdout
+	 * any changes that should be made.
+	 * @param tile the tile that would be part of the conversion
+	 * @param quadrant which quadrant
+	 * @param helper the helper to use to check each fixture on the tile
+	 * @param factory the ID factory used to load the map
+	 * @return whether all the fixtures in the tile would end up where we want them to
+	 */
+	private static boolean checkSubmapPreconditionsImpl(final Tile tile,
+			final Quadrant quadrant, final SubmapCreator helper,
+			final IDFactory factory) {
+		boolean retval = true;
+		for (TileFixture fix : tile.getContents()) {
+			if (!(fix instanceof TerrainFixture) && !(fix instanceof RiverFixture)) {
+				final int id = helper.getIdForQuadrant(fix, quadrant, SUBMAP_SIZE, factory); // NOPMD
+				if (id != fix.getID()) {
+					System.out.println("Suggest changing fixture ID " + fix.getID() + " to ID " + id);
+					retval = false;
+				}
 			}
 		}
 		return retval;
