@@ -39,7 +39,7 @@ public final class IDFactory {
 	public int createID() {
 		if (next < Integer.MAX_VALUE) {
 			next++;
-			return next - 1;
+			return next - 1; // NOPMD
 		} else {
 			for (int i = 0; i < Integer.MAX_VALUE; i++) {
 				if (!usedIDs.contains(Integer.valueOf(i))) {
