@@ -13,6 +13,10 @@ import java.util.Set;
  */
 public final class IDFactory {
 	/**
+	 * The next ID to generate.
+	 */
+	private int next = 1;
+	/**
 	 * The set of IDs used already.
 	 */
 	private final Set<Integer> usedIDs = new HashSet<Integer>(); 
@@ -23,6 +27,9 @@ public final class IDFactory {
 	 */
 	public int register(final int id) { // NOPMD
 		usedIDs.add(Integer.valueOf(id));
+		if (id >= next) {
+			next = id + 1;
+		}
 		return id;
 	}
 	/**
@@ -30,12 +37,17 @@ public final class IDFactory {
 	 * @return the generated id 
 	 */
 	public int createID() {
-		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			if (!usedIDs.contains(Integer.valueOf(i))) {
-				return register(i);
+		if (next < Integer.MAX_VALUE) {
+			next++;
+			return next - 1;
+		} else {
+			for (int i = 0; i < Integer.MAX_VALUE; i++) {
+				if (!usedIDs.contains(Integer.valueOf(i))) {
+					return register(i);
+				}
 			}
+			throw new IllegalStateException("Exhausted all ints ...");
 		}
-		throw new IllegalStateException("Exhausted all ints ...");
 	}
 	
 	/**
@@ -47,6 +59,7 @@ public final class IDFactory {
 	public IDFactory copy() {
 		final IDFactory retval = new IDFactory();
 		retval.usedIDs.addAll(usedIDs);
+		retval.next = next;
 		return retval;
 	}
 }
