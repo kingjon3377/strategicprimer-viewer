@@ -173,10 +173,11 @@ public class SubmapCreator {
 	public int getIdForQuadrant(final TileFixture fix, final Quadrant quadrant,
 			final int size, final IDFactory factory) {
 		final MockFixture fixture = new MockFixture(fix);
+		final IDFactory testFactory = factory.copy();
 		while (!checkPlacement(fixture, quadrant, size)) {
-			fixture.setID(factory.createID()); // NOPMD
+			fixture.setID(testFactory.createID()); // NOPMD
 		}
-		return fixture.getID();
+		return factory.register(fixture.getID());
 	}
 	/**
 	 * @param point a coordinate pair, within the bounds of the submap

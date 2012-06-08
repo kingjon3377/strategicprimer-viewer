@@ -37,4 +37,16 @@ public final class IDFactory {
 		}
 		throw new IllegalStateException("Exhausted all ints ...");
 	}
+	
+	/**
+	 * Create a copy of this factory for testing purposes. (So that we don't
+	 * "register" IDs that don't end up getting used.)
+	 * 
+	 * @return a copy of this factory
+	 */
+	public IDFactory copy() {
+		final IDFactory retval = new IDFactory();
+		retval.usedIDs.addAll(usedIDs);
+		return retval;
+	}
 }
