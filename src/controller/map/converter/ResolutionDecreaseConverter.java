@@ -23,6 +23,8 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.EnumCounter;
+import controller.map.converter.SubmapCreator.Quadrant;
+import controller.map.misc.IDFactory;
 
 /**
  * A class to convert a map to an equivalent half-resolution one, also creating
@@ -89,16 +91,14 @@ public class ResolutionDecreaseConverter {
 	public boolean checkSubmapPreconditions(final IMap old, final IDFactory factory) {
 		checkRequirements(old);
 		boolean retval = true;
-		final int newRows = old.rows() / 2;
-		final int newCols = old.cols() / 2;
 		final SubmapCreator helper = new SubmapCreator();
-		for (int row = 0; row < newRows; row++) {
-			for (int col = 0; col < newCols; col++) {
-				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2, col * 2), Quadrant.UpperLeft, helper, factory);
-				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2, col * 2 + 1), Quadrant.UpperRight, helper, factory);
-				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2 + 1, col * 2), Quadrant.LowerLeft, helper, factory);
-				retval &= checkSubmapPreconditionsImpl(old.getTile(row * 2 + 1, col * 2 + 1), Quadrant.LowerRight, helper, factory);
-			}
+		for (Point point : old.getTiles()) {
+			retval &= checkSubmapPreconditionsImpl(
+					old.getTile(point),
+					point.row() % 2 == 0 ? (point.col() % 2 == 0 ? Quadrant.UpperLeft
+							: Quadrant.UpperRight)
+							: (point.col() % 2 == 0 ? Quadrant.LowerLeft
+									: Quadrant.LowerRight), helper, factory);
 		}
 		return retval;
 	}
