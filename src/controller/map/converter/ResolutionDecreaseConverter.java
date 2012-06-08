@@ -8,12 +8,10 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-import controller.map.converter.SubmapCreator.Quadrant;
-import controller.map.misc.IDFactory;
-
 import model.map.IMap;
 import model.map.MapView;
 import model.map.Player;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.SPMap;
@@ -21,7 +19,9 @@ import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
 import util.EnumCounter;
 
 /**
@@ -117,7 +117,10 @@ public class ResolutionDecreaseConverter {
 			final IDFactory factory) {
 		boolean retval = true;
 		for (TileFixture fix : tile.getContents()) {
-			if (!(fix instanceof TerrainFixture) && !(fix instanceof RiverFixture)) {
+			if (!(fix instanceof TerrainFixture)
+					&& !(fix instanceof RiverFixture)
+					&& !(fix instanceof Ground)
+					&& !(fix instanceof TextFixture)) {
 				final int id = helper.getIdForQuadrant(fix, quadrant, SUBMAP_SIZE, factory); // NOPMD
 				if (id != fix.getID()) {
 					System.out.println("Suggest changing fixture ID " + fix.getID() + " to ID " + id);
