@@ -1,7 +1,6 @@
 package controller.map.misc;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.BitSet;
 
 /**
  * A class to register IDs with and produce not-yet-used IDs. Performance is
@@ -13,23 +12,16 @@ import java.util.Set;
  */
 public final class IDFactory {
 	/**
-	 * The next ID to generate.
-	 */
-	private int next = 1;
-	/**
 	 * The set of IDs used already.
 	 */
-	private final Set<Integer> usedIDs = new HashSet<Integer>(); 
+	private final BitSet usedIDs = new BitSet();
 	/**
 	 * Register an ID. 
 	 * @param id the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
 	public int register(final int id) { // NOPMD
-		usedIDs.add(Integer.valueOf(id));
-		if (id >= next) {
-			next = id + 1;
-		}
+		usedIDs.set(id);
 		return id;
 	}
 	/**
@@ -37,15 +29,9 @@ public final class IDFactory {
 	 * @return the generated id 
 	 */
 	public int createID() {
-		if (next < Integer.MAX_VALUE) {
-			next++;
-			return next - 1; // NOPMD
+		if (usedIDs.cardinality() < Integer.MAX_VALUE) {
+			return register(usedIDs.nextClearBit(0));
 		} else {
-			for (int i = 0; i < Integer.MAX_VALUE; i++) {
-				if (!usedIDs.contains(Integer.valueOf(i))) {
-					return register(i);
-				}
-			}
 			throw new IllegalStateException("Exhausted all ints ...");
 		}
 	}
@@ -58,8 +44,7 @@ public final class IDFactory {
 	 */
 	public IDFactory copy() {
 		final IDFactory retval = new IDFactory();
-		retval.usedIDs.addAll(usedIDs);
-		retval.next = next;
+		retval.usedIDs.or(usedIDs);
 		return retval;
 	}
 }
