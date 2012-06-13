@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="all" name="SP viewer">
+    <property name="launch4j.dir" location="/home/kingjon/src/launch4j" />
+    <property name="project_home" location="/home/kingjon/Projects/workspace/viewer" />
+    <property name="release" location="${project_home}/release" />
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="viewer.jar">
+        <jar destfile="${release}/viewer.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="controller.map.drivers.ViewerStart"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${project_home}/bin"/>
+        </jar>
+    </target>
+    <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+    <target name="viewer.exe" depends="viewer.jar">
+    	<launch4j configFile="${project_home}/launch4j.cfg.xml" outfile="${release}/viewer.exe" jar="${release}/viewer.jar" />
+    </target>
+    <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
+    <target name="viewer.app" depends="viewer.jar">
+	<jarbundler dir="${release}" name="viewer" mainclass="controller.map.drivers.ViewerStart" jar="${release}/viewer.jar" />
+	<symlink link="${release}/viewer.app/Contents/MacOS/JavaApplicationStub" resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
+    </target>
+    <target name="viewer.app.tbz2" depends="viewer.app">
+	<tar destfile="${release}/viewer.app.tbz2" compression="bzip2">
+		<tarfileset dir="${release}">
+			<include name="viewer.app/**" />
+		</tarfileset>
+	</tar>
+    </target>
+    <target name="all" depends="viewer.app.tbz2,viewer.exe,viewer.jar" />
+</project>
