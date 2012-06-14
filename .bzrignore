@@ -5,3 +5,4 @@ bin/tables
 .pt
 pmd-eclipse.log
 release/*
+junit/*
