@@ -1,100 +1,125 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <project default="all" name="SP viewer">
-    <target name="all" depends="clean,release" />
-    <!--ANT 1.7 is required                                        -->
-    <!-- Paths to find necessary files -->
-    <property name="launch4j.dir" location="/home/kingjon/src/launch4j" />
-    <property name="project_home" location="/home/kingjon/Projects/workspace/viewer" />
-    <property name="release" location="${project_home}/release" />
-    <property name="source_dir" location="${project_home}/src" />
-    <property name="bin_dir" location="${project_home}/bin" />
-    <property name="junit.output.dir" value="${project_home}/junit"/>
-    <path id="junit.classpath">
-	<!-- These are where these files are located on a Gentoo Linux system;
+  <target name="all" depends="clean,release" />
+  <!-- ANT 1.7 is required -->
+
+  <!-- Paths to find necessary files -->
+  <property name="launch4j.dir" location="/home/kingjon/src/launch4j" />
+  <property name="project_home" location="/home/kingjon/Projects/workspace/viewer" />
+  <property name="release" location="${project_home}/release" />
+  <property name="source_dir" location="${project_home}/src" />
+  <property name="bin_dir" location="${project_home}/bin" />
+  <property name="junit.output.dir" value="${project_home}/junit" />
+  <path id="junit.classpath">
+    <!-- These are where these files are located on a Gentoo Linux system;
 	     they'll almost certainly be located somewhere else under some
 	     other distribution or on some other operating system. But IMO this
 	     is better than specifying *version-specific* paths under the
 	     Eclipse home directory. -->
-    	<pathelement location="/usr/share/junit-4/lib/junit.jar" />
-	<pathelement location="/usr/share/hamcrest-core/lib/hamcrest-core.jar" />
-    </path>
-    <path id="viewer.classpath">
-    	<pathelement location="${bin_dir}" />
-	<path refid="junit.classpath" />
-    </path>
-    <!-- Java version specifications and such -->
-    <property name="target" value="1.6" />
-    <property name="source" value="1.6" />
-    <property name="debuglevel" value="source,lines,vars"/>
-    <!-- Clean targets -->
-    <target name="clean">
-        <delete dir="${bin_dir}"/>
-    </target>
-    <target depends="clean" name="cleanall">
-    	<delete dir="${release}" />
-	<delete dir="${junit.output.dir}" />
-    </target>
-    <!-- Build targets -->
-    <target name="init">
-    	<mkdir dir="${bin_dir}" />
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="${source_dir}">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.ceylon"/>
-                <exclude name="**/*.java"/>
-                <exclude name="tables/"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="build" depends="init">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}" includeantruntime="false">
-            <src path="src"/>
-            <exclude name="tables/"/>
-            <classpath refid="viewer.classpath"/>
-        </javac>
-    </target>
-    <!-- Test targets -->
-    <target name="test" depends="build">
-	<echo message='If Ant fails to find JUnit task on a Gentoo system, run with the environment variable ANT_TASKS="ant-junit4 jarbundler".' />
-        <mkdir dir="${junit.output.dir}"/>
-    	<junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}"/>
-            <test name="model.exploration.TestExplorationRunner" todir="${junit.output.dir}"/>
-            <test name="model.map.TestSerialization" todir="${junit.output.dir}"/>
-            <test name="model.map.events.BattlefieldTest" todir="${junit.output.dir}"/>
-            <test name="model.map.events.TestEventSerialization" todir="${junit.output.dir}"/>
-            <test name="model.map.fixtures.TestFixtureSerialization" todir="${junit.output.dir}"/>
-            <test name="model.map.fixtures.TestMoreFixtureSerialization" todir="${junit.output.dir}"/>
-            <classpath refid="viewer.classpath"/>
-        </junit>
-    </target>
-    <!-- Release targets -->
-    <target name="viewer.jar" depends="test">
-        <jar destfile="${release}/viewer.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="controller.map.drivers.ViewerStart"/>
-                <attribute name="Class-Path" value="."/>
-            </manifest>
-            <fileset dir="${project_home}/bin"/>
-        </jar>
-    </target>
-    <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
-    <target name="viewer.exe" depends="viewer.jar">
-    	<launch4j configFile="${project_home}/launch4j.cfg.xml" outfile="${release}/viewer.exe" jar="${release}/viewer.jar" />
-    </target>
-    <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
-    <target name="viewer.app" depends="viewer.jar">
-	<jarbundler dir="${release}" name="viewer" mainclass="controller.map.drivers.ViewerStart" jar="${release}/viewer.jar" />
-	<symlink link="${release}/viewer.app/Contents/MacOS/JavaApplicationStub" resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
-    </target>
-    <target name="viewer.app.tbz2" depends="viewer.app">
-	<tar destfile="${release}/viewer.app.tbz2" compression="bzip2">
-		<tarfileset dir="${release}">
-			<include name="viewer.app/**" />
-		</tarfileset>
-	</tar>
-    </target>
-    <target name="release" depends="viewer.app.tbz2,viewer.exe,viewer.jar" />
+    <pathelement location="/usr/share/junit-4/lib/junit.jar" />
+    <pathelement location="/usr/share/hamcrest-core/lib/hamcrest-core.jar" />
+  </path>
+  <path id="viewer.classpath">
+    <pathelement location="${bin_dir}" />
+    <path refid="junit.classpath" />
+  </path>
+
+  <!-- Java version specifications and such -->
+  <property name="target" value="1.6" />
+  <property name="source" value="1.6" />
+  <property name="debuglevel" value="source,lines,vars" />
+
+  <!-- Clean targets -->
+  <target name="clean">
+    <delete dir="${bin_dir}" />
+  </target>
+  <target depends="clean" name="cleanall">
+    <delete dir="${release}" />
+    <delete dir="${junit.output.dir}" />
+  </target>
+
+  <!-- Build targets -->
+  <target name="init">
+    <mkdir dir="${bin_dir}" />
+    <copy includeemptydirs="false" todir="bin">
+      <fileset dir="${source_dir}">
+        <exclude name="**/*.launch" />
+        <exclude name="**/*.ceylon" />
+        <exclude name="**/*.java" />
+        <exclude name="tables/" />
+      </fileset>
+    </copy>
+  </target>
+  <target name="build" depends="init">
+    <echo message="${ant.project.name}: ${ant.file}" />
+    <javac debug="true" debuglevel="${debuglevel}" destdir="bin"
+    source="${source}" target="${target}"
+    includeantruntime="false">
+      <src path="src" />
+      <exclude name="tables/" />
+      <classpath refid="viewer.classpath" />
+    </javac>
+  </target>
+  
+  <!-- Test targets -->
+  <target name="test" depends="build">
+    <echo message='If Ant fails to find JUnit task on a Gentoo system, run with the environment variable ANT_TASKS="ant-junit4 jarbundler".' />
+    <mkdir dir="${junit.output.dir}" />
+    <junit fork="yes" printsummary="withOutAndErr">
+      <formatter type="xml" />
+      <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
+      <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
+      <test name="model.exploration.TestExplorationRunner" todir="${junit.output.dir}" />
+      <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
+      <test name="model.map.events.BattlefieldTest" todir="${junit.output.dir}" />
+      <test name="model.map.events.TestEventSerialization" todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.TestFixtureSerialization" todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.TestMoreFixtureSerialization" todir="${junit.output.dir}" />
+      <classpath refid="viewer.classpath" />
+    </junit>
+  </target>
+
+  <!-- Release targets -->
+  <target name="viewer.jar" depends="test">
+    <jar destfile="${release}/viewer.jar"
+    filesetmanifest="mergewithoutmain">
+      <manifest>
+        <attribute name="Main-Class"
+        value="controller.map.drivers.ViewerStart" />
+        <attribute name="Class-Path" value="." />
+      </manifest>
+      <fileset dir="${project_home}/bin" />
+    </jar>
+  </target>
+  <taskdef name="launch4j"
+    classname="net.sf.launch4j.ant.Launch4jTask"
+    classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+  <target name="viewer.exe" depends="viewer.jar">
+    <launch4j configFile="${project_home}/launch4j.cfg.xml"
+      outfile="${release}/viewer.exe" jar="${release}/viewer.jar" />
+  </target>
+  <taskdef name="jarbundler"
+    classname="net.sourceforge.jarbundler.JarBundler" />
+  <target name="viewer.app" depends="viewer.jar">
+    <jarbundler dir="${release}" name="viewer"
+      mainclass="controller.map.drivers.ViewerStart"
+      jar="${release}/viewer.jar" />
+    <symlink link="${release}/viewer.app/Contents/MacOS/JavaApplicationStub"
+      resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
+  </target>
+  <target name="viewer.app.tbz2" depends="viewer.app">
+    <tar destfile="${release}/viewer.app.tbz2" compression="bzip2">
+      <tarfileset dir="${release}">
+        <include name="viewer.app/**" />
+      </tarfileset>
+    </tar>
+  </target>
+  <target name="release"
+    depends="viewer.app.tbz2,viewer.exe,viewer.jar" />
 </project>
+
+To learn more about HTML Tidy see http://tidy.sourceforge.net
+Please fill bug reports and queries using the "tracker" on the Tidy web site.
+Additionally, questions can be sent to html-tidy@w3.org
+HTML and CSS specifications are available from http://www.w3.org/
+Lobby your company to join W3C, see http://www.w3.org/Consortium
