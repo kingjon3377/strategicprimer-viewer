@@ -32,9 +32,11 @@ public class MapSizeListener extends ComponentAdapter {
 	public void componentResized(final ComponentEvent event) {
 		if (event.getSource() instanceof MapGUI && event.getSource() instanceof Component) {
 			synchronized (model) {
-				final int visibleCols = ((Component) event.getSource()).getWidth()
+				final int visibleCols = ((Component) event.getSource())
+						.getWidth()
 						/ ((MapGUI) event.getSource()).getTileSize();
-				final int visibleRows = ((Component) event.getSource()).getHeight()
+				final int visibleRows = ((Component) event.getSource())
+						.getHeight()
 						/ ((MapGUI) event.getSource()).getTileSize();
 				int minCol = model.getDimensions().getMinimumCol();
 				int maxCol = model.getDimensions().getMaximumCol();
@@ -42,21 +44,28 @@ public class MapSizeListener extends ComponentAdapter {
 				int maxRow = model.getDimensions().getMaximumRow();
 				final int totalRows = model.getSizeRows();
 				final int totalCols = model.getSizeCols();
-				if ((visibleCols <= totalCols && visibleCols != (maxCol - minCol))
-						|| (visibleRows <= totalRows && visibleRows != (maxRow - minRow))) {
-					if (minCol + visibleCols < totalCols) {
-						maxCol = minCol + visibleCols;
-					} else {
+				if (visibleCols != maxCol - minCol
+						|| visibleRows != maxRow - minRow) {
+					if (visibleCols >= totalCols) {
+						minCol = 0;
 						maxCol = totalCols - 1;
-						minCol = Math.max(0, totalCols - visibleCols - 1);
-					}
-					if (minRow + visibleRows < totalRows) {
-						maxRow = minRow + visibleRows;
+					} else if (minCol + visibleCols >= totalCols) {
+						maxCol = totalCols - 1;
+						minCol = totalCols - visibleCols - 1;
 					} else {
-						maxRow = totalRows - 1;
-						minRow = Math.max(0, totalRows - visibleRows - 1);
+						maxCol = minCol + visibleCols;
 					}
-					model.setDimensions(new VisibleDimensions(minRow, maxRow, minCol, maxCol));
+					if (visibleRows >= totalRows) {
+						minRow = 0;
+						maxRow = totalRows - 1;
+					} else if (minRow + visibleRows >= totalRows) {
+						maxRow = totalRows - 1;
+						minRow = totalRows - visibleRows - 1;
+					} else {
+						maxRow = minRow + visibleRows;
+					}
+					model.setDimensions(new VisibleDimensions(minRow, maxRow,
+							minCol, maxCol));
 				}
 			}
 		}
