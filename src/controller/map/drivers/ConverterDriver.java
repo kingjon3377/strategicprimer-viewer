@@ -2,13 +2,16 @@ package controller.map.drivers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.MapView;
 import model.map.Point;
+import model.map.SPMap;
 import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
@@ -22,6 +25,7 @@ import controller.map.SPFormatException;
 import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.misc.IDFactory;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.readerng.MapWriterNG;
 
 /**
  * A driver to convert maps to the new format.
@@ -72,23 +76,23 @@ public final class ConverterDriver {
 				} else {
 					SystemOut.SYS_OUT.println("WARN");
 				}
-//				SystemOut.SYS_OUT.println(" ... Converting ... ");
-//				final MapView map = CONV.convert(old);
-//				map.setFile(filename + ".new");
-//				map.setFileOnChildren(filename + ".new");
-//				for (Entry<Point, SPMap> entry : map.getSubmapIterator()) {
-//					final String submapFilename = filename.replaceAll(
-//									".xml$",
-//									String.format("_%d_%d.xml",
-//											Integer.valueOf(entry.getKey().row()),
-//											Integer.valueOf(entry.getKey().col())));
-//					entry.getValue().setFile(submapFilename);
-//					entry.getValue().setFileOnChildren(submapFilename);
-//				}
-//				SystemOut.SYS_OUT.print("About to write ");
-//				SystemOut.SYS_OUT.print(filename);
-//				SystemOut.SYS_OUT.println(".new");
-//				new MapWriterNG().write(filename + ".new", map, true); // NOPMD
+				SystemOut.SYS_OUT.println(" ... Converting ... ");
+				final MapView map = CONV.convert(old);
+				map.setFile(filename + ".new");
+				map.setFileOnChildren(filename + ".new");
+				for (Entry<Point, SPMap> entry : map.getSubmapIterator()) {
+					final String submapFilename = filename.replaceAll(
+									".xml$",
+									String.format("_%d_%d.xml",
+											Integer.valueOf(entry.getKey().row()),
+											Integer.valueOf(entry.getKey().col())));
+					entry.getValue().setFile(submapFilename);
+					entry.getValue().setFileOnChildren(submapFilename);
+				}
+				SystemOut.SYS_OUT.print("About to write ");
+				SystemOut.SYS_OUT.print(filename);
+				SystemOut.SYS_OUT.println(".new");
+				new MapWriterNG().write(filename + ".new", map, true); // NOPMD
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				continue;
