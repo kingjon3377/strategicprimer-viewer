@@ -9,7 +9,7 @@ import model.viewer.MapModel;
 import model.viewer.TileViewSize;
 
 /**
- * A mouse listener for the MapComponent.
+ * A mouse listener for the MapComponent, to show the terrain-changing menu as needed.
  * 
  * @author Jonathan Lovelace
  * 
