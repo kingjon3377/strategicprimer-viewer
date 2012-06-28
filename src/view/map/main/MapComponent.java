@@ -51,12 +51,8 @@ public final class MapComponent extends JComponent implements
 		setLayout(new BorderLayout());
 		new ScrollListener(theMap, this).setUpListeners();
 		setDoubleBuffered(true);
-		if (theMap.getMainMap().getVersion() == 1) {
-			helper = new DirectTileDrawHelper(); 
-		} else if (theMap.getMainMap().getVersion() == 2) {
-			helper = new Ver2TileDrawHelper(this);
-		}
 		model = theMap;
+		helper = TileDrawHelperFactory.INSTANCE.factory(model.getMainMap().getVersion(), this);
 		loadMap(theMap.getMainMap());
 		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
