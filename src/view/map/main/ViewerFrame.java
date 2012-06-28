@@ -57,7 +57,17 @@ public final class ViewerFrame extends JFrame {
 	 * to construct it every time.
 	 */
 	private final JFileChooser chooser = new JFileChooser(".");
-
+	/**
+	 * Initialize size to the specified dimensions. Not that this actually works ...
+	 * @param width the specified width
+	 * @param height the specified height
+	 */
+	private final void initializeDimensions(final int width, final int height) {
+		setPreferredSize(new Dimension(width, height));
+		setSize(width, height);
+		setMaximumSize(new Dimension(width, height));
+		setMinimumSize(new Dimension(width, height));
+	}
 	/**
 	 * Constructor.
 	 * 
@@ -74,10 +84,7 @@ public final class ViewerFrame extends JFrame {
 		final MapGUI mapPanel = new MapComponent(map);
 		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.SOUTH);
 		add((JComponent) mapPanel, BorderLayout.CENTER);
-		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		createMenu(mapMenu, map);
 		pack();
 		repaint();
