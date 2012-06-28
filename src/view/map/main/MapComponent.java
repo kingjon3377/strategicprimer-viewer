@@ -73,7 +73,7 @@ public final class MapComponent extends JComponent implements
 		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
 		new ArrowKeyListener().setUpListeners(
-				new DirectionSelectionChangerImpl(model), getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
+				new DirectionSelectionChanger(model), getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
 				getActionMap());
 		addComponentListener(new MapSizeListener(model));
 	}
