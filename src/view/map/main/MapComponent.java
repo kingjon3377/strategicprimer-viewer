@@ -81,10 +81,11 @@ public final class MapComponent extends JComponent implements
 	private void drawMap(final Graphics pen) {
 		final Graphics context = pen.create();
 		try {
-		context.setColor(Color.white);
-		context.fillRect(0, 0, getWidth(), getHeight());
-		final Rectangle bounds = bounds(context.getClipBounds());
-		final int tsize = TILE_SIZE.getSize(model.getMainMap().getVersion());
+			context.setColor(Color.white);
+			context.fillRect(0, 0, getWidth(), getHeight());
+			final Rectangle bounds = bounds(context.getClipBounds());
+			final int tsize = TILE_SIZE
+					.getSize(model.getMainMap().getVersion());
 			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tsize),
 					(int) Math.round(bounds.getMinY() / tsize), Math.min(
 							(int) Math.round(bounds.getMaxX() / tsize + 1),
