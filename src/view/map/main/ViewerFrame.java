@@ -73,8 +73,6 @@ public final class ViewerFrame extends JFrame {
 		chooser.setFileFilter(new MapFileFilter());
 		final MapGUI mapPanel = new MapComponent(map);
 		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.SOUTH);
-//		final JScrollPane scroller = new JScrollPane((JComponent) mapPanel);
-//		add(scroller, BorderLayout.CENTER);
 		add((JComponent) mapPanel, BorderLayout.CENTER);
 		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
