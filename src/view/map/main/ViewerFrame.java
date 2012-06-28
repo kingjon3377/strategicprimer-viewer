@@ -87,7 +87,6 @@ public final class ViewerFrame extends JFrame {
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		createMenu(mapMenu, map);
 		pack();
-		repaint();
 	}
 
 	/**
