@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.MapModel;
@@ -78,6 +79,7 @@ public final class ViewerStart {
 					new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Warn)));
 			final ViewerFrame frame = new ViewerFrame(model, new IOHandler(
 					model, chooser).getMenu());
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 			if (args.length > 1) {
 				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1], new Warning(Warning.Action.Warn)));
