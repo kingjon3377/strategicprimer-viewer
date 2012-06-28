@@ -102,7 +102,7 @@ public class DrawHelperComparator { // NOPMD
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
 					helper.drawTile(image.createGraphics(),
-							spmap.getVersion(), spmap.getTile(i, j), tsize, tsize);
+							spmap.getTile(i, j), tsize, tsize);
 				}
 			}
 		}
@@ -137,8 +137,8 @@ public class DrawHelperComparator { // NOPMD
 			image.flush();
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
-					helper.drawTile(image.createGraphics(), spmap.getVersion(),
-							spmap.getTile(i, j), new Coordinate(i * tsize, j // NOPMD
+					helper.drawTile(image.createGraphics(), spmap.getTile(i, j),
+							new Coordinate(i * tsize, j // NOPMD
 									* tsize), dimensions);
 				}
 			}
@@ -174,7 +174,7 @@ public class DrawHelperComparator { // NOPMD
 	private void thirdBody(final TileDrawHelper helper, final Graphics pen) {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j), tsize, tsize);
+				helper.drawTile(pen, spmap.getTile(i, j), tsize, tsize);
 			}
 		}
 	}
@@ -209,8 +209,8 @@ public class DrawHelperComparator { // NOPMD
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				helper.drawTile(pen, spmap.getVersion(), spmap.getTile(i, j),
-						new Coordinate(i * tsize, j * tsize), dimensions); // NOPMD
+				helper.drawTile(pen, spmap.getTile(i, j), new Coordinate(i * tsize, j * tsize),
+						dimensions); // NOPMD
 			}
 		}
 	}

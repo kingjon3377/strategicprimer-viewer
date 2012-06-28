@@ -31,7 +31,6 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context.
-	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param coordinates
@@ -41,11 +40,10 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	// ESCA-JAVA0138:
 	@Override
-	public void drawTile(final Graphics pen, final int version, final Tile tile, final Coordinate coordinates,
-			final Coordinate dimensions) {
+	public void drawTile(final Graphics pen, final Tile tile, final Coordinate coordinates, final Coordinate dimensions) {
 		 final Graphics context = pen.create();
 		try {
-			context.setColor(getTileColor(version, tile.getTerrain()));
+			context.setColor(getTileColor(1, tile.getTerrain()));
 			context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 			context.setColor(Color.black);
 			context.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
@@ -88,7 +86,6 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
-	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -97,9 +94,8 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
-			final int height) {
-		drawTile(pen, version, tile, new Coordinate(0, 0), new Coordinate(width, height));
+	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
+		drawTile(pen, tile, new Coordinate(0, 0), new Coordinate(width, height));
 	}
 
 	/**

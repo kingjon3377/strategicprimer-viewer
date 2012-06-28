@@ -80,8 +80,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context.
-	 * @param version
-	 *            the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param coordinates
@@ -90,11 +88,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 *            the width (X) and height (Y) of the tile
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final int version,
-			final Tile tile, final Coordinate coordinates,
-			final Coordinate dimensions) {
+	public void drawTile(final Graphics pen, final Tile tile,
+			final Coordinate coordinates, final Coordinate dimensions) {
 		pen.setColor((needFixtureColor(tile) ? getFixtureColor(tile)
-				: getTileColor(version, tile.getTerrain())));
+				: getTileColor(2, tile.getTerrain())));
 		pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 		if (hasFixture(tile)) {
 			pen.drawImage(getImageForFixture(getTopFixture(tile)),
@@ -110,7 +107,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
-	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -119,9 +115,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
-			final int height) {
-		drawTile(pen, version, tile, new Coordinate(0, 0), new Coordinate(width, height));
+	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
+		drawTile(pen, tile, new Coordinate(0, 0), new Coordinate(width, height));
 	}
 	/**
 	 * @param tile a tile

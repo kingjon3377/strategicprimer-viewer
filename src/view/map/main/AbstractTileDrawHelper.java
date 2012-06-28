@@ -110,7 +110,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
-	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -119,8 +118,8 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public abstract void drawTile(final Graphics pen, final int version, final Tile tile,
-			final int width, final int height);
+	public abstract void drawTile(final Graphics pen, final Tile tile, final int width,
+			final int height);
 	/**
 	 * @return the UI helper.
 	 */

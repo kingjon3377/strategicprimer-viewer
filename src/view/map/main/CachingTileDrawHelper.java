@@ -107,8 +107,6 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context
-	 * @param version
-	 *            the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param width
@@ -117,15 +115,14 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final int version, final Tile tile, final int width,
-			final int height) {
+	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException(
 					"CachingTileDrawHelper requires Graphics2D, not an old Graphics");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
-		pen2d.setColor(getTileColor(version, tile.getTerrain()));
+		pen2d.setColor(getTileColor(1, tile.getTerrain()));
 		pen2d.fill(backgroundShape);
 		pen2d.setColor(Color.BLACK);
 		pen2d.draw(backgroundShape);
@@ -175,7 +172,6 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * 
 	 * @param pen
 	 *            the graphics context.
-	 * @param version the map version
 	 * @param tile
 	 *            the tile to draw
 	 * @param coordinates
@@ -184,13 +180,12 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 *            the width (X) and height (Y) of the tile
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final int version,
-			final Tile tile, final Coordinate coordinates,
-			final Coordinate dimensions) {
+	public void drawTile(final Graphics pen, final Tile tile,
+			final Coordinate coordinates, final Coordinate dimensions) {
 		final Graphics context = pen.create(coordinates.x, coordinates.y,
 				dimensions.x, dimensions.y);
 		try {
-			drawTile(context, version, tile, dimensions.x, dimensions.y);
+			drawTile(context, tile, dimensions.x, dimensions.y);
 		} finally {
 			context.dispose();
 		}
