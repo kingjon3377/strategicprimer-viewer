@@ -1,10 +1,13 @@
 package view.map.main;
 
+import java.awt.Adjustable;
+import java.awt.BorderLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 
 import model.viewer.MapModel;
@@ -35,6 +38,25 @@ public class ScrollListener implements AdjustmentListener,
 		dimensions = map.getDimensions();
 		hbar = horizBar;
 		vbar = vertBar;
+	}
+	
+	/**
+	 * Alternate constructor to reduce complexity in the calling class. The
+	 * uncheckable precondition is that the component is using a BorderLayout,
+	 * and doesn't already have members at south or east.
+	 * 
+	 * @param map
+	 *            the map model to work with
+	 * @param component
+	 *            the component to attach the scrollbars to.
+	 */
+	public ScrollListener(final MapModel map, final JComponent component) {
+		model = map;
+		dimensions = map.getDimensions();
+		hbar = new JScrollBar(Adjustable.HORIZONTAL);
+		component.add(hbar, BorderLayout.SOUTH);
+		vbar = new JScrollBar(Adjustable.VERTICAL);
+		component.add(vbar, BorderLayout.EAST);
 	}
 	/**
 	 * Set up listeners. This is now done in a method rather than the constructor so we don't get "dead store" warnings.

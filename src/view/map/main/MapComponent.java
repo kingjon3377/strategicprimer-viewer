@@ -2,7 +2,6 @@ package view.map.main;
 
 import static util.EqualsAny.equalsAny;
 
-import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +10,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
-import javax.swing.JScrollBar;
 
 import model.map.MapView;
 import model.map.Tile;
@@ -43,14 +41,6 @@ public final class MapComponent extends JComponent implements
 	 */
 	private TileDrawHelper helper;
 	/**
-	 * Horizontal scroll-bar.
-	 */
-	private final JScrollBar hbar = new JScrollBar(Adjustable.HORIZONTAL);
-	/**
-	 * Vertical scroll bar.
-	 */
-	private final JScrollBar vbar = new JScrollBar(Adjustable.VERTICAL);
-	/**
 	 * Constructor.
 	 * 
 	 * @param theMap
@@ -59,9 +49,7 @@ public final class MapComponent extends JComponent implements
 	public MapComponent(final MapModel theMap) {
 		super();
 		setLayout(new BorderLayout());
-		add(hbar, BorderLayout.SOUTH);
-		add(vbar, BorderLayout.EAST);
-		new ScrollListener(theMap, hbar, vbar).setUpListeners();
+		new ScrollListener(theMap, this).setUpListeners();
 		setDoubleBuffered(true);
 		if (theMap.getMainMap().getVersion() == 1) {
 			helper = new DirectTileDrawHelper(); 
