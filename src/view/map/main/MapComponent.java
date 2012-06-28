@@ -178,6 +178,7 @@ public final class MapComponent extends JComponent implements
 	@Override
 	public void loadMap(final MapView newMap) {
 		model.setMainMap(newMap);
+		helper = TileDrawHelperFactory.INSTANCE.factory(newMap.getVersion(), this);
 		repaint();
 	}
 
