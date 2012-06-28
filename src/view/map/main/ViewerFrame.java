@@ -62,7 +62,7 @@ public final class ViewerFrame extends JFrame {
 	 * @param width the specified width
 	 * @param height the specified height
 	 */
-	private final void initializeDimensions(final int width, final int height) {
+	private void initializeDimensions(final int width, final int height) {
 		setPreferredSize(new Dimension(width, height));
 		setSize(width, height);
 		setMaximumSize(new Dimension(width, height));
