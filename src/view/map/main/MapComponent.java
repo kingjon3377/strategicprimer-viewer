@@ -85,13 +85,12 @@ public final class MapComponent extends JComponent implements
 		context.fillRect(0, 0, getWidth(), getHeight());
 		final Rectangle bounds = bounds(context.getClipBounds());
 		final int tsize = TILE_SIZE.getSize(model.getMainMap().getVersion());
-		final int minX = (int) Math.round(bounds.getMinX() / tsize);
-		final int minY = (int) Math.round(bounds.getMinY() / tsize);
-		final int maxX = Math.min((int) Math.round(bounds.getMaxX() / tsize + 1),
-				model.getSizeCols());
-		final int maxY = Math.min((int) Math.round(bounds.getMaxY() / tsize + 1),
-				model.getSizeRows());
-		drawMapPortion(context, minX, minY, maxX, maxY);
+			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tsize),
+					(int) Math.round(bounds.getMinY() / tsize), Math.min(
+							(int) Math.round(bounds.getMaxX() / tsize + 1),
+							model.getSizeCols()), Math.min(
+							(int) Math.round(bounds.getMaxY() / tsize + 1),
+							model.getSizeRows()));
 		} finally {
 			context.dispose();
 		}
