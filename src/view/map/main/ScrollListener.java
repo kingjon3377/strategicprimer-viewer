@@ -7,6 +7,7 @@ import java.awt.event.AdjustmentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 
@@ -37,7 +38,33 @@ public class ScrollListener implements AdjustmentListener,
 		model = map;
 		dimensions = map.getDimensions();
 		hbar = horizBar;
+		hbar.setInputVerifier(new InputVerifier() {
+			/**
+			 * Verify input
+			 * @param input the input event to verify
+			 * @return whether to let it proceed
+			 */
+			@Override
+			public boolean verify(final JComponent input) {
+				return (input instanceof JScrollBar && isInRange(0,
+						((JScrollBar) input).getValue(),
+						map.getSizeCols() - 1));
+			}
+		});
 		vbar = vertBar;
+		vbar.setInputVerifier(new InputVerifier() {
+			/**
+			 * Verify input
+			 * @param input the input event to verify
+			 * @return whether to let it proceed
+			 */
+			@Override
+			public boolean verify(final JComponent input) {
+				return (input instanceof JScrollBar && isInRange(0,
+						((JScrollBar) input).getValue(),
+						map.getSizeRows() - 1));
+			}
+		});
 	}
 	
 	/**
@@ -54,8 +81,34 @@ public class ScrollListener implements AdjustmentListener,
 		model = map;
 		dimensions = map.getDimensions();
 		hbar = new JScrollBar(Adjustable.HORIZONTAL);
+		hbar.setInputVerifier(new InputVerifier() {
+			/**
+			 * Verify input
+			 * @param input the input event to verify
+			 * @return whether to let it proceed
+			 */
+			@Override
+			public boolean verify(final JComponent input) {
+				return (input instanceof JScrollBar && isInRange(0,
+						((JScrollBar) input).getValue(),
+						map.getSizeCols() - 1));
+			}
+		});
 		component.add(hbar, BorderLayout.SOUTH);
 		vbar = new JScrollBar(Adjustable.VERTICAL);
+		vbar.setInputVerifier(new InputVerifier() {
+			/**
+			 * Verify input
+			 * @param input the input event to verify
+			 * @return whether to let it proceed
+			 */
+			@Override
+			public boolean verify(final JComponent input) {
+				return (input instanceof JScrollBar && isInRange(0,
+						((JScrollBar) input).getValue(),
+						map.getSizeRows() - 1));
+			}
+		});
 		component.add(vbar, BorderLayout.EAST);
 	}
 	/**
@@ -134,7 +187,7 @@ public class ScrollListener implements AdjustmentListener,
 	 * @param max the end of te range
 	 * @return whether the value is in the range
 	 */
-	private static boolean isInRange(final int min, final int value, final int max) {
+	protected static boolean isInRange(final int min, final int value, final int max) {
 		return value >= min && value <= max;
 	}
 	/**
