@@ -99,26 +99,20 @@ public class ScrollListener implements AdjustmentListener,
 			dimensions = model.getDimensions();
 			hbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().col(), 0),
-					1, 0, model.getSizeCols(),
-					false);
+					1, 0, model.getSizeCols(), false);
 			vbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().row(), 0),
-					1, 0, model.getSizeRows(),
-					false);
+					1, 0, model.getSizeRows(), false);
 		} else if ("tile".equals(evt.getPropertyName())) {
 			hbar.getModel().setValue(
 					Math.max(model.getSelectedTile().getLocation().col(), 0));
 			vbar.getModel().setValue(
 					Math.max(model.getSelectedTile().getLocation().row(), 0));
 		} else if ("map".equals(evt.getPropertyName())) {
-			hbar.getModel().setRangeProperties(
-					0,
-					1, 0,
-					model.getSizeCols(), false);
-			vbar.getModel().setRangeProperties(
-					0,
-					1, 0,
-					model.getSizeRows(), false);
+			hbar.getModel().setRangeProperties(0, 1, 0, model.getSizeCols(),
+					false);
+			vbar.getModel().setRangeProperties(0, 1, 0, model.getSizeRows(),
+					false);
 			dimensions = model.getDimensions();
 		}
 	}
