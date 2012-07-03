@@ -99,15 +99,11 @@ public class ScrollListener implements AdjustmentListener,
 			dimensions = model.getDimensions();
 			hbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().col(), 0),
-					model.getSizeCols()
-							/ (dimensions.getMaximumCol() - dimensions
-									.getMinimumCol()), 0, model.getSizeCols(),
+					1, 0, model.getSizeCols(),
 					false);
 			vbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().row(), 0),
-					model.getSizeRows()
-							/ (dimensions.getMaximumRow() - dimensions
-									.getMinimumRow()), 0, model.getSizeRows(),
+					1, 0, model.getSizeRows(),
 					false);
 		} else if ("tile".equals(evt.getPropertyName())) {
 			hbar.getModel().setValue(
@@ -117,17 +113,11 @@ public class ScrollListener implements AdjustmentListener,
 		} else if ("map".equals(evt.getPropertyName())) {
 			hbar.getModel().setRangeProperties(
 					0,
-					model.getSizeCols()
-							/ (((VisibleDimensions) evt.getNewValue())
-									.getMaximumCol() - ((VisibleDimensions) evt
-									.getNewValue()).getMinimumCol()), 0,
+					1, 0,
 					model.getSizeCols(), false);
 			vbar.getModel().setRangeProperties(
 					0,
-					model.getSizeRows()
-							/ (((VisibleDimensions) evt.getNewValue())
-									.getMaximumRow() - ((VisibleDimensions) evt
-									.getNewValue()).getMinimumRow()), 0,
+					1, 0,
 					model.getSizeRows(), false);
 			dimensions = model.getDimensions();
 		}
