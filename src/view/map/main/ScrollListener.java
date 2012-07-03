@@ -104,10 +104,22 @@ public class ScrollListener implements AdjustmentListener,
 					Math.max(model.getSelectedTile().getLocation().row(), 0),
 					1, 0, model.getSizeRows(), false);
 		} else if ("tile".equals(evt.getPropertyName())) {
-			hbar.getModel().setValue(
-					Math.max(model.getSelectedTile().getLocation().col(), 0));
-			vbar.getModel().setValue(
-					Math.max(model.getSelectedTile().getLocation().row(), 0));
+			if (!isInRange(model.getDimensions().getMinimumCol(), model
+					.getSelectedTile().getLocation().col(), model
+					.getDimensions().getMaximumCol())) {
+				hbar.getModel()
+						.setValue(
+								Math.max(model.getSelectedTile().getLocation()
+										.col(), 0));
+			}
+			if (!isInRange(model.getDimensions().getMinimumRow(), model
+					.getSelectedTile().getLocation().row(), model
+					.getDimensions().getMaximumRow())) {
+				vbar.getModel()
+						.setValue(
+								Math.max(model.getSelectedTile().getLocation()
+										.row(), 0));
+			}
 		} else if ("map".equals(evt.getPropertyName())) {
 			hbar.getModel().setRangeProperties(0, 1, 0, model.getSizeCols(),
 					false);
@@ -116,7 +128,15 @@ public class ScrollListener implements AdjustmentListener,
 			dimensions = model.getDimensions();
 		}
 	}
-
+	/**
+	 * @param min the start of a range
+	 * @param value a value
+	 * @param max the end of te range
+	 * @return whether the value is in the range
+	 */
+	private static boolean isInRange(final int min, final int value, final int max) {
+		return value >= min && value <= max;
+	}
 	/**
 	 * Handle scroll-bar events.
 	 * 
