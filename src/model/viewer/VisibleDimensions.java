@@ -95,4 +95,16 @@ public class VisibleDimensions {
 		return (maximumCol - minimumCol) == (other.maximumCol - other.minimumCol)
 				&& (maximumRow - minimumRow) == (other.maximumRow - other.minimumRow);
 	}
+	/**
+	 * @return the width (in columns) visible.
+	 */
+	public int getWidth() {
+		return maximumCol - minimumCol;
+	}
+	/**
+	 * @return the height (in rows) visible.
+	 */
+	public int getHeight() {
+		return maximumRow - minimumRow;
+	}
 }

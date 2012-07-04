@@ -91,7 +91,7 @@ public class ScrollListener implements AdjustmentListener,
 			public boolean verify(final JComponent input) {
 				return (input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(),
-						map.getSizeCols() - 1));
+						map.getSizeCols() - map.getDimensions().getWidth()));
 			}
 		});
 		component.add(hbar, BorderLayout.SOUTH);
@@ -106,7 +106,7 @@ public class ScrollListener implements AdjustmentListener,
 			public boolean verify(final JComponent input) {
 				return (input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(),
-						map.getSizeRows() - 1));
+						map.getSizeRows() - map.getDimensions().getHeight()));
 			}
 		});
 		component.add(vbar, BorderLayout.EAST);
@@ -152,10 +152,10 @@ public class ScrollListener implements AdjustmentListener,
 			dimensions = model.getDimensions();
 			hbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().col(), 0),
-					1, 0, model.getSizeCols(), false);
+					1, 0, model.getSizeCols() - model.getDimensions().getWidth(), false);
 			vbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().row(), 0),
-					1, 0, model.getSizeRows(), false);
+					1, 0, model.getSizeRows() - model.getDimensions().getHeight(), false);
 		} else if ("tile".equals(evt.getPropertyName())) {
 			if (!isInRange(model.getDimensions().getMinimumCol(), model
 					.getSelectedTile().getLocation().col(), model
@@ -174,9 +174,9 @@ public class ScrollListener implements AdjustmentListener,
 										.row(), 0));
 			}
 		} else if ("map".equals(evt.getPropertyName())) {
-			hbar.getModel().setRangeProperties(0, 1, 0, model.getSizeCols(),
+			hbar.getModel().setRangeProperties(0, 1, 0, model.getSizeCols() - model.getDimensions().getWidth(),
 					false);
-			vbar.getModel().setRangeProperties(0, 1, 0, model.getSizeRows(),
+			vbar.getModel().setRangeProperties(0, 1, 0, model.getSizeRows() - model.getDimensions().getHeight(),
 					false);
 			dimensions = model.getDimensions();
 		}
