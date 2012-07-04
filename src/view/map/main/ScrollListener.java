@@ -201,13 +201,9 @@ public class ScrollListener implements AdjustmentListener,
 	@Override
 	public void adjustmentValueChanged(final AdjustmentEvent evt) {
 		if (hbar == evt.getSource() || vbar == evt.getSource()) {
-			model.setDimensions(new VisibleDimensions(vbar.getValue(),
-					vbar.getValue()
-							+ (dimensions.getMaximumRow() - dimensions
-									.getMinimumRow()), hbar.getValue(), hbar
-							.getValue()
-							+ (dimensions.getMaximumCol() - dimensions
-									.getMinimumCol())));
+			model.setDimensions(new VisibleDimensions(vbar.getValue(), vbar
+					.getValue() + dimensions.getHeight(), hbar.getValue(), hbar
+					.getValue() + dimensions.getWidth()));
 		}
 	}
 }
