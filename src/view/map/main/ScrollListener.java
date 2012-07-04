@@ -48,7 +48,7 @@ public class ScrollListener implements AdjustmentListener,
 			public boolean verify(final JComponent input) {
 				return (input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(),
-						map.getSizeCols() - 1));
+						map.getSizeCols() - map.getDimensions().getWidth()));
 			}
 		});
 		vbar = vertBar;
@@ -62,7 +62,7 @@ public class ScrollListener implements AdjustmentListener,
 			public boolean verify(final JComponent input) {
 				return (input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(),
-						map.getSizeRows() - 1));
+						map.getSizeRows() - map.getDimensions().getHeight()));
 			}
 		});
 	}
