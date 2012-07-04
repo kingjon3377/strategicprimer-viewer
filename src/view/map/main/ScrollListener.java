@@ -38,6 +38,9 @@ public class ScrollListener implements AdjustmentListener,
 		model = map;
 		dimensions = map.getDimensions();
 		hbar = horizBar;
+		hbar.getModel().setRangeProperties(
+				Math.max(model.getSelectedTile().getLocation().col(), 0),
+				1, 0, model.getSizeCols() - model.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -52,6 +55,9 @@ public class ScrollListener implements AdjustmentListener,
 			}
 		});
 		vbar = vertBar;
+		vbar.getModel().setRangeProperties(
+				Math.max(model.getSelectedTile().getLocation().row(), 0),
+				1, 0, model.getSizeRows() - model.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -81,6 +87,9 @@ public class ScrollListener implements AdjustmentListener,
 		model = map;
 		dimensions = map.getDimensions();
 		hbar = new JScrollBar(Adjustable.HORIZONTAL);
+		hbar.getModel().setRangeProperties(
+				Math.max(model.getSelectedTile().getLocation().col(), 0),
+				1, 0, model.getSizeCols() - model.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -96,6 +105,9 @@ public class ScrollListener implements AdjustmentListener,
 		});
 		component.add(hbar, BorderLayout.SOUTH);
 		vbar = new JScrollBar(Adjustable.VERTICAL);
+		vbar.getModel().setRangeProperties(
+				Math.max(model.getSelectedTile().getLocation().row(), 0),
+				1, 0, model.getSizeRows() - model.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
