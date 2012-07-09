@@ -1,6 +1,5 @@
 package view.map.main;
 
-import java.awt.Component;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -30,12 +29,12 @@ public class MapSizeListener extends ComponentAdapter {
 	 */
 	@Override
 	public void componentResized(final ComponentEvent event) {
-		if (event.getSource() instanceof MapGUI && event.getSource() instanceof Component) {
+		if (event.getComponent() instanceof MapGUI) {
 			synchronized (model) {
-				final int visibleCols = ((Component) event.getSource())
+				final int visibleCols = event.getComponent()
 						.getWidth()
 						/ ((MapGUI) event.getSource()).getTileSize();
-				final int visibleRows = ((Component) event.getSource())
+				final int visibleRows = event.getComponent()
 						.getHeight()
 						/ ((MapGUI) event.getSource()).getTileSize();
 				int minCol = model.getDimensions().getMinimumCol();
