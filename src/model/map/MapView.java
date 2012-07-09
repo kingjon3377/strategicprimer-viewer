@@ -206,7 +206,7 @@ public class MapView implements IMap {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("Map view at turn ");
+		final StringBuilder builder = new StringBuilder("Map view at turn ");
 		builder.append(turn);
 		builder.append(":\nCurrent player:");
 		builder.append(player);
