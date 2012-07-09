@@ -209,8 +209,8 @@ public class DrawHelperComparator { // NOPMD
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				helper.drawTile(pen, spmap.getTile(i, j), new Coordinate(i * tsize, j * tsize),
-						dimensions); // NOPMD
+				helper.drawTile(pen, spmap.getTile(i, j), new Coordinate(i // NOPMD
+						* tsize, j * tsize), dimensions);
 			}
 		}
 	}
