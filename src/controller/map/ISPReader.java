@@ -17,7 +17,7 @@ public interface ISPReader {
 	 */
 	String[] FUTURE = { "future", "worker", "explorer",
 			"building", "resource", "animal", "changeset", "change",
-			"move", "work", "discover" };
+			"move", "work", "discover", "submap" };
 	/**
 	 * @param <T> The type of the object the XML represents
 	 * @param file the name of the file being read from

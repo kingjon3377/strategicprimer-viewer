@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,20 +9,11 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.map.MapView;
-import model.map.Point;
-import model.map.SPMap;
-import model.map.TerrainFixture;
-import model.map.Tile;
-import model.map.TileFixture;
-import model.map.fixtures.Ground;
-import model.map.fixtures.RiverFixture;
-import model.map.fixtures.TextFixture;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.converter.ResolutionDecreaseConverter;
-import controller.map.misc.IDFactory;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.readerng.MapWriterNG;
 
@@ -68,31 +58,14 @@ public final class ConverterDriver {
 			SystemOut.SYS_OUT.print(" ... ");
 			try {
 				final IMap old = READER.readMap(filename, Warning.INSTANCE);
-				SystemOut.SYS_OUT.print(" ... Creating IDFactory ... ");
-				final IDFactory factory = createFactory(old);
-				SystemOut.SYS_OUT.print(" ... Verifying preconditions ... ");
-				if (CONV.checkSubmapPreconditions(old, factory)) {
-					SystemOut.SYS_OUT.println("OK");
-				} else {
-					SystemOut.SYS_OUT.println("WARN");
-				}
 				SystemOut.SYS_OUT.println(" ... Converting ... ");
+				final String newFilename = filename + ".new";
 				final MapView map = CONV.convert(old);
-				map.setFile(filename + ".new");
-				map.setFileOnChildren(filename + ".new");
-				for (Entry<Point, SPMap> entry : map.getSubmapIterator()) {
-					final String submapFilename = filename.replaceAll(
-									".xml$",
-									String.format("_%d_%d.xml",
-											Integer.valueOf(entry.getKey().row()),
-											Integer.valueOf(entry.getKey().col())));
-					entry.getValue().setFile(submapFilename);
-					entry.getValue().setFileOnChildren(submapFilename);
-				}
+				map.setFile(newFilename);
+				map.setFileOnChildren(newFilename);
 				SystemOut.SYS_OUT.print("About to write ");
-				SystemOut.SYS_OUT.print(filename);
-				SystemOut.SYS_OUT.println(".new");
-				new MapWriterNG().write(filename + ".new", map, true); // NOPMD
+				SystemOut.SYS_OUT.println(newFilename);
+				new MapWriterNG().write(newFilename, map, true); // NOPMD
 			} catch (MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
 				continue;
@@ -109,29 +82,5 @@ public final class ConverterDriver {
 				continue;
 			}
 		}
-	}
-	/**
-	 * Create an ID factory registering all IDs used in the map.
-	 * @param map the map to refer to
-	 * @return an ID factory having registered all IDs used in it.
-	 */
-	private static IDFactory createFactory(final IMap map) {
-		final IDFactory retval = new IDFactory();
-		for (Point point : map.getTiles()) {
-			final Tile tile = map.getTile(point);
-			for (TileFixture fix : tile.getContents()) {
-				retval.register(fix.getID());
-				if (fix.getID() == -1 && !(fix instanceof TerrainFixture)
-						&& !(fix instanceof RiverFixture)
-						&& !(fix instanceof Ground)
-						&& !(fix instanceof TextFixture)) {
-					SystemOut.SYS_OUT.print("ID -1 in ");
-					SystemOut.SYS_OUT.print(fix.getClass().getSimpleName());
-					SystemOut.SYS_OUT.print(" at ");
-					SystemOut.SYS_OUT.println(point);
-				}
-			}
-		}
-		return retval;
 	}
 }

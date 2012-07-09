@@ -15,10 +15,6 @@ public enum Tag {
 	 */
 	View(ViewNode.class),
 	/**
-	 * A submap---the super-tag of a map representing a tile.
-	 */
-	Submap(SubmapNode.class),
-	/**
 	 * The main map tag.
 	 */
 	Map(MapNode.class),

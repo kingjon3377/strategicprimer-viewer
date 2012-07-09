@@ -1,14 +1,9 @@
 package model.map;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import util.IteratorWrapper;
 
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
- * current turn, the current player, links to submaps, and eventually
+ * current turn, the current player, and eventually
  * changesets.
  * 
  * @author Jonathan Lovelace
@@ -53,13 +48,6 @@ public class MapView implements IMap {
 		builder.append(turn);
 		builder.append("\">\n");
 		builder.append(map.toXML());
-		for (Point point : submaps.keySet()) {
-			builder.append("\n<submap ");
-			builder.append(point.toXML());
-			builder.append(">\n");
-			builder.append(submaps.get(point).toXML());
-			builder.append("</submap>");
-		}
 		builder.append("\n</view>");
 		return builder.toString();
 	}
@@ -84,34 +72,14 @@ public class MapView implements IMap {
 	
 	/**
 	 * Test whether another map or map view is a subset of this one. TODO: Check
-	 * submaps and changesets.
+	 * changesets.
 	 * 
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
 	 */
 	@Override
 	public boolean isSubset(final IMap obj) {
-		if (map.isSubset(obj)) {
-			if (obj instanceof MapView) {
-				final MapView other = (MapView) obj;
-				boolean retval = true;
-				System.out.print("Considering submaps:");
-				for (Point represented : submaps.keySet()) {
-					if (other.submaps.containsKey(represented)) {
-						System.out.print("\nSubmap for tile ");
-						System.out.print(represented);
-						System.out.print(": ");
-						retval &= getSubmap(represented).isSubset(
-								other.getSubmap(represented));
-					}
-				}
-				return retval; // NOPMD
-			} else {
-				return true; // NOPMD
-			}
-		} else {
-			return false;
-		}
+		return map.isSubset(obj);
 	}
 	/**
 	 * @param obj another map.
@@ -208,7 +176,7 @@ public class MapView implements IMap {
 	public boolean equals(final Object obj) {
 		return obj instanceof MapView && map.equals(((MapView) obj).map)
 				&& player.equals(((MapView) obj).player)
-				&& turn == ((MapView) obj).turn && submaps.equals(((MapView) obj).submaps);
+				&& turn == ((MapView) obj).turn;
 	}
 	/**
 	 * @return a hash code for the object
@@ -244,63 +212,16 @@ public class MapView implements IMap {
 		builder.append(player);
 		builder.append("\nMap:\n");
 		builder.append(map);
-		if (!submaps.isEmpty()) {
-			builder.append("Submaps:\n");
-			for (Entry<Point, SPMap> entry : getSubmapIterator()) {
-				builder.append("Submap for ");
-				builder.append(entry.getKey().toString());
-				builder.append(":\n");
-				builder.append(entry.getValue().toString());
-			}
-		}
 		return builder.toString();
-	}
-	/**
-	 * A collection of submaps.
-	 */
-	private final Map<Point, SPMap> submaps = new HashMap<Point, SPMap>();
-	
-	/**
-	 * Add a submap. But we only add it if it corresponds to a (non-empty) tile
-	 * in the map (so players can't learn stuff they shouldn't know about tiles
-	 * they can't see).
-	 * 
-	 * @param point
-	 *            the location of a tile
-	 * @param submap
-	 *            the submap of that tile
-	 */
-	public void addSubmap(final Point point, final SPMap submap) {
-		if (!map.getTile(point).isEmpty()) {
-			submaps.put(point, submap);
-		}
-	}
-	/**
-	 * Get a submap.
-	 * @param point the location of a tile
-	 * @return the submap representing that tile 
-	 */
-	public SPMap getSubmap(final Point point) {
-		return submaps.get(point);
-	}
-	/**
-	 * @return an iterator over point-submap pairs.
-	 */
-	public Iterable<Entry<Point, SPMap>> getSubmapIterator() {
-		return new IteratorWrapper<Entry<Point, SPMap>>(submaps.entrySet().iterator());
 	}
 	/**
 	 * @return a clone of this object
 	 */
 	@Override
 	public IMap deepCopy() {
-		final MapView retval = new MapView((SPMap) map.deepCopy(), getPlayers()
-				.getCurrentPlayer().getPlayerId(), getCurrentTurn(), getFile());
-		for (Point point : submaps.keySet()) {
-			retval.submaps.put(point, (SPMap) submaps.get(point).deepCopy());
-		}
 		// TODO: changesets
-		return retval;
+		return new MapView((SPMap) map.deepCopy(), getPlayers()
+				.getCurrentPlayer().getPlayerId(), getCurrentTurn(), getFile());
 	}
 	/**
 	 * Set all children's file property to the specified value, recursively.
@@ -310,9 +231,5 @@ public class MapView implements IMap {
 	public void setFileOnChildren(final String value) {
 		map.setFile(value);
 		map.setFileOnChildren(value);
-		for (SPMap submap : submaps.values()) {
-			submap.setFile(value);
-			submap.setFileOnChildren(value);
-		}
 	}
 }

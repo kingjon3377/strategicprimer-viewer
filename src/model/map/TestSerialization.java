@@ -304,8 +304,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						.append("<row index=\"0\">")
 						.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")
 						.append("</row>").append("</map>").toString());
-		one.addSubmap(PointFactory.point(0, 0), setFileOnObject(new SPMap(2, 0, 0, FAKE_FILENAME)));
-		assertSerialization("Serialization of map-view containing submaps", one, MapView.class);
 	}
 	/**
 	 * Test the <include> tag.
@@ -356,20 +354,5 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				converted.getTile(0, 0).getContents().contains(fixtureThree));
 		assertTrue("Combined tile should contain fixtures from tile four",
 				converted.getTile(0, 0).getContents().contains(fixtureFour));
-		// We got these locations from printing the submap to screen; they're
-		// selected within that quadrant by a Random instance seeded with their
-		// ID. What's important is that they're all *somewhere* in the map.
-		assertTrue("Submap should contain fixtures from tile one", converted
-				.getSubmap(PointFactory.point(0, 0)).getTile(0, 1)
-				.getContents().contains(fixture));
-		assertTrue("Submap should contain fixtures from tile two", converted
-				.getSubmap(PointFactory.point(0, 0)).getTile(1, 3)
-				.getContents().contains(fixtureTwo));
-		assertTrue("Submap should contain fixtures from tile three", converted
-				.getSubmap(PointFactory.point(0, 0)).getTile(5, 2)
-				.getContents().contains(fixtureThree));
-		assertTrue("Submap should contain fixtures from tile four", converted
-				.getSubmap(PointFactory.point(0, 0)).getTile(5, 4)
-				.getContents().contains(fixtureFour));
 	}
 }

@@ -6,32 +6,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.MapView;
 import model.map.PlayerCollection;
-import model.map.Point;
-import model.map.PointFactory;
 import model.map.SPMap;
-import util.Pair;
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
- * A reader to read map views from XML and turn them into XML. TODO: submaps, changesets.
+ * A reader to read map views from XML and turn them into XML. TODO: changesets.
  * @author Jonathan Lovelace
  *
  */
 public class ViewReader implements INodeHandler<MapView> {
-	/**
-	 * The tag indicating a submap.
-	 */
-	private static final String SUBMAP_TAG = "submap";
 	/**
 	 * The (main) tag we deal with.
 	 */
@@ -45,9 +37,6 @@ public class ViewReader implements INodeHandler<MapView> {
 	}
 	
 	/**
-	 * TODO: Once we add support for submaps, this reader should be the one to
-	 * "understand" (and abort on) XML with <submap> as the root.
-	 * 
 	 * @return a list of the tags this reader understands.
 	 */
 	@Override
@@ -81,15 +70,6 @@ public class ViewReader implements INodeHandler<MapView> {
 							Integer.parseInt(getAttribute(element,
 									"current_turn")),
 							XMLHelper.getFile(stream));
-				} else if (SUBMAP_TAG.equalsIgnoreCase(event.asStartElement()
-						.getName().getLocalPart())) {
-					view.addSubmap(
-							PointFactory.point(Integer.parseInt(getAttribute(//NOPMD
-									event.asStartElement(), "row")), Integer
-									.parseInt(getAttribute(
-											event.asStartElement(), "column"))),
-							parseSubmap(stream, players, warner, idFactory,
-									event.asStartElement()));
 				} else {
 					throw new UnwantedChildException(element.getName()
 							.getLocalPart(), event.asStartElement().getName()
@@ -107,50 +87,7 @@ public class ViewReader implements INodeHandler<MapView> {
 	}
 	
 	/**
-	 * Parse a submap. We've already parsed the 'submap' tag itself to get the
-	 * coordinates of the tile the submap represents.
-	 * 
-	 * @param stream
-	 *            the stream of tags
-	 * @param players
-	 *            the collection of players to use
-	 * @param warner
-	 *            the Warning instance to use
-	 * @param idFactory
-	 *            the ID factory to use
-	 * @param parent
-	 *            the parent ('submap') tag, needed for its location on error and to spin-until-end on.
-	 * @return the submap
-	 * @throws SPFormatException on SP format problems
-	 */
-	private static SPMap parseSubmap(final Iterable<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
-			final IDFactory idFactory, final StartElement parent)
-			throws SPFormatException {
-		StartElement element = null;
-		for (XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				element = event.asStartElement();
-				break;
-			}
-		}
-		if (element == null) {
-			throw new MissingChildException(SUBMAP_TAG, parent.getLocation().getLineNumber());
-		}
-		// ESCA-JAVA0177:
-		final SPMap retval; // NOPMD
-		if ("map".equalsIgnoreCase(element.getName().getLocalPart())) {
-			retval = MAP_READER.parse(element, stream, players, warner, idFactory);
-		} else {
-			throw new UnwantedChildException(SUBMAP_TAG, element.getName()
-					.getLocalPart(), element.getLocation().getLineNumber());
-		}
-		XMLHelper.spinUntilEnd(parent.getName(), stream);
-		return retval;
-	}
-
-	/**
-	 * Create an intermediate representation to write to a Writer. TODO: submaps, changesets
+	 * Create an intermediate representation to write to a Writer. TODO: changesets
 	 * @param <S> the type of the object
 	 * @param obj the object to write
 	 * @return an intermediate representation
@@ -167,17 +104,6 @@ public class ViewReader implements INodeHandler<MapView> {
 		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 		tagMap.put(obj.getFile(), retval);
 		addChild(tagMap, obj.getMap(), retval, reader);
-		for (Entry<Point, SPMap> submap : obj.getSubmapIterator()) {
-			tagMap.clear();
-			@SuppressWarnings("unchecked")
-			final SPIntermediateRepresentation child = new SPIntermediateRepresentation(//NOPMD
-					SUBMAP_TAG, Pair.of("row",
-							Integer.toString(submap.getKey().row())), Pair.of(
-							"column", Integer.toString(submap.getKey().col())));
-			tagMap.put(obj.getFile(), child);
-			addChild(tagMap, submap.getValue(), child, reader);
-			retval.addChild(child);
-		}
 		return retval;
 	}
 	/**

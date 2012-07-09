@@ -17,8 +17,7 @@ import controller.map.SPFormatException;
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
  * automatically handles "include" tags. TODO: We need something to map tags to
- * the files they came from, so we can write them back properly. (For tile
- * submaps at <em>least</em>.)
+ * the files they came from, so we can write them back properly.
  * 
  * @author Jonathan Lovelace
  * 

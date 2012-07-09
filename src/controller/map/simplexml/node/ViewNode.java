@@ -9,7 +9,7 @@ import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
- * A node to produce a MapView. TODO: submaps, changesets.
+ * A node to produce a MapView. TODO: changesets.
  * @author Jonathan Lovelace
  *
  */
@@ -26,7 +26,7 @@ public class ViewNode extends AbstractChildNode<MapView> {
 		super(MapView.class);
 	}
 	/**
-	 * Produce the view. TODO: submaps, changesets.
+	 * Produce the view. TODO: changesets.
 	 * @param players the players object to pass down
 	 * @param warner the Warning instance to use
 	 * @return the view this represents
@@ -50,12 +50,6 @@ public class ViewNode extends AbstractChildNode<MapView> {
 						warner),
 				Integer.parseInt(getProperty("current_player")),
 				Integer.parseInt(getProperty("current_turn")), getProperty("file"));
-		for (AbstractXMLNode child : this) {
-			if (child instanceof SubmapNode) {
-				final SubmapNode.Submap submap = ((SubmapNode) child).produce(players, warner);
-				retval.addSubmap(submap.getLocation(), submap.getMap());
-			}
-		}
 		return retval;
 	}
 	/**
@@ -68,7 +62,7 @@ public class ViewNode extends AbstractChildNode<MapView> {
 	}
 	
 	/**
-	 * Check for errors. TODO: submaps, changesets.
+	 * Check for errors. TODO: changesets.
 	 * 
 	 * @param warner
 	 *            the Warning instance to use.
@@ -86,8 +80,6 @@ public class ViewNode extends AbstractChildNode<MapView> {
 			if (mapnodes == 0 && node instanceof MapNode) {
 				node.checkNode(warner, idFactory);
 				mapnodes++;
-			} else if (node instanceof SubmapNode) {
-				node.checkNode(warner, idFactory);
 			} else {
 				throw new UnwantedChildException(TAG, node.toString(),
 						getLine());
