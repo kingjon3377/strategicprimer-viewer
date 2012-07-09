@@ -69,4 +69,12 @@ public class MapSizeListener extends ComponentAdapter {
 			}
 		}
 	}
+	/**
+	 * Treat a "shown" event as a "resized" event.
+	 * @param event the event to handle.
+	 */
+	@Override
+	public void componentShown(final ComponentEvent event) {
+		componentResized(event);
+	}
 }
