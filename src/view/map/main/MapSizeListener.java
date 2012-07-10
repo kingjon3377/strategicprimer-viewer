@@ -50,18 +50,18 @@ public class MapSizeListener extends ComponentAdapter {
 						maxCol = totalCols - 1;
 					} else if (minCol + visibleCols >= totalCols) {
 						maxCol = totalCols - 1;
-						minCol = totalCols - visibleCols - 1;
+						minCol = totalCols - visibleCols - 2;
 					} else {
-						maxCol = minCol + visibleCols;
+						maxCol = minCol + visibleCols - 1;
 					}
 					if (visibleRows >= totalRows) {
 						minRow = 0;
 						maxRow = totalRows - 1;
 					} else if (minRow + visibleRows >= totalRows) {
 						maxRow = totalRows - 1;
-						minRow = totalRows - visibleRows - 1;
+						minRow = totalRows - visibleRows - 2;
 					} else {
-						maxRow = minRow + visibleRows;
+						maxRow = minRow + visibleRows - 1;
 					}
 					model.setDimensions(new VisibleDimensions(minRow, maxRow,
 							minCol, maxCol));
