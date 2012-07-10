@@ -1,6 +1,9 @@
 package controller.map;
 
 import java.io.Reader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -15,9 +18,11 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and
 	 * we'll warn if they're used.
 	 */
-	String[] FUTURE = { "future", "worker", "explorer",
-			"building", "resource", "animal", "changeset", "change",
-			"move", "work", "discover", "submap" };
+	List<String> FUTURE = Collections.unmodifiableList(Arrays
+			.asList(new String[] { "future", "worker", "explorer", "building",
+					"resource", "animal", "changeset", "change", "move",
+					"work", "discover", "submap" }));
+
 	/**
 	 * @param <T> The type of the object the XML represents
 	 * @param file the name of the file being read from
