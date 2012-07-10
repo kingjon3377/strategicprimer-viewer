@@ -117,9 +117,3 @@
   <target name="release"
     depends="viewer.app.tbz2,viewer.exe,viewer.jar" />
 </project>
-
-To learn more about HTML Tidy see http://tidy.sourceforge.net
-Please fill bug reports and queries using the "tracker" on the Tidy web site.
-Additionally, questions can be sent to html-tidy@w3.org
-HTML and CSS specifications are available from http://www.w3.org/
-Lobby your company to join W3C, see http://www.w3.org/Consortium
