@@ -173,6 +173,7 @@ public final class IOHandler implements ActionListener {
 			try {
 				new MapReaderAdapter().write(chooser.getSelectedFile().getPath(), map);
 			} catch (final IOException e) {
+				ErrorShower.showErrorDialog(source, "I/O error writing to file " + chooser.getSelectedFile().getPath());
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
 		}
