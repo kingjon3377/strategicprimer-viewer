@@ -3,23 +3,15 @@ package view.map.main;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
-import javax.swing.Box.Filler;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
 import model.viewer.MapModel;
 import view.map.details.DetailPanel;
-import view.util.DriverQuit;
-import view.util.MenuItemCreator;
 
 /**
  * The main driver class for the viewer app.
@@ -28,23 +20,6 @@ import view.util.MenuItemCreator;
  * 
  */
 public final class ViewerFrame extends JFrame {
-	/**
-	 * A listener for the Quit menu item.
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	static final class QuitListener implements ActionListener {
-		/**
-		 * Handle the menu "button" press.
-		 * @param event the event to handle
-		 */
-		@Override
-		public void actionPerformed(final ActionEvent event) {
-			if ("Quit".equals(event.getActionCommand())) {
-				DriverQuit.quit(0);
-			}
-		}
-	}
 	/**
 	 * Default width of the Frame.
 	 */
@@ -74,10 +49,8 @@ public final class ViewerFrame extends JFrame {
 	 * 
 	 * @param map
 	 *            The map model.
-	 * @param mapMenu
-	 *            the menu dealing with file I/O and map switching.
 	 */
-	public ViewerFrame(final MapModel map, final JMenu mapMenu) {
+	public ViewerFrame(final MapModel map) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		setIgnoreRepaint(false);
@@ -89,37 +62,16 @@ public final class ViewerFrame extends JFrame {
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
 		add(mapSuperPanel, BorderLayout.CENTER);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		createMenu(mapMenu, map);
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
 	}
 
 	/**
-	 * Set up the menu.
+	 * Attach the menu bar to the frame.
 	 * 
-	 * @param mapMenu
-	 *            the map menu
-	 * @param model the map model
+	 * @param mbar the menu bar to attach
 	 */
-	private void createMenu(final JMenu mapMenu, final MapModel model) {
-		final MenuItemCreator creator = new MenuItemCreator();
-		final JMenuBar mbar = new JMenuBar();
-		mbar.add(mapMenu);
-		mbar.add(creator.createMenuItem("Go to tile", KeyEvent.VK_G,
-				KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK),
-				"Go to a tile by coordinates", new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				if ("Go to tile".equals(event.getActionCommand())) {
-					new SelectTileDialog(getFrame(), model).setVisible(true);
-				}
-			}
-		}));
-		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0),
-				new Dimension(Integer.MAX_VALUE, 0)));
-		mbar.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
-				"Quit the viewer", new QuitListener()));
+	public void attachMenu(final JMenuBar mbar) {
 		setJMenuBar(mbar);
 	}
 	/**
