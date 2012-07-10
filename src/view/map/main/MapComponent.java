@@ -256,6 +256,6 @@ public final class MapComponent extends JComponent implements
 	 */
 	@Override
 	public int getTileSize() {
-		return TILE_SIZE.getSize(getModel().getMainMap().getVersion());
+		return TILE_SIZE.getSize(getMapModel().getMainMap().getVersion());
 	}
 }
