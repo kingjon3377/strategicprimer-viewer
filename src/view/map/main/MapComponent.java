@@ -112,10 +112,10 @@ public final class MapComponent extends JComponent implements
 	 */
 	private void drawMapPortion(final Graphics pen, final int minX,
 			final int minY, final int maxX, final int maxY) {
-		final int minRow = getModel().getDimensions().getMinimumRow();
-		final int maxRow = getModel().getDimensions().getMaximumRow();
-		final int minCol = getModel().getDimensions().getMinimumCol(); // NOPMD
-		final int maxCol = getModel().getDimensions().getMaximumCol(); // NOPMD
+		final int minRow = getMapModel().getDimensions().getMinimumRow();
+		final int maxRow = getMapModel().getDimensions().getMaximumRow();
+		final int minCol = getMapModel().getDimensions().getMinimumCol(); // NOPMD
+		final int maxCol = getMapModel().getDimensions().getMaximumCol(); // NOPMD
 		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
 				paintTile(pen, model.getTile(i + minRow, j + minCol), i, j);
@@ -130,11 +130,11 @@ public final class MapComponent extends JComponent implements
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return (rect == null) ? new Rectangle(0, 0, (getModel().getDimensions()
-				.getMaximumCol() - getModel().getDimensions().getMinimumCol())
-				* TILE_SIZE.getSize(getModel().getMainMap().getVersion()),
-				(getModel().getDimensions().getMaximumRow() - getModel()
-						.getDimensions().getMinimumRow()) * TILE_SIZE.getSize(getModel().getMainMap().getVersion()))
+		return (rect == null) ? new Rectangle(0, 0, (getMapModel().getDimensions()
+				.getMaximumCol() - getMapModel().getDimensions().getMinimumCol())
+				* TILE_SIZE.getSize(getMapModel().getMainMap().getVersion()),
+				(getMapModel().getDimensions().getMaximumRow() - getMapModel()
+						.getDimensions().getMinimumRow()) * TILE_SIZE.getSize(getMapModel().getMainMap().getVersion()))
 				: rect;
 	}
 
@@ -152,7 +152,7 @@ public final class MapComponent extends JComponent implements
 	 */
 	private void paintTile(final Graphics pen, final Tile tile, final int row,
 			final int col) {
-		final int tsize = TILE_SIZE.getSize(getModel().getMainMap().getVersion());
+		final int tsize = TILE_SIZE.getSize(getMapModel().getMainMap().getVersion());
 		helper.drawTile(pen, tile, new Coordinate(col * tsize, row * tsize), new Coordinate(tsize, tsize));
 		if (model.getSelectedTile().equals(tile)) {
 			final Graphics context = pen.create();
@@ -184,7 +184,7 @@ public final class MapComponent extends JComponent implements
 	 * @return the map model
 	 */
 	@Override
-	public MapModel getModel() {
+	public MapModel getMapModel() {
 		return model;
 	}
 
@@ -209,27 +209,27 @@ public final class MapComponent extends JComponent implements
 	 * @return whether the selected tile is either not in the map or visible in the current bounds.
 	 */
 	private boolean isSelectionVisible() {
-		final int selRow = getModel().getSelectedTile().getLocation().row();
-		final int selCol = getModel().getSelectedTile().getLocation().col();
-		final int minRow = getModel().getDimensions().getMinimumRow();
-		final int maxRow = getModel().getDimensions().getMaximumRow();
-		final int minCol = getModel().getDimensions().getMinimumCol();
-		final int maxCol = getModel().getDimensions().getMaximumCol();
+		final int selRow = getMapModel().getSelectedTile().getLocation().row();
+		final int selCol = getMapModel().getSelectedTile().getLocation().col();
+		final int minRow = getMapModel().getDimensions().getMinimumRow();
+		final int maxRow = getMapModel().getDimensions().getMaximumRow();
+		final int minCol = getMapModel().getDimensions().getMinimumCol();
+		final int maxCol = getMapModel().getDimensions().getMaximumCol();
 		return ((selRow <= 0 || selRow >= minRow)
-				&& (selRow >= getModel().getSizeRows() || selRow <= maxRow)
+				&& (selRow >= getMapModel().getSizeRows() || selRow <= maxRow)
 				&& (selCol <= 0 || selCol >= minCol)
-				&& (selCol >= getModel().getSizeCols() || selCol <= maxCol));
+				&& (selCol >= getMapModel().getSizeCols() || selCol <= maxCol));
 	}
 	/**
 	 * Fix the visible dimensions to include the selected tile.
 	 */
 	private void fixVisibility() {
-		final int selRow = Math.max(getModel().getSelectedTile().getLocation().row(), 0);
-		final int selCol = Math.max(getModel().getSelectedTile().getLocation().col(), 0);
-		int minRow = getModel().getDimensions().getMinimumRow();
-		int maxRow = getModel().getDimensions().getMaximumRow();
-		int minCol = getModel().getDimensions().getMinimumCol();
-		int maxCol = getModel().getDimensions().getMaximumCol();
+		final int selRow = Math.max(getMapModel().getSelectedTile().getLocation().row(), 0);
+		final int selCol = Math.max(getMapModel().getSelectedTile().getLocation().col(), 0);
+		int minRow = getMapModel().getDimensions().getMinimumRow();
+		int maxRow = getMapModel().getDimensions().getMaximumRow();
+		int minCol = getMapModel().getDimensions().getMinimumCol();
+		int maxCol = getMapModel().getDimensions().getMaximumCol();
 		if (selRow < minRow) {
 			final int diff = minRow - selRow;
 			minRow -= diff;
@@ -248,7 +248,7 @@ public final class MapComponent extends JComponent implements
 			minCol += diff;
 			maxCol += diff;
 		}
-		getModel().setDimensions(
+		getMapModel().setDimensions(
 				new VisibleDimensions(minRow, maxRow, minCol, maxCol));
 	}
 	/**

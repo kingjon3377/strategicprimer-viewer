@@ -23,7 +23,7 @@ public interface MapGUI extends PropertyChangeSource {
 	 * 
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */
-	MapModel getModel();
+	MapModel getMapModel();
 	/**
 	 * @return the size of a tile in this GUI.
 	 */
