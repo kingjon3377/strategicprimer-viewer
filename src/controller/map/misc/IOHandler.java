@@ -1,5 +1,6 @@
 package controller.map.misc;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,7 +9,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
@@ -64,29 +64,31 @@ public final class IOHandler implements ActionListener {
 	private final MenuItemCreator creator = new MenuItemCreator();
 	/**
 	 * Handle the "load" menu item.
+	 * @param source the source of the event
 	 */
-	private void handleLoadMenu() {
-		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+	private void handleLoadMenu(final Component source) {
+		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
 			try {
 				panel.setMainMap(readMap(filename, Warning.INSTANCE));
 			} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
-				handleError(e, filename);
+				handleError(e, filename, source);
 			}
 		}
 	}
 	/**
 	 * Handle the "load secondary map" menu item.
+	 * @param source the source of the event
 	 */
-	private void handleLoadAltMenu() {
-		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+	private void handleLoadAltMenu(final Component source) {
+		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
 			try {
 				panel.setSecondaryMap(readMap(filename, Warning.INSTANCE));
 			} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
-				handleError(e, filename);
+				handleError(e, filename, source);
 			}
 		}
 	}
@@ -98,14 +100,16 @@ public final class IOHandler implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
+		final Component source = event.getSource() instanceof Component ? (Component) event
+				.getSource() : null; // NOPMD
 		if ("Load".equals(event.getActionCommand())) {
-			handleLoadMenu();
+			handleLoadMenu(source);
 		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(panel.getMainMap());
+			saveMap(panel.getMainMap(), source);
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			handleLoadAltMenu();
+			handleLoadAltMenu(source);
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			saveMap(panel.getSecondaryMap());
+			saveMap(panel.getSecondaryMap(), source);
 		} else if ("Switch maps".equals(event.getActionCommand())) {
 			panel.swapMaps();
 		}
@@ -131,19 +135,15 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
-	 * A component to show the chooser under.
-	 */
-	private JComponent parent;
-
-	/**
 	 * Display an appropriate error message.
 	 * 
 	 * @param except
 	 *            an Exception
 	 * @param filename
 	 *            the file we were trying to process
+	 * @param source the component to use as the parent of the error dialog
 	 */
-	private void handleError(final Exception except, final String filename) {
+	private static void handleError(final Exception except, final String filename, final Component source) {
 		// ESCA-JAVA0177:
 		String msg;
 		if (except instanceof XMLStreamException) {
@@ -158,7 +158,7 @@ public final class IOHandler implements ActionListener {
 			throw new IllegalStateException("Unknown exception type", except);
 		}
 		LOGGER.log(Level.SEVERE, msg, except);
-		ErrorShower.showErrorDialog(parent, msg);
+		ErrorShower.showErrorDialog(source, msg);
 	}
 
 	/**
@@ -166,9 +166,10 @@ public final class IOHandler implements ActionListener {
 	 * 
 	 * @param map
 	 *            the map to save.
+	 * @param source the source of the event
 	 */
-	private void saveMap(final IMap map) {
-		if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+	private void saveMap(final IMap map, final Component source) {
+		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new MapReaderAdapter().write(chooser.getSelectedFile().getPath(), map);
 			} catch (final IOException e) {
@@ -233,7 +234,6 @@ public final class IOHandler implements ActionListener {
 		retval.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Make the secondary map the main map and vice versa", this));
-		parent = retval;
 		return retval;
 	}
 }
