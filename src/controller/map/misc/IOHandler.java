@@ -1,31 +1,21 @@
 package controller.map.misc;
 
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.Box.Filler;
 import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.KeyStroke;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.map.MapView;
 import model.viewer.MapModel;
 import util.Warning;
-import view.map.main.SelectTileDialog;
-import view.util.DriverQuit;
 import view.util.ErrorShower;
-import view.util.MenuItemCreator;
 import controller.map.SPFormatException;
 
 /**
@@ -35,23 +25,6 @@ import controller.map.SPFormatException;
  * 
  */
 public final class IOHandler implements ActionListener {
-	/**
-	 * A listener for the Quit menu item.
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	static final class QuitListener implements ActionListener {
-		/**
-		 * Handle the menu "button" press.
-		 * @param event the event to handle
-		 */
-		@Override
-		public void actionPerformed(final ActionEvent event) {
-			if ("Quit".equals(event.getActionCommand())) {
-				DriverQuit.quit(0);
-			}
-		}
-	}
 	/**
 	 * Error message fragment when file not found.
 	 */
@@ -81,10 +54,6 @@ public final class IOHandler implements ActionListener {
 	 * File chooser.
 	 */
 	private final JFileChooser chooser;
-	/**
-	 * The helper to create menu items for us.
-	 */
-	private final MenuItemCreator creator = new MenuItemCreator();
 	/**
 	 * Handle the "load" menu item.
 	 * @param source the source of the event
@@ -226,57 +195,5 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public String toString() {
 		return "IOHandler";
-	}
-
-	/**
-	 * Create a menu.
-	 * @param frame the frame to which the menu will be attached
-	 * @param map a reference to the map model  
-	 * @return a menu whose I/O-related functions we handle
-	 */
-	public JMenuBar createMenu(final Frame frame, final MapModel map) {
-		final JMenu mapMenu = new JMenu("Map");
-		mapMenu.setMnemonic(KeyEvent.VK_M);
-		mapMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
-				"Load a main map from file", this));
-		mapMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
-				"Save the main map to file", this));
-		mapMenu.addSeparator();
-		mapMenu.add(creator.createMenuItem(
-				LOAD_ALT_MAP_CMD,
-				KeyEvent.VK_D,
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
-						+ ActionEvent.ALT_MASK),
-				"Load a secondary map from file", this));
-		mapMenu.add(creator.createMenuItem(
-				SAVE_ALT_MAP_CMD,
-				KeyEvent.VK_V,
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK
-						+ ActionEvent.ALT_MASK),
-				"Save the secondary map to file", this));
-		mapMenu.addSeparator();
-		mapMenu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
-				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
-				"Make the secondary map the main map and vice versa", this));
-		final JMenuBar mbar = new JMenuBar();
-		mbar.add(mapMenu);
-		mbar.add(creator.createMenuItem("Go to tile", KeyEvent.VK_G,
-				KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK),
-				"Go to a tile by coordinates", new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				if ("Go to tile".equals(event.getActionCommand())) {
-					new SelectTileDialog(frame, map).setVisible(true);
-				}
-			}
-		}));
-		mbar.add(new Filler(new Dimension(0, 0), new Dimension(0, 0),
-				new Dimension(Integer.MAX_VALUE, 0)));
-		mbar.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
-				"Quit the viewer", new QuitListener()));
-		return mbar;
 	}
 }

@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import model.viewer.MapModel;
 import util.Warning;
 import view.map.main.MapFileFilter;
+import view.map.main.SPMenu;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import controller.map.SPFormatException;
@@ -78,8 +79,7 @@ public final class ViewerStart {
 			final MapModel model = new MapModel(
 					new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Warn)));
 			final ViewerFrame frame = new ViewerFrame(model);
-			frame.attachMenu(new IOHandler(
-					model, chooser).createMenu(frame, model));
+			frame.setJMenuBar(new SPMenu(new IOHandler(model, chooser), frame, model));
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 			if (args.length > 1) {

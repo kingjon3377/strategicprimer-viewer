@@ -7,7 +7,6 @@ import java.awt.Frame;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import model.viewer.MapModel;
@@ -64,15 +63,6 @@ public final class ViewerFrame extends JFrame {
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
-	}
-
-	/**
-	 * Attach the menu bar to the frame.
-	 * 
-	 * @param mbar the menu bar to attach
-	 */
-	public void attachMenu(final JMenuBar mbar) {
-		setJMenuBar(mbar);
 	}
 	/**
 	 * @return this frame
