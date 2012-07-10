@@ -52,7 +52,6 @@ public final class ViewerFrame extends JFrame {
 	public ViewerFrame(final MapModel map) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
-		setIgnoreRepaint(false);
 		chooser.setFileFilter(new MapFileFilter());
 		final MapGUI mapPanel = new MapComponent(map);
 		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.SOUTH);
