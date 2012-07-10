@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
@@ -65,7 +66,7 @@ public final class IOHandler implements ActionListener {
 	 * Handle the "load" menu item.
 	 */
 	private void handleLoadMenu() {
-		if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
 			try {
@@ -79,7 +80,7 @@ public final class IOHandler implements ActionListener {
 	 * Handle the "load secondary map" menu item.
 	 */
 	private void handleLoadAltMenu() {
-		if (chooser.showOpenDialog(menu) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
 			try {
@@ -126,14 +127,13 @@ public final class IOHandler implements ActionListener {
 	 */
 	public IOHandler(final MapModel map, final JFileChooser fchooser) {
 		panel = map;
-		setUpMenu();
 		chooser = fchooser;
 	}
 
 	/**
 	 * A component to show the chooser under.
 	 */
-	private JMenu menu;
+	private JComponent parent;
 
 	/**
 	 * Display an appropriate error message.
@@ -158,7 +158,7 @@ public final class IOHandler implements ActionListener {
 			throw new IllegalStateException("Unknown exception type", except);
 		}
 		LOGGER.log(Level.SEVERE, msg, except);
-		ErrorShower.showErrorDialog(menu, msg);
+		ErrorShower.showErrorDialog(parent, msg);
 	}
 
 	/**
@@ -168,7 +168,7 @@ public final class IOHandler implements ActionListener {
 	 *            the map to save.
 	 */
 	private void saveMap(final IMap map) {
-		if (chooser.showSaveDialog(menu) == JFileChooser.APPROVE_OPTION) {
+		if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new MapReaderAdapter().write(chooser.getSelectedFile().getPath(), map);
 			} catch (final IOException e) {
@@ -204,41 +204,36 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
-	 * Set up the menu we'll be handling.
+	 * Create a menu.
+	 * @return a menu whose I/O-related functions we handle
 	 */
-	private void setUpMenu() {
-		menu = new JMenu("Map");
-		menu.setMnemonic(KeyEvent.VK_M);
-		menu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
+	public JMenu createMenu() {
+		final JMenu retval = new JMenu("Map");
+		retval.setMnemonic(KeyEvent.VK_M);
+		retval.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
 				"Load a main map from file", this));
-		menu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
+		retval.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
 				"Save the main map to file", this));
-		menu.addSeparator();
-		menu.add(creator.createMenuItem(
+		retval.addSeparator();
+		retval.add(creator.createMenuItem(
 				LOAD_ALT_MAP_CMD,
 				KeyEvent.VK_D,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
 						+ ActionEvent.ALT_MASK),
 				"Load a secondary map from file", this));
-		menu.add(creator.createMenuItem(
+		retval.add(creator.createMenuItem(
 				SAVE_ALT_MAP_CMD,
 				KeyEvent.VK_V,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK
 						+ ActionEvent.ALT_MASK),
 				"Save the secondary map to file", this));
-		menu.addSeparator();
-		menu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
+		retval.addSeparator();
+		retval.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Make the secondary map the main map and vice versa", this));
-	}
-
-	/**
-	 * 
-	 * @return the menu we handle
-	 */
-	public JMenu getMenu() {
-		return menu;
+		parent = retval;
+		return retval;
 	}
 }

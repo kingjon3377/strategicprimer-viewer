@@ -78,7 +78,7 @@ public final class ViewerStart {
 			final MapModel model = new MapModel(
 					new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Warn)));
 			final ViewerFrame frame = new ViewerFrame(model, new IOHandler(
-					model, chooser).getMenu());
+					model, chooser).createMenu());
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 			if (args.length > 1) {
