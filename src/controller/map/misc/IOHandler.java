@@ -71,7 +71,7 @@ public final class IOHandler implements ActionListener {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
 			try {
-				panel.setMainMap(readMap(filename, Warning.INSTANCE));
+				model.setMainMap(readMap(filename, Warning.INSTANCE));
 			} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 				handleError(e, filename, source);
 			}
@@ -86,7 +86,7 @@ public final class IOHandler implements ActionListener {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
 			try {
-				panel.setSecondaryMap(readMap(filename, Warning.INSTANCE));
+				model.setSecondaryMap(readMap(filename, Warning.INSTANCE));
 			} catch (final Exception e) { // $codepro.audit.disable caughtExceptions
 				handleError(e, filename, source);
 			}
@@ -105,21 +105,21 @@ public final class IOHandler implements ActionListener {
 		if ("Load".equals(event.getActionCommand())) {
 			handleLoadMenu(source);
 		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(panel.getMainMap(), source);
+			saveMap(model.getMainMap(), source);
 		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
 			handleLoadAltMenu(source);
 		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			saveMap(panel.getSecondaryMap(), source);
+			saveMap(model.getSecondaryMap(), source);
 		} else if ("Switch maps".equals(event.getActionCommand())) {
-			panel.swapMaps();
+			model.swapMaps();
 		}
 	}
 
 	/**
-	 * The panel that needs to be told about newly loaded maps and that holds
+	 * The map model, which needs to be told about newly loaded maps and holds
 	 * maps to be saved.
 	 */
-	private final MapModel panel;
+	private final MapModel model;
 
 	/**
 	 * Constructor.
@@ -130,7 +130,7 @@ public final class IOHandler implements ActionListener {
 	 *            the file chooser
 	 */
 	public IOHandler(final MapModel map, final JFileChooser fchooser) {
-		panel = map;
+		model = map;
 		chooser = fchooser;
 	}
 
