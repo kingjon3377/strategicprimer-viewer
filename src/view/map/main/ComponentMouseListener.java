@@ -58,8 +58,13 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
-		model.setSelection(event.getPoint().y / tsize.getSize(model.getMainMap().getVersion()),
-				event.getPoint().x / tsize.getSize(model.getMainMap().getVersion()));
+		model.setSelection(
+				event.getPoint().y
+						/ tsize.getSize(model.getMainMap().getVersion())
+						+ model.getDimensions().getMinimumRow(),
+				event.getPoint().x
+						/ tsize.getSize(model.getMainMap().getVersion())
+						+ model.getDimensions().getMinimumCol());
 		event.getComponent().requestFocusInWindow();
 		if (event.getClickCount() == 2) {
 			pcs.firePropertyChange("encounter", "old", "new");
