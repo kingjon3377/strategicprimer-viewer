@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import model.viewer.MapModel;
@@ -83,7 +84,10 @@ public final class ViewerFrame extends JFrame {
 		chooser.setFileFilter(new MapFileFilter());
 		final MapGUI mapPanel = new MapComponent(map);
 		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.SOUTH);
-		add((JComponent) mapPanel, BorderLayout.CENTER);
+		final JPanel mapSuperPanel = new JPanel(new BorderLayout());
+		mapSuperPanel.add((JComponent) mapPanel, BorderLayout.CENTER);
+		new ScrollListener(map, mapSuperPanel).setUpListeners();
+		add(mapSuperPanel, BorderLayout.CENTER);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		createMenu(mapMenu, map);
 		pack();

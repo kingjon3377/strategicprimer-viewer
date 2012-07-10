@@ -49,7 +49,6 @@ public final class MapComponent extends JComponent implements
 	public MapComponent(final MapModel theMap) {
 		super();
 		setLayout(new BorderLayout());
-		new ScrollListener(theMap, this).setUpListeners();
 		setDoubleBuffered(true);
 		model = theMap;
 		helper = TileDrawHelperFactory.INSTANCE.factory(model.getMainMap().getVersion(), this);
