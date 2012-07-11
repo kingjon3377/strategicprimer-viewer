@@ -45,10 +45,10 @@ public class SimpleChit extends Chit {
 				LOGGER.log(Level.SEVERE, "I/O error reading image");
 				localImage = createDefaultImage(fix);
 			}
+			image = localImage;
 		} else {
-			localImage = createDefaultImage(fix);
+			image = createDefaultImage(fix);
 		}
-		image = localImage;
 	}
 	/**
 	 * An image to use to represent the fixture.
