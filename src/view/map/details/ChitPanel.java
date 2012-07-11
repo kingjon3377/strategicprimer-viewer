@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 
 import model.map.HasImage;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
@@ -61,8 +60,6 @@ public class ChitPanel extends JPanel {
 			add(new GroundChit((Ground) fix, listener));
 		} else if (fix instanceof HasImage) {
 			add(new SimpleChit(fix, listener));
-		} else if (fix instanceof IEvent) {
-			add(new EventChit((IEvent) fix, listener));
 		} else {
 			throw new IllegalStateException("We're missing a case here: " + fix.getClass().getSimpleName());
 		}

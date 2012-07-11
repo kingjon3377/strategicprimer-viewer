@@ -21,7 +21,6 @@ import model.map.River;
 import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
@@ -188,8 +187,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImageForFixture(final TileFixture fix) {
 		if (fix instanceof HasImage) {
 			return getImage(((HasImage) fix).getImage()); // NOPMD
-		} else if (fix instanceof IEvent) {
-			return getImage("event.png"); // NOPMD
 		} else if (fix instanceof RiverFixture) { 
 			return getImage(riverFiles.get(((RiverFixture) fix).getRivers())); // NOPMD
 		} else {
