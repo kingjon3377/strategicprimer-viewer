@@ -3,6 +3,7 @@ package view.map.details;
 import javax.swing.JPanel;
 
 import model.map.TileFixture;
+import model.map.events.BattlefieldEvent;
 import model.map.events.IEvent;
 import model.map.events.MineralEvent;
 import model.map.events.StoneEvent;
@@ -74,7 +75,8 @@ public class ChitPanel extends JPanel {
 		} else if (EqualsAny.equalsAny(fix.getClass(), Mine.class, Grove.class,
 				Oasis.class, Shrub.class, MineralEvent.class, StoneEvent.class,
 				Mountain.class, Forest.class, Animal.class, Meadow.class,
-				Hill.class, Village.class, CacheFixture.class, Sandbar.class, TextFixture.class)) {
+				Hill.class, Village.class, CacheFixture.class, Sandbar.class,
+				TextFixture.class, BattlefieldEvent.class)) {
 			add(new SimpleChit(fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));

@@ -1,5 +1,6 @@
 package model.map.events;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 
 
@@ -8,7 +9,7 @@ import model.map.TileFixture;
  * 
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent implements IEvent {
+public final class BattlefieldEvent implements IEvent, HasImage {
 	/**
 	 * A (U)ID.
 	 */
@@ -146,5 +147,12 @@ public final class BattlefieldEvent implements IEvent {
 		final BattlefieldEvent retval = new BattlefieldEvent(getDC(), getID());
 		retval.setFile(getFile());
 		return retval;
+	}
+	/**
+	 * @return the name of the image to represent the event
+	 */
+	@Override
+	public String getImage() {
+		return "battlefield.png";
 	}
 }
