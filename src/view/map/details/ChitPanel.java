@@ -9,6 +9,7 @@ import model.map.events.MineralEvent;
 import model.map.events.StoneEvent;
 import model.map.fixtures.Animal;
 import model.map.fixtures.CacheFixture;
+import model.map.fixtures.Dragon;
 import model.map.fixtures.Forest;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
@@ -76,7 +77,7 @@ public class ChitPanel extends JPanel {
 				Oasis.class, Shrub.class, MineralEvent.class, StoneEvent.class,
 				Mountain.class, Forest.class, Animal.class, Meadow.class,
 				Hill.class, Village.class, CacheFixture.class, Sandbar.class,
-				TextFixture.class, BattlefieldEvent.class)) {
+				TextFixture.class, BattlefieldEvent.class, Dragon.class)) {
 			add(new SimpleChit(fix, listener));
 		} else if (fix instanceof IEvent) {
 			add(new EventChit((IEvent) fix, listener));
