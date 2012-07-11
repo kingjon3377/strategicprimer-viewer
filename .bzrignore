@@ -6,4 +6,5 @@ bin/tables
 pmd-eclipse.log
 release/*
 junit/*
-*.png
+bin/*.png
+bin/images/*.png
