@@ -37,9 +37,9 @@ public class SimpleChit extends Chit {
 		Image localImage;
 		if (fix instanceof HasImage) {
 			try {
-				localImage = ImageLoader.getLoader().loadImage(((HasImage) fix).getImage());
+				localImage = ImageLoader.getLoader().loadImage("images/" + ((HasImage) fix).getImage());
 			} catch (FileNotFoundException e) {
-				LOGGER.log(Level.SEVERE, "image file " + (((HasImage) fix).getImage()) + " not found");
+				LOGGER.log(Level.SEVERE, "image file images/" + (((HasImage) fix).getImage()) + " not found");
 				localImage = createDefaultImage(fix);
 			} catch (IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error reading image");
