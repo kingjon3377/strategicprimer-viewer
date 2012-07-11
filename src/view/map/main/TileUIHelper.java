@@ -10,6 +10,7 @@ import model.map.SPMap;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Forest;
+import model.map.fixtures.Hill;
 import model.map.fixtures.Mountain;
 import model.map.fixtures.Oasis;
 import model.map.fixtures.Sandbar;
@@ -68,6 +69,7 @@ public class TileUIHelper {
 		featureColors.put(Mountain.class, new Color(249, 137, 28));
 		featureColors.put(Oasis.class, new Color(72, 218, 164));
 		featureColors.put(Sandbar.class, new Color(249, 233, 28));
+		featureColors.put(Hill.class, new Color(141, 182, 0));
 	}
 
 	/**
