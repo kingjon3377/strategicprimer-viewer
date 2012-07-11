@@ -13,7 +13,7 @@ public class TileViewSize {
 		if (version == 1) {
 			return 16; // NOPMD
 		} else if (version == 2) {
-			return 24;
+			return 30;
 		} else {
 			throw new IllegalArgumentException("Unknown version");
 		}

@@ -33,7 +33,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	/**
 	 * The maximum size of a chit.
 	 */
-	private static final int SIZE = 20;
+	private static final int SIZE = 24;
 	/**
 	 * The maximum size of a chit, in the form other objects will want.
 	 */
