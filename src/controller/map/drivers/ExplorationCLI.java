@@ -15,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.IMap;
+import model.map.PointFactory;
 import model.map.Tile;
 import util.Warning;
 import view.util.DriverQuit;
@@ -213,8 +214,8 @@ public final class ExplorationCLI {
 	private static Tile selectTile(final IMap map,
 			final BufferedReader reader, final PrintStream ostream)
 			throws IOException {
-		return map.getTile(getInteger(reader, ostream, "Row: "),
-				getInteger(reader, ostream, "Column: "));
+		return map.getTile(PointFactory.point(getInteger(reader, ostream, "Row: "),
+				getInteger(reader, ostream, "Column: ")));
 	}
 
 	/**

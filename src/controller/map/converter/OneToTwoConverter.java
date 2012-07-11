@@ -13,6 +13,7 @@ import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.IMap;
 import model.map.Player;
+import model.map.PointFactory;
 import model.map.River;
 import model.map.SPMap;
 import model.map.Tile;
@@ -89,7 +90,7 @@ public class OneToTwoConverter { // NOPMD
 		final List<Tile> converted = new LinkedList<Tile>();
 		for (int row = 0; row < old.rows(); row++) {
 			for (int col = 0; col < old.cols(); col++) {
-				for (Tile tile : convertTile(old.getTile(row, col), main, idFactory)) {
+				for (Tile tile : convertTile(old.getTile(PointFactory.point(row, col)), main, idFactory)) {
 					retval.addTile(tile);
 					converted.add(tile);
 				}
@@ -370,9 +371,10 @@ public class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a town.
 	 */
 	private static boolean isAdjacentToTown(final Tile tile, final IMap map) {
+		// TODO: A getNeighbors() helper function somewhere
 		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
 			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
-				final Tile neighbor = map.getTile(row, col);
+				final Tile neighbor = map.getTile(PointFactory.point(row, col));
 				if (neighbor.equals(tile)) {
 					continue;
 				}
@@ -397,7 +399,7 @@ public class OneToTwoConverter { // NOPMD
 	private static boolean isAdjacentToWater(final Tile tile, final IMap map) {
 		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
 			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
-				final Tile neighbor = map.getTile(row, col);
+				final Tile neighbor = map.getTile(PointFactory.point(row, col));
 				if (neighbor.equals(tile)) {
 					continue;
 				}

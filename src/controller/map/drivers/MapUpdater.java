@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
 import util.Warning;
@@ -54,13 +55,9 @@ public final class MapUpdater {
 		if (master.rows() != derived.rows() || master.cols() != derived.cols()) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
-		final int rows = master.rows();
-		final int cols = master.cols(); // NOPMD
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				if (shouldUpdate(derived.getTile(i, j), master.getTile(i, j))) {
-					derived.getTile(i, j).update(master.getTile(i, j));
-				}
+		for (Point point : derived.getTiles()) {
+			if (shouldUpdate(derived.getTile(point), master.getTile(point))) {
+				derived.getTile(point).update(master.getTile(point));
 			}
 		}
 	}

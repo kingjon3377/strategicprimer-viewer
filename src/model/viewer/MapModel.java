@@ -4,6 +4,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import model.map.MapView;
+import model.map.Point;
+import model.map.PointFactory;
 import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
@@ -120,7 +122,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * Set the new selected tiles, given coordinates.
+	 * Set the new selected tiles, given coordinates. TODO: Match other usage and take a Point as a parameter.
 	 * 
 	 * @param row
 	 *            the row coordinate
@@ -130,8 +132,9 @@ public final class MapModel implements PropertyChangeSource {
 	public void setSelection(final int row, final int col) {
 		final Tile oldSelection = selTile;
 		final Tile oldSecSelection = secondTile;
-		selTile = map.getTile(row, col);
-		secondTile = secondaryMap.getTile(row, col);
+		final Point point = PointFactory.point(row, col);
+		selTile = map.getTile(point);
+		secondTile = secondaryMap.getTile(point);
 		pcs.firePropertyChange("tile", oldSelection, selTile);
 		pcs.firePropertyChange("secondary-tile", oldSecSelection, secondTile);
 	}
@@ -173,6 +176,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
+	 * TODO: Match other usage and take a Point as a parameter.
 	 * @param row
 	 *            the row of a tile
 	 * @param col
@@ -181,7 +185,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * @return the tile at those coordinates
 	 */
 	public Tile getTile(final int row, final int col) {
-		return map.getTile(row, col);
+		return map.getTile(PointFactory.point(row, col));
 	}
 
 	/**

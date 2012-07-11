@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.IMap;
+import model.map.PointFactory;
 import model.map.Tile;
 import util.SingletonRandom;
 import util.Warning;
@@ -69,13 +70,13 @@ public final class GenerateTileContents {
 	 */
 	private final ExplorationRunner runner = new ExplorationRunner();
 	/**
-	 * Generate the contents of a tile.
+	 * Generate the contents of a tile. TODO: To match other usage, move the PointFactory usage to our caller.
 	 * @param row the row of the tile
 	 * @param col the column of a tile
 	 * @throws MissingTableException if a missing table is referenced
 	 */
 	public void generateTileContents(final int row, final int col) throws MissingTableException {
-		generateTileContents(map.getTile(row, col));
+		generateTileContents(map.getTile(PointFactory.point(row, col)));
 	}
 	/**
 	 * Generate the contents of a tile.

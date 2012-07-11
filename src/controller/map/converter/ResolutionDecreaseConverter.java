@@ -9,6 +9,7 @@ import java.util.Set;
 import model.map.IMap;
 import model.map.MapView;
 import model.map.Player;
+import model.map.PointFactory;
 import model.map.River;
 import model.map.SPMap;
 import model.map.Tile;
@@ -42,10 +43,10 @@ public class ResolutionDecreaseConverter {
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				retval.getMap().addTile(
-						convertTile(old.getTile(row * 2, col * 2),
-								old.getTile(row * 2, col * 2 + 1),
-								old.getTile(row * 2 + 1, col * 2),
-								old.getTile(row * 2 + 1, col * 2 + 1)));
+						convertTile(old.getTile(PointFactory.point(row * 2, col * 2)),
+								old.getTile(PointFactory.point(row * 2, col * 2 + 1)),
+								old.getTile(PointFactory.point(row * 2 + 1, col * 2)),
+								old.getTile(PointFactory.point(row * 2 + 1, col * 2 + 1))));
 			}
 		}
 		return retval;

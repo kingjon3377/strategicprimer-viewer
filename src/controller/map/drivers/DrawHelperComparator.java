@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.Point;
 import model.viewer.TileViewSize;
 import util.Warning;
 import view.map.main.CachingTileDrawHelper;
@@ -45,8 +46,6 @@ public class DrawHelperComparator { // NOPMD
 	 */
 	public DrawHelperComparator(final IMap map, final int repetitions) {
 		spmap = map;
-		rows = spmap.rows();
-		cols = spmap.cols();
 		reps = repetitions;
 		tsize = new TileViewSize().getSize(map.getVersion());
 	}
@@ -55,14 +54,6 @@ public class DrawHelperComparator { // NOPMD
 	 * The map.
 	 */
 	private final IMap spmap;
-	/**
-	 * The size of the map in rows.
-	 */
-	private final int rows;
-	/**
-	 * The size of the map in columns.
-	 */
-	private final int cols;
 	/**
 	 * How many times to repeat each test.
 	 */
@@ -99,11 +90,8 @@ public class DrawHelperComparator { // NOPMD
 			final BufferedImage image) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < cols; j++) {
-					helper.drawTile(image.createGraphics(),
-							spmap.getTile(i, j), tsize, tsize);
-				}
+			for (Point point : spmap.getTiles()) {
+				helper.drawTile(image.createGraphics(), spmap.getTile(point), tsize, tsize);
 			}
 		}
 	}
@@ -135,12 +123,12 @@ public class DrawHelperComparator { // NOPMD
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < cols; j++) {
-					helper.drawTile(image.createGraphics(), spmap.getTile(i, j),
-							new Coordinate(i * tsize, j // NOPMD
-									* tsize), dimensions);
-				}
+			for (Point point : spmap.getTiles()) {
+				final int row = point.row();
+				final int col = point.col();
+				helper.drawTile(image.createGraphics(), spmap.getTile(point),
+						new Coordinate(row * tsize, col // NOPMD
+								* tsize), dimensions);
 			}
 		}
 	}
@@ -172,10 +160,8 @@ public class DrawHelperComparator { // NOPMD
 	 * @param pen the Graphics used to draw to the image
 	 */
 	private void thirdBody(final TileDrawHelper helper, final Graphics pen) {
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				helper.drawTile(pen, spmap.getTile(i, j), tsize, tsize);
-			}
+		for (Point point : spmap.getTiles()) {
+			helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
 		}
 	}
 
@@ -207,11 +193,10 @@ public class DrawHelperComparator { // NOPMD
 	 */
 	private void fourthBody(final TileDrawHelper helper, final Graphics pen) {
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				helper.drawTile(pen, spmap.getTile(i, j), new Coordinate(i // NOPMD
-						* tsize, j * tsize), dimensions);
-			}
+		for (final Point point : spmap.getTiles()) {
+			helper.drawTile(pen, spmap.getTile(point),
+					new Coordinate(point.row() * tsize, point.col() * tsize), // NOPMD
+					dimensions);
 		}
 	}
 

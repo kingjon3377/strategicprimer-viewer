@@ -125,6 +125,7 @@ public class MapView implements IMap {
 	 * @return the tile at those coordinates
 	 */
 	@Override
+	@Deprecated
 	public Tile getTile(final int row, final int col) {
 		return map.getTile(row, col);
 	}

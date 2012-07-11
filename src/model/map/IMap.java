@@ -41,6 +41,7 @@ public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>,
 	 * 
 	 * @return the tile at those coordinates
 	 */
+	@Deprecated
 	Tile getTile(final int row, final int col);
 
 	/**

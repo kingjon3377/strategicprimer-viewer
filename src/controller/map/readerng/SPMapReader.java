@@ -12,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PointFactory;
 import model.map.SPMap;
 import model.map.Tile;
 import util.EqualsAny;
@@ -151,7 +152,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 					"row", Pair.of("index", Integer.toString(i)));
 			tagMap.put(obj.getFile(), row);
 			for (int j = 0; j < obj.cols(); j++) {
-				final Tile tile = obj.getTile(i, j);
+				final Tile tile = obj.getTile(PointFactory.point(i, j));
 				if (!tile.isEmpty()) {
 					retval.addChild(row);
 					addTileChild(tagMap, tile, row);

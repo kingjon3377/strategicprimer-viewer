@@ -112,6 +112,7 @@ public class SPMap implements IMap {
 	 * @return the tile at those coordinates
 	 */
 	@Override
+	@Deprecated
 	public final Tile getTile(final int row, final int col) {
 		return getTile(PointFactory.point(row, col));
 	}
@@ -209,7 +210,7 @@ public class SPMap implements IMap {
 		for (int i = 0; i < myRows; i++) {
 			boolean anyTiles = false;
 			for (int j = 0; j < myCols; j++) {
-				final String tileXML = getTile(i, j).toXML();
+				final String tileXML = getTile(PointFactory.point(i, j)).toXML();
 				if (!anyTiles && !tileXML.isEmpty()) {
 					anyTiles = true;
 					sbuild.append("\t<row index=\"");
