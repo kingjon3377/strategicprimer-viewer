@@ -121,18 +121,6 @@ public final class MapModel implements PropertyChangeSource {
 	/**
 	 * Set the new selected tiles, given coordinates.
 	 * 
-	 * @param row
-	 *            the row coordinate
-	 * @param col
-	 *            the column coordinate.
-	 */
-	@Deprecated
-	public void setSelection(final int row, final int col) {
-		setSelection(PointFactory.point(row, col));
-	}
-	/**
-	 * Set the new selected tiles, given coordinates.
-	 * 
 	 * @param point the location of the new tile.
 	 */
 	public void setSelection(final Point point) {
@@ -178,19 +166,6 @@ public final class MapModel implements PropertyChangeSource {
 	 */
 	public int getSizeCols() {
 		return map.cols();
-	}
-
-	/**
-	 * @param row
-	 *            the row of a tile
-	 * @param col
-	 *            the column of a tile
-	 * 
-	 * @return the tile at those coordinates
-	 */
-	@Deprecated
-	public Tile getTile(final int row, final int col) {
-		return getTile(PointFactory.point(row, col));
 	}
 	/**
 	 * @param point a tile's location

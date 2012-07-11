@@ -72,16 +72,6 @@ public final class GenerateTileContents {
 	private final ExplorationRunner runner = new ExplorationRunner();
 	/**
 	 * Generate the contents of a tile.
-	 * @param row the row of the tile
-	 * @param col the column of a tile
-	 * @throws MissingTableException if a missing table is referenced
-	 */
-	@Deprecated
-	public void generateTileContents(final int row, final int col) throws MissingTableException {
-		generateTileContents(PointFactory.point(row, col));
-	}
-	/**
-	 * Generate the contents of a tile.
 	 * @param point the tile's location
 	 * @throws MissingTableException if a missing table is referenced
 	 */
