@@ -148,7 +148,7 @@ public final class CaveEvent implements IEvent, HasImage {
 		return retval;
 	}
 	/**
-	 * Image from OpenGameArt.org, by user MrBeast, from page http://opengameart.org/content/cave-tileset-0
+	 * Image from OpenGameArt.org, by user MrBeast, from page http://opengameart.org/content/cave-tileset-0 .
 	 * @return the name of the image representing a cave
 	 */
 	@Override
