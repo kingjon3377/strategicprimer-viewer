@@ -148,8 +148,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean needFixtureColor(final Tile tile) {
 		if (hasTerrainFixture(tile)) {
-			final TileFixture fix = getTopFixture(tile);
-			return !(fix instanceof TerrainFixture); // NOPMD
+			return !(getTopFixture(tile) instanceof TerrainFixture); // NOPMD
 		} else {
 			return false;
 		}
