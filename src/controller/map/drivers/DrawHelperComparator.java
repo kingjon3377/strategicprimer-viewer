@@ -10,11 +10,13 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.map.Point;
+import model.map.PointFactory;
 import model.viewer.TileViewSize;
 import util.Warning;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
+import view.map.main.Ver2TileDrawHelper;
 import view.util.Coordinate;
 import view.util.SystemOut;
 import controller.map.SPFormatException;
@@ -30,12 +32,15 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * Label to put before every direct-helper test result.
 	 */
-	private static final String DIRECT_NAME = "Direct:";
+	private static final String DIRECT_NAME = "Direct:  ";
 	/**
 	 * Label to put before every caching-helper test result.
 	 */
 	private static final String CACHING_NAME = "Caching:";
-
+	/**
+	 * Label to put before every version-2 helper test result.
+	 */
+	private static final String VER_TWO_NAME = "Ver. 2: ";
 	/**
 	 * Constructor.
 	 * 
@@ -199,7 +204,96 @@ public class DrawHelperComparator { // NOPMD
 					dimensions);
 		}
 	}
-
+	/**
+	 * The minimum row for the iteration-vs-filtering test.
+	 */
+	private static final int TEST_MIN_ROW = 20;
+	/**
+	 * The maximum row for the interation-vs-filtering test.
+	 */
+	private static final int TEST_MAX_ROW = 40;
+	/**
+	 * The minimum col for the iteration-vs-filtering test.
+	 */
+	private static final int TEST_MIN_COL = 55;
+	/**
+	 * The maximum col for the iteration-vs-filtering test.
+	 */
+	private static final int TEST_MAX_COL = 82;
+	/**
+	 * Fifth test, part one: iterating.
+	 * 
+	 * @param helper
+	 *            the helper to test
+	 * 
+	 * @return how long the test took, in ns.
+	 */
+	public long fifthOne(final TileDrawHelper helper) {
+		final BufferedImage image = new BufferedImage(tsize * spmap.cols(), // NOPMD
+				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
+		final long start = System.nanoTime();
+		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
+			final Graphics pen = image.createGraphics();
+			fifthOneBody(helper, pen);
+		}
+		final long end = System.nanoTime();
+		return end - start;
+	}
+	/**
+	 * The body of the first part of the fifth test.
+	 * @param helper the helper being tested
+	 * @param pen the Graphics used to draw to the image
+	 */
+	private void fifthOneBody(final TileDrawHelper helper, final Graphics pen) {
+		final Coordinate dimensions = new Coordinate(tsize, tsize);
+		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
+			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
+				final Point point = PointFactory.point(row, col);
+				helper.drawTile(pen, spmap.getTile(point),
+					new Coordinate(row * tsize, col * tsize), // NOPMD
+					dimensions);
+			}
+		}
+	}
+	/**
+	 * Fifth test, part two: filtering.
+	 * 
+	 * @param helper
+	 *            the helper to test
+	 * 
+	 * @return how long the test took, in ns.
+	 */
+	public long fifthTwo(final TileDrawHelper helper) {
+		final BufferedImage image = new BufferedImage(tsize * spmap.cols(), // NOPMD
+				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
+		final long start = System.nanoTime();
+		for (int rep = 0; rep < reps; rep++) {
+			image.flush();
+			final Graphics pen = image.createGraphics();
+			fifthTwoBody(helper, pen);
+		}
+		final long end = System.nanoTime();
+		return end - start;
+	}
+	/**
+	 * The body of the first part of the fifth test.
+	 * @param helper the helper being tested
+	 * @param pen the Graphics used to draw to the image
+	 */
+	private void fifthTwoBody(final TileDrawHelper helper, final Graphics pen) {
+		final Coordinate dimensions = new Coordinate(tsize, tsize);
+		for (final Point point : spmap.getTiles()) {
+			if (point.row() >= TEST_MIN_ROW && point.row() < TEST_MAX_ROW
+					&& point.col() >= TEST_MIN_COL && point.col() < TEST_MAX_COL) {
+				helper.drawTile(
+						pen,
+						spmap.getTile(point),
+						new Coordinate(point.row() * tsize, point.col() * tsize), // NOPMD
+						dimensions);
+			}
+		}
+	}
 	/**
 	 * A driver method to compare the two helpers, and the two map-GUI
 	 * implementations.
@@ -214,7 +308,7 @@ public class DrawHelperComparator { // NOPMD
 		final DrawHelperComparator comp; // NOPMD
 		try {
 			comp = new DrawHelperComparator(// NOPMD
-					new MapReaderAdapter().readMap(args[0], Warning.INSTANCE), 50);
+					new MapReaderAdapter().readMap(args[0], new Warning(Warning.Action.Ignore)), 50);
 		} catch (final IOException e) {
 			logger.log(Level.SEVERE, "I/O error reading map", e);
 			return; // NOPMD
@@ -227,26 +321,54 @@ public class DrawHelperComparator { // NOPMD
 		}
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
+		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null);
 		SystemOut.SYS_OUT.println("1. All in one place:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		comp.printStats(comp.first(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
 		comp.printStats(comp.first(helperTwo));
+		SystemOut.SYS_OUT.print(VER_TWO_NAME);
+		comp.printStats(comp.first(helperThree));
 		SystemOut.SYS_OUT.println("2. Translating:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		comp.printStats(comp.second(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
 		comp.printStats(comp.second(helperTwo));
+		SystemOut.SYS_OUT.print(VER_TWO_NAME);
+		comp.printStats(comp.second(helperThree));
 		SystemOut.SYS_OUT.println("3. In-place, reusing Graphics:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		comp.printStats(comp.third(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
 		comp.printStats(comp.third(helperTwo));
+		SystemOut.SYS_OUT.print(VER_TWO_NAME);
+		comp.printStats(comp.third(helperThree));
 		SystemOut.SYS_OUT.println("4. Translating, reusing Graphics:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		comp.printStats(comp.fourth(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
 		comp.printStats(comp.fourth(helperTwo));
+		SystemOut.SYS_OUT.print(VER_TWO_NAME);
+		comp.printStats(comp.fourth(helperThree));
+		SystemOut.SYS_OUT.println("5. Ordered iteration vs filtering:");
+		SystemOut.SYS_OUT.print("Iteration, ");
+		SystemOut.SYS_OUT.print(CACHING_NAME);
+		comp.printStats(comp.fifthOne(helperOne));
+		SystemOut.SYS_OUT.print("Iteration, ");
+		SystemOut.SYS_OUT.print(DIRECT_NAME);
+		comp.printStats(comp.fifthOne(helperTwo));
+		SystemOut.SYS_OUT.print("Iteration, ");
+		SystemOut.SYS_OUT.print(VER_TWO_NAME);
+		comp.printStats(comp.fifthOne(helperThree));
+		SystemOut.SYS_OUT.print("Filtering, ");
+		SystemOut.SYS_OUT.print(CACHING_NAME);
+		comp.printStats(comp.fifthTwo(helperOne));
+		SystemOut.SYS_OUT.print("Filtering, ");
+		SystemOut.SYS_OUT.print(DIRECT_NAME);
+		comp.printStats(comp.fifthTwo(helperTwo));
+		SystemOut.SYS_OUT.print("Filtering, ");
+		SystemOut.SYS_OUT.print(VER_TWO_NAME);
+		comp.printStats(comp.fifthTwo(helperThree));
 	}
 
 	/**
