@@ -119,17 +119,6 @@ public class MapView implements IMap {
 		map.addPlayer(newPlayer);
 	}
 	/**
-	 * TODO: changesets affect this.
-	 * @param row the row of a pair of coordinates
-	 * @param col the column of a pair of coordinates
-	 * @return the tile at those coordinates
-	 */
-	@Override
-	@Deprecated
-	public Tile getTile(final int row, final int col) {
-		return map.getTile(row, col);
-	}
-	/**
 	 * @param point a pair of coordinates
 	 * @return the tile at those coordinates
 	 */

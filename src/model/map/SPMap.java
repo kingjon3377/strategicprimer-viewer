@@ -102,20 +102,6 @@ public class SPMap implements IMap {
 	public final void addPlayer(final Player player) {
 		players.addPlayer(player);
 	}
-
-	/**
-	 * @param row
-	 *            the row
-	 * @param col
-	 *            the column
-	 * 
-	 * @return the tile at those coordinates
-	 */
-	@Override
-	@Deprecated
-	public final Tile getTile(final int row, final int col) {
-		return getTile(PointFactory.point(row, col));
-	}
 	/**
 	 * @param point a point
 	 * @return the tile at those coordinates

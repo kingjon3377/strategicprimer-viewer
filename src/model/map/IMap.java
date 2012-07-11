@@ -34,17 +34,6 @@ public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>,
 	void addPlayer(final Player player);
 
 	/**
-	 * @param row
-	 *            the row
-	 * @param col
-	 *            the column
-	 * 
-	 * @return the tile at those coordinates
-	 */
-	@Deprecated
-	Tile getTile(final int row, final int col);
-
-	/**
 	 * @param point a point
 	 * @return the tile at those coordinates
 	 */
