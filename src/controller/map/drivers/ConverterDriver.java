@@ -62,7 +62,6 @@ public final class ConverterDriver {
 				final String newFilename = filename + ".new";
 				final MapView map = CONV.convert(old);
 				map.setFile(newFilename);
-				map.setFileOnChildren(newFilename);
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.println(newFilename);
 				new MapWriterNG().write(newFilename, map, true); // NOPMD

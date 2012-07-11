@@ -251,6 +251,8 @@ public class SPMap implements IMap {
 	@Override
 	public void setFile(final String fileName) {
 		file = fileName;
+		players.setFileOnChildren(file);
+		tiles.setFileOnChildren(file);
 	}
 	/**
 	 * The name of the file this is to be written to.
@@ -274,14 +276,5 @@ public class SPMap implements IMap {
 		}
 		retval.tiles = tiles.deepCopy();
 		return retval;
-	}
-	/**
-	 * Set all children's file property to the specified value, recursively.
-	 * @param value the value to set
-	 */
-	@Override
-	public void setFileOnChildren(final String value) {
-		players.setFileOnChildren(value);
-		tiles.setFileOnChildren(value);
 	}
 }

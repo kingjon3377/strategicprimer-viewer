@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.map.HasChildren;
 import model.map.HasImage;
 import model.map.Player;
 import model.map.Subsettable;
@@ -21,7 +20,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public class Fortress implements TileFixture, HasImage, Subsettable<Fortress>, HasChildren {
+public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -261,6 +260,9 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress>, H
 	@Override
 	public void setFile(final String fileName) {
 		file = fileName;
+		for (Unit unit : units) {
+			unit.setFile(file);
+		}
 	}
 	/**
 	 * The name of the file this is to be written to.
@@ -277,16 +279,5 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress>, H
 			retval.addUnit((Unit) unit.deepCopy());
 		}
 		return retval;
-	}
-	/**
-	 * Set all children's file property to the specified value.
-	 * @param value the value to set
-	 */
-	@Override
-	public void setFileOnChildren(final String value) {
-		for (Unit unit : units) {
-			// TODO: When Unit implements HasChildren, use its setFileOnChildren too.
-			unit.setFile(value);
-		}
 	}
 }

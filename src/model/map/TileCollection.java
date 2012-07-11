@@ -136,7 +136,6 @@ public final class TileCollection implements Iterable<Point>,
 	public void setFileOnChildren(final String value) {
 		for (Tile tile : tiles.values()) {
 			tile.setFile(value);
-			tile.setFileOnChildren(value);
 		}
 	}
 }

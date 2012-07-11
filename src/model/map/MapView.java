@@ -68,6 +68,7 @@ public class MapView implements IMap {
 	@Override
 	public void setFile(final String origFile) {
 		file = origFile;
+		map.setFile(origFile);
 	}
 	
 	/**
@@ -212,14 +213,5 @@ public class MapView implements IMap {
 		// TODO: changesets
 		return new MapView((SPMap) map.deepCopy(), getPlayers()
 				.getCurrentPlayer().getPlayerId(), getCurrentTurn(), getFile());
-	}
-	/**
-	 * Set all children's file property to the specified value, recursively.
-	 * @param value the value to set
-	 */
-	@Override
-	public void setFileOnChildren(final String value) {
-		map.setFile(value);
-		map.setFileOnChildren(value);
 	}
 }

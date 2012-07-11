@@ -18,7 +18,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  * 
  */
-public final class Tile extends SimpleTile implements HasChildren {
+public final class Tile extends SimpleTile {
 	/**
 	 * Constructor.
 	 * 
@@ -285,16 +285,14 @@ public final class Tile extends SimpleTile implements HasChildren {
 		return retval;
 	}
 	/**
-	 * Set all children's file property to the specified value, recursively.
+	 * Set the file property of this tile and all its children to the specified value, recursively.
 	 * @param value the value to set
 	 */
 	@Override
-	public void setFileOnChildren(final String value) {
+	public void setFile(final String value) {
+		super.setFile(value);
 		for (final TileFixture fix : contents) {
 			fix.setFile(value);
-			if (fix instanceof HasChildren) {
-				((HasChildren) fix).setFileOnChildren(value);
-			}
 		}
 	}
 }
