@@ -83,7 +83,7 @@ public final class MapModel implements PropertyChangeSource {
 		setSecondaryMap(new MapView(new SPMap(map.getVersion(), map.rows(),
 				map.cols(), ""), map.getPlayers().getCurrentPlayer().getPlayerId(),
 				map.getCurrentTurn(), ""));
-		setSelection(-1, -1);
+		setSelection(PointFactory.point(-1, -1)); // TODO: Perhaps clearSelection() instead?
 		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0,
 				getSizeCols() - 1));
 		pcs.firePropertyChange("map", map, newMap);
