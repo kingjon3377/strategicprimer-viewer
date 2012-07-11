@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.map.PointFactory;
 import model.viewer.MapModel;
 import util.IsNumeric;
 /**
@@ -175,8 +176,8 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 			row.selectAll();
 		}
 		if (rowState == State.Valid && colState == State.Valid) {
-			map.setSelection(Integer.parseInt(rowText),
-					Integer.parseInt(colText));
+			map.setSelection(PointFactory.point(Integer.parseInt(rowText),
+					Integer.parseInt(colText)));
 			setVisible(false);
 		} else {
 			pack();

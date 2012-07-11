@@ -1,5 +1,6 @@
 package view.map.main;
 
+import model.map.PointFactory;
 import model.viewer.MapModel;
 
 /**
@@ -29,8 +30,9 @@ public class DirectionSelectionChanger {
 	 */
 	public void up() { // NOPMD
 		if (model.getSelectedTile().getLocation().row() > 0) {
-			model.setSelection(model.getSelectedTile().getLocation().row() - 1, model
-					.getSelectedTile().getLocation().col());
+			model.setSelection(PointFactory.point(model.getSelectedTile()
+					.getLocation().row() - 1, model.getSelectedTile()
+					.getLocation().col()));
 		}
 	}
 
@@ -39,8 +41,9 @@ public class DirectionSelectionChanger {
 	 */
 	public void left() {
 		if (model.getSelectedTile().getLocation().col() > 0) {
-			model.setSelection(model.getSelectedTile().getLocation().row(), model
-					.getSelectedTile().getLocation().col() - 1);
+			model.setSelection(PointFactory.point(model.getSelectedTile()
+					.getLocation().row(), model.getSelectedTile().getLocation()
+					.col() - 1));
 		}
 	}
 
@@ -49,8 +52,9 @@ public class DirectionSelectionChanger {
 	 */
 	public void down() {
 		if (model.getSelectedTile().getLocation().row() < model.getSizeRows() - 1) {
-			model.setSelection(model.getSelectedTile().getLocation().row() + 1, model
-					.getSelectedTile().getLocation().col());
+			model.setSelection(PointFactory.point(model.getSelectedTile()
+					.getLocation().row() + 1, model.getSelectedTile()
+					.getLocation().col()));
 		}
 	}
 
@@ -59,8 +63,9 @@ public class DirectionSelectionChanger {
 	 */
 	public void right() {
 		if (model.getSelectedTile().getLocation().col() < model.getSizeCols() - 1) {
-			model.setSelection(model.getSelectedTile().getLocation().row(), model
-					.getSelectedTile().getLocation().col() + 1);
+			model.setSelection(PointFactory.point(model.getSelectedTile()
+					.getLocation().row(), model.getSelectedTile().getLocation()
+					.col() + 1));
 		}
 	}
 

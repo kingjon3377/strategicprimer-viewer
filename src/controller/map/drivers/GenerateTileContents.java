@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.IMap;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
 import util.SingletonRandom;
@@ -70,13 +71,22 @@ public final class GenerateTileContents {
 	 */
 	private final ExplorationRunner runner = new ExplorationRunner();
 	/**
-	 * Generate the contents of a tile. TODO: To match other usage, move the PointFactory usage to our caller.
+	 * Generate the contents of a tile.
 	 * @param row the row of the tile
 	 * @param col the column of a tile
 	 * @throws MissingTableException if a missing table is referenced
 	 */
+	@Deprecated
 	public void generateTileContents(final int row, final int col) throws MissingTableException {
-		generateTileContents(map.getTile(PointFactory.point(row, col)));
+		generateTileContents(PointFactory.point(row, col));
+	}
+	/**
+	 * Generate the contents of a tile.
+	 * @param point the tile's location
+	 * @throws MissingTableException if a missing table is referenced
+	 */
+	public void generateTileContents(final Point point) throws MissingTableException {
+		generateTileContents(map.getTile(point));
 	}
 	/**
 	 * Generate the contents of a tile.
@@ -99,8 +109,8 @@ public final class GenerateTileContents {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
 			try {
-				getInstance(args[0]).generateTileContents(
-						Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+				getInstance(args[0]).generateTileContents(PointFactory.point(
+						Integer.parseInt(args[1]), Integer.parseInt(args[2])));
 			} catch (NumberFormatException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
 				System.exit(1);

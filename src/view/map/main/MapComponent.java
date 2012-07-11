@@ -12,6 +12,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 
 import model.map.MapView;
+import model.map.PointFactory;
 import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
@@ -118,7 +119,7 @@ public final class MapComponent extends JComponent implements
 		final int maxCol = getMapModel().getDimensions().getMaximumCol(); // NOPMD
 		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
-				paintTile(pen, model.getTile(i + minRow, j + minCol), i, j);
+				paintTile(pen, model.getTile(PointFactory.point(i + minRow, j + minCol)), i, j);
 			}
 		}
 	}
