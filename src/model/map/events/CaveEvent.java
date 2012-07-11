@@ -1,5 +1,6 @@
 package model.map.events;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 
 
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  * 
  */
-public final class CaveEvent implements IEvent {
+public final class CaveEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 * 
@@ -145,5 +146,13 @@ public final class CaveEvent implements IEvent {
 		final CaveEvent retval = new CaveEvent(getDC(), getID());
 		retval.setFile(file);
 		return retval;
+	}
+	/**
+	 * Image from OpenGameArt.org, by user MrBeast, from page http://opengameart.org/content/cave-tileset-0
+	 * @return the name of the image representing a cave
+	 */
+	@Override
+	public String getImage() {
+		return "cave.png";
 	}
 }
