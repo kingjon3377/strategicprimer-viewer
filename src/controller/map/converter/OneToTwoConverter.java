@@ -1,5 +1,6 @@
 package controller.map.converter; // NOPMD
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.IMap;
 import model.map.Player;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.SPMap;
@@ -364,6 +366,26 @@ public class OneToTwoConverter { // NOPMD
 	}
 
 	/**
+	 * A tile's neighbors are its adjacent tiles. An "empty" tile (i.e. no
+	 * fixtures, NotVisible---what is returned when a tile isn't in the map)
+	 * shouldn't affect the caller at all; it should be as if it wasn't in the
+	 * Iterable.
+	 * @param tile a tile
+	 * @return the locations of its neighbors.
+	 */
+	private static Iterable<Point> getNeighbors(final Tile tile) {
+		final int row = tile.getLocation().row();
+		final int col = tile.getLocation().col();
+		return Arrays.asList(PointFactory.point(row - 1, col - 1),
+				PointFactory.point(row - 1, col),
+				PointFactory.point(row - 1, col + 1),
+				PointFactory.point(row, col - 1),
+				PointFactory.point(row, col + 1),
+				PointFactory.point(row + 1, col - 1),
+				PointFactory.point(row + 1, col),
+				PointFactory.point(row + 1, col + 1));
+	}
+	/**
 	 * @param tile
 	 *            a tile
 	 * @param map
@@ -371,18 +393,11 @@ public class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a town.
 	 */
 	private static boolean isAdjacentToTown(final Tile tile, final IMap map) {
-		// TODO: A getNeighbors() helper function somewhere
-		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
-			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
-				final Tile neighbor = map.getTile(PointFactory.point(row, col));
-				if (neighbor.equals(tile)) {
-					continue;
-				}
-				for (final TileFixture fix : neighbor.getContents()) {
-					if (fix instanceof Village
-							|| fix instanceof AbstractTownEvent) {
-						return true; // NOPMD
-					}
+		for (Point point : getNeighbors(tile)) {
+			final Tile neighbor = map.getTile(point);
+			for (final TileFixture fix : neighbor.getContents()) {
+				if (fix instanceof Village || fix instanceof AbstractTownEvent) {
+					return true; // NOPMD
 				}
 			}
 		}
@@ -397,16 +412,11 @@ public class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
 	private static boolean isAdjacentToWater(final Tile tile, final IMap map) {
-		for (int row = tile.getLocation().row() - 1; row < tile.getLocation().row() + 2; row++) {
-			for (int col = tile.getLocation().col() - 1; col < tile.getLocation().col() + 2; col++) {
-				final Tile neighbor = map.getTile(PointFactory.point(row, col));
-				if (neighbor.equals(tile)) {
-					continue;
-				}
-				if (!neighbor.hasRiver()
-						|| TileType.Ocean.equals(neighbor.getTerrain())) {
-					return true; // NOPMD
-				}
+		for (Point point : getNeighbors(tile)) {
+			final Tile neighbor = map.getTile(point);
+			if (!neighbor.hasRiver()
+					|| TileType.Ocean.equals(neighbor.getTerrain())) {
+				return true; // NOPMD
 			}
 		}
 		return false;
