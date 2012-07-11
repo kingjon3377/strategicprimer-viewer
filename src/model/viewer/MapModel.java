@@ -15,9 +15,6 @@ import util.PropertyChangeSource;
  * A class to encapsulate the various model-type things views need to do with
  * maps.
  * 
- * TODO: add current-player and current-turn properties (which belong here, but
- * need to be serialized to the SPMap)
- * 
  * @author Jonathan Lovelace
  * 
  */
