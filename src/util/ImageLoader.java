@@ -54,7 +54,7 @@ public final class ImageLoader {
 	 */
 	public Image loadImage(final String file) throws FileNotFoundException, IOException {
 		if (!cache.containsKey(file)) {
-			cache.put(file, ImageIO.read(helper.doLoadFileAsStream(file)));
+			cache.put(file, ImageIO.read(helper.doLoadFileAsStream("images/" + file)));
 		}
 		return cache.get(file);
 	}

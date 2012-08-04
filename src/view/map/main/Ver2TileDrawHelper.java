@@ -50,7 +50,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	public Ver2TileDrawHelper(final ImageObserver iobs) {
 		super();
 		observer = iobs;
-		final String[] files = new String[] { "images/tree.png", "images/mountain.png" };
+		final String[] files = new String[] { "tree.png", "mountain.png" };
 		createRiverFiles();
 		for (String file : files) {
 			try {
@@ -62,7 +62,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			}
 		}
 		try {
-			fallbackImage = loader.loadImage("images/event_fallback.png");
+			fallbackImage = loader.loadImage("event_fallback.png");
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Image event_fallback.png not found", e);
 			fallbackImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -201,7 +201,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Image getImage(final String filename) {
 		try {
-			return loader.loadImage("images/" + filename); // NOPMD
+			return loader.loadImage(filename); // NOPMD
 		} catch (FileNotFoundException e) {
 			if (!missingFiles.contains(filename)) {
 //				LOGGER.log(Level.SEVERE, filename + " not found", e);

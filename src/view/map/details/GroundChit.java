@@ -34,7 +34,7 @@ public class GroundChit extends Chit {
 		// ESCA-JAVA0177:
 		Image img;
 		try {
-			img = ImageLoader.getLoader().loadImage("images/expground.png");
+			img = ImageLoader.getLoader().loadImage("expground.png");
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Ground image file not found", e);
 			img = createDefaultImage(ground);

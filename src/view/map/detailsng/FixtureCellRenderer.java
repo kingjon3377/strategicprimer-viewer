@@ -85,7 +85,7 @@ public class FixtureCellRenderer implements TreeCellRenderer {
 		// ESCA-JAVA0177:
 		Icon retval;
 		try {
-			retval = ImageLoader.getLoader().loadIcon("images/" + obj.getImage());
+			retval = ImageLoader.getLoader().loadIcon(obj.getImage());
 		} catch (FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "image file images/" + (obj.getImage()) + " not found");
 			retval = defaultFixtIcon;
