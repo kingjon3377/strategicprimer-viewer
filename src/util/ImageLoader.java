@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  * A class to load images from file, backed by a cache so no image is loaded
@@ -55,5 +57,22 @@ public final class ImageLoader {
 			cache.put(file, ImageIO.read(helper.doLoadFileAsStream(file)));
 		}
 		return cache.get(file);
+	}
+	/**
+	 * An icon cache.
+	 */
+	private final Map<String, Icon> iconCache = new HashMap<String, Icon>();
+	/**
+	 * Load an icon from the cache, or if not in it, from file.
+	 * @param file the name of the file to load
+	 * @return an icon of image contained in the file.
+	 * @throws FileNotFoundException if the file isn't found.
+	 * @throws IOException on I/O error reading the file
+	 */
+	public Icon loadIcon(final String file) throws FileNotFoundException, IOException {
+		if (!iconCache.containsKey(file)) {
+			iconCache.put(file, new ImageIcon(loadImage(file)));
+		}
+		return iconCache.get(file);
 	}
 }
