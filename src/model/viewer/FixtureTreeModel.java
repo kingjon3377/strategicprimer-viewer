@@ -38,6 +38,7 @@ public class FixtureTreeModel extends DefaultTreeModel implements PropertyChange
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if (listenedProperty.equalsIgnoreCase(evt.getPropertyName())) {
 			setRoot(new TileNode((Tile) evt.getNewValue()));
+			this.reload();
 		}
 	}
 
