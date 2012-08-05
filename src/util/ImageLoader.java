@@ -71,7 +71,7 @@ public final class ImageLoader {
 	 */
 	public Icon loadIcon(final String file) throws FileNotFoundException, IOException {
 		if (!iconCache.containsKey(file)) {
-			iconCache.put(file, new ImageIcon(loadImage(file)));
+			iconCache.put(file, new ImageIcon(loadImage(file).getScaledInstance(20, -1, Image.SCALE_DEFAULT)));
 		}
 		return iconCache.get(file);
 	}
