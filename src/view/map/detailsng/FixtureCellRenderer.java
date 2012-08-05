@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,10 +30,6 @@ import view.map.details.SimpleChit;
  */
 public class FixtureCellRenderer implements TreeCellRenderer {
 	/**
-	 * A mapping from Class to renderers.
-	 */
-	private final Map<Class<? extends FixtureNode>, Component> cache = new HashMap<Class<? extends FixtureNode>, Component>();
-	/**
 	 * Default renderer, for cases we don't know how to handle.
 	 */
 	private static final TreeCellRenderer DEFAULT = new DefaultTreeCellRenderer();
@@ -60,18 +54,15 @@ public class FixtureCellRenderer implements TreeCellRenderer {
 			component = new JLabel(((TileNode) value).getTileString());
 		} else if (value instanceof FixtureNode) {
 			final FixtureNode node = (FixtureNode) value;
-			if (!cache.containsKey(value.getClass())) {
 				final TileFixture tempFix = node.getFixture();
 				if (tempFix instanceof HasImage) {
 					final HasImage fix = (HasImage) tempFix;
-					cache.put(node.getClass(), new JLabel(fix.toString(),
-							getIcon(fix), SwingConstants.LEADING));
+					component = new JLabel(fix.toString(),
+							getIcon(fix), SwingConstants.LEADING);
 				} else {
-					cache.put(node.getClass(), new JLabel(tempFix.toString(),
-							defaultFixtIcon, SwingConstants.LEADING));
+					component = new JLabel(tempFix.toString(),
+							defaultFixtIcon, SwingConstants.LEADING);
 				}
-		}
-			component = cache.get(value.getClass());
 		} else {
 			component = DEFAULT.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 		}
