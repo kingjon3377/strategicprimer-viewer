@@ -1,0 +1,13 @@
+syntax: glob
+.bzr
+*.class
+bin/tiles.jar
+src/view/util/IsAdmin.java
+bin/tables
+.pt
+pmd-eclipse.log
+release/*
+junit/*
+bin/*.png
+bin/images/*.png
+
