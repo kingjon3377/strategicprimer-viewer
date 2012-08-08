@@ -365,7 +365,7 @@ public class DrawHelperComparator { // NOPMD
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		oneTotal += comp.printStats(comp.second(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		twoTotal +=comp.printStats(comp.second(helperTwo));
+		twoTotal += comp.printStats(comp.second(helperTwo));
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
 		threeTotal += comp.printStats(comp.second(helperThree));
 		SystemOut.SYS_OUT.println("3. In-place, reusing Graphics:");
