@@ -55,7 +55,6 @@ public class ChitPanel extends JPanel {
 			add(new FortChit((Fortress) fix, listener));
 		} else if (fix instanceof Unit) {
 			add(new UnitChit((Unit) fix, listener));
-			System.out.println("Unit chit added");
 		} else if (fix instanceof RiverFixture) {
 			add(new RiverChit((RiverFixture) fix, listener));
 		} else if (fix instanceof Ground) {
