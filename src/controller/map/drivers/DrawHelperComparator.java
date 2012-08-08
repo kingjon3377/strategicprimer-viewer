@@ -307,21 +307,23 @@ public class DrawHelperComparator { // NOPMD
 	 * @param args the command-line arguments.
 	 */
 	public static void main(final String[] args) { // NOPMD
-		final String filename = args[0];
-		if (new Random().nextBoolean()) {
-			PointFactory.shouldUseCache(true);
-			System.out.println("Using cache:");
-			runAllTests(filename);
-			PointFactory.shouldUseCache(false);
-			System.out.println("Not using cache:");
-			runAllTests(filename);
-		} else {
-			PointFactory.shouldUseCache(false);
-			System.out.println("Not using cache:");
-			runAllTests(filename);
-			PointFactory.shouldUseCache(true);
-			System.out.println("Using cache:");
-			runAllTests(filename);
+		final Random random = new Random();
+		for (String filename : args) {
+			if (random.nextBoolean()) {
+				PointFactory.shouldUseCache(true);
+				System.out.println("Using cache:");
+				runAllTests(filename);
+				PointFactory.shouldUseCache(false);
+				System.out.println("Not using cache:");
+				runAllTests(filename);
+			} else {
+				PointFactory.shouldUseCache(false);
+				System.out.println("Not using cache:");
+				runAllTests(filename);
+				PointFactory.shouldUseCache(true);
+				System.out.println("Using cache:");
+				runAllTests(filename);
+			}
 		}
 	}
 
