@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A djinn. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Djinn implements TileFixture, HasImage {
 	/**
@@ -21,6 +21,7 @@ public class Djinn implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the djinn
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

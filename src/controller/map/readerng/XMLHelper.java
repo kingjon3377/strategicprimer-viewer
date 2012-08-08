@@ -15,9 +15,9 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A class for helper methods.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class XMLHelper {
 	/**
@@ -30,7 +30,7 @@ public final class XMLHelper {
 	/**
 	 * @param startElement a tag
 	 * @param attribute the attribute we want
-	 * 
+	 *
 	 * @return the value of that attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
@@ -49,12 +49,12 @@ public final class XMLHelper {
 	/**
 	 * A variant of getAttribute() that returns a specified default value if the
 	 * attribute is missing, instead of throwing an exception.
-	 * 
+	 *
 	 * @param elem the element
 	 * @param attr the attribute we want
 	 * @param defaultValue the default value if the element doesn't have the
 	 *        attribute
-	 * 
+	 *
 	 * @return the value of attribute if it exists, or the default
 	 */
 	public static String getAttribute(final StartElement elem,
@@ -109,7 +109,7 @@ public final class XMLHelper {
 	/**
 	 * Move along the stream until we hit an end element, but object to any
 	 * start elements.
-	 * 
+	 *
 	 * @param tag what kind of tag we're in (for the error message)
 	 * @param reader the XML stream we're reading from
 	 * @throws SPFormatException on unwanted child
@@ -131,7 +131,7 @@ public final class XMLHelper {
 	/**
 	 * Throw an exception (or warn) if the specified parameter is missing or
 	 * empty.
-	 * 
+	 *
 	 * @param element the current element
 	 * @param parameter the parameter to check
 	 * @param mandatory whether we should throw or just warn
@@ -156,7 +156,7 @@ public final class XMLHelper {
 	/**
 	 * If the specified tag has an ID as a property, return it; otherwise warn
 	 * about its absence and generate one.
-	 * 
+	 *
 	 * @param element the tag we're working with
 	 * @param warner the Warning instance to send the warning on if the tag
 	 *        doesn't specify an ID
@@ -168,15 +168,18 @@ public final class XMLHelper {
 	public static int getOrGenerateID(final StartElement element,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
+		// ESCA-JAVA0177:
+		final int retval; // NOPMD
 		if (hasAttribute(element, "id")) {
-			return idFactory.register(Integer.parseInt(getAttribute(element,
-					"id"))); // NOPMD
+			retval = idFactory.register(Integer.parseInt(getAttribute(element,
+					"id")));
 		} else {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "id", element.getLocation()
 					.getLineNumber()));
-			return idFactory.createID();
+			retval = idFactory.createID();
 		}
+		return retval;
 	}
 
 	/**

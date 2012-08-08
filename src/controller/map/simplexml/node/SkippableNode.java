@@ -12,9 +12,9 @@ import controller.map.misc.IDFactory;
  * because produce() should never get called on a SkippableNode anyway. Instead,
  * use the iterator it contains to move all its children to its parent, then
  * remove it from its parent.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class SkippableNode extends AbstractChildNode<SkippableNode> {
@@ -23,7 +23,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * see in every map; tags we expect to see in future map formats are added
 	 * as SkippableNodes too, but if we see them in a map we should warn about
 	 * that.
-	 * 
+	 *
 	 * @param tag the text of the tag name.
 	 * @param line the line of the file the tag occurs.
 	 * @param warner a Warning instance to warn about future-proofed tags with
@@ -38,11 +38,13 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	/**
 	 * Throws an exception, because you should move all children from this to
 	 * its parent and then remove this node instead.
-	 * 
+	 *
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
 	 * @return nothing
 	 * @throws SPFormatException never
+	 * @deprecated Should never be called: move all children from this to its
+	 *             parent and remove this node before calling any produce().
 	 */
 	@Deprecated
 	@Override
@@ -55,7 +57,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * Always throw an exception (but not this one), because the existence of a
 	 * SkippableNode in the node-tree at the point that we're checking the data
 	 * for validity is a sign that something's wrong.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -68,7 +70,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

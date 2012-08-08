@@ -14,16 +14,16 @@ import controller.map.misc.IDFactory;
 
 /**
  * A class representing an XML tag and its descendants.
- * 
+ *
  * @param <T> the business-logic type this will eventually get turned into.
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param type the type of the object we'll produce.
 	 */
 	protected AbstractChildNode(final Class<T> type) {
@@ -38,7 +38,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 
 	/**
 	 * Add a property.
-	 * 
+	 *
 	 * @param property the property to add.
 	 * @param value its value
 	 * @param warner the warning instance to use if this node doesn't know how
@@ -58,7 +58,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 
 	/**
 	 * @param property a property
-	 * 
+	 *
 	 * @return whether the node contains it
 	 */
 	public final boolean hasProperty(final String property) {
@@ -67,7 +67,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 
 	/**
 	 * @param property a property
-	 * 
+	 *
 	 * @return its value
 	 */
 	public final String getProperty(final String property) {
@@ -86,7 +86,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 
 	/**
 	 * Convert the Node to its equivalent business-logic type.
-	 * 
+	 *
 	 * @param players the players in the map. May be null for Nodes that don't
 	 *        use it.
 	 * @param warner a Warning instance to use for warnings
@@ -116,7 +116,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 
 	/**
 	 * A helper method that throws an exception if there are any child nodes.
-	 * 
+	 *
 	 * @param tag the current tag (for use in constructing the exception to
 	 *        throw)
 	 * @throws SPFormatException if there is a child
@@ -131,7 +131,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 	/**
 	 * A helper method to register the ID if present or generate a new one (and
 	 * save it in the appropriate parameter) if not.
-	 * 
+	 *
 	 * @param tag the current tag
 	 * @param idFactory the factory to register the ID with or generate a new
 	 *        one from.
@@ -149,7 +149,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 
 	/**
 	 * Object (warn or throw an exception) if the specified property is missing.
-	 * 
+	 *
 	 * @param tag the current tag
 	 * @param property the property to look for
 	 * @param warner the Warning instance to use if necessary
@@ -175,7 +175,7 @@ public abstract class AbstractChildNode<T> extends AbstractXMLNode {
 
 	/**
 	 * Handle deprecated name for a property.
-	 * 
+	 *
 	 * @param tag the current tag
 	 * @param preferred the preferred name for the tag
 	 * @param deprecated the deprecated name for the tag

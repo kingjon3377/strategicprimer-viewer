@@ -9,8 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a MineralEvent.
- * 
+ *
  * @author Jonathan Lovelace
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
@@ -76,7 +77,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	/**
 	 * Check whether the Node's data is valid. A MineralNode is valid if it has
 	 * no children and "kind", "dc", and "exposed" properties.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -94,7 +95,7 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

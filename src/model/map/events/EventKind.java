@@ -5,18 +5,20 @@ import java.util.Map;
 
 /**
  * The kinds of events we know about.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public enum EventKind {
 	/**
 	 * "Nothing of interest here ...". Useful primarily as an alternative to
 	 * null.
+	 * @deprecated Should never actually be used.
 	 */
 	@Deprecated
 	Nothing("nothing"),
 	/**
 	 * A mineral vein.
+	 * @deprecated We don't treat MineralEvents as Events anymore.
 	 */
 	@Deprecated
 	Mineral("mineral"),
@@ -30,6 +32,7 @@ public enum EventKind {
 	Town("town"),
 	/**
 	 * Signs of a long-ago battle.
+	 * @deprecated We don't treat BattlefieldEvents as Events anymore.
 	 */
 	@Deprecated
 	Battlefield("battlefield"),
@@ -39,11 +42,13 @@ public enum EventKind {
 	City("city"),
 	/**
 	 * A stone deposit.
+	 * @deprecated We don't treat StoneEvents as events anymore.
 	 */
 	@Deprecated
 	Stone("stone"),
 	/**
 	 * Caves beneath the tile.
+	 * @deprecated We don't treat CaveEvents as Events anymore.
 	 */
 	@Deprecated
 	Caves("cave");
@@ -58,7 +63,7 @@ public enum EventKind {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param string a string representing the event, to be used in non-specific
 	 *        event tags.
 	 */
@@ -74,7 +79,7 @@ public enum EventKind {
 
 	/**
 	 * @param string a string representing an EventKind
-	 * 
+	 *
 	 * @return the EventKind it represents
 	 */
 	public static EventKind parseEventKind(final String string) {
@@ -82,7 +87,7 @@ public enum EventKind {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representing the kind of event.
 	 */
 	@Override

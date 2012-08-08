@@ -5,14 +5,14 @@ import model.map.TileFixture;
 
 /**
  * A troll. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Troll implements TileFixture, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
@@ -23,6 +23,7 @@ public class Troll implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the troll
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

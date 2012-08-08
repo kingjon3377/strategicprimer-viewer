@@ -21,9 +21,9 @@ import controller.map.readerng.MapWriterNG;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class MapUpdater {
 	/**
@@ -37,7 +37,7 @@ public final class MapUpdater {
 	private final IMap master;
 
 	/**
-	 * 
+	 *
 	 * @param masterMap the master map
 	 */
 	public MapUpdater(final IMap masterMap) {
@@ -46,7 +46,7 @@ public final class MapUpdater {
 
 	/**
 	 * Update a derived map from the master.
-	 * 
+	 *
 	 * @param derived the derived map to update.
 	 */
 	public void update(final IMap derived) {
@@ -63,7 +63,7 @@ public final class MapUpdater {
 	/**
 	 * @param masterTile a tile from the master map
 	 * @param tile the equivalent tile from a derived map
-	 * 
+	 *
 	 * @return whether the derived map needs updating in this tile
 	 */
 	public boolean shouldUpdate(final Tile masterTile, final Tile tile) {
@@ -75,7 +75,7 @@ public final class MapUpdater {
 	/**
 	 * Driver. We won't actually overwrite the dependent map with an update, but
 	 * rather print the updated version to stdout.
-	 * 
+	 *
 	 * @param args Command-line arguments: master, then a map to update.
 	 */
 	public static void main(final String[] args) {
@@ -122,9 +122,9 @@ public final class MapUpdater {
 
 	/**
 	 * Build a string.
-	 * 
+	 *
 	 * @param strings the strings to concatenate.
-	 * 
+	 *
 	 * @return the result of the concatenation
 	 */
 	private static String buildString(final String... strings) {
@@ -143,9 +143,9 @@ public final class MapUpdater {
 
 	/**
 	 * Load a map; if this fails, log a suitable error message and quit.
-	 * 
+	 *
 	 * @param filename the name of the map to load
-	 * 
+	 *
 	 * @return the map
 	 */
 	private static IMap loadMap(final String filename) {
@@ -156,27 +156,27 @@ public final class MapUpdater {
 			LOGGER.log(Level.SEVERE,
 					buildString("File ", filename, " not found"), e);
 			DriverQuit.quit(1);
-			throw PASSED_EXIT;
+			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE,
 					buildString("XML stream error parsing ", filename), e);
 			DriverQuit.quit(2);
-			throw PASSED_EXIT;
+			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE,
 					buildString("I/O error processing ", filename), e);
 			DriverQuit.quit(3);
-			throw PASSED_EXIT;
+			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
 		} catch (final SPFormatException e) {
 			LOGGER.log(Level.SEVERE,
 					buildString(filename, " contained invalid data"), e);
 			DriverQuit.quit(4);
-			throw PASSED_EXIT;
+			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this object
 	 */
 	@Override

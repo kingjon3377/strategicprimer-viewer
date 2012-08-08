@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A griffin. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Griffin implements TileFixture, HasImage {
 	/**
@@ -21,6 +21,7 @@ public class Griffin implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the griffin.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

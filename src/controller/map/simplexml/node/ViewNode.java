@@ -11,9 +11,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A node to produce a MapView. TODO: changesets.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class ViewNode extends AbstractChildNode<MapView> {
@@ -31,7 +31,7 @@ public class ViewNode extends AbstractChildNode<MapView> {
 
 	/**
 	 * Produce the view. TODO: changesets.
-	 * 
+	 *
 	 * @param players the players object to pass down
 	 * @param warner the Warning instance to use
 	 * @return the view this represents
@@ -68,7 +68,7 @@ public class ViewNode extends AbstractChildNode<MapView> {
 
 	/**
 	 * Check for errors. TODO: changesets.
-	 * 
+	 *
 	 * @param warner the Warning instance to use.
 	 * @param idFactory the ID factory to pass down.
 	 * @throws SPFormatException on format problems.

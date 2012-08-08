@@ -2,15 +2,15 @@ package model.map;
 
 /**
  * A superclass to simplify Tile.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 		DeepCloneable<SimpleTile> {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param loc the tile's location
 	 * @param tileType the tile type
 	 * @param filename the file this is read from
@@ -34,7 +34,8 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 	/**
 	 * As this is deprecated, we expect subclasses to override, instead of
 	 * designing for extensibility here.
-	 * 
+	 *
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 * @return an XML representation of the tile.
 	 */
 	@Override
@@ -84,7 +85,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 	private TileType type;
 
 	/**
-	 * 
+	 *
 	 * @return the kind of tile
 	 */
 	public TileType getTerrain() {
@@ -100,7 +101,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 
 	/**
 	 * A SimpleTile is "empty" if its tile type is NotVisible.
-	 * 
+	 *
 	 * @return whether this tile is "empty"
 	 */
 	public boolean isEmpty() {
@@ -109,7 +110,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 
 	/**
 	 * Update with data from a tile in another map.
-	 * 
+	 *
 	 * @param tile the same tile in another map.
 	 */
 	public void update(final SimpleTile tile) {
@@ -118,7 +119,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 
 	/**
 	 * Use this in creating subclass toString methods.
-	 * 
+	 *
 	 * @return a String representation of the tile.
 	 */
 	@Override
@@ -131,7 +132,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 	 * Use this in creating subclass hashCode methods. In fact, it might be a
 	 * good idea to just use it as is, and maybe even not use the terrain here,
 	 * to avoid the hash-table bug I found. (TODO: consider.)
-	 * 
+	 *
 	 * @return a hash code for the object.
 	 */
 	@Override
@@ -141,7 +142,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 
 	/**
 	 * Use this in creating subclass equals methods.
-	 * 
+	 *
 	 * @param obj an object
 	 * @return whether it is an equal tile.
 	 */

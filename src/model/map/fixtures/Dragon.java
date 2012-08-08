@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A dragon. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Dragon implements TileFixture, HasImage {
 	/**
@@ -17,7 +17,7 @@ public class Dragon implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param dKind the kind of dragon
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
@@ -37,6 +37,7 @@ public class Dragon implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the dragon
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

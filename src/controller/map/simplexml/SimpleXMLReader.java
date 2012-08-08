@@ -30,9 +30,9 @@ import controller.map.simplexml.node.NodeFactory;
 /**
  * An XML-map reader that just converts the XML into XMLNodes, which then
  * convert themselves into the map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class SimpleXMLReader implements IMapReader, ISPReader {
@@ -109,7 +109,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
 	 * Use readMap if you want a map; this is public primarily for testing
 	 * purposes.
-	 * 
+	 *
 	 * @param <T> The type of the object the XML represents
 	 * @param file the name of the file being read from
 	 * @param istream a reader from which to read the XML
@@ -129,7 +129,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
 	 * Use readMap if you want a map; this is public primarily for testing
 	 * purposes.
-	 * 
+	 *
 	 * @param <T> The type of the object the XML represents
 	 * @param reflection whether to try the reflection-based verion of the node
 	 *        factory method
@@ -181,7 +181,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 
 	/**
 	 * Turn a tag and its contents (properties) into a Node.
-	 * 
+	 *
 	 * @param element the tag
 	 * @param reflection whether we should try the version of the NodeFactory
 	 *        method that uses reflection
@@ -196,11 +196,11 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 			final boolean reflection, final String file, final Warning warner)
 			throws SPFormatException, InstantiationException,
 			IllegalAccessException {
-		final AbstractChildNode<?> node = (reflection ? NodeFactory
+		final AbstractChildNode<?> node = reflection ? NodeFactory
 				.createReflection(element.getName().getLocalPart(), element
 						.getLocation().getLineNumber(), file, warner)
 				: NodeFactory.create(element.getName().getLocalPart(), element
-						.getLocation().getLineNumber(), file, warner));
+						.getLocation().getLineNumber(), file, warner);
 		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(
 				element.getAttributes());
 		for (final Attribute att : attributes) {
@@ -211,7 +211,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

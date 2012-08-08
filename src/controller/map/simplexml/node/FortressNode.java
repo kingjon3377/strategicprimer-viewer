@@ -10,8 +10,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A node to produce a Fortress.
- * 
+ *
  * @author Jonathan Lovelace
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class FortressNode extends AbstractFixtureNode<Fortress> {
@@ -38,7 +39,7 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 
 	/**
 	 * Produce the equivalent fortress.
-	 * 
+	 *
 	 * @param players the players in the map
 	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent fortress.
@@ -74,8 +75,8 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	 * every child is a Unit. At present we don't require it to have any
 	 * properties, not even "owner" or "name"; if or when that changes, this
 	 * should change to check those conditions.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -98,7 +99,7 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

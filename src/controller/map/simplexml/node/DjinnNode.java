@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a djinn or group of djinni.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class DjinnNode extends AbstractFixtureNode<Djinn> {
@@ -36,7 +36,7 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 
 	/**
 	 * Check the node for invalid data. A Djinn is valid i it has no children.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

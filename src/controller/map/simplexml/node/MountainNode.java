@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce a Mountain.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class MountainNode extends AbstractFixtureNode<Mountain> {
@@ -36,7 +36,7 @@ public class MountainNode extends AbstractFixtureNode<Mountain> {
 	/**
 	 * Check that the node is valid. A Mountain is valid if it has no children.
 	 * TODO: should it have attributes?
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

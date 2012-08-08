@@ -6,9 +6,9 @@ import model.map.TileFixture;
 /**
  * An animal or group of animals. TODO: Add more features (population, to start
  * with).
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Animal implements TileFixture, HasImage {
 	/**
@@ -39,7 +39,7 @@ public class Animal implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param animal what kind of animal
 	 * @param tracks whether this is really the animal, or only tracks
 	 * @param talks whether this is a talking animal.
@@ -79,6 +79,7 @@ public class Animal implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the Fixture.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -108,7 +109,7 @@ public class Animal implements TileFixture, HasImage {
 
 	/**
 	 * TODO: Should depend on the kind of animal.
-	 * 
+	 *
 	 * @return the name of an image to represent the animal
 	 */
 	@Override
@@ -118,7 +119,7 @@ public class Animal implements TileFixture, HasImage {
 
 	/**
 	 * TODO: Should depend on the kind of animal ...
-	 * 
+	 *
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
 	@Override
@@ -148,7 +149,7 @@ public class Animal implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

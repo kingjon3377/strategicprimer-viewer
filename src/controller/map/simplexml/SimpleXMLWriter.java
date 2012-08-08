@@ -11,15 +11,15 @@ import controller.map.SPWriter;
 
 /**
  * A class to write a map to file.
- * 
+ *
  * @author JOnathan Lovelace
- * 
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
  */
 @Deprecated
 public class SimpleXMLWriter implements SPWriter { // NOPMD
 	/**
 	 * Write a map.
-	 * 
+	 *
 	 * @param filename the file to write to
 	 * @param map the map to write.
 	 * @param inclusion ignored
@@ -38,7 +38,7 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 
 	/**
 	 * Write a map.
-	 * 
+	 *
 	 * @param out the writer to write to
 	 * @param map the map to write
 	 * @param inclusion ignored
@@ -58,7 +58,7 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 
 	/**
 	 * Prints a string in quotation marks.
-	 * 
+	 *
 	 * @param writer the Writer to write to
 	 * @param text the string to print
 	 */
@@ -69,7 +69,7 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

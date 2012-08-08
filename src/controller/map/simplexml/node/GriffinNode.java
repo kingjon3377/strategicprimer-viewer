@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a griffin or group of griffins.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class GriffinNode extends AbstractFixtureNode<Griffin> {
@@ -37,7 +37,7 @@ public class GriffinNode extends AbstractFixtureNode<Griffin> {
 	/**
 	 * Check the node for invalid data. A Griffin is valid if it has no
 	 * children.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

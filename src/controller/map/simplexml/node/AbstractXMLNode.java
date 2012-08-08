@@ -13,9 +13,10 @@ import controller.map.misc.IDFactory;
 /**
  * A class representing an XML tag and its descendants---except not necessarily
  * a node actually *in* the XML tree.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
+ *
  */
 @Deprecated
 public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
@@ -31,7 +32,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 
 	/**
 	 * Add a child.
-	 * 
+	 *
 	 * @param child the child to add.
 	 */
 	public final void addChild(final AbstractXMLNode child) {
@@ -39,7 +40,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return an iterator over the children.
 	 */
 	@Override
@@ -49,18 +50,18 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 
 	/**
 	 * Check that the data is legal---no tiles outside the map, for example.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
-	 * 
+	 *
 	 * @throws SPFormatException if the data isn't legal.
 	 */
 	public abstract void checkNode(Warning warner, IDFactory idFactory)
 			throws SPFormatException;
 
 	/**
-	 * 
+	 *
 	 * @return the line the tag was on
 	 */
 	public int getLine() {
@@ -80,7 +81,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 * actions that need to be taken after setting up the tree but before
 	 * validity-checking should go here. We do this in a separate method because
 	 * validity-checking should be side-effect-free.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @throws SPFormatException on format errors uncovered in this process
 	 */
@@ -121,7 +122,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	// }
 	/**
 	 * Pretty-print the node.
-	 * 
+	 *
 	 * @param depth how deep we are in the tree
 	 * @return the pretty-printed version of the node
 	 */

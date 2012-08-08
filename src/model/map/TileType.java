@@ -10,9 +10,9 @@ import java.util.Set;
 
 /**
  * Possible tile types.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public enum TileType implements XMLWritable {
 	/**
@@ -26,18 +26,21 @@ public enum TileType implements XMLWritable {
 	/**
 	 * Mountain. Starting in version 2, this is represented as a plain, steppe,
 	 * or desert plus a mountain on the tile.
+	 * @deprecated Format version 1 only
 	 */
 	@Deprecated
 	Mountain("mountain", 1),
 	/**
 	 * Boreal forest. Starting in version 2, this is represented as a steppe
 	 * plus a forest.
+	 * @deprecated Format version 1 only
 	 */
 	@Deprecated
 	BorealForest("boreal_forest", 1),
 	/**
 	 * Temperate forest. Starting in version 2, this is represented as a plain
 	 * plus a forest.
+	 * @deprecated Format version 1 only
 	 */
 	@Deprecated
 	TemperateForest("temperate_forest", 1),
@@ -97,7 +100,7 @@ public enum TileType implements XMLWritable {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param descr a descriptive string to represent the type.
 	 * @param vers the map versions that support the tile type.
 	 */
@@ -134,9 +137,9 @@ public enum TileType implements XMLWritable {
 
 	/**
 	 * Parse a tile terrain type.
-	 * 
+	 *
 	 * @param string A string describing the terrain
-	 * 
+	 *
 	 * @return the terrain type
 	 */
 	public static TileType getTileType(final String string) {

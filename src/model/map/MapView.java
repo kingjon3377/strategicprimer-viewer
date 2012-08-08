@@ -3,14 +3,14 @@ package model.map;
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
  * current turn, the current player, and eventually changesets.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MapView implements IMap {
 	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
-	 * 
+	 *
 	 * @param wrapped the map this wraps
 	 * @param curPlayer the current player's number
 	 * @param curTurn the current turn
@@ -40,6 +40,7 @@ public class MapView implements IMap {
 
 	/**
 	 * @return an XML representation of the view.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Deprecated
 	@Override
@@ -80,7 +81,7 @@ public class MapView implements IMap {
 	/**
 	 * Test whether another map or map view is a subset of this one. TODO: Check
 	 * changesets.
-	 * 
+	 *
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
 	 */
@@ -124,7 +125,7 @@ public class MapView implements IMap {
 
 	/**
 	 * Add a player to the wrapped map.
-	 * 
+	 *
 	 * @param newPlayer the player to add
 	 */
 	@Override
@@ -151,7 +152,7 @@ public class MapView implements IMap {
 
 	/**
 	 * TODO: changesets affect this.
-	 * 
+	 *
 	 * @return the collection of tiles that make up the map.
 	 */
 	@Override
@@ -161,7 +162,7 @@ public class MapView implements IMap {
 
 	/**
 	 * Set the current player.
-	 * 
+	 *
 	 * @param current the new current player (number)
 	 */
 	public void setCurrentPlayer(final int current) {
@@ -172,7 +173,7 @@ public class MapView implements IMap {
 
 	/**
 	 * Set the current turn.
-	 * 
+	 *
 	 * @param current the new current turn
 	 */
 	public void setCurrentTurn(final int current) {
@@ -181,7 +182,7 @@ public class MapView implements IMap {
 
 	/**
 	 * TODO: sub-maps, changesets.
-	 * 
+	 *
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -210,7 +211,7 @@ public class MapView implements IMap {
 	/**
 	 * TODO: How does this interact with changesets? This is primarily used
 	 * (should probably *only* be used) in serialization.
-	 * 
+	 *
 	 * @return the map this wraps
 	 */
 	public SPMap getMap() {

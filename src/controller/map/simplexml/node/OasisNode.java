@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce an Oasis.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class OasisNode extends AbstractFixtureNode<Oasis> {
@@ -37,7 +37,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	/**
 	 * Check that the noe is valid. An Oasis is valid if it has no children.
 	 * TODO: should it have attributes?
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

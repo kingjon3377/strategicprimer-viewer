@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent an ogre.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class OgreNode extends AbstractFixtureNode<Ogre> {
@@ -36,7 +36,7 @@ public class OgreNode extends AbstractFixtureNode<Ogre> {
 
 	/**
 	 * Check the node for invalid data. An Ogre is valid if it has no children.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

@@ -15,9 +15,9 @@ import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A driver to test reflection-based map loading speed against the old way.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public final class ReflectionTestDriver {
@@ -44,7 +44,7 @@ public final class ReflectionTestDriver {
 
 	/**
 	 * Run the test.
-	 * 
+	 *
 	 * @param filename the test file
 	 * @param runs how many times to run the test
 	 * @param reflection whether to use reflection
@@ -66,7 +66,7 @@ public final class ReflectionTestDriver {
 
 	/**
 	 * Test correctness by comparing the results of the two reading methods.
-	 * 
+	 *
 	 * @param filename the file containing map data to test with
 	 * @return whether the two methods returned identical results
 	 * @throws SPFormatException on map format error detected by one of the
@@ -103,14 +103,14 @@ public final class ReflectionTestDriver {
 				SystemOut.SYS_OUT.print("\t\t\ttook ");
 				SystemOut.SYS_OUT.print(duration);
 				SystemOut.SYS_OUT.print(" ns, average of ");
-				SystemOut.SYS_OUT.println((duration / REPS));
+				SystemOut.SYS_OUT.println(duration / REPS);
 				duration = runTest(filename, REPS, true);
 				SystemOut.SYS_OUT.print("With reflection, ");
 				SystemOut.SYS_OUT.print(filename);
 				SystemOut.SYS_OUT.print("\ttook ");
 				SystemOut.SYS_OUT.print(duration);
 				SystemOut.SYS_OUT.print(" ns, average of ");
-				SystemOut.SYS_OUT.println((duration / REPS));
+				SystemOut.SYS_OUT.println(duration / REPS);
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 						+ " not acceptable to reader", e);

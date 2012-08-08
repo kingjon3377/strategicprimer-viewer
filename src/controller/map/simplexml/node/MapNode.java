@@ -14,9 +14,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A node generated from the <map> tag.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class MapNode extends AbstractChildNode<SPMap> {
@@ -49,7 +49,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 * Check the node. A Map is valid iff every child is either a Player or a
 	 * Tile and it includes version (greater than or equal to 1, for this
 	 * version of the reader), rows, and columns properties.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -89,7 +89,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param players will be null, and is ignored
 	 * @param warner a Warning instance to use for warnings
 	 * @return the map the XML represented
@@ -123,7 +123,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a cache on a tile.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class CacheNode extends AbstractFixtureNode<CacheFixture> {
@@ -53,7 +53,7 @@ public class CacheNode extends AbstractFixtureNode<CacheFixture> {
 	/**
 	 * Check a node for validity. A Cache is valid if it has "kind" and
 	 * "contents" properties and no children.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

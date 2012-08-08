@@ -3,9 +3,9 @@ package controller.map.simplexml.node;
 /**
  * The kinds of tags the Factory knows how to parse. Note that multiple XML tags
  * can get mapped to a single enumerated tag-type.
- * 
+ *
  * @author kingjon
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public enum Tag {
@@ -182,7 +182,7 @@ public enum Tag {
 	Town(TownNode.class);
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param tclass the Class of the kind of Node that this tag indicates.
 	 */
 	private Tag(final Class<? extends AbstractChildNode<?>> tclass) {

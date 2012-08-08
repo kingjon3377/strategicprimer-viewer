@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * An ogre. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Ogre implements TileFixture, HasImage {
 	/**
@@ -21,6 +21,7 @@ public class Ogre implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the ogre
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

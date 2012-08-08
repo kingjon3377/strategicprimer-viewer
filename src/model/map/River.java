@@ -3,11 +3,11 @@ package model.map;
 /**
  * If a tile has a river, it could be in any one of several directions. This
  * class enumerates those. Tiles should have a <em>set</em> of these.
- * 
+ *
  * At present we'll just cover the four cardinal directions.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public enum River implements XMLWritable {
 	/**
@@ -37,7 +37,7 @@ public enum River implements XMLWritable {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param string a descriptive string representing the direction
 	 */
 	private River(final String string) {
@@ -46,9 +46,9 @@ public enum River implements XMLWritable {
 
 	/**
 	 * Parse a river direction.
-	 * 
+	 *
 	 * @param string a string giving the direction
-	 * 
+	 *
 	 * @return the river direction
 	 */
 	public static River getRiver(final String string) {
@@ -70,11 +70,12 @@ public enum River implements XMLWritable {
 
 	/**
 	 * @return an XML representation of the river.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		if (Lake.equals(this)) {
+		if (this == Lake) {
 			return "<lake />"; // NOPMD
 		} else {
 			return new StringBuilder("<river direction=\"").append(desc)

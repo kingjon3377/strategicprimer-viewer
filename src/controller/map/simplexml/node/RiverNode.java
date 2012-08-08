@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A node representing a river XML tag.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class RiverNode extends AbstractChildNode<River> {
@@ -29,7 +29,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	/**
 	 * We don't *promise* to throw an exception here if there are unexpected
 	 * children---still need to call checkNode().
-	 * 
+	 *
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
 	 * @return a River equivalent to this.
@@ -50,7 +50,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	 * Check the validity of the node. (TODO: eventually we may want to allow
 	 * units or even fortresses, etc., in rivers.) A river is valid iff it has
 	 * no children and has a direction.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -64,7 +64,7 @@ public class RiverNode extends AbstractChildNode<River> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -11,6 +11,7 @@
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
+    <module name="FileContentsHolder"/>
     <module name="JavadocMethod"/>
     <module name="JavadocType"/>
     <module name="JavadocVariable"/>
@@ -95,6 +96,44 @@
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="UpperEll"/>
+    <module name="AvoidHidingCauseException">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="AvoidNotShortCircuitOperatorsForBoolean"/>
+    <module name="ReturnNullInsteadOfBoolean"/>
+    <module name="ReturnBooleanFromTernary"/>
+    <module name="MultipleVariableDeclarationsExtended"/>
+    <module name="MultipleStringLiteralsExtended">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="OverridableMethodInConstructor">
+      <property name="checkCloneMethod" value="true"/>
+      <property name="checkReadObjectMethod" value="true"/>
+    </module>
+    <module name="UnnecessaryParenthesesExtended"/>
+    <module name="MissingDeprecated"/>
+    <module name="GenericWhitespace"/>
+    <module name="CovariantEquals"/>
+    <module name="DefaultComesLast"/>
+    <module name="EqualsAvoidNull"/>
+    <module name="FallThrough"/>
+    <module name="IllegalCatch"/>
+    <module name="InnerAssignment"/>
+    <module name="ModifiedControlVariable"/>
+    <module name="MultipleStringLiterals">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="MultipleVariableDeclarations"/>
+    <module name="NoClone"/>
+    <module name="NoFinalizer"/>
+    <module name="ParameterAssignment"/>
+    <module name="StringLiteralEquality"/>
+    <module name="UnnecessaryParentheses"/>
+    <module name="OneStatementPerLine"/>
+    <module name="MutableException"/>
   </module>
   <module name="JavadocPackage">
     <property name="severity" value="ignore"/>
@@ -103,14 +142,11 @@
   <module name="NewlineAtEndOfFile"/>
   <module name="Translation"/>
   <module name="FileLength"/>
-  <module name="FileTabCharacter">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
   <module name="RegexpSingleline">
     <property name="severity" value="ignore"/>
     <property name="format" value="\s+$"/>
     <property name="message" value="Line has trailing spaces."/>
     <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
+  <module name="SuppressWithNearbyCommentFilter"/>
 </module>

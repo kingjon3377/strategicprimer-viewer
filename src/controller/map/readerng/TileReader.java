@@ -28,9 +28,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Tiles.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TileReader implements INodeHandler<Tile> {
 	/**
@@ -55,18 +55,15 @@ public class TileReader implements INodeHandler<Tile> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName().getLocalPart())) {
-					tile.addFixture(new RiverFixture(READER.parse(
-							// NOPMD
-							event.asStartElement(), stream, players, warner,
-							idFactory)));
+					tile.addFixture(parseRiver(stream, players, warner,
+							idFactory, event));
 				} else {
 					perhapsAddFixture(stream, players, warner, tile, event,
 							element.getName().getLocalPart(), idFactory);
 				}
 			} else if (event.isCharacters()) {
-				tile.addFixture(new TextFixture(event.asCharacters().getData()
-						.trim(), // NOPMD
-						-1));
+				tile.addFixture(new TextFixture(event.asCharacters().getData()// NOPMD
+						.trim(), -1));
 			} else if (event.isEndElement()
 					&& "tile".equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
@@ -76,11 +73,30 @@ public class TileReader implements INodeHandler<Tile> {
 		return tile;
 	}
 
+	/**
+	 * Parse a river from XML. Method extracted to avoid a "instantiation inside loops" warning.
+	 * @param stream the stream of XML events
+	 * @param players the collection of players
+	 * @param warner the Warning instance
+	 * @param idFactory the ID factory
+	 * @param event the current XML event.
+	 * @return the river fixture.
+	 * @throws SPFormatException on SP format problems.
+	 */
+	private static RiverFixture parseRiver(final Iterable<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory, final XMLEvent event)
+			throws SPFormatException {
+		return new RiverFixture(READER.parse(
+				event.asStartElement(), stream, players, warner,
+				idFactory));
+	}
+
 	// ESCA-JAVA0138:
 	/**
 	 * We expect the next start element to be a TileFixture. If it is, parse and
 	 * add it.
-	 * 
+	 *
 	 * @param stream the stream to read events from
 	 * @param players the players collection (required by the spec of the
 	 *        methods we call)
@@ -139,7 +155,7 @@ public class TileReader implements INodeHandler<Tile> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
@@ -181,7 +197,7 @@ public class TileReader implements INodeHandler<Tile> {
 	/**
 	 * Add a child node to a node---the parent node, or an 'include' node
 	 * representing its chosen file.
-	 * 
+	 *
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
 	 * @param adapter the adapter to use to call the right handler.

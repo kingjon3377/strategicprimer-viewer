@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node representing a CaveEvent.
- * 
+ *
  * @author kingjon
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
@@ -48,8 +48,8 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	/**
 	 * Check whether this Node has valid data or not. A Cave is valid if it has
 	 * "dc" and "kind" properties and no children.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -73,7 +73,7 @@ public class CaveEventNode extends AbstractFixtureNode<CaveEvent> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this object
 	 */
 	@Override

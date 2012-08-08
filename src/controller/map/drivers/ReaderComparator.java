@@ -23,15 +23,15 @@ import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A driver for comparing map readers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 @SuppressWarnings("deprecation")
 public class ReaderComparator {
 	/**
 	 * Driver method.
-	 * 
+	 *
 	 * @param args The maps to test the two readers on.
 	 */
 	public static void main(final String[] args) {
@@ -42,7 +42,7 @@ public class ReaderComparator {
 
 	/**
 	 * Compare the two readers.
-	 * 
+	 *
 	 * @param args The list of specified files to compare them on
 	 * @param logger The logger to log errors to.
 	 */
@@ -76,7 +76,7 @@ public class ReaderComparator {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param ostream the stream to print results to
 	 * @param readerOne the first reader
 	 * @param readerTwo the second reader
@@ -103,7 +103,7 @@ public class ReaderComparator {
 
 	/**
 	 * Compare the two readers on a file.
-	 * 
+	 *
 	 * @param arg the name of the file to have each read.
 	 * @throws XMLStreamException if either reader claims badly formed input
 	 * @throws FileNotFoundException if either reader can't find the file
@@ -133,13 +133,13 @@ public class ReaderComparator {
 		final IMap map1 = one.readMap(arg, new StringReader(contents), warner);
 		final long endOne = System.nanoTime();
 		out.print("Old method took ");
-		out.print((endOne - startOne));
+		out.print(endOne - startOne);
 		out.println(" time-units.");
 		final long startTwo = System.nanoTime();
 		final IMap map2 = two.readMap(arg, new StringReader(contents), warner);
 		final long endTwo = System.nanoTime();
 		out.print("New method took ");
-		out.print((endTwo - startTwo));
+		out.print(endTwo - startTwo);
 		out.println(" time-units.");
 		if (map1.equals(map2)) {
 			out.println("Readers produce identical results.");
@@ -150,7 +150,7 @@ public class ReaderComparator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this object
 	 */
 	@Override

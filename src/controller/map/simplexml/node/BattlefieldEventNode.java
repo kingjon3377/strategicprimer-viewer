@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node representing a BattlefieldEvent.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> {
@@ -49,8 +49,8 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	 * Check whether this Node has valid data or not. A battlefield must have
 	 * "kind" and "dc" properties (any others are ignored, for forward
 	 * compatibility) and no children.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -74,7 +74,7 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this object.
 	 */
 	@Override

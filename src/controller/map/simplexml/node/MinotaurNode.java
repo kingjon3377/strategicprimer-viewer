@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a minotaur or group of minotaurs.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
@@ -37,7 +37,7 @@ public class MinotaurNode extends AbstractFixtureNode<Minotaur> {
 	/**
 	 * Check the node for invalid data. A Minotaur is valid if it has no
 	 * children.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

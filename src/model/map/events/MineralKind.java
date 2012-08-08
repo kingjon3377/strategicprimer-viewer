@@ -5,8 +5,9 @@ import java.util.Map;
 
 /**
  * Kinds of minerals whose events the program knows about.
- * 
+ *
  * @author Jonathan Lovelace
+ * @deprecated We now use free-form strings for minerals' kinds. Eventually we'll want to load a list of kinds from file.
  */
 @Deprecated
 public enum MineralKind {
@@ -41,7 +42,7 @@ public enum MineralKind {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param string A string representing the MineralKind.
 	 */
 	private MineralKind(final String string) {
@@ -56,7 +57,7 @@ public enum MineralKind {
 
 	/**
 	 * @param string a string representing a MineralKind
-	 * 
+	 *
 	 * @return the MineralKind it represents
 	 */
 	public static MineralKind parseMineralKind(final String string) {
@@ -64,7 +65,7 @@ public enum MineralKind {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the mineral
 	 */
 	@Override

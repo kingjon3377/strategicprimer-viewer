@@ -5,13 +5,14 @@ import model.map.TileFixture;
 
 /**
  * A TileFixture to represent shrubs, or their aquatic equivalents, on a tile.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Shrub implements TileFixture, HasImage {
 	/**
 	 * @return an XML representation of the Fixture.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -27,7 +28,7 @@ public class Shrub implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param desc a description of the shrub.
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
@@ -90,7 +91,7 @@ public class Shrub implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

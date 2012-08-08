@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class CacheFixture implements TileFixture, HasImage {
 	/**
@@ -23,7 +23,7 @@ public class CacheFixture implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param category what kind of things this is a cache of
 	 * @param cont what this cache contains
 	 * @param idNum the ID number.
@@ -53,6 +53,7 @@ public class CacheFixture implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the cache.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -64,7 +65,7 @@ public class CacheFixture implements TileFixture, HasImage {
 
 	/**
 	 * TODO: should be more granular.
-	 * 
+	 *
 	 * @return the name of an image to represent the cache
 	 */
 	@Override
@@ -111,7 +112,7 @@ public class CacheFixture implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

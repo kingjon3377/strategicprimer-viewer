@@ -2,9 +2,9 @@ package model.map;
 
 /**
  * A structure encapsulating two coordinates.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Point implements Comparable<Point>, XMLWritable {
 	/**
@@ -17,7 +17,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	private final int myCol;
 
 	/**
-	 * 
+	 *
 	 * @return the first coordinate.
 	 */
 	public final int row() {
@@ -25,7 +25,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the second coordinate.
 	 */
 	public final int col() {
@@ -34,7 +34,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param row The first coordinate
 	 * @param col The second coordinate
 	 */
@@ -44,7 +44,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param obj the other object
 	 * @return whether this object equals another.
 	 */
@@ -55,7 +55,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash code.
 	 */
 	@Override
@@ -65,7 +65,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 
 	/**
 	 * @param point another point
-	 * 
+	 *
 	 * @return the result of a comparison with that point
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the class
 	 */
 	@Override
@@ -84,6 +84,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 
 	/**
 	 * @return an XML representation of the point
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -95,8 +96,9 @@ public class Point implements Comparable<Point>, XMLWritable {
 	 * Note that this shouldn't ever be called; Points aren't represented by
 	 * tags, they're an implementation detail that shouldn't be exposed to
 	 * serialization.
-	 * 
+	 *
 	 * @return The name of the file this is to be written to.
+	 * @deprecated Points are an implementation detail irrelevant to the serialized form, so this should never be called.
 	 */
 	@Deprecated
 	@Override

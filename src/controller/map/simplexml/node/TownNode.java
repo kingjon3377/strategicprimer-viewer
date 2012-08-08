@@ -11,8 +11,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node that produces a Town.
- * 
+ *
  * @author Jonathan Lovelace
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class TownNode extends AbstractFixtureNode<TownEvent> {
@@ -83,7 +84,7 @@ public class TownNode extends AbstractFixtureNode<TownEvent> {
 	/**
 	 * Check the data for validity. A Town or similar is valid if it has no
 	 * children and "dc", "size', and "status" properties.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -101,7 +102,7 @@ public class TownNode extends AbstractFixtureNode<TownEvent> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

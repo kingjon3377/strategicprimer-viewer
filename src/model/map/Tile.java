@@ -14,14 +14,14 @@ import view.util.SystemOut;
 
 /**
  * A tile in a map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class Tile extends SimpleTile {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param tileRow The row number
 	 * @param tileCol The column number
 	 * @param tileType The tile type
@@ -68,8 +68,8 @@ public final class Tile extends SimpleTile {
 
 	/**
 	 * FIXME: Should return a copy, not the real collection.
-	 * 
-	 * 
+	 *
+	 *
 	 * @return the contents of the tile
 	 */
 	public Set<TileFixture> getContents() {
@@ -78,7 +78,7 @@ public final class Tile extends SimpleTile {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it is an identical tile
 	 */
 	@Override
@@ -89,7 +89,7 @@ public final class Tile extends SimpleTile {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash-code for the object
 	 */
 	@Override
@@ -98,7 +98,7 @@ public final class Tile extends SimpleTile {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the tile
 	 */
 	@Override
@@ -139,7 +139,7 @@ public final class Tile extends SimpleTile {
 
 	/**
 	 * Update with data from a tile in another map.
-	 * 
+	 *
 	 * @param tile the same tile in another map.
 	 */
 	@Override
@@ -164,7 +164,8 @@ public final class Tile extends SimpleTile {
 	/**
 	 * Write the tile to XML. Returns the empty string if the tile isn't visible
 	 * and contains nothing.
-	 * 
+	 *
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 * @return an XML representation of the tile.
 	 */
 	@Override
@@ -181,7 +182,7 @@ public final class Tile extends SimpleTile {
 				sbuild.append("\"");
 			}
 			sbuild.append(">");
-			if ((!contents.isEmpty())) {
+			if (!contents.isEmpty()) {
 				sbuild.append('\n');
 				for (final TileFixture fix : contents) {
 					sbuild.append("\t\t\t");
@@ -197,7 +198,7 @@ public final class Tile extends SimpleTile {
 
 	/**
 	 * A tile is "empty" if its tile type is NotVisible and it has no contents.
-	 * 
+	 *
 	 * @return whether this tile is "empty".
 	 */
 	@Override
@@ -220,7 +221,7 @@ public final class Tile extends SimpleTile {
 	/**
 	 * Call hasRiver() before this, because this will throw
 	 * IllegalStateException if we don't actually contain a river.
-	 * 
+	 *
 	 * @return the RiverFixture that we contain
 	 */
 	public RiverFixture getRivers() {
@@ -299,7 +300,7 @@ public final class Tile extends SimpleTile {
 	/**
 	 * Set the file property of this tile and all its children to the specified
 	 * value, recursively.
-	 * 
+	 *
 	 * @param value the value to set
 	 */
 	@Override

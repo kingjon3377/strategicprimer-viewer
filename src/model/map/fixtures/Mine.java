@@ -6,14 +6,14 @@ import model.map.events.TownStatus;
 
 /**
  * A mine---a source of mineral resources.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Mine implements TileFixture, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param mineral what mineral this produces
 	 * @param stat the status of the mine
 	 * @param idNum the ID number.
@@ -52,6 +52,7 @@ public class Mine implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the mine
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -106,7 +107,7 @@ public class Mine implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

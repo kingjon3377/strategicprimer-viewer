@@ -8,9 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce a Hill.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class HillNode extends AbstractFixtureNode<Hill> {
@@ -37,7 +37,7 @@ public class HillNode extends AbstractFixtureNode<Hill> {
 	/**
 	 * check that the node is valid. A Hill is valid if it has no children.
 	 * TODO: should it have attributes?
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

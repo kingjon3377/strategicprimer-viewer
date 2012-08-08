@@ -14,14 +14,14 @@ import util.PropertyChangeSource;
 /**
  * A class to encapsulate the various model-type things views need to do with
  * maps.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class MapModel implements PropertyChangeSource {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param firstMap the initial map
 	 */
 	public MapModel(final MapView firstMap) {
@@ -35,7 +35,7 @@ public final class MapModel implements PropertyChangeSource {
 
 	/**
 	 * Add a property-change listener.
-	 * 
+	 *
 	 * @param list the listener to add
 	 */
 	@Override
@@ -45,7 +45,7 @@ public final class MapModel implements PropertyChangeSource {
 
 	/**
 	 * Remove a property-change listener.
-	 * 
+	 *
 	 * @param list the listener to remove.
 	 */
 	@Override
@@ -74,14 +74,14 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap the new map
 	 */
 	public void setMainMap(final MapView newMap) {
-		pcs.firePropertyChange("version", (map == null ? 0 : map.getVersion()),
+		pcs.firePropertyChange("version", map == null ? 0 : map.getVersion(),
 				newMap.getVersion());
 		map = newMap;
 		setSecondaryMap(new MapView(new SPMap(map.getVersion(), map.rows(),
 				map.cols(), ""), map.getPlayers().getCurrentPlayer()
 				.getPlayerId(), map.getCurrentTurn(), ""));
-		setSelection(PointFactory.point(-1, -1)); // TODO: Perhaps
-													// clearSelection() instead?
+		// TODO: Perhaps clearSelection() instead of setting to (-1, -1)?
+		setSelection(PointFactory.point(-1, -1));
 		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0,
 				getSizeCols() - 1));
 		pcs.firePropertyChange("map", map, newMap);
@@ -100,7 +100,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the currently selected tile
 	 */
 	public Tile getSelectedTile() {
@@ -108,7 +108,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the currently selected tile in the secondary map
 	 */
 	public Tile getSecondarySelectedTile() {
@@ -117,7 +117,7 @@ public final class MapModel implements PropertyChangeSource {
 
 	/**
 	 * Set the new selected tiles, given coordinates.
-	 * 
+	 *
 	 * @param point the location of the new tile.
 	 */
 	public void setSelection(final Point point) {
@@ -140,7 +140,7 @@ public final class MapModel implements PropertyChangeSource {
 
 	/**
 	 * Copy a tile from the main map to the secondary map.
-	 * 
+	 *
 	 * @param selection the tile to copy.
 	 */
 	public void copyTile(final Tile selection) {
@@ -149,7 +149,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the size of the map in rows
 	 */
 	public int getSizeRows() {
@@ -157,7 +157,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the size of the map in columns
 	 */
 	public int getSizeCols() {
@@ -166,7 +166,7 @@ public final class MapModel implements PropertyChangeSource {
 
 	/**
 	 * @param point a tile's location
-	 * 
+	 *
 	 * @return the tile at that location
 	 */
 	public Tile getTile(final Point point) {
@@ -174,7 +174,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the main map
 	 */
 	public MapView getMainMap() {
@@ -182,7 +182,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the secondary map
 	 */
 	public MapView getSecondaryMap() {
@@ -215,7 +215,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the visible dimensions of the map
 	 */
 	public VisibleDimensions getDimensions() {
@@ -223,7 +223,7 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the class
 	 */
 	@Override

@@ -10,9 +10,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a StoneEvent.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
@@ -63,7 +63,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	/**
 	 * Check whether the node is valid. A Stone Node is valid if it has no
 	 * children and "kind", "dc", and "stone" properties.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -90,7 +90,7 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

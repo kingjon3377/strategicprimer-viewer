@@ -16,10 +16,10 @@ import controller.map.simplexml.node.ViewNode;
 /**
  * A node at the root of the hierarchy. Its only child should be a ChildNode
  * producing the type we want.
- * 
+ *
  * @author Jonathan Lovelace
  * @param <T> The kind of child we want.
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public final class RootNode<T> extends AbstractXMLNode {
@@ -27,7 +27,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 	 * Check whether the tree is valid. Since we can't check whether it has more
 	 * than one child, we only verify that it has at least one, which is the
 	 * child we want.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -107,7 +107,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -117,7 +117,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param type the type of child we want to produce.
 	 */
 	public RootNode(final Class<T> type) {

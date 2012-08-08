@@ -4,14 +4,14 @@ import model.map.TileFixture;
 
 /**
  * An abandoned, ruined, or burned-out town.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class TownEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param tStatus The status of the town
 	 * @param tSize The size of the town
 	 * @param discdc The DC to discover it.
@@ -31,7 +31,7 @@ public final class TownEvent extends AbstractTownEvent {
 	private final int dc; // NOPMD
 
 	/**
-	 * 
+	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -41,6 +41,7 @@ public final class TownEvent extends AbstractTownEvent {
 
 	/**
 	 * @return an XML representation of the event
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

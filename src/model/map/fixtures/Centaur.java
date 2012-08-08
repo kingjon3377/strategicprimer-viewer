@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A centaur. TODO: Should probably be a kind of unit instead, or something ...
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Centaur implements TileFixture, HasImage {
 	/**
@@ -17,7 +17,7 @@ public class Centaur implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param centKind the kind of centaur
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
@@ -37,6 +37,7 @@ public class Centaur implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the centaur
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

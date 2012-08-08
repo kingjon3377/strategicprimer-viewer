@@ -5,9 +5,9 @@ import view.util.SystemOut;
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
  * tile; each unit is either in a fortress or on a tile directly.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class SPMap implements IMap {
 	/**
@@ -29,7 +29,7 @@ public class SPMap implements IMap {
 
 	/**
 	 * Constructor that takes the size.
-	 * 
+	 *
 	 * @param ver the map version
 	 * @param rows the number of rows
 	 * @param cols the number of columns
@@ -64,7 +64,7 @@ public class SPMap implements IMap {
 	private final PlayerCollection players; // NOPMD
 
 	/**
-	 * 
+	 *
 	 * @return how many rows the map has.
 	 */
 	@Override
@@ -73,7 +73,7 @@ public class SPMap implements IMap {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return how many columns the map has
 	 */
 	@Override
@@ -83,7 +83,7 @@ public class SPMap implements IMap {
 
 	/**
 	 * Add a tile to the map.
-	 * 
+	 *
 	 * @param tile the tile to add
 	 */
 	public final void addTile(final Tile tile) {
@@ -92,7 +92,7 @@ public class SPMap implements IMap {
 
 	/**
 	 * Add a player to the game.
-	 * 
+	 *
 	 * @param player the player to add
 	 */
 	@Override
@@ -110,7 +110,7 @@ public class SPMap implements IMap {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the players in the map
 	 */
 	@Override
@@ -120,7 +120,7 @@ public class SPMap implements IMap {
 
 	/**
 	 * @param obj another object
-	 * 
+	 *
 	 * @return whether it is an identical map.
 	 */
 	@Override
@@ -133,7 +133,7 @@ public class SPMap implements IMap {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the map
 	 */
 	@Override
@@ -143,7 +143,7 @@ public class SPMap implements IMap {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the map
 	 */
 	@Override
@@ -171,8 +171,9 @@ public class SPMap implements IMap {
 
 	/**
 	 * Write the map to XML.
-	 * 
+	 *
 	 * @return an XML representation of the map.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -225,8 +226,8 @@ public class SPMap implements IMap {
 	@Override
 	public boolean isSubset(final IMap obj) {
 		if (cols() == obj.cols() && rows() == obj.rows()) {
-			return players.isSubset(obj.getPlayers())
-					&& tiles.isSubset(obj.getTiles()); // NOPMD
+			return players.isSubset(obj.getPlayers()) // NOPMD
+					&& tiles.isSubset(obj.getTiles());
 		} else {
 			SystemOut.SYS_OUT.println("Sizes differ");
 			return false;
@@ -235,7 +236,7 @@ public class SPMap implements IMap {
 
 	/**
 	 * Compare to another map.
-	 * 
+	 *
 	 * @param other the other map
 	 * @return the result of the comparison
 	 */

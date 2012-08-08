@@ -22,14 +22,14 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Mines.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MineReader implements INodeHandler<Mine> {
 	/**
 	 * Parse a mine.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -50,8 +50,8 @@ public class MineReader implements INodeHandler<Mine> {
 						warner),
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getOrGenerateID(element, warner, idFactory),
-				(stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-						.iterator()).getFile() : ""));
+				stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
+						.iterator()).getFile() : "");
 		return fix;
 	}
 
@@ -73,7 +73,7 @@ public class MineReader implements INodeHandler<Mine> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write

@@ -28,9 +28,9 @@ import controller.map.converter.ResolutionDecreaseConverter;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
@@ -40,7 +40,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test Player serialization.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
@@ -61,7 +61,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * A factory to add rivers to a tile in-line.
-	 * 
+	 *
 	 * @param tile the tile to use
 	 * @param rivers the rivers to add
 	 * @return the tile, set up.
@@ -76,7 +76,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test River serialization.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
@@ -153,7 +153,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test Tile serialization.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
@@ -246,7 +246,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Test that row nodes are ignored, and that "future" tags are skipped but
 	 * warned about.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 */
@@ -268,7 +268,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test Map serialization ... primarily errors.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
@@ -294,7 +294,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test view serialization.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
@@ -339,7 +339,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test the <include> tag.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML reading error
 	 */

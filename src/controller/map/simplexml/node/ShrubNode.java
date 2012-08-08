@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent shrubs (or the aquatic equivalent) on the tile.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class ShrubNode extends AbstractFixtureNode<Shrub> {
@@ -51,7 +51,7 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	/**
 	 * Check whether the node is valid. A Shrub is valid if it has a "shrub"
 	 * property and no children.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

@@ -15,7 +15,7 @@ import controller.map.SPFormatException;
 
 /**
  * Another class to test serialization of TileFixtures.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public final class TestMoreFixtureSerialization extends
@@ -35,7 +35,7 @@ public final class TestMoreFixtureSerialization extends
 
 	/**
 	 * Test serialization of Groves.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -69,7 +69,7 @@ public final class TestMoreFixtureSerialization extends
 
 	/**
 	 * Test serialization of Meadows, including error-checking.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -105,7 +105,7 @@ public final class TestMoreFixtureSerialization extends
 
 	/**
 	 * Test serialization of Mines.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -149,7 +149,7 @@ public final class TestMoreFixtureSerialization extends
 
 	/**
 	 * Test serialization of Shrubs.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -182,7 +182,7 @@ public final class TestMoreFixtureSerialization extends
 
 	/**
 	 * Test serialization of TextFixtures.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -208,7 +208,7 @@ public final class TestMoreFixtureSerialization extends
 
 	/**
 	 * Test Village serialization.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -217,15 +217,13 @@ public final class TestMoreFixtureSerialization extends
 	public void testVillageSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final TownStatus status : TownStatus.values()) {
-			final Village one = new Village(status, "villageOne", 1,
-					FAKE_FILENAME); // NOPMD
-			assertSerialization(
-					"First Village serialization test, reflection, " + status,
+			final Village one = new Village(status, "villageOne", 1, // NOPMD
+					FAKE_FILENAME);
+			assertSerialization("First Village serialization test, " + status,
 					one, Village.class);
-			final Village two = new Village(status, "villageTwo", 2,
-					FAKE_FILENAME); // NOPMD
-			assertSerialization(
-					"Second Village serialization test, reflection, " + status,
+			final Village two = new Village(status, "villageTwo", 2, // NOPMD
+					FAKE_FILENAME);
+			assertSerialization("2nd Village serialization test,  " + status,
 					two, Village.class);
 		}
 		final Village three = new Village(TownStatus.Abandoned, "", 3,
@@ -249,7 +247,7 @@ public final class TestMoreFixtureSerialization extends
 	/**
 	 * Test that a Unit should have an owner, and other errors and warnings.
 	 * TODO: Combine this method with the main Unit tests.
-	 * 
+	 *
 	 * @throws SPFormatException always
 	 * @throws XMLStreamException never
 	 * @throws IOException on I/O error creating serialized form

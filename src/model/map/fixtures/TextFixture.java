@@ -7,14 +7,14 @@ import model.map.TileFixture;
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can
  * improve the interface, have more than one set of text per tile, and be clear
  * on <em>which turn</em> encounters happened.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TextFixture implements TileFixture, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param theText the text
 	 * @param turnNum the turn number it's associated with
 	 */
@@ -28,7 +28,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return (turn == -1 ? text : text + "(turn " + turn + ')');
+		return turn == -1 ? text : text + "(turn " + turn + ')';
 	}
 
 	/**
@@ -56,6 +56,7 @@ public class TextFixture implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the fixture
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -108,7 +109,7 @@ public class TextFixture implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -119,7 +120,7 @@ public class TextFixture implements TileFixture, HasImage {
 	/**
 	 * TextFixtures deliberately don't have a UID---unlike Forests, Mountains,
 	 * or Ground, which lack one because there are so many in the world map.
-	 * 
+	 *
 	 * @return a UID for the fixture.
 	 */
 	@Override

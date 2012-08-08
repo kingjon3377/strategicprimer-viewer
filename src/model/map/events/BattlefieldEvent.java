@@ -5,7 +5,7 @@ import model.map.TileFixture;
 
 /**
  * "There are the signs of a long-ago battle here".
- * 
+ *
  * @author Jonathan Lovelace
  */
 public final class BattlefieldEvent implements IEvent, HasImage {
@@ -16,7 +16,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param discdc the DC to discover the battlefield.
 	 * @param idNum the ID number for the event.
 	 */
@@ -32,8 +32,8 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	private final int dc; // NOPMD
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -42,7 +42,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -52,7 +52,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it's an identical BattlefieldEvent.
 	 */
 	@Override
@@ -63,7 +63,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the event.
 	 */
 	@Override
@@ -72,7 +72,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -82,6 +82,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 
 	/**
 	 * @return an XML representation of the event.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -100,7 +101,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

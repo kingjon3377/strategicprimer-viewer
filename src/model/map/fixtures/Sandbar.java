@@ -6,9 +6,9 @@ import model.map.TileFixture;
 
 /**
  * A sandbar on the map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Sandbar implements TerrainFixture, HasImage {
 	/**
@@ -30,6 +30,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 
 	/**
 	 * @return an XML representaiton of the sandbar
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -73,7 +74,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

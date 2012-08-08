@@ -12,9 +12,9 @@ import model.map.fixtures.Unit;
 
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 
@@ -35,7 +35,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * @param version the map version
 	 * @param type a tile type
-	 * 
+	 *
 	 * @return the color associated with that tile-type.
 	 */
 	public static Color getTileColor(final int version, final TileType type) {
@@ -44,7 +44,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 
 	/**
 	 * @param tile a tile
-	 * 
+	 *
 	 * @return whether the tile has any forts.
 	 */
 	protected static boolean hasAnyForts(final Tile tile) {
@@ -58,7 +58,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 
 	/**
 	 * @param tile a tile
-	 * 
+	 *
 	 * @return whether the tile has any units.
 	 */
 	protected static boolean hasAnyUnits(final Tile tile) {
@@ -72,7 +72,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 
 	/**
 	 * @param tile a tile
-	 * 
+	 *
 	 * @return whether the tile has any events
 	 */
 	protected static boolean hasEvent(final Tile tile) {
@@ -104,7 +104,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * Draw a tile. At present, the graphics context needs to be translated so
 	 * that its origin is the tile's upper-left-hand corner.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 * @param tile the tile to draw
 	 * @param width the width of the drawing area

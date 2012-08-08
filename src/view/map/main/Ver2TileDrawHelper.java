@@ -28,9 +28,9 @@ import view.util.Coordinate;
 
 /**
  * A TileDrawHelper for the new map version.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
@@ -49,7 +49,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Constructor. We need to initialize the cache.
-	 * 
+	 *
 	 * @param iobs the class to notify when images finish drawing.
 	 */
 	public Ver2TileDrawHelper(final ImageObserver iobs) {
@@ -83,7 +83,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * Draw a tile at the specified coordinates. Because this is at present only
 	 * called in a loop that's the last thing before the context is disposed, we
 	 * alter the state freely and don't restore it.
-	 * 
+	 *
 	 * @param pen the graphics context.
 	 * @param tile the tile to draw
 	 * @param coordinates the coordinates of the tile's upper-left corner
@@ -92,8 +92,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile,
 			final Coordinate coordinates, final Coordinate dimensions) {
-		pen.setColor((needFixtureColor(tile) ? getFixtureColor(tile)
-				: getTileColor(2, tile.getTerrain())));
+		pen.setColor(needFixtureColor(tile) ? getFixtureColor(tile)
+				: getTileColor(2, tile.getTerrain()));
 		pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 		if (hasFixture(tile)) {
 			pen.drawImage(getImageForFixture(getTopFixture(tile)),
@@ -106,7 +106,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Draw a tile at the upper-left corner of the drawing surface.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 * @param tile the tile to draw
 	 * @param width the width of the drawing area
@@ -123,7 +123,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether that tile has any fixtures (or any river
 	 */
 	private static boolean hasFixture(final Tile tile) {
-		return (!tile.getContents().isEmpty());
+		return !tile.getContents().isEmpty();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * FIXME: This at present ignores the case of a forest *and* a mountain on a
 	 * tile; we can't show both as icons.
-	 * 
+	 *
 	 * @param tile a tile
 	 * @return whether it needs a different color to show a non-top fixture
 	 *         (like a forest or mountain)
@@ -203,7 +203,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Return either a loaded image or a generic one.
-	 * 
+	 *
 	 * @param filename the name of the file containing the image
 	 * @return that image, or, if it fails to load, the generic one.
 	 */

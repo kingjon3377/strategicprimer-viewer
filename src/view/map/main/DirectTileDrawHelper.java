@@ -20,14 +20,14 @@ import view.util.Coordinate;
  * A TileDrawHelper that doesn't create Shapes, but draws directly. If this is
  * faster, we'll be able to drop the requirement that the graphics context's
  * origin be translated.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Draw a tile at the specified coordinates.
-	 * 
+	 *
 	 * @param pen the graphics context.
 	 * @param tile the tile to draw
 	 * @param coordinates the coordinates of the tile's upper-left corner
@@ -69,8 +69,8 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 							+ coordinates.x,
 							((int) Math.round(dimensions.y / FOUR))
 									+ coordinates.y,
-							((int) Math.round(dimensions.x / FOUR)),
-							((int) Math.round(dimensions.y / FOUR)));
+							(int) Math.round(dimensions.x / FOUR),
+							(int) Math.round(dimensions.y / FOUR));
 				} else if (hasEvent(tile)) {
 					context.setColor(EVENT_COLOR);
 					context.fillPolygon(
@@ -97,7 +97,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Draw a tile. At present, the graphics context needs to be translated so
 	 * that its origin is the tile's upper-left-hand corner.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 * @param tile the tile to draw
 	 * @param width the width of the drawing area
@@ -111,7 +111,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Draw a river.
-	 * 
+	 *
 	 * @param pen the graphics context---again, origin at tile's upper-left
 	 *        corner
 	 * @param river the river to draw
@@ -159,7 +159,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

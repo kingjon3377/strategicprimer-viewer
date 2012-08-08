@@ -4,17 +4,17 @@ import model.map.TileFixture;
 
 /**
  * An abandoned, ruined, or burned-out fortification.
- * 
+ *
  * FIXME: We want this to share a tag, and thus probably model code as well,
  * with Fortress.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class FortificationEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param tStatus The status of the fortification
 	 * @param tSize The size of the fortification
 	 * @param discdc The DC to discover it.
@@ -34,7 +34,7 @@ public final class FortificationEvent extends AbstractTownEvent {
 	private final int dc; // NOPMD
 
 	/**
-	 * 
+	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -44,6 +44,7 @@ public final class FortificationEvent extends AbstractTownEvent {
 
 	/**
 	 * @return an XML representation of the event.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

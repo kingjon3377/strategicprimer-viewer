@@ -6,9 +6,9 @@ import model.map.TileFixture;
 
 /**
  * A unit on the map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Unit implements TileFixture, HasImage {
 	/**
@@ -26,9 +26,9 @@ public class Unit implements TileFixture, HasImage {
 
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
-	 * 
+	 *
 	 * Constructor.
-	 * 
+	 *
 	 * @param unitOwner the player that owns the unit
 	 * @param unitType the type of unit
 	 * @param unitName the name of this unit
@@ -45,7 +45,7 @@ public class Unit implements TileFixture, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the player that owns the unit
 	 */
 	public final Player getOwner() {
@@ -53,7 +53,7 @@ public class Unit implements TileFixture, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the kind of unit
 	 */
 	public final String getKind() {
@@ -61,7 +61,7 @@ public class Unit implements TileFixture, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the name of the unit
 	 */
 	public final String getName() {
@@ -70,7 +70,7 @@ public class Unit implements TileFixture, HasImage {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it's an identical Unit.
 	 */
 	@Override
@@ -85,7 +85,7 @@ public class Unit implements TileFixture, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash-code for the object
 	 */
 	@Override
@@ -94,7 +94,7 @@ public class Unit implements TileFixture, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the Unit.
 	 */
 	@Override
@@ -105,7 +105,7 @@ public class Unit implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -115,6 +115,7 @@ public class Unit implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the unit.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -139,7 +140,7 @@ public class Unit implements TileFixture, HasImage {
 	 * TODO: Should be per-unit-type ... This image from OpenGameArt.org,
 	 * uploaded by jreijonen,
 	 * http://opengameart.org/content/faction-symbols-allies-axis .
-	 * 
+	 *
 	 * @return the name of an image to represent the unit.
 	 */
 	@Override
@@ -149,7 +150,7 @@ public class Unit implements TileFixture, HasImage {
 
 	/**
 	 * TODO: But how to determine which unit?
-	 * 
+	 *
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
 	@Override
@@ -171,7 +172,7 @@ public class Unit implements TileFixture, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param fix a fixture
 	 * @return whether it's an identical-except-ID unit.
 	 */

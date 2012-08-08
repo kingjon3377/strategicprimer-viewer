@@ -12,9 +12,9 @@ import model.viewer.FixtureTransferable;
 /**
  * A Chit to represent an event. TODO: Make it look different for different
  * Events.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class EventChit extends Chit {
 	/**
@@ -24,7 +24,7 @@ public class EventChit extends Chit {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param event the fortress this chit represents
 	 * @param listener the object listening for clicks on this chit.
 	 */
@@ -57,7 +57,7 @@ public class EventChit extends Chit {
 
 	/**
 	 * Paint the chit.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 */
 	@Override
@@ -69,7 +69,7 @@ public class EventChit extends Chit {
 	/**
 	 * Paint the contents of the chit. This is split out so we can override it
 	 * in subclasses without losing access to the superclass's paint().
-	 * 
+	 *
 	 * @param pen the graphics context
 	 */
 	protected void paintChit(final Graphics pen) {
@@ -77,17 +77,17 @@ public class EventChit extends Chit {
 		pen.setColor(Color.RED);
 		pen.fillRoundRect(((int) Math.round(getWidth() * MARGIN)) + 1,
 				((int) Math.round(getHeight() * MARGIN)) + 1,
-				((int) Math.round(getWidth() * (1.0 - MARGIN * 2.0))),
-				((int) Math.round(getHeight() * (1.0 - MARGIN * 2.0))),
-				((int) Math.round(getWidth() * (MARGIN / 2.0))),
-				((int) Math.round(getHeight() * (MARGIN / 2.0))));
+				(int) Math.round(getWidth() * (1.0 - MARGIN * 2.0)),
+				(int) Math.round(getHeight() * (1.0 - MARGIN * 2.0)),
+				(int) Math.round(getWidth() * (MARGIN / 2.0)),
+				(int) Math.round(getHeight() * (MARGIN / 2.0)));
 		pen.setColor(saveColor);
 		pen.fillRoundRect(
 				((int) Math.round(getWidth() / 2.0 - getWidth() * MARGIN)) + 1,
 				((int) Math.round(getHeight() / 2.0 - getHeight() * MARGIN)) + 1,
-				((int) Math.round(getWidth() * MARGIN * 2.0)),
-				((int) Math.round(getHeight() * MARGIN * 2.0)),
-				((int) Math.round(getWidth() * MARGIN / 2.0)),
-				((int) Math.round(getHeight() * MARGIN / 2.0)));
+				(int) Math.round(getWidth() * MARGIN * 2.0),
+				(int) Math.round(getHeight() * MARGIN * 2.0),
+				(int) Math.round(getWidth() * MARGIN / 2.0),
+				(int) Math.round(getHeight() * MARGIN / 2.0));
 	}
 }

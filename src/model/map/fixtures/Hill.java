@@ -7,9 +7,9 @@ import model.map.TileFixture;
 /**
  * A hill on the map. Should increase unit's effective vision by a small
  * fraction when the unit is on it, if not in forest.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Hill implements TerrainFixture, HasImage {
 	/**
@@ -31,6 +31,7 @@ public class Hill implements TerrainFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the hill.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -74,7 +75,7 @@ public class Hill implements TerrainFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

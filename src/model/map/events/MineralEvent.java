@@ -5,14 +5,14 @@ import model.map.TileFixture;
 
 /**
  * A vein of a mineral.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class MineralEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param minkind what kind of mineral this is
 	 * @param exp whether the vein is exposed
 	 * @param discdc the dc to discover the vein
@@ -33,7 +33,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	private final String mineral;
 
 	/**
-	 * 
+	 *
 	 * @return what kind of mineral this is
 	 */
 	public String mineral() {
@@ -47,7 +47,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	private final boolean exposed;
 
 	/**
-	 * 
+	 *
 	 * @return whether the vein is exposed
 	 */
 	public boolean isExposed() {
@@ -60,7 +60,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	private final int dc; // NOPMD
 
 	/**
-	 * 
+	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -69,7 +69,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -91,7 +91,7 @@ public final class MineralEvent implements IEvent, HasImage {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it's an identical event
 	 */
 	@Override
@@ -104,7 +104,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the event
 	 */
 	@Override
@@ -113,7 +113,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -131,6 +131,7 @@ public final class MineralEvent implements IEvent, HasImage {
 
 	/**
 	 * @return an XML representation of the event.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -159,7 +160,7 @@ public final class MineralEvent implements IEvent, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

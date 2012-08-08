@@ -9,9 +9,9 @@ import controller.map.simplexml.ITextNode;
 
 /**
  * A Node to produce a TextFixture.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class TextNode extends AbstractFixtureNode<TextFixture> implements
@@ -25,7 +25,7 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements
 
 	/**
 	 * Produce the equivalent Fixture.
-	 * 
+	 *
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
 	 * @return the TextFixture this represents
@@ -59,7 +59,7 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements
 
 	/**
 	 * Add text to the fixture.
-	 * 
+	 *
 	 * @param text the text to add
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements
 	/**
 	 * Check whether we contain invalid data. A TextNode is valid if it has no
 	 * child nodes.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

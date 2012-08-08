@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a Unit.
- * 
+ *
  * @author kingjon
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class UnitNode extends AbstractFixtureNode<Unit> {
@@ -46,7 +46,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 
 	/**
 	 * Produce the equivalent Unit.
-	 * 
+	 *
 	 * @param players the players in the map
 	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent Unit.
@@ -72,8 +72,8 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	 * compatibility we don't object to properties we don't recognize. But if at
 	 * some point we should start requiring properties, that condition should be
 	 * checked here.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -101,7 +101,7 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

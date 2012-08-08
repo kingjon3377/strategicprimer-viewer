@@ -10,8 +10,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node that will produce a Mine.
- * 
+ *
  * @author Jonathan Lovelace
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class MineNode extends AbstractFixtureNode<Mine> {
@@ -57,7 +58,7 @@ public class MineNode extends AbstractFixtureNode<Mine> {
 	/**
 	 * Check the data for validity. A Mine is valid if it has no children and
 	 * "product" and "status" properties.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

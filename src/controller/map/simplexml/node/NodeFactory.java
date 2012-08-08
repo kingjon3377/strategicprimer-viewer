@@ -12,9 +12,9 @@ import controller.map.UnsupportedTagException;
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
  * the tags that represent them.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public final class NodeFactory { // NOPMD
@@ -32,7 +32,7 @@ public final class NodeFactory { // NOPMD
 
 	/**
 	 * Set up a tag.
-	 * 
+	 *
 	 * @param string an XML tag
 	 * @param tag a corresponding tag category
 	 */
@@ -96,7 +96,7 @@ public final class NodeFactory { // NOPMD
 
 	/**
 	 * Create a Node from a tag using reflection.
-	 * 
+	 *
 	 * @param tag the tag.
 	 * @param line the line of the file it's on ... just in case.
 	 * @param file the file it's taken from
@@ -145,7 +145,7 @@ public final class NodeFactory { // NOPMD
 
 	/**
 	 * Create a Node from a tag.
-	 * 
+	 *
 	 * @param tag the tag.
 	 * @param line the line of the file it's on ... just in case.
 	 * @param file the file we read it from

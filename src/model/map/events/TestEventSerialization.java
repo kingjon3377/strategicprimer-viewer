@@ -13,9 +13,9 @@ import controller.map.SPFormatException;
 
 /**
  * A class to test the serialization of Events.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	/**
@@ -33,7 +33,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of CaveEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -48,7 +48,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of CaveEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -64,7 +64,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of CaveEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 */
@@ -78,7 +78,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of CityEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -91,13 +91,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"First CityEvent serialization test, reflection, status "
-								+ status + ", size " + size, new CityEvent(
-								status, size, 10, "one", 0), CityEvent.class); // NOPMD
+								+ status + ", size " + size, new CityEvent(// NOPMD
+								status, size, 10, "oneCity", 0), CityEvent.class);
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"Second CityEvent serialization test, reflection, status "
-								+ status + ", size " + size, new CityEvent(
-								status, size, 40, "two", 1), CityEvent.class); // NOPMD
+								+ status + ", size " + size, new CityEvent(// NOPMD
+								status, size, 40, "twoCity", 1), CityEvent.class);
 			}
 		}
 		final CityEvent three = new CityEvent(TownStatus.Active,
@@ -119,7 +119,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of FortificationEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -161,7 +161,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of MineralEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -203,7 +203,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of StoneEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -242,7 +242,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of TownEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -254,12 +254,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			for (final TownSize size : TownSize.values()) {
 				assertSerialization(
 						"First TownEvent serialization test, reflection, status "
-								+ status + " and size " + size, new TownEvent(
-								status, size, 10, "one", 1), TownEvent.class); // NOPMD
+								+ status + " and size " + size, new TownEvent(// NOPMD
+								status, size, 10, "one", 1), TownEvent.class);
 				assertSerialization(
 						"Second TownEvent serialization test, reflection, status "
-								+ status + " and size " + size, new TownEvent(
-								status, size, 40, "two", 2), TownEvent.class); // NOPMD
+								+ status + " and size " + size, new TownEvent(// NOPMD
+								status, size, 40, "two", 2), TownEvent.class);
 			}
 		}
 		final TownEvent three = new TownEvent(TownStatus.Active,

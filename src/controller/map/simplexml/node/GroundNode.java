@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce a Ground fixture.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class GroundNode extends AbstractFixtureNode<Ground> {
@@ -68,7 +68,7 @@ public class GroundNode extends AbstractFixtureNode<Ground> {
 	/**
 	 * Check whether the node is valid. A Ground is valid if it has "ground" and
 	 * "exposed" properties and no children. TODO: add further properties.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

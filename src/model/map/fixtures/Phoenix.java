@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A phoenix. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Phoenix implements TileFixture, HasImage {
 	/**
@@ -21,6 +21,7 @@ public class Phoenix implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the phoenix
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

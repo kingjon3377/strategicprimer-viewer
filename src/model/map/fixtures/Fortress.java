@@ -14,11 +14,11 @@ import model.map.TileFixture;
 /**
  * A fortress on the map. A player can only have one fortress per tile, but
  * multiple players may have fortresses on the same tile.
- * 
+ *
  * FIXME: We need something about resources and buildings yet
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	/**
@@ -36,7 +36,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param fortOwner the player that owns the fortress
 	 * @param fortName the name of the fortress
 	 * @param idNum the ID number.
@@ -52,7 +52,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the units in the fortress.
 	 */
 	public final List<Unit> getUnits() {
@@ -61,7 +61,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 
 	/**
 	 * Add a unit to the fortress.
-	 * 
+	 *
 	 * @param unit the unit to add
 	 */
 	public final void addUnit(final Unit unit) {
@@ -70,7 +70,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 
 	/**
 	 * Remove a unit from the fortress.
-	 * 
+	 *
 	 * @param unit the unit to remove
 	 */
 	public final void removeUnit(final Unit unit) {
@@ -78,7 +78,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the player that owns the fortress
 	 */
 	public final Player getOwner() {
@@ -86,7 +86,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the name of the fortress
 	 */
 	public final String getName() {
@@ -95,7 +95,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it is an identical fortress
 	 */
 	@Override
@@ -110,7 +110,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -119,7 +119,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -147,6 +147,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 
 	/**
 	 * @return an XML representation of the fortress.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -174,7 +175,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 
 	/**
 	 * TODO: Should perhaps be more granular.
-	 * 
+	 *
 	 * @return the name of an image to represent the fortress.
 	 */
 	@Override
@@ -221,7 +222,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 
 	/**
 	 * FIXME: Uses equals() to compare units.
-	 * 
+	 *
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */

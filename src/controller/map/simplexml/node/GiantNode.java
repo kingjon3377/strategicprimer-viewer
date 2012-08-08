@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a giant.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class GiantNode extends AbstractFixtureNode<Giant> {
@@ -43,7 +43,7 @@ public class GiantNode extends AbstractFixtureNode<Giant> {
 	/**
 	 * Check the node for invalid data. A Giant is valid if it has no children
 	 * and has a "kind" property.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

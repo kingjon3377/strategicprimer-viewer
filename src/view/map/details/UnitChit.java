@@ -9,7 +9,7 @@ import model.viewer.FixtureTransferable;
 
 /**
  * A chit to represent a unit.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public class UnitChit extends Chit {
@@ -20,7 +20,7 @@ public class UnitChit extends Chit {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param unit the unit this chit represents
 	 * @param listener the object listening for clicks on this chit.
 	 */
@@ -57,10 +57,10 @@ public class UnitChit extends Chit {
 
 	/**
 	 * Paint the chit.
-	 * 
+	 *
 	 * @param pen the graphics context
-	 * 
-	 * 
+	 *
+	 *
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	@Override
@@ -71,8 +71,8 @@ public class UnitChit extends Chit {
 			copy.setColor(UNIT_COLOR);
 			copy.fillOval(((int) Math.round(getWidth() * MARGIN)) + 1,
 					((int) Math.round(getHeight() * MARGIN)) + 1,
-					((int) Math.round(getWidth() * (1.0 - MARGIN * 2.0))),
-					((int) Math.round(getHeight() * (1.0 - MARGIN * 2.0))));
+					(int) Math.round(getWidth() * (1.0 - MARGIN * 2.0)),
+					(int) Math.round(getHeight() * (1.0 - MARGIN * 2.0)));
 		} finally {
 			copy.dispose();
 		}

@@ -14,9 +14,9 @@ import controller.map.simplexml.ITextNode;
 
 /**
  * A Node to represent a Tile.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
@@ -46,7 +46,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 
 	/**
 	 * Produce the equivalent Tile.
-	 * 
+	 *
 	 * @param players the players in the map
 	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent Tile.
@@ -81,8 +81,8 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 * fortresses, rivers, events, etc.). For forward compatibility, we do not
 	 * object to properties we ignore. (But TODO: should we object to "event"
 	 * tags, since those *used* to be valid?)
-	 * 
-	 * 
+	 *
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -123,7 +123,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 
 	/**
 	 * Add text to the tile.
-	 * 
+	 *
 	 * @param text the text to add
 	 */
 	@Override
@@ -132,7 +132,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -2,9 +2,9 @@ package model.map;
 
 /**
  * A representation of a player in the game.
- * 
+ *
  * @author jsl7
- * 
+ *
  */
 public class Player implements Comparable<Player>, XMLWritable,
 		DeepCloneable<Player> {
@@ -19,7 +19,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param idNum the player's number
 	 * @param name the player's code name
 	 * @param fileName the file this was loaded from
@@ -32,7 +32,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the player's number
 	 */
 	public final int getPlayerId() {
@@ -40,7 +40,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the player's code name
 	 */
 	public final String getName() {
@@ -49,7 +49,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it's an identical Player
 	 */
 	@Override
@@ -61,7 +61,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -71,7 +71,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 
 	/**
 	 * Compare to another Player.
-	 * 
+	 *
 	 * @param player the Player to compare to
 	 * @return the result of the comparison
 	 */
@@ -81,7 +81,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the Player
 	 */
 	@Override
@@ -102,7 +102,7 @@ public class Player implements Comparable<Player>, XMLWritable,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return true iff this is the current player
 	 */
 	public final boolean isCurrent() {
@@ -111,7 +111,8 @@ public class Player implements Comparable<Player>, XMLWritable,
 
 	/**
 	 * Write the player to XML.
-	 * 
+	 *
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 * @return an XML representation of the player.
 	 */
 	@Override

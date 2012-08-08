@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A minotaur. TODO:Should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Minotaur implements TileFixture, HasImage {
 	/**
@@ -21,6 +21,7 @@ public class Minotaur implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the minotaur
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

@@ -6,9 +6,9 @@ import model.map.TileFixture;
 /**
  * A field or meadow. If in forest, should increase a unit's vision slightly
  * when the unit is on it.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Meadow implements TileFixture, HasImage {
 	/**
@@ -30,7 +30,7 @@ public class Meadow implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param grain the kind of grass or grain growing in the field or meadow
 	 * @param fld whether this is a field (as opposed to a meadow)
 	 * @param cult whether it's under cultivation
@@ -78,6 +78,7 @@ public class Meadow implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the Fixture.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -90,7 +91,7 @@ public class Meadow implements TileFixture, HasImage {
 
 	/**
 	 * TODO: This should be more granular based on the kind of field.
-	 * 
+	 *
 	 * @return the name of an image to represent the field or meadow
 	 */
 	@Override
@@ -119,7 +120,7 @@ public class Meadow implements TileFixture, HasImage {
 
 	/**
 	 * TODO: Should probably depend.
-	 * 
+	 *
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
 	@Override
@@ -149,7 +150,7 @@ public class Meadow implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

@@ -13,14 +13,14 @@ import controller.map.SPFormatException;
 /**
  * A class to hold Battlefield tests, since the single-method version takes too
  * long to run.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class BattlefieldTest extends BaseTestFixtureSerialization {
 	/**
 	 * First test of serialization of BattlefieldEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -33,7 +33,7 @@ public class BattlefieldTest extends BaseTestFixtureSerialization {
 
 	/**
 	 * Second test of serialization of BattlefieldEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException on I/O error creating serialized form
@@ -46,7 +46,7 @@ public class BattlefieldTest extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test of error-checking in serialization of BattlefieldEvents.
-	 * 
+	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
 	 */

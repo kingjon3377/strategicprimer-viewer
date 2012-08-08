@@ -18,13 +18,13 @@ import view.map.main.Selectable;
 /**
  * A "piece" to represent a unit or fortress (or something else ...) in the
  * details-panel.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public abstract class Chit extends Selectable { // NOPMD
 	/**
-	 * 
+	 *
 	 * @return the description of the unit or fortress this chit represents, to
 	 *         report to the user
 	 */
@@ -40,7 +40,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	private static final Dimension MAX_SIZE = new Dimension(SIZE, SIZE);
 
 	/**
-	 * 
+	 *
 	 * @return the maximum size of a chit
 	 */
 	@Override
@@ -49,7 +49,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the minimum size of a chit
 	 */
 	@Override
@@ -58,7 +58,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the preferred size of a chit
 	 */
 	@Override
@@ -68,7 +68,7 @@ public abstract class Chit extends Selectable { // NOPMD
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param listener a listener to detect clicks on the chit.
 	 * @param transferable a Transferable encapsulating the data the Chit
 	 *        represents.
@@ -85,7 +85,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	/**
 	 * Create a backup image, special-casing forests and mountains (and perhaps
 	 * others).
-	 * 
+	 *
 	 * @param fix the fixture it'll represent
 	 * @return a default image
 	 */
@@ -109,20 +109,20 @@ public abstract class Chit extends Selectable { // NOPMD
 		} else {
 			final Color saveColor = pen.getColor();
 			pen.setColor(Color.RED);
-			pen.fillRoundRect((int) Math.round((imageSize * margin)) + 1,
-					((int) Math.round(imageSize * margin)) + 1,
-					((int) Math.round(imageSize * (1.0 - margin * 2.0))),
-					((int) Math.round(imageSize * (1.0 - margin * 2.0))),
-					((int) Math.round(imageSize * (margin / 2.0))),
-					((int) Math.round(imageSize * (margin / 2.0))));
+			pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
+					(int) Math.round(imageSize * margin) + 1,
+					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+					(int) Math.round(imageSize * (margin / 2.0)),
+					(int) Math.round(imageSize * (margin / 2.0)));
 			pen.setColor(saveColor);
 			pen.fillRoundRect(
 					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
 					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
-					((int) Math.round(imageSize * margin * 2.0)),
-					((int) Math.round(imageSize * margin * 2.0)),
-					((int) Math.round(imageSize * margin / 2.0)),
-					((int) Math.round(imageSize * margin / 2.0)));
+					(int) Math.round(imageSize * margin * 2.0),
+					(int) Math.round(imageSize * margin * 2.0),
+					(int) Math.round(imageSize * margin / 2.0),
+					(int) Math.round(imageSize * margin / 2.0));
 		}
 		return temp;
 	}

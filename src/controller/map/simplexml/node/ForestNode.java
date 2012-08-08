@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node that will produce a Forest.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class ForestNode extends AbstractFixtureNode<Forest> {
@@ -52,7 +52,7 @@ public class ForestNode extends AbstractFixtureNode<Forest> {
 	/**
 	 * Check whether the node is valid. A forest is valid if it has a "kind"
 	 * property and no children. TODO: add further properties.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

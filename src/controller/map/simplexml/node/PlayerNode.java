@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a Player.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class PlayerNode extends AbstractChildNode<Player> {
@@ -33,7 +33,7 @@ public class PlayerNode extends AbstractChildNode<Player> {
 
 	/**
 	 * Produce the equivalent Player.
-	 * 
+	 *
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent Player.
@@ -52,7 +52,7 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	 * Check whether we contain invalid data. A Player is valid iff it has no
 	 * children and contains number and code_name properties. For forward
 	 * compatibility, we do not object to properties we don't check.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed
@@ -76,7 +76,7 @@ public class PlayerNode extends AbstractChildNode<Player> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

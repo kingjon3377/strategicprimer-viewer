@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A fairy. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Fairy implements TileFixture, HasImage {
 	/**
@@ -17,7 +17,7 @@ public class Fairy implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param fKind the kind of fairy
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
@@ -37,6 +37,7 @@ public class Fairy implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the fairy
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated

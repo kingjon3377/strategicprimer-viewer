@@ -6,9 +6,9 @@ import model.map.events.TownStatus;
 
 /**
  * A village on the map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Village implements TileFixture, HasImage {
 	/**
@@ -29,7 +29,7 @@ public class Village implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param vstatus the status of the village.
 	 * @param vName the name of the village
 	 * @param idNum the ID number.
@@ -52,6 +52,7 @@ public class Village implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the village
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -114,7 +115,7 @@ public class Village implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -136,7 +137,7 @@ public class Village implements TileFixture, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param fix a fixture
 	 * @return whether it's an identical-but-for-ID village.
 	 */

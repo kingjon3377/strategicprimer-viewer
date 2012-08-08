@@ -17,15 +17,15 @@ import model.viewer.VisibleDimensions;
 /**
  * A class to change the visible area of the map based on the user's use of the
  * scrollbars.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ScrollListener implements AdjustmentListener,
 		PropertyChangeListener {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param map the map model to work with
 	 * @param horizBar the horizontal scroll bar to work with
 	 * @param vertBar the vertical scroll bar to work with
@@ -41,15 +41,15 @@ public class ScrollListener implements AdjustmentListener,
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
-			 * 
+			 *
 			 * @param input the input event to verify
 			 * @return whether to let it proceed
 			 */
 			@Override
 			public boolean verify(final JComponent input) {
-				return (input instanceof JScrollBar && isInRange(0,
+				return input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(), map.getSizeCols()
-								- map.getDimensions().getWidth()));
+								- map.getDimensions().getWidth());
 			}
 		});
 		vbar = vertBar;
@@ -59,15 +59,15 @@ public class ScrollListener implements AdjustmentListener,
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
-			 * 
+			 *
 			 * @param input the input event to verify
 			 * @return whether to let it proceed
 			 */
 			@Override
 			public boolean verify(final JComponent input) {
-				return (input instanceof JScrollBar && isInRange(0,
+				return input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(), map.getSizeRows()
-								- map.getDimensions().getHeight()));
+								- map.getDimensions().getHeight());
 			}
 		});
 	}
@@ -76,7 +76,7 @@ public class ScrollListener implements AdjustmentListener,
 	 * Alternate constructor to reduce complexity in the calling class. The
 	 * uncheckable precondition is that the component is using a BorderLayout,
 	 * and doesn't already have members at south or east.
-	 * 
+	 *
 	 * @param map the map model to work with
 	 * @param component the component to attach the scrollbars to.
 	 */
@@ -90,15 +90,15 @@ public class ScrollListener implements AdjustmentListener,
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
-			 * 
+			 *
 			 * @param input the input event to verify
 			 * @return whether to let it proceed
 			 */
 			@Override
 			public boolean verify(final JComponent input) {
-				return (input instanceof JScrollBar && isInRange(0,
+				return input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(), map.getSizeCols()
-								- map.getDimensions().getWidth()));
+								- map.getDimensions().getWidth());
 			}
 		});
 		component.add(hbar, BorderLayout.SOUTH);
@@ -109,15 +109,15 @@ public class ScrollListener implements AdjustmentListener,
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
-			 * 
+			 *
 			 * @param input the input event to verify
 			 * @return whether to let it proceed
 			 */
 			@Override
 			public boolean verify(final JComponent input) {
-				return (input instanceof JScrollBar && isInRange(0,
+				return input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(), map.getSizeRows()
-								- map.getDimensions().getHeight()));
+								- map.getDimensions().getHeight());
 			}
 		});
 		component.add(vbar, BorderLayout.EAST);
@@ -151,9 +151,9 @@ public class ScrollListener implements AdjustmentListener,
 	private final JScrollBar vbar;
 
 	/**
-	 * 
+	 *
 	 * @param evt the event to handle
-	 * 
+	 *
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
 	@Override
@@ -214,9 +214,9 @@ public class ScrollListener implements AdjustmentListener,
 
 	/**
 	 * Handle scroll-bar events.
-	 * 
+	 *
 	 * @param evt the event to handle
-	 * 
+	 *
 	 * @see java.awt.event.AdjustmentListener#adjustmentValueChanged(java.awt.event.AdjustmentEvent)
 	 */
 	@Override

@@ -22,7 +22,7 @@ import model.map.events.TownStatus;
 
 /**
  * A table for legacy "events".
- * 
+ *
  * @author Jonathan Lovelace
  */
 @SuppressWarnings("deprecation")
@@ -31,30 +31,34 @@ public class LegacyTable implements EncounterTable {
 	 * The list of events we can return.
 	 */
 	private final List<String> data;
-
+	/**
+	 * Add the text from an Event to the list.
+	 * @param event the event to get the text from
+	 */
+	private void addData(final IEvent event) {
+		data.add(event.toString());
+	}
 	/**
 	 * Constructor.
 	 */
 	public LegacyTable() {
 		data = new ArrayList<String>();
-		data.add(new BattlefieldEvent(0, -1).getText());
-		data.add(new CaveEvent(0, -1).getText());
+		addData(new BattlefieldEvent(0, -1));
+		addData(new CaveEvent(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
-				data.add(new CityEvent(status, size, 0, "", 0).getText()); // NOPMD
-				data.add(new FortificationEvent(status, size, 0, "", 0)
-						.getText()); // NOPMD
-				data.add(new TownEvent(status, size, 0, "", 0).getText()); // NOPMD
+				addData(new CityEvent(status, size, 0, "", 0)); // NOPMD
+				addData(new FortificationEvent(status, size, 0, "", 0)); // NOPMD
+				addData(new TownEvent(status, size, 0, "", 0)); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
-			data.add(new MineralEvent(mineral.toString(), true, 0, 0).getText()); // NOPMD
-			data.add(new MineralEvent(mineral.toString(), false, 0, 0)
-					.getText()); // NOPMD
+			addData(new MineralEvent(mineral.toString(), true, 0, 0)); // NOPMD
+			addData(new MineralEvent(mineral.toString(), false, 0, 0)); // NOPMD
 		}
 		data.add("Nothing interesting here ...");
 		for (final StoneKind stone : StoneKind.values()) {
-			data.add(new StoneEvent(stone, 0, 0).getText()); // NOPMD
+			addData(new StoneEvent(stone, 0, 0)); // NOPMD
 		}
 	}
 
@@ -81,7 +85,7 @@ public class LegacyTable implements EncounterTable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

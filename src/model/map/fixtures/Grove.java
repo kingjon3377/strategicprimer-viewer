@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Grove implements TileFixture, HasImage {
 	/**
@@ -25,7 +25,7 @@ public class Grove implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param fruit whether the trees are fruit trees
 	 * @param wildGrove whether the trees are wild
 	 * @param tree what kind of trees are in the grove
@@ -65,6 +65,7 @@ public class Grove implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the Fixture.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -122,7 +123,7 @@ public class Grove implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

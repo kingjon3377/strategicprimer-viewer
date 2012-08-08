@@ -5,14 +5,14 @@ import model.map.TileFixture;
 
 /**
  * "There are extensive caves beneath this tile".
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class CaveEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param discdc the DC to discover the caves
 	 * @param idNum the ID number for the event.
 	 */
@@ -28,7 +28,7 @@ public final class CaveEvent implements IEvent, HasImage {
 	private final int dc; // NOPMD
 
 	/**
-	 * 
+	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -37,7 +37,7 @@ public final class CaveEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -47,7 +47,7 @@ public final class CaveEvent implements IEvent, HasImage {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it's an identical CaveEvent.
 	 */
 	@Override
@@ -57,7 +57,7 @@ public final class CaveEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the event. Constant, as our only state is DC,
 	 *         and that's zeroed in players' maps.
 	 */
@@ -67,7 +67,7 @@ public final class CaveEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -77,6 +77,7 @@ public final class CaveEvent implements IEvent, HasImage {
 
 	/**
 	 * @return an XML representation of the event.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -95,7 +96,7 @@ public final class CaveEvent implements IEvent, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -159,7 +160,7 @@ public final class CaveEvent implements IEvent, HasImage {
 	/**
 	 * Image from OpenGameArt.org, by user MrBeast, from page
 	 * http://opengameart.org/content/cave-tileset-0 .
-	 * 
+	 *
 	 * @return the name of the image representing a cave
 	 */
 	@Override

@@ -11,15 +11,15 @@ import model.map.TileFixture;
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for
  * rivers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class RiverFixture implements TileFixture, Iterable<River>,
 		Subsettable<RiverFixture> {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param initial the initial state of the fixture
 	 */
 	public RiverFixture(final River... initial) {
@@ -36,6 +36,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 
 	/**
 	 * @return an XML representation of the rivers on the tile.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -51,7 +52,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 
 	/**
 	 * Add a river.
-	 * 
+	 *
 	 * @param river the river to add
 	 */
 	public void addRiver(final River river) {
@@ -60,7 +61,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 
 	/**
 	 * Remove a river.
-	 * 
+	 *
 	 * @param river the river to remove
 	 */
 	public void removeRiver(final River river) {
@@ -104,7 +105,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 
 	/**
 	 * Update to match the rivers in another RiverFixture.
-	 * 
+	 *
 	 * @param source the fixture to update from
 	 */
 	public void update(final RiverFixture source) {
@@ -136,7 +137,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -169,7 +170,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 
 	/**
 	 * Add rivers from another RiverFixture to this one.
-	 * 
+	 *
 	 * @param collection the rivers to add
 	 */
 	public void addRivers(final Iterable<River> collection) {
@@ -189,6 +190,9 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 
 	/**
 	 * @return The name of the file this is to be written to.
+	 * @deprecated River writing is handled as part of Tile writing, not
+	 *             separately---and rivers can't be written to a different file
+	 *             from their tile.
 	 */
 	@Override
 	@Deprecated

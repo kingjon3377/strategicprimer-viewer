@@ -5,13 +5,14 @@ import model.map.TileFixture;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Ground implements TileFixture, HasImage {
 	/**
 	 * @return an XML representation of the Fixture.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -23,7 +24,7 @@ public class Ground implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param desc a description of the ground (the type of rock)
 	 * @param exp whether it's exposed. (If not, the tile should also include a
 	 *        grass or forest Fixture ...)
@@ -68,7 +69,7 @@ public class Ground implements TileFixture, HasImage {
 
 	/**
 	 * TODO: Should perhaps depend on whether it's exposed or not.
-	 * 
+	 *
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
 	@Override
@@ -96,7 +97,7 @@ public class Ground implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -114,7 +115,7 @@ public class Ground implements TileFixture, HasImage {
 
 	/**
 	 * TODO: make this different between instances.
-	 * 
+	 *
 	 * @return an ID number.
 	 */
 	@Override

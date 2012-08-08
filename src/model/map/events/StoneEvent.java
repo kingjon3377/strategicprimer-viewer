@@ -5,14 +5,14 @@ import model.map.TileFixture;
 
 /**
  * A deposit (always exposed for now) of stone.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class StoneEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param skind the kind of stone
 	 * @param discdc the dc to discover the stone.
 	 * @param idNum the ID number.
@@ -30,7 +30,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	private final StoneKind stone;
 
 	/**
-	 * 
+	 *
 	 * @return what kind of stone this deposit is.
 	 */
 	public StoneKind stone() {
@@ -43,7 +43,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	private final int dc; // NOPMD
 
 	/**
-	 * 
+	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -52,7 +52,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -65,7 +65,7 @@ public final class StoneEvent implements IEvent, HasImage {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it's an identical event
 	 */
 	@Override
@@ -76,7 +76,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the event
 	 */
 	@Override
@@ -85,7 +85,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the object
 	 */
 	@Override
@@ -95,6 +95,7 @@ public final class StoneEvent implements IEvent, HasImage {
 
 	/**
 	 * @return an XML representation of the event
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -122,7 +123,7 @@ public final class StoneEvent implements IEvent, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override

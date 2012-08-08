@@ -7,14 +7,14 @@ import model.map.TileFixture;
 /**
  * A mountain on the map---or at least a fixture representing mountainous
  * terrain.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Mountain implements TerrainFixture, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param fileName the file this was loaded from
 	 */
 	public Mountain(final String fileName) {
@@ -31,6 +31,7 @@ public class Mountain implements TerrainFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the forest.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -73,7 +74,7 @@ public class Mountain implements TerrainFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -83,7 +84,7 @@ public class Mountain implements TerrainFixture, HasImage {
 
 	/**
 	 * TODO: Perhaps make this per-mountain?
-	 * 
+	 *
 	 * @return an ID number
 	 */
 	@Override

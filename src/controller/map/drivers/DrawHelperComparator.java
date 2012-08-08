@@ -24,9 +24,9 @@ import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to compare the performance of TileDrawHelpers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class DrawHelperComparator { // NOPMD
 	/**
@@ -44,7 +44,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param map the map we'll be drawing in the tests
 	 * @param repetitions how many times to repeat each test
 	 */
@@ -70,9 +70,9 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The first test: all in one place.
-	 * 
+	 *
 	 * @param helper the helper to test
-	 * 
+	 *
 	 * @return how long the test took, in ns.
 	 */
 	public long first(final TileDrawHelper helper) {
@@ -86,7 +86,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the first test.
-	 * 
+	 *
 	 * @param helper the helper to test
 	 * @param image the image used in the test.
 	 */
@@ -103,9 +103,9 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The second test: Translating.
-	 * 
+	 *
 	 * @param helper the helper to test
-	 * 
+	 *
 	 * @return how long the test took, in ns.
 	 */
 	public long second(final TileDrawHelper helper) {
@@ -119,7 +119,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the second test.
-	 * 
+	 *
 	 * @param helper the helper to test
 	 * @param image the image used in the test.
 	 */
@@ -140,9 +140,9 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * Third test: in-place, reusing Graphics.
-	 * 
+	 *
 	 * @param helper the helper to test
-	 * 
+	 *
 	 * @return how long the test took, in ns.
 	 */
 	public long third(final TileDrawHelper helper) {
@@ -160,7 +160,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the third test.
-	 * 
+	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
@@ -172,9 +172,9 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * Third test: translating, reusing Graphics.
-	 * 
+	 *
 	 * @param helper the helper to test
-	 * 
+	 *
 	 * @return how long the test took, in ns.
 	 */
 	public long fourth(final TileDrawHelper helper) {
@@ -192,7 +192,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the fourth test.
-	 * 
+	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
@@ -224,9 +224,9 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * Fifth test, part one: iterating.
-	 * 
+	 *
 	 * @param helper the helper to test
-	 * 
+	 *
 	 * @return how long the test took, in ns.
 	 */
 	public long fifthOne(final TileDrawHelper helper) {
@@ -244,7 +244,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the first part of the fifth test.
-	 * 
+	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
@@ -253,8 +253,8 @@ public class DrawHelperComparator { // NOPMD
 		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
 			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
 				final Point point = PointFactory.point(row, col);
-				helper.drawTile(pen, spmap.getTile(point), new Coordinate(row
-						* tsize, col * tsize), // NOPMD
+				helper.drawTile(pen, spmap.getTile(point),
+						Coordinate.factory(row * tsize, col * tsize),
 						dimensions);
 			}
 		}
@@ -262,9 +262,9 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * Fifth test, part two: filtering.
-	 * 
+	 *
 	 * @param helper the helper to test
-	 * 
+	 *
 	 * @return how long the test took, in ns.
 	 */
 	public long fifthTwo(final TileDrawHelper helper) {
@@ -282,7 +282,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the first part of the fifth test.
-	 * 
+	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
@@ -304,7 +304,7 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * A driver method to compare the two helpers, and the two map-GUI
 	 * implementations.
-	 * 
+	 *
 	 * @param args the command-line arguments.
 	 */
 	public static void main(final String[] args) { // NOPMD
@@ -380,7 +380,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * A helper method to reduce repeated strings.
-	 * 
+	 *
 	 * @param total the total time
 	 */
 	public void printStats(final long total) {
@@ -392,7 +392,7 @@ public class DrawHelperComparator { // NOPMD
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this object
 	 */
 	@Override

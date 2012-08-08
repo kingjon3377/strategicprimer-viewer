@@ -9,9 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a fairy or group of fairies.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class FairyNode extends AbstractFixtureNode<Fairy> {
@@ -43,7 +43,7 @@ public class FairyNode extends AbstractFixtureNode<Fairy> {
 	/**
 	 * Check the node for invalid data. A Fairy is valid if it has no children
 	 * and has a "kind" property.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

@@ -22,9 +22,9 @@ import view.util.Coordinate;
 /**
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class MapComponent extends JComponent implements MapGUI,
 		PropertyChangeListener {
@@ -44,7 +44,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param theMap The model containing the map this represents
 	 */
 	public MapComponent(final MapModel theMap) {
@@ -65,7 +65,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * Paint.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 */
 	@Override
@@ -98,7 +98,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * Draw a subset of the map.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 * @param minX the minimum X (row?) to draw
 	 * @param minY the minimum Y (col?) to draw
@@ -121,7 +121,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * @param rect a bounding rectangle
-	 * 
+	 *
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
@@ -137,7 +137,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * Paint a tile.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 * @param tile the tile to paint
 	 * @param row which row this is
@@ -163,7 +163,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * Load and draw a map.
-	 * 
+	 *
 	 * @param newMap the map to load
 	 */
 	@Override
@@ -175,7 +175,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the map model
 	 */
 	@Override
@@ -185,7 +185,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * Handle events.
-	 * 
+	 *
 	 * @param evt the event to handle.
 	 */
 	@Override
@@ -211,10 +211,10 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int maxRow = getMapModel().getDimensions().getMaximumRow();
 		final int minCol = getMapModel().getDimensions().getMinimumCol();
 		final int maxCol = getMapModel().getDimensions().getMaximumCol();
-		return ((selRow <= 0 || selRow >= minRow)
+		return (selRow <= 0 || selRow >= minRow)
 				&& (selRow >= getMapModel().getSizeRows() || selRow <= maxRow)
 				&& (selCol <= 0 || selCol >= minCol) && (selCol >= getMapModel()
-				.getSizeCols() || selCol <= maxCol));
+				.getSizeCols() || selCol <= maxCol);
 	}
 
 	/**

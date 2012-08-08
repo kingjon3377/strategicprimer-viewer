@@ -41,9 +41,9 @@ import controller.map.misc.IDFactory;
 /**
  * A class to convert a version-1 map to a version-2 map with greater
  * resolution.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class OneToTwoConverter { // NOPMD
 	/**
@@ -110,7 +110,7 @@ public class OneToTwoConverter { // NOPMD
 
 	/**
 	 * Create the initial list of subtiles for a tile.
-	 * 
+	 *
 	 * @param tile the tile on the old map
 	 * @param main whether this is the main map or a player's map
 	 * @return the equivalent higher-resolution tiles, in initial form
@@ -124,8 +124,8 @@ public class OneToTwoConverter { // NOPMD
 							* SUBTILES_PER_TILE + i;
 					final int col = tile.getLocation().col()
 							* SUBTILES_PER_TILE + j;
-					final Tile subtile = new Tile(row, col, tile.getTerrain(),
-							tile.getFile()); // NOPMD
+					final Tile subtile = new Tile(row, col, tile.getTerrain(), // NOPMD
+							tile.getFile());
 					initial.add(subtile);
 					convertSubtile(subtile, main);
 				}
@@ -174,8 +174,7 @@ public class OneToTwoConverter { // NOPMD
 				while (!fixtures.isEmpty()) {
 					final Tile subtile = initial.get(0);
 					subtile.addFixture(fixtures.remove(0));
-					subtile.addFixture(new TextFixture(
-							// NOPMD
+					subtile.addFixture(new TextFixture(// NOPMD
 							"FIXME: A fixture here was force-added after MAX_ITER",
 							NEXT_TURN));
 					initial.add(initial.remove(0));
@@ -194,7 +193,7 @@ public class OneToTwoConverter { // NOPMD
 	 * Convert a tile. That is, change it from a forest or mountain type to the
 	 * proper replacement type plus the proper fixture. Also, in any case, add
 	 * the proper Ground.
-	 * 
+	 *
 	 * @param tile the tile to convert
 	 * @param main whether this is the main map or a player's map
 	 */
@@ -228,7 +227,7 @@ public class OneToTwoConverter { // NOPMD
 	 * Determine whether a subtile is suitable for more fixtures. It's suitable
 	 * if its only fixtures are Forests, Mountains, Ground or other similar
 	 * "background".
-	 * 
+	 *
 	 * @param tile the tile
 	 * @return whether it's suitable
 	 */
@@ -247,7 +246,7 @@ public class OneToTwoConverter { // NOPMD
 	 * Prepare a subtile for a specified new fixture. At present, the only
 	 * change this involves is removing any forests if there's a village or
 	 * TownEvent.
-	 * 
+	 *
 	 * @param tile the tile to prepare
 	 * @param fix the fixture to prepare it for
 	 */
@@ -265,7 +264,7 @@ public class OneToTwoConverter { // NOPMD
 
 	/**
 	 * Possibly make a random change to a tile.
-	 * 
+	 *
 	 * @param tile the tile under consideration
 	 * @param map the map it's on, so we can consider adjacent tiles
 	 * @param random the source of randomness (so this is repeatable with
@@ -291,7 +290,7 @@ public class OneToTwoConverter { // NOPMD
 
 	/**
 	 * Make changes to a desert tile based on water.
-	 * 
+	 *
 	 * @param tile the tile
 	 * @param random the source of randomness
 	 * @param watered whether the tile is adjacent to water
@@ -307,7 +306,7 @@ public class OneToTwoConverter { // NOPMD
 
 	/**
 	 * Add a suitable field or orchard to a tile.
-	 * 
+	 *
 	 * @param field if true, a field; if false, an orchard.
 	 * @param tile the tile under consideration
 	 * @param main whether we should actually add the fixtures (i.e. is this the
@@ -337,7 +336,7 @@ public class OneToTwoConverter { // NOPMD
 
 	/**
 	 * Add a forest.
-	 * 
+	 *
 	 * @param tile the tile under consideration
 	 * @param main whether we should actually add the fixtures (i.e. is this the
 	 *        main map)
@@ -356,7 +355,7 @@ public class OneToTwoConverter { // NOPMD
 
 	/**
 	 * Add a fixture to a tile if this is the main map.
-	 * 
+	 *
 	 * @param tile the tile to add the fixture to
 	 * @param fix the fixture to add
 	 * @param main whether this is the main map, i.e. should we actually add the
@@ -374,7 +373,7 @@ public class OneToTwoConverter { // NOPMD
 	 * fixtures, NotVisible---what is returned when a tile isn't in the map)
 	 * shouldn't affect the caller at all; it should be as if it wasn't in the
 	 * Iterable.
-	 * 
+	 *
 	 * @param tile a tile
 	 * @return the locations of its neighbors.
 	 */

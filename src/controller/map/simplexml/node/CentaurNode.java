@@ -9,8 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a centaur or group of centaurs.
- * 
+ *
  * @author Jonathan Lovelace
+ * @deprecated Replaced by ReaderNG.
  */
 @Deprecated
 public class CentaurNode extends AbstractFixtureNode<Centaur> {
@@ -42,7 +43,7 @@ public class CentaurNode extends AbstractFixtureNode<Centaur> {
 	/**
 	 * Check the node for invalid data. A Centaur is valid if it has no children
 	 * and has a "kind" property.
-	 * 
+	 *
 	 * @param warner a Warning instance to use for warnings
 	 * @param idFactory the factory to use to register ID numbers and generate
 	 *        new ones as needed

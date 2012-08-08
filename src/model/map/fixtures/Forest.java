@@ -6,9 +6,9 @@ import model.map.TileFixture;
 
 /**
  * A forest on a tile.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Forest implements TerrainFixture, HasImage {
 	/**
@@ -25,7 +25,7 @@ public class Forest implements TerrainFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param kind what kind of trees dominate.
 	 * @param rowed whether the trees are in rows
 	 * @param fileName the file this was loaded from
@@ -52,6 +52,7 @@ public class Forest implements TerrainFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the forest.
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
@@ -67,7 +68,7 @@ public class Forest implements TerrainFixture, HasImage {
 
 	/**
 	 * TODO: Should differ based on what kind of tree.
-	 * 
+	 *
 	 * @return the name of an image to represent the forest.
 	 */
 	@Override
@@ -110,7 +111,7 @@ public class Forest implements TerrainFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -120,7 +121,7 @@ public class Forest implements TerrainFixture, HasImage {
 
 	/**
 	 * TODO: support different IDs for different instances.
-	 * 
+	 *
 	 * @return an ID for the object
 	 */
 	@Override

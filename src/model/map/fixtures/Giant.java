@@ -5,9 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A giant. TODO: should probably be a unit, or something.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class Giant implements TileFixture, HasImage {
 	/**
@@ -17,7 +17,7 @@ public class Giant implements TileFixture, HasImage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param gKind the kind of giant
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
@@ -37,6 +37,7 @@ public class Giant implements TileFixture, HasImage {
 
 	/**
 	 * @return an XML representation of the giant
+	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
