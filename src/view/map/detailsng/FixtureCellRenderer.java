@@ -1,7 +1,6 @@
 package view.map.detailsng;
 
 import java.awt.Component;
-import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
