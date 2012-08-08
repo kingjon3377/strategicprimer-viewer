@@ -351,6 +351,8 @@ public class DrawHelperComparator { // NOPMD
 			logger.log(Level.SEVERE, "Map format error reading map", e);
 			return;
 		}
+		SystemOut.SYS_OUT.print("Testing using ");
+		SystemOut.SYS_OUT.println(filename);
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
 		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null);
@@ -409,6 +411,7 @@ public class DrawHelperComparator { // NOPMD
 		comp.printStats(twoTotal);
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
 		comp.printStats(threeTotal);
+		SystemOut.SYS_OUT.println();
 	}
 
 	/**
