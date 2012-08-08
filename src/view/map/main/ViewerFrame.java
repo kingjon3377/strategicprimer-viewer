@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import model.viewer.MapModel;
 import view.map.details.DetailPanel;
+import view.map.detailsng.DetailPanelNG;
 
 /**
  * The main driver class for the viewer app.
@@ -55,6 +56,7 @@ public final class ViewerFrame extends JFrame {
 		chooser.setFileFilter(new MapFileFilter());
 		final MapGUI mapPanel = new MapComponent(map);
 		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.SOUTH);
+		add(new DetailPanelNG(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.EAST);
 		final JPanel mapSuperPanel = new JPanel(new BorderLayout());
 		mapSuperPanel.add((JComponent) mapPanel, BorderLayout.CENTER);
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
