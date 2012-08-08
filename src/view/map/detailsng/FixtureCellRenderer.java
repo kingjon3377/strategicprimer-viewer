@@ -45,23 +45,18 @@ public class FixtureCellRenderer implements TreeCellRenderer {
 	public Component getTreeCellRendererComponent(final JTree tree, final Object value,
 			final boolean selected, final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
-		// ESCA-JAVA0177:
-		final Component component; // NOPMD
+		final Component component = DEFAULT.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 		if (value instanceof TileNode) {
-			component = new JLabel(((TileNode) value).getTileString());
+			((JLabel) component).setText(((TileNode) value).getTileString());
 		} else if (value instanceof FixtureNode) {
 			final FixtureNode node = (FixtureNode) value;
 				final TileFixture tempFix = node.getFixture();
+				((JLabel) component).setText(tempFix.toString());
 				if (tempFix instanceof HasImage) {
-					final HasImage fix = (HasImage) tempFix;
-					component = new JLabel(fix.toString(),
-							getIcon(fix), SwingConstants.LEADING);
+					((JLabel) component).setIcon(getIcon((HasImage) tempFix));
 				} else {
-					component = new JLabel(tempFix.toString(),
-							defaultFixtIcon, SwingConstants.LEADING);
+					((JLabel) component).setIcon(defaultFixtIcon);
 				}
-		} else {
-			component = DEFAULT.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 		}
 		return component;
 	}
