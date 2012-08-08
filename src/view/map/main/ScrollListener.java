@@ -36,7 +36,7 @@ public class ScrollListener implements AdjustmentListener,
 		dimensions = map.getDimensions();
 		hbar = horizBar;
 		hbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedTile().getLocation().col(), 0), 1, 0,
+				Math.max(model.getSelectedTile().getLocation().col, 0), 1, 0,
 				model.getSizeCols() - model.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
@@ -54,7 +54,7 @@ public class ScrollListener implements AdjustmentListener,
 		});
 		vbar = vertBar;
 		vbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedTile().getLocation().row(), 0), 1, 0,
+				Math.max(model.getSelectedTile().getLocation().row, 0), 1, 0,
 				model.getSizeRows() - model.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
@@ -85,7 +85,7 @@ public class ScrollListener implements AdjustmentListener,
 		dimensions = map.getDimensions();
 		hbar = new JScrollBar(Adjustable.HORIZONTAL);
 		hbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedTile().getLocation().col(), 0), 1, 0,
+				Math.max(model.getSelectedTile().getLocation().col, 0), 1, 0,
 				model.getSizeCols() - model.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
@@ -104,7 +104,7 @@ public class ScrollListener implements AdjustmentListener,
 		component.add(hbar, BorderLayout.SOUTH);
 		vbar = new JScrollBar(Adjustable.VERTICAL);
 		vbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedTile().getLocation().row(), 0), 1, 0,
+				Math.max(model.getSelectedTile().getLocation().row, 0), 1, 0,
 				model.getSizeRows() - model.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
@@ -164,31 +164,31 @@ public class ScrollListener implements AdjustmentListener,
 						.isSameSize(dimensions)) {
 			dimensions = model.getDimensions();
 			hbar.getModel().setRangeProperties(
-					Math.max(model.getSelectedTile().getLocation().col(), 0),
+					Math.max(model.getSelectedTile().getLocation().col, 0),
 					1, 0,
 					model.getSizeCols() - model.getDimensions().getWidth(),
 					false);
 			vbar.getModel().setRangeProperties(
-					Math.max(model.getSelectedTile().getLocation().row(), 0),
+					Math.max(model.getSelectedTile().getLocation().row, 0),
 					1, 0,
 					model.getSizeRows() - model.getDimensions().getHeight(),
 					false);
 		} else if ("tile".equals(evt.getPropertyName())) {
 			if (!isInRange(model.getDimensions().getMinimumCol(), model
-					.getSelectedTile().getLocation().col(), model
+					.getSelectedTile().getLocation().col, model
 					.getDimensions().getMaximumCol())) {
 				hbar.getModel()
 						.setValue(
 								Math.max(model.getSelectedTile().getLocation()
-										.col(), 0));
+										.col, 0));
 			}
 			if (!isInRange(model.getDimensions().getMinimumRow(), model
-					.getSelectedTile().getLocation().row(), model
+					.getSelectedTile().getLocation().row, model
 					.getDimensions().getMaximumRow())) {
 				vbar.getModel()
 						.setValue(
 								Math.max(model.getSelectedTile().getLocation()
-										.row(), 0));
+										.row, 0));
 			}
 		} else if ("map".equals(evt.getPropertyName())) {
 			hbar.getModel().setRangeProperties(0, 1, 0,

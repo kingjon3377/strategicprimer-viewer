@@ -11,9 +11,9 @@ import util.Pair;
 
 /**
  * A class for things where results are by quadrant rather than randomly.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class QuadrantTable implements EncounterTable {
 	/**
@@ -31,7 +31,7 @@ public class QuadrantTable implements EncounterTable {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param rows the number of rows of quadrants
 	 * @param items the items to allocate by quadrant
 	 */
@@ -61,7 +61,7 @@ public class QuadrantTable implements EncounterTable {
 	/**
 	 * @param row the row of a tile
 	 * @param col the column of a tile
-	 * 
+	 *
 	 * @return the result from the quadrant containing that tile.
 	 */
 	@SuppressWarnings("boxing")
@@ -83,8 +83,8 @@ public class QuadrantTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
-		return getQuadrantValue(tile.getLocation().row(), tile.getLocation()
-				.col());
+		return getQuadrantValue(tile.getLocation().row, tile.getLocation()
+				.col);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class QuadrantTable implements EncounterTable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

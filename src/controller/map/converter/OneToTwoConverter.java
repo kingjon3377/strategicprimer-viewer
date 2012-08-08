@@ -120,9 +120,9 @@ public class OneToTwoConverter { // NOPMD
 		if (!tile.isEmpty()) {
 			for (int i = 0; i < SUBTILES_PER_TILE; i++) {
 				for (int j = 0; j < SUBTILES_PER_TILE; j++) {
-					final int row = tile.getLocation().row()
+					final int row = tile.getLocation().row
 							* SUBTILES_PER_TILE + i;
-					final int col = tile.getLocation().col()
+					final int col = tile.getLocation().col
 							* SUBTILES_PER_TILE + j;
 					final Tile subtile = new Tile(row, col, tile.getTerrain(), // NOPMD
 							tile.getFile());
@@ -169,8 +169,8 @@ public class OneToTwoConverter { // NOPMD
 			}
 			if (iterations == MAX_ITERATIONS) {
 				LOGGER.severe("Maximum number of iterations reached on tile ("
-						+ tile.getLocation().row() + ", "
-						+ tile.getLocation().col() + "); forcing ...");
+						+ tile.getLocation().row + ", "
+						+ tile.getLocation().col + "); forcing ...");
 				while (!fixtures.isEmpty()) {
 					final Tile subtile = initial.get(0);
 					subtile.addFixture(fixtures.remove(0));
@@ -378,8 +378,8 @@ public class OneToTwoConverter { // NOPMD
 	 * @return the locations of its neighbors.
 	 */
 	private static Iterable<Point> getNeighbors(final Tile tile) {
-		final int row = tile.getLocation().row();
-		final int col = tile.getLocation().col();
+		final int row = tile.getLocation().row;
+		final int col = tile.getLocation().col;
 		return Arrays.asList(PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),
@@ -492,7 +492,7 @@ public class OneToTwoConverter { // NOPMD
 	 * @return a seed for the RNG for conversion based on the given tile
 	 */
 	private static long getSeed(final Tile tile) {
-		return (long) (tile.getLocation().col()) << 32L + tile.getLocation()
-				.row();
+		return (long) (tile.getLocation().col) << 32L + tile.getLocation()
+				.row;
 	}
 }

@@ -129,8 +129,8 @@ public class DrawHelperComparator { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.getTiles()) {
-				final int row = point.row();
-				final int col = point.col();
+				final int row = point.row; // FIXME: inline
+				final int col = point.col;
 				helper.drawTile(image.createGraphics(), spmap.getTile(point),
 						new Coordinate(row * tsize, col // NOPMD
 								* tsize), dimensions);
@@ -200,7 +200,7 @@ public class DrawHelperComparator { // NOPMD
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
 			helper.drawTile(pen, spmap.getTile(point),
-					new Coordinate(point.row() * tsize, point.col() * tsize), // NOPMD
+					new Coordinate(point.row * tsize, point.col * tsize), // NOPMD
 					dimensions);
 		}
 	}
@@ -289,13 +289,13 @@ public class DrawHelperComparator { // NOPMD
 	private void fifthTwoBody(final TileDrawHelper helper, final Graphics pen) {
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
-			if (point.row() >= TEST_MIN_ROW && point.row() < TEST_MAX_ROW
-					&& point.col() >= TEST_MIN_COL
-					&& point.col() < TEST_MAX_COL) {
+			if (point.row >= TEST_MIN_ROW && point.row < TEST_MAX_ROW
+					&& point.col >= TEST_MIN_COL
+					&& point.col < TEST_MAX_COL) {
 				helper.drawTile(
 						pen,
 						spmap.getTile(point),
-						new Coordinate(point.row() * tsize, point.col() * tsize), // NOPMD
+						new Coordinate(point.row * tsize, point.col * tsize), // NOPMD
 						dimensions);
 			}
 		}

@@ -20,14 +20,14 @@ import util.EnumCounter;
 
 /**
  * A class to convert a map to an equivalent half-resolution one.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ResolutionDecreaseConverter {
 	/**
 	 * Convert a map. It needs to have an even number of rows and columns.
-	 * 
+	 *
 	 * @param old the map to convert.
 	 * @return an equivalent MapView.
 	 */
@@ -57,7 +57,7 @@ public class ResolutionDecreaseConverter {
 
 	/**
 	 * Check that the map has an even number of rows and columns.
-	 * 
+	 *
 	 * @param map the map to check.
 	 */
 	private static void checkRequirements(final IMap map) {
@@ -80,8 +80,8 @@ public class ResolutionDecreaseConverter {
 		final RiverFixture upperRightRivers = getRivers(upperRight);
 		final RiverFixture lowerLeftRivers = getRivers(lowerLeft);
 		final RiverFixture lowerRightRivers = getRivers(lowerRight);
-		final Tile retval = new Tile(upperLeft.getLocation().row() / 2,
-				upperLeft.getLocation().col() / 2, consensus(
+		final Tile retval = new Tile(upperLeft.getLocation().row / 2,
+				upperLeft.getLocation().col / 2, consensus(
 						upperLeft.getTerrain(), upperRight.getTerrain(),
 						lowerLeft.getTerrain(), lowerRight.getTerrain()),
 				upperLeft.getFile());
@@ -104,7 +104,7 @@ public class ResolutionDecreaseConverter {
 
 	/**
 	 * Add all non-river fixtures from the source to the destination tile.
-	 * 
+	 *
 	 * @param source a source tile
 	 * @param dest a destination tile
 	 */

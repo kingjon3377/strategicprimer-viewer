@@ -10,37 +10,35 @@ public class Point implements Comparable<Point>, XMLWritable {
 	/**
 	 * The first coordinate.
 	 */
-	private final int myRow;
+	public final int row;
 	/**
 	 * The second coordinate.
 	 */
-	private final int myCol;
+	public final int col;
 
 	/**
-	 *
 	 * @return the first coordinate.
 	 */
-	public final int row() {
-		return myRow;
+	public final int getRow() {
+		return row;
 	}
 
 	/**
-	 *
 	 * @return the second coordinate.
 	 */
-	public final int col() {
-		return myCol;
+	public final int getCol() {
+		return col;
 	}
 
 	/**
 	 * Constructor.
 	 *
-	 * @param row The first coordinate
-	 * @param col The second coordinate
+	 * @param rowNum The first coordinate
+	 * @param colNum The second coordinate
 	 */
-	public Point(final int row, final int col) {
-		myRow = row;
-		myCol = col;
+	public Point(final int rowNum, final int colNum) {
+		this.row = rowNum;
+		this.col = colNum;
 	}
 
 	/**
@@ -51,7 +49,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	@Override
 	public final boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof Point && (((Point) obj).myRow == myRow && ((Point) obj).myCol == myCol));
+				|| (obj instanceof Point && (((Point) obj).row == row && ((Point) obj).col == col));
 	}
 
 	/**
@@ -60,7 +58,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	 */
 	@Override
 	public final int hashCode() {
-		return myRow | myCol;
+		return row | col;
 	}
 
 	/**
@@ -70,7 +68,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	 */
 	@Override
 	public int compareTo(final Point point) {
-		return ((point.row() - row()) << 7) + (point.col() - col());
+		return ((point.getRow() - getRow()) << 7) + (point.getCol() - getCol());
 	}
 
 	/**
@@ -79,7 +77,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	 */
 	@Override
 	public String toString() {
-		return "(" + myRow + ", " + myCol + ")";
+		return "(" + row + ", " + col + ")";
 	}
 
 	/**
@@ -89,7 +87,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	@Override
 	@Deprecated
 	public String toXML() {
-		return "row=\"" + myRow + "\" column=\"" + myCol + "\"";
+		return "row=\"" + row + "\" column=\"" + col + "\"";
 	}
 
 	/**

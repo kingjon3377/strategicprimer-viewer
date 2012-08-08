@@ -5,9 +5,9 @@ import model.viewer.MapModel;
 
 /**
  * A class for moving the cursor around the single-component map UI.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class DirectionSelectionChanger {
 	/**
@@ -17,7 +17,7 @@ public class DirectionSelectionChanger {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param mapModel the map model we're to use
 	 */
 	public DirectionSelectionChanger(final MapModel mapModel) {
@@ -28,10 +28,10 @@ public class DirectionSelectionChanger {
 	 * Move the cursor up.
 	 */
 	public void up() { // NOPMD
-		if (model.getSelectedTile().getLocation().row() > 0) {
+		if (model.getSelectedTile().getLocation().row > 0) {
 			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row() - 1, model.getSelectedTile()
-					.getLocation().col()));
+					.getLocation().row - 1, model.getSelectedTile()
+					.getLocation().col));
 		}
 	}
 
@@ -39,10 +39,10 @@ public class DirectionSelectionChanger {
 	 * Move the cursor left.
 	 */
 	public void left() {
-		if (model.getSelectedTile().getLocation().col() > 0) {
+		if (model.getSelectedTile().getLocation().col > 0) {
 			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row(), model.getSelectedTile().getLocation()
-					.col() - 1));
+					.getLocation().row, model.getSelectedTile().getLocation()
+					.col - 1));
 		}
 	}
 
@@ -50,10 +50,10 @@ public class DirectionSelectionChanger {
 	 * Move the cursor down.
 	 */
 	public void down() {
-		if (model.getSelectedTile().getLocation().row() < model.getSizeRows() - 1) {
+		if (model.getSelectedTile().getLocation().row < model.getSizeRows() - 1) {
 			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row() + 1, model.getSelectedTile()
-					.getLocation().col()));
+					.getLocation().row + 1, model.getSelectedTile()
+					.getLocation().col));
 		}
 	}
 
@@ -61,15 +61,15 @@ public class DirectionSelectionChanger {
 	 * Move the cursor right.
 	 */
 	public void right() {
-		if (model.getSelectedTile().getLocation().col() < model.getSizeCols() - 1) {
+		if (model.getSelectedTile().getLocation().col < model.getSizeCols() - 1) {
 			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row(), model.getSelectedTile().getLocation()
-					.col() + 1));
+					.getLocation().row, model.getSelectedTile().getLocation()
+					.col + 1));
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

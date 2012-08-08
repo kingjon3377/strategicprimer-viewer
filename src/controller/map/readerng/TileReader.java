@@ -167,9 +167,9 @@ public class TileReader implements INodeHandler<Tile> {
 			final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 					"tile");
 			retval.addAttribute("row",
-					Integer.toString(obj.getLocation().row()));
+					Integer.toString(obj.getLocation().row));
 			retval.addAttribute("column",
-					Integer.toString(obj.getLocation().col()));
+					Integer.toString(obj.getLocation().col));
 			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}

@@ -13,7 +13,7 @@ import controller.map.SPFormatException;
 
 /**
  * A class to test serialization of TileFixtures.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public final class TestFixtureSerialization extends
@@ -25,7 +25,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Animal, including catching format errors.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -57,7 +57,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of CacheFixture, including catching format errors.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -84,7 +84,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Centaurs, including catching format errors.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -106,7 +106,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Dragons.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -127,7 +127,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Fairies.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -148,7 +148,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Forests.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -167,7 +167,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Fortresses.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -210,7 +210,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Giants.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -231,7 +231,7 @@ public final class TestFixtureSerialization extends
 
 	/**
 	 * Test the serialization of Ground Fixtures.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -259,7 +259,7 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of simple (no-parameter) fixtures, including
 	 * format errors.
-	 * 
+	 *
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form

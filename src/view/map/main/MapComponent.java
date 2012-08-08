@@ -205,8 +205,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 *         the current bounds.
 	 */
 	private boolean isSelectionVisible() {
-		final int selRow = getMapModel().getSelectedTile().getLocation().row();
-		final int selCol = getMapModel().getSelectedTile().getLocation().col();
+		final int selRow = getMapModel().getSelectedTile().getLocation().row;
+		final int selCol = getMapModel().getSelectedTile().getLocation().col;
 		final int minRow = getMapModel().getDimensions().getMinimumRow();
 		final int maxRow = getMapModel().getDimensions().getMaximumRow();
 		final int minCol = getMapModel().getDimensions().getMinimumCol();
@@ -222,9 +222,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	private void fixVisibility() {
 		final int selRow = Math.max(getMapModel().getSelectedTile()
-				.getLocation().row(), 0);
+				.getLocation().row, 0);
 		final int selCol = Math.max(getMapModel().getSelectedTile()
-				.getLocation().col(), 0);
+				.getLocation().col, 0);
 		int minRow = getMapModel().getDimensions().getMinimumRow();
 		int maxRow = getMapModel().getDimensions().getMaximumRow();
 		int minCol = getMapModel().getDimensions().getMinimumCol();

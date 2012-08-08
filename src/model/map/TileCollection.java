@@ -10,9 +10,9 @@ import java.util.Map;
  * SPMap, aside from the latter's extra features, is that this doesn't know
  * anything about the map's size and so doesn't check whether a key makes any
  * sense.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class TileCollection implements Iterable<Point>,
 		Subsettable<TileCollection>, DeepCloneable<TileCollection>, HasChildren {
@@ -23,7 +23,7 @@ public final class TileCollection implements Iterable<Point>,
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param filename the default filename for tiles we create to avoid
 	 *        returning null
 	 */
@@ -38,7 +38,7 @@ public final class TileCollection implements Iterable<Point>,
 
 	/**
 	 * Add a Tile to the map.
-	 * 
+	 *
 	 * @param tile the tile to add.
 	 */
 	public void addTile(final Tile tile) {
@@ -48,14 +48,14 @@ public final class TileCollection implements Iterable<Point>,
 	/**
 	 * Get the specified point. If it isn't in the collection, add a new "empty"
 	 * one there and return that. This should never return null.
-	 * 
+	 *
 	 * @param point a point
-	 * 
+	 *
 	 * @return the tile at that point, or a new "empty" tile at that point.
 	 */
 	public Tile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
-			tiles.put(point, new Tile(point.row(), point.col(),
+			tiles.put(point, new Tile(point.row, point.col,
 					TileType.NotVisible, file));
 		}
 		return tiles.get(point);
@@ -71,7 +71,7 @@ public final class TileCollection implements Iterable<Point>,
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it is an identical TileCollection.
 	 */
 	@Override
@@ -82,7 +82,7 @@ public final class TileCollection implements Iterable<Point>,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -91,7 +91,7 @@ public final class TileCollection implements Iterable<Point>,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the class
 	 */
 	@Override
@@ -103,7 +103,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * We don't replace the "retval = false" with "return false" because
 	 * {@link Tile#isSubset(SimpleTile)} has the side effect of printing what
 	 * makes it *not* a subset; we want that done for *all* relevant tiles.
-	 * 
+	 *
 	 * @param obj another TileCollection
 	 * @return whether it's a strict subset of this one
 	 */
@@ -133,7 +133,7 @@ public final class TileCollection implements Iterable<Point>,
 
 	/**
 	 * Set all children's file property to the specified value, recursively.
-	 * 
+	 *
 	 * @param value the value to set
 	 */
 	@Override

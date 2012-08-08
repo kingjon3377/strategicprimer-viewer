@@ -160,9 +160,9 @@ public class SPMap implements IMap {
 		sbuild.append("\nTiles:");
 		for (final Point point : tiles) {
 			sbuild.append("\n\t(");
-			sbuild.append(point.row());
+			sbuild.append(point.row);
 			sbuild.append(", ");
-			sbuild.append(point.col());
+			sbuild.append(point.col);
 			sbuild.append("): ");
 			sbuild.append(tiles.getTile(point));
 		}
