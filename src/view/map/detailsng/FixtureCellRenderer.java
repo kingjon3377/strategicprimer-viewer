@@ -99,7 +99,7 @@ public class FixtureCellRenderer implements TreeCellRenderer {
 	 */
 	private static Icon createDefaultFixtureIcon() {
 		// TODO: If we ever get rid of Chit, copy its method to here.
-		final BufferedImage image = new BufferedImage(60, 60, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage image = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
 		final SimpleChit chit = new SimpleChit(new RiverFixture(), null);
 		final Graphics2D pen = image.createGraphics();
 		chit.paint(pen);
