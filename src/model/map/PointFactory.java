@@ -15,6 +15,12 @@ public final class PointFactory {
 	 */
 	private static boolean useCache = true;
 	/**
+	 * Clear the cache.
+	 */
+	public static void clearCache() {
+		CACHE.clear();
+	}
+	/**
 	 * @param shouldUseCache whether to use the cache from now on
 	 */
 	public static void shouldUseCache(final boolean shouldUseCache) {

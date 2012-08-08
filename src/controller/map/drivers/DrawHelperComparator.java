@@ -309,6 +309,7 @@ public class DrawHelperComparator { // NOPMD
 	public static void main(final String[] args) { // NOPMD
 		final Random random = new Random();
 		for (String filename : args) {
+			PointFactory.clearCache();
 			if (random.nextBoolean()) {
 				PointFactory.shouldUseCache(true);
 				System.out.println("Using cache:");
