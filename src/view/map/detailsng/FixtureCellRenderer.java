@@ -1,8 +1,7 @@
 package view.map.detailsng;
 
 import java.awt.Component;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -12,7 +11,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
-import javax.swing.SwingConstants;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
@@ -22,7 +20,7 @@ import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureNode;
 import model.viewer.TileNode;
 import util.ImageLoader;
-import view.map.details.SimpleChit;
+import view.map.details.Chit;
 /**
  * A tree-cell-renderer for FixtureTrees.
  * @author Jonathan Lovelace
@@ -99,12 +97,7 @@ public class FixtureCellRenderer implements TreeCellRenderer {
 	 */
 	private static Icon createDefaultFixtureIcon() {
 		// TODO: If we ever get rid of Chit, copy its method to here.
-		final BufferedImage image = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
-		final SimpleChit chit = new SimpleChit(new RiverFixture(), null);
-		final Graphics2D pen = image.createGraphics();
-		chit.paint(pen);
-		pen.dispose();
-		return new ImageIcon(image);
+		return new ImageIcon(Chit.createDefaultImage(new RiverFixture()));
 		
 	}
 }

@@ -87,7 +87,7 @@ public abstract class Chit extends Selectable { // NOPMD
 	 * @param fix the fixture it'll represent
 	 * @return a default image
 	 */
-	protected Image createDefaultImage(final TileFixture fix) {
+	public static Image createDefaultImage(final TileFixture fix) {
 		/**
 		 * The margin we allow around the chit itself in the default image.
 		 */
