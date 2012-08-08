@@ -401,7 +401,7 @@ public class DrawHelperComparator { // NOPMD
 		SystemOut.SYS_OUT.print("Filtering, ");
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
 		threeTotal += comp.printStats(comp.fifthTwo(helperThree));
-		SystemOut.SYS_OUT.print("--------------------------------------");
+		SystemOut.SYS_OUT.println("--------------------------------------");
 		SystemOut.SYS_OUT.print("Total:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		comp.printStats(oneTotal);
