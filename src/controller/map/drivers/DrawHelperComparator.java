@@ -3,6 +3,7 @@ package controller.map.drivers;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -306,13 +307,36 @@ public class DrawHelperComparator { // NOPMD
 	 * @param args the command-line arguments.
 	 */
 	public static void main(final String[] args) { // NOPMD
+		final String filename = args[0];
+		if (new Random().nextBoolean()) {
+			PointFactory.shouldUseCache(true);
+			System.out.println("Using cache:");
+			runAllTests(filename);
+			PointFactory.shouldUseCache(false);
+			System.out.println("Not using cache:");
+			runAllTests(filename);
+		} else {
+			PointFactory.shouldUseCache(false);
+			System.out.println("Not using cache:");
+			runAllTests(filename);
+			PointFactory.shouldUseCache(true);
+			System.out.println("Using cache:");
+			runAllTests(filename);
+		}
+	}
+
+	/**
+	 * Run all the tests on the specified file.
+	 * @param filename the file to use for the tests.
+	 */
+	private static void runAllTests(final String filename) {
 		final Logger logger = Logger.getLogger(DrawHelperComparator.class
 				.getName());
 		// ESCA-JAVA0177:
 		final DrawHelperComparator comp; // NOPMD
 		try {
 			comp = new DrawHelperComparator(// NOPMD
-					new MapReaderAdapter().readMap(args[0], new Warning(
+					new MapReaderAdapter().readMap(filename, new Warning(
 							Warning.Action.Ignore)), 50);
 		} catch (final IOException e) {
 			logger.log(Level.SEVERE, "I/O error reading map", e);

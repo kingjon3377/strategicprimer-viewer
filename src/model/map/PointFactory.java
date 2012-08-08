@@ -11,6 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class PointFactory {
 	/**
+	 * Whether to use the cache.
+	 */
+	private static boolean useCache = true;
+	/**
+	 * @param shouldUseCache whether to use the cache from now on
+	 */
+	public static void shouldUseCache(final boolean shouldUseCache) {
+		useCache = shouldUseCache;
+	}
+	/**
 	 * Do not instantiate.
 	 */
 	private PointFactory() {
@@ -35,14 +45,18 @@ public final class PointFactory {
 	 * @return a Point representing this point.
 	 */
 	public static Point point(final int row, final int col) {
-		final Integer boxedRow = Integer.valueOf(row);
-		final Integer boxedCol = Integer.valueOf(col);
-		if (!CACHE.containsKey(boxedRow)) {
-			CACHE.put(boxedRow, new ConcurrentHashMap<Integer, Point>());
+		if (useCache) {
+			final Integer boxedRow = Integer.valueOf(row);
+			final Integer boxedCol = Integer.valueOf(col);
+			if (!CACHE.containsKey(boxedRow)) {
+				CACHE.put(boxedRow, new ConcurrentHashMap<Integer, Point>());
+			}
+			if (!CACHE.get(boxedRow).containsKey(boxedCol)) {
+				CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
+			}
+			return CACHE.get(boxedRow).get(boxedCol); // NOPMD
+		} else {
+			return new Point(row, col);
 		}
-		if (!CACHE.get(boxedRow).containsKey(boxedCol)) {
-			CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
-		}
-		return CACHE.get(boxedRow).get(boxedCol);
 	}
 }
