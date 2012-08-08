@@ -13,34 +13,38 @@ import java.util.NoSuchElementException;
  * 
  * @author Jonathan Lovelace
  * 
- * @param <T>
- *            the type of thing returned by the iterator.
+ * @param <T> the type of thing returned by the iterator.
  */
 public class IteratorStack<T> implements Iterator<T> {
 	/**
 	 * The queue of iterators.
 	 */
 	private final Deque<Iterator<T>> queue = new LinkedList<Iterator<T>>();
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param iters sources for iterators to put in the queue.
 	 */
 	public IteratorStack(final Iterable<T>... iters) {
-		for (Iterable<T> iter : iters) {
+		for (final Iterable<T> iter : iters) {
 			queue.addFirst(iter.iterator());
 		}
 		removeEmptyIterators();
 	}
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param iters the iterators to put in the queue.
 	 */
 	public IteratorStack(final Iterator<T>... iters) {
-		for (Iterator<T> iter : iters) {
+		for (final Iterator<T> iter : iters) {
 			queue.addFirst(iter);
 		}
 		removeEmptyIterators();
 	}
+
 	/**
 	 * Remove any empty iterators from the front of the queue.
 	 */
@@ -49,6 +53,7 @@ public class IteratorStack<T> implements Iterator<T> {
 			queue.removeFirst();
 		}
 	}
+
 	/**
 	 * @return whether any of the iterators in the stack has any left.
 	 */
@@ -57,6 +62,7 @@ public class IteratorStack<T> implements Iterator<T> {
 		removeEmptyIterators();
 		return queue.isEmpty();
 	}
+
 	/**
 	 * @return the next item in one of the iterators
 	 */
@@ -64,13 +70,15 @@ public class IteratorStack<T> implements Iterator<T> {
 	public T next() {
 		removeEmptyIterators();
 		if (queue.isEmpty()) {
-			throw new NoSuchElementException("No elements left in any of the iterators");
+			throw new NoSuchElementException(
+					"No elements left in any of the iterators");
 		} else {
 			final T retval = queue.peekFirst().next();
 			removeEmptyIterators();
 			return retval;
 		}
 	}
+
 	/**
 	 * Remove the next item from one of the iterators.
 	 */
@@ -78,7 +86,8 @@ public class IteratorStack<T> implements Iterator<T> {
 	public void remove() {
 		removeEmptyIterators();
 		if (queue.isEmpty()) {
-			throw new NoSuchElementException("No elements left in any of the iterators");
+			throw new NoSuchElementException(
+					"No elements left in any of the iterators");
 		} else {
 			queue.peekFirst().remove();
 		}

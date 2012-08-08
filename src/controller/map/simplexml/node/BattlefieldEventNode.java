@@ -21,22 +21,23 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	public BattlefieldEventNode() {
 		super(BattlefieldEvent.class);
 	}
+
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
 	private static final String DC_PROPERTY = "dc";
+
 	/**
-	 * @param players
-	 *            the players on the map
+	 * @param players the players on the map
 	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent event
-	 * @throws SPFormatException
-	 *             if this includes invalid data
+	 * @throws SPFormatException if this includes invalid data
 	 */
 	@Override
-	public BattlefieldEvent produce(final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
-		final BattlefieldEvent fix = new BattlefieldEvent(Integer.parseInt(getProperty(DC_PROPERTY)),
+	public BattlefieldEvent produce(final PlayerCollection players,
+			final Warning warner) throws SPFormatException {
+		final BattlefieldEvent fix = new BattlefieldEvent(
+				Integer.parseInt(getProperty(DC_PROPERTY)),
 				Integer.parseInt(getProperty("id")));
 		if (hasProperty("file")) {
 			fix.setFile(getProperty("file"));
@@ -50,11 +51,10 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 	 * compatibility) and no children.
 	 * 
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if the data is invalid
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if the data is invalid
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
@@ -63,6 +63,7 @@ public class BattlefieldEventNode extends AbstractFixtureNode<BattlefieldEvent> 
 		demandProperty("battlefield", DC_PROPERTY, warner, false, false);
 		registerOrCreateID("battlefield", idFactory, warner);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property

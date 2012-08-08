@@ -37,8 +37,7 @@ public enum TownStatus {
 	/**
 	 * Constructor.
 	 * 
-	 * @param string
-	 *            a string representing the status.
+	 * @param string a string representing the status.
 	 */
 	private TownStatus(final String string) {
 		str = string;
@@ -51,8 +50,7 @@ public enum TownStatus {
 	}
 
 	/**
-	 * @param string
-	 *            a string representing a TownStatus
+	 * @param string a string representing a TownStatus
 	 * 
 	 * @return the TownStatus it represents
 	 */

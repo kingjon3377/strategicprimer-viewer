@@ -15,16 +15,11 @@ public class MenuItemCreator {
 	/**
 	 * Create a menu item.
 	 * 
-	 * @param item
-	 *            the text of the item
-	 * @param mnemonic
-	 *            the mnemonic key
-	 * @param accel
-	 *            the keyboard accelerator
-	 * @param desc
-	 *            the accessibile description.
-	 * @param list
-	 *            the listener to hande when the item is selected.
+	 * @param item the text of the item
+	 * @param mnemonic the mnemonic key
+	 * @param accel the keyboard accelerator
+	 * @param desc the accessibile description.
+	 * @param list the listener to hande when the item is selected.
 	 * 
 	 * @return the configured menu item.
 	 */

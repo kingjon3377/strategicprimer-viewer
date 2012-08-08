@@ -18,30 +18,34 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Phoenixes.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class PhoenixReader implements INodeHandler<Phoenix> {
 	/**
 	 * Parse a phoenix.
+	 * 
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the phoenix represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Phoenix parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Phoenix fix = new Phoenix(
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+		final Phoenix fix = new Phoenix(getOrGenerateID(element, warner,
+				idFactory), XMLHelper.getFile(stream));
 		return fix;
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -49,6 +53,7 @@ public class PhoenixReader implements INodeHandler<Phoenix> {
 	public List<String> understands() {
 		return Collections.singletonList("phoenix");
 	}
+
 	/**
 	 * @return the class we know how to write
 	 */
@@ -56,12 +61,13 @@ public class PhoenixReader implements INodeHandler<Phoenix> {
 	public Class<Phoenix> writes() {
 		return Phoenix.class;
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
-	 * @param obj
-	 *            the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the
+	 *        adapter work.
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@SuppressWarnings("unchecked")

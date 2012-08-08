@@ -25,7 +25,7 @@ import controller.map.misc.IncludingIterator;
  * An XML-map reader that calls a tree of per-node XML readers, similar to the
  * SimpleXMLReader but allowing for more complex types that don't map 1:1 to the
  * XML.
- *
+ * 
  * @author Jonathan Lovelace
  */
 public class MapReaderNG implements IMapReader, ISPReader {
@@ -39,8 +39,9 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws MapVersionException if the format isn't one we support
 	 */
 	@Override
-	public MapView readMap(final String file, final Warning warner) throws IOException, XMLStreamException,
-			SPFormatException, MapVersionException {
+	public MapView readMap(final String file, final Warning warner)
+			throws IOException, XMLStreamException, SPFormatException,
+			MapVersionException {
 		final Reader istream = new FileOpener().createReader(file);
 		try {
 			return readMap(file, istream, warner);
@@ -48,6 +49,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			istream.close();
 		}
 	}
+
 	/**
 	 * 
 	 * @param file the name of the file being read from
@@ -59,49 +61,49 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws MapVersionException if the map version isn't one we support
 	 */
 	@Override
-	public MapView readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
-			SPFormatException, MapVersionException {
+	public MapView readMap(final String file, final Reader istream,
+			final Warning warner) throws XMLStreamException, SPFormatException,
+			MapVersionException {
 		return readXML(file, istream, MapView.class, warner);
 	}
+
 	/**
 	 * @param <T> The type of the object the XML represents
 	 * @param file the name of the file from which we're reading
-	 * @param istream
-	 *            a reader from which to read the XML
+	 * @param istream a reader from which to read the XML
 	 * @param type The type of the object the XML represents
 	 * @param warner a Warning instance to use for warnings
 	 * @return the object contained in that stream
-	 * @throws XMLStreamException
-	 *             if XML isn't well-formed.
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @throws XMLStreamException if XML isn't well-formed.
+	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream, final Class<T> type, final Warning warner)
+	public <T> T readXML(final String file, final Reader istream,
+			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
-				new IncludingIterator(file, XMLInputFactory.newInstance().createXMLEventReader(istream)));
-		for (XMLEvent event : eventReader) {
+				new IncludingIterator(file, XMLInputFactory.newInstance()
+						.createXMLEventReader(istream)));
+		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final XMLWritable retval = ReaderAdapter.ADAPTER.parse(//NOPMD
+				final XMLWritable retval = ReaderAdapter.ADAPTER.parse(
+						// NOPMD
 						event.asStartElement(), eventReader,
 						new PlayerCollection(), warner, new IDFactory()); // NOPMD
 				return checkType(retval, type);
 			}
 		}
-		throw new XMLStreamException("XML stream didn't contain a start element");
+		throw new XMLStreamException(
+				"XML stream didn't contain a start element");
 	}
-	
+
 	/**
 	 * Helper method: check that an XMLWritable is in fact assignable to the
 	 * specified type. Return it if so; if not throw IllegalArgumentException.
 	 * 
-	 * @param <T>
-	 *            the type to check the object against.
-	 * @param obj
-	 *            the object to check
-	 * @param type
-	 *            the type to check it against.
+	 * @param <T> the type to check the object against.
+	 * @param obj the object to check
+	 * @param type the type to check it against.
 	 * @return the object, if it matches the desired type.
 	 */
 	@SuppressWarnings("unchecked")
@@ -110,33 +112,30 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			return (T) obj; // NOPMD
 		} else if (type.equals(MapView.class) && obj instanceof SPMap) {
 			return (T) new MapView((SPMap) obj, ((SPMap) obj).getPlayers()
-					.getCurrentPlayer().getPlayerId(), 0, ((SPMap) obj).getFile());
+					.getCurrentPlayer().getPlayerId(), 0,
+					((SPMap) obj).getFile());
 		} else {
-			throw new IllegalArgumentException(
-					"We want a node producing " + type.getSimpleName()
-							+ ", not "
-							+ obj.getClass().getSimpleName()
-							+ ", as the top-level tag");
+			throw new IllegalArgumentException("We want a node producing "
+					+ type.getSimpleName() + ", not "
+					+ obj.getClass().getSimpleName() + ", as the top-level tag");
 		}
 	}
-	
+
 	/**
 	 * @param <T> The type of the object the XML represents
 	 * @param file the name of the file being read from
-	 * @param istream
-	 *            a reader from which to read the XML
+	 * @param istream a reader from which to read the XML
 	 * @param type The type of the object the XML represents
 	 * @param warner a Warning instance to use for warnings
 	 * @param reflection ignored
 	 * @return the object contained in that stream
-	 * @throws XMLStreamException
-	 *             if XML isn't well-formed.
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @throws XMLStreamException if XML isn't well-formed.
+	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream, final Class<T> type, final boolean reflection,
-			final Warning warner) throws XMLStreamException, SPFormatException {
+	public <T> T readXML(final String file, final Reader istream,
+			final Class<T> type, final boolean reflection, final Warning warner)
+			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, type, warner);
 	}
 }

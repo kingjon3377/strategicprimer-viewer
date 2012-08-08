@@ -6,7 +6,8 @@ package model.map;
  * @author jsl7
  * 
  */
-public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Player> {
+public class Player implements Comparable<Player>, XMLWritable,
+		DeepCloneable<Player> {
 	/**
 	 * The player's number.
 	 */
@@ -19,10 +20,8 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 	/**
 	 * Constructor.
 	 * 
-	 * @param idNum
-	 *            the player's number
-	 * @param name
-	 *            the player's code name
+	 * @param idNum the player's number
+	 * @param name the player's code name
 	 * @param fileName the file this was loaded from
 	 */
 	public Player(final int idNum, final String name, final String fileName) {
@@ -49,16 +48,16 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it's an identical Player
 	 */
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof Player && playerID == ((Player) obj).getPlayerId() && playerName
-						.equals(((Player) obj).getName()));
+				|| (obj instanceof Player
+						&& playerID == ((Player) obj).getPlayerId() && playerName
+							.equals(((Player) obj).getName()));
 	}
 
 	/**
@@ -73,8 +72,7 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 	/**
 	 * Compare to another Player.
 	 * 
-	 * @param player
-	 *            the Player to compare to
+	 * @param player the Player to compare to
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -97,8 +95,7 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 	private boolean current;
 
 	/**
-	 * @param curr
-	 *            whether this is the current player or not
+	 * @param curr whether this is the current player or not
 	 */
 	public final void setCurrent(final boolean curr) {
 		current = curr;
@@ -111,8 +108,10 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 	public final boolean isCurrent() {
 		return current;
 	}
+
 	/**
 	 * Write the player to XML.
+	 * 
 	 * @return an XML representation of the player.
 	 */
 	@Override
@@ -122,6 +121,7 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 				.append("\" code_name=\"").append(getName()).append("\" />")
 				.toString();
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -129,6 +129,7 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -136,10 +137,12 @@ public class Player implements Comparable<Player>, XMLWritable, DeepCloneable<Pl
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of the player
 	 */

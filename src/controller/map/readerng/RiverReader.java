@@ -16,35 +16,41 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
+
 /**
  * A reader for Rivers.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class RiverReader implements INodeHandler<River> {
 	/**
 	 * Parse a river.
+	 * 
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the river represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public River parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final River fix = "lake".equalsIgnoreCase(element.getName().getLocalPart()) ? River.Lake
-				: River.getRiver(getAttribute(element,
-						"direction"));
+		final River fix = "lake".equalsIgnoreCase(element.getName()
+				.getLocalPart()) ? River.Lake : River.getRiver(getAttribute(
+				element, "direction"));
 		if (stream.iterator() instanceof IncludingIterator) {
 			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return fix;
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -52,6 +58,7 @@ public class RiverReader implements INodeHandler<River> {
 	public List<String> understands() {
 		return Arrays.asList("river", "lake");
 	}
+
 	/**
 	 * @return the class we know how to write
 	 */
@@ -59,11 +66,11 @@ public class RiverReader implements INodeHandler<River> {
 	public Class<River> writes() {
 		return River.class;
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param obj
-	 *            the object to write
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@SuppressWarnings("unchecked")

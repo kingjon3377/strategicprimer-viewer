@@ -24,10 +24,8 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * as SkippableNodes too, but if we see them in a map we should warn about
 	 * that.
 	 * 
-	 * @param tag
-	 *            the text of the tag name.
-	 * @param line
-	 *            the line of the file the tag occurs.
+	 * @param tag the text of the tag name.
+	 * @param line the line of the file the tag occurs.
 	 * @param warner a Warning instance to warn about future-proofed tags with
 	 */
 	public SkippableNode(final String tag, final int line, final Warning warner) {
@@ -41,18 +39,15 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * Throws an exception, because you should move all children from this to
 	 * its parent and then remove this node instead.
 	 * 
-	 * @param players
-	 *            ignored
-	 * @param warner
-	 *            a Warning instance to use for warnings
+	 * @param players ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return nothing
-	 * @throws SPFormatException
-	 *             never
+	 * @throws SPFormatException never
 	 */
 	@Deprecated
 	@Override
-	public SkippableNode produce(final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
+	public SkippableNode produce(final PlayerCollection players,
+			final Warning warner) throws SPFormatException {
 		throw new IllegalStateException("SkippableNodes should be skipped.");
 	}
 
@@ -61,11 +56,10 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	 * SkippableNode in the node-tree at the point that we're checking the data
 	 * for validity is a sign that something's wrong.
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             never
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException never
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
@@ -81,6 +75,7 @@ public class SkippableNode extends AbstractChildNode<SkippableNode> {
 	public String toString() {
 		return "SkippableNode";
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
-
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.SPFormatException;
@@ -19,8 +18,7 @@ import controller.map.simplexml.node.ViewNode;
  * producing the type we want.
  * 
  * @author Jonathan Lovelace
- * @param <T>
- *            The kind of child we want.
+ * @param <T> The kind of child we want.
  * 
  */
 @Deprecated
@@ -30,11 +28,10 @@ public final class RootNode<T> extends AbstractXMLNode {
 	 * than one child, we only verify that it has at least one, which is the
 	 * child we want.
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if it isn't.
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if it isn't.
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -49,11 +46,12 @@ public final class RootNode<T> extends AbstractXMLNode {
 								.getProduct().equals(SPMap.class))) {
 					iterator().next().checkNode(warner, idFactory);
 				} else {
-					throw new IllegalArgumentException("We want a node producing "
-							+ product.getSimpleName()
-							+ " as the top-level tag, not one producing "
-							+ ((AbstractChildNode) child).getProduct()
-									.getSimpleName());
+					throw new IllegalArgumentException(
+							"We want a node producing "
+									+ product.getSimpleName()
+									+ " as the top-level tag, not one producing "
+									+ ((AbstractChildNode) child).getProduct()
+											.getSimpleName());
 				}
 			} else {
 				throw new IllegalArgumentException("We want a node producing "
@@ -67,8 +65,8 @@ public final class RootNode<T> extends AbstractXMLNode {
 
 	/**
 	 * @return the root node, which should be our only child.
-	 * @throws SPFormatException
-	 *             if we don't have a child or it isn't what we wanted.
+	 * @throws SPFormatException if we don't have a child or it isn't what we
+	 *         wanted.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public AbstractChildNode<T> getRootNode() throws SPFormatException {
@@ -95,7 +93,8 @@ public final class RootNode<T> extends AbstractXMLNode {
 										new Warning(Warning.Action.Die))
 								.getPlayers().getCurrentPlayer().getPlayerId()),
 						new Warning(Warning.Action.Die));
-				root.addProperty("current_turn", "0", new Warning(Warning.Action.Die));
+				root.addProperty("current_turn", "0", new Warning(
+						Warning.Action.Die));
 				return (AbstractChildNode<T>) root;
 			} else {
 				throw new IllegalArgumentException(
@@ -119,8 +118,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 	/**
 	 * Constructor.
 	 * 
-	 * @param type
-	 *            the type of child we want to produce.
+	 * @param type the type of child we want to produce.
 	 */
 	public RootNode(final Class<T> type) {
 		super();

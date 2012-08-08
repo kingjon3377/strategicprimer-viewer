@@ -11,7 +11,8 @@ package model.map;
 public interface HasImage {
 	/**
 	 * FIXME: This is model-view mixing, but should fix code-complexity problems
-	 * in the tile-draw helper, and might let us reduce the number of Chit classes.
+	 * in the tile-draw helper, and might let us reduce the number of Chit
+	 * classes.
 	 * 
 	 * @return the name of an image to represent the fixture, on the tile and
 	 *         probably on the chit to represent it.

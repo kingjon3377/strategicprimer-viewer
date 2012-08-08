@@ -21,11 +21,9 @@ public class LoadFile {
 	/**
 	 * Load a file from disk or the classpath.
 	 * 
-	 * @param fileName
-	 *            Name of the file to load
+	 * @param fileName Name of the file to load
 	 * @return the file as an input stream
-	 * @throws FileNotFoundException
-	 *             when the file isn't in either place
+	 * @throws FileNotFoundException when the file isn't in either place
 	 */
 	public BufferedReader doLoadFile(final String fileName)
 			throws FileNotFoundException {
@@ -40,17 +38,16 @@ public class LoadFile {
 	/**
 	 * Load a file from disk or the classpath.
 	 * 
-	 * @param fileName
-	 *            Name of the file to load
+	 * @param fileName Name of the file to load
 	 * @return the file as an input stream
-	 * @throws FileNotFoundException
-	 *             when the file isn't in either place
+	 * @throws FileNotFoundException when the file isn't in either place
 	 */
 	public InputStream doLoadFileAsStream(final String fileName)
 			throws FileNotFoundException {
 		InputStream inputStream;
 		try {
-			inputStream = new FileInputStream(fileName); // NOPMD // $codepro.audit.disable
+			inputStream = new FileInputStream(fileName); // NOPMD //
+															// $codepro.audit.disable
 															// closeWhereCreated
 		} catch (final FileNotFoundException fe) {
 			// failed, so try to load it from resources in class path

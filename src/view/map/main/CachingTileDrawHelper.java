@@ -19,11 +19,10 @@ import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
 
-import view.util.Coordinate;
-
 import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
+import view.util.Coordinate;
 
 /**
  * A class to do the drawing of a tile, whether on a GUITile or on a
@@ -67,10 +66,8 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Check, and possibly regenerate, the cache.
 	 * 
-	 * @param width
-	 *            the current width
-	 * @param height
-	 *            the current height
+	 * @param width the current width
+	 * @param height the current height
 	 */
 	private void checkCache(final int width, final int height) {
 		if (!equalFloats(backgroundShape.getWidth(), width)
@@ -92,10 +89,11 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					* TWO_THIRDS - 1.0, width / THREE, height / THREE);
 			unit = new Ellipse2D.Double(width / FOUR, height / FOUR, width
 					/ FOUR, height / FOUR);
-			event = new Polygon(new int[] { (int) Math.round(width * THREE_QUARTERS),
+			event = new Polygon(new int[] {
+					(int) Math.round(width * THREE_QUARTERS),
 					(int) Math.round(width / TWO), width }, new int[] { 0,
-					(int) Math.round(height / TWO), (int) Math.round(height / TWO) },
-					MISC_EVENT_SIDES);
+					(int) Math.round(height / TWO),
+					(int) Math.round(height / TWO) }, MISC_EVENT_SIDES);
 		}
 	}
 
@@ -105,17 +103,14 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * assumptions about the graphics context's initial state, but unlike Chits
 	 * it makes no attempt to save and restore that state either.
 	 * 
-	 * @param pen
-	 *            the graphics context
-	 * @param tile
-	 *            the tile to draw
-	 * @param width
-	 *            the width of the drawing area
-	 * @param height
-	 *            the height of the drawing area
+	 * @param pen the graphics context
+	 * @param tile the tile to draw
+	 * @param width the width of the drawing area
+	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int width, final int height) {
+	public void drawTile(final Graphics pen, final Tile tile, final int width,
+			final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException(
@@ -156,10 +151,8 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Compare two floating-point values.
 	 * 
-	 * @param one
-	 *            the first value
-	 * @param two
-	 *            the second value
+	 * @param one the first value
+	 * @param two the second value
 	 * 
 	 * @return whether the two are approximately equal
 	 */
@@ -170,14 +163,10 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Draw a tile at the specified coordinates.
 	 * 
-	 * @param pen
-	 *            the graphics context.
-	 * @param tile
-	 *            the tile to draw
-	 * @param coordinates
-	 *            the coordinates of the tile's upper-left corner
-	 * @param dimensions
-	 *            the width (X) and height (Y) of the tile
+	 * @param pen the graphics context.
+	 * @param tile the tile to draw
+	 * @param coordinates the coordinates of the tile's upper-left corner
+	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile,

@@ -19,12 +19,14 @@ public final class TestReaderFactory {
 	private TestReaderFactory() {
 		// Do nothing.
 	}
+
 	/**
 	 * @return an instance of the old reader
 	 */
 	public static ISPReader createOldReader() {
 		return new SimpleXMLReader();
 	}
+
 	/**
 	 * @return an instance of the new reader
 	 */

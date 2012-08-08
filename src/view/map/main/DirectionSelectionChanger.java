@@ -18,8 +18,7 @@ public class DirectionSelectionChanger {
 	/**
 	 * Constructor.
 	 * 
-	 * @param mapModel
-	 *            the map model we're to use
+	 * @param mapModel the map model we're to use
 	 */
 	public DirectionSelectionChanger(final MapModel mapModel) {
 		model = mapModel;

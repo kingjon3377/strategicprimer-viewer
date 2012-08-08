@@ -14,8 +14,7 @@ public interface MapGUI extends PropertyChangeSource {
 	/**
 	 * Load and draw a map.
 	 * 
-	 * @param newMap
-	 *            the map to load
+	 * @param newMap the map to load
 	 */
 	void loadMap(final MapView newMap);
 
@@ -24,6 +23,7 @@ public interface MapGUI extends PropertyChangeSource {
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */
 	MapModel getMapModel();
+
 	/**
 	 * @return the size of a tile in this GUI.
 	 */

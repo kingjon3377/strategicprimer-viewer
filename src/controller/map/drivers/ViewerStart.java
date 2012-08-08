@@ -55,9 +55,8 @@ public final class ViewerStart {
 	/**
 	 * Run the app.
 	 * 
-	 * @param args
-	 *            Command-line arguments: args[0] is the map filename, others
-	 *            are ignored. TODO: Add option handling.
+	 * @param args Command-line arguments: args[0] is the map filename, others
+	 *        are ignored. TODO: Add option handling.
 	 * 
 	 */
 	public static void main(final String[] args) {
@@ -76,14 +75,16 @@ public final class ViewerStart {
 			filename = args[0];
 		}
 		try {
-			final MapModel model = new MapModel(
-					new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Warn)));
+			final MapModel model = new MapModel(new MapReaderAdapter().readMap(
+					filename, new Warning(Warning.Action.Warn)));
 			final ViewerFrame frame = new ViewerFrame(model);
-			frame.setJMenuBar(new SPMenu(new IOHandler(model, chooser), frame, model));
+			frame.setJMenuBar(new SPMenu(new IOHandler(model, chooser), frame,
+					model));
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 			if (args.length > 1) {
-				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1], new Warning(Warning.Action.Warn)));
+				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1],
+						new Warning(Warning.Action.Warn)));
 			}
 		} catch (final XMLStreamException e) {
 			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);

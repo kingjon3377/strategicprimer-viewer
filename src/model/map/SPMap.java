@@ -18,6 +18,7 @@ public class SPMap implements IMap {
 	 * Map version.
 	 */
 	private final int version;
+
 	/**
 	 * @return the map version
 	 */
@@ -25,19 +26,17 @@ public class SPMap implements IMap {
 	public int getVersion() {
 		return version;
 	}
-	
+
 	/**
 	 * Constructor that takes the size.
 	 * 
-	 * @param ver
-	 *            the map version
-	 * @param rows
-	 *            the number of rows
-	 * @param cols
-	 *            the number of columns
+	 * @param ver the map version
+	 * @param rows the number of rows
+	 * @param cols the number of columns
 	 * @param fileName the file this was loaded from
 	 */
-	public SPMap(final int ver, final int rows, final int cols, final String fileName) {
+	public SPMap(final int ver, final int rows, final int cols,
+			final String fileName) {
 		tiles = new TileCollection(fileName);
 		players = new PlayerCollection();
 		myRows = rows;
@@ -85,8 +84,7 @@ public class SPMap implements IMap {
 	/**
 	 * Add a tile to the map.
 	 * 
-	 * @param tile
-	 *            the tile to add
+	 * @param tile the tile to add
 	 */
 	public final void addTile(final Tile tile) {
 		tiles.addTile(tile);
@@ -95,13 +93,13 @@ public class SPMap implements IMap {
 	/**
 	 * Add a player to the game.
 	 * 
-	 * @param player
-	 *            the player to add
+	 * @param player the player to add
 	 */
 	@Override
 	public final void addPlayer(final Player player) {
 		players.addPlayer(player);
 	}
+
 	/**
 	 * @param point a point
 	 * @return the tile at those coordinates
@@ -110,6 +108,7 @@ public class SPMap implements IMap {
 	public final Tile getTile(final Point point) {
 		return tiles.getTile(point);
 	}
+
 	/**
 	 * 
 	 * @return the players in the map
@@ -120,8 +119,7 @@ public class SPMap implements IMap {
 	}
 
 	/**
-	 * @param obj
-	 *            another object
+	 * @param obj another object
 	 * 
 	 * @return whether it is an identical map.
 	 */
@@ -170,8 +168,10 @@ public class SPMap implements IMap {
 		}
 		return sbuild.toString();
 	}
+
 	/**
 	 * Write the map to XML.
+	 * 
 	 * @return an XML representation of the map.
 	 */
 	@Override
@@ -188,7 +188,7 @@ public class SPMap implements IMap {
 			sbuild.append(players.getCurrentPlayer().getPlayerId());
 		}
 		sbuild.append("\">\n");
-		for (Player player : players) {
+		for (final Player player : players) {
 			sbuild.append('\t');
 			sbuild.append(player.toXML());
 			sbuild.append('\n');
@@ -196,7 +196,8 @@ public class SPMap implements IMap {
 		for (int i = 0; i < myRows; i++) {
 			boolean anyTiles = false;
 			for (int j = 0; j < myCols; j++) {
-				final String tileXML = getTile(PointFactory.point(i, j)).toXML();
+				final String tileXML = getTile(PointFactory.point(i, j))
+						.toXML();
 				if (!anyTiles && !tileXML.isEmpty()) {
 					anyTiles = true;
 					sbuild.append("\t<row index=\"");
@@ -216,6 +217,7 @@ public class SPMap implements IMap {
 		sbuild.append("</map>");
 		return sbuild.toString();
 	}
+
 	/**
 	 * @param obj another map
 	 * @return whether it's a strict subset of this one
@@ -223,14 +225,17 @@ public class SPMap implements IMap {
 	@Override
 	public boolean isSubset(final IMap obj) {
 		if (cols() == obj.cols() && rows() == obj.rows()) {
-			return players.isSubset(obj.getPlayers()) && tiles.isSubset(obj.getTiles()); // NOPMD
+			return players.isSubset(obj.getPlayers())
+					&& tiles.isSubset(obj.getTiles()); // NOPMD
 		} else {
 			SystemOut.SYS_OUT.println("Sizes differ");
 			return false;
 		}
 	}
+
 	/**
 	 * Compare to another map.
+	 * 
 	 * @param other the other map
 	 * @return the result of the comparison
 	 */
@@ -238,6 +243,7 @@ public class SPMap implements IMap {
 	public int compareTo(final IMap other) {
 		return equals(other) ? 0 : hashCode() - other.hashCode();
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -245,6 +251,7 @@ public class SPMap implements IMap {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -254,10 +261,12 @@ public class SPMap implements IMap {
 		players.setFileOnChildren(file);
 		tiles.setFileOnChildren(file);
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return the collection of tiles
 	 */
@@ -265,13 +274,14 @@ public class SPMap implements IMap {
 	public TileCollection getTiles() {
 		return tiles;
 	}
+
 	/**
 	 * @return a clone of this object.
 	 */
 	@Override
 	public IMap deepCopy() {
 		final SPMap retval = new SPMap(version, myRows, myCols, file);
-		for (Player player : players) {
+		for (final Player player : players) {
 			retval.players.addPlayer(player.deepCopy());
 		}
 		retval.tiles = tiles.deepCopy();

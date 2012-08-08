@@ -7,16 +7,19 @@ import javax.swing.JComponent;
 
 /**
  * The main component of a KeyElement.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class KeyElementComponent extends JComponent {
 	/**
 	 * The color of this Component.
 	 */
 	private final Color color;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param col the color to make the component.
 	 */
 	public KeyElementComponent(final Color col) {
@@ -25,8 +28,7 @@ public final class KeyElementComponent extends JComponent {
 	}
 
 	/**
-	 * @param pen
-	 *            the graphics context
+	 * @param pen the graphics context
 	 */
 	@Override
 	public void paint(final Graphics pen) {

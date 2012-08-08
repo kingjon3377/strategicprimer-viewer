@@ -10,14 +10,16 @@ import model.map.TileFixture;
  * @param <T> The Fixture type this will produce.
  * 
  */
-//ESCA-JAVA0024:
-//ESCA-JAVA0011:
+// ESCA-JAVA0024:
+// ESCA-JAVA0011:
 @Deprecated
-public abstract class AbstractFixtureNode<T extends TileFixture> extends AbstractChildNode<T> { // NOPMD
+public abstract class AbstractFixtureNode<T extends TileFixture> extends
+		AbstractChildNode<T> { // NOPMD
 	// This is a superclass to unite its subclasses, and abstract to avoid
 	// pointless code implementing the methods required by its superclass.
 	/**
 	 * Constructor.
+	 * 
 	 * @param type the type of child we're to produce
 	 */
 	protected AbstractFixtureNode(final Class<T> type) {

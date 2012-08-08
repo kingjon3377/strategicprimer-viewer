@@ -12,6 +12,7 @@ package model.map;
 public interface HasChildren {
 	/**
 	 * Set all children's file property to the specified value.
+	 * 
 	 * @param value the value to set
 	 */
 	void setFileOnChildren(final String value);

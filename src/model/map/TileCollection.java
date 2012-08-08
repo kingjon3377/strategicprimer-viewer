@@ -20,13 +20,17 @@ public final class TileCollection implements Iterable<Point>,
 	 * The default filename for tiles we create to avoid returning null.
 	 */
 	private final String file;
+
 	/**
 	 * Constructor.
-	 * @param filename the default filename for tiles we create to avoid returning null
+	 * 
+	 * @param filename the default filename for tiles we create to avoid
+	 *        returning null
 	 */
 	public TileCollection(final String filename) {
 		file = filename;
 	}
+
 	/**
 	 * The Map this is a wrapper around.
 	 */
@@ -35,8 +39,7 @@ public final class TileCollection implements Iterable<Point>,
 	/**
 	 * Add a Tile to the map.
 	 * 
-	 * @param tile
-	 *            the tile to add.
+	 * @param tile the tile to add.
 	 */
 	public void addTile(final Tile tile) {
 		tiles.put(tile.getLocation(), tile);
@@ -46,8 +49,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * Get the specified point. If it isn't in the collection, add a new "empty"
 	 * one there and return that. This should never return null.
 	 * 
-	 * @param point
-	 *            a point
+	 * @param point a point
 	 * 
 	 * @return the tile at that point, or a new "empty" tile at that point.
 	 */
@@ -68,8 +70,7 @@ public final class TileCollection implements Iterable<Point>,
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it is an identical TileCollection.
 	 */
@@ -97,44 +98,47 @@ public final class TileCollection implements Iterable<Point>,
 	public String toString() {
 		return "TileCollection";
 	}
-	
+
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(SimpleTile)} has the side effect of printing what makes it
-	 * *not* a subset; we want that done for *all* relevant tiles.
+	 * {@link Tile#isSubset(SimpleTile)} has the side effect of printing what
+	 * makes it *not* a subset; we want that done for *all* relevant tiles.
 	 * 
-	 * @param obj
-	 *            another TileCollection
+	 * @param obj another TileCollection
 	 * @return whether it's a strict subset of this one
 	 */
 	@Override
 	public boolean isSubset(final TileCollection obj) {
 		boolean retval = true; // NOPMD
-		for (Point point : obj) {
-			if (!tiles.containsKey(point) || !tiles.get(point).isSubset(obj.getTile(point))) {
+		for (final Point point : obj) {
+			if (!tiles.containsKey(point)
+					|| !tiles.get(point).isSubset(obj.getTile(point))) {
 				retval = false; // NOPMD
 			}
 		}
 		return retval;
 	}
+
 	/**
 	 * @return a clone of this collection
 	 */
 	@Override
 	public TileCollection deepCopy() {
 		final TileCollection retval = new TileCollection(file);
-		for (Point point : this) {
+		for (final Point point : this) {
 			retval.tiles.put(point, (Tile) tiles.get(point).deepCopy());
 		}
 		return retval;
 	}
+
 	/**
 	 * Set all children's file property to the specified value, recursively.
+	 * 
 	 * @param value the value to set
 	 */
 	@Override
 	public void setFileOnChildren(final String value) {
-		for (Tile tile : tiles.values()) {
+		for (final Tile tile : tiles.values()) {
 			tile.setFile(value);
 		}
 	}

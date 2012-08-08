@@ -27,14 +27,10 @@ public class VisibleDimensions {
 	/**
 	 * Constructor.
 	 * 
-	 * @param minRow
-	 *            the minimum row
-	 * @param maxRow
-	 *            the maximum row
-	 * @param minCol
-	 *            the minimum column
-	 * @param maxCol
-	 *            the maximum column
+	 * @param minRow the minimum row
+	 * @param maxRow the maximum row
+	 * @param minCol the minimum column
+	 * @param maxCol the maximum column
 	 */
 	public VisibleDimensions(final int minRow, final int maxRow,
 			final int minCol, final int maxCol) {
@@ -87,6 +83,7 @@ public class VisibleDimensions {
 				.append(maximumRow).append(", ").append(maximumCol).append(')')
 				.toString();
 	}
+
 	/**
 	 * @param other another VisibleDimensions
 	 * @return whether it's the same size as this one.
@@ -95,12 +92,14 @@ public class VisibleDimensions {
 		return (maximumCol - minimumCol) == (other.maximumCol - other.minimumCol)
 				&& (maximumRow - minimumRow) == (other.maximumRow - other.minimumRow);
 	}
+
 	/**
 	 * @return the width (in columns) visible.
 	 */
 	public int getWidth() {
 		return maximumCol - minimumCol;
 	}
+
 	/**
 	 * @return the height (in rows) visible.
 	 */

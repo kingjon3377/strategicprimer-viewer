@@ -45,19 +45,17 @@ public final class ReflectionTestDriver {
 	/**
 	 * Run the test.
 	 * 
-	 * @param filename
-	 *            the test file
-	 * @param runs
-	 *            how many times to run the test
-	 * @param reflection
-	 *            whether to use reflection
+	 * @param filename the test file
+	 * @param runs how many times to run the test
+	 * @param reflection whether to use reflection
 	 * @return how long the test took
 	 * @throws SPFormatException on map format error
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on other I/O error
 	 */
 	private static long runTest(final String filename, final int runs,
-			final boolean reflection) throws IOException, XMLStreamException, SPFormatException {
+			final boolean reflection) throws IOException, XMLStreamException,
+			SPFormatException {
 		final long start = System.nanoTime();
 		for (int i = 0; i < runs; i++) {
 			READER.readMap(filename, reflection, Warning.INSTANCE);
@@ -65,28 +63,32 @@ public final class ReflectionTestDriver {
 		final long end = System.nanoTime();
 		return end - start;
 	}
+
 	/**
 	 * Test correctness by comparing the results of the two reading methods.
+	 * 
 	 * @param filename the file containing map data to test with
 	 * @return whether the two methods returned identical results
-	 * @throws SPFormatException on map format error detected by one of the readers
+	 * @throws SPFormatException on map format error detected by one of the
+	 *         readers
 	 * @throws XMLStreamException on XML error detected by one of the readers
 	 * @throws IOException on I/O error detected by one o the readers
 	 */
 	private static boolean methodsAgree(final String filename)
 			throws IOException, XMLStreamException, SPFormatException {
-		return READER.readMap(filename, false, Warning.INSTANCE).equals(READER.readMap(filename, true, Warning.INSTANCE));
+		return READER.readMap(filename, false, Warning.INSTANCE).equals(
+				READER.readMap(filename, true, Warning.INSTANCE));
 	}
+
 	/**
-	 * @param args
-	 *            the list of filenames to check
+	 * @param args the list of filenames to check
 	 */
 	public static void main(final String[] args) {
 		if (args.length < 1) {
 			SystemOut.SYS_OUT
 					.println("Usage: MapChecker filename [filename ...]");
 		}
-		for (String filename : args) {
+		for (final String filename : args) {
 			try {
 				SystemOut.SYS_OUT.print("Starting ");
 				SystemOut.SYS_OUT.println(filename);
@@ -109,21 +111,21 @@ public final class ReflectionTestDriver {
 				SystemOut.SYS_OUT.print(duration);
 				SystemOut.SYS_OUT.print(" ns, average of ");
 				SystemOut.SYS_OUT.println((duration / REPS));
-			} catch (MapVersionException e) {
+			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 						+ " not acceptable to reader", e);
 				continue;
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
 				continue;
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error reading " + filename, e);
 				continue;
-			} catch (XMLStreamException e) {
+			} catch (final XMLStreamException e) {
 				LOGGER.log(Level.SEVERE,
 						"XML stream error reading " + filename, e);
 				continue;
-			} catch (SPFormatException e) {
+			} catch (final SPFormatException e) {
 				LOGGER.log(Level.SEVERE, "SP map format error reading "
 						+ filename, e);
 				continue;

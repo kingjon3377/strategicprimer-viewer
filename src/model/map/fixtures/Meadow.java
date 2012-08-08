@@ -4,9 +4,11 @@ import model.map.HasImage;
 import model.map.TileFixture;
 
 /**
- * A field or meadow. If in forest, should increase a unit's vision slightly when the unit is on it.
+ * A field or meadow. If in forest, should increase a unit's vision slightly
+ * when the unit is on it.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class Meadow implements TileFixture, HasImage {
 	/**
@@ -25,8 +27,10 @@ public class Meadow implements TileFixture, HasImage {
 	 * Kind of grass or grain growing there.
 	 */
 	private final String kind;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param grain the kind of grass or grain growing in the field or meadow
 	 * @param fld whether this is a field (as opposed to a meadow)
 	 * @param cult whether it's under cultivation
@@ -43,30 +47,35 @@ public class Meadow implements TileFixture, HasImage {
 		file = fileName;
 		status = stat;
 	}
+
 	/**
 	 * @return the kind of grass or grain growing in the meadow or field
 	 */
 	public String getKind() {
 		return kind;
 	}
+
 	/**
 	 * @return if this is a cultivated field or meadow
 	 */
 	public boolean isCultivated() {
 		return cultivated;
 	}
+
 	/**
 	 * @return true if this is a field, false if it's a meadow
 	 */
 	public boolean isField() {
 		return field;
 	}
+
 	/**
 	 * @return the status of the field, i.e. what season it's in
 	 */
 	public FieldStatus getStatus() {
 		return status;
 	}
+
 	/**
 	 * @return an XML representation of the Fixture.
 	 */
@@ -78,14 +87,17 @@ public class Meadow implements TileFixture, HasImage {
 				.append(cultivated).append("\" status=\"").append(status)
 				.append("\" id=\"").append(id).append("\" />").toString();
 	}
+
 	/**
 	 * TODO: This should be more granular based on the kind of field.
+	 * 
 	 * @return the name of an image to represent the field or meadow
 	 */
 	@Override
 	public String getImage() {
 		return field ? "field.png" : "meadow.png";
 	}
+
 	/**
 	 * @return a String representation of the field or meadow
 	 */
@@ -104,14 +116,17 @@ public class Meadow implements TileFixture, HasImage {
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * TODO: Should probably depend.
+	 * 
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
 	@Override
 	public int getZValue() {
 		return 15;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -123,6 +138,7 @@ public class Meadow implements TileFixture, HasImage {
 				&& cultivated == ((Meadow) obj).cultivated
 				&& id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -130,9 +146,9 @@ public class Meadow implements TileFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -140,10 +156,12 @@ public class Meadow implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -151,6 +169,7 @@ public class Meadow implements TileFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -161,6 +180,7 @@ public class Meadow implements TileFixture, HasImage {
 				&& field == ((Meadow) fix).field
 				&& cultivated == ((Meadow) fix).cultivated;
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -168,6 +188,7 @@ public class Meadow implements TileFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -175,15 +196,18 @@ public class Meadow implements TileFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Meadow(getKind(), isField(), isCultivated(), getID(), getStatus(), getFile());
+		return new Meadow(getKind(), isField(), isCultivated(), getID(),
+				getStatus(), getFile());
 	}
 }

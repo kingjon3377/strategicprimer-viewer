@@ -35,10 +35,8 @@ public class Point implements Comparable<Point>, XMLWritable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param row
-	 *            The first coordinate
-	 * @param col
-	 *            The second coordinate
+	 * @param row The first coordinate
+	 * @param col The second coordinate
 	 */
 	public Point(final int row, final int col) {
 		myRow = row;
@@ -47,8 +45,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 
 	/**
 	 * 
-	 * @param obj
-	 *            the other object
+	 * @param obj the other object
 	 * @return whether this object equals another.
 	 */
 	@Override
@@ -67,8 +64,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	}
 
 	/**
-	 * @param point
-	 *            another point
+	 * @param point another point
 	 * 
 	 * @return the result of a comparison with that point
 	 */
@@ -85,6 +81,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	public String toString() {
 		return "(" + myRow + ", " + myCol + ")";
 	}
+
 	/**
 	 * @return an XML representation of the point
 	 */
@@ -93,7 +90,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	public String toXML() {
 		return "row=\"" + myRow + "\" column=\"" + myCol + "\"";
 	}
-	
+
 	/**
 	 * Note that this shouldn't ever be called; Points aren't represented by
 	 * tags, they're an implementation detail that shouldn't be exposed to
@@ -106,6 +103,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -113,6 +111,7 @@ public class Point implements Comparable<Point>, XMLWritable {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */

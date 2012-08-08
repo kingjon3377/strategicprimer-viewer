@@ -36,8 +36,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	 * Set the selection, and notify both the old and the new values of the
 	 * change.
 	 * 
-	 * @param sel
-	 *            the new currently-selected item
+	 * @param sel the new currently-selected item
 	 */
 	protected void setSelection(final Selectable sel) {
 		if (!sel.equals(selection)) {
@@ -58,8 +57,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	/**
 	 * Handle mouse clicks.
 	 * 
-	 * @param event
-	 *            the event to handle
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
@@ -72,8 +70,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	/**
 	 * Ignored.
 	 * 
-	 * @param event
-	 *            ignored
+	 * @param event ignored
 	 */
 	@Override
 	public void mouseEntered(final MouseEvent event) {
@@ -83,8 +80,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	/**
 	 * Ignored.
 	 * 
-	 * @param event
-	 *            ignored
+	 * @param event ignored
 	 */
 	@Override
 	public void mouseExited(final MouseEvent event) {
@@ -94,8 +90,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	/**
 	 * Ignored.
 	 * 
-	 * @param event
-	 *            the event to handle
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mousePressed(final MouseEvent event) {
@@ -105,8 +100,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	/**
 	 * Ignored.
 	 * 
-	 * @param event
-	 *            the event to handle
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mouseReleased(final MouseEvent event) {
@@ -132,8 +126,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	/**
 	 * Add a property-change listener.
 	 * 
-	 * @param list
-	 *            the listener to add
+	 * @param list the listener to add
 	 */
 	@Override
 	public void addPropertyChangeListener(final PropertyChangeListener list) {
@@ -143,8 +136,7 @@ public class SelectionListener implements MouseListener, PropertyChangeSource {
 	/**
 	 * Remove a property-change listener.
 	 * 
-	 * @param list
-	 *            the listener to remove.
+	 * @param list the listener to remove.
 	 */
 	@Override
 	public void removePropertyChangeListener(final PropertyChangeListener list) {

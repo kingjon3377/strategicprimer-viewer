@@ -8,8 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a Troll.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 @Deprecated
 public class TrollNode extends AbstractFixtureNode<Troll> {
@@ -19,6 +20,7 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	public TrollNode() {
 		super(Troll.class);
 	}
+
 	/**
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
@@ -26,13 +28,18 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Troll produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Troll(Integer.parseInt(getProperty("id")), getProperty("file"));
+	public Troll produce(final PlayerCollection players, final Warning warner)
+			throws SPFormatException {
+		return new Troll(Integer.parseInt(getProperty("id")),
+				getProperty("file"));
 	}
+
 	/**
 	 * Check the node for invalid data. A Troll is valid if it has no children.
+	 * 
 	 * @param warner a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException if the node contains invalid data
 	 */
 	@Override
@@ -41,6 +48,7 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 		forbidChildren("troll");
 		registerOrCreateID("troll", idFactory, warner);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
@@ -49,6 +57,7 @@ public class TrollNode extends AbstractFixtureNode<Troll> {
 	public boolean canUse(final String property) {
 		return "id".equals(property);
 	}
+
 	/**
 	 * @return a String representation of the node.
 	 */

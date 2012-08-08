@@ -6,8 +6,9 @@ import model.map.TileFixture;
 
 /**
  * An oasis on the map.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class Oasis implements TerrainFixture, HasImage {
 	/**
@@ -18,6 +19,7 @@ public class Oasis implements TerrainFixture, HasImage {
 		id = idNum;
 		file = fileName;
 	}
+
 	/**
 	 * @return a String representation of the oasis.
 	 */
@@ -25,6 +27,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	public String toString() {
 		return "Oasis";
 	}
+
 	/**
 	 * @return an XML representation of the oasis.
 	 */
@@ -34,6 +37,7 @@ public class Oasis implements TerrainFixture, HasImage {
 		return new StringBuilder("<oasis id=\"").append(id).append("\" />")
 				.toString();
 	}
+
 	/**
 	 * @return the name of an image to represent the oasis.
 	 */
@@ -41,6 +45,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	public String getImage() {
 		return "oasis.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -48,6 +53,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	public int getZValue() {
 		return 25;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -56,6 +62,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	public boolean equals(final Object obj) {
 		return obj instanceof Oasis && id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -63,9 +70,9 @@ public class Oasis implements TerrainFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -73,10 +80,12 @@ public class Oasis implements TerrainFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -84,6 +93,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -92,6 +102,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Oasis;
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -99,6 +110,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -106,10 +118,12 @@ public class Oasis implements TerrainFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

@@ -17,8 +17,7 @@ public final class DriverQuit {
 	 * Quit. Note that this should not be called from a non-static context
 	 * except by some CLI drivers.
 	 * 
-	 * @param code
-	 *            The exit code.
+	 * @param code The exit code.
 	 */
 	public static void quit(final int code) {
 		System.exit(code);

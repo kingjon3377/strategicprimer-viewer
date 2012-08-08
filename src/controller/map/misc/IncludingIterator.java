@@ -14,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import util.Pair;
 import controller.map.SPFormatException;
+
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
  * automatically handles "include" tags. TODO: We need something to map tags to
@@ -27,8 +28,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * Constructor.
 	 * 
 	 * @param file the name of the file we're reading
-	 * @param iter
-	 *            the iterator we'll start with.
+	 * @param iter the iterator we'll start with.
 	 */
 	public IncludingIterator(final String file, final Iterator<XMLEvent> iter) {
 		stack = new LinkedList<Pair<String, ComparableIterator<XMLEvent>>>();
@@ -90,22 +90,29 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		}
 		return retval;
 	}
+
 	/**
-	 * A NoSuchElementException that takes a custom cause, unlike its superclass.
+	 * A NoSuchElementException that takes a custom cause, unlike its
+	 * superclass.
 	 */
 	// ESCA-JAVA0051:
-	public static class NoSuchElementBecauseException extends NoSuchElementException {
+	public static class NoSuchElementBecauseException extends
+			NoSuchElementException {
 		/**
 		 * Constructor.
+		 * 
 		 * @param message the message
 		 * @param cause the cause
 		 */
-		public NoSuchElementBecauseException(final String message, final Throwable cause) {
+		public NoSuchElementBecauseException(final String message,
+				final Throwable cause) {
 			super(message);
 			super.initCause(cause);
 		}
+
 		/**
 		 * Constructor.
+		 * 
 		 * @param cause the cause
 		 */
 		public NoSuchElementBecauseException(final Throwable cause) {
@@ -113,21 +120,20 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			super.initCause(cause);
 		}
 	}
+
 	/**
 	 * Handle an "include" tag by adding an iterator for the contents of the
 	 * file it references to the top of the stack.
 	 * 
-	 * @param tag
-	 *            the tag.
+	 * @param tag the tag.
 	 */
 	private void handleInclude(final XMLEvent tag) {
 		try {
-			final String file = getAttribute(
-					tag.asStartElement(), "file");
+			final String file = getAttribute(tag.asStartElement(), "file");
 			stack.addFirst(Pair.of(
 					file,
-					new ComparableIterator<XMLEvent>(XMLInputFactory.newInstance()
-							.createXMLEventReader(
+					new ComparableIterator<XMLEvent>(XMLInputFactory
+							.newInstance().createXMLEventReader(
 									new FileOpener().createReader(file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
@@ -155,6 +161,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		stack.peekFirst().second().remove();
 		removeEmptyIterators();
 	}
+
 	/**
 	 * @return the file we're *currently* reading from.
 	 */

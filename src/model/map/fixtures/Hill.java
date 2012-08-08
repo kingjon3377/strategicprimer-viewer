@@ -20,6 +20,7 @@ public class Hill implements TerrainFixture, HasImage {
 		id = idNum;
 		file = fileName;
 	}
+
 	/**
 	 * @return a String representation of the hill.
 	 */
@@ -27,14 +28,17 @@ public class Hill implements TerrainFixture, HasImage {
 	public String toString() {
 		return "Hill";
 	}
+
 	/**
 	 * @return an XML representation of the hill.
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<hill id=\"").append(id).append("\" />").toString();
+		return new StringBuilder("<hill id=\"").append(id).append("\" />")
+				.toString();
 	}
+
 	/**
 	 * @return the name of an image to represent the hill.
 	 */
@@ -42,6 +46,7 @@ public class Hill implements TerrainFixture, HasImage {
 	public String getImage() {
 		return "hill.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -49,6 +54,7 @@ public class Hill implements TerrainFixture, HasImage {
 	public int getZValue() {
 		return 5;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -57,6 +63,7 @@ public class Hill implements TerrainFixture, HasImage {
 	public boolean equals(final Object obj) {
 		return obj instanceof Hill && id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -64,9 +71,9 @@ public class Hill implements TerrainFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -74,10 +81,12 @@ public class Hill implements TerrainFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -85,6 +94,7 @@ public class Hill implements TerrainFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -93,6 +103,7 @@ public class Hill implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Hill;
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -100,6 +111,7 @@ public class Hill implements TerrainFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -107,10 +119,12 @@ public class Hill implements TerrainFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

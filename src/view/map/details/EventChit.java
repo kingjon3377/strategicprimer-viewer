@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
-import model.map.events.IEvent;
 import model.map.events.AbstractTownEvent;
+import model.map.events.IEvent;
 import model.map.events.TownStatus;
 import model.viewer.FixtureTransferable;
 
@@ -25,10 +25,8 @@ public class EventChit extends Chit {
 	/**
 	 * Constructor.
 	 * 
-	 * @param event
-	 *            the fortress this chit represents
-	 * @param listener
-	 *            the object listening for clicks on this chit.
+	 * @param event the fortress this chit represents
+	 * @param listener the object listening for clicks on this chit.
 	 */
 	public EventChit(final IEvent event, final MouseListener listener) {
 		super(listener, new FixtureTransferable(event));
@@ -60,8 +58,7 @@ public class EventChit extends Chit {
 	/**
 	 * Paint the chit.
 	 * 
-	 * @param pen
-	 *            the graphics context
+	 * @param pen the graphics context
 	 */
 	@Override
 	public final void paint(final Graphics pen) {
@@ -85,10 +82,12 @@ public class EventChit extends Chit {
 				((int) Math.round(getWidth() * (MARGIN / 2.0))),
 				((int) Math.round(getHeight() * (MARGIN / 2.0))));
 		pen.setColor(saveColor);
-		pen.fillRoundRect(((int) Math.round(getWidth() / 2.0 - getWidth() * MARGIN)) + 1,
+		pen.fillRoundRect(
+				((int) Math.round(getWidth() / 2.0 - getWidth() * MARGIN)) + 1,
 				((int) Math.round(getHeight() / 2.0 - getHeight() * MARGIN)) + 1,
-				((int) Math.round(getWidth() * MARGIN * 2.0)), ((int) Math.round(getHeight()
-						* MARGIN * 2.0)), ((int) Math.round(getWidth() * MARGIN / 2.0)),
+				((int) Math.round(getWidth() * MARGIN * 2.0)),
+				((int) Math.round(getHeight() * MARGIN * 2.0)),
+				((int) Math.round(getWidth() * MARGIN / 2.0)),
 				((int) Math.round(getHeight() * MARGIN / 2.0)));
 	}
 }

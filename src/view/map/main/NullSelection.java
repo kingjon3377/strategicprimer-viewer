@@ -23,8 +23,7 @@ public final class NullSelection extends Selectable {
 	/**
 	 * Don't waste resources doing any painting.
 	 * 
-	 * @param pen
-	 *            ignored
+	 * @param pen ignored
 	 */
 	@Override
 	// ESCA-JAVA0025:

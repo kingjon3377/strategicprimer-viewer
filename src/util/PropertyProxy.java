@@ -22,8 +22,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 	/**
 	 * Constructor.
 	 * 
-	 * @param source
-	 *            a source of events that we're to proxy.
+	 * @param source a source of events that we're to proxy.
 	 */
 	public PropertyProxy(final Component source) {
 		source.addPropertyChangeListener(this);
@@ -33,8 +32,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 	/**
 	 * Constructor.
 	 * 
-	 * @param source
-	 *            a source of events that we're to proxy.
+	 * @param source a source of events that we're to proxy.
 	 */
 	public PropertyProxy(final PropertyChangeSource source) {
 		source.addPropertyChangeListener(this);
@@ -44,8 +42,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 	/**
 	 * Handle (pass on) a property change event.
 	 * 
-	 * @param evt
-	 *            the event to handle.
+	 * @param evt the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
@@ -55,8 +52,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 	/**
 	 * Add a property-change listener.
 	 * 
-	 * @param list
-	 *            the listener to add
+	 * @param list the listener to add
 	 */
 	@Override
 	public void addPropertyChangeListener(final PropertyChangeListener list) {
@@ -66,8 +62,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 	/**
 	 * Remove a property-change listener.
 	 * 
-	 * @param list
-	 *            The listener to remove.
+	 * @param list The listener to remove.
 	 */
 	@Override
 	public void removePropertyChangeListener(final PropertyChangeListener list) {

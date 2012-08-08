@@ -26,12 +26,14 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	 * The tag.
 	 */
 	private static final String TAG = "mineral";
+
 	/**
 	 * Constructor.
 	 */
 	public MineralEventNode() {
 		super(MineralEvent.class);
 	}
+
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
@@ -42,18 +44,16 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 	private static final String MINERAL_PROPERTY = "kind";
 
 	/**
-	 * @param players
-	 *            the players on the map
-	 * @param warner
-	 *            a Warning instance to use for warnings
+	 * @param players the players on the map
+	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent event
-	 * @throws SPFormatException
-	 *             if this includes invalid data
+	 * @throws SPFormatException if this includes invalid data
 	 */
 	@Override
-	public MineralEvent produce(final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
-		final MineralEvent fix = new MineralEvent(getProperty(MINERAL_PROPERTY),
+	public MineralEvent produce(final PlayerCollection players,
+			final Warning warner) throws SPFormatException {
+		final MineralEvent fix = new MineralEvent(
+				getProperty(MINERAL_PROPERTY),
 				Boolean.parseBoolean(getProperty(EXPOSED_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
 				Integer.parseInt(getProperty("id")));
@@ -62,31 +62,32 @@ public class MineralEventNode extends AbstractFixtureNode<MineralEvent> {
 		}
 		return fix;
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, OLD_MINERAL_PROP, EXPOSED_PROPERTY, DC_PROPERTY,
-				MINERAL_PROPERTY, "id");
+		return EqualsAny.equalsAny(property, OLD_MINERAL_PROP,
+				EXPOSED_PROPERTY, DC_PROPERTY, MINERAL_PROPERTY, "id");
 	}
 
 	/**
 	 * Check whether the Node's data is valid. A MineralNode is valid if it has
 	 * no children and "kind", "dc", and "exposed" properties.
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		handleDeprecatedProperty(TAG, MINERAL_PROPERTY, OLD_MINERAL_PROP, warner, true, false);
+		handleDeprecatedProperty(TAG, MINERAL_PROPERTY, OLD_MINERAL_PROP,
+				warner, true, false);
 		demandProperty(TAG, DC_PROPERTY, warner, false, false);
 		demandProperty(TAG, EXPOSED_PROPERTY, warner, false, false);
 		registerOrCreateID(TAG, idFactory, warner);

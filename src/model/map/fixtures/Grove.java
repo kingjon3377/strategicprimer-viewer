@@ -5,8 +5,9 @@ import model.map.TileFixture;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class Grove implements TileFixture, HasImage {
 	/**
@@ -21,8 +22,10 @@ public class Grove implements TileFixture, HasImage {
 	 * Kind of tree.
 	 */
 	private final String kind;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param fruit whether the trees are fruit trees
 	 * @param wildGrove whether the trees are wild
 	 * @param tree what kind of trees are in the grove
@@ -37,34 +40,41 @@ public class Grove implements TileFixture, HasImage {
 		id = idNum;
 		file = fileName;
 	}
+
 	/**
 	 * @return true if this is an orchard, false otherwise
 	 */
 	public boolean isOrchard() {
 		return orchard;
 	}
+
 	/**
-	 * @return if this is a wild grove or orchard, false if it's a cultivated one
+	 * @return if this is a wild grove or orchard, false if it's a cultivated
+	 *         one
 	 */
 	public boolean isWild() {
 		return wild;
 	}
+
 	/**
 	 * @return what kind of trees are in the grove
 	 */
 	public String getKind() {
 		return kind;
 	}
+
 	/**
 	 * @return an XML representation of the Fixture.
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder(orchard ? "<orchard"
-				: "<grove").append(" wild=\"").append(isWild())
-				.append("\" kind=\"").append(getKind()).append("\" id=\"").append(id).append("\" />").toString();
+		return new StringBuilder(orchard ? "<orchard" : "<grove")
+				.append(" wild=\"").append(isWild()).append("\" kind=\"")
+				.append(getKind()).append("\" id=\"").append(id)
+				.append("\" />").toString();
 	}
+
 	/**
 	 * @return the name of an image to represent the grove or orchard
 	 */
@@ -72,6 +82,7 @@ public class Grove implements TileFixture, HasImage {
 	public String getImage() {
 		return orchard ? "orchard.png" : "grove.png";
 	}
+
 	/**
 	 * @return a String representation of the grove or orchard
 	 */
@@ -80,6 +91,7 @@ public class Grove implements TileFixture, HasImage {
 		return (isWild() ? "Wild " : "Cultivated ") + getKind()
 				+ (isOrchard() ? " orchard" : " grove");
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -87,6 +99,7 @@ public class Grove implements TileFixture, HasImage {
 	public int getZValue() {
 		return 35;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -98,6 +111,7 @@ public class Grove implements TileFixture, HasImage {
 				&& wild == ((Grove) obj).wild
 				&& id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -105,9 +119,9 @@ public class Grove implements TileFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -115,10 +129,12 @@ public class Grove implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -126,6 +142,7 @@ public class Grove implements TileFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -136,6 +153,7 @@ public class Grove implements TileFixture, HasImage {
 				&& orchard == ((Grove) fix).orchard
 				&& wild == ((Grove) fix).wild;
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -143,6 +161,7 @@ public class Grove implements TileFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -150,10 +169,12 @@ public class Grove implements TileFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

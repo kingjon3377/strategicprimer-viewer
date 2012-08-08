@@ -18,8 +18,7 @@ import model.map.TileType;
  */
 public class ExplorationRunner { // NOPMD
 	/**
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * 
 	 * @return what the owner of a fortress on the tile knows
 	 * @throws MissingTableException on missing table
@@ -47,18 +46,15 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * Add a table. This is package-visibility so our test-case can use it.
 	 * 
-	 * @param name
-	 *            The name to add the table under
-	 * @param table
-	 *            the table.
+	 * @param name The name to add the table under
+	 * @param table the table.
 	 */
 	public void loadTable(final String name, final EncounterTable table) { // NOPMD
 		tables.put(name, table);
 	}
 
 	/**
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * 
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
@@ -68,8 +64,7 @@ public class ExplorationRunner { // NOPMD
 	}
 
 	/**
-	 * @param tile
-	 *            a forest tile
+	 * @param tile a forest tile
 	 * 
 	 * @return the main kind of tree on the tile
 	 * @throws MissingTableException on missing table
@@ -91,30 +86,34 @@ public class ExplorationRunner { // NOPMD
 	 * on it if it's a random-encounter table.) Note that the result may be the
 	 * name of another table, which should then be consulted.
 	 * 
-	 * @param table
-	 *            the name of the table to consult
-	 * @param tile
-	 *            the tile to refer to
+	 * @param table the name of the table to consult
+	 * @param tile the tile to refer to
 	 * 
 	 * @return the result of the consultation
 	 * @throws MissingTableException if the table is missing
 	 */
-	public String consultTable(final String table, final Tile tile) throws MissingTableException {
+	public String consultTable(final String table, final Tile tile)
+			throws MissingTableException {
 		return getTable(table).generateEvent(tile);
 	}
+
 	/**
-	 * Get a table; guaranteed to return non-null (assuming a null wasn't explicitly added to the map).
+	 * Get a table; guaranteed to return non-null (assuming a null wasn't
+	 * explicitly added to the map).
+	 * 
 	 * @param name the name of the table we want
 	 * @return that table
 	 * @throws MissingTableException if the table isn't in the map of tables.
 	 */
-	public EncounterTable getTable(final String name) throws MissingTableException {
+	public EncounterTable getTable(final String name)
+			throws MissingTableException {
 		if (tables.containsKey(name)) {
 			return tables.get(name);
 		} else {
 			throw new MissingTableException(name);
 		}
 	}
+
 	/**
 	 * Consult a table, and if the result indicates recursion, perform it.
 	 * Recursion is indicated by hash-marks around the name of the table to
@@ -122,18 +121,18 @@ public class ExplorationRunner { // NOPMD
 	 * given string, or if either is at the beginning or the end of the string,
 	 * since we use String.split .
 	 * 
-	 * @param table
-	 *            the name of the table to consult
-	 * @param tile
-	 *            the tile to refer to
+	 * @param table the name of the table to consult
+	 * @param tile the tile to refer to
 	 * 
 	 * @return the result of the consultation
 	 * @throws MissingTableException on missing table
 	 */
-	public String recursiveConsultTable(final String table, final Tile tile) throws MissingTableException {
+	public String recursiveConsultTable(final String table, final Tile tile)
+			throws MissingTableException {
 		String result = consultTable(table, tile);
 		if (result == null) {
-			throw new MissingTableException("Table " + table + " generated null result");
+			throw new MissingTableException("Table " + table
+					+ " generated null result");
 		}
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
@@ -151,8 +150,7 @@ public class ExplorationRunner { // NOPMD
 	 * Check that whether a table contains recursive calls to a table that
 	 * doesn't exist.
 	 * 
-	 * @param table
-	 *            the name of the table to consult
+	 * @param table the name of the table to consult
 	 * 
 	 * @return whether that table, or any table it calls, calls a table that
 	 *         doesn't exist.
@@ -166,10 +164,8 @@ public class ExplorationRunner { // NOPMD
 	 * Check whether a table contains recursive calls to a table that doesn't
 	 * exist.
 	 * 
-	 * @param table
-	 *            the name of the table to consult
-	 * @param state
-	 *            a Set to use to prevent infinite recursion
+	 * @param table the name of the table to consult
+	 * @param state a Set to use to prevent infinite recursion
 	 * 
 	 * @return whether the table, or any it calls, calls a table that doesn't
 	 *         exist.
@@ -189,7 +185,7 @@ public class ExplorationRunner { // NOPMD
 							return true; // NOPMD
 						}
 					}
-				} catch (MissingTableException e) {
+				} catch (final MissingTableException e) {
 					return true; // NOPMD
 				}
 				return false; // NOPMD
@@ -221,8 +217,7 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * Print the names of any tables that are called but don't exist yet.
 	 * 
-	 * @param ostream
-	 *            The stream to print results on.
+	 * @param ostream The stream to print results on.
 	 */
 	public void verboseRecursiveCheck(final PrintStream ostream) {
 		final Set<String> state = new HashSet<String>(); // NOPMD
@@ -234,12 +229,9 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * Print the names of any tables this one calls that don't exist yet.
 	 * 
-	 * @param table
-	 *            the table to recursively check
-	 * @param ostream
-	 *            the stream to print results on
-	 * @param state
-	 *            to prevent infinite recursion.
+	 * @param table the table to recursively check
+	 * @param ostream the stream to print results on
+	 * @param state to prevent infinite recursion.
 	 */
 	// ESCA-JAVA0049:
 	private void verboseRecursiveCheck(final String table,
@@ -250,11 +242,11 @@ public class ExplorationRunner { // NOPMD
 				try {
 					for (final String value : getTable(table).allEvents()) {
 						if (value.contains("#")) {
-							verboseRecursiveCheck(value.split("#", 3)[1], ostream,
-									state);
+							verboseRecursiveCheck(value.split("#", 3)[1],
+									ostream, state);
 						}
 					}
-				} catch (MissingTableException e) {
+				} catch (final MissingTableException e) {
 					ostream.println(e.getTable());
 				}
 			} else {

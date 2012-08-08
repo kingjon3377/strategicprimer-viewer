@@ -18,8 +18,7 @@ public abstract class Selectable extends JComponent { // NOPMD
 	/**
 	 * Paint a rectangle around the item if it's selected.
 	 * 
-	 * @param pen
-	 *            the graphics context.
+	 * @param pen the graphics context.
 	 */
 	@Override
 	public void paint(final Graphics pen) {
@@ -57,8 +56,7 @@ public abstract class Selectable extends JComponent { // NOPMD
 	}
 
 	/**
-	 * @param sel
-	 *            whether this is the currently selected tile
+	 * @param sel whether this is the currently selected tile
 	 */
 	public void setSelected(final boolean sel) {
 		selected = sel;

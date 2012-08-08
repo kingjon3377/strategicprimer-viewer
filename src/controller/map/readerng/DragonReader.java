@@ -16,33 +16,38 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+
 /**
  * A reader for Dragons.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class DragonReader implements INodeHandler<Dragon> {
 	/**
 	 * Parse a dragon.
+	 * 
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the dragon represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Dragon parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Dragon fix = new Dragon(
-				getAttribute(element, "kind"),
+		final Dragon fix = new Dragon(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory),
 				XMLHelper.getFile(stream));
 		return fix;
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -50,17 +55,19 @@ public class DragonReader implements INodeHandler<Dragon> {
 	public List<String> understands() {
 		return Collections.singletonList("dragon");
 	}
+
 	/** @return the class we know how to write */
 	@Override
 	public Class<Dragon> writes() {
 		return Dragon.class;
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
-	 * @param obj
-	 *            the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the
+	 *        adapter work.
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@SuppressWarnings("unchecked")

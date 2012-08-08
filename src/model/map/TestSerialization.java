@@ -41,10 +41,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Test Player serialization.
 	 * 
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
@@ -54,56 +52,60 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new Player(1, "one", FAKE_FILENAME), Player.class);
 		assertSerialization("Second Player serialization test, reflection",
 				new Player(2, "two", FAKE_FILENAME), Player.class);
-		assertUnwantedChild("<player><troll /></player>",
-				Player.class, false);
-		assertMissingProperty("<player code_name=\"one\" />",
-				Player.class, "number", false);
-		assertMissingProperty("<player number=\"1\" />",
-				Player.class, "code_name", false);
+		assertUnwantedChild("<player><troll /></player>", Player.class, false);
+		assertMissingProperty("<player code_name=\"one\" />", Player.class,
+				"number", false);
+		assertMissingProperty("<player number=\"1\" />", Player.class,
+				"code_name", false);
 	}
 
 	/**
 	 * A factory to add rivers to a tile in-line.
+	 * 
 	 * @param tile the tile to use
 	 * @param rivers the rivers to add
 	 * @return the tile, set up.
 	 */
 	private static Tile addRivers(final Tile tile, final River... rivers) {
 		setFileOnObject(tile);
-		for (River river : rivers) {
+		for (final River river : rivers) {
 			tile.addRiver(BaseTestFixtureSerialization.setFileOnObject(river));
 		}
 		return tile;
 	}
+
 	/**
 	 * Test River serialization.
 	 * 
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
 	public void testRiverSerializationOne() throws XMLStreamException,
 			SPFormatException, IOException {
-		for (River river : River.values()) {
+		for (final River river : River.values()) {
 			assertSerialization("First River serialization test, reflection",
 					river, River.class);
 		}
-		assertUnwantedChild("<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
+		assertUnwantedChild(
+				"<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
 				Tile.class, false);
-		assertMissingProperty("<tile row=\"1\" column=\"1\" kind=\"plains\"><river /></tile>",
+		assertMissingProperty(
+				"<tile row=\"1\" column=\"1\" kind=\"plains\"><river /></tile>",
 				Tile.class, "direction", false);
-		assertSerialization("Second River serialization test, reflection",
-				addRivers(setFileOnObject(new Tile(0, 0, TileType.Plains, FAKE_FILENAME)), River.East),
-				Tile.class);
-		assertSerialization("Third River serialization test, reflection",
-				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME), River.Lake),
-				Tile.class);
-		assertSerialization("Fourth River serialization test, reflection",
-				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME), River.North),
-				Tile.class);
+		assertSerialization(
+				"Second River serialization test, reflection",
+				addRivers(setFileOnObject(new Tile(0, 0, TileType.Plains,
+						FAKE_FILENAME)), River.East), Tile.class);
+		assertSerialization(
+				"Third River serialization test, reflection",
+				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
+						River.Lake), Tile.class);
+		assertSerialization(
+				"Fourth River serialization test, reflection",
+				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
+						River.North), Tile.class);
 		final EnumSet<River> setOne = EnumSet.noneOf(River.class);
 		final EnumSet<River> setTwo = EnumSet.noneOf(River.class);
 		assertEquals("Empty sets are equal", setOne, setTwo);
@@ -129,31 +131,31 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		tone.addFixture(fixOne);
 		final Tile ttwo = new Tile(0, 0, TileType.Plains, FAKE_FILENAME);
 		ttwo.addFixture(fixTwo);
-		assertEquals("Tile.equals(), RiverFixtures constructed separately", tone, ttwo);
+		assertEquals("Tile.equals(), RiverFixtures constructed separately",
+				tone, ttwo);
 		assertEquals(
 				"Make sure equals() works properly for rivers",
-				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME), River.North,
-						River.South),
-				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME), River.North,
-						River.South));
+				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
+						River.North, River.South),
+				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
+						River.North, River.South));
 		assertEquals(
 				"Make sure equals() works properly if rivers added in different order",
-				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME), River.North,
-						River.South),
-				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME), River.South,
-						River.North));
+				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
+						River.North, River.South),
+				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
+						River.South, River.North));
 		assertSerialization(
 				"Fifth River serialization test, reflection",
-				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME), River.North,
-						River.South), Tile.class);
+				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
+						River.North, River.South), Tile.class);
 	}
+
 	/**
 	 * Test Tile serialization.
 	 * 
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
@@ -164,52 +166,64 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Tile two = new Tile(1, 1, TileType.Plains, FAKE_FILENAME);
 		two.setFile(FAKE_FILENAME);
 		two.addFixture(setFileOnObject(new Griffin(1, FAKE_FILENAME)));
-		assertSerialization("Second Tile serialization test, reflection",
-				two, Tile.class);
+		assertSerialization("Second Tile serialization test, reflection", two,
+				Tile.class);
 		final Tile three = new Tile(2, 2, TileType.Steppe, FAKE_FILENAME);
 		three.setFile(FAKE_FILENAME);
 		three.addFixture(setFileOnObject(new Unit(setFileOnObject(new Player(1,
 				"", FAKE_FILENAME)), "unitOne", "firstUnit", 1, FAKE_FILENAME)));
-		three.addFixture(setFileOnObject(new Forest("forestKind", true, FAKE_FILENAME)));
-		assertSerialization("Third Tile serialization test, reflection", three, Tile.class);
+		three.addFixture(setFileOnObject(new Forest("forestKind", true,
+				FAKE_FILENAME)));
+		assertSerialization("Third Tile serialization test, reflection", three,
+				Tile.class);
 		final Tile four = new Tile(3, 3, TileType.Jungle, FAKE_FILENAME);
 		four.setFile(FAKE_FILENAME);
-		final Fortress fort = setFileOnObject(new Fortress(new Player(2, "", FAKE_FILENAME), "fortOne", 1, FAKE_FILENAME));
-		fort.addUnit(setFileOnObject(new Unit(new Player(2, "", FAKE_FILENAME), "unitTwo", "secondUnit", 2, FAKE_FILENAME)));
+		final Fortress fort = setFileOnObject(new Fortress(new Player(2, "",
+				FAKE_FILENAME), "fortOne", 1, FAKE_FILENAME));
+		fort.addUnit(setFileOnObject(new Unit(new Player(2, "", FAKE_FILENAME),
+				"unitTwo", "secondUnit", 2, FAKE_FILENAME)));
 		four.addFixture(fort);
 		four.addFixture(setFileOnObject(new TextFixture("Random text here", 5)));
 		four.addRiver(River.Lake);
-		assertSerialization("Fourth Tile serialization test, reflection", four, Tile.class);
+		assertSerialization("Fourth Tile serialization test, reflection", four,
+				Tile.class);
 		final Tile five = new Tile(4, 4, TileType.Plains, FAKE_FILENAME);
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five, createSerializedForm(five, true).replace("kind",
+				five,
+				createSerializedForm(five, true).replace("kind",
 						oldKindProperty), Tile.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five, createSerializedForm(five, false).replace("kind", oldKindProperty), Tile.class, oldKindProperty);
+				five,
+				createSerializedForm(five, false).replace("kind",
+						oldKindProperty), Tile.class, oldKindProperty);
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
-		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />",
-				Tile.class, "column", false);
-		assertMissingProperty("<tile row=\"0\" column=\"0\" />",
-				Tile.class, KIND_PROPERTY, false);
+		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />", Tile.class,
+				"column", false);
+		assertMissingProperty("<tile row=\"0\" column=\"0\" />", Tile.class,
+				KIND_PROPERTY, false);
 		assertUnwantedChild(
 				"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
 				Tile.class, false);
 		final Tile six = new Tile(2, 3, TileType.Jungle, FAKE_FILENAME);
-		six.addFixture(setFileOnObject(new Unit(new Player(2, "", FAKE_FILENAME), "explorer", "name one", 1, FAKE_FILENAME)));
-		six.addFixture(setFileOnObject(new Unit(new Player(2, "", FAKE_FILENAME), "explorer", "name two", 2, FAKE_FILENAME)));
+		six.addFixture(setFileOnObject(new Unit(
+				new Player(2, "", FAKE_FILENAME), "explorer", "name one", 1,
+				FAKE_FILENAME)));
+		six.addFixture(setFileOnObject(new Unit(
+				new Player(2, "", FAKE_FILENAME), "explorer", "name two", 2,
+				FAKE_FILENAME)));
 		six.setFile(FAKE_FILENAME);
 		assertEquals("Just checking ...", 2, six.getContents().size());
-		assertSerialization("Multiple units should come through", six, Tile.class);
+		assertSerialization("Multiple units should come through", six,
+				Tile.class);
 		final String xmlTwo = new StringBuilder(
 				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
 				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
 				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
-				.append("</tile>")
-				.toString(); 
+				.append("</tile>").toString();
 		// This is hackish, but we're using the same expected string with two
 		// serialization frameworks, one of which is much smarter about
 		// indentation.
@@ -217,17 +231,24 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				createSerializedForm(six, true).replace("\t\t", ""));
 		assertEquals("Multiple units should come through", xmlTwo,
 				createSerializedForm(six, false).trim());
-		assertEquals("Shouldn't print empty not-visible tiles", "",
-				createSerializedForm(new Tile(0, 0, TileType.NotVisible, FAKE_FILENAME), true));
-		assertEquals("Shouldn't print empty not-visible tiles", "",
-				createSerializedForm(new Tile(0, 0, TileType.NotVisible, FAKE_FILENAME), false));
+		assertEquals(
+				"Shouldn't print empty not-visible tiles",
+				"",
+				createSerializedForm(new Tile(0, 0, TileType.NotVisible,
+						FAKE_FILENAME), true));
+		assertEquals(
+				"Shouldn't print empty not-visible tiles",
+				"",
+				createSerializedForm(new Tile(0, 0, TileType.NotVisible,
+						FAKE_FILENAME), false));
 	}
+
 	/**
-	 * Test that row nodes are ignored, and that "future" tags are skipped but warned about.
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
+	 * Test that row nodes are ignored, and that "future" tags are skipped but
+	 * warned about.
+	 * 
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
 	 */
 	@Test
 	public void testSkppableSerialization() throws XMLStreamException,
@@ -244,40 +265,49 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
 				SPMap.class, "future", true);
 	}
+
 	/**
 	 * Test Map serialization ... primarily errors.
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
+	 * 
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void testMapSerialization() throws XMLStreamException, SPFormatException, IOException {
-		assertUnwantedChild("<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>", SPMap.class, false);
+	public void testMapSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
+		assertUnwantedChild(
+				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
+				SPMap.class, false);
 		final SPMap one = new SPMap(2, 1, 1, FAKE_FILENAME);
 		one.setFile(FAKE_FILENAME);
 		one.addPlayer(setFileOnObject(new Player(1, "playerOne", FAKE_FILENAME)));
 		one.getPlayers().getPlayer(1).setCurrent(true);
-		one.addTile(setFileOnObject(new Tile(0, 0, TileType.Plains, FAKE_FILENAME)));
+		one.addTile(setFileOnObject(new Tile(0, 0, TileType.Plains,
+				FAKE_FILENAME)));
 		assertSerialization("Simple Map serialization", one, SPMap.class);
-		assertMissingProperty("<map version=\"2\" columns=\"1\" />", SPMap.class, "rows", false);
-		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMap.class, "columns", false);
+		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
+				SPMap.class, "rows", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMap.class,
+				"columns", false);
 	}
+
 	/**
 	 * Test view serialization.
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
+	 * 
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void testViewSerialization() throws XMLStreamException, SPFormatException, IOException {
+	public void testViewSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
 		final SPMap mOne = setFileOnObject(new SPMap(2, 1, 1, FAKE_FILENAME));
 		mOne.addPlayer(setFileOnObject(new Player(1, "playerOne", FAKE_FILENAME)));
-		mOne.addTile(setFileOnObject(new Tile(0, 0, TileType.Steppe, FAKE_FILENAME)));
-		final MapView one = setFileOnObject(new MapView(mOne, 1, 0, FAKE_FILENAME));
+		mOne.addTile(setFileOnObject(new Tile(0, 0, TileType.Steppe,
+				FAKE_FILENAME)));
+		final MapView one = setFileOnObject(new MapView(mOne, 1, 0,
+				FAKE_FILENAME));
 		assertSerialization("MapView serialization", one, MapView.class);
 		assertMissingProperty(
 				"<view current_turn=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
@@ -285,7 +315,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<view current_player=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
 				MapView.class, "current_turn", false);
-		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />", MapView.class, false);
+		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
+				MapView.class, false);
 		assertUnwantedChild(
 				new StringBuilder(
 						"<view current_player=\"0\" current_turn=\"0\">")
@@ -305,19 +336,21 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")
 						.append("</row>").append("</map>").toString());
 	}
+
 	/**
 	 * Test the <include> tag.
-	 * @throws SPFormatException
-	 *             on SP format error
-	 * @throws XMLStreamException
-	 *             on XML reading error
+	 * 
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
 	 */
 	@Test
 	public void testInclude() throws XMLStreamException, SPFormatException {
-		assertForwardDeserialization("Reading Ogre via <include>",
-				new Ogre(1, FAKE_FILENAME), "<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />",
+		assertForwardDeserialization("Reading Ogre via <include>", new Ogre(1,
+				FAKE_FILENAME),
+				"<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />",
 				Ogre.class);
 	}
+
 	/**
 	 * Test conversion.
 	 */
@@ -351,9 +384,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				converted.getTile(zeroPoint).getContents().contains(fixture));
 		assertTrue("Combined tile should contain fixtures from tile two",
 				converted.getTile(zeroPoint).getContents().contains(fixtureTwo));
-		assertTrue("Combined tile should contain fixtures from tile three",
-				converted.getTile(zeroPoint).getContents().contains(fixtureThree));
+		assertTrue(
+				"Combined tile should contain fixtures from tile three",
+				converted.getTile(zeroPoint).getContents()
+						.contains(fixtureThree));
 		assertTrue("Combined tile should contain fixtures from tile four",
-				converted.getTile(zeroPoint).getContents().contains(fixtureFour));
+				converted.getTile(zeroPoint).getContents()
+						.contains(fixtureFour));
 	}
 }

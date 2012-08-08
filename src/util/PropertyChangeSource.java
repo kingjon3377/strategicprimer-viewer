@@ -13,16 +13,14 @@ public interface PropertyChangeSource {
 	/**
 	 * Add a PropertyChangeListener.
 	 * 
-	 * @param list
-	 *            the listener to add
+	 * @param list the listener to add
 	 */
 	void addPropertyChangeListener(final PropertyChangeListener list);
 
 	/**
 	 * Remove a PropertyChangeListener.
 	 * 
-	 * @param list
-	 *            the listener to remove
+	 * @param list the listener to remove
 	 */
 	void removePropertyChangeListener(final PropertyChangeListener list);
 }

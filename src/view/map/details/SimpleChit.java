@@ -24,9 +24,12 @@ public class SimpleChit extends Chit {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(SimpleChit.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SimpleChit.class
+			.getName());
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param fix the fixture this chit is to represent
 	 * @param listener the listener to tell about mouse events.
 	 */
@@ -37,11 +40,13 @@ public class SimpleChit extends Chit {
 		Image localImage;
 		if (fix instanceof HasImage) {
 			try {
-				localImage = ImageLoader.getLoader().loadImage(((HasImage) fix).getImage());
-			} catch (FileNotFoundException e) {
-				LOGGER.log(Level.SEVERE, "image file images/" + (((HasImage) fix).getImage()) + " not found");
+				localImage = ImageLoader.getLoader().loadImage(
+						((HasImage) fix).getImage());
+			} catch (final FileNotFoundException e) {
+				LOGGER.log(Level.SEVERE, "image file images/"
+						+ (((HasImage) fix).getImage()) + " not found");
 				localImage = createDefaultImage(fix);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error reading image");
 				localImage = createDefaultImage(fix);
 			}
@@ -50,6 +55,7 @@ public class SimpleChit extends Chit {
 			image = createDefaultImage(fix);
 		}
 	}
+
 	/**
 	 * An image to use to represent the fixture.
 	 */
@@ -58,6 +64,7 @@ public class SimpleChit extends Chit {
 	 * A description of the fixture this chit represents.
 	 */
 	private final String desc;
+
 	/**
 	 * @return a description of the fixture
 	 */
@@ -65,8 +72,10 @@ public class SimpleChit extends Chit {
 	public String describe() {
 		return desc;
 	}
+
 	/**
 	 * Paint the chit.
+	 * 
 	 * @param pen the graphics context.
 	 */
 	@Override

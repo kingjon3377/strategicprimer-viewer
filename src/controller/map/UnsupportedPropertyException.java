@@ -2,14 +2,15 @@ package controller.map;
 
 /**
  * A custom exception for cases where a tag has a property it doesn't support.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class UnsupportedPropertyException extends SPFormatException {
 	/**
 	 * @param tag the current tag
 	 * @param parameter the unsupported parameter
-	 * @param line the line where this occurred 
+	 * @param line the line where this occurred
 	 */
 	public UnsupportedPropertyException(final String tag,
 			final String parameter, final int line) {
@@ -17,6 +18,7 @@ public class UnsupportedPropertyException extends SPFormatException {
 		context = tag;
 		param = parameter;
 	}
+
 	/**
 	 * The current tag.
 	 */
@@ -25,12 +27,14 @@ public class UnsupportedPropertyException extends SPFormatException {
 	 * The unsupported parameter.
 	 */
 	private final String param;
+
 	/**
 	 * @return the current tag
 	 */
 	public final String getTag() {
 		return context;
 	}
+
 	/**
 	 * @return the unsupported parameter
 	 */

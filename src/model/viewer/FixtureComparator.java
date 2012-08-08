@@ -20,8 +20,10 @@ public class FixtureComparator implements Comparator<TileFixture>, Serializable 
 	 * adding Serializable implementation anywhere else.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Compare two fixtures.
+	 * 
 	 * @param one The first fixture
 	 * @param two The second fixture
 	 * @return the result of the comparison.

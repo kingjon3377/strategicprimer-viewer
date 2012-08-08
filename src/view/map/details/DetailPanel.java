@@ -32,9 +32,8 @@ public class DetailPanel extends JPanel {
 	 * Constructor.
 	 * 
 	 * @param version the (initial) map version
-	 * @param tileEventSources
-	 *            Sources of property-changing events we want sub-panels to
-	 *            listen to.
+	 * @param tileEventSources Sources of property-changing events we want
+	 *        sub-panels to listen to.
 	 */
 	public DetailPanel(final int version,
 			final PropertyChangeSource... tileEventSources) {
@@ -55,12 +54,10 @@ public class DetailPanel extends JPanel {
 	/**
 	 * Add a subpanel and make it a property-change listener, if it is one.
 	 * 
-	 * @param panel
-	 *            the panel to add
+	 * @param panel the panel to add
 	 * 
-	 * @param tileEventSources
-	 *            Sources of property-changing events we want sub-panels to
-	 *            listen to.
+	 * @param tileEventSources Sources of property-changing events we want
+	 *        sub-panels to listen to.
 	 */
 	private void addListener(final JPanel panel,
 			final PropertyChangeSource... tileEventSources) {

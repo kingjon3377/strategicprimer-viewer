@@ -17,16 +17,21 @@ public interface Changeset {
 	 * @return The number of the "before" turn.
 	 */
 	int from();
+
 	/**
 	 * @return The number of the "after" turn.
 	 */
 	int to(); // NOPMD
+
 	/**
 	 * @return the inverse of this set of operations
 	 */
 	Changeset invert();
+
 	/**
-	 * Apply the changeset to a map. TODO: Should this possibly take different arguments?
+	 * Apply the changeset to a map. TODO: Should this possibly take different
+	 * arguments?
+	 * 
 	 * @param map the map to apply it to.
 	 */
 	void apply(IMap map);

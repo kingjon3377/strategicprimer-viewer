@@ -37,14 +37,13 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	/**
 	 * Constructor.
 	 * 
-	 * @param fortOwner
-	 *            the player that owns the fortress
-	 * @param fortName
-	 *            the name of the fortress
+	 * @param fortOwner the player that owns the fortress
+	 * @param fortName the name of the fortress
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Fortress(final Player fortOwner, final String fortName, final int idNum, final String fileName) {
+	public Fortress(final Player fortOwner, final String fortName,
+			final int idNum, final String fileName) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<Unit>();
@@ -63,8 +62,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	/**
 	 * Add a unit to the fortress.
 	 * 
-	 * @param unit
-	 *            the unit to add
+	 * @param unit the unit to add
 	 */
 	public final void addUnit(final Unit unit) {
 		units.add(unit);
@@ -73,8 +71,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	/**
 	 * Remove a unit from the fortress.
 	 * 
-	 * @param unit
-	 *            the unit to remove
+	 * @param unit the unit to remove
 	 */
 	public final void removeUnit(final Unit unit) {
 		units.remove(unit);
@@ -97,8 +94,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it is an identical fortress
 	 */
@@ -107,8 +103,10 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		return this == obj
 				|| (obj instanceof Fortress
 						&& (name.equals(((Fortress) obj).name))
-						&& ((Fortress) obj).owner.getPlayerId() == owner.getPlayerId() && ((Fortress) obj).units
-							.equals(units) && ((TileFixture) obj).getID() == id);
+						&& ((Fortress) obj).owner.getPlayerId() == owner
+								.getPlayerId()
+						&& ((Fortress) obj).units.equals(units) && ((TileFixture) obj)
+						.getID() == id);
 	}
 
 	/**
@@ -139,14 +137,14 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	}
 
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * @return the result of the comparison
 	 */
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * @return an XML representation of the fortress.
 	 */
@@ -173,14 +171,17 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		sbuild.append("</fortress>");
 		return sbuild.toString();
 	}
+
 	/**
 	 * TODO: Should perhaps be more granular.
+	 * 
 	 * @return the name of an image to represent the fortress.
 	 */
 	@Override
 	public String getImage() {
 		return "fortress.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -188,13 +189,15 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	public int getZValue() {
 		return 60;
 	}
+
 	/**
 	 * @param obj another Fortress
 	 * @return whether it's a strict subset of this one
 	 */
 	@Override
 	public boolean isSubset(final Fortress obj) {
-		if (name.equals(obj.name) && obj.owner.getPlayerId() == owner.getPlayerId()) {
+		if (name.equals(obj.name)
+				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
 			final Set<Unit> temp = new HashSet<Unit>(obj.units);
 			temp.removeAll(units);
 			return temp.isEmpty(); // NOPMD
@@ -202,10 +205,12 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 			return false;
 		}
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -213,8 +218,10 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * FIXME: Uses equals() to compare units.
+	 * 
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -223,30 +230,34 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		return this == fix
 				|| (fix instanceof Fortress
 						&& (name.equals(((Fortress) fix).name))
-						&& ((Fortress) fix).owner.getPlayerId() == owner.getPlayerId() && ((Fortress) fix).units
+						&& ((Fortress) fix).owner.getPlayerId() == owner
+								.getPlayerId() && ((Fortress) fix).units
 							.equals(units));
-//		if (this == fix) {
-//			return true;
-//		} else if (fix instanceof Fortress
-//						&& (name.equals(((Fortress) fix).name))
-//						&& ((Fortress) fix).owner.getId() == owner.getId()) {
-//			final Set<Unit> ours = Collections.synchronizedSet(new HashSet<Unit>(units));
-//			final Set<Unit> theirs = Collections.synchronizedSet(new HashSet<Unit>(((Fortress) fix).units));
-//			ours.removeAll(((Fortress) fix).units);
-//			theirs.removeAll(units);
-//			for (Unit one : ours) {
-//				for (Unit two : theirs) {
-//					if (one.equalsIgnoringID(two)) {
-//						ours.remove(one);
-//						theirs.remove(two);
-//					}
-//				}
-//			}
-//			return ours.isEmpty() && theirs.isEmpty();
-//		} else {
-//			return false;
-//		}	
+		// if (this == fix) {
+		// return true;
+		// } else if (fix instanceof Fortress
+		// && (name.equals(((Fortress) fix).name))
+		// && ((Fortress) fix).owner.getId() == owner.getId()) {
+		// final Set<Unit> ours = Collections.synchronizedSet(new
+		// HashSet<Unit>(units));
+		// final Set<Unit> theirs = Collections.synchronizedSet(new
+		// HashSet<Unit>(((Fortress) fix).units));
+		// ours.removeAll(((Fortress) fix).units);
+		// theirs.removeAll(units);
+		// for (Unit one : ours) {
+		// for (Unit two : theirs) {
+		// if (one.equalsIgnoringID(two)) {
+		// ours.remove(one);
+		// theirs.remove(two);
+		// }
+		// }
+		// }
+		// return ours.isEmpty() && theirs.isEmpty();
+		// } else {
+		// return false;
+		// }
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -254,20 +265,23 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
 	@Override
 	public void setFile(final String fileName) {
 		file = fileName;
-		for (Unit unit : units) {
+		for (final Unit unit : units) {
 			unit.setFile(file);
 		}
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */
@@ -275,7 +289,7 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	public TileFixture deepCopy() {
 		final Fortress retval = new Fortress(getOwner().deepCopy(), getName(),
 				getID(), getFile());
-		for (Unit unit : units) {
+		for (final Unit unit : units) {
 			retval.addUnit((Unit) unit.deepCopy());
 		}
 		return retval;

@@ -33,8 +33,7 @@ public enum TownSize {
 	/**
 	 * Constructor.
 	 * 
-	 * @param str
-	 *            a string representing the size.
+	 * @param str a string representing the size.
 	 */
 	private TownSize(final String str) {
 		sizeStr = str;
@@ -47,8 +46,7 @@ public enum TownSize {
 	}
 
 	/**
-	 * @param string
-	 *            a string representing a TownSize
+	 * @param string a string representing a TownSize
 	 * 
 	 * @return the TownSize it represents
 	 */

@@ -6,8 +6,9 @@ import model.map.events.TownStatus;
 
 /**
  * A village on the map.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class Village implements TileFixture, HasImage {
 	/**
@@ -18,31 +19,37 @@ public class Village implements TileFixture, HasImage {
 	 * The name of the village.
 	 */
 	private final String name;
+
 	/**
 	 * @return the name of the village
 	 */
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param vstatus the status of the village.
 	 * @param vName the name of the village
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Village(final TownStatus vstatus, final String vName, final int idNum, final String fileName) {
+	public Village(final TownStatus vstatus, final String vName,
+			final int idNum, final String fileName) {
 		status = vstatus;
 		name = vName;
 		id = idNum;
 		file = fileName;
 	}
+
 	/**
 	 * @return the status of the village
 	 */
 	public TownStatus getStatus() {
 		return status;
 	}
+
 	/**
 	 * @return an XML representation of the village
 	 */
@@ -60,13 +67,16 @@ public class Village implements TileFixture, HasImage {
 		sbuild.append("\" />");
 		return sbuild.toString();
 	}
+
 	/**
 	 * @return a String representation of the village
 	 */
 	@Override
 	public String toString() {
-		return status.toString() + " village" + (name.isEmpty() ? name : " named " + name);
+		return status.toString() + " village"
+				+ (name.isEmpty() ? name : " named " + name);
 	}
+
 	/**
 	 * @return the name of an image to represent the village
 	 */
@@ -74,6 +84,7 @@ public class Village implements TileFixture, HasImage {
 	public String getImage() {
 		return "village.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -81,6 +92,7 @@ public class Village implements TileFixture, HasImage {
 	public int getZValue() {
 		return 45;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -88,8 +100,10 @@ public class Village implements TileFixture, HasImage {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Village && status.equals(((Village) obj).status)
-				&& name.equals(((Village) obj).name) && id == ((TileFixture) obj).getID();
+				&& name.equals(((Village) obj).name)
+				&& id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -97,9 +111,9 @@ public class Village implements TileFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -107,10 +121,12 @@ public class Village implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -118,6 +134,7 @@ public class Village implements TileFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * 
 	 * @param fix a fixture
@@ -128,6 +145,7 @@ public class Village implements TileFixture, HasImage {
 		return fix instanceof Village && status.equals(((Village) fix).status)
 				&& name.equals(((Village) fix).name);
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -135,6 +153,7 @@ public class Village implements TileFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -142,10 +161,12 @@ public class Village implements TileFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

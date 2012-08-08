@@ -28,26 +28,23 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	/**
 	 * Parse an element.
 	 * 
-	 * @param element
-	 *            the element to parse
-	 * @param stream
-	 *            the stream to get more elements from
-	 * @param players
-	 *            the collection of players to use if needed
-	 * @param warner
-	 *            the Warning instance to use
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param element the element to parse
+	 * @param stream the stream to get more elements from
+	 * @param players the collection of players to use if needed
+	 * @param warner the Warning instance to use
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the result of parsing the element
-	 * @throws SPFormatException
-	 *             on SP format problems.
+	 * @throws SPFormatException on SP format problems.
 	 */
 	@Override
 	public XMLWritable parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (READ_CACHE.containsKey(element.getName().getLocalPart())) {
-			return READ_CACHE.get(element.getName().getLocalPart()).parse(element,
-					stream, players, warner, idFactory);
+			return READ_CACHE.get(element.getName().getLocalPart()).parse(
+					element, stream, players, warner, idFactory);
 		} else {
 			throw new UnwantedChildException("unknown", element.getName()
 					.getLocalPart(), element.getLocation().getLineNumber());
@@ -63,14 +60,14 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 * Map from writable objects to writers. Initializer in static block below.
 	 */
 	private static final Map<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>> WRITE_CACHE;
+
 	/**
 	 * Add a reader to the cache.
 	 * 
-	 * @param reader
-	 *            the reader to add
+	 * @param reader the reader to add
 	 */
 	private static void factory(final INodeHandler<? extends XMLWritable> reader) {
-		for (String tag : reader.understands()) {
+		for (final String tag : reader.understands()) {
 			READ_CACHE.put(tag, reader);
 		}
 		WRITE_CACHE.put(reader.writes(), reader);
@@ -133,12 +130,9 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	}
 
 	/**
-	 * @param <T>
-	 *            a type
-	 * @param obj
-	 *            an object
-	 * @param type
-	 *            a type
+	 * @param <T> a type
+	 * @param obj an object
+	 * @param type a type
 	 * @return obj, if it is assignable to the specified type; throw an
 	 *         exception otherwise.
 	 */
@@ -153,31 +147,36 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 					+ ", was " + obj.getClass().getSimpleName());
 		}
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
 	 * @param <S> the actual type of the object
-	 * @param obj
-	 *            the object to write
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends XMLWritable> SPIntermediateRepresentation write(final S obj) {
+	public <S extends XMLWritable> SPIntermediateRepresentation write(
+			final S obj) {
 		if (WRITE_CACHE.containsKey(obj.getClass())) {
-			return ((INodeHandler<S>) WRITE_CACHE.get(obj.getClass())).write(obj);
+			return ((INodeHandler<S>) WRITE_CACHE.get(obj.getClass()))
+					.write(obj);
 		} else {
 			throw new IllegalArgumentException(
 					"Writable type this adapter can't handle: "
 							+ obj.getClass().getSimpleName());
 		}
 	}
+
 	/**
-	 * @return nothing---this should never be called, so we object with an exception.
+	 * @return nothing---this should never be called, so we object with an
+	 *         exception.
 	 */
 	@Override
 	public Class<XMLWritable> writes() {
 		throw new IllegalStateException("This should never be called.");
 	}
+
 	/**
 	 * A singleton. Provided for performance; this is, after all, stateless.
 	 */

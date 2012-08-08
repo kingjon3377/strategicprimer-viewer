@@ -3,7 +3,6 @@ package model.map.events;
 import model.map.HasImage;
 import model.map.TileFixture;
 
-
 /**
  * A deposit (always exposed for now) of stone.
  * 
@@ -14,10 +13,8 @@ public final class StoneEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 * 
-	 * @param skind
-	 *            the kind of stone
-	 * @param discdc
-	 *            the dc to discover the stone.
+	 * @param skind the kind of stone
+	 * @param discdc the dc to discover the stone.
 	 * @param idNum the ID number.
 	 */
 	public StoneEvent(final StoneKind skind, final int discdc, final int idNum) {
@@ -44,6 +41,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	 * The DC to discover the stone. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
+
 	/**
 	 * 
 	 * @return the DC to discover the event.
@@ -66,16 +64,15 @@ public final class StoneEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it's an identical event
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj
-				|| obj instanceof StoneEvent
-						&& ((StoneEvent) obj).stone.equals(stone) && ((TileFixture) obj).getID() == id;
+		return this == obj || obj instanceof StoneEvent
+				&& ((StoneEvent) obj).stone.equals(stone)
+				&& ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -95,6 +92,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	public String toString() {
 		return "A " + stone.toString() + " deposit, of DC " + dc;
 	}
+
 	/**
 	 * @return an XML representation of the event
 	 */
@@ -105,6 +103,7 @@ public final class StoneEvent implements IEvent, HasImage {
 				.append("\" dc=\"").append(dc).append("\" id=\"").append(id)
 				.append("\" />").toString();
 	}
+
 	/**
 	 * @return the name of an image to represent the event
 	 */
@@ -112,6 +111,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	public String getImage() {
 		return "stone.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -119,9 +119,9 @@ public final class StoneEvent implements IEvent, HasImage {
 	public int getZValue() {
 		return 40;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -129,10 +129,12 @@ public final class StoneEvent implements IEvent, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -140,15 +142,18 @@ public final class StoneEvent implements IEvent, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return this == fix || (fix instanceof StoneEvent
-				&& ((StoneEvent) fix).stone.equals(stone));
+		return this == fix
+				|| (fix instanceof StoneEvent && ((StoneEvent) fix).stone
+						.equals(stone));
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -156,6 +161,7 @@ public final class StoneEvent implements IEvent, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -163,10 +169,12 @@ public final class StoneEvent implements IEvent, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

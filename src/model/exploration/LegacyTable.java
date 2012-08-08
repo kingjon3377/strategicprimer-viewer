@@ -42,13 +42,15 @@ public class LegacyTable implements EncounterTable {
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				data.add(new CityEvent(status, size, 0, "", 0).getText()); // NOPMD
-				data.add(new FortificationEvent(status, size, 0, "", 0).getText()); // NOPMD
+				data.add(new FortificationEvent(status, size, 0, "", 0)
+						.getText()); // NOPMD
 				data.add(new TownEvent(status, size, 0, "", 0).getText()); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
 			data.add(new MineralEvent(mineral.toString(), true, 0, 0).getText()); // NOPMD
-			data.add(new MineralEvent(mineral.toString(), false, 0, 0).getText()); // NOPMD
+			data.add(new MineralEvent(mineral.toString(), false, 0, 0)
+					.getText()); // NOPMD
 		}
 		data.add("Nothing interesting here ...");
 		for (final StoneKind stone : StoneKind.values()) {
@@ -57,8 +59,7 @@ public class LegacyTable implements EncounterTable {
 	}
 
 	/**
-	 * @param tile
-	 *            the tile in question
+	 * @param tile the tile in question
 	 * @return the event on that tile
 	 */
 	@Override

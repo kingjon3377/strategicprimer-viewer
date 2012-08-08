@@ -15,8 +15,7 @@ public class ChitSelectionListener extends SelectionListener {
 	/**
 	 * Constructor.
 	 * 
-	 * @param list
-	 *            a listener to tell when the selected chit changes
+	 * @param list a listener to tell when the selected chit changes
 	 */
 	public ChitSelectionListener(final PropertyChangeListener list) {
 		super();
@@ -26,8 +25,7 @@ public class ChitSelectionListener extends SelectionListener {
 	/**
 	 * Handle mouse clicks.
 	 * 
-	 * @param event
-	 *            the event to handle
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {

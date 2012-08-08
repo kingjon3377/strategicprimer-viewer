@@ -1,10 +1,12 @@
 package model.map;
+
 /**
  * An interface for the map and any wrappers around it.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
-//ESCA-JAVA0237:
+// ESCA-JAVA0237:
 public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>,
 		DeepCloneable<IMap> {
 
@@ -28,8 +30,7 @@ public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>,
 	/**
 	 * Add a player to the game.
 	 * 
-	 * @param player
-	 *            the player to add
+	 * @param player the player to add
 	 */
 	void addPlayer(final Player player);
 
@@ -47,6 +48,7 @@ public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>,
 
 	/**
 	 * We need this for subset calculations if nothing else.
+	 * 
 	 * @return the collection of tiles.
 	 */
 	TileCollection getTiles();

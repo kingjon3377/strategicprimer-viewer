@@ -18,17 +18,21 @@ import model.map.TileType;
 public class KeyPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * Constructor.
+	 * 
 	 * @param version the map version
 	 */
 	public KeyPanel(final int version) {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
-		setMinimumSize(new Dimension(new KeyElement(version, 
-				TileType.NotVisible).getMinimumSize().width * 4, getMinimumSize().height));
+		setMinimumSize(new Dimension(new KeyElement(version,
+				TileType.NotVisible).getMinimumSize().width * 4,
+				getMinimumSize().height));
 		setPreferredSize(getMinimumSize());
 	}
+
 	/**
 	 * Update the key for a new map version.
+	 * 
 	 * @param version the map version
 	 */
 	private void updateForVersion(final int version) {
@@ -37,8 +41,10 @@ public class KeyPanel extends JPanel implements PropertyChangeListener {
 			add(new KeyElement(version, type)); // NOPMD
 		}
 	}
+
 	/**
 	 * Listen for property changes---specifically, the map version.
+	 * 
 	 * @param evt the event to handle
 	 */
 	@Override

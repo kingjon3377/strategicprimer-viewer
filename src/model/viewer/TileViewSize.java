@@ -1,8 +1,10 @@
 package model.viewer;
+
 /**
  * A class to encapsulate how big the GUI representation of a tile should be.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class TileViewSize {
 	/**

@@ -43,6 +43,7 @@ public final class ExplorationCLI {
 	 * Random number generator.
 	 */
 	private final Random random = new Random(System.currentTimeMillis());
+
 	/**
 	 * Constructor.
 	 */
@@ -78,17 +79,12 @@ public final class ExplorationCLI {
 	}
 
 	/**
-	 * @param map
-	 *            the map
-	 * @param reader
-	 *            the stream to read further input from
-	 * @param ostream
-	 *            the stream to write to
-	 * @param input
-	 *            the command
+	 * @param map the map
+	 * @param reader the stream to read further input from
+	 * @param ostream the stream to write to
+	 * @param input the command
 	 * 
-	 * @throws IOException
-	 *             on I/O error
+	 * @throws IOException on I/O error
 	 */
 	public void handleCommand(final IMap map, final BufferedReader reader,
 			final PrintStream ostream, final char input) throws IOException {
@@ -119,8 +115,7 @@ public final class ExplorationCLI {
 	 * We keep looping if the input is not null, is not an empty string, and is
 	 * not "quit" (only the first character is checked).
 	 * 
-	 * @param input
-	 *            a line of input
+	 * @param input a line of input
 	 * 
 	 * @return whether that input says we should keep going.
 	 */
@@ -131,15 +126,11 @@ public final class ExplorationCLI {
 	/**
 	 * Explore a user-specified tile.
 	 * 
-	 * @param map
-	 *            the map
-	 * @param reader
-	 *            source of user input
-	 * @param ostream
-	 *            the stream to write the results to
+	 * @param map the map
+	 * @param reader source of user input
+	 * @param ostream the stream to write the results to
 	 * 
-	 * @throws IOException
-	 *             on I/O error
+	 * @throws IOException on I/O error
 	 */
 	private void explore(final IMap map, final BufferedReader reader,
 			final PrintStream ostream) throws IOException {
@@ -151,7 +142,7 @@ public final class ExplorationCLI {
 			for (int i = 0; i < reps; i++) {
 				ostream.println(runner.recursiveConsultTable("main", tile));
 			}
-		} catch (MissingTableException e) {
+		} catch (final MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 		}
 	}
@@ -160,35 +151,28 @@ public final class ExplorationCLI {
 	 * Give the data the player automatically knows about a user-specified tile
 	 * if he has a fortress on it.
 	 * 
-	 * @param map
-	 *            the map
-	 * @param reader
-	 *            source of user input
-	 * @param ostream
-	 *            the stream to print results to
+	 * @param map the map
+	 * @param reader source of user input
+	 * @param ostream the stream to print results to
 	 * 
-	 * @throws IOException
-	 *             on I/O error
+	 * @throws IOException on I/O error
 	 */
 	private void fortressInfo(final IMap map, final BufferedReader reader,
 			final PrintStream ostream) throws IOException {
 		try {
-			ostream.print(runner.defaultResults(selectTile(map, reader, ostream)));
-		} catch (MissingTableException e) {
+			ostream.print(runner
+					.defaultResults(selectTile(map, reader, ostream)));
+		} catch (final MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 		}
 	}
 
 	/**
-	 * @param reader
-	 *            the stream we read from
-	 * @param ostream
-	 *            the stream we write to
-	 * @param string
-	 *            the prompt
+	 * @param reader the stream we read from
+	 * @param ostream the stream we write to
+	 * @param string the prompt
 	 * @return the integer the player specified
-	 * @throws IOException
-	 *             on I/O error
+	 * @throws IOException on I/O error
 	 */
 	private static int getInteger(final BufferedReader reader,
 			final PrintStream ostream, final String string) throws IOException {
@@ -201,20 +185,16 @@ public final class ExplorationCLI {
 	}
 
 	/**
-	 * @param map
-	 *            The map we're dealing with
-	 * @param reader
-	 *            The stream we're reading from
-	 * @param ostream
-	 *            The stream we write the prompts to
+	 * @param map The map we're dealing with
+	 * @param reader The stream we're reading from
+	 * @param ostream The stream we write the prompts to
 	 * @return The tile the user specifies.
-	 * @throws IOException
-	 *             on I/O error
+	 * @throws IOException on I/O error
 	 */
-	private static Tile selectTile(final IMap map,
-			final BufferedReader reader, final PrintStream ostream)
-			throws IOException {
-		return map.getTile(PointFactory.point(getInteger(reader, ostream, "Row: "),
+	private static Tile selectTile(final IMap map, final BufferedReader reader,
+			final PrintStream ostream) throws IOException {
+		return map.getTile(PointFactory.point(
+				getInteger(reader, ostream, "Row: "),
 				getInteger(reader, ostream, "Column: ")));
 	}
 
@@ -232,8 +212,10 @@ public final class ExplorationCLI {
 	 * handled the same way, but with different tables.
 	 */
 	private static final Map<Character, String> ORDER_MAP = setUpOrders();
+
 	/**
 	 * Set up the map from commands to tables.
+	 * 
 	 * @return the map
 	 */
 	@SuppressWarnings("boxing")
@@ -251,29 +233,24 @@ public final class ExplorationCLI {
 	/**
 	 * Repeatedly consult a table.
 	 * 
-	 * @param table
-	 *            the table to consult
-	 * @param tile
-	 *            the tile to refer to
-	 * @param reps
-	 *            how many times to consult it
-	 * @param ostream
-	 *            the stream to print the results to
+	 * @param table the table to consult
+	 * @param tile the tile to refer to
+	 * @param reps how many times to consult it
+	 * @param ostream the stream to print the results to
 	 */
 	private void repeatedlyConsultTable(final String table, final Tile tile,
 			final int reps, final PrintStream ostream) {
 		for (int i = 0; i < reps; i++) {
 			try {
 				ostream.println(runner.recursiveConsultTable(table, tile));
-			} catch (MissingTableException e) {
+			} catch (final MissingTableException e) {
 				LOGGER.log(Level.SEVERE, "Missing table", e);
 			}
 		}
 	}
 
 	/**
-	 * @param args
-	 *            command-line arguments
+	 * @param args command-line arguments
 	 */
 	public static void main(final String[] args) {
 		try {

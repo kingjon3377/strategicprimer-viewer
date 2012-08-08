@@ -14,8 +14,7 @@ public class ChangeableComponent extends JPanel {
 	/**
 	 * Constructor.
 	 * 
-	 * @param comp
-	 *            the component to wrap
+	 * @param comp the component to wrap
 	 */
 	public ChangeableComponent(final JComponent comp) {
 		super();
@@ -37,8 +36,7 @@ public class ChangeableComponent extends JPanel {
 	}
 
 	/**
-	 * @param comp
-	 *            the new component
+	 * @param comp the new component
 	 */
 	public void setComponent(final JComponent comp) {
 		remove(wrappedComponent);

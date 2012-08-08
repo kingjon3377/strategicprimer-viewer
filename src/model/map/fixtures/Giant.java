@@ -5,16 +5,19 @@ import model.map.TileFixture;
 
 /**
  * A giant. TODO: should probably be a unit, or something.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class Giant implements TileFixture, HasImage {
 	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
 	private final String kind;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param gKind the kind of giant
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
@@ -24,12 +27,14 @@ public class Giant implements TileFixture, HasImage {
 		id = idNum;
 		file = fileName;
 	}
+
 	/**
 	 * @return the kind of giant
 	 */
 	public String getKind() {
 		return kind;
 	}
+
 	/**
 	 * @return an XML representation of the giant
 	 */
@@ -39,13 +44,15 @@ public class Giant implements TileFixture, HasImage {
 		return new StringBuilder("<giant kind=\"").append(kind)
 				.append("\" id=\"").append(id).append("\" />").toString();
 	}
+
 	/**
 	 * @return a String representation of the giant
 	 */
 	@Override
 	public String toString() {
-		return kind + (kind.isEmpty() ? "giant"  : " giant");
+		return kind + (kind.isEmpty() ? "giant" : " giant");
 	}
+
 	/**
 	 * @return the name of an image to represent the fairy
 	 */
@@ -53,6 +60,7 @@ public class Giant implements TileFixture, HasImage {
 	public String getImage() {
 		return "giant.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -60,6 +68,7 @@ public class Giant implements TileFixture, HasImage {
 	public int getZValue() {
 		return 40;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -69,6 +78,7 @@ public class Giant implements TileFixture, HasImage {
 		return obj instanceof Giant && ((Giant) obj).kind.equals(kind)
 				&& id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -76,6 +86,7 @@ public class Giant implements TileFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
 	 * @param fix a TileFixture to compare to
 	 * @return the result of the comparison
@@ -84,10 +95,12 @@ public class Giant implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -95,6 +108,7 @@ public class Giant implements TileFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -103,6 +117,7 @@ public class Giant implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -110,6 +125,7 @@ public class Giant implements TileFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -117,10 +133,12 @@ public class Giant implements TileFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

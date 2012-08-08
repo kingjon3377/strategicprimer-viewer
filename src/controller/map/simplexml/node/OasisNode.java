@@ -8,8 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to produce an Oasis.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 @Deprecated
 public class OasisNode extends AbstractFixtureNode<Oasis> {
@@ -19,6 +20,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	public OasisNode() {
 		super(Oasis.class);
 	}
+
 	/**
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
@@ -26,13 +28,19 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Oasis produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Oasis(Integer.parseInt(getProperty("id")), getProperty("file"));
+	public Oasis produce(final PlayerCollection players, final Warning warner)
+			throws SPFormatException {
+		return new Oasis(Integer.parseInt(getProperty("id")),
+				getProperty("file"));
 	}
+
 	/**
-	 * Check that the noe is valid. An Oasis is valid if it has no children. TODO: should it have attributes?
+	 * Check that the noe is valid. An Oasis is valid if it has no children.
+	 * TODO: should it have attributes?
+	 * 
 	 * @param warner a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException if the node isn't valid
 	 */
 	@Override
@@ -41,6 +49,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 		forbidChildren("oasis");
 		registerOrCreateID("oasis", idFactory, warner);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
@@ -49,6 +58,7 @@ public class OasisNode extends AbstractFixtureNode<Oasis> {
 	public boolean canUse(final String property) {
 		return "id".equals(property);
 	}
+
 	/**
 	 * @return a String representation of the node
 	 */

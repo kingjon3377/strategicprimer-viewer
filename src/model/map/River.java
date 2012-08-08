@@ -1,6 +1,5 @@
 package model.map;
 
-
 /**
  * If a tile has a river, it could be in any one of several directions. This
  * class enumerates those. Tiles should have a <em>set</em> of these.
@@ -35,36 +34,40 @@ public enum River implements XMLWritable {
 	 * A descriptive string representing the direction.
 	 */
 	private final String desc;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param string a descriptive string representing the direction
 	 */
 	private River(final String string) {
 		desc = string;
 	}
+
 	/**
 	 * Parse a river direction.
 	 * 
-	 * @param string
-	 *            a string giving the direction
+	 * @param string a string giving the direction
 	 * 
 	 * @return the river direction
 	 */
 	public static River getRiver(final String string) {
-		for (River river : values()) {
+		for (final River river : values()) {
 			if (river.desc.equals(string)) {
 				return river;
 			}
 		}
-			throw new IllegalArgumentException(
-					"Unrecognized river direction string");
+		throw new IllegalArgumentException(
+				"Unrecognized river direction string");
 	}
+
 	/**
 	 * @return a description of the direction of the river
 	 */
 	public String getDescription() {
 		return desc;
 	}
+
 	/**
 	 * @return an XML representation of the river.
 	 */
@@ -74,10 +77,11 @@ public enum River implements XMLWritable {
 		if (Lake.equals(this)) {
 			return "<lake />"; // NOPMD
 		} else {
-			return new StringBuilder("<river direction=\"")
-					.append(desc).append("\" />").toString();
+			return new StringBuilder("<river direction=\"").append(desc)
+					.append("\" />").toString();
 		}
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -85,6 +89,7 @@ public enum River implements XMLWritable {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -92,6 +97,7 @@ public enum River implements XMLWritable {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */

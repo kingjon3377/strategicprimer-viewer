@@ -39,6 +39,7 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	public MapNode() {
 		super(SPMap.class);
 	}
+
 	/**
 	 * The (name of the) "version" property.
 	 */
@@ -49,11 +50,10 @@ public class MapNode extends AbstractChildNode<SPMap> {
 	 * Tile and it includes version (greater than or equal to 1, for this
 	 * version of the reader), rows, and columns properties.
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if all is not well.
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if all is not well.
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
@@ -66,48 +66,50 @@ public class MapNode extends AbstractChildNode<SPMap> {
 						getLine());
 			}
 		}
-		// TODO: This shouldn't be coupled to SPMap.MAX_VERSION, esp. since it's the deprecated implementation.
+		// TODO: This shouldn't be coupled to SPMap.MAX_VERSION, esp. since it's
+		// the deprecated implementation.
 		if (!hasProperty(VERSION_PROP)
 				|| Integer.parseInt(getProperty(VERSION_PROP)) < SPMap.MAX_VERSION) {
 			throw new MapVersionException(
 					"This reader only accepts maps with a \"version\" property of at least "
 							+ SPMap.MAX_VERSION, getLine());
-		} 
+		}
 		demandProperty(TAG, ROWS_PROPERTY, warner, false, false);
 		demandProperty(TAG, COLUMNS_PROPERTY, warner, false, false);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, VERSION_PROP, ROWS_PROPERTY, COLUMNS_PROPERTY, "current_player");
+		return EqualsAny.equalsAny(property, VERSION_PROP, ROWS_PROPERTY,
+				COLUMNS_PROPERTY, "current_player");
 	}
-	
+
 	/**
 	 * 
-	 * @param players
-	 *            will be null, and is ignored
-	 * @param warner
-	 *            a Warning instance to use for warnings
+	 * @param players will be null, and is ignored
+	 * @param warner a Warning instance to use for warnings
 	 * @return the map the XML represented
-	 * @throws SPFormatException
-	 *             if something's wrong with the format.
+	 * @throws SPFormatException if something's wrong with the format.
 	 */
 	@Override
 	public SPMap produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final SPMap map = new SPMap(Integer.parseInt(getProperty(VERSION_PROP)),
+		final SPMap map = new SPMap(
+				Integer.parseInt(getProperty(VERSION_PROP)),
 				Integer.parseInt(getProperty(ROWS_PROPERTY)),
-				Integer.parseInt(getProperty(COLUMNS_PROPERTY)), getProperty("file"));
+				Integer.parseInt(getProperty(COLUMNS_PROPERTY)),
+				getProperty("file"));
 		final List<TileNode> tiles = new LinkedList<TileNode>();
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof PlayerNode) {
 				map.addPlayer(((PlayerNode) node).produce(players, warner));
 			} else if (node instanceof TileNode) {
 				tiles.add((TileNode) node);
-			} 
+			}
 		}
 		for (final TileNode node : tiles) {
 			map.addTile(node.produce(map.getPlayers(), warner));

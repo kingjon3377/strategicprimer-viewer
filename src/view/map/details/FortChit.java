@@ -21,10 +21,8 @@ public class FortChit extends Chit {
 	/**
 	 * Constructor.
 	 * 
-	 * @param fort
-	 *            the fortress this chit represents
-	 * @param listener
-	 *            the object listening for clicks on this chit.
+	 * @param fort the fortress this chit represents
+	 * @param listener the object listening for clicks on this chit.
 	 */
 	public FortChit(final Fortress fort, final MouseListener listener) {
 		super(listener, new FixtureTransferable(fort));
@@ -55,8 +53,7 @@ public class FortChit extends Chit {
 	/**
 	 * Paint the chit.
 	 * 
-	 * @param pen
-	 *            the graphics context
+	 * @param pen the graphics context
 	 * 
 	 * 
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
@@ -68,9 +65,9 @@ public class FortChit extends Chit {
 		try {
 			copy.setColor(FORT_COLOR);
 			copy.fillRect(((int) Math.round(getWidth() * MARGIN)) + 1,
-				((int) Math.round(getHeight() * MARGIN)) + 1,
-				((int) Math.round(getWidth() * (1.0 - MARGIN * 2.0))),
-				((int) Math.round(getHeight() * (1.0 - MARGIN * 2.0))));
+					((int) Math.round(getHeight() * MARGIN)) + 1,
+					((int) Math.round(getWidth() * (1.0 - MARGIN * 2.0))),
+					((int) Math.round(getHeight() * (1.0 - MARGIN * 2.0))));
 		} finally {
 			copy.dispose();
 		}

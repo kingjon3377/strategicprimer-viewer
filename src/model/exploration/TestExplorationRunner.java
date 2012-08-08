@@ -67,6 +67,7 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Table.
+	 * 
 	 * @throws MissingTableException if the table is missing
 	 */
 	@Test
@@ -82,6 +83,7 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
+	 * 
 	 * @throws MissingTableException if a table is missing
 	 */
 	@SuppressWarnings("deprecation")
@@ -91,17 +93,18 @@ public final class TestExplorationRunner {
 				"boreal_major_test"));
 		runner.loadTable("temperate_major_tree", new ConstantTable(
 				"temperate_major_test"));
-		assertEquals("primary tree test for boreal forest",
+		assertEquals(
+				"primary tree test for boreal forest",
 				runner.getPrimaryTree(new Tile(0, 0, TileType.BorealForest, "")),
 				"boreal_major_test");
-		assertEquals(
-				"primary tree test for temperate forest",
-				runner.getPrimaryTree(new Tile(0, 0, TileType.TemperateForest, "")),
-				"temperate_major_test");
+		assertEquals("primary tree test for temperate forest",
+				runner.getPrimaryTree(new Tile(0, 0, TileType.TemperateForest,
+						"")), "temperate_major_test");
 	}
 
 	/**
 	 * Test that getPrimaryTree objects to non-forest tiles.
+	 * 
 	 * @throws MissingTableException if a table is missing
 	 */
 	@Test(expected = IllegalArgumentException.class)
@@ -115,6 +118,7 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
+	 * 
 	 * @throws MissingTableException if a table is missing
 	 */
 	@Test
@@ -136,6 +140,7 @@ public final class TestExplorationRunner {
 	 * 
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
+	 * 
 	 * @throws MissingTableException if a table is missing
 	 */
 	@Test
@@ -154,7 +159,8 @@ public final class TestExplorationRunner {
 				TEST_TABLE_TWO, new Tile(0, 0, TileType.Tundra, "")),
 				"( test_three )");
 		assertEquals("no recursion", runner.recursiveConsultTable(
-				TEST_TABLE_THREE, new Tile(0, 0, TileType.Tundra, "")), TEST_THREE);
+				TEST_TABLE_THREE, new Tile(0, 0, TileType.Tundra, "")),
+				TEST_THREE);
 		assertEquals("one-sided split", runner.recursiveConsultTable(
 				"test_table_four", new Tile(0, 0, TileType.Plains, "")),
 				"_ ( ( test_three ) )");
@@ -162,6 +168,7 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the defaultResults() method.
+	 * 
 	 * @throws MissingTableException if a table is missing
 	 */
 	@SuppressWarnings("deprecation")
@@ -181,7 +188,8 @@ public final class TestExplorationRunner {
 		assertEquals(
 				"defaultResults in temperate forest",
 				"The primary rock type here is test_rock.\nThe main kind of tree is temperate_tree.\n",
-				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest, "")));
+				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest,
+						"")));
 	}
 
 	/**

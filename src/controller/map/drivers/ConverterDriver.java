@@ -19,38 +19,43 @@ import controller.map.readerng.MapWriterNG;
 
 /**
  * A driver to convert maps to the new format.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class ConverterDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ConverterDriver.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ConverterDriver.class
+			.getName());
+
 	/**
 	 * Do not instantiate.
 	 */
 	private ConverterDriver() {
 		// Do nothing.
 	}
+
 	/**
 	 * The converter to use.
 	 */
-	private static final ResolutionDecreaseConverter CONV = new ResolutionDecreaseConverter(); 
+	private static final ResolutionDecreaseConverter CONV = new ResolutionDecreaseConverter();
 	/**
 	 * The map reader we'll use.
 	 */
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
+
 	/**
 	 * Main method.
 	 * 
-	 * @param args
-	 *            the names of files to convert. Each, after conversion, will be
-	 *            written back to its original name plus ".new"
+	 * @param args the names of files to convert. Each, after conversion, will
+	 *        be written back to its original name plus ".new"
 	 */
 	public static void main(final String[] args) {
 		if (args.length < 1) {
-			SystemOut.SYS_OUT.println("Usage: ConverterDriver filename [filename ...]");
+			SystemOut.SYS_OUT
+					.println("Usage: ConverterDriver filename [filename ...]");
 		}
 		for (final String filename : args) {
 			SystemOut.SYS_OUT.print("Reading ");
@@ -65,19 +70,22 @@ public final class ConverterDriver {
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.println(newFilename);
 				new MapWriterNG().write(newFilename, map, true); // NOPMD
-			} catch (MapVersionException e) {
-				LOGGER.log(Level.SEVERE, "Map version in " + filename + " not acceptable to reader", e);
+			} catch (final MapVersionException e) {
+				LOGGER.log(Level.SEVERE, "Map version in " + filename
+						+ " not acceptable to reader", e);
 				continue;
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error processing " + filename, e);
 				continue;
-			} catch (XMLStreamException e) {
-				LOGGER.log(Level.SEVERE, "XML stream error reading " + filename, e);
+			} catch (final XMLStreamException e) {
+				LOGGER.log(Level.SEVERE,
+						"XML stream error reading " + filename, e);
 				continue;
-			} catch (SPFormatException e) {
-				LOGGER.log(Level.SEVERE, "SP map format error reading " + filename, e);
+			} catch (final SPFormatException e) {
+				LOGGER.log(Level.SEVERE, "SP map format error reading "
+						+ filename, e);
 				continue;
 			}
 		}

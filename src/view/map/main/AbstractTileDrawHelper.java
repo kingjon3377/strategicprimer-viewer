@@ -31,10 +31,10 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * The color of the icon used to show that a tile has a mountain.
 	 */
 	protected static final Color MTN_COLOR = new Color(249, 137, 28);
+
 	/**
 	 * @param version the map version
-	 * @param type
-	 *            a tile type
+	 * @param type a tile type
 	 * 
 	 * @return the color associated with that tile-type.
 	 */
@@ -43,8 +43,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * 
 	 * @return whether the tile has any forts.
 	 */
@@ -58,8 +57,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * 
 	 * @return whether the tile has any units.
 	 */
@@ -73,18 +71,17 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * 
 	 * @return whether the tile has any events
 	 */
 	protected static boolean hasEvent(final Tile tile) {
-			for (final TileFixture fix : tile.getContents()) {
-				if (fix instanceof IEvent) {
-					return true; // NOPMD
-				}
+		for (final TileFixture fix : tile.getContents()) {
+			if (fix instanceof IEvent) {
+				return true; // NOPMD
 			}
-			return false; // NOPMD
+		}
+		return false; // NOPMD
 	}
 
 	/**
@@ -108,18 +105,15 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * Draw a tile. At present, the graphics context needs to be translated so
 	 * that its origin is the tile's upper-left-hand corner.
 	 * 
-	 * @param pen
-	 *            the graphics context
-	 * @param tile
-	 *            the tile to draw
-	 * @param width
-	 *            the width of the drawing area
-	 * @param height
-	 *            the height of the drawing area
+	 * @param pen the graphics context
+	 * @param tile the tile to draw
+	 * @param width the width of the drawing area
+	 * @param height the height of the drawing area
 	 */
 	@Override
-	public abstract void drawTile(final Graphics pen, final Tile tile, final int width,
-			final int height);
+	public abstract void drawTile(final Graphics pen, final Tile tile,
+			final int width, final int height);
+
 	/**
 	 * @return the UI helper.
 	 */

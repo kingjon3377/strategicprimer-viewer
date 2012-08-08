@@ -26,6 +26,7 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	public FortressNode() {
 		super(Fortress.class);
 	}
+
 	/**
 	 * The (name of) the "name" property.
 	 */
@@ -38,13 +39,10 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	/**
 	 * Produce the equivalent fortress.
 	 * 
-	 * @param players
-	 *            the players in the map
-	 * @param warner
-	 *            a Warning instance to use for warnings
+	 * @param players the players in the map
+	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent fortress.
-	 * @throws SPFormatException
-	 *             if this node contains invalid data.
+	 * @throws SPFormatException if this node contains invalid data.
 	 */
 	@Override
 	public Fortress produce(final PlayerCollection players, final Warning warner)
@@ -53,14 +51,15 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 				players.getPlayer(hasProperty(OWNER_PROP) ? Integer
 						.parseInt(getProperty(OWNER_PROP)) : -1),
 				hasProperty(NAME_PROP) ? getProperty(NAME_PROP) : "",
-						Integer.parseInt(getProperty("id")), getProperty("file"));
+				Integer.parseInt(getProperty("id")), getProperty("file"));
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof UnitNode) {
 				fort.addUnit(((UnitNode) node).produce(players, warner));
-			} 
+			}
 		}
 		return fort;
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
@@ -77,11 +76,10 @@ public class FortressNode extends AbstractFixtureNode<Fortress> {
 	 * should change to check those conditions.
 	 * 
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if we don't.
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if we don't.
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)

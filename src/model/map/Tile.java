@@ -22,18 +22,16 @@ public final class Tile extends SimpleTile {
 	/**
 	 * Constructor.
 	 * 
-	 * @param tileRow
-	 *            The row number
-	 * @param tileCol
-	 *            The column number
-	 * @param tileType
-	 *            The tile type
-	 * @param filename
-	 *            the file this was loaded from
+	 * @param tileRow The row number
+	 * @param tileCol The column number
+	 * @param tileType The tile type
+	 * @param filename the file this was loaded from
 	 */
-	public Tile(final int tileRow, final int tileCol, final TileType tileType, final String filename) {
+	public Tile(final int tileRow, final int tileCol, final TileType tileType,
+			final String filename) {
 		super(PointFactory.point(tileRow, tileCol), tileType, filename);
-		// Can't be an otherwise-preferable TreeSet because of Java bug #7030899: TreeSet ignores equals() entirely.
+		// Can't be an otherwise-preferable TreeSet because of Java bug
+		// #7030899: TreeSet ignores equals() entirely.
 		contents = new HashSet<TileFixture>();
 	}
 
@@ -43,12 +41,11 @@ public final class Tile extends SimpleTile {
 	private final Set<TileFixture> contents;
 
 	/**
-	 * @param fix
-	 *            something new on the tile
+	 * @param fix something new on the tile
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (!((fix instanceof TextFixture) && ((TextFixture) fix)
-						.getText().isEmpty())) {
+		if (!((fix instanceof TextFixture) && ((TextFixture) fix).getText()
+				.isEmpty())) {
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {
 					final RiverFixture rivers = getRivers();
@@ -63,8 +60,7 @@ public final class Tile extends SimpleTile {
 	}
 
 	/**
-	 * @param fix
-	 *            something to remove from the tile
+	 * @param fix something to remove from the tile
 	 */
 	public void removeFixture(final TileFixture fix) {
 		contents.remove(fix);
@@ -81,8 +77,7 @@ public final class Tile extends SimpleTile {
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it is an identical tile
 	 */
@@ -118,8 +113,7 @@ public final class Tile extends SimpleTile {
 	}
 
 	/**
-	 * @param river
-	 *            a river to add
+	 * @param river a river to add
 	 */
 	public void addRiver(final River river) {
 		if (hasRiver()) {
@@ -131,8 +125,7 @@ public final class Tile extends SimpleTile {
 	}
 
 	/**
-	 * @param river
-	 *            a river to remove
+	 * @param river a river to remove
 	 */
 	public void removeRiver(final River river) {
 		if (hasRiver()) {
@@ -147,28 +140,31 @@ public final class Tile extends SimpleTile {
 	/**
 	 * Update with data from a tile in another map.
 	 * 
-	 * @param tile
-	 *            the same tile in another map.
+	 * @param tile the same tile in another map.
 	 */
 	@Override
 	public void update(final SimpleTile tile) {
 		super.update(tile);
 		if (tile instanceof Tile) {
-		final Set<TileFixture> unmatchedContents = new HashSet<TileFixture>(contents);
-		unmatchedContents.removeAll(((Tile) tile).contents);
-		for (TileFixture local : unmatchedContents) {
-			for (TileFixture remote : ((Tile) tile).getContents()) {
-				if (local.equalsIgnoringID(remote)) {
-					removeFixture(local);
-					addFixture(remote);
-					break;
+			final Set<TileFixture> unmatchedContents = new HashSet<TileFixture>(
+					contents);
+			unmatchedContents.removeAll(((Tile) tile).contents);
+			for (final TileFixture local : unmatchedContents) {
+				for (final TileFixture remote : ((Tile) tile).getContents()) {
+					if (local.equalsIgnoringID(remote)) {
+						removeFixture(local);
+						addFixture(remote);
+						break;
+					}
 				}
 			}
 		}
-		}
 	}
+
 	/**
-	 * Write the tile to XML. Returns the empty string if the tile isn't visible and contains nothing.
+	 * Write the tile to XML. Returns the empty string if the tile isn't visible
+	 * and contains nothing.
+	 * 
 	 * @return an XML representation of the tile.
 	 */
 	@Override
@@ -198,14 +194,17 @@ public final class Tile extends SimpleTile {
 			return sbuild.toString();
 		}
 	}
+
 	/**
 	 * A tile is "empty" if its tile type is NotVisible and it has no contents.
+	 * 
 	 * @return whether this tile is "empty".
 	 */
 	@Override
 	public boolean isEmpty() {
 		return super.isEmpty() && getContents().isEmpty();
 	}
+
 	/**
 	 * @return whether we contain a RiverFixture
 	 */
@@ -217,8 +216,11 @@ public final class Tile extends SimpleTile {
 		}
 		return false;
 	}
+
 	/**
-	 * Call hasRiver() before this, because this will throw IllegalStateException if we don't actually contain a river.
+	 * Call hasRiver() before this, because this will throw
+	 * IllegalStateException if we don't actually contain a river.
+	 * 
 	 * @return the RiverFixture that we contain
 	 */
 	public RiverFixture getRivers() {
@@ -229,9 +231,11 @@ public final class Tile extends SimpleTile {
 		}
 		throw new IllegalStateException("Didn't find a RiverFixture");
 	}
+
 	/**
 	 * @param obj another Tile
-	 * @return whether it's a strict subset of this one, having no members this one doesn't
+	 * @return whether it's a strict subset of this one, having no members this
+	 *         one doesn't
 	 */
 	@Override
 	public boolean isSubset(final SimpleTile obj) {
@@ -239,27 +243,33 @@ public final class Tile extends SimpleTile {
 			if (contents.isEmpty()) {
 				return true; // NOPMD
 			} else if (obj instanceof Tile) {
-				final Set<TileFixture> temp = new HashSet<TileFixture>(((Tile) obj).contents);
+				final Set<TileFixture> temp = new HashSet<TileFixture>(
+						((Tile) obj).contents);
 				temp.removeAll(contents);
-				final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
-				for (TileFixture fix : tempList) {
+				final List<TileFixture> tempList = new ArrayList<TileFixture>(
+						temp);
+				for (final TileFixture fix : tempList) {
 					if (shouldSkip(fix)) {
 						temp.remove(fix);
 					}
 				}
 				if (!temp.isEmpty()) {
-					SystemOut.SYS_OUT.print("\nExtra fixture in " + getLocation().toString() + ":\t");
-					for (TileFixture fix : temp) {
+					SystemOut.SYS_OUT.print("\nExtra fixture in "
+							+ getLocation().toString() + ":\t");
+					for (final TileFixture fix : temp) {
 						SystemOut.SYS_OUT.print(fix.toString());
 					}
 				}
 				return temp.isEmpty(); // NOPMD
 			} else {
-				SystemOut.SYS_OUT.print("Other is a SimpleTile, this is not, at " + getLocation().toString());
+				SystemOut.SYS_OUT
+						.print("Other is a SimpleTile, this is not, at "
+								+ getLocation().toString());
 				return false; // NOPMD
 			}
 		} else {
-			SystemOut.SYS_OUT.print("Type of " + getLocation().toString() + " wrong\t");
+			SystemOut.SYS_OUT.print("Type of " + getLocation().toString()
+					+ " wrong\t");
 			return false;
 		}
 	}
@@ -272,6 +282,7 @@ public final class Tile extends SimpleTile {
 		return fix instanceof CacheFixture || fix instanceof TextFixture
 				|| (fix instanceof Animal && ((Animal) fix).isTraces());
 	}
+
 	/**
 	 * @return a clone of this object
 	 */
@@ -279,13 +290,16 @@ public final class Tile extends SimpleTile {
 	public SimpleTile deepCopy() {
 		final Tile retval = new Tile(getLocation().row(), getLocation().col(),
 				getTerrain(), getFile());
-		for (TileFixture fix : contents) {
+		for (final TileFixture fix : contents) {
 			retval.contents.add(fix.deepCopy());
 		}
 		return retval;
 	}
+
 	/**
-	 * Set the file property of this tile and all its children to the specified value, recursively.
+	 * Set the file property of this tile and all its children to the specified
+	 * value, recursively.
+	 * 
 	 * @param value the value to set
 	 */
 	@Override

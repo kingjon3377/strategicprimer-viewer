@@ -13,8 +13,7 @@ public class ApplyButtonHandler implements ActionListener {
 	/**
 	 * Constructor.
 	 * 
-	 * @param app
-	 *            the Applyable that does the heavy lifting.
+	 * @param app the Applyable that does the heavy lifting.
 	 */
 	public ApplyButtonHandler(final Applyable app) {
 		obj = app;
@@ -28,8 +27,7 @@ public class ApplyButtonHandler implements ActionListener {
 	/**
 	 * Handle button presses.
 	 * 
-	 * @param evt
-	 *            the event to handle
+	 * @param evt the event to handle
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent evt) {

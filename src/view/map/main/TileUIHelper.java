@@ -25,7 +25,8 @@ public class TileUIHelper {
 	/**
 	 * The map we wrap.
 	 */
-	private final Map<Integer, Map<TileType, Color>> colors = new HashMap<Integer, Map<TileType, Color>>(SPMap.MAX_VERSION + 1);
+	private final Map<Integer, Map<TileType, Color>> colors = new HashMap<Integer, Map<TileType, Color>>(
+			SPMap.MAX_VERSION + 1);
 
 	/**
 	 * Constructor.
@@ -33,7 +34,8 @@ public class TileUIHelper {
 	// ESCA-JAVA0076:
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
-		final Map<TileType, Color> one = new EnumMap<TileType, Color>(TileType.class);
+		final Map<TileType, Color> one = new EnumMap<TileType, Color>(
+				TileType.class);
 		one.put(TileType.BorealForest, new Color(72, 218, 164));
 		one.put(TileType.Desert, new Color(249, 233, 28));
 		one.put(TileType.Jungle, new Color(229, 46, 46));
@@ -44,7 +46,8 @@ public class TileUIHelper {
 		one.put(TileType.TemperateForest, new Color(72, 250, 72));
 		one.put(TileType.Tundra, new Color(153, 153, 153));
 		colors.put(Integer.valueOf(1), one);
-		final Map<TileType, Color> two = new EnumMap<TileType, Color>(TileType.class);
+		final Map<TileType, Color> two = new EnumMap<TileType, Color>(
+				TileType.class);
 		two.put(TileType.Desert, new Color(249, 233, 28));
 		two.put(TileType.Jungle, new Color(229, 46, 46));
 		two.put(TileType.NotVisible, new Color(255, 255, 255));
@@ -74,8 +77,7 @@ public class TileUIHelper {
 
 	/**
 	 * @param version what version the map is
-	 * @param type
-	 *            a tile type
+	 * @param type a tile type
 	 * 
 	 * @return the tile's color, if any, under that map version
 	 */
@@ -99,20 +101,21 @@ public class TileUIHelper {
 			TileType.class);
 
 	/**
-	 * @param type
-	 *            a terrain type
+	 * @param type a terrain type
 	 * 
 	 * @return a String representation of that terrain type
 	 */
 	public String getDescription(final TileType type) { // NOPMD
 		return descriptions.get(type);
 	}
+
 	/**
 	 * A map from classes of features to the colors they can make the tile be.
 	 * Used to show that a tile is mountainous or forested even when those are
 	 * represented by icons and there's a higher icon on the tile.
 	 */
 	private final Map<Class<? extends TileFixture>, Color> featureColors = new HashMap<Class<? extends TileFixture>, Color>();
+
 	/**
 	 * @param fix a fixture
 	 * @return the color it should turn the tile

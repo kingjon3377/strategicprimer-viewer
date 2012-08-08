@@ -25,7 +25,8 @@ public class ChitDropListener implements DropTargetListener {
 	/**
 	 * The data flavor we want.
 	 */
-	private static final DataFlavor WANTED_FLAVOR = new DataFlavor(TileFixture.class, "TileFixture");
+	private static final DataFlavor WANTED_FLAVOR = new DataFlavor(
+			TileFixture.class, "TileFixture");
 	/**
 	 * Logger.
 	 */
@@ -35,8 +36,7 @@ public class ChitDropListener implements DropTargetListener {
 	/**
 	 * A possible drag entering the component?
 	 * 
-	 * @param dtde
-	 *            the event to handle
+	 * @param dtde the event to handle
 	 */
 	@Override
 	public void dragEnter(final DropTargetDragEvent dtde) {
@@ -52,8 +52,7 @@ public class ChitDropListener implements DropTargetListener {
 	/**
 	 * Continued dragging over the component.
 	 * 
-	 * @param dtde
-	 *            the event to handle
+	 * @param dtde the event to handle
 	 */
 	@Override
 	public void dragOver(final DropTargetDragEvent dtde) {
@@ -69,8 +68,7 @@ public class ChitDropListener implements DropTargetListener {
 	/**
 	 * Handle change to the type of drag---which we don't care about.
 	 * 
-	 * @param dtde
-	 *            the event to handle.
+	 * @param dtde the event to handle.
 	 */
 	@Override
 	public void dropActionChanged(final DropTargetDragEvent dtde) {
@@ -86,8 +84,7 @@ public class ChitDropListener implements DropTargetListener {
 	/**
 	 * The drag is exiting the component.
 	 * 
-	 * @param dte
-	 *            ignored
+	 * @param dte ignored
 	 */
 	@Override
 	public void dragExit(final DropTargetEvent dte) {
@@ -97,8 +94,7 @@ public class ChitDropListener implements DropTargetListener {
 	/**
 	 * Handle drop.
 	 * 
-	 * @param dtde
-	 *            the event to handle.
+	 * @param dtde the event to handle.
 	 */
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {

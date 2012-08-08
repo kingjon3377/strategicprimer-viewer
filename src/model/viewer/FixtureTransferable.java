@@ -17,8 +17,7 @@ public class FixtureTransferable implements Transferable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param theData
-	 *            the object
+	 * @param theData the object
 	 */
 	public FixtureTransferable(final TileFixture theData) {
 		data = theData;
@@ -45,8 +44,7 @@ public class FixtureTransferable implements Transferable {
 
 	/**
 	 * 
-	 * @param dflavor
-	 *            a DataFlavor
+	 * @param dflavor a DataFlavor
 	 * 
 	 * @return whether it's the one we support
 	 */
@@ -56,13 +54,10 @@ public class FixtureTransferable implements Transferable {
 	}
 
 	/**
-	 * @param dflavor
-	 *            a DataFlavor
+	 * @param dflavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
-	 * @throws UnsupportedFlavorException
-	 *             if they want an unsupported flavor
-	 * @throws IOException
-	 *             required by spec but not thrown
+	 * @throws UnsupportedFlavorException if they want an unsupported flavor
+	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
 	public Object getTransferData(final DataFlavor dflavor)
@@ -82,6 +77,7 @@ public class FixtureTransferable implements Transferable {
 	public String toString() {
 		return "FixtureTransferable";
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -91,6 +87,7 @@ public class FixtureTransferable implements Transferable {
 		return obj instanceof FixtureTransferable
 				&& data.equals(((FixtureTransferable) obj).data);
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */

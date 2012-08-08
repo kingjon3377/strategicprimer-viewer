@@ -22,10 +22,8 @@ public final class PointFactory {
 	private static final Map<Integer, Map<Integer, Point>> CACHE = new ConcurrentHashMap<Integer, Map<Integer, Point>>();
 
 	/**
-	 * @param row
-	 *            a row
-	 * @param col
-	 *            a column
+	 * @param row a row
+	 * @param col a column
 	 * 
 	 * @return a Point representing this point.
 	 */

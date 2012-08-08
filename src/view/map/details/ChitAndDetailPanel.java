@@ -53,14 +53,10 @@ public class ChitAndDetailPanel extends JPanel implements
 	/**
 	 * Constructor.
 	 * 
-	 * @param maxHeight
-	 *            the maximum height of the panel we're part of
-	 * @param minHeight
-	 *            the minimum height of the panel we're part of
-	 * @param height
-	 *            the (preferred) height of the panel we're part of
-	 * @param propertyName
-	 *            the property we listen for
+	 * @param maxHeight the maximum height of the panel we're part of
+	 * @param minHeight the minimum height of the panel we're part of
+	 * @param height the (preferred) height of the panel we're part of
+	 * @param propertyName the property we listen for
 	 */
 	public ChitAndDetailPanel(final int maxHeight, final int minHeight,
 			final int height, final String propertyName) {
@@ -94,8 +90,7 @@ public class ChitAndDetailPanel extends JPanel implements
 	private Tile tile = new Tile(-1, -1, TileType.NotVisible, "");
 
 	/**
-	 * @param fix
-	 *            a TileFixture to add to the underlying tile
+	 * @param fix a TileFixture to add to the underlying tile
 	 */
 	public void addFixture(final TileFixture fix) {
 		if (!tile.getContents().contains(fix)) {
@@ -108,8 +103,7 @@ public class ChitAndDetailPanel extends JPanel implements
 	/**
 	 * Update the chits for a new tile.
 	 * 
-	 * @param newTile
-	 *            the new tile
+	 * @param newTile the new tile
 	 */
 	public void updateChits(final Tile newTile) {
 		if (!newTile.equals(tile)) {
@@ -124,8 +118,7 @@ public class ChitAndDetailPanel extends JPanel implements
 	/**
 	 * Handle a property change.
 	 * 
-	 * @param evt
-	 *            the event to handle.
+	 * @param evt the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {

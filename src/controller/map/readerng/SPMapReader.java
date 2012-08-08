@@ -35,33 +35,33 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	 * The tag we read.
 	 */
 	private static final String TAG = "map";
+
 	/**
 	 * Parse a map from XML.
 	 * 
-	 * @param element
-	 *            the eleent to start parsing with
-	 * @param stream
-	 *            the XML tags and such
+	 * @param element the eleent to start parsing with
+	 * @param stream the XML tags and such
 	 * @param players the collection of players, most likely null at this point
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the produced type
-	 * @throws SPFormatException
-	 *             on format problems
+	 * @throws SPFormatException on format problems
 	 */
 	@Override
 	public SPMap parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final SPMap map = new SPMap(
-				Integer.parseInt(getAttribute(element, "version", "1")),
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
+		final SPMap map = new SPMap(Integer.parseInt(getAttribute(element,
+				"version", "1")),
 				Integer.parseInt(getAttribute(element, "rows")),
 				Integer.parseInt(getAttribute(element, "columns")),
 				XMLHelper.getFile(stream));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
-				parseChild(stream, warner, map, elem, idFactory); 
+				parseChild(stream, warner, map, elem, idFactory);
 			} else if (event.isEndElement()
 					&& TAG.equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
@@ -77,28 +77,32 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		return map;
 	}
 
-	/** Parse a child element.
-	 * @param stream the stream we're reading from---only here to pass to children
+	/**
+	 * Parse a child element.
+	 * 
+	 * @param stream the stream we're reading from---only here to pass to
+	 *        children
 	 * @param warner the Warning instance to use.
 	 * @param map the map we're building.
 	 * @param elem the current tag.
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException on SP map format error
 	 */
 	private static void parseChild(final Iterable<XMLEvent> stream,
-			final Warning warner, final SPMap map, 
-			final StartElement elem, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final SPMap map, final StartElement elem,
+			final IDFactory idFactory) throws SPFormatException {
 		final String type = elem.getName().getLocalPart();
 		if ("player".equalsIgnoreCase(type)) {
-			map.addPlayer(PLAYER_READER
-					.parse(elem, stream, map.getPlayers(), warner, idFactory));
+			map.addPlayer(PLAYER_READER.parse(elem, stream, map.getPlayers(),
+					warner, idFactory));
 		} else if (!"row".equalsIgnoreCase(type)) {
 			// We deliberately ignore "row"; that had been a "continue",
 			// but we want to extract this as a method.
 			if ("tile".equalsIgnoreCase(type)) {
-				map.addTile(TILE_READER.parse(
-						elem, stream, map.getPlayers(), warner, idFactory));
-			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) { 
+				map.addTile(TILE_READER.parse(elem, stream, map.getPlayers(),
+						warner, idFactory));
+			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 				warner.warn(new UnsupportedTagException(type, elem // NOPMD
 						.getLocation().getLineNumber()));
 			} else {
@@ -107,6 +111,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			}
 		}
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -114,6 +119,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public List<String> understands() {
 		return Collections.singletonList("map");
 	}
+
 	/**
 	 * @return the class we know how to write
 	 */
@@ -121,17 +127,19 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public Class<SPMap> writes() {
 		return SPMap.class;
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
-	 * @param obj
-	 *            the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the
+	 *        adapter work.
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
 	public <S extends SPMap> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("map");
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"map");
 		retval.addAttribute("version", Integer.toString(obj.getVersion()));
 		retval.addAttribute("rows", Integer.toString(obj.rows()));
 		retval.addAttribute("columns", Integer.toString(obj.cols()));
@@ -143,12 +151,12 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		}
 		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 		tagMap.put(obj.getFile(), retval);
-		for (Player player : obj.getPlayers()) {
+		for (final Player player : obj.getPlayers()) {
 			addPlayerChild(tagMap, player, retval);
 		}
 		for (int i = 0; i < obj.rows(); i++) {
 			@SuppressWarnings("unchecked")
-			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(//NOPMD
+			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(// NOPMD
 					"row", Pair.of("index", Integer.toString(i)));
 			tagMap.put(obj.getFile(), row);
 			for (int j = 0; j < obj.cols(); j++) {
@@ -161,36 +169,49 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		}
 		return retval;
 	}
+
 	/**
-	 * Add a child node for a tile to a node---the parent node, or an 'include' node representing its chosen file.
+	 * Add a child node for a tile to a node---the parent node, or an 'include'
+	 * node representing its chosen file.
+	 * 
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
-	 * @param parent the parent node, so we can add any include nodes created to it
+	 * @param parent the parent node, so we can add any include nodes created to
+	 *        it
 	 */
-	private static void addTileChild(final Map<String, SPIntermediateRepresentation> map,
+	private static void addTileChild(
+			final Map<String, SPIntermediateRepresentation> map,
 			final Tile obj, final SPIntermediateRepresentation parent) {
 		if (!map.containsKey(obj.getFile())) {
-			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation("include");
+			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
+					"include");
 			includeTag.addAttribute("file", obj.getFile());
 			parent.addChild(includeTag);
 		}
 		map.get(obj.getFile()).addChild(TILE_READER.write(obj));
 	}
+
 	/**
-	 * Add a child node for a player to a node---the parent node, or an 'include' node representing its chosen file.
+	 * Add a child node for a player to a node---the parent node, or an
+	 * 'include' node representing its chosen file.
+	 * 
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
-	 * @param parent the parent node, so we can add any include nodes created to it
+	 * @param parent the parent node, so we can add any include nodes created to
+	 *        it
 	 */
-	private static void addPlayerChild(final Map<String, SPIntermediateRepresentation> map,
+	private static void addPlayerChild(
+			final Map<String, SPIntermediateRepresentation> map,
 			final Player obj, final SPIntermediateRepresentation parent) {
 		if (!map.containsKey(obj.getFile())) {
-			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation("include");
+			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
+					"include");
 			includeTag.addAttribute("file", obj.getFile());
 			parent.addChild(includeTag);
 		}
 		map.get(obj.getFile()).addChild(PLAYER_READER.write(obj));
 	}
+
 	/**
 	 * The reader to use to parse players.
 	 */

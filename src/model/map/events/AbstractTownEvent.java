@@ -13,14 +13,10 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 * 
-	 * @param eKind
-	 *            what kind of event this is
-	 * @param tSize
-	 *            the size of the town, fortress, or city
-	 * @param tStatus
-	 *            the status of the town, fortress, or city
-	 * @param tName
-	 *            the name of the town, fortress, or city
+	 * @param eKind what kind of event this is
+	 * @param tSize the size of the town, fortress, or city
+	 * @param tStatus the status of the town, fortress, or city
+	 * @param tName the name of the town, fortress, or city
 	 */
 	protected AbstractTownEvent(final EventKind eKind,
 			final TownStatus tStatus, final TownSize tSize, final String tName) {
@@ -30,16 +26,19 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 		size = tSize;
 		name = tName;
 	}
+
 	/**
 	 * The name of this town, fortress, or city.
 	 */
 	private final String name;
+
 	/**
 	 * @return the name of the town, fortress, or city.
 	 */
 	public String name() {
 		return name;
 	}
+
 	/**
 	 * The status of the town, fortress, or city.
 	 */
@@ -103,8 +102,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it's an identical event
 	 */
@@ -115,9 +113,10 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 						&& ((AbstractTownEvent) obj).kind().equals(kind())
 						&& ((AbstractTownEvent) obj).size.equals(size)
 						&& ((AbstractTownEvent) obj).name.equals(name)
-						&& ((AbstractTownEvent) obj).status.equals(status)
-						&& ((TileFixture) obj).getID() == getID());
+						&& ((AbstractTownEvent) obj).status.equals(status) && ((TileFixture) obj)
+						.getID() == getID());
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -128,9 +127,10 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 				|| (fix instanceof AbstractTownEvent
 						&& ((AbstractTownEvent) fix).kind().equals(kind())
 						&& ((AbstractTownEvent) fix).size.equals(size)
-						&& ((AbstractTownEvent) fix).name.equals(name)
-						&& ((AbstractTownEvent) fix).status.equals(status));
+						&& ((AbstractTownEvent) fix).name.equals(name) && ((AbstractTownEvent) fix).status
+							.equals(status));
 	}
+
 	/**
 	 * 
 	 * @return a hash value for the object
@@ -146,8 +146,9 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "A " + size.toString() + ' ' + status.toString() + ' ' + kind().toString()
-				+ " of DC " + getDC() + (name.isEmpty() ? " with no name" : " with name " + name);
+		return "A " + size.toString() + ' ' + status.toString() + ' '
+				+ kind().toString() + " of DC " + getDC()
+				+ (name.isEmpty() ? " with no name" : " with name " + name);
 	}
 
 	/**
@@ -157,24 +158,28 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	public EventKind kind() {
 		return kind;
 	}
+
 	/**
 	 * TODO: Should be more granular.
+	 * 
 	 * @return the name of an image to represent the event.
 	 */
 	@Override
 	public String getImage() {
 		return "town.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
 	@Override
-	public int getZValue() { // NOPMD: It claims this is "empty" and should be abstract instead.
+	public int getZValue() { // NOPMD: It claims this is "empty" and should be
+								// abstract instead.
 		return 50;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */

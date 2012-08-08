@@ -16,8 +16,7 @@ public class ChitDescriptionLabel extends JLabel implements
 	/**
 	 * Handle a changed property.
 	 * 
-	 * @param evt
-	 *            the event to handle.
+	 * @param evt the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {

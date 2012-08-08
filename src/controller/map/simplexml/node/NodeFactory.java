@@ -11,7 +11,7 @@ import controller.map.UnsupportedTagException;
 
 /**
  * A class to create properly-typed Nodes (but *not* their contents) based on
- * the tags that represent them. 
+ * the tags that represent them.
  * 
  * @author Jonathan Lovelace
  * 
@@ -33,14 +33,13 @@ public final class NodeFactory { // NOPMD
 	/**
 	 * Set up a tag.
 	 * 
-	 * @param string
-	 *            an XML tag
-	 * @param tag
-	 *            a corresponding tag category
+	 * @param string an XML tag
+	 * @param tag a corresponding tag category
 	 */
 	private static void addTag(final String string, final Tag tag) {
 		TAGS.put(string, tag);
 	}
+
 	/**
 	 * Set up the mappings from tags to node types. And just in case we didn't
 	 * remove a tag from FUTURE, we handle those before the tags we *do* handle.
@@ -94,26 +93,27 @@ public final class NodeFactory { // NOPMD
 		addTag("troll", Tag.Troll);
 		addTag("view", Tag.View);
 	}
+
 	/**
 	 * Create a Node from a tag using reflection.
-	 * @param tag
-	 *            the tag.
-	 * @param line
-	 *            the line of the file it's on ... just in case.
+	 * 
+	 * @param tag the tag.
+	 * @param line the line of the file it's on ... just in case.
 	 * @param file the file it's taken from
-	 * @param warner the Warning instance to use if we need to propagate a warning
+	 * @param warner the Warning instance to use if we need to propagate a
+	 *        warning
 	 * @return a Node representing the tag, but not its contents yet.
-	 * @throws SPFormatException
-	 *             on unrecognized tag
+	 * @throws SPFormatException on unrecognized tag
 	 * @throws IllegalAccessException thrown by reflection
 	 * @throws InstantiationException thrown by reflection
 	 */
 	public static AbstractChildNode<?> createReflection(final String tag,
-			final int line, final String file, final Warning warner) throws SPFormatException, InstantiationException,
+			final int line, final String file, final Warning warner)
+			throws SPFormatException, InstantiationException,
 			IllegalAccessException {
 		final Tag localtag = getTag(tag, line);
 		// ESCA-JAVA0177:
-		final AbstractChildNode<?> node; //NOPMD
+		final AbstractChildNode<?> node; // NOPMD
 		if (Tag.Skippable.equals(localtag)) {
 			node = new SkippableNode(tag, line, warner);
 		} else {
@@ -128,6 +128,7 @@ public final class NodeFactory { // NOPMD
 		node.addProperty("file", file, warner);
 		return node;
 	}
+
 	/**
 	 * @param tag An XML tag
 	 * @param line the line it occurs on
@@ -141,22 +142,19 @@ public final class NodeFactory { // NOPMD
 		}
 		return TAGS.get(tag);
 	}
+
 	/**
 	 * Create a Node from a tag.
 	 * 
-	 * @param tag
-	 *            the tag.
-	 * @param line
-	 *            the line of the file it's on ... just in case.
+	 * @param tag the tag.
+	 * @param line the line of the file it's on ... just in case.
 	 * @param file the file we read it from
-	 * @param warner the warning instance to use if necessary 
+	 * @param warner the warning instance to use if necessary
 	 * @return a Node representing the tag, but not its contents yet.
-	 * @throws SPFormatException
-	 *             on unrecognized tag
+	 * @throws SPFormatException on unrecognized tag
 	 */
 	public static AbstractChildNode<?> create(final String tag, final int line, // NOPMD
-			final String file, final Warning warner)
-			throws SPFormatException {
+			final String file, final Warning warner) throws SPFormatException {
 		// ESCA-JAVA0177:
 		final AbstractChildNode<?> node; // NOPMD
 		// ESCA-JAVA0040:

@@ -19,13 +19,15 @@ import controller.map.SPWriter;
 public class SimpleXMLWriter implements SPWriter { // NOPMD
 	/**
 	 * Write a map.
+	 * 
 	 * @param filename the file to write to
-	 * @param map the map to write. 
+	 * @param map the map to write.
 	 * @param inclusion ignored
 	 * @throws IOException on error opening the file
 	 */
 	@Override
-	public void write(final String filename, final IMap map, final boolean inclusion) throws IOException {
+	public void write(final String filename, final IMap map,
+			final boolean inclusion) throws IOException {
 		final FileWriter writer = new FileWriter(filename);
 		try {
 			write(writer, map, inclusion);
@@ -38,8 +40,7 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 	 * Write a map.
 	 * 
 	 * @param out the writer to write to
-	 * @param map
-	 *            the map to write
+	 * @param map the map to write
 	 * @param inclusion ignored
 	 */
 	@Override
@@ -57,9 +58,9 @@ public class SimpleXMLWriter implements SPWriter { // NOPMD
 
 	/**
 	 * Prints a string in quotation marks.
+	 * 
 	 * @param writer the Writer to write to
-	 * @param text
-	 *            the string to print
+	 * @param text the string to print
 	 */
 	private static void printQuoted(final PrintWriter writer, final String text) {
 		writer.print('"');

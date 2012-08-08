@@ -47,23 +47,21 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	/**
 	 * Produce the equivalent Unit.
 	 * 
-	 * @param players
-	 *            the players in the map
-	 * @param warner
-	 *            a Warning instance to use for warnings
+	 * @param players the players in the map
+	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent Unit.
-	 * @throws SPFormatException
-	 *             if we contain invalid data.
+	 * @throws SPFormatException if we contain invalid data.
 	 */
 	@Override
 	public Unit produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
-		final Unit fix = new Unit(players.getPlayer((hasProperty(OWNER_ATTR) && !""
-				.equals(getProperty(OWNER_ATTR))) ? Integer
-				.parseInt(getProperty(OWNER_ATTR)) : -1),
-				getPropertyWithDefault(TYPE_ATTR, ""),
-				getPropertyWithDefault(NAME_ATTR, ""),
-				Integer.parseInt(getProperty("id")), getProperty("file"));
+		final Unit fix = new Unit(
+				players.getPlayer((hasProperty(OWNER_ATTR) && !""
+						.equals(getProperty(OWNER_ATTR))) ? Integer
+						.parseInt(getProperty(OWNER_ATTR)) : -1),
+				getPropertyWithDefault(TYPE_ATTR, ""), getPropertyWithDefault(
+						NAME_ATTR, ""), Integer.parseInt(getProperty("id")),
+				getProperty("file"));
 		return fix;
 	}
 
@@ -76,25 +74,24 @@ public class UnitNode extends AbstractFixtureNode<Unit> {
 	 * checked here.
 	 * 
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if contain invalid data.
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if contain invalid data.
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
 		demandProperty(TAG, OWNER_ATTR, warner, true, false);
-		handleDeprecatedProperty(TAG, TYPE_ATTR, OLD_TYPE_ATTR, warner, false, false);
+		handleDeprecatedProperty(TAG, TYPE_ATTR, OLD_TYPE_ATTR, warner, false,
+				false);
 		demandProperty(TAG, NAME_ATTR, warner, true, false);
 		registerOrCreateID("unit", idFactory, warner);
 	}
 
 	/**
-	 * @param property
-	 *            the name of a property
+	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
 	 */
 	@Override

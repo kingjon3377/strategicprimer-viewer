@@ -27,8 +27,7 @@ public enum StoneKind {
 	private static final Map<String, StoneKind> SK_MAP = new HashMap<String, StoneKind>();
 
 	/**
-	 * @param string
-	 *            a string representing a StoneKind
+	 * @param string a string representing a StoneKind
 	 * 
 	 * @return the StoneKind it represents
 	 */
@@ -45,8 +44,7 @@ public enum StoneKind {
 	/**
 	 * Constructor.
 	 * 
-	 * @param string
-	 *            A string representing the StoneKind.
+	 * @param string A string representing the StoneKind.
 	 */
 	private StoneKind(final String string) {
 		str = string;

@@ -69,10 +69,9 @@ public abstract class Chit extends Selectable { // NOPMD
 	/**
 	 * Constructor.
 	 * 
-	 * @param listener
-	 *            a listener to detect clicks on the chit.
-	 * @param transferable
-	 *            a Transferable encapsulating the data the Chit represents.
+	 * @param listener a listener to detect clicks on the chit.
+	 * @param transferable a Transferable encapsulating the data the Chit
+	 *        represents.
 	 */
 	protected Chit(final MouseListener listener, final Transferable transferable) {
 		super();
@@ -82,8 +81,11 @@ public abstract class Chit extends Selectable { // NOPMD
 				this, DnDConstants.ACTION_COPY,
 				new ChitDragGestureListener(transferable));
 	}
+
 	/**
-	 * Create a backup image, special-casing forests and mountains (and perhaps others).
+	 * Create a backup image, special-casing forests and mountains (and perhaps
+	 * others).
+	 * 
 	 * @param fix the fixture it'll represent
 	 * @return a default image
 	 */
@@ -93,7 +95,8 @@ public abstract class Chit extends Selectable { // NOPMD
 		 */
 		final double margin = 0.15; // NOPMD
 		final int imageSize = 24; // NOPMD
-		final BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
+				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		if (fix instanceof Mountain) {
 			pen.setColor(Color.orange);
@@ -113,11 +116,13 @@ public abstract class Chit extends Selectable { // NOPMD
 					((int) Math.round(imageSize * (margin / 2.0))),
 					((int) Math.round(imageSize * (margin / 2.0))));
 			pen.setColor(saveColor);
-			pen.fillRoundRect(((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+			pen.fillRoundRect(
 					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
-					((int) Math.round(imageSize * margin * 2.0)), ((int) Math.round(imageSize
-							* margin * 2.0)), ((int) Math.round(imageSize * margin / 2.0)),
-							((int) Math.round(imageSize * margin / 2.0)));
+					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+					((int) Math.round(imageSize * margin * 2.0)),
+					((int) Math.round(imageSize * margin * 2.0)),
+					((int) Math.round(imageSize * margin / 2.0)),
+					((int) Math.round(imageSize * margin / 2.0)));
 		}
 		return temp;
 	}

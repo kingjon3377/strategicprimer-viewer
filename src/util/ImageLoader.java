@@ -29,49 +29,61 @@ public final class ImageLoader {
 	 * The object we use for our actual file I/O.
 	 */
 	private final LoadFile helper = new LoadFile();
+
 	/**
 	 * Constructor.
 	 */
 	private ImageLoader() {
-		// Do  nothing.
+		// Do nothing.
 	}
+
 	/**
 	 * Singleton instance.
 	 */
 	private static final ImageLoader LOADER = new ImageLoader();
+
 	/**
 	 * @return the instance.
 	 */
 	public static ImageLoader getLoader() {
 		return LOADER;
 	}
+
 	/**
 	 * Load an image from the cache, or if not in it, from file.
+	 * 
 	 * @param file the name of the file to load
 	 * @return the image contained in the file.
 	 * @throws FileNotFoundException if the file isn't found.
 	 * @throws IOException on I/O error reading the file
 	 */
-	public Image loadImage(final String file) throws FileNotFoundException, IOException {
+	public Image loadImage(final String file) throws FileNotFoundException,
+			IOException {
 		if (!cache.containsKey(file)) {
-			cache.put(file, ImageIO.read(helper.doLoadFileAsStream("images/" + file)));
+			cache.put(file,
+					ImageIO.read(helper.doLoadFileAsStream("images/" + file)));
 		}
 		return cache.get(file);
 	}
+
 	/**
 	 * An icon cache.
 	 */
 	private final Map<String, Icon> iconCache = new HashMap<String, Icon>();
+
 	/**
 	 * Load an icon from the cache, or if not in it, from file.
+	 * 
 	 * @param file the name of the file to load
 	 * @return an icon of image contained in the file.
 	 * @throws FileNotFoundException if the file isn't found.
 	 * @throws IOException on I/O error reading the file
 	 */
-	public Icon loadIcon(final String file) throws FileNotFoundException, IOException {
+	public Icon loadIcon(final String file) throws FileNotFoundException,
+			IOException {
 		if (!iconCache.containsKey(file)) {
-			iconCache.put(file, new ImageIcon(loadImage(file).getScaledInstance(20, -1, Image.SCALE_DEFAULT)));
+			iconCache.put(file, new ImageIcon(loadImage(file)
+					.getScaledInstance(20, -1, Image.SCALE_DEFAULT)));
 		}
 		return iconCache.get(file);
 	}

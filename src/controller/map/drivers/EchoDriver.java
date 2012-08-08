@@ -15,7 +15,8 @@ import controller.map.misc.MapReaderAdapter;
 /**
  * A driver that reads in maps and then writes them out again---this is
  * primarily to make sure that the map format is properly read, but is also
- * useful for correcting deprecated syntax. (Because of that usage, warnings are disabled.)
+ * useful for correcting deprecated syntax. (Because of that usage, warnings are
+ * disabled.)
  * 
  * @author Jonathan Lovelace
  * 
@@ -27,13 +28,18 @@ public final class EchoDriver {
 	private EchoDriver() {
 		// Do nothing.
 	}
+
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(EchoDriver.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(EchoDriver.class
+			.getName());
+
 	/**
 	 * Main.
-	 * @param args command-line arguments: the filename to read from and the filename to write to. These may be the same.
+	 * 
+	 * @param args command-line arguments: the filename to read from and the
+	 *        filename to write to. These may be the same.
 	 */
 	public static void main(final String[] args) {
 		if (args.length != 2) {
@@ -43,14 +49,15 @@ public final class EchoDriver {
 		// ESCA-JAVA0177:
 		final IMap map; // NOPMD
 		try {
-			map = new MapReaderAdapter().readMap(args[0], new Warning(//NOPMD
+			map = new MapReaderAdapter().readMap(args[0], new Warning(// NOPMD
 					Warning.Action.Ignore));
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE, "Unsupported map version", except);
 			System.exit(2);
 			return; // NOPMD
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading file " + args[0], except);
+			LOGGER.log(Level.SEVERE, "I/O error reading file " + args[0],
+					except);
 			System.exit(3);
 			return; // NOPMD
 		} catch (final XMLStreamException except) {
@@ -67,6 +74,6 @@ public final class EchoDriver {
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error writing " + args[1], except);
 		}
-		
+
 	}
 }

@@ -27,6 +27,7 @@ import util.EnumCounter;
 public class ResolutionDecreaseConverter {
 	/**
 	 * Convert a map. It needs to have an even number of rows and columns.
+	 * 
 	 * @param old the map to convert.
 	 * @return an equivalent MapView.
 	 */
@@ -35,7 +36,7 @@ public class ResolutionDecreaseConverter {
 		final int newRows = old.rows() / 2;
 		final int newCols = old.cols() / 2;
 		final SPMap newMap = new SPMap(2, newRows, newCols, old.getFile());
-		for (Player player : old.getPlayers()) {
+		for (final Player player : old.getPlayers()) {
 			newMap.addPlayer(player);
 		}
 		final MapView retval = new MapView(newMap, newMap.getPlayers()
@@ -43,24 +44,29 @@ public class ResolutionDecreaseConverter {
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				retval.getMap().addTile(
-						convertTile(old.getTile(PointFactory.point(row * 2, col * 2)),
-								old.getTile(PointFactory.point(row * 2, col * 2 + 1)),
-								old.getTile(PointFactory.point(row * 2 + 1, col * 2)),
-								old.getTile(PointFactory.point(row * 2 + 1, col * 2 + 1))));
+						convertTile(old.getTile(PointFactory.point(row * 2,
+								col * 2)), old.getTile(PointFactory.point(
+								row * 2, col * 2 + 1)), old
+								.getTile(PointFactory.point(row * 2 + 1,
+										col * 2)), old.getTile(PointFactory
+								.point(row * 2 + 1, col * 2 + 1))));
 			}
 		}
 		return retval;
 	}
-	
+
 	/**
 	 * Check that the map has an even number of rows and columns.
+	 * 
 	 * @param map the map to check.
 	 */
 	private static void checkRequirements(final IMap map) {
 		if (map.rows() % 2 != 0 || map.cols() % 2 != 0) {
-			throw new IllegalArgumentException("This converter can only work on maps with an even number of rows and columns.");
+			throw new IllegalArgumentException(
+					"This converter can only work on maps with an even number of rows and columns.");
 		}
 	}
+
 	/**
 	 * @param upperLeft the upper-left tile of a group of four.
 	 * @param upperRight the upper-right tile of a group of four
@@ -95,18 +101,21 @@ public class ResolutionDecreaseConverter {
 		retval.addFixture(combined);
 		return retval;
 	}
+
 	/**
 	 * Add all non-river fixtures from the source to the destination tile.
+	 * 
 	 * @param source a source tile
 	 * @param dest a destination tile
 	 */
 	private static void addAllFixtures(final Tile source, final Tile dest) {
-		for (TileFixture fix : source.getContents()) {
+		for (final TileFixture fix : source.getContents()) {
 			if (!(fix instanceof RiverFixture)) {
 				dest.addFixture(fix);
 			}
 		}
 	}
+
 	/**
 	 * @param tile a tile
 	 * @return its RiverFixture, or an empty one if it doesn't have one
@@ -118,33 +127,33 @@ public class ResolutionDecreaseConverter {
 			return new RiverFixture();
 		}
 	}
+
 	/**
 	 * @param fix a RiverFixture
 	 * @param rivers a series of rivers to remove from it
 	 */
-	private static void removeRivers(final RiverFixture fix, final River... rivers) {
-		for (River river : rivers) {
+	private static void removeRivers(final RiverFixture fix,
+			final River... rivers) {
+		for (final River river : rivers) {
 			fix.removeRiver(river);
 		}
 	}
+
 	/**
-	 * @param one
-	 *            one tile-type
-	 * @param two
-	 *            a second tile-type
-	 * @param three
-	 *            a third tile-type
-	 * @param four
-	 *            a fourth tile-type
+	 * @param one one tile-type
+	 * @param two a second tile-type
+	 * @param three a third tile-type
+	 * @param four a fourth tile-type
 	 * @return the most common tile of them, or if there are two or four with
 	 *         equal representation one selected from among them at random.
 	 */
 	private static TileType consensus(final TileType one, final TileType two,
 			final TileType three, final TileType four) {
-		final EnumCounter<TileType> counter = new EnumCounter<TileType>(TileType.class);
+		final EnumCounter<TileType> counter = new EnumCounter<TileType>(
+				TileType.class);
 		counter.countMany(one, two, three, four);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);
-		for (TileType type : TileType.values()) {
+		for (final TileType type : TileType.values()) {
 			switch (counter.getCount(type)) {
 			case 0:
 				// skip
@@ -167,5 +176,5 @@ public class ResolutionDecreaseConverter {
 			return list.get(0);
 		}
 	}
-	
+
 }

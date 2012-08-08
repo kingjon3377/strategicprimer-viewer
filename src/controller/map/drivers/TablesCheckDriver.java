@@ -15,8 +15,7 @@ public final class TablesCheckDriver {
 	 * A utility driver method that loads all files in tables/ under the current
 	 * directory, then checks to see whether any references a nonexistent table.
 	 * 
-	 * @param args
-	 *            ignore
+	 * @param args ignore
 	 */
 	public static void main(final String[] args) {
 		final ExplorationRunner runner = new ExplorationRunner();

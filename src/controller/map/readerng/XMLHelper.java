@@ -15,8 +15,9 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A class for helper methods.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public final class XMLHelper {
 	/**
@@ -25,11 +26,10 @@ public final class XMLHelper {
 	private XMLHelper() {
 		// Don't instantiate
 	}
+
 	/**
-	 * @param startElement
-	 *            a tag
-	 * @param attribute
-	 *            the attribute we want
+	 * @param startElement a tag
+	 * @param attribute the attribute we want
 	 * 
 	 * @return the value of that attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute
@@ -45,17 +45,15 @@ public final class XMLHelper {
 		}
 		return attr.getValue();
 	}
-	
+
 	/**
 	 * A variant of getAttribute() that returns a specified default value if the
 	 * attribute is missing, instead of throwing an exception.
 	 * 
-	 * @param elem
-	 *            the element
-	 * @param attr
-	 *            the attribute we want
-	 * @param defaultValue
-	 *            the default value if the element doesn't have the attribute
+	 * @param elem the element
+	 * @param attr the attribute we want
+	 * @param defaultValue the default value if the element doesn't have the
+	 *        attribute
 	 * 
 	 * @return the value of attribute if it exists, or the default
 	 */
@@ -64,29 +62,30 @@ public final class XMLHelper {
 		final Attribute value = elem.getAttributeByName(new QName(attr));
 		return (value == null) ? defaultValue : value.getValue();
 	}
-	
+
 	/**
-	 * @param element
-	 *            the element
-	 * @param preferred
-	 *            the preferred name of the attribute
-	 * @param deprecated
-	 *            the deprecated name of the attribute * @throws
-	 *            SPFormatException if the element doesn't have that attribute
+	 * @param element the element
+	 * @param preferred the preferred name of the attribute
+	 * @param deprecated the deprecated name of the attribute * @throws
+	 *        SPFormatException if the element doesn't have that attribute
 	 * @param warner the warning instance to use
 	 * @return the value of the attribute, gotten from the preferred form if it
 	 *         has it, and from the deprecated form if the preferred form isn't
 	 *         there but it is.
-	 * @throws SPFormatException
-	 *             if the element doesn't have that attribute
+	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttributeWithDeprecatedForm(
 			final StartElement element, final String preferred,
-			final String deprecated, final Warning warner) throws SPFormatException {
-		final Attribute prefAttr = element.getAttributeByName(new QName(preferred));
-		final Attribute deprAttr = element.getAttributeByName(new QName(deprecated));
+			final String deprecated, final Warning warner)
+			throws SPFormatException {
+		final Attribute prefAttr = element.getAttributeByName(new QName(
+				preferred));
+		final Attribute deprAttr = element.getAttributeByName(new QName(
+				deprecated));
 		if (prefAttr == null && deprAttr == null) {
-			throw new MissingParameterException(element.getName().getLocalPart(), preferred, element.getLocation().getLineNumber());
+			throw new MissingParameterException(element.getName()
+					.getLocalPart(), preferred, element.getLocation()
+					.getLineNumber());
 		} else if (prefAttr == null) {
 			warner.warn(new DeprecatedPropertyException(element.getName()
 					.getLocalPart(), deprecated, preferred, element
@@ -96,42 +95,47 @@ public final class XMLHelper {
 			return prefAttr.getValue();
 		}
 	}
+
 	/**
 	 * @param elem an element
 	 * @param attr the attribute we want
 	 * @return whether the element has that attribute
 	 */
-	public static boolean hasAttribute(final StartElement elem, final String attr) {
-		return !(elem.getAttributeByName(new QName(attr)) == null); 
+	public static boolean hasAttribute(final StartElement elem,
+			final String attr) {
+		return !(elem.getAttributeByName(new QName(attr)) == null);
 	}
+
 	/**
 	 * Move along the stream until we hit an end element, but object to any
 	 * start elements.
 	 * 
-	 * @param tag
-	 *            what kind of tag we're in (for the error message)
-	 * @param reader
-	 *            the XML stream we're reading from
+	 * @param tag what kind of tag we're in (for the error message)
+	 * @param reader the XML stream we're reading from
 	 * @throws SPFormatException on unwanted child
 	 */
-	public static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader) throws SPFormatException {
+	public static void spinUntilEnd(final QName tag,
+			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(tag.getLocalPart(), event.asStartElement()
-						.getName().getLocalPart(), event.getLocation()
-						.getLineNumber());
+				throw new UnwantedChildException(tag.getLocalPart(), event
+						.asStartElement().getName().getLocalPart(), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
 	}
+
 	/**
-	 * Throw an exception (or warn) if the specified parameter is missing or empty.
+	 * Throw an exception (or warn) if the specified parameter is missing or
+	 * empty.
+	 * 
 	 * @param element the current element
 	 * @param parameter the parameter to check
 	 * @param mandatory whether we should throw or just warn
-	 * @param warner the Warning instance to use if not mandatory 
+	 * @param warner the Warning instance to use if not mandatory
 	 * @throws SPFormatException if the parameter is mandatory and missing
 	 */
 	public static void requireNonEmptyParameter(final StartElement element,
@@ -148,19 +152,25 @@ public final class XMLHelper {
 			}
 		}
 	}
+
 	/**
 	 * If the specified tag has an ID as a property, return it; otherwise warn
 	 * about its absence and generate one.
+	 * 
 	 * @param element the tag we're working with
-	 * @param warner the Warning instance to send the warning on if the tag doesn't specify an ID
-	 * @param idFactory the factory to register an existing ID with or get a new one from
+	 * @param warner the Warning instance to send the warning on if the tag
+	 *        doesn't specify an ID
+	 * @param idFactory the factory to register an existing ID with or get a new
+	 *        one from
 	 * @return the ID the tag has if it has one, or otherwise a generated one.
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	public static int getOrGenerateID(final StartElement element,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		if (hasAttribute(element, "id")) {
-			return idFactory.register(Integer.parseInt(getAttribute(element, "id"))); // NOPMD
+			return idFactory.register(Integer.parseInt(getAttribute(element,
+					"id"))); // NOPMD
 		} else {
 			warner.warn(new MissingParameterException(element.getName()
 					.getLocalPart(), "id", element.getLocation()
@@ -168,6 +178,7 @@ public final class XMLHelper {
 			return idFactory.createID();
 		}
 	}
+
 	/**
 	 * @param stream a source of XMLEvents
 	 * @return the file currently being read from if it's an

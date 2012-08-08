@@ -37,20 +37,16 @@ import controller.map.simplexml.node.NodeFactory;
 @Deprecated
 public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
-	 * @param file
-	 *            the name of a file
+	 * @param file the name of a file
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that file
-	 * @throws IOException
-	 *             on I/O error
-	 * @throws XMLStreamException
-	 *             if the XML isn't well-formed
-	 * @throws SPFormatException
-	 *             if the data is invalid
+	 * @throws IOException on I/O error
+	 * @throws XMLStreamException if the XML isn't well-formed
+	 * @throws SPFormatException if the data is invalid
 	 */
 	@Override
-	public MapView readMap(final String file, final Warning warner) throws IOException,
-			XMLStreamException, SPFormatException {
+	public MapView readMap(final String file, final Warning warner)
+			throws IOException, XMLStreamException, SPFormatException {
 		final Reader istream = new FileOpener().createReader(file);
 		try {
 			return readMap(file, istream, warner);
@@ -60,22 +56,18 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	}
 
 	/**
-	 * @param reflection
-	 *            whether to try the reflection-based verion of the node factory
-	 *            method
-	 * @param file
-	 *            the name of a file
+	 * @param reflection whether to try the reflection-based verion of the node
+	 *        factory method
+	 * @param file the name of a file
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that file
-	 * @throws IOException
-	 *             on I/O error
-	 * @throws XMLStreamException
-	 *             if the XML isn't well-formed
-	 * @throws SPFormatException
-	 *             if the data is invalid
+	 * @throws IOException on I/O error
+	 * @throws XMLStreamException if the XML isn't well-formed
+	 * @throws SPFormatException if the data is invalid
 	 */
-	public IMap readMap(final String file, final boolean reflection, final Warning warner)
-			throws IOException, XMLStreamException, SPFormatException {
+	public IMap readMap(final String file, final boolean reflection,
+			final Warning warner) throws IOException, XMLStreamException,
+			SPFormatException {
 		final FileReader istream = new FileReader(file);
 		try {
 			return readMap(file, istream, reflection, warner);
@@ -86,74 +78,68 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 
 	/**
 	 * @param file the name of the file being read from
-	 * @param istream
-	 *            a reader from which to read the XML
+	 * @param istream a reader from which to read the XML
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that stream
-	 * @throws XMLStreamException
-	 *             if XML isn't well-formed.
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @throws XMLStreamException if XML isn't well-formed.
+	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public MapView readMap(final String file, final Reader istream, final Warning warner) throws XMLStreamException,
-			SPFormatException {
+	public MapView readMap(final String file, final Reader istream,
+			final Warning warner) throws XMLStreamException, SPFormatException {
 		return readMap(file, istream, false, warner);
 	}
 
 	/**
-	 * @param reflection
-	 *            whether to try the reflection-based verion of the node factory
-	 *            method
+	 * @param reflection whether to try the reflection-based verion of the node
+	 *        factory method
 	 * @param file the name of the file being read from
-	 * @param istream
-	 *            a reader from which to read the XML
+	 * @param istream a reader from which to read the XML
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that stream
-	 * @throws XMLStreamException
-	 *             if XML isn't well-formed.
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @throws XMLStreamException if XML isn't well-formed.
+	 * @throws SPFormatException if the data is invalid.
 	 */
-	public MapView readMap(final String file, final Reader istream, final boolean reflection, final Warning warner)
+	public MapView readMap(final String file, final Reader istream,
+			final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, MapView.class, reflection, warner);
 	}
+
 	/**
-	 * Use readMap if you want a map; this is public primarily for testing purposes. 
+	 * Use readMap if you want a map; this is public primarily for testing
+	 * purposes.
+	 * 
 	 * @param <T> The type of the object the XML represents
 	 * @param file the name of the file being read from
-	 * @param istream
-	 *            a reader from which to read the XML
+	 * @param istream a reader from which to read the XML
 	 * @param type The type of the object the XML represents
 	 * @param warner a Warning instance to use for warnings
 	 * @return the object contained in that stream
-	 * @throws XMLStreamException
-	 *             if XML isn't well-formed.
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @throws XMLStreamException if XML isn't well-formed.
+	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream, final Class<T> type, final Warning warner)
+	public <T> T readXML(final String file, final Reader istream,
+			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, type, true, warner);
 	}
+
 	/**
-	 * Use readMap if you want a map; this is public primarily for testing purposes. 
+	 * Use readMap if you want a map; this is public primarily for testing
+	 * purposes.
+	 * 
 	 * @param <T> The type of the object the XML represents
-	 * @param reflection
-	 *            whether to try the reflection-based verion of the node factory
-	 *            method
+	 * @param reflection whether to try the reflection-based verion of the node
+	 *        factory method
 	 * @param file the name of the file being read from
-	 * @param istream
-	 *            a reader from which to read the XML
+	 * @param istream a reader from which to read the XML
 	 * @param type The type of the object the XML represents
 	 * @param warner a Warning instance to use for warnings
 	 * @return the object contained in that stream
-	 * @throws XMLStreamException
-	 *             if XML isn't well-formed.
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @throws XMLStreamException if XML isn't well-formed.
+	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
 	public <T> T readXML(final String file, final Reader istream,
@@ -163,16 +149,18 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
-				new IncludingIterator(file, XMLInputFactory.newInstance().createXMLEventReader(istream)));
+				new IncludingIterator(file, XMLInputFactory.newInstance()
+						.createXMLEventReader(istream)));
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				// ESCA-JAVA0177:
 				AbstractXMLNode node;
 				try {
-					node = parseTag(event.asStartElement(), reflection, getFileName(eventReader), warner); // NOPMD
-				} catch (InstantiationException e) {
+					node = parseTag(event.asStartElement(), reflection,
+							getFileName(eventReader), warner); // NOPMD
+				} catch (final InstantiationException e) {
 					throw new IllegalStateException(e);
-				} catch (IllegalAccessException e) {
+				} catch (final IllegalAccessException e) {
 					throw new IllegalStateException(e);
 				}
 				stack.peek().addChild(node);
@@ -194,33 +182,30 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	/**
 	 * Turn a tag and its contents (properties) into a Node.
 	 * 
-	 * @param element
-	 *            the tag
-	 * @param reflection
-	 *            whether we should try the version of the NodeFactory method
-	 *            that uses reflection
+	 * @param element the tag
+	 * @param reflection whether we should try the version of the NodeFactory
+	 *        method that uses reflection
 	 * @param file the current filename
 	 * @param warner a Warning instance to use if necessary
 	 * @return the equivalent node.
-	 * @throws SPFormatException
-	 *             on unexpected or illegal XML.
-	 * @throws IllegalAccessException
-	 *             thrown by reflection
-	 * @throws InstantiationException
-	 *             thrown by reflection
+	 * @throws SPFormatException on unexpected or illegal XML.
+	 * @throws IllegalAccessException thrown by reflection
+	 * @throws InstantiationException thrown by reflection
 	 */
 	private static AbstractXMLNode parseTag(final StartElement element,
-			final boolean reflection, final String file, final Warning warner) throws SPFormatException,
-			InstantiationException, IllegalAccessException {
+			final boolean reflection, final String file, final Warning warner)
+			throws SPFormatException, InstantiationException,
+			IllegalAccessException {
 		final AbstractChildNode<?> node = (reflection ? NodeFactory
 				.createReflection(element.getName().getLocalPart(), element
-						.getLocation().getLineNumber(), file, warner) : NodeFactory.create(
-				element.getName().getLocalPart(), element.getLocation()
-						.getLineNumber(), file, warner));
+						.getLocation().getLineNumber(), file, warner)
+				: NodeFactory.create(element.getName().getLocalPart(), element
+						.getLocation().getLineNumber(), file, warner));
 		final IteratorWrapper<Attribute> attributes = new IteratorWrapper<Attribute>(
 				element.getAttributes());
 		for (final Attribute att : attributes) {
-			node.addProperty(att.getName().getLocalPart(), att.getValue(), warner);
+			node.addProperty(att.getName().getLocalPart(), att.getValue(),
+					warner);
 		}
 		return node;
 	}
@@ -233,9 +218,11 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	public String toString() {
 		return "SimpleXMLReader";
 	}
+
 	/**
 	 * @param stream an Iterable
-	 * @return the file name we're working from, if its iterator is an IncludingIterator, or the empty string.
+	 * @return the file name we're working from, if its iterator is an
+	 *         IncludingIterator, or the empty string.
 	 */
 	private static String getFileName(final Iterable<XMLEvent> stream) {
 		if (stream.iterator() instanceof IncludingIterator) {

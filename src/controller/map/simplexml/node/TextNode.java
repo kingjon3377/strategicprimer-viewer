@@ -6,28 +6,34 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 import controller.map.simplexml.ITextNode;
+
 /**
  * A Node to produce a TextFixture.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 @Deprecated
-public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextNode {
+public class TextNode extends AbstractFixtureNode<TextFixture> implements
+		ITextNode {
 	/**
 	 * Constructor.
 	 */
 	public TextNode() {
 		super(TextFixture.class);
 	}
+
 	/**
 	 * Produce the equivalent Fixture.
+	 * 
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
 	 * @return the TextFixture this represents
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public TextFixture produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
+	public TextFixture produce(final PlayerCollection players,
+			final Warning warner) throws SPFormatException {
 		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
 				hasProperty("turn") ? Integer.parseInt(getProperty("turn"))
 						: -1);
@@ -36,6 +42,7 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 		}
 		return fix;
 	}
+
 	/**
 	 * The text the fixture encapsulates.
 	 */
@@ -49,20 +56,24 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 	public boolean canUse(final String property) {
 		return "turn".equals(property);
 	}
+
 	/**
 	 * Add text to the fixture.
 	 * 
-	 * @param text
-	 *            the text to add
+	 * @param text the text to add
 	 */
 	@Override
 	public void addText(final String text) {
 		sbuild.append(text);
 	}
+
 	/**
-	 * Check whether we contain invalid data. A TextNode is valid if it has no child nodes.
+	 * Check whether we contain invalid data. A TextNode is valid if it has no
+	 * child nodes.
+	 * 
 	 * @param warner a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException on invalid data
 	 */
 	@Override
@@ -70,6 +81,7 @@ public class TextNode extends AbstractFixtureNode<TextFixture> implements ITextN
 			throws SPFormatException {
 		forbidChildren("text");
 	}
+
 	/**
 	 * @return a String representation of the node
 	 */

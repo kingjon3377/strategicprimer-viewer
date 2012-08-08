@@ -2,8 +2,6 @@ package model.map.events;
 
 import model.map.TileFixture;
 
-
-
 /**
  * An abandoned, ruined, or burned-out town.
  * 
@@ -14,14 +12,10 @@ public final class TownEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
 	 * 
-	 * @param tStatus
-	 *            The status of the town
-	 * @param tSize
-	 *            The size of the town
-	 * @param discdc
-	 *            The DC to discover it.
-	 * @param tName
-	 *            the name of the town, fortress, or city
+	 * @param tStatus The status of the town
+	 * @param tSize The size of the town
+	 * @param discdc The DC to discover it.
+	 * @param tName the name of the town, fortress, or city
 	 * @param idNum the ID number.
 	 */
 	public TownEvent(final TownStatus tStatus, final TownSize tSize,
@@ -44,15 +38,16 @@ public final class TownEvent extends AbstractTownEvent {
 	public int getDC() {
 		return dc;
 	}
+
 	/**
 	 * @return an XML representation of the event
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<town status=\"").append(status().toString())
-				.append("\" size=\"").append(size().toString())
-				.append("\" dc=\"").append(dc);
+		final StringBuilder sbuild = new StringBuilder("<town status=\"")
+				.append(status().toString()).append("\" size=\"")
+				.append(size().toString()).append("\" dc=\"").append(dc);
 		if (!name().isEmpty()) {
 			sbuild.append("\" name=\"");
 			sbuild.append(name());
@@ -61,10 +56,12 @@ public final class TownEvent extends AbstractTownEvent {
 		sbuild.append(id);
 		return sbuild.append("\" />").toString();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -72,6 +69,7 @@ public final class TownEvent extends AbstractTownEvent {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -79,6 +77,7 @@ public final class TownEvent extends AbstractTownEvent {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -86,16 +85,19 @@ public final class TownEvent extends AbstractTownEvent {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		final TownEvent retval = new TownEvent(status(), size(), getDC(), name(), getID());
+		final TownEvent retval = new TownEvent(status(), size(), getDC(),
+				name(), getID());
 		retval.setFile(getFile());
 		return retval;
 	}

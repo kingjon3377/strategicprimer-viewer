@@ -22,8 +22,7 @@ public final class MapModel implements PropertyChangeSource {
 	/**
 	 * Constructor.
 	 * 
-	 * @param firstMap
-	 *            the initial map
+	 * @param firstMap the initial map
 	 */
 	public MapModel(final MapView firstMap) {
 		setMainMap(firstMap);
@@ -37,8 +36,7 @@ public final class MapModel implements PropertyChangeSource {
 	/**
 	 * Add a property-change listener.
 	 * 
-	 * @param list
-	 *            the listener to add
+	 * @param list the listener to add
 	 */
 	@Override
 	public void addPropertyChangeListener(final PropertyChangeListener list) {
@@ -48,8 +46,7 @@ public final class MapModel implements PropertyChangeSource {
 	/**
 	 * Remove a property-change listener.
 	 * 
-	 * @param list
-	 *            the listener to remove.
+	 * @param list the listener to remove.
 	 */
 	@Override
 	public void removePropertyChangeListener(final PropertyChangeListener list) {
@@ -74,24 +71,24 @@ public final class MapModel implements PropertyChangeSource {
 	private Tile secondTile;
 
 	/**
-	 * @param newMap
-	 *            the new map
+	 * @param newMap the new map
 	 */
 	public void setMainMap(final MapView newMap) {
-		pcs.firePropertyChange("version", (map == null ? 0 : map.getVersion()), newMap.getVersion());
+		pcs.firePropertyChange("version", (map == null ? 0 : map.getVersion()),
+				newMap.getVersion());
 		map = newMap;
 		setSecondaryMap(new MapView(new SPMap(map.getVersion(), map.rows(),
-				map.cols(), ""), map.getPlayers().getCurrentPlayer().getPlayerId(),
-				map.getCurrentTurn(), ""));
-		setSelection(PointFactory.point(-1, -1)); // TODO: Perhaps clearSelection() instead?
+				map.cols(), ""), map.getPlayers().getCurrentPlayer()
+				.getPlayerId(), map.getCurrentTurn(), ""));
+		setSelection(PointFactory.point(-1, -1)); // TODO: Perhaps
+													// clearSelection() instead?
 		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0,
 				getSizeCols() - 1));
 		pcs.firePropertyChange("map", map, newMap);
 	}
 
 	/**
-	 * @param newMap
-	 *            the new secondary map
+	 * @param newMap the new secondary map
 	 */
 	public void setSecondaryMap(final MapView newMap) {
 		if (newMap.rows() == map.rows() && newMap.cols() == map.cols()) {
@@ -144,8 +141,7 @@ public final class MapModel implements PropertyChangeSource {
 	/**
 	 * Copy a tile from the main map to the secondary map.
 	 * 
-	 * @param selection
-	 *            the tile to copy.
+	 * @param selection the tile to copy.
 	 */
 	public void copyTile(final Tile selection) {
 		secondaryMap.getTile(selection.getLocation()).update(
@@ -167,6 +163,7 @@ public final class MapModel implements PropertyChangeSource {
 	public int getSizeCols() {
 		return map.cols();
 	}
+
 	/**
 	 * @param point a tile's location
 	 * 
@@ -175,6 +172,7 @@ public final class MapModel implements PropertyChangeSource {
 	public Tile getTile(final Point point) {
 		return map.getTile(point);
 	}
+
 	/**
 	 * 
 	 * @return the main map
@@ -209,8 +207,7 @@ public final class MapModel implements PropertyChangeSource {
 	private VisibleDimensions dimensions;
 
 	/**
-	 * @param dim
-	 *            the new visible dimensions of the map
+	 * @param dim the new visible dimensions of the map
 	 */
 	public void setDimensions(final VisibleDimensions dim) {
 		pcs.firePropertyChange("dimensions", dimensions, dim);

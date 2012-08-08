@@ -15,8 +15,10 @@ public final class IDFactory {
 	 * The set of IDs used already.
 	 */
 	private final BitSet usedIDs = new BitSet();
+
 	/**
-	 * Register an ID. 
+	 * Register an ID.
+	 * 
 	 * @param id the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
@@ -24,9 +26,11 @@ public final class IDFactory {
 		usedIDs.set(id);
 		return id;
 	}
+
 	/**
 	 * Generate and register an id that hasn't been previously registered.
-	 * @return the generated id 
+	 * 
+	 * @return the generated id
 	 */
 	public int createID() {
 		if (usedIDs.cardinality() < Integer.MAX_VALUE) {
@@ -35,7 +39,7 @@ public final class IDFactory {
 			throw new IllegalStateException("Exhausted all ints ...");
 		}
 	}
-	
+
 	/**
 	 * Create a copy of this factory for testing purposes. (So that we don't
 	 * "register" IDs that don't end up getting used.)

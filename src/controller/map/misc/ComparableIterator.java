@@ -3,22 +3,26 @@ package controller.map.misc;
 import java.util.Iterator;
 
 /**
- * @author Jonathan Lovelace
- * A wrapper around Iterator implementing Comparable, so we can put it in a Pair.
+ * @author Jonathan Lovelace A wrapper around Iterator implementing Comparable,
+ *         so we can put it in a Pair.
  * @param <T> the type of thing being iterated over
  */
-public class ComparableIterator<T> implements Iterator<T>, Comparable<ComparableIterator<T>> {
+public class ComparableIterator<T> implements Iterator<T>,
+		Comparable<ComparableIterator<T>> {
 	/**
 	 * The Iterator we're wrapping.
 	 */
 	private final Iterator<T> wrapped;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param iter the Iterator to wrap.
 	 */
 	public ComparableIterator(final Iterator<T> iter) {
 		wrapped = iter;
 	}
+
 	/**
 	 * @param obj another iterator
 	 * @return the result of a comparison between them.
@@ -27,6 +31,7 @@ public class ComparableIterator<T> implements Iterator<T>, Comparable<Comparable
 	public int compareTo(final ComparableIterator<T> obj) {
 		return obj.hashCode() - hashCode();
 	}
+
 	/**
 	 * @return whether there's a next element.
 	 */
@@ -34,6 +39,7 @@ public class ComparableIterator<T> implements Iterator<T>, Comparable<Comparable
 	public boolean hasNext() {
 		return wrapped.hasNext();
 	}
+
 	// ESCA-JAVA0277:
 	/**
 	 * @return the next element
@@ -42,6 +48,7 @@ public class ComparableIterator<T> implements Iterator<T>, Comparable<Comparable
 	public T next() {
 		return wrapped.next();
 	}
+
 	/**
 	 * Remove the next element.
 	 */
@@ -49,6 +56,7 @@ public class ComparableIterator<T> implements Iterator<T>, Comparable<Comparable
 	public void remove() {
 		wrapped.remove();
 	}
+
 	/**
 	 * @return the hash code of the wrapped iterator.
 	 */
@@ -56,6 +64,7 @@ public class ComparableIterator<T> implements Iterator<T>, Comparable<Comparable
 	public int hashCode() {
 		return wrapped.hashCode();
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it equals this one

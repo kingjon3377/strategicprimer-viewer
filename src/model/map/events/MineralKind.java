@@ -42,8 +42,7 @@ public enum MineralKind {
 	/**
 	 * Constructor.
 	 * 
-	 * @param string
-	 *            A string representing the MineralKind.
+	 * @param string A string representing the MineralKind.
 	 */
 	private MineralKind(final String string) {
 		str = string;
@@ -56,8 +55,7 @@ public enum MineralKind {
 	}
 
 	/**
-	 * @param string
-	 *            a string representing a MineralKind
+	 * @param string a string representing a MineralKind
 	 * 
 	 * @return the MineralKind it represents
 	 */

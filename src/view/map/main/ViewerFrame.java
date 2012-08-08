@@ -33,8 +33,11 @@ public final class ViewerFrame extends JFrame {
 	 * to construct it every time.
 	 */
 	private final JFileChooser chooser = new JFileChooser(".");
+
 	/**
-	 * Initialize size to the specified dimensions. Not that this actually works ...
+	 * Initialize size to the specified dimensions. Not that this actually works
+	 * ...
+	 * 
 	 * @param width the specified width
 	 * @param height the specified height
 	 */
@@ -44,19 +47,21 @@ public final class ViewerFrame extends JFrame {
 		setMaximumSize(new Dimension(width, height));
 		setMinimumSize(new Dimension(width, height));
 	}
+
 	/**
 	 * Constructor.
 	 * 
-	 * @param map
-	 *            The map model.
+	 * @param map The map model.
 	 */
 	public ViewerFrame(final MapModel map) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		chooser.setFileFilter(new MapFileFilter());
 		final MapGUI mapPanel = new MapComponent(map);
-		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.SOUTH);
-		add(new DetailPanelNG(map.getMainMap().getVersion(), map, mapPanel), BorderLayout.EAST);
+		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel),
+				BorderLayout.SOUTH);
+		add(new DetailPanelNG(map.getMainMap().getVersion(), map, mapPanel),
+				BorderLayout.EAST);
 		final JPanel mapSuperPanel = new JPanel(new BorderLayout());
 		mapSuperPanel.add((JComponent) mapPanel, BorderLayout.CENTER);
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
@@ -65,6 +70,7 @@ public final class ViewerFrame extends JFrame {
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
 	}
+
 	/**
 	 * @return this frame
 	 */

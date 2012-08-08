@@ -3,7 +3,6 @@ package model.map.events;
 import model.map.HasImage;
 import model.map.TileFixture;
 
-
 /**
  * "There are the signs of a long-ago battle here".
  * 
@@ -14,11 +13,11 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	 * A (U)ID.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * Constructor.
 	 * 
-	 * @param discdc
-	 *            the DC to discover the battlefield.
+	 * @param discdc the DC to discover the battlefield.
 	 * @param idNum the ID number for the event.
 	 */
 	public BattlefieldEvent(final int discdc, final int idNum) {
@@ -31,6 +30,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
+
 	/**
 	 * 
 	 * 
@@ -51,8 +51,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it's an identical BattlefieldEvent.
 	 */
@@ -80,6 +79,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public String toString() {
 		return "An ancient battlefield with DC " + dc;
 	}
+
 	/**
 	 * @return an XML representation of the event.
 	 */
@@ -89,6 +89,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 		return new StringBuilder("<battlefield dc=\"").append(dc)
 				.append("\" id=\"").append(id).append("\" />").toString();
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -96,9 +97,9 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public int getZValue() {
 		return 40;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -106,6 +107,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * @return the ID number for the event.
 	 */
@@ -113,6 +115,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -121,6 +124,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof BattlefieldEvent;
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -128,6 +132,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -135,10 +140,12 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */
@@ -148,6 +155,7 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 		retval.setFile(getFile());
 		return retval;
 	}
+
 	/**
 	 * @return the name of the image to represent the event
 	 */

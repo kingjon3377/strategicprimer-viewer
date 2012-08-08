@@ -38,8 +38,7 @@ public final class MapUpdater {
 
 	/**
 	 * 
-	 * @param masterMap
-	 *            the master map
+	 * @param masterMap the master map
 	 */
 	public MapUpdater(final IMap masterMap) {
 		master = masterMap;
@@ -48,14 +47,13 @@ public final class MapUpdater {
 	/**
 	 * Update a derived map from the master.
 	 * 
-	 * @param derived
-	 *            the derived map to update.
+	 * @param derived the derived map to update.
 	 */
 	public void update(final IMap derived) {
 		if (master.rows() != derived.rows() || master.cols() != derived.cols()) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
-		for (Point point : derived.getTiles()) {
+		for (final Point point : derived.getTiles()) {
 			if (shouldUpdate(derived.getTile(point), master.getTile(point))) {
 				derived.getTile(point).update(master.getTile(point));
 			}
@@ -63,10 +61,8 @@ public final class MapUpdater {
 	}
 
 	/**
-	 * @param masterTile
-	 *            a tile from the master map
-	 * @param tile
-	 *            the equivalent tile from a derived map
+	 * @param masterTile a tile from the master map
+	 * @param tile the equivalent tile from a derived map
 	 * 
 	 * @return whether the derived map needs updating in this tile
 	 */
@@ -80,8 +76,7 @@ public final class MapUpdater {
 	 * Driver. We won't actually overwrite the dependent map with an update, but
 	 * rather print the updated version to stdout.
 	 * 
-	 * @param args
-	 *            Command-line arguments: master, then a map to update.
+	 * @param args Command-line arguments: master, then a map to update.
 	 */
 	public static void main(final String[] args) {
 		if (args.length < 2) {
@@ -93,7 +88,7 @@ public final class MapUpdater {
 		// ESCA-JAVA0177:
 		final MapUpdater updater = new MapUpdater(loadMap(args[0]));
 		System.out.println("Finished");
-		for (String arg : args) {
+		for (final String arg : args) {
 			if (arg.equals(args[0])) {
 				continue;
 			}
@@ -110,7 +105,8 @@ public final class MapUpdater {
 			try {
 				writer = new PrintWriter(new FileWriter(arg)); // NOPMD
 			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error creating writer for updated map", e);
+				LOGGER.log(Level.SEVERE,
+						"I/O error creating writer for updated map", e);
 				continue;
 			}
 			try {
@@ -127,8 +123,7 @@ public final class MapUpdater {
 	/**
 	 * Build a string.
 	 * 
-	 * @param strings
-	 *            the strings to concatenate.
+	 * @param strings the strings to concatenate.
 	 * 
 	 * @return the result of the concatenation
 	 */
@@ -149,14 +144,14 @@ public final class MapUpdater {
 	/**
 	 * Load a map; if this fails, log a suitable error message and quit.
 	 * 
-	 * @param filename
-	 *            the name of the map to load
+	 * @param filename the name of the map to load
 	 * 
 	 * @return the map
 	 */
 	private static IMap loadMap(final String filename) {
 		try {
-			return new MapReaderAdapter().readMap(filename, new Warning(Warning.Action.Ignore));
+			return new MapReaderAdapter().readMap(filename, new Warning(
+					Warning.Action.Ignore));
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE,
 					buildString("File ", filename, " not found"), e);

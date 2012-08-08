@@ -16,6 +16,7 @@ public final class Warning {
 	 * An instance.
 	 */
 	public static final Warning INSTANCE = new Warning();
+
 	/**
 	 * An enumeration of possible states.
 	 */
@@ -33,28 +34,32 @@ public final class Warning {
 		 */
 		Die;
 	}
+
 	/**
 	 * How we should deal with warnings.
 	 */
 	private final Action state;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param action what action to take with each warning
 	 */
 	public Warning(final Action action) {
 		state = action;
 	}
+
 	/**
 	 * Constructor. Only warn on warnings.
 	 */
 	public Warning() {
 		this(Action.Warn);
 	}
+
 	/**
 	 * Log a warning, e.g. if a particular map-format construct is deprecated.
 	 * 
-	 * @param warning
-	 *            the warning
+	 * @param warning the warning
 	 */
 	public void warn(final Exception warning) {
 		switch (state) {

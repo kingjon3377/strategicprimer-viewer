@@ -32,8 +32,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	/**
 	 * Add a child.
 	 * 
-	 * @param child
-	 *            the child to add.
+	 * @param child the child to add.
 	 */
 	public final void addChild(final AbstractXMLNode child) {
 		children.add(child);
@@ -52,12 +51,13 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 * Check that the data is legal---no tiles outside the map, for example.
 	 * 
 	 * @param warner a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * 
-	 * @throws SPFormatException
-	 *             if the data isn't legal.
+	 * @throws SPFormatException if the data isn't legal.
 	 */
-	public abstract void checkNode(Warning warner, IDFactory idFactory) throws SPFormatException;
+	public abstract void checkNode(Warning warner, IDFactory idFactory)
+			throws SPFormatException;
 
 	/**
 	 * 
@@ -68,8 +68,7 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	}
 
 	/**
-	 * @param tagLine
-	 *            the line the tag is on
+	 * @param tagLine the line the tag is on
 	 */
 	protected void setLine(final int tagLine) {
 		line = tagLine;
@@ -82,12 +81,11 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 	 * validity-checking should go here. We do this in a separate method because
 	 * validity-checking should be side-effect-free.
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @throws SPFormatException
-	 *             on format errors uncovered in this process
+	 * @param warner a Warning instance to use for warnings
+	 * @throws SPFormatException on format errors uncovered in this process
 	 */
-	public final void canonicalize(final Warning warner) throws SPFormatException {
+	public final void canonicalize(final Warning warner)
+			throws SPFormatException {
 		final List<AbstractXMLNode> nodesToAdd = new LinkedList<AbstractXMLNode>();
 		final List<AbstractXMLNode> nodesToKeep = new LinkedList<AbstractXMLNode>();
 		for (final AbstractXMLNode node : children) {
@@ -103,25 +101,27 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		children.addAll(nodesToAdd);
 	}
 
-//	/**
-//	 * @param obj an object
-//	 * @return whether it's equal to this one
-//	 */
-//	@Override
-//	public boolean equals(final Object obj) {
-//		return (obj instanceof AbstractXMLNode
-//				&& getClass().equals(obj.getClass())
-//				&& children.equals(((AbstractXMLNode) obj).children) && line == ((AbstractXMLNode) obj).line);
-//	}
-//	/**
-//	 * @return a hash value for the object
-//	 */
-//	@Override
-//	public int hashCode() {
-//		return children.hashCode() | getClass().hashCode() | line;
-//	}
+	// /**
+	// * @param obj an object
+	// * @return whether it's equal to this one
+	// */
+	// @Override
+	// public boolean equals(final Object obj) {
+	// return (obj instanceof AbstractXMLNode
+	// && getClass().equals(obj.getClass())
+	// && children.equals(((AbstractXMLNode) obj).children) && line ==
+	// ((AbstractXMLNode) obj).line);
+	// }
+	// /**
+	// * @return a hash value for the object
+	// */
+	// @Override
+	// public int hashCode() {
+	// return children.hashCode() | getClass().hashCode() | line;
+	// }
 	/**
 	 * Pretty-print the node.
+	 * 
 	 * @param depth how deep we are in the tree
 	 * @return the pretty-printed version of the node
 	 */
@@ -132,10 +132,10 @@ public abstract class AbstractXMLNode implements Iterable<AbstractXMLNode> {
 		}
 		sbuild.append(toString());
 		sbuild.append('\n');
-		for (AbstractXMLNode node : children) {
+		for (final AbstractXMLNode node : children) {
 			sbuild.append(node.prettyPrint(depth + 1));
 		}
 		return sbuild.toString();
 	}
-	
+
 }

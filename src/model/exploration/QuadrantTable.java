@@ -32,10 +32,8 @@ public class QuadrantTable implements EncounterTable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param rows
-	 *            the number of rows of quadrants
-	 * @param items
-	 *            the items to allocate by quadrant
+	 * @param rows the number of rows of quadrants
+	 * @param items the items to allocate by quadrant
 	 */
 	public QuadrantTable(final int rows, final List<String> items) {
 		if (items.size() % rows != 0) {
@@ -53,22 +51,23 @@ public class QuadrantTable implements EncounterTable {
 			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
 				// System.out.println("Adding " + items.get(0) + " at (" + row +
 				// ", " + col +").");
-				quadrants.put(Pair.of(Integer.valueOf(row), Integer.valueOf(col)), items.remove(0));
+				quadrants.put(
+						Pair.of(Integer.valueOf(row), Integer.valueOf(col)),
+						items.remove(0));
 			}
 		}
 	}
 
 	/**
-	 * @param row
-	 *            the row of a tile
-	 * @param col
-	 *            the column of a tile
+	 * @param row the row of a tile
+	 * @param col the column of a tile
 	 * 
 	 * @return the result from the quadrant containing that tile.
 	 */
 	@SuppressWarnings("boxing")
 	public String getQuadrantValue(final int row, final int col) {
-		Pair<Integer, Integer> bestKey = Pair.of(Integer.valueOf(-1), Integer.valueOf(-1));
+		Pair<Integer, Integer> bestKey = Pair.of(Integer.valueOf(-1),
+				Integer.valueOf(-1));
 		for (final Pair<Integer, Integer> iter : quadrants.keySet()) {
 			if (iter.first() <= row && iter.first() > bestKey.first()
 					&& iter.second() <= col && iter.second() > bestKey.second()) {
@@ -79,13 +78,13 @@ public class QuadrantTable implements EncounterTable {
 	}
 
 	/**
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * @return what the table has for that tile
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
-		return getQuadrantValue(tile.getLocation().row(), tile.getLocation().col());
+		return getQuadrantValue(tile.getLocation().row(), tile.getLocation()
+				.col());
 	}
 
 	/**

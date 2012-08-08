@@ -1,21 +1,27 @@
 package model.map;
+
 /**
  * A superclass to simplify Tile.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
-public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepCloneable<SimpleTile> {
+public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
+		DeepCloneable<SimpleTile> {
 	/**
 	 * Constructor.
+	 * 
 	 * @param loc the tile's location
 	 * @param tileType the tile type
 	 * @param filename the file this is read from
 	 */
-	public SimpleTile(final Point loc, final TileType tileType, final String filename) {
+	public SimpleTile(final Point loc, final TileType tileType,
+			final String filename) {
 		location = loc;
 		type = tileType;
 		file = filename;
 	}
+
 	/**
 	 * @param obj another tile
 	 * @return whether it's a subset of this one
@@ -24,8 +30,11 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepClo
 	public boolean isSubset(final SimpleTile obj) {
 		return location.equals(obj.location) && type.equals(obj.type);
 	}
+
 	/**
-	 * As this is deprecated, we expect subclasses to override, instead of designing for extensibility here.
+	 * As this is deprecated, we expect subclasses to override, instead of
+	 * designing for extensibility here.
+	 * 
 	 * @return an XML representation of the tile.
 	 */
 	@Override
@@ -35,10 +44,12 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepClo
 				+ location.toXML() + " kind=\"" + getTerrain().toXML()
 				+ "\"></tile>";
 	}
+
 	/**
 	 * The file this was loaded from.
 	 */
 	private String file;
+
 	/**
 	 * @return the file this was loaded from
 	 */
@@ -46,6 +57,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepClo
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param filename the file this was loaded from
 	 */
@@ -53,16 +65,19 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepClo
 	public void setFile(final String filename) {
 		file = filename;
 	}
+
 	/**
 	 * The tile's location.
 	 */
 	private final Point location;
+
 	/**
 	 * @return the tile's location
 	 */
 	public Point getLocation() {
 		return location;
 	}
+
 	/**
 	 * The tile type.
 	 */
@@ -70,43 +85,48 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepClo
 
 	/**
 	 * 
-	 * @return the kind of tile 
+	 * @return the kind of tile
 	 */
 	public TileType getTerrain() {
 		return type;
 	}
 
 	/**
-	 * @param ttype
-	 *            the tile's new terrain type
+	 * @param ttype the tile's new terrain type
 	 */
 	public void setTerrain(final TileType ttype) {
 		type = ttype;
 	}
+
 	/**
 	 * A SimpleTile is "empty" if its tile type is NotVisible.
+	 * 
 	 * @return whether this tile is "empty"
 	 */
 	public boolean isEmpty() {
 		return TileType.NotVisible.equals(getTerrain());
 	}
+
 	/**
 	 * Update with data from a tile in another map.
 	 * 
-	 * @param tile
-	 *            the same tile in another map.
+	 * @param tile the same tile in another map.
 	 */
 	public void update(final SimpleTile tile) {
 		setTerrain(tile.getTerrain());
 	}
+
 	/**
 	 * Use this in creating subclass toString methods.
+	 * 
 	 * @return a String representation of the tile.
 	 */
 	@Override
 	public String toString() {
-		return new StringBuilder(getLocation().toString()).append(": ").append(getTerrain()).append('.').toString();
+		return new StringBuilder(getLocation().toString()).append(": ")
+				.append(getTerrain()).append('.').toString();
 	}
+
 	/**
 	 * Use this in creating subclass hashCode methods. In fact, it might be a
 	 * good idea to just use it as is, and maybe even not use the terrain here,
@@ -118,8 +138,10 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepClo
 	public int hashCode() {
 		return getLocation().hashCode() + getTerrain().ordinal() << 6;
 	}
+
 	/**
 	 * Use this in creating subclass equals methods.
+	 * 
 	 * @param obj an object
 	 * @return whether it is an equal tile.
 	 */
@@ -129,6 +151,7 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>, DeepClo
 				&& getLocation().equals(((SimpleTile) obj).getLocation())
 				&& getTerrain().equals(((SimpleTile) obj).getTerrain());
 	}
+
 	/**
 	 * @return a clone of the tile
 	 */

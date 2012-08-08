@@ -14,8 +14,7 @@ public final class MapFileFilter extends FileFilter {
 	/**
 	 * Accept .xml and .map.
 	 * 
-	 * @param file
-	 *            a file to consider
+	 * @param file a file to consider
 	 * 
 	 * @return true if its extension is .xml or .map
 	 */
@@ -30,8 +29,7 @@ public final class MapFileFilter extends FileFilter {
 	}
 
 	/**
-	 * @param file
-	 *            A file
+	 * @param file A file
 	 * 
 	 * @return The extension of that file
 	 */

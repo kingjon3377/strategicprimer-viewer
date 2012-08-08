@@ -5,8 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class CacheFixture implements TileFixture, HasImage {
 	/**
@@ -19,31 +20,37 @@ public class CacheFixture implements TileFixture, HasImage {
 	 * (serialized as children) as part of the general Resource framework.
 	 */
 	private final String contents;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param category what kind of things this is a cache of
 	 * @param cont what this cache contains
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public CacheFixture(final String category, final String cont, final int idNum, final String fileName) {
+	public CacheFixture(final String category, final String cont,
+			final int idNum, final String fileName) {
 		kind = category;
 		contents = cont;
 		id = idNum;
 		file = fileName;
 	}
+
 	/**
 	 * @return what kind of things this is a cache of
 	 */
 	public String getKind() {
 		return kind;
 	}
+
 	/**
 	 * @return the contents of this cache
 	 */
 	public String getContents() {
 		return contents;
 	}
+
 	/**
 	 * @return an XML representation of the cache.
 	 */
@@ -54,14 +61,17 @@ public class CacheFixture implements TileFixture, HasImage {
 				.append("\" contents=\"").append(contents).append("\" id=\"")
 				.append(id).append("\" />").toString();
 	}
+
 	/**
 	 * TODO: should be more granular.
+	 * 
 	 * @return the name of an image to represent the cache
 	 */
 	@Override
 	public String getImage() {
 		return "cache.png";
 	}
+
 	/**
 	 * @return a string representation of the cache
 	 */
@@ -70,6 +80,7 @@ public class CacheFixture implements TileFixture, HasImage {
 		return new StringBuilder("a cache of ").append(kind)
 				.append(" containing ").append(contents).toString();
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -77,6 +88,7 @@ public class CacheFixture implements TileFixture, HasImage {
 	public int getZValue() {
 		return 22;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -88,6 +100,7 @@ public class CacheFixture implements TileFixture, HasImage {
 				&& contents.equals(((CacheFixture) obj).contents)
 				&& id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -95,9 +108,9 @@ public class CacheFixture implements TileFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -105,10 +118,12 @@ public class CacheFixture implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -116,6 +131,7 @@ public class CacheFixture implements TileFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -126,6 +142,7 @@ public class CacheFixture implements TileFixture, HasImage {
 				&& kind.equals(((CacheFixture) fix).kind)
 				&& contents.equals(((CacheFixture) fix).contents);
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -133,6 +150,7 @@ public class CacheFixture implements TileFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -140,10 +158,12 @@ public class CacheFixture implements TileFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

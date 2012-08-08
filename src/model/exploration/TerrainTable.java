@@ -27,8 +27,7 @@ public class TerrainTable implements EncounterTable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param items
-	 *            the items to add to the list
+	 * @param items the items to add to the list
 	 */
 	public TerrainTable(final List<Pair<TileType, String>> items) {
 		for (final Pair<TileType, String> item : items) {
@@ -37,8 +36,7 @@ public class TerrainTable implements EncounterTable {
 	}
 
 	/**
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * @return what the table has for that kind of tile.
 	 */
 	@Override

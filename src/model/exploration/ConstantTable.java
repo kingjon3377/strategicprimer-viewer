@@ -27,24 +27,21 @@ public class ConstantTable implements EncounterTable {
 	/**
 	 * Constructor.
 	 * 
-	 * @param val
-	 *            the value to return for all queries.
+	 * @param val the value to return for all queries.
 	 */
 	public ConstantTable(final String val) {
 		setValue(val);
 	}
 
 	/**
-	 * @param val
-	 *            the value to return for subsequent queries.
+	 * @param val the value to return for subsequent queries.
 	 */
 	public final void setValue(final String val) {
 		value = val;
 	}
 
 	/**
-	 * @param tile
-	 *            ignored
+	 * @param tile ignored
 	 * @return our specified value.
 	 */
 	@Override

@@ -36,18 +36,22 @@ public enum FieldStatus {
 	 * A string representing the FieldStatus.
 	 */
 	private final String str;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param string a string representing the status.
 	 */
 	private FieldStatus(final String string) {
 		str = string;
 	}
+
 	static {
 		for (final FieldStatus fs : values()) {
 			FST_MAP.put(fs.str, fs);
 		}
 	}
+
 	/**
 	 * @param string a string representing a FieldStatus
 	 * @return the FieldStatus it represents
@@ -55,6 +59,7 @@ public enum FieldStatus {
 	public static FieldStatus parse(final String string) {
 		return FST_MAP.get(string);
 	}
+
 	/**
 	 * @return a string representation of the status
 	 */
@@ -62,6 +67,7 @@ public enum FieldStatus {
 	public String toString() {
 		return str;
 	}
+
 	/**
 	 * @param seed a number to use to seed the RNG
 	 * @return a random status

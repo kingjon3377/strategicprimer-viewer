@@ -43,15 +43,14 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	public TileNode() {
 		super(Tile.class);
 	}
+
 	/**
 	 * Produce the equivalent Tile.
 	 * 
-	 * @param players
-	 *            the players in the map
+	 * @param players the players in the map
 	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent Tile.
-	 * @throws SPFormatException
-	 *             if we contain invalid data.
+	 * @throws SPFormatException if we contain invalid data.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -59,7 +58,8 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			throws SPFormatException {
 		final Tile tile = new Tile(Integer.parseInt(getProperty(ROW_PROPERTY)),
 				Integer.parseInt(getProperty(COL_PROPERTY)),
-				TileType.getTileType(getProperty(TERRAIN_PROPERTY)), getProperty("file"));
+				TileType.getTileType(getProperty(TERRAIN_PROPERTY)),
+				getProperty("file"));
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof RiverNode) {
 				tile.addRiver(((RiverNode) node).produce(players, warner));
@@ -83,18 +83,18 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	 * tags, since those *used* to be valid?)
 	 * 
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if contain invalid data.
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if contain invalid data.
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		demandProperty("tile", ROW_PROPERTY, warner, false, false);
 		demandProperty("tile", COL_PROPERTY, warner, false, false);
-		handleDeprecatedProperty("tile", TERRAIN_PROPERTY, OLD_KIND_PROPERTY, warner, true, false);
+		handleDeprecatedProperty("tile", TERRAIN_PROPERTY, OLD_KIND_PROPERTY,
+				warner, true, false);
 		for (final AbstractXMLNode node : this) {
 			if (node instanceof AbstractFixtureNode // ESCA-JAVA0049:
 					|| node instanceof RiverNode) {
@@ -105,14 +105,17 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 			}
 		}
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, ROW_PROPERTY, COL_PROPERTY, TERRAIN_PROPERTY, OLD_KIND_PROPERTY);
+		return EqualsAny.equalsAny(property, ROW_PROPERTY, COL_PROPERTY,
+				TERRAIN_PROPERTY, OLD_KIND_PROPERTY);
 	}
+
 	/**
 	 * The text associated with the tile.
 	 */
@@ -121,8 +124,7 @@ public class TileNode extends AbstractChildNode<Tile> implements ITextNode {
 	/**
 	 * Add text to the tile.
 	 * 
-	 * @param text
-	 *            the text to add
+	 * @param text the text to add
 	 */
 	@Override
 	public void addText(final String text) {

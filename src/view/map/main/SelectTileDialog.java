@@ -16,10 +16,12 @@ import javax.swing.JTextField;
 import model.map.PointFactory;
 import model.viewer.MapModel;
 import util.IsNumeric;
+
 /**
  * A dialog to let the user select a tile by coordinates.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class SelectTileDialog extends JDialog implements ActionListener {
 	/**
@@ -39,8 +41,10 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 * The map model to change the selection in.
 	 */
 	private final MapModel map;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param parent the parent to attach this dialog to
 	 * @param model the map model to change the selection in
 	 */
@@ -81,8 +85,10 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		map = model;
 		pack();
 	}
+
 	/**
 	 * Handle button presses.
+	 * 
 	 * @param event the event to handle
 	 */
 	@Override
@@ -95,6 +101,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 			column.setText("-1");
 		}
 	}
+
 	/**
 	 * Possible states.
 	 */
@@ -116,6 +123,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		 */
 		Overflow;
 	}
+
 	/**
 	 * @param text a String to test, representing a number
 	 * @param bound its maximum value
@@ -134,11 +142,14 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 			return State.Nonnumeric; // NOPMD
 		}
 	}
+
 	/**
 	 * Set text for an error.
+	 * 
 	 * @param state the state to give an error message for
 	 * @param bound the upper bound, for the overflow case.
-	 * @return a suitable message for that error, suitable for following "row" or "column".
+	 * @return a suitable message for that error, suitable for following "row"
+	 *         or "column".
 	 */
 	private static String getErrorMessage(final State state, final int bound) {
 		switch (state) {
@@ -154,10 +165,12 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 			throw new IllegalStateException("Default case of enum switch");
 		}
 	}
+
 	/**
 	 * Handle the OK button.
+	 * 
 	 * @param rowText the text in the row box
-	 * @param colText the text in the column box 
+	 * @param colText the text in the column box
 	 */
 	private void handleOK(final String rowText, final String colText) {
 		errorLabel.setText("");

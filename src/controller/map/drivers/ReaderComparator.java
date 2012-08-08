@@ -32,8 +32,7 @@ public class ReaderComparator {
 	/**
 	 * Driver method.
 	 * 
-	 * @param args
-	 *            The maps to test the two readers on.
+	 * @param args The maps to test the two readers on.
 	 */
 	public static void main(final String[] args) {
 		new ReaderComparator(SystemOut.SYS_OUT, new SimpleXMLReader(),
@@ -44,10 +43,8 @@ public class ReaderComparator {
 	/**
 	 * Compare the two readers.
 	 * 
-	 * @param args
-	 *            The list of specified files to compare them on
-	 * @param logger
-	 *            The logger to log errors to.
+	 * @param args The list of specified files to compare them on
+	 * @param logger The logger to log errors to.
 	 */
 	public void compareReaders(final String[] args, final Logger logger) {
 		for (final String arg : args) {
@@ -80,12 +77,9 @@ public class ReaderComparator {
 	/**
 	 * Constructor.
 	 * 
-	 * @param ostream
-	 *            the stream to print results to
-	 * @param readerOne
-	 *            the first reader
-	 * @param readerTwo
-	 *            the second reader
+	 * @param ostream the stream to print results to
+	 * @param readerOne the first reader
+	 * @param readerTwo the second reader
 	 */
 	public ReaderComparator(final PrintStream ostream,
 			final IMapReader readerOne, final IMapReader readerTwo) {
@@ -110,18 +104,13 @@ public class ReaderComparator {
 	/**
 	 * Compare the two readers on a file.
 	 * 
-	 * @param arg
-	 *            the name of the file to have each read.
-	 * @throws XMLStreamException
-	 *             if either reader claims badly formed input
-	 * @throws FileNotFoundException
-	 *             if either reader can't find the file
-	 * @throws IOException
-	 *             on other I/O error in either reader
-	 * @throws SPFormatException
-	 *             if the new reader claims invalid data
-	 * @throws MapVersionException
-	 *             if the old reader can't handle that map version
+	 * @param arg the name of the file to have each read.
+	 * @throws XMLStreamException if either reader claims badly formed input
+	 * @throws FileNotFoundException if either reader can't find the file
+	 * @throws IOException on other I/O error in either reader
+	 * @throws SPFormatException if the new reader claims invalid data
+	 * @throws MapVersionException if the old reader can't handle that map
+	 *         version
 	 */
 	// ESCA-JAVA0160:
 	public void compareReaders(final String arg) throws XMLStreamException,
@@ -134,9 +123,9 @@ public class ReaderComparator {
 		final FileReader reader = new FileReader(file);
 		final CharBuffer buffer = CharBuffer.allocate((int) file.length());
 		try {
-		reader.read(buffer);
+			reader.read(buffer);
 		} finally {
-		reader.close();
+			reader.close();
 		}
 		buffer.position(0);
 		final String contents = buffer.toString();

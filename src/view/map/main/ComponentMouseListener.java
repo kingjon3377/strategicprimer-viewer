@@ -10,7 +10,8 @@ import model.viewer.MapModel;
 import model.viewer.TileViewSize;
 
 /**
- * A mouse listener for the MapComponent, to show the terrain-changing menu as needed.
+ * A mouse listener for the MapComponent, to show the terrain-changing menu as
+ * needed.
  * 
  * @author Jonathan Lovelace
  * 
@@ -26,10 +27,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	/**
-	 * @param mapModel
-	 *            the map model we'll refer to
-	 * @param list
-	 *            a listener to send encounter events to
+	 * @param mapModel the map model we'll refer to
+	 * @param list a listener to send encounter events to
 	 */
 	public ComponentMouseListener(final MapModel mapModel,
 			final PropertyChangeListener list) {
@@ -51,11 +50,11 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * The helper to tell us the size of a tile.
 	 */
 	private final TileViewSize tsize = new TileViewSize();
+
 	/**
 	 * Handle mouse clicks.
 	 * 
-	 * @param event
-	 *            the event to handle
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
@@ -79,8 +78,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 	/**
 	 * Handle mouse presses.
 	 * 
-	 * @param event
-	 *            the event to handle
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mousePressed(final MouseEvent event) {
@@ -92,8 +90,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 	/**
 	 * Handle mouse releases.
 	 * 
-	 * @param event
-	 *            the event to handle
+	 * @param event the event to handle
 	 */
 	@Override
 	public void mouseReleased(final MouseEvent event) {

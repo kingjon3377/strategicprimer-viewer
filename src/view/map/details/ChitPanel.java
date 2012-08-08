@@ -21,8 +21,7 @@ public class ChitPanel extends JPanel {
 	/**
 	 * Constructor.
 	 * 
-	 * @param list
-	 *            the selection listener.
+	 * @param list the selection listener.
 	 */
 	public ChitPanel(final SelectionListener list) {
 		super(new WrapLayout());
@@ -47,8 +46,7 @@ public class ChitPanel extends JPanel {
 	 * its own Chit with a tool-tip advising that the cache's contents were most
 	 * likely removed by the explorer?
 	 * 
-	 * @param fix
-	 *            the Fixture to add a chit for
+	 * @param fix the Fixture to add a chit for
 	 */
 	public void add(final TileFixture fix) {
 		if (fix instanceof Fortress) {
@@ -62,7 +60,8 @@ public class ChitPanel extends JPanel {
 		} else if (fix instanceof HasImage) {
 			add(new SimpleChit(fix, listener));
 		} else {
-			throw new IllegalStateException("We're missing a case here: " + fix.getClass().getSimpleName());
+			throw new IllegalStateException("We're missing a case here: "
+					+ fix.getClass().getSimpleName());
 		}
 	}
 }

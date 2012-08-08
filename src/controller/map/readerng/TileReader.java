@@ -34,38 +34,38 @@ import controller.map.misc.IDFactory;
  */
 public class TileReader implements INodeHandler<Tile> {
 	/**
-	 * @param element
-	 *            the element to start with
-	 * @param stream
-	 *            the stream to get more elements from
+	 * @param element the element to start with
+	 * @param stream the stream to get more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the tile we're at in the stream
-	 * @throws SPFormatException
-	 *             on map format error
+	 * @throws SPFormatException on map format error
 	 */
 	@Override
 	public Tile parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Tile tile = new Tile(
-				parseInt(getAttribute(element, "row")), // NOPMD
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
+		final Tile tile = new Tile(parseInt(getAttribute(element, "row")), // NOPMD
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttributeWithDeprecatedForm(element,
-						"kind", "type", warner)),
-						XMLHelper.getFile(stream));
+						"kind", "type", warner)), XMLHelper.getFile(stream));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName().getLocalPart())) {
-					tile.addFixture(new RiverFixture(READER.parse(// NOPMD
-							event.asStartElement(), stream, players, warner, idFactory)));
+					tile.addFixture(new RiverFixture(READER.parse(
+							// NOPMD
+							event.asStartElement(), stream, players, warner,
+							idFactory)));
 				} else {
 					perhapsAddFixture(stream, players, warner, tile, event,
 							element.getName().getLocalPart(), idFactory);
-				} 
+				}
 			} else if (event.isCharacters()) {
-				tile.addFixture(new TextFixture(event.asCharacters().getData().trim(), // NOPMD
+				tile.addFixture(new TextFixture(event.asCharacters().getData()
+						.trim(), // NOPMD
 						-1));
 			} else if (event.isEndElement()
 					&& "tile".equalsIgnoreCase(event.asEndElement().getName()
@@ -75,46 +75,52 @@ public class TileReader implements INodeHandler<Tile> {
 		}
 		return tile;
 	}
+
 	// ESCA-JAVA0138:
 	/**
-	 * We expect the next start element to be a TileFixture. If it is, parse and add it.
+	 * We expect the next start element to be a TileFixture. If it is, parse and
+	 * add it.
+	 * 
 	 * @param stream the stream to read events from
-	 * @param players the players collection (required by the spec of the methods we call)
+	 * @param players the players collection (required by the spec of the
+	 *        methods we call)
 	 * @param warner the Warning instance
 	 * @param tile the tile under construction.
 	 * @param event the tag to be parsed
 	 * @param tag the tile's tag
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static void perhapsAddFixture(final Iterable<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
-			final Tile tile, final XMLEvent event, final String tag, final IDFactory idFactory)
-			throws SPFormatException {
+			final Tile tile, final XMLEvent event, final String tag,
+			final IDFactory idFactory) throws SPFormatException {
 		try {
-			tile.addFixture(checkedCast(ReaderAdapter.ADAPTER.parse(//NOPMD
-				event.asStartElement(), stream, players, warner, idFactory),
-				TileFixture.class));
+			tile.addFixture(checkedCast(
+					ReaderAdapter.ADAPTER.parse(
+							// NOPMD
+							event.asStartElement(), stream, players, warner,
+							idFactory), TileFixture.class));
 		} catch (final UnwantedChildException except) {
 			// ESCA-JAVA0049:
 			if ("unknown".equals(except.getTag())) {
-				throw new UnwantedChildException(tag, //NOPMD
-						except.getChild(), event
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException(tag, // NOPMD
+						except.getChild(), event.getLocation().getLineNumber());
 			} else {
 				throw except;
 			}
 		} catch (final IllegalStateException except) {
 			if (except.getMessage().matches("^Wanted [^ ]*, was [^ ]*$")) {
-				throw new UnwantedChildException(tag, //NOPMD
-						event.asStartElement()
-						.getName().getLocalPart(), event
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException(tag, // NOPMD
+						event.asStartElement().getName().getLocalPart(), event
+								.getLocation().getLineNumber());
 			} else {
 				throw except;
 			}
 		}
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether it's a river tag.
@@ -122,6 +128,7 @@ public class TileReader implements INodeHandler<Tile> {
 	private static boolean isRiver(final String tag) {
 		return "river".equalsIgnoreCase(tag) || "lake".equalsIgnoreCase(tag);
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -129,11 +136,11 @@ public class TileReader implements INodeHandler<Tile> {
 	public List<String> understands() {
 		return Collections.singletonList("tile");
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param obj
-	 *            the object to write
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
@@ -141,9 +148,12 @@ public class TileReader implements INodeHandler<Tile> {
 		if (obj.isEmpty()) {
 			return new SPIntermediateRepresentation(""); // NOPMD
 		} else {
-			final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("tile");
-			retval.addAttribute("row", Integer.toString(obj.getLocation().row()));
-			retval.addAttribute("column", Integer.toString(obj.getLocation().col()));
+			final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+					"tile");
+			retval.addAttribute("row",
+					Integer.toString(obj.getLocation().row()));
+			retval.addAttribute("column",
+					Integer.toString(obj.getLocation().col()));
 			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
@@ -152,7 +162,7 @@ public class TileReader implements INodeHandler<Tile> {
 				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj.getContents()) {
 					if (fix instanceof RiverFixture) {
-						for (River river : (RiverFixture) fix) {
+						for (final River river : (RiverFixture) fix) {
 							retval.addChild(READER.write(river));
 						}
 					} else {
@@ -160,22 +170,28 @@ public class TileReader implements INodeHandler<Tile> {
 					}
 				}
 				tagMap.remove(obj.getFile());
-				for (SPIntermediateRepresentation child : tagMap.values()) {
+				for (final SPIntermediateRepresentation child : tagMap.values()) {
 					retval.addChild(child);
 				}
 			}
 			return retval;
 		}
 	}
+
 	/**
-	 * Add a child node to a node---the parent node, or an 'include' node representing its chosen file.
+	 * Add a child node to a node---the parent node, or an 'include' node
+	 * representing its chosen file.
+	 * 
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
 	 * @param adapter the adapter to use to call the right handler.
-	 * @param parent the parent node, so we can add any include nodes created to it
+	 * @param parent the parent node, so we can add any include nodes created to
+	 *        it
 	 */
-	private static void addChild(final Map<String, SPIntermediateRepresentation> map,
-			final XMLWritable obj, final ReaderAdapter adapter, final SPIntermediateRepresentation parent) {
+	private static void addChild(
+			final Map<String, SPIntermediateRepresentation> map,
+			final XMLWritable obj, final ReaderAdapter adapter,
+			final SPIntermediateRepresentation parent) {
 		if (obj.getFile() == null) {
 			parent.addChild(adapter.write(obj));
 		} else {
@@ -189,6 +205,7 @@ public class TileReader implements INodeHandler<Tile> {
 			map.get(obj.getFile()).addChild(adapter.write(obj));
 		}
 	}
+
 	/**
 	 * @return the type of object we know how to write.
 	 */
@@ -196,6 +213,7 @@ public class TileReader implements INodeHandler<Tile> {
 	public Class<Tile> writes() {
 		return Tile.class;
 	}
+
 	/**
 	 * A reader to use to parse and write Rivers.
 	 */

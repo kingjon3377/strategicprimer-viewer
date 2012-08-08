@@ -53,10 +53,9 @@ public final class TableLoader { // NOPMD
 	 * Terrain tables have lines with each terrain type (as in the XML map
 	 * format) followed by a description or event.
 	 * 
-	 * @param filename
-	 *            the file containing the table.
-	 * @return the table 
-	 * @throws FileNotFoundException when file not found 
+	 * @param filename the file containing the table.
+	 * @return the table
+	 * @throws FileNotFoundException when file not found
 	 * @throws IOException on I/O error
 	 */
 	public EncounterTable loadTable(final String filename)
@@ -77,11 +76,9 @@ public final class TableLoader { // NOPMD
 	}
 
 	/**
-	 * @param reader
-	 *            the stream to read from
+	 * @param reader the stream to read from
 	 * @return the table constructed from the file
-	 * @throws IOException
-	 *             on I/O error or badly formed table.
+	 * @throws IOException on I/O error or badly formed table.
 	 */
 	EncounterTable loadTable(final BufferedReader reader) throws IOException { // NOPMD
 		final String line = reader.readLine();
@@ -114,11 +111,9 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Load a QuadrantTable from file.
 	 * 
-	 * @param reader
-	 *            the file descriptor
+	 * @param reader the file descriptor
 	 * @return the quadrant table the file describes.
-	 * @throws IOException
-	 *             on I/O error reading the number of rows
+	 * @throws IOException on I/O error reading the number of rows
 	 */
 	public QuadrantTable loadQuadrantTable(final BufferedReader reader)
 			throws IOException {
@@ -147,11 +142,9 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Load a RandomTable from file.
 	 * 
-	 * @param reader
-	 *            the file descriptor
+	 * @param reader the file descriptor
 	 * @return the random-table the file describes.
-	 * @throws IOException
-	 *             on I/O error
+	 * @throws IOException on I/O error
 	 */
 	public RandomTable loadRandomTable(final BufferedReader reader)
 			throws IOException {
@@ -177,11 +170,9 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Load a TerrainTable from file.
 	 * 
-	 * @param reader
-	 *            the file descriptor
+	 * @param reader the file descriptor
 	 * @return the terrain-table the file describes.
-	 * @throws IOException
-	 *             on I/O error.
+	 * @throws IOException on I/O error.
 	 */
 	public TerrainTable loadTerrainTable(final BufferedReader reader)
 			throws IOException {
@@ -207,11 +198,9 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Load a ConstantTable from file.
 	 * 
-	 * @param reader
-	 *            the file descriptor
+	 * @param reader the file descriptor
 	 * @return the terrain-table the file describes.
-	 * @throws IOException
-	 *             on I/O error.
+	 * @throws IOException on I/O error.
 	 */
 	public ConstantTable loadConstantTable(final BufferedReader reader)
 			throws IOException {
@@ -245,12 +234,9 @@ public final class TableLoader { // NOPMD
 	 * Try to load a table from file, but log the error and use the given backup
 	 * if it fails.
 	 * 
-	 * @param filename
-	 *            the file to load from
-	 * @param defaultRows
-	 *            the number of rows to use if loading fails
-	 * @param defaultItems
-	 *            a list of items to use if loading fails
+	 * @param filename the file to load from
+	 * @param defaultRows the number of rows to use if loading fails
+	 * @param defaultItems a list of items to use if loading fails
 	 * 
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
@@ -276,8 +262,7 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Loads the default set of tables.
 	 * 
-	 * @param runner
-	 *            the runner to add them to
+	 * @param runner the runner to add them to
 	 */
 	public void loadDefaultTables(final ExplorationRunner runner) {
 		for (final String table : defaultTableList) {
@@ -290,10 +275,8 @@ public final class TableLoader { // NOPMD
 	 * Create a list of strings, each beginning with a specified stem and ending
 	 * with a sequential number.
 	 * 
-	 * @param stem
-	 *            the string to begin each item with
-	 * @param iterations
-	 *            how many items should be in the list
+	 * @param stem the string to begin each item with
+	 * @param iterations how many items should be in the list
 	 * 
 	 * @return such a list
 	 */
@@ -310,10 +293,8 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Load all tables in the specified path.
 	 * 
-	 * @param path
-	 *            the directory to look in
-	 * @param runner
-	 *            the runner to add them to
+	 * @param path the directory to look in
+	 * @param runner the runner to add them to
 	 */
 	public void loadAllTables(final String path, final ExplorationRunner runner) {
 		final TableLoader loader = new TableLoader(); // NOPMD
@@ -322,7 +303,8 @@ public final class TableLoader { // NOPMD
 		if (children != null) {
 			for (final String table : children) {
 				if ('.' == table.charAt(0) || table.contains("/.")) {
-					LOGGER.info(table + " looks like a hidden file, skipping ...");
+					LOGGER.info(table
+							+ " looks like a hidden file, skipping ...");
 					continue;
 				}
 				try {

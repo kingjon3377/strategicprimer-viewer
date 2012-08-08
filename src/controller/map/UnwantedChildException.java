@@ -2,8 +2,9 @@ package controller.map;
 
 /**
  * A custom exception for when a tag has a child tag it can't handle.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class UnwantedChildException extends SPFormatException {
 
@@ -18,20 +19,24 @@ public class UnwantedChildException extends SPFormatException {
 		tag = parent;
 		chld = child;
 	}
+
 	/**
 	 * The current tag.
 	 */
 	private final String tag;
+
 	/**
 	 * @return the current tag.
 	 */
 	public final String getTag() {
 		return tag;
 	}
+
 	/**
 	 * The unwanted child.
 	 */
 	private final String chld;
+
 	/**
 	 * @return the unwanted child.
 	 */

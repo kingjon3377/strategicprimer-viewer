@@ -11,18 +11,22 @@ import java.util.logging.Logger;
 import model.map.fixtures.Ground;
 import model.viewer.FixtureTransferable;
 import util.ImageLoader;
+
 /**
  * A chit to represent ground.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class GroundChit extends Chit {
 	/**
 	 * A description of the forest.
 	 */
 	private final String desc;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param ground the ground this chit represents
 	 * @param listener the object listening for clicks on this chit.
 	 */
@@ -35,15 +39,16 @@ public class GroundChit extends Chit {
 		Image img;
 		try {
 			img = ImageLoader.getLoader().loadImage("expground.png");
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "Ground image file not found", e);
 			img = createDefaultImage(ground);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading ground image");
 			img = createDefaultImage(ground);
 		}
 		image = img;
 	}
+
 	/**
 	 * @return a description of the forest.
 	 */
@@ -51,6 +56,7 @@ public class GroundChit extends Chit {
 	public String describe() {
 		return desc;
 	}
+
 	/**
 	 * The image we'll use to draw the chit.
 	 */
@@ -58,9 +64,12 @@ public class GroundChit extends Chit {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(GroundChit.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(GroundChit.class
+			.getName());
+
 	/**
 	 * Paint the chit.
+	 * 
 	 * @param pen the graphics context.
 	 */
 	@Override
@@ -69,4 +78,3 @@ public class GroundChit extends Chit {
 		pen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 	}
 }
-

@@ -8,8 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a djinn or group of djinni.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 @Deprecated
 public class DjinnNode extends AbstractFixtureNode<Djinn> {
@@ -19,6 +20,7 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	public DjinnNode() {
 		super(Djinn.class);
 	}
+
 	/**
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
@@ -26,13 +28,18 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Djinn produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Djinn(Integer.parseInt(getProperty("id")), getProperty("file"));
+	public Djinn produce(final PlayerCollection players, final Warning warner)
+			throws SPFormatException {
+		return new Djinn(Integer.parseInt(getProperty("id")),
+				getProperty("file"));
 	}
+
 	/**
 	 * Check the node for invalid data. A Djinn is valid i it has no children.
+	 * 
 	 * @param warner a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException if the node contains invalid data
 	 */
 	@Override
@@ -41,6 +48,7 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 		forbidChildren("djinn");
 		registerOrCreateID("djinn", idFactory, warner);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
@@ -49,6 +57,7 @@ public class DjinnNode extends AbstractFixtureNode<Djinn> {
 	public boolean canUse(final String property) {
 		return "id".equals(property);
 	}
+
 	/**
 	 * @return a String representation of the node.
 	 */

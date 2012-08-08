@@ -3,7 +3,6 @@ package model.map.events;
 import model.map.HasImage;
 import model.map.TileFixture;
 
-
 /**
  * A vein of a mineral.
  * 
@@ -14,12 +13,9 @@ public final class MineralEvent implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 * 
-	 * @param minkind
-	 *            what kind of mineral this is
-	 * @param exp
-	 *            whether the vein is exposed
-	 * @param discdc
-	 *            the dc to discover the vein
+	 * @param minkind what kind of mineral this is
+	 * @param exp whether the vein is exposed
+	 * @param discdc the dc to discover the vein
 	 * @param idNum the ID number.
 	 */
 	public MineralEvent(final String minkind, final boolean exp,
@@ -62,6 +58,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	 * The DC to discover the vein. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
+
 	/**
 	 * 
 	 * @return the DC to discover the event.
@@ -93,8 +90,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it's an identical event
 	 */
@@ -103,7 +99,8 @@ public final class MineralEvent implements IEvent, HasImage {
 		return this == obj
 				|| (obj instanceof MineralEvent
 						&& ((MineralEvent) obj).mineral.equals(mineral)
-						&& ((MineralEvent) obj).exposed == exposed && ((TileFixture) obj).getID() == id);
+						&& ((MineralEvent) obj).exposed == exposed && ((TileFixture) obj)
+						.getID() == id);
 	}
 
 	/**
@@ -124,12 +121,14 @@ public final class MineralEvent implements IEvent, HasImage {
 		return "A " + mineral + " deposit, "
 				+ (exposed ? "exposed" : "not exposed") + ", DC " + dc;
 	}
+
 	/**
 	 * @return the kind of mineral
 	 */
 	public String getKind() {
 		return mineral;
 	}
+
 	/**
 	 * @return an XML representation of the event.
 	 */
@@ -141,6 +140,7 @@ public final class MineralEvent implements IEvent, HasImage {
 				.append(dc).append("\" id=\"").append(id).append("\" />")
 				.toString();
 	}
+
 	/**
 	 * @return the name of an image to represent the event
 	 */
@@ -148,6 +148,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	public String getImage() {
 		return "mineral.png";
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -155,9 +156,9 @@ public final class MineralEvent implements IEvent, HasImage {
 	public int getZValue() {
 		return 40;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -165,10 +166,12 @@ public final class MineralEvent implements IEvent, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -176,6 +179,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -186,6 +190,7 @@ public final class MineralEvent implements IEvent, HasImage {
 				|| (fix instanceof MineralEvent
 						&& ((MineralEvent) fix).mineral.equals(mineral) && ((MineralEvent) fix).exposed == exposed);
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -193,6 +198,7 @@ public final class MineralEvent implements IEvent, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -200,16 +206,19 @@ public final class MineralEvent implements IEvent, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		final MineralEvent retval = new MineralEvent(getKind(), isExposed(), getDC(), getID());
+		final MineralEvent retval = new MineralEvent(getKind(), isExposed(),
+				getDC(), getID());
 		retval.setFile(getFile());
 		return retval;
 	}

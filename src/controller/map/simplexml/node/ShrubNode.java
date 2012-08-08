@@ -9,8 +9,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent shrubs (or the aquatic equivalent) on the tile.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 @Deprecated
 public class ShrubNode extends AbstractFixtureNode<Shrub> {
@@ -26,12 +27,14 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	 * The name of the property telling what kind of shrub.
 	 */
 	private static final String KIND_PROPERTY = "kind";
+
 	/**
 	 * Constructor.
 	 */
 	public ShrubNode() {
 		super(Shrub.class);
 	}
+
 	/**
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
@@ -39,31 +42,40 @@ public class ShrubNode extends AbstractFixtureNode<Shrub> {
 	 * @throws SPFormatException if it doesn't have a "kind" property.
 	 */
 	@Override
-	public Shrub produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Shrub(getProperty(KIND_PROPERTY), Integer.parseInt(getProperty("id")), getProperty("file"));
+	public Shrub produce(final PlayerCollection players, final Warning warner)
+			throws SPFormatException {
+		return new Shrub(getProperty(KIND_PROPERTY),
+				Integer.parseInt(getProperty("id")), getProperty("file"));
 	}
+
 	/**
 	 * Check whether the node is valid. A Shrub is valid if it has a "shrub"
 	 * property and no children.
+	 * 
 	 * @param warner a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException if the required property is missing
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		handleDeprecatedProperty(TAG, KIND_PROPERTY, OLD_KIND_PROPERTY, warner, true, false);
+		handleDeprecatedProperty(TAG, KIND_PROPERTY, OLD_KIND_PROPERTY, warner,
+				true, false);
 		registerOrCreateID("shrub", idFactory, warner);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY, "id");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, OLD_KIND_PROPERTY,
+				"id");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

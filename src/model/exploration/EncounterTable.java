@@ -19,8 +19,7 @@ public interface EncounterTable {
 	 * each tile; for random event tables the result will be randomly selected
 	 * from that table.
 	 * 
-	 * @param tile
-	 *            a tile
+	 * @param tile a tile
 	 * 
 	 * @return an appropriate event for that tile
 	 */

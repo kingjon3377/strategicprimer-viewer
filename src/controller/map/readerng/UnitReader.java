@@ -30,47 +30,46 @@ public class UnitReader implements INodeHandler<Unit> {
 	 * The name of the property telling what kind of unit.
 	 */
 	private static final String KIND_PROPERTY = "kind";
+
 	/**
 	 * Parse a unit.
 	 * 
-	 * @param element
-	 *            the element to start with
-	 * @param stream
-	 *            the stream to read more elements from
-	 * @param players
-	 *            the collection of players
+	 * @param element the element to start with
+	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the fortress
-	 * @throws SPFormatException
-	 *             on SP format error
+	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public Unit parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
 		final Unit fix = new Unit(
 				players.getPlayer(Integer.parseInt(ensureNumeric(getAttribute(
-						element, "owner", "-1")))),
-				parseKind(element, warner),
-				getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+						element, "owner", "-1")))), parseKind(element, warner),
+				getAttribute(element, "name", ""), getOrGenerateID(element,
+						warner, idFactory), XMLHelper.getFile(stream));
 		return fix;
 	}
 
 	/**
-	 * Parse the kind of unit, from the "kind" or "type" parameter---default the empty string. 
+	 * Parse the kind of unit, from the "kind" or "type" parameter---default the
+	 * empty string.
+	 * 
 	 * @param element the current element
 	 * @param warner the Warning instance to use
 	 * @return the kind of unit
 	 * @throws SPFormatException on SP format error.
 	 */
-	private static String parseKind(final StartElement element, final Warning warner)
-			throws SPFormatException {
+	private static String parseKind(final StartElement element,
+			final Warning warner) throws SPFormatException {
 		String retval = "";
 		try {
 			retval = getAttributeWithDeprecatedForm(element, // NOPMD
@@ -86,6 +85,7 @@ public class UnitReader implements INodeHandler<Unit> {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param string a string that may be either numeric or empty.
 	 * @return it, or "-1" if it's empty.
@@ -93,6 +93,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	private static String ensureNumeric(final String string) {
 		return string.isEmpty() ? "-1" : string;
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -104,15 +105,17 @@ public class UnitReader implements INodeHandler<Unit> {
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
-	 * @param obj
-	 *            the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the
+	 *        adapter work.
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
 	public <S extends Unit> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("unit");
-		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"unit");
+		retval.addAttribute("owner",
+				Integer.toString(obj.getOwner().getPlayerId()));
 		if (!obj.getKind().isEmpty()) {
 			retval.addAttribute("kind", obj.getKind());
 		}
@@ -122,6 +125,7 @@ public class UnitReader implements INodeHandler<Unit> {
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		return retval;
 	}
+
 	/**
 	 * @return The type we know how to write
 	 */

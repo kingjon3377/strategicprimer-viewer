@@ -12,10 +12,8 @@ public interface NeedsExtraCanonicalization {
 	/**
 	 * Do the extra necessary work.
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @throws SPFormatException
-	 *             on format errors uncovered in this process.
+	 * @param warner a Warning instance to use for warnings
+	 * @throws SPFormatException on format errors uncovered in this process.
 	 */
 	void canonicalizeImpl(Warning warner) throws SPFormatException;
 }

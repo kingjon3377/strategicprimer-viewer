@@ -21,10 +21,8 @@ public final class ErrorShower {
 	/**
 	 * Show an error dialog.
 	 * 
-	 * @param parent
-	 *            the parent component for the dialog
-	 * @param message
-	 *            the error message.
+	 * @param parent the parent component for the dialog
+	 * @param message the error message.
 	 */
 	public static void showErrorDialog(final Component parent,
 			final String message) {

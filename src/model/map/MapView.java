@@ -1,10 +1,8 @@
 package model.map;
 
-
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
- * current turn, the current player, and eventually
- * changesets.
+ * current turn, the current player, and eventually changesets.
  * 
  * @author Jonathan Lovelace
  * 
@@ -12,18 +10,21 @@ package model.map;
 public class MapView implements IMap {
 	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
+	 * 
 	 * @param wrapped the map this wraps
 	 * @param curPlayer the current player's number
 	 * @param curTurn the current turn
 	 * @param filename the file this is loaded from
 	 */
-	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn, final String filename) {
+	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn,
+			final String filename) {
 		map = wrapped;
 		player = map.getPlayers().getPlayer(curPlayer);
 		player.setCurrent(true);
 		turn = curTurn;
 		file = filename;
 	}
+
 	/**
 	 * The map we wrap.
 	 */
@@ -36,13 +37,15 @@ public class MapView implements IMap {
 	 * The current turn.
 	 */
 	private int turn;
+
 	/**
 	 * @return an XML representation of the view.
 	 */
 	@Deprecated
 	@Override
 	public String toXML() {
-		final StringBuilder builder = new StringBuilder("<view current_player=\"");
+		final StringBuilder builder = new StringBuilder(
+				"<view current_player=\"");
 		builder.append(player.getPlayerId());
 		builder.append("\" current_turn=\"");
 		builder.append(turn);
@@ -51,10 +54,12 @@ public class MapView implements IMap {
 		builder.append("\n</view>");
 		return builder.toString();
 	}
+
 	/**
 	 * The file this view was read from.
 	 */
 	private String file;
+
 	/**
 	 * @return the file this was read from
 	 */
@@ -62,6 +67,7 @@ public class MapView implements IMap {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param origFile the file this view was read from
 	 */
@@ -70,7 +76,7 @@ public class MapView implements IMap {
 		file = origFile;
 		map.setFile(origFile);
 	}
-	
+
 	/**
 	 * Test whether another map or map view is a subset of this one. TODO: Check
 	 * changesets.
@@ -82,6 +88,7 @@ public class MapView implements IMap {
 	public boolean isSubset(final IMap obj) {
 		return map.isSubset(obj);
 	}
+
 	/**
 	 * @param obj another map.
 	 * @return the result of a comparison with it.
@@ -90,6 +97,7 @@ public class MapView implements IMap {
 	public int compareTo(final IMap obj) {
 		return map.compareTo(obj);
 	}
+
 	/**
 	 * @return the map version of the wrapped map
 	 */
@@ -97,6 +105,7 @@ public class MapView implements IMap {
 	public int getVersion() {
 		return map.getVersion();
 	}
+
 	/**
 	 * @return the number of rows in the wrapped map
 	 */
@@ -104,6 +113,7 @@ public class MapView implements IMap {
 	public int rows() {
 		return map.rows();
 	}
+
 	/**
 	 * @return the number of columns in the wrapped map
 	 */
@@ -111,14 +121,17 @@ public class MapView implements IMap {
 	public int cols() {
 		return map.cols();
 	}
+
 	/**
-	 * Add a player to the wrapped map. 
+	 * Add a player to the wrapped map.
+	 * 
 	 * @param newPlayer the player to add
 	 */
 	@Override
 	public void addPlayer(final Player newPlayer) {
 		map.addPlayer(newPlayer);
 	}
+
 	/**
 	 * @param point a pair of coordinates
 	 * @return the tile at those coordinates
@@ -127,6 +140,7 @@ public class MapView implements IMap {
 	public Tile getTile(final Point point) {
 		return map.getTile(point);
 	}
+
 	/**
 	 * @return the collection of players in the map
 	 */
@@ -134,16 +148,20 @@ public class MapView implements IMap {
 	public PlayerCollection getPlayers() {
 		return map.getPlayers();
 	}
+
 	/**
 	 * TODO: changesets affect this.
+	 * 
 	 * @return the collection of tiles that make up the map.
 	 */
 	@Override
 	public TileCollection getTiles() {
 		return map.getTiles();
 	}
+
 	/**
 	 * Set the current player.
+	 * 
 	 * @param current the new current player (number)
 	 */
 	public void setCurrentPlayer(final int current) {
@@ -151,15 +169,19 @@ public class MapView implements IMap {
 		player = map.getPlayers().getPlayer(current);
 		player.setCurrent(true);
 	}
+
 	/**
 	 * Set the current turn.
+	 * 
 	 * @param current the new current turn
 	 */
 	public void setCurrentTurn(final int current) {
 		turn = current;
 	}
+
 	/**
 	 * TODO: sub-maps, changesets.
+	 * 
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
@@ -169,6 +191,7 @@ public class MapView implements IMap {
 				&& player.equals(((MapView) obj).player)
 				&& turn == ((MapView) obj).turn;
 	}
+
 	/**
 	 * @return a hash code for the object
 	 */
@@ -176,13 +199,14 @@ public class MapView implements IMap {
 	public int hashCode() {
 		return map.hashCode();
 	}
+
 	/**
 	 * @return the current turn
 	 */
 	public int getCurrentTurn() {
 		return turn;
 	}
-	
+
 	/**
 	 * TODO: How does this interact with changesets? This is primarily used
 	 * (should probably *only* be used) in serialization.
@@ -192,6 +216,7 @@ public class MapView implements IMap {
 	public SPMap getMap() {
 		return map;
 	}
+
 	/**
 	 * @return a String representation of the view.
 	 */
@@ -205,6 +230,7 @@ public class MapView implements IMap {
 		builder.append(map);
 		return builder.toString();
 	}
+
 	/**
 	 * @return a clone of this object
 	 */

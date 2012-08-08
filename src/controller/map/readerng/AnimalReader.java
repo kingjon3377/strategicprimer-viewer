@@ -16,10 +16,12 @@ import model.map.fixtures.Animal;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+
 /**
  * A reader for Animals.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class AnimalReader implements INodeHandler<Animal> {
 	/**
@@ -27,23 +29,26 @@ public class AnimalReader implements INodeHandler<Animal> {
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the animal
 	 * @throws SPFormatException if the data is invalid
 	 */
 	@Override
 	public Animal parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Animal fix = new Animal(
 				getAttribute(element, "kind"),
 				hasAttribute(element, "traces"),
 				Boolean.parseBoolean(getAttribute(element, "talking", "false")),
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+				getOrGenerateID(element, warner, idFactory), XMLHelper
+						.getFile(stream));
 		return fix;
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -51,22 +56,25 @@ public class AnimalReader implements INodeHandler<Animal> {
 	public List<String> understands() {
 		return Collections.singletonList("animal");
 	}
+
 	/** @return the class we know how to write */
 	@Override
 	public Class<Animal> writes() {
 		return Animal.class;
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param <S> the type of the object---it can be a subclass, to make the adapter work.
-	 * @param obj
-	 *            the object to write
+	 * @param <S> the type of the object---it can be a subclass, to make the
+	 *        adapter work.
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
 	public <S extends Animal> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("animal");
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"animal");
 		retval.addAttribute("kind", obj.getAnimal());
 		if (obj.isTraces()) {
 			retval.addAttribute("traces", "");

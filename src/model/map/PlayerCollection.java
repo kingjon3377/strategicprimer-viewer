@@ -13,7 +13,8 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  * 
  */
-public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCollection>, HasChildren {
+public class PlayerCollection implements Iterable<Player>,
+		Subsettable<PlayerCollection>, HasChildren {
 	/**
 	 * The collection this class wraps.
 	 */
@@ -22,23 +23,21 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 	/**
 	 * Add a player.
 	 * 
-	 * @param player
-	 *            the player to add.
+	 * @param player the player to add.
 	 */
 	public void addPlayer(final Player player) {
 		players.put(Integer.valueOf(player.getPlayerId()), player);
 	}
 
 	/**
-	 * @param player
-	 *            a player-id
+	 * @param player a player-id
 	 * 
 	 * @return the player with that ID, or a new Player with that number if we
 	 *         don't have it.
 	 */
 	public Player getPlayer(final int player) {
-		return players.containsKey(Integer.valueOf(player)) ? players.get(Integer.valueOf(player)) : new Player(
-				player, "", "");
+		return players.containsKey(Integer.valueOf(player)) ? players
+				.get(Integer.valueOf(player)) : new Player(player, "", "");
 	}
 
 	/**
@@ -50,8 +49,7 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 	}
 
 	/**
-	 * @param obj
-	 *            an object
+	 * @param obj an object
 	 * 
 	 * @return whether it is another identical PlayerCollection or not
 	 */
@@ -96,13 +94,14 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 	public String toString() {
 		return "PlayerCollection";
 	}
+
 	/**
 	 * @param obj another PlayerCollection
 	 * @return whether it's a strict subset of this one
 	 */
 	@Override
 	public boolean isSubset(final PlayerCollection obj) {
-		for (Player player : obj) {
+		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
 				SystemOut.SYS_OUT.println("Extra player");
 				return false; // NOPMD
@@ -110,8 +109,10 @@ public class PlayerCollection implements Iterable<Player>, Subsettable<PlayerCol
 		}
 		return true;
 	}
+
 	/**
 	 * Set all children's file property to the specified value, recursively.
+	 * 
 	 * @param value the value to set
 	 */
 	@Override

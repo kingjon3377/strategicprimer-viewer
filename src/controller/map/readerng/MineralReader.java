@@ -21,36 +21,41 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Minerals.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class MineralReader implements INodeHandler<MineralEvent> {
 	/**
 	 * Parse a Mineral.
+	 * 
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @return the parsed mineral
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public MineralEvent parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final MineralEvent fix = new MineralEvent(
-				getAttributeWithDeprecatedForm(element, "kind",
-						"mineral", warner), Boolean.parseBoolean(XMLHelper
-						.getAttribute(element, "exposed")),
-				Integer.parseInt(getAttribute(element, "dc")),
-				getOrGenerateID(element, warner, idFactory));
+				getAttributeWithDeprecatedForm(element, "kind", "mineral",
+						warner), Boolean.parseBoolean(XMLHelper.getAttribute(
+						element, "exposed")), Integer.parseInt(getAttribute(
+						element, "dc")), getOrGenerateID(element, warner,
+						idFactory));
 		if (stream.iterator() instanceof IncludingIterator) {
 			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
 		return fix;
 	}
+
 	/**
 	 * @return a list of the tags this reader understands
 	 */
@@ -58,6 +63,7 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	public List<String> understands() {
 		return Collections.singletonList("mineral");
 	}
+
 	/**
 	 * @return the class we know how to write
 	 */
@@ -65,11 +71,11 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	public Class<MineralEvent> writes() {
 		return MineralEvent.class;
 	}
+
 	/**
 	 * Create an intermediate representation to write to a Writer.
 	 * 
-	 * @param obj
-	 *            the object to write
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@SuppressWarnings("unchecked")

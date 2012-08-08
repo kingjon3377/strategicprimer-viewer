@@ -59,9 +59,8 @@ public enum EventKind {
 	/**
 	 * Constructor.
 	 * 
-	 * @param string
-	 *            a string representing the event, to be used in non-specific
-	 *            event tags.
+	 * @param string a string representing the event, to be used in non-specific
+	 *        event tags.
 	 */
 	private EventKind(final String string) {
 		str = string;
@@ -74,8 +73,7 @@ public enum EventKind {
 	}
 
 	/**
-	 * @param string
-	 *            a string representing an EventKind
+	 * @param string a string representing an EventKind
 	 * 
 	 * @return the EventKind it represents
 	 */

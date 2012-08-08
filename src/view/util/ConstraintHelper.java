@@ -13,10 +13,8 @@ public class ConstraintHelper extends GridBagConstraints {
 	/**
 	 * Constructor taking just position.
 	 * 
-	 * @param col
-	 *            the column
-	 * @param row
-	 *            the row
+	 * @param col the column
+	 * @param row the row
 	 */
 	public ConstraintHelper(final int col, final int row) {
 		super();
@@ -27,14 +25,10 @@ public class ConstraintHelper extends GridBagConstraints {
 	/**
 	 * Constructor taking position and extent.
 	 * 
-	 * @param col
-	 *            the column
-	 * @param row
-	 *            the row
-	 * @param width
-	 *            how many columns
-	 * @param height
-	 *            how many rows
+	 * @param col the column
+	 * @param row the row
+	 * @param width how many columns
+	 * @param height how many rows
 	 */
 	public ConstraintHelper(final int col, final int row, final int width,
 			final int height) {

@@ -5,37 +5,43 @@ import java.awt.event.ComponentEvent;
 
 import model.viewer.MapModel;
 import model.viewer.VisibleDimensions;
+
 /**
- * A listener to adjust the number of displayed tiles based on the area to display them in.
+ * A listener to adjust the number of displayed tiles based on the area to
+ * display them in.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class MapSizeListener extends ComponentAdapter {
 	/**
 	 * The map model we'll be modifying.
 	 */
 	private final MapModel model;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param map the map model we'll be modifying.
 	 */
 	public MapSizeListener(final MapModel map) {
 		super();
 		model = map;
 	}
+
 	/**
-	 * Adjust the visible size of the map based on the map component being resized.
+	 * Adjust the visible size of the map based on the map component being
+	 * resized.
+	 * 
 	 * @param event the resize event
 	 */
 	@Override
 	public void componentResized(final ComponentEvent event) {
 		if (event.getComponent() instanceof MapGUI) {
 			synchronized (model) {
-				final int visibleCols = event.getComponent()
-						.getWidth()
+				final int visibleCols = event.getComponent().getWidth()
 						/ ((MapGUI) event.getSource()).getTileSize();
-				final int visibleRows = event.getComponent()
-						.getHeight()
+				final int visibleRows = event.getComponent().getHeight()
 						/ ((MapGUI) event.getSource()).getTileSize();
 				int minCol = model.getDimensions().getMinimumCol();
 				int maxCol = model.getDimensions().getMaximumCol();
@@ -69,8 +75,10 @@ public class MapSizeListener extends ComponentAdapter {
 			}
 		}
 	}
+
 	/**
 	 * Treat a "shown" event as a "resized" event.
+	 * 
 	 * @param event the event to handle.
 	 */
 	@Override

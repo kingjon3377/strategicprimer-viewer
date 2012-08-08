@@ -21,10 +21,8 @@ public class UnitChit extends Chit {
 	/**
 	 * Constructor.
 	 * 
-	 * @param unit
-	 *            the unit this chit represents
-	 * @param listener
-	 *            the object listening for clicks on this chit.
+	 * @param unit the unit this chit represents
+	 * @param listener the object listening for clicks on this chit.
 	 */
 	public UnitChit(final Unit unit, final MouseListener listener) {
 		super(listener, new FixtureTransferable(unit));
@@ -60,8 +58,7 @@ public class UnitChit extends Chit {
 	/**
 	 * Paint the chit.
 	 * 
-	 * @param pen
-	 *            the graphics context
+	 * @param pen the graphics context
 	 * 
 	 * 
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)

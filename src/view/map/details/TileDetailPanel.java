@@ -43,8 +43,7 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * Set the labels appropriately based on a new tile.
 	 * 
-	 * @param tile
-	 *            the tile we now represent
+	 * @param tile the tile we now represent
 	 */
 	public void updateText(final Tile tile) {
 		coordLabel.setText("<html>Coordinates: "
@@ -56,8 +55,7 @@ public class TileDetailPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * Handle a property change.
 	 * 
-	 * @param evt
-	 *            the event to handle.
+	 * @param evt the event to handle.
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {

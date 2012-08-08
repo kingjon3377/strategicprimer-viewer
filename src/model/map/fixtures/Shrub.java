@@ -5,8 +5,9 @@ import model.map.TileFixture;
 
 /**
  * A TileFixture to represent shrubs, or their aquatic equivalents, on a tile.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class Shrub implements TileFixture, HasImage {
 	/**
@@ -18,12 +19,15 @@ public class Shrub implements TileFixture, HasImage {
 		return new StringBuilder("<shrub kind=\"").append(description)
 				.append("\" id=\"").append(id).append("\" />").toString();
 	}
+
 	/**
 	 * A description of what kind of shrub this is.
 	 */
 	private final String description;
+
 	/**
 	 * Constructor.
+	 * 
 	 * @param desc a description of the shrub.
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
@@ -33,12 +37,14 @@ public class Shrub implements TileFixture, HasImage {
 		id = idNum;
 		file = fileName;
 	}
+
 	/**
 	 * @return a description of the shrub
 	 */
 	public String getDescription() {
 		return description;
 	}
+
 	/**
 	 * @return the name of an image to represent the shrub.
 	 */
@@ -46,6 +52,7 @@ public class Shrub implements TileFixture, HasImage {
 	public String getImage() {
 		return "shrub.png";
 	}
+
 	/**
 	 * @return the description of the shrub
 	 */
@@ -53,6 +60,7 @@ public class Shrub implements TileFixture, HasImage {
 	public String toString() {
 		return getDescription();
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -60,6 +68,7 @@ public class Shrub implements TileFixture, HasImage {
 	public int getZValue() {
 		return 15;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -70,6 +79,7 @@ public class Shrub implements TileFixture, HasImage {
 				&& description.equals(((Shrub) obj).description)
 				&& id == ((TileFixture) obj).getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -77,9 +87,9 @@ public class Shrub implements TileFixture, HasImage {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
-	 * @param fix
-	 *            A TileFixture to compare to
+	 * @param fix A TileFixture to compare to
 	 * 
 	 * @return the result of the comparison
 	 */
@@ -87,10 +97,12 @@ public class Shrub implements TileFixture, HasImage {
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return a UID for the fixture.
 	 */
@@ -98,6 +110,7 @@ public class Shrub implements TileFixture, HasImage {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
@@ -107,6 +120,7 @@ public class Shrub implements TileFixture, HasImage {
 		return fix instanceof Shrub
 				&& description.equals(((Shrub) fix).description);
 	}
+
 	/**
 	 * @return The name of the file this is to be written to.
 	 */
@@ -114,6 +128,7 @@ public class Shrub implements TileFixture, HasImage {
 	public String getFile() {
 		return file;
 	}
+
 	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
@@ -121,10 +136,12 @@ public class Shrub implements TileFixture, HasImage {
 	public void setFile(final String fileName) {
 		file = fileName;
 	}
+
 	/**
 	 * The name of the file this is to be written to.
 	 */
 	private String file;
+
 	/**
 	 * @return a clone of this object
 	 */

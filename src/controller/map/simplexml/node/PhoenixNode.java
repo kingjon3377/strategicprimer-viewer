@@ -8,8 +8,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A Node to represent a phoenix.
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 @Deprecated
 public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
@@ -19,6 +20,7 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	public PhoenixNode() {
 		super(Phoenix.class);
 	}
+
 	/**
 	 * @param players ignored
 	 * @param warner a Warning instance to use for warnings
@@ -26,13 +28,19 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	 * @throws SPFormatException never
 	 */
 	@Override
-	public Phoenix produce(final PlayerCollection players, final Warning warner) throws SPFormatException {
-		return new Phoenix(Integer.parseInt(getProperty("id")), getProperty("file"));
+	public Phoenix produce(final PlayerCollection players, final Warning warner)
+			throws SPFormatException {
+		return new Phoenix(Integer.parseInt(getProperty("id")),
+				getProperty("file"));
 	}
+
 	/**
-	 * Check the node for invalid data. A Phoenix is valid if it has no children.
+	 * Check the node for invalid data. A Phoenix is valid if it has no
+	 * children.
+	 * 
 	 * @param warner a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
 	 * @throws SPFormatException if the node contains invalid data
 	 */
 	@Override
@@ -41,6 +49,7 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 		forbidChildren("phoenix");
 		registerOrCreateID("phoenix", idFactory, warner);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property
@@ -49,6 +58,7 @@ public class PhoenixNode extends AbstractFixtureNode<Phoenix> {
 	public boolean canUse(final String property) {
 		return "id".equals(property);
 	}
+
 	/**
 	 * @return a String representation of the node.
 	 */

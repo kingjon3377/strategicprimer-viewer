@@ -41,13 +41,12 @@ public class DrawHelperComparator { // NOPMD
 	 * Label to put before every version-2 helper test result.
 	 */
 	private static final String VER_TWO_NAME = "Ver. 2: ";
+
 	/**
 	 * Constructor.
 	 * 
-	 * @param map
-	 *            the map we'll be drawing in the tests
-	 * @param repetitions
-	 *            how many times to repeat each test
+	 * @param map the map we'll be drawing in the tests
+	 * @param repetitions how many times to repeat each test
 	 */
 	public DrawHelperComparator(final IMap map, final int repetitions) {
 		spmap = map;
@@ -72,8 +71,7 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * The first test: all in one place.
 	 * 
-	 * @param helper
-	 *            the helper to test
+	 * @param helper the helper to test
 	 * 
 	 * @return how long the test took, in ns.
 	 */
@@ -88,6 +86,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the first test.
+	 * 
 	 * @param helper the helper to test
 	 * @param image the image used in the test.
 	 */
@@ -95,8 +94,9 @@ public class DrawHelperComparator { // NOPMD
 			final BufferedImage image) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (Point point : spmap.getTiles()) {
-				helper.drawTile(image.createGraphics(), spmap.getTile(point), tsize, tsize);
+			for (final Point point : spmap.getTiles()) {
+				helper.drawTile(image.createGraphics(), spmap.getTile(point),
+						tsize, tsize);
 			}
 		}
 	}
@@ -104,8 +104,7 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * The second test: Translating.
 	 * 
-	 * @param helper
-	 *            the helper to test
+	 * @param helper the helper to test
 	 * 
 	 * @return how long the test took, in ns.
 	 */
@@ -120,6 +119,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the second test.
+	 * 
 	 * @param helper the helper to test
 	 * @param image the image used in the test.
 	 */
@@ -128,7 +128,7 @@ public class DrawHelperComparator { // NOPMD
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (Point point : spmap.getTiles()) {
+			for (final Point point : spmap.getTiles()) {
 				final int row = point.row();
 				final int col = point.col();
 				helper.drawTile(image.createGraphics(), spmap.getTile(point),
@@ -141,8 +141,7 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * Third test: in-place, reusing Graphics.
 	 * 
-	 * @param helper
-	 *            the helper to test
+	 * @param helper the helper to test
 	 * 
 	 * @return how long the test took, in ns.
 	 */
@@ -161,11 +160,12 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the third test.
+	 * 
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
 	private void thirdBody(final TileDrawHelper helper, final Graphics pen) {
-		for (Point point : spmap.getTiles()) {
+		for (final Point point : spmap.getTiles()) {
 			helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
 		}
 	}
@@ -173,8 +173,7 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * Third test: translating, reusing Graphics.
 	 * 
-	 * @param helper
-	 *            the helper to test
+	 * @param helper the helper to test
 	 * 
 	 * @return how long the test took, in ns.
 	 */
@@ -193,6 +192,7 @@ public class DrawHelperComparator { // NOPMD
 
 	/**
 	 * The body of the fourth test.
+	 * 
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
@@ -204,6 +204,7 @@ public class DrawHelperComparator { // NOPMD
 					dimensions);
 		}
 	}
+
 	/**
 	 * The minimum row for the iteration-vs-filtering test.
 	 */
@@ -220,11 +221,11 @@ public class DrawHelperComparator { // NOPMD
 	 * The maximum col for the iteration-vs-filtering test.
 	 */
 	private static final int TEST_MAX_COL = 82;
+
 	/**
 	 * Fifth test, part one: iterating.
 	 * 
-	 * @param helper
-	 *            the helper to test
+	 * @param helper the helper to test
 	 * 
 	 * @return how long the test took, in ns.
 	 */
@@ -240,8 +241,10 @@ public class DrawHelperComparator { // NOPMD
 		final long end = System.nanoTime();
 		return end - start;
 	}
+
 	/**
 	 * The body of the first part of the fifth test.
+	 * 
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
@@ -250,17 +253,17 @@ public class DrawHelperComparator { // NOPMD
 		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
 			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
 				final Point point = PointFactory.point(row, col);
-				helper.drawTile(pen, spmap.getTile(point),
-					new Coordinate(row * tsize, col * tsize), // NOPMD
-					dimensions);
+				helper.drawTile(pen, spmap.getTile(point), new Coordinate(row
+						* tsize, col * tsize), // NOPMD
+						dimensions);
 			}
 		}
 	}
+
 	/**
 	 * Fifth test, part two: filtering.
 	 * 
-	 * @param helper
-	 *            the helper to test
+	 * @param helper the helper to test
 	 * 
 	 * @return how long the test took, in ns.
 	 */
@@ -276,8 +279,10 @@ public class DrawHelperComparator { // NOPMD
 		final long end = System.nanoTime();
 		return end - start;
 	}
+
 	/**
 	 * The body of the first part of the fifth test.
+	 * 
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
 	 */
@@ -285,7 +290,8 @@ public class DrawHelperComparator { // NOPMD
 		final Coordinate dimensions = new Coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
 			if (point.row() >= TEST_MIN_ROW && point.row() < TEST_MAX_ROW
-					&& point.col() >= TEST_MIN_COL && point.col() < TEST_MAX_COL) {
+					&& point.col() >= TEST_MIN_COL
+					&& point.col() < TEST_MAX_COL) {
 				helper.drawTile(
 						pen,
 						spmap.getTile(point),
@@ -294,12 +300,12 @@ public class DrawHelperComparator { // NOPMD
 			}
 		}
 	}
+
 	/**
 	 * A driver method to compare the two helpers, and the two map-GUI
 	 * implementations.
 	 * 
-	 * @param args
-	 *            the command-line arguments.
+	 * @param args the command-line arguments.
 	 */
 	public static void main(final String[] args) { // NOPMD
 		final Logger logger = Logger.getLogger(DrawHelperComparator.class
@@ -308,7 +314,8 @@ public class DrawHelperComparator { // NOPMD
 		final DrawHelperComparator comp; // NOPMD
 		try {
 			comp = new DrawHelperComparator(// NOPMD
-					new MapReaderAdapter().readMap(args[0], new Warning(Warning.Action.Ignore)), 50);
+					new MapReaderAdapter().readMap(args[0], new Warning(
+							Warning.Action.Ignore)), 50);
 		} catch (final IOException e) {
 			logger.log(Level.SEVERE, "I/O error reading map", e);
 			return; // NOPMD
@@ -374,8 +381,7 @@ public class DrawHelperComparator { // NOPMD
 	/**
 	 * A helper method to reduce repeated strings.
 	 * 
-	 * @param total
-	 *            the total time
+	 * @param total the total time
 	 */
 	public void printStats(final long total) {
 		SystemOut.SYS_OUT.print('\t');

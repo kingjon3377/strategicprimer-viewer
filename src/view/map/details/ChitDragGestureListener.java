@@ -13,8 +13,7 @@ public class ChitDragGestureListener implements DragGestureListener {
 	/**
 	 * Constructor.
 	 * 
-	 * @param data
-	 *            the data to transfer
+	 * @param data the data to transfer
 	 */
 	public ChitDragGestureListener(final Transferable data) {
 		trans = data;
@@ -28,8 +27,7 @@ public class ChitDragGestureListener implements DragGestureListener {
 	/**
 	 * Start a drag if the operation is appropriate.
 	 * 
-	 * @param dge
-	 *            the event to handle.
+	 * @param dge the event to handle.
 	 */
 	@Override
 	public void dragGestureRecognized(final DragGestureEvent dge) {

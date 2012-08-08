@@ -24,12 +24,14 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	 * The old, deprecated name for what is now STONE_PROPERTY.
 	 */
 	private static final String OLD_STONE_PROP = "stone";
+
 	/**
 	 * Constructor.
 	 */
 	public StoneEventNode() {
 		super(StoneEvent.class);
 	}
+
 	/**
 	 * The property of an event saying how difficult it is to find it.
 	 */
@@ -40,16 +42,14 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	private static final String STONE_PROPERTY = "kind";
 
 	/**
-	 * @param players
-	 *            the players on the map
+	 * @param players the players on the map
 	 * @param warner a Warning instance to use for warnings
 	 * @return the equivalent event
-	 * @throws SPFormatException
-	 *             if this includes invalid data
+	 * @throws SPFormatException if this includes invalid data
 	 */
 	@Override
-	public StoneEvent produce(final PlayerCollection players, final Warning warner)
-			throws SPFormatException {
+	public StoneEvent produce(final PlayerCollection players,
+			final Warning warner) throws SPFormatException {
 		final StoneEvent fix = new StoneEvent(
 				StoneKind.parseStoneKind(getProperty(STONE_PROPERTY)),
 				Integer.parseInt(getProperty(DC_PROPERTY)),
@@ -64,20 +64,21 @@ public class StoneEventNode extends AbstractFixtureNode<StoneEvent> {
 	 * Check whether the node is valid. A Stone Node is valid if it has no
 	 * children and "kind", "dc", and "stone" properties.
 	 * 
-	 * @param warner
-	 *            a Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new ones as needed
-	 * @throws SPFormatException
-	 *             if the data is invalid.
+	 * @param warner a Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate
+	 *        new ones as needed
+	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
 	public void checkNode(final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		forbidChildren(TAG);
-		handleDeprecatedProperty(TAG, STONE_PROPERTY, OLD_STONE_PROP, warner, true, false);
+		handleDeprecatedProperty(TAG, STONE_PROPERTY, OLD_STONE_PROP, warner,
+				true, false);
 		demandProperty(TAG, DC_PROPERTY, warner, false, false);
 		registerOrCreateID(TAG, idFactory, warner);
 	}
+
 	/**
 	 * @param property the name of a property
 	 * @return whether this kind of node can use the property

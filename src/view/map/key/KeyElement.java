@@ -39,8 +39,7 @@ public final class KeyElement extends JPanel {
 	 * Constructor.
 	 * 
 	 * @param version the map version
-	 * @param type
-	 *            the type this is the key element for.
+	 * @param type the type this is the key element for.
 	 */
 	public KeyElement(final int version, final TileType type) {
 		super();
@@ -50,12 +49,12 @@ public final class KeyElement extends JPanel {
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
-		final JComponent tile = new KeyElementComponent(TUI_HELPER.get(version, type));
+		final JComponent tile = new KeyElementComponent(TUI_HELPER.get(version,
+				type));
 		tile.setMinimumSize(MIN_SIZE);
 		tile.setPreferredSize(PREF_SIZE);
 		final int tsize = new TileViewSize().getSize(version);
-		tile.setMaximumSize(new Dimension(
-				tsize, tsize));
+		tile.setMaximumSize(new Dimension(tsize, tsize));
 		panel.add(tile);
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
 		final JLabel label = new JLabel(TUI_HELPER.getDescription(type));
