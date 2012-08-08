@@ -129,10 +129,8 @@ public class DrawHelperComparator { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.getTiles()) {
-				final int row = point.row; // FIXME: inline
-				final int col = point.col;
 				helper.drawTile(image.createGraphics(), spmap.getTile(point),
-						new Coordinate(row * tsize, col // NOPMD
+						new Coordinate(point.row * tsize, point.col
 								* tsize), dimensions);
 			}
 		}
