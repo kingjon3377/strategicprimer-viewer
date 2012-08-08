@@ -3,7 +3,6 @@ package view.map.detailsng;
 import javax.swing.JTree;
 
 import model.viewer.FixtureTreeModel;
-
 import util.PropertyChangeSource;
 /**
  * A visual tree-based representation of the contents of a tile.
