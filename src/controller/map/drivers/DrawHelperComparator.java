@@ -353,64 +353,74 @@ public class DrawHelperComparator { // NOPMD
 		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null);
 		SystemOut.SYS_OUT.println("1. All in one place:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		comp.printStats(comp.first(helperOne));
+		long oneTotal = comp.printStats(comp.first(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		comp.printStats(comp.first(helperTwo));
+		long twoTotal = comp.printStats(comp.first(helperTwo));
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		comp.printStats(comp.first(helperThree));
+		long threeTotal = comp.printStats(comp.first(helperThree));
 		SystemOut.SYS_OUT.println("2. Translating:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		comp.printStats(comp.second(helperOne));
+		oneTotal += comp.printStats(comp.second(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		comp.printStats(comp.second(helperTwo));
+		twoTotal +=comp.printStats(comp.second(helperTwo));
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		comp.printStats(comp.second(helperThree));
+		threeTotal += comp.printStats(comp.second(helperThree));
 		SystemOut.SYS_OUT.println("3. In-place, reusing Graphics:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		comp.printStats(comp.third(helperOne));
+		oneTotal += comp.printStats(comp.third(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		comp.printStats(comp.third(helperTwo));
+		twoTotal += comp.printStats(comp.third(helperTwo));
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		comp.printStats(comp.third(helperThree));
+		threeTotal += comp.printStats(comp.third(helperThree));
 		SystemOut.SYS_OUT.println("4. Translating, reusing Graphics:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		comp.printStats(comp.fourth(helperOne));
+		oneTotal += comp.printStats(comp.fourth(helperOne));
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		comp.printStats(comp.fourth(helperTwo));
+		twoTotal += comp.printStats(comp.fourth(helperTwo));
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		comp.printStats(comp.fourth(helperThree));
+		threeTotal += comp.printStats(comp.fourth(helperThree));
 		SystemOut.SYS_OUT.println("5. Ordered iteration vs filtering:");
 		SystemOut.SYS_OUT.print("Iteration, ");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		comp.printStats(comp.fifthOne(helperOne));
+		oneTotal += comp.printStats(comp.fifthOne(helperOne));
 		SystemOut.SYS_OUT.print("Iteration, ");
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		comp.printStats(comp.fifthOne(helperTwo));
+		twoTotal += comp.printStats(comp.fifthOne(helperTwo));
 		SystemOut.SYS_OUT.print("Iteration, ");
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		comp.printStats(comp.fifthOne(helperThree));
+		threeTotal += comp.printStats(comp.fifthOne(helperThree));
 		SystemOut.SYS_OUT.print("Filtering, ");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		comp.printStats(comp.fifthTwo(helperOne));
+		oneTotal += comp.printStats(comp.fifthTwo(helperOne));
 		SystemOut.SYS_OUT.print("Filtering, ");
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		comp.printStats(comp.fifthTwo(helperTwo));
+		twoTotal += comp.printStats(comp.fifthTwo(helperTwo));
 		SystemOut.SYS_OUT.print("Filtering, ");
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		comp.printStats(comp.fifthTwo(helperThree));
+		threeTotal += comp.printStats(comp.fifthTwo(helperThree));
+		SystemOut.SYS_OUT.print("--------------------------------------");
+		SystemOut.SYS_OUT.print("Total:");
+		SystemOut.SYS_OUT.print(CACHING_NAME);
+		comp.printStats(oneTotal);
+		SystemOut.SYS_OUT.print(DIRECT_NAME);
+		comp.printStats(twoTotal);
+		SystemOut.SYS_OUT.print(VER_TWO_NAME);
+		comp.printStats(threeTotal);
 	}
 
 	/**
 	 * A helper method to reduce repeated strings.
 	 *
 	 * @param total the total time
+	 * @return that total
 	 */
-	public void printStats(final long total) {
+	public long printStats(final long total) {
 		SystemOut.SYS_OUT.print('\t');
 		SystemOut.SYS_OUT.print(total);
 		SystemOut.SYS_OUT.print(", average of\t");
 		SystemOut.SYS_OUT.print(Long.toString(total / reps));
 		SystemOut.SYS_OUT.println(" ns.");
+		return total;
 	}
 
 	/**
