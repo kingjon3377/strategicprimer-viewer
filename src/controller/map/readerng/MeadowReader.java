@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.hasAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -11,9 +12,11 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.fixtures.FieldStatus;
 import model.map.fixtures.Meadow;
 import util.Pair;
 import util.Warning;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 /**
@@ -22,6 +25,10 @@ import controller.map.misc.IDFactory;
  *
  */
 public class MeadowReader implements INodeHandler<Meadow> {
+	/**
+	 * The name of the property giving the status of the field.
+	 */
+	private static final String STATUS_ATTR = "status";
 	/**
 	 * Parse a meadow.
 	 * @param element the element to read from
@@ -37,11 +44,17 @@ public class MeadowReader implements INodeHandler<Meadow> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
+		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
+		if (!hasAttribute(element, STATUS_ATTR)) {
+			warner.warn(new MissingParameterException(element.getName()
+					.getLocalPart(), STATUS_ATTR, element.getLocation()
+					.getLineNumber()));
+		}
 		final Meadow fix = new Meadow(
 				getAttribute(element, "kind"),
 				"field".equalsIgnoreCase(element.getName().getLocalPart()),
 				Boolean.parseBoolean(getAttribute(element, "cultivated")),
-				getOrGenerateID(element, warner, idFactory),
+				id, FieldStatus.parse(getAttribute(element, STATUS_ATTR, FieldStatus.random(id).toString())),
 				XMLHelper.getFile(stream));
 		return fix;
 	}
@@ -73,6 +86,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 		return new SPIntermediateRepresentation(obj.isField() ? "field"
 				: "meadow", Pair.of("kind", obj.getKind()), Pair.of(
 				"cultivated", Boolean.toString(obj.isCultivated())), Pair.of(
-				"id", Long.toString(obj.getID())));
+				STATUS_ATTR, obj.getStatus().toString()), Pair.of("id",
+				Long.toString(obj.getID())));
 	}
 }

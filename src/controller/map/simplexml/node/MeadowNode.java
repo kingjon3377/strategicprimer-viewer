@@ -1,6 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
+import model.map.fixtures.FieldStatus;
 import model.map.fixtures.Meadow;
 import util.EqualsAny;
 import util.Warning;
@@ -16,6 +17,10 @@ import controller.map.misc.IDFactory;
  */
 @Deprecated
 public class MeadowNode extends AbstractFixtureNode<Meadow> {
+	/**
+	 * The name of the property giving the status of the field.
+	 */
+	private static final String STATUS_PROP = "status";
 	/**
 	 * The name of the property saying whether or not the field or meadow is cultivated.
 	 */
@@ -46,7 +51,8 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 		final Meadow fix = new Meadow(getProperty(KIND_PROPERTY),
 				"field".equals(getProperty(TAG_PROPERTY)),
 				Boolean.parseBoolean(getProperty(CULTIVATED_PARAM)),
-				Integer.parseInt(getProperty("id")), getProperty("file"));
+				Integer.parseInt(getProperty("id")),
+				FieldStatus.parse(getProperty(STATUS_PROP)), getProperty("file"));
 		return fix;
 	}
 	/**
@@ -55,7 +61,7 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 	 */
 	@Override
 	public boolean canUse(final String property) {
-		return EqualsAny.equalsAny(property, KIND_PROPERTY, TAG_PROPERTY, CULTIVATED_PARAM, "id");
+		return EqualsAny.equalsAny(property, KIND_PROPERTY, TAG_PROPERTY, CULTIVATED_PARAM, STATUS_PROP, "id");
 	}
 	
 	/**
@@ -84,6 +90,12 @@ public class MeadowNode extends AbstractFixtureNode<Meadow> {
 				false, false);
 		demandProperty(getProperty(TAG_PROPERTY), KIND_PROPERTY, warner, false, false);
 		registerOrCreateID(getProperty(TAG_PROPERTY), idFactory, warner);
+		try {
+			demandProperty(getProperty(TAG_PROPERTY), STATUS_PROP, warner, false, false);
+		} catch (MissingParameterException except) {
+			warner.warn(except);
+			addProperty(STATUS_PROP, FieldStatus.random(Integer.parseInt(getProperty("id"))).toString(), warner);
+		}
 	}
 	/**
 	 * @return a String representation of the Node

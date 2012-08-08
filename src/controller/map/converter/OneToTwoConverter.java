@@ -23,6 +23,7 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.events.AbstractTownEvent;
 import model.map.events.TownStatus;
+import model.map.fixtures.FieldStatus;
 import model.map.fixtures.Forest;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Grove;
@@ -313,17 +314,17 @@ public class OneToTwoConverter { // NOPMD
 	private void addFieldOrOrchard(final boolean field, final Tile tile,
 			final boolean main, final IDFactory idFactory) {
 		try {
+			final int id = idFactory.createID(); // NOPMD
 			if (field) {
 				addFixture(tile,
 						new Meadow(runner.recursiveConsultTable("grain", tile),
-								true, true, idFactory.createID(), tile.getFile()), main);
+								true, true, id, FieldStatus.random(id), tile.getFile()), main);
 			} else {
 				addFixture(
 						tile,
 						new Grove(true, false, runner
 								.recursiveConsultTable("fruit_trees",
-										tile), idFactory
-								.createID(), tile.getFile()), main);
+										tile), id, tile.getFile()), main);
 			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);

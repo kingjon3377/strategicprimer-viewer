@@ -10,6 +10,10 @@ import model.map.TileFixture;
  */
 public class Meadow implements TileFixture, HasImage {
 	/**
+	 * Which season the field is in.
+	 */
+	private final FieldStatus status;
+	/**
 	 * Whether this is a field. If not, it's a meadow.
 	 */
 	private final boolean field;
@@ -28,14 +32,16 @@ public class Meadow implements TileFixture, HasImage {
 	 * @param cult whether it's under cultivation
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
+	 * @param stat the status of the field, i.e. what season it's in
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
-			final int idNum, final String fileName) {
+			final int idNum, final FieldStatus stat, final String fileName) {
 		kind = grain;
 		field = fld;
 		cultivated = cult;
 		id = idNum;
 		file = fileName;
+		status = stat;
 	}
 	/**
 	 * @return the kind of grass or grain growing in the meadow or field
@@ -56,6 +62,12 @@ public class Meadow implements TileFixture, HasImage {
 		return field;
 	}
 	/**
+	 * @return the status of the field, i.e. what season it's in
+	 */
+	public FieldStatus getStatus() {
+		return status;
+	}
+	/**
 	 * @return an XML representation of the Fixture.
 	 */
 	@Override
@@ -63,8 +75,8 @@ public class Meadow implements TileFixture, HasImage {
 	public String toXML() {
 		return new StringBuilder(field ? "<field" : "<meadow")
 				.append(" kind=\"").append(kind).append("\" cultivated=\"")
-				.append(cultivated).append("\" id=\"").append(id)
-				.append("\" />").toString();
+				.append(cultivated).append("\" status=\"").append(status)
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 	/**
 	 * TODO: This should be more granular based on the kind of field.
@@ -172,6 +184,6 @@ public class Meadow implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Meadow(getKind(), isField(), isCultivated(), getID(), getFile());
+		return new Meadow(getKind(), isField(), isCultivated(), getID(), getStatus(), getFile());
 	}
 }

@@ -72,13 +72,13 @@ public final class TestMoreFixtureSerialization extends
 	public void testMeadowSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("First test of Meadow serialization, reflection",
-				new Meadow("firstMeadow", true, true, 1, FAKE_FILENAME), Meadow.class);
+				new Meadow("firstMeadow", true, true, 1, FieldStatus.Fallow, FAKE_FILENAME), Meadow.class);
 		assertSerialization("Second test of Meadow serialization, reflection",
-				new Meadow("secondMeadow", true, false, 2, FAKE_FILENAME), Meadow.class);
+				new Meadow("secondMeadow", true, false, 2, FieldStatus.Seeding, FAKE_FILENAME), Meadow.class);
 		assertSerialization("Third test of Meadow serialization, reflection",
-				new Meadow("three", false, true, 3, FAKE_FILENAME), Meadow.class);
+				new Meadow("three", false, true, 3, FieldStatus.Growing, FAKE_FILENAME), Meadow.class);
 		assertSerialization("Fourth test of Meadow serialization, reflection",
-				new Meadow("four", false, false, 4, FAKE_FILENAME), Meadow.class);
+				new Meadow("four", false, false, 4, FieldStatus.Bearing, FAKE_FILENAME), Meadow.class);
 		assertUnwantedChild("<meadow kind=\"flax\" cultivated=\"false\"><troll /></meadow>",
 				Meadow.class, false);
 		assertMissingProperty("<meadow cultivated=\"false\" />",
@@ -88,6 +88,9 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty(
 				"<field kind=\"kind\" cultivated=\"true\" />", Meadow.class,
 				"id", true);
+		assertMissingProperty(
+				"<field kind=\"kind\" cultivated=\"true\" id=\"0\" />",
+				Meadow.class, "status", true);
 	}
 
 	/**
