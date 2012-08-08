@@ -21,9 +21,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader to read map views from XML and turn them into XML. TODO: changesets.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ViewReader implements INodeHandler<MapView> {
 	/**
@@ -49,7 +49,7 @@ public class ViewReader implements INodeHandler<MapView> {
 
 	/**
 	 * Parse a view from XML.
-	 * 
+	 *
 	 * @param element the element to start parsing with.
 	 * @param stream the XML tags and such
 	 * @param players the collection of players, most likely null at this point
@@ -65,41 +65,38 @@ public class ViewReader implements INodeHandler<MapView> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		MapView view = null;
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				if (view == null) {
-					requireMapTag(event.asStartElement(), element);
-					view = new MapView(
-							// NOPMD
-							MAP_READER.parse(event.asStartElement(), stream,
+		final StartElement event = getFirstStartElement(stream, element
+				.getLocation().getLineNumber());
+		requireMapTag(event, element);
+		view = new MapView(MAP_READER.parse(event, stream,
 									players, warner, idFactory),
 							Integer.parseInt(getAttribute(element,
 									"current_player")),
 							Integer.parseInt(getAttribute(element,
 									"current_turn")), XMLHelper.getFile(stream));
-				} else {
-					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), event.asStartElement().getName()
-							.getLocalPart(), event.getLocation()
-							.getLineNumber());
-				}
-			} else if (event.isEndElement()
-					&& TAG.equalsIgnoreCase(event.asEndElement().getName()
-							.getLocalPart())) {
-				break;
-			}
-		}
-		if (view == null) {
-			throw new MissingChildException(TAG, element.getLocation()
-					.getLineNumber());
-		}
+		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return view;
 	}
-
+	/**
+	 * @param stream a stream of XMLEvents
+	 * @param line the line the parent tag is on
+	 * @throws SPFormatException if no start element in stream
+	 * @return the first start-element in the stream
+	 */
+	private static StartElement getFirstStartElement(
+			final Iterable<XMLEvent> stream, final int line)
+			throws SPFormatException {
+		for (XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				return event.asStartElement();
+			}
+		}
+		throw new MissingChildException("map", line);
+	}
 	/**
 	 * Create an intermediate representation to write to a Writer. TODO:
 	 * changesets
-	 * 
+	 *
 	 * @param <S> the type of the object
 	 * @param obj the object to write
 	 * @return an intermediate representation
@@ -124,7 +121,7 @@ public class ViewReader implements INodeHandler<MapView> {
 	/**
 	 * Add a child node to a node---the parent node, or an 'include' node
 	 * representing its chosen file.
-	 * 
+	 *
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
 	 * @param parent the parent node, so we can add any include nodes created to
@@ -156,7 +153,7 @@ public class ViewReader implements INodeHandler<MapView> {
 
 	/**
 	 * Assert that the specified tag is a "map" tag.
-	 * 
+	 *
 	 * @param element the tag to check
 	 * @param context the parent tag
 	 * @throws SPFormatException if it isn't
