@@ -9,7 +9,7 @@ package model.map;
  * @author Jonathan Lovelace
  *
  */
-public enum River implements XMLWritable {
+public enum River {
 	/**
 	 * North.
 	 */
@@ -72,7 +72,6 @@ public enum River implements XMLWritable {
 	 * @return an XML representation of the river.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
-	@Override
 	@Deprecated
 	public String toXML() {
 		if (this == Lake) {
@@ -82,25 +81,4 @@ public enum River implements XMLWritable {
 					.append("\" />").toString();
 		}
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 }
