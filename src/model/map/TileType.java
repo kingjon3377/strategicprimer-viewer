@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Jonathan Lovelace
  *
  */
-public enum TileType implements XMLWritable {
+public enum TileType {
 	/**
 	 * Tundra.
 	 */
@@ -153,29 +153,7 @@ public enum TileType implements XMLWritable {
 	/**
 	 * @return the XML representation of the tile type.
 	 */
-	@Override
 	public String toXML() {
 		return desc;
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 }
