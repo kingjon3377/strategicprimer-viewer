@@ -20,14 +20,14 @@ import controller.map.misc.IDFactory;
  * asking for a reader based on what type you expect, you tell the Adapter to
  * parse the node and it does The Right Thing. In theory. This is absolutely
  * necessary to implement the "include" tag.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	/**
 	 * Parse an element.
-	 * 
+	 *
 	 * @param element the element to parse
 	 * @param stream the stream to get more elements from
 	 * @param players the collection of players to use if needed
@@ -63,7 +63,7 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 
 	/**
 	 * Add a reader to the cache.
-	 * 
+	 *
 	 * @param reader the reader to add
 	 */
 	private static void factory(final INodeHandler<? extends XMLWritable> reader) {
@@ -150,7 +150,7 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the actual type of the object
 	 * @param obj the object to write
 	 * @return an intermediate representation
