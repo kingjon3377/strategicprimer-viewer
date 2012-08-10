@@ -94,10 +94,8 @@ public class ResolutionDecreaseConverter {
 		removeRivers(upperRightRivers, River.West, River.South);
 		removeRivers(lowerLeftRivers, River.East, River.North);
 		removeRivers(lowerRightRivers, River.West, River.North);
-		combined.addRivers(upperLeftRivers);
-		combined.addRivers(upperRightRivers);
-		combined.addRivers(lowerLeftRivers);
-		combined.addRivers(lowerRightRivers);
+		addRivers(combined, upperLeftRivers, upperRightRivers, lowerLeftRivers,
+				lowerRightRivers);
 		retval.addFixture(combined);
 		return retval;
 	}
@@ -127,7 +125,17 @@ public class ResolutionDecreaseConverter {
 			return new RiverFixture();
 		}
 	}
-
+	/**
+	 * @param fix a RiverFixture
+	 * @param rivers a series of rivers to add to it
+	 */
+	private static void addRivers(final RiverFixture fix, final RiverFixture... rivers) {
+		for (final RiverFixture riverFix : rivers) {
+			for (final River river : riverFix) {
+				fix.addRiver(river);
+			}
+		}
+	}
 	/**
 	 * @param fix a RiverFixture
 	 * @param rivers a series of rivers to remove from it

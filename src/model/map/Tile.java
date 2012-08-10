@@ -49,7 +49,9 @@ public final class Tile extends SimpleTile {
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {
 					final RiverFixture rivers = getRivers();
-					rivers.addRivers((RiverFixture) fix);
+					for (River river : (RiverFixture) fix) {
+						rivers.addRiver(river);
+					}
 				} else if (!((RiverFixture) fix).getRivers().isEmpty()) {
 					contents.add(fix);
 				}

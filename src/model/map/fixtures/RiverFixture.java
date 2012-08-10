@@ -159,25 +159,16 @@ public class RiverFixture extends XMLWritableImpl implements TileFixture,
 	}
 
 	/**
+	 * Perhaps (TODO: investigate how FreeCol does it) rivers should have IDs
+	 * (and names ..), though.
+	 *
 	 * @return an ID for the fixture. This is constant because it's really a
-	 *         container for a ollection of rivers. Perhaps (TODO: investigate
-	 *         how FreeCol does it) rivers should have IDs (and names ..),
-	 *         though.
+	 *         container for a ollection of rivers.
+	 *
 	 */
 	@Override
 	public int getID() {
 		return -1;
-	}
-
-	/**
-	 * Add rivers from another RiverFixture to this one.
-	 *
-	 * @param collection the rivers to add
-	 */
-	public void addRivers(final Iterable<River> collection) {
-		for (final River river : collection) {
-			addRiver(river);
-		}
 	}
 
 	/**
@@ -195,7 +186,9 @@ public class RiverFixture extends XMLWritableImpl implements TileFixture,
 	@Override
 	public TileFixture deepCopy() {
 		final RiverFixture retval = new RiverFixture();
-		retval.addRivers(this);
+		for (River river : this) {
+			retval.addRiver(river);
+		}
 		retval.setFile(getFile());
 		return retval;
 	}
