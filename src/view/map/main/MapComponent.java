@@ -17,7 +17,6 @@ import model.map.Tile;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
-import view.util.Coordinate;
 
 /**
  * A component to display the map, even a large one, without the performance
