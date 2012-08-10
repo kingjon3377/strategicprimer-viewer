@@ -16,8 +16,6 @@ import javax.swing.ListCellRenderer;
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
-import model.viewer.FixtureNode;
-import model.viewer.TileNode;
 import util.ImageLoader;
 import view.map.details.Chit;
 
@@ -49,18 +47,12 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 			final boolean cellHasFocus) {
 		final Component component = DEFAULT.getListCellRendererComponent(list,
 				value, index, isSelected, cellHasFocus);
-		if (value instanceof TileNode) {
-			((JLabel) component).setText(((TileNode) value).getTileString());
-		} else if (value instanceof FixtureNode) {
-			final FixtureNode node = (FixtureNode) value;
-			final TileFixture tempFix = node.getFixture();
-			((JLabel) component).setText(tempFix.toString());
-			if (tempFix instanceof HasImage) {
-				((JLabel) component).setIcon(getIcon((HasImage) tempFix));
+			((JLabel) component).setText(value.toString());
+			if (value instanceof HasImage) {
+				((JLabel) component).setIcon(getIcon((HasImage) value));
 			} else {
 				((JLabel) component).setIcon(defaultFixtIcon);
 			}
-		}
 		return component;
 	}
 
