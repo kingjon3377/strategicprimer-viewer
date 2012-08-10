@@ -6,7 +6,7 @@ package model.map;
  * @author Jonathan Lovelace
  *
  */
-public class Point implements Comparable<Point>, XMLWritable {
+public class Point implements Comparable<Point> {
 	/**
 	 * The first coordinate.
 	 */
@@ -84,36 +84,8 @@ public class Point implements Comparable<Point>, XMLWritable {
 	 * @return an XML representation of the point
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
-	@Override
 	@Deprecated
 	public String toXML() {
 		return "row=\"" + row + "\" column=\"" + col + "\"";
 	}
-
-	/**
-	 * Note that this shouldn't ever be called; Points aren't represented by
-	 * tags, they're an implementation detail that shouldn't be exposed to
-	 * serialization.
-	 *
-	 * @return The name of the file this is to be written to.
-	 * @deprecated Points are an implementation detail irrelevant to the serialized form, so this should never be called.
-	 */
-	@Deprecated
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 }
