@@ -126,12 +126,12 @@ public class DrawHelperComparator { // NOPMD
 	 */
 	private void secondBody(final TileDrawHelper helper,
 			final BufferedImage image) {
-		final Coordinate dimensions = new Coordinate(tsize, tsize);
+		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.getTiles()) {
 				helper.drawTile(image.createGraphics(), spmap.getTile(point),
-						new Coordinate(point.row * tsize, point.col
+						PointFactory.coordinate(point.row * tsize, point.col
 								* tsize), dimensions);
 			}
 		}
@@ -196,10 +196,10 @@ public class DrawHelperComparator { // NOPMD
 	 * @param pen the Graphics used to draw to the image
 	 */
 	private void fourthBody(final TileDrawHelper helper, final Graphics pen) {
-		final Coordinate dimensions = new Coordinate(tsize, tsize);
+		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
 			helper.drawTile(pen, spmap.getTile(point),
-					new Coordinate(point.row * tsize, point.col * tsize), // NOPMD
+					PointFactory.coordinate(point.row * tsize, point.col * tsize),
 					dimensions);
 		}
 	}
@@ -248,12 +248,12 @@ public class DrawHelperComparator { // NOPMD
 	 * @param pen the Graphics used to draw to the image
 	 */
 	private void fifthOneBody(final TileDrawHelper helper, final Graphics pen) {
-		final Coordinate dimensions = new Coordinate(tsize, tsize);
+		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
 			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
 				final Point point = PointFactory.point(row, col);
 				helper.drawTile(pen, spmap.getTile(point),
-						Coordinate.factory(row * tsize, col * tsize),
+						PointFactory.coordinate(row * tsize, col * tsize),
 						dimensions);
 			}
 		}
@@ -286,7 +286,7 @@ public class DrawHelperComparator { // NOPMD
 	 * @param pen the Graphics used to draw to the image
 	 */
 	private void fifthTwoBody(final TileDrawHelper helper, final Graphics pen) {
-		final Coordinate dimensions = new Coordinate(tsize, tsize);
+		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
 			if (point.row >= TEST_MIN_ROW && point.row < TEST_MAX_ROW
 					&& point.col >= TEST_MIN_COL
@@ -294,7 +294,7 @@ public class DrawHelperComparator { // NOPMD
 				helper.drawTile(
 						pen,
 						spmap.getTile(point),
-						new Coordinate(point.row * tsize, point.col * tsize), // NOPMD
+						PointFactory.coordinate(point.row * tsize, point.col * tsize),
 						dimensions);
 			}
 		}

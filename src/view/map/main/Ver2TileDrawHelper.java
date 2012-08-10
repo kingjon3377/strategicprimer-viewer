@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.map.HasImage;
+import model.map.PointFactory;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.Tile;
@@ -115,7 +116,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int width,
 			final int height) {
-		drawTile(pen, tile, new Coordinate(0, 0), new Coordinate(width, height));
+		drawTile(pen, tile, PointFactory.coordinate(0, 0), PointFactory.coordinate(width, height));
 	}
 
 	/**

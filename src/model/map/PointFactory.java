@@ -3,6 +3,8 @@ package model.map;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import view.util.Coordinate;
+
 /**
  * A cache for Points.
  *
@@ -18,7 +20,7 @@ public final class PointFactory {
 	 * Clear the cache.
 	 */
 	public static void clearCache() {
-		CACHE.clear();
+		POINT_CACHE.clear();
 	}
 	/**
 	 * @param shouldUseCache whether to use the cache from now on
@@ -33,9 +35,9 @@ public final class PointFactory {
 	}
 
 	/**
-	 * The cache.
+	 * The point cache.
 	 */
-	private static final Map<Integer, Map<Integer, Point>> CACHE = new ConcurrentHashMap<Integer, Map<Integer, Point>>();
+	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE = new ConcurrentHashMap<Integer, Map<Integer, Point>>();
 
 	/**
 	 * Factory method. I considered replacing the cache with simply a
@@ -54,15 +56,46 @@ public final class PointFactory {
 		if (useCache) {
 			final Integer boxedRow = Integer.valueOf(row);
 			final Integer boxedCol = Integer.valueOf(col);
-			if (!CACHE.containsKey(boxedRow)) {
-				CACHE.put(boxedRow, new ConcurrentHashMap<Integer, Point>());
+			if (!POINT_CACHE.containsKey(boxedRow)) {
+				POINT_CACHE.put(boxedRow, new ConcurrentHashMap<Integer, Point>());
 			}
-			if (!CACHE.get(boxedRow).containsKey(boxedCol)) {
-				CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
+			if (!POINT_CACHE.get(boxedRow).containsKey(boxedCol)) {
+				POINT_CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
 			}
-			return CACHE.get(boxedRow).get(boxedCol); // NOPMD
+			return POINT_CACHE.get(boxedRow).get(boxedCol); // NOPMD
 		} else {
 			return new Point(row, col);
+		}
+	}
+	/**
+	 * Coordinate cache.
+	 */
+	private static final Map<Integer, Map<Integer, Coordinate>> COORD_CACHE;
+	// Moved into a static block because every static-analysis plugin complained
+	// about the line length but reformatting wouldn't move anything to the next
+	// line.
+	static {
+		COORD_CACHE = new ConcurrentHashMap<Integer, Map<Integer, Coordinate>>();
+	}
+	/**
+	 * @param xCoord an X coordinate or extent
+	 * @param yCoord a Y coordinate or extent
+	 *
+	 * @return a Coordinate representing those coordinates.
+	 */
+	public static Coordinate coordinate(final int xCoord, final int yCoord) {
+		if (useCache) {
+			final Integer boxedX = Integer.valueOf(xCoord);
+			final Integer boxedY = Integer.valueOf(yCoord);
+			if (!COORD_CACHE.containsKey(boxedX)) {
+				COORD_CACHE.put(boxedX, new ConcurrentHashMap<Integer, Coordinate>());
+			}
+			if (!COORD_CACHE.get(boxedX).containsKey(boxedY)) {
+				COORD_CACHE.get(boxedX).put(boxedY, new Coordinate(xCoord, yCoord));
+			}
+			return COORD_CACHE.get(boxedX).get(boxedY); // NOPMD
+		} else {
+			return new Coordinate(xCoord, yCoord);
 		}
 	}
 }

@@ -11,6 +11,7 @@ import static view.util.DrawingNumericConstants.TWO_THIRDS;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import model.map.PointFactory;
 import model.map.River;
 import model.map.Tile;
 import model.map.TileType;
@@ -106,7 +107,7 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int width,
 			final int height) {
-		drawTile(pen, tile, new Coordinate(0, 0), new Coordinate(width, height));
+		drawTile(pen, tile, PointFactory.coordinate(0, 0), PointFactory.coordinate(width, height));
 	}
 
 	/**

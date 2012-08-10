@@ -147,8 +147,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 			final int col) {
 		final int tsize = TILE_SIZE.getSize(getMapModel().getMainMap()
 				.getVersion());
-		helper.drawTile(pen, tile, new Coordinate(col * tsize, row * tsize),
-				new Coordinate(tsize, tsize));
+		helper.drawTile(pen, tile, PointFactory.coordinate(col * tsize, row * tsize),
+				PointFactory.coordinate(tsize, tsize));
 		if (model.getSelectedTile().equals(tile)) {
 			final Graphics context = pen.create();
 			try {

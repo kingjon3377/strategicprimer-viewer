@@ -18,15 +18,6 @@ public class Coordinate {
 		y = yCoord;
 	}
 	/**
-	 * Factory method.
-	 * @param xCoord the X coordinate or width
-	 * @param yCoord the Y coordinate or height
-	 * @return an instance containing those coordinates.
-	 */
-	public static Coordinate factory(final int xCoord, final int yCoord) {
-		return new Coordinate(xCoord, yCoord);
-	}
-	/**
 	 * The X coordinate or width.
 	 */
 	public final int x; // NOPMD
