@@ -2,6 +2,7 @@ package view.map.detailsng;
 
 import javax.swing.JList;
 
+import model.map.TileFixture;
 import model.viewer.FixtureListModel;
 import util.PropertyChangeSource;
 
@@ -10,7 +11,7 @@ import util.PropertyChangeSource;
  *
  * @author Jonathan Lovelace
  */
-public class FixtureList extends JList {
+public class FixtureList extends JList<TileFixture> {
 	/**
 	 * Constructor.
 	 *
