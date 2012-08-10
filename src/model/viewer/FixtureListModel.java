@@ -3,19 +3,19 @@ package model.viewer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.DefaultListModel;
 
 import model.map.Tile;
-import model.map.TileType;
+import model.map.TileFixture;
 import util.PropertyChangeSource;
 
 /**
  * A model for a FixtureTree.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
-public class FixtureTreeModel extends DefaultTreeModel implements
+public class FixtureListModel extends DefaultListModel<TileFixture> implements
 		PropertyChangeListener {
 	/**
 	 * The property we listen for.
@@ -24,13 +24,13 @@ public class FixtureTreeModel extends DefaultTreeModel implements
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param property The property to listen for to get the new tile
 	 * @param sources sources to listen to
 	 */
-	public FixtureTreeModel(final String property,
+	public FixtureListModel(final String property,
 			final PropertyChangeSource... sources) {
-		super(new TileNode(new Tile(-1, -1, TileType.NotVisible, "")));
+		super();
 		listenedProperty = property;
 		for (final PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(this);
@@ -39,14 +39,17 @@ public class FixtureTreeModel extends DefaultTreeModel implements
 
 	/**
 	 * Handle a property change.
-	 * 
+	 *
 	 * @param evt the event to handle
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
-		if (listenedProperty.equalsIgnoreCase(evt.getPropertyName())) {
-			setRoot(new TileNode((Tile) evt.getNewValue()));
-			this.reload();
+		if (listenedProperty.equalsIgnoreCase(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Tile) {
+			this.clear();
+			for (TileFixture fix : ((Tile) evt.getNewValue()).getContents()) {
+				this.addElement(fix);
+			}
 		}
 	}
 

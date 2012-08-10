@@ -1,25 +1,25 @@
 package view.map.detailsng;
 
-import javax.swing.JTree;
+import javax.swing.JList;
 
-import model.viewer.FixtureTreeModel;
+import model.viewer.FixtureListModel;
 import util.PropertyChangeSource;
 
 /**
  * A visual tree-based representation of the contents of a tile.
- * 
+ *
  * @author Jonathan Lovelace
  */
-public class FixtureTree extends JTree {
+public class FixtureList extends JList {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param property the property the model will be listening for
 	 * @param sources objects the model should listen to
 	 */
-	public FixtureTree(final String property,
+	public FixtureList(final String property,
 			final PropertyChangeSource... sources) {
-		super(new FixtureTreeModel(property, sources));
+		super(new FixtureListModel(property, sources));
 		setCellRenderer(new FixtureCellRenderer());
 	}
 }

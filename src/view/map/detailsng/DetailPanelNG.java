@@ -31,9 +31,9 @@ public class DetailPanelNG extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		addListener(new TileDetailPanel(), sources);
 		add(new JLabel("Contents of the tile on the main map:"));
-		add(new FixtureTree("tile", sources));
+		add(new FixtureList("tile", sources));
 		add(new JLabel("Contents of the tile on the secondary map:"));
-		add(new FixtureTree("secondary-tile", sources));
+		add(new FixtureList("secondary-tile", sources));
 		addListener(new KeyPanel(version), sources);
 	}
 
