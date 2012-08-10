@@ -15,17 +15,18 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Rivers.
- *
+ * 
  * @author Jonathan Lovelace
- *
+ * 
  */
 public class RiverReader implements INodeHandler<River> {
 	/**
 	 * Parse a river.
-	 *
+	 * 
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -44,9 +45,9 @@ public class RiverReader implements INodeHandler<River> {
 		final River fix = "lake".equalsIgnoreCase(element.getName()
 				.getLocalPart()) ? River.Lake : River.getRiver(getAttribute(
 				element, "direction"));
-//		if (stream.iterator() instanceof IncludingIterator) {
-//			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-//		}
+		if (stream.iterator() instanceof IncludingIterator) {
+			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
+		}
 		return fix;
 	}
 
@@ -68,7 +69,7 @@ public class RiverReader implements INodeHandler<River> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 *
+	 * 
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
