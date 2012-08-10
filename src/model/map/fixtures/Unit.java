@@ -3,6 +3,7 @@ package model.map.fixtures;
 import model.map.HasImage;
 import model.map.Player;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A unit on the map.
@@ -10,7 +11,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Unit implements TileFixture, HasImage {
+public class Unit extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * The player that owns the unit.
 	 */
@@ -37,11 +38,11 @@ public class Unit implements TileFixture, HasImage {
 	 */
 	public Unit(final Player unitOwner, final String unitType,
 			final String unitName, final int idNum, final String fileName) {
+		super(fileName);
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -185,27 +186,6 @@ public class Unit implements TileFixture, HasImage {
 						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
 							.equals(name)));
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

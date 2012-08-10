@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * An animal or group of animals. TODO: Add more features (population, to start
@@ -10,7 +11,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Animal implements TileFixture, HasImage {
+public class Animal extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * ID number.
 	 */
@@ -48,11 +49,11 @@ public class Animal implements TileFixture, HasImage {
 	 */
 	public Animal(final String animal, final boolean tracks,
 			final boolean talks, final int idNum, final String fileName) {
+		super(fileName);
 		kind = animal;
 		traces = tracks;
 		talking = talks;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -167,27 +168,6 @@ public class Animal implements TileFixture, HasImage {
 				&& ((Animal) fix).traces == traces
 				&& ((Animal) fix).talking == talking;
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

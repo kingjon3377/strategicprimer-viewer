@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A giant. TODO: should probably be a unit, or something.
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Giant implements TileFixture, HasImage {
+public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
@@ -23,9 +24,9 @@ public class Giant implements TileFixture, HasImage {
 	 * @param fileName the file this was loaded from
 	 */
 	public Giant(final String gKind, final int idNum, final String fileName) {
+		super(fileName);
 		kind = gKind;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -118,27 +119,6 @@ public class Giant implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

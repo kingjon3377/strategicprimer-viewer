@@ -3,6 +3,7 @@ package model.map.fixtures;
 import model.map.HasImage;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A mountain on the map---or at least a fixture representing mountainous
@@ -11,14 +12,14 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Mountain implements TerrainFixture, HasImage {
+public class Mountain extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * Constructor.
 	 *
 	 * @param fileName the file this was loaded from
 	 */
 	public Mountain(final String fileName) {
-		file = fileName;
+		super(fileName);
 	}
 
 	/**
@@ -100,27 +101,6 @@ public class Mountain implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

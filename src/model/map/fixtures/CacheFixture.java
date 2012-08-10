@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class CacheFixture implements TileFixture, HasImage {
+public class CacheFixture extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * What kind of things this is a cache of. TODO: Should perhaps be
 	 * enumerated, so we can make images more granular.
@@ -31,10 +32,10 @@ public class CacheFixture implements TileFixture, HasImage {
 	 */
 	public CacheFixture(final String category, final String cont,
 			final int idNum, final String fileName) {
+		super(fileName);
 		kind = category;
 		contents = cont;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -143,27 +144,6 @@ public class CacheFixture implements TileFixture, HasImage {
 				&& kind.equals(((CacheFixture) fix).kind)
 				&& contents.equals(((CacheFixture) fix).contents);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

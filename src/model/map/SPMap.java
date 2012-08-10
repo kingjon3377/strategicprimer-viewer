@@ -9,7 +9,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class SPMap implements IMap {
+public class SPMap extends XMLWritableImpl implements IMap {
 	/**
 	 * Map max version.
 	 */
@@ -37,12 +37,12 @@ public class SPMap implements IMap {
 	 */
 	public SPMap(final int ver, final int rows, final int cols,
 			final String fileName) {
+		super(fileName);
 		tiles = new TileCollection(fileName);
 		players = new PlayerCollection();
 		myRows = rows;
 		myCols = cols;
 		version = ver;
-		file = fileName;
 	}
 
 	/**
@@ -246,28 +246,14 @@ public class SPMap implements IMap {
 	}
 
 	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
 	 * @param fileName the name of the file this should be written to.
 	 */
 	@Override
 	public void setFile(final String fileName) {
-		file = fileName;
-		players.setFileOnChildren(file);
-		tiles.setFileOnChildren(file);
+		super.setFile(fileName);
+		players.setFileOnChildren(fileName);
+		tiles.setFileOnChildren(fileName);
 	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
-
 	/**
 	 * @return the collection of tiles
 	 */
@@ -281,7 +267,7 @@ public class SPMap implements IMap {
 	 */
 	@Override
 	public IMap deepCopy() {
-		final SPMap retval = new SPMap(version, myRows, myCols, file);
+		final SPMap retval = new SPMap(version, myRows, myCols, getFile());
 		for (final Player player : players) {
 			retval.players.addPlayer(player.deepCopy());
 		}

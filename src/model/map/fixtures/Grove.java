@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Grove implements TileFixture, HasImage {
+public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * Whether this is a fruit orchard.
 	 */
@@ -34,11 +35,11 @@ public class Grove implements TileFixture, HasImage {
 	 */
 	public Grove(final boolean fruit, final boolean wildGrove,
 			final String tree, final int idNum, final String fileName) {
+		super(fileName);
 		orchard = fruit;
 		wild = wildGrove;
 		kind = tree;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -154,27 +155,6 @@ public class Grove implements TileFixture, HasImage {
 				&& orchard == ((Grove) fix).orchard
 				&& wild == ((Grove) fix).wild;
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

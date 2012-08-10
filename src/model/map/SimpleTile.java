@@ -6,7 +6,7 @@ package model.map;
  * @author Jonathan Lovelace
  *
  */
-public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
+public class SimpleTile extends XMLWritableImpl implements Subsettable<SimpleTile>,
 		DeepCloneable<SimpleTile> {
 	/**
 	 * Constructor.
@@ -17,9 +17,9 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 	 */
 	public SimpleTile(final Point loc, final TileType tileType,
 			final String filename) {
+		super(filename);
 		location = loc;
 		type = tileType;
-		file = filename;
 	}
 
 	/**
@@ -44,27 +44,6 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 		return TileType.NotVisible.equals(getTerrain()) ? "" : "<tile "
 				+ location.toXML() + " kind=\"" + getTerrain().toXML()
 				+ "\"></tile>";
-	}
-
-	/**
-	 * The file this was loaded from.
-	 */
-	private String file;
-
-	/**
-	 * @return the file this was loaded from
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param filename the file this was loaded from
-	 */
-	@Override
-	public void setFile(final String filename) {
-		file = filename;
 	}
 
 	/**
@@ -158,6 +137,6 @@ public class SimpleTile implements XMLWritable, Subsettable<SimpleTile>,
 	 */
 	@Override
 	public SimpleTile deepCopy() {
-		return new SimpleTile(location, getTerrain(), file);
+		return new SimpleTile(location, getTerrain(), getFile());
 	}
 }

@@ -3,6 +3,7 @@ package model.map.fixtures;
 import model.map.HasImage;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A forest on a tile.
@@ -10,7 +11,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Forest implements TerrainFixture, HasImage {
+public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @return what kind of trees
 	 */
@@ -31,9 +32,9 @@ public class Forest implements TerrainFixture, HasImage {
 	 * @param fileName the file this was loaded from
 	 */
 	public Forest(final String kind, final boolean rowed, final String fileName) {
+		super(fileName);
 		trees = kind;
 		rows = rowed;
-		file = fileName;
 	}
 
 	/**
@@ -137,27 +138,6 @@ public class Forest implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

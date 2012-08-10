@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A minotaur. TODO:Should probably be a unit, or something.
@@ -9,14 +10,14 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Minotaur implements TileFixture, HasImage {
+public class Minotaur extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
 	public Minotaur(final int idNum, final String fileName) {
+		super(fileName);
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -103,31 +104,10 @@ public class Minotaur implements TileFixture, HasImage {
 	}
 
 	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
-
-	/**
 	 * @return a clone of this object
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Minotaur(getID(), file);
+		return new Minotaur(getID(), getFile());
 	}
 }

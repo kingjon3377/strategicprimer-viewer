@@ -2,6 +2,7 @@ package model.map.events;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A vein of a mineral.
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class MineralEvent implements IEvent, HasImage {
+public final class MineralEvent extends XMLWritableImpl implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 *
@@ -191,27 +192,6 @@ public final class MineralEvent implements IEvent, HasImage {
 				|| (fix instanceof MineralEvent
 						&& ((MineralEvent) fix).mineral.equals(mineral) && ((MineralEvent) fix).exposed == exposed);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

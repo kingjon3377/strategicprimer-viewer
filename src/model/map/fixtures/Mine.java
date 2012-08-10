@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 import model.map.events.TownStatus;
 
 /**
@@ -10,7 +11,7 @@ import model.map.events.TownStatus;
  * @author Jonathan Lovelace
  *
  */
-public class Mine implements TileFixture, HasImage {
+public class Mine extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 *
@@ -21,10 +22,10 @@ public class Mine implements TileFixture, HasImage {
 	 */
 	public Mine(final String mineral, final TownStatus stat, final int idNum,
 			final String fileName) {
+		super(fileName);
 		kind = mineral;
 		status = stat;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -137,27 +138,6 @@ public class Mine implements TileFixture, HasImage {
 		return fix instanceof Mine && kind.equals(((Mine) fix).kind)
 				&& status.equals(((Mine) fix).status);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

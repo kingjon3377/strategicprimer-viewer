@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A field or meadow. If in forest, should increase a unit's vision slightly
@@ -10,7 +11,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Meadow implements TileFixture, HasImage {
+public class Meadow extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * Which season the field is in.
 	 */
@@ -40,11 +41,11 @@ public class Meadow implements TileFixture, HasImage {
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
 			final int idNum, final FieldStatus stat, final String fileName) {
+		super(fileName);
 		kind = grain;
 		field = fld;
 		cultivated = cult;
 		id = idNum;
-		file = fileName;
 		status = stat;
 	}
 
@@ -181,27 +182,6 @@ public class Meadow implements TileFixture, HasImage {
 				&& field == ((Meadow) fix).field
 				&& cultivated == ((Meadow) fix).cultivated;
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

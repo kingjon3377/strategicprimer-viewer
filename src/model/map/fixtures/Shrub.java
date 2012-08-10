@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A TileFixture to represent shrubs, or their aquatic equivalents, on a tile.
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Shrub implements TileFixture, HasImage {
+public class Shrub extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @return an XML representation of the Fixture.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
@@ -34,9 +35,9 @@ public class Shrub implements TileFixture, HasImage {
 	 * @param fileName the file this was loaded from
 	 */
 	public Shrub(final String desc, final int idNum, final String fileName) {
+		super(fileName);
 		description = desc;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -121,27 +122,6 @@ public class Shrub implements TileFixture, HasImage {
 		return fix instanceof Shrub
 				&& description.equals(((Shrub) fix).description);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

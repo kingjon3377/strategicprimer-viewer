@@ -2,6 +2,7 @@ package model.map.events;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * "There are extensive caves beneath this tile".
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class CaveEvent implements IEvent, HasImage {
+public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage {
 	/**
 	 * Constructor.
 	 *
@@ -127,33 +128,12 @@ public final class CaveEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
-
-	/**
 	 * @return a clone of this object
 	 */
 	@Override
 	public TileFixture deepCopy() {
 		final CaveEvent retval = new CaveEvent(getDC(), getID());
-		retval.setFile(file);
+		retval.setFile(getFile());
 		return retval;
 	}
 

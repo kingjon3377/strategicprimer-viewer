@@ -10,6 +10,7 @@ import model.map.HasImage;
 import model.map.Player;
 import model.map.Subsettable;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but
@@ -20,7 +21,8 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
+public class Fortress extends XMLWritableImpl implements TileFixture, HasImage,
+		Subsettable<Fortress> {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -44,11 +46,11 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
 			final int idNum, final String fileName) {
+		super(fileName);
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<Unit>();
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -258,30 +260,6 @@ public class Fortress implements TileFixture, HasImage, Subsettable<Fortress> {
 		// return false;
 		// }
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-		for (final Unit unit : units) {
-			unit.setFile(file);
-		}
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

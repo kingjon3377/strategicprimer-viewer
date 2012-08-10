@@ -7,6 +7,7 @@ import java.util.Set;
 import model.map.River;
 import model.map.Subsettable;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for
@@ -15,8 +16,8 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class RiverFixture implements TileFixture, Iterable<River>,
-		Subsettable<RiverFixture> {
+public class RiverFixture extends XMLWritableImpl implements TileFixture,
+		Iterable<River>, Subsettable<RiverFixture> {
 	/**
 	 * Constructor.
 	 *
@@ -189,38 +190,13 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 	}
 
 	/**
-	 * @return The name of the file this is to be written to.
-	 * @deprecated River writing is handled as part of Tile writing, not
-	 *             separately---and rivers can't be written to a different file
-	 *             from their tile.
-	 */
-	@Override
-	@Deprecated
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
-
-	/**
 	 * @return a clone of this object
 	 */
 	@Override
 	public TileFixture deepCopy() {
 		final RiverFixture retval = new RiverFixture();
 		retval.addRivers(this);
-		retval.setFile(file);
+		retval.setFile(getFile());
 		return retval;
 	}
 }

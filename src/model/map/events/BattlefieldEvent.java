@@ -2,13 +2,14 @@ package model.map.events;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * "There are the signs of a long-ago battle here".
  *
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent implements IEvent, HasImage {
+public final class BattlefieldEvent extends XMLWritableImpl implements IEvent, HasImage {
 	/**
 	 * A (U)ID.
 	 */
@@ -125,27 +126,6 @@ public final class BattlefieldEvent implements IEvent, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof BattlefieldEvent;
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

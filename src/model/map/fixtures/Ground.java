@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Ground implements TileFixture, HasImage {
+public class Ground extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @return an XML representation of the Fixture.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
@@ -31,9 +32,9 @@ public class Ground implements TileFixture, HasImage {
 	 * @param fileName the file this was loaded from
 	 */
 	public Ground(final String desc, final boolean exp, final String fileName) {
+		super(fileName);
 		kind = desc;
 		exposed = exp;
-		file = fileName;
 	}
 
 	/**
@@ -131,27 +132,6 @@ public class Ground implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

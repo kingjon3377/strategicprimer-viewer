@@ -7,7 +7,7 @@ package model.map;
  * @author Jonathan Lovelace
  *
  */
-public class MapView implements IMap {
+public class MapView extends XMLWritableImpl implements IMap {
 	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
 	 *
@@ -18,11 +18,11 @@ public class MapView implements IMap {
 	 */
 	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn,
 			final String filename) {
+		super(filename);
 		map = wrapped;
 		player = map.getPlayers().getPlayer(curPlayer);
 		player.setCurrent(true);
 		turn = curTurn;
-		file = filename;
 	}
 
 	/**
@@ -55,26 +55,12 @@ public class MapView implements IMap {
 		builder.append("\n</view>");
 		return builder.toString();
 	}
-
-	/**
-	 * The file this view was read from.
-	 */
-	private String file;
-
-	/**
-	 * @return the file this was read from
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
 	/**
 	 * @param origFile the file this view was read from
 	 */
 	@Override
 	public void setFile(final String origFile) {
-		file = origFile;
+		super.setFile(origFile);
 		map.setFile(origFile);
 	}
 

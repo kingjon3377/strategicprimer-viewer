@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A centaur. TODO: Should probably be a kind of unit instead, or something ...
@@ -9,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Centaur implements TileFixture, HasImage {
+public class Centaur extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * What kind of centaur.
 	 */
@@ -23,9 +24,9 @@ public class Centaur implements TileFixture, HasImage {
 	 * @param fileName the file this was loaded from
 	 */
 	public Centaur(final String centKind, final int idNum, final String fileName) {
+		super(fileName);
 		kind = centKind;
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -118,27 +119,6 @@ public class Centaur implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Centaur && ((Centaur) fix).kind.equals(kind);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

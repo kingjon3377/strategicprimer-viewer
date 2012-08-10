@@ -3,6 +3,7 @@ package model.map.fixtures;
 import model.map.HasImage;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A hill on the map. Should increase unit's effective vision by a small
@@ -11,14 +12,14 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Hill implements TerrainFixture, HasImage {
+public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
 	public Hill(final int idNum, final String fileName) {
+		super(fileName);
 		id = idNum;
-		file = fileName;
 	}
 
 	/**
@@ -104,27 +105,6 @@ public class Hill implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Hill;
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

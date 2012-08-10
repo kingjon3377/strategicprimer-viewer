@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can
@@ -11,7 +12,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class TextFixture implements TileFixture, HasImage {
+public class TextFixture extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 *
@@ -19,6 +20,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 * @param turnNum the turn number it's associated with
 	 */
 	public TextFixture(final String theText, final int turnNum) {
+		super();
 		text = theText;
 		turn = turnNum;
 	}
@@ -136,27 +138,6 @@ public class TextFixture implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	@Override
-	public String getFile() {
-		return file;
-	}
-
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		file = fileName;
-	}
-
-	/**
-	 * The name of the file this is to be written to.
-	 */
-	private String file;
 
 	/**
 	 * @return a clone of this object

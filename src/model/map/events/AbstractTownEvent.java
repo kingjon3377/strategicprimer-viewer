@@ -2,17 +2,19 @@ package model.map.events;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+import model.map.XMLWritableImpl;
 
 /**
  * An abstract superclass for towns etc.
- * 
+ *
  * @author Jonathan Lovelace
  */
 // ESCA-JAVA0011:
-public abstract class AbstractTownEvent implements IEvent, HasImage {
+public abstract class AbstractTownEvent extends XMLWritableImpl implements
+		IEvent, HasImage {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param eKind what kind of event this is
 	 * @param tSize the size of the town, fortress, or city
 	 * @param tStatus the status of the town, fortress, or city
@@ -45,7 +47,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	private final TownStatus status;
 
 	/**
-	 * 
+	 *
 	 * @return the status of the town, fortress, or city
 	 */
 	public TownStatus status() {
@@ -62,7 +64,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	private final EventKind kind;
 
 	/**
-	 * 
+	 *
 	 * @return the size of the town, fortress, or city
 	 */
 	public TownSize size() {
@@ -71,8 +73,8 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 
 	/**
 	 * FIXME: What about towns we've already rolled up?
-	 * 
-	 * 
+	 *
+	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -103,7 +105,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it's an identical event
 	 */
 	@Override
@@ -132,7 +134,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -141,7 +143,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -152,7 +154,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return what kind of event this is
 	 */
 	public EventKind kind() {
@@ -161,7 +163,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 
 	/**
 	 * TODO: Should be more granular.
-	 * 
+	 *
 	 * @return the name of an image to represent the event.
 	 */
 	@Override
@@ -180,7 +182,7 @@ public abstract class AbstractTownEvent implements IEvent, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 * 
+	 *
 	 * @return the result of the comparison
 	 */
 	@Override
