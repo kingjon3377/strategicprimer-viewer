@@ -10,6 +10,7 @@ import model.map.fixtures.Animal;
 import model.map.fixtures.CacheFixture;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import util.ArraySet;
 import view.util.SystemOut;
 
 /**
@@ -32,7 +33,7 @@ public final class Tile extends SimpleTile {
 		super(PointFactory.point(tileRow, tileCol), tileType, filename);
 		// Can't be an otherwise-preferable TreeSet because of Java bug
 		// #7030899: TreeSet ignores equals() entirely.
-		contents = new HashSet<TileFixture>();
+		contents = new ArraySet<TileFixture>();
 	}
 
 	/**
