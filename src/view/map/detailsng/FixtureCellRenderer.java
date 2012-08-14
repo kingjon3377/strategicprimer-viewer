@@ -1,6 +1,7 @@
 package view.map.detailsng;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -47,12 +48,13 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 			final boolean cellHasFocus) {
 		final Component component = DEFAULT.getListCellRendererComponent(list,
 				value, index, isSelected, cellHasFocus);
-			((JLabel) component).setText(value.toString());
+			((JLabel) component).setText("<html><p>" + value.toString() + "</p></html>");
 			if (value instanceof HasImage) {
 				((JLabel) component).setIcon(getIcon((HasImage) value));
 			} else {
 				((JLabel) component).setIcon(defaultFixtIcon);
 			}
+		component.setMaximumSize(new Dimension(component.getMaximumSize().width, component.getMaximumSize().height * 2));
 		return component;
 	}
 
