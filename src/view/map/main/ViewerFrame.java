@@ -15,9 +15,9 @@ import view.map.detailsng.DetailPanelNG;
 
 /**
  * The main driver class for the viewer app.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class ViewerFrame extends JFrame {
 	/**
@@ -37,7 +37,7 @@ public final class ViewerFrame extends JFrame {
 	/**
 	 * Initialize size to the specified dimensions. Not that this actually works
 	 * ...
-	 * 
+	 *
 	 * @param width the specified width
 	 * @param height the specified height
 	 */
@@ -50,7 +50,7 @@ public final class ViewerFrame extends JFrame {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param map The map model.
 	 */
 	public ViewerFrame(final MapModel map) {
