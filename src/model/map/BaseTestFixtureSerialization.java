@@ -28,9 +28,9 @@ import controller.map.readerng.ReaderAdapter;
 // ESCA-JAVA0011:
 /**
  * An abstract base class for this helper method.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
@@ -51,7 +51,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * If it's only supposed to be a warning, assert that it'll pass with
 	 * warnings disabled but fail with warnings made fatal. This version runs
 	 * against both the old and the new reader.
-	 * 
+	 *
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
 	 * @param warning whether this is supposed to be a warning only
@@ -72,7 +72,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * UnsupportedTagException. If it's only supposed to be a warning, assert
 	 * that it'll pass with warnings disabled but fail with warnings made fatal.
 	 * This version uses both old and new readers.
-	 * 
+	 *
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
 	 * @param tag the unsupported tag
@@ -92,7 +92,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * UnsupportedTagException. If it's only supposed to be a warning, assert
 	 * that it'll pass with warnings disabled but fail with warnings made fatal.
 	 * This version uses both reflection and non-reflection readers.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -112,7 +112,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that reading the given XML will produce an
 	 * UnsupportedTagException. If it's only supposed to be a warning, assert
 	 * that it'll pass with warnings disabled but fail with warnings made fatal.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -155,7 +155,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that reading the given XML will produce an UnwantedChildException.
 	 * If it's only supposed to be a warning, assert that it'll pass with
 	 * warnings disabled but fail with warnings made fatal.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -197,7 +197,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * If it's only supposed to be a warning, assert that it'll pass with
 	 * warnings disabled but object with them made fatal. This version tests
 	 * both old and new readers.
-	 * 
+	 *
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
 	 * @param property the missing property
@@ -217,7 +217,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * If it's only supposed to be a warning, assert that it'll pass with
 	 * warnings disabled but object with them made fatal. This version runs both
 	 * with and without reflection.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -239,7 +239,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that reading the given XML will give a MissingPropertyException.
 	 * If it's only supposed to be a warning, assert that it'll pass with
 	 * warnings disabled but object with them made fatal.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -288,7 +288,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * DeprecatedPropertyException. If it's only supposed to be a warning,
 	 * assert that it'll pass with warnings disabled but object with them made
 	 * fatal. This version tests both old and new readers.
-	 * 
+	 *
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
 	 * @param deprecated the deprecated property
@@ -310,7 +310,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * DeprecatedPropertyException. If it's only supposed to be a warning,
 	 * assert that it'll pass with warnings disabled but object with them made
 	 * fatal. This version tests both reflection and non-reflection versions.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -334,7 +334,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * DeprecatedPropertyException. If it's only supposed to be a warning,
 	 * assert that it'll pass with warnings disabled but object with them made
 	 * fatal.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -382,7 +382,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that the serialized form of the given object will deserialize
 	 * without error using both old and new readers.
-	 * 
+	 *
 	 * @param <T> the type of the object
 	 * @param message the message to use
 	 * @param obj the object to serialize
@@ -400,7 +400,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that the serialized form of the given object will deserialize
 	 * without error using both the old and new readers.
-	 * 
+	 *
 	 * @param <T> the type of the object
 	 * @param message the message to use
 	 * @param obj the object to serialize
@@ -421,7 +421,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that the serialized form of the given object will deserialize
 	 * without error using both the reflection and non-reflection methods.
-	 * 
+	 *
 	 * @param <T> the type of the object
 	 * @param message the message to use
 	 * @param reader the reader to parse the serialized form
@@ -453,7 +453,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that a deprecated idiom deserializes properly if warnings are
 	 * ignored, but is warned about.
-	 * 
+	 *
 	 * @param <T> the type
 	 * @param message the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
@@ -486,7 +486,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that a serialized form with a recommended but not required
 	 * property missing deserializes properly if warnings are ignored, but is
 	 * warned about.
-	 * 
+	 *
 	 * @param <T> the type
 	 * @param message the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
@@ -519,7 +519,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that a "forward idiom"---an idiom that we do not yet produce, but
 	 * want to accept---will be deserialized properly by both readers, both with
 	 * and without reflection.
-	 * 
+	 *
 	 * @param <T> the type
 	 * @param message the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
@@ -548,7 +548,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that two deserialzed forms are equivalent, using both readers,
 	 * both with and without reflection.
-	 * 
+	 *
 	 * @param <T> the type they'll deserialize to.
 	 * @param message the message to pass to JUnit
 	 * @param one the first form
@@ -613,7 +613,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * it's only supposed to be a warning, assert that it'll pass with warnings
 	 * disabled but object with them made fatal. This version tests both old and
 	 * new readers.
-	 * 
+	 *
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
 	 * @param warning whether this is supposed to be only a warning
@@ -632,7 +632,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * it's only supposed to be a warning, assert that it'll pass with warnings
 	 * disabled but object with them made fatal. This version runs both with and
 	 * without reflection.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -651,7 +651,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that reading the given XML will give a MissingChildException. If
 	 * it's only supposed to be a warning, assert that it'll pass with warnings
 	 * disabled but object with them made fatal.
-	 * 
+	 *
 	 * @param reader the reader to do the reading
 	 * @param xml the XML to read
 	 * @param desideratum the class it would produce if it weren't erroneous
@@ -692,7 +692,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that a map is properly deserialized (by the main
 	 * map-deserialization methods) into a view.
-	 * 
+	 *
 	 * @param message the message to use in JUnit calls
 	 * @param expected the object to test against
 	 * @param xml the XML to deserialize it into.
@@ -709,5 +709,37 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		assertEquals(message, expected, ((IMapReader) newReader).readMap(
 				FAKE_FILENAME, new StringReader(xml), new Warning(
 						Warning.Action.Die)));
+	}
+
+	/**
+	 * Test whether an item is in an iterable. Note that the iterable's iterator
+	 * will have advanced either to the item searched for or to the end.
+	 *
+	 * @param iter an iterable
+	 * @param item an item
+	 * @param <T> the type of the items in the iterator
+	 * @param <U> the type of the item
+	 * @return whether the iterable contains the item
+	 */
+	public <T, U extends T> boolean iterableContains(final Iterable<T> iter, final U item) {
+		for (final T each : iter) {
+			if (each.equals(item)) {
+				return true; // NOPMD
+			}
+		}
+		return false;
+	}
+	/**
+	 * Determine the size of an iterable. Note that its iterator will have been advanced to the end.
+	 * @param iter an iterable
+	 * @param <T> the type of thing it contains
+	 * @return the number of items in the iterable
+	 */
+	public <T> int iteratorSize(final Iterable<T> iter) {
+		int size = 0;
+		for (@SuppressWarnings("unused") final T each : iter) {
+			size++;
+		}
+		return size;
 	}
 }

@@ -1,12 +1,11 @@
 package controller.map.converter; // NOPMD
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -146,8 +145,10 @@ public class OneToTwoConverter { // NOPMD
 		if (!tile.isEmpty()) {
 			tile.addFixture(new Village(TownStatus.Active, "", idFactory
 					.createID(), tile.getFile()));
-			final List<TileFixture> fixtures = new LinkedList<TileFixture>(
-					tile.getContents());
+			final List<TileFixture> fixtures = new LinkedList<TileFixture>();
+			for (final TileFixture fixture : tile.getContents()) {
+				fixtures.add(fixture);
+			}
 			if (tile.hasRiver()) {
 				final RiverFixture rivers = tile.getRivers();
 				for (final River river : rivers) {
@@ -252,12 +253,14 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static void changeFor(final Tile tile, final TileFixture fix) {
 		if (fix instanceof Village || fix instanceof AbstractTownEvent) {
-			final Set<TileFixture> fixtures = new HashSet<TileFixture>(
-					tile.getContents());
-			for (final TileFixture fixture : fixtures) {
+			final List<TileFixture> forests = new ArrayList<TileFixture>();
+			for (final TileFixture fixture : tile.getContents()) {
 				if (fixture instanceof Forest) {
-					tile.removeFixture(fixture);
+					forests.add(fixture);
 				}
+			}
+			for (final TileFixture fixture : forests) {
+				tile.removeFixture(fixture);
 			}
 		}
 	}

@@ -173,7 +173,7 @@ public class TileReader implements INodeHandler<Tile> {
 			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
-			if (!obj.getContents().isEmpty()) {
+			if (obj.getContents().iterator().hasNext()) {
 				final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
 				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj.getContents()) {

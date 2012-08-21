@@ -19,7 +19,7 @@ import model.map.TileType;
 /**
  * A panel to encapsulate the ChitPanel and the label for showing a chit's
  * details.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public class ChitAndDetailPanel extends JPanel implements
@@ -52,7 +52,7 @@ public class ChitAndDetailPanel extends JPanel implements
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param maxHeight the maximum height of the panel we're part of
 	 * @param minHeight the minimum height of the panel we're part of
 	 * @param height the (preferred) height of the panel we're part of
@@ -93,8 +93,7 @@ public class ChitAndDetailPanel extends JPanel implements
 	 * @param fix a TileFixture to add to the underlying tile
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (!tile.getContents().contains(fix)) {
-			tile.addFixture(fix);
+		if (tile.addFixture(fix)) {
 			panel.add(fix);
 			panel.validate();
 		}
@@ -102,7 +101,7 @@ public class ChitAndDetailPanel extends JPanel implements
 
 	/**
 	 * Update the chits for a new tile.
-	 * 
+	 *
 	 * @param newTile the new tile
 	 */
 	public void updateChits(final Tile newTile) {
@@ -112,12 +111,13 @@ public class ChitAndDetailPanel extends JPanel implements
 			for (final TileFixture fix : tile.getContents()) {
 				panel.add(fix);
 			}
+			panel.validate();
 		}
 	}
 
 	/**
 	 * Handle a property change.
-	 * 
+	 *
 	 * @param evt the event to handle.
 	 */
 	@Override

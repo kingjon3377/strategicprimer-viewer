@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +24,7 @@ import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureComparator;
 import util.ImageLoader;
+import util.IteratorWrapper;
 import view.util.Coordinate;
 
 /**
@@ -124,7 +124,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether that tile has any fixtures (or any river
 	 */
 	private static boolean hasFixture(final Tile tile) {
-		return !tile.getContents().isEmpty();
+		return tile.getContents().iterator().hasNext();
 	}
 
 	/**
@@ -137,7 +137,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture on that tile.
 	 */
 	private TileFixture getTopFixture(final Tile tile) {
-		return Collections.max(tile.getContents(), fixComp);
+		return new IteratorWrapper<TileFixture>(tile.getContents().iterator(),
+				fixComp).iterator().next();
 	}
 
 	/**

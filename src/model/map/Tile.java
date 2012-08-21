@@ -43,8 +43,9 @@ public final class Tile extends SimpleTile {
 
 	/**
 	 * @param fix something new on the tile
+	 * @return true iff it was not already in the set.
 	 */
-	public void addFixture(final TileFixture fix) {
+	public boolean addFixture(final TileFixture fix) {
 		if (!((fix instanceof TextFixture) && ((TextFixture) fix).getText()
 				.isEmpty())) {
 			if (fix instanceof RiverFixture) {
@@ -53,12 +54,18 @@ public final class Tile extends SimpleTile {
 					for (River river : (RiverFixture) fix) {
 						rivers.addRiver(river);
 					}
+					return true;
 				} else if (!((RiverFixture) fix).getRivers().isEmpty()) {
-					contents.add(fix);
+					// If the parameter is a *non-empty* river-fixture
+					return contents.add(fix);
+				} else {
+					return false;
 				}
 			} else {
-				contents.add(fix);
+				return contents.add(fix);
 			}
+		} else {
+			return false;
 		}
 	}
 
@@ -75,7 +82,7 @@ public final class Tile extends SimpleTile {
 	 *
 	 * @return the contents of the tile
 	 */
-	public Set<TileFixture> getContents() {
+	public Iterable<TileFixture> getContents() {
 		return Collections.unmodifiableSet(contents);
 	}
 
@@ -206,7 +213,7 @@ public final class Tile extends SimpleTile {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return super.isEmpty() && getContents().isEmpty();
+		return super.isEmpty() && !getContents().iterator().hasNext();
 	}
 
 	/**

@@ -130,4 +130,22 @@ public class ArraySet<T> implements Set<T> { // NOPMD
 	public void clear() {
 		impl.clear();
 	}
+	/**
+	 * @return a hash-value for the set.
+	 */
+	@Override
+	public int hashCode() {
+		return impl.hashCode();
+	}
+	/**
+	 * Another object is equal to this one if it is a set that contains the same elements.
+	 * @param obj another object
+	 * @return whether it's equal to this
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Set && ((Set) obj).containsAll(this)
+				&& containsAll((Set) obj);
+	}
 }

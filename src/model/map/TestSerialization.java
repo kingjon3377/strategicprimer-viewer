@@ -216,7 +216,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new Player(2, "", FAKE_FILENAME), "explorer", "name two", 2,
 				FAKE_FILENAME)));
 		six.setFile(FAKE_FILENAME);
-		assertEquals("Just checking ...", 2, six.getContents().size());
+		assertEquals("Just checking ...", 2, iteratorSize(six.getContents()));
 		assertSerialization("Multiple units should come through", six,
 				Tile.class);
 		final String xmlTwo = new StringBuilder(
@@ -381,15 +381,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final MapView converted = converter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertTrue("Combined tile should contain fixtures from tile one",
-				converted.getTile(zeroPoint).getContents().contains(fixture));
+				iterableContains(converted.getTile(zeroPoint).getContents(), fixture));
 		assertTrue("Combined tile should contain fixtures from tile two",
-				converted.getTile(zeroPoint).getContents().contains(fixtureTwo));
+				iterableContains(converted.getTile(zeroPoint).getContents(), fixtureTwo));
 		assertTrue(
 				"Combined tile should contain fixtures from tile three",
-				converted.getTile(zeroPoint).getContents()
-						.contains(fixtureThree));
+				iterableContains(converted.getTile(zeroPoint).getContents(), fixtureThree));
 		assertTrue("Combined tile should contain fixtures from tile four",
-				converted.getTile(zeroPoint).getContents()
-						.contains(fixtureFour));
+				iterableContains(converted.getTile(zeroPoint).getContents(), fixtureFour));
 	}
 }

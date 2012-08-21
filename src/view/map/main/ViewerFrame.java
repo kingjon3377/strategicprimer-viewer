@@ -58,10 +58,10 @@ public final class ViewerFrame extends JFrame {
 		setLayout(new BorderLayout());
 		chooser.setFileFilter(new MapFileFilter());
 		final MapGUI mapPanel = new MapComponent(map);
-		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel),
-				BorderLayout.SOUTH);
+//		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel),
+//				BorderLayout.SOUTH);
 		add(new DetailPanelNG(map.getMainMap().getVersion(), map, mapPanel),
-				BorderLayout.EAST);
+				BorderLayout.SOUTH);
 		final JPanel mapSuperPanel = new JPanel(new BorderLayout());
 		mapSuperPanel.add((JComponent) mapPanel, BorderLayout.CENTER);
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
