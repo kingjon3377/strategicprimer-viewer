@@ -146,7 +146,7 @@ public class OneToTwoConverter { // NOPMD
 			tile.addFixture(new Village(TownStatus.Active, "", idFactory
 					.createID(), tile.getFile()));
 			final List<TileFixture> fixtures = new LinkedList<TileFixture>();
-			for (final TileFixture fixture : tile.getContents()) {
+			for (final TileFixture fixture : tile) {
 				fixtures.add(fixture);
 			}
 			if (tile.hasRiver()) {
@@ -233,7 +233,7 @@ public class OneToTwoConverter { // NOPMD
 	 * @return whether it's suitable
 	 */
 	private static boolean isSubtileSuitable(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (!(fix instanceof Forest || fix instanceof Mountain
 					|| fix instanceof Ground || fix instanceof Sandbar
 					|| fix instanceof Shrub || fix instanceof Meadow || fix instanceof Hill)) {
@@ -254,7 +254,7 @@ public class OneToTwoConverter { // NOPMD
 	private static void changeFor(final Tile tile, final TileFixture fix) {
 		if (fix instanceof Village || fix instanceof AbstractTownEvent) {
 			final List<TileFixture> forests = new ArrayList<TileFixture>();
-			for (final TileFixture fixture : tile.getContents()) {
+			for (final TileFixture fixture : tile) {
 				if (fixture instanceof Forest) {
 					forests.add(fixture);
 				}
@@ -401,7 +401,7 @@ public class OneToTwoConverter { // NOPMD
 	private static boolean isAdjacentToTown(final Tile tile, final IMap map) {
 		for (final Point point : getNeighbors(tile)) {
 			final Tile neighbor = map.getTile(point);
-			for (final TileFixture fix : neighbor.getContents()) {
+			for (final TileFixture fix : neighbor) {
 				if (fix instanceof Village || fix instanceof AbstractTownEvent) {
 					return true; // NOPMD
 				}
@@ -431,7 +431,7 @@ public class OneToTwoConverter { // NOPMD
 	 * @return whether it already has a forest
 	 */
 	private static boolean hasForest(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (fix instanceof Forest) {
 				return true; // NOPMD
 			}

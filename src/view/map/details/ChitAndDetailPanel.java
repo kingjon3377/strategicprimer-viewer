@@ -108,7 +108,7 @@ public class ChitAndDetailPanel extends JPanel implements
 		if (!newTile.equals(tile)) {
 			tile = newTile;
 			panel.clear();
-			for (final TileFixture fix : tile.getContents()) {
+			for (final TileFixture fix : tile) {
 				panel.add(fix);
 			}
 			panel.validate();

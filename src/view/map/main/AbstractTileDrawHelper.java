@@ -48,7 +48,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether the tile has any forts.
 	 */
 	protected static boolean hasAnyForts(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (fix instanceof Fortress) {
 				return true; // NOPMD
 			}
@@ -62,7 +62,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether the tile has any units.
 	 */
 	protected static boolean hasAnyUnits(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (fix instanceof Unit) {
 				return true; // NOPMD
 			}
@@ -76,7 +76,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether the tile has any events
 	 */
 	protected static boolean hasEvent(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (fix instanceof IEvent) {
 				return true; // NOPMD
 			}

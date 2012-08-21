@@ -124,7 +124,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether that tile has any fixtures (or any river
 	 */
 	private static boolean hasFixture(final Tile tile) {
-		return tile.getContents().iterator().hasNext();
+		return tile.iterator().hasNext();
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture on that tile.
 	 */
 	private TileFixture getTopFixture(final Tile tile) {
-		return new IteratorWrapper<TileFixture>(tile.getContents().iterator(),
+		return new IteratorWrapper<TileFixture>(tile.iterator(),
 				fixComp).iterator().next();
 	}
 
@@ -162,7 +162,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether it has a TerrainFixture.
 	 */
 	private static boolean hasTerrainFixture(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (fix instanceof TerrainFixture) {
 				return true; // NOPMD
 			}
@@ -175,7 +175,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a color to represent its not-on-top terrain feature.
 	 */
 	private static Color getFixtureColor(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (fix instanceof TerrainFixture) {
 				return getHelper().getFeatureColor(fix); // NOPMD
 			}

@@ -68,7 +68,7 @@ public class LegacyTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			if (fix instanceof IEvent) {
 				return ((IEvent) fix).getText(); // NOPMD
 			}

@@ -12,7 +12,7 @@ import model.map.TileFixture;
 
 /**
  * A node in a tree representing a tile.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public class TileNode implements TreeNode {
@@ -23,11 +23,11 @@ public class TileNode implements TreeNode {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param tile the tile this represents.
 	 */
 	public TileNode(final Tile tile) {
-		for (final TileFixture fix : tile.getContents()) {
+		for (final TileFixture fix : tile) {
 			// TODO: Specialized nodes for editable fixtures
 			children.add(new FixtureNode(fix, this)); // NOPMD
 		}

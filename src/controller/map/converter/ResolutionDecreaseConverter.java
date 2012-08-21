@@ -107,7 +107,7 @@ public class ResolutionDecreaseConverter {
 	 * @param dest a destination tile
 	 */
 	private static void addAllFixtures(final Tile source, final Tile dest) {
-		for (final TileFixture fix : source.getContents()) {
+		for (final TileFixture fix : source) {
 			if (!(fix instanceof RiverFixture)) {
 				dest.addFixture(fix);
 			}

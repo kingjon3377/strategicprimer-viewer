@@ -1,8 +1,8 @@
 package model.map;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +19,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public final class Tile extends SimpleTile {
+public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	/**
 	 * Constructor.
 	 *
@@ -82,8 +82,9 @@ public final class Tile extends SimpleTile {
 	 *
 	 * @return the contents of the tile
 	 */
-	public Iterable<TileFixture> getContents() {
-		return Collections.unmodifiableSet(contents);
+	@Override
+	public Iterator<TileFixture> iterator() {
+		return contents.iterator();
 	}
 
 	/**
@@ -160,7 +161,7 @@ public final class Tile extends SimpleTile {
 					contents);
 			unmatchedContents.removeAll(((Tile) tile).contents);
 			for (final TileFixture local : unmatchedContents) {
-				for (final TileFixture remote : ((Tile) tile).getContents()) {
+				for (final TileFixture remote : ((Tile) tile)) {
 					if (local.equalsIgnoringID(remote)) {
 						removeFixture(local);
 						addFixture(remote);
@@ -213,7 +214,7 @@ public final class Tile extends SimpleTile {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return super.isEmpty() && !getContents().iterator().hasNext();
+		return super.isEmpty() && !iterator().hasNext();
 	}
 
 	/**
