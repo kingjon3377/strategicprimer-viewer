@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures.towns;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package model.map.events;
+package model.map.fixtures.towns;
 
 import java.util.HashMap;
 import java.util.Map;

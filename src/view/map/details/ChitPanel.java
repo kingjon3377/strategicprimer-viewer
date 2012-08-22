@@ -4,10 +4,10 @@ import javax.swing.JPanel;
 
 import model.map.HasImage;
 import model.map.TileFixture;
-import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.towns.Fortress;
 import view.map.main.SelectionListener;
 import view.util.WrapLayout;
 

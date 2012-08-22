@@ -7,8 +7,8 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.events.IEvent;
-import model.map.fixtures.Fortress;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.towns.Fortress;
 
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.

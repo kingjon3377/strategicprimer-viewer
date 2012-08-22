@@ -1,6 +1,7 @@
-package model.map.events;
+package model.map.fixtures.towns;
 
 import model.map.TileFixture;
+import model.map.events.EventKind;
 
 /**
  * An abandoned, ruined, or burned-out fortification.

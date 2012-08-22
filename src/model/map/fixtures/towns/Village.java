@@ -1,9 +1,8 @@
-package model.map.fixtures;
+package model.map.fixtures.towns;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
-import model.map.events.TownStatus;
 
 /**
  * A village on the map.

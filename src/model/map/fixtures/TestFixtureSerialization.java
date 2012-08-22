@@ -25,6 +25,7 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
+import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
 

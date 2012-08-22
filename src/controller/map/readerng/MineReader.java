@@ -12,8 +12,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.events.TownStatus;
 import model.map.fixtures.Mine;
+import model.map.fixtures.towns.TownStatus;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;

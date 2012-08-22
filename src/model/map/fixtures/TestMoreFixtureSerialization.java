@@ -6,8 +6,9 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
-import model.map.events.TownStatus;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.towns.TownStatus;
+import model.map.fixtures.towns.Village;
 
 import org.junit.Test;
 

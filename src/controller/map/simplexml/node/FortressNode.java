@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Fortress;
+import model.map.fixtures.towns.Fortress;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.SPFormatException;

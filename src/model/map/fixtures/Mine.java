@@ -3,7 +3,7 @@ package model.map.fixtures;
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
-import model.map.events.TownStatus;
+import model.map.fixtures.towns.TownStatus;
 
 /**
  * A mine---a source of mineral resources.

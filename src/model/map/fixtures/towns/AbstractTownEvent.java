@@ -1,8 +1,10 @@
-package model.map.events;
+package model.map.fixtures.towns;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.events.EventKind;
+import model.map.events.IEvent;
 
 /**
  * An abstract superclass for towns etc.

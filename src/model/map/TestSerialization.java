@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.fixtures.CacheFixture;
-import model.map.fixtures.Fortress;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -19,6 +18,7 @@ import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
 

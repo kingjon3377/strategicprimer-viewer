@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
-import model.map.events.AbstractTownEvent;
 import model.map.events.IEvent;
-import model.map.events.TownStatus;
+import model.map.fixtures.towns.AbstractTownEvent;
+import model.map.fixtures.towns.TownStatus;
 import model.viewer.FixtureTransferable;
 
 /**

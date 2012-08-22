@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.events.TownStatus;
-import model.map.fixtures.Village;
+import model.map.fixtures.towns.TownStatus;
+import model.map.fixtures.towns.Village;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.SPFormatException;

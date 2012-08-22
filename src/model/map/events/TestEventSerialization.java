@@ -5,6 +5,11 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
+import model.map.fixtures.towns.CityEvent;
+import model.map.fixtures.towns.FortificationEvent;
+import model.map.fixtures.towns.TownEvent;
+import model.map.fixtures.towns.TownSize;
+import model.map.fixtures.towns.TownStatus;
 
 import org.junit.Test;
 

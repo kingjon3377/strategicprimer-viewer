@@ -9,16 +9,16 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.events.BattlefieldEvent;
 import model.map.events.CaveEvent;
-import model.map.events.CityEvent;
-import model.map.events.FortificationEvent;
 import model.map.events.IEvent;
 import model.map.events.MineralEvent;
 import model.map.events.MineralKind;
 import model.map.events.StoneEvent;
 import model.map.events.StoneKind;
-import model.map.events.TownEvent;
-import model.map.events.TownSize;
-import model.map.events.TownStatus;
+import model.map.fixtures.towns.CityEvent;
+import model.map.fixtures.towns.FortificationEvent;
+import model.map.fixtures.towns.TownEvent;
+import model.map.fixtures.towns.TownSize;
+import model.map.fixtures.towns.TownStatus;
 
 /**
  * A table for legacy "events".

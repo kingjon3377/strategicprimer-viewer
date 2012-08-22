@@ -1,32 +1,33 @@
-package model.map.events;
+package model.map.fixtures.towns;
 
 import model.map.TileFixture;
+import model.map.events.EventKind;
 
 /**
- * An abandoned, ruined, or burned-out town.
+ * An abandoned, ruined, or burned-out city.
  *
  * @author Jonathan Lovelace
  *
  */
-public final class TownEvent extends AbstractTownEvent {
+public final class CityEvent extends AbstractTownEvent {
 	/**
 	 * Constructor.
 	 *
-	 * @param tStatus The status of the town
-	 * @param tSize The size of the town
+	 * @param tStatus The status of the city
+	 * @param tSize The size of the city
 	 * @param discdc The DC to discover it.
 	 * @param tName the name of the town, fortress, or city
 	 * @param idNum the ID number.
 	 */
-	public TownEvent(final TownStatus tStatus, final TownSize tSize,
+	public CityEvent(final TownStatus tStatus, final TownSize tSize,
 			final int discdc, final String tName, final int idNum) {
-		super(EventKind.Town, tStatus, tSize, tName);
+		super(EventKind.City, tStatus, tSize, tName);
 		dc = discdc;
 		id = idNum;
 	}
 
 	/**
-	 * The DC to discover the town. TODO: Should perhaps be mutable.
+	 * The DC to discover the city. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
 
@@ -40,22 +41,22 @@ public final class TownEvent extends AbstractTownEvent {
 	}
 
 	/**
-	 * @return an XML representation of the event
+	 * @return an XML representation of the event.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<town status=\"")
+		final StringBuilder sbuilder = new StringBuilder("<city status=\"")
 				.append(status().toString()).append("\" size=\"")
 				.append(size().toString()).append("\" dc=\"").append(dc);
 		if (!name().isEmpty()) {
-			sbuild.append("\" name=\"");
-			sbuild.append(name());
+			sbuilder.append("\" name=\"");
+			sbuilder.append(name());
 		}
-		sbuild.append("\" id=\"");
-		sbuild.append(id);
-		return sbuild.append("\" />").toString();
+		sbuilder.append("\" id=\"");
+		sbuilder.append(id);
+		return sbuilder.append("\" />").toString();
 	}
 
 	/**
@@ -76,7 +77,7 @@ public final class TownEvent extends AbstractTownEvent {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		final TownEvent retval = new TownEvent(status(), size(), getDC(),
+		final CityEvent retval = new CityEvent(status(), size(), getDC(),
 				name(), getID());
 		retval.setFile(getFile());
 		return retval;
