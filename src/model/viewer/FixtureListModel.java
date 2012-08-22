@@ -10,7 +10,7 @@ import model.map.TileFixture;
 import util.PropertyChangeSource;
 
 /**
- * A model for a FixtureTree.
+ * A model for a FixtureList.
  *
  * @author Jonathan Lovelace
  *
