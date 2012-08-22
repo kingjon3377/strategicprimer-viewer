@@ -17,7 +17,7 @@ import controller.map.SPFormatException;
  * @author Jonathan Lovelace
  *
  */
-public final class TestEventSerialization extends BaseTestFixtureSerialization {
+public final class TestEventSerialization extends BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Extracted constant.
 	 */
