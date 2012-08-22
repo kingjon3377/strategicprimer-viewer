@@ -46,6 +46,18 @@ public class DetailPanelNG extends JPanel {
 	 */
 	private static final int LIST_WIDTH = 240;
 	/**
+	 * The maximum height of the title labels.
+	 */
+	private static final int LABEL_MAX_HT = 30;
+	/**
+	 * The minimum height of the title labels.
+	 */
+	private static final int LABEL_MIN_HT = 10;
+	/**
+	 * The preferred height of the title labels.
+	 */
+	private static final int LABEL_HEIGHT = 20;
+	/**
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
@@ -61,9 +73,9 @@ public class DetailPanelNG extends JPanel {
 		addListener(new TileDetailPanel(), sources);
 		final JPanel panelOne = new JPanel(new BorderLayout());
 		final JLabel labelOne = new JLabel("Contents of the tile on the main map:");
-		labelOne.setMaximumSize(new Dimension(LIST_MAX_WIDTH, 30));
-		labelOne.setMinimumSize(new Dimension(LIST_MIN_WIDTH, 10));
-		labelOne.setPreferredSize(new Dimension(LIST_WIDTH, 20));
+		labelOne.setMaximumSize(new Dimension(LIST_MAX_WIDTH, LABEL_MAX_HT));
+		labelOne.setMinimumSize(new Dimension(LIST_MIN_WIDTH, LABEL_MIN_HT));
+		labelOne.setPreferredSize(new Dimension(LIST_WIDTH, LABEL_HEIGHT));
 		panelOne.add(labelOne, BorderLayout.NORTH);
 		final JScrollPane listOne = new JScrollPane(new FixtureList("tile", sources));
 		listOne.setMaximumSize(new Dimension(LIST_MAX_WIDTH, DETAIL_PAN_MAX_HT));
@@ -73,9 +85,9 @@ public class DetailPanelNG extends JPanel {
 		add(panelOne);
 		final JPanel panelTwo = new JPanel(new BorderLayout());
 		final JLabel labelTwo = new JLabel("On the secondary map:");
-		labelTwo.setMaximumSize(new Dimension(LIST_MAX_WIDTH, 30));
-		labelTwo.setMinimumSize(new Dimension(LIST_MIN_WIDTH, 10));
-		labelTwo.setPreferredSize(new Dimension(LIST_WIDTH, 20));
+		labelTwo.setMaximumSize(new Dimension(LIST_MAX_WIDTH, LABEL_MAX_HT));
+		labelTwo.setMinimumSize(new Dimension(LIST_MIN_WIDTH, LABEL_MIN_HT));
+		labelTwo.setPreferredSize(new Dimension(LIST_WIDTH, LABEL_HEIGHT));
 		panelTwo.add(labelTwo, BorderLayout.NORTH);
 		final JScrollPane listTwo = new JScrollPane(new FixtureList("secondary-tile", sources));
 		listTwo.setMaximumSize(new Dimension(LIST_MAX_WIDTH, DETAIL_PAN_MAX_HT));
