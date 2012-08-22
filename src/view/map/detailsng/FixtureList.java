@@ -10,7 +10,7 @@ import model.viewer.FixtureListModel;
 import util.PropertyChangeSource;
 
 /**
- * A visual tree-based representation of the contents of a tile.
+ * A visual list-based representation of the contents of a tile.
  *
  * @author Jonathan Lovelace
  */
