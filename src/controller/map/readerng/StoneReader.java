@@ -10,8 +10,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.events.StoneEvent;
-import model.map.events.StoneKind;
+import model.map.fixtures.resources.StoneEvent;
+import model.map.fixtures.resources.StoneKind;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;

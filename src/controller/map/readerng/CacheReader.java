@@ -11,7 +11,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.CacheFixture;
+import model.map.fixtures.resources.CacheFixture;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;

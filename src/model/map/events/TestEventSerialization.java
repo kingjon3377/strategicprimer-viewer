@@ -5,6 +5,9 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
+import model.map.fixtures.resources.MineralEvent;
+import model.map.fixtures.resources.StoneEvent;
+import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.CityEvent;
 import model.map.fixtures.towns.FortificationEvent;
 import model.map.fixtures.towns.TownEvent;

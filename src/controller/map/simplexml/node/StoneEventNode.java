@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.events.StoneEvent;
-import model.map.events.StoneKind;
+import model.map.fixtures.resources.StoneEvent;
+import model.map.fixtures.resources.StoneKind;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.SPFormatException;

@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.TileFixture;

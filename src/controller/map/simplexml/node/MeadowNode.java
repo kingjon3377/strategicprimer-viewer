@@ -1,8 +1,8 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.FieldStatus;
-import model.map.fixtures.Meadow;
+import model.map.fixtures.resources.FieldStatus;
+import model.map.fixtures.resources.Meadow;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;

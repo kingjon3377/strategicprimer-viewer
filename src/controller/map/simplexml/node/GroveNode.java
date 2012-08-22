@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Grove;
+import model.map.fixtures.resources.Grove;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.MissingParameterException;

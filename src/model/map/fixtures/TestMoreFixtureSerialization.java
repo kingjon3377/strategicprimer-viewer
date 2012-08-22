@@ -7,6 +7,11 @@ import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.FieldStatus;
+import model.map.fixtures.resources.Grove;
+import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.Mine;
+import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 

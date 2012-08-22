@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Shrub;
+import model.map.fixtures.resources.Shrub;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.SPFormatException;

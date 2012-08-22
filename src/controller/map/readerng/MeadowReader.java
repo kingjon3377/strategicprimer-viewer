@@ -12,8 +12,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.FieldStatus;
-import model.map.fixtures.Meadow;
+import model.map.fixtures.resources.FieldStatus;
+import model.map.fixtures.resources.Meadow;
 import util.Pair;
 import util.Warning;
 import controller.map.MissingParameterException;

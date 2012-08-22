@@ -1,4 +1,4 @@
-package model.map.events;
+package model.map.fixtures.resources;
 
 import java.util.HashMap;
 import java.util.Map;
