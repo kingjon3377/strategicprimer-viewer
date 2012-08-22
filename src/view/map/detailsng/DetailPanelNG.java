@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -66,34 +67,20 @@ public class DetailPanelNG extends JPanel {
 	public DetailPanelNG(final int version,
 			final PropertyChangeSource... sources) {
 		super();
-		setMaximumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MAX_HT));
-		setMinimumSize(new Dimension(Integer.MAX_VALUE, DETAIL_PAN_MIN_HT));
-		setPreferredSize(new Dimension(Integer.MAX_VALUE, DETAIL_PANEL_HT));
+		setComponentSizes(this, new Dimension(Integer.MAX_VALUE,
+				DETAIL_PAN_MIN_HT), new Dimension(Integer.MAX_VALUE,
+				DETAIL_PANEL_HT), new Dimension(Integer.MAX_VALUE,
+				DETAIL_PAN_MAX_HT));
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		addListener(new TileDetailPanel(), sources);
 		final JPanel panelOne = new JPanel(new BorderLayout());
-		final JLabel labelOne = new JLabel("Contents of the tile on the main map:");
-		labelOne.setMaximumSize(new Dimension(LIST_MAX_WIDTH, LABEL_MAX_HT));
-		labelOne.setMinimumSize(new Dimension(LIST_MIN_WIDTH, LABEL_MIN_HT));
-		labelOne.setPreferredSize(new Dimension(LIST_WIDTH, LABEL_HEIGHT));
-		panelOne.add(labelOne, BorderLayout.NORTH);
-		final JScrollPane listOne = new JScrollPane(new FixtureList("tile", sources));
-		listOne.setMaximumSize(new Dimension(LIST_MAX_WIDTH, DETAIL_PAN_MAX_HT));
-		listOne.setMinimumSize(new Dimension(LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT));
-		listOne.setPreferredSize(new Dimension(LIST_WIDTH, DETAIL_PANEL_HT));
-		panelOne.add(listOne, BorderLayout.CENTER);
+		panelOne.add(createLabel("Contents of the tile on the main map:"),
+				BorderLayout.NORTH);
+		panelOne.add(createList("tile", sources), BorderLayout.CENTER);
 		add(panelOne);
 		final JPanel panelTwo = new JPanel(new BorderLayout());
-		final JLabel labelTwo = new JLabel("On the secondary map:");
-		labelTwo.setMaximumSize(new Dimension(LIST_MAX_WIDTH, LABEL_MAX_HT));
-		labelTwo.setMinimumSize(new Dimension(LIST_MIN_WIDTH, LABEL_MIN_HT));
-		labelTwo.setPreferredSize(new Dimension(LIST_WIDTH, LABEL_HEIGHT));
-		panelTwo.add(labelTwo, BorderLayout.NORTH);
-		final JScrollPane listTwo = new JScrollPane(new FixtureList("secondary-tile", sources));
-		listTwo.setMaximumSize(new Dimension(LIST_MAX_WIDTH, DETAIL_PAN_MAX_HT));
-		listTwo.setMinimumSize(new Dimension(LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT));
-		listTwo.setPreferredSize(new Dimension(LIST_WIDTH, DETAIL_PANEL_HT));
-		panelTwo.add(listTwo, BorderLayout.CENTER);
+		panelTwo.add(createLabel("On the secondary map:"), BorderLayout.NORTH);
+		panelTwo.add(createList("secondary-tile", sources), BorderLayout.CENTER);
 		add(panelTwo);
 		addListener(new KeyPanel(version), sources);
 		// TODO: Drag-and-drop between lists ...
@@ -116,5 +103,45 @@ public class DetailPanelNG extends JPanel {
 				source.addPropertyChangeListener((PropertyChangeListener) panel);
 			}
 		}
+	}
+	/**
+	 * Set a component's sizes.
+	 * @param <T> the type of the component
+	 * @param component the component
+	 * @param min the minimum size
+	 * @param pref the preferred size
+	 * @param max the maximum size
+	 * @return the component
+	 */
+	private static <T extends JComponent> T setComponentSizes(
+			final T component, final Dimension min, final Dimension pref,
+			final Dimension max) {
+		component.setMinimumSize(min);
+		component.setPreferredSize(pref);
+		component.setMaximumSize(max);
+		return component;
+	}
+	/**
+	 * Create one of the labels. The static constants are effectively parameters.
+	 * @param text the text it should have.
+	 * @return the constructed label
+	 */
+	private static JLabel createLabel(final String text) {
+		return setComponentSizes(new JLabel(text), new Dimension(
+				LIST_MIN_WIDTH, LABEL_MIN_HT), new Dimension(LIST_WIDTH,
+				LABEL_HEIGHT), new Dimension(LIST_MAX_WIDTH, LABEL_MAX_HT));
+	}
+	/**
+	 * Create one of the lists/trees. The static constants are effectively parameters.
+	 * @param property the property it should be listening to for changes
+	 * @param sources PropertyChangeSources it should be listening on
+	 * @return a scroll pane containing the list or tree.
+	 */
+	private static JScrollPane createList(final String property, final PropertyChangeSource... sources) {
+		return setComponentSizes(new JScrollPane(
+				new FixtureList(property, sources)), new Dimension(
+				LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT), new Dimension(LIST_WIDTH,
+				DETAIL_PANEL_HT), new Dimension(LIST_MAX_WIDTH,
+				DETAIL_PAN_MAX_HT));
 	}
 }
