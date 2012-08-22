@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -134,10 +135,15 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						desideratum, reflection,
 						new Warning(Warning.Action.Die));
 			} catch (final FatalWarning except) {
+				final Throwable cause = except.getCause();
 				assertTrue("Unsupported tag",
-						except.getCause() instanceof UnsupportedTagException);
-				assertEquals("The tag we expected", tag,
-						((UnsupportedTagException) except.getCause()).getTag());
+						cause instanceof UnsupportedTagException);
+				if (cause instanceof UnsupportedTagException) {
+					assertEquals("The tag we expected", tag,
+							((UnsupportedTagException) cause).getTag());
+				} else {
+					throw new IllegalStateException("Can't get here");
+				}
 			}
 		} else {
 			try {
@@ -263,12 +269,17 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						new Warning(Warning.Action.Die));
 				fail("We were expecting a MissingParameterException");
 			} catch (final FatalWarning except) {
+				final Throwable cause = except.getCause();
 				assertTrue("Missing property",
-						except.getCause() instanceof MissingParameterException);
-				assertEquals(
-						"The missing property should be the one we're expecting",
-						property, ((MissingParameterException) except
-								.getCause()).getParam());
+						cause instanceof MissingParameterException);
+				if (cause instanceof MissingParameterException) {
+					assertEquals(
+							"The missing property should be the one we're expecting",
+							property,
+							((MissingParameterException) cause).getParam());
+				} else {
+					throw new IllegalStateException("Can't get here");
+				}
 			}
 		} else {
 			try {
@@ -358,13 +369,18 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						new Warning(Warning.Action.Die));
 				fail("We were expecting a MissingParameterException");
 			} catch (final FatalWarning except) {
+				final Throwable cause = except.getCause();
 				assertTrue(
 						"Missing property",
-						except.getCause() instanceof DeprecatedPropertyException);
-				assertEquals(
-						"The missing property should be the one we're expecting",
-						deprecated, ((DeprecatedPropertyException) except
-								.getCause()).getOld());
+						cause instanceof DeprecatedPropertyException);
+				if (cause instanceof DeprecatedPropertyException) {
+					assertEquals(
+							"The missing property should be the one we're expecting",
+							deprecated,
+							((DeprecatedPropertyException) cause).getOld());
+				} else {
+					throw new IllegalStateException("Can't get here");
+				}
 			}
 		} else {
 			try {
@@ -737,9 +753,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 */
 	public <T> int iteratorSize(final Iterable<T> iter) {
 		int size = 0;
-		// ESCA-JAVA0171:
-		for (@SuppressWarnings("unused") final T each : iter) {
+		final Iterator<T> iterator = iter.iterator();
+		// ESCA-JAVA0254:
+		while (iterator.hasNext()) {
 			size++;
+			iterator.next();
 		}
 		return size;
 	}
