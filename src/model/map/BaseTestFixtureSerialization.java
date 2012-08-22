@@ -737,6 +737,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 */
 	public <T> int iteratorSize(final Iterable<T> iter) {
 		int size = 0;
+		// ESCA-JAVA0171:
 		for (@SuppressWarnings("unused") final T each : iter) {
 			size++;
 		}

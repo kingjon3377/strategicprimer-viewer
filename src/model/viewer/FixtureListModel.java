@@ -47,7 +47,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 		if (listenedProperty.equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Tile) {
 			this.clear();
-			for (TileFixture fix : ((Tile) evt.getNewValue())) {
+			for (TileFixture fix : (Tile) evt.getNewValue()) {
 				this.addElement(fix);
 			}
 		}

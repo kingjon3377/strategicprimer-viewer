@@ -46,26 +46,25 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	 * @return true iff it was not already in the set.
 	 */
 	public boolean addFixture(final TileFixture fix) {
-		if (!((fix instanceof TextFixture) && ((TextFixture) fix).getText()
-				.isEmpty())) {
+		if ((fix instanceof TextFixture) && ((TextFixture) fix).getText()
+				.isEmpty()) {
+			return false; // NOPMD
+		} else {
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {
 					final RiverFixture rivers = getRivers();
 					for (River river : (RiverFixture) fix) {
 						rivers.addRiver(river);
 					}
-					return true;
-				} else if (!((RiverFixture) fix).getRivers().isEmpty()) {
-					// If the parameter is a *non-empty* river-fixture
-					return contents.add(fix);
+					return true; // NOPMD
+				} else if (((RiverFixture) fix).getRivers().isEmpty()) {
+					return false; // NOPMD
 				} else {
-					return false;
+					return contents.add(fix); // NOPMD
 				}
 			} else {
-				return contents.add(fix);
+				return contents.add(fix); // NOPMD
 			}
-		} else {
-			return false;
 		}
 	}
 
@@ -161,7 +160,7 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 					contents);
 			unmatchedContents.removeAll(((Tile) tile).contents);
 			for (final TileFixture local : unmatchedContents) {
-				for (final TileFixture remote : ((Tile) tile)) {
+				for (final TileFixture remote : (Tile) tile) {
 					if (local.equalsIgnoringID(remote)) {
 						removeFixture(local);
 						addFixture(remote);
