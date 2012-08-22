@@ -10,7 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Minotaur;
+import model.map.fixtures.mobile.Minotaur;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;

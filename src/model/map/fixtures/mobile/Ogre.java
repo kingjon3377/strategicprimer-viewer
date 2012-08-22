@@ -1,50 +1,50 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A minotaur. TODO:Should probably be a unit, or something.
+ * An ogre. TODO: should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Minotaur extends XMLWritableImpl implements TileFixture, HasImage {
+public class Ogre extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Minotaur(final int idNum, final String fileName) {
+	public Ogre(final int idNum, final String fileName) {
 		super(fileName);
 		id = idNum;
 	}
 
 	/**
-	 * @return an XML representation of the minotaur
+	 * @return an XML representation of the ogre
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<minotaur id=\"").append(id).append("\" />")
+		return new StringBuilder("<ogre id=\"").append(id).append("\" />")
 				.toString();
 	}
 
 	/**
-	 * @return a String representation of the minotaur
+	 * @return a String representation of the ogre
 	 */
 	@Override
 	public String toString() {
-		return "minotaur";
+		return "ogre";
 	}
 
 	/**
-	 * @return the name of an image to represent the minotaur
+	 * @return the name of an image to represent the ogre
 	 */
 	@Override
 	public String getImage() {
-		return "minotaur.png";
+		return "ogre.png";
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Minotaur extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Minotaur && id == ((TileFixture) obj).getID();
+		return obj instanceof Ogre && id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Minotaur extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Minotaur;
+		return fix instanceof Ogre;
 	}
 
 	/**
@@ -108,6 +108,6 @@ public class Minotaur extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Minotaur(getID(), getFile());
+		return new Ogre(getID(), getFile());
 	}
 }

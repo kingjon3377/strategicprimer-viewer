@@ -15,7 +15,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.Fortress;
-import model.map.fixtures.Unit;
+import model.map.fixtures.mobile.Unit;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;

@@ -11,7 +11,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Giant;
+import model.map.fixtures.mobile.Giant;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;

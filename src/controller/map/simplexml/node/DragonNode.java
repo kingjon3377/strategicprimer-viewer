@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Dragon;
+import model.map.fixtures.mobile.Dragon;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.SPFormatException;

@@ -1,58 +1,58 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A giant. TODO: should probably be a unit, or something.
+ * A fairy. TODO: should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
+public class Fairy extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
-	 * What kind of giant. (Usually blank, at least at first.)
+	 * What kind of fairy (great, lesser, snow ...).
 	 */
 	private final String kind;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param gKind the kind of giant
+	 * @param fKind the kind of fairy
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Giant(final String gKind, final int idNum, final String fileName) {
+	public Fairy(final String fKind, final int idNum, final String fileName) {
 		super(fileName);
-		kind = gKind;
+		kind = fKind;
 		id = idNum;
 	}
 
 	/**
-	 * @return the kind of giant
+	 * @return the kind of fairy
 	 */
 	public String getKind() {
 		return kind;
 	}
 
 	/**
-	 * @return an XML representation of the giant
+	 * @return an XML representation of the fairy
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<giant kind=\"").append(kind)
+		return new StringBuilder("<fairy kind=\"").append(kind)
 				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 
 	/**
-	 * @return a String representation of the giant
+	 * @return a String representation of the fairy
 	 */
 	@Override
 	public String toString() {
-		return kind + (kind.isEmpty() ? "giant" : " giant");
+		return kind + " fairy";
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public String getImage() {
-		return "giant.png";
+		return "fairy.png";
 	}
 
 	/**
@@ -77,8 +77,8 @@ public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Giant && ((Giant) obj).kind.equals(kind)
-				&& id == ((TileFixture) obj).getID();
+		return obj instanceof Fairy && ((Fairy) obj).kind.equals(kind)
+				&& ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
+		return fix instanceof Fairy && ((Fairy) fix).kind.equals(kind);
 	}
 
 	/**
@@ -125,6 +125,6 @@ public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Giant(getKind(), getID(), getFile());
+		return new Fairy(getKind(), getID(), getFile());
 	}
 }

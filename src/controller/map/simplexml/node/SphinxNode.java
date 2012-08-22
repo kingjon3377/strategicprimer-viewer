@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Sphinx;
+import model.map.fixtures.mobile.Sphinx;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;

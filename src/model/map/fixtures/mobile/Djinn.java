@@ -1,34 +1,34 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A phoenix. TODO: should probably be a unit, or something.
+ * A djinn. TODO: should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Phoenix extends XMLWritableImpl implements TileFixture, HasImage {
+public class Djinn extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Phoenix(final int idNum, final String fileName) {
+	public Djinn(final int idNum, final String fileName) {
 		super(fileName);
 		id = idNum;
 	}
 
 	/**
-	 * @return an XML representation of the phoenix
+	 * @return an XML representation of the djinn
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder().append("<phoenix id=\"").append(id)
-				.append("\" />").toString();
+		return new StringBuilder("<djinn id=\"").append(id).append("\" />")
+				.toString();
 	}
 
 	/**
@@ -36,15 +36,15 @@ public class Phoenix extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "phoenix";
+		return "djinn";
 	}
 
 	/**
-	 * @return the name of an image to represent the phoenix
+	 * @return the name of an image to represent the djinn
 	 */
 	@Override
 	public String getImage() {
-		return "phoenix.png";
+		return "djinn.png";
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Phoenix extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Phoenix && id == ((TileFixture) obj).getID();
+		return obj instanceof Djinn && ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Phoenix extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Phoenix;
+		return fix instanceof Djinn;
 	}
 
 	/**
@@ -108,6 +108,6 @@ public class Phoenix extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Phoenix(getID(), getFile());
+		return new Djinn(getID(), getFile());
 	}
 }

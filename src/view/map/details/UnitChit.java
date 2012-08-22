@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 
-import model.map.fixtures.Unit;
+import model.map.fixtures.mobile.Unit;
 import model.viewer.FixtureTransferable;
 
 /**

@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Ogre;
+import model.map.fixtures.mobile.Ogre;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;

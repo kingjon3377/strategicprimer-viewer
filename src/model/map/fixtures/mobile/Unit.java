@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.Player;

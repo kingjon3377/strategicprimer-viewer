@@ -7,7 +7,7 @@ import model.map.TileFixture;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.Unit;
+import model.map.fixtures.mobile.Unit;
 import view.map.main.SelectionListener;
 import view.util.WrapLayout;
 

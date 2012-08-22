@@ -1,66 +1,50 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A centaur. TODO: Should probably be a kind of unit instead, or something ...
+ * A phoenix. TODO: should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Centaur extends XMLWritableImpl implements TileFixture, HasImage {
+public class Phoenix extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
-	 * What kind of centaur.
-	 */
-	private final String kind;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param centKind the kind of centaur
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Centaur(final String centKind, final int idNum, final String fileName) {
+	public Phoenix(final int idNum, final String fileName) {
 		super(fileName);
-		kind = centKind;
 		id = idNum;
 	}
 
 	/**
-	 * @return the kind of centaur
-	 */
-	public String getKind() {
-		return kind;
-	}
-
-	/**
-	 * @return an XML representation of the centaur
+	 * @return an XML representation of the phoenix
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<centaur kind=\"").append(kind)
-				.append("\" id=\"").append(id).append("\" />").toString();
+		return new StringBuilder().append("<phoenix id=\"").append(id)
+				.append("\" />").toString();
 	}
 
 	/**
-	 * @return a String representation of the centaur
+	 * @return a String representation of the djinn
 	 */
 	@Override
 	public String toString() {
-		return kind + " centaur";
+		return "phoenix";
 	}
 
 	/**
-	 * @return the name of an image to represent the centaur
+	 * @return the name of an image to represent the phoenix
 	 */
 	@Override
 	public String getImage() {
-		return "centaur.png";
+		return "phoenix.png";
 	}
 
 	/**
@@ -77,8 +61,7 @@ public class Centaur extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Centaur && ((Centaur) obj).kind.equals(kind)
-				&& ((TileFixture) obj).getID() == id;
+		return obj instanceof Phoenix && id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -117,7 +100,7 @@ public class Centaur extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Centaur && ((Centaur) fix).kind.equals(kind);
+		return fix instanceof Phoenix;
 	}
 
 	/**
@@ -125,6 +108,6 @@ public class Centaur extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Centaur(getKind(), getID(), getFile());
+		return new Phoenix(getID(), getFile());
 	}
 }

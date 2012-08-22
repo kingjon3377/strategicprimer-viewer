@@ -1,50 +1,50 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A djinn. TODO: should probably be a unit, or something.
+ * A minotaur. TODO:Should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Djinn extends XMLWritableImpl implements TileFixture, HasImage {
+public class Minotaur extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Djinn(final int idNum, final String fileName) {
+	public Minotaur(final int idNum, final String fileName) {
 		super(fileName);
 		id = idNum;
 	}
 
 	/**
-	 * @return an XML representation of the djinn
+	 * @return an XML representation of the minotaur
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<djinn id=\"").append(id).append("\" />")
+		return new StringBuilder("<minotaur id=\"").append(id).append("\" />")
 				.toString();
 	}
 
 	/**
-	 * @return a String representation of the djinn
+	 * @return a String representation of the minotaur
 	 */
 	@Override
 	public String toString() {
-		return "djinn";
+		return "minotaur";
 	}
 
 	/**
-	 * @return the name of an image to represent the djinn
+	 * @return the name of an image to represent the minotaur
 	 */
 	@Override
 	public String getImage() {
-		return "djinn.png";
+		return "minotaur.png";
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Djinn extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Djinn && ((TileFixture) obj).getID() == id;
+		return obj instanceof Minotaur && id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Djinn extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Djinn;
+		return fix instanceof Minotaur;
 	}
 
 	/**
@@ -108,6 +108,6 @@ public class Djinn extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Djinn(getID(), getFile());
+		return new Minotaur(getID(), getFile());
 	}
 }

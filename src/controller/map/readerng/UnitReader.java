@@ -13,7 +13,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Unit;
+import model.map.fixtures.mobile.Unit;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;

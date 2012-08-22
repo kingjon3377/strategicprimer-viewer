@@ -6,10 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import model.map.fixtures.Animal;
 import model.map.fixtures.CacheFixture;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Animal;
 import util.ArraySet;
 import view.util.SystemOut;
 

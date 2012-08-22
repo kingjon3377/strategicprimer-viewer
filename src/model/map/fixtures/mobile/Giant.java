@@ -1,50 +1,66 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A simurgh. TODO: should probably be a unit, or something.
+ * A giant. TODO: should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Simurgh extends XMLWritableImpl implements TileFixture, HasImage {
+public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
+	 * What kind of giant. (Usually blank, at least at first.)
+	 */
+	private final String kind;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param gKind the kind of giant
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Simurgh(final int idNum, final String fileName) {
+	public Giant(final String gKind, final int idNum, final String fileName) {
 		super(fileName);
+		kind = gKind;
 		id = idNum;
 	}
 
 	/**
-	 * @return an XML representation of the simurgh
+	 * @return the kind of giant
+	 */
+	public String getKind() {
+		return kind;
+	}
+
+	/**
+	 * @return an XML representation of the giant
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<simurgh id=\"").append(id).append("\" />")
-				.toString();
+		return new StringBuilder("<giant kind=\"").append(kind)
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 
 	/**
-	 * @return a String representation of the djinn
+	 * @return a String representation of the giant
 	 */
 	@Override
 	public String toString() {
-		return "simurgh";
+		return kind + (kind.isEmpty() ? "giant" : " giant");
 	}
 
 	/**
-	 * @return the name of an image to represent the simurgh
+	 * @return the name of an image to represent the fairy
 	 */
 	@Override
 	public String getImage() {
-		return "simurgh.png";
+		return "giant.png";
 	}
 
 	/**
@@ -52,7 +68,7 @@ public class Simurgh extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public int getZValue() {
-		return 45;
+		return 40;
 	}
 
 	/**
@@ -61,7 +77,8 @@ public class Simurgh extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Simurgh && ((TileFixture) obj).getID() == id;
+		return obj instanceof Giant && ((Giant) obj).kind.equals(kind)
+				&& id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -100,7 +117,7 @@ public class Simurgh extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Simurgh;
+		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
 
 	/**
@@ -108,6 +125,6 @@ public class Simurgh extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Simurgh(getID(), getFile());
+		return new Giant(getKind(), getID(), getFile());
 	}
 }

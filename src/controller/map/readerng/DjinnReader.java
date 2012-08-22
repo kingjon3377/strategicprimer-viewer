@@ -10,7 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Djinn;
+import model.map.fixtures.mobile.Djinn;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;

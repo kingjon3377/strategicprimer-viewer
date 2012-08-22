@@ -1,50 +1,50 @@
-package model.map.fixtures;
+package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * An ogre. TODO: should probably be a unit, or something.
+ * A simurgh. TODO: should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Ogre extends XMLWritableImpl implements TileFixture, HasImage {
+public class Simurgh extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Ogre(final int idNum, final String fileName) {
+	public Simurgh(final int idNum, final String fileName) {
 		super(fileName);
 		id = idNum;
 	}
 
 	/**
-	 * @return an XML representation of the ogre
+	 * @return an XML representation of the simurgh
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<ogre id=\"").append(id).append("\" />")
+		return new StringBuilder("<simurgh id=\"").append(id).append("\" />")
 				.toString();
 	}
 
 	/**
-	 * @return a String representation of the ogre
+	 * @return a String representation of the djinn
 	 */
 	@Override
 	public String toString() {
-		return "ogre";
+		return "simurgh";
 	}
 
 	/**
-	 * @return the name of an image to represent the ogre
+	 * @return the name of an image to represent the simurgh
 	 */
 	@Override
 	public String getImage() {
-		return "ogre.png";
+		return "simurgh.png";
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Ogre extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Ogre && id == ((TileFixture) obj).getID();
+		return obj instanceof Simurgh && ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Ogre extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Ogre;
+		return fix instanceof Simurgh;
 	}
 
 	/**
@@ -108,6 +108,6 @@ public class Ogre extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Ogre(getID(), getFile());
+		return new Simurgh(getID(), getFile());
 	}
 }

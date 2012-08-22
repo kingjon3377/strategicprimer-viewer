@@ -11,6 +11,7 @@ import model.map.Player;
 import model.map.Subsettable;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.fixtures.mobile.Unit;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but

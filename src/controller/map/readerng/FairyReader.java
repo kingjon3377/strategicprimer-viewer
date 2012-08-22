@@ -11,7 +11,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Fairy;
+import model.map.fixtures.mobile.Fairy;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
