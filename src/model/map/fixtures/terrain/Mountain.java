@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures.terrain;
 
 import model.map.HasImage;
 import model.map.TerrainFixture;
@@ -6,49 +6,28 @@ import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A forest on a tile.
+ * A mountain on the map---or at least a fixture representing mountainous
+ * terrain.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage {
-	/**
-	 * @return what kind of trees
-	 */
-	public String getKind() {
-		return trees;
-	}
-
-	/**
-	 * Whether this is "rows of" trees.
-	 */
-	private final boolean rows;
-
+public class Mountain extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * Constructor.
 	 *
-	 * @param kind what kind of trees dominate.
-	 * @param rowed whether the trees are in rows
 	 * @param fileName the file this was loaded from
 	 */
-	public Forest(final String kind, final boolean rowed, final String fileName) {
+	public Mountain(final String fileName) {
 		super(fileName);
-		trees = kind;
-		rows = rowed;
 	}
-
-	/**
-	 * What kind of trees dominate the forest.
-	 */
-	private final String trees;
 
 	/**
 	 * @return a String representation of the forest.
 	 */
 	@Override
 	public String toString() {
-		return rows ? "Rows of " + trees + " trees." : "A " + trees
-				+ " forest.";
+		return "Mountain.";
 	}
 
 	/**
@@ -58,30 +37,15 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage 
 	@Override
 	@Deprecated
 	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<forest kind=\"");
-		sbuild.append(trees);
-		if (rows) {
-			sbuild.append("\" rows=\"true");
-		}
-		sbuild.append("\" />");
-		return sbuild.toString();
+		return "<mountain />";
 	}
 
 	/**
-	 * TODO: Should differ based on what kind of tree.
-	 *
-	 * @return the name of an image to represent the forest.
+	 * @return the name of an image to represent the mountain.
 	 */
 	@Override
 	public String getImage() {
-		return "tree.png";
-	}
-
-	/**
-	 * @return whether this is "rows of" trees.
-	 */
-	public boolean isRows() {
-		return rows;
+		return "mountain.png";
 	}
 
 	/**
@@ -89,7 +53,7 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage 
 	 */
 	@Override
 	public int getZValue() {
-		return 20;
+		return 10;
 	}
 
 	/**
@@ -98,8 +62,7 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage 
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Forest && trees.equals(((Forest) obj).trees)
-				&& rows == ((Forest) obj).rows;
+		return obj instanceof Mountain;
 	}
 
 	/**
@@ -107,7 +70,7 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage 
 	 */
 	@Override
 	public int hashCode() {
-		return trees.hashCode() << (rows ? 1 : 0);
+		return 1;
 	}
 
 	/**
@@ -121,9 +84,9 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage 
 	}
 
 	/**
-	 * TODO: support different IDs for different instances.
+	 * TODO: Perhaps make this per-mountain?
 	 *
-	 * @return an ID for the object
+	 * @return an ID number
 	 */
 	@Override
 	public int getID() {
@@ -144,6 +107,6 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage 
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Forest(getKind(), isRows(), getFile());
+		return new Mountain(getFile());
 	}
 }

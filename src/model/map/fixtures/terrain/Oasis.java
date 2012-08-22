@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures.terrain;
 
 import model.map.HasImage;
 import model.map.TerrainFixture;
@@ -6,46 +6,46 @@ import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A sandbar on the map.
+ * An oasis on the map.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Sandbar(final int idNum, final String fileName) {
+	public Oasis(final int idNum, final String fileName) {
 		super(fileName);
 		id = idNum;
 	}
 
 	/**
-	 * @return a String representation of the sandbar.
+	 * @return a String representation of the oasis.
 	 */
 	@Override
 	public String toString() {
-		return "Sandbar";
+		return "Oasis";
 	}
 
 	/**
-	 * @return an XML representaiton of the sandbar
+	 * @return an XML representation of the oasis.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<sandbar id=\"").append(id).append("\" />")
+		return new StringBuilder("<oasis id=\"").append(id).append("\" />")
 				.toString();
 	}
 
 	/**
-	 * @return the name o an image to represent the sandbar.
+	 * @return the name of an image to represent the oasis.
 	 */
 	@Override
 	public String getImage() {
-		return "sandbar.png";
+		return "oasis.png";
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage
 	 */
 	@Override
 	public int getZValue() {
-		return 5;
+		return 25;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Sandbar && id == ((TileFixture) obj).getID();
+		return obj instanceof Oasis && id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Sandbar;
+		return fix instanceof Oasis;
 	}
 
 	/**
@@ -110,6 +110,6 @@ public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Sandbar(getID(), getFile());
+		return new Oasis(getID(), getFile());
 	}
 }

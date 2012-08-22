@@ -6,6 +6,11 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Hill;
+import model.map.fixtures.terrain.Mountain;
+import model.map.fixtures.terrain.Oasis;
+import model.map.fixtures.terrain.Sandbar;
 
 import org.junit.Test;
 

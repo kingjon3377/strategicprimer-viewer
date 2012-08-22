@@ -1,7 +1,7 @@
 package controller.map.simplexml.node;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Forest;
+import model.map.fixtures.terrain.Forest;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.SPFormatException;

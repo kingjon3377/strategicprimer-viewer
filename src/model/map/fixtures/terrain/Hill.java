@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures.terrain;
 
 import model.map.HasImage;
 import model.map.TerrainFixture;
@@ -6,46 +6,47 @@ import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * An oasis on the map.
+ * A hill on the map. Should increase unit's effective vision by a small
+ * fraction when the unit is on it, if not in forest.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Oasis(final int idNum, final String fileName) {
+	public Hill(final int idNum, final String fileName) {
 		super(fileName);
 		id = idNum;
 	}
 
 	/**
-	 * @return a String representation of the oasis.
+	 * @return a String representation of the hill.
 	 */
 	@Override
 	public String toString() {
-		return "Oasis";
+		return "Hill";
 	}
 
 	/**
-	 * @return an XML representation of the oasis.
+	 * @return an XML representation of the hill.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<oasis id=\"").append(id).append("\" />")
+		return new StringBuilder("<hill id=\"").append(id).append("\" />")
 				.toString();
 	}
 
 	/**
-	 * @return the name of an image to represent the oasis.
+	 * @return the name of an image to represent the hill.
 	 */
 	@Override
 	public String getImage() {
-		return "oasis.png";
+		return "hill.png";
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public int getZValue() {
-		return 25;
+		return 5;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Oasis && id == ((TileFixture) obj).getID();
+		return obj instanceof Hill && id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Oasis;
+		return fix instanceof Hill;
 	}
 
 	/**
@@ -110,6 +111,6 @@ public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Oasis(getID(), getFile());
+		return new Hill(getID(), getFile());
 	}
 }

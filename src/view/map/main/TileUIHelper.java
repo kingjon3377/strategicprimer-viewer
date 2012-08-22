@@ -9,11 +9,11 @@ import java.util.Map;
 import model.map.SPMap;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.fixtures.Forest;
-import model.map.fixtures.Hill;
-import model.map.fixtures.Mountain;
-import model.map.fixtures.Oasis;
-import model.map.fixtures.Sandbar;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Hill;
+import model.map.fixtures.terrain.Mountain;
+import model.map.fixtures.terrain.Oasis;
+import model.map.fixtures.terrain.Sandbar;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.

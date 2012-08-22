@@ -1,4 +1,4 @@
-package model.map.fixtures;
+package model.map.fixtures.terrain;
 
 import model.map.HasImage;
 import model.map.TerrainFixture;
@@ -6,47 +6,46 @@ import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
 /**
- * A hill on the map. Should increase unit's effective vision by a small
- * fraction when the unit is on it, if not in forest.
+ * A sandbar on the map.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Hill(final int idNum, final String fileName) {
+	public Sandbar(final int idNum, final String fileName) {
 		super(fileName);
 		id = idNum;
 	}
 
 	/**
-	 * @return a String representation of the hill.
+	 * @return a String representation of the sandbar.
 	 */
 	@Override
 	public String toString() {
-		return "Hill";
+		return "Sandbar";
 	}
 
 	/**
-	 * @return an XML representation of the hill.
+	 * @return an XML representaiton of the sandbar
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
 	 */
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<hill id=\"").append(id).append("\" />")
+		return new StringBuilder("<sandbar id=\"").append(id).append("\" />")
 				.toString();
 	}
 
 	/**
-	 * @return the name of an image to represent the hill.
+	 * @return the name o an image to represent the sandbar.
 	 */
 	@Override
 	public String getImage() {
-		return "hill.png";
+		return "sandbar.png";
 	}
 
 	/**
@@ -63,7 +62,7 @@ public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Hill && id == ((TileFixture) obj).getID();
+		return obj instanceof Sandbar && id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -103,7 +102,7 @@ public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof Hill;
+		return fix instanceof Sandbar;
 	}
 
 	/**
@@ -111,6 +110,6 @@ public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Hill(getID(), getFile());
+		return new Sandbar(getID(), getFile());
 	}
 }

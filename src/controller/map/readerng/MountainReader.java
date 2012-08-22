@@ -9,7 +9,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.Mountain;
+import model.map.fixtures.terrain.Mountain;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;

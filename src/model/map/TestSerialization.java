@@ -12,13 +12,13 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.fixtures.Animal;
 import model.map.fixtures.CacheFixture;
-import model.map.fixtures.Forest;
 import model.map.fixtures.Fortress;
 import model.map.fixtures.Griffin;
 import model.map.fixtures.Ogre;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.Unit;
+import model.map.fixtures.terrain.Forest;
 
 import org.junit.Test;
 
