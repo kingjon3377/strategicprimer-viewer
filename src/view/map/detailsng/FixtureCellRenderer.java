@@ -123,16 +123,16 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeC
 			final boolean isSelected, final boolean hasFocus, final int row, final int column) {
 		final Component component = TABLE_DEFAULT.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		if (component instanceof JLabel) {
-			if (value instanceof TileTreeNode) {
-				((JLabel) component).setText("<html><p>On this tile:</p></html>");
-			} else if (value instanceof FixtureTreeNode) {
-				final TileFixture fixture = ((FixtureTreeNode) value).getFixture();
+			if (value instanceof TileFixture) {
+				final TileFixture fixture = (TileFixture) value;
 				((JLabel) component).setText("<html><p>" + fixture.toString() + "</p></html>");
 				if (fixture instanceof HasImage) {
 					((JLabel) component).setIcon(getIcon((HasImage) fixture));
 				} else {
 					((JLabel) component).setIcon(defaultFixtIcon);
 				}
+			} else {
+				LOGGER.warning("Non-TileFixture item");
 			}
 		} else {
 			LOGGER.warning("Component wasn't a JLabel, so skipping custom rendering");
