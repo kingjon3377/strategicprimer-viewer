@@ -18,7 +18,7 @@ public class FixtureTree extends JTree {
 	 */
 	public FixtureTree(final String property, final PropertyChangeSource... sources) {
 		super(new FixtureTreeModel(property, sources));
-		setCellRenderer(new FixtureTreeRenderer());
+		setCellRenderer(new FixtureCellRenderer());
 	}
 	/**
 	 * Restrict the width to the width of the parent.
