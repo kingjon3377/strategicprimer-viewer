@@ -27,13 +27,15 @@ public class CurriedFixtureTransferable implements Transferable {
 	/**
 	 * Constructor.
 	 * @param list a list of TileFixtures to be transferred
+	 * @param sourceProperty the property the source component listens to
 	 */
-	public CurriedFixtureTransferable(final List<TileFixture> list) {
+	public CurriedFixtureTransferable(final List<TileFixture> list, final String sourceProperty) {
 		final List<Transferable> payloadTemp = new ArrayList<Transferable>();
 		for (TileFixture fix : list) {
-			payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
+			payloadTemp.add(new FixtureTransferable(fix, sourceProperty)); // NOPMD
 		}
 		payload = Collections.unmodifiableList(payloadTemp);
+		property = sourceProperty;
 	}
 	/**
 	 * @return the supported DataFlavors
@@ -43,6 +45,11 @@ public class CurriedFixtureTransferable implements Transferable {
 		return new DataFlavor[] { FLAVOR };
 	}
 
+	/**
+	 * The property the source object listens to. Returned for DataFlavor
+	 * "string," to prevent self-drops.
+	 */
+	private final String property;
 	/**
 	 *
 	 * @param dFlavor a DataFlavor
@@ -55,6 +62,9 @@ public class CurriedFixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * This now returns the source component's listened property for text
+	 * flavors, as part of a hack to disallow intra-component drops.
+	 *
 	 * @param dFlavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
@@ -65,7 +75,9 @@ public class CurriedFixtureTransferable implements Transferable {
 			throws UnsupportedFlavorException, IOException {
 		if (isDataFlavorSupported(dFlavor)) {
 			// ESCA-JAVA0259: The collection is unmodifiable.
-			return payload;
+			return payload; // NOPMD
+		} else if (dFlavor.isFlavorTextType()) {
+			return property;
 		} else {
 			throw new UnsupportedFlavorException(dFlavor);
 		}

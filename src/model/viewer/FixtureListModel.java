@@ -103,4 +103,11 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	public int hashCode() {
 		return listenedProperty.hashCode();
 	}
+	/**
+	 * This is part of a hack to prevent intra-component drops.
+	 * @return the property we listen for
+	 */
+	public String getProperty() {
+		return listenedProperty;
+	}
 }

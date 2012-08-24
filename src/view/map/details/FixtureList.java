@@ -75,7 +75,9 @@ public class FixtureList extends JList<TileFixture> implements
 	public void dragGestureRecognized(final DragGestureEvent dge) {
 		final List<TileFixture> selection = getSelectedValuesList();
 		final Transferable trans = selection.size() == 1 ? new FixtureTransferable(
-				selection.get(0)) : new CurriedFixtureTransferable(selection);
+				selection.get(0), ((FixtureListModel) getModel()).getProperty())
+				: new CurriedFixtureTransferable(selection,
+						((FixtureListModel) getModel()).getProperty());
 		dge.startDrag(null, trans);
 	}
 	/**
@@ -89,10 +91,50 @@ public class FixtureList extends JList<TileFixture> implements
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()))) {
+								dtde.getCurrentDataFlavorsAsList()))
+				&& !isIntraComponentDrag(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
+		}
+	}
+
+	/**
+	 * TODO: We would skip all this (return false) on non-local drags if I could
+	 * figure out how.
+	 *
+	 * @param dtde an event
+	 * @return whether the data it holds come from are (probably) from this
+	 *         component. I/O etc. problems return true.
+	 */
+	private boolean isIntraComponentDrag(final DropTargetDragEvent dtde) {
+		try {
+			return dtde.getTransferable() // NOPMD
+					.getTransferData(DataFlavor.stringFlavor)
+					.equals(((FixtureListModel) getModel()).getProperty());
+		} catch (UnsupportedFlavorException except) {
+			return true; // NOPMD
+		} catch (IOException except) {
+			return true;
+		}
+	}
+	/**
+	 * TODO: We would skip all this (return false) on non-local drags if I could
+	 * figure out how.
+	 *
+	 * @param dtde an event
+	 * @return whether the data it holds come from are (probably) from this
+	 *         component. I/O etc. problems return true.
+	 */
+	private boolean isIntraComponentDrop(final DropTargetDropEvent dtde) {
+		try {
+			return dtde.getTransferable() // NOPMD
+					.getTransferData(DataFlavor.stringFlavor)
+					.equals(((FixtureListModel) getModel()).getProperty());
+		} catch (UnsupportedFlavorException except) {
+			return true; // NOPMD
+		} catch (IOException except) {
+			return true;
 		}
 	}
 	/**
@@ -106,7 +148,8 @@ public class FixtureList extends JList<TileFixture> implements
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()))) {
+								dtde.getCurrentDataFlavorsAsList()))
+				&& !isIntraComponentDrag(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -123,7 +166,8 @@ public class FixtureList extends JList<TileFixture> implements
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()))) {
+								dtde.getCurrentDataFlavorsAsList()))
+				&& !isIntraComponentDrag(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -145,7 +189,11 @@ public class FixtureList extends JList<TileFixture> implements
 	 */
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
-			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
+		if (isIntraComponentDrop(dtde)) {
+			dtde.rejectDrop();
+			return; // NOPMD
+		}
+		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
 						CurriedFixtureTransferable.FLAVOR)) {
 					try {

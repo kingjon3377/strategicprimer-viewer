@@ -18,11 +18,18 @@ public class FixtureTransferable implements Transferable {
 	 * Constructor.
 	 *
 	 * @param theData the object
+	 * @param sourceProperty the property the source object listens to
 	 */
-	public FixtureTransferable(final TileFixture theData) {
+	public FixtureTransferable(final TileFixture theData, final String sourceProperty) {
 		data = theData;
+		property = sourceProperty;
 	}
 
+	/**
+	 * The property the source object listens to. Returned for DataFlavor
+	 * "string," to prevent self-drops.
+	 */
+	private final String property;
 	/**
 	 * The object we're transfering.
 	 */
@@ -54,6 +61,9 @@ public class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * This now returns the source component's listened property for text
+	 * flavors, as part of a hack to disallow intra-component drops.
+	 *
 	 * @param dflavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
@@ -63,7 +73,9 @@ public class FixtureTransferable implements Transferable {
 	public Object getTransferData(final DataFlavor dflavor)
 			throws UnsupportedFlavorException, IOException {
 		if (isDataFlavorSupported(dflavor)) {
-			return data;
+			return data; // NOPMD
+		} else if (dflavor.isFlavorTextType()) {
+			return property;
 		} else {
 			throw new UnsupportedFlavorException(dflavor);
 		}
