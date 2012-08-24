@@ -62,7 +62,7 @@ public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Oasis && id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Oasis && id == ((TileFixture) obj).getID());
 	}
 
 	/**

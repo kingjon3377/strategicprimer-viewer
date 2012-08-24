@@ -174,9 +174,9 @@ public class MapView extends XMLWritableImpl implements IMap {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof MapView && map.equals(((MapView) obj).map)
+		return this == obj || (obj instanceof MapView && map.equals(((MapView) obj).map)
 				&& player.equals(((MapView) obj).player)
-				&& turn == ((MapView) obj).turn;
+				&& turn == ((MapView) obj).turn);
 	}
 
 	/**

@@ -79,9 +79,9 @@ public class FixtureListDropListener implements DropTargetListener {
 			return dtde.getTransferable() // NOPMD
 					.getTransferData(DataFlavor.stringFlavor)
 					.equals(listenedProperty);
-		} catch (UnsupportedFlavorException except) {
+		} catch (UnsupportedFlavorException except) { // $codepro.audit.disable logExceptions
 			return true; // NOPMD
-		} catch (IOException except) {
+		} catch (IOException except) { // $codepro.audit.disable logExceptions
 			return true;
 		}
 	}
@@ -98,9 +98,9 @@ public class FixtureListDropListener implements DropTargetListener {
 			return dtde.getTransferable() // NOPMD
 					.getTransferData(DataFlavor.stringFlavor)
 					.equals(listenedProperty);
-		} catch (UnsupportedFlavorException except) {
+		} catch (UnsupportedFlavorException except) { // $codepro.audit.disable logExceptions
 			return true; // NOPMD
-		} catch (IOException except) {
+		} catch (IOException except) { // $codepro.audit.disable logExceptions
 			return true;
 		}
 	}

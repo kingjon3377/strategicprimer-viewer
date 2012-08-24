@@ -77,8 +77,8 @@ public class Dragon extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Dragon && ((Dragon) obj).kind.equals(kind)
-				&& ((TileFixture) obj).getID() == id;
+		return this == obj || (obj instanceof Dragon && ((Dragon) obj).kind.equals(kind)
+				&& ((TileFixture) obj).getID() == id);
 	}
 
 	/**

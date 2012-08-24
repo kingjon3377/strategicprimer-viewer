@@ -135,10 +135,10 @@ public class Meadow extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Meadow && kind.equals(((Meadow) obj).kind)
+		return this == obj || (obj instanceof Meadow && kind.equals(((Meadow) obj).kind)
 				&& field == ((Meadow) obj).field
 				&& cultivated == ((Meadow) obj).cultivated
-				&& id == ((TileFixture) obj).getID();
+				&& id == ((TileFixture) obj).getID());
 	}
 
 	/**

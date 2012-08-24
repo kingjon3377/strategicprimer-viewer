@@ -108,10 +108,10 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Grove && kind.equals(((Grove) obj).kind)
+		return this == obj || (obj instanceof Grove && kind.equals(((Grove) obj).kind)
 				&& orchard == ((Grove) obj).orchard
 				&& wild == ((Grove) obj).wild
-				&& id == ((TileFixture) obj).getID();
+				&& id == ((TileFixture) obj).getID());
 	}
 
 	/**

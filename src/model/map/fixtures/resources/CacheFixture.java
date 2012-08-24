@@ -97,10 +97,10 @@ public class CacheFixture extends XMLWritableImpl implements TileFixture, HasIma
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof CacheFixture
+		return this == obj || (obj instanceof CacheFixture
 				&& kind.equals(((CacheFixture) obj).kind)
 				&& contents.equals(((CacheFixture) obj).contents)
-				&& id == ((TileFixture) obj).getID();
+				&& id == ((TileFixture) obj).getID());
 	}
 
 	/**

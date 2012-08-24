@@ -134,10 +134,10 @@ public class Animal extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Animal && ((Animal) obj).kind.equals(kind)
+		return this == obj || (obj instanceof Animal && ((Animal) obj).kind.equals(kind)
 				&& ((Animal) obj).traces == traces
 				&& ((Animal) obj).talking == talking
-				&& ((TileFixture) obj).getID() == id;
+				&& ((TileFixture) obj).getID() == id);
 	}
 
 	/**

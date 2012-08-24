@@ -100,9 +100,9 @@ public class Village extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Village && status.equals(((Village) obj).status)
+		return this == obj || (obj instanceof Village && status.equals(((Village) obj).status)
 				&& name.equals(((Village) obj).name)
-				&& id == ((TileFixture) obj).getID();
+				&& id == ((TileFixture) obj).getID());
 	}
 
 	/**

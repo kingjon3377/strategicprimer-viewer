@@ -96,8 +96,8 @@ public class FixtureTransferable implements Transferable {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof FixtureTransferable
-				&& data.equals(((FixtureTransferable) obj).data);
+		return this == obj || (obj instanceof FixtureTransferable
+				&& data.equals(((FixtureTransferable) obj).data));
 	}
 
 	/**

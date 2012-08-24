@@ -98,8 +98,8 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage 
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Forest && trees.equals(((Forest) obj).trees)
-				&& rows == ((Forest) obj).rows;
+		return this == obj || (obj instanceof Forest && trees.equals(((Forest) obj).trees)
+				&& rows == ((Forest) obj).rows);
 	}
 
 	/**

@@ -77,8 +77,8 @@ public class Fairy extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Fairy && ((Fairy) obj).kind.equals(kind)
-				&& ((TileFixture) obj).getID() == id;
+		return this == obj || (obj instanceof Fairy && ((Fairy) obj).kind.equals(kind)
+				&& ((TileFixture) obj).getID() == id);
 	}
 
 	/**

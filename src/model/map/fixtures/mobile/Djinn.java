@@ -61,7 +61,7 @@ public class Djinn extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Djinn && ((TileFixture) obj).getID() == id;
+		return this == obj || (obj instanceof Djinn && ((TileFixture) obj).getID() == id);
 	}
 
 	/**

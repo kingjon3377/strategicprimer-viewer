@@ -61,7 +61,7 @@ public class Simurgh extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Simurgh && ((TileFixture) obj).getID() == id;
+		return this == obj || (obj instanceof Simurgh && ((TileFixture) obj).getID() == id);
 	}
 
 	/**

@@ -96,9 +96,9 @@ public class TextFixture extends XMLWritableImpl implements TileFixture, HasImag
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof TextFixture
+		return this == obj || (obj instanceof TextFixture
 				&& text.equals(((TextFixture) obj).text)
-				&& turn == ((TextFixture) obj).turn;
+				&& turn == ((TextFixture) obj).turn);
 	}
 
 	/**

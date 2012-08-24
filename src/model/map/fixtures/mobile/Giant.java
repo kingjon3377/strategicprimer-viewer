@@ -77,8 +77,8 @@ public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Giant && ((Giant) obj).kind.equals(kind)
-				&& id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Giant && ((Giant) obj).kind.equals(kind)
+				&& id == ((TileFixture) obj).getID());
 	}
 
 	/**

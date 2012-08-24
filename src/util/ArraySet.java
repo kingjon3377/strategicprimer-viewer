@@ -145,8 +145,8 @@ public class ArraySet<T> implements Set<T> { // NOPMD
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Set && ((Set) obj).containsAll(this)
-				&& containsAll((Set) obj);
+		return this == obj || (obj instanceof Set && ((Set) obj).containsAll(this)
+				&& containsAll((Set) obj));
 	}
 	/**
 	 * TODO: Should perhaps include data on its contents.

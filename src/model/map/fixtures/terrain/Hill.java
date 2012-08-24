@@ -63,7 +63,7 @@ public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Hill && id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Hill && id == ((TileFixture) obj).getID());
 	}
 
 	/**

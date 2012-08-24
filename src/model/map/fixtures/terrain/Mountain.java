@@ -61,8 +61,8 @@ public class Mountain extends XMLWritableImpl implements TerrainFixture, HasImag
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof Mountain;
+	public boolean equals(final Object obj) { // $codepro.audit.disable
+		return this == obj || obj instanceof Mountain;
 	}
 
 	/**

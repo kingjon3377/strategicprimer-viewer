@@ -93,9 +93,9 @@ public class Mine extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Mine && kind.equals(((Mine) obj).kind)
+		return this == obj || (obj instanceof Mine && kind.equals(((Mine) obj).kind)
 				&& status.equals(((Mine) obj).status)
-				&& id == ((TileFixture) obj).getID();
+				&& id == ((TileFixture) obj).getID());
 	}
 
 	/**

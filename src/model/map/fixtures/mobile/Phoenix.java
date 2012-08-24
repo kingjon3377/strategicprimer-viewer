@@ -61,7 +61,7 @@ public class Phoenix extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Phoenix && id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Phoenix && id == ((TileFixture) obj).getID());
 	}
 
 	/**

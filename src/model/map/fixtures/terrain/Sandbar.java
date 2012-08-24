@@ -62,7 +62,7 @@ public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Sandbar && id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Sandbar && id == ((TileFixture) obj).getID());
 	}
 
 	/**

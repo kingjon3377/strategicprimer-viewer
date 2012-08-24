@@ -177,13 +177,7 @@ public class TileReader implements INodeHandler<Tile> {
 				final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj) {
-					if (fix instanceof RiverFixture) {
-						for (final River river : (RiverFixture) fix) {
-							retval.addChild(READER.write(river));
-						}
-					} else {
-						addChild(tagMap, fix, ReaderAdapter.ADAPTER, retval);
-					}
+					writeFixture(fix, retval, tagMap);
 				}
 				tagMap.remove(obj.getFile());
 				for (final SPIntermediateRepresentation child : tagMap.values()) {
@@ -191,6 +185,24 @@ public class TileReader implements INodeHandler<Tile> {
 				}
 			}
 			return retval;
+		}
+	}
+
+	/**
+	 * "Write" a TileFixture by creating its SPIR and attaching it to the proper parent.
+	 * @param fix the current fixture
+	 * @param parent the SPIR node representing the Tile, for rivers
+	 * @param tagMap The tag map
+	 */
+	private static void writeFixture(final TileFixture fix,
+			final SPIntermediateRepresentation parent,
+			final Map<String, SPIntermediateRepresentation> tagMap) {
+		if (fix instanceof RiverFixture) {
+			for (final River river : (RiverFixture) fix) {
+				parent.addChild(READER.write(river));
+			}
+		} else {
+			addChild(tagMap, fix, ReaderAdapter.ADAPTER, parent);
 		}
 	}
 

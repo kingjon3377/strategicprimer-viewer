@@ -63,7 +63,7 @@ public class Troll extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Troll && ((TileFixture) obj).getID() == id;
+		return this == obj || (obj instanceof Troll && ((TileFixture) obj).getID() == id);
 	}
 
 	/**

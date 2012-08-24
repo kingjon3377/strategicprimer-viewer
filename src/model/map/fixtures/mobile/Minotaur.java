@@ -61,7 +61,7 @@ public class Minotaur extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Minotaur && id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Minotaur && id == ((TileFixture) obj).getID());
 	}
 
 	/**

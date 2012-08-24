@@ -61,7 +61,7 @@ public class Sphinx extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Sphinx && ((TileFixture) obj).getID() == id;
+		return this == obj || (obj instanceof Sphinx && ((TileFixture) obj).getID() == id);
 	}
 
 	/**

@@ -61,7 +61,7 @@ public class Griffin extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Griffin && id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Griffin && id == ((TileFixture) obj).getID());
 	}
 
 	/**

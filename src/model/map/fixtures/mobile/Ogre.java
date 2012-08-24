@@ -61,7 +61,7 @@ public class Ogre extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Ogre && id == ((TileFixture) obj).getID();
+		return this == obj || (obj instanceof Ogre && id == ((TileFixture) obj).getID());
 	}
 
 	/**

@@ -77,9 +77,9 @@ public class Shrub extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Shrub
+		return this == obj || (obj instanceof Shrub
 				&& description.equals(((Shrub) obj).description)
-				&& id == ((TileFixture) obj).getID();
+				&& id == ((TileFixture) obj).getID());
 	}
 
 	/**
