@@ -1,3 +1,4 @@
+// $codepro.audit.disable lineLength
 package util;
 
 /**

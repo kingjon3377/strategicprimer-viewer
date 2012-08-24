@@ -128,13 +128,16 @@ public abstract class AbstractTownEvent extends XMLWritableImpl implements
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return this == fix
-				|| (fix instanceof AbstractTownEvent
-						&& ((AbstractTownEvent) fix).kind().equals(kind())
-						&& ((AbstractTownEvent) fix).size.equals(size)
-						&& ((AbstractTownEvent) fix).name.equals(name) && ((AbstractTownEvent) fix).status
-							.equals(status));
+				|| (fix instanceof AbstractTownEvent && equalsContents((AbstractTownEvent) fix));
 	}
-
+	/**
+	 * @param fix a town-event
+	 * @return whether it's equal to this one ignoring ID.
+	 */
+	private boolean equalsContents(final AbstractTownEvent fix) {
+		return fix.kind().equals(kind) && fix.size().equals(size)
+				&& fix.name().equals(name) && fix.status().equals(status);
+	}
 	/**
 	 *
 	 * @return a hash value for the object

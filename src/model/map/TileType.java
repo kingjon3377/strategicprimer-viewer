@@ -75,8 +75,10 @@ public enum TileType {
 	private final List<Integer> versions;
 	/**
 	 * A cache of the lists of types supported by particular versions.
+	 * Initializer in the static block below because here it made the line too
+	 * long.
 	 */
-	private static final Map<Integer, Set<TileType>> VALS_BY_VER = new HashMap<Integer, Set<TileType>>();
+	private static final Map<Integer, Set<TileType>> VALS_BY_VER;
 
 	/**
 	 * @param ver a map version
@@ -130,6 +132,7 @@ public enum TileType {
 	 */
 	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>(); // NOPMD
 	static {
+		VALS_BY_VER = new HashMap<Integer, Set<TileType>>();
 		for (final TileType type : values()) {
 			TILE_TYPE_MAP.put(type.toXML(), type);
 		}

@@ -26,7 +26,7 @@ public class TableDebugger {
 		new TableLoader().loadAllTables("tables", runner);
 		try {
 			new TableDebugger(runner).debugTables(System.out);
-		} catch (final MissingTableException e) {
+		} catch (final MissingTableException e) { // $codepro.audit.disable logExceptions
 			SystemOut.SYS_OUT.println("Missing table");
 			System.exit(1);
 		}

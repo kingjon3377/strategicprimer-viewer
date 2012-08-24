@@ -10,7 +10,13 @@ import java.util.Map;
  * @author Jonathan Lovelace
  *
  */
-public class TileDrawHelperFactory {
+public final class TileDrawHelperFactory {
+	/**
+	 * Constructor. Needed because some initializers make lines too long.
+	 */
+	private TileDrawHelperFactory() {
+		verTwoHelpers = new HashMap<ImageObserver, TileDrawHelper>();
+	}
 	/**
 	 * An instance of this class, for callers who don't want to create their
 	 * own.
@@ -23,7 +29,7 @@ public class TileDrawHelperFactory {
 	/**
 	 * A mapping from ImageObservers to version-2 helpers.
 	 */
-	private final Map<ImageObserver, TileDrawHelper> verTwoHelpers = new HashMap<ImageObserver, TileDrawHelper>();
+	private final Map<ImageObserver, TileDrawHelper> verTwoHelpers;
 
 	/**
 	 * @param version the version of the map that'll be drawn

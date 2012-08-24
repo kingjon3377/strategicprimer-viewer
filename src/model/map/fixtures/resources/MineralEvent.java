@@ -191,7 +191,14 @@ public final class MineralEvent extends XMLWritableImpl implements IEvent, HasIm
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return this == fix
 				|| (fix instanceof MineralEvent
-						&& ((MineralEvent) fix).mineral.equals(mineral) && ((MineralEvent) fix).exposed == exposed);
+						&& equalsContents((MineralEvent) fix));
+	}
+	/**
+	 * @param fix another MineralEvent
+	 * @return whether its contents equal ours
+	 */
+	private boolean equalsContents(final MineralEvent fix) {
+		return fix.mineral.equals(mineral) && fix.exposed == exposed;
 	}
 
 	/**

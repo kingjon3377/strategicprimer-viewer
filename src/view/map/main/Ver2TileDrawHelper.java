@@ -212,7 +212,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImage(final String filename) {
 		try {
 			return loader.loadImage(filename); // NOPMD
-		} catch (final FileNotFoundException e) {
+		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
 			if (!missingFiles.contains(filename)) {
 				// LOGGER.log(Level.SEVERE, filename + " not found", e);
 				LOGGER.log(Level.SEVERE, "images/" + filename + " not found");

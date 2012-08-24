@@ -17,16 +17,15 @@ import model.map.fixtures.terrain.Sandbar;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TileUIHelper {
 	/**
 	 * The map we wrap.
 	 */
-	private final Map<Integer, Map<TileType, Color>> colors = new HashMap<Integer, Map<TileType, Color>>(
-			SPMap.MAX_VERSION + 1);
+	private final Map<Integer, Map<TileType, Color>> colors;
 
 	/**
 	 * Constructor.
@@ -34,6 +33,8 @@ public class TileUIHelper {
 	// ESCA-JAVA0076:
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
+		colors = new HashMap<Integer, Map<TileType, Color>>(
+				SPMap.MAX_VERSION + 1);
 		final Map<TileType, Color> one = new EnumMap<TileType, Color>(
 				TileType.class);
 		one.put(TileType.BorealForest, new Color(72, 218, 164));
@@ -68,6 +69,7 @@ public class TileUIHelper {
 				"<html><p>Temperate Forest</p></html>");
 		descriptions.put(TileType.Tundra, "<html><p>Tundra</p></html>");
 		descriptions.put(TileType.Steppe, "<html><p>Steppe</p></html>");
+		featureColors = new HashMap<Class<? extends TileFixture>, Color>();
 		featureColors.put(Forest.class, new Color(0, 117, 0));
 		featureColors.put(Mountain.class, new Color(249, 137, 28));
 		featureColors.put(Oasis.class, new Color(72, 218, 164));
@@ -78,7 +80,7 @@ public class TileUIHelper {
 	/**
 	 * @param version what version the map is
 	 * @param type a tile type
-	 * 
+	 *
 	 * @return the tile's color, if any, under that map version
 	 */
 	public Color get(final int version, final TileType type) {
@@ -86,7 +88,7 @@ public class TileUIHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -102,7 +104,7 @@ public class TileUIHelper {
 
 	/**
 	 * @param type a terrain type
-	 * 
+	 *
 	 * @return a String representation of that terrain type
 	 */
 	public String getDescription(final TileType type) { // NOPMD
@@ -114,7 +116,7 @@ public class TileUIHelper {
 	 * Used to show that a tile is mountainous or forested even when those are
 	 * represented by icons and there's a higher icon on the tile.
 	 */
-	private final Map<Class<? extends TileFixture>, Color> featureColors = new HashMap<Class<? extends TileFixture>, Color>();
+	private final Map<Class<? extends TileFixture>, Color> featureColors;
 
 	/**
 	 * @param fix a fixture
