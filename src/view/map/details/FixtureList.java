@@ -12,12 +12,17 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
+import javax.swing.InputMap;
 import javax.swing.JList;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import model.map.TileFixture;
@@ -51,7 +56,15 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY, this);
 		setDropTarget(new DropTarget(this, this));
-
+		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "delete");
+		getActionMap().put("delete", new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				((FixtureListModel) getModel()).remove(getSelectedValuesList());
+			}
+		});
 	}
 	/**
 	 * Start a drag when appropriate.

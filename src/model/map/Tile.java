@@ -70,9 +70,10 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 
 	/**
 	 * @param fix something to remove from the tile
+	 * @return the result of the operation
 	 */
-	public void removeFixture(final TileFixture fix) {
-		contents.remove(fix);
+	public boolean removeFixture(final TileFixture fix) {
+		return contents.remove(fix);
 	}
 
 	/**

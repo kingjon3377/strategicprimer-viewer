@@ -2,6 +2,7 @@ package model.viewer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 
@@ -67,6 +68,17 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 			// was already in the set---so we only want to add it to the display
 			// if it returns true.
 			addElement(fix);
+		}
+	}
+	/**
+	 * Remove the specified items from the tile and the list.
+	 * @param list the list of items to remove
+	 */
+	public void remove(final List<TileFixture> list) {
+		for (TileFixture fix : list) {
+			if (tile.removeFixture(fix)) {
+				removeElement(fix);
+			}
 		}
 	}
 }
