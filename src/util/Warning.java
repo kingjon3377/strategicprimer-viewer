@@ -64,7 +64,7 @@ public final class Warning {
 	public void warn(final Exception warning) {
 		switch (state) {
 		case Die:
-			throw new FatalWarning(warning); // NOPMD
+			throw new FatalWarningException(warning); // NOPMD
 		case Warn:
 			if (warning instanceof SPFormatException) {
 				Logger.getLogger(

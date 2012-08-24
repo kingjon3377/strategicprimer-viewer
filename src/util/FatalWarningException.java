@@ -8,13 +8,13 @@ package util;
  */
 // ESCA-JAVA0051:
 // ESCA-JAVA0048:
-public class FatalWarning extends RuntimeException {
+public class FatalWarningException extends RuntimeException {
 	/**
 	 * Constructor.
 	 * 
 	 * @param cause the Throwable we're wrapping
 	 */
-	public FatalWarning(final Throwable cause) {
+	public FatalWarningException(final Throwable cause) {
 		super(cause);
 	}
 }

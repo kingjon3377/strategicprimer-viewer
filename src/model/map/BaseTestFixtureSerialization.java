@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
-import util.FatalWarning;
+import util.FatalWarningException;
 import util.Warning;
 import controller.map.DeprecatedPropertyException;
 import controller.map.IMapReader;
@@ -134,7 +134,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				reader.readXML(FAKE_FILENAME, new StringReader(xml),
 						desideratum, reflection,
 						new Warning(Warning.Action.Die));
-			} catch (final FatalWarning except) {
+			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
 				assertTrue("Unsupported tag",
 						cause instanceof UnsupportedTagException);
@@ -182,7 +182,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						desideratum, reflection,
 						new Warning(Warning.Action.Die));
 				fail("We were expecting an UnwantedChildException");
-			} catch (final FatalWarning except) {
+			} catch (final FatalWarningException except) {
 				assertTrue("Unwanted child",
 						except.getCause() instanceof UnwantedChildException);
 			}
@@ -268,7 +268,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						desideratum, reflection,
 						new Warning(Warning.Action.Die));
 				fail("We were expecting a MissingParameterException");
-			} catch (final FatalWarning except) {
+			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
 				assertTrue("Missing property",
 						cause instanceof MissingParameterException);
@@ -368,7 +368,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						desideratum, reflection,
 						new Warning(Warning.Action.Die));
 				fail("We were expecting a MissingParameterException");
-			} catch (final FatalWarning except) {
+			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
 				assertTrue(
 						"Missing property",
@@ -689,7 +689,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						desideratum, reflection,
 						new Warning(Warning.Action.Die));
 				fail("We were expecting a MissingChildException");
-			} catch (final FatalWarning except) {
+			} catch (final FatalWarningException except) {
 				assertTrue("Missing property",
 						except.getCause() instanceof MissingChildException);
 			}
@@ -737,7 +737,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @param <U> the type of the item
 	 * @return whether the iterable contains the item
 	 */
-	public <T, U extends T> boolean iterableContains(final Iterable<T> iter, final U item) {
+	public <T, U extends T> boolean doesIterableContain(final Iterable<T> iter, final U item) {
 		for (final T each : iter) {
 			if (each.equals(item)) {
 				return true; // NOPMD

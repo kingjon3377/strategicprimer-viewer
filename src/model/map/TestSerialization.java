@@ -381,14 +381,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final MapView converted = converter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertTrue("Combined tile should contain fixtures from tile one",
-				iterableContains(converted.getTile(zeroPoint), fixture));
+				doesIterableContain(converted.getTile(zeroPoint), fixture));
 		assertTrue("Combined tile should contain fixtures from tile two",
-				iterableContains(converted.getTile(zeroPoint), fixtureTwo));
+				doesIterableContain(converted.getTile(zeroPoint), fixtureTwo));
 		assertTrue(
 				"Combined tile should contain fixtures from tile three",
-				iterableContains(converted.getTile(zeroPoint), fixtureThree));
+				doesIterableContain(converted.getTile(zeroPoint), fixtureThree));
 		assertTrue("Combined tile should contain fixtures from tile four",
-				iterableContains(converted.getTile(zeroPoint), fixtureFour));
+				doesIterableContain(converted.getTile(zeroPoint), fixtureFour));
 	}
 	/**
 	 * @return a String representation of the object

@@ -93,7 +93,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile,
 			final Coordinate coordinates, final Coordinate dimensions) {
-		pen.setColor(needFixtureColor(tile) ? getFixtureColor(tile)
+		pen.setColor(needsFixtureColor(tile) ? getFixtureColor(tile)
 				: getTileColor(2, tile.getTerrain()));
 		pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 		if (hasFixture(tile)) {
@@ -149,7 +149,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether it needs a different color to show a non-top fixture
 	 *         (like a forest or mountain)
 	 */
-	private boolean needFixtureColor(final Tile tile) {
+	private boolean needsFixtureColor(final Tile tile) {
 		if (hasTerrainFixture(tile)) {
 			return !(getTopFixture(tile) instanceof TerrainFixture); // NOPMD
 		} else {

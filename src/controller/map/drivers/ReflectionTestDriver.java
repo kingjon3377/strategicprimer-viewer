@@ -74,7 +74,7 @@ public final class ReflectionTestDriver {
 	 * @throws XMLStreamException on XML error detected by one of the readers
 	 * @throws IOException on I/O error detected by one o the readers
 	 */
-	private static boolean methodsAgree(final String filename)
+	private static boolean doMethodsAgree(final String filename)
 			throws IOException, XMLStreamException, SPFormatException {
 		return READER.readMap(filename, false, Warning.INSTANCE).equals(
 				READER.readMap(filename, true, Warning.INSTANCE));
@@ -93,7 +93,7 @@ public final class ReflectionTestDriver {
 				SystemOut.SYS_OUT.print("Starting ");
 				SystemOut.SYS_OUT.println(filename);
 				SystemOut.SYS_OUT.print("Testing correctness ...\t\t\t");
-				if (methodsAgree(filename)) {
+				if (doMethodsAgree(filename)) {
 					SystemOut.SYS_OUT.println("OK");
 				} else {
 					SystemOut.SYS_OUT.println("FAIL");

@@ -168,7 +168,7 @@ public class SPIntermediateRepresentation {
 				writeIfTagNotEmpty(writer, "\"");
 			}
 			if (children.isEmpty()) {
-				if (separateClosingTag(tag)) {
+				if (shouldSeparateClosingTag(tag)) {
 					writeIfTagNotEmpty(writer, ">");
 					writeIfTagNotEmpty(writer, text);
 					writeIfTagNotEmpty(writer, "</");
@@ -265,7 +265,7 @@ public class SPIntermediateRepresentation {
 	 * @return whether it should always have a separate closing tag, even if it
 	 *         has no children
 	 */
-	private static boolean separateClosingTag(final String tag) {
+	private static boolean shouldSeparateClosingTag(final String tag) {
 		return EqualsAny.equalsAny(tag, "tile", "fortress", "text");
 	}
 

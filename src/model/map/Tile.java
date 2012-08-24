@@ -1,3 +1,4 @@
+// $codepro.audit.disable booleanMethodNamingConvention
 package model.map;
 
 import java.util.ArrayList;
