@@ -33,33 +33,6 @@ public class SPMenu extends JMenuBar {
 	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
 
 	/**
-	 * A listener for the Quit menu item.
-	 *
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	private static final class QuitListener implements ActionListener {
-		/**
-		 * Handle the menu "button" press.
-		 *
-		 * @param event the event to handle
-		 */
-		@Override
-		public void actionPerformed(final ActionEvent event) {
-			if ("Quit".equals(event.getActionCommand())) {
-				DriverQuit.quit(0);
-			}
-		}
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "QuitListener";
-		}
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param handler the I/O handler to handle I/O related items
@@ -85,7 +58,19 @@ public class SPMenu extends JMenuBar {
 				Integer.MAX_VALUE, 0)));
 		add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
-				"Quit the viewer", new QuitListener()));
+				"Quit the viewer", new ActionListener() {
+					/**
+					 * Handle the menu "button" press.
+					 *
+					 * @param event the event to handle
+					 */
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						if ("Quit".equals(event.getActionCommand())) {
+							DriverQuit.quit(0);
+						}
+					}
+		}));
 	}
 
 	/**
