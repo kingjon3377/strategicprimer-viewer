@@ -1,4 +1,4 @@
-package view.map.detailsng;
+package view.map.details;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

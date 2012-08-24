@@ -1,4 +1,4 @@
-package view.map.detailsng;
+package view.map.details;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import util.PropertyChangeSource;
-import view.map.details.TileDetailPanel;
 import view.map.key.KeyPanel;
 
 /**

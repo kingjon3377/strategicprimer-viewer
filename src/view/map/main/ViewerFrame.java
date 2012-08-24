@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import model.viewer.MapModel;
-import view.map.detailsng.DetailPanelNG;
+import view.map.details.DetailPanelNG;
 
 /**
  * The main driver class for the viewer app.
