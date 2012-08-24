@@ -86,7 +86,6 @@ public class FixtureList extends JList<TileFixture> implements
 	@Override
 	public void dragEnter(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& dtde.getSource() != this
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
@@ -104,7 +103,6 @@ public class FixtureList extends JList<TileFixture> implements
 	@Override
 	public void dragOver(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& dtde.getSource() != this
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
@@ -122,7 +120,6 @@ public class FixtureList extends JList<TileFixture> implements
 	@Override
 	public void dropActionChanged(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& dtde.getSource() != this
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
@@ -148,7 +145,6 @@ public class FixtureList extends JList<TileFixture> implements
 	 */
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
-		if (dtde.getSource() != this) {
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
 						CurriedFixtureTransferable.FLAVOR)) {
@@ -167,7 +163,6 @@ public class FixtureList extends JList<TileFixture> implements
 					return; // NOPMD
 				}
 			}
-		}
 		dtde.rejectDrop();
 	}
 	/**
