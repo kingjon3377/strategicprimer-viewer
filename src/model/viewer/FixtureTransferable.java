@@ -9,19 +9,18 @@ import model.map.TileFixture;
 
 /**
  * A class to transfer a TileFixture.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class FixtureTransferable implements Transferable {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param theData the object
 	 */
 	public FixtureTransferable(final TileFixture theData) {
 		data = theData;
-		flavor = new DataFlavor(TileFixture.class, "TileFixture");
 	}
 
 	/**
@@ -31,26 +30,27 @@ public class FixtureTransferable implements Transferable {
 	/**
 	 * a DataFlavor representing its class.
 	 */
-	private final DataFlavor flavor;
+	public static final DataFlavor FLAVOR = new DataFlavor(TileFixture.class,
+			"TileFixture");
 
 	/**
-	 * 
+	 *
 	 * @return the supported DataFlavors.
 	 */
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] { flavor };
+		return new DataFlavor[] { FLAVOR };
 	}
 
 	/**
-	 * 
+	 *
 	 * @param dflavor a DataFlavor
-	 * 
+	 *
 	 * @return whether it's the one we support
 	 */
 	@Override
 	public boolean isDataFlavorSupported(final DataFlavor dflavor) {
-		return dflavor.equals(flavor);
+		return dflavor.equals(FLAVOR);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class FixtureTransferable implements Transferable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this object
 	 */
 	@Override
