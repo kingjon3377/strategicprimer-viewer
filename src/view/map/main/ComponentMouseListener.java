@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import model.map.PointFactory;
 import model.viewer.MapModel;
 import model.viewer.TileViewSize;
+import model.viewer.VisibleDimensions;
 
 /**
  * A mouse listener for the MapComponent, to show the terrain-changing menu as
@@ -47,13 +48,12 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
-		model.setSelection(PointFactory.point(
-				event.getPoint().y
-						/ tsize.getSize(model.getMainMap().getVersion())
-						+ model.getDimensions().getMinimumRow(),
-				event.getPoint().x
-						/ tsize.getSize(model.getMainMap().getVersion())
-						+ model.getDimensions().getMinimumCol()));
+		final java.awt.Point eventPoint = event.getPoint();
+		final VisibleDimensions dimensions = model.getDimensions();
+		final int tileSize = tsize.getSize(model.getMainMap().getVersion());
+		model.setSelection(PointFactory.point(eventPoint.y / tileSize
+				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
+				+ dimensions.getMinimumCol()));
 		event.getComponent().requestFocusInWindow();
 		if (event.getClickCount() == 2) {
 			model.copyTile(model.getSelectedTile());
