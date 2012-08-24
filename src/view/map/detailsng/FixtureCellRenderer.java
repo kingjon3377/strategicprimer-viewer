@@ -12,8 +12,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
@@ -31,7 +34,7 @@ import view.map.details.Chit;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeCellRenderer {
+public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeCellRenderer, TableCellRenderer {
 	/**
 	 * Default list renderer, for cases we don't know how to handle.
 	 */
@@ -84,6 +87,41 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeC
 			final boolean focused) {
 		final Component component = TREE_DEFAULT.getTreeCellRendererComponent(tree,
 				value, sel, expanded, leaf, row, focused);
+		if (component instanceof JLabel) {
+			if (value instanceof TileTreeNode) {
+				((JLabel) component).setText("<html><p>On this tile:</p></html>");
+			} else if (value instanceof FixtureTreeNode) {
+				final TileFixture fixture = ((FixtureTreeNode) value).getFixture();
+				((JLabel) component).setText("<html><p>" + fixture.toString() + "</p></html>");
+				if (fixture instanceof HasImage) {
+					((JLabel) component).setIcon(getIcon((HasImage) fixture));
+				} else {
+					((JLabel) component).setIcon(defaultFixtIcon);
+				}
+			}
+		} else {
+			LOGGER.warning("Component wasn't a JLabel, so skipping custom rendering");
+		}
+		return component;
+	}
+	/**
+	 * Default table cell renderer.
+	 */
+	private static final DefaultTableCellRenderer TABLE_DEFAULT = new DefaultTableCellRenderer();
+	/**
+	 * Render a table cell.
+	 * @param table the table
+	 * @param value the value being rendered
+	 * @param isSelected whether it's selected
+	 * @param hasFocus whether it has focus
+	 * @param row its row
+	 * @param column its column
+	 * @return a component to render it
+	 */
+	@Override
+	public Component getTableCellRendererComponent(final JTable table, final Object value,
+			final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+		final Component component = TABLE_DEFAULT.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		if (component instanceof JLabel) {
 			if (value instanceof TileTreeNode) {
 				((JLabel) component).setText("<html><p>On this tile:</p></html>");

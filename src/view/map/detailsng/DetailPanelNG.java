@@ -139,7 +139,7 @@ public class DetailPanelNG extends JPanel {
 	 */
 	private static JScrollPane createList(final String property, final PropertyChangeSource... sources) {
 		return setComponentSizes(new JScrollPane(
-				new FixtureTree(property, sources)), new Dimension(
+				new FixtureTable(property, sources)), new Dimension(
 				LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT), new Dimension(LIST_WIDTH,
 				DETAIL_PANEL_HT), new Dimension(LIST_MAX_WIDTH,
 				DETAIL_PAN_MAX_HT));
