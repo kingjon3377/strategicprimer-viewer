@@ -22,9 +22,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Meadows.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MeadowReader implements INodeHandler<Meadow> {
 	/**
@@ -34,7 +34,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 
 	/**
 	 * Parse a meadow.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -83,7 +83,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -97,5 +97,12 @@ public class MeadowReader implements INodeHandler<Meadow> {
 				"cultivated", Boolean.toString(obj.isCultivated())), Pair.of(
 				STATUS_ATTR, obj.getStatus().toString()), Pair.of("id",
 				Long.toString(obj.getID())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MeadowReader";
 	}
 }

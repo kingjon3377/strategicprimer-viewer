@@ -86,4 +86,11 @@ public class MineReader implements INodeHandler<Mine> {
 				obj.getKind()), Pair.of("status", obj.getStatus().toString()),
 				Pair.of("id", Long.toString(obj.getID())));
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MineReader";
+	}
 }

@@ -19,14 +19,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Ground.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class GroundReader implements INodeHandler<Ground> {
 	/**
 	 * Parse ground.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -66,7 +66,7 @@ public class GroundReader implements INodeHandler<Ground> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -78,5 +78,12 @@ public class GroundReader implements INodeHandler<Ground> {
 		return new SPIntermediateRepresentation("ground", Pair.of("kind",
 				obj.getKind()), Pair.of("exposed",
 				Boolean.toString(obj.isExposed())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "GroundReader";
 	}
 }

@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
  * we need to do the same thing to. The order in which the iterators are
  * processed (despite "stack" in the name of this class) is unspecified and
  * implementation-specific; don't rely on it.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  * @param <T> the type of thing returned by the iterator.
  */
 public class IteratorStack<T> implements Iterator<T> {
@@ -23,7 +23,7 @@ public class IteratorStack<T> implements Iterator<T> {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param iters sources for iterators to put in the queue.
 	 */
 	public IteratorStack(final Iterable<T>... iters) {
@@ -35,7 +35,7 @@ public class IteratorStack<T> implements Iterator<T> {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param iters the iterators to put in the queue.
 	 */
 	public IteratorStack(final Iterator<T>... iters) {
@@ -92,5 +92,12 @@ public class IteratorStack<T> implements Iterator<T> {
 			queue.peekFirst().remove();
 		}
 		removeEmptyIterators();
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "IteratorStack";
 	}
 }

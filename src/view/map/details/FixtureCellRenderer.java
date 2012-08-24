@@ -137,4 +137,11 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 		component.setPreferredSize(new Dimension(wid, height));
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "FixtureCellRenderer";
+	}
 }

@@ -37,8 +37,8 @@ public class Point implements Comparable<Point> {
 	 * @param colNum The second coordinate
 	 */
 	public Point(final int rowNum, final int colNum) {
-		this.row = rowNum;
-		this.col = colNum;
+		row = rowNum;
+		col = colNum;
 	}
 
 	/**

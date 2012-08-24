@@ -18,14 +18,14 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for text elements.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TextReader implements INodeHandler<TextFixture> {
 	/**
 	 * Parse a TextFixture.
-	 * 
+	 *
 	 * @param element the element to parse
 	 * @param stream the stream to get more elements (in this case, the text)
 	 *        from
@@ -80,7 +80,7 @@ public class TextReader implements INodeHandler<TextFixture> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -96,5 +96,12 @@ public class TextReader implements INodeHandler<TextFixture> {
 		}
 		retval.addAttribute("text-contents", obj.getText().trim());
 		return retval;
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TextReader";
 	}
 }

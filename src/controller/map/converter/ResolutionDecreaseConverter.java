@@ -184,5 +184,11 @@ public class ResolutionDecreaseConverter {
 			return list.get(0);
 		}
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ResolutionDecreaseConverter";
+	}
 }

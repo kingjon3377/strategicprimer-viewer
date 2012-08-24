@@ -333,4 +333,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<battlefield dc=\"10\" />",
 				BattlefieldEvent.class, "id", true);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TestEventSerialization";
+	}
 }

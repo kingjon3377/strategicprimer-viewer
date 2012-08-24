@@ -18,9 +18,9 @@ import controller.map.misc.IOHandler;
 
 /**
  * A class encapsulating the menus.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class SPMenu extends JMenuBar {
 	/**
@@ -34,14 +34,14 @@ public class SPMenu extends JMenuBar {
 
 	/**
 	 * A listener for the Quit menu item.
-	 * 
+	 *
 	 * @author Jonathan Lovelace
-	 * 
+	 *
 	 */
-	static final class QuitListener implements ActionListener {
+	private static final class QuitListener implements ActionListener {
 		/**
 		 * Handle the menu "button" press.
-		 * 
+		 *
 		 * @param event the event to handle
 		 */
 		@Override
@@ -50,11 +50,18 @@ public class SPMenu extends JMenuBar {
 				DriverQuit.quit(0);
 			}
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "QuitListener";
+		}
 	}
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param handler the I/O handler to handle I/O related items
 	 * @param parent the frame we'll be attached to
 	 * @param model the map model
@@ -88,7 +95,7 @@ public class SPMenu extends JMenuBar {
 
 	/**
 	 * Create the map menu.
-	 * 
+	 *
 	 * @param handler the class to handle I/O related menu items
 	 * @return the map menu.
 	 */
@@ -119,5 +126,12 @@ public class SPMenu extends JMenuBar {
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Make the secondary map the main map and vice versa", handler));
 		return mapMenu;
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SPMenu";
 	}
 }

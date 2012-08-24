@@ -181,4 +181,11 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 * A singleton. Provided for performance; this is, after all, stateless.
 	 */
 	public static final ReaderAdapter ADAPTER = new ReaderAdapter();
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ReaderAdapter";
+	}
 }

@@ -17,9 +17,9 @@ import controller.map.readerng.MapWriterNG;
 /**
  * An adapter, so that classes using map readers and writers don't have to
  * change whenever the map reader or writer is replaced.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MapReaderAdapter {
 	/**
@@ -56,7 +56,7 @@ public class MapReaderAdapter {
 
 	/**
 	 * Write a map.
-	 * 
+	 *
 	 * @param filename the file to write to
 	 * @param map the map to write.
 	 * @throws IOException on error opening the file
@@ -65,4 +65,11 @@ public class MapReaderAdapter {
 		writer.write(filename, map, true);
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MapReaderAdapter";
+	}
 }

@@ -16,7 +16,7 @@ public class ComparableIterator<T> implements Iterator<T>,
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param iter the Iterator to wrap.
 	 */
 	public ComparableIterator(final Iterator<T> iter) {
@@ -74,5 +74,12 @@ public class ComparableIterator<T> implements Iterator<T>,
 	public boolean equals(final Object obj) {
 		return obj instanceof ComparableIterator
 				&& ((ComparableIterator) obj).wrapped.equals(wrapped);
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ComparableIterator";
 	}
 }

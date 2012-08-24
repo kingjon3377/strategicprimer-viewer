@@ -19,14 +19,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Groves.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class GroveReader implements INodeHandler<Grove> {
 	/**
 	 * Parse a grove.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -69,7 +69,7 @@ public class GroveReader implements INodeHandler<Grove> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -82,5 +82,12 @@ public class GroveReader implements INodeHandler<Grove> {
 				: "grove", Pair.of("wild", Boolean.toString(obj.isWild())),
 				Pair.of("kind", obj.getKind()), Pair.of("id",
 						Long.toString(obj.getID())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "GroveReader";
 	}
 }

@@ -106,8 +106,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"Fourth River serialization test, reflection",
 				addRivers(new Tile(0, 0, TileType.Plains, FAKE_FILENAME),
 						River.North), Tile.class);
-		final EnumSet<River> setOne = EnumSet.noneOf(River.class);
-		final EnumSet<River> setTwo = EnumSet.noneOf(River.class);
+		final Set<River> setOne = EnumSet.noneOf(River.class);
+		final Set<River> setTwo = EnumSet.noneOf(River.class);
 		assertEquals("Empty sets are equal", setOne, setTwo);
 		setOne.add(River.North);
 		setOne.add(River.South);
@@ -389,5 +389,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				iterableContains(converted.getTile(zeroPoint), fixtureThree));
 		assertTrue("Combined tile should contain fixtures from tile four",
 				iterableContains(converted.getTile(zeroPoint), fixtureFour));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TestSerialization";
 	}
 }

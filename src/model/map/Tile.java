@@ -190,9 +190,9 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 			if (!(TileType.NotVisible.equals(getTerrain()))) {
 				sbuild.append(" kind=\"");
 				sbuild.append(getTerrain().toXML());
-				sbuild.append("\"");
+				sbuild.append('"');
 			}
-			sbuild.append(">");
+			sbuild.append('>');
 			if (!contents.isEmpty()) {
 				sbuild.append('\n');
 				for (final TileFixture fix : contents) {

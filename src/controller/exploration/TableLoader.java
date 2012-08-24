@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.avoidPackageScopeAuditRule
 package controller.exploration;
 
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ import util.Pair;
 
 /**
  * A class to load encounter tables from file.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public final class TableLoader { // NOPMD
@@ -52,7 +53,7 @@ public final class TableLoader { // NOPMD
 	 * number at the bottom of the range of rolls the description applies to.
 	 * Terrain tables have lines with each terrain type (as in the XML map
 	 * format) followed by a description or event.
-	 * 
+	 *
 	 * @param filename the file containing the table.
 	 * @return the table
 	 * @throws FileNotFoundException when file not found
@@ -110,7 +111,7 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Load a QuadrantTable from file.
-	 * 
+	 *
 	 * @param reader the file descriptor
 	 * @return the quadrant table the file describes.
 	 * @throws IOException on I/O error reading the number of rows
@@ -141,7 +142,7 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Load a RandomTable from file.
-	 * 
+	 *
 	 * @param reader the file descriptor
 	 * @return the random-table the file describes.
 	 * @throws IOException on I/O error
@@ -169,7 +170,7 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Load a TerrainTable from file.
-	 * 
+	 *
 	 * @param reader the file descriptor
 	 * @return the terrain-table the file describes.
 	 * @throws IOException on I/O error.
@@ -197,7 +198,7 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Load a ConstantTable from file.
-	 * 
+	 *
 	 * @param reader the file descriptor
 	 * @return the terrain-table the file describes.
 	 * @throws IOException on I/O error.
@@ -213,8 +214,8 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Load a LegacyTable from file.
-	 * 
-	 * 
+	 *
+	 *
 	 * @return the table the file describes.
 	 */
 	public LegacyTable loadLegacyTable() {
@@ -222,7 +223,7 @@ public final class TableLoader { // NOPMD
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this class
 	 */
 	@Override
@@ -233,11 +234,11 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Try to load a table from file, but log the error and use the given backup
 	 * if it fails.
-	 * 
+	 *
 	 * @param filename the file to load from
 	 * @param defaultRows the number of rows to use if loading fails
 	 * @param defaultItems a list of items to use if loading fails
-	 * 
+	 *
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
 	 */
@@ -261,7 +262,7 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Loads the default set of tables.
-	 * 
+	 *
 	 * @param runner the runner to add them to
 	 */
 	public void loadDefaultTables(final ExplorationRunner runner) {
@@ -274,10 +275,10 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Create a list of strings, each beginning with a specified stem and ending
 	 * with a sequential number.
-	 * 
+	 *
 	 * @param stem the string to begin each item with
 	 * @param iterations how many items should be in the list
-	 * 
+	 *
 	 * @return such a list
 	 */
 	private List<String> createList(final String stem, final int iterations) {
@@ -292,7 +293,7 @@ public final class TableLoader { // NOPMD
 
 	/**
 	 * Load all tables in the specified path.
-	 * 
+	 *
 	 * @param path the directory to look in
 	 * @param runner the runner to add them to
 	 */

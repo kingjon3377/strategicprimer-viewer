@@ -18,14 +18,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Ogres.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class OgreReader implements INodeHandler<Ogre> {
 	/**
 	 * Parse an ogre.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -64,7 +64,7 @@ public class OgreReader implements INodeHandler<Ogre> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -75,5 +75,12 @@ public class OgreReader implements INodeHandler<Ogre> {
 	public <S extends Ogre> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("ogre", Pair.of("id",
 				Long.toString(obj.getID())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "OgreReader";
 	}
 }

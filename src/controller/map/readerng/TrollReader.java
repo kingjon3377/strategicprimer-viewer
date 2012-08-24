@@ -18,14 +18,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Trolls.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TrollReader implements INodeHandler<Troll> {
 	/**
 	 * Parse a troll.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -57,7 +57,7 @@ public class TrollReader implements INodeHandler<Troll> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -76,5 +76,12 @@ public class TrollReader implements INodeHandler<Troll> {
 	@Override
 	public Class<Troll> writes() {
 		return Troll.class;
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TrollReader";
 	}
 }

@@ -8,9 +8,9 @@ import java.beans.PropertyChangeSupport;
 /**
  * A proxy for property-change listening. It will pass on any property change
  * events it gets to its own listeners.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class PropertyProxy implements PropertyChangeSource,
 		PropertyChangeListener {
@@ -21,7 +21,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param source a source of events that we're to proxy.
 	 */
 	public PropertyProxy(final Component source) {
@@ -31,7 +31,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param source a source of events that we're to proxy.
 	 */
 	public PropertyProxy(final PropertyChangeSource source) {
@@ -41,7 +41,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 
 	/**
 	 * Handle (pass on) a property change event.
-	 * 
+	 *
 	 * @param evt the event to handle.
 	 */
 	@Override
@@ -51,7 +51,7 @@ public final class PropertyProxy implements PropertyChangeSource,
 
 	/**
 	 * Add a property-change listener.
-	 * 
+	 *
 	 * @param list the listener to add
 	 */
 	@Override
@@ -61,12 +61,18 @@ public final class PropertyProxy implements PropertyChangeSource,
 
 	/**
 	 * Remove a property-change listener.
-	 * 
+	 *
 	 * @param list The listener to remove.
 	 */
 	@Override
 	public void removePropertyChangeListener(final PropertyChangeListener list) {
 		pcs.removePropertyChangeListener(list);
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "PropertyProxy";
+	}
 }

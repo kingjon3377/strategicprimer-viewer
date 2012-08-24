@@ -7,9 +7,9 @@ import controller.map.SPFormatException;
 
 /**
  * A class to log warnings.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class Warning {
 	/**
@@ -42,7 +42,7 @@ public final class Warning {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param action what action to take with each warning
 	 */
 	public Warning(final Action action) {
@@ -58,7 +58,7 @@ public final class Warning {
 
 	/**
 	 * Log a warning, e.g. if a particular map-format construct is deprecated.
-	 * 
+	 *
 	 * @param warning the warning
 	 */
 	public void warn(final Exception warning) {
@@ -83,5 +83,11 @@ public final class Warning {
 					"Default case of an enum-switch that isn't missing any cases");
 		}
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "Warning";
+	}
 }

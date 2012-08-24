@@ -19,14 +19,14 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Caves.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class CaveReader implements INodeHandler<CaveEvent> {
 	/**
 	 * Parse a cave.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
@@ -67,7 +67,7 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
@@ -77,5 +77,12 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 		return new SPIntermediateRepresentation("cave", Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",
 				Long.toString(obj.getID())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CaveReader";
 	}
 }

@@ -26,9 +26,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader to produce SPMaps.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class SPMapReader implements INodeHandler<SPMap> {
 	/**
@@ -38,7 +38,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 
 	/**
 	 * Parse a map from XML.
-	 * 
+	 *
 	 * @param element the eleent to start parsing with
 	 * @param stream the XML tags and such
 	 * @param players the collection of players, most likely null at this point
@@ -79,7 +79,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 
 	/**
 	 * Parse a child element.
-	 * 
+	 *
 	 * @param stream the stream we're reading from---only here to pass to
 	 *        children
 	 * @param warner the Warning instance to use.
@@ -130,7 +130,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -173,7 +173,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	/**
 	 * Add a child node for a tile to a node---the parent node, or an 'include'
 	 * node representing its chosen file.
-	 * 
+	 *
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
 	 * @param parent the parent node, so we can add any include nodes created to
@@ -194,7 +194,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	/**
 	 * Add a child node for a player to a node---the parent node, or an
 	 * 'include' node representing its chosen file.
-	 * 
+	 *
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
 	 * @param parent the parent node, so we can add any include nodes created to
@@ -220,4 +220,11 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	 * The reader to use to parse tiles.
 	 */
 	private static final TileReader TILE_READER = new TileReader();
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SPMapReader";
+	}
 }

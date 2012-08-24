@@ -18,14 +18,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Forests.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ForestReader implements INodeHandler<Forest> {
 	/**
 	 * Parse a forest.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -62,7 +62,7 @@ public class ForestReader implements INodeHandler<Forest> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -79,4 +79,11 @@ public class ForestReader implements INodeHandler<Forest> {
 		return retval;
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ForestReader";
+	}
 }

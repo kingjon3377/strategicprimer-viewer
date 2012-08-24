@@ -18,14 +18,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader to produce Players.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class PlayerReader implements INodeHandler<Player> {
 	/**
 	 * Parse a player from the XML.
-	 * 
+	 *
 	 * @param element the start element to read from
 	 * @param stream the stream to get more elements from
 	 * @param players the collection of players
@@ -65,7 +65,7 @@ public class PlayerReader implements INodeHandler<Player> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -78,5 +78,11 @@ public class PlayerReader implements INodeHandler<Player> {
 				Integer.toString(obj.getPlayerId())), Pair.of("code_name",
 				obj.getName()));
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "PlayerReader";
+	}
 }

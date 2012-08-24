@@ -312,4 +312,11 @@ public final class TestMoreFixtureSerialization extends
 				"<unit owner=\"1\" kind=\"kind\" name=\"name\" />", Unit.class,
 				"id", true);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TestMoreFixtureSerialization";
+	}
 }

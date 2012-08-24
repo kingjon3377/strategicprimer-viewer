@@ -234,4 +234,11 @@ public class TileReader implements INodeHandler<Tile> {
 	 * A reader to use to parse and write Rivers.
 	 */
 	private static final RiverReader READER = new RiverReader();
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TileReader";
+	}
 }

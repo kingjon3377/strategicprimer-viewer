@@ -23,13 +23,13 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for fortresses.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * Parse a fortress.
-	 * 
+	 *
 	 * @param element the element to start with
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -86,7 +86,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -115,7 +115,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * Add a child node to a node---the parent node, or an 'include' node
 	 * representing its chosen file.
-	 * 
+	 *
 	 * @param map the mapping from filenames to IRs.
 	 * @param obj the object we're handling
 	 * @param parent the parent node, so we can add any include nodes created to
@@ -137,4 +137,11 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 * The reader to use to parse units.
 	 */
 	private static final UnitReader UNIT_READER = new UnitReader();
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "FortressReader";
+	}
 }

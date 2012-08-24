@@ -148,4 +148,12 @@ public class ArraySet<T> implements Set<T> { // NOPMD
 		return obj instanceof Set && ((Set) obj).containsAll(this)
 				&& containsAll((Set) obj);
 	}
+	/**
+	 * TODO: Should perhaps include data on its contents
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ArraySet";
+	}
 }

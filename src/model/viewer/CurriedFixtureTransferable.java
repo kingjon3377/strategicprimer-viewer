@@ -77,4 +77,11 @@ public class CurriedFixtureTransferable implements Transferable {
 	public List<Transferable> getPayload() {
 		return payload;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CurriedFixtureTransferable";
+	}
 }

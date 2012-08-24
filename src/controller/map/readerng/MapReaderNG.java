@@ -25,7 +25,7 @@ import controller.map.misc.IncludingIterator;
  * An XML-map reader that calls a tree of per-node XML readers, similar to the
  * SimpleXMLReader but allowing for more complex types that don't map 1:1 to the
  * XML.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public class MapReaderNG implements IMapReader, ISPReader {
@@ -51,7 +51,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param file the name of the file being read from
 	 * @param istream a reader from which to read the XML
 	 * @param warner the Warning instance to use for warnings.
@@ -100,7 +100,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * Helper method: check that an XMLWritable is in fact assignable to the
 	 * specified type. Return it if so; if not throw IllegalArgumentException.
-	 * 
+	 *
 	 * @param <T> the type to check the object against.
 	 * @param obj the object to check
 	 * @param type the type to check it against.
@@ -137,5 +137,12 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			final Class<T> type, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, type, warner);
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MapReaderNG";
 	}
 }

@@ -19,14 +19,14 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Rivers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class RiverReader implements INodeHandler<River> {
 	/**
 	 * Parse a river.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -69,7 +69,7 @@ public class RiverReader implements INodeHandler<River> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
@@ -79,5 +79,12 @@ public class RiverReader implements INodeHandler<River> {
 		return River.Lake.equals(obj) ? new SPIntermediateRepresentation("lake")
 				: new SPIntermediateRepresentation("river", Pair.of(
 						"direction", obj.getDescription()));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "RiverReader";
 	}
 }

@@ -24,11 +24,11 @@ import util.IteratorWrapper;
  * A class to convert a version-0 map to a version-1 map. As no reader currently
  * in the tree supports reading version 0 files, we have to handle that
  * ourselves, but fortunately not much requires changing.
- * 
+ *
  * We ignore namespaces, as I'm not sure quite how to handle them.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ZeroToOneConverter {
 	/**
@@ -74,7 +74,7 @@ public class ZeroToOneConverter {
 
 	/**
 	 * Convert the version attribute of the map.
-	 * 
+	 *
 	 * @param element the map element
 	 * @param attrs its attributes
 	 * @return the converted tag, in XML representation.
@@ -139,7 +139,7 @@ public class ZeroToOneConverter {
 
 	/**
 	 * Print an end element.
-	 * 
+	 *
 	 * @param element the element
 	 * @return its XML representation.
 	 */
@@ -150,7 +150,7 @@ public class ZeroToOneConverter {
 
 	/**
 	 * Print a start element.
-	 * 
+	 *
 	 * @param element the element
 	 * @return its XML representation.
 	 */
@@ -184,7 +184,7 @@ public class ZeroToOneConverter {
 
 	/**
 	 * Add XML for the specified numbers.
-	 * 
+	 *
 	 * @param xml the XML to add
 	 * @param nums the numbers to add it for
 	 */
@@ -236,7 +236,7 @@ public class ZeroToOneConverter {
 
 	/**
 	 * Driver.
-	 * 
+	 *
 	 * @param args the filenames to try it on. Prints results to stdout.
 	 */
 	public static void main(final String[] args) {
@@ -263,5 +263,12 @@ public class ZeroToOneConverter {
 				}
 			}
 		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ZeroToOneConverter";
 	}
 }

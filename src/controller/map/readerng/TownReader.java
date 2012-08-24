@@ -22,14 +22,14 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for towns.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TownReader implements INodeHandler<TownEvent> {
 	/**
 	 * Parse a town.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
@@ -68,7 +68,7 @@ public class TownReader implements INodeHandler<TownEvent> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
@@ -92,5 +92,12 @@ public class TownReader implements INodeHandler<TownEvent> {
 	@Override
 	public Class<TownEvent> writes() {
 		return TownEvent.class;
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TownReader";
 	}
 }

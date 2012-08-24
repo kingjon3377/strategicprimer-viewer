@@ -6,9 +6,9 @@ import java.util.Map;
 
 /**
  * A factory for TileDrawHelpers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TileDrawHelperFactory {
 	/**
@@ -41,5 +41,12 @@ public class TileDrawHelperFactory {
 		} else {
 			throw new IllegalArgumentException("Unsupported map version");
 		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TileDrawHelperFactory";
 	}
 }

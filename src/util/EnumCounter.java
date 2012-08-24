@@ -5,15 +5,15 @@ import java.util.Map;
 
 /**
  * A class to count instances of enums.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  * @param <T> the enumerated type we're counting
  */
 public class EnumCounter<T extends Enum<T>> {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param type the enumerated type we're dealing with
 	 */
 	public EnumCounter(final Class<T> type) {
@@ -55,5 +55,12 @@ public class EnumCounter<T extends Enum<T>> {
 		} else {
 			return 0;
 		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "EnumCounter";
 	}
 }

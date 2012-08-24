@@ -227,4 +227,11 @@ public class ScrollListener implements AdjustmentListener,
 					.getValue() + dimensions.getWidth()));
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ScrollListener";
+	}
 }

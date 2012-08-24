@@ -16,9 +16,9 @@ import util.Pair;
  * An intermediate representation between SP objects and XML; this lets us add
  * in the 'row' and 'include' tags, which will then get handled properly when
  * writing the XML out.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class SPIntermediateRepresentation {
 	/**
@@ -29,7 +29,7 @@ public class SPIntermediateRepresentation {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param name the tag this represents.
 	 */
 	public SPIntermediateRepresentation(final String name) {
@@ -38,7 +38,7 @@ public class SPIntermediateRepresentation {
 
 	/**
 	 * Secondary constructor.
-	 * 
+	 *
 	 * @param name the tag this represents
 	 * @param attributes a list of attributes to add.
 	 */
@@ -70,7 +70,7 @@ public class SPIntermediateRepresentation {
 
 	/**
 	 * Add an attribute.
-	 * 
+	 *
 	 * @param name the name of the attribute
 	 * @param value its value
 	 */
@@ -95,7 +95,7 @@ public class SPIntermediateRepresentation {
 	/**
 	 * Add a child tag. If the child's tag is the empty string, we do nothing
 	 * instead---this is so we can handle empty tiles more easily.
-	 * 
+	 *
 	 * @param child the child to add.
 	 */
 	public void addChild(final SPIntermediateRepresentation child) {
@@ -106,7 +106,7 @@ public class SPIntermediateRepresentation {
 
 	/**
 	 * Remove an attribute and return its value.
-	 * 
+	 *
 	 * @param name an attribute name
 	 * @return its value, or "" if it's not there
 	 */
@@ -131,7 +131,7 @@ public class SPIntermediateRepresentation {
 
 	/**
 	 * Write to a Writer, or (if this is an 'include' tag) to its own.
-	 * 
+	 *
 	 * @param writer the writer to write to
 	 * @param inclusion whether we should use 'include' tags (or just skip them,
 	 *        leaving everything in its own file)
@@ -209,7 +209,7 @@ public class SPIntermediateRepresentation {
 	/**
 	 * Write an 'include' tag to the Writer, and if we're doing inclusion its
 	 * contents to its own.
-	 * 
+	 *
 	 * @param writer the writer
 	 * @param inclusion whether we're doing inclusion
 	 * @param indentationLevel how many tabs to indent if inclusion is disabled
@@ -251,7 +251,7 @@ public class SPIntermediateRepresentation {
 
 	/**
 	 * Escape a string for embedding in XML.
-	 * 
+	 *
 	 * @param string the string to escape
 	 * @return it with XML-sensitive characters escaped
 	 */
@@ -271,7 +271,7 @@ public class SPIntermediateRepresentation {
 
 	/**
 	 * Write only if the tag isn't the empty string.
-	 * 
+	 *
 	 * @param writer the Writer to write to
 	 * @param string the string to write
 	 * @throws IOException if I/O error in writing
@@ -281,5 +281,12 @@ public class SPIntermediateRepresentation {
 		if (!tag.isEmpty()) {
 			writer.write(string);
 		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SPIntermediateRepresentation";
 	}
 }

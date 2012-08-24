@@ -18,11 +18,8 @@ import org.junit.Test;
 /**
  * @author Jonathan Lovelace
  */
+//ESCA-JAVA0137:
 public final class TestTableLoader {
-	/**
-	 * Error message for IOExceptions.
-	 */
-	private static final String IO_ERROR_MESSAGE = "I/O exception";
 	/**
 	 * "one".
 	 */
@@ -31,13 +28,6 @@ public final class TestTableLoader {
 	 * The object we'll use for the tests.
 	 */
 	private TableLoader loader;
-
-	/**
-	 * Constructor: implemented to make a warning go away.
-	 */
-	public TestTableLoader() {
-		setUp();
-	}
 
 	/**
 	 * Setup method.
@@ -51,9 +41,10 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadQuadrantTable(java.io.BufferedReader)}
 	 * . .
+	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@Test
-	public void testLoadQuadrantTable() {
+	public void testLoadQuadrantTable() throws IOException {
 		final BufferedReader reader = new BufferedReader(new StringReader(
 				"quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"));
 		try {
@@ -61,14 +52,8 @@ public final class TestTableLoader {
 			assertEquals("loading quadrant table", ONE_STRING,
 					result.generateEvent(new Tile(0, 0, TileType.Tundra, "")));
 			// TODO: somehow check that it got properly loaded, beyond this
-		} catch (final IOException e) {
-			fail(IO_ERROR_MESSAGE);
 		} finally {
-			try {
-				reader.close();
-			} catch (final IOException e) {
-				fail("I/O error cleaning up after the test");
-			}
+			reader.close();
 		}
 		final BufferedReader readerTwo = new BufferedReader(new StringReader(
 				"quadrant"));
@@ -80,11 +65,7 @@ public final class TestTableLoader {
 					"File doesn't start with the number of rows of quadrants",
 					except.getMessage());
 		} finally {
-			try {
-				readerTwo.close();
-			} catch (final IOException e) {
-				fail("I/O error cleaning up after the test");
-			}
+			readerTwo.close();
 		}
 	}
 
@@ -92,9 +73,10 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadRandomTable(java.io.BufferedReader)}
 	 * .
+	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@Test
-	public void testLoadRandomTable() {
+	public void testLoadRandomTable() throws IOException {
 		final BufferedReader reader = new BufferedReader(new StringReader(
 				"random\n0 one\n99 two"));
 		try {
@@ -102,14 +84,8 @@ public final class TestTableLoader {
 			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
 					result.generateEvent(new Tile(30, 30, TileType.Tundra, "")));
-		} catch (final IOException e) {
-			fail(IO_ERROR_MESSAGE);
 		} finally {
-			try {
-				reader.close();
-			} catch (final IOException e) {
-				fail(IO_ERROR_MESSAGE);
-			}
+			reader.close();
 		}
 	}
 
@@ -117,9 +93,10 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadTerrainTable(java.io.BufferedReader)}
 	 * .
+	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@Test
-	public void testLoadTerrainTable() {
+	public void testLoadTerrainTable() throws IOException {
 		final BufferedReader reader = new BufferedReader(new StringReader(
 				"terrain\ntundra one\nplains two\nocean three"));
 		try {
@@ -130,14 +107,8 @@ public final class TestTableLoader {
 					result.generateEvent(new Tile(15, 15, TileType.Plains, "")));
 			assertEquals("loading terrain table: ocean", "three",
 					result.generateEvent(new Tile(15, 15, TileType.Ocean, "")));
-		} catch (final IOException e) {
-			fail(IO_ERROR_MESSAGE);
 		} finally {
-			try {
-				reader.close();
-			} catch (final IOException e) {
-				fail(IO_ERROR_MESSAGE);
-			}
+			reader.close();
 		}
 	}
 
@@ -145,23 +116,18 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadConstantTable(java.io.BufferedReader)}
 	 * .
+	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@Test
-	public void testLoadConstantTable() {
+	public void testLoadConstantTable() throws IOException {
 		final BufferedReader one = new BufferedReader(new StringReader(
 				"constant\none"));
 		try {
 			final EncounterTable result = loader.loadTable(one);
 			assertEquals("loading constant table: first test", ONE_STRING,
 					result.generateEvent(new Tile(10, 5, TileType.Plains, "")));
-		} catch (final IOException e) {
-			fail(IO_ERROR_MESSAGE);
 		} finally {
-			try {
-				one.close();
-			} catch (final IOException e) {
-				fail(IO_ERROR_MESSAGE);
-			}
+			one.close();
 		}
 	}
 
@@ -169,9 +135,10 @@ public final class TestTableLoader {
 	 * Test the bad-input logic in
 	 * {@link controller.exploration.TableLoader#loadTable(java.io.BufferedReader)}
 	 * .
+	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@Test
-	public void testInvalidInput() {
+	public void testInvalidInput() throws IOException {
 		final BufferedReader one = new BufferedReader(new StringReader(""));
 		try {
 			loader.loadTable(one);
@@ -181,11 +148,7 @@ public final class TestTableLoader {
 					"File doesn't start by specifying which kind of table.",
 					except.getMessage());
 		} finally {
-			try {
-				one.close();
-			} catch (final IOException e) {
-				fail("I/O error while closing the stream");
-			}
+			one.close();
 		}
 		final BufferedReader two = new BufferedReader(new StringReader(
 				"2\ninvaliddata\ninvaliddata"));
@@ -195,19 +158,13 @@ public final class TestTableLoader {
 		} catch (final IllegalArgumentException except) {
 			assertEquals("Table without header", "unknown table type",
 					except.getMessage());
-		} catch (final IOException except) {
-			fail("I/O error when testing for rejection of headerless tables");
 		} finally {
-			try {
-				two.close();
-			} catch (final IOException e) {
-				fail("I/O error while closing the stream");
-			}
+			two.close();
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of this class
 	 */
 	@Override

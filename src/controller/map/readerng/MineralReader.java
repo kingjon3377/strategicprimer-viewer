@@ -21,14 +21,14 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Minerals.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MineralReader implements INodeHandler<MineralEvent> {
 	/**
 	 * Parse a Mineral.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
@@ -74,7 +74,7 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
@@ -86,5 +86,12 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 				Boolean.toString(obj.isExposed())), Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",
 				Long.toString(obj.getID())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MineralReader";
 	}
 }

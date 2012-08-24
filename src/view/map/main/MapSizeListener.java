@@ -9,9 +9,9 @@ import model.viewer.VisibleDimensions;
 /**
  * A listener to adjust the number of displayed tiles based on the area to
  * display them in.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MapSizeListener extends ComponentAdapter {
 	/**
@@ -21,7 +21,7 @@ public class MapSizeListener extends ComponentAdapter {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param map the map model we'll be modifying.
 	 */
 	public MapSizeListener(final MapModel map) {
@@ -32,7 +32,7 @@ public class MapSizeListener extends ComponentAdapter {
 	/**
 	 * Adjust the visible size of the map based on the map component being
 	 * resized.
-	 * 
+	 *
 	 * @param event the resize event
 	 */
 	@Override
@@ -78,11 +78,18 @@ public class MapSizeListener extends ComponentAdapter {
 
 	/**
 	 * Treat a "shown" event as a "resized" event.
-	 * 
+	 *
 	 * @param event the event to handle.
 	 */
 	@Override
 	public void componentShown(final ComponentEvent event) {
 		componentResized(event);
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MapSizeListener";
 	}
 }

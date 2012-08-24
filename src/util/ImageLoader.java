@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  * I can't think of a better way of making the cache actually be shared without
  * making it effectively singleton except for lightweight instances to access
  * the singleton cache.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public final class ImageLoader {
@@ -51,7 +51,7 @@ public final class ImageLoader {
 
 	/**
 	 * Load an image from the cache, or if not in it, from file.
-	 * 
+	 *
 	 * @param file the name of the file to load
 	 * @return the image contained in the file.
 	 * @throws FileNotFoundException if the file isn't found.
@@ -73,7 +73,7 @@ public final class ImageLoader {
 
 	/**
 	 * Load an icon from the cache, or if not in it, from file.
-	 * 
+	 *
 	 * @param file the name of the file to load
 	 * @return an icon of image contained in the file.
 	 * @throws FileNotFoundException if the file isn't found.
@@ -86,5 +86,12 @@ public final class ImageLoader {
 					.getScaledInstance(20, -1, Image.SCALE_DEFAULT)));
 		}
 		return iconCache.get(file);
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ImageLoader";
 	}
 }

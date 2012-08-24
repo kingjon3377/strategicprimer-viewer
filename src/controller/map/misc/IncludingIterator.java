@@ -19,14 +19,14 @@ import controller.map.SPFormatException;
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
  * automatically handles "include" tags. TODO: We need something to map tags to
  * the files they came from, so we can write them back properly.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class IncludingIterator implements Iterator<XMLEvent> {
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param file the name of the file we're reading
 	 * @param iter the iterator we'll start with.
 	 */
@@ -43,7 +43,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	/**
 	 * Note that this method removes any empty iterators from the top of the
 	 * stack before returning.
-	 * 
+	 *
 	 * @return whether there are any events left.
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * its elements onto the stack. On error in that process, we throw a
 	 * NoSuchElementException, as that's the only thing we *can* throw other
 	 * than unchecked exceptions.
-	 * 
+	 *
 	 * @return the next item in the topmost iterator.
 	 */
 	@Override
@@ -100,7 +100,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			NoSuchElementException {
 		/**
 		 * Constructor.
-		 * 
+		 *
 		 * @param message the message
 		 * @param cause the cause
 		 */
@@ -112,7 +112,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 
 		/**
 		 * Constructor.
-		 * 
+		 *
 		 * @param cause the cause
 		 */
 		public NoSuchElementBecauseException(final Throwable cause) {
@@ -124,7 +124,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	/**
 	 * Handle an "include" tag by adding an iterator for the contents of the
 	 * file it references to the top of the stack.
-	 * 
+	 *
 	 * @param tag the tag.
 	 */
 	private void handleInclude(final XMLEvent tag) {
@@ -171,5 +171,12 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			throw new NoSuchElementException("We're not reading at all");
 		}
 		return stack.peekFirst().first();
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "IncludingIterator";
 	}
 }

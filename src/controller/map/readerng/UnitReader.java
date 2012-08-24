@@ -21,9 +21,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Units.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class UnitReader implements INodeHandler<Unit> {
 	/**
@@ -33,7 +33,7 @@ public class UnitReader implements INodeHandler<Unit> {
 
 	/**
 	 * Parse a unit.
-	 * 
+	 *
 	 * @param element the element to start with
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -62,7 +62,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	/**
 	 * Parse the kind of unit, from the "kind" or "type" parameter---default the
 	 * empty string.
-	 * 
+	 *
 	 * @param element the current element
 	 * @param warner the Warning instance to use
 	 * @return the kind of unit
@@ -104,7 +104,7 @@ public class UnitReader implements INodeHandler<Unit> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -132,5 +132,12 @@ public class UnitReader implements INodeHandler<Unit> {
 	@Override
 	public Class<Unit> writes() {
 		return Unit.class;
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "UnitReader";
 	}
 }

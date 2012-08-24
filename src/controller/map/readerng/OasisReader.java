@@ -18,14 +18,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Oases.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class OasisReader implements INodeHandler<Oasis> {
 	/**
 	 * Parse an oasis.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -65,7 +65,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -76,5 +76,12 @@ public class OasisReader implements INodeHandler<Oasis> {
 	public <S extends Oasis> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("oasis", Pair.of("id",
 				Long.toString(obj.getID())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "OasisReader";
 	}
 }

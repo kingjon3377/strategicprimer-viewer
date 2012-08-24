@@ -25,4 +25,11 @@ public class Coordinate {
 	 * The Y coordinate or height.
 	 */
 	public final int y; // NOPMD
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "[" + x + ", " + "]";
+	}
 }

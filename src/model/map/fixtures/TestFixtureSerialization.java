@@ -364,5 +364,11 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild("<troll><troll /></troll>", Troll.class, false);
 		assertMissingProperty("<troll />", Troll.class, "id", true);
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TestFixtureSerialization";
+	}
 }

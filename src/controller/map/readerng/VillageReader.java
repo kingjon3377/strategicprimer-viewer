@@ -20,14 +20,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Villages.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class VillageReader implements INodeHandler<Village> {
 	/**
 	 * Parse a village.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -61,7 +61,7 @@ public class VillageReader implements INodeHandler<Village> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -85,5 +85,12 @@ public class VillageReader implements INodeHandler<Village> {
 	@Override
 	public Class<Village> writes() {
 		return Village.class;
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "VillageReader";
 	}
 }

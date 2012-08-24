@@ -20,14 +20,14 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Stones.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class StoneReader implements INodeHandler<StoneEvent> {
 	/**
 	 * Parse a Stone.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
@@ -73,7 +73,7 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
@@ -84,5 +84,12 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 				.stone().toString()), Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",
 				Long.toString(obj.getID())));
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "StoneReader";
 	}
 }

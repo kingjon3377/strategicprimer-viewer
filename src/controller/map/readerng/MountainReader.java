@@ -16,14 +16,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Mountains.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MountainReader implements INodeHandler<Mountain> {
 	/**
 	 * Parse a mountain.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -60,7 +60,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -69,5 +69,12 @@ public class MountainReader implements INodeHandler<Mountain> {
 	@Override
 	public <S extends Mountain> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("mountain");
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MountainReader";
 	}
 }

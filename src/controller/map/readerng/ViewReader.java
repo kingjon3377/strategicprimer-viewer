@@ -166,4 +166,11 @@ public class ViewReader implements INodeHandler<MapView> {
 							.getLocation().getLineNumber());
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ViewReader";
+	}
 }

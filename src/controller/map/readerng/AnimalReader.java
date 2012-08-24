@@ -19,9 +19,9 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Animals.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class AnimalReader implements INodeHandler<Animal> {
 	/**
@@ -65,7 +65,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -86,4 +86,11 @@ public class AnimalReader implements INodeHandler<Animal> {
 		return retval;
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "AnimalReader";
+	}
 }

@@ -25,9 +25,9 @@ import controller.map.misc.MapReaderAdapter;
 
 /**
  * A class to non-interactively generate a tile's contents.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class GenerateTileContents {
 	/**
@@ -69,7 +69,7 @@ public final class GenerateTileContents {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param theMap the map we'll be consulting.
 	 */
 	private GenerateTileContents(final IMap theMap) {
@@ -84,7 +84,7 @@ public final class GenerateTileContents {
 
 	/**
 	 * Generate the contents of a tile.
-	 * 
+	 *
 	 * @param point the tile's location
 	 * @throws MissingTableException if a missing table is referenced
 	 */
@@ -95,7 +95,7 @@ public final class GenerateTileContents {
 
 	/**
 	 * Generate the contents of a tile.
-	 * 
+	 *
 	 * @param tile the tile
 	 * @throws MissingTableException if a missing table is referenced
 	 */
@@ -145,7 +145,7 @@ public final class GenerateTileContents {
 
 	/**
 	 * Print lines properly indented.
-	 * 
+	 *
 	 * @param text the text to print
 	 */
 	private static void println(final String text) {
@@ -153,5 +153,12 @@ public final class GenerateTileContents {
 			SystemOut.SYS_OUT.print("\t\t\t");
 			SystemOut.SYS_OUT.println(string);
 		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "GenerateTileContents";
 	}
 }

@@ -10,14 +10,14 @@ import controller.map.SPWriter;
 
 /**
  * Entry point for the new map writing framework.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MapWriterNG implements SPWriter {
 	/**
 	 * Write a map.
-	 * 
+	 *
 	 * @param filename the file to write to
 	 * @param map the map to write.
 	 * @param inclusion whether to write to other files if sub-objects came from
@@ -32,7 +32,7 @@ public class MapWriterNG implements SPWriter {
 
 	/**
 	 * Write a map.
-	 * 
+	 *
 	 * @param out the Writer to write to
 	 * @param map the map to write.
 	 * @param inclusion whether to write to other files if sub-objects came from
@@ -47,7 +47,7 @@ public class MapWriterNG implements SPWriter {
 
 	/**
 	 * Write a SP object.
-	 * 
+	 *
 	 * @param filename the file to write to
 	 * @param obj the object to write.
 	 * @param inclusion whether to write to other files if sub-objects came from
@@ -66,7 +66,7 @@ public class MapWriterNG implements SPWriter {
 
 	/**
 	 * Write a SP object.
-	 * 
+	 *
 	 * @param out the Writer to write to
 	 * @param obj the object to write.
 	 * @param inclusion whether to write to other files if sub-objects came from
@@ -76,5 +76,12 @@ public class MapWriterNG implements SPWriter {
 	public void writeObject(final Writer out, final XMLWritable obj,
 			final boolean inclusion) throws IOException {
 		ReaderAdapter.ADAPTER.write(obj).write(out, inclusion, 0);
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MapWriterNG";
 	}
 }

@@ -19,14 +19,14 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for CacheFixtures.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class CacheReader implements INodeHandler<CacheFixture> {
 	/**
 	 * Parse a cache.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -65,7 +65,7 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write
@@ -80,4 +80,11 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 				Pair.of("id", Long.toString(obj.getID())));
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CacheReader";
+	}
 }

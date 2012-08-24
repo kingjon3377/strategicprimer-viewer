@@ -304,4 +304,11 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 		return set;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "Ver2TileDrawHelper";
+	}
 }

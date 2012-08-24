@@ -22,13 +22,13 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for cities.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public class CityReader implements INodeHandler<CityEvent> {
 	/**
 	 * Parse a city.
-	 * 
+	 *
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
 	 * @param players the list of players
@@ -75,7 +75,7 @@ public class CityReader implements INodeHandler<CityEvent> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
@@ -91,5 +91,12 @@ public class CityReader implements INodeHandler<CityEvent> {
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		return retval;
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CityReader";
 	}
 }

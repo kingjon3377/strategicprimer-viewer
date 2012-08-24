@@ -498,4 +498,11 @@ public class OneToTwoConverter { // NOPMD
 		return (long) (tile.getLocation().col) << 32L + tile.getLocation()
 				.row;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "OneToTwoConverter";
+	}
 }

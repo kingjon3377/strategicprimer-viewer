@@ -12,9 +12,9 @@ import controller.exploration.TableLoader;
 
 /**
  * A driver to help debug exploration tables.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TableDebugger {
 
@@ -39,7 +39,7 @@ public class TableDebugger {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param explRunner an exploration runner loaded with all the tables we
 	 *        want.
 	 */
@@ -49,7 +49,7 @@ public class TableDebugger {
 
 	/**
 	 * Print all possible results from the tables.
-	 * 
+	 *
 	 * @param out the stream to print to.
 	 * @throws MissingTableException if a referenced table isn't there
 	 */
@@ -61,7 +61,7 @@ public class TableDebugger {
 
 	/**
 	 * Print all possible results from a table.
-	 * 
+	 *
 	 * @param before the string to print before each result (from the calling
 	 *        table)
 	 * @param after the string to print after each result (from the calling
@@ -98,5 +98,12 @@ public class TableDebugger {
 			}
 		}
 		set.remove(table);
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TableDebugger";
 	}
 }
