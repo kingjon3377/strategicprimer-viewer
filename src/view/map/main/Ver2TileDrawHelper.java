@@ -198,7 +198,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		} else if (fix instanceof RiverFixture) {
 			return getImage(riverFiles.get(((RiverFixture) fix).getRivers())); // NOPMD
 		} else {
-			LOGGER.warning("Using the fallback image because this is an unanticipated kind of Fixture.");
+			LOGGER.warning("Using the fallback image for an unanticipated kind of Fixture.");
 			return fallbackImage;
 		}
 	}

@@ -205,8 +205,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"column", false);
 		assertMissingProperty("<tile row=\"0\" column=\"0\" />", Tile.class,
 				KIND_PROPERTY, false);
-		assertUnwantedChild(
-				"<tile row=\"0\" column=\"0\" kind=\"plains\"><tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
+		assertUnwantedChild("<tile row=\"0\" column=\"0\" kind=\"plains\">"
+				+ "<tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
 				Tile.class, false);
 		final Tile six = new Tile(2, 3, TileType.Jungle, FAKE_FILENAME);
 		six.addFixture(setFileOnObject(new Unit(

@@ -1,9 +1,9 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -149,7 +149,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 					Integer.toString(obj.getPlayers().getCurrentPlayer()
 							.getPlayerId()));
 		}
-		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
+		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
 		for (final Player player : obj.getPlayers()) {
 			addPlayerChild(tagMap, player, retval);

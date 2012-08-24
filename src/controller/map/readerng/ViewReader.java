@@ -1,9 +1,9 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,7 +112,7 @@ public class ViewReader implements INodeHandler<MapView> {
 		retval.addAttribute("current_turn",
 				Integer.toString(obj.getCurrentTurn()));
 		final SPMapReader reader = MAP_READER;
-		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
+		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
 		addChild(tagMap, obj.getMap(), retval, reader);
 		return retval;

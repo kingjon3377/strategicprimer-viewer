@@ -7,7 +7,8 @@ import java.util.Map;
  * Kinds of minerals whose events the program knows about.
  *
  * @author Jonathan Lovelace
- * @deprecated We now use free-form strings for minerals' kinds. Eventually we'll want to load a list of kinds from file.
+ * @deprecated We now use free-form strings for minerals' kinds. Eventually
+ *             we'll want to load a list of kinds from file.
  */
 @Deprecated
 public enum MineralKind {

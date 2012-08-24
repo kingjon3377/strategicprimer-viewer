@@ -16,9 +16,9 @@ import org.junit.Test;
 
 /**
  * A test case for TestExplorationRunner.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class TestExplorationRunner {
 	/**
@@ -64,10 +64,10 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the getPrimaryRock method.
-	 * 
+	 *
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Table.
-	 * 
+	 *
 	 * @throws MissingTableException if the table is missing
 	 */
 	@Test
@@ -80,10 +80,10 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the getPrimaryTree method.
-	 * 
+	 *
 	 * TODO Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
-	 * 
+	 *
 	 * @throws MissingTableException if a table is missing
 	 */
 	@SuppressWarnings("deprecation")
@@ -104,7 +104,7 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test that getPrimaryTree objects to non-forest tiles.
-	 * 
+	 *
 	 * @throws MissingTableException if a table is missing
 	 */
 	@Test(expected = IllegalArgumentException.class)
@@ -115,10 +115,10 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the consultTable method.
-	 * 
+	 *
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
-	 * 
+	 *
 	 * @throws MissingTableException if a table is missing
 	 */
 	@Test
@@ -137,10 +137,10 @@ public final class TestExplorationRunner {
 	/**
 	 * Test the recursiveConsultTable method: the one method under test whose
 	 * correctness is nonobvious.
-	 * 
+	 *
 	 * TODO: Use a mock object rather than a real object for the Tile, and even
 	 * for the Tables.
-	 * 
+	 *
 	 * @throws MissingTableException if a table is missing
 	 */
 	@Test
@@ -168,7 +168,7 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the defaultResults() method.
-	 * 
+	 *
 	 * @throws MissingTableException if a table is missing
 	 */
 	@SuppressWarnings("deprecation")
@@ -185,15 +185,15 @@ public final class TestExplorationRunner {
 				"defaultResults in boreal forest",
 				"The primary rock type here is test_rock.\nThe main kind of tree is boreal_tree.\n",
 				runner.defaultResults(new Tile(0, 0, TileType.BorealForest, "")));
-		assertEquals(
-				"defaultResults in temperate forest",
-				"The primary rock type here is test_rock.\nThe main kind of tree is temperate_tree.\n",
+		assertEquals("defaultResults in temperate forest",
+				"The primary rock type here is test_rock.\n"
+						+ "The main kind of tree is temperate_tree.\n",
 				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest,
 						"")));
 	}
 
 	/**
-	 * 
+	 *
 	 * Test recursive checking. Note that the method returns true if the table
 	 * in question, or one it references, does *not* exist.
 	 */
@@ -234,7 +234,7 @@ public final class TestExplorationRunner {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the class
 	 */
 	@Override

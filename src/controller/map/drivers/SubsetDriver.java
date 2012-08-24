@@ -14,9 +14,9 @@ import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to check whether player maps are subsets of the main map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class SubsetDriver {
 	/**
@@ -44,7 +44,8 @@ public final class SubsetDriver {
 		}
 		final IMap mainMap = mainPair.first(); // NOPMD
 		SystemOut.SYS_OUT
-				.println("OK if strict subset, WARN if needs manual checking, FAIL if error in reading");
+				.print("OK if strict subset, WARN if needs manual checking,");
+		SystemOut.SYS_OUT.println("FAIL if error in reading");
 		for (final String arg : args) {
 			if (arg.equals(args[0])) {
 				continue;
@@ -68,7 +69,7 @@ public final class SubsetDriver {
 	/**
 	 * Return the specified map (or null) *and* whether an exception was thrown.
 	 * Any thrown exceptions will additionally be warned about.
-	 * 
+	 *
 	 * @param reader the map reader to use
 	 * @param filename the name of a map
 	 * @return a Pair of the map (or null) and whether an exception was thrown.

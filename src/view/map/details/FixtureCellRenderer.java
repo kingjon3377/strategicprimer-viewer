@@ -57,7 +57,9 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 			} else {
 				((JLabel) component).setIcon(defaultFixtIcon);
 			}
-		component.setMaximumSize(new Dimension(component.getMaximumSize().width, component.getMaximumSize().height * 2));
+		component.setMaximumSize(new Dimension(
+				component.getMaximumSize().width,
+				component.getMaximumSize().height * 2));
 		setComponentPreferredSize((JComponent) component, list.getWidth());
 		return component;
 	}
@@ -131,7 +133,8 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	 * @param width the width we're working within
 	 */
 	private static void setComponentPreferredSize(final JComponent component, final int width) {
-		final View view = (View) component.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
+		final View view = (View) component
+				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
 		view.setSize(width, 0);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));

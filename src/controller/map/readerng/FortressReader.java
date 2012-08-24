@@ -3,10 +3,10 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
+import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static java.lang.Integer.parseInt;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,7 +102,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
-		final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
+		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
 		if (!obj.getUnits().isEmpty()) {
 			for (final Unit unit : obj.getUnits()) {

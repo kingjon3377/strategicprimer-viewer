@@ -63,7 +63,7 @@ public class ResolutionDecreaseConverter {
 	private static void checkRequirements(final IMap map) {
 		if (map.rows() % 2 != 0 || map.cols() % 2 != 0) {
 			throw new IllegalArgumentException(
-					"This converter can only work on maps with an even number of rows and columns.");
+					"Can only convert maps with even numbers of rows and columns.");
 		}
 	}
 

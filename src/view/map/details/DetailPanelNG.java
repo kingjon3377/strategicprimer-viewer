@@ -136,11 +136,11 @@ public class DetailPanelNG extends JPanel {
 	 * @param sources PropertyChangeSources it should be listening on
 	 * @return a scroll pane containing the list or tree.
 	 */
-	private static JScrollPane createList(final String property, final PropertyChangeSource... sources) {
-		return setComponentSizes(new JScrollPane(
-				new FixtureList(property, sources)), new Dimension(
-				LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT), new Dimension(LIST_WIDTH,
-				DETAIL_PANEL_HT), new Dimension(LIST_MAX_WIDTH,
-				DETAIL_PAN_MAX_HT));
+	private static JScrollPane createList(final String property,
+			final PropertyChangeSource... sources) {
+		return setComponentSizes(new JScrollPane(new FixtureList(property,
+				sources)), new Dimension(LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT),
+				new Dimension(LIST_WIDTH, DETAIL_PANEL_HT), new Dimension(
+						LIST_MAX_WIDTH, DETAIL_PAN_MAX_HT));
 	}
 }

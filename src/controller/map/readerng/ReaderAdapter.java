@@ -1,3 +1,4 @@
+// $codepro.audit.disable lineLength
 package controller.map.readerng;
 
 import java.util.HashMap;

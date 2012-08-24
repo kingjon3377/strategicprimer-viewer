@@ -1,12 +1,12 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.ReaderAdapter.checkedCast;
+import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static java.lang.Integer.parseInt;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -174,7 +174,7 @@ public class TileReader implements INodeHandler<Tile> {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
 			if (obj.iterator().hasNext()) {
-				final Map<String, SPIntermediateRepresentation> tagMap = new HashMap<String, SPIntermediateRepresentation>();
+				final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj) {
 					if (fix instanceof RiverFixture) {

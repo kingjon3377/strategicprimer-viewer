@@ -29,8 +29,11 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	public IteratorWrapper(final Iterator<T> iterator) {
 		iter = iterator;
 	}
+
 	/**
-	 * Constructor to produce a *sorted* Iterable. Unlike normal operation, this evaluates its arguments greedily.
+	 * Constructor to produce a *sorted* Iterable. Unlike normal operation, this
+	 * evaluates its arguments greedily.
+	 *
 	 * @param iterator the iterator to get elements from.
 	 * @param comparator the comparator to use for sorting elements.
 	 */

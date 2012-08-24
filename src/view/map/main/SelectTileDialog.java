@@ -19,9 +19,9 @@ import util.IsNumeric;
 
 /**
  * A dialog to let the user select a tile by coordinates.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class SelectTileDialog extends JDialog implements ActionListener {
 	/**
@@ -36,7 +36,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 * A label to display error messages.
 	 */
 	private final JLabel errorLabel = new JLabel(
-			"This is a label for error messages. This text should be removed before the constructor finishes.");
+			"This text should vanish from the error-message label before the constructor ends.");
 	/**
 	 * The map model to change the selection in.
 	 */
@@ -44,7 +44,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param parent the parent to attach this dialog to
 	 * @param model the map model to change the selection in
 	 */
@@ -88,7 +88,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Handle button presses.
-	 * 
+	 *
 	 * @param event the event to handle
 	 */
 	@Override
@@ -145,7 +145,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Set text for an error.
-	 * 
+	 *
 	 * @param state the state to give an error message for
 	 * @param bound the upper bound, for the overflow case.
 	 * @return a suitable message for that error, suitable for following "row"
@@ -168,7 +168,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Handle the OK button.
-	 * 
+	 *
 	 * @param rowText the text in the row box
 	 * @param colText the text in the column box
 	 */

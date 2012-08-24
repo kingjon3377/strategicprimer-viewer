@@ -37,7 +37,8 @@ import util.PropertyChangeSource;
  *
  * @author Jonathan Lovelace
  */
-public class FixtureList extends JList<TileFixture> implements DragGestureListener, DropTargetListener {
+public class FixtureList extends JList<TileFixture> implements
+		DragGestureListener, DropTargetListener {
 	/**
 	 * Logger.
 	 */
@@ -149,7 +150,8 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 	public void drop(final DropTargetDropEvent dtde) {
 		if (dtde.getSource() != this) {
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR, CurriedFixtureTransferable.FLAVOR)) {
+				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
+						CurriedFixtureTransferable.FLAVOR)) {
 					try {
 						handleDrop(dtde.getTransferable());
 					} catch (UnsupportedFlavorException except) {
@@ -174,12 +176,15 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 	 * @throws IOException on I/O error getting the data
 	 * @throws UnsupportedFlavorException if the data flavor isn't actually supported
 	 */
-	private void handleDrop(final Transferable trans) throws UnsupportedFlavorException, IOException {
+	private void handleDrop(final Transferable trans)
+			throws UnsupportedFlavorException, IOException {
 		if (EqualsAny.equalsAny(FixtureTransferable.FLAVOR, trans.getTransferDataFlavors())) {
 			((FixtureListModel) getModel()).addFixture((TileFixture) trans
 					.getTransferData(FixtureTransferable.FLAVOR));
-		} else if (EqualsAny.equalsAny(CurriedFixtureTransferable.FLAVOR, trans.getTransferDataFlavors())) {
-			for (Transferable item : (List<Transferable>) trans.getTransferData(CurriedFixtureTransferable.FLAVOR)) {
+		} else if (EqualsAny.equalsAny(CurriedFixtureTransferable.FLAVOR,
+				trans.getTransferDataFlavors())) {
+			for (Transferable item : (List<Transferable>) trans
+					.getTransferData(CurriedFixtureTransferable.FLAVOR)) {
 				handleDrop(item);
 			}
 		} else {

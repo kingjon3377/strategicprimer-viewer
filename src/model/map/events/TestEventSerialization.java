@@ -163,7 +163,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				FortificationEvent.class, "id", true);
 		assertUnwantedChild(
-				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></fortification>",
+				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
+						+ "<troll /></fortification>",
 				FortificationEvent.class, false);
 	}
 
