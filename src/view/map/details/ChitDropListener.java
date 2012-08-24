@@ -13,20 +13,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.map.TileFixture;
+import model.viewer.FixtureTransferable;
 import util.EqualsAny;
 
 /**
  * A class to listen for potential Chit drops.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ChitDropListener implements DropTargetListener {
-	/**
-	 * The data flavor we want.
-	 */
-	private static final DataFlavor WANTED_FLAVOR = new DataFlavor(
-			TileFixture.class, "TileFixture");
 	/**
 	 * Logger.
 	 */
@@ -35,13 +31,13 @@ public class ChitDropListener implements DropTargetListener {
 
 	/**
 	 * A possible drag entering the component?
-	 * 
+	 *
 	 * @param dtde the event to handle
 	 */
 	@Override
 	public void dragEnter(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& EqualsAny.equalsAny(WANTED_FLAVOR,
+				&& EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
@@ -51,13 +47,13 @@ public class ChitDropListener implements DropTargetListener {
 
 	/**
 	 * Continued dragging over the component.
-	 * 
+	 *
 	 * @param dtde the event to handle
 	 */
 	@Override
 	public void dragOver(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& EqualsAny.equalsAny(WANTED_FLAVOR,
+				&& EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
@@ -67,13 +63,13 @@ public class ChitDropListener implements DropTargetListener {
 
 	/**
 	 * Handle change to the type of drag---which we don't care about.
-	 * 
+	 *
 	 * @param dtde the event to handle.
 	 */
 	@Override
 	public void dropActionChanged(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& EqualsAny.equalsAny(WANTED_FLAVOR,
+				&& EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList())) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
@@ -83,7 +79,7 @@ public class ChitDropListener implements DropTargetListener {
 
 	/**
 	 * The drag is exiting the component.
-	 * 
+	 *
 	 * @param dte ignored
 	 */
 	@Override
@@ -93,13 +89,13 @@ public class ChitDropListener implements DropTargetListener {
 
 	/**
 	 * Handle drop.
-	 * 
+	 *
 	 * @param dtde the event to handle.
 	 */
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
 		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-			if (WANTED_FLAVOR.equals(flavor)) {
+			if (FixtureTransferable.FLAVOR.equals(flavor)) {
 				try {
 					((ChitAndDetailPanel) ((DropTarget) dtde.getSource())
 							.getComponent()).addFixture((TileFixture) dtde
@@ -121,7 +117,7 @@ public class ChitDropListener implements DropTargetListener {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
