@@ -20,4 +20,12 @@ public class FixtureTree extends JTree {
 		super(new FixtureTreeModel(property, sources));
 		setCellRenderer(new FixtureTreeRenderer());
 	}
+	/**
+	 * Restrict the width to the width of the parent.
+	 * @return true
+	 */
+	@Override
+	public boolean getScrollableTracksViewportWidth() { // NOPMD
+		return true;
+	}
 }
