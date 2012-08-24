@@ -7,9 +7,9 @@ import model.map.Tile;
 
 /**
  * An EncounterTable that always returns the same value.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ConstantTable implements EncounterTable {
 	/**
@@ -26,17 +26,10 @@ public class ConstantTable implements EncounterTable {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param val the value to return for all queries.
 	 */
 	public ConstantTable(final String val) {
-		setValue(val);
-	}
-
-	/**
-	 * @param val the value to return for subsequent queries.
-	 */
-	public final void setValue(final String val) {
 		value = val;
 	}
 
@@ -60,7 +53,7 @@ public class ConstantTable implements EncounterTable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object
 	 */
 	@Override

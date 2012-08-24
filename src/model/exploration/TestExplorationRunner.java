@@ -20,6 +20,7 @@ import org.junit.Test;
  * @author Jonathan Lovelace
  *
  */
+//ESCA-JAVA0137:
 public final class TestExplorationRunner {
 	/**
 	 * Extracted constant, to fix a warning because it occurred three or more

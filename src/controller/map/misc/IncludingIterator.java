@@ -94,6 +94,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	/**
 	 * A NoSuchElementException that takes a custom cause, unlike its
 	 * superclass.
+	 * @author Jonathan Lovelace
 	 */
 	// ESCA-JAVA0051:
 	public static class NoSuchElementBecauseException extends

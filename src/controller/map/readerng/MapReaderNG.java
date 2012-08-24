@@ -57,13 +57,12 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map contained in that stream
 	 * @throws XMLStreamException if the XML isn't well-formed
-	 * @throws SPFormatException if the data is invalid
-	 * @throws MapVersionException if the map version isn't one we support
+	 * @throws SPFormatException if the data is invalid, including if the map
+	 *         version isn't one we support
 	 */
 	@Override
 	public MapView readMap(final String file, final Reader istream,
-			final Warning warner) throws XMLStreamException, SPFormatException,
-			MapVersionException {
+			final Warning warner) throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, MapView.class, warner);
 	}
 

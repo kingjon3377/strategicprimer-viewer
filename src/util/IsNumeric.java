@@ -2,9 +2,9 @@ package util;
 
 /**
  * A helper class to determine whether a String is numeric or not.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class IsNumeric {
 	/**
@@ -22,7 +22,7 @@ public final class IsNumeric {
 		try {
 			Integer.parseInt(string);
 			return true; // NOPMD
-		} catch (final NumberFormatException except) {
+		} catch (final NumberFormatException except) { // $codepro.audit.disable logExceptions
 			return false;
 		}
 	}

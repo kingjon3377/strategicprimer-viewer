@@ -72,8 +72,8 @@ public class ComparableIterator<T> implements Iterator<T>,
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof ComparableIterator
-				&& ((ComparableIterator) obj).wrapped.equals(wrapped);
+		return this == obj || (obj instanceof ComparableIterator
+				&& ((ComparableIterator) obj).wrapped.equals(wrapped));
 	}
 	/**
 	 * @return a String representation of the object

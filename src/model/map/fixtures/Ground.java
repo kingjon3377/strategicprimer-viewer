@@ -84,8 +84,8 @@ public class Ground extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Ground && kind.equals(((Ground) obj).kind)
-				&& exposed == ((Ground) obj).exposed;
+		return this == obj || (obj instanceof Ground && kind.equals(((Ground) obj).kind)
+				&& exposed == ((Ground) obj).exposed);
 	}
 
 	/**
