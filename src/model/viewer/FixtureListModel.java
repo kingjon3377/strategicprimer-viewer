@@ -7,6 +7,7 @@ import javax.swing.DefaultListModel;
 
 import model.map.Tile;
 import model.map.TileFixture;
+import model.map.TileType;
 import util.PropertyChangeSource;
 
 /**
@@ -21,7 +22,10 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * The property we listen for.
 	 */
 	private final String listenedProperty;
-
+	/**
+	 * The current tile.
+	 */
+	private Tile tile = new Tile(-1, -1, TileType.NotVisible, "string");
 	/**
 	 * Constructor.
 	 *
@@ -46,11 +50,23 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if (listenedProperty.equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Tile) {
+			tile = (Tile) evt.getNewValue();
 			this.clear();
 			for (TileFixture fix : (Tile) evt.getNewValue()) {
 				this.addElement(fix);
 			}
 		}
 	}
-
+	/**
+	 * Add a tile fixture to the current tile.
+	 * @param fix the fixture to add.
+	 */
+	public void addFixture(final TileFixture fix) {
+		if (tile.addFixture(fix)) {
+			// addFixture returns false if it wasn't actually added---e.g. it
+			// was already in the set---so we only want to add it to the display
+			// if it returns true.
+			addElement(fix);
+		}
+	}
 }
