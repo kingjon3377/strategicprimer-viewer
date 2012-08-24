@@ -166,7 +166,7 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 			((FixtureListModel) getModel()).addFixture((TileFixture) trans
 					.getTransferData(FixtureTransferable.FLAVOR));
 		} else if (EqualsAny.equalsAny(CurriedFixtureTransferable.FLAVOR, trans.getTransferDataFlavors())) {
-			for (Transferable item : ((CurriedFixtureTransferable) trans).getPayload()) {
+			for (Transferable item : (List<Transferable>) trans.getTransferData(CurriedFixtureTransferable.FLAVOR)) {
 				handleDrop(item);
 			}
 		} else {
