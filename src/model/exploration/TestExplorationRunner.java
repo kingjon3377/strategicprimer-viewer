@@ -47,13 +47,6 @@ public final class TestExplorationRunner {
 	private ExplorationRunner runner;
 
 	/**
-	 * To fix a warning.
-	 */
-	public TestExplorationRunner() {
-		setUp();
-	}
-
-	/**
 	 * Set up for the tests.
 	 */
 	// ESCA-JAVA0160:

@@ -700,7 +700,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 								Warning.Action.Ignore));
 				fail("We were expecting a MissingChildException");
 			} catch (final MissingChildException except) { // $codepro.audit.disable logExceptions
-				assertTrue(true);
+				assertTrue("Got the expected MissingChildException", true);
 			}
 		}
 	}
@@ -755,7 +755,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		int size = 0;
 		final Iterator<T> iterator = iter.iterator();
 		// ESCA-JAVA0254:
-		while (iterator.hasNext()) { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.minimizeScopeOfLocalVariables
+		while (iterator.hasNext()) { // $codepro.audit.disable
 			size++;
 			iterator.next();
 		}
