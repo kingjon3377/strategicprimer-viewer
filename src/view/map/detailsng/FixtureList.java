@@ -1,6 +1,7 @@
 package view.map.detailsng;
 
 import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 import model.map.TileFixture;
 import model.viewer.FixtureListModel;
@@ -22,5 +23,6 @@ public class FixtureList extends JList<TileFixture> {
 			final PropertyChangeSource... sources) {
 		super(new FixtureListModel(property, sources));
 		setCellRenderer(new FixtureCellRenderer());
+		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 }
