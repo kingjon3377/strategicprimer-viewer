@@ -81,4 +81,26 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 			}
 		}
 	}
+	/**
+	 * A FixtureListModel is equal only to another FixtureListModel listening
+	 * for the same property and representing the same tile.
+	 *
+	 * @param obj an object
+	 * @return whether we're equal to it
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj
+				|| (obj instanceof FixtureListModel
+						&& ((FixtureListModel) obj).listenedProperty
+								.equalsIgnoreCase(listenedProperty) && ((FixtureListModel) obj).tile
+							.equals(tile));
+	}
+	/**
+	 * @return a hash code for the object
+	 */
+	@Override
+	public int hashCode() {
+		return listenedProperty.hashCode();
+	}
 }

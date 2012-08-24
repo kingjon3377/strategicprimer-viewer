@@ -191,4 +191,25 @@ public class FixtureList extends JList<TileFixture> implements
 			throw new UnsupportedFlavorException(trans.getTransferDataFlavors()[0]);
 		}
 	}
+
+	/**
+	 * A FixtureList is equal to only another JList with the same model. If obj
+	 * is a DropTarget, we compare to its Component.
+	 *
+	 * @param obj another object
+	 * @return whether it's equal to this one
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || (obj instanceof JList
+						&& getModel().equals(((JList) obj).getModel()));
+	}
+	/**
+	 * @return a hash-code for the object
+	 */
+	@Override
+	public int hashCode() {
+		return getModel().hashCode();
+	}
 }
