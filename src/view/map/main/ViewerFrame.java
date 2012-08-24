@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import model.viewer.MapModel;
-import view.map.details.DetailPanel;
 import view.map.detailsng.DetailPanelNG;
 
 /**
