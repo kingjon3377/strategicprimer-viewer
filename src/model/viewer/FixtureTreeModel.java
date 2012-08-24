@@ -2,10 +2,7 @@ package model.viewer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -14,7 +11,6 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import model.map.Tile;
-import model.map.TileFixture;
 import util.PropertyChangeSource;
 /**
  * A model for a FixtureTree.
@@ -59,10 +55,10 @@ public class FixtureTreeModel implements PropertyChangeListener, TreeModel {
 		if (listenedProperty.equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Tile) {
 			tile = new TileTreeNode((Tile) evt.getNewValue());
+			final TreeModelEvent event = new TreeModelEvent(this, new TreePath(tile));
 			for (final TreeModelListener listener : listeners
 					.getListeners(TreeModelListener.class)) {
-				listener.treeStructureChanged(new TreeModelEvent(this,
-						new TreePath(tile)));
+				listener.treeStructureChanged(event);
 			}
 		}
 	}
