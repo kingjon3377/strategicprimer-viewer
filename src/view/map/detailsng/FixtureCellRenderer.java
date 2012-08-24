@@ -1,7 +1,10 @@
 package view.map.detailsng;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -18,9 +21,7 @@ import javax.swing.text.View;
 
 import model.map.HasImage;
 import model.map.TileFixture;
-import model.map.fixtures.RiverFixture;
 import util.ImageLoader;
-import view.map.details.Chit;
 
 /**
  * A cell renderer for tile-details GUIs.
@@ -95,8 +96,32 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	 * @return the default icon for fixtures.
 	 */
 	private static Icon createDefaultFixtureIcon() {
+		/**
+		 * The margin we allow around the chit itself in the default image.
+		 */
+		final double margin = 0.15; // NOPMD
+		final int imageSize = 24; // NOPMD
+		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
+				BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D pen = temp.createGraphics();
+			final Color saveColor = pen.getColor();
+			pen.setColor(Color.RED);
+			pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
+					(int) Math.round(imageSize * margin) + 1,
+					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+					(int) Math.round(imageSize * (margin / 2.0)),
+					(int) Math.round(imageSize * (margin / 2.0)));
+			pen.setColor(saveColor);
+			pen.fillRoundRect(
+					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+					(int) Math.round(imageSize * margin * 2.0),
+					(int) Math.round(imageSize * margin * 2.0),
+					(int) Math.round(imageSize * margin / 2.0),
+					(int) Math.round(imageSize * margin / 2.0));
 		// TODO: If we ever get rid of Chit, copy its method to here.
-		return new ImageIcon(Chit.createDefaultImage(new RiverFixture()));
+		return new ImageIcon(temp);
 
 	}
 	/**
