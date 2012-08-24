@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -17,6 +18,7 @@ import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.View;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
@@ -63,6 +65,7 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeC
 				((JLabel) component).setIcon(defaultFixtIcon);
 			}
 		component.setMaximumSize(new Dimension(component.getMaximumSize().width, component.getMaximumSize().height * 2));
+		setComponentPreferredSize((JComponent) component, list.getWidth());
 		return component;
 	}
 	/**
@@ -99,6 +102,7 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeC
 					((JLabel) component).setIcon(defaultFixtIcon);
 				}
 			}
+			setComponentPreferredSize((JComponent) component, tree.getWidth());
 		} else {
 			LOGGER.warning("Component wasn't a JLabel, so skipping custom rendering");
 		}
@@ -137,6 +141,8 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeC
 		} else {
 			LOGGER.warning("Component wasn't a JLabel, so skipping custom rendering");
 		}
+		setComponentPreferredSize((JComponent) component, table.getWidth());
+		table.setRowHeight(row, component.getPreferredSize().height);
 		return component;
 	}
 	/**
@@ -176,5 +182,18 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture>, TreeC
 		// TODO: If we ever get rid of Chit, copy its method to here.
 		return new ImageIcon(Chit.createDefaultImage(new RiverFixture()));
 
+	}
+	/**
+	 * Set a component's height given a fixed width.
+	 * Adapted from http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
+	 * @param component the component we're laying out
+	 * @param width the width we're working within
+	 */
+	private static void setComponentPreferredSize(final JComponent component, final int width) {
+		final View view = (View) component.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
+		view.setSize(width, 0);
+		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
+		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
+		component.setPreferredSize(new Dimension(wid, height));
 	}
 }
