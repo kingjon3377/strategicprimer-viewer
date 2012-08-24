@@ -149,7 +149,7 @@ public class ArraySet<T> implements Set<T> { // NOPMD
 				&& containsAll((Set) obj);
 	}
 	/**
-	 * TODO: Should perhaps include data on its contents
+	 * TODO: Should perhaps include data on its contents.
 	 * @return a String representation of the object
 	 */
 	@Override
