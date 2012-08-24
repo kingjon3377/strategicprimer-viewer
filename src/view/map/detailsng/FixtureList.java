@@ -72,6 +72,7 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 	@Override
 	public void dragEnter(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+				&& dtde.getSource() != this
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
@@ -89,6 +90,7 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 	@Override
 	public void dragOver(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+				&& dtde.getSource() != this
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
@@ -106,6 +108,7 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 	@Override
 	public void dropActionChanged(final DropTargetDragEvent dtde) {
 		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+				&& dtde.getSource() != this
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
@@ -131,24 +134,23 @@ public class FixtureList extends JList<TileFixture> implements DragGestureListen
 	 */
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
-		if (dtde.getSource() == this) {
-			return; // NOPMD
-		}
-		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-			if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR, CurriedFixtureTransferable.FLAVOR)) {
-				try {
-					handleDrop(dtde.getTransferable());
-				} catch (UnsupportedFlavorException except) {
-					LOGGER.log(Level.SEVERE,
-							"Unsupported flavor when it said it was supported",
-							except);
-					continue;
-				} catch (IOException except) {
-					LOGGER.log(Level.SEVERE, "I/O error getting the data", except);
-					continue;
+		if (dtde.getSource() != this) {
+			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
+				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR, CurriedFixtureTransferable.FLAVOR)) {
+					try {
+						handleDrop(dtde.getTransferable());
+					} catch (UnsupportedFlavorException except) {
+						LOGGER.log(Level.SEVERE,
+								"Unsupported flavor when it said it was supported",
+								except);
+						continue;
+					} catch (IOException except) {
+						LOGGER.log(Level.SEVERE, "I/O error getting the data", except);
+						continue;
+					}
+					dtde.acceptDrop(dtde.getDropAction());
+					return; // NOPMD
 				}
-				dtde.acceptDrop(dtde.getDropAction());
-				return; // NOPMD
 			}
 		}
 		dtde.rejectDrop();
