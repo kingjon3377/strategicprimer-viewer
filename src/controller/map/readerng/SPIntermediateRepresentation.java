@@ -196,20 +196,6 @@ public class SPIntermediateRepresentation {
 	}
 
 	/**
-	 * @param name an attribute name
-	 * @return whether we have an attribute by that name
-	 */
-	private boolean hasAttribute(final String name) {
-		// for (Pair<String, String> pair : attrs) {
-		// if (pair.first().equals(name)) {
-		// return true; // NOPMD
-		// }
-		// }
-		// return false;
-		return attrs.contains(name);
-	}
-
-	/**
 	 * Write an 'include' tag to the Writer, and if we're doing inclusion its
 	 * contents to its own.
 	 *
@@ -221,7 +207,7 @@ public class SPIntermediateRepresentation {
 	private void writeInclude(final Writer writer, final boolean inclusion,
 			final int indentationLevel) throws IOException {
 		// if (attrs.containsKey(FILE_ATTR) && inclusion) {
-		if (hasAttribute(FILE_ATTR) && inclusion) {
+		if (attrs.contains(FILE_ATTR) && inclusion) {
 			String file = removeAttribute(FILE_ATTR);
 			if ("string:".equals(file)) {
 				final StringWriter swriter = new StringWriter();
