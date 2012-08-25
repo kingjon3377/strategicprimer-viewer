@@ -160,7 +160,7 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	public <S extends XMLWritable> SPIntermediateRepresentation write(
 			final S obj) {
 		if (WRITE_CACHE.containsKey(obj.getClass())) {
-			return ((INodeHandler<S>) (WRITE_CACHE.get(obj.getClass())))
+			return ((INodeHandler<S>) WRITE_CACHE.get(obj.getClass()))
 					.write(obj);
 		} else {
 			throw new IllegalArgumentException(
