@@ -138,8 +138,9 @@ public class Unit extends XMLWritableImpl implements TileFixture, HasImage {
 	}
 
 	/**
-	 * TODO: Should be per-unit-type ... This image from OpenGameArt.org,
-	 * uploaded by jreijonen,
+	 * TODO: Should be per-unit-type ...
+	 *
+	 * This image from OpenGameArt.org, uploaded by jreijonen,
 	 * http://opengameart.org/content/faction-symbols-allies-axis .
 	 *
 	 * @return the name of an image to represent the unit.
