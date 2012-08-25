@@ -122,7 +122,6 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 					(int) Math.round(imageSize * margin * 2.0),
 					(int) Math.round(imageSize * margin / 2.0),
 					(int) Math.round(imageSize * margin / 2.0));
-		// TODO: If we ever get rid of Chit, copy its method to here.
 		return new ImageIcon(temp);
 
 	}

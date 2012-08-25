@@ -14,7 +14,6 @@ import controller.map.misc.IDFactory;
  *
  * @author Jonathan Lovelace
  * @deprecated Replaced by ReaderNG.
- *         FIXME: Groves have "wild", meadows have "cultivated".
  *
  */
 @Deprecated

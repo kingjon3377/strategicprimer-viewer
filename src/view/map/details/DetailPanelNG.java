@@ -82,7 +82,6 @@ public class DetailPanelNG extends JPanel {
 		panelTwo.add(createList("secondary-tile", sources), BorderLayout.CENTER);
 		add(panelTwo);
 		addListener(new KeyPanel(version), sources);
-		// TODO: Drag-and-drop between lists ...
 	}
 
 	/**
