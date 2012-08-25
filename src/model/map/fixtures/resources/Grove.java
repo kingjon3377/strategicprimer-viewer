@@ -16,9 +16,9 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	private final boolean orchard;
 	/**
-	 * Whether it's wild (if true) or cultivated.
+	 * Whether it's wild (if false) or cultivated.
 	 */
-	private final boolean wild;
+	private final boolean cultivated;
 	/**
 	 * Kind of tree.
 	 */
@@ -28,16 +28,16 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	 * Constructor.
 	 *
 	 * @param fruit whether the trees are fruit trees
-	 * @param wildGrove whether the trees are wild
+	 * @param cultivatedGrove whether the trees are cultivated
 	 * @param tree what kind of trees are in the grove
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
-	public Grove(final boolean fruit, final boolean wildGrove,
+	public Grove(final boolean fruit, final boolean cultivatedGrove,
 			final String tree, final int idNum, final String fileName) {
 		super(fileName);
 		orchard = fruit;
-		wild = wildGrove;
+		cultivated = cultivatedGrove;
 		kind = tree;
 		id = idNum;
 	}
@@ -50,13 +50,11 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	}
 
 	/**
-	 * @return if this is a wild grove or orchard, false if it's a cultivated
-	 *         one
+	 * @return if this is a cultivated grove or orchard, false if it's a wild one
 	 */
-	public boolean isWild() {
-		return wild;
+	public boolean isCultivated() {
+		return cultivated;
 	}
-
 	/**
 	 * @return what kind of trees are in the grove
 	 */
@@ -72,7 +70,7 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	@Deprecated
 	public String toXML() {
 		return new StringBuilder(orchard ? "<orchard" : "<grove")
-				.append(" wild=\"").append(isWild()).append("\" kind=\"")
+				.append(" cultivated=\"").append(isCultivated()).append("\" kind=\"")
 				.append(getKind()).append("\" id=\"").append(id)
 				.append("\" />").toString();
 	}
@@ -90,7 +88,7 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return (isWild() ? "Wild " : "Cultivated ") + getKind()
+		return (isCultivated() ? "Cultivated " : "Wild ") + getKind()
 				+ (isOrchard() ? " orchard" : " grove");
 	}
 
@@ -110,7 +108,7 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	public boolean equals(final Object obj) {
 		return this == obj || (obj instanceof Grove && kind.equals(((Grove) obj).kind)
 				&& orchard == ((Grove) obj).orchard
-				&& wild == ((Grove) obj).wild
+				&& cultivated == ((Grove) obj).cultivated
 				&& id == ((TileFixture) obj).getID());
 	}
 
@@ -153,7 +151,7 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Grove && kind.equals(((Grove) fix).kind)
 				&& orchard == ((Grove) fix).orchard
-				&& wild == ((Grove) fix).wild;
+				&& cultivated == ((Grove) fix).cultivated;
 	}
 
 	/**
@@ -161,6 +159,6 @@ public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Grove(isOrchard(), isWild(), getKind(), getID(), getFile());
+		return new Grove(isOrchard(), isCultivated(), getKind(), getID(), getFile());
 	}
 }

@@ -339,7 +339,7 @@ public class OneToTwoConverter { // NOPMD
 			} else {
 				addFixture(
 						tile,
-						new Grove(true, false, runner.recursiveConsultTable(
+						new Grove(true, true, runner.recursiveConsultTable(
 								"fruit_trees", tile), id, tile.getFile()), main);
 			}
 		} catch (final MissingTableException e) {

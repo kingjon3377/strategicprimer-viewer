@@ -64,14 +64,22 @@ public final class TestMoreFixtureSerialization extends
 		assertUnwantedChild(
 				"<grove wild=\"true\" kind=\"kind\"><troll /></grove>",
 				Grove.class, false);
-		assertMissingProperty("<grove />", Grove.class, "wild", false);
+		assertMissingProperty("<grove />", Grove.class, "cultivated", false);
 		assertMissingProperty("<grove wild=\"false\" />", Grove.class, "kind",
 				false);
 		assertDeprecatedProperty(
-				"<grove wild=\"true\" tree=\"tree\" id=\"0\" />", Grove.class,
+				"<grove cultivated=\"true\" tree=\"tree\" id=\"0\" />", Grove.class,
 				"tree", true);
-		assertMissingProperty("<grove wild=\"true\" kind=\"kind\" />",
+		assertMissingProperty("<grove cultivated=\"true\" kind=\"kind\" />",
 				Grove.class, "id", true);
+		assertDeprecatedProperty(
+				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />", Grove.class,
+				"wild", true);
+		super.assertEquivalentForms(
+				"Assert that wild is the inverse of cultivated",
+				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
+				"<grove cultivated=\"false\" kind=\"tree\" id=\"0\" />",
+				Grove.class, Warning.Action.Ignore);
 	}
 
 	/**

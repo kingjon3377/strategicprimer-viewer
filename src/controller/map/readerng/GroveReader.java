@@ -14,6 +14,8 @@ import model.map.PlayerCollection;
 import model.map.fixtures.resources.Grove;
 import util.Pair;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -24,6 +26,10 @@ import controller.map.misc.IDFactory;
  *
  */
 public class GroveReader implements INodeHandler<Grove> {
+	/**
+	 * The name of the 'cultivated' property.
+	 */
+	private static final String CULTIVATED_ATTR = "cultivated";
 	/**
 	 * Parse a grove.
 	 *
@@ -42,13 +48,42 @@ public class GroveReader implements INodeHandler<Grove> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
+		final boolean cultivated = isCultivated(element, warner);
 		final Grove fix = new Grove(
 				"orchard".equalsIgnoreCase(element.getName().getLocalPart()),
-				Boolean.parseBoolean(XMLHelper.getAttribute(element, "wild")),
+				cultivated,
 				getAttributeWithDeprecatedForm(element, "kind", "tree", warner),
 				getOrGenerateID(element, warner, idFactory), XMLHelper
 						.getFile(stream));
 		return fix;
+	}
+
+	/**
+	 * @param element the element representing the XML tag representing the
+	 *        grove
+	 * @param warner the Warning instance to use
+	 * @return whether the grove or orchard is cultivated
+	 * @throws SPFormatException on XML format problems: use of 'wild' rather
+	 *         than 'cultivated' if warnings are fatal, or both properties
+	 *         missing ever.
+	 */
+	private static boolean isCultivated(final StartElement element,
+			final Warning warner) throws SPFormatException {
+		if (XMLHelper.hasAttribute(element, CULTIVATED_ATTR)) {
+			return Boolean.parseBoolean(XMLHelper.getAttribute(element, // NOPMD
+					CULTIVATED_ATTR));
+		} else {
+			if (XMLHelper.hasAttribute(element, "wild")) {
+				warner.warn(new DeprecatedPropertyException(element.getName()
+						.getLocalPart(), "wild", CULTIVATED_ATTR, element
+						.getLocation().getLineNumber()));
+				return !Boolean.parseBoolean(XMLHelper.getAttribute(element, "wild")); // NOPMD
+			} else {
+				throw new MissingParameterException(element.getName()
+						.getLocalPart(), CULTIVATED_ATTR, element.getLocation()
+						.getLineNumber());
+			}
+		}
 	}
 
 	/**
@@ -79,7 +114,7 @@ public class GroveReader implements INodeHandler<Grove> {
 	@Override
 	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation(obj.isOrchard() ? "orchard"
-				: "grove", Pair.of("wild", Boolean.toString(obj.isWild())),
+				: "grove", Pair.of(CULTIVATED_ATTR, Boolean.toString(obj.isCultivated())),
 				Pair.of("kind", obj.getKind()), Pair.of("id",
 						Long.toString(obj.getID())));
 	}

@@ -4,6 +4,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.resources.Grove;
 import util.EqualsAny;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -17,11 +18,15 @@ import controller.map.misc.IDFactory;
 @Deprecated
 public class GroveNode extends AbstractFixtureNode<Grove> {
 	/**
+	 * The name of the parameter telling whether this is cultivated or wild.
+	 */
+	private static final String CULTIVATED_PROP = "cultivated";
+	/**
 	 * The former, deprecated, name of the parameter telling what kind of trees.
 	 */
 	private static final String OLD_KIND_PARAM = "tree";
 	/**
-	 * The name of the parameter telling whether this is a wild grove or orchard
+	 * The old, deprecated, name of the parameter telling whether this is a wild grove or orchard
 	 * or a cultivated one.
 	 */
 	private static final String WILD_PARAM = "wild";
@@ -53,7 +58,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	public Grove produce(final PlayerCollection players, final Warning warner)
 			throws SPFormatException {
 		final Grove fix = new Grove("orchard".equals(getProperty(TAG_PARAM)),
-				Boolean.parseBoolean(getProperty(WILD_PARAM)),
+				Boolean.parseBoolean(getProperty(CULTIVATED_PROP)),
 				getProperty(KIND_PROPERTY),
 				Integer.parseInt(getProperty("id")), getProperty("file"));
 		return fix;
@@ -66,7 +71,7 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 	@Override
 	public boolean canUse(final String property) {
 		return EqualsAny.equalsAny(property, TAG_PARAM, WILD_PARAM,
-				KIND_PROPERTY, OLD_KIND_PARAM, "id");
+				KIND_PROPERTY, OLD_KIND_PARAM, CULTIVATED_PROP, "id");
 	}
 
 	/**
@@ -90,7 +95,17 @@ public class GroveNode extends AbstractFixtureNode<Grove> {
 			throw new IllegalStateException(except);
 		}
 		forbidChildren(getProperty(TAG_PARAM));
-		demandProperty(getProperty(TAG_PARAM), WILD_PARAM, warner, false, false);
+		if (hasProperty(CULTIVATED_PROP)) {
+			demandProperty(getProperty(TAG_PARAM), CULTIVATED_PROP, warner, false, false);
+		} else {
+			if (hasProperty(WILD_PARAM)) {
+				warner.warn(new DeprecatedPropertyException(getProperty(TAG_PARAM), WILD_PARAM,
+						CULTIVATED_PROP, getLine()));
+				addProperty(CULTIVATED_PROP, Boolean.toString(!Boolean.parseBoolean(getProperty(WILD_PARAM))), warner);
+			} else {
+				demandProperty(getProperty(TAG_PARAM), CULTIVATED_PROP, warner, false, false);
+			}
+		}
 		handleDeprecatedProperty(getProperty(TAG_PARAM), KIND_PROPERTY,
 				OLD_KIND_PARAM, warner, true, false);
 		registerOrCreateID(getProperty(TAG_PARAM), idFactory, warner);
