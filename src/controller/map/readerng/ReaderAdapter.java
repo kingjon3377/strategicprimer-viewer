@@ -74,50 +74,50 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 		WRITE_CACHE.put(reader.writes(), reader);
 	}
 
+	/**
+	 * Add four readers to the cache. CodePro objects to initializers over 40
+	 * lines, but we can't do a var-args method because the parameterization
+	 * would give us unsolvable compiler warnings.
+	 * @param one the first reader
+	 * @param two the second reader
+	 * @param three the third reader
+	 * @param four the fourth reader
+	 */
+	private static void factoryFour(
+			final INodeHandler<? extends XMLWritable> one,
+			final INodeHandler<? extends XMLWritable> two,
+			final INodeHandler<? extends XMLWritable> three,
+			final INodeHandler<? extends XMLWritable> four) {
+		factory(one);
+		factory(two);
+		factory(three);
+		factory(four);
+	}
+
 	static {
 		READ_CACHE = new TreeMap<String, INodeHandler<? extends XMLWritable>>(
 				String.CASE_INSENSITIVE_ORDER);
 		WRITE_CACHE = new HashMap<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>>();
-		factory(new SPMapReader());
-		factory(new PlayerReader());
-		factory(new TileReader());
-		factory(new AnimalReader());
-		factory(new CacheReader());
-		factory(new CentaurReader());
-		factory(new DjinnReader());
-		factory(new DragonReader());
-		factory(new FairyReader());
-		factory(new ForestReader());
-		factory(new FortressReader());
-		factory(new GiantReader());
-		factory(new GriffinReader());
-		factory(new GroundReader());
-		factory(new GroveReader());
-		factory(new HillReader());
-		factory(new MeadowReader());
-		factory(new MineReader());
-		factory(new MinotaurReader());
-		factory(new MountainReader());
-		factory(new OasisReader());
-		factory(new OgreReader());
-		factory(new PhoenixReader());
-		factory(new SandbarReader());
-		factory(new ShrubReader());
-		factory(new SimurghReader());
-		factory(new SphinxReader());
-		factory(new TrollReader());
-		factory(new TextReader());
-		factory(new UnitReader());
-		factory(new VillageReader());
-		factory(new BattlefieldReader());
-		factory(new CaveReader());
-		factory(new CityReader());
-		factory(new FortificationReader());
-		factory(new TownReader());
-		factory(new MineralReader());
-		factory(new StoneReader());
-		factory(new RiverReader());
-		factory(new ViewReader());
+		factoryFour(new SPMapReader(), new PlayerReader(), new TileReader(),
+				new AnimalReader());
+		factoryFour(new CacheReader(), new CentaurReader(), new DjinnReader(),
+				new DragonReader());
+		factoryFour(new FairyReader(), new ForestReader(),
+				new FortressReader(), new GiantReader());
+		factoryFour(new GriffinReader(), new GroundReader(), new GroveReader(),
+				new HillReader());
+		factoryFour(new MeadowReader(), new MineReader(), new MinotaurReader(),
+				new MountainReader());
+		factoryFour(new OasisReader(), new OgreReader(), new PhoenixReader(),
+				new SandbarReader());
+		factoryFour(new ShrubReader(), new SimurghReader(), new SphinxReader(),
+				new TrollReader());
+		factoryFour(new TextReader(), new UnitReader(), new VillageReader(),
+				new BattlefieldReader());
+		factoryFour(new CaveReader(), new CityReader(),
+				new FortificationReader(), new TownReader());
+		factoryFour(new MineralReader(), new StoneReader(), new RiverReader(),
+				new ViewReader());
 	}
 
 	/**
