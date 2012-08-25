@@ -149,13 +149,7 @@ public class OneToTwoConverter { // NOPMD
 			for (final TileFixture fixture : tile) {
 				fixtures.add(fixture);
 			}
-			if (tile.hasRiver()) {
-				final RiverFixture rivers = tile.getRivers();
-				for (final River river : rivers) {
-					addRiver(river, initial);
-				}
-				fixtures.remove(rivers);
-			}
+			separateRivers(tile, initial, fixtures);
 			final Random random = new Random(getSeed(tile));
 			Collections.shuffle(initial, random);
 			Collections.shuffle(fixtures, random);
@@ -183,6 +177,22 @@ public class OneToTwoConverter { // NOPMD
 			}
 		}
 		return initial;
+	}
+
+	/** Deal with rivers separately.
+	 * @param tile the tile being handled
+	 * @param initial the initial set of subtiles
+	 * @param fixtures the list of fixtures on the initial tile, to be parceled out among the subtiles
+	 */
+	private static void separateRivers(final Tile tile, final List<Tile> initial,
+			final List<TileFixture> fixtures) {
+		if (tile.hasRiver()) {
+			final RiverFixture rivers = tile.getRivers();
+			for (final River river : rivers) {
+				addRiver(river, initial);
+			}
+			fixtures.remove(rivers);
+		}
 	}
 
 	/**
