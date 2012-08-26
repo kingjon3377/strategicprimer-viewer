@@ -21,13 +21,6 @@ public class Village extends XMLWritableImpl implements TownFixture, HasImage {
 	private final String name;
 
 	/**
-	 * @return the name of the village
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param vstatus the status of the village.
@@ -41,13 +34,6 @@ public class Village extends XMLWritableImpl implements TownFixture, HasImage {
 		status = vstatus;
 		name = vName;
 		id = idNum;
-	}
-
-	/**
-	 * @return the status of the village
-	 */
-	public TownStatus getStatus() {
-		return status;
 	}
 
 	/**
@@ -152,23 +138,21 @@ public class Village extends XMLWritableImpl implements TownFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Village(getStatus(), getName(), getID(), getFile());
+		return new Village(status(), name(), getID(), getFile());
 	}
 	/**
-	 * TODO: Combine with getName().
 	 * @return the name of the village
 	 */
 	@Override
 	public String name() {
-		return getName();
+		return name;
 	}
 	/**
-	 * TODO: combine with getStatus().
 	 * @return the status of the village
 	 */
 	@Override
 	public TownStatus status() {
-		return getStatus();
+		return status;
 	}
 	/**
 	 * All villages are small.

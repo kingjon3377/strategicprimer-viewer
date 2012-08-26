@@ -89,14 +89,6 @@ public class Fortress extends XMLWritableImpl implements HasImage,
 	}
 
 	/**
-	 *
-	 * @return the name of the fortress
-	 */
-	public final String getName() {
-		return name;
-	}
-
-	/**
 	 * @param obj an object
 	 *
 	 * @return whether it is an identical fortress
@@ -267,7 +259,7 @@ public class Fortress extends XMLWritableImpl implements HasImage,
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		final Fortress retval = new Fortress(getOwner().deepCopy(), getName(),
+		final Fortress retval = new Fortress(getOwner().deepCopy(), name(),
 				getID(), getFile());
 		for (final Unit unit : units) {
 			retval.addUnit((Unit) unit.deepCopy());
@@ -275,12 +267,11 @@ public class Fortress extends XMLWritableImpl implements HasImage,
 		return retval;
 	}
 	/**
-	 * TODO: Get rid of either this or getName().
 	 * @return the fortress's name.
 	 */
 	@Override
 	public String name() {
-		return getName();
+		return name;
 	}
 
 	/**

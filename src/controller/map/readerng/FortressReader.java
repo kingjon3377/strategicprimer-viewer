@@ -98,8 +98,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 				"fortress");
 		retval.addAttribute("owner",
 				Integer.toString(obj.getOwner().getPlayerId()));
-		if (!obj.getName().isEmpty()) {
-			retval.addAttribute("name", obj.getName());
+		if (!obj.name().isEmpty()) {
+			retval.addAttribute("name", obj.name());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
