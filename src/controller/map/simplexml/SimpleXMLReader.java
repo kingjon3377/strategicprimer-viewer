@@ -15,6 +15,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMap;
 import model.map.MapView;
 import model.map.PlayerCollection;
+import model.map.XMLWritable;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.IMapReader;
@@ -120,7 +121,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream,
+	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, type, true, warner);
@@ -142,7 +143,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream,
+	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
 			final Class<T> type, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final RootNode<T> root = new RootNode<T>(type);
