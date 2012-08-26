@@ -11,7 +11,8 @@ import model.map.events.IEvent;
  * @author Jonathan Lovelace
  *
  */
-public final class MineralEvent extends XMLWritableImpl implements IEvent, HasImage {
+public final class MineralEvent extends XMLWritableImpl implements IEvent,
+		HasImage, HarvestableFixture {
 	/**
 	 * Constructor.
 	 *

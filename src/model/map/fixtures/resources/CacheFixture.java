@@ -10,7 +10,8 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class CacheFixture extends XMLWritableImpl implements TileFixture, HasImage {
+public class CacheFixture extends XMLWritableImpl implements
+		HarvestableFixture, HasImage {
 	/**
 	 * What kind of things this is a cache of. TODO: Should perhaps be
 	 * enumerated, so we can make images more granular.

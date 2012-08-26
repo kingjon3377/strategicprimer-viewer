@@ -10,7 +10,8 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Grove extends XMLWritableImpl implements TileFixture, HasImage {
+public class Grove extends XMLWritableImpl implements HarvestableFixture,
+		HasImage {
 	/**
 	 * Whether this is a fruit orchard.
 	 */

@@ -11,7 +11,8 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Meadow extends XMLWritableImpl implements TileFixture, HasImage {
+public class Meadow extends XMLWritableImpl implements HarvestableFixture,
+		HasImage {
 	/**
 	 * Which season the field is in.
 	 */

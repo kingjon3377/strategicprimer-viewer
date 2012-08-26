@@ -10,7 +10,8 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Shrub extends XMLWritableImpl implements TileFixture, HasImage {
+public class Shrub extends XMLWritableImpl implements HarvestableFixture,
+		HasImage {
 	/**
 	 * @return an XML representation of the Fixture.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output

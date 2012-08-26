@@ -11,7 +11,8 @@ import model.map.fixtures.towns.TownStatus;
  * @author Jonathan Lovelace
  *
  */
-public class Mine extends XMLWritableImpl implements TileFixture, HasImage {
+public class Mine extends XMLWritableImpl implements HarvestableFixture,
+		HasImage {
 	/**
 	 * Constructor.
 	 *
