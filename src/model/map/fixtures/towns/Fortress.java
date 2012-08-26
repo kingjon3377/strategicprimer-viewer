@@ -22,7 +22,7 @@ import model.map.fixtures.mobile.Unit;
  * @author Jonathan Lovelace
  *
  */
-public class Fortress extends XMLWritableImpl implements TileFixture, HasImage,
+public class Fortress extends XMLWritableImpl implements HasImage,
 		Subsettable<Fortress>, TownFixture {
 	/**
 	 * The player that owns the fortress.

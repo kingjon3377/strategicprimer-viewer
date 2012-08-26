@@ -77,7 +77,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream,
+	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
@@ -132,7 +132,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream,
+	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
 			final Class<T> type, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, type, warner);
