@@ -13,7 +13,7 @@ import model.map.events.IEvent;
  */
 // ESCA-JAVA0011:
 public abstract class AbstractTownEvent extends XMLWritableImpl implements
-		IEvent, HasImage {
+		IEvent, HasImage, TownFixture {
 	/**
 	 * Constructor.
 	 *
@@ -39,6 +39,7 @@ public abstract class AbstractTownEvent extends XMLWritableImpl implements
 	/**
 	 * @return the name of the town, fortress, or city.
 	 */
+	@Override
 	public String name() {
 		return name;
 	}
@@ -52,6 +53,7 @@ public abstract class AbstractTownEvent extends XMLWritableImpl implements
 	 *
 	 * @return the status of the town, fortress, or city
 	 */
+	@Override
 	public TownStatus status() {
 		return status;
 	}
@@ -69,6 +71,7 @@ public abstract class AbstractTownEvent extends XMLWritableImpl implements
 	 *
 	 * @return the size of the town, fortress, or city
 	 */
+	@Override
 	public TownSize size() {
 		return size;
 	}

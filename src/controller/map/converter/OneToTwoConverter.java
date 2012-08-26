@@ -31,7 +31,7 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Sandbar;
-import model.map.fixtures.towns.AbstractTownEvent;
+import model.map.fixtures.towns.TownFixture;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import controller.exploration.TableLoader;
@@ -262,7 +262,7 @@ public class OneToTwoConverter { // NOPMD
 	 * @param fix the fixture to prepare it for
 	 */
 	private static void changeFor(final Tile tile, final TileFixture fix) {
-		if (fix instanceof Village || fix instanceof AbstractTownEvent) {
+		if (fix instanceof Village || fix instanceof TownFixture) {
 			final List<TileFixture> forests = new ArrayList<TileFixture>();
 			for (final TileFixture fixture : tile) {
 				if (fixture instanceof Forest) {
@@ -412,7 +412,7 @@ public class OneToTwoConverter { // NOPMD
 		for (final Point point : getNeighbors(tile)) {
 			final Tile neighbor = map.getTile(point);
 			for (final TileFixture fix : neighbor) {
-				if (fix instanceof Village || fix instanceof AbstractTownEvent) {
+				if (fix instanceof Village || fix instanceof TownFixture) {
 					return true; // NOPMD
 				}
 			}

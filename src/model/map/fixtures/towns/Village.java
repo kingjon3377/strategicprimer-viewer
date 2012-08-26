@@ -10,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Village extends XMLWritableImpl implements TileFixture, HasImage {
+public class Village extends XMLWritableImpl implements TownFixture, HasImage {
 	/**
 	 * The status of the village.
 	 */
@@ -153,5 +153,29 @@ public class Village extends XMLWritableImpl implements TileFixture, HasImage {
 	@Override
 	public TileFixture deepCopy() {
 		return new Village(getStatus(), getName(), getID(), getFile());
+	}
+	/**
+	 * TODO: Combine with getName().
+	 * @return the name of the village
+	 */
+	@Override
+	public String name() {
+		return getName();
+	}
+	/**
+	 * TODO: combine with getStatus().
+	 * @return the status of the village
+	 */
+	@Override
+	public TownStatus status() {
+		return getStatus();
+	}
+	/**
+	 * All villages are small.
+	 * @return the size of the village.
+	 */
+	@Override
+	public TownSize size() {
+		return TownSize.Small;
 	}
 }

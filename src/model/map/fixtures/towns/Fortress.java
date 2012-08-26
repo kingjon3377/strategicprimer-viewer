@@ -23,7 +23,7 @@ import model.map.fixtures.mobile.Unit;
  *
  */
 public class Fortress extends XMLWritableImpl implements TileFixture, HasImage,
-		Subsettable<Fortress> {
+		Subsettable<Fortress>, TownFixture {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -273,5 +273,32 @@ public class Fortress extends XMLWritableImpl implements TileFixture, HasImage,
 			retval.addUnit((Unit) unit.deepCopy());
 		}
 		return retval;
+	}
+	/**
+	 * TODO: Get rid of either this or getName().
+	 * @return the fortress's name.
+	 */
+	@Override
+	public String name() {
+		return getName();
+	}
+
+	/**
+	 * TODO: Add support for having a different status (but leave 'active' the
+	 * default).
+	 *
+	 * @return the status of the fortress
+	 */
+	@Override
+	public TownStatus status() {
+		return TownStatus.Active;
+	}
+	/**
+	 * TODO: Add support for different sizes (but leave 'small' the default).
+	 * @return the size of the fortress.
+	 */
+	@Override
+	public TownSize size() {
+		return TownSize.Small;
 	}
 }
