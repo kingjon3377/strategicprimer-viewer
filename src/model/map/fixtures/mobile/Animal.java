@@ -11,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Animal extends XMLWritableImpl implements TileFixture, HasImage {
+public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * ID number.
 	 */

@@ -10,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Centaur extends XMLWritableImpl implements TileFixture, HasImage {
+public class Centaur extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * What kind of centaur.
 	 */

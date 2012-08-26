@@ -10,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Griffin extends XMLWritableImpl implements TileFixture, HasImage {
+public class Griffin extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from

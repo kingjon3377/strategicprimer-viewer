@@ -10,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Fairy extends XMLWritableImpl implements TileFixture, HasImage {
+public class Fairy extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * What kind of fairy (great, lesser, snow ...).
 	 */

@@ -11,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Unit extends XMLWritableImpl implements TileFixture, HasImage {
+public class Unit extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * The player that owns the unit.
 	 */

@@ -10,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Dragon extends XMLWritableImpl implements TileFixture, HasImage {
+public class Dragon extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * What kind of dragon. (Usually blank, at least at first.)
 	 */

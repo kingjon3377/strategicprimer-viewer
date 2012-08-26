@@ -10,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Giant extends XMLWritableImpl implements TileFixture, HasImage {
+public class Giant extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */

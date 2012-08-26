@@ -10,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Troll extends XMLWritableImpl implements TileFixture, HasImage {
+public class Troll extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * Constructor.
 	 *
