@@ -71,7 +71,6 @@
       <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
       <test name="model.exploration.TestExplorationRunner" todir="${junit.output.dir}" />
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.events.BattlefieldTest" todir="${junit.output.dir}" />
       <test name="model.map.events.TestEventSerialization" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestFixtureSerialization" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestMoreFixtureSerialization" todir="${junit.output.dir}" />
