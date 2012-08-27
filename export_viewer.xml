@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <project default="all" name="SP viewer">
   <target name="all" depends="clean,release" />
+  <tstamp />
   <!-- ANT 1.7 is required -->
+
+  <!-- Versioning -->
+  <property name="major-version-number" value="0" />
+  <property name="minor-version-number" value="4" />
 
   <!-- Paths to find necessary files -->
   <property name="launch4j.dir" location="/home/kingjon/src/launch4j" />
   <property name="project_home" location="/home/kingjon/Projects/workspace/viewer" />
+
+  <!-- Paths within the repository. This should just work, so long as the directories exist. -->
   <property name="release" location="${project_home}/release" />
   <property name="source_dir" location="${project_home}/src" />
   <property name="bin_dir" location="${project_home}/bin" />
@@ -36,6 +43,27 @@
   <target depends="clean" name="cleanall">
     <delete dir="${release}" />
     <delete dir="${junit.output.dir}" />
+  </target>
+
+  <!-- Target to get the Mercurial revision number, which we use as the micro version. -->
+  <target name="get-version">
+    <exec executable="/usr/bin/hg" outputproperty="scm.revision.number">
+      <arg value="id" />
+      <arg value="-n" />
+    </exec>
+    <exec executable="/usr/bin/hg" outputproperty="scm.revision.id">
+      <arg value="id" />
+      <arg value="-i" />
+    </exec>
+    <property name="version-number" value="${major-version-number}.${minor-version-number}.${scm.revision.number}" />
+  </target>
+
+  <target name="get-builder">
+    <!-- This requires the HgConfig extension, https://bitbucket.org/alu/hgconfig -->
+    <exec executable="/usr/bin/hg" outputproperty="scm.builder">
+      <arg value="showconfig" />
+      <arg value="ui.username" />
+    </exec>
   </target>
 
   <!-- Build targets -->
@@ -80,13 +108,17 @@
   </target>
 
   <!-- Release targets -->
-  <target name="viewer.jar" depends="test">
-    <jar destfile="${release}/viewer.jar"
+  <target name="viewer-${version-number}.jar" depends="test,get-builder,get-version">
+    <jar destfile="${release}/viewer-${version-number}.jar"
     filesetmanifest="mergewithoutmain">
       <manifest>
         <attribute name="Main-Class"
         value="controller.map.drivers.ViewerStart" />
         <attribute name="Class-Path" value="." />
+	<attribute name="Built-By" value="${scm.builder}" />
+	<attribute name="Built-On" value="${TODAY}" />
+	<attribute name="Built-At" value="${TSTAMP}" />
+	<attribute name="Mercurial-Revision" value="${scm.revision.id}" />
       </manifest>
       <fileset dir="${project_home}/bin" />
     </jar>
@@ -94,26 +126,26 @@
   <taskdef name="launch4j"
     classname="net.sf.launch4j.ant.Launch4jTask"
     classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
-  <target name="viewer.exe" depends="viewer.jar">
+  <target name="viewer-${version-number}.exe" depends="viewer-${version-number}.jar">
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
-      outfile="${release}/viewer.exe" jar="${release}/viewer.jar" />
+      outfile="${release}/viewer-${version-number}.exe" jar="${release}/viewer-${version-number}.jar" />
   </target>
   <taskdef name="jarbundler"
     classname="net.sourceforge.jarbundler.JarBundler" />
-  <target name="viewer.app" depends="viewer.jar">
-    <jarbundler dir="${release}" name="viewer"
+  <target name="viewer-${version-number}.app" depends="viewer-${version-number}.jar">
+    <jarbundler dir="${release}" name="viewer-${version-number}"
       mainclass="controller.map.drivers.ViewerStart"
-      jar="${release}/viewer.jar" />
-    <symlink link="${release}/viewer.app/Contents/MacOS/JavaApplicationStub"
+      jar="${release}/viewer-${version-number}.jar" />
+    <symlink link="${release}/viewer-${version-number}.app/Contents/MacOS/JavaApplicationStub"
       resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
   </target>
-  <target name="viewer.app.tbz2" depends="viewer.app">
-    <tar destfile="${release}/viewer.app.tbz2" compression="bzip2">
+  <target name="viewer-${version-number}.app.tbz2" depends="viewer-${version-number}.app">
+    <tar destfile="${release}/viewer-${version-number}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
-        <include name="viewer.app/**" />
+        <include name="viewer-${version-number}.app/**" />
       </tarfileset>
     </tar>
   </target>
   <target name="release"
-    depends="viewer.app.tbz2,viewer.exe,viewer.jar" />
+    depends="viewer-${version-number}.app.tbz2,viewer-${version-number}.exe,viewer-${version-number}.jar" />
 </project>
