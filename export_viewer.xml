@@ -1,40 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <project default="all" name="SP viewer">
   <target name="all" depends="clean,release" />
+  <property file="build.properties" />
   <tstamp />
   <!-- ANT 1.7 is required -->
 
   <!-- Versioning -->
-  <property name="major-version-number" value="0" />
-  <property name="minor-version-number" value="4" />
+  <property file="version.properties" />
 
-  <!-- Paths to find necessary files -->
-  <property name="launch4j.dir" location="/home/kingjon/src/launch4j" />
-  <property name="project_home" location="/home/kingjon/Projects/workspace/viewer" />
+  <!-- Paths to find necessary files and paths within the repository -->
+  <property file="paths.properties" />
 
   <!-- Paths within the repository. This should just work, so long as the directories exist. -->
-  <property name="release" location="${project_home}/release" />
-  <property name="source_dir" location="${project_home}/src" />
-  <property name="bin_dir" location="${project_home}/bin" />
-  <property name="junit.output.dir" value="${project_home}/junit" />
   <path id="junit.classpath">
     <!-- These are where these files are located on a Gentoo Linux system;
 	     they'll almost certainly be located somewhere else under some
 	     other distribution or on some other operating system. But IMO this
 	     is better than specifying *version-specific* paths under the
 	     Eclipse home directory. -->
-    <pathelement location="/usr/share/junit-4/lib/junit.jar" />
-    <pathelement location="/usr/share/hamcrest-core/lib/hamcrest-core.jar" />
+    <pathelement location="${junit.jar.path}" />
+    <pathelement location="${hamcrest.jar.path}" />
   </path>
   <path id="viewer.classpath">
     <pathelement location="${bin_dir}" />
     <path refid="junit.classpath" />
   </path>
 
-  <!-- Java version specifications and such -->
-  <property name="target" value="1.6" />
-  <property name="source" value="1.6" />
-  <property name="debuglevel" value="source,lines,vars" />
 
   <!-- Clean targets -->
   <target name="clean">
