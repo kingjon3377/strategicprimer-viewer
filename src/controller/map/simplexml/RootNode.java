@@ -120,7 +120,7 @@ public final class RootNode<T> extends AbstractXMLNode {
 	 *
 	 * @param type the type of child we want to produce.
 	 */
-	public RootNode(final Class<T> type) {
+	public RootNode(final Class<? super T> type) {
 		super();
 		product = type;
 	}
@@ -128,5 +128,5 @@ public final class RootNode<T> extends AbstractXMLNode {
 	/**
 	 * The type of child we want to produce.
 	 */
-	private final Class<T> product;
+	private final Class<? super T> product;
 }

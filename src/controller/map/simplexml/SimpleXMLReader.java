@@ -111,7 +111,8 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * Use readMap if you want a map; this is public primarily for testing
 	 * purposes.
 	 *
-	 * @param <T> The type of the object the XML represents
+	 * @param <T> A supertype of the object the XML represents
+	 * @param <U> The type of the object the XML represents
 	 * @param file the name of the file being read from
 	 * @param istream a reader from which to read the XML
 	 * @param type The type of the object the XML represents
@@ -121,7 +122,7 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
+	public <T extends XMLWritable, U extends T> U readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, type, true, warner);
@@ -131,7 +132,8 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * Use readMap if you want a map; this is public primarily for testing
 	 * purposes.
 	 *
-	 * @param <T> The type of the object the XML represents
+	 * @param <T> A supertype of the object the XML represents
+	 * @param <U> The type of the object the XML represents
 	 * @param reflection whether to try the reflection-based verion of the node
 	 *        factory method
 	 * @param file the name of the file being read from
@@ -143,10 +145,10 @@ public class SimpleXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
+	public <T extends XMLWritable, U extends T> U readXML(final String file, final Reader istream,
 			final Class<T> type, final boolean reflection, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		final RootNode<T> root = new RootNode<T>(type);
+		final RootNode<U> root = new RootNode<U>(type);
 		final Deque<AbstractXMLNode> stack = new LinkedList<AbstractXMLNode>();
 		stack.push(root);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
