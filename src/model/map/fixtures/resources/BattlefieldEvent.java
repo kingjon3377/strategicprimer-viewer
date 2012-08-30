@@ -10,7 +10,8 @@ import model.map.events.IEvent;
  *
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent extends XMLWritableImpl implements IEvent, HasImage {
+public final class BattlefieldEvent extends XMLWritableImpl implements IEvent,
+		HasImage, HarvestableFixture {
 	/**
 	 * A (U)ID.
 	 */
