@@ -58,7 +58,21 @@ public final class CompactReaderAdapter {
 			// Handle rivers specially.
 			return (U) CompactTileReader.READER.parseRiver(element, stream, // NOPMD
 					warner);
-		} else if (IMap.class.isAssignableFrom(type)) {
+		} else {
+			reader = getReader(type);
+		}
+		return reader.read(element, stream, players, warner, idFactory);
+	}
+	/**
+	 * Get a reader for the specified type.
+	 * @param <T> the type
+	 * @param type the type
+	 * @return a reader for the type
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T extends XMLWritable> CompactReader<T> getReader(final Class<T> type) {
+		final CompactReader<T> reader; // NOPMD
+		if (IMap.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapReader.READER;
 		} else if (Tile.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTileReader.READER;
@@ -81,6 +95,6 @@ public final class CompactReaderAdapter {
 		} else {
 			throw new IllegalStateException("Unhandled type " + type.getName());
 		}
-		return reader.read(element, stream, players, warner, idFactory);
+		return reader;
 	}
 }
