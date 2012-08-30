@@ -9,6 +9,7 @@ import model.map.PlayerCollection;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.Tile;
+import model.map.TileFixture;
 import model.map.XMLWritable;
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
@@ -76,7 +77,25 @@ public final class CompactReaderAdapter {
 			reader = (CompactReader<T>) CompactMapReader.READER;
 		} else if (Tile.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTileReader.READER;
-		} else if (TerrainFixture.class.isAssignableFrom(type)) {
+		} else if (Player.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactPlayerReader.READER;
+		} else if (TileFixture.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) getFixtureReader((Class<? extends TileFixture>) type);
+		} else {
+			throw new IllegalStateException("Unhandled type "
+					+ type.getName());
+		}
+		return reader;
+	}
+	/**
+	 * @param <T> the type
+	 * @param type the type
+	 * @return a reader for that type
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T extends TileFixture> CompactReader<T> getFixtureReader(final Class<T> type) {
+		final CompactReader<T> reader; // NOPMD
+		if (TerrainFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTerrainReader.READER;
 		} else if (TownFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTownReader.READER;
@@ -90,10 +109,9 @@ public final class CompactReaderAdapter {
 			reader = (CompactReader<T>) CompactGroundReader.READER;
 		} else if (TextFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTextReader.READER;
-		} else if (Player.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactPlayerReader.READER;
 		} else {
-			throw new IllegalStateException("Unhandled type " + type.getName());
+			throw new IllegalStateException("Unhandled type "
+					+ type.getName());
 		}
 		return reader;
 	}
