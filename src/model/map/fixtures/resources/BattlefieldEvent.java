@@ -1,34 +1,40 @@
-package model.map.events;
+package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.events.IEvent;
 
 /**
- * "There are extensive caves beneath this tile".
+ * "There are the signs of a long-ago battle here".
  *
  * @author Jonathan Lovelace
- *
  */
-public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage {
+public final class BattlefieldEvent extends XMLWritableImpl implements IEvent, HasImage {
+	/**
+	 * A (U)ID.
+	 */
+	private final int id; // NOPMD
+
 	/**
 	 * Constructor.
 	 *
-	 * @param discdc the DC to discover the caves
+	 * @param discdc the DC to discover the battlefield.
 	 * @param idNum the ID number for the event.
 	 */
-	public CaveEvent(final int discdc, final int idNum) {
+	public BattlefieldEvent(final int discdc, final int idNum) {
 		super();
 		dc = discdc;
 		id = idNum;
 	}
 
 	/**
-	 * The DC to discover the caves. TODO: Should perhaps be mutable.
+	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
 
 	/**
+	 *
 	 *
 	 * @return the DC to discover the event.
 	 */
@@ -43,24 +49,24 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage
 	 */
 	@Override
 	public String getText() {
-		return "There are extensive caves beneath this tile.";
+		return "There are the signs of a long-ago battle here.";
 	}
 
 	/**
 	 * @param obj an object
 	 *
-	 * @return whether it's an identical CaveEvent.
+	 * @return whether it's an identical BattlefieldEvent.
 	 */
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof CaveEvent && ((TileFixture) obj).getID() == id);
+				|| (obj instanceof BattlefieldEvent && ((TileFixture) obj)
+						.getID() == id);
 	}
 
 	/**
 	 *
-	 * @return a hash value for the event. Constant, as our only state is DC,
-	 *         and that's zeroed in players' maps.
+	 * @return a hash value for the event.
 	 */
 	@Override
 	public int hashCode() {
@@ -73,7 +79,7 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage
 	 */
 	@Override
 	public String toString() {
-		return "Caves with DC " + dc;
+		return "An ancient battlefield with DC " + dc;
 	}
 
 	/**
@@ -83,8 +89,8 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage
 	@Override
 	@Deprecated
 	public String toXML() {
-		return new StringBuilder("<cave dc=\"").append(dc).append("\" id=\"")
-				.append(id).append("\" />").toString();
+		return new StringBuilder("<battlefield dc=\"").append(dc)
+				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 
 	/**
@@ -106,12 +112,7 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage
 	}
 
 	/**
-	 * The event's ID number.
-	 */
-	private final int id; // NOPMD
-
-	/**
-	 * @return the event's ID number.
+	 * @return the ID number for the event.
 	 */
 	@Override
 	public int getID() {
@@ -124,7 +125,7 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage
 	 */
 	@Override
 	public boolean equalsIgnoringID(final TileFixture fix) {
-		return fix instanceof CaveEvent;
+		return fix instanceof BattlefieldEvent;
 	}
 
 	/**
@@ -132,19 +133,16 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		final CaveEvent retval = new CaveEvent(getDC(), getID());
+		final BattlefieldEvent retval = new BattlefieldEvent(getDC(), getID());
 		retval.setFile(getFile());
 		return retval;
 	}
 
 	/**
-	 * Image from OpenGameArt.org, by user MrBeast, from page
-	 * http://opengameart.org/content/cave-tileset-0 .
-	 *
-	 * @return the name of the image representing a cave
+	 * @return the name of the image to represent the event
 	 */
 	@Override
 	public String getImage() {
-		return "cave.png";
+		return "battlefield.png";
 	}
 }

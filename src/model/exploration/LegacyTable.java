@@ -7,9 +7,9 @@ import java.util.Set;
 
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.events.BattlefieldEvent;
-import model.map.events.CaveEvent;
 import model.map.events.IEvent;
+import model.map.fixtures.resources.BattlefieldEvent;
+import model.map.fixtures.resources.CaveEvent;
 import model.map.fixtures.resources.MineralEvent;
 import model.map.fixtures.resources.MineralKind;
 import model.map.fixtures.resources.StoneEvent;
