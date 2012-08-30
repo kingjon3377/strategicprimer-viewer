@@ -35,6 +35,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException on SP XML format error
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends XMLWritable, U extends T> U readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner) throws XMLStreamException,
