@@ -43,11 +43,13 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
 				new IncludingIterator(file, XMLInputFactory.newInstance()
 						.createXMLEventReader(istream)));
+		final PlayerCollection players = new PlayerCollection();
+		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final T retval = CompactReaderAdapter.ADAPTER.parse(type,
 					event.asStartElement(), eventReader,
-					new PlayerCollection(), warner, new IDFactory());
+					players, warner, idFactory);
 				return (U) retval;
 			}
 		}
