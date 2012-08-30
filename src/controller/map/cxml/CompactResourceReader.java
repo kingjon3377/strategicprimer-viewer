@@ -14,7 +14,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactResourceReader implements CompactReader<HarvestableFixture> {
+public final class CompactResourceReader extends CompactReaderSuperclass implements CompactReader<HarvestableFixture> {
 	/**
 	 * Singleton.
 	 */

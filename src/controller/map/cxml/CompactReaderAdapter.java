@@ -19,6 +19,7 @@ import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.TownFixture;
 import util.IteratorWrapper;
 import util.Warning;
+import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -46,11 +47,12 @@ public final class CompactReaderAdapter {
 	 * @param warner the Warning instance if warnings need to be issued
 	 * @param idFactory the ID factory to get IDs from
 	 * @return the object encoded by the XML
+	 * @throws SPFormatException on SP format problems
 	 */
 	public <T extends XMLWritable, U extends T> U parse(final Class<T> type,
 			final StartElement element, final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
-			final IDFactory idFactory) {
+			final IDFactory idFactory) throws SPFormatException {
 		// ESCA-JAVA0177:
 		final CompactReader<T> reader; // NOPMD
 		if (River.class.isAssignableFrom(type)) {

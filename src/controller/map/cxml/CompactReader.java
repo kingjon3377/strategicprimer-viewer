@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import model.map.XMLWritable;
 import util.IteratorWrapper;
 import util.Warning;
+import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -24,8 +25,9 @@ public interface CompactReader<T extends XMLWritable> {
 	 * @param warner the Warning instance to use as needed
 	 * @param idFactory the ID factory to use as needed
 	 * @return the object parsed from XML
+	 * @throws SPFormatException on SP format errors
 	 */
 	<U extends T> U read(StartElement element, IteratorWrapper<XMLEvent> stream,
-			PlayerCollection players, Warning warner, IDFactory idFactory);
+			PlayerCollection players, Warning warner, IDFactory idFactory) throws SPFormatException;
 
 }

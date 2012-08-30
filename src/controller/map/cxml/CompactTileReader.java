@@ -15,7 +15,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTileReader implements CompactReader<Tile> {
+public final class CompactTileReader extends CompactReaderSuperclass implements CompactReader<Tile> {
 	/**
 	 * Singleton.
 	 */

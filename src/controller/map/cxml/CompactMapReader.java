@@ -14,7 +14,7 @@ import model.map.PlayerCollection;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactMapReader implements CompactReader<IMap> {
+public final class CompactMapReader extends CompactReaderSuperclass implements CompactReader<IMap> {
 	/**
 	 * Read a map from XML.
 	 * @param <U> The actual type we'll return

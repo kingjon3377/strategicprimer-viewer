@@ -14,7 +14,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTownReader implements CompactReader<TownFixture> {
+public final class CompactTownReader extends CompactReaderSuperclass implements CompactReader<TownFixture> {
 	/**
 	 * Singleton.
 	 */
