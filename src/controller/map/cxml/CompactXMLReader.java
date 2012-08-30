@@ -58,25 +58,6 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	}
 
 	/**
-	 * @param <T> A supertype of the object the XML represents
-	 * @param <U> The type of the object the XML represents
-	 * @param file the file we're reading from
-	 * @param istream the stream to read from
-	 * @param type the type of the object the caller wants
-	 * @param reflection ignored
-	 * @param warner the Warning instance to use for warnings
-	 * @return the wanted object
-	 * @throws XMLStreamException if the XML isn't well-formed
-	 * @throws SPFormatException on SP XML format error
-	 */
-	@Override
-	public <T extends XMLWritable, U extends T> U readXML(final String file, final Reader istream,
-			final Class<T> type, final boolean reflection, final Warning warner)
-			throws XMLStreamException, SPFormatException {
-		return readXML(file, istream, type, warner);
-	}
-
-	/**
 	 * @param file the file to read from
 	 * @param warner a Warning instance to use for warnings
 	 * @return the map contained in the file

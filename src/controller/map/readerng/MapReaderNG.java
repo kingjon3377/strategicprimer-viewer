@@ -123,24 +123,6 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	}
 
 	/**
-	 * @param <T> A supertype of the object the XML represents
-	 * @param <U> The type of the object the XML represents
-	 * @param file the name of the file being read from
-	 * @param istream a reader from which to read the XML
-	 * @param type The type of the object the XML represents
-	 * @param warner a Warning instance to use for warnings
-	 * @param reflection ignored
-	 * @return the object contained in that stream
-	 * @throws XMLStreamException if XML isn't well-formed.
-	 * @throws SPFormatException if the data is invalid.
-	 */
-	@Override
-	public <T extends XMLWritable, U extends T> U readXML(final String file, final Reader istream,
-			final Class<T> type, final boolean reflection, final Warning warner)
-			throws XMLStreamException, SPFormatException {
-		return readXML(file, istream, type, warner);
-	}
-	/**
 	 * @return a String representation of the object
 	 */
 	@Override
