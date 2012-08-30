@@ -43,10 +43,12 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 				new IncludingIterator(file, XMLInputFactory.newInstance()
 						.createXMLEventReader(istream)));
 		for (final XMLEvent event : eventReader) {
-			final T retval = CompactReaderAdapter.ADAPTER.parse(type,
+			if (event.isStartElement()) {
+				final T retval = CompactReaderAdapter.ADAPTER.parse(type,
 					event.asStartElement(), eventReader,
 					new PlayerCollection(), warner, new IDFactory());
-			return (U) retval;
+				return (U) retval;
+			}
 		}
 		throw new XMLStreamException(
 				"XML stream didn't contain a start element");
