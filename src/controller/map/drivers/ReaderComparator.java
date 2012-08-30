@@ -18,8 +18,8 @@ import view.util.SystemOut;
 import controller.map.IMapReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
+import controller.map.cxml.CompactXMLReader;
 import controller.map.readerng.MapReaderNG;
-import controller.map.simplexml.SimpleXMLReader;
 
 /**
  * A driver for comparing map readers.
@@ -35,8 +35,8 @@ public class ReaderComparator {
 	 * @param args The maps to test the two readers on.
 	 */
 	public static void main(final String[] args) {
-		new ReaderComparator(SystemOut.SYS_OUT, new SimpleXMLReader(),
-				new MapReaderNG()).compareReaders(args,
+		new ReaderComparator(SystemOut.SYS_OUT, new MapReaderNG(),
+				new CompactXMLReader()).compareReaders(args,
 				Logger.getLogger(ReaderComparator.class.getName()));
 	}
 
