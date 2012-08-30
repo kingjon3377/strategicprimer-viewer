@@ -4,8 +4,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.River;
-import model.map.Tile;
+import model.map.fixtures.TextFixture;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.misc.IDFactory;
@@ -15,17 +14,17 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTileReader implements CompactReader<Tile> {
+public final class CompactTextReader implements CompactReader<TextFixture> {
 	/**
 	 * Singleton.
 	 */
-	private CompactTileReader() {
+	private CompactTextReader() {
 		// Singleton.
 	}
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactTileReader READER = new CompactTileReader();
+	public static final CompactTextReader READER = new CompactTextReader();
 	/**
 	 *
 	 * @param <U> the actual type of the object
@@ -37,22 +36,12 @@ public final class CompactTileReader implements CompactReader<Tile> {
 	 * @return the parsed tile
 	 */
 	@Override
-	public <U extends Tile> U read(final StartElement element,
+	public <U extends TextFixture> U read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	/**
-	 * Parse a river from XML.
-	 * @param element the element to parse
-	 * @param stream the stream to read further elements from (FIXME: do we need this parameter?)
-	 * @param warner the Warning instance to use as needed
-	 * @return the parsed river
-	 */
-	public River parseRiver(final StartElement element, final IteratorWrapper<XMLEvent> stream,
-			final Warning warner) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
+
+
