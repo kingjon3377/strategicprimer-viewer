@@ -47,8 +47,6 @@ public final class CompactReaderAdapter {
 	 * @param idFactory the ID factory to get IDs from
 	 * @return the object encoded by the XML
 	 */
-	@SuppressWarnings("unchecked")
-	// We *do* check ... but neither Java nor Eclipse can know that
 	public <T extends XMLWritable, U extends T> U parse(final Class<T> type,
 			final StartElement element, final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
@@ -71,6 +69,7 @@ public final class CompactReaderAdapter {
 	 * @return a reader for the type
 	 */
 	@SuppressWarnings("unchecked")
+	// We *do* check ... but neither Java nor Eclipse can know that
 	private static <T extends XMLWritable> CompactReader<T> getReader(final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
 		if (IMap.class.isAssignableFrom(type)) {
