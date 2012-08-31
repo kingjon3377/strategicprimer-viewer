@@ -52,7 +52,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new Player(1, "one", FAKE_FILENAME), Player.class);
 		assertSerialization("Second Player serialization test, reflection",
 				new Player(2, "two", FAKE_FILENAME), Player.class);
-		assertUnwantedChild("<player><troll /></player>", Player.class, false);
+		assertUnwantedChild("<player code_name=\"one\" number=\"1\"><troll /></player>", Player.class, false);
 		assertMissingProperty("<player code_name=\"one\" />", Player.class,
 				"number", false);
 		assertMissingProperty("<player number=\"1\" />", Player.class,
