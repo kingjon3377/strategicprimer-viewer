@@ -8,6 +8,7 @@ import model.map.River;
 import model.map.Tile;
 import util.IteratorWrapper;
 import util.Warning;
+import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -49,10 +50,17 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	 * @param stream the stream to read further elements from (FIXME: do we need this parameter?)
 	 * @param warner the Warning instance to use as needed
 	 * @return the parsed river
+	 * @throws SPFormatException on SP format problem
 	 */
 	public River parseRiver(final StartElement element, final IteratorWrapper<XMLEvent> stream,
-			final Warning warner) {
-		// TODO Auto-generated method stub
-		return null;
+			final Warning warner) throws SPFormatException {
+		requireTag(element, "river", "lake");
+		spinUntilEnd(element.getName(), stream);
+		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
+			return River.Lake; // NOPMD
+		} else {
+			requireNonEmptyParameter(element, "direction", true, warner);
+			return River.getRiver(getParameter(element, "direction"));
+		}
 	}
 }

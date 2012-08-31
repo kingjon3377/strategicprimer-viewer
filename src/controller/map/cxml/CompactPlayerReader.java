@@ -3,10 +3,11 @@ package controller.map.cxml;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.PlayerCollection;
 import model.map.Player;
+import model.map.PlayerCollection;
 import util.IteratorWrapper;
 import util.Warning;
+import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -34,12 +35,17 @@ public final class CompactPlayerReader extends CompactReaderSuperclass implement
 	 * @param warner the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed tile
+	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public <U extends Player> U read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) {
-		// TODO Auto-generated method stub
-		return null;
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+		requireTag(element, "player");
+		requireNonEmptyParameter(element, "number", true, warner);
+		requireNonEmptyParameter(element, "code_name", true, warner);
+		spinUntilEnd(element.getName(), stream);
+		return (U) new Player(Integer.parseInt(getParameter(element, "number")),
+				getParameter(element, "code_name"), getFile(stream));
 	}
 }

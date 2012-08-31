@@ -7,6 +7,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
 import util.IteratorWrapper;
 import util.Warning;
+import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -34,12 +35,16 @@ public final class CompactGroundReader extends CompactReaderSuperclass implement
 	 * @param warner the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed tile
+	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public <U extends Ground> U read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) {
-		// TODO Auto-generated method stub
-		return null;
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+		requireTag(element, "ground");
+		final String kind = getParameterWithDeprecatedForm(element, "kind", "ground", warner);
+		requireNonEmptyParameter(element, "exposed", true, warner);
+		spinUntilEnd(element.getName(), stream);
+		return (U) new Ground(kind, Boolean.parseBoolean(getParameter(element, "exposed")), getFile(stream));
 	}
 }
