@@ -69,7 +69,13 @@ public final class CompactGroundReader extends CompactReaderSuperclass implement
 	@Override
 	public void write(final Writer out, final Ground obj, final String file, final boolean inclusion,
 			final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		for (int i = 0; i < indent; i++) {
+			out.append('\t');
+		}
+		out.append("<ground kind=\"");
+		out.append(obj.getKind());
+		out.append("\" exposed=\"");
+		out.append(Boolean.toString(obj.isExposed()));
+		out.append("\" />\n");
 	}
 }
