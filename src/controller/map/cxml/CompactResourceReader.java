@@ -237,14 +237,14 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	 * Create a Meadow, to reduce code duplication between 'field' and 'meadow' cases.
 	 * @param element the tag we're parsing
 	 * @param field whether this is a field (meadow otherwise)
-	 * @param id the ID number parsed or generated
+	 * @param idNum the ID number parsed or generated
 	 * @param file the file we're reading from
 	 * @param warner the Warning instance to use for warnings
 	 * @return the parsed Meadow object.
 	 * @throws SPFormatException on SP format problems
 	 */
 	private Meadow createMeadow(final StartElement element,
-			final boolean field, final int id, final String file, final Warning warner)
+			final boolean field, final int idNum, final String file, final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, "status")) {
 			warner.warn(new MissingParameterException(element.getName()
@@ -252,28 +252,28 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 					.getLineNumber()));
 		}
 		return new Meadow(getParameter(element, "kind"), field,
-				Boolean.parseBoolean(getParameter(element, "cultivated")), id,
+				Boolean.parseBoolean(getParameter(element, "cultivated")), idNum,
 				FieldStatus.parse(getParameter(element, "status", FieldStatus
-						.random(id).toString())), file);
+						.random(idNum).toString())), file);
 	}
 	/**
 	 * Create a Grove, to reduce code duplication between 'grove' and 'meadow' cases.
 	 * @param element the tag we're parsing
 	 * @param orchard whether this is an orchard, a grove otherwise
-	 * @param id the ID number parsed or generated
+	 * @param idNum the ID number parsed or generated
 	 * @param file the file we're reading from
 	 * @param warner the Warning instance to use for warnings
 	 * @return the parsed Grove object
 	 * @throws SPFormatException on SP format problems
 	 */
 	private Grove createGrove(final StartElement element,
-			final boolean orchard, final int id, final String file, final Warning warner)
+			final boolean orchard, final int idNum, final String file, final Warning warner)
 			throws SPFormatException {
 		return new Grove(
 				orchard,
 				isCultivated(element, warner),
 				getParameterWithDeprecatedForm(element, "kind", "tree", warner),
-				id, file);
+				idNum, file);
 	}
 	/**
 	 * @param element a tag representing a grove or orchard

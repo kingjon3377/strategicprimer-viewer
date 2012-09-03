@@ -51,7 +51,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 					"current_player")), Integer.parseInt(getParameter(element,
 					"current_turn")), getFile(stream));
 			spinUntilEnd(element.getName(), stream);
-			return retval;
+			return retval; // NOPMD: TODO: Perhaps split this into parseMap and parseView?
 		} else {
 			final SPMap retval = new SPMap(Integer.parseInt(getParameter(
 					element, "version", "1")), Integer.parseInt(getParameter(
