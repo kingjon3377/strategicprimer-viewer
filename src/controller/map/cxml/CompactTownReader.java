@@ -27,6 +27,10 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactTownReader extends CompactReaderSuperclass implements CompactReader<TownFixture> {
 	/**
+	 * The 'name' parameter.
+	 */
+	private static final String NAME_PARAM = "name";
+	/**
 	 * Singleton.
 	 */
 	private CompactTownReader() {
@@ -84,9 +88,9 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 	private Village parseVillage(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		requireNonEmptyParameter(element, "name", false, warner);
+		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		return new Village(TownStatus.parseTownStatus(getParameter(element,
-				"status")), getParameter(element, "name", ""), getOrGenerateID(
+				"status")), getParameter(element, NAME_PARAM, ""), getOrGenerateID(
 				element, warner, idFactory), getFile(stream));
 	}
 	/**
@@ -101,8 +105,8 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 	private AbstractTownEvent parseTown(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		requireNonEmptyParameter(element, "name", false, warner);
-		final String name = getParameter(element, "name", "");
+		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
+		final String name = getParameter(element, NAME_PARAM, "");
 		final TownStatus status = TownStatus.parseTownStatus(getParameter(element, "status"));
 		final TownSize size = TownSize.parseTownSize(getParameter(element, "size"));
 		final int dc = Integer.parseInt(getParameter(element, "dc")); // NOPMD
@@ -132,10 +136,10 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
-		requireNonEmptyParameter(element, "name", false, warner);
+		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final Fortress retval = new Fortress(players.getPlayer(Integer
 				.parseInt(getParameter(element, "owner", "-1"))), getParameter(
-				element, "name", ""), getOrGenerateID(element, warner,
+				element, NAME_PARAM, ""), getOrGenerateID(element, warner,
 				idFactory), getFile(stream));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && "unit".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
