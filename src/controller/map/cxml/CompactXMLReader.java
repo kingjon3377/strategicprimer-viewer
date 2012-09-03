@@ -7,8 +7,10 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMap;
 import model.map.MapView;
 import model.map.PlayerCollection;
+import model.map.SPMap;
 import model.map.XMLWritable;
 import util.IteratorWrapper;
 import util.Warning;
@@ -87,7 +89,13 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	@Override
 	public MapView readMap(final String file, final Reader istream, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		return readXML(file, istream, MapView.class, warner);
+		final IMap retval = readXML(file, istream, MapView.class, warner);
+		if (retval instanceof SPMap) {
+			return new MapView((SPMap) retval, retval.getPlayers()
+					.getCurrentPlayer().getPlayerId(), 0, retval.getFile());
+		} else {
+			return (MapView) retval;
+		}
 	}
 
 }
