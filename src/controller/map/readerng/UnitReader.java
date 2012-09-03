@@ -23,8 +23,9 @@ import controller.map.misc.IDFactory;
  * A reader for Units.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class UnitReader implements INodeHandler<Unit> {
 	/**
 	 * The name of the property telling what kind of unit.

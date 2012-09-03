@@ -22,8 +22,9 @@ import controller.map.misc.IDFactory;
  * A reader for Villages.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class VillageReader implements INodeHandler<Village> {
 	/**
 	 * Parse a village.

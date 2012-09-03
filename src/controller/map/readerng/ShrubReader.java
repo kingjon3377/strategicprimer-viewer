@@ -21,8 +21,9 @@ import controller.map.misc.IDFactory;
  * A reader for Shrubs.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class ShrubReader implements INodeHandler<Shrub> {
 	/**
 	 * Parse a shrub.

@@ -21,8 +21,9 @@ import controller.map.misc.IDFactory;
  * A reader for CacheFixtures.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class CacheReader implements INodeHandler<CacheFixture> {
 	/**
 	 * Parse a cache.

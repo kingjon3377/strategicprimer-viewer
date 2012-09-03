@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for djinn.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class DjinnReader implements INodeHandler<Djinn> {
 	/**
 	 * Parse a djinn.

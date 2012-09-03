@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Phoenixes.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class PhoenixReader implements INodeHandler<Phoenix> {
 	/**
 	 * Parse a phoenix.

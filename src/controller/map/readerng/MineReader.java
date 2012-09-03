@@ -24,8 +24,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Mines.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class MineReader implements INodeHandler<Mine> {
 	/**
 	 * Parse a mine.

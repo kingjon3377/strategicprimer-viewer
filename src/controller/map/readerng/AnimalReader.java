@@ -21,8 +21,9 @@ import controller.map.misc.IDFactory;
  * A reader for Animals.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class AnimalReader implements INodeHandler<Animal> {
 	/**
 	 * @param element the element containing an animal

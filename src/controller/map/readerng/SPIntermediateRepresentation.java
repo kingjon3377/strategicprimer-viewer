@@ -20,8 +20,9 @@ import util.Pair;
  * writing the XML out.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class SPIntermediateRepresentation {
 	/**
 	 * The attribute of an include tag specifying what file its

@@ -21,8 +21,9 @@ import controller.map.misc.IDFactory;
  * A reader for Fairies.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class FairyReader implements INodeHandler<Fairy> {
 	/**
 	 * Parse a fairy.

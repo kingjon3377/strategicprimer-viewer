@@ -23,8 +23,9 @@ import controller.map.misc.IDFactory;
  * A reader to read map views from XML and turn them into XML. TODO: changesets.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class ViewReader implements INodeHandler<MapView> {
 	/**
 	 * The (main) tag we deal with.

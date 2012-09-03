@@ -12,11 +12,12 @@ import controller.map.misc.IDFactory;
 
 /**
  * An interface for *stateless* per-class XML readers/writers.
- * 
+ *
  * @author Jonathan Lovelace
  * @param <T> The type of object the reader knows how to read
- * 
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public interface INodeHandler<T> {
 	/**
 	 * @return the class this can write to a writer.
@@ -30,7 +31,7 @@ public interface INodeHandler<T> {
 
 	/**
 	 * Parse an instance of the type from XML.
-	 * 
+	 *
 	 * @param element the eleent to start parsing with
 	 * @param stream to get more elements from
 	 * @param players the collection of players
@@ -46,7 +47,7 @@ public interface INodeHandler<T> {
 
 	/**
 	 * Create an intermediate representation to write to a Writer.
-	 * 
+	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.
 	 * @param obj the object to write

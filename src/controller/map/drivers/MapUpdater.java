@@ -16,8 +16,8 @@ import model.map.TileType;
 import util.Warning;
 import view.util.DriverQuit;
 import controller.map.SPFormatException;
+import controller.map.cxml.CompactXMLWriter;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.readerng.MapWriterNG;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
@@ -110,7 +110,7 @@ public final class MapUpdater {
 				continue;
 			}
 			try {
-				new MapWriterNG().write(writer, derived, true); // NOPMD
+				new CompactXMLWriter().write(writer, derived, true); // NOPMD
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
 			} finally {

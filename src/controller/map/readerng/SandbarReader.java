@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Sandbars.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class SandbarReader implements INodeHandler<Sandbar> {
 	/**
 	 * Parse a sandbar.

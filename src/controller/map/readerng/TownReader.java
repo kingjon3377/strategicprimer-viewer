@@ -24,8 +24,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for towns.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class TownReader implements INodeHandler<TownEvent> {
 	/**
 	 * Parse a town.

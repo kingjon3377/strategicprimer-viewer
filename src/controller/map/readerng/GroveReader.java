@@ -23,8 +23,9 @@ import controller.map.misc.IDFactory;
  * A reader for Groves.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class GroveReader implements INodeHandler<Grove> {
 	/**
 	 * The name of the 'cultivated' property.

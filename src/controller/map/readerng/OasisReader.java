@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Oases.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class OasisReader implements INodeHandler<Oasis> {
 	/**
 	 * Parse an oasis.

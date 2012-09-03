@@ -24,6 +24,7 @@ import controller.map.SPFormatException;
 import controller.map.TestReaderFactory;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
+import controller.map.cxml.CompactXMLWriter;
 import controller.map.readerng.ReaderAdapter;
 
 // ESCA-JAVA0011:
@@ -520,13 +521,13 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	@SuppressWarnings("deprecation")
 	public static String createSerializedForm(final XMLWritable obj,
 			final boolean deprecated) throws IOException {
+		final StringWriter writer = new StringWriter();
 		if (deprecated) {
-			return obj.toXML(); // NOPMD
-		} else {
-			final StringWriter writer = new StringWriter();
 			ReaderAdapter.ADAPTER.write(obj).write(writer, true, 0);
-			return writer.toString();
+		} else {
+			new CompactXMLWriter().writeObject(writer, obj, true);
 		}
+		return writer.toString();
 	}
 
 	/**

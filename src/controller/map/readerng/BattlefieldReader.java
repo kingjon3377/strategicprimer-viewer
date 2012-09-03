@@ -22,8 +22,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Battlefields.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 	/**
 	 * Parse a battlefield.

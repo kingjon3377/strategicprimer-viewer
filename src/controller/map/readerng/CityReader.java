@@ -24,7 +24,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for cities.
  *
  * @author Jonathan Lovelace
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class CityReader implements INodeHandler<CityEvent> {
 	/**
 	 * Parse a city.

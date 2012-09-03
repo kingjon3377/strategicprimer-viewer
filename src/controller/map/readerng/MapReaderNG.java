@@ -27,7 +27,9 @@ import controller.map.misc.IncludingIterator;
  * XML.
  *
  * @author Jonathan Lovelace
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * @param file the name of a file

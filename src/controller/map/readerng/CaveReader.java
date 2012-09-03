@@ -21,8 +21,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Caves.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class CaveReader implements INodeHandler<CaveEvent> {
 	/**
 	 * Parse a cave.

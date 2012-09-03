@@ -15,13 +15,12 @@ import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.readerng.MapWriterNG;
 
 /**
  * A driver to convert maps to the new format.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class ConverterDriver {
 	/**
@@ -48,7 +47,7 @@ public final class ConverterDriver {
 
 	/**
 	 * Main method.
-	 * 
+	 *
 	 * @param args the names of files to convert. Each, after conversion, will
 	 *        be written back to its original name plus ".new"
 	 */
@@ -69,7 +68,7 @@ public final class ConverterDriver {
 				map.setFile(newFilename);
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.println(newFilename);
-				new MapWriterNG().write(newFilename, map, true); // NOPMD
+				new MapReaderAdapter().write(newFilename, map); // NOPMD
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 						+ " not acceptable to reader", e);

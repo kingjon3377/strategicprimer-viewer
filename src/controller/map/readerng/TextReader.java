@@ -20,8 +20,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for text elements.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class TextReader implements INodeHandler<TextFixture> {
 	/**
 	 * Parse a TextFixture.
