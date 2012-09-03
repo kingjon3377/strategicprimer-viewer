@@ -136,8 +136,11 @@ public final class CompactReaderAdapter {
 			final CompactReader reader;
 			if (obj instanceof IMap) {
 				reader = CompactMapReader.READER;
-			} else if (obj instanceof Tile || obj instanceof River) {
+			} else if (obj instanceof Tile) {
 				reader = CompactTileReader.READER;
+			} else if (obj instanceof River) {
+				CompactTileReader.READER.writeRiver(out, (River) obj, indent);
+				return; // NOPMD
 			} else if (obj instanceof Player) {
 				reader = CompactPlayerReader.READER;
 			} else if (obj instanceof TileFixture) {

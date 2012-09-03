@@ -14,6 +14,7 @@ import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.XMLWritable;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.IteratorWrapper;
@@ -159,5 +160,25 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 			final int indent) throws IOException {
 		// TODO Auto-generated method stub
 
+	}
+	/**
+	 * Write a river.
+	 * @param out the stream we're writing to
+	 * @param obj the river to write
+	 * @param indent the indentation level
+	 * @throws IOException on I/O error
+	 */
+	public void writeRiver(final Writer out, final River obj, final int indent) throws IOException {
+		for (int i = 0; i < indent; i++) {
+			out.append('\t');
+		}
+		if (River.Lake.equals(obj)) {
+			out.append("<lake />");
+		} else {
+			out.append("<river direction=\"");
+			out.append(obj.getDescription());
+			out.append("\" />");
+		}
+		out.append('\n');
 	}
 }
