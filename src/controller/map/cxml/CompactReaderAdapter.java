@@ -1,5 +1,7 @@
 package controller.map.cxml;
 
+import java.io.Writer;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -115,5 +117,18 @@ public final class CompactReaderAdapter {
 					+ type.getName());
 		}
 		return reader;
+	}
+	/**
+	 * Write an object to XML.
+	 * @param out The stream to write to.
+	 * @param obj The object to write.
+	 * @param file The file we're nominally writing to
+	 * @param inclusion Whether to write to different files if they were loaded from different files
+	 * @param indent the current indentation level.
+	 */
+	public void write(final Writer out, final XMLWritable obj, final String file,
+			final boolean inclusion, final int indent) {
+		// TODO Auto-generated method stub
+
 	}
 }
