@@ -271,7 +271,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testUnitWarnings() throws XMLStreamException,
 			SPFormatException, IOException { // NOPMD
 		assertMissingProperty("<unit name=\"name\" />", Unit.class, "owner", true);
-		assertMissingProperty("<unit owner=\"\" />", Unit.class, "owner", true);
+		assertMissingProperty("<unit owner=\"\" name=\"name\" />", Unit.class, "owner", true);
 		assertMissingProperty("<unit owner=\"1\" name=\"name\" id=\"0\" />",
 				Unit.class, KIND_PROPERTY, true);
 		assertMissingProperty(
