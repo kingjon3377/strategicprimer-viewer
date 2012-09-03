@@ -8,7 +8,7 @@ import model.map.IMap;
 import model.map.XMLWritable;
 import controller.map.SPWriter;
 /**
- * CompactXML's Writer implementation
+ * CompactXML's Writer implementation.
  * @author Jonathan Lovelace
  *
  */

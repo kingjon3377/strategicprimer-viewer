@@ -51,7 +51,7 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	@Override
 	public Tile read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws NumberFormatException, SPFormatException {
+			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		final Tile retval = new Tile(Integer.parseInt(getParameter(element, "row")),
 				Integer.parseInt(getParameter(element, "column")),
 				TileType.getTileType(getParameterWithDeprecatedForm(element,

@@ -1,7 +1,5 @@
 package controller.map.cxml;
 
-import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
-
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
