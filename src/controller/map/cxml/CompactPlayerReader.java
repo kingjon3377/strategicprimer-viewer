@@ -48,4 +48,12 @@ public final class CompactPlayerReader extends CompactReaderSuperclass implement
 		return (U) new Player(Integer.parseInt(getParameter(element, "number")),
 				getParameter(element, "code_name"), getFile(stream));
 	}
+	/**
+	 * @param tag a tag
+	 * @return whether it's one we can read
+	 */
+	@Override
+	public boolean isSupportedTag(final String tag) {
+		return "player".equalsIgnoreCase(tag);
+	}
 }

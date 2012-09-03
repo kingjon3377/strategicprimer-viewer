@@ -42,4 +42,12 @@ public final class CompactUnitReader extends CompactReaderSuperclass implements 
 		// TODO Auto-generated method stub
 		return null;
 	}
+	/**
+	 * @param tag a tag
+	 * @return whether it's one we can read
+	 */
+	@Override
+	public boolean isSupportedTag(final String tag) {
+		return "unit".equalsIgnoreCase(tag);
+	}
 }

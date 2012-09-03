@@ -31,6 +31,13 @@ public final class CompactTextReader extends CompactReaderSuperclass implements 
 	 */
 	public static final CompactTextReader READER = new CompactTextReader();
 	/**
+	 * @param tag a tag
+	 * @return whether we support it
+	 */
+	public boolean isSupportedTag(final String tag) {
+		return "text".equalsIgnoreCase(tag);
+	}
+	/**
 	 *
 	 * @param <U> the actual type of the object
 	 * @param element the XML element to parse

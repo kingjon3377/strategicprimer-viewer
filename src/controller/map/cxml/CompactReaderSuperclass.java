@@ -19,7 +19,7 @@ import controller.map.misc.IncludingIterator;
  * @author Jonathan Lovelace
  *
  */
-public class CompactReaderSuperclass {
+public abstract class CompactReaderSuperclass {
 	/**
 	 * Do not instantiate directly.
 	 */
@@ -197,4 +197,9 @@ public class CompactReaderSuperclass {
 			return prefProp.getValue();
 		}
 	}
+	/**
+	 * @param tag a tag
+	 * @return whether we support it
+	 */
+	public abstract boolean isSupportedTag(final String tag);
 }

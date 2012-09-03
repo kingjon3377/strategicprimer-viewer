@@ -1,7 +1,9 @@
 package controller.map.cxml;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -21,6 +23,7 @@ import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
+import util.ArraySet;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.SPFormatException;
@@ -115,10 +118,25 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 	 * Mapping from tags to enum-tags.
 	 */
 	private static final Map<String, MobileType> MAP = new HashMap<String, MobileType>(MobileType.values().length);
+	/**
+	 * List of supported tags.
+	 */
+	private static final Set<String> SUPP_TAGS;
 	static {
+		final Set<String> suppTagsTemp = new ArraySet<String>();
 		for (MobileType mt : MobileType.values()) {
 			MAP.put(mt.tag, mt);
+			suppTagsTemp.add(mt.tag);
 		}
+		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
+	}
+	/**
+	 * @param tag a tag
+	 * @return whether we support it
+	 */
+	@Override
+	public boolean isSupportedTag(final String tag) {
+		return SUPP_TAGS.contains(tag);
 	}
 	/**
 	 * Singleton object.
@@ -142,7 +160,7 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
-				"sphinx", "troll");
+				"sphinx", "troll", "unit");
 		// ESCA-JAVA0177:
 		final U retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {

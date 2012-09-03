@@ -47,4 +47,12 @@ public final class CompactGroundReader extends CompactReaderSuperclass implement
 		spinUntilEnd(element.getName(), stream);
 		return (U) new Ground(kind, Boolean.parseBoolean(getParameter(element, "exposed")), getFile(stream));
 	}
+	/**
+	 * @param tag a tag
+	 * @return whether it's one we support
+	 */
+	@Override
+	public boolean isSupportedTag(final String tag) {
+		return "ground".equalsIgnoreCase(tag);
+	}
 }

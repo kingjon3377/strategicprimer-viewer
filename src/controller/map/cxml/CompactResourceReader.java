@@ -1,7 +1,9 @@
 package controller.map.cxml;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -20,6 +22,7 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneEvent;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
+import util.ArraySet;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.DeprecatedPropertyException;
@@ -28,7 +31,7 @@ import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
- * A reader for tiles, including rivers.
+ * A reader for resource-bearing TileFixtures.
  * @author Jonathan Lovelace
  *
  */
@@ -107,10 +110,24 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	 * Mapping from tags to enum-tags.
 	 */
 	private static final Map<String, HarvestableType> MAP = new HashMap<String, HarvestableType>(HarvestableType.values().length);
+	/**
+	 * List of supported tags.
+	 */
+	private static final Set<String> SUPP_TAGS;
 	static {
+		final Set<String> suppTagsTemp = new ArraySet<String>();
 		for (HarvestableType mt : HarvestableType.values()) {
 			MAP.put(mt.tag, mt);
+			suppTagsTemp.add(mt.tag);
 		}
+		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
+	}
+	/**
+	 * @param tag a tag
+	 * @return whether we support it
+	 */
+	public boolean isSupportedTag(final String tag) {
+		return SUPP_TAGS.contains(tag);
 	}
 	/**
 	 *

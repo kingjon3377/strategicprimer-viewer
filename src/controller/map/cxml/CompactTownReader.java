@@ -13,6 +13,7 @@ import model.map.fixtures.towns.TownFixture;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.SPFormatException;
@@ -35,6 +36,13 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 	 * Singleton object.
 	 */
 	public static final CompactTownReader READER = new CompactTownReader();
+	/**
+	 * @param tag a tag
+	 * @return whether we support it
+	 */
+	public boolean isSupportedTag(final String tag) {
+		return EqualsAny.equalsAny(tag, "village", "fortress", "town", "city", "fortification");
+	}
 	/**
 	 *
 	 * @param <U> the actual type of the object

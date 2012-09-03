@@ -42,4 +42,12 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 	 * Singleton instance.
 	 */
 	public static final CompactMapReader READER = new CompactMapReader();
+	/**
+	 * @param tag a tag
+	 * @return whether it's one we support
+	 */
+	@Override
+	public boolean isSupportedTag(final String tag) {
+		return "map".equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
+	}
 }
