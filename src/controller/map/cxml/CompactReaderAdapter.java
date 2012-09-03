@@ -1,5 +1,8 @@
 package controller.map.cxml;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import javax.xml.stream.events.StartElement;
@@ -124,10 +127,45 @@ public final class CompactReaderAdapter {
 	 * @param file The file we're nominally writing to
 	 * @param inclusion Whether to write to different files if they were loaded from different files
 	 * @param indent the current indentation level.
+	 * @throws IOException on I/O problems
 	 */
 	public void write(final Writer out, final XMLWritable obj, final String file,
-			final boolean inclusion, final int indent) {
-		// TODO Auto-generated method stub
-
+			final boolean inclusion, final int indent) throws IOException {
+		if (file.equals(obj.getFile()) || !inclusion) {
+			@SuppressWarnings("rawtypes")
+			final CompactReader reader;
+			if (obj instanceof IMap) {
+				reader = CompactMapReader.READER;
+			} else if (obj instanceof Tile || obj instanceof River) {
+				reader = CompactTileReader.READER;
+			} else if (obj instanceof Player) {
+				reader = CompactPlayerReader.READER;
+			} else if (obj instanceof TileFixture) {
+				reader = getFixtureReader(((TileFixture) obj).getClass());
+			} else {
+				throw new IllegalStateException("Don't know how to write this type");
+			}
+			reader.write(out, obj, file, inclusion, indent);
+		} else {
+			for (int i = 0; i < indent; i++) {
+				out.append('\t');
+			}
+			out.append("<include file=\"");
+			if ("string".equals(obj.getFile())) {
+				final StringWriter writer = new StringWriter();
+				write(writer, obj, obj.getFile(), true, 0);
+				out.append("string:");
+				out.append(writer.toString());
+			} else {
+				try {
+					final FileWriter writer = new FileWriter(obj.getFile());
+					write(writer, obj, obj.getFile(), true, 0);
+					out.append(obj.getFile());
+				} finally {
+					out.close();
+				}
+			}
+			out.append("\" />\n");
+		}
 	}
 }

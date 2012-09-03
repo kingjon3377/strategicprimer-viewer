@@ -1,5 +1,8 @@
 package controller.map.cxml;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -155,5 +158,20 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 			}
 		}
 		return retval;
+	}
+	/**
+	 * Write an object to a stream.
+	 * @param out The stream to write to.
+	 * @param obj The object to write.
+	 * @param file The file we're writing to.
+	 * @param inclusion Whether to change files if a sub-object was read from a different file
+	 * @param indent The current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	@Override
+	public void write(final Writer out, final TownFixture obj, final String file,
+			final boolean inclusion, final int indent) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 }

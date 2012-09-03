@@ -1,5 +1,7 @@
 package controller.map.cxml;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -251,6 +253,21 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 		return new Animal(getKind(element), hasParameter(element,
 				"traces"), Boolean.parseBoolean(getParameter(element,
 				"talking", "false")), id, file);
+	}
+	/**
+	 * Write an object to a stream.
+	 * @param out The stream to write to.
+	 * @param obj The object to write.
+	 * @param file The file we're writing to.
+	 * @param inclusion Whether to change files if a sub-object was read from a different file
+	 * @param indent The current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	@Override
+	public void write(final Writer out, final MobileFixture obj, final String file,
+			final boolean inclusion, final int indent) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 }
 
