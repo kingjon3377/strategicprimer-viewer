@@ -41,7 +41,6 @@ public final class CompactReaderAdapter {
 	/**
 	 * Parse an object from XML.
 	 * @param <T> the type the caller expects
-	 * @param <U> the type of the object we'll return
 	 * @param type the type the caller expects
 	 * @param element the element we're immediately dealing with
 	 * @param stream the stream from which to read more elements

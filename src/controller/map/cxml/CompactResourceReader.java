@@ -131,8 +131,6 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 		return SUPP_TAGS.contains(tag);
 	}
 	/**
-	 *
-	 * @param <U> the actual type of the object
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -141,7 +139,6 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	 * @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public HarvestableFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,

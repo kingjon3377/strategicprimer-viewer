@@ -144,7 +144,6 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 	public static final CompactMobileReader READER = new CompactMobileReader();
 	/**
 	 *
-	 * @param <U> the actual type of the object
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -153,7 +152,6 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 	 * @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public MobileFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,

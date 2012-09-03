@@ -100,7 +100,6 @@ public final class CompactTerrainReader extends CompactReaderSuperclass implemen
 	}
 	/**
 	 *
-	 * @param <U> the actual type of the object
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players

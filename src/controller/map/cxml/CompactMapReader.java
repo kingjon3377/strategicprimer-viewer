@@ -25,7 +25,6 @@ import controller.map.misc.IDFactory;
 public final class CompactMapReader extends CompactReaderSuperclass implements CompactReader<IMap> {
 	/**
 	 * Read a map from XML.
-	 * @param <U> The actual type we'll return
 	 * @param element the element we're parsing
 	 * @param stream the source to read more elements from
 	 * @param players The collection to put players in

@@ -28,7 +28,6 @@ public final class CompactGroundReader extends CompactReaderSuperclass implement
 	public static final CompactGroundReader READER = new CompactGroundReader();
 	/**
 	 *
-	 * @param <U> the actual type of the object
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players

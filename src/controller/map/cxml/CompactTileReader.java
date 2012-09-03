@@ -38,7 +38,6 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	public static final CompactTileReader READER = new CompactTileReader();
 	/**
 	 *
-	 * @param <U> the actual type of the object
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -46,7 +45,6 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed tile
 	 * @throws SPFormatException on SP format problem
-	 * @throws NumberFormatException
 	 */
 	@Override
 	public Tile read(final StartElement element,
@@ -59,17 +57,19 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName())) {
-					retval.addFixture(new RiverFixture(parseRiver(event.asStartElement(), stream, warner)));
+					retval.addFixture(new RiverFixture(parseRiver(//NOPMD
+							event.asStartElement(), stream, warner)));
 				} else {
 					retval.addFixture(parseFixture(event.asStartElement(), stream, players, idFactory, warner));
 				}
 			} else if (event.isCharacters()) {
-				String text = event.asCharacters().getData().trim();
+				final String text = event.asCharacters().getData().trim();
 				if (!text.isEmpty()) {
-					warner.warn(new UnwantedChildException("tile",
+					warner.warn(new UnwantedChildException("tile", // NOPMD
 							"arbitrary text", event.getLocation()
 									.getLineNumber()));
-					retval.addFixture(new TextFixture(event.asCharacters().getData().trim(), -1));
+					retval.addFixture(new TextFixture(event.asCharacters()//NOPMD
+							.getData().trim(), -1));
 				}
 			} else if (event.isEndElement() && element.getName().equals(event.asEndElement().getName())) {
 				break;
@@ -95,13 +95,14 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	 * @return the parsed fixture.
 	 * @throws SPFormatException on SP format problem
 	 */
+	@SuppressWarnings("unchecked")
 	private TileFixture parseFixture(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final IDFactory idFactory, final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
-		for (CompactReaderSuperclass reader : readers) {
-			if (reader.isSupportedTag(name)) {
-				return ((CompactReader<? extends TileFixture>) reader).read(
+		for (CompactReaderSuperclass item : readers) {
+			if (item.isSupportedTag(name)) {
+				return ((CompactReader<? extends TileFixture>) item).read(
 						element, stream, players, warner, idFactory);
 			}
 		}

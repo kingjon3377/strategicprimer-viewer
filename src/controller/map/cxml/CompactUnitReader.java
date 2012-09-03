@@ -29,7 +29,6 @@ public final class CompactUnitReader extends CompactReaderSuperclass implements 
 	public static final CompactUnitReader READER = new CompactUnitReader();
 	/**
 	 *
-	 * @param <U> the actual type of the object
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
