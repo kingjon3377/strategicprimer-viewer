@@ -49,10 +49,10 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	 * @throws NumberFormatException
 	 */
 	@Override
-	public <U extends Tile> U read(final StartElement element,
+	public Tile read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws NumberFormatException, SPFormatException {
-		final U retval = (U) new Tile(Integer.parseInt(getParameter(element, "row")),
+		final Tile retval = new Tile(Integer.parseInt(getParameter(element, "row")),
 				Integer.parseInt(getParameter(element, "column")),
 				TileType.getTileType(getParameterWithDeprecatedForm(element,
 						"kind", "type", warner)), getFile(stream));

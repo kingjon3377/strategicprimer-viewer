@@ -38,14 +38,14 @@ public final class CompactPlayerReader extends CompactReaderSuperclass implement
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public <U extends Player> U read(final StartElement element,
+	public Player read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "player");
 		requireNonEmptyParameter(element, "number", true, warner);
 		requireNonEmptyParameter(element, "code_name", true, warner);
 		spinUntilEnd(element.getName(), stream);
-		return (U) new Player(Integer.parseInt(getParameter(element, "number")),
+		return new Player(Integer.parseInt(getParameter(element, "number")),
 				getParameter(element, "code_name"), getFile(stream));
 	}
 	/**

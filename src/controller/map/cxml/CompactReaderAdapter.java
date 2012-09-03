@@ -51,7 +51,7 @@ public final class CompactReaderAdapter {
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public <T extends XMLWritable, U extends T> U parse(final Class<T> type,
+	public <T extends XMLWritable> T parse(final Class<T> type,
 			final StartElement element, final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
@@ -59,7 +59,7 @@ public final class CompactReaderAdapter {
 		final CompactReader<T> reader; // NOPMD
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
-			return (U) CompactTileReader.READER.parseRiver(element, stream, // NOPMD
+			return (T) CompactTileReader.READER.parseRiver(element, stream, // NOPMD
 					warner);
 		} else {
 			reader = getReader(type);

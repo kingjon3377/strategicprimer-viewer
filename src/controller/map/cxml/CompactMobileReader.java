@@ -155,75 +155,75 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <U extends MobileFixture> U read(final StartElement element,
+	public MobileFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
 		// ESCA-JAVA0177:
-		final U retval; // NOPMD
+		final MobileFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case UnitType:
-			return (U) CompactUnitReader.READER.read(element, stream, players, // NOPMD
+			return CompactUnitReader.READER.read(element, stream, players, // NOPMD
 					warner, idFactory);
 		case AnimalType:
-			retval = (U) createAnimal(element,
+			retval = createAnimal(element,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case CentaurType:
-			retval = (U) new Centaur(getKind(element),
+			retval = new Centaur(getKind(element),
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case DjinnType:
-			retval = (U) new Djinn(getOrGenerateID(element, warner, idFactory),
+			retval = new Djinn(getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case DragonType:
-			retval = (U) new Dragon(getKind(element),
+			retval = new Dragon(getKind(element),
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case FairyType:
-			retval = (U) new Fairy(getKind(element),
+			retval = new Fairy(getKind(element),
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case GiantType:
-			retval = (U) new Giant(getKind(element),
+			retval = new Giant(getKind(element),
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case GriffinType:
-			retval = (U) new Griffin(
+			retval = new Griffin(
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case MinotaurType:
-			retval = (U) new Minotaur(getOrGenerateID(element, warner,
+			retval = new Minotaur(getOrGenerateID(element, warner,
 					idFactory), getFile(stream));
 			break;
 		case OgreType:
-			retval = (U) new Ogre(getOrGenerateID(element, warner, idFactory),
+			retval = new Ogre(getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case PhoenixType:
-			retval = (U) new Phoenix(
+			retval = new Phoenix(
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case SimurghType:
-			retval = (U) new Simurgh(getOrGenerateID(element, warner, idFactory),
+			retval = new Simurgh(getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case SphinxType:
-			retval = (U) new Sphinx(getOrGenerateID(element, warner, idFactory),
+			retval = new Sphinx(getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		case TrollType:
-			retval = (U) new Troll(getOrGenerateID(element, warner, idFactory),
+			retval = new Troll(getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			break;
 		default:

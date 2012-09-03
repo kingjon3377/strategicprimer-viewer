@@ -94,6 +94,7 @@ public final class CompactTerrainReader extends CompactReaderSuperclass implemen
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
+	@Override
 	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
@@ -109,28 +110,28 @@ public final class CompactTerrainReader extends CompactReaderSuperclass implemen
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public <U extends TerrainFixture> U read(final StartElement element,
+	public TerrainFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
 		// ESCA-JAVA0177:
-		final U retval; // NOPMD
+		final TerrainFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case ForestType:
-			retval = (U) new Forest(getParameter(element, "kind"),
+			retval = new Forest(getParameter(element, "kind"),
 					hasParameter(element, "rows"), getFile(stream));
 			break;
 		case HillType:
-			retval = (U) new Hill(getOrGenerateID(element, warner, idFactory), getFile(stream));
+			retval = new Hill(getOrGenerateID(element, warner, idFactory), getFile(stream));
 			break;
 		case MountainType:
-			retval = (U) new Mountain(getFile(stream));
+			retval = new Mountain(getFile(stream));
 			break;
 		case OasisType:
-			retval = (U) new Oasis(getOrGenerateID(element, warner, idFactory), getFile(stream));
+			retval = new Oasis(getOrGenerateID(element, warner, idFactory), getFile(stream));
 			break;
 		case SandbarType:
-			retval = (U) new Sandbar(getOrGenerateID(element, warner, idFactory), getFile(stream));
+			retval = new Sandbar(getOrGenerateID(element, warner, idFactory), getFile(stream));
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");

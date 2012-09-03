@@ -18,7 +18,6 @@ import controller.map.misc.IDFactory;
  */
 public interface CompactReader<T extends XMLWritable> {
 	/**
-	 * @param <U> the type actually returned
 	 * @param element the element being parsed
 	 * @param stream to read more elements from
 	 * @param players the collection of players
@@ -27,7 +26,7 @@ public interface CompactReader<T extends XMLWritable> {
 	 * @return the object parsed from XML
 	 * @throws SPFormatException on SP format errors
 	 */
-	<U extends T> U read(StartElement element, IteratorWrapper<XMLEvent> stream,
+	T read(StartElement element, IteratorWrapper<XMLEvent> stream,
 			PlayerCollection players, Warning warner, IDFactory idFactory) throws SPFormatException;
 
 }

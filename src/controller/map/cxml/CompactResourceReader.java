@@ -126,6 +126,7 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
+	@Override
 	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
@@ -142,51 +143,51 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <U extends HarvestableFixture> U read(final StartElement element,
+	public HarvestableFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "battlefield", "cache", "cave", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		// ESCA-JAVA0177:
-		final U retval; // NOPMD
+		final HarvestableFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case BattlefieldType:
-			retval = (U) new BattlefieldEvent(getDC(element), getOrGenerateID(
+			retval = new BattlefieldEvent(getDC(element), getOrGenerateID(
 					element, warner, idFactory));
 			retval.setFile(getFile(stream));
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case CacheType:
-			retval = (U) new CacheFixture(getParameter(element, "kind"),
+			retval = new CacheFixture(getParameter(element, "kind"),
 					getParameter(element, "contents"), getOrGenerateID(element,
 							warner, idFactory), getFile(stream));
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case CaveType:
-			retval = (U) new CaveEvent(getDC(element), getOrGenerateID(element, warner, idFactory));
+			retval = new CaveEvent(getDC(element), getOrGenerateID(element, warner, idFactory));
 			retval.setFile(getFile(stream));
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case FieldType:
-			retval = (U) createMeadow(element, true,
+			retval = createMeadow(element, true,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case GroveType:
-			retval = (U) createGrove(element, false,
+			retval = createGrove(element, false,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case MeadowType:
-			retval = (U) createMeadow(element, false,
+			retval = createMeadow(element, false,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case MineType:
-			retval = (U) new Mine(
+			retval = new Mine(
 					getParameterWithDeprecatedForm(element, "kind", "product",
 							warner),
 					TownStatus.parseTownStatus(getParameter(element, "status")),
@@ -195,7 +196,7 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case MineralType:
-			retval = (U) new MineralEvent(getParameterWithDeprecatedForm(
+			retval = new MineralEvent(getParameterWithDeprecatedForm(
 					element, "kind", "mineral", warner),
 					Boolean.parseBoolean(getParameter(element, "exposed")),
 					getDC(element), getOrGenerateID(element, warner, idFactory));
@@ -203,19 +204,19 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case OrchardType:
-			retval = (U) createGrove(element, true,
+			retval = createGrove(element, true,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case ShrubType:
-			retval = (U) new Shrub(getParameterWithDeprecatedForm(element,
+			retval = new Shrub(getParameterWithDeprecatedForm(element,
 					"kind", "shrub", warner), getOrGenerateID(element, warner,
 					idFactory), getFile(stream));
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case StoneType:
-			retval = (U) new StoneEvent(
+			retval = new StoneEvent(
 					StoneKind.parseStoneKind(getParameterWithDeprecatedForm(
 							element, "kind", "stone", warner)), getDC(element),
 					getOrGenerateID(element, warner, idFactory));

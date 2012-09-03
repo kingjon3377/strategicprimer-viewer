@@ -34,6 +34,7 @@ public final class CompactTextReader extends CompactReaderSuperclass implements 
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
+	@Override
 	public boolean isSupportedTag(final String tag) {
 		return "text".equalsIgnoreCase(tag);
 	}
@@ -49,7 +50,7 @@ public final class CompactTextReader extends CompactReaderSuperclass implements 
 	 * @throws SPFormatException on SP format errors
 	 */
 	@Override
-	public <U extends TextFixture> U read(final StartElement element,
+	public TextFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		final StringBuilder sbuild = new StringBuilder(""); // NOPMD
@@ -71,7 +72,7 @@ public final class CompactTextReader extends CompactReaderSuperclass implements 
 		if (stream.iterator() instanceof IncludingIterator) {
 			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
-		return (U) fix;
+		return fix;
 	}
 }
 

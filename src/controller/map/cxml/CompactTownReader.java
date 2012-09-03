@@ -40,6 +40,7 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
+	@Override
 	public boolean isSupportedTag(final String tag) {
 		return EqualsAny.equalsAny(tag, "village", "fortress", "town", "city", "fortification");
 	}
@@ -55,19 +56,19 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public <U extends TownFixture> U read(final StartElement element,
+	public TownFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city", "fortification");
 		// ESCA-JAVA0177:
-		final U retval; // NOPMD
+		final TownFixture retval; // NOPMD
 		if ("village".equals(element.getName().getLocalPart())) {
-			retval = (U) parseVillage(element, stream, warner, idFactory);
+			retval = parseVillage(element, stream, warner, idFactory);
 			spinUntilEnd(element.getName(), stream);
 		} else if ("fortress".equals(element.getName().getLocalPart())) {
-			retval = (U) parseFortress(element, stream, players, warner, idFactory);
+			retval = parseFortress(element, stream, players, warner, idFactory);
 		} else {
-			retval = (U) parseTown(element, stream, warner, idFactory);
+			retval = parseTown(element, stream, warner, idFactory);
 			spinUntilEnd(element.getName(), stream);
 		}
 		return retval;

@@ -35,7 +35,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public <U extends IMap> U read(final StartElement element,
+	public IMap read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "map", "view");
@@ -47,7 +47,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 						.getLocalPart(), mapElement.getName().getLocalPart(),
 						mapElement.getLocation().getLineNumber());
 			}
-			final U retval = (U) new MapView((SPMap) read(mapElement, stream, players,
+			final MapView retval = new MapView((SPMap) read(mapElement, stream, players,
 					warner, idFactory), Integer.parseInt(getParameter(element,
 					"current_player")), Integer.parseInt(getParameter(element,
 					"current_turn")), getFile(stream));
@@ -71,7 +71,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 								Integer.parseInt(getParameter(element,
 										"current_player"))).setCurrent(true);
 			}
-			return (U) retval;
+			return retval;
 		}
 	}
 	/**

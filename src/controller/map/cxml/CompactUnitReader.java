@@ -41,14 +41,14 @@ public final class CompactUnitReader extends CompactReaderSuperclass implements 
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public <U extends Unit> U read(final StartElement element,
+	public Unit read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "unit");
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		return (U) new Unit(
+		return new Unit(
 				players.getPlayer(Integer.parseInt(ensureNumeric(getParameter(
 						element, "owner", "-1")))), parseKind(element, warner),
 				getParameter(element, "name", ""), getOrGenerateID(element,
