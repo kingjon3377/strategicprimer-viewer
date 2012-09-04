@@ -202,4 +202,15 @@ public abstract class CompactReaderSuperclass {
 	 * @return whether we support it
 	 */
 	public abstract boolean isSupportedTag(final String tag);
+	/**
+	 * @param tabs a nonnegative integer
+	 * @return that many tabs
+	 */
+	protected String indent(final int tabs) {
+		final StringBuilder buf = new StringBuilder();
+		for (int i = 0; i < tabs; i++) {
+			buf.append('\t');
+		}
+		return buf.toString();
+	}
 }
