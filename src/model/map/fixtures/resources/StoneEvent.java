@@ -97,18 +97,6 @@ public final class StoneEvent extends XMLWritableImpl implements IEvent,
 	}
 
 	/**
-	 * @return an XML representation of the event
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<stone kind=\"").append(stone.toString())
-				.append("\" dc=\"").append(dc).append("\" id=\"").append(id)
-				.append("\" />").toString();
-	}
-
-	/**
 	 * @return the name of an image to represent the event
 	 */
 	@Override

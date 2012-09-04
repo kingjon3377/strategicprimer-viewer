@@ -40,17 +40,6 @@ public class Giant extends XMLWritableImpl implements MobileFixture, HasImage,
 	}
 
 	/**
-	 * @return an XML representation of the giant
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<giant kind=\"").append(kind)
-				.append("\" id=\"").append(id).append("\" />").toString();
-	}
-
-	/**
 	 * @return a String representation of the giant
 	 */
 	@Override

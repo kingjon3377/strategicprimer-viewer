@@ -21,8 +21,9 @@ import controller.map.misc.IDFactory;
  * A reader for Dragons.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class DragonReader implements INodeHandler<Dragon> {
 	/**
 	 * Parse a dragon.

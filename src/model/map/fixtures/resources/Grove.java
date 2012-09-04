@@ -66,19 +66,6 @@ public class Grove extends XMLWritableImpl implements HarvestableFixture,
 	}
 
 	/**
-	 * @return an XML representation of the Fixture.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder(orchard ? "<orchard" : "<grove")
-				.append(" cultivated=\"").append(isCultivated()).append("\" kind=\"")
-				.append(getKind()).append("\" id=\"").append(id)
-				.append("\" />").toString();
-	}
-
-	/**
 	 * @return the name of an image to represent the grove or orchard
 	 */
 	@Override

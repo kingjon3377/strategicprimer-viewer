@@ -44,26 +44,6 @@ public final class FortificationEvent extends AbstractTownEvent {
 	}
 
 	/**
-	 * @return an XML representation of the event.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder(
-				"<fortification status=\"").append(status().toString())
-				.append("\" size=\"").append(size().toString())
-				.append("\" dc=\"").append(dc);
-		if (!name().isEmpty()) {
-			sbuild.append("\" name=\"");
-			sbuild.append(name());
-		}
-		sbuild.append("\" id=\"");
-		sbuild.append(id);
-		return sbuild.append("\" />").toString();
-	}
-
-	/**
 	 * @return the name of an image to represent the event.
 	 */
 	@Override

@@ -21,8 +21,9 @@ import controller.map.misc.IDFactory;
  * A reader for Centaurs.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class CentaurReader implements INodeHandler<Centaur> {
 	/**
 	 * Parse a centaur.

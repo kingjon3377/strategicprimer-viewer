@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Ogres.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class OgreReader implements INodeHandler<Ogre> {
 	/**
 	 * Parse an ogre.

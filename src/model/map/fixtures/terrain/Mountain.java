@@ -31,16 +31,6 @@ public class Mountain extends XMLWritableImpl implements TerrainFixture, HasImag
 	}
 
 	/**
-	 * @return an XML representation of the forest.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return "<mountain />";
-	}
-
-	/**
 	 * @return the name of an image to represent the mountain.
 	 */
 	@Override

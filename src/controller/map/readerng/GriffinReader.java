@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for griffins.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class GriffinReader implements INodeHandler<Griffin> {
 	/**
 	 * Parse a griffin.

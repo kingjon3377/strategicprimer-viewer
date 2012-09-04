@@ -30,8 +30,9 @@ import controller.map.misc.IDFactory;
  * A reader for Tiles.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class TileReader implements INodeHandler<Tile> {
 	/**
 	 * @param element the element to start with

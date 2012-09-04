@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Sphinxes.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class SphinxReader implements INodeHandler<Sphinx> {
 	/**
 	 * Parse a sphinx.

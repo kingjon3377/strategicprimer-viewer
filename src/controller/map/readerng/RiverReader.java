@@ -21,8 +21,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Rivers.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class RiverReader implements INodeHandler<River> {
 	/**
 	 * Parse a river.

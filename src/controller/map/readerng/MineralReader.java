@@ -23,8 +23,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Minerals.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class MineralReader implements INodeHandler<MineralEvent> {
 	/**
 	 * Parse a Mineral.

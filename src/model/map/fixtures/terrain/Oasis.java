@@ -30,17 +30,6 @@ public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	}
 
 	/**
-	 * @return an XML representation of the oasis.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<oasis id=\"").append(id).append("\" />")
-				.toString();
-	}
-
-	/**
 	 * @return the name of an image to represent the oasis.
 	 */
 	@Override

@@ -39,23 +39,6 @@ public class MapView extends XMLWritableImpl implements IMap {
 	private int turn;
 
 	/**
-	 * @return an XML representation of the view.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Deprecated
-	@Override
-	public String toXML() {
-		final StringBuilder builder = new StringBuilder(
-				"<view current_player=\"");
-		builder.append(player.getPlayerId());
-		builder.append("\" current_turn=\"");
-		builder.append(turn);
-		builder.append("\">\n");
-		builder.append(map.toXML());
-		builder.append("\n</view>");
-		return builder.toString();
-	}
-	/**
 	 * @param origFile the file this view was read from
 	 */
 	@Override

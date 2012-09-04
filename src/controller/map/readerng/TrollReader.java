@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Trolls.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class TrollReader implements INodeHandler<Troll> {
 	/**
 	 * Parse a troll.

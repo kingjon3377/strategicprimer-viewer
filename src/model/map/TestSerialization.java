@@ -52,7 +52,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new Player(1, "one", FAKE_FILENAME), Player.class);
 		assertSerialization("Second Player serialization test, reflection",
 				new Player(2, "two", FAKE_FILENAME), Player.class);
-		assertUnwantedChild("<player><troll /></player>", Player.class, false);
+		assertUnwantedChild("<player code_name=\"one\" number=\"1\"><troll /></player>", Player.class, false);
 		assertMissingProperty("<player code_name=\"one\" />", Player.class,
 				"number", false);
 		assertMissingProperty("<player number=\"1\" />", Player.class,
@@ -223,14 +223,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
 				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
 				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
-				.append("</tile>").toString();
-		// This is hackish, but we're using the same expected string with two
-		// serialization frameworks, one of which is much smarter about
-		// indentation.
+				.append("</tile>\n").toString();
 		assertEquals("Multiple units should come through", xmlTwo,
-				createSerializedForm(six, true).replace("\t\t", ""));
+				createSerializedForm(six, true));
 		assertEquals("Multiple units should come through", xmlTwo,
-				createSerializedForm(six, false).trim());
+				createSerializedForm(six, false));
 		assertEquals(
 				"Shouldn't print empty not-visible tiles",
 				"",

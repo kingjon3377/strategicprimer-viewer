@@ -170,56 +170,6 @@ public class SPMap extends XMLWritableImpl implements IMap {
 	}
 
 	/**
-	 * Write the map to XML.
-	 *
-	 * @return an XML representation of the map.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<map version=\"");
-		sbuild.append(getVersion());
-		sbuild.append("\" rows=\"");
-		sbuild.append(rows());
-		sbuild.append("\" columns=\"");
-		sbuild.append(cols());
-		if (!players.getCurrentPlayer().getName().isEmpty()) {
-			sbuild.append("\" current_player=\"");
-			sbuild.append(players.getCurrentPlayer().getPlayerId());
-		}
-		sbuild.append("\">\n");
-		for (final Player player : players) {
-			sbuild.append('\t');
-			sbuild.append(player.toXML());
-			sbuild.append('\n');
-		}
-		for (int i = 0; i < myRows; i++) {
-			boolean anyTiles = false;
-			for (int j = 0; j < myCols; j++) {
-				final String tileXML = getTile(PointFactory.point(i, j))
-						.toXML();
-				if (!anyTiles && !tileXML.isEmpty()) {
-					anyTiles = true;
-					sbuild.append("\t<row index=\"");
-					sbuild.append(i);
-					sbuild.append("\">\n");
-				}
-				if (!tileXML.isEmpty()) {
-					sbuild.append("\t\t");
-					sbuild.append(tileXML);
-					sbuild.append('\n');
-				}
-			}
-			if (anyTiles) {
-				sbuild.append("\t</row>\n");
-			}
-		}
-		sbuild.append("</map>");
-		return sbuild.toString();
-	}
-
-	/**
 	 * @param obj another map
 	 * @return whether it's a strict subset of this one
 	 */

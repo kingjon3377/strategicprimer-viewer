@@ -32,21 +32,6 @@ public class SimpleTile extends XMLWritableImpl implements Subsettable<SimpleTil
 	}
 
 	/**
-	 * As this is deprecated, we expect subclasses to override, instead of
-	 * designing for extensibility here.
-	 *
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 * @return an XML representation of the tile.
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return TileType.NotVisible.equals(getTerrain()) ? "" : "<tile "
-				+ location.toXML() + " kind=\"" + getTerrain().toXML()
-				+ "\"></tile>";
-	}
-
-	/**
 	 * The tile's location.
 	 */
 	private final Point location;

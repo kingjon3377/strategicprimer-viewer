@@ -21,17 +21,6 @@ public class Griffin extends XMLWritableImpl implements MobileFixture, HasImage 
 	}
 
 	/**
-	 * @return an XML representation of the griffin.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<griffin id=\"").append(id).append("\" />")
-				.toString();
-	}
-
-	/**
 	 * @return a String representation of the griffin
 	 */
 	@Override

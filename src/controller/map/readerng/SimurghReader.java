@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Simurghs.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class SimurghReader implements INodeHandler<Simurgh> {
 	/**
 	 * Parse a simurgh.

@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for minotaurs.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class MinotaurReader implements INodeHandler<Minotaur> {
 	/**
 	 * Parse a minotaur.

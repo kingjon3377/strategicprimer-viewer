@@ -22,8 +22,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Stones.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class StoneReader implements INodeHandler<StoneEvent> {
 	/**
 	 * Parse a Stone.

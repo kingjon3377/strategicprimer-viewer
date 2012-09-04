@@ -12,8 +12,9 @@ import controller.map.SPWriter;
  * Entry point for the new map writing framework.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class MapWriterNG implements SPWriter {
 	/**
 	 * Write a map.

@@ -30,17 +30,6 @@ public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage
 	}
 
 	/**
-	 * @return an XML representaiton of the sandbar
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<sandbar id=\"").append(id).append("\" />")
-				.toString();
-	}
-
-	/**
 	 * @return the name o an image to represent the sandbar.
 	 */
 	@Override

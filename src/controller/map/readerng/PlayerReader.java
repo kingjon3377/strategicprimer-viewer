@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader to produce Players.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class PlayerReader implements INodeHandler<Player> {
 	/**
 	 * Parse a player from the XML.

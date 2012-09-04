@@ -23,8 +23,9 @@ import controller.map.misc.IDFactory;
  * necessary to implement the "include" tag.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	/**
 	 * Parse an element.

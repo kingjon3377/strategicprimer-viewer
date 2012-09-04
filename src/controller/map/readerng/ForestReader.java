@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Forests.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class ForestReader implements INodeHandler<Forest> {
 	/**
 	 * Parse a forest.

@@ -57,17 +57,6 @@ public class TextFixture extends XMLWritableImpl implements TileFixture, HasImag
 	}
 
 	/**
-	 * @return an XML representation of the fixture
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return (turn == -1 ? "<text>" : "<text turn=\"" + turn + "\">")
-				+ text.trim() + "</text>";
-	}
-
-	/**
 	 * @return the name of an image to represent the fixture
 	 */
 	@Override

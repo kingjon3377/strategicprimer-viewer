@@ -110,20 +110,6 @@ public class Player extends XMLWritableImpl implements Comparable<Player>,
 	}
 
 	/**
-	 * Write the player to XML.
-	 *
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 * @return an XML representation of the player.
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<player number=\"").append(getPlayerId())
-				.append("\" code_name=\"").append(getName()).append("\" />")
-				.toString();
-	}
-
-	/**
 	 * @return a clone of the player
 	 */
 	@Override

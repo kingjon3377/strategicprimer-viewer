@@ -28,8 +28,9 @@ import controller.map.misc.IDFactory;
  * A reader to produce SPMaps.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class SPMapReader implements INodeHandler<SPMap> {
 	/**
 	 * The tag we read.

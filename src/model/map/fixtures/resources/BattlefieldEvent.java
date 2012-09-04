@@ -1,15 +1,17 @@
-package model.map.events;
+package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.events.IEvent;
 
 /**
  * "There are the signs of a long-ago battle here".
  *
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent extends XMLWritableImpl implements IEvent, HasImage {
+public final class BattlefieldEvent extends XMLWritableImpl implements IEvent,
+		HasImage, HarvestableFixture {
 	/**
 	 * A (U)ID.
 	 */
@@ -79,17 +81,6 @@ public final class BattlefieldEvent extends XMLWritableImpl implements IEvent, H
 	@Override
 	public String toString() {
 		return "An ancient battlefield with DC " + dc;
-	}
-
-	/**
-	 * @return an XML representation of the event.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<battlefield dc=\"").append(dc)
-				.append("\" id=\"").append(id).append("\" />").toString();
 	}
 
 	/**

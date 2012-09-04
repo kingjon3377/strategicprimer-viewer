@@ -24,8 +24,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for fortifications.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class FortificationReader implements INodeHandler<FortificationEvent> {
 	/**
 	 * Parse a city.

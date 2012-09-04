@@ -11,8 +11,8 @@ import controller.map.IMapReader;
 import controller.map.MapVersionException;
 import controller.map.SPFormatException;
 import controller.map.SPWriter;
-import controller.map.readerng.MapReaderNG;
-import controller.map.readerng.MapWriterNG;
+import controller.map.cxml.CompactXMLReader;
+import controller.map.cxml.CompactXMLWriter;
 
 /**
  * An adapter, so that classes using map readers and writers don't have to
@@ -35,8 +35,8 @@ public class MapReaderAdapter {
 	 * Constructor.
 	 */
 	public MapReaderAdapter() {
-		reader = new MapReaderNG();
-		writer = new MapWriterNG();
+		reader = new CompactXMLReader();
+		writer = new CompactXMLWriter();
 	}
 
 	/**

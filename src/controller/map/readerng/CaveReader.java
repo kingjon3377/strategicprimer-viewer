@@ -10,7 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.events.CaveEvent;
+import model.map.fixtures.resources.CaveEvent;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
@@ -21,8 +21,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Caves.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class CaveReader implements INodeHandler<CaveEvent> {
 	/**
 	 * Parse a cave.

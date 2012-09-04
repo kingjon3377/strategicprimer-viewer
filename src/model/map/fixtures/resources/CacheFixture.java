@@ -56,18 +56,6 @@ public class CacheFixture extends XMLWritableImpl implements
 	}
 
 	/**
-	 * @return an XML representation of the cache.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<cache kind=\"").append(kind)
-				.append("\" contents=\"").append(contents).append("\" id=\"")
-				.append(id).append("\" />").toString();
-	}
-
-	/**
 	 * TODO: should be more granular.
 	 *
 	 * @return the name of an image to represent the cache

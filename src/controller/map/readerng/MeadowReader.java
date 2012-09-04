@@ -24,8 +24,9 @@ import controller.map.misc.IDFactory;
  * A reader for Meadows.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class MeadowReader implements INodeHandler<Meadow> {
 	/**
 	 * The name of the property giving the status of the field.

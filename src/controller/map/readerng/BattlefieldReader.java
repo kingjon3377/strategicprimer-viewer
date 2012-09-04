@@ -11,7 +11,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.events.BattlefieldEvent;
+import model.map.fixtures.resources.BattlefieldEvent;
 import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
@@ -22,8 +22,9 @@ import controller.map.misc.IncludingIterator;
  * A reader for Battlefields.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 	/**
 	 * Parse a battlefield.

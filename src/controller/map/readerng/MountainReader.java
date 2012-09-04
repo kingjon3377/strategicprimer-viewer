@@ -18,8 +18,9 @@ import controller.map.misc.IDFactory;
  * A reader for Mountains.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class MountainReader implements INodeHandler<Mountain> {
 	/**
 	 * Parse a mountain.

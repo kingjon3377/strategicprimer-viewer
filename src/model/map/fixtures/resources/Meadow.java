@@ -81,19 +81,6 @@ public class Meadow extends XMLWritableImpl implements HarvestableFixture,
 	}
 
 	/**
-	 * @return an XML representation of the Fixture.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder(field ? "<field" : "<meadow")
-				.append(" kind=\"").append(kind).append("\" cultivated=\"")
-				.append(cultivated).append("\" status=\"").append(status)
-				.append("\" id=\"").append(id).append("\" />").toString();
-	}
-
-	/**
 	 * TODO: This should be more granular based on the kind of field.
 	 *
 	 * @return the name of an image to represent the field or meadow

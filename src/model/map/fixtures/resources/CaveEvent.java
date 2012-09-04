@@ -1,8 +1,9 @@
-package model.map.events;
+package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.events.IEvent;
 
 /**
  * "There are extensive caves beneath this tile".
@@ -10,7 +11,8 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage {
+public final class CaveEvent extends XMLWritableImpl implements IEvent,
+		HasImage, HarvestableFixture {
 	/**
 	 * Constructor.
 	 *
@@ -74,17 +76,6 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent, HasImage
 	@Override
 	public String toString() {
 		return "Caves with DC " + dc;
-	}
-
-	/**
-	 * @return an XML representation of the event.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<cave dc=\"").append(dc).append("\" id=\"")
-				.append(id).append("\" />").toString();
 	}
 
 	/**

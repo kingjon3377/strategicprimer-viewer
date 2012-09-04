@@ -21,8 +21,9 @@ import controller.map.misc.IDFactory;
  * A reader for Giants.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class GiantReader implements INodeHandler<Giant> {
 	/**
 	 * Parse a giant.

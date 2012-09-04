@@ -41,25 +41,6 @@ public final class CityEvent extends AbstractTownEvent {
 	}
 
 	/**
-	 * @return an XML representation of the event.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuilder = new StringBuilder("<city status=\"")
-				.append(status().toString()).append("\" size=\"")
-				.append(size().toString()).append("\" dc=\"").append(dc);
-		if (!name().isEmpty()) {
-			sbuilder.append("\" name=\"");
-			sbuilder.append(name());
-		}
-		sbuilder.append("\" id=\"");
-		sbuilder.append(id);
-		return sbuilder.append("\" />").toString();
-	}
-
-	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD

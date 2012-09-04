@@ -18,7 +18,9 @@ import controller.map.misc.IncludingIterator;
  *
  * @author Jonathan Lovelace
  *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public final class XMLHelper {
 	/**
 	 * Do not instantiate.

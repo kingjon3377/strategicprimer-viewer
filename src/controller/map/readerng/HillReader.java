@@ -20,8 +20,9 @@ import controller.map.misc.IDFactory;
  * A reader for Hills.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class HillReader implements INodeHandler<Hill> {
 	/**
 	 * Parse a hill.

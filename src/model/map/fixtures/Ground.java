@@ -13,18 +13,6 @@ import model.map.XMLWritableImpl;
  */
 public class Ground extends XMLWritableImpl implements TileFixture, HasImage, HasKind {
 	/**
-	 * @return an XML representation of the Fixture.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<ground kind=\"").append(kind)
-				.append("\" exposed=\"").append(exposed).append("\" />")
-				.toString();
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param desc a description of the ground (the type of rock)

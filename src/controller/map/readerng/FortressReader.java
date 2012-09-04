@@ -25,7 +25,9 @@ import controller.map.misc.IDFactory;
  * A reader for fortresses.
  *
  * @author Jonathan Lovelace
+ * @deprecated ReaderNG is deprecated
  */
+@Deprecated
 public class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * Parse a fortress.
