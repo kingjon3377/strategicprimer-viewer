@@ -167,36 +167,30 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 			retval = new BattlefieldEvent(getDC(element), getOrGenerateID(
 					element, warner, idFactory));
 			retval.setFile(getFile(stream));
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case CacheType:
 			retval = new CacheFixture(getParameter(element, KIND_PARAM),
 					getParameter(element, "contents"), getOrGenerateID(element,
 							warner, idFactory), getFile(stream));
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case CaveType:
 			retval = new CaveEvent(getDC(element), getOrGenerateID(element, warner, idFactory));
 			retval.setFile(getFile(stream));
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case FieldType:
 			retval = createMeadow(element, true,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case GroveType:
 			retval = createGrove(element, false,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case MeadowType:
 			retval = createMeadow(element, false,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case MineType:
 			retval = new Mine(
@@ -205,7 +199,6 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 					TownStatus.parseTownStatus(getParameter(element, STATUS_PARAM)),
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case MineralType:
 			retval = new MineralEvent(getParameterWithDeprecatedForm(
@@ -213,19 +206,16 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 					Boolean.parseBoolean(getParameter(element, "exposed")),
 					getDC(element), getOrGenerateID(element, warner, idFactory));
 			retval.setFile(getFile(stream));
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case OrchardType:
 			retval = createGrove(element, true,
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream), warner);
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case ShrubType:
 			retval = new Shrub(getParameterWithDeprecatedForm(element,
 					KIND_PARAM, "shrub", warner), getOrGenerateID(element, warner,
 					idFactory), getFile(stream));
-			spinUntilEnd(element.getName(), stream);
 			break;
 		case StoneType:
 			retval = new StoneEvent(
@@ -233,11 +223,11 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 							element, KIND_PARAM, "stone", warner)), getDC(element),
 					getOrGenerateID(element, warner, idFactory));
 			retval.setFile(getFile(stream));
-			spinUntilEnd(element.getName(), stream);
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 	/**
