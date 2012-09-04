@@ -7,6 +7,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.events.IEvent;
+import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTownEvent;
 import model.map.fixtures.towns.CityEvent;
 import model.map.fixtures.towns.FortificationEvent;
@@ -171,7 +173,59 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 	@Override
 	public void write(final Writer out, final TownFixture obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		out.append(indent(indent));
+		if (obj instanceof AbstractTownEvent) {
+			if (obj instanceof FortificationEvent) {
+				out.append("<fortification ");
+			} else if (obj instanceof TownEvent) {
+				out.append("<town ");
+			} else if (obj instanceof CityEvent) {
+				out.append("<city ");
+			} else {
+				throw new IllegalStateException("Unknown AbstractTownEvent type");
+			}
+			out.append("status=\"");
+			out.append(((AbstractTownEvent) obj).status().toString());
+			out.append("\" size=\"");
+			out.append(((AbstractTownEvent) obj).size().toString());
+			out.append("\" dc=\"");
+			out.append(Integer.toString(((IEvent) obj).getDC()));
+			if (!obj.name().isEmpty()) {
+				out.append("\" name=\"");
+				out.append(obj.name());
+			}
+			out.append("\" id=\"");
+			out.append(Integer.toString(obj.getID()));
+			out.append("\" />\n");
+		} else if (obj instanceof Village) {
+			out.append("<village status=\"");
+			out.append(((Village) obj).status().toString());
+			if (!obj.name().isEmpty()) {
+				out.append("\" name=\"");
+				out.append(obj.name());
+			}
+			out.append("\" id=\"");
+			out.append(Integer.toString(obj.getID()));
+			out.append("\" />\n");
+		} else if (obj instanceof Fortress) {
+			out.append("<fortress owner=\"");
+			out.append(Integer.toString(((Fortress) obj).getOwner().getPlayerId()));
+			if (!obj.name().isEmpty()) {
+				out.append("\" name=\"");
+				out.append(obj.name());
+			}
+			out.append("\" id=\"");
+			out.append(Integer.toString(obj.getID()));
+			out.append("\">");
+			if (!((Fortress) obj).getUnits().isEmpty()) {
+				out.append('\n');
+				for (final Unit unit : ((Fortress) obj).getUnits()) {
+					CompactReaderAdapter.ADAPTER.write(out, unit, file, inclusion, indent + 1);
+				}
+			}
+			out.append("</fortress>\n");
+		} else {
+			throw new IllegalStateException("Unexpected TownFixture type");
+		}
 	}
 }
