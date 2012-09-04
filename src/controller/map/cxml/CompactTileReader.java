@@ -157,8 +157,25 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	@Override
 	public void write(final Writer out, final Tile obj, final String file, final boolean inclusion,
 			final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		if (!obj.isEmpty()) {
+			out.append(indent(indent));
+			out.append("<tile row=\"");
+			out.append(Integer.toString(obj.getLocation().row));
+			out.append("\" column=\"");
+			out.append(Integer.toString(obj.getLocation().col));
+			if (!TileType.NotVisible.equals(obj.getTerrain())) {
+				out.append("\" kind=\"");
+				out.append(obj.getTerrain().toXML());
+			}
+			out.append("\">");
+			if (obj.iterator().hasNext()) {
+				out.append('\n');
+				for (final TileFixture fix : obj) {
+					CompactReaderAdapter.ADAPTER.write(out, fix, file, inclusion, indent + 1);
+				}
+			}
+			out.append("</tile>\n");
+		}
 	}
 	/**
 	 * Write a river.
