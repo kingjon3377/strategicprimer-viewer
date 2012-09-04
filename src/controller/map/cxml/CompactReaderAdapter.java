@@ -17,6 +17,7 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.XMLWritable;
 import model.map.fixtures.Ground;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.Unit;
@@ -140,6 +141,11 @@ public final class CompactReaderAdapter {
 				reader = CompactTileReader.READER;
 			} else if (obj instanceof River) {
 				CompactTileReader.READER.writeRiver(out, (River) obj, indent);
+				return; // NOPMD
+			} else if (obj instanceof RiverFixture) {
+				for (River river : (RiverFixture) obj) {
+					CompactTileReader.READER.writeRiver(out, river, indent);
+				}
 				return; // NOPMD
 			} else if (obj instanceof Player) {
 				reader = CompactPlayerReader.READER;
