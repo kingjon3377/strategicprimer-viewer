@@ -272,7 +272,7 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 		} else if (obj instanceof Animal) {
 			out.append(indent(indent));
 			out.append("<animal kind=\"");
-			out.append(((Animal) obj).getAnimal());
+			out.append(((Animal) obj).getKind());
 			if (((Animal) obj).isTraces()) {
 				out.append("\" traces=\"");
 			}

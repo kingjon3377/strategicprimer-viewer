@@ -76,7 +76,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 	public <S extends Animal> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"animal");
-		retval.addAttribute("kind", obj.getAnimal());
+		retval.addAttribute("kind", obj.getKind());
 		if (obj.isTraces()) {
 			retval.addAttribute("traces", "");
 		}

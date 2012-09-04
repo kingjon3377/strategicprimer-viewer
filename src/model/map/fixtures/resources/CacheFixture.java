@@ -1,6 +1,7 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
@@ -11,7 +12,7 @@ import model.map.XMLWritableImpl;
  *
  */
 public class CacheFixture extends XMLWritableImpl implements
-		HarvestableFixture, HasImage {
+		HarvestableFixture, HasImage, HasKind {
 	/**
 	 * What kind of things this is a cache of. TODO: Should perhaps be
 	 * enumerated, so we can make images more granular.
@@ -42,6 +43,7 @@ public class CacheFixture extends XMLWritableImpl implements
 	/**
 	 * @return what kind of things this is a cache of
 	 */
+	@Override
 	public String getKind() {
 		return kind;
 	}

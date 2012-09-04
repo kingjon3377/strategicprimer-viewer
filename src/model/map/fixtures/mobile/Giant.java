@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
@@ -10,7 +11,8 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Giant extends XMLWritableImpl implements MobileFixture, HasImage {
+public class Giant extends XMLWritableImpl implements MobileFixture, HasImage,
+		HasKind {
 	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
@@ -32,6 +34,7 @@ public class Giant extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * @return the kind of giant
 	 */
+	@Override
 	public String getKind() {
 		return kind;
 	}

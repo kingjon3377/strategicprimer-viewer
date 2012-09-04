@@ -1,6 +1,7 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
@@ -11,7 +12,7 @@ import model.map.XMLWritableImpl;
  *
  */
 public class Shrub extends XMLWritableImpl implements HarvestableFixture,
-		HasImage {
+		HasImage, HasKind {
 	/**
 	 * @return an XML representation of the Fixture.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
@@ -44,7 +45,8 @@ public class Shrub extends XMLWritableImpl implements HarvestableFixture,
 	/**
 	 * @return a description of the shrub
 	 */
-	public String getDescription() {
+	@Override
+	public String getKind() {
 		return description;
 	}
 
@@ -61,7 +63,7 @@ public class Shrub extends XMLWritableImpl implements HarvestableFixture,
 	 */
 	@Override
 	public String toString() {
-		return getDescription();
+		return getKind();
 	}
 
 	/**
@@ -129,6 +131,6 @@ public class Shrub extends XMLWritableImpl implements HarvestableFixture,
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Shrub(getDescription(), getID(), getFile());
+		return new Shrub(getKind(), getID(), getFile());
 	}
 }

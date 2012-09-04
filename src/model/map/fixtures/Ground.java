@@ -1,6 +1,7 @@
 package model.map.fixtures;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
@@ -10,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Ground extends XMLWritableImpl implements TileFixture, HasImage {
+public class Ground extends XMLWritableImpl implements TileFixture, HasImage, HasKind {
 	/**
 	 * @return an XML representation of the Fixture.
 	 * @deprecated Replaced by SPIntermediateRepresentation-based output
@@ -56,6 +57,7 @@ public class Ground extends XMLWritableImpl implements TileFixture, HasImage {
 	/**
 	 * @return a description of the grond
 	 */
+	@Override
 	public String getKind() {
 		return kind;
 	}

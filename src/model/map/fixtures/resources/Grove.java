@@ -1,6 +1,7 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
@@ -11,7 +12,7 @@ import model.map.XMLWritableImpl;
  *
  */
 public class Grove extends XMLWritableImpl implements HarvestableFixture,
-		HasImage {
+		HasImage, HasKind {
 	/**
 	 * Whether this is a fruit orchard.
 	 */
@@ -59,6 +60,7 @@ public class Grove extends XMLWritableImpl implements HarvestableFixture,
 	/**
 	 * @return what kind of trees are in the grove
 	 */
+	@Override
 	public String getKind() {
 		return kind;
 	}

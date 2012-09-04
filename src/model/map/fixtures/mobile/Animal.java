@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
@@ -11,7 +12,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
+public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, HasKind {
 	/**
 	 * ID number.
 	 */
@@ -74,7 +75,8 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * @return what kind of animal this is
 	 */
-	public String getAnimal() {
+	@Override
+	public String getKind() {
 		return kind;
 	}
 
@@ -105,7 +107,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
 	@Override
 	public String toString() {
 		return (isTraces() ? "traces of " : "")
-				+ (isTalking() ? "talking " : "") + getAnimal();
+				+ (isTalking() ? "talking " : "") + getKind();
 	}
 
 	/**
@@ -174,7 +176,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Animal(getAnimal(), isTraces(), isTalking(), getID(),
+		return new Animal(getKind(), isTraces(), isTalking(), getID(),
 				getFile());
 	}
 }

@@ -1,6 +1,7 @@
 package model.map.fixtures.terrain;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
@@ -11,10 +12,11 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage, HasKind {
 	/**
 	 * @return what kind of trees
 	 */
+	@Override
 	public String getKind() {
 		return trees;
 	}
