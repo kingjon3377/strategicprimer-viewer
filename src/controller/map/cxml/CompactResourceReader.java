@@ -315,20 +315,14 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	public void write(final Writer out, final HarvestableFixture obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
 		out.append(indent(indent));
-		if (obj instanceof BattlefieldEvent) {
-			out.append("<battlefield dc=\"");
-			out.append(Integer.toString(((IEvent) obj).getDC()));
-		} else if (obj instanceof CacheFixture) {
+		if (obj instanceof CacheFixture) {
 			out.append("<cache kind=\"");
 			out.append(((CacheFixture) obj).getKind());
 			out.append("\" contents=\"");
 			out.append(((CacheFixture) obj).getContents());
-		} else if (obj instanceof CaveEvent) {
-			out.append("<cave dc=\"");
-			out.append(Integer.toString(((IEvent) obj).getDC()));
 		} else if (obj instanceof Meadow) {
 			out.append('<');
-			out.append(((Meadow) obj).isField() ? "field" : "meadow");
+			out.append(getMeadowTag((Meadow) obj));
 			out.append(" kind=\"");
 			out.append(((Meadow) obj).getKind());
 			out.append("\" cultivated=\"");
@@ -337,7 +331,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 			out.append(((Meadow) obj).getStatus().toString());
 		} else if (obj instanceof Grove) {
 			out.append('<');
-			out.append(((Grove) obj).isOrchard() ? "orchard" : "grove");
+			out.append(getGroveTag((Grove) obj));
 			out.append(" cultivated=\"");
 			out.append(Boolean.toString(((Grove) obj).isCultivated()));
 			out.append("\" kind=\"");
@@ -362,10 +356,43 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 			out.append(((StoneEvent) obj).stone().toString());
 			out.append("\" dc=\"");
 			out.append(Integer.toString(((StoneEvent) obj).getDC()));
+		} else if (obj instanceof IEvent) {
+			writeSimpleEvent(out, (IEvent) obj);
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
 		out.append("\" />\n");
+	}
+	/**
+	 * @param meadow a meadow or field
+	 * @return the proper tag for it
+	 */
+	private static String getMeadowTag(final Meadow meadow) {
+		return meadow.isField() ? "field" : "meadow";
+	}
+	/**
+	 * @param grove a grove or orchard
+	 * @return the proper tag for it
+	 */
+	private static String getGroveTag(final Grove grove) {
+		return grove.isOrchard() ? "orchard" : "grove";
+	}
+	/**
+	 * Serialize a very simple Event.
+	 * @param out the stream to write (most of) it to
+	 * @param event a simple (DC- and ID-only) IEvent
+	 * @throws IOException on I/O error
+	 */
+	private static void writeSimpleEvent(final Writer out, final IEvent event) throws IOException {
+		if (event instanceof BattlefieldEvent) {
+			out.append("<battlefield ");
+		} else if (event instanceof CaveEvent) {
+			out.append("<cave ");
+		} else {
+			throw new IllegalStateException("Unhandled IEvent subtype");
+		}
+		out.append("dc=\"");
+		out.append(Integer.toString(event.getDC()));
 	}
 }
 
