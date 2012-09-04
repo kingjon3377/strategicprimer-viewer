@@ -70,7 +70,6 @@ public class MapReaderNG implements IMapReader, ISPReader {
 
 	/**
 	 * @param <T> A supertype of the object the XML represents
-	 * @param <U> The type of the object the XML represents
 	 * @param file the name of the file from which we're reading
 	 * @param istream a reader from which to read the XML
 	 * @param type The type of the object the XML represents
@@ -80,7 +79,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T extends XMLWritable, U extends T> U readXML(final String file, final Reader istream,
+	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
@@ -93,7 +92,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 						event.asStartElement(), eventReader,
 						new PlayerCollection(), warner, new IDFactory()); // NOPMD
 				// This is a hack to make it compile under the new twoparameter system ...
-				return (U) checkType(retval, type);
+				return checkType(retval, type);
 			}
 		}
 		throw new XMLStreamException(

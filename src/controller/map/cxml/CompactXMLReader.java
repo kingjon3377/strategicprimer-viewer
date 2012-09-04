@@ -28,7 +28,6 @@ import controller.map.misc.IncludingIterator;
 public class CompactXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param <T> A supertype of the object the XML represents
-	 * @param <U> The type of the object the XML represents
 	 * @param file the file we're reading from
 	 * @param istream the stream to read from
 	 * @param type the type of the object the caller wants
@@ -37,9 +36,8 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException on SP XML format error
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends XMLWritable, U extends T> U readXML(final String file, final Reader istream,
+	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner) throws XMLStreamException,
 			SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
@@ -52,7 +50,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 				final T retval = CompactReaderAdapter.ADAPTER.parse(type,
 					event.asStartElement(), eventReader,
 					players, warner, idFactory);
-				return (U) retval;
+				return retval;
 			}
 		}
 		throw new XMLStreamException(
