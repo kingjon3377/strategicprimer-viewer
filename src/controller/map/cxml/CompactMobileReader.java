@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.HasKind;
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
@@ -125,6 +126,10 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
+	/**
+	 * Map from types to tags. FIXME: This is brittle and doesn't work well with extensible classes.
+	 */
+	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<String>();
 		for (MobileType mt : MobileType.values()) {
@@ -132,6 +137,21 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 			suppTagsTemp.add(mt.tag);
 		}
 		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
+		TAG_MAP = new HashMap<Class<? extends MobileFixture>, String>();
+		TAG_MAP.put(Animal.class, "animal");
+		TAG_MAP.put(Centaur.class, "centaur");
+		TAG_MAP.put(Djinn.class, "djinn");
+		TAG_MAP.put(Dragon.class, "dragon");
+		TAG_MAP.put(Fairy.class, "fairy");
+		TAG_MAP.put(Giant.class, "giant");
+		TAG_MAP.put(Griffin.class, "griffin");
+		TAG_MAP.put(Minotaur.class, "minotaur");
+		TAG_MAP.put(Ogre.class, "ogre");
+		TAG_MAP.put(Phoenix.class, "phoenix");
+		TAG_MAP.put(Simurgh.class, "simurgh");
+		TAG_MAP.put(Sphinx.class, "sphinx");
+		TAG_MAP.put(Troll.class, "troll");
+		TAG_MAP.put(Unit.class, "unit");
 	}
 	/**
 	 * @param tag a tag
@@ -283,7 +303,17 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 			out.append(Integer.toString(obj.getID()));
 			out.append("\" />\n");
 		} else {
-			throw new IllegalStateException("Not yet implemented");
+			out.append(indent(indent));
+			out.append('<');
+			out.append(TAG_MAP.get(obj.getClass()));
+			if (obj instanceof HasKind) {
+				out.append(" kind=\"");
+				out.append(((HasKind) obj).getKind());
+				out.append('"');
+			}
+			out.append(" id=\"");
+			out.append(Integer.toString(obj.getID()));
+			out.append("\" />\n");
 		}
 	}
 }
