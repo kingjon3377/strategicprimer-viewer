@@ -175,28 +175,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			final boolean inclusion, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof AbstractTownEvent) {
-			if (obj instanceof FortificationEvent) {
-				out.append("<fortification ");
-			} else if (obj instanceof TownEvent) {
-				out.append("<town ");
-			} else if (obj instanceof CityEvent) {
-				out.append("<city ");
-			} else {
-				throw new IllegalStateException("Unknown AbstractTownEvent type");
-			}
-			out.append("status=\"");
-			out.append(((AbstractTownEvent) obj).status().toString());
-			out.append("\" size=\"");
-			out.append(((AbstractTownEvent) obj).size().toString());
-			out.append("\" dc=\"");
-			out.append(Integer.toString(((IEvent) obj).getDC()));
-			if (!obj.name().isEmpty()) {
-				out.append("\" name=\"");
-				out.append(obj.name());
-			}
-			out.append("\" id=\"");
-			out.append(Integer.toString(obj.getID()));
-			out.append("\" />\n");
+			writeAbstractTown(out, (AbstractTownEvent) obj);
 		} else if (obj instanceof Village) {
 			out.append("<village status=\"");
 			out.append(((Village) obj).status().toString());
@@ -228,5 +207,35 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		} else {
 			throw new IllegalStateException("Unexpected TownFixture type");
 		}
+	}
+	/**
+	 * @param out the stream to write to
+	 * @param obj the AbstractTownEvent to write
+	 * @throws IOException on I/O error
+	 */
+	private static void writeAbstractTown(final Writer out, final AbstractTownEvent obj)
+			throws IOException {
+		if (obj instanceof FortificationEvent) {
+			out.append("<fortification ");
+		} else if (obj instanceof TownEvent) {
+			out.append("<town ");
+		} else if (obj instanceof CityEvent) {
+			out.append("<city ");
+		} else {
+			throw new IllegalStateException("Unknown AbstractTownEvent type");
+		}
+		out.append("status=\"");
+		out.append(obj.status().toString());
+		out.append("\" size=\"");
+		out.append(obj.size().toString());
+		out.append("\" dc=\"");
+		out.append(Integer.toString(((IEvent) obj).getDC()));
+		if (!obj.name().isEmpty()) {
+			out.append("\" name=\"");
+			out.append(obj.name());
+		}
+		out.append("\" id=\"");
+		out.append(Integer.toString(obj.getID()));
+		out.append("\" />\n");
 	}
 }
