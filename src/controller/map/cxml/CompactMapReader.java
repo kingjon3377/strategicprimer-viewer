@@ -8,8 +8,11 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
 import model.map.MapView;
+import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.PointFactory;
 import model.map.SPMap;
+import model.map.Tile;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
@@ -144,7 +147,50 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 	@Override
 	public void write(final Writer out, final IMap obj, final String file, final boolean inclusion,
 			final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		out.append(indent(indent));
+		if (obj instanceof MapView) {
+			out.append("<view current_player=\"");
+			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer().getPlayerId()));
+			out.append("\" current_turn=\"");
+			out.append(Integer.toString(((MapView) obj).getCurrentTurn()));
+			CompactReaderAdapter.ADAPTER.write(out, ((MapView) obj).getMap(), file, inclusion, indent + 1);
+			out.append(indent(indent));
+			out.append("</view>\n");
+		} else if (obj instanceof SPMap) {
+			out.append("<map version=\"");
+			out.append(Integer.toString(((SPMap) obj).getVersion()));
+			out.append("\" rows=\"");
+			out.append(Integer.toString(((SPMap) obj).rows()));
+			out.append("\" columns=\"");
+			out.append(Integer.toString(((SPMap) obj).cols()));
+			if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
+				out.append("\" current_player=\"");
+				out.append(Integer.toString(obj.getPlayers().getCurrentPlayer().getPlayerId()));
+			}
+			out.append("\">\n");
+			for (Player player : obj.getPlayers()) {
+				CompactReaderAdapter.ADAPTER.write(out, player, file, inclusion, indent + 1);
+			}
+			for (int i = 0; i < obj.rows(); i++) {
+				boolean rowEmpty = true;
+				for (int j = 0; j < obj.cols(); j++) {
+					final Tile tile = obj.getTile(PointFactory.point(i, j));
+					if (!tile.isEmpty() && rowEmpty) {
+						out.append(indent(indent + 1));
+						out.append("<row index=\"");
+						out.append(Integer.toString(i));
+						out.append("\">\n");
+						rowEmpty = false;
+					}
+					CompactReaderAdapter.ADAPTER.write(out, obj.getTile(PointFactory.point(i, j)), file, inclusion, indent + 2);
+				}
+				if (!rowEmpty) {
+					out.append(indent(indent + 1));
+					out.append("</row>\n");
+				}
+			}
+			out.append(indent(indent));
+			out.append("</map>\n");
+		}
 	}
 }
