@@ -153,6 +153,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer().getPlayerId()));
 			out.append("\" current_turn=\"");
 			out.append(Integer.toString(((MapView) obj).getCurrentTurn()));
+			out.append("\">\n");
 			CompactReaderAdapter.ADAPTER.write(out, ((MapView) obj).getMap(), file, inclusion, indent + 1);
 			out.append(indent(indent));
 			out.append("</view>\n");
