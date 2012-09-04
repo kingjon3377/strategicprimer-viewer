@@ -18,7 +18,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactPlayerReader extends CompactReaderSuperclass implements CompactReader<Player> {
+public final class CompactPlayerReader extends AbstractCompactReader implements CompactReader<Player> {
 	/**
 	 * Singleton.
 	 */

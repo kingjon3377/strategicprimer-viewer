@@ -20,7 +20,7 @@ import controller.map.misc.IncludingIterator;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTextReader extends CompactReaderSuperclass implements CompactReader<TextFixture> {
+public final class CompactTextReader extends AbstractCompactReader implements CompactReader<TextFixture> {
 	/**
 	 * Singleton.
 	 */

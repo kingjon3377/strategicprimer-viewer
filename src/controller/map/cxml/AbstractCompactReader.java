@@ -19,11 +19,11 @@ import controller.map.misc.IncludingIterator;
  * @author Jonathan Lovelace
  *
  */
-public abstract class CompactReaderSuperclass {
+public abstract class AbstractCompactReader {
 	/**
 	 * Do not instantiate directly.
 	 */
-	protected CompactReaderSuperclass() {
+	protected AbstractCompactReader() {
 		// Nothing to do
 	}
 	/**

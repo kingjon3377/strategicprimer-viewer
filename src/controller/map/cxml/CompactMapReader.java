@@ -28,7 +28,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactMapReader extends CompactReaderSuperclass implements CompactReader<IMap> {
+public final class CompactMapReader extends AbstractCompactReader implements CompactReader<IMap> {
 	/**
 	 * The 'map' tag.
 	 */

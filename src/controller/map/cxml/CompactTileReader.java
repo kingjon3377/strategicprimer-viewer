@@ -27,7 +27,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTileReader extends CompactReaderSuperclass implements CompactReader<Tile> {
+public final class CompactTileReader extends AbstractCompactReader implements CompactReader<Tile> {
 	/**
 	 * Singleton.
 	 */
@@ -82,8 +82,8 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<CompactReaderSuperclass> readers = Arrays
-			.asList(new CompactReaderSuperclass[] { CompactMobileReader.READER,
+	private final List<AbstractCompactReader> readers = Arrays
+			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
 					CompactResourceReader.READER, CompactTerrainReader.READER,
 					CompactTextReader.READER, CompactTownReader.READER });
 
@@ -102,7 +102,7 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final IDFactory idFactory, final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
-		for (CompactReaderSuperclass item : readers) {
+		for (AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
 				return ((CompactReader<? extends TileFixture>) item).read(
 						element, stream, players, warner, idFactory);

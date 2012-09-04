@@ -38,7 +38,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactResourceReader extends CompactReaderSuperclass implements CompactReader<HarvestableFixture> {
+public final class CompactResourceReader extends AbstractCompactReader implements CompactReader<HarvestableFixture> {
 	/**
 	 * The parameter giving the status of a fixture.
 	 */

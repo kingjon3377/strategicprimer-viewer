@@ -38,7 +38,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactMobileReader extends CompactReaderSuperclass implements CompactReader<MobileFixture> {
+public final class CompactMobileReader extends AbstractCompactReader implements CompactReader<MobileFixture> {
 	/**
 	 * Singleton.
 	 */

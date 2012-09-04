@@ -30,7 +30,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTownReader extends CompactReaderSuperclass implements CompactReader<TownFixture> {
+public final class CompactTownReader extends AbstractCompactReader implements CompactReader<TownFixture> {
 	/**
 	 * The 'name' parameter.
 	 */

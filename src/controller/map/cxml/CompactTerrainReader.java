@@ -28,7 +28,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTerrainReader extends CompactReaderSuperclass implements CompactReader<TerrainFixture> {
+public final class CompactTerrainReader extends AbstractCompactReader implements CompactReader<TerrainFixture> {
 	/**
 	 * Singleton.
 	 */
