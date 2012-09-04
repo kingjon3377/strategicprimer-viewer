@@ -88,8 +88,16 @@ public final class CompactTextReader extends CompactReaderSuperclass implements 
 	@Override
 	public void write(final Writer out, final TextFixture obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		out.append(indent(indent));
+		if (obj.getTurn() == -1) {
+			out.append("<text>");
+		} else {
+			out.append("<text turn=\"");
+			out.append(Integer.toString(obj.getTurn()));
+			out.append("\">");
+		}
+		out.append(obj.getText().trim());
+		out.append("</text>\n");
 	}
 }
 
