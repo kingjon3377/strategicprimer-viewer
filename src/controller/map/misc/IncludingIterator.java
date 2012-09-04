@@ -1,18 +1,20 @@
 package controller.map.misc;
 
-import static controller.map.readerng.XMLHelper.getAttribute;
-
 import java.io.FileNotFoundException;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import util.Pair;
+import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
 
 /**
@@ -179,5 +181,23 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	@Override
 	public String toString() {
 		return "IncludingIterator";
+	}
+	/**
+	 * @param startElement a tag
+	 * @param attribute the attribute we want
+	 *
+	 * @return the value of that attribute.
+	 * @throws SPFormatException if the element doesn't have that attribute
+	 */
+	private static String getAttribute(final StartElement startElement,
+			final String attribute) throws SPFormatException {
+		final Attribute attr = startElement.getAttributeByName(new QName(
+				attribute));
+		if (attr == null) {
+			throw new MissingParameterException(startElement.getName()
+					.getLocalPart(), attribute, startElement.getLocation()
+					.getLineNumber());
+		}
+		return attr.getValue();
 	}
 }
