@@ -1,6 +1,7 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 
@@ -12,7 +13,7 @@ import model.map.XMLWritableImpl;
  *
  */
 public class Meadow extends XMLWritableImpl implements HarvestableFixture,
-		HasImage {
+		HasImage, HasKind {
 	/**
 	 * Which season the field is in.
 	 */
@@ -53,6 +54,7 @@ public class Meadow extends XMLWritableImpl implements HarvestableFixture,
 	/**
 	 * @return the kind of grass or grain growing in the meadow or field
 	 */
+	@Override
 	public String getKind() {
 		return kind;
 	}

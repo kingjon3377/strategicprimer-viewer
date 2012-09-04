@@ -1,6 +1,7 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
 import model.map.events.IEvent;
@@ -12,7 +13,7 @@ import model.map.events.IEvent;
  *
  */
 public final class MineralEvent extends XMLWritableImpl implements IEvent,
-		HasImage, HarvestableFixture {
+		HasImage, HarvestableFixture, HasKind {
 	/**
 	 * Constructor.
 	 *
@@ -128,6 +129,7 @@ public final class MineralEvent extends XMLWritableImpl implements IEvent,
 	/**
 	 * @return the kind of mineral
 	 */
+	@Override
 	public String getKind() {
 		return mineral;
 	}

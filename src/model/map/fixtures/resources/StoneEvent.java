@@ -6,7 +6,7 @@ import model.map.XMLWritableImpl;
 import model.map.events.IEvent;
 
 /**
- * A deposit (always exposed for now) of stone.
+ * A deposit (always exposed for now) of stone. TODO: Implement HasKind when stone() returns a String rather than an enumerated type
  *
  * @author Jonathan Lovelace
  *

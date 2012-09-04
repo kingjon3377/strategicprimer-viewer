@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
@@ -11,7 +12,8 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Unit extends XMLWritableImpl implements MobileFixture, HasImage {
+public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
+		HasKind {
 	/**
 	 * The player that owns the unit.
 	 */
@@ -57,6 +59,7 @@ public class Unit extends XMLWritableImpl implements MobileFixture, HasImage {
 	 *
 	 * @return the kind of unit
 	 */
+	@Override
 	public final String getKind() {
 		return kind;
 	}
