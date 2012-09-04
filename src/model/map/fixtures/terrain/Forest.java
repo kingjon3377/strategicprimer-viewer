@@ -54,22 +54,6 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage,
 	}
 
 	/**
-	 * @return an XML representation of the forest.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<forest kind=\"");
-		sbuild.append(trees);
-		if (rows) {
-			sbuild.append("\" rows=\"true");
-		}
-		sbuild.append("\" />");
-		return sbuild.toString();
-	}
-
-	/**
 	 * TODO: Should differ based on what kind of tree.
 	 *
 	 * @return the name of an image to represent the forest.

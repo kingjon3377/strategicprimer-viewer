@@ -31,17 +31,6 @@ public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	}
 
 	/**
-	 * @return an XML representation of the hill.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<hill id=\"").append(id).append("\" />")
-				.toString();
-	}
-
-	/**
 	 * @return the name of an image to represent the hill.
 	 */
 	@Override

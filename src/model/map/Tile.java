@@ -174,41 +174,6 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	}
 
 	/**
-	 * Write the tile to XML. Returns the empty string if the tile isn't visible
-	 * and contains nothing.
-	 *
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 * @return an XML representation of the tile.
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		if (isEmpty()) {
-			return ""; // NOPMD
-		} else {
-			final StringBuilder sbuild = new StringBuilder("<tile ");
-			sbuild.append(getLocation().toXML());
-			if (!(TileType.NotVisible.equals(getTerrain()))) {
-				sbuild.append(" kind=\"");
-				sbuild.append(getTerrain().toXML());
-				sbuild.append('"');
-			}
-			sbuild.append('>');
-			if (!contents.isEmpty()) {
-				sbuild.append('\n');
-				for (final TileFixture fix : contents) {
-					sbuild.append("\t\t\t");
-					sbuild.append(fix.toXML());
-					sbuild.append('\n');
-				}
-				sbuild.append("\t\t");
-			}
-			sbuild.append("</tile>");
-			return sbuild.toString();
-		}
-	}
-
-	/**
 	 * A tile is "empty" if its tile type is NotVisible and it has no contents.
 	 *
 	 * @return whether this tile is "empty".

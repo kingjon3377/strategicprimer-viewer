@@ -36,22 +36,6 @@ public class RiverFixture extends XMLWritableImpl implements TileFixture,
 	private final Set<River> rivers = EnumSet.noneOf(River.class);
 
 	/**
-	 * @return an XML representation of the rivers on the tile.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder();
-		for (final River river : rivers) {
-			sbuild.append("\t\t\t");
-			sbuild.append(river.toXML());
-			sbuild.append('\n');
-		}
-		return sbuild.toString().trim();
-	}
-
-	/**
 	 * Add a river.
 	 *
 	 * @param river the river to add

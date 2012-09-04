@@ -141,34 +141,6 @@ public class Fortress extends XMLWritableImpl implements HasImage,
 	}
 
 	/**
-	 * @return an XML representation of the fortress.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<fortress owner=\"");
-		sbuild.append(owner.getPlayerId());
-		if (!name.isEmpty()) {
-			sbuild.append("\" name=\"");
-			sbuild.append(name);
-		}
-		sbuild.append("\" id=\"");
-		sbuild.append(id);
-		sbuild.append("\">");
-		if (!units.isEmpty()) {
-			sbuild.append('\n');
-			for (final Unit unit : units) {
-				sbuild.append("\t\t\t\t");
-				sbuild.append(unit.toXML());
-			}
-			sbuild.append("\t\t\t");
-		}
-		sbuild.append("</fortress>");
-		return sbuild.toString();
-	}
-
-	/**
 	 * TODO: Should perhaps be more granular.
 	 *
 	 * @return the name of an image to represent the fortress.

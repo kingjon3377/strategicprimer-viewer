@@ -21,17 +21,6 @@ public class Sphinx extends XMLWritableImpl implements MobileFixture, HasImage {
 	}
 
 	/**
-	 * @return an XML representation of the sphinx
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<sphinx id=\"").append(id).append("\" />")
-				.toString();
-	}
-
-	/**
 	 * @return a String representation of the djinn
 	 */
 	@Override

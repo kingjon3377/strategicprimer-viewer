@@ -39,17 +39,6 @@ public class Dragon extends XMLWritableImpl implements MobileFixture, HasImage, 
 	}
 
 	/**
-	 * @return an XML representation of the dragon
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<dragon kind=\"").append(kind)
-				.append("\" id=\"").append(id).append("\" />").toString();
-	}
-
-	/**
 	 * @return a String representation of the dragon
 	 */
 	@Override

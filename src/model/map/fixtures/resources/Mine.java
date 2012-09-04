@@ -55,18 +55,6 @@ public class Mine extends XMLWritableImpl implements HarvestableFixture,
 	}
 
 	/**
-	 * @return an XML representation of the mine
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<mine kind=\"").append(kind)
-				.append("\" status=\"").append(status.toString())
-				.append("\" id=\"").append(id).append("\" />").toString();
-	}
-
-	/**
 	 * @return the name of an image to represent the mine
 	 */
 	@Override

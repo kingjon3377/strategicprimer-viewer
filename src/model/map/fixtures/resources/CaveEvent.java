@@ -79,17 +79,6 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent,
 	}
 
 	/**
-	 * @return an XML representation of the event.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<cave dc=\"").append(dc).append("\" id=\"")
-				.append(id).append("\" />").toString();
-	}
-
-	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
 	@Override

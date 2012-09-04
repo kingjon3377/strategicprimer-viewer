@@ -81,27 +81,6 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 	}
 
 	/**
-	 * @return an XML representation of the Fixture.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<animal kind=\"");
-		sbuild.append(kind);
-		if (isTraces()) {
-			sbuild.append("\" traces=\"");
-		}
-		if (isTalking()) {
-			sbuild.append("\" talking=\"true");
-		}
-		sbuild.append("\" id=\"");
-		sbuild.append(id);
-		sbuild.append("\" />");
-		return sbuild.toString();
-	}
-
-	/**
 	 * @return a String representation of the animal
 	 */
 	@Override

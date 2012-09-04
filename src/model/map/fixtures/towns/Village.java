@@ -37,25 +37,6 @@ public class Village extends XMLWritableImpl implements TownFixture, HasImage {
 	}
 
 	/**
-	 * @return an XML representation of the village
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<village status=\"");
-		sbuild.append(status.toString());
-		if (!name.isEmpty()) {
-			sbuild.append("\" name=\"");
-			sbuild.append(name);
-		}
-		sbuild.append("\" id=\"");
-		sbuild.append(id);
-		sbuild.append("\" />");
-		return sbuild.toString();
-	}
-
-	/**
 	 * @return a String representation of the village
 	 */
 	@Override

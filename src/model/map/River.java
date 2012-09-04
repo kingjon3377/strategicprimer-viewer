@@ -69,21 +69,6 @@ public enum River implements XMLWritable {
 	}
 
 	/**
-	 * @return an XML representation of the river.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		if (this == Lake) {
-			return "<lake />"; // NOPMD
-		} else {
-			return new StringBuilder("<river direction=\"").append(desc)
-					.append("\" />").toString();
-		}
-	}
-
-	/**
 	 * @return The name of the file this is to be written to.
 	 */
 	@Override

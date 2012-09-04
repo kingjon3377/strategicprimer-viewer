@@ -14,17 +14,6 @@ import model.map.XMLWritableImpl;
 public class Shrub extends XMLWritableImpl implements HarvestableFixture,
 		HasImage, HasKind {
 	/**
-	 * @return an XML representation of the Fixture.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		return new StringBuilder("<shrub kind=\"").append(description)
-				.append("\" id=\"").append(id).append("\" />").toString();
-	}
-
-	/**
 	 * A description of what kind of shrub this is.
 	 */
 	private final String description;

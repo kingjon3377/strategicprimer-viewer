@@ -12,15 +12,6 @@ package model.map;
  */
 public interface XMLWritable {
 	/**
-	 * Write the object to XML.
-	 *
-	 * @return the XML representation of the object.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Deprecated
-	String toXML();
-
-	/**
 	 * @return The name of the file this is to be written to.
 	 */
 	String getFile();

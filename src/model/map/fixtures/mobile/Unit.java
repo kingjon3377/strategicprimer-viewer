@@ -118,29 +118,6 @@ public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
 	}
 
 	/**
-	 * @return an XML representation of the unit.
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Override
-	@Deprecated
-	public String toXML() {
-		final StringBuilder sbuild = new StringBuilder("<unit owner=\"");
-		sbuild.append(owner.getPlayerId());
-		if (!kind.isEmpty()) {
-			sbuild.append("\" kind=\"");
-			sbuild.append(kind);
-		}
-		if (!name.isEmpty()) {
-			sbuild.append("\" name=\"");
-			sbuild.append(name);
-		}
-		sbuild.append("\" id=\"");
-		sbuild.append(id);
-		sbuild.append("\" />");
-		return sbuild.toString();
-	}
-
-	/**
 	 * TODO: Should be per-unit-type ...
 	 *
 	 * This image from OpenGameArt.org, uploaded by jreijonen,
