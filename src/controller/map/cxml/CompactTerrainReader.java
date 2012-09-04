@@ -152,7 +152,29 @@ public final class CompactTerrainReader extends CompactReaderSuperclass implemen
 	@Override
 	public void write(final Writer out, final TerrainFixture obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		out.append(indent(indent));
+		if (obj instanceof Mountain) {
+			out.append("<mountain />\n");
+			return; // NOPMD Mountains don't yet have IDs.
+		} else if (obj instanceof Forest) {
+			out.append("<forest kind=\"");
+			out.append(((Forest) obj).getKind());
+			if (((Forest) obj).isRows()) {
+				out.append("\" rows=\"true");
+			}
+			out.append("\" />\n");
+			return; // NOPMD Neither do Forests.
+		} else if (obj instanceof Hill) {
+			out.append("<hill ");
+		} else if (obj instanceof Oasis) {
+			out.append("<oasis ");
+		} else if (obj instanceof Sandbar) {
+			out.append("<sandbar ");
+		} else {
+			throw new IllegalStateException("Unexpected TerrainFixture type.");
+		}
+		out.append("id=\"");
+		out.append(Integer.toString(obj.getID()));
+		out.append("\" />\n");
 	}
 }
