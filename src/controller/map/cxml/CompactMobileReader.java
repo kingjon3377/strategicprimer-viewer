@@ -268,7 +268,7 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 	public void write(final Writer out, final MobileFixture obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
 		if (obj instanceof Unit) {
-			CompactUnitReader.READER.write(out, obj, file, inclusion, indent);
+			CompactUnitReader.READER.write(out, (Unit) obj, file, inclusion, indent);
 		} else if (obj instanceof Animal) {
 			out.append(indent(indent));
 			out.append("<animal kind=\"");
