@@ -70,7 +70,11 @@ public final class CompactPlayerReader extends CompactReaderSuperclass implement
 	@Override
 	public void write(final Writer out, final Player obj, final String file, final boolean inclusion,
 			final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		out.append(indent(indent));
+		out.append("<player number=\"");
+		out.append(Integer.toString(obj.getPlayerId()));
+		out.append("\" code_name=\"");
+		out.append(obj.getName());
+		out.append("\" />\n");
 	}
 }
