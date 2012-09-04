@@ -25,6 +25,7 @@ import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.Unit;
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.Warning;
@@ -266,8 +267,24 @@ public final class CompactMobileReader extends CompactReaderSuperclass implement
 	@Override
 	public void write(final Writer out, final MobileFixture obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		if (obj instanceof Unit) {
+			CompactUnitReader.READER.write(out, obj, file, inclusion, indent);
+		} else if (obj instanceof Animal) {
+			out.append(indent(indent));
+			out.append("<animal kind=\"");
+			out.append(((Animal) obj).getAnimal());
+			if (((Animal) obj).isTraces()) {
+				out.append("\" traces=\"");
+			}
+			if (((Animal) obj).isTalking()) {
+				out.append("\" talking=\"true");
+			}
+			out.append("\" id=\"");
+			out.append(Integer.toString(obj.getID()));
+			out.append("\" />\n");
+		} else {
+			throw new IllegalStateException("Not yet implemented");
+		}
 	}
 }
 
