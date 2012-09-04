@@ -197,4 +197,17 @@ public final class CompactTileReader extends CompactReaderSuperclass implements 
 		}
 		out.append('\n');
 	}
+	/**
+	 * Write a series of rivers.
+	 * @param out the stream to write to
+	 * @param iter a series of rivers to write
+	 * @param indent the indentation level
+	 * @throws IOException on I/O error
+	 */
+	public void writeRivers(final Writer out, final Iterable<River> iter,
+			final int indent) throws IOException {
+		for (River river : iter) {
+			writeRiver(out, river, indent);
+		}
+	}
 }

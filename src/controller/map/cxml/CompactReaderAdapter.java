@@ -134,7 +134,7 @@ public final class CompactReaderAdapter {
 	public void write(final Writer out, final XMLWritable obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
 		if (file.equals(obj.getFile()) || !inclusion) {
-			@SuppressWarnings("rawtypes")
+			@SuppressWarnings("rawtypes") // NOPMD
 			final CompactReader reader; // NOPMD
 			if (obj instanceof IMap) {
 				reader = CompactMapReader.READER;
@@ -144,9 +144,7 @@ public final class CompactReaderAdapter {
 				CompactTileReader.READER.writeRiver(out, (River) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof RiverFixture) {
-				for (River river : (RiverFixture) obj) {
-					CompactTileReader.READER.writeRiver(out, river, indent);
-				}
+				CompactTileReader.READER.writeRivers(out, (RiverFixture) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof Player) {
 				reader = CompactPlayerReader.READER;
@@ -157,25 +155,35 @@ public final class CompactReaderAdapter {
 			}
 			reader.write(out, obj, file, inclusion, indent);
 		} else {
-			for (int i = 0; i < indent; i++) {
-				out.append('\t');
-			}
-			out.append("<include file=\"");
-			if ("string".equals(obj.getFile())) {
-				final StringWriter writer = new StringWriter();
-				write(writer, obj, obj.getFile(), true, 0);
-				out.append("string:");
-				out.append(writer.toString());
-			} else {
-				try {
-					final FileWriter writer = new FileWriter(obj.getFile());
-					write(writer, obj, obj.getFile(), true, 0);
-					out.append(obj.getFile());
-				} finally {
-					out.close();
-				}
-			}
-			out.append("\" />\n");
+			writeInclude(out, obj, indent);
 		}
+	}
+	/**
+	 * @param out the stream we're currently writing to
+	 * @param obj the object that needs to go into a different file
+	 * @param indent the current indentation level
+	 * @throws IOException on I/O error
+	 */
+	private void writeInclude(final Writer out, final XMLWritable obj,
+			final int indent) throws IOException {
+		for (int i = 0; i < indent; i++) {
+			out.append('\t');
+		}
+		out.append("<include file=\"");
+		if ("string".equals(obj.getFile())) {
+			final StringWriter writer = new StringWriter();
+			write(writer, obj, obj.getFile(), true, 0);
+			out.append("string:");
+			out.append(writer.toString());
+		} else {
+			try {
+				final FileWriter writer = new FileWriter(obj.getFile());
+				write(writer, obj, obj.getFile(), true, 0);
+				out.append(obj.getFile());
+			} finally {
+				out.close();
+			}
+		}
+		out.append("\" />\n");
 	}
 }
