@@ -107,7 +107,19 @@ public final class CompactUnitReader extends CompactReaderSuperclass implements 
 	@Override
 	public void write(final Writer out, final Unit obj, final String file, final boolean inclusion,
 			final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		out.append(indent(indent));
+		out.append("<unit owner=\"");
+		out.append(Integer.toString(obj.getOwner().getPlayerId()));
+		if (!obj.getKind().isEmpty()) {
+			out.append("\" kind=\"");
+			out.append(obj.getKind());
+		}
+		if (!obj.getName().isEmpty()) {
+			out.append("\" name=\"");
+			out.append(obj.getName());
+		}
+		out.append("\" id=\"");
+		out.append(Integer.toString(obj.getID()));
+		out.append("\" />\n");
 	}
 }
