@@ -30,6 +30,10 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactMapReader extends CompactReaderSuperclass implements CompactReader<IMap> {
 	/**
+	 * The 'map' tag.
+	 */
+	private static final String MAP_TAG = "map";
+	/**
 	 * Read a map from XML.
 	 * @param element the element we're parsing
 	 * @param stream the source to read more elements from
@@ -43,11 +47,11 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 	public IMap read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		requireTag(element, "map", "view");
+		requireTag(element, MAP_TAG, "view");
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			final StartElement mapElement = getFirstStartElement(stream,
 					element.getLocation().getLineNumber());
-			if (!"map".equalsIgnoreCase(mapElement.getName().getLocalPart())) {
+			if (!MAP_TAG.equalsIgnoreCase(mapElement.getName().getLocalPart())) {
 				throw new UnwantedChildException(element.getName()
 						.getLocalPart(), mapElement.getName().getLocalPart(),
 						mapElement.getLocation().getLineNumber());
@@ -99,7 +103,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 		} else if (EqualsAny.equalsAny(tag, ISPReader.FUTURE)) {
 			warner.warn(new UnsupportedTagException(tag, elem.getLocation().getLineNumber()));
 		} else if (!"row".equalsIgnoreCase(tag)) {
-			throw new UnwantedChildException("map", tag, elem.getLocation().getLineNumber());
+			throw new UnwantedChildException(MAP_TAG, tag, elem.getLocation().getLineNumber());
 		}
 	}
 	/**
@@ -115,7 +119,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 				return event.asStartElement();
 			}
 		}
-		throw new MissingChildException("map", line);
+		throw new MissingChildException(MAP_TAG, line);
 	}
 	/**
 	 * Singleton.
@@ -133,7 +137,7 @@ public final class CompactMapReader extends CompactReaderSuperclass implements C
 	 */
 	@Override
 	public boolean isSupportedTag(final String tag) {
-		return "map".equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
+		return MAP_TAG.equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
 	}
 	/**
 	 * Write an object to a stream.

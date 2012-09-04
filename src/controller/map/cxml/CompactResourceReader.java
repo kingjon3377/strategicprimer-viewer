@@ -40,6 +40,18 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactResourceReader extends CompactReaderSuperclass implements CompactReader<HarvestableFixture> {
 	/**
+	 * The parameter giving the status of a fixture.
+	 */
+	private static final String STATUS_PARAM = "status";
+	/**
+	 * The parameter saying what kind of thing is in a HarvestableFixture.
+	 */
+	private static final String KIND_PARAM = "kind";
+	/**
+	 * The parameter saying whether a grove or field or orchard or meadow is cultivated.
+	 */
+	private static final String CULTIVATED_PARAM = "cultivated";
+	/**
 	 * Singleton.
 	 */
 	private CompactResourceReader() {
@@ -158,7 +170,7 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case CacheType:
-			retval = new CacheFixture(getParameter(element, "kind"),
+			retval = new CacheFixture(getParameter(element, KIND_PARAM),
 					getParameter(element, "contents"), getOrGenerateID(element,
 							warner, idFactory), getFile(stream));
 			spinUntilEnd(element.getName(), stream);
@@ -188,16 +200,16 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 			break;
 		case MineType:
 			retval = new Mine(
-					getParameterWithDeprecatedForm(element, "kind", "product",
+					getParameterWithDeprecatedForm(element, KIND_PARAM, "product",
 							warner),
-					TownStatus.parseTownStatus(getParameter(element, "status")),
+					TownStatus.parseTownStatus(getParameter(element, STATUS_PARAM)),
 					getOrGenerateID(element, warner, idFactory),
 					getFile(stream));
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case MineralType:
 			retval = new MineralEvent(getParameterWithDeprecatedForm(
-					element, "kind", "mineral", warner),
+					element, KIND_PARAM, "mineral", warner),
 					Boolean.parseBoolean(getParameter(element, "exposed")),
 					getDC(element), getOrGenerateID(element, warner, idFactory));
 			retval.setFile(getFile(stream));
@@ -211,14 +223,14 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 			break;
 		case ShrubType:
 			retval = new Shrub(getParameterWithDeprecatedForm(element,
-					"kind", "shrub", warner), getOrGenerateID(element, warner,
+					KIND_PARAM, "shrub", warner), getOrGenerateID(element, warner,
 					idFactory), getFile(stream));
 			spinUntilEnd(element.getName(), stream);
 			break;
 		case StoneType:
 			retval = new StoneEvent(
 					StoneKind.parseStoneKind(getParameterWithDeprecatedForm(
-							element, "kind", "stone", warner)), getDC(element),
+							element, KIND_PARAM, "stone", warner)), getDC(element),
 					getOrGenerateID(element, warner, idFactory));
 			retval.setFile(getFile(stream));
 			spinUntilEnd(element.getName(), stream);
@@ -249,14 +261,14 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	private Meadow createMeadow(final StartElement element,
 			final boolean field, final int idNum, final String file, final Warning warner)
 			throws SPFormatException {
-		if (!hasParameter(element, "status")) {
+		if (!hasParameter(element, STATUS_PARAM)) {
 			warner.warn(new MissingParameterException(element.getName()
-					.getLocalPart(), "status", element.getLocation()
+					.getLocalPart(), STATUS_PARAM, element.getLocation()
 					.getLineNumber()));
 		}
-		return new Meadow(getParameter(element, "kind"), field,
-				Boolean.parseBoolean(getParameter(element, "cultivated")), idNum,
-				FieldStatus.parse(getParameter(element, "status", FieldStatus
+		return new Meadow(getParameter(element, KIND_PARAM), field,
+				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)), idNum,
+				FieldStatus.parse(getParameter(element, STATUS_PARAM, FieldStatus
 						.random(idNum).toString())), file);
 	}
 	/**
@@ -275,7 +287,7 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 		return new Grove(
 				orchard,
 				isCultivated(element, warner),
-				getParameterWithDeprecatedForm(element, "kind", "tree", warner),
+				getParameterWithDeprecatedForm(element, KIND_PARAM, "tree", warner),
 				idNum, file);
 	}
 	/**
@@ -285,17 +297,17 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	 * @throws SPFormatException on SP format problems: use of 'wild' if warnings are fatal, or if both properties are missing.
 	 */
 	private boolean isCultivated(final StartElement element, final Warning warner) throws SPFormatException {
-		if (hasParameter(element, "cultivated")) {
-			return Boolean.parseBoolean(getParameter(element, "cultivated")); // NOPMD
+		if (hasParameter(element, CULTIVATED_PARAM)) {
+			return Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
 			if (hasParameter(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(element.getName()
-						.getLocalPart(), "wild", "cultivated", element
+						.getLocalPart(), "wild", CULTIVATED_PARAM, element
 						.getLocation().getLineNumber()));
 				return !Boolean.parseBoolean(getParameter(element, "wild"));
 			} else {
 				throw new MissingParameterException(element.getName()
-						.getLocalPart(), "cultivated", element.getLocation()
+						.getLocalPart(), CULTIVATED_PARAM, element.getLocation()
 						.getLineNumber());
 			}
 		}
