@@ -11,6 +11,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.events.IEvent;
 import model.map.fixtures.resources.BattlefieldEvent;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.CaveEvent;
@@ -259,7 +260,7 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 						.random(idNum).toString())), file);
 	}
 	/**
-	 * Create a Grove, to reduce code duplication between 'grove' and 'meadow' cases.
+	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard' cases.
 	 * @param element the tag we're parsing
 	 * @param orchard whether this is an orchard, a grove otherwise
 	 * @param idNum the ID number parsed or generated
@@ -300,7 +301,7 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 		}
 	}
 	/**
-	 * Write an object to a stream.
+	 * Write an object to a stream. TODO: Some way of simplifying this?
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
@@ -311,8 +312,58 @@ public final class CompactResourceReader extends CompactReaderSuperclass impleme
 	@Override
 	public void write(final Writer out, final HarvestableFixture obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
-		// TODO Auto-generated method stub
-
+		out.append(indent(indent));
+		if (obj instanceof BattlefieldEvent) {
+			out.append("<battlefield dc=\"");
+			out.append(Integer.toString(((IEvent) obj).getDC()));
+		} else if (obj instanceof CacheFixture) {
+			out.append("<cache kind=\"");
+			out.append(((CacheFixture) obj).getKind());
+			out.append("\" contents=\"");
+			out.append(((CacheFixture) obj).getContents());
+		} else if (obj instanceof CaveEvent) {
+			out.append("<cave dc=\"");
+			out.append(Integer.toString(((IEvent) obj).getDC()));
+		} else if (obj instanceof Meadow) {
+			out.append('<');
+			out.append(((Meadow) obj).isField() ? "field" : "meadow");
+			out.append(" kind=\"");
+			out.append(((Meadow) obj).getKind());
+			out.append("\" cultivated=\"");
+			out.append(Boolean.toString(((Meadow) obj).isCultivated()));
+			out.append("\" status=\"");
+			out.append(((Meadow) obj).getStatus().toString());
+		} else if (obj instanceof Grove) {
+			out.append('<');
+			out.append(((Grove) obj).isOrchard() ? "orchard" : "grove");
+			out.append(" cultivated=\"");
+			out.append(Boolean.toString(((Grove) obj).isCultivated()));
+			out.append("\" kind=\"");
+			out.append(((Grove) obj).getKind());
+		} else if (obj instanceof Mine) {
+			out.append("<mine kind=\"");
+			out.append(((Mine) obj).getKind());
+			out.append("\" status=\"");
+			out.append(((Mine) obj).getStatus().toString());
+		} else if (obj instanceof MineralEvent) {
+			out.append("<mineral kind=\"");
+			out.append(((MineralEvent) obj).getKind());
+			out.append("\" exposed=\"");
+			out.append(Boolean.toString(((MineralEvent) obj).isExposed()));
+			out.append("\" dc=\"");
+			out.append(Integer.toString(((IEvent) obj).getDC()));
+		} else if (obj instanceof Shrub) {
+			out.append("<shrub kind=\"");
+			out.append(((Shrub) obj).getKind());
+		} else if (obj instanceof StoneEvent) {
+			out.append("<stone kind=\"");
+			out.append(((StoneEvent) obj).stone().toString());
+			out.append("\" dc=\"");
+			out.append(Integer.toString(((StoneEvent) obj).getDC()));
+		}
+		out.append("\" id=\"");
+		out.append(Integer.toString(obj.getID()));
+		out.append("\" />\n");
 	}
 }
 
