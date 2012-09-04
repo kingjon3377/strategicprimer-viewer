@@ -25,7 +25,6 @@ import controller.map.TestReaderFactory;
 import controller.map.UnsupportedTagException;
 import controller.map.UnwantedChildException;
 import controller.map.cxml.CompactXMLWriter;
-import controller.map.readerng.ReaderAdapter;
 
 // ESCA-JAVA0011:
 /**
@@ -34,6 +33,7 @@ import controller.map.readerng.ReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("deprecation")
 public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * The "filename" to pass to the readers.
@@ -524,12 +524,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @return its serialized form
 	 * @throws IOException on I/O error creating it
 	 */
-	@SuppressWarnings("deprecation")
 	public static String createSerializedForm(final XMLWritable obj,
 			final boolean deprecated) throws IOException {
 		final StringWriter writer = new StringWriter();
 		if (deprecated) {
-			ReaderAdapter.ADAPTER.write(obj).write(writer, true, 0);
+			controller.map.readerng.ReaderAdapter.ADAPTER.write(obj).write(writer, true, 0);
 		} else {
 			new CompactXMLWriter().writeObject(writer, obj, true);
 		}
