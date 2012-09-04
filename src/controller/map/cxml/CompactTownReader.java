@@ -222,6 +222,7 @@ public final class CompactTownReader extends CompactReaderSuperclass implements 
 				for (final Unit unit : ((Fortress) obj).getUnits()) {
 					CompactReaderAdapter.ADAPTER.write(out, unit, file, inclusion, indent + 1);
 				}
+				out.append(indent(indent));
 			}
 			out.append("</fortress>\n");
 		} else {
