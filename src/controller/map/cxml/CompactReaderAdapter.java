@@ -130,11 +130,12 @@ public final class CompactReaderAdapter {
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
+	@SuppressWarnings("unchecked")
 	public void write(final Writer out, final XMLWritable obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
 		if (file.equals(obj.getFile()) || !inclusion) {
 			@SuppressWarnings("rawtypes")
-			final CompactReader reader;
+			final CompactReader reader; // NOPMD
 			if (obj instanceof IMap) {
 				reader = CompactMapReader.READER;
 			} else if (obj instanceof Tile) {
