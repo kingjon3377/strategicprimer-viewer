@@ -1,7 +1,5 @@
 package controller.map.cxml;
 
-import static controller.map.readerng.XMLHelper.getAttribute;
-
 import java.io.IOException;
 import java.io.Writer;
 
@@ -70,7 +68,7 @@ public final class CompactTextReader extends CompactReaderSuperclass implements 
 			}
 		}
 		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
-				Integer.parseInt(getAttribute(element, "turn", "-1")));
+				Integer.parseInt(getParameter(element, "turn", "-1")));
 		if (stream.iterator() instanceof IncludingIterator) {
 			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
 		}
