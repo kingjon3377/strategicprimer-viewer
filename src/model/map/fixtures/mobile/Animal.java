@@ -74,7 +74,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
 	/**
 	 * @return what kind of animal this is
 	 */
-	public String getAnimal() {
+	public String getKind() {
 		return kind;
 	}
 
@@ -105,7 +105,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
 	@Override
 	public String toString() {
 		return (isTraces() ? "traces of " : "")
-				+ (isTalking() ? "talking " : "") + getAnimal();
+				+ (isTalking() ? "talking " : "") + getKind();
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage {
 	 */
 	@Override
 	public TileFixture deepCopy() {
-		return new Animal(getAnimal(), isTraces(), isTalking(), getID(),
+		return new Animal(getKind(), isTraces(), isTalking(), getID(),
 				getFile());
 	}
 }
