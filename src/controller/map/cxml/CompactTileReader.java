@@ -14,7 +14,6 @@ import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.XMLWritable;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.IteratorWrapper;
