@@ -9,9 +9,9 @@ import view.util.SystemOut;
 /**
  * A collection of players. Using a simple List doesn't work when -1 is the
  * default index if one isn't given in the XML.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class PlayerCollection implements Iterable<Player>,
 		Subsettable<PlayerCollection>, HasChildren {
@@ -22,7 +22,7 @@ public class PlayerCollection implements Iterable<Player>,
 
 	/**
 	 * Add a player.
-	 * 
+	 *
 	 * @param player the player to add.
 	 */
 	public void addPlayer(final Player player) {
@@ -31,7 +31,7 @@ public class PlayerCollection implements Iterable<Player>,
 
 	/**
 	 * @param player a player-id
-	 * 
+	 *
 	 * @return the player with that ID, or a new Player with that number if we
 	 *         don't have it.
 	 */
@@ -50,7 +50,7 @@ public class PlayerCollection implements Iterable<Player>,
 
 	/**
 	 * @param obj an object
-	 * 
+	 *
 	 * @return whether it is another identical PlayerCollection or not
 	 */
 	@Override
@@ -61,7 +61,7 @@ public class PlayerCollection implements Iterable<Player>,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a hash value for this collection.
 	 */
 	@Override
@@ -72,8 +72,8 @@ public class PlayerCollection implements Iterable<Player>,
 	/**
 	 * Note that this method currently iterates through all the players to find
 	 * the one marked current.
-	 * 
-	 * 
+	 *
+	 *
 	 * @return the current player, or a new player with a negative number and
 	 *         the empty string for a name.
 	 */
@@ -87,7 +87,7 @@ public class PlayerCollection implements Iterable<Player>,
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the class
 	 */
 	@Override
@@ -103,7 +103,7 @@ public class PlayerCollection implements Iterable<Player>,
 	public boolean isSubset(final PlayerCollection obj) {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
-				SystemOut.SYS_OUT.println("Extra player");
+				SystemOut.SYS_OUT.print("Extra player");
 				return false; // NOPMD
 			}
 		}
@@ -112,7 +112,7 @@ public class PlayerCollection implements Iterable<Player>,
 
 	/**
 	 * Set all children's file property to the specified value, recursively.
-	 * 
+	 *
 	 * @param value the value to set
 	 */
 	@Override
