@@ -94,12 +94,4 @@ public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Hill;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Hill(getID(), getFile());
-	}
 }

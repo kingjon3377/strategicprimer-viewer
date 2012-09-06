@@ -127,14 +127,4 @@ public class TextFixture extends XMLWritableImpl implements TileFixture, HasImag
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final TextFixture retval = new TextFixture(getText(), getTurn());
-		retval.setFile(getFile());
-		return retval;
-	}
 }

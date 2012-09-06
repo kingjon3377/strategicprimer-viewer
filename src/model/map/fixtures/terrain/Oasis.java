@@ -93,12 +93,4 @@ public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Oasis;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Oasis(getID(), getFile());
-	}
 }

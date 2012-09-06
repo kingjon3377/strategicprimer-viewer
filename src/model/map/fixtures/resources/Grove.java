@@ -143,12 +143,4 @@ public class Grove extends XMLWritableImpl implements HarvestableFixture,
 				&& orchard == ((Grove) fix).orchard
 				&& cultivated == ((Grove) fix).cultivated;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Grove(isOrchard(), isCultivated(), getKind(), getID(), getFile());
-	}
 }

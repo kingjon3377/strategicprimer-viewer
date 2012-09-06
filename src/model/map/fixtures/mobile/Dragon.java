@@ -110,12 +110,4 @@ public class Dragon extends XMLWritableImpl implements MobileFixture, HasImage, 
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Dragon && ((Dragon) fix).kind.equals(kind);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Dragon(getKind(), getID(), getFile());
-	}
 }

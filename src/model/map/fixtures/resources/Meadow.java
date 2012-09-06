@@ -172,13 +172,4 @@ public class Meadow extends XMLWritableImpl implements HarvestableFixture,
 				&& field == ((Meadow) fix).field
 				&& cultivated == ((Meadow) fix).cultivated;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Meadow(getKind(), isField(), isCultivated(), getID(),
-				getStatus(), getFile());
-	}
 }

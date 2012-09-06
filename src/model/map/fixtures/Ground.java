@@ -122,12 +122,4 @@ public class Ground extends XMLWritableImpl implements TileFixture, HasImage, Ha
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Ground(getKind(), isExposed(), getFile());
-	}
 }

@@ -145,14 +145,4 @@ public final class StoneEvent extends XMLWritableImpl implements IEvent,
 				|| (fix instanceof StoneEvent && ((StoneEvent) fix).stone
 						.equals(stone));
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final StoneEvent retval = new StoneEvent(stone(), getDC(), getID());
-		retval.setFile(getFile());
-		return retval;
-	}
 }

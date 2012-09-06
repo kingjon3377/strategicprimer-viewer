@@ -111,12 +111,4 @@ public class Giant extends XMLWritableImpl implements MobileFixture, HasImage,
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Giant(getKind(), getID(), getFile());
-	}
 }

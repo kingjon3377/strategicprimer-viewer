@@ -129,12 +129,4 @@ public class Mine extends XMLWritableImpl implements HarvestableFixture,
 		return fix instanceof Mine && kind.equals(((Mine) fix).kind)
 				&& status.equals(((Mine) fix).status);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Mine(getKind(), getStatus(), getID(), getFile());
-	}
 }

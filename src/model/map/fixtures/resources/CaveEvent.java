@@ -119,16 +119,6 @@ public final class CaveEvent extends XMLWritableImpl implements IEvent,
 	}
 
 	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final CaveEvent retval = new CaveEvent(getDC(), getID());
-		retval.setFile(getFile());
-		return retval;
-	}
-
-	/**
 	 * Image from OpenGameArt.org, by user MrBeast, from page
 	 * http://opengameart.org/content/cave-tileset-0 .
 	 *

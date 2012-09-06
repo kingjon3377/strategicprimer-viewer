@@ -110,12 +110,4 @@ public class Centaur extends XMLWritableImpl implements MobileFixture, HasImage,
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Centaur && ((Centaur) fix).kind.equals(kind);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Centaur(getKind(), getID(), getFile());
-	}
 }

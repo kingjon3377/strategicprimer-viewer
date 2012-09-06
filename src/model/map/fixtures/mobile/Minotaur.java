@@ -91,12 +91,4 @@ public class Minotaur extends XMLWritableImpl implements MobileFixture, HasImage
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Minotaur;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Minotaur(getID(), getFile());
-	}
 }

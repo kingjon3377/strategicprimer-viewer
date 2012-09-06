@@ -113,14 +113,6 @@ public class Village extends XMLWritableImpl implements TownFixture, HasImage {
 		return fix instanceof Village && status.equals(((Village) fix).status)
 				&& name.equals(((Village) fix).name);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Village(status(), name(), getID(), getFile());
-	}
 	/**
 	 * @return the name of the village
 	 */

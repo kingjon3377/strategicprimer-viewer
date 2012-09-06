@@ -1,6 +1,5 @@
 package model.map.fixtures.towns;
 
-import model.map.TileFixture;
 import model.map.events.EventKind;
 
 /**
@@ -51,16 +50,5 @@ public final class TownEvent extends AbstractTownEvent {
 	@Override
 	public int getID() {
 		return id;
-	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final TownEvent retval = new TownEvent(status(), size(), getDC(),
-				name(), getID());
-		retval.setFile(getFile());
-		return retval;
 	}
 }

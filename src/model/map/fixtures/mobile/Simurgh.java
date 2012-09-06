@@ -91,12 +91,4 @@ public class Simurgh extends XMLWritableImpl implements MobileFixture, HasImage 
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Simurgh;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Simurgh(getID(), getFile());
-	}
 }

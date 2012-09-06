@@ -91,12 +91,4 @@ public class Djinn extends XMLWritableImpl implements MobileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Djinn;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Djinn(getID(), getFile());
-	}
 }

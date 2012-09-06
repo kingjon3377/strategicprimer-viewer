@@ -200,14 +200,4 @@ public class MapView extends XMLWritableImpl implements IMap {
 		builder.append(map);
 		return builder.toString();
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public IMap deepCopy() {
-		// TODO: changesets
-		return new MapView((SPMap) map.deepCopy(), getPlayers()
-				.getCurrentPlayer().getPlayerId(), getCurrentTurn(), getFile());
-	}
 }

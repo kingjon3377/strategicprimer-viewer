@@ -91,12 +91,4 @@ public class Griffin extends XMLWritableImpl implements MobileFixture, HasImage 
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Griffin;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Griffin(getID(), getFile());
-	}
 }

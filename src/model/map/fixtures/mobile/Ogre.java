@@ -91,12 +91,4 @@ public class Ogre extends XMLWritableImpl implements MobileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Ogre;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Ogre(getID(), getFile());
-	}
 }

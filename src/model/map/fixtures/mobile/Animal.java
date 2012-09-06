@@ -149,13 +149,4 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 				&& ((Animal) fix).traces == traces
 				&& ((Animal) fix).talking == talking;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Animal(getKind(), isTraces(), isTalking(), getID(),
-				getFile());
-	}
 }

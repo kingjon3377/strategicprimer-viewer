@@ -93,12 +93,4 @@ public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Sandbar;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Sandbar(getID(), getFile());
-	}
 }

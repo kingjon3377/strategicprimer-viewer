@@ -15,7 +15,7 @@ import java.util.Map;
  *
  */
 public final class TileCollection implements Iterable<Point>,
-		Subsettable<TileCollection>, DeepCloneable<TileCollection>, HasChildren {
+		Subsettable<TileCollection>, HasChildren {
 	/**
 	 * The default filename for tiles we create to avoid returning null.
 	 */
@@ -115,18 +115,6 @@ public final class TileCollection implements Iterable<Point>,
 					|| !tiles.get(point).isSubset(obj.getTile(point))) {
 				retval = false; // NOPMD
 			}
-		}
-		return retval;
-	}
-
-	/**
-	 * @return a clone of this collection
-	 */
-	@Override
-	public TileCollection deepCopy() {
-		final TileCollection retval = new TileCollection(file);
-		for (final Point point : this) {
-			retval.tiles.put(point, (Tile) tiles.get(point).deepCopy());
 		}
 		return retval;
 	}

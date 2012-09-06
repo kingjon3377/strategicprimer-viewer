@@ -119,16 +119,6 @@ public final class BattlefieldEvent extends XMLWritableImpl implements IEvent,
 	}
 
 	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final BattlefieldEvent retval = new BattlefieldEvent(getDC(), getID());
-		retval.setFile(getFile());
-		return retval;
-	}
-
-	/**
 	 * @return the name of the image to represent the event
 	 */
 	@Override

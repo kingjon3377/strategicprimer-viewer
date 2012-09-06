@@ -124,12 +124,4 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage,
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Forest(getKind(), isRows(), getFile());
-	}
 }

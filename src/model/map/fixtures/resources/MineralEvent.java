@@ -190,15 +190,4 @@ public final class MineralEvent extends XMLWritableImpl implements IEvent,
 	private boolean equalsContents(final MineralEvent fix) {
 		return fix.mineral.equals(mineral) && fix.exposed == exposed;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final MineralEvent retval = new MineralEvent(getKind(), isExposed(),
-				getDC(), getID());
-		retval.setFile(getFile());
-		return retval;
-	}
 }

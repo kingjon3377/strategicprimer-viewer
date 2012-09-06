@@ -114,12 +114,4 @@ public class Shrub extends XMLWritableImpl implements HarvestableFixture,
 		return fix instanceof Shrub
 				&& description.equals(((Shrub) fix).description);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Shrub(getKind(), getID(), getFile());
-	}
 }

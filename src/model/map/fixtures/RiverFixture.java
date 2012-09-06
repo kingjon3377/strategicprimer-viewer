@@ -163,17 +163,4 @@ public class RiverFixture extends XMLWritableImpl implements TileFixture,
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final RiverFixture retval = new RiverFixture();
-		for (River river : this) {
-			retval.addRiver(river);
-		}
-		retval.setFile(getFile());
-		return retval;
-	}
 }

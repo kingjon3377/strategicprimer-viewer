@@ -211,17 +211,4 @@ public class SPMap extends XMLWritableImpl implements IMap {
 	public TileCollection getTiles() {
 		return tiles;
 	}
-
-	/**
-	 * @return a clone of this object.
-	 */
-	@Override
-	public IMap deepCopy() {
-		final SPMap retval = new SPMap(version, myRows, myCols, getFile());
-		for (final Player player : players) {
-			retval.players.addPlayer(player.deepCopy());
-		}
-		retval.tiles = tiles.deepCopy();
-		return retval;
-	}
 }

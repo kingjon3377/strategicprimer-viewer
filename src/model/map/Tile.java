@@ -262,19 +262,6 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	}
 
 	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public SimpleTile deepCopy() {
-		final Tile retval = new Tile(getLocation().row, getLocation().col,
-				getTerrain(), getFile());
-		for (final TileFixture fix : contents) {
-			retval.contents.add(fix.deepCopy());
-		}
-		return retval;
-	}
-
-	/**
 	 * Set the file property of this tile and all its children to the specified
 	 * value, recursively.
 	 *

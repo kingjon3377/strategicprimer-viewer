@@ -227,18 +227,6 @@ public class Fortress extends XMLWritableImpl implements HasImage,
 	}
 
 	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		final Fortress retval = new Fortress(getOwner().deepCopy(), name(),
-				getID(), getFile());
-		for (final Unit unit : units) {
-			retval.addUnit((Unit) unit.deepCopy());
-		}
-		return retval;
-	}
-	/**
 	 * @return the fortress's name.
 	 */
 	@Override

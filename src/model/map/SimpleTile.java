@@ -6,8 +6,7 @@ package model.map;
  * @author Jonathan Lovelace
  *
  */
-public class SimpleTile extends XMLWritableImpl implements Subsettable<SimpleTile>,
-		DeepCloneable<SimpleTile> {
+public class SimpleTile extends XMLWritableImpl implements Subsettable<SimpleTile> {
 	/**
 	 * Constructor.
 	 *
@@ -115,13 +114,5 @@ public class SimpleTile extends XMLWritableImpl implements Subsettable<SimpleTil
 		return this == obj || obj instanceof SimpleTile
 				&& getLocation().equals(((SimpleTile) obj).getLocation())
 				&& getTerrain().equals(((SimpleTile) obj).getTerrain());
-	}
-
-	/**
-	 * @return a clone of the tile
-	 */
-	@Override
-	public SimpleTile deepCopy() {
-		return new SimpleTile(location, getTerrain(), getFile());
 	}
 }

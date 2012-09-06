@@ -93,12 +93,4 @@ public class Troll extends XMLWritableImpl implements MobileFixture, HasImage {
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Troll;
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Troll(getID(), getFile());
-	}
 }

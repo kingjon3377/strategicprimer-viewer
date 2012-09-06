@@ -6,8 +6,7 @@ package model.map;
  * @author jsl7
  *
  */
-public class Player extends XMLWritableImpl implements Comparable<Player>,
-		DeepCloneable<Player> {
+public class Player extends XMLWritableImpl implements Comparable<Player> {
 	/**
 	 * The player's number.
 	 */
@@ -107,13 +106,5 @@ public class Player extends XMLWritableImpl implements Comparable<Player>,
 	 */
 	public final boolean isCurrent() {
 		return current;
-	}
-
-	/**
-	 * @return a clone of the player
-	 */
-	@Override
-	public Player deepCopy() {
-		return new Player(getPlayerId(), getName(), getFile());
 	}
 }

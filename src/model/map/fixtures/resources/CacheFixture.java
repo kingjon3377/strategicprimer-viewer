@@ -135,12 +135,4 @@ public class CacheFixture extends XMLWritableImpl implements
 				&& kind.equals(((CacheFixture) fix).kind)
 				&& contents.equals(((CacheFixture) fix).contents);
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new CacheFixture(getKind(), getContents(), getID(), getFile());
-	}
 }

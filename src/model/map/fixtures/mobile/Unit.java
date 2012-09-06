@@ -167,13 +167,4 @@ public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
 						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
 							.equals(name)));
 	}
-
-	/**
-	 * @return a clone of this object
-	 */
-	@Override
-	public TileFixture deepCopy() {
-		return new Unit(getOwner().deepCopy(), getKind(), getName(), getID(),
-				getFile());
-	}
 }
