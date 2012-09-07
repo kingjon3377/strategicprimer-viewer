@@ -3,7 +3,11 @@ package model.map;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
@@ -82,5 +86,56 @@ public class TestSubsets {
 		four.addUnit(new Unit(new Player(2, "two", FAKE_FILENAME), "unit_type", "unit_name", 4, FAKE_FILENAME));
 		assertTrue("Fortress without is a subset of fortress with unit", four.isSubset(one));
 		assertFalse("Fortress with is not a subset of fortress without unit", one.isSubset(four));
+	}
+	/**
+	 * A test of Tile's subset feature.
+	 */
+	@Test
+	public void testTileSubset() {
+		final Tile one = new Tile(0, 0, TileType.Steppe, FAKE_FILENAME);
+		final Tile two = new Tile(0, 1, TileType.Steppe, FAKE_FILENAME);
+		assertFalse("Subset tile must match in location", one.isSubset(two));
+		assertFalse("Subset tile must match in location", two.isSubset(one));
+		final Tile three = new Tile(0, 0, TileType.Desert, FAKE_FILENAME);
+		assertFalse("Subset tile must match in type", one.isSubset(three));
+		assertFalse("Subset tile must match in type", three.isSubset(one));
+		final Tile four = new Tile(0, 0, TileType.Steppe, FAKE_FILENAME);
+		assertTrue("Tile is subset of self", one.isSubset(one));
+		assertTrue("Tile is subset of equal tile", one.isSubset(four));
+		assertTrue("Tile is subset of equal tile", four.isSubset(one));
+		four.addFixture(new Mountain(FAKE_FILENAME));
+		assertTrue("Tile with fixture is subset of tile without", four.isSubset(one));
+		assertFalse("Tile without fixture is not subset of tile with", one.isSubset(four));
+		one.addFixture(new Mountain(FAKE_FILENAME));
+		assertTrue("Adding equal fixture makes it again a subset", one.isSubset(four));
+		four.addFixture(new CacheFixture("category", "contents", 1, FAKE_FILENAME));
+		assertTrue("Subset calculation skips Caches", one.isSubset(four));
+		four.addFixture(new TextFixture("text", -1));
+		assertTrue("Subset calculation skips arbitrary-text", one.isSubset(four));
+		four.addFixture(new Animal("animal", true, false, 2, FAKE_FILENAME));
+		assertTrue("Subset calculation skips animal tracks ...", one.isSubset(four));
+		four.addFixture(new Animal("animal", false, false, 3, FAKE_FILENAME));
+		assertFalse("But not the animals themselves", one.isSubset(four));
+	}
+	/**
+	 * Test the TileCollection subset feature.
+	 */
+	@Test
+	public void testTileCollectionSubset() {
+		final TileCollection zero = new TileCollection(FAKE_FILENAME);
+		final TileCollection one = new TileCollection(FAKE_FILENAME);
+		one.addTile(new Tile(0, 0, TileType.Jungle, FAKE_FILENAME));
+		final TileCollection two = new TileCollection(FAKE_FILENAME);
+		two.addTile(new Tile(0, 0, TileType.Jungle, FAKE_FILENAME));
+		two.addTile(new Tile(1, 1, TileType.Ocean, FAKE_FILENAME));
+		assertTrue("None is a subset of itself", zero.isSubset(zero));
+		assertTrue("None is a subset of one", one.isSubset(zero));
+		assertTrue("None is a subset of two", two.isSubset(zero));
+		assertFalse("One is not a subset of none", zero.isSubset(one));
+		assertTrue("One is a subset of itself", one.isSubset(one));
+		assertTrue("One is a subset of two", two.isSubset(one));
+		assertFalse("TWo is not a subset of none", zero.isSubset(two));
+		assertFalse("Two is not a subset of one", one.isSubset(two));
+		assertTrue("Two is a subset of itself", two.isSubset(two));
 	}
 }
