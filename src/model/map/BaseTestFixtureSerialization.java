@@ -650,11 +650,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @return the number of items in the iterable
 	 */
 	public <T> int iteratorSize(final Iterable<T> iter) {
-		int size = 0;
+		int size = 0; // NOPMD
 		final Iterator<T> iterator = iter.iterator();
 		// ESCA-JAVA0254:
 		while (iterator.hasNext()) { // $codepro.audit.disable
-			size++;
+			size++; // NOPMD
 			iterator.next();
 		}
 		return size;
