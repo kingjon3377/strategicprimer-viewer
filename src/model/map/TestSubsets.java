@@ -137,5 +137,8 @@ public class TestSubsets {
 		assertFalse("TWo is not a subset of none", zero.isSubset(two));
 		assertFalse("Two is not a subset of one", one.isSubset(two));
 		assertTrue("Two is a subset of itself", two.isSubset(two));
+		one.addTile(new Tile(1, 1, TileType.Plains, FAKE_FILENAME));
+		assertFalse("Corresponding but non-matching tile breaks subset", two.isSubset(one));
+		assertFalse("Corresponding but non-matching tile breaks subset", one.isSubset(two));
 	}
 }
