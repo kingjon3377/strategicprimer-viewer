@@ -218,7 +218,7 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	@Override
 	public boolean isSubset(final SimpleTile obj) {
 		if (super.isSubset(obj)) {
-			if (contents.isEmpty()) {
+			if (contents.isEmpty() && !(obj instanceof Tile)) {
 				return true; // NOPMD
 			} else if (obj instanceof Tile) {
 				final Set<TileFixture> temp = new HashSet<TileFixture>(
