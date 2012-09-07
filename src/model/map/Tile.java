@@ -20,7 +20,8 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public final class Tile extends SimpleTile implements Iterable<TileFixture> {
+public final class Tile extends XMLWritableImpl implements
+		Iterable<TileFixture>, Subsettable<Tile> {
 	/**
 	 * Constructor.
 	 *
@@ -31,7 +32,9 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	 */
 	public Tile(final int tileRow, final int tileCol, final TileType tileType,
 			final String filename) {
-		super(PointFactory.point(tileRow, tileCol), tileType, filename);
+		super(filename);
+		location = PointFactory.point(tileRow, tileCol);
+		type = tileType;
 		// Can't be an otherwise-preferable TreeSet because of Java bug
 		// #7030899: TreeSet ignores equals() entirely.
 		contents = new ArraySet<TileFixture>();
@@ -96,8 +99,11 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| ((obj instanceof Tile) && super.equals(obj) && contents
-						.equals(((Tile) obj).contents));
+				|| ((obj instanceof Tile)
+						&& getLocation().equals(
+								((Tile) obj).getLocation())
+						&& getTerrain().equals(((Tile) obj).getTerrain()) && contents
+							.equals(((Tile) obj).contents));
 	}
 
 	/**
@@ -106,7 +112,7 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	 */
 	@Override
 	public int hashCode() {
-		return super.hashCode() + contents.hashCode() << 8;
+		return getLocation().hashCode() + getTerrain().ordinal() << 6 + contents.hashCode() << 8;
 	}
 
 	/**
@@ -115,7 +121,10 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuilder = new StringBuilder(super.toString());
+		final StringBuilder sbuilder = new StringBuilder(getLocation().toString());
+		sbuilder.append(": ");
+		sbuilder.append(getTerrain());
+		sbuilder.append('.');
 		sbuilder.append(" Contents:");
 		for (final TileFixture fix : contents) {
 			sbuilder.append("\n\t\t");
@@ -154,15 +163,13 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	 *
 	 * @param tile the same tile in another map.
 	 */
-	@Override
-	public void update(final SimpleTile tile) {
-		super.update(tile);
-		if (tile instanceof Tile) {
+	public void update(final Tile tile) {
+		setTerrain(tile.getTerrain());
 			final Set<TileFixture> unmatchedContents = new HashSet<TileFixture>(
 					contents);
-			unmatchedContents.removeAll(((Tile) tile).contents);
+			unmatchedContents.removeAll(tile.contents);
 			for (final TileFixture local : unmatchedContents) {
-				for (final TileFixture remote : (Tile) tile) {
+				for (final TileFixture remote : tile) {
 					if (local.equalsIgnoringID(remote)) {
 						removeFixture(local);
 						addFixture(remote);
@@ -170,7 +177,6 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 					}
 				}
 			}
-		}
 	}
 
 	/**
@@ -178,9 +184,8 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	 *
 	 * @return whether this tile is "empty".
 	 */
-	@Override
 	public boolean isEmpty() {
-		return super.isEmpty() && !iterator().hasNext();
+		return TileType.NotVisible.equals(getTerrain()) && !iterator().hasNext();
 	}
 
 	/**
@@ -216,13 +221,10 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	 *         one doesn't
 	 */
 	@Override
-	public boolean isSubset(final SimpleTile obj) {
-		if (super.isSubset(obj)) {
-			if (contents.isEmpty() && !(obj instanceof Tile)) {
-				return true; // NOPMD
-			} else if (obj instanceof Tile) {
+	public boolean isSubset(final Tile obj) {
+		if (getLocation().equals(obj.getLocation()) && getTerrain().equals(obj.getTerrain())) {
 				final Set<TileFixture> temp = new HashSet<TileFixture>(
-						((Tile) obj).contents);
+						obj.contents);
 				temp.removeAll(contents);
 				final List<TileFixture> tempList = new ArrayList<TileFixture>(
 						temp);
@@ -239,12 +241,6 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 					}
 				}
 				return temp.isEmpty(); // NOPMD
-			} else {
-				SystemOut.SYS_OUT
-						.print("Other is a SimpleTile, this is not, at "
-								+ getLocation().toString());
-				return false; // NOPMD
-			}
 		} else {
 			SystemOut.SYS_OUT.print("Type of " + getLocation().toString()
 					+ " wrong\t");
@@ -262,6 +258,18 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 	}
 
 	/**
+	 * The tile's location.
+	 */
+	private final Point location;
+
+	/**
+	 * @return the tile's location
+	 */
+	public Point getLocation() {
+		return location;
+	}
+
+	/**
 	 * Set the file property of this tile and all its children to the specified
 	 * value, recursively.
 	 *
@@ -273,5 +281,25 @@ public final class Tile extends SimpleTile implements Iterable<TileFixture> {
 		for (final TileFixture fix : contents) {
 			fix.setFile(value);
 		}
+	}
+
+	/**
+	 * The tile type.
+	 */
+	private TileType type;
+
+	/**
+	 *
+	 * @return the kind of tile
+	 */
+	public TileType getTerrain() {
+		return type;
+	}
+
+	/**
+	 * @param ttype the tile's new terrain type
+	 */
+	public void setTerrain(final TileType ttype) {
+		type = ttype;
 	}
 }
