@@ -106,10 +106,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
-		if (!obj.getUnits().isEmpty()) {
-			for (final Unit unit : obj.getUnits()) {
-				addChild(tagMap, unit, retval);
-			}
+		for (final Unit unit : obj.getUnits()) {
+			addChild(tagMap, unit, retval);
 		}
 		return retval;
 	}
