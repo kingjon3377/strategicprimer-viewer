@@ -11,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.XMLWritable;
+import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
@@ -190,5 +191,23 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	@Override
 	public String toString() {
 		return "ReaderAdapter";
+	}
+	/**
+	 * A helper to add child nodes to either a parent node or an 'include' node representing a separate file.
+	 *
+	 * @param map the mapping from filenames to IR nodes.
+	 * @param obj the object we're currently handling
+	 * @param parent the parent node, so we can add any 'include' nodes created to it
+	 */
+	public void addChild(final Map<String, SPIntermediateRepresentation> map,
+			final XMLWritable obj, final SPIntermediateRepresentation parent) {
+		if (!map.containsKey(obj.getFile())) {
+			@SuppressWarnings("unchecked")
+			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
+					"include", Pair.of("file", obj.getFile()));
+			parent.addChild(includeTag);
+			map.put(obj.getFile(), includeTag);
+		}
+		map.get(obj.getFile()).addChild(write(obj));
 	}
 }
