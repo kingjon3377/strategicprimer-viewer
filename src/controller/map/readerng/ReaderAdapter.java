@@ -201,13 +201,17 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 */
 	public void addChild(final Map<String, SPIntermediateRepresentation> map,
 			final XMLWritable obj, final SPIntermediateRepresentation parent) {
-		if (!map.containsKey(obj.getFile())) {
-			@SuppressWarnings("unchecked")
-			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
-					"include", Pair.of("file", obj.getFile()));
-			parent.addChild(includeTag);
-			map.put(obj.getFile(), includeTag);
+		if (obj.getFile() == null) {
+			parent.addChild(write(obj));
+		} else {
+			if (!map.containsKey(obj.getFile())) {
+				@SuppressWarnings("unchecked")
+				final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
+						"include", Pair.of("file", obj.getFile()));
+				parent.addChild(includeTag);
+				map.put(obj.getFile(), includeTag);
+			}
+			map.get(obj.getFile()).addChild(write(obj));
 		}
-		map.get(obj.getFile()).addChild(write(obj));
 	}
 }
