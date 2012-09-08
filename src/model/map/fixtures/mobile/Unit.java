@@ -106,7 +106,8 @@ public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
 						&& ((Unit) obj).owner.getPlayerId() == owner
 								.getPlayerId()
 						&& (((Unit) obj).kind.equals(kind))
-						&& (((Unit) obj).name.equals(name)) && ((TileFixture) obj)
+						&& (((Unit) obj).name.equals(name))
+						&& (((Unit) obj).members.equals(members)) && ((TileFixture) obj)
 						.getID() == id);
 	}
 
