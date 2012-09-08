@@ -179,10 +179,6 @@ public class TileReader implements INodeHandler<Tile> {
 				for (final TileFixture fix : obj) {
 					writeFixture(fix, retval, tagMap);
 				}
-				tagMap.remove(obj.getFile());
-				for (final SPIntermediateRepresentation child : tagMap.values()) {
-					retval.addChild(child);
-				}
 			}
 			return retval;
 		}
