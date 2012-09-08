@@ -73,7 +73,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	private final List<AbstractCompactReader> readers = Arrays
 			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
 					CompactResourceReader.READER, CompactTerrainReader.READER,
-					CompactTextReader.READER, CompactTownReader.READER });
+					CompactTextReader.READER, CompactTownReader.READER, CompactWorkerReader.READER });
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
@@ -103,7 +103,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 				}
 			}
 		}
-		throw new UnwantedChildException("tile", name, element.getLocation().getLineNumber());
+		throw new UnwantedChildException("unit", name, element.getLocation().getLineNumber());
 	}
 	/**
 	 * Parse the kind of unit, from the "kind" or "type" parameter---default the

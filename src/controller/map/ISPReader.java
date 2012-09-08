@@ -22,7 +22,7 @@ public interface ISPReader {
 	 * warn if they're used.
 	 */
 	List<String> FUTURE = Collections.unmodifiableList(Arrays
-			.asList(new String[] { "future", "worker", "explorer", "building",
+			.asList(new String[] { "future", "explorer", "building",
 					"resource", "animal", "changeset", "change", "move",
 					"work", "discover", "submap" }));
 

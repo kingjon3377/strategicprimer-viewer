@@ -8,6 +8,7 @@ import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
@@ -335,6 +336,8 @@ public final class TestMoreFixtureSerialization extends
 				"unitName", 1, FAKE_FILENAME);
 		one.addMember(new Animal("animal", false, true, 2, FAKE_FILENAME));
 		assertSerialization("Unit can have an animal as a member", one, Unit.class);
+		one.addMember(new Worker("worker", FAKE_FILENAME, 3));
+		assertSerialization("Unit can have a worker as a member", one, Unit.class);
 	}
 	/**
 	 * @return a String representation of the object

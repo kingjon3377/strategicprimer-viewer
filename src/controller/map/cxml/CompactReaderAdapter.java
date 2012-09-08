@@ -21,6 +21,7 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.TownFixture;
 import util.IteratorWrapper;
@@ -87,6 +88,8 @@ public final class CompactReaderAdapter {
 			reader = (CompactReader<T>) CompactPlayerReader.READER;
 		} else if (TileFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) getFixtureReader((Class<? extends TileFixture>) type);
+		} else if (Worker.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactWorkerReader.READER;
 		} else {
 			throw new IllegalStateException("Unhandled type "
 					+ type.getName());
@@ -150,6 +153,8 @@ public final class CompactReaderAdapter {
 				reader = CompactPlayerReader.READER;
 			} else if (obj instanceof TileFixture) {
 				reader = getFixtureReader(((TileFixture) obj).getClass());
+			} else if (obj instanceof Worker) {
+				reader = CompactWorkerReader.READER;
 			} else {
 				throw new IllegalStateException("Don't know how to write this type");
 			}
