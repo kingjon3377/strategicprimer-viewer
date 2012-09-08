@@ -151,7 +151,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
-	 * @return the parsed tile
+	 * @return the parsed resource
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
