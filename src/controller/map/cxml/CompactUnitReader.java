@@ -2,16 +2,21 @@ package controller.map.cxml;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.XMLWritable;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.MissingParameterException;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**
@@ -47,12 +52,58 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		requireTag(element, "unit");
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
-		spinUntilEnd(element.getName(), stream);
-		return new Unit(
+		final Unit retval = new Unit(
 				players.getPlayer(Integer.parseInt(ensureNumeric(getParameter(
 						element, "owner", "-1")))), parseKind(element, warner),
 				getParameter(element, "name", ""), getOrGenerateID(element,
 						warner, idFactory), getFile(stream));
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				retval.addMember(parseChild(event.asStartElement(), stream, players, idFactory, warner));
+			} else if (event.isEndElement()
+					&& element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		return retval;
+	}
+	/**
+	 * List of readers we'll try subtags on.
+	 */
+	private final List<AbstractCompactReader> readers = Arrays
+			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
+					CompactResourceReader.READER, CompactTerrainReader.READER,
+					CompactTextReader.READER, CompactTownReader.READER });
+
+	/**
+	 * Parse what should be a TileFixture from the XML.
+	 * @param element the XML element to parse
+	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
+	 * @param idFactory the ID factory to generate IDs with
+	 * @param warner the Warning instance to use for warnings
+	 * @return the parsed fixture.
+	 * @throws SPFormatException on SP format problem
+	 */
+	@SuppressWarnings("unchecked")
+	private UnitMember parseChild(final StartElement element,
+			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
+			final IDFactory idFactory, final Warning warner) throws SPFormatException {
+		final String name = element.getName().getLocalPart();
+		for (AbstractCompactReader item : readers) {
+			if (item.isSupportedTag(name)) {
+				XMLWritable retval = ((CompactReader<? extends XMLWritable>) item).read(
+						element, stream, players, warner, idFactory);
+				if (retval instanceof UnitMember) {
+					return (UnitMember) retval;
+				} else {
+					throw new UnwantedChildException("unit", element.getName()
+							.getLocalPart(), element.getLocation()
+							.getLineNumber());
+				}
+			}
+		}
+		throw new UnwantedChildException("tile", name, element.getLocation().getLineNumber());
 	}
 	/**
 	 * Parse the kind of unit, from the "kind" or "type" parameter---default the
@@ -120,6 +171,16 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
-		out.append("\" />\n");
+		out.append('"');
+		if (obj.iterator().hasNext()) {
+			out.append(">\n");
+			for (final UnitMember member : obj) {
+				CompactReaderAdapter.ADAPTER.write(out, member, file, inclusion, indent + 1);
+			}
+			out.append(indent(indent));
+			out.append("</unit>\n");
+		} else {
+			out.append(" />\n");
+		}
 	}
 }

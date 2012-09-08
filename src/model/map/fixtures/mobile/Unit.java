@@ -1,10 +1,15 @@
 package model.map.fixtures.mobile;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.fixtures.UnitMember;
+import util.ArraySet;
 
 /**
  * A unit on the map.
@@ -13,7 +18,7 @@ import model.map.XMLWritableImpl;
  *
  */
 public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
-		HasKind {
+		HasKind, Iterable<UnitMember> {
 	/**
 	 * The player that owns the unit.
 	 */
@@ -27,6 +32,10 @@ public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
 	 */
 	private final String name;
 
+	/**
+	 * The members of the unit.
+	 */
+	private final Set<UnitMember> members = new ArraySet<UnitMember>();
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
 	 *
@@ -71,7 +80,20 @@ public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
 	public final String getName() {
 		return name;
 	}
-
+	/**
+	 * Add a member.
+	 * @param member the member to add
+	 */
+	public void addMember(final UnitMember member) {
+		members.add(member);
+	}
+	/**
+	 * @return an iterator over the unit's members
+	 */
+	@Override
+	public Iterator<UnitMember> iterator() {
+		return members.iterator();
+	}
 	/**
 	 * @param obj an object
 	 *

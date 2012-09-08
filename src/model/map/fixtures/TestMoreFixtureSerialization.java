@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Grove;
@@ -319,6 +320,21 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty(
 				"<unit owner=\"1\" kind=\"kind\" name=\"name\" />", Unit.class,
 				"id", true);
+	}
+	/**
+	 * Test unit-member serialization.
+	 *
+	 * @throws SPFormatException on XML format error
+	 * @throws XMLStreamException on XML reader error
+	 * @throws IOException on I/O error creating serialized form
+	 */
+	@Test
+	public void testUnitMemberSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
+		final Unit one = new Unit(new Player(1, "", FAKE_FILENAME), "unitType",
+				"unitName", 1, FAKE_FILENAME);
+		one.addMember(new Animal("animal", false, true, 2, FAKE_FILENAME));
+		assertSerialization("Unit can have an animal as a member", one, Unit.class);
 	}
 	/**
 	 * @return a String representation of the object
