@@ -4,6 +4,7 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.fixtures.UnitMember;
 
 /**
  * A fairy. TODO: should probably be a unit, or something.
@@ -12,7 +13,7 @@ import model.map.XMLWritableImpl;
  *
  */
 public class Fairy extends XMLWritableImpl implements MobileFixture, HasImage,
-		HasKind {
+		HasKind, UnitMember {
 	/**
 	 * What kind of fairy (great, lesser, snow ...).
 	 */

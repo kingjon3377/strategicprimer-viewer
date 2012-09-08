@@ -4,6 +4,7 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.fixtures.UnitMember;
 
 /**
  * An animal or group of animals. TODO: Add more features (population, to start
@@ -12,7 +13,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, HasKind {
+public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * ID number.
 	 */

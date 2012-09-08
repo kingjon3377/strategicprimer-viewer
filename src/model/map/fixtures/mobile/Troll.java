@@ -3,6 +3,7 @@ package model.map.fixtures.mobile;
 import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.fixtures.UnitMember;
 
 /**
  * A troll. TODO: should probably be a unit, or something.
@@ -10,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Troll extends XMLWritableImpl implements MobileFixture, HasImage {
+public class Troll extends XMLWritableImpl implements MobileFixture, HasImage, UnitMember {
 	/**
 	 * Constructor.
 	 *

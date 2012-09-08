@@ -4,6 +4,7 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.fixtures.UnitMember;
 
 /**
  * A centaur. TODO: Should probably be a kind of unit instead, or something ...
@@ -11,7 +12,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Centaur extends XMLWritableImpl implements MobileFixture, HasImage, HasKind {
+public class Centaur extends XMLWritableImpl implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * What kind of centaur.
 	 */

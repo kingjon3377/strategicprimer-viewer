@@ -4,6 +4,7 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
 import model.map.XMLWritableImpl;
+import model.map.fixtures.UnitMember;
 
 /**
  * A giant. TODO: should probably be a unit, or something.
@@ -12,7 +13,7 @@ import model.map.XMLWritableImpl;
  *
  */
 public class Giant extends XMLWritableImpl implements MobileFixture, HasImage,
-		HasKind {
+		HasKind, UnitMember {
 	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
