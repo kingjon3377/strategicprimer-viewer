@@ -107,30 +107,9 @@ public class FortressReader implements INodeHandler<Fortress> {
 		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
 		for (final Unit unit : obj.getUnits()) {
-			addChild(tagMap, unit, retval);
+			ReaderAdapter.ADAPTER.addChild(tagMap, unit, retval);
 		}
 		return retval;
-	}
-
-	/**
-	 * Add a child node to a node---the parent node, or an 'include' node
-	 * representing its chosen file.
-	 *
-	 * @param map the mapping from filenames to IRs.
-	 * @param obj the object we're handling
-	 * @param parent the parent node, so we can add any include nodes created to
-	 *        it
-	 */
-	private static void addChild(
-			final Map<String, SPIntermediateRepresentation> map,
-			final Unit obj, final SPIntermediateRepresentation parent) {
-		if (!map.containsKey(obj.getFile())) {
-			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
-					"include");
-			includeTag.addAttribute("file", obj.getFile());
-			parent.addChild(includeTag);
-		}
-		map.get(obj.getFile()).addChild(UNIT_READER.write(obj));
 	}
 
 	/**

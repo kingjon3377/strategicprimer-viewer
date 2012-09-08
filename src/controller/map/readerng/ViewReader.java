@@ -12,7 +12,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.MapView;
 import model.map.PlayerCollection;
-import model.map.SPMap;
 import util.Warning;
 import controller.map.MissingChildException;
 import controller.map.SPFormatException;
@@ -112,39 +111,10 @@ public class ViewReader implements INodeHandler<MapView> {
 						.getPlayerId()));
 		retval.addAttribute("current_turn",
 				Integer.toString(obj.getCurrentTurn()));
-		final SPMapReader reader = MAP_READER;
 		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
-		addChild(tagMap, obj.getMap(), retval, reader);
+		ReaderAdapter.ADAPTER.addChild(tagMap, obj.getMap(), retval);
 		return retval;
-	}
-
-	/**
-	 * Add a child node to a node---the parent node, or an 'include' node
-	 * representing its chosen file.
-	 *
-	 * @param map the mapping from filenames to IRs.
-	 * @param obj the object we're handling
-	 * @param parent the parent node, so we can add any include nodes created to
-	 *        it
-	 * @param reader the reader to use to handle the object
-	 */
-	private static void addChild(
-			final Map<String, SPIntermediateRepresentation> map,
-			final SPMap obj, final SPIntermediateRepresentation parent,
-			final SPMapReader reader) {
-		if (obj.getFile() == null) {
-			parent.addChild(reader.write(obj));
-		} else {
-			if (!map.containsKey(obj.getFile())) {
-				final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
-						"include");
-				includeTag.addAttribute("file", obj.getFile());
-				parent.addChild(includeTag);
-				map.put(obj.getFile(), includeTag);
-			}
-			map.get(obj.getFile()).addChild(reader.write(obj));
-		}
 	}
 
 	/**

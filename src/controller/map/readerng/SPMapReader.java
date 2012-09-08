@@ -153,7 +153,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
 		for (final Player player : obj.getPlayers()) {
-			addPlayerChild(tagMap, player, retval);
+			ReaderAdapter.ADAPTER.addChild(tagMap, player, retval);
 		}
 		for (int i = 0; i < obj.rows(); i++) {
 			@SuppressWarnings("unchecked")
@@ -164,53 +164,11 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				final Tile tile = obj.getTile(PointFactory.point(i, j));
 				if (!tile.isEmpty()) {
 					retval.addChild(row);
-					addTileChild(tagMap, tile, row);
+					ReaderAdapter.ADAPTER.addChild(tagMap, tile, row);
 				}
 			}
 		}
 		return retval;
-	}
-
-	/**
-	 * Add a child node for a tile to a node---the parent node, or an 'include'
-	 * node representing its chosen file.
-	 *
-	 * @param map the mapping from filenames to IRs.
-	 * @param obj the object we're handling
-	 * @param parent the parent node, so we can add any include nodes created to
-	 *        it
-	 */
-	private static void addTileChild(
-			final Map<String, SPIntermediateRepresentation> map,
-			final Tile obj, final SPIntermediateRepresentation parent) {
-		if (!map.containsKey(obj.getFile())) {
-			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
-					"include");
-			includeTag.addAttribute("file", obj.getFile());
-			parent.addChild(includeTag);
-		}
-		map.get(obj.getFile()).addChild(TILE_READER.write(obj));
-	}
-
-	/**
-	 * Add a child node for a player to a node---the parent node, or an
-	 * 'include' node representing its chosen file.
-	 *
-	 * @param map the mapping from filenames to IRs.
-	 * @param obj the object we're handling
-	 * @param parent the parent node, so we can add any include nodes created to
-	 *        it
-	 */
-	private static void addPlayerChild(
-			final Map<String, SPIntermediateRepresentation> map,
-			final Player obj, final SPIntermediateRepresentation parent) {
-		if (!map.containsKey(obj.getFile())) {
-			final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
-					"include");
-			includeTag.addAttribute("file", obj.getFile());
-			parent.addChild(includeTag);
-		}
-		map.get(obj.getFile()).addChild(PLAYER_READER.write(obj));
 	}
 
 	/**

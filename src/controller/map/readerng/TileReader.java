@@ -18,7 +18,6 @@ import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.XMLWritable;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.Warning;
@@ -203,35 +202,7 @@ public class TileReader implements INodeHandler<Tile> {
 				parent.addChild(READER.write(river));
 			}
 		} else {
-			addChild(tagMap, fix, ReaderAdapter.ADAPTER, parent);
-		}
-	}
-
-	/**
-	 * Add a child node to a node---the parent node, or an 'include' node
-	 * representing its chosen file.
-	 *
-	 * @param map the mapping from filenames to IRs.
-	 * @param obj the object we're handling
-	 * @param adapter the adapter to use to call the right handler.
-	 * @param parent the parent node, so we can add any include nodes created to
-	 *        it
-	 */
-	private static void addChild(
-			final Map<String, SPIntermediateRepresentation> map,
-			final XMLWritable obj, final ReaderAdapter adapter,
-			final SPIntermediateRepresentation parent) {
-		if (obj.getFile() == null) {
-			parent.addChild(adapter.write(obj));
-		} else {
-			if (!map.containsKey(obj.getFile())) {
-				final SPIntermediateRepresentation includeTag = new SPIntermediateRepresentation(
-						"include");
-				includeTag.addAttribute("file", obj.getFile());
-				parent.addChild(includeTag);
-				map.put(obj.getFile(), includeTag);
-			}
-			map.get(obj.getFile()).addChild(adapter.write(obj));
+			ReaderAdapter.ADAPTER.addChild(tagMap, fix, parent);
 		}
 	}
 
