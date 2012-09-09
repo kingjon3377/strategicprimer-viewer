@@ -22,6 +22,8 @@ import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.TownFixture;
 import util.IteratorWrapper;
@@ -148,6 +150,12 @@ public final class CompactReaderAdapter {
 				return; // NOPMD
 			} else if (obj instanceof RiverFixture) {
 				CompactTileReader.READER.writeRivers(out, (RiverFixture) obj, indent);
+				return; // NOPMD
+			} else if (obj instanceof Job) {
+				CompactWorkerReader.READER.writeJob(out, (Job) obj, file, inclusion, indent);
+				return; // NOPMD
+			} else if (obj instanceof Skill) {
+				CompactWorkerReader.READER.writeSkill(out, (Skill) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof Player) {
 				reader = CompactPlayerReader.READER;

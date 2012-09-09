@@ -2,6 +2,7 @@ package controller.map.readerng;
 
 import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -11,57 +12,61 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.XMLWritable;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.Skill;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
+
 /**
- * A reader for Workers.
+ * A reader for Jobs.
+ *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class WorkerReader implements INodeHandler<Worker> {
+public class JobReader implements INodeHandler<Job> {
 	/**
-	 * @return the class this knows how to write.
+	 * @return the class this knows how to write
 	 */
 	@Override
-	public Class<Worker> writes() {
-		return Worker.class;
+	public Class<Job> writes() {
+		return Job.class;
 	}
+
 	/**
-	 * TODO: expand as it gets subtags.
-	 * @return the list of tags this knows how to read.
+	 * @return the list of tags this knows how to read
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("worker");
+		return Collections.singletonList("job");
 	}
+
 	/**
-	 * Parse a worker from XML.
+	 * Parse a job from XML.
+	 *
 	 * @param element the current tag
 	 * @param stream the stream to read more tags from
 	 * @param players ignored
 	 * @param warner the Warning instance to report errors on
 	 * @param idFactory the ID factory to use to generate IDs.
-	 * @return the parsed Worker
+	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Worker parse(final StartElement element, final Iterable<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner, final IDFactory idFactory)
+	public Job parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Worker retval = new Worker(XMLHelper.getAttribute(element, "name"),
-				XMLHelper.getFile(stream), XMLHelper.getOrGenerateID(element, warner, idFactory));
+		final List<Skill> skills = new ArrayList<Skill>();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
 						event.asStartElement(), stream, players, warner,
 						idFactory);
-				if (result instanceof Job) {
-					retval.addJob((Job) result);
+				if (result instanceof Skill) {
+					skills.add((Skill) result);
 				} else {
 					throw new UnwantedChildException(element.getName()
 							.getLocalPart(), event.asStartElement().getName()
@@ -73,21 +78,28 @@ public class WorkerReader implements INodeHandler<Worker> {
 				break;
 			}
 		}
-		return retval;
+		return new Job(XMLHelper.getAttribute(element, "name"),
+				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
+				XMLHelper.getFile(stream), skills.toArray(new Skill[skills
+						.size()]));
 	}
+
 	/**
-	 * @param obj a worker
-	 * @return the SPIR representing it.
+	 * Create an intermediate representation to write to a Writer.
+	 *
+	 * @param obj the object to write
+	 * @return the intermediate representation
 	 */
 	@Override
-	public SPIntermediateRepresentation write(final Worker obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("worker");
+	public SPIntermediateRepresentation write(final Job obj) {
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"job");
 		retval.addAttribute("name", obj.getName());
-		retval.addAttribute("id", Integer.toString(obj.getID()));
+		retval.addAttribute("level", Integer.toString(obj.getLevel()));
 		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);
-		for (Job job : obj) {
-			ReaderAdapter.ADAPTER.addChild(tagMap, job, retval);
+		for (final Skill skill : obj) {
+			ReaderAdapter.ADAPTER.addChild(tagMap, skill, retval);
 		}
 		return retval;
 	}

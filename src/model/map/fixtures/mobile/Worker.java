@@ -1,7 +1,13 @@
 package model.map.fixtures.mobile;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Set;
+
 import model.map.XMLWritableImpl;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.worker.Job;
+import util.ArraySet;
 
 /**
  * A worker (or soldier) in a unit. This is deliberately not a TileFixture:
@@ -12,17 +18,38 @@ import model.map.fixtures.UnitMember;
  * @author Jonathan Lovelace
  *
  */
-public class Worker extends XMLWritableImpl implements UnitMember {
+public class Worker extends XMLWritableImpl implements UnitMember, Iterable<Job> {
 	/**
 	 * Constructor.
 	 * @param wName the worker's name
 	 * @param file the file the worker was loaded from
 	 * @param idNum the ID number of the worker
+	 * @param jobs the Jobs the worker is trained in
 	 */
-	public Worker(final String wName, final String file, final int idNum) {
+	public Worker(final String wName, final String file, final int idNum, final Job... jobs) {
 		super(file);
 		name = wName;
 		id = idNum;
+		jobSet.addAll(Arrays.asList(jobs));
+	}
+	/**
+	 * The set of jobs the worker is trained or experienced in.
+	 */
+	private final Set<Job> jobSet = new ArraySet<Job>();
+	/**
+	 * Add a job.
+	 * @param job the job to add.
+	 * @return the result of the operation
+	 */
+	public boolean addJob(final Job job) {
+		return jobSet.add(job);
+	}
+	/**
+	 * @return An iterator over the worker's jobs.
+	 */
+	@Override
+	public Iterator<Job> iterator() {
+		return jobSet.iterator();
 	}
 	/**
 	 * The ID number of the worker.
@@ -51,7 +78,7 @@ public class Worker extends XMLWritableImpl implements UnitMember {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj || (obj instanceof Worker && ((Worker) obj).name.equals(name)
-				&& ((Worker) obj).id == id);
+				&& ((Worker) obj).id == id && ((Worker) obj).jobSet.equals(jobSet));
 	}
 	/**
 	 * @return a hash code for the object

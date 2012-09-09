@@ -6,12 +6,15 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.PlayerCollection;
+import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.Skill;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import model.map.PlayerCollection;
-import model.map.fixtures.mobile.Worker;
 
 /**
  * A reader for Workers.
@@ -45,10 +48,68 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"), getFile(stream),
 				getOrGenerateID(element, warner, idFactory));
-		spinUntilEnd(element.getName(), stream);
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				if ("job".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+					retval.addJob(parseJob(event.asStartElement(), stream));
+				} else {
+					throw new UnwantedChildException(element.getName().getLocalPart(), event
+							.asStartElement().getName().getLocalPart(), event
+							.getLocation().getLineNumber());
+				}
+			} else if (event.isEndElement()
+					&& element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
 		return retval;
 	}
-
+	/**
+	 * Parse a Job.
+	 * @param element the element to parse
+	 * @param stream the stream to read further elements from (FIXME: do we need this parameter?)
+	 * @return the parsed job
+	 * @throws SPFormatException on SP format problem
+	 */
+	public Job parseJob(final StartElement element,
+			final IteratorWrapper<XMLEvent> stream)
+			throws SPFormatException {
+		requireTag(element, "job");
+		final Job retval = new Job(getParameter(element, "name"),
+				Integer.parseInt(getParameter(element, "level")), getFile(stream));
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				if ("skill".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+					retval.addSkill(parseSkill(event.asStartElement(), stream));
+				} else {
+					throw new UnwantedChildException(element.getName().getLocalPart(), event
+							.asStartElement().getName().getLocalPart(), event
+							.getLocation().getLineNumber());
+				}
+			} else if (event.isEndElement()
+					&& element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		return retval;
+	}
+	/**
+	 * Parse a Skill.
+	 * @param element the element to parse
+	 * @param stream the stream to read further elements from (FIXME: do we need this parameter?)
+	 * @return the parsed skill
+	 * @throws SPFormatException on SP format problem
+	 */
+	public Skill parseSkill(final StartElement element,
+			final IteratorWrapper<XMLEvent> stream)
+			throws SPFormatException {
+		requireTag(element, "skill");
+		spinUntilEnd(element.getName(), stream);
+		return new Skill(getParameter(element, "name"),
+				Integer.parseInt(getParameter(element, "level")),
+				Integer.parseInt(getParameter(element, "hours")),
+				getFile(stream));
+	}
 	/**
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
@@ -66,9 +127,64 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		out.append(obj.getName());
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
-		out.append("\" />\n");
+		out.append('"');
+		if (obj.iterator().hasNext()) {
+			out.append(">\n");
+			for (Job job : obj) {
+				CompactReaderAdapter.ADAPTER.write(out, job, file, inclusion, indent + 1);
+			}
+			out.append(indent(indent));
+			out.append("</worker>\n");
+		} else {
+			out.append(" />\n");
+		}
+	}
+	/**
+	 * Write a Job to a stream.
+	 * @param out The stream to write to.
+	 * @param obj The object to write.
+	 * @param file The file we're writing to.
+	 * @param inclusion Whether to change files if a sub-object was read from a different file
+	 * @param indent The current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	public void writeJob(final Writer out, final Job obj, final String file,
+			final boolean inclusion, final int indent) throws IOException {
+		out.append(indent(indent));
+		out.append("<job name=\"");
+		out.append(obj.getName());
+		out.append("\" level=\"");
+		out.append(Integer.toString(obj.getLevel()));
+		out.append('"');
+		if (obj.iterator().hasNext()) {
+			out.append(">\n");
+			for (Skill skill : obj) {
+				CompactReaderAdapter.ADAPTER.write(out, skill, file, inclusion, indent + 1);
+			}
+			out.append(indent(indent));
+			out.append("</job>\n");
+		} else {
+			out.append(" />\n");
+		}
 	}
 
+	/**
+	 * Write a Skill to a stream.
+	 * @param out The stream to write to.
+	 * @param obj The object to write.
+	 * @param indent The current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	public void writeSkill(final Writer out, final Skill obj, final int indent) throws IOException {
+		out.append(indent(indent));
+		out.append("<skill name=\"");
+		out.append(obj.getName());
+		out.append("\" level=\"");
+		out.append(Integer.toString(obj.getLevel()));
+		out.append("\" hours=\"");
+		out.append(Integer.toString(obj.getHours()));
+		out.append("\" />\n");
+	}
 	/**
 	 * TODO: extend when Worker grows sub-tags.
 	 * @param tag a tag
