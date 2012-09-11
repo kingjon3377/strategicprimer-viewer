@@ -23,6 +23,10 @@ import view.util.NullStream;
  */
 public class TestSubsets {
 	/**
+	 * A commonly-used string.
+	 */
+	private static final String ONE_STR = "one";
+	/**
 	 * A fake filename to use with all objects that require a filename.
 	 */
 	private static final String FAKE_FILENAME = "string";
@@ -38,8 +42,8 @@ public class TestSubsets {
 		final PlayerCollection zero = new PlayerCollection();
 		final PlayerCollection one = new PlayerCollection();
 		final PlayerCollection two = new PlayerCollection();
-		one.addPlayer(new Player(1, "one", FAKE_FILENAME));
-		two.addPlayer(new Player(1, "one", FAKE_FILENAME));
+		one.addPlayer(new Player(1, ONE_STR, FAKE_FILENAME));
+		two.addPlayer(new Player(1, ONE_STR, FAKE_FILENAME));
 		two.addPlayer(new Player(2, "two", FAKE_FILENAME));
 		assertTrue("Empty is subset of self", zero.isSubset(zero, BIT_BUCKET));
 		assertTrue("Empty is subset of one", one.isSubset(zero, BIT_BUCKET));
@@ -82,14 +86,14 @@ public class TestSubsets {
 	 */
 	@Test
 	public void testFortressSubset() {
-		final Fortress one = new Fortress(new Player(1, "one", FAKE_FILENAME), "fOne", 1, FAKE_FILENAME);
+		final Fortress one = new Fortress(new Player(1, ONE_STR, FAKE_FILENAME), "fOne", 1, FAKE_FILENAME);
 		final Fortress two = new Fortress(new Player(2, "two", FAKE_FILENAME), "fOne", 1, FAKE_FILENAME);
 		assertFalse("Subset requires same owner, first test", one.isSubset(two, BIT_BUCKET));
 		assertFalse("Subset requires same owner, second test", two.isSubset(one, BIT_BUCKET));
-		final Fortress three = new Fortress(new Player(1, "one", FAKE_FILENAME), "fTwo", 2, FAKE_FILENAME);
+		final Fortress three = new Fortress(new Player(1, ONE_STR, FAKE_FILENAME), "fTwo", 2, FAKE_FILENAME);
 		assertFalse("Subset requires same name, first test", one.isSubset(three, BIT_BUCKET));
 		assertFalse("Subset requires same name, second test", three.isSubset(one, BIT_BUCKET));
-		final Fortress four = new Fortress(new Player(1, "one", FAKE_FILENAME), "fOne", 3, FAKE_FILENAME);
+		final Fortress four = new Fortress(new Player(1, ONE_STR, FAKE_FILENAME), "fOne", 3, FAKE_FILENAME);
 		assertTrue("Subset doesn't require identiy or ID equality", one.isSubset(four, BIT_BUCKET));
 		assertTrue("Subset doesn't require identiy or ID equality", four.isSubset(one, BIT_BUCKET));
 		four.addUnit(new Unit(new Player(2, "two", FAKE_FILENAME), "unit_type", "unit_name", 4, FAKE_FILENAME));

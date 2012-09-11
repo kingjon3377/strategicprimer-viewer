@@ -26,6 +26,10 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactUnitReader extends AbstractCompactReader implements CompactReader<Unit> {
 	/**
+	 * The tag used for a unit.
+	 */
+	private static final String UNIT_TAG = "unit";
+	/**
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
@@ -49,7 +53,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	public Unit read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		requireTag(element, "unit");
+		requireTag(element, UNIT_TAG);
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
 		final Unit retval = new Unit(
@@ -92,18 +96,18 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		final String name = element.getName().getLocalPart();
 		for (AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
-				XMLWritable retval = ((CompactReader<? extends XMLWritable>) item).read(
+				final XMLWritable retval = ((CompactReader<? extends XMLWritable>) item).read(
 						element, stream, players, warner, idFactory);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
-					throw new UnwantedChildException("unit", element.getName()
+					throw new UnwantedChildException(UNIT_TAG, element.getName()
 							.getLocalPart(), element.getLocation()
 							.getLineNumber());
 				}
 			}
 		}
-		throw new UnwantedChildException("unit", name, element.getLocation().getLineNumber());
+		throw new UnwantedChildException(UNIT_TAG, name, element.getLocation().getLineNumber());
 	}
 	/**
 	 * Parse the kind of unit, from the "kind" or "type" parameter---default the
@@ -144,7 +148,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	 */
 	@Override
 	public boolean isSupportedTag(final String tag) {
-		return "unit".equalsIgnoreCase(tag);
+		return UNIT_TAG.equalsIgnoreCase(tag);
 	}
 	/**
 	 * Write an object to a stream.
