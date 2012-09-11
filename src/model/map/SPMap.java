@@ -1,6 +1,6 @@
 package model.map;
 
-import view.util.SystemOut;
+import java.io.PrintStream;
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
@@ -172,14 +172,15 @@ public class SPMap extends XMLWritableImpl implements IMap {
 	/**
 	 * @param obj another map
 	 * @return whether it's a strict subset of this one
+	 * @param out the stream to write details of the difference to
 	 */
 	@Override
-	public boolean isSubset(final IMap obj) {
+	public boolean isSubset(final IMap obj, final PrintStream out) {
 		if (cols() == obj.cols() && rows() == obj.rows()) {
-			return players.isSubset(obj.getPlayers()) // NOPMD
-					&& tiles.isSubset(obj.getTiles());
+			return players.isSubset(obj.getPlayers(), out) // NOPMD
+					&& tiles.isSubset(obj.getTiles(), out);
 		} else {
-			SystemOut.SYS_OUT.println("Sizes differ");
+			out.println("Sizes differ");
 			return false;
 		}
 	}

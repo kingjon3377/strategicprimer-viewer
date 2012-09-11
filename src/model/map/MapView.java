@@ -1,5 +1,7 @@
 package model.map;
 
+import java.io.PrintStream;
+
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
  * current turn, the current player, and eventually changesets.
@@ -53,10 +55,11 @@ public class MapView extends XMLWritableImpl implements IMap {
 	 *
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
+	 * @param out the stream to write details to
 	 */
 	@Override
-	public boolean isSubset(final IMap obj) {
-		return map.isSubset(obj);
+	public boolean isSubset(final IMap obj, final PrintStream out) {
+		return map.isSubset(obj, out);
 	}
 
 	/**

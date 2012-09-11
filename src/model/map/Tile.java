@@ -1,6 +1,7 @@
 // $codepro.audit.disable booleanMethodNamingConvention
 package model.map;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,7 +13,6 @@ import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.CacheFixture;
 import util.ArraySet;
-import view.util.SystemOut;
 
 /**
  * A tile in a map.
@@ -219,9 +219,10 @@ public final class Tile extends XMLWritableImpl implements
 	 * @param obj another Tile
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't
+	 * @param out the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final Tile obj) {
+	public boolean isSubset(final Tile obj, final PrintStream out) {
 		if (getLocation().equals(obj.getLocation()) && getTerrain().equals(obj.getTerrain())) {
 				final Set<TileFixture> temp = new HashSet<TileFixture>(
 						obj.contents);
@@ -234,15 +235,15 @@ public final class Tile extends XMLWritableImpl implements
 					}
 				}
 				if (!temp.isEmpty()) {
-					SystemOut.SYS_OUT.print("\nExtra fixture in "
+					out.print("\nExtra fixture in "
 							+ getLocation().toString() + ":\t");
 					for (final TileFixture fix : temp) {
-						SystemOut.SYS_OUT.print(fix.toString());
+						out.print(fix.toString());
 					}
 				}
 				return temp.isEmpty(); // NOPMD
 		} else {
-			SystemOut.SYS_OUT.print("Type of " + getLocation().toString()
+			out.print("Type of " + getLocation().toString()
 					+ " wrong\t");
 			return false;
 		}

@@ -1,10 +1,9 @@
 package model.map;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import view.util.SystemOut;
 
 /**
  * A collection of players. Using a simple List doesn't work when -1 is the
@@ -98,12 +97,13 @@ public class PlayerCollection implements Iterable<Player>,
 	/**
 	 * @param obj another PlayerCollection
 	 * @return whether it's a strict subset of this one
+	 * @param out the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final PlayerCollection obj) {
+	public boolean isSubset(final PlayerCollection obj, final PrintStream out) {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
-				SystemOut.SYS_OUT.print("Extra player");
+				out.print("Extra player");
 				return false; // NOPMD
 			}
 		}

@@ -58,7 +58,7 @@ public final class SubsetDriver {
 				continue;
 			}
 			final IMap map = pair.first(); // NOPMD
-			if (mainMap.isSubset(map)) {
+			if (mainMap.isSubset(map, SystemOut.SYS_OUT)) {
 				SystemOut.SYS_OUT.println("OK");
 			} else {
 				SystemOut.SYS_OUT.println("WARN");
