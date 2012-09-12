@@ -6,6 +6,8 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
 import model.map.Player;
+import model.map.Tile;
+import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
 import model.map.fixtures.mobile.Djinn;
@@ -266,6 +268,10 @@ public final class TestFixtureSerialization extends
 				"two", true, FAKE_FILENAME), Ground.class);
 		assertSerialization("Third test of Ground serialization", new Ground(
 				"three", false, FAKE_FILENAME), Ground.class);
+		final Tile tile = new Tile(0, 0, TileType.Steppe, FAKE_FILENAME);
+		tile.addFixture(new Ground("four", true, FAKE_FILENAME));
+		assertSerialization("Test that reader handles ground as a fixture",
+				tile, Tile.class);
 		assertUnwantedChild(
 				"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>",
 				Ground.class, false);

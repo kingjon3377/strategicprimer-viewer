@@ -85,7 +85,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	private final List<AbstractCompactReader> readers = Arrays
 			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
 					CompactResourceReader.READER, CompactTerrainReader.READER,
-					CompactTextReader.READER, CompactTownReader.READER });
+					CompactTextReader.READER, CompactTownReader.READER, CompactGroundReader.READER });
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
