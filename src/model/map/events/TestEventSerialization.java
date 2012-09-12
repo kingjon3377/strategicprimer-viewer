@@ -49,37 +49,14 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void testCaveOne() throws XMLStreamException, SPFormatException,
+	public void testCaveSerialization() throws XMLStreamException, SPFormatException,
 			IOException {
 		// ESCA-JAVA0076:
 		assertSerialization("First CaveEvent serialization test, reflection",
 				new CaveEvent(10, 0), CaveEvent.class);
-	}
-
-	/**
-	 * Test serialization of CaveEvents.
-	 *
-	 * @throws SPFormatException on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 * @throws IOException on I/O error creating serialized form
-	 */
-	@Test
-	public void testCaveTwo() throws XMLStreamException, SPFormatException,
-			IOException {
-		// ESCA-JAVA0076:
 		assertSerialization(
-				"Second BattlefieldEvent serialization test, reflection",
+				"Second CaveEvent serialization test, reflection",
 				new CaveEvent(30, 1), CaveEvent.class);
-	}
-
-	/**
-	 * Test serialization of CaveEvents.
-	 *
-	 * @throws SPFormatException on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 */
-	@Test
-	public void testCaveThree() throws XMLStreamException, SPFormatException {
 		assertUnwantedChild("<cave dc=\"10\"><troll /></cave>",
 				CaveEvent.class, false);
 		assertMissingProperty("<cave />", CaveEvent.class, "dc", false);
@@ -303,32 +280,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void battlefieldOne() throws XMLStreamException, SPFormatException, IOException {
+	public void testBattlefieldSerialization() throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First BattlefieldEvent serialization test",
 				new BattlefieldEvent(10, 0), BattlefieldEvent.class);
-	}
-
-	/**
-	 * Second test of serialization of BattlefieldEvents.
-	 *
-	 * @throws SPFormatException on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 * @throws IOException on I/O error creating serialized form
-	 */
-	@Test
-	public void battlefieldTwo() throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("Second BattlefieldEvent serialization test",
 				new BattlefieldEvent(30, 1), BattlefieldEvent.class);
-	}
-
-	/**
-	 * Test of error-checking in serialization of BattlefieldEvents.
-	 *
-	 * @throws SPFormatException on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 */
-	@Test
-	public void battlefieldThree() throws XMLStreamException, SPFormatException {
 		assertUnwantedChild("<battlefield dc=\"10\"><troll /></battlefield>",
 				BattlefieldEvent.class, false);
 		assertMissingProperty("<battlefield />", BattlefieldEvent.class, "dc",
@@ -336,6 +292,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<battlefield dc=\"10\" />",
 				BattlefieldEvent.class, "id", true);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
