@@ -338,11 +338,16 @@ public final class TestMoreFixtureSerialization extends
 				"unitName", 1, FAKE_FILENAME);
 		one.addMember(new Animal("animal", false, true, "wild", 2, FAKE_FILENAME));
 		assertSerialization("Unit can have an animal as a member", one, Unit.class);
-		one.addMember(new Worker("worker", FAKE_FILENAME, 3));
+		one.addMember(new Worker("worker", "human", FAKE_FILENAME, 3));
 		assertSerialization("Unit can have a worker as a member", one, Unit.class);
-		one.addMember(new Worker("second", FAKE_FILENAME, 4, new Job("job", 0, FAKE_FILENAME,
+		one.addMember(new Worker("second", "elf", FAKE_FILENAME, 4, new Job("job", 0, FAKE_FILENAME,
 				new Skill("skill", 1, 2, FAKE_FILENAME))));
 		assertSerialization("Worker can have jobs", one, Unit.class);
+		assertForwardDeserialization(
+				"Explicit specification of default race works", new Worker(
+						"third", "human", FAKE_FILENAME, 5),
+				"<worker name=\"third\" race=\"human\" id=\"5\" />",
+				Worker.class);
 	}
 	/**
 	 * @return a String representation of the object

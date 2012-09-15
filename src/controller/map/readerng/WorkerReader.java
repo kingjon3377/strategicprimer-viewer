@@ -53,8 +53,11 @@ public class WorkerReader implements INodeHandler<Worker> {
 	public Worker parse(final StartElement element, final Iterable<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Worker retval = new Worker(XMLHelper.getAttribute(element, "name"),
-				XMLHelper.getFile(stream), XMLHelper.getOrGenerateID(element, warner, idFactory));
+		final Worker retval = new Worker(
+				XMLHelper.getAttribute(element, "name"),
+				XMLHelper.getAttribute(element, "race", "human"),
+				XMLHelper.getFile(stream), XMLHelper.getOrGenerateID(element,
+						warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
@@ -83,6 +86,9 @@ public class WorkerReader implements INodeHandler<Worker> {
 	public SPIntermediateRepresentation write(final Worker obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("worker");
 		retval.addAttribute("name", obj.getName());
+		if (!"human".equals(obj.getRace())) {
+			retval.addAttribute("race", obj.getRace());
+		}
 		retval.addAttribute("id", Integer.toString(obj.getID()));
 		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
 		tagMap.put(obj.getFile(), retval);

@@ -23,15 +23,21 @@ public class Worker extends XMLWritableImpl implements UnitMember, Iterable<Job>
 	 * Constructor.
 	 * @param wName the worker's name
 	 * @param file the file the worker was loaded from
+	 * @param workerRace the worker's race
 	 * @param idNum the ID number of the worker
 	 * @param jobs the Jobs the worker is trained in
 	 */
-	public Worker(final String wName, final String file, final int idNum, final Job... jobs) {
+	public Worker(final String wName, final String workerRace, final String file, final int idNum, final Job... jobs) {
 		super(file);
 		name = wName;
 		id = idNum;
+		race = workerRace;
 		jobSet.addAll(Arrays.asList(jobs));
 	}
+	/**
+	 * The worker's race (elf, dwarf, human, etc.).
+	 */
+	private final String race;
 	/**
 	 * The set of jobs the worker is trained or experienced in.
 	 */
@@ -62,6 +68,12 @@ public class Worker extends XMLWritableImpl implements UnitMember, Iterable<Job>
 		return id;
 	}
 	/**
+	 * @return the worker's race (elf, human, or whatever)
+	 */
+	public String getRace() {
+		return race;
+	}
+	/**
 	 * The worker's name.
 	 */
 	private final String name;
@@ -77,8 +89,11 @@ public class Worker extends XMLWritableImpl implements UnitMember, Iterable<Job>
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof Worker && ((Worker) obj).name.equals(name)
-				&& ((Worker) obj).id == id && ((Worker) obj).jobSet.equals(jobSet));
+		return this == obj
+				|| (obj instanceof Worker && ((Worker) obj).name.equals(name)
+						&& ((Worker) obj).id == id && ((Worker) obj).jobSet
+							.equals(jobSet))
+				&& ((Worker) obj).race.equals(race);
 	}
 	/**
 	 * @return a hash code for the object

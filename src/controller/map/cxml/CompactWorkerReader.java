@@ -46,7 +46,8 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			final PlayerCollection players, final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "worker");
-		final Worker retval = new Worker(getParameter(element, "name"), getFile(stream),
+		final Worker retval = new Worker(getParameter(element, "name"),
+				getParameter(element, "race", "human"), getFile(stream),
 				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -125,6 +126,10 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		out.append(indent(indent));
 		out.append("<worker name=\"");
 		out.append(obj.getName());
+		if (!"human".equals(obj.getRace())) {
+			out.append("\" race=\"");
+			out.append(obj.getRace());
+		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
 		out.append('"');
