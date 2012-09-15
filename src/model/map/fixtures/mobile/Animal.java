@@ -39,22 +39,28 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 	 * Whether this is a talking animal.
 	 */
 	private final boolean talking;
-
+	/**
+	 * The domestication status of the animal. TODO: Should this be an
+	 * enumerated type?
+	 */
+	private final String status;
 	/**
 	 * Constructor.
 	 *
 	 * @param animal what kind of animal
 	 * @param tracks whether this is really the animal, or only tracks
 	 * @param talks whether this is a talking animal.
+	 * @param dStatus domestication status
 	 * @param idNum the ID number.
 	 * @param fileName the file this was loaded from
 	 */
 	public Animal(final String animal, final boolean tracks,
-			final boolean talks, final int idNum, final String fileName) {
+			final boolean talks, final String dStatus, final int idNum, final String fileName) {
 		super(fileName);
 		kind = animal;
 		traces = tracks;
 		talking = talks;
+		status = dStatus;
 		id = idNum;
 	}
 
@@ -80,13 +86,19 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 	public String getKind() {
 		return kind;
 	}
+	/**
+	 * @return the domestication status of the animal
+	 */
+	public String getStatus() {
+		return status;
+	}
 
 	/**
 	 * @return a String representation of the animal
 	 */
 	@Override
 	public String toString() {
-		return (isTraces() ? "traces of " : "")
+		return (isTraces() ? "traces of " : "") + status
 				+ (isTalking() ? "talking " : "") + getKind();
 	}
 
@@ -119,6 +131,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 		return this == obj || (obj instanceof Animal && ((Animal) obj).kind.equals(kind)
 				&& ((Animal) obj).traces == traces
 				&& ((Animal) obj).talking == talking
+				&& ((Animal) obj).status.equals(status)
 				&& ((TileFixture) obj).getID() == id);
 	}
 
@@ -148,6 +161,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Animal && ((Animal) fix).kind.equals(kind)
 				&& ((Animal) fix).traces == traces
+				&& ((Animal) fix).status.equals(status)
 				&& ((Animal) fix).talking == talking;
 	}
 }

@@ -125,9 +125,9 @@ public class TestSubsets {
 		assertTrue("Subset calculation skips Caches", one.isSubset(four, BIT_BUCKET));
 		four.addFixture(new TextFixture("text", -1));
 		assertTrue("Subset calculation skips arbitrary-text", one.isSubset(four, BIT_BUCKET));
-		four.addFixture(new Animal("animal", true, false, 2, FAKE_FILENAME));
+		four.addFixture(new Animal("animal", true, false, "wild", 2, FAKE_FILENAME));
 		assertTrue("Subset calculation skips animal tracks ...", one.isSubset(four, BIT_BUCKET));
-		four.addFixture(new Animal("animal", false, false, 3, FAKE_FILENAME));
+		four.addFixture(new Animal("animal", false, false, "wild", 3, FAKE_FILENAME));
 		assertFalse("But not the animals themselves", one.isSubset(four, BIT_BUCKET));
 	}
 	/**

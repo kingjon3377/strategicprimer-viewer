@@ -355,8 +355,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testConversion() {
 		final SPMap start = new SPMap(2, 2, 2, FAKE_FILENAME);
 		final Tile tileOne = new Tile(0, 0, TileType.Steppe, FAKE_FILENAME);
-		final Animal fixture = new Animal("animal", false, true, 1,
-				FAKE_FILENAME);
+		final Animal fixture = new Animal("animal", false, true,
+				"domesticated", 1, FAKE_FILENAME);
 		tileOne.addFixture(fixture);
 		start.addTile(tileOne);
 		final Tile tileTwo = new Tile(0, 1, TileType.Ocean, FAKE_FILENAME);

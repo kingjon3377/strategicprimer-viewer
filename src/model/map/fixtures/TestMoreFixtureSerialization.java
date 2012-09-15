@@ -336,7 +336,7 @@ public final class TestMoreFixtureSerialization extends
 			SPFormatException, IOException {
 		final Unit one = new Unit(new Player(1, "", FAKE_FILENAME), "unitType",
 				"unitName", 1, FAKE_FILENAME);
-		one.addMember(new Animal("animal", false, true, 2, FAKE_FILENAME));
+		one.addMember(new Animal("animal", false, true, "wild", 2, FAKE_FILENAME));
 		assertSerialization("Unit can have an animal as a member", one, Unit.class);
 		one.addMember(new Worker("worker", FAKE_FILENAME, 3));
 		assertSerialization("Unit can have a worker as a member", one, Unit.class);

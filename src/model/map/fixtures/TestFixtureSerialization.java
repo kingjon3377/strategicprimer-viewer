@@ -57,12 +57,12 @@ public final class TestFixtureSerialization extends
 	public void testAnimalSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("First test of Animal serialization", new Animal(
-				"animalOne", false, false, 0, FAKE_FILENAME), Animal.class);
+				"animalOne", false, false, "wild", 0, FAKE_FILENAME), Animal.class);
 		assertSerialization("Second test of Animal serialization", new Animal(
-				"animalTwo", false, true, 1, FAKE_FILENAME), Animal.class);
+				"animalTwo", false, true, "semi-domesticated", 1, FAKE_FILENAME), Animal.class);
 		assertSerialization("Third test of Animal serialization", new Animal(
-				"animalThree", true, false, 2, FAKE_FILENAME), Animal.class);
-		final Animal four = new Animal("animalFour", true, true, 3,
+				"animalThree", true, false, "domesticated", 2, FAKE_FILENAME), Animal.class);
+		final Animal four = new Animal("animalFour", true, true, "status", 3,
 				FAKE_FILENAME);
 		assertSerialization("Fourth test of Animal serialization", four,
 				Animal.class);
@@ -71,11 +71,16 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<animal />", Animal.class, KIND_PROPERTY, false);
 		assertForwardDeserialization(
 				"Forward-looking XML in re talking, reflection", new Animal(
-						"animalFive", false, false, 3, FAKE_FILENAME),
+						"animalFive", false, false, "wild", 3, FAKE_FILENAME),
 				"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />",
 				Animal.class);
 		assertMissingProperty("<animal kind=\"animalSix\" talking=\"true\" />",
 				Animal.class, "id", true);
+		assertForwardDeserialization("Explicit default status of animal",
+				new Animal("animalSeven", false, false, "wild", 4,
+						FAKE_FILENAME),
+				"<animal kind=\"animalSeven\" status=\"wild\" id=\"4\" />",
+				Animal.class);
 	}
 
 	/**

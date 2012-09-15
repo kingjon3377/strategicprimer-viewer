@@ -271,9 +271,11 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	 */
 	private Animal createAnimal(final StartElement element, final int id, // NOPMD
 			final String file) throws SPFormatException {
-		return new Animal(getKind(element), hasParameter(element,
-				"traces"), Boolean.parseBoolean(getParameter(element,
-				"talking", "false")), id, file);
+		return new Animal(
+				getKind(element),
+				hasParameter(element, "traces"),
+				Boolean.parseBoolean(getParameter(element, "talking", "false")),
+				getParameter(element, "status", "wild"), id, file);
 	}
 	/**
 	 * Write an object to a stream.
@@ -298,6 +300,10 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 			}
 			if (((Animal) obj).isTalking()) {
 				out.append("\" talking=\"true");
+			}
+			if (!"wild".equals(((Animal) obj).getStatus())) {
+				out.append("\" status=\"");
+				out.append(((Animal) obj).getStatus());
 			}
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));

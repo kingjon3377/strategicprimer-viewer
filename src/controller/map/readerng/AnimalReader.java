@@ -45,6 +45,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 				getAttribute(element, "kind"),
 				hasAttribute(element, "traces"),
 				Boolean.parseBoolean(getAttribute(element, "talking", "false")),
+				getAttribute(element, "status", "wild"),
 				getOrGenerateID(element, warner, idFactory), XMLHelper
 						.getFile(stream));
 		return fix;
@@ -82,6 +83,9 @@ public class AnimalReader implements INodeHandler<Animal> {
 		}
 		if (obj.isTalking()) {
 			retval.addAttribute("talking", "true");
+		}
+		if (!"wild".equals(obj.getStatus())) {
+			retval.addAttribute("status", obj.getStatus());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		return retval;
