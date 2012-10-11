@@ -99,7 +99,7 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 	@Override
 	public String toString() {
 		return (isTraces() ? "traces of " : "") + status
-				+ (isTalking() ? "talking " : "") + getKind();
+				+ (isTalking() ? " talking " : " ") + getKind();
 	}
 
 	/**
