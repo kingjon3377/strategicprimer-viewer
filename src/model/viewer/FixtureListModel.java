@@ -53,6 +53,9 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 				&& evt.getNewValue() instanceof Tile) {
 			tile = (Tile) evt.getNewValue();
 			this.clear();
+			if (!TileType.NotVisible.equals(tile.getTerrain())) {
+				addElement(new TileTypeFixture(tile.getTerrain()));
+			}
 			for (TileFixture fix : (Tile) evt.getNewValue()) {
 				this.addElement(fix);
 			}
@@ -63,7 +66,12 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @param fix the fixture to add.
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (tile.addFixture(fix)) {
+		if (fix instanceof TileTypeFixture) {
+			if (!tile.getTerrain().equals(((TileTypeFixture) fix).getTileType())) {
+				tile.setTerrain(((TileTypeFixture) fix).getTileType());
+			}
+			addElement(fix);
+		} else if (tile.addFixture(fix)) {
 			// addFixture returns false if it wasn't actually added---e.g. it
 			// was already in the set---so we only want to add it to the display
 			// if it returns true.
@@ -76,7 +84,10 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 */
 	public void remove(final List<TileFixture> list) {
 		for (TileFixture fix : list) {
-			if (tile.removeFixture(fix)) {
+			if (fix instanceof TileTypeFixture) {
+				tile.setTerrain(TileType.NotVisible);
+				removeElement(fix);
+			} else if (tile.removeFixture(fix)) {
 				removeElement(fix);
 			}
 		}
