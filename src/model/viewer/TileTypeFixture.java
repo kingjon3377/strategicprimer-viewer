@@ -1,5 +1,6 @@
 package model.viewer;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 import model.map.TileType;
 
@@ -10,7 +11,7 @@ import model.map.TileType;
  * @author Jonathan Lovelace
  *
  */
-public class TileTypeFixture implements TileFixture {
+public class TileTypeFixture implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 * @param terrain The TileType this wraps.
@@ -106,5 +107,12 @@ public class TileTypeFixture implements TileFixture {
 	@Override
 	public String toString() {
 		return "Terrain: " + ttype.toString();
+	}
+	/**
+	 * @return a "filename" for an image to represent the object.
+	 */
+	@Override
+	public String getImage() {
+		return ttype.toXML() + ".png";
 	}
 }

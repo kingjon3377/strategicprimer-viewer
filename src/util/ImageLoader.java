@@ -1,6 +1,8 @@
 package util;
 
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,6 +11,9 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+
+import model.map.TileType;
+import view.map.main.TileUIHelper;
 
 /**
  * A class to load images from file, backed by a cache so no image is loaded
@@ -34,7 +39,16 @@ public final class ImageLoader {
 	 * Constructor.
 	 */
 	private ImageLoader() {
-		// Do nothing.
+		final TileUIHelper colors = new TileUIHelper();
+		for (TileType type : TileType.values()) {
+			final BufferedImage buf = new BufferedImage(20, 20, //NOPMD
+					BufferedImage.TYPE_INT_ARGB);
+			final Graphics pen = buf.createGraphics();
+			pen.setColor(colors.get(2, type));
+			pen.fillRect(0, 0, buf.getWidth(), buf.getHeight());
+			pen.dispose();
+			iconCache.put(type.toXML() + ".png", new ImageIcon(buf)); //NOPMD
+		}
 	}
 
 	/**
