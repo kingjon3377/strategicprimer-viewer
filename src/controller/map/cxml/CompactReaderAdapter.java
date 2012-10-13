@@ -138,7 +138,7 @@ public final class CompactReaderAdapter {
 	@SuppressWarnings("unchecked")
 	public void write(final Writer out, final XMLWritable obj, final String file,
 			final boolean inclusion, final int indent) throws IOException {
-		if (file.equals(obj.getFile()) || !inclusion) {
+		if (file.equals(obj.getFile()) || "".equals(obj.getFile()) || !inclusion) {
 			@SuppressWarnings("rawtypes") // NOPMD
 			final CompactReader reader; // NOPMD
 			if (obj instanceof IMap) {
