@@ -173,6 +173,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 				for (final TileFixture fix : obj) {
 					CompactReaderAdapter.ADAPTER.write(out, fix, file, inclusion, indent + 1);
 				}
+				out.append(indent(indent));
 			}
 			out.append("</tile>\n");
 		}
