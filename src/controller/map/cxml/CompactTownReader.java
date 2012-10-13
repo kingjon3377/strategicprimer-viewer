@@ -72,12 +72,10 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		final TownFixture retval; // NOPMD
 		if ("village".equals(element.getName().getLocalPart())) {
 			retval = parseVillage(element, stream, warner, idFactory);
-			spinUntilEnd(element.getName(), stream);
 		} else if ("fortress".equals(element.getName().getLocalPart())) {
 			retval = parseFortress(element, stream, players, warner, idFactory);
 		} else {
 			retval = parseTown(element, stream, warner, idFactory);
-			spinUntilEnd(element.getName(), stream);
 		}
 		return retval;
 	}
@@ -94,6 +92,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			final IteratorWrapper<XMLEvent> stream, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
+		spinUntilEnd(element.getName(), stream);
 		return new Village(TownStatus.parseTownStatus(getParameter(element,
 				"status")), getParameter(element, NAME_PARAM, ""), getOrGenerateID(
 				element, warner, idFactory));
@@ -124,6 +123,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		} else {
 			retval = new FortificationEvent(status, size, dc, name, id);
 		}
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 	/**

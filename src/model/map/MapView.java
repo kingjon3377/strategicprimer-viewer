@@ -9,7 +9,7 @@ import java.io.PrintStream;
  * @author Jonathan Lovelace
  *
  */
-public class MapView extends XMLWritableImpl implements IMap {
+public class MapView implements IMap {
 	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
 	 *

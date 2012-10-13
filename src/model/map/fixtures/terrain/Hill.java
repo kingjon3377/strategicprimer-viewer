@@ -3,7 +3,6 @@ package model.map.fixtures.terrain;
 import model.map.HasImage;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A hill on the map. Should increase unit's effective vision by a small
@@ -12,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Hill implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 */

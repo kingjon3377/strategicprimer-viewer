@@ -20,7 +20,7 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public final class Tile extends XMLWritableImpl implements
+public final class Tile implements XMLWritable,
 		Iterable<TileFixture>, Subsettable<Tile> {
 	/**
 	 * Constructor.

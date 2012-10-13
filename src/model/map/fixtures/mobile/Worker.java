@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
-import model.map.XMLWritableImpl;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Job;
 import util.ArraySet;
@@ -18,7 +17,7 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public class Worker extends XMLWritableImpl implements UnitMember, Iterable<Job> {
+public class Worker implements UnitMember, Iterable<Job> {
 	/**
 	 * Constructor.
 	 * @param wName the worker's name

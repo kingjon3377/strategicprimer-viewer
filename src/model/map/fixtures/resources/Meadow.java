@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A field or meadow. If in forest, should increase a unit's vision slightly
@@ -12,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Meadow extends XMLWritableImpl implements HarvestableFixture,
+public class Meadow implements HarvestableFixture,
 		HasImage, HasKind {
 	/**
 	 * Which season the field is in.

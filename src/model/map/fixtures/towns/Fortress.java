@@ -11,7 +11,6 @@ import model.map.HasImage;
 import model.map.Player;
 import model.map.Subsettable;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 import model.map.fixtures.mobile.Unit;
 
 /**
@@ -23,7 +22,7 @@ import model.map.fixtures.mobile.Unit;
  * @author Jonathan Lovelace
  *
  */
-public class Fortress extends XMLWritableImpl implements HasImage,
+public class Fortress implements HasImage,
 		Subsettable<Fortress>, TownFixture {
 	/**
 	 * The player that owns the fortress.

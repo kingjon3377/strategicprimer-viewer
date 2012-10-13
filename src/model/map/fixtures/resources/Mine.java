@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 import model.map.fixtures.towns.TownStatus;
 
 /**
@@ -12,7 +11,7 @@ import model.map.fixtures.towns.TownStatus;
  * @author Jonathan Lovelace
  *
  */
-public class Mine extends XMLWritableImpl implements HarvestableFixture,
+public class Mine implements HarvestableFixture,
 		HasImage, HasKind {
 	/**
 	 * Constructor.

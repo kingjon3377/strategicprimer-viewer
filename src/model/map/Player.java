@@ -6,7 +6,7 @@ package model.map;
  * @author jsl7
  *
  */
-public class Player extends XMLWritableImpl implements Comparable<Player> {
+public class Player implements XMLWritable, Comparable<Player> {
 	/**
 	 * The player's number.
 	 */

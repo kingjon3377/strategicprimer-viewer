@@ -8,7 +8,6 @@ import java.util.Set;
 import model.map.River;
 import model.map.Subsettable;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for
@@ -17,7 +16,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class RiverFixture extends XMLWritableImpl implements TileFixture,
+public class RiverFixture implements TileFixture,
 		Iterable<River>, Subsettable<RiverFixture> {
 	/**
 	 * Constructor.

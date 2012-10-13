@@ -2,7 +2,6 @@ package model.map.fixtures.towns;
 
 import model.map.HasImage;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A village on the map.
@@ -10,7 +9,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Village extends XMLWritableImpl implements TownFixture, HasImage {
+public class Village implements TownFixture, HasImage {
 	/**
 	 * The status of the village.
 	 */

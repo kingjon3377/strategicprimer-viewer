@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A TileFixture to represent shrubs, or their aquatic equivalents, on a tile.
@@ -11,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Shrub extends XMLWritableImpl implements HarvestableFixture,
+public class Shrub implements HarvestableFixture,
 		HasImage, HasKind {
 	/**
 	 * A description of what kind of shrub this is.

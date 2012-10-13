@@ -3,7 +3,6 @@ package model.map.fixtures.terrain;
 import model.map.HasImage;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A mountain on the map---or at least a fixture representing mountainous
@@ -12,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Mountain extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Mountain implements TerrainFixture, HasImage {
 	/**
 	 * @return a String representation of the forest.
 	 */

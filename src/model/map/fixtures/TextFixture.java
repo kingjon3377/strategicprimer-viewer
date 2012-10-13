@@ -2,7 +2,6 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can
@@ -12,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class TextFixture extends XMLWritableImpl implements TileFixture, HasImage {
+public class TextFixture implements TileFixture, HasImage {
 	/**
 	 * Constructor.
 	 *

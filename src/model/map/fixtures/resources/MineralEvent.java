@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 import model.map.events.IEvent;
 
 /**
@@ -12,7 +11,7 @@ import model.map.events.IEvent;
  * @author Jonathan Lovelace
  *
  */
-public final class MineralEvent extends XMLWritableImpl implements IEvent,
+public final class MineralEvent implements IEvent,
 		HasImage, HarvestableFixture, HasKind {
 	/**
 	 * Constructor.

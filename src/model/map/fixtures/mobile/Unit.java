@@ -7,7 +7,6 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.Player;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 import model.map.fixtures.UnitMember;
 import util.ArraySet;
 
@@ -17,7 +16,7 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
+public class Unit implements MobileFixture, HasImage,
 		HasKind, Iterable<UnitMember> {
 	/**
 	 * The player that owns the unit.

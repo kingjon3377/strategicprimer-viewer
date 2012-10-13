@@ -3,7 +3,6 @@ package model.map.fixtures.mobile;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 import model.map.fixtures.UnitMember;
 
 /**
@@ -13,7 +12,7 @@ import model.map.fixtures.UnitMember;
  * @author Jonathan Lovelace
  *
  */
-public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, HasKind, UnitMember {
+public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * ID number.
 	 */

@@ -2,7 +2,6 @@ package model.map.fixtures.towns;
 
 import model.map.HasImage;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 import model.map.events.EventKind;
 import model.map.events.IEvent;
 
@@ -12,7 +11,7 @@ import model.map.events.IEvent;
  * @author Jonathan Lovelace
  */
 // ESCA-JAVA0011:
-public abstract class AbstractTownEvent extends XMLWritableImpl implements
+public abstract class AbstractTownEvent implements
 		IEvent, HasImage, TownFixture {
 	/**
 	 * Constructor.

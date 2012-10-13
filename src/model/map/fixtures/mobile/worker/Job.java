@@ -4,14 +4,14 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
-import model.map.XMLWritableImpl;
+import model.map.XMLWritable;
 import util.ArraySet;
 
 /**
  * A Job a worker can work at.
  * @author Jonathan Lovelace
  */
-public class Job extends XMLWritableImpl implements Iterable<Skill> {
+public class Job implements XMLWritable, Iterable<Skill> {
 	/**
 	 * Constructor.
 	 * @param jobName the name of the Job

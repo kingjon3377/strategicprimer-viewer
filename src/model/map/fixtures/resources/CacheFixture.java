@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
@@ -11,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class CacheFixture extends XMLWritableImpl implements
+public class CacheFixture implements
 		HarvestableFixture, HasImage, HasKind {
 	/**
 	 * What kind of things this is a cache of. TODO: Should perhaps be

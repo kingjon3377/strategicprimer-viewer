@@ -1,13 +1,13 @@
 package model.map.fixtures.mobile.worker;
 
-import model.map.XMLWritableImpl;
+import model.map.XMLWritable;
 
 /**
  * A skill a worker has experience or training in.
  * @author Jonathan Lovelace
  *
  */
-public class Skill extends XMLWritableImpl {
+public class Skill implements XMLWritable {
 	/**
 	 * Constructor.
 	 * @param skillName the name of the skill

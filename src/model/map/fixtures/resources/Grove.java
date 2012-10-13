@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
@@ -11,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Grove extends XMLWritableImpl implements HarvestableFixture,
+public class Grove implements HarvestableFixture,
 		HasImage, HasKind {
 	/**
 	 * Whether this is a fruit orchard.

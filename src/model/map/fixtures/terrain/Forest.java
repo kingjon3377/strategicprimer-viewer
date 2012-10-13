@@ -4,7 +4,6 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A forest on a tile.
@@ -12,7 +11,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage, HasKind {
+public class Forest implements TerrainFixture, HasImage, HasKind {
 	/**
 	 * @return what kind of trees
 	 */

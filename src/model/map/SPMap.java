@@ -9,7 +9,7 @@ import java.io.PrintStream;
  * @author Jonathan Lovelace
  *
  */
-public class SPMap extends XMLWritableImpl implements IMap {
+public class SPMap implements IMap {
 	/**
 	 * Map max version.
 	 */

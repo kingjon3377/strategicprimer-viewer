@@ -3,7 +3,6 @@ package model.map.fixtures.terrain;
 import model.map.HasImage;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A sandbar on the map.
@@ -11,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Sandbar implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 */

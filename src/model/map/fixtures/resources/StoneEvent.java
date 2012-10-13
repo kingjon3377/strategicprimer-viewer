@@ -2,7 +2,6 @@ package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 import model.map.events.IEvent;
 
 /**
@@ -11,7 +10,7 @@ import model.map.events.IEvent;
  * @author Jonathan Lovelace
  *
  */
-public final class StoneEvent extends XMLWritableImpl implements IEvent,
+public final class StoneEvent implements IEvent,
 		HasImage, HarvestableFixture {
 	/**
 	 * Constructor.

@@ -3,7 +3,6 @@ package model.map.fixtures.terrain;
 import model.map.HasImage;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * An oasis on the map.
@@ -11,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
+public class Oasis implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
 	 */

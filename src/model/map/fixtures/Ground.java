@@ -3,7 +3,6 @@ package model.map.fixtures;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.TileFixture;
-import model.map.XMLWritableImpl;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
@@ -11,7 +10,7 @@ import model.map.XMLWritableImpl;
  * @author Jonathan Lovelace
  *
  */
-public class Ground extends XMLWritableImpl implements TileFixture, HasImage, HasKind {
+public class Ground implements TileFixture, HasImage, HasKind {
 	/**
 	 * Constructor.
 	 *
