@@ -47,7 +47,7 @@ public final class CompactGroundReader extends AbstractCompactReader implements 
 		final String kind = getParameterWithDeprecatedForm(element, "kind", "ground", warner);
 		requireNonEmptyParameter(element, "exposed", true, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new Ground(kind, Boolean.parseBoolean(getParameter(element, "exposed")), getFile(stream));
+		return new Ground(kind, Boolean.parseBoolean(getParameter(element, "exposed")));
 	}
 	/**
 	 * @param tag a tag
@@ -61,12 +61,11 @@ public final class CompactGroundReader extends AbstractCompactReader implements 
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Ground obj, final String file, final int indent) throws IOException {
+	public void write(final Writer out, final Ground obj, final int indent) throws IOException {
 		for (int i = 0; i < indent; i++) {
 			out.append('\t');
 		}

@@ -1,11 +1,9 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -73,7 +71,7 @@ public class ViewReader implements INodeHandler<MapView> {
 							Integer.parseInt(getAttribute(element,
 									"current_player")),
 							Integer.parseInt(getAttribute(element,
-									"current_turn")), XMLHelper.getFile(stream));
+									"current_turn")));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return view;
 	}
@@ -111,9 +109,7 @@ public class ViewReader implements INodeHandler<MapView> {
 						.getPlayerId()));
 		retval.addAttribute("current_turn",
 				Integer.toString(obj.getCurrentTurn()));
-		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
-		tagMap.put(obj.getFile(), retval);
-		ReaderAdapter.ADAPTER.addChild(tagMap, obj.getMap(), retval);
+		retval.addChild(ReaderAdapter.ADAPTER.write(obj.getMap()));
 		return retval;
 	}
 

@@ -14,10 +14,9 @@ import model.map.XMLWritableImpl;
 public class Oasis extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Oasis(final int idNum, final String fileName) {
-		super(fileName);
+	public Oasis(final int idNum) {
+		super();
 		id = idNum;
 	}
 

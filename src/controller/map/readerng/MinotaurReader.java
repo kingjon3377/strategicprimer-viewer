@@ -43,7 +43,7 @@ public class MinotaurReader implements INodeHandler<Minotaur> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Minotaur fix = new Minotaur(getOrGenerateID(element, warner,
-				idFactory), XMLHelper.getFile(stream));
+				idFactory));
 		return fix;
 	}
 

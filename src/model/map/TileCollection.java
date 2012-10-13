@@ -16,22 +16,7 @@ import java.util.Map;
  *
  */
 public final class TileCollection implements Iterable<Point>,
-		Subsettable<TileCollection>, HasChildren {
-	/**
-	 * The default filename for tiles we create to avoid returning null.
-	 */
-	private final String file;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param filename the default filename for tiles we create to avoid
-	 *        returning null
-	 */
-	public TileCollection(final String filename) {
-		file = filename;
-	}
-
+		Subsettable<TileCollection> {
 	/**
 	 * The Map this is a wrapper around.
 	 */
@@ -57,7 +42,7 @@ public final class TileCollection implements Iterable<Point>,
 	public Tile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
 			tiles.put(point, new Tile(point.row, point.col,
-					TileType.NotVisible, file));
+					TileType.NotVisible));
 		}
 		return tiles.get(point);
 	}
@@ -119,17 +104,5 @@ public final class TileCollection implements Iterable<Point>,
 			}
 		}
 		return retval;
-	}
-
-	/**
-	 * Set all children's file property to the specified value, recursively.
-	 *
-	 * @param value the value to set
-	 */
-	@Override
-	public void setFileOnChildren(final String value) {
-		for (final Tile tile : tiles.values()) {
-			tile.setFile(value);
-		}
 	}
 }

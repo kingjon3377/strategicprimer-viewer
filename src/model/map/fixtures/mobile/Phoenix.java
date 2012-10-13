@@ -14,10 +14,9 @@ import model.map.fixtures.UnitMember;
 public class Phoenix extends XMLWritableImpl implements MobileFixture, HasImage, UnitMember {
 	/**
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Phoenix(final int idNum, final String fileName) {
-		super(fileName);
+	public Phoenix(final int idNum) {
+		super();
 		id = idNum;
 	}
 

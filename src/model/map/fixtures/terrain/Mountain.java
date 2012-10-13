@@ -14,15 +14,6 @@ import model.map.XMLWritableImpl;
  */
 public class Mountain extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
-	 * Constructor.
-	 *
-	 * @param fileName the file this was loaded from
-	 */
-	public Mountain(final String fileName) {
-		super(fileName);
-	}
-
-	/**
 	 * @return a String representation of the forest.
 	 */
 	@Override

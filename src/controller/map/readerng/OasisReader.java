@@ -43,8 +43,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Oasis fix = new Oasis(
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+				getOrGenerateID(element, warner, idFactory));
 		return fix;
 	}
 

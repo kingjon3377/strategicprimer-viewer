@@ -84,7 +84,7 @@ public class OneToTwoConverter { // NOPMD
 	public SPMap convert(final IMap old, final boolean main) {
 		final IDFactory idFactory = new IDFactory();
 		final SPMap retval = new SPMap(2, old.rows() * SUBTILES_PER_TILE,
-				old.cols() * SUBTILES_PER_TILE, old.getFile());
+				old.cols() * SUBTILES_PER_TILE);
 		for (final Player player : old.getPlayers()) {
 			retval.addPlayer(player);
 		}
@@ -123,8 +123,7 @@ public class OneToTwoConverter { // NOPMD
 							* SUBTILES_PER_TILE + i;
 					final int col = tile.getLocation().col
 							* SUBTILES_PER_TILE + j;
-					final Tile subtile = new Tile(row, col, tile.getTerrain(), // NOPMD
-							tile.getFile());
+					final Tile subtile = new Tile(row, col, tile.getTerrain());
 					initial.add(subtile);
 					convertSubtile(subtile, main);
 				}
@@ -144,7 +143,7 @@ public class OneToTwoConverter { // NOPMD
 		final List<Tile> initial = createInitialSubtiles(tile, main);
 		if (!tile.isEmpty()) {
 			tile.addFixture(new Village(TownStatus.Active, "", idFactory
-					.createID(), tile.getFile()));
+					.createID()));
 			final List<TileFixture> fixtures = new LinkedList<TileFixture>();
 			for (final TileFixture fixture : tile) {
 				fixtures.add(fixture);
@@ -213,22 +212,21 @@ public class OneToTwoConverter { // NOPMD
 		try {
 			if (TileType.Mountain.equals(tile.getTerrain())) {
 				tile.setTerrain(TileType.Plains);
-				tile.addFixture(new Mountain(tile.getFile()));
+				tile.addFixture(new Mountain());
 			} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
 					tile.addFixture(new Forest(runner.getPrimaryTree(tile),
-							false, tile.getFile()));
+							false));
 				}
 				tile.setTerrain(TileType.Plains);
 			} else if (TileType.BorealForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
 					tile.addFixture(new Forest(runner.getPrimaryTree(tile),
-							false, tile.getFile()));
+							false));
 				}
 				tile.setTerrain(TileType.Steppe);
 			}
-			addFixture(tile, new Ground(runner.getPrimaryRock(tile), false,
-					tile.getFile()), main);
+			addFixture(tile, new Ground(runner.getPrimaryRock(tile), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing table", e);
 		}
@@ -334,13 +332,12 @@ public class OneToTwoConverter { // NOPMD
 				addFixture(
 						tile,
 						new Meadow(runner.recursiveConsultTable("grain", tile),
-								true, true, id, FieldStatus.random(id), tile
-										.getFile()), main);
+								true, true, id, FieldStatus.random(id)), main);
 			} else {
 				addFixture(
 						tile,
 						new Grove(true, true, runner.recursiveConsultTable(
-								"fruit_trees", tile), id, tile.getFile()), main);
+								"fruit_trees", tile), id), main);
 			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
@@ -359,8 +356,7 @@ public class OneToTwoConverter { // NOPMD
 			addFixture(
 					tile,
 					new Forest(runner.recursiveConsultTable(
-							"temperate_major_tree", tile), false, tile
-							.getFile()), main);
+							"temperate_major_tree", tile), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}

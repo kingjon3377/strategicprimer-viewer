@@ -43,7 +43,7 @@ public class SandbarReader implements INodeHandler<Sandbar> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Sandbar fix = new Sandbar(getOrGenerateID(element, warner,
-				idFactory), XMLHelper.getFile(stream));
+				idFactory));
 		return fix;
 	}
 

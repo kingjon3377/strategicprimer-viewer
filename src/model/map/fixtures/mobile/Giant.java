@@ -24,10 +24,9 @@ public class Giant extends XMLWritableImpl implements MobileFixture, HasImage,
 	 *
 	 * @param gKind the kind of giant
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Giant(final String gKind, final int idNum, final String fileName) {
-		super(fileName);
+	public Giant(final String gKind, final int idNum) {
+		super();
 		kind = gKind;
 		id = idNum;
 	}

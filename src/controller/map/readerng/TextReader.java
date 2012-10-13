@@ -14,7 +14,6 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for text elements.
@@ -57,9 +56,6 @@ public class TextReader implements INodeHandler<TextFixture> {
 		}
 		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
 				Integer.parseInt(getAttribute(element, "turn", "-1")));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
 		return fix;
 	}
 

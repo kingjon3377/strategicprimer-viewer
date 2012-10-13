@@ -541,7 +541,6 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @return it, with its file set to "string"
 	 */
 	public static <T extends XMLWritable> T setFileOnObject(final T obj) {
-		obj.setFile(FAKE_FILENAME);
 		return obj;
 	}
 

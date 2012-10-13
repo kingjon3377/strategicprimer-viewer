@@ -43,8 +43,7 @@ public class TrollReader implements INodeHandler<Troll> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Troll fix = new Troll(
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+				getOrGenerateID(element, warner, idFactory));
 		return fix;
 	}
 

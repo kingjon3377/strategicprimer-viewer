@@ -114,8 +114,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			return (T) obj; // NOPMD
 		} else if (type.equals(MapView.class) && obj instanceof SPMap) {
 			return (T) new MapView((SPMap) obj, ((SPMap) obj).getPlayers()
-					.getCurrentPlayer().getPlayerId(), 0,
-					((SPMap) obj).getFile());
+					.getCurrentPlayer().getPlayerId(), 0);
 		} else {
 			throw new IllegalArgumentException("We want a node producing "
 					+ type.getSimpleName() + ", not "

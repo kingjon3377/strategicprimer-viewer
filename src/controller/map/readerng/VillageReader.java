@@ -48,7 +48,7 @@ public class VillageReader implements INodeHandler<Village> {
 		final Village fix = new Village(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory), XMLHelper.getFile(stream));
+						warner, idFactory));
 		return fix;
 	}
 

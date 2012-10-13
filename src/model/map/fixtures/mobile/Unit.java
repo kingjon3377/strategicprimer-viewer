@@ -45,11 +45,10 @@ public class Unit extends XMLWritableImpl implements MobileFixture, HasImage,
 	 * @param unitType the type of unit
 	 * @param unitName the name of this unit
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
 	public Unit(final Player unitOwner, final String unitType,
-			final String unitName, final int idNum, final String fileName) {
-		super(fileName);
+			final String unitName, final int idNum) {
+		super();
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;

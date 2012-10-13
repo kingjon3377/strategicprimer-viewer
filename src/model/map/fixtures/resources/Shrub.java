@@ -23,10 +23,9 @@ public class Shrub extends XMLWritableImpl implements HarvestableFixture,
 	 *
 	 * @param desc a description of the shrub.
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Shrub(final String desc, final int idNum, final String fileName) {
-		super(fileName);
+	public Shrub(final String desc, final int idNum) {
+		super();
 		description = desc;
 		id = idNum;
 	}

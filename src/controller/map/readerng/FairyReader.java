@@ -44,8 +44,7 @@ public class FairyReader implements INodeHandler<Fairy> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Fairy fix = new Fairy(getAttribute(element, "kind"),
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+				getOrGenerateID(element, warner, idFactory));
 		return fix;
 	}
 

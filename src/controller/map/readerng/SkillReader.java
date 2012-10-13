@@ -53,7 +53,7 @@ public class SkillReader implements INodeHandler<Skill> {
 		return new Skill(XMLHelper.getAttribute(element, "name"),
 				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
 						Integer.parseInt(XMLHelper.getAttribute(element,
-								"hours")), XMLHelper.getFile(stream));
+								"hours")));
 	}
 
 	/**

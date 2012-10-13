@@ -19,31 +19,6 @@ public abstract class XMLWritableImpl implements XMLWritable { // NOPMD
 	 * Default constructor.
 	 */
 	protected XMLWritableImpl() {
-		this("");
+		// Do nothing
 	}
-	/**
-	 * @param file the file we should be written to.
-	 */
-	protected XMLWritableImpl(final String file) {
-		filename = file;
-	}
-	/**
-	 * The filename this should be written to.
-	 */
-	private String filename;
-	/**
-	 * @return the filename this should be written to
-	 */
-	@Override
-	public String getFile() {
-		return filename;
-	}
-	/**
-	 * @param file the filename this should be written to
-	 */
-	@Override
-	public void setFile(final String file) {
-		filename = file;
-	}
-
 }

@@ -38,12 +38,11 @@ public class Meadow extends XMLWritableImpl implements HarvestableFixture,
 	 * @param fld whether this is a field (as opposed to a meadow)
 	 * @param cult whether it's under cultivation
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 * @param stat the status of the field, i.e. what season it's in
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
-			final int idNum, final FieldStatus stat, final String fileName) {
-		super(fileName);
+			final int idNum, final FieldStatus stat) {
+		super();
 		kind = grain;
 		field = fld;
 		cultivated = cult;

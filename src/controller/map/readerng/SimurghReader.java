@@ -43,7 +43,7 @@ public class SimurghReader implements INodeHandler<Simurgh> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Simurgh fix = new Simurgh(getOrGenerateID(element, warner,
-				idFactory), XMLHelper.getFile(stream));
+				idFactory));
 		return fix;
 	}
 

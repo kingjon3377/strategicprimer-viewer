@@ -48,7 +48,7 @@ public final class CompactPlayerReader extends AbstractCompactReader implements 
 		requireNonEmptyParameter(element, "code_name", true, warner);
 		spinUntilEnd(element.getName(), stream);
 		return new Player(Integer.parseInt(getParameter(element, "number")),
-				getParameter(element, "code_name"), getFile(stream));
+				getParameter(element, "code_name"));
 	}
 	/**
 	 * @param tag a tag
@@ -62,12 +62,11 @@ public final class CompactPlayerReader extends AbstractCompactReader implements 
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Player obj, final String file, final int indent) throws IOException {
+	public void write(final Writer out, final Player obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<player number=\"");
 		out.append(Integer.toString(obj.getPlayerId()));

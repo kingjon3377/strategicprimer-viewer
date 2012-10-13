@@ -43,7 +43,7 @@ public class ForestReader implements INodeHandler<Forest> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Forest fix = new Forest(getAttribute(element, "kind"),
-				hasAttribute(element, "rows"), XMLHelper.getFile(stream));
+				hasAttribute(element, "rows"));
 		return fix;
 	}
 

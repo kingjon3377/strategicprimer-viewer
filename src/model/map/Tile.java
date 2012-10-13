@@ -28,11 +28,9 @@ public final class Tile extends XMLWritableImpl implements
 	 * @param tileRow The row number
 	 * @param tileCol The column number
 	 * @param tileType The tile type
-	 * @param filename the file this was loaded from
 	 */
-	public Tile(final int tileRow, final int tileCol, final TileType tileType,
-			final String filename) {
-		super(filename);
+	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
+		super();
 		location = PointFactory.point(tileRow, tileCol);
 		type = tileType;
 		// Can't be an otherwise-preferable TreeSet because of Java bug
@@ -141,7 +139,6 @@ public final class Tile extends XMLWritableImpl implements
 			getRivers().addRiver(river);
 		} else {
 			addFixture(new RiverFixture(river));
-			getRivers().setFile(getFile());
 		}
 	}
 
@@ -268,20 +265,6 @@ public final class Tile extends XMLWritableImpl implements
 	 */
 	public Point getLocation() {
 		return location;
-	}
-
-	/**
-	 * Set the file property of this tile and all its children to the specified
-	 * value, recursively.
-	 *
-	 * @param value the value to set
-	 */
-	@Override
-	public void setFile(final String value) {
-		super.setFile(value);
-		for (final TileFixture fix : contents) {
-			fix.setFile(value);
-		}
 	}
 
 	/**

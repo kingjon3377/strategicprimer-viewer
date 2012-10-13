@@ -14,10 +14,9 @@ import model.map.fixtures.UnitMember;
 public class Ogre extends XMLWritableImpl implements MobileFixture, HasImage, UnitMember {
 	/**
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Ogre(final int idNum, final String fileName) {
-		super(fileName);
+	public Ogre(final int idNum) {
+		super();
 		id = idNum;
 	}
 

@@ -128,13 +128,11 @@ public final class CompactReaderAdapter {
 	 * Write an object to XML.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're nominally writing to
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
 	@SuppressWarnings("unchecked")
-	public void write(final Writer out, final XMLWritable obj, final String file,
-			final int indent) throws IOException {
+	public void write(final Writer out, final XMLWritable obj, final int indent) throws IOException {
 			@SuppressWarnings("rawtypes") // NOPMD
 			final CompactReader reader; // NOPMD
 			if (obj instanceof IMap) {
@@ -148,7 +146,7 @@ public final class CompactReaderAdapter {
 				CompactTileReader.READER.writeRivers(out, (RiverFixture) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof Job) {
-				CompactWorkerReader.READER.writeJob(out, (Job) obj, file, indent);
+				CompactWorkerReader.READER.writeJob(out, (Job) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof Skill) {
 				CompactWorkerReader.READER.writeSkill(out, (Skill) obj, indent);
@@ -162,6 +160,6 @@ public final class CompactReaderAdapter {
 			} else {
 				throw new IllegalStateException("Don't know how to write this type");
 			}
-			reader.write(out, obj, file, indent);
+			reader.write(out, obj, indent);
 	}
 }

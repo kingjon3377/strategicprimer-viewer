@@ -26,11 +26,10 @@ public class Village extends XMLWritableImpl implements TownFixture, HasImage {
 	 * @param vstatus the status of the village.
 	 * @param vName the name of the village
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
 	public Village(final TownStatus vstatus, final String vName,
-			final int idNum, final String fileName) {
-		super(fileName);
+			final int idNum) {
+		super();
 		status = vstatus;
 		name = vName;
 		id = idNum;

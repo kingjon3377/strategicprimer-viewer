@@ -15,10 +15,9 @@ import model.map.XMLWritableImpl;
 public class Hill extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Hill(final int idNum, final String fileName) {
-		super(fileName);
+	public Hill(final int idNum) {
+		super();
 		id = idNum;
 	}
 

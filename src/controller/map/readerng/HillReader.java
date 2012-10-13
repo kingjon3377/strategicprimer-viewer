@@ -42,9 +42,7 @@ public class HillReader implements INodeHandler<Hill> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Hill fix = new Hill(getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
-		return fix;
+		return new Hill(getOrGenerateID(element, warner, idFactory));
 	}
 
 	/**

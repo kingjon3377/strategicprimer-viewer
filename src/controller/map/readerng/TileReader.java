@@ -1,14 +1,12 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.ReaderAdapter.checkedCast;
-import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static java.lang.Integer.parseInt;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -51,7 +49,7 @@ public class TileReader implements INodeHandler<Tile> {
 		final Tile tile = new Tile(parseInt(getAttribute(element, "row")), // NOPMD
 				parseInt(getAttribute(element, "column")),
 				TileType.getTileType(getAttributeWithDeprecatedForm(element,
-						"kind", "type", warner)), XMLHelper.getFile(stream));
+						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName().getLocalPart())) {
@@ -174,10 +172,8 @@ public class TileReader implements INodeHandler<Tile> {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
 			if (obj.iterator().hasNext()) {
-				final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
-				tagMap.put(obj.getFile(), retval);
 				for (final TileFixture fix : obj) {
-					writeFixture(fix, retval, tagMap);
+					writeFixture(fix, retval);
 				}
 			}
 			return retval;
@@ -188,17 +184,15 @@ public class TileReader implements INodeHandler<Tile> {
 	 * "Write" a TileFixture by creating its SPIR and attaching it to the proper parent.
 	 * @param fix the current fixture
 	 * @param parent the SPIR node representing the Tile, for rivers
-	 * @param tagMap The tag map
 	 */
 	private static void writeFixture(final TileFixture fix,
-			final SPIntermediateRepresentation parent,
-			final Map<String, SPIntermediateRepresentation> tagMap) {
+			final SPIntermediateRepresentation parent) {
 		if (fix instanceof RiverFixture) {
 			for (final River river : (RiverFixture) fix) {
 				parent.addChild(READER.write(river));
 			}
 		} else {
-			ReaderAdapter.ADAPTER.addChild(tagMap, fix, parent);
+			parent.addChild(ReaderAdapter.ADAPTER.write(fix));
 		}
 	}
 

@@ -47,8 +47,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
-				getParameter(element, "race", "human"), getFile(stream),
-				getOrGenerateID(element, warner, idFactory));
+				getParameter(element, "race", "human"), getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("job".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
@@ -77,7 +76,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			throws SPFormatException {
 		requireTag(element, "job");
 		final Job retval = new Job(getParameter(element, "name"),
-				Integer.parseInt(getParameter(element, "level")), getFile(stream));
+				Integer.parseInt(getParameter(element, "level")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("skill".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
@@ -108,19 +107,17 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		spinUntilEnd(element.getName(), stream);
 		return new Skill(getParameter(element, "name"),
 				Integer.parseInt(getParameter(element, "level")),
-				Integer.parseInt(getParameter(element, "hours")),
-				getFile(stream));
+				Integer.parseInt(getParameter(element, "hours")));
 	}
 	/**
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Worker obj, final String file, final int indent) throws IOException {
+	public void write(final Writer out, final Worker obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<worker name=\"");
 		out.append(obj.getName());
@@ -134,7 +131,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
 			for (Job job : obj) {
-				CompactReaderAdapter.ADAPTER.write(out, job, file, indent + 1);
+				CompactReaderAdapter.ADAPTER.write(out, job, indent + 1);
 			}
 			out.append(indent(indent));
 			out.append("</worker>\n");
@@ -146,12 +143,10 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * Write a Job to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public void writeJob(final Writer out, final Job obj, final String file,
-			final int indent) throws IOException {
+	public void writeJob(final Writer out, final Job obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<job name=\"");
 		out.append(obj.getName());
@@ -161,7 +156,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
 			for (Skill skill : obj) {
-				CompactReaderAdapter.ADAPTER.write(out, skill, file, indent + 1);
+				CompactReaderAdapter.ADAPTER.write(out, skill, indent + 1);
 			}
 			out.append(indent(indent));
 			out.append("</job>\n");

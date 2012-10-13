@@ -43,7 +43,7 @@ public class GriffinReader implements INodeHandler<Griffin> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Griffin fix = new Griffin(getOrGenerateID(element, warner,
-				idFactory), XMLHelper.getFile(stream));
+				idFactory));
 		return fix;
 	}
 

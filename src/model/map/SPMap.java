@@ -33,12 +33,10 @@ public class SPMap extends XMLWritableImpl implements IMap {
 	 * @param ver the map version
 	 * @param rows the number of rows
 	 * @param cols the number of columns
-	 * @param fileName the file this was loaded from
 	 */
-	public SPMap(final int ver, final int rows, final int cols,
-			final String fileName) {
-		super(fileName);
-		tiles = new TileCollection(fileName);
+	public SPMap(final int ver, final int rows, final int cols) {
+		super();
+		tiles = new TileCollection();
 		players = new PlayerCollection();
 		myRows = rows;
 		myCols = cols;
@@ -196,15 +194,6 @@ public class SPMap extends XMLWritableImpl implements IMap {
 		return equals(other) ? 0 : hashCode() - other.hashCode();
 	}
 
-	/**
-	 * @param fileName the name of the file this should be written to.
-	 */
-	@Override
-	public void setFile(final String fileName) {
-		super.setFile(fileName);
-		players.setFileOnChildren(fileName);
-		tiles.setFileOnChildren(fileName);
-	}
 	/**
 	 * @return the collection of tiles
 	 */

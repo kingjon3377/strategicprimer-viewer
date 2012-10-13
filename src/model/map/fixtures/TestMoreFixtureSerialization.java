@@ -55,16 +55,16 @@ public final class TestMoreFixtureSerialization extends
 	public void testGroveSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("First test of Grove serialization, reflection",
-				new Grove(true, true, "firstGrove", 1, FAKE_FILENAME),
+				new Grove(true, true, "firstGrove", 1),
 				Grove.class);
 		assertSerialization("Second test of Grove serialization, reflection",
-				new Grove(true, false, "secondGrove", 2, FAKE_FILENAME),
+				new Grove(true, false, "secondGrove", 2),
 				Grove.class);
 		assertSerialization("Third test of Grove serialization, reflection",
-				new Grove(false, true, "thirdGrove", 3, FAKE_FILENAME),
+				new Grove(false, true, "thirdGrove", 3),
 				Grove.class);
 		assertSerialization("Fourth test of Grove serialization, reflection",
-				new Grove(false, false, "four", 4, FAKE_FILENAME), Grove.class);
+				new Grove(false, false, "four", 4), Grove.class);
 		assertUnwantedChild(
 				"<grove wild=\"true\" kind=\"kind\"><troll /></grove>",
 				Grove.class, false);
@@ -97,17 +97,13 @@ public final class TestMoreFixtureSerialization extends
 	public void testMeadowSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("First test of Meadow serialization, reflection",
-				new Meadow("firstMeadow", true, true, 1, FieldStatus.Fallow,
-						FAKE_FILENAME), Meadow.class);
+				new Meadow("firstMeadow", true, true, 1, FieldStatus.Fallow), Meadow.class);
 		assertSerialization("Second test of Meadow serialization, reflection",
-				new Meadow("secondMeadow", true, false, 2, FieldStatus.Seeding,
-						FAKE_FILENAME), Meadow.class);
+				new Meadow("secondMeadow", true, false, 2, FieldStatus.Seeding), Meadow.class);
 		assertSerialization("Third test of Meadow serialization, reflection",
-				new Meadow("three", false, true, 3, FieldStatus.Growing,
-						FAKE_FILENAME), Meadow.class);
+				new Meadow("three", false, true, 3, FieldStatus.Growing), Meadow.class);
 		assertSerialization("Fourth test of Meadow serialization, reflection",
-				new Meadow("four", false, false, 4, FieldStatus.Bearing,
-						FAKE_FILENAME), Meadow.class);
+				new Meadow("four", false, false, 4, FieldStatus.Bearing), Meadow.class);
 		assertUnwantedChild(
 				"<meadow kind=\"flax\" cultivated=\"false\"><troll /></meadow>",
 				Meadow.class, false);
@@ -133,15 +129,15 @@ public final class TestMoreFixtureSerialization extends
 	public void testMineSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("First test of Mine serialization, reflection",
-				new Mine("one", TownStatus.Active, 1, FAKE_FILENAME),
+				new Mine("one", TownStatus.Active, 1),
 				Mine.class);
 		assertSerialization("Second test of Mine serialization, reflection",
-				new Mine("two", TownStatus.Abandoned, 2, FAKE_FILENAME),
+				new Mine("two", TownStatus.Abandoned, 2),
 				Mine.class);
 		assertSerialization("Third test of Mine serialization, reflection",
-				new Mine("three", TownStatus.Burned, 3, FAKE_FILENAME),
+				new Mine("three", TownStatus.Burned, 3),
 				Mine.class);
-		final Mine four = new Mine("four", TownStatus.Ruined, 4, FAKE_FILENAME);
+		final Mine four = new Mine("four", TownStatus.Ruined, 4);
 		assertSerialization("Fourth test of Mine serialization, reflection",
 				four, Mine.class);
 		final String oldKindProperty = "product"; // NOPMD
@@ -177,8 +173,8 @@ public final class TestMoreFixtureSerialization extends
 	public void testShrubSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("First test of Shrub serialization, reflection",
-				new Shrub("one", 1, FAKE_FILENAME), Shrub.class);
-		final Shrub two = new Shrub("two", 2, FAKE_FILENAME);
+				new Shrub("one", 1), Shrub.class);
+		final Shrub two = new Shrub("two", 2);
 		assertSerialization("Second test of Shrub serialization, reflection",
 				two, Shrub.class);
 		final String oldKindProperty = "shrub"; // NOPMD
@@ -236,17 +232,14 @@ public final class TestMoreFixtureSerialization extends
 	public void testVillageSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final TownStatus status : TownStatus.values()) {
-			final Village one = new Village(status, "villageOne", 1, // NOPMD
-					FAKE_FILENAME);
+			final Village one = new Village(status, "villageOne", 1);
 			assertSerialization("First Village serialization test, " + status,
 					one, Village.class);
-			final Village two = new Village(status, "villageTwo", 2, // NOPMD
-					FAKE_FILENAME);
+			final Village two = new Village(status, "villageTwo", 2);
 			assertSerialization("2nd Village serialization test,  " + status,
 					two, Village.class);
 		}
-		final Village three = new Village(TownStatus.Abandoned, "", 3,
-				FAKE_FILENAME);
+		final Village three = new Village(TownStatus.Abandoned, "", 3);
 		assertMissingPropertyDeserialization(
 				"Serialization of village with no or empty name does The Right Thing",
 				three, createSerializedForm(three, true), Village.class,
@@ -282,8 +275,8 @@ public final class TestMoreFixtureSerialization extends
 				"<unit owner=\"1\" kind=\"\" name=\"name\" id=\"0\" />",
 				Unit.class, KIND_PROPERTY, true);
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
-		final Unit one = new Unit(new Player(1, "", FAKE_FILENAME), "unitType",
-				"unitName", 1, FAKE_FILENAME);
+		final Unit one = new Unit(new Player(1, ""), "unitType",
+				"unitName", 1);
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
@@ -299,17 +292,15 @@ public final class TestMoreFixtureSerialization extends
 				NAME_PROPERTY, true);
 		assertSerialization(
 				"Deserialize unit with no kind properly, reflection", new Unit(
-						new Player(2, "", FAKE_FILENAME), "", NAME_PROPERTY, 2,
-						FAKE_FILENAME), Unit.class, new Warning(
+						new Player(2, ""), "", NAME_PROPERTY, 2), Unit.class, new Warning(
 						Warning.Action.Ignore));
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no owner properly", new Unit(new Player(
-						-1, "", FAKE_FILENAME), "kind", "unitThree", 3,
-						FAKE_FILENAME),
+						-1, ""), "kind", "unitThree", 3),
 				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />",
 				Unit.class, "owner");
-		final Unit four = new Unit(new Player(3, "", FAKE_FILENAME),
-				"unitKind", "", 4, FAKE_FILENAME);
+		final Unit four = new Unit(new Player(3, ""),
+				"unitKind", "", 4);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no name properly", four,
 				createSerializedForm(four, true), Unit.class, NAME_PROPERTY);
@@ -334,18 +325,17 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testUnitMemberSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final Unit one = new Unit(new Player(1, "", FAKE_FILENAME), "unitType",
-				"unitName", 1, FAKE_FILENAME);
-		one.addMember(new Animal("animal", false, true, "wild", 2, FAKE_FILENAME));
+		final Unit one = new Unit(new Player(1, ""), "unitType",
+				"unitName", 1);
+		one.addMember(new Animal("animal", false, true, "wild", 2));
 		assertSerialization("Unit can have an animal as a member", one, Unit.class);
-		one.addMember(new Worker("worker", "human", FAKE_FILENAME, 3));
+		one.addMember(new Worker("worker", "human", 3));
 		assertSerialization("Unit can have a worker as a member", one, Unit.class);
-		one.addMember(new Worker("second", "elf", FAKE_FILENAME, 4, new Job("job", 0, FAKE_FILENAME,
-				new Skill("skill", 1, 2, FAKE_FILENAME))));
+		one.addMember(new Worker("second", "elf", 4, new Job("job", 0, new Skill("skill", 1, 2))));
 		assertSerialization("Worker can have jobs", one, Unit.class);
 		assertForwardDeserialization(
 				"Explicit specification of default race works", new Worker(
-						"third", "human", FAKE_FILENAME, 5),
+						"third", "human", 5),
 				"<worker name=\"third\" race=\"human\" id=\"5\" />",
 				Worker.class);
 	}

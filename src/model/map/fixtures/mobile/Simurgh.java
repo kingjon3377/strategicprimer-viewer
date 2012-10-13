@@ -14,10 +14,9 @@ import model.map.fixtures.UnitMember;
 public class Simurgh extends XMLWritableImpl implements MobileFixture, HasImage, UnitMember {
 	/**
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Simurgh(final int idNum, final String fileName) {
-		super(fileName);
+	public Simurgh(final int idNum) {
+		super();
 		id = idNum;
 	}
 

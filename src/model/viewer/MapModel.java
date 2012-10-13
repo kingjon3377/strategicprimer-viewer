@@ -78,8 +78,8 @@ public final class MapModel implements PropertyChangeSource {
 				newMap.getVersion());
 		map = newMap;
 		setSecondaryMap(new MapView(new SPMap(map.getVersion(), map.rows(),
-				map.cols(), ""), map.getPlayers().getCurrentPlayer()
-				.getPlayerId(), map.getCurrentTurn(), ""));
+				map.cols()), map.getPlayers().getCurrentPlayer()
+				.getPlayerId(), map.getCurrentTurn()));
 		// TODO: Perhaps clearSelection() instead of setting to (-1, -1)?
 		setSelection(PointFactory.point(-1, -1));
 		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0,
@@ -195,8 +195,8 @@ public final class MapModel implements PropertyChangeSource {
 	public void clearSelection() {
 		final Tile oldSelection = selTile;
 		final Tile oldSecSelection = secondTile;
-		selTile = new Tile(-1, -1, TileType.NotVisible, "");
-		secondTile = new Tile(-1, -1, TileType.NotVisible, "");
+		selTile = new Tile(-1, -1, TileType.NotVisible);
+		secondTile = new Tile(-1, -1, TileType.NotVisible);
 		pcs.firePropertyChange("tile", oldSelection, selTile);
 		pcs.firePropertyChange("secondary-tile", oldSecSelection, secondTile);
 	}

@@ -18,7 +18,6 @@ import model.map.fixtures.towns.TownStatus;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for towns.
@@ -53,9 +52,6 @@ public class TownReader implements INodeHandler<TownEvent> {
 				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
 						element, "name", ""), getOrGenerateID(element, warner,
 						idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
 		return fix;
 	}
 

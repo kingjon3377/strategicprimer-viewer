@@ -60,7 +60,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 				players.getPlayer(Integer.parseInt(ensureNumeric(getParameter(
 						element, "owner", "-1")))), parseKind(element, warner),
 				getParameter(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory), getFile(stream));
+						warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				retval.addMember(parseChild(event.asStartElement(), stream, players, idFactory, warner));
@@ -154,12 +154,11 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Unit obj, final String file, final int indent) throws IOException {
+	public void write(final Writer out, final Unit obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<unit owner=\"");
 		out.append(Integer.toString(obj.getOwner().getPlayerId()));
@@ -177,7 +176,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
 			for (final UnitMember member : obj) {
-				CompactReaderAdapter.ADAPTER.write(out, member, file, indent + 1);
+				CompactReaderAdapter.ADAPTER.write(out, member, indent + 1);
 			}
 			out.append(indent(indent));
 			out.append("</unit>\n");

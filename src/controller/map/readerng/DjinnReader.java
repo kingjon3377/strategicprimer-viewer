@@ -43,8 +43,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Djinn fix = new Djinn(
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+				getOrGenerateID(element, warner, idFactory));
 		return fix;
 	}
 

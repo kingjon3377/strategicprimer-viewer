@@ -13,7 +13,7 @@ import java.util.Map;
  *
  */
 public class PlayerCollection implements Iterable<Player>,
-		Subsettable<PlayerCollection>, HasChildren {
+		Subsettable<PlayerCollection> {
 	/**
 	 * The collection this class wraps.
 	 */
@@ -36,7 +36,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 */
 	public Player getPlayer(final int player) {
 		return players.containsKey(Integer.valueOf(player)) ? players
-				.get(Integer.valueOf(player)) : new Player(player, "", "");
+				.get(Integer.valueOf(player)) : new Player(player, "");
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class PlayerCollection implements Iterable<Player>,
 				return player; // NOPMD
 			}
 		}
-		return new Player(-1, "", "");
+		return new Player(-1, "");
 	}
 
 	/**
@@ -108,17 +108,5 @@ public class PlayerCollection implements Iterable<Player>,
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Set all children's file property to the specified value, recursively.
-	 *
-	 * @param value the value to set
-	 */
-	@Override
-	public void setFileOnChildren(final String value) {
-		for (final Player player : players.values()) {
-			player.setFile(value);
-		}
 	}
 }

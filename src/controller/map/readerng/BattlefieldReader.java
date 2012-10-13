@@ -16,7 +16,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Battlefields.
@@ -47,9 +46,6 @@ public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 		final BattlefieldEvent fix = new BattlefieldEvent(
 				Integer.parseInt(getAttribute(element, "dc")), getOrGenerateID(
 						element, warner, idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
 		return fix;
 	}
 

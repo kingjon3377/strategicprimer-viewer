@@ -43,7 +43,7 @@ public class PhoenixReader implements INodeHandler<Phoenix> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Phoenix fix = new Phoenix(getOrGenerateID(element, warner,
-				idFactory), XMLHelper.getFile(stream));
+				idFactory));
 		return fix;
 	}
 

@@ -35,12 +35,12 @@ public class ResolutionDecreaseConverter {
 		checkRequirements(old);
 		final int newRows = old.rows() / 2;
 		final int newCols = old.cols() / 2;
-		final SPMap newMap = new SPMap(2, newRows, newCols, old.getFile());
+		final SPMap newMap = new SPMap(2, newRows, newCols);
 		for (final Player player : old.getPlayers()) {
 			newMap.addPlayer(player);
 		}
 		final MapView retval = new MapView(newMap, newMap.getPlayers()
-				.getCurrentPlayer().getPlayerId(), 0, old.getFile());
+				.getCurrentPlayer().getPlayerId(), 0);
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				retval.getMap().addTile(
@@ -83,8 +83,7 @@ public class ResolutionDecreaseConverter {
 		final Tile retval = new Tile(upperLeft.getLocation().row / 2,
 				upperLeft.getLocation().col / 2, consensus(
 						upperLeft.getTerrain(), upperRight.getTerrain(),
-						lowerLeft.getTerrain(), lowerRight.getTerrain()),
-				upperLeft.getFile());
+						lowerLeft.getTerrain(), lowerRight.getTerrain()));
 		addAllFixtures(upperLeft, retval);
 		addAllFixtures(upperRight, retval);
 		addAllFixtures(lowerLeft, retval);

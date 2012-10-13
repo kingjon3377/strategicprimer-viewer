@@ -13,11 +13,9 @@ public class Skill extends XMLWritableImpl {
 	 * @param skillName the name of the skill
 	 * @param skillLevel how many levels the worker has in the skill
 	 * @param time how many hours of training or experience the worker has gained since last gaining a level.
-	 * @param file the file this was loaded from
 	 */
-	public Skill(final String skillName, final int skillLevel, final int time,
-			final String file) {
-		super(file);
+	public Skill(final String skillName, final int skillLevel, final int time) {
+		super();
 		name = skillName;
 		level = skillLevel;
 		hours = time;

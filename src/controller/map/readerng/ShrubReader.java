@@ -45,7 +45,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 		spinUntilEnd(element.getName(), stream);
 		final Shrub fix = new Shrub(getAttributeWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
-				idFactory), XMLHelper.getFile(stream));
+				idFactory));
 		return fix;
 	}
 

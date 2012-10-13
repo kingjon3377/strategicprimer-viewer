@@ -45,7 +45,7 @@ public class GroundReader implements INodeHandler<Ground> {
 		spinUntilEnd(element.getName(), stream);
 		final Ground fix = new Ground(getAttributeWithDeprecatedForm(element,
 				"kind", "ground", warner), Boolean.parseBoolean(getAttribute(
-				element, "exposed")), XMLHelper.getFile(stream));
+				element, "exposed")));
 		return fix;
 	}
 

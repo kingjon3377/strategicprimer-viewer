@@ -65,7 +65,6 @@ public final class ConverterDriver {
 				SystemOut.SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
 				final MapView map = CONV.convert(old);
-				map.setFile(newFilename);
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.println(newFilename);
 				new MapReaderAdapter().write(newFilename, map); // NOPMD

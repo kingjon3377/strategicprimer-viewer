@@ -40,7 +40,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Mountain(XMLHelper.getFile(stream));
+		return new Mountain();
 	}
 
 	/**

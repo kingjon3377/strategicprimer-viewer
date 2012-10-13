@@ -16,7 +16,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Stones.
@@ -50,9 +49,6 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 								"stone", warner)), Integer.parseInt(XMLHelper
 						.getAttribute(element, "dc")), getOrGenerateID(element,
 						warner, idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
 		return fix;
 	}
 

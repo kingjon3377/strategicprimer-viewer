@@ -1,6 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
@@ -8,7 +7,6 @@ import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -59,7 +57,7 @@ public class UnitReader implements INodeHandler<Unit> {
 				players.getPlayer(Integer.parseInt(ensureNumeric(getAttribute(
 						element, "owner", "-1")))), parseKind(element, warner),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory), XMLHelper.getFile(stream));
+						warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
@@ -145,10 +143,8 @@ public class UnitReader implements INodeHandler<Unit> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
-		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
-		tagMap.put(obj.getFile(), retval);
 		for (final UnitMember member : obj) {
-			ReaderAdapter.ADAPTER.addChild(tagMap, member, retval);
+			retval.addChild(ReaderAdapter.ADAPTER.write(member));
 		}
 		return retval;
 	}

@@ -120,19 +120,19 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case ForestType:
 			retval = new Forest(getParameter(element, "kind"),
-					hasParameter(element, "rows"), getFile(stream));
+					hasParameter(element, "rows"));
 			break;
 		case HillType:
-			retval = new Hill(getOrGenerateID(element, warner, idFactory), getFile(stream));
+			retval = new Hill(getOrGenerateID(element, warner, idFactory));
 			break;
 		case MountainType:
-			retval = new Mountain(getFile(stream));
+			retval = new Mountain();
 			break;
 		case OasisType:
-			retval = new Oasis(getOrGenerateID(element, warner, idFactory), getFile(stream));
+			retval = new Oasis(getOrGenerateID(element, warner, idFactory));
 			break;
 		case SandbarType:
-			retval = new Sandbar(getOrGenerateID(element, warner, idFactory), getFile(stream));
+			retval = new Sandbar(getOrGenerateID(element, warner, idFactory));
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
@@ -144,13 +144,11 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TerrainFixture obj, final String file,
-			final int indent) throws IOException {
+	public void write(final Writer out, final TerrainFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof Mountain) {
 			out.append("<mountain />\n");

@@ -16,11 +16,9 @@ public class MapView extends XMLWritableImpl implements IMap {
 	 * @param wrapped the map this wraps
 	 * @param curPlayer the current player's number
 	 * @param curTurn the current turn
-	 * @param filename the file this is loaded from
 	 */
-	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn,
-			final String filename) {
-		super(filename);
+	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn) {
+		super();
 		map = wrapped;
 		player = map.getPlayers().getPlayer(curPlayer);
 		player.setCurrent(true);
@@ -39,15 +37,6 @@ public class MapView extends XMLWritableImpl implements IMap {
 	 * The current turn.
 	 */
 	private int turn;
-
-	/**
-	 * @param origFile the file this view was read from
-	 */
-	@Override
-	public void setFile(final String origFile) {
-		super.setFile(origFile);
-		map.setFile(origFile);
-	}
 
 	/**
 	 * Test whether another map or map view is a subset of this one. TODO: Check

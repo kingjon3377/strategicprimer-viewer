@@ -44,11 +44,10 @@ public class Fortress extends XMLWritableImpl implements HasImage,
 	 * @param fortOwner the player that owns the fortress
 	 * @param fortName the name of the fortress
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
-			final int idNum, final String fileName) {
-		super(fileName);
+			final int idNum) {
+		super();
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<Unit>();

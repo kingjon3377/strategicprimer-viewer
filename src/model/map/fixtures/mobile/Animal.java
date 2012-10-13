@@ -52,11 +52,10 @@ public class Animal extends XMLWritableImpl implements MobileFixture, HasImage, 
 	 * @param talks whether this is a talking animal.
 	 * @param dStatus domestication status
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
 	public Animal(final String animal, final boolean tracks,
-			final boolean talks, final String dStatus, final int idNum, final String fileName) {
-		super(fileName);
+			final boolean talks, final String dStatus, final int idNum) {
+		super();
 		kind = animal;
 		traces = tracks;
 		talking = talks;

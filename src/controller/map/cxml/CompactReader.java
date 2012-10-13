@@ -35,10 +35,9 @@ public interface CompactReader<T extends XMLWritable> {
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems.
 	 */
-	void write(Writer out, T obj, String file, int indent) throws IOException;
+	void write(Writer out, T obj, int indent) throws IOException;
 
 }

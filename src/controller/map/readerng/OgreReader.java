@@ -42,9 +42,7 @@ public class OgreReader implements INodeHandler<Ogre> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Ogre fix = new Ogre(getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
-		return fix;
+		return new Ogre(getOrGenerateID(element, warner, idFactory));
 	}
 
 	/**

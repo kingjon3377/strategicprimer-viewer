@@ -43,7 +43,7 @@ public class SphinxReader implements INodeHandler<Sphinx> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Sphinx fix = new Sphinx(getOrGenerateID(element, warner,
-				idFactory), XMLHelper.getFile(stream));
+				idFactory));
 		return fix;
 	}
 

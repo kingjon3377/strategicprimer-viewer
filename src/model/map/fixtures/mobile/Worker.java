@@ -22,13 +22,12 @@ public class Worker extends XMLWritableImpl implements UnitMember, Iterable<Job>
 	/**
 	 * Constructor.
 	 * @param wName the worker's name
-	 * @param file the file the worker was loaded from
 	 * @param workerRace the worker's race
 	 * @param idNum the ID number of the worker
 	 * @param jobs the Jobs the worker is trained in
 	 */
-	public Worker(final String wName, final String workerRace, final String file, final int idNum, final Job... jobs) {
-		super(file);
+	public Worker(final String wName, final String workerRace, final int idNum, final Job... jobs) {
+		super();
 		name = wName;
 		id = idNum;
 		race = workerRace;

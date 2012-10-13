@@ -68,7 +68,7 @@ public final class TestExplorationRunner {
 	public void testGetPrimaryRock() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
 		assertEquals("primary rock test",
-				runner.getPrimaryRock(new Tile(0, 0, TileType.Tundra, "")),
+				runner.getPrimaryRock(new Tile(0, 0, TileType.Tundra)),
 				"primary_rock_test");
 	}
 
@@ -89,11 +89,10 @@ public final class TestExplorationRunner {
 				"temperate_major_test"));
 		assertEquals(
 				"primary tree test for boreal forest",
-				runner.getPrimaryTree(new Tile(0, 0, TileType.BorealForest, "")),
+				runner.getPrimaryTree(new Tile(0, 0, TileType.BorealForest)),
 				"boreal_major_test");
 		assertEquals("primary tree test for temperate forest",
-				runner.getPrimaryTree(new Tile(0, 0, TileType.TemperateForest,
-						"")), "temperate_major_test");
+				runner.getPrimaryTree(new Tile(0, 0, TileType.TemperateForest)), "temperate_major_test");
 	}
 
 	/**
@@ -103,7 +102,7 @@ public final class TestExplorationRunner {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalGetPrimaryTree() throws MissingTableException {
-		runner.getPrimaryTree(new Tile(0, 0, TileType.Tundra, ""));
+		runner.getPrimaryTree(new Tile(0, 0, TileType.Tundra));
 		fail("gave a primary tree for non-forest");
 	}
 
@@ -121,11 +120,11 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		assertEquals("first table", runner.consultTable(TEST_TABLE_ONE,
-				new Tile(0, 0, TileType.Tundra, "")), "test_one");
+				new Tile(0, 0, TileType.Tundra)), "test_one");
 		assertEquals("second table", runner.consultTable(TEST_TABLE_TWO,
-				new Tile(0, 0, TileType.Tundra, "")), "test_two");
+				new Tile(0, 0, TileType.Tundra)), "test_two");
 		assertEquals("third table", runner.consultTable(TEST_TABLE_THREE,
-				new Tile(0, 0, TileType.Tundra, "")), TEST_THREE);
+				new Tile(0, 0, TileType.Tundra)), TEST_THREE);
 	}
 
 	/**
@@ -147,16 +146,16 @@ public final class TestExplorationRunner {
 		runner.loadTable("test_table_four", new ConstantTable(
 				"_ #test_table_one"));
 		assertEquals("two levels of recursion", runner.recursiveConsultTable(
-				TEST_TABLE_ONE, new Tile(0, 0, TileType.Tundra, "")),
+				TEST_TABLE_ONE, new Tile(0, 0, TileType.Tundra)),
 				"( ( test_three ) )");
 		assertEquals("one level of recursion", runner.recursiveConsultTable(
-				TEST_TABLE_TWO, new Tile(0, 0, TileType.Tundra, "")),
+				TEST_TABLE_TWO, new Tile(0, 0, TileType.Tundra)),
 				"( test_three )");
 		assertEquals("no recursion", runner.recursiveConsultTable(
-				TEST_TABLE_THREE, new Tile(0, 0, TileType.Tundra, "")),
+				TEST_TABLE_THREE, new Tile(0, 0, TileType.Tundra)),
 				TEST_THREE);
 		assertEquals("one-sided split", runner.recursiveConsultTable(
-				"test_table_four", new Tile(0, 0, TileType.Plains, "")),
+				"test_table_four", new Tile(0, 0, TileType.Plains)),
 				"_ ( ( test_three ) )");
 	}
 
@@ -174,16 +173,15 @@ public final class TestExplorationRunner {
 				"temperate_tree"));
 		assertEquals("defaultResults in non-forest",
 				"The primary rock type here is test_rock.\n",
-				runner.defaultResults(new Tile(0, 0, TileType.Tundra, "")));
+				runner.defaultResults(new Tile(0, 0, TileType.Tundra)));
 		assertEquals(
 				"defaultResults in boreal forest",
 				"The primary rock type here is test_rock.\nThe main kind of tree is boreal_tree.\n",
-				runner.defaultResults(new Tile(0, 0, TileType.BorealForest, "")));
+				runner.defaultResults(new Tile(0, 0, TileType.BorealForest)));
 		assertEquals("defaultResults in temperate forest",
 				"The primary rock type here is test_rock.\n"
 						+ "The main kind of tree is temperate_tree.\n",
-				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest,
-						"")));
+				runner.defaultResults(new Tile(0, 0, TileType.TemperateForest)));
 	}
 
 	/**

@@ -57,6 +57,6 @@ public class CompactXMLWriter implements SPWriter {
 	 * @throws IOException on I/O error
 	 */
 	public void writeObject(final Writer out, final XMLWritable obj) throws IOException {
-		CompactReaderAdapter.ADAPTER.write(out, obj, obj.getFile(), 0);
+		CompactReaderAdapter.ADAPTER.write(out, obj, 0);
 	}
 }

@@ -1,11 +1,8 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -80,7 +77,7 @@ public class JobReader implements INodeHandler<Job> {
 		}
 		return new Job(XMLHelper.getAttribute(element, "name"),
 				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
-				XMLHelper.getFile(stream), skills.toArray(new Skill[skills
+				skills.toArray(new Skill[skills
 						.size()]));
 	}
 
@@ -96,10 +93,8 @@ public class JobReader implements INodeHandler<Job> {
 				"job");
 		retval.addAttribute("name", obj.getName());
 		retval.addAttribute("level", Integer.toString(obj.getLevel()));
-		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
-		tagMap.put(obj.getFile(), retval);
 		for (final Skill skill : obj) {
-			ReaderAdapter.ADAPTER.addChild(tagMap, skill, retval);
+			retval.addChild(ReaderAdapter.ADAPTER.write(skill));
 		}
 		return retval;
 	}

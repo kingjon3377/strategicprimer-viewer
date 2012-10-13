@@ -14,10 +14,9 @@ import model.map.XMLWritableImpl;
 public class Sandbar extends XMLWritableImpl implements TerrainFixture, HasImage {
 	/**
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Sandbar(final int idNum, final String fileName) {
-		super(fileName);
+	public Sandbar(final int idNum) {
+		super();
 		id = idNum;
 	}
 

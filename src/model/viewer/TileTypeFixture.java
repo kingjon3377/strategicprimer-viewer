@@ -24,24 +24,6 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	private final TileType ttype;
 	/**
-	 * @return the empty string
-	 * @deprecated This class should only ever be in a FixtureListModel, so this method should never be called.
-	 */
-	@Deprecated
-	@Override
-	public String getFile() {
-		return "";
-	}
-	/**
-	 * @param file ignored
-	 * @deprecated This class should only ever be in a FixtureListModel, so this method should never be called.
-	 */
-	@Deprecated
-	@Override
-	public void setFile(final String file) {
-		// Do nothing
-	}
-	/**
 	 * @param obj another TileFixture
 	 * @return the result of a comparison
 	 * @deprecated This class should only ever be in a FixtureListModel, so this method should never be called.

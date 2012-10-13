@@ -33,11 +33,10 @@ public class Grove extends XMLWritableImpl implements HarvestableFixture,
 	 * @param cultivatedGrove whether the trees are cultivated
 	 * @param tree what kind of trees are in the grove
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
 	public Grove(final boolean fruit, final boolean cultivatedGrove,
-			final String tree, final int idNum, final String fileName) {
-		super(fileName);
+			final String tree, final int idNum) {
+		super();
 		orchard = fruit;
 		cultivated = cultivatedGrove;
 		kind = tree;

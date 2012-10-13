@@ -31,10 +31,9 @@ public class Forest extends XMLWritableImpl implements TerrainFixture, HasImage,
 	 *
 	 * @param kind what kind of trees dominate.
 	 * @param rowed whether the trees are in rows
-	 * @param fileName the file this was loaded from
 	 */
-	public Forest(final String kind, final boolean rowed, final String fileName) {
-		super(fileName);
+	public Forest(final String kind, final boolean rowed) {
+		super();
 		trees = kind;
 		rows = rowed;
 	}

@@ -54,8 +54,7 @@ public class GroveReader implements INodeHandler<Grove> {
 				"orchard".equalsIgnoreCase(element.getName().getLocalPart()),
 				cultivated,
 				getAttributeWithDeprecatedForm(element, "kind", "tree", warner),
-				getOrGenerateID(element, warner, idFactory), XMLHelper
-						.getFile(stream));
+				getOrGenerateID(element, warner, idFactory));
 		return fix;
 	}
 

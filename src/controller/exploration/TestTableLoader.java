@@ -50,7 +50,7 @@ public final class TestTableLoader {
 		try {
 			final EncounterTable result = loader.loadTable(reader);
 			assertEquals("loading quadrant table", ONE_STRING,
-					result.generateEvent(new Tile(0, 0, TileType.Tundra, "")));
+					result.generateEvent(new Tile(0, 0, TileType.Tundra)));
 			// TODO: somehow check that it got properly loaded, beyond this
 		} finally {
 			reader.close();
@@ -83,7 +83,7 @@ public final class TestTableLoader {
 			final EncounterTable result = loader.loadTable(reader);
 			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
-					result.generateEvent(new Tile(30, 30, TileType.Tundra, "")));
+					result.generateEvent(new Tile(30, 30, TileType.Tundra)));
 		} finally {
 			reader.close();
 		}
@@ -102,11 +102,11 @@ public final class TestTableLoader {
 		try {
 			final EncounterTable result = loader.loadTable(reader);
 			assertEquals("loading terrain table: tundra", ONE_STRING,
-					result.generateEvent(new Tile(30, 30, TileType.Tundra, "")));
+					result.generateEvent(new Tile(30, 30, TileType.Tundra)));
 			assertEquals("loading terrain table: plains", "two",
-					result.generateEvent(new Tile(15, 15, TileType.Plains, "")));
+					result.generateEvent(new Tile(15, 15, TileType.Plains)));
 			assertEquals("loading terrain table: ocean", "three",
-					result.generateEvent(new Tile(15, 15, TileType.Ocean, "")));
+					result.generateEvent(new Tile(15, 15, TileType.Ocean)));
 		} finally {
 			reader.close();
 		}
@@ -125,7 +125,7 @@ public final class TestTableLoader {
 		try {
 			final EncounterTable result = loader.loadTable(one);
 			assertEquals("loading constant table: first test", ONE_STRING,
-					result.generateEvent(new Tile(10, 5, TileType.Plains, "")));
+					result.generateEvent(new Tile(10, 5, TileType.Plains)));
 		} finally {
 			one.close();
 		}

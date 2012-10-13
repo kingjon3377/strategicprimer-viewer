@@ -43,8 +43,7 @@ public class PlayerReader implements INodeHandler<Player> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Player player = new Player(Integer.parseInt(getAttribute(element,
-				"number")), getAttribute(element, "code_name"),
-				XMLHelper.getFile(stream));
+				"number")), getAttribute(element, "code_name"));
 		return player;
 	}
 

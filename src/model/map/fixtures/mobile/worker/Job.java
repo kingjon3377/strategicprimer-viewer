@@ -16,11 +16,10 @@ public class Job extends XMLWritableImpl implements Iterable<Skill> {
 	 * Constructor.
 	 * @param jobName the name of the Job
 	 * @param levels how many levels the worker has in the Job.
-	 * @param file the file this was loaded from
 	 * @param skills the worker's level in the various skills associated with the job.
 	 */
-	public Job(final String jobName, final int levels, final String file, final Skill... skills) {
-		super(file);
+	public Job(final String jobName, final int levels, final Skill... skills) {
+		super();
 		name = jobName;
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));

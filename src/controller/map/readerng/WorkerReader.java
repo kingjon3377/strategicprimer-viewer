@@ -1,10 +1,7 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
-
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -56,7 +53,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 		final Worker retval = new Worker(
 				XMLHelper.getAttribute(element, "name"),
 				XMLHelper.getAttribute(element, "race", "human"),
-				XMLHelper.getFile(stream), XMLHelper.getOrGenerateID(element,
+				XMLHelper.getOrGenerateID(element,
 						warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -90,10 +87,8 @@ public class WorkerReader implements INodeHandler<Worker> {
 			retval.addAttribute("race", obj.getRace());
 		}
 		retval.addAttribute("id", Integer.toString(obj.getID()));
-		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
-		tagMap.put(obj.getFile(), retval);
 		for (Job job : obj) {
-			ReaderAdapter.ADAPTER.addChild(tagMap, job, retval);
+			retval.addChild(ReaderAdapter.ADAPTER.write(job));
 		}
 		return retval;
 	}

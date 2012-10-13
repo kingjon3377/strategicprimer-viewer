@@ -23,10 +23,9 @@ public class Dragon extends XMLWritableImpl implements MobileFixture, HasImage, 
 	 *
 	 * @param dKind the kind of dragon
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Dragon(final String dKind, final int idNum, final String fileName) {
-		super(fileName);
+	public Dragon(final String dKind, final int idNum) {
+		super();
 		kind = dKind;
 		id = idNum;
 	}

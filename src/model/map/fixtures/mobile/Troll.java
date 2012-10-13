@@ -16,10 +16,9 @@ public class Troll extends XMLWritableImpl implements MobileFixture, HasImage, U
 	 * Constructor.
 	 *
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Troll(final int idNum, final String fileName) {
-		super(fileName);
+	public Troll(final int idNum) {
+		super();
 		id = idNum;
 	}
 

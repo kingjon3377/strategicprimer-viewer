@@ -13,7 +13,6 @@ import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for tiles, including rivers.
@@ -69,22 +68,17 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 		}
 		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
 				Integer.parseInt(getParameter(element, "turn", "-1")));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
 		return fix;
 	}
 	/**
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TextFixture obj, final String file,
-			final int indent) throws IOException {
+	public void write(final Writer out, final TextFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj.getTurn() == -1) {
 			out.append("<text>");

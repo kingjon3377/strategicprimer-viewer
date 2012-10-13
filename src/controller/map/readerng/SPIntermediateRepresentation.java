@@ -3,10 +3,8 @@ package controller.map.readerng;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import util.EqualsAny;
@@ -227,12 +225,5 @@ public class SPIntermediateRepresentation {
 	@Override
 	public String toString() {
 		return "SPIntermediateRepresentation";
-	}
-	/**
-	 * This is to fix a lot of line-length warnings without too  much duplicated code.
-	 * @return a SPIR hash-map.
-	 */
-	public static Map<String, SPIntermediateRepresentation> createTagMap() {
-		return new HashMap<String, SPIntermediateRepresentation>();
 	}
 }

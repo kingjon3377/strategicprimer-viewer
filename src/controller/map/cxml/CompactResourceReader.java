@@ -166,63 +166,58 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		case BattlefieldType:
 			retval = new BattlefieldEvent(getDC(element), getOrGenerateID(
 					element, warner, idFactory));
-			retval.setFile(getFile(stream));
 			break;
 		case CacheType:
 			retval = new CacheFixture(getParameter(element, KIND_PARAM),
 					getParameter(element, "contents"), getOrGenerateID(element,
-							warner, idFactory), getFile(stream));
+							warner, idFactory));
 			break;
 		case CaveType:
 			retval = new CaveEvent(getDC(element), getOrGenerateID(element, warner, idFactory));
-			retval.setFile(getFile(stream));
 			break;
 		case FieldType:
 			retval = createMeadow(element, true,
 					getOrGenerateID(element, warner, idFactory),
-					getFile(stream), warner);
+					warner);
 			break;
 		case GroveType:
 			retval = createGrove(element, false,
 					getOrGenerateID(element, warner, idFactory),
-					getFile(stream), warner);
+					warner);
 			break;
 		case MeadowType:
 			retval = createMeadow(element, false,
 					getOrGenerateID(element, warner, idFactory),
-					getFile(stream), warner);
+					warner);
 			break;
 		case MineType:
 			retval = new Mine(
 					getParameterWithDeprecatedForm(element, KIND_PARAM, "product",
 							warner),
 					TownStatus.parseTownStatus(getParameter(element, STATUS_PARAM)),
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case MineralType:
 			retval = new MineralEvent(getParameterWithDeprecatedForm(
 					element, KIND_PARAM, "mineral", warner),
 					Boolean.parseBoolean(getParameter(element, "exposed")),
 					getDC(element), getOrGenerateID(element, warner, idFactory));
-			retval.setFile(getFile(stream));
 			break;
 		case OrchardType:
 			retval = createGrove(element, true,
 					getOrGenerateID(element, warner, idFactory),
-					getFile(stream), warner);
+					warner);
 			break;
 		case ShrubType:
 			retval = new Shrub(getParameterWithDeprecatedForm(element,
 					KIND_PARAM, "shrub", warner), getOrGenerateID(element, warner,
-					idFactory), getFile(stream));
+					idFactory));
 			break;
 		case StoneType:
 			retval = new StoneEvent(
 					StoneKind.parseStoneKind(getParameterWithDeprecatedForm(
 							element, KIND_PARAM, "stone", warner)), getDC(element),
 					getOrGenerateID(element, warner, idFactory));
-			retval.setFile(getFile(stream));
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
@@ -243,13 +238,12 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * @param element the tag we're parsing
 	 * @param field whether this is a field (meadow otherwise)
 	 * @param idNum the ID number parsed or generated
-	 * @param file the file we're reading from
 	 * @param warner the Warning instance to use for warnings
 	 * @return the parsed Meadow object.
 	 * @throws SPFormatException on SP format problems
 	 */
 	private Meadow createMeadow(final StartElement element,
-			final boolean field, final int idNum, final String file, final Warning warner)
+			final boolean field, final int idNum, final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PARAM)) {
 			warner.warn(new MissingParameterException(element.getName()
@@ -259,26 +253,25 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		return new Meadow(getParameter(element, KIND_PARAM), field,
 				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)), idNum,
 				FieldStatus.parse(getParameter(element, STATUS_PARAM, FieldStatus
-						.random(idNum).toString())), file);
+						.random(idNum).toString())));
 	}
 	/**
 	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard' cases.
 	 * @param element the tag we're parsing
 	 * @param orchard whether this is an orchard, a grove otherwise
 	 * @param idNum the ID number parsed or generated
-	 * @param file the file we're reading from
 	 * @param warner the Warning instance to use for warnings
 	 * @return the parsed Grove object
 	 * @throws SPFormatException on SP format problems
 	 */
 	private Grove createGrove(final StartElement element,
-			final boolean orchard, final int idNum, final String file, final Warning warner)
+			final boolean orchard, final int idNum, final Warning warner)
 			throws SPFormatException {
 		return new Grove(
 				orchard,
 				isCultivated(element, warner),
 				getParameterWithDeprecatedForm(element, KIND_PARAM, "tree", warner),
-				idNum, file);
+				idNum);
 	}
 	/**
 	 * @param element a tag representing a grove or orchard
@@ -306,13 +299,11 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * Write an object to a stream. TODO: Some way of simplifying this?
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final HarvestableFixture obj, final String file,
-			final int indent) throws IOException {
+	public void write(final Writer out, final HarvestableFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof CacheFixture) {
 			out.append("<cache kind=\"");

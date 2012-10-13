@@ -17,7 +17,6 @@ import util.Pair;
 import util.Warning;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 /**
  * A reader for Minerals.
@@ -51,9 +50,6 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 						element, "exposed")), Integer.parseInt(getAttribute(
 						element, "dc")), getOrGenerateID(element, warner,
 						idFactory));
-		if (stream.iterator() instanceof IncludingIterator) {
-			fix.setFile(((IncludingIterator) stream.iterator()).getFile());
-		}
 		return fix;
 	}
 

@@ -11,14 +11,5 @@ package model.map;
  *
  */
 public interface XMLWritable {
-	/**
-	 * @return The name of the file this is to be written to.
-	 */
-	String getFile();
-
-	/**
-	 * @param file the name of the file this, and its children unless later
-	 *        specified otherwise, should be written to.
-	 */
-	void setFile(final String file);
+	// Marker interface
 }

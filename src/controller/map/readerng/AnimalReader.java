@@ -46,8 +46,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 				hasAttribute(element, "traces"),
 				Boolean.parseBoolean(getAttribute(element, "talking", "false")),
 				getAttribute(element, "status", "wild"),
-				getOrGenerateID(element, warner, idFactory), XMLHelper
-						.getFile(stream));
+				getOrGenerateID(element, warner, idFactory));
 		return fix;
 	}
 

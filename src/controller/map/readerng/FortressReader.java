@@ -3,12 +3,10 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
-import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static java.lang.Integer.parseInt;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -51,7 +49,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 		final Fortress fort = new Fortress(
 				players.getPlayer(parseInt(getAttribute(element, "owner", "-1"))),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory), XMLHelper.getFile(stream));
+						warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
@@ -104,10 +102,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 			retval.addAttribute("name", obj.name());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
-		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
-		tagMap.put(obj.getFile(), retval);
 		for (final Unit unit : obj.getUnits()) {
-			ReaderAdapter.ADAPTER.addChild(tagMap, unit, retval);
+			retval.addChild(ReaderAdapter.ADAPTER.write(unit));
 		}
 		return retval;
 	}

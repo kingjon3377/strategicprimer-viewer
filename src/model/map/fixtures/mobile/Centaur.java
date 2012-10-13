@@ -23,10 +23,9 @@ public class Centaur extends XMLWritableImpl implements MobileFixture, HasImage,
 	 *
 	 * @param centKind the kind of centaur
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Centaur(final String centKind, final int idNum, final String fileName) {
-		super(fileName);
+	public Centaur(final String centKind, final int idNum) {
+		super();
 		kind = centKind;
 		id = idNum;
 	}

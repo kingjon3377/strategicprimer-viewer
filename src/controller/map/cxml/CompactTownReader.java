@@ -96,7 +96,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		return new Village(TownStatus.parseTownStatus(getParameter(element,
 				"status")), getParameter(element, NAME_PARAM, ""), getOrGenerateID(
-				element, warner, idFactory), getFile(stream));
+				element, warner, idFactory));
 	}
 	/**
 	 * Parse a town, city, or fortification.
@@ -124,7 +124,6 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		} else {
 			retval = new FortificationEvent(status, size, dc, name, id);
 		}
-		retval.setFile(getFile(stream));
 		return retval;
 	}
 	/**
@@ -145,7 +144,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		final Fortress retval = new Fortress(players.getPlayer(Integer
 				.parseInt(getParameter(element, "owner", "-1"))), getParameter(
 				element, NAME_PARAM, ""), getOrGenerateID(element, warner,
-				idFactory), getFile(stream));
+				idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && "unit".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
 				retval.addUnit(CompactUnitReader.READER.read(
@@ -165,13 +164,11 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TownFixture obj, final String file,
-			final int indent) throws IOException {
+	public void write(final Writer out, final TownFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof AbstractTownEvent) {
 			writeAbstractTown(out, (AbstractTownEvent) obj);
@@ -198,7 +195,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			if (!((Fortress) obj).getUnits().isEmpty()) {
 				out.append('\n');
 				for (final Unit unit : ((Fortress) obj).getUnits()) {
-					CompactReaderAdapter.ADAPTER.write(out, unit, file, indent + 1);
+					CompactReaderAdapter.ADAPTER.write(out, unit, indent + 1);
 				}
 				out.append(indent(indent));
 			}

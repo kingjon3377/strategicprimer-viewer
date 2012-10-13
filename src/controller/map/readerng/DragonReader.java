@@ -44,8 +44,7 @@ public class DragonReader implements INodeHandler<Dragon> {
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
 		final Dragon fix = new Dragon(getAttribute(element, "kind"),
-				getOrGenerateID(element, warner, idFactory),
-				XMLHelper.getFile(stream));
+				getOrGenerateID(element, warner, idFactory));
 		return fix;
 	}
 

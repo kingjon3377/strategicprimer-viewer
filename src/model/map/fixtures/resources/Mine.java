@@ -20,11 +20,9 @@ public class Mine extends XMLWritableImpl implements HarvestableFixture,
 	 * @param mineral what mineral this produces
 	 * @param stat the status of the mine
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Mine(final String mineral, final TownStatus stat, final int idNum,
-			final String fileName) {
-		super(fileName);
+	public Mine(final String mineral, final TownStatus stat, final int idNum) {
+		super();
 		kind = mineral;
 		status = stat;
 		id = idNum;

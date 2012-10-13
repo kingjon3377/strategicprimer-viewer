@@ -24,10 +24,9 @@ public class Fairy extends XMLWritableImpl implements MobileFixture, HasImage,
 	 *
 	 * @param fKind the kind of fairy
 	 * @param idNum the ID number.
-	 * @param fileName the file this was loaded from
 	 */
-	public Fairy(final String fKind, final int idNum, final String fileName) {
-		super(fileName);
+	public Fairy(final String fKind, final int idNum) {
+		super();
 		kind = fKind;
 		id = idNum;
 	}

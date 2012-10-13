@@ -55,7 +55,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 		final Tile retval = new Tile(Integer.parseInt(getParameter(element, "row")),
 				Integer.parseInt(getParameter(element, "column")),
 				TileType.getTileType(getParameterWithDeprecatedForm(element,
-						"kind", "type", warner)), getFile(stream));
+						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName())) {
@@ -149,12 +149,11 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Tile obj, final String file, final int indent) throws IOException {
+	public void write(final Writer out, final Tile obj, final int indent) throws IOException {
 		if (!obj.isEmpty()) {
 			out.append(indent(indent));
 			out.append("<tile row=\"");
@@ -169,7 +168,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 			if (obj.iterator().hasNext()) {
 				out.append('\n');
 				for (final TileFixture fix : obj) {
-					CompactReaderAdapter.ADAPTER.write(out, fix, file, indent + 1);
+					CompactReaderAdapter.ADAPTER.write(out, fix, indent + 1);
 				}
 				out.append(indent(indent));
 			}

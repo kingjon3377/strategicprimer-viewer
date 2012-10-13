@@ -1,11 +1,9 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.SPIntermediateRepresentation.createTagMap;
 import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -57,8 +55,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		final SPMap map = new SPMap(Integer.parseInt(getAttribute(element,
 				"version", "1")),
 				Integer.parseInt(getAttribute(element, "rows")),
-				Integer.parseInt(getAttribute(element, "columns")),
-				XMLHelper.getFile(stream));
+				Integer.parseInt(getAttribute(element, "columns")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
@@ -150,21 +147,18 @@ public class SPMapReader implements INodeHandler<SPMap> {
 					Integer.toString(obj.getPlayers().getCurrentPlayer()
 							.getPlayerId()));
 		}
-		final Map<String, SPIntermediateRepresentation> tagMap = createTagMap();
-		tagMap.put(obj.getFile(), retval);
 		for (final Player player : obj.getPlayers()) {
-			ReaderAdapter.ADAPTER.addChild(tagMap, player, retval);
+			retval.addChild(ReaderAdapter.ADAPTER.write(player));
 		}
 		for (int i = 0; i < obj.rows(); i++) {
 			@SuppressWarnings("unchecked")
 			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(// NOPMD
 					"row", Pair.of("index", Integer.toString(i)));
-			tagMap.put(obj.getFile(), row);
 			for (int j = 0; j < obj.cols(); j++) {
 				final Tile tile = obj.getTile(PointFactory.point(i, j));
 				if (!tile.isEmpty()) {
 					retval.addChild(row);
-					ReaderAdapter.ADAPTER.addChild(tagMap, tile, row);
+					row.addChild(ReaderAdapter.ADAPTER.write(tile));
 				}
 			}
 		}

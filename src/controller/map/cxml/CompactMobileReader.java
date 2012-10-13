@@ -190,62 +190,50 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 					warner, idFactory);
 		case AnimalType:
 			retval = createAnimal(element,
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case CentaurType:
 			retval = new Centaur(getKind(element),
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case DjinnType:
-			retval = new Djinn(getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+			retval = new Djinn(getOrGenerateID(element, warner, idFactory));
 			break;
 		case DragonType:
 			retval = new Dragon(getKind(element),
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case FairyType:
 			retval = new Fairy(getKind(element),
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case GiantType:
 			retval = new Giant(getKind(element),
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case GriffinType:
 			retval = new Griffin(
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case MinotaurType:
 			retval = new Minotaur(getOrGenerateID(element, warner,
-					idFactory), getFile(stream));
+					idFactory));
 			break;
 		case OgreType:
-			retval = new Ogre(getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+			retval = new Ogre(getOrGenerateID(element, warner, idFactory));
 			break;
 		case PhoenixType:
 			retval = new Phoenix(
-					getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		case SimurghType:
-			retval = new Simurgh(getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+			retval = new Simurgh(getOrGenerateID(element, warner, idFactory));
 			break;
 		case SphinxType:
-			retval = new Sphinx(getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+			retval = new Sphinx(getOrGenerateID(element, warner, idFactory));
 			break;
 		case TrollType:
-			retval = new Troll(getOrGenerateID(element, warner, idFactory),
-					getFile(stream));
+			retval = new Troll(getOrGenerateID(element, warner, idFactory));
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
@@ -265,31 +253,27 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	 * Create an animal.
 	 * @param element the tag we're reading
 	 * @param id the ID number to give it
-	 * @param file the file it was loaded from
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
-	private Animal createAnimal(final StartElement element, final int id, // NOPMD
-			final String file) throws SPFormatException {
+	private Animal createAnimal(final StartElement element, final int id) throws SPFormatException {
 		return new Animal(
 				getKind(element),
 				hasParameter(element, "traces"),
 				Boolean.parseBoolean(getParameter(element, "talking", "false")),
-				getParameter(element, "status", "wild"), id, file);
+				getParameter(element, "status", "wild"), id);
 	}
 	/**
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final MobileFixture obj, final String file,
-			final int indent) throws IOException {
+	public void write(final Writer out, final MobileFixture obj, final int indent) throws IOException {
 		if (obj instanceof Unit) {
-			CompactUnitReader.READER.write(out, (Unit) obj, file, indent);
+			CompactUnitReader.READER.write(out, (Unit) obj, indent);
 		} else if (obj instanceof Animal) {
 			out.append(indent(indent));
 			out.append("<animal kind=\"");

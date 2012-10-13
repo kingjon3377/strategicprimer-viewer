@@ -61,8 +61,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 				"field".equalsIgnoreCase(element.getName().getLocalPart()),
 				Boolean.parseBoolean(getAttribute(element, "cultivated")), id,
 				FieldStatus.parse(getAttribute(element, STATUS_ATTR,
-						FieldStatus.random(id).toString())),
-				XMLHelper.getFile(stream));
+						FieldStatus.random(id).toString())));
 		return fix;
 	}
 

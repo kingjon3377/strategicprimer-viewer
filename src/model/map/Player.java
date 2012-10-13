@@ -21,10 +21,9 @@ public class Player extends XMLWritableImpl implements Comparable<Player> {
 	 *
 	 * @param idNum the player's number
 	 * @param name the player's code name
-	 * @param fileName the file this was loaded from
 	 */
-	public Player(final int idNum, final String name, final String fileName) {
-		super(fileName);
+	public Player(final int idNum, final String name) {
+		super();
 		playerID = idNum;
 		playerName = name;
 		setCurrent(false);

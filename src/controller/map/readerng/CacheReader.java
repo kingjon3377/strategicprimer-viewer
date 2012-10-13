@@ -46,7 +46,7 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 		final CacheFixture fix = new CacheFixture(
 				getAttribute(element, "kind"),
 				getAttribute(element, "contents"), getOrGenerateID(element,
-						warner, idFactory), XMLHelper.getFile(stream));
+						warner, idFactory));
 		return fix;
 	}
 

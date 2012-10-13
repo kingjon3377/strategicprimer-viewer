@@ -59,14 +59,14 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			final MapView retval = new MapView((SPMap) read(mapElement, stream, players,
 					warner, idFactory), Integer.parseInt(getParameter(element,
 					"current_player")), Integer.parseInt(getParameter(element,
-					"current_turn")), getFile(stream));
+					"current_turn")));
 			spinUntilEnd(element.getName(), stream);
 			return retval; // NOPMD: TODO: Perhaps split this into parseMap and parseView?
 		} else {
 			final SPMap retval = new SPMap(Integer.parseInt(getParameter(
 					element, "version", "1")), Integer.parseInt(getParameter(
 					element, "rows")), Integer.parseInt(getParameter(element,
-					"columns")), getFile(stream));
+					"columns")));
 			for (final XMLEvent event : stream) {
 				if (event.isStartElement()) {
 					parseChild(stream, warner, retval, event.asStartElement(), idFactory);
@@ -143,12 +143,11 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * Write an object to a stream.
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
-	 * @param file The file we're writing to.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final IMap obj, final String file, final int indent) throws IOException {
+	public void write(final Writer out, final IMap obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof MapView) {
 			out.append("<view current_player=\"");
@@ -156,22 +155,20 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			out.append("\" current_turn=\"");
 			out.append(Integer.toString(((MapView) obj).getCurrentTurn()));
 			out.append("\">\n");
-			CompactReaderAdapter.ADAPTER.write(out, ((MapView) obj).getMap(), file, indent + 1);
+			CompactReaderAdapter.ADAPTER.write(out, ((MapView) obj).getMap(), indent + 1);
 			out.append(indent(indent));
 			out.append("</view>\n");
 		} else if (obj instanceof SPMap) {
-			writeMap(out, (SPMap) obj, file, indent);
+			writeMap(out, (SPMap) obj, indent);
 		}
 	}
 	/**
 	 * @param out the stream to write to
 	 * @param obj the map to write
-	 * @param file the file we're writing to
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private void writeMap(final Writer out, final SPMap obj, final String file,
-			final int indent) throws IOException {
+	private void writeMap(final Writer out, final SPMap obj, final int indent) throws IOException {
 		out.append("<map version=\"");
 		out.append(Integer.toString(obj.getVersion()));
 		out.append("\" rows=\"");
@@ -184,7 +181,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 		}
 		out.append("\">\n");
 		for (Player player : obj.getPlayers()) {
-			CompactReaderAdapter.ADAPTER.write(out, player, file, indent + 1);
+			CompactReaderAdapter.ADAPTER.write(out, player, indent + 1);
 		}
 		for (int i = 0; i < obj.rows(); i++) {
 			boolean rowEmpty = true;
@@ -197,7 +194,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 					out.append("\">\n");
 					rowEmpty = false;
 				}
-				CompactReaderAdapter.ADAPTER.write(out, obj.getTile(PointFactory.point(i, j)), file, indent + 2);
+				CompactReaderAdapter.ADAPTER.write(out, obj.getTile(PointFactory.point(i, j)), indent + 2);
 			}
 			if (!rowEmpty) {
 				out.append(indent(indent + 1));
