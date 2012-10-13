@@ -150,13 +150,11 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Tile obj, final String file, final boolean inclusion,
-			final int indent) throws IOException {
+	public void write(final Writer out, final Tile obj, final String file, final int indent) throws IOException {
 		if (!obj.isEmpty()) {
 			out.append(indent(indent));
 			out.append("<tile row=\"");
@@ -171,7 +169,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 			if (obj.iterator().hasNext()) {
 				out.append('\n');
 				for (final TileFixture fix : obj) {
-					CompactReaderAdapter.ADAPTER.write(out, fix, file, inclusion, indent + 1);
+					CompactReaderAdapter.ADAPTER.write(out, fix, file, indent + 1);
 				}
 				out.append(indent(indent));
 			}

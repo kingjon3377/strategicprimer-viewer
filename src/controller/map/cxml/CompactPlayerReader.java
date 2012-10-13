@@ -63,13 +63,11 @@ public final class CompactPlayerReader extends AbstractCompactReader implements 
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Player obj, final String file, final boolean inclusion,
-			final int indent) throws IOException {
+	public void write(final Writer out, final Player obj, final String file, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<player number=\"");
 		out.append(Integer.toString(obj.getPlayerId()));

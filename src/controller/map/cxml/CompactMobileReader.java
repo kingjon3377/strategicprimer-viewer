@@ -282,15 +282,14 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void write(final Writer out, final MobileFixture obj, final String file,
-			final boolean inclusion, final int indent) throws IOException {
+			final int indent) throws IOException {
 		if (obj instanceof Unit) {
-			CompactUnitReader.READER.write(out, (Unit) obj, file, inclusion, indent);
+			CompactUnitReader.READER.write(out, (Unit) obj, file, indent);
 		} else if (obj instanceof Animal) {
 			out.append(indent(indent));
 			out.append("<animal kind=\"");

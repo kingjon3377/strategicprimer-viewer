@@ -155,13 +155,11 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Unit obj, final String file, final boolean inclusion,
-			final int indent) throws IOException {
+	public void write(final Writer out, final Unit obj, final String file, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<unit owner=\"");
 		out.append(Integer.toString(obj.getOwner().getPlayerId()));
@@ -179,7 +177,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
 			for (final UnitMember member : obj) {
-				CompactReaderAdapter.ADAPTER.write(out, member, file, inclusion, indent + 1);
+				CompactReaderAdapter.ADAPTER.write(out, member, file, indent + 1);
 			}
 			out.append(indent(indent));
 			out.append("</unit>\n");

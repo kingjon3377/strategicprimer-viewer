@@ -528,9 +528,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final boolean deprecated) throws IOException {
 		final StringWriter writer = new StringWriter();
 		if (deprecated) {
-			controller.map.readerng.ReaderAdapter.ADAPTER.write(obj).write(writer, true, 0);
+			controller.map.readerng.ReaderAdapter.ADAPTER.write(obj).write(writer, 0);
 		} else {
-			new CompactXMLWriter().writeObject(writer, obj, true);
+			new CompactXMLWriter().writeObject(writer, obj);
 		}
 		return writer.toString();
 	}

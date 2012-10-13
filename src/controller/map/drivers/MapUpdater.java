@@ -110,7 +110,7 @@ public final class MapUpdater {
 				continue;
 			}
 			try {
-				new CompactXMLWriter().write(writer, derived, true); // NOPMD
+				new CompactXMLWriter().write(writer, derived); // NOPMD
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
 			} finally {

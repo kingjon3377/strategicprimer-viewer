@@ -166,13 +166,12 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void write(final Writer out, final TownFixture obj, final String file,
-			final boolean inclusion, final int indent) throws IOException {
+			final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof AbstractTownEvent) {
 			writeAbstractTown(out, (AbstractTownEvent) obj);
@@ -199,7 +198,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			if (!((Fortress) obj).getUnits().isEmpty()) {
 				out.append('\n');
 				for (final Unit unit : ((Fortress) obj).getUnits()) {
-					CompactReaderAdapter.ADAPTER.write(out, unit, file, inclusion, indent + 1);
+					CompactReaderAdapter.ADAPTER.write(out, unit, file, indent + 1);
 				}
 				out.append(indent(indent));
 			}

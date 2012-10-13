@@ -18,11 +18,9 @@ public interface SPWriter {
 	 * 
 	 * @param filename the file to write to
 	 * @param map the map to write.
-	 * @param inclusion whether to write to other files if sub-objects came from
-	 *        'include' tags.
 	 * @throws IOException on error opening the file
 	 */
-	void write(final String filename, final IMap map, final boolean inclusion)
+	void write(final String filename, final IMap map)
 			throws IOException;
 
 	/**
@@ -30,11 +28,9 @@ public interface SPWriter {
 	 * 
 	 * @param out the writer to write to
 	 * @param map the map to write
-	 * @param inclusion whether to write to other files if sub-objects came from
-	 *        'include' tags.
 	 * @throws IOException on error in writing
 	 */
-	void write(final Writer out, final IMap map, final boolean inclusion)
+	void write(final Writer out, final IMap map)
 			throws IOException;
 
 }

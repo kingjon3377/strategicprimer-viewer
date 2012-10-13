@@ -116,13 +116,11 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Worker obj, final String file, final boolean inclusion,
-			final int indent) throws IOException {
+	public void write(final Writer out, final Worker obj, final String file, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<worker name=\"");
 		out.append(obj.getName());
@@ -136,7 +134,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
 			for (Job job : obj) {
-				CompactReaderAdapter.ADAPTER.write(out, job, file, inclusion, indent + 1);
+				CompactReaderAdapter.ADAPTER.write(out, job, file, indent + 1);
 			}
 			out.append(indent(indent));
 			out.append("</worker>\n");
@@ -149,12 +147,11 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	public void writeJob(final Writer out, final Job obj, final String file,
-			final boolean inclusion, final int indent) throws IOException {
+			final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<job name=\"");
 		out.append(obj.getName());
@@ -164,7 +161,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
 			for (Skill skill : obj) {
-				CompactReaderAdapter.ADAPTER.write(out, skill, file, inclusion, indent + 1);
+				CompactReaderAdapter.ADAPTER.write(out, skill, file, indent + 1);
 			}
 			out.append(indent(indent));
 			out.append("</job>\n");

@@ -17,38 +17,34 @@ public class CompactXMLWriter implements SPWriter {
 	 * Write a map to file.
 	 * @param filename The file to write to
 	 * @param map the map to write
-	 * @param inclusion whether to use inclusion
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final String filename, final IMap map, final boolean inclusion)
+	public void write(final String filename, final IMap map)
 			throws IOException {
-		writeObject(filename, map, inclusion);
+		writeObject(filename, map);
 	}
 	/**
 	 * Write a map to a stream.
 	 * @param out the stream to write to
 	 * @param map the map to write
-	 * @param inclusion whether to use inclusion
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final IMap map, final boolean inclusion)
+	public void write(final Writer out, final IMap map)
 			throws IOException {
-		writeObject(out, map, inclusion);
+		writeObject(out, map);
 	}
 	/**
 	 * Write an object to file.
 	 * @param filename the file to write to
 	 * @param obj the object to write
-	 * @param inclusion whether to write to other files if sub-objects came from 'include' tags
 	 * @throws IOException on I/O error
 	 */
-	public void writeObject(final String filename, final XMLWritable obj,
-			final boolean inclusion) throws IOException {
+	public void writeObject(final String filename, final XMLWritable obj) throws IOException {
 		final Writer writer = new FileWriter(filename);
 		try {
-			writeObject(writer, obj, inclusion);
+			writeObject(writer, obj);
 		} finally {
 			writer.close();
 		}
@@ -58,11 +54,9 @@ public class CompactXMLWriter implements SPWriter {
 	 *
 	 * @param out the stream to write to
 	 * @param obj the object to write
-	 * @param inclusion whether to write to other files if sub-objects came from
-	 *        'include' tags.
 	 * @throws IOException on I/O error
 	 */
-	public void writeObject(final Writer out, final XMLWritable obj, final boolean inclusion) throws IOException {
-		CompactReaderAdapter.ADAPTER.write(out, obj, obj.getFile(), inclusion, 0);
+	public void writeObject(final Writer out, final XMLWritable obj) throws IOException {
+		CompactReaderAdapter.ADAPTER.write(out, obj, obj.getFile(), 0);
 	}
 }

@@ -1,8 +1,6 @@
 package controller.map.readerng;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +22,6 @@ import util.Pair;
  */
 @Deprecated
 public class SPIntermediateRepresentation {
-	/**
-	 * The attribute of an include tag specifying what file its
-	 * included-by-reference contents are written to.
-	 */
-	private static final String FILE_ATTR = "file";
-
 	/**
 	 * Constructor.
 	 *
@@ -137,20 +129,17 @@ public class SPIntermediateRepresentation {
 	 * Write to a Writer, or (if this is an 'include' tag) to its own.
 	 *
 	 * @param writer the writer to write to
-	 * @param inclusion whether we should use 'include' tags (or just skip them,
-	 *        leaving everything in its own file)
 	 * @param indentationLevel how many tabs to indent---normally callers set to
 	 *        0, and we increment in recursive calls (except for inclusion,
 	 *        where we reset it to 0 again)
 	 * @throws IOException on I/O error while writing
 	 */
-	public void write(final Writer writer, final boolean inclusion,
-			final int indentationLevel) throws IOException {
+	public void write(final Writer writer, final int indentationLevel) throws IOException {
 		for (int i = 0; i < indentationLevel; i++) {
 			writeIfTagNotEmpty(writer, "\t");
 		}
 		if ("include".equals(tag)) {
-			writeInclude(writer, inclusion, indentationLevel);
+			writeInclude(writer, indentationLevel);
 		} else {
 			writeIfTagNotEmpty(writer, "<");
 			writeIfTagNotEmpty(writer, tag);
@@ -184,7 +173,7 @@ public class SPIntermediateRepresentation {
 			} else {
 				writeIfTagNotEmpty(writer, ">\n");
 				for (final SPIntermediateRepresentation child : children) {
-					child.write(writer, inclusion, indentationLevel + 1);
+					child.write(writer, indentationLevel + 1);
 				}
 				for (int i = 0; i < indentationLevel; i++) {
 					writeIfTagNotEmpty(writer, "\t");
@@ -201,53 +190,13 @@ public class SPIntermediateRepresentation {
 	 * contents to its own.
 	 *
 	 * @param writer the writer
-	 * @param inclusion whether we're doing inclusion
 	 * @param indentationLevel how many tabs to indent if inclusion is disabled
 	 * @throws IOException on I/O error while writing
 	 */
-	private void writeInclude(final Writer writer, final boolean inclusion,
-			final int indentationLevel) throws IOException {
-		// if (attrs.containsKey(FILE_ATTR) && inclusion) {
-		if (attrs.contains(FILE_ATTR) && inclusion) {
-			String file = removeAttribute(FILE_ATTR);
-			if ("string:".equals(file)) {
-				final StringWriter swriter = new StringWriter();
-				for (final SPIntermediateRepresentation child : children) {
-					child.write(swriter, inclusion, 0);
-				}
-				// attrs.add(Pair.of(FILE_ATTR, xmlEncode(swriter.toString())));
-				file = xmlEncode(swriter.toString());
-			} else {
-				// attrs.add(Pair.of(FILE_ATTR, file));
-				final FileWriter fwriter = new FileWriter(file);
-				try {
-					for (final SPIntermediateRepresentation child : children) {
-						child.write(fwriter, inclusion, 0);
-					}
-				} finally {
-					fwriter.close();
-				}
-			}
-			writeIfTagNotEmpty(writer, "<include file=\"");
-			// writeIfTagNotEmpty(writer, removeAttribute(FILE_ATTR));
-			writeIfTagNotEmpty(writer, file);
-			writeIfTagNotEmpty(writer, "\" />\n");
-		} else {
+	private void writeInclude(final Writer writer, final int indentationLevel) throws IOException {
 			for (final SPIntermediateRepresentation child : children) {
-				child.write(writer, inclusion, indentationLevel);
+				child.write(writer, indentationLevel);
 			}
-		}
-	}
-
-	/**
-	 * Escape a string for embedding in XML.
-	 *
-	 * @param string the string to escape
-	 * @return it with XML-sensitive characters escaped
-	 */
-	private static String xmlEncode(final String string) {
-		return string.replace("&", "&amp;").replace("<", "&lt;")
-				.replace(">", "&gt;").replace("\"", "&quot;");
 	}
 
 	/**

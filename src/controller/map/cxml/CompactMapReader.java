@@ -144,13 +144,11 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param file The file we're writing to.
-	 * @param inclusion Whether to change files if a sub-object was read from a different file
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final IMap obj, final String file, final boolean inclusion,
-			final int indent) throws IOException {
+	public void write(final Writer out, final IMap obj, final String file, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof MapView) {
 			out.append("<view current_player=\"");
@@ -158,23 +156,22 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			out.append("\" current_turn=\"");
 			out.append(Integer.toString(((MapView) obj).getCurrentTurn()));
 			out.append("\">\n");
-			CompactReaderAdapter.ADAPTER.write(out, ((MapView) obj).getMap(), file, inclusion, indent + 1);
+			CompactReaderAdapter.ADAPTER.write(out, ((MapView) obj).getMap(), file, indent + 1);
 			out.append(indent(indent));
 			out.append("</view>\n");
 		} else if (obj instanceof SPMap) {
-			writeMap(out, (SPMap) obj, file, inclusion, indent);
+			writeMap(out, (SPMap) obj, file, indent);
 		}
 	}
 	/**
 	 * @param out the stream to write to
 	 * @param obj the map to write
 	 * @param file the file we're writing to
-	 * @param inclusion whether to change files if a sub-object was read from a different file
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
 	private void writeMap(final Writer out, final SPMap obj, final String file,
-			final boolean inclusion, final int indent) throws IOException {
+			final int indent) throws IOException {
 		out.append("<map version=\"");
 		out.append(Integer.toString(obj.getVersion()));
 		out.append("\" rows=\"");
@@ -187,7 +184,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 		}
 		out.append("\">\n");
 		for (Player player : obj.getPlayers()) {
-			CompactReaderAdapter.ADAPTER.write(out, player, file, inclusion, indent + 1);
+			CompactReaderAdapter.ADAPTER.write(out, player, file, indent + 1);
 		}
 		for (int i = 0; i < obj.rows(); i++) {
 			boolean rowEmpty = true;
@@ -200,7 +197,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 					out.append("\">\n");
 					rowEmpty = false;
 				}
-				CompactReaderAdapter.ADAPTER.write(out, obj.getTile(PointFactory.point(i, j)), file, inclusion, indent + 2);
+				CompactReaderAdapter.ADAPTER.write(out, obj.getTile(PointFactory.point(i, j)), file, indent + 2);
 			}
 			if (!rowEmpty) {
 				out.append(indent(indent + 1));

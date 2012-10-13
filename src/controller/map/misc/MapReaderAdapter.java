@@ -62,7 +62,7 @@ public class MapReaderAdapter {
 	 * @throws IOException on error opening the file
 	 */
 	public void write(final String filename, final IMap map) throws IOException {
-		writer.write(filename, map, true);
+		writer.write(filename, map);
 	}
 
 	/**
