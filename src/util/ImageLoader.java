@@ -27,6 +27,10 @@ import view.map.main.TileUIHelper;
  */
 public final class ImageLoader {
 	/**
+	 * The size of fixture icons.
+	 */
+	private static final int ICON_SIZE = 20;
+	/**
 	 * The cache.
 	 */
 	private final Map<String, Image> cache = new HashMap<String, Image>();
@@ -41,7 +45,7 @@ public final class ImageLoader {
 	private ImageLoader() {
 		final TileUIHelper colors = new TileUIHelper();
 		for (TileType type : TileType.values()) {
-			final BufferedImage buf = new BufferedImage(20, 20, //NOPMD
+			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, //NOPMD
 					BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = buf.createGraphics();
 			pen.setColor(colors.get(2, type));
@@ -97,7 +101,7 @@ public final class ImageLoader {
 			IOException {
 		if (!iconCache.containsKey(file)) {
 			iconCache.put(file, new ImageIcon(loadImage(file)
-					.getScaledInstance(20, -1, Image.SCALE_DEFAULT)));
+					.getScaledInstance(ICON_SIZE, -1, Image.SCALE_DEFAULT)));
 		}
 		return iconCache.get(file);
 	}
