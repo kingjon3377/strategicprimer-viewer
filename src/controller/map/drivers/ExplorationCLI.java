@@ -56,7 +56,7 @@ public final class ExplorationCLI {
 		try {
 			ostream.print("Command: ");
 			String input = reader.readLine();
-			while (canKeepGoing(input)) {
+			while (input != null && input.length() > 0 && input.charAt(0) != 'q') {
 				handleCommand(map, reader, ostream, input.charAt(0));
 				ostream.print("Command: ");
 				input = reader.readLine();
@@ -156,18 +156,6 @@ public final class ExplorationCLI {
 			}
 		}
 	}
-	/**
-	 * We keep looping if the input is not null, is not an empty string, and is
-	 * not "quit" (only the first character is checked).
-	 *
-	 * @param input a line of input
-	 *
-	 * @return whether that input says we should keep going.
-	 */
-	private static boolean canKeepGoing(final String input) {
-		return input != null && input.length() > 0 && input.charAt(0) != 'q';
-	}
-
 	/**
 	 * Explore a user-specified tile.
 	 *
