@@ -1,4 +1,4 @@
-package controller.map.drivers;
+package controller.exploration;
 
 import java.io.PrintStream;
 import java.util.HashSet;
@@ -8,7 +8,6 @@ import model.exploration.EncounterTable;
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import view.util.SystemOut;
-import controller.exploration.TableLoader;
 
 /**
  * A driver to help debug exploration tables.
