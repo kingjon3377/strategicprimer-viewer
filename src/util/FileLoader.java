@@ -66,6 +66,6 @@ public class FileLoader {
 	 */
 	@Override
 	public String toString() {
-		return "LoadFile";
+		return "FileLoader";
 	}
 }
