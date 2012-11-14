@@ -25,12 +25,12 @@ public class FileLoader {
 	 * @return the file as an input stream
 	 * @throws FileNotFoundException when the file isn't in either place
 	 */
-	public BufferedReader doLoadFile(final String fileName)
+	public BufferedReader loadFile(final String fileName)
 			throws FileNotFoundException {
 		// ESCA-JAVA0177:
 		InputStream inputStream; // $codepro.audit.disable localDeclaration
 		// try to load file from disk
-		inputStream = doLoadFileAsStream(fileName);
+		inputStream = loadFileAsStream(fileName);
 		return new BufferedReader(new InputStreamReader(inputStream)); // $codepro.audit.disable
 																		// closeWhereCreated
 	}
@@ -42,7 +42,7 @@ public class FileLoader {
 	 * @return the file as an input stream
 	 * @throws FileNotFoundException when the file isn't in either place
 	 */
-	public InputStream doLoadFileAsStream(final String fileName)
+	public InputStream loadFileAsStream(final String fileName)
 			throws FileNotFoundException {
 		InputStream inputStream;
 		try {

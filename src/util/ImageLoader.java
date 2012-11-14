@@ -79,7 +79,7 @@ public final class ImageLoader {
 			IOException {
 		if (!cache.containsKey(file)) {
 			cache.put(file,
-					ImageIO.read(helper.doLoadFileAsStream("images/" + file)));
+					ImageIO.read(helper.loadFileAsStream("images/" + file)));
 		}
 		return cache.get(file);
 	}

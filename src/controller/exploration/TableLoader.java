@@ -61,7 +61,7 @@ public final class TableLoader { // NOPMD
 	 */
 	public EncounterTable loadTable(final String filename)
 			throws FileNotFoundException, IOException { // NOPMD
-		final BufferedReader reader = new FileLoader().doLoadFile(filename);
+		final BufferedReader reader = new FileLoader().loadFile(filename);
 		try {
 			return loadTable(reader);
 		} catch (final IllegalArgumentException except) {
