@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
  * Load a file, from a file or (if no such file) from a resource on the
  * classpath.
  *
+ * TODO: Replace with an InputStream implementation.
+ *
  * @author hoom Taken from
  *         http://hoomb.blogspot.com/2010/12/read-text-file-from-
  *         resource-jar-or.html
