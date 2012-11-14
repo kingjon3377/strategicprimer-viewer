@@ -37,7 +37,7 @@ public final class ImageLoader {
 	/**
 	 * The object we use for our actual file I/O.
 	 */
-	private final LoadFile helper = new LoadFile();
+	private final FileLoader helper = new FileLoader();
 
 	/**
 	 * Constructor.

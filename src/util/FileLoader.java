@@ -9,18 +9,18 @@ import java.io.InputStreamReader;
 /**
  * Load a file, from a file or (if no such file) from a resource on the
  * classpath.
- * 
+ *
  * @author hoom Taken from
  *         http://hoomb.blogspot.com/2010/12/read-text-file-from-
  *         resource-jar-or.html
  * @author Adapted by Jonathan Lovelace to pass our static analysis and fit our
  *         needs.
- * 
+ *
  */
-public class LoadFile {
+public class FileLoader {
 	/**
 	 * Load a file from disk or the classpath.
-	 * 
+	 *
 	 * @param fileName Name of the file to load
 	 * @return the file as an input stream
 	 * @throws FileNotFoundException when the file isn't in either place
@@ -37,7 +37,7 @@ public class LoadFile {
 
 	/**
 	 * Load a file from disk or the classpath.
-	 * 
+	 *
 	 * @param fileName Name of the file to load
 	 * @return the file as an input stream
 	 * @throws FileNotFoundException when the file isn't in either place
@@ -51,7 +51,7 @@ public class LoadFile {
 															// closeWhereCreated
 		} catch (final FileNotFoundException fe) {
 			// failed, so try to load it from resources in class path
-			inputStream = LoadFile.class.getClassLoader().getResourceAsStream(
+			inputStream = FileLoader.class.getClassLoader().getResourceAsStream(
 					fileName); // NOPMD
 			if (inputStream == null) {
 				throw fe;
@@ -61,7 +61,7 @@ public class LoadFile {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

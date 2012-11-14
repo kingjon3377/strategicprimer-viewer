@@ -19,7 +19,7 @@ import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
 import model.exploration.TerrainTable;
 import model.map.TileType;
-import util.LoadFile;
+import util.FileLoader;
 import util.Pair;
 
 /**
@@ -61,7 +61,7 @@ public final class TableLoader { // NOPMD
 	 */
 	public EncounterTable loadTable(final String filename)
 			throws FileNotFoundException, IOException { // NOPMD
-		final BufferedReader reader = new LoadFile().doLoadFile(filename);
+		final BufferedReader reader = new FileLoader().doLoadFile(filename);
 		try {
 			return loadTable(reader);
 		} catch (final IllegalArgumentException except) {
