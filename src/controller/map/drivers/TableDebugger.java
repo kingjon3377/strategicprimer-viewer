@@ -19,11 +19,16 @@ import controller.exploration.TableLoader;
 public class TableDebugger {
 
 	/**
+	 * A utility driver method that loads all files in tables/ under the current
+	 * directory, then checks to see whether any references a nonexistent table,
+	 * then does further tests for debugging purposes.
+	 *
 	 * @param args ignored
 	 */
 	public static void main(final String[] args) {
 		final ExplorationRunner runner = new ExplorationRunner();
 		new TableLoader().loadAllTables("tables", runner);
+		runner.verboseRecursiveCheck(System.out);
 		try {
 			new TableDebugger(runner).debugTables(System.out);
 		} catch (final MissingTableException e) { // $codepro.audit.disable logExceptions
