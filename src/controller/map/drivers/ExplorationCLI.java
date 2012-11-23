@@ -21,6 +21,7 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
 import util.Warning;
 import view.util.DriverQuit;
@@ -150,7 +151,7 @@ public final class ExplorationCLI {
 		for (int i = 0; i < encounters; i++) {
 			Collections.shuffle(fixtures);
 			final TileFixture fix = fixtures.get(0);
-			if (fix instanceof Grove || fix instanceof Meadow) {
+			if (fix instanceof Grove || fix instanceof Meadow || fix instanceof Shrub) {
 				ostream.println(fix);
 			} else {
 				ostream.print("nothing ... (");
