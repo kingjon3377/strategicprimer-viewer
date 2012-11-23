@@ -84,6 +84,9 @@ public final class ExplorationCLI {
 	public void handleCommand(final IMap map, final BufferedReader reader,
 			final PrintStream ostream, final char input) throws IOException {
 		switch (input) {
+		case '?':
+			usage(ostream);
+			break;
 		case 'x':
 			explore(map, reader, ostream);
 			break;
@@ -296,5 +299,22 @@ public final class ExplorationCLI {
 	@Override
 	public String toString() {
 		return "ExplorationCLI";
+	}
+	/**
+	 * Prints a usage message.
+	 * @param ostream the stream to write it to.
+	 */
+	public void usage(final PrintStream ostream) {
+		ostream.println("The following commands are supported:");
+		ostream.println("eXplore: prints tile type, any terrain fixtures, and four random fixtures.");
+		ostream.println("Fortress: Prints what a player automatically knows about his fortress's tile.");
+		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;
+		ostream.print("Hunt/fIsh: Generates up to ");
+		ostream.print(encounters);
+		ostream.println(" encounters with animals.");
+		ostream.print("Gather: Generates up to ");
+		ostream.print(encounters);
+		ostream.println(" encounters with fields, meadows, groves, orchards, or shrubs.");
+		ostream.println("Quit: Exit the program.");
 	}
 }
