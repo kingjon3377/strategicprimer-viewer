@@ -34,16 +34,16 @@ import controller.map.misc.MapReaderAdapter;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationCLI {
+public final class QueryCLI {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ExplorationCLI.class
+	private static final Logger LOGGER = Logger.getLogger(QueryCLI.class
 			.getName());
 	/**
 	 * Constructor.
 	 */
-	private ExplorationCLI() {
+	private QueryCLI() {
 		// Not for general use.
 	}
 
@@ -275,7 +275,7 @@ public final class ExplorationCLI {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new ExplorationCLI().repl(new MapReaderAdapter().readMap(args[0],
+			new QueryCLI().repl(new MapReaderAdapter().readMap(args[0],
 					new Warning(Warning.Action.Warn)), new BufferedReader(
 					new InputStreamReader(System.in)), SystemOut.SYS_OUT);
 		} catch (final XMLStreamException e) {
