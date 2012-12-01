@@ -38,9 +38,9 @@ public class TestSubsets {
 		final PlayerCollection zero = new PlayerCollection();
 		final PlayerCollection one = new PlayerCollection();
 		final PlayerCollection two = new PlayerCollection();
-		one.addPlayer(new Player(1, ONE_STR));
-		two.addPlayer(new Player(1, ONE_STR));
-		two.addPlayer(new Player(2, "two"));
+		one.add(new Player(1, ONE_STR));
+		two.add(new Player(1, ONE_STR));
+		two.add(new Player(2, "two"));
 		assertTrue("Empty is subset of self", zero.isSubset(zero, BIT_BUCKET));
 		assertTrue("Empty is subset of one", one.isSubset(zero, BIT_BUCKET));
 		assertTrue("Empty is subset of two", two.isSubset(zero, BIT_BUCKET));

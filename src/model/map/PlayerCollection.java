@@ -21,17 +21,6 @@ public class PlayerCollection implements Collection<Player>,
 	private final Map<Integer, Player> players = new HashMap<Integer, Player>();
 
 	/**
-	 * Add a player.
-	 *
-	 * @param player the player to add.
-	 * @deprecated in favor of the Collection method.
-	 */
-	@Deprecated
-	public void addPlayer(final Player player) {
-		add(player);
-	}
-
-	/**
 	 * @param player a player-id
 	 *
 	 * @return the player with that ID, or a new Player with that number if we

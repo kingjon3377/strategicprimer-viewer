@@ -95,7 +95,7 @@ public class SPMap implements IMap {
 	 */
 	@Override
 	public final void addPlayer(final Player player) {
-		players.addPlayer(player);
+		players.add(player);
 	}
 
 	/**
