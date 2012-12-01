@@ -127,7 +127,18 @@ public class Unit implements MobileFixture, HasImage,
 		return "Unit of type " + kind + ", belonging to player " + owner
 				+ ", named " + name;
 	}
-
+	/**
+	 * @return a verbose description of the Unit.
+	 */
+	public String verbose() {
+		final StringBuilder builder = new StringBuilder(toString());
+		builder.append(", consisting of:");
+		for (final UnitMember member : members) {
+			builder.append('\n');
+			builder.append(member.toString());
+		}
+		return builder.toString();
+	}
 	/**
 	 * @param fix A TileFixture to compare to
 	 *
