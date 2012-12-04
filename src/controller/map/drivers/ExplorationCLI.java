@@ -140,7 +140,7 @@ public class ExplorationCLI {
 		}
 		Unit unit = units.get(inputNumber());
 		SystemOut.SYS_OUT.println("Details of that unit:");
-		SystemOut.SYS_OUT.println(unit.toString());
+		SystemOut.SYS_OUT.println(unit.verbose());
 	}
 	/**
 	 * Read input from stdin repeatedly until a nonnegative integer is entered, and return it.
