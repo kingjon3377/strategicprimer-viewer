@@ -252,16 +252,17 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	/**
 	 * Create an animal.
 	 * @param element the tag we're reading
-	 * @param id the ID number to give it
+	 * @param idNum the ID number to give it
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
-	private Animal createAnimal(final StartElement element, final int id) throws SPFormatException {
+	private Animal createAnimal(final StartElement element, final int idNum)
+			throws SPFormatException {
 		return new Animal(
 				getKind(element),
 				hasParameter(element, "traces"),
 				Boolean.parseBoolean(getParameter(element, "talking", "false")),
-				getParameter(element, "status", "wild"), id);
+				getParameter(element, "status", "wild"), idNum);
 	}
 	/**
 	 * Write an object to a stream.
