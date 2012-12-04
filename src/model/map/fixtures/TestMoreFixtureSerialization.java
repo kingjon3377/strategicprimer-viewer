@@ -232,10 +232,10 @@ public final class TestMoreFixtureSerialization extends
 	public void testVillageSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final TownStatus status : TownStatus.values()) {
-			final Village one = new Village(status, "villageOne", 1);
+			final Village one = new Village(status, "villageOne", 1); // NOPMD
 			assertSerialization("First Village serialization test, " + status,
 					one, Village.class);
-			final Village two = new Village(status, "villageTwo", 2);
+			final Village two = new Village(status, "villageTwo", 2); // NOPMD
 			assertSerialization("2nd Village serialization test,  " + status,
 					two, Village.class);
 		}

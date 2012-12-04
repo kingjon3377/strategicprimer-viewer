@@ -123,7 +123,7 @@ public class OneToTwoConverter { // NOPMD
 							* SUBTILES_PER_TILE + i;
 					final int col = tile.getLocation().col
 							* SUBTILES_PER_TILE + j;
-					final Tile subtile = new Tile(row, col, tile.getTerrain());
+					final Tile subtile = new Tile(row, col, tile.getTerrain()); // NOPMD
 					initial.add(subtile);
 					convertSubtile(subtile, main);
 				}
