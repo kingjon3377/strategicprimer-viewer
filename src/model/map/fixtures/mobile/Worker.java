@@ -100,4 +100,11 @@ public class Worker implements UnitMember, Iterable<Job> {
 	public int hashCode() {
 		return id;
 	}
+	/**
+	 * @return a String representation of the Worker.
+	 */
+	@Override
+	public String toString() {
+		return name + ", a " + race;
+	}
 }
