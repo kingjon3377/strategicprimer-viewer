@@ -15,6 +15,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
@@ -280,7 +281,11 @@ public class ExplorationCLI {
 			// of doing that, so players can have a strategy based on secrecy.
 			constants.clear();
 			for (TileFixture fix : master.getTile(dPoint)) {
-				allFixtures.add(fix);
+				if ((fix instanceof Ground && !((Ground) fix).isExposed())
+						|| !(fix instanceof Ground)) {
+					// FIXME: *Some* explorers would notice even unexposed ground.
+					allFixtures.add(fix);
+				}
 				if (fix instanceof Mountain || fix instanceof RiverFixture
 						|| fix instanceof Hill || fix instanceof Forest
 						|| fix instanceof Fortress) {
