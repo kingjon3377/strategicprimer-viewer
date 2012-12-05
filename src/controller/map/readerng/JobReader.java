@@ -13,6 +13,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedPropertyException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
@@ -56,6 +57,10 @@ public class JobReader implements INodeHandler<Job> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
+		if (XMLHelper.hasAttribute(element, "hours")) {
+			warner.warn(new UnsupportedPropertyException("job", "hours",
+					element.getLocation().getLineNumber()));
+		}
 		final List<Skill> skills = new ArrayList<Skill>();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {

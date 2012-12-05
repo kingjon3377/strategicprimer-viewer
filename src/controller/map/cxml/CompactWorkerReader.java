@@ -13,6 +13,7 @@ import model.map.fixtures.mobile.worker.Skill;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.SPFormatException;
+import controller.map.UnsupportedPropertyException;
 import controller.map.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
@@ -51,7 +52,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("job".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
-					retval.addJob(parseJob(event.asStartElement(), stream));
+					retval.addJob(parseJob(event.asStartElement(), stream, warner));
 				} else {
 					throw new UnwantedChildException(element.getName().getLocalPart(), event
 							.asStartElement().getName().getLocalPart(), event
@@ -68,15 +69,20 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * Parse a Job.
 	 * @param element the element to parse
 	 * @param stream the stream to read further elements from (FIXME: do we need this parameter?)
+	 * @param warner the Warning instance to use for warnings
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format problem
 	 */
 	public Job parseJob(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream)
+			final IteratorWrapper<XMLEvent> stream, final Warning warner)
 			throws SPFormatException {
 		requireTag(element, "job");
 		final Job retval = new Job(getParameter(element, "name"),
 				Integer.parseInt(getParameter(element, "level")));
+		if (hasParameter(element, "hours")) {
+			warner.warn(new UnsupportedPropertyException("job", "hours",
+					element.getLocation().getLineNumber()));
+		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("skill".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
