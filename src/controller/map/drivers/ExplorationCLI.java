@@ -162,28 +162,54 @@ public class ExplorationCLI {
 		return retval;
 	}
 	/**
+	 * A "plus one" method with a configurable, low "overflow".
+	 * @param num the number to increment
+	 * @param max the maximum number we want to return
+	 * @return either num + 1, if max or lower, or 0.
+	 */
+	public static int increment(final int num, final int max) {
+		return num >= max - 1 ? 0 : num + 1;
+	}
+	/**
+	 * A "minus one" method that "underflows" after 0 to a configurable, low value.
+	 * @param num the number to decrement.
+	 * @param max the number to "underflow" to.
+	 * @return either num - 1, if 1 or higher, or max.
+	 */
+	public static int decrement(final int num, final int max) {
+		return num == 0 ? max : num - 1;
+	}
+	/**
 	 * @param point a point
 	 * @param direction a direction
 	 * @return the point one tile in that direction.
 	 */
-	private static Point getDestination(final Point point, final Direction direction) {
+	private Point getDestination(final Point point, final Direction direction) {
 		switch (direction) {
 		case East:
-			return PointFactory.point(point.row, point.col + 1); // NOPMD
+			return PointFactory.point(point.row, // NOPMD
+					increment(point.col, source.rows() - 1));
 		case North:
-			return PointFactory.point(point.row - 1, point.col); // NOPMD
+			return PointFactory.point(decrement(point.row, source.rows() - 1), // NOPMD
+					point.col);
 		case Northeast:
-			return PointFactory.point(point.row - 1, point.col + 1); // NOPMD
+			return PointFactory.point(decrement(point.row, source.rows() - 1), // NOPMD
+					increment(point.col, source.rows() - 1));
 		case Northwest:
-			return PointFactory.point(point.row - 1, point.col - 1); // NOPMD
+			return PointFactory.point(decrement(point.row, source.rows() - 1), // NOPMD
+					decrement(point.col, source.cols() - 1));
 		case South:
-			return PointFactory.point(point.row + 1, point.col); // NOPMD
+			return PointFactory.point(increment(point.row, source.rows() - 1), // NOPMD
+					point.col);
 		case Southeast:
-			return PointFactory.point(point.row + 1, point.col + 1); // NOPMD
+			return PointFactory.point(increment(point.row, source.rows() - 1), // NOPMD
+					increment(point.col, source.rows() - 1));
 		case Southwest:
-			return PointFactory.point(point.row + 1, point.col - 1); // NOPMD
+			return PointFactory.point(increment(point.row, source.rows() - 1), // NOPMD
+					decrement(point.col, source.cols() - 1));
 		case West:
-			return PointFactory.point(point.row, point.col - 1); // NOPMD
+			return PointFactory.point(point.row, // NOPMD
+					decrement(point.col, source.cols() - 1));
 		default:
 			throw new IllegalStateException("Unhandled case");
 		}
@@ -257,7 +283,7 @@ public class ExplorationCLI {
 				break;
 			}
 			final Point point = cli.find(unit);
-			final Point dPoint = getDestination(point, Direction.values()[direction]);
+			final Point dPoint = cli.getDestination(point, Direction.values()[direction]);
 			// ESCA-JAVA0177:
 			int cost;
 			try {
