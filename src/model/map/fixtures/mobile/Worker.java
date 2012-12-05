@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Job;
 import util.ArraySet;
@@ -17,7 +18,7 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public class Worker implements UnitMember, Iterable<Job> {
+public class Worker implements UnitMember, Iterable<Job>, HasName {
 	/**
 	 * Constructor.
 	 * @param wName the worker's name
@@ -78,6 +79,7 @@ public class Worker implements UnitMember, Iterable<Job> {
 	/**
 	 * @return the worker's name
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

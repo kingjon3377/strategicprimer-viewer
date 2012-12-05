@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.HasName;
 import model.map.XMLWritable;
 import util.ArraySet;
 
@@ -11,7 +12,7 @@ import util.ArraySet;
  * A Job a worker can work at.
  * @author Jonathan Lovelace
  */
-public class Job implements XMLWritable, Iterable<Skill> {
+public class Job implements XMLWritable, Iterable<Skill>, HasName {
 	/**
 	 * Constructor.
 	 * @param jobName the name of the Job
@@ -47,6 +48,7 @@ public class Job implements XMLWritable, Iterable<Skill> {
 	/**
 	 * @return the name of the job
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

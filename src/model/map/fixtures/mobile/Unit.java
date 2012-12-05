@@ -5,6 +5,7 @@ import java.util.Set;
 
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.HasName;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
@@ -17,7 +18,7 @@ import util.ArraySet;
  *
  */
 public class Unit implements MobileFixture, HasImage,
-		HasKind, Iterable<UnitMember> {
+		HasKind, Iterable<UnitMember>, HasName {
 	/**
 	 * The player that owns the unit.
 	 */
@@ -75,6 +76,7 @@ public class Unit implements MobileFixture, HasImage,
 	 *
 	 * @return the name of the unit
 	 */
+	@Override
 	public final String getName() {
 		return name;
 	}

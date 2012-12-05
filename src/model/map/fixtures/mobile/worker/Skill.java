@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
+import model.map.HasName;
 import model.map.XMLWritable;
 
 /**
@@ -7,7 +8,7 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  *
  */
-public class Skill implements XMLWritable {
+public class Skill implements XMLWritable, HasName {
 	/**
 	 * Constructor.
 	 * @param skillName the name of the skill
@@ -35,6 +36,7 @@ public class Skill implements XMLWritable {
 	/**
 	 * @return the name of the skill
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

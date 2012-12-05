@@ -6,7 +6,7 @@ package model.map;
  * @author jsl7
  *
  */
-public class Player implements XMLWritable, Comparable<Player> {
+public class Player implements XMLWritable, Comparable<Player>, HasName {
 	/**
 	 * The player's number.
 	 */
@@ -41,6 +41,7 @@ public class Player implements XMLWritable, Comparable<Player> {
 	 *
 	 * @return the player's code name
 	 */
+	@Override
 	public final String getName() {
 		return playerName;
 	}
