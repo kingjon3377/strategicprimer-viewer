@@ -326,18 +326,23 @@ public class ExplorationCLI {
 					constants.add(fix);
 				}
 			}
-			SystemOut.SYS_OUT.print("The explorer comes to a tile with terrain ");
-			SystemOut.SYS_OUT.print(master.getTile(dPoint).getTerrain());
-			SystemOut.SYS_OUT.println(" and the following automatically-noticed fixtures:");
+			SystemOut.SYS_OUT.print("The explorer comes to ");
+			SystemOut.SYS_OUT.print(dPoint.toString());
+			SystemOut.SYS_OUT.print(", a tile with terrain ");
+			SystemOut.SYS_OUT.println(master.getTile(dPoint).getTerrain());
+			if (allFixtures.isEmpty()) {
+				SystemOut.SYS_OUT.println("The following fixtures were automatically noticed:");
+			} else {
+				SystemOut.SYS_OUT.print("The following fixtures were noticed, all but the");
+				SystemOut.SYS_OUT.println("first automtically:");
+				while (!unit.equals(allFixtures.get(0))) {
+					Collections.shuffle(allFixtures);
+				}
+				SystemOut.SYS_OUT.println(allFixtures.get(0));
+			}
 			for (TileFixture fix : constants) {
 				SystemOut.SYS_OUT.println(fix);
 			}
-			Collections.shuffle(allFixtures);
-			if (!allFixtures.isEmpty()) {
-				SystemOut.SYS_OUT.println("The following fixture was also noticed:");
-				SystemOut.SYS_OUT.println(allFixtures.get(0));
-			}
-			SystemOut.SYS_OUT.println("Updating subordinate maps with new data ...");
 			for (IMap map : secondaries) {
 				for (final TileFixture fix : constants) {
 					map.getTile(dPoint).addFixture(fix);
