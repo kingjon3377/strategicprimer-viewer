@@ -353,7 +353,7 @@ public class ExplorationCLI {
 				}
 			}
 		}
-		for (int i = 1; i < args.length; i++) {
+		for (int i = 0; i < args.length; i++) {
 			reader.write(args[i], maps.get(i));
 		}
 	}
