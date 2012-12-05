@@ -240,12 +240,17 @@ public class ExplorationCLI {
 		SystemOut.SYS_OUT.println(unit.verbose());
 		SystemOut.SYS_OUT.print("MP that unit has: ");
 		int movement = inputNumber();
+		final int totalMP = movement;
 		int direction = -1;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
 		// "contstants" is the fixtures that *always* get copied, such as
 		// forests, mountains hills, and rivers.
 		final List<TileFixture> constants = new ArrayList<TileFixture>();
 		while (movement > 0) {
+			SystemOut.SYS_OUT.print(movement);
+			SystemOut.SYS_OUT.print(" MP of ");
+			SystemOut.SYS_OUT.print(totalMP);
+			SystemOut.SYS_OUT.println(" remaining.");
 			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
 			SystemOut.SYS_OUT.print("Direction to move: ");
