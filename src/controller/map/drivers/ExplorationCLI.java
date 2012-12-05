@@ -3,12 +3,14 @@ package controller.map.drivers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.HasName;
 import model.map.IMap;
 import model.map.Player;
 import model.map.Point;
@@ -215,6 +217,19 @@ public class ExplorationCLI {
 		}
 	}
 	/**
+	 * Print a list of things by name and number.
+	 * @param out the stream to write to
+	 * @param list the list to print.
+	 */
+	private static void printList(final PrintStream out,
+			final List<? extends HasName> list) {
+		for (int i = 0; i < list.size(); i++) {
+			out.print(i);
+			out.print(": ");
+			out.println(list.get(i).getName());
+		}
+	}
+	/**
 	 * Driver. Takes as its parameters the map files to use.
 	 * @param args the command-line arguments
 	 * @throws SPFormatException on SP format problems
@@ -244,11 +259,7 @@ public class ExplorationCLI {
 			return; // NOPMD
 		}
 		SystemOut.SYS_OUT.println("The players shared by all the maps:");
-		for (int i = 0; i < players.size(); i++) {
-			SystemOut.SYS_OUT.print(i);
-			SystemOut.SYS_OUT.print(": ");
-			SystemOut.SYS_OUT.println(players.get(i).getName());
-		}
+		printList(SystemOut.SYS_OUT, players);
 		final Player player = players.get(inputNumber("Please make a selection: "));
 		final List<Unit> units = getUnits(master, player);
 		if (units.isEmpty()) {
@@ -256,11 +267,7 @@ public class ExplorationCLI {
 			return;
 		}
 		SystemOut.SYS_OUT.println("Player's units:");
-		for (int i = 0; i < units.size(); i++) {
-			SystemOut.SYS_OUT.print(i);
-			SystemOut.SYS_OUT.print(": ");
-			SystemOut.SYS_OUT.println(units.get(i).getName());
-		}
+		printList(SystemOut.SYS_OUT, units);
 		final Unit unit = units.get(inputNumber("Please make a selection: "));
 		SystemOut.SYS_OUT.println("Details of that unit:");
 		SystemOut.SYS_OUT.println(unit.verbose());
