@@ -182,8 +182,6 @@ public class ExplorationCLI {
 			return PointFactory.point(point.row + 1, point.col + 1); // NOPMD
 		case Southwest:
 			return PointFactory.point(point.row + 1, point.col - 1); // NOPMD
-		case Stop:
-			throw new IllegalArgumentException("Stop means no destination.");
 		case West:
 			return PointFactory.point(point.row, point.col - 1); // NOPMD
 		default:
@@ -369,10 +367,6 @@ public class ExplorationCLI {
 		/**
 		 * Northwest.
 		 */
-		Northwest,
-		/**
-		 * Stop (i.e. quit).
-		 */
-		Stop;
+		Northwest;
 	}
 }
