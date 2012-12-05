@@ -335,7 +335,8 @@ public class ExplorationCLI {
 			} else {
 				SystemOut.SYS_OUT.print("The following fixtures were noticed, all but the");
 				SystemOut.SYS_OUT.println("first automtically:");
-				while (!unit.equals(allFixtures.get(0))) {
+				Collections.shuffle(allFixtures);
+				while (unit.equals(allFixtures.get(0))) {
 					Collections.shuffle(allFixtures);
 				}
 				SystemOut.SYS_OUT.println(allFixtures.get(0));
