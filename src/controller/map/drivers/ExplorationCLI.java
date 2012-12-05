@@ -223,7 +223,7 @@ public class ExplorationCLI {
 			SystemOut.SYS_OUT.print(": ");
 			SystemOut.SYS_OUT.println(players.get(i).getName());
 		}
-		final Player player = players.get(inputNumber());
+		final Player player = players.get(inputNumber("Please make a selection: "));
 		final List<Unit> units = getUnits(master, player);
 		if (units.isEmpty()) {
 			SystemOut.SYS_OUT.println("That player has no units in the master map.");
@@ -235,11 +235,10 @@ public class ExplorationCLI {
 			SystemOut.SYS_OUT.print(": ");
 			SystemOut.SYS_OUT.println(units.get(i).getName());
 		}
-		final Unit unit = units.get(inputNumber());
+		final Unit unit = units.get(inputNumber("Please make a selection: "));
 		SystemOut.SYS_OUT.println("Details of that unit:");
 		SystemOut.SYS_OUT.println(unit.verbose());
-		SystemOut.SYS_OUT.print("MP that unit has: ");
-		int movement = inputNumber();
+		int movement = inputNumber("MP that unit has: ");
 		final int totalMP = movement;
 		int direction = -1;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
@@ -253,8 +252,7 @@ public class ExplorationCLI {
 			SystemOut.SYS_OUT.println(" remaining.");
 			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
-			SystemOut.SYS_OUT.print("Direction to move: ");
-			direction = inputNumber();
+			direction = inputNumber("Direction to move: ");
 			if (direction > 7) {
 				break;
 			}
@@ -322,14 +320,15 @@ public class ExplorationCLI {
 	}
 	/**
 	 * Read input from stdin repeatedly until a nonnegative integer is entered, and return it.
+	 * @param prompt The prompt to prompt the user with
 	 * @return the number entered
 	 * @throws IOException on I/O error
 	 */
-	public static int inputNumber() throws IOException {
+	public static int inputNumber(final String prompt) throws IOException {
 		int retval = -1;
 		final BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));
 		while (retval < 0) {
-			SystemOut.SYS_OUT.print("Please make a selection: ");
+			SystemOut.SYS_OUT.print(prompt);
 			final String input = istream.readLine();
 			if (IsNumeric.isNumeric(input)) {
 				retval = Integer.parseInt(input);
