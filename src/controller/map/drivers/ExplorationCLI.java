@@ -315,7 +315,7 @@ public class ExplorationCLI {
 			// of doing that, so players can have a strategy based on secrecy.
 			constants.clear();
 			for (TileFixture fix : master.getTile(dPoint)) {
-				if ((fix instanceof Ground && !((Ground) fix).isExposed())
+				if ((fix instanceof Ground && ((Ground) fix).isExposed())
 						|| !(fix instanceof Ground)) {
 					// FIXME: *Some* explorers would notice even unexposed ground.
 					allFixtures.add(fix);
