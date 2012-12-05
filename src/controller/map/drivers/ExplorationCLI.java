@@ -166,7 +166,7 @@ public class ExplorationCLI {
 	 * @param direction a direction
 	 * @return the point one tile in that direction.
 	 */
-	private Point getDestination(final Point point, final Direction direction) {
+	private static Point getDestination(final Point point, final Direction direction) {
 		switch (direction) {
 		case East:
 			return PointFactory.point(point.row, point.col + 1); // NOPMD
@@ -256,7 +256,7 @@ public class ExplorationCLI {
 				break;
 			}
 			final Point point = cli.find(unit);
-			final Point dPoint = cli.getDestination(point, Direction.values()[direction]);
+			final Point dPoint = getDestination(point, Direction.values()[direction]);
 			// ESCA-JAVA0177:
 			int cost;
 			try {
