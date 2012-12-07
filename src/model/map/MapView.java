@@ -20,8 +20,7 @@ public class MapView implements IMap {
 	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn) {
 		super();
 		map = wrapped;
-		player = map.getPlayers().getPlayer(curPlayer);
-		player.setCurrent(true);
+		map.getPlayers().getPlayer(curPlayer).setCurrent(true);
 		turn = curTurn;
 	}
 
@@ -29,10 +28,6 @@ public class MapView implements IMap {
 	 * The map we wrap.
 	 */
 	private final SPMap map;
-	/**
-	 * The current player.
-	 */
-	private Player player;
 	/**
 	 * The current turn.
 	 */
@@ -127,9 +122,8 @@ public class MapView implements IMap {
 	 * @param current the new current player (number)
 	 */
 	public void setCurrentPlayer(final int current) {
-		player.setCurrent(false);
-		player = map.getPlayers().getPlayer(current);
-		player.setCurrent(true);
+		map.getPlayers().getCurrentPlayer().setCurrent(false);
+		map.getPlayers().getPlayer(current).setCurrent(true);
 	}
 
 	/**
@@ -150,7 +144,6 @@ public class MapView implements IMap {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj || (obj instanceof MapView && map.equals(((MapView) obj).map)
-				&& player.equals(((MapView) obj).player)
 				&& turn == ((MapView) obj).turn);
 	}
 
@@ -187,7 +180,7 @@ public class MapView implements IMap {
 		final StringBuilder builder = new StringBuilder("Map view at turn ");
 		builder.append(turn);
 		builder.append(":\nCurrent player:");
-		builder.append(player);
+		builder.append(map.getPlayers().getCurrentPlayer());
 		builder.append("\nMap:\n");
 		builder.append(map);
 		return builder.toString();
