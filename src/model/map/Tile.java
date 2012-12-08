@@ -3,6 +3,7 @@ package model.map;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +43,13 @@ public final class Tile implements XMLWritable,
 	 * The units, fortresses, and events on the tile.
 	 */
 	private final Set<TileFixture> contents;
-
+	/**
+	 * This is immediately needed for the MapNGAdapter to be even remotely efficient.
+	 * @return a read-only view of the contents of the tile.
+	 */
+	public Set<TileFixture> getContents() {
+		return Collections.unmodifiableSet(contents);
+	}
 	/**
 	 * @param fix something new on the tile
 	 * @return true iff it was not already in the set.
@@ -250,7 +257,7 @@ public final class Tile implements XMLWritable,
 	 * @param fix a fixture
 	 * @return whether strict-subset calculations should skip it.
 	 */
-	private static boolean shouldSkip(final TileFixture fix) {
+	public static boolean shouldSkip(final TileFixture fix) {
 		return fix instanceof CacheFixture || fix instanceof TextFixture
 				|| (fix instanceof Animal && ((Animal) fix).isTraces());
 	}
