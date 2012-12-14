@@ -390,16 +390,15 @@ public class ExplorationCLI {
 			// fortresses, so we'll always see when we want to stop.
 			constants.clear();
 			for (TileFixture fix : master.getTile(dPoint)) {
-				if ((fix instanceof Ground && ((Ground) fix).isExposed())
-						|| !(fix instanceof Ground || fix.equals(unit))) {
-					// FIXME: *Some* explorers would notice even unexposed ground.
-					allFixtures.add(fix);
-				}
 				if (fix instanceof Mountain || fix instanceof RiverFixture
 						|| fix instanceof Hill || fix instanceof Forest
 						|| (fix instanceof Fortress && ((Fortress) fix)
 								.getOwner().equals(unit.getOwner()))) {
 					constants.add(fix);
+				} else if ((fix instanceof Ground && ((Ground) fix).isExposed())
+						|| !(fix instanceof Ground || fix.equals(unit))) {
+					// FIXME: *Some* explorers would notice even unexposed ground.
+					allFixtures.add(fix);
 				}
 			}
 			SystemOut.SYS_OUT.print("The explorer comes to ");
