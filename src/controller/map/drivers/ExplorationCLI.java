@@ -376,7 +376,6 @@ public class ExplorationCLI {
 			}
 			final Direction direction = Direction.values()[directionNum];
 			final Point point = cli.find(unit);
-			final Point dPoint = cli.getDestination(point, direction);
 			try {
 				final int cost = cli.move(unit, point, direction);
 				movement -= cost;
@@ -391,6 +390,7 @@ public class ExplorationCLI {
 			// forests, mountains, hills, rivers). Also the player's own
 			// fortresses, so we'll always see when we want to stop.
 			constants.clear();
+			final Point dPoint = cli.getDestination(point, direction);
 			for (TileFixture fix : master.getTile(dPoint)) {
 				if (fix instanceof Mountain || fix instanceof RiverFixture
 						|| fix instanceof Hill || fix instanceof Forest
