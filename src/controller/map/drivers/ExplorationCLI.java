@@ -361,10 +361,9 @@ public class ExplorationCLI {
 			}
 			final Point point = cli.find(unit);
 			final Point dPoint = cli.getDestination(point, Direction.values()[direction]);
-			// ESCA-JAVA0177:
-			int cost;
 			try {
-				cost = cli.move(unit, point, Direction.values()[direction]);
+				final int cost = cli.move(unit, point, Direction.values()[direction]);
+				movement -= cost;
 			} catch (TraversalImpossibleException except) {
 				movement--;
 				for (IMap map : secondaries) {
@@ -377,7 +376,6 @@ public class ExplorationCLI {
 				SystemOut.SYS_OUT.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
 				continue;
 			}
-			movement -= cost;
 			allFixtures.clear();
 			// "contstants" is the fixtures that *always* get copied, such as
 			// forests, mountains hills, and rivers. Also fortresses, primarily
