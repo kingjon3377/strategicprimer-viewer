@@ -80,8 +80,13 @@ public class ExplorationCLI {
 		for (Player player : maps.get(0).getPlayers()) {
 			retval.add(player);
 		}
+		final List<Player> temp = new ArrayList<Player>();
 		for (IMap map : maps) {
-			retval.retainAll(map.getPlayers());
+			temp.clear();
+			for (Player player : map.getPlayers()) {
+				temp.add(player);
+			}
+			retval.retainAll(temp);
 		}
 		return retval;
 	}

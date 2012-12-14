@@ -1,7 +1,6 @@
 package model.map;
 
 import java.io.PrintStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,7 +12,7 @@ import java.util.Map;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerCollection implements Collection<Player>,
+public class PlayerCollection implements Iterable<Player>,
 		Subsettable<PlayerCollection> {
 	/**
 	 * The collection this class wraps.
@@ -102,49 +101,19 @@ public class PlayerCollection implements Collection<Player>,
 		return true;
 	}
 	/**
-	 * @return the number of players
-	 */
-	@Override
-	public int size() {
-		return players.size();
-	}
-	/**
-	 * @return whether the collection is empty.
-	 */
-	@Override
-	public boolean isEmpty() {
-		return players.isEmpty();
-	}
-	/**
 	 * @param obj an object
 	 * @return whether we contain it
+	 * @deprecated because we want to remove it if unnecessary
 	 */
-	@Override
+	@Deprecated
 	public boolean contains(final Object obj) {
 		return players.containsValue(obj);
-	}
-	/**
-	 * @return a view of the collection as an array
-	 */
-	@Override
-	public Object[] toArray() {
-		return players.values().toArray();
-	}
-	/**
-	 * @param <T> a type
-	 * @param array an array of that type
-	 * @return a view of the collection in that array
-	 */
-	@Override
-	public <T> T[] toArray(final T[] array) {
-		return players.values().toArray(array);
 	}
 	/**
 	 * Add a player to the collection.
 	 * @param player the player to add
 	 * @return whether the collection was changed by the operation.
 	 */
-	@Override
 	public boolean add(final Player player) {
 		final boolean retval = !players.containsValue(player);
 		players.put(Integer.valueOf(player.getPlayerId()), player);
@@ -155,7 +124,6 @@ public class PlayerCollection implements Collection<Player>,
 	 * @param obj an object
 	 * @return true if it was removed as a result of this call
 	 */
-	@Override
 	public boolean remove(final Object obj) {
 		if (obj instanceof Integer) {
 			final boolean retval = players.containsKey(obj);
@@ -168,67 +136,5 @@ public class PlayerCollection implements Collection<Player>,
 		} else {
 			return false;
 		}
-	}
-	/**
-	 * @param coll a collection of objects of an unknown type
-	 * @return whether we contain all of them
-	 */
-	@Override
-	public boolean containsAll(final Collection<?> coll) {
-		return players.keySet().containsAll(coll)
-				|| players.values().containsAll(coll);
-	}
-	/**
-	 * @param coll a collection of Players
-	 * @return true if the collection changed as the result of the call
-	 *
-	 * @see java.util.Collection#addAll(java.util.Collection)
-	 */
-	@Override
-	public boolean addAll(final Collection<? extends Player> coll) {
-		boolean retval = false;
-		for (Player player : coll) {
-			if (add(player)) {
-				retval = true;
-			}
-		}
-		return retval;
-	}
-	/**
-	 * @param coll a collection of objects of unknown type
-	 * @return true if the collection changedd as the result of trying to remove them
-	 */
-	@Override
-	public boolean removeAll(final Collection<?> coll) {
-		boolean retval = false;
-		for (Object obj : coll) {
-			if (remove(obj)) {
-				retval = true;
-			}
-		}
-		return retval;
-	}
-	/**
-	 *
-	 * @param coll A collection
-	 * @return whether the collection changed as a result of this operation.
-	 */
-	@Override
-	public boolean retainAll(final Collection<?> coll) {
-		boolean retval = false;
-		for (Integer num : players.keySet()) {
-			if (!coll.contains(num) && !coll.contains(players.get(num))
-					&& remove(num)) {
-				retval = true;
-			}
-		}
-		return retval;
-	}
-	/**
-	 * Empty the collection.
-	 */
-	@Override
-	public void clear() {
-		players.clear();
 	}
 }
