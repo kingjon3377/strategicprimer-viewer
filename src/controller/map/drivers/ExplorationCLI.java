@@ -415,9 +415,7 @@ public class ExplorationCLI {
 			}
 			for (TileFixture fix : constants) {
 				SystemOut.SYS_OUT.println(fix);
-			}
-			for (IMap map : secondaries) {
-				for (final TileFixture fix : constants) {
+				for (IMap map : secondaries) {
 					map.getTile(dPoint).addFixture(fix);
 				}
 			}
