@@ -370,14 +370,15 @@ public class ExplorationCLI {
 			SystemOut.SYS_OUT.println(" remaining.");
 			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
-			final int direction = inputNumber("Direction to move: ");
-			if (direction > 7) {
+			final int directionNum = inputNumber("Direction to move: ");
+			if (directionNum > 7) {
 				break;
 			}
+			final Direction direction = Direction.values()[directionNum];
 			final Point point = cli.find(unit);
-			final Point dPoint = cli.getDestination(point, Direction.values()[direction]);
+			final Point dPoint = cli.getDestination(point, direction);
 			try {
-				final int cost = cli.move(unit, point, Direction.values()[direction]);
+				final int cost = cli.move(unit, point, direction);
 				movement -= cost;
 			} catch (TraversalImpossibleException except) {
 				movement--;
