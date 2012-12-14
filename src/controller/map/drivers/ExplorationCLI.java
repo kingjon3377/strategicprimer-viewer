@@ -409,9 +409,9 @@ public class ExplorationCLI {
 				SystemOut.SYS_OUT.println("The following fixtures were automatically noticed:");
 			} else {
 				SystemOut.SYS_OUT.print("The following fixtures were noticed, all but the");
-				SystemOut.SYS_OUT.println("first automtically:");
+				SystemOut.SYS_OUT.println("last automtically:");
 				Collections.shuffle(allFixtures);
-				SystemOut.SYS_OUT.println(allFixtures.get(0));
+				constants.add(allFixtures.get(0));
 			}
 			for (TileFixture fix : constants) {
 				SystemOut.SYS_OUT.println(fix);
@@ -419,9 +419,6 @@ public class ExplorationCLI {
 			for (IMap map : secondaries) {
 				for (final TileFixture fix : constants) {
 					map.getTile(dPoint).addFixture(fix);
-				}
-				if (!allFixtures.isEmpty()) {
-					map.getTile(dPoint).addFixture(allFixtures.get(0));
 				}
 			}
 		}
