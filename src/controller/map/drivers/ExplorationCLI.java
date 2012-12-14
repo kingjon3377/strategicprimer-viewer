@@ -235,6 +235,63 @@ public class ExplorationCLI {
 		}
 	}
 	/**
+	 * Read maps.
+	 * @param filenames the files to read from
+	 * @param maps a list to put all of them in
+	 * @param secondaries a list to put all but the first in
+	 * @return the first map
+	 * @throws SPFormatException on SP format problems
+	 * @throws XMLStreamException on malformed XML
+	 * @throws IOException on basic file I/O error
+	 */
+	private static IMap readMaps(final String[] filenames,
+			final List<IMap> maps, final List<IMap> secondaries)
+			throws IOException, XMLStreamException, SPFormatException {
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		final IMap master = reader.readMap(filenames[0], Warning.INSTANCE);
+		maps.add(master);
+		for (int i = 1; i < filenames.length; i++) {
+			final IMap map = reader.readMap(filenames[i], Warning.INSTANCE);
+			secondaries.add(map);
+			maps.add(map);
+		}
+		return master;
+	}
+	/**
+	 * Write maps to disk.
+	 * @param maps the list of maps to write
+	 * @param filenames the list of files to write them to
+	 * @throws IOException on I/O error
+	 */
+	private static void writeMaps(final List<IMap> maps,
+			final String[] filenames) throws IOException {
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		for (int i = 0; i < filenames.length; i++) {
+			reader.write(filenames[i], maps.get(i));
+		}
+	}
+	/**
+	 * Have the user choose an item from a list.
+	 * @param <T> The type of things in the list
+	 * @param items the list of items
+	 * @param desc the description to give before printing the list
+	 * @param none what to print if there are none
+	 * @param prompt what to prompt the user with
+	 * @return the user's selection, or -1 if there are none
+	 * @throws IOException on I/O error getting the user's input
+	 */
+	private static <T extends HasName> int chooseFromList(
+			final List<? extends T> items, final String desc,
+			final String none, final String prompt) throws IOException {
+		if (items.isEmpty()) {
+			SystemOut.SYS_OUT.println(none);
+			return -1; // NOPMD
+		}
+		SystemOut.SYS_OUT.println(desc);
+		printList(SystemOut.SYS_OUT, items);
+		return inputNumber(prompt);
+	}
+	/**
 	 * Driver. Takes as its parameters the map files to use.
 	 * @param args the command-line arguments
 	 * @throws SPFormatException on SP format problems
@@ -247,33 +304,27 @@ public class ExplorationCLI {
 			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
 			System.exit(1);
 		}
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IMap master = reader.readMap(args[0], Warning.INSTANCE);
 		final List<IMap> secondaries = new ArrayList<IMap>();
-		final List<IMap> maps = new ArrayList<IMap>(
-				Collections.singletonList(master));
-		for (int i = 1; i < args.length; i++) {
-			final IMap map = reader.readMap(args[i], Warning.INSTANCE);
-			secondaries.add(map);
-			maps.add(map);
-		}
+		final List<IMap> maps = new ArrayList<IMap>();
+		final IMap master = readMaps(args, maps, secondaries);
 		final ExplorationCLI cli = new ExplorationCLI(master, secondaries);
 		final List<Player> players = getPlayerChoices(maps);
-		if (players.isEmpty()) {
-			SystemOut.SYS_OUT.println("No players shared by all the maps.");
+		final int playerNum = chooseFromList(players,
+				"The players shared by all the maps:",
+				"No players shared by all the maps.",
+				"Please make a selection: ");
+		if (playerNum < 0) {
 			return; // NOPMD
 		}
-		SystemOut.SYS_OUT.println("The players shared by all the maps:");
-		printList(SystemOut.SYS_OUT, players);
-		final Player player = players.get(inputNumber("Please make a selection: "));
+		final Player player = players.get(playerNum);
 		final List<Unit> units = getUnits(master, player);
-		if (units.isEmpty()) {
-			SystemOut.SYS_OUT.println("That player has no units in the master map.");
+		final int unitNum = chooseFromList(units, "Player's units:",
+				"That player has no units in the master map.",
+				"Please make a selection: ");
+		if (unitNum < 0) {
 			return;
 		}
-		SystemOut.SYS_OUT.println("Player's units:");
-		printList(SystemOut.SYS_OUT, units);
-		final Unit unit = units.get(inputNumber("Please make a selection: "));
+		final Unit unit = units.get(unitNum);
 		SystemOut.SYS_OUT.println("Details of that unit:");
 		SystemOut.SYS_OUT.println(unit.verbose());
 		int movement = inputNumber("MP that unit has: ");
@@ -358,9 +409,7 @@ public class ExplorationCLI {
 				}
 			}
 		}
-		for (int i = 0; i < args.length; i++) {
-			reader.write(args[i], maps.get(i));
-		}
+		writeMaps(maps, args);
 	}
 	/**
 	 * Read input from stdin repeatedly until a nonnegative integer is entered, and return it.
