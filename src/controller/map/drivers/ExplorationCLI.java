@@ -377,7 +377,7 @@ public class ExplorationCLI {
 				continue;
 			}
 			allFixtures.clear();
-			// "contstants" is the fixtures that *always* get copied, such as
+			// "constants" is the fixtures that *always* get copied, such as
 			// forests, mountains hills, and rivers. Also fortresses, primarily
 			// so we'll always see when we want to stop. FIXME: Find a better way
 			// of doing that, so players can have a strategy based on secrecy.
