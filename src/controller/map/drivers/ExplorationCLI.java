@@ -360,8 +360,9 @@ public class ExplorationCLI {
 			final int totalMP) throws IOException {
 		int movement = totalMP;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
-		// "contstants" is the fixtures that *always* get copied, such as
-		// forests, mountains hills, and rivers.
+		// "constants" is the fixtures that *always* get copied (e.g. forests,
+		// mountains, hills, rivers). Also the player's own fortresses, so we'll
+		// always see when we want to stop.
 		final List<TileFixture> constants = new ArrayList<TileFixture>();
 		while (movement > 0) {
 			SystemOut.SYS_OUT.print(movement);
@@ -386,9 +387,6 @@ public class ExplorationCLI {
 				continue;
 			}
 			allFixtures.clear();
-			// "constants" is the fixtures that *always* get copied (e.g.
-			// forests, mountains, hills, rivers). Also the player's own
-			// fortresses, so we'll always see when we want to stop.
 			constants.clear();
 			final Point dPoint = cli.getDestination(point, direction);
 			for (TileFixture fix : master.getTile(dPoint)) {
