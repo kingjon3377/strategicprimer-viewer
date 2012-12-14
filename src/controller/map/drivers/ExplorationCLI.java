@@ -383,7 +383,7 @@ public class ExplorationCLI {
 			constants.clear();
 			for (TileFixture fix : master.getTile(dPoint)) {
 				if ((fix instanceof Ground && ((Ground) fix).isExposed())
-						|| !(fix instanceof Ground)) {
+						|| !(fix instanceof Ground || fix.equals(unit))) {
 					// FIXME: *Some* explorers would notice even unexposed ground.
 					allFixtures.add(fix);
 				}
@@ -404,9 +404,6 @@ public class ExplorationCLI {
 				SystemOut.SYS_OUT.print("The following fixtures were noticed, all but the");
 				SystemOut.SYS_OUT.println("first automtically:");
 				Collections.shuffle(allFixtures);
-				while (unit.equals(allFixtures.get(0))) {
-					Collections.shuffle(allFixtures);
-				}
 				SystemOut.SYS_OUT.println(allFixtures.get(0));
 			}
 			for (TileFixture fix : constants) {
