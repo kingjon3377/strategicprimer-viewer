@@ -381,7 +381,8 @@ public class ExplorationCLI {
 				movement -= cost;
 			} catch (TraversalImpossibleException except) {
 				movement--;
-				SystemOut.SYS_OUT.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
+				SystemOut.SYS_OUT
+						.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
 				continue;
 			}
 			allFixtures.clear();
