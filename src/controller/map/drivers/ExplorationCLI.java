@@ -377,10 +377,9 @@ public class ExplorationCLI {
 				continue;
 			}
 			allFixtures.clear();
-			// "constants" is the fixtures that *always* get copied, such as
-			// forests, mountains hills, and rivers. Also fortresses, primarily
-			// so we'll always see when we want to stop. FIXME: Find a better way
-			// of doing that, so players can have a strategy based on secrecy.
+			// "constants" is the fixtures that *always* get copied (e.g.
+			// forests, mountains, hills, rivers). Also the player's own
+			// fortresses, so we'll always see when we want to stop.
 			constants.clear();
 			for (TileFixture fix : master.getTile(dPoint)) {
 				if ((fix instanceof Ground && ((Ground) fix).isExposed())
@@ -390,7 +389,8 @@ public class ExplorationCLI {
 				}
 				if (fix instanceof Mountain || fix instanceof RiverFixture
 						|| fix instanceof Hill || fix instanceof Forest
-						|| fix instanceof Fortress) {
+						|| (fix instanceof Fortress && ((Fortress) fix)
+								.getOwner().equals(unit.getOwner()))) {
 					constants.add(fix);
 				}
 			}
