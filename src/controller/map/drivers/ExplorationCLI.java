@@ -131,18 +131,34 @@ public class ExplorationCLI {
 	 * Move a unit from the specified tile one tile in the specified direction.
 	 * Moves the unit in all maps where the unit *was* in the specified tile,
 	 * copying terrain information if the tile didn't exist in a subordinate
-	 * map.
+	 * map. If movement in the specified direction is impossible, we update all
+	 * subordinate maps with the terrain information showing that, then re-throw
+	 * the exception; callers should deduct a minimal MP cost.
 	 *
 	 * @param unit the unit to move
 	 * @param point the starting location
 	 * @param direction the direction to move
 	 * @return the movement cost
-	 * @throws TraversalImpossibleException if movement in that direction is impossible
+	 * @throws TraversalImpossibleException if movement in that direction is
+	 *         impossible
 	 */
 	public int move(final Unit unit, final Point point,
 			final Direction direction) throws TraversalImpossibleException {
 		final Point dest = getDestination(point, direction);
-		final int retval = SimpleMovement.getMovementCost(source.getTile(dest));
+		// ESCA-JAVA0177:
+		final int retval; //NOPMD
+		try {
+			retval = SimpleMovement.getMovementCost(source.getTile(dest));
+		} catch (final TraversalImpossibleException except) {
+			for (IMap map : dests) {
+				if (map.getTile(dest).isEmpty()) {
+					map.getTiles().addTile(
+							new Tile(dest.row, dest.col, source.getTile(dest)//NOPMD
+									.getTerrain()));
+				}
+			}
+			throw except;
+		}
 		source.getTile(point).removeFixture(unit);
 		source.getTile(dest).addFixture(unit);
 		for (IMap map : dests) {
@@ -366,13 +382,6 @@ public class ExplorationCLI {
 				movement -= cost;
 			} catch (TraversalImpossibleException except) {
 				movement--;
-				for (IMap map : secondaries) {
-					if (map.getTile(dPoint).isEmpty()) {
-						map.getTiles().addTile(
-								new Tile(dPoint.row, dPoint.col, master// NOPMD
-										.getTile(dPoint).getTerrain()));
-					}
-				}
 				SystemOut.SYS_OUT.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
 				continue;
 			}
