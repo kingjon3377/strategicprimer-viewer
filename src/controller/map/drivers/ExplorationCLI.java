@@ -343,8 +343,8 @@ public class ExplorationCLI {
 		final Unit unit = units.get(unitNum);
 		SystemOut.SYS_OUT.println("Details of that unit:");
 		SystemOut.SYS_OUT.println(unit.verbose());
-		int movement = inputNumber("MP that unit has: ");
-		movementREPL(secondaries, master, cli, unit, movement);
+		movementREPL(secondaries, master, cli, unit,
+				inputNumber("MP that unit has: "));
 		writeMaps(maps, args);
 	}
 	/**
