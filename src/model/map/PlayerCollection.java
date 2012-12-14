@@ -103,10 +103,8 @@ public class PlayerCollection implements Iterable<Player>,
 	/**
 	 * @param obj an object
 	 * @return whether we contain it
-	 * @deprecated because we want to remove it if unnecessary
 	 */
-	@Deprecated
-	public boolean contains(final Object obj) {
+	public boolean contains(final Player obj) {
 		return players.containsValue(obj);
 	}
 	/**
