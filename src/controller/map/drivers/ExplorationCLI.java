@@ -359,7 +359,6 @@ public class ExplorationCLI {
 			final IMap master, final ExplorationCLI cli, final Unit unit,
 			final int totalMP) throws IOException {
 		int movement = totalMP;
-		int direction = -1;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
 		// "contstants" is the fixtures that *always* get copied, such as
 		// forests, mountains hills, and rivers.
@@ -371,7 +370,7 @@ public class ExplorationCLI {
 			SystemOut.SYS_OUT.println(" remaining.");
 			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
-			direction = inputNumber("Direction to move: ");
+			final int direction = inputNumber("Direction to move: ");
 			if (direction > 7) {
 				break;
 			}
