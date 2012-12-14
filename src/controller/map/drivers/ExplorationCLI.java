@@ -328,7 +328,21 @@ public class ExplorationCLI {
 		SystemOut.SYS_OUT.println("Details of that unit:");
 		SystemOut.SYS_OUT.println(unit.verbose());
 		int movement = inputNumber("MP that unit has: ");
-		final int totalMP = movement;
+		movementREPL(secondaries, master, cli, unit, movement);
+		writeMaps(maps, args);
+	}
+	/**
+	 * @param secondaries the maps to update with data from the master map
+	 * @param master the main map
+	 * @param cli the object that does the moving of the unit
+	 * @param unit the unit in motion
+	 * @param totalMP the unit's total MP (to start with)
+	 * @throws IOException on I/O error getting input
+	 */
+	private static void movementREPL(final List<IMap> secondaries,
+			final IMap master, final ExplorationCLI cli, final Unit unit,
+			final int totalMP) throws IOException {
+		int movement = totalMP;
 		int direction = -1;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
 		// "contstants" is the fixtures that *always* get copied, such as
@@ -409,7 +423,6 @@ public class ExplorationCLI {
 				}
 			}
 		}
-		writeMaps(maps, args);
 	}
 	/**
 	 * Read input from stdin repeatedly until a nonnegative integer is entered, and return it.
