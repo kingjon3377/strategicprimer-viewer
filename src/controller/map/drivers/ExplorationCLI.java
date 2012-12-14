@@ -50,7 +50,7 @@ public class ExplorationCLI {
 	public ExplorationCLI(final IMap master, final List<IMap> secondaries) {
 		source = master;
 		for (IMap map : secondaries) {
-			if (map.rows() == master.rows() && map.cols() == master.cols()) {
+			if (map.getDimensions().equals(master.getDimensions())) {
 				dests.add(map);
 			} else {
 				throw new IllegalArgumentException("Size mismatch");
@@ -195,28 +195,28 @@ public class ExplorationCLI {
 		switch (direction) {
 		case East:
 			return PointFactory.point(point.row, // NOPMD
-					increment(point.col, source.cols() - 1));
+					increment(point.col, source.getDimensions().cols - 1));
 		case North:
-			return PointFactory.point(decrement(point.row, source.rows() - 1), // NOPMD
+			return PointFactory.point(decrement(point.row, source.getDimensions().rows - 1), // NOPMD
 					point.col);
 		case Northeast:
-			return PointFactory.point(decrement(point.row, source.rows() - 1), // NOPMD
-					increment(point.col, source.rows() - 1));
+			return PointFactory.point(decrement(point.row, source.getDimensions().rows - 1), // NOPMD
+					increment(point.col, source.getDimensions().rows - 1));
 		case Northwest:
-			return PointFactory.point(decrement(point.row, source.rows() - 1), // NOPMD
-					decrement(point.col, source.cols() - 1));
+			return PointFactory.point(decrement(point.row, source.getDimensions().rows - 1), // NOPMD
+					decrement(point.col, source.getDimensions().cols - 1));
 		case South:
-			return PointFactory.point(increment(point.row, source.rows() - 1), // NOPMD
+			return PointFactory.point(increment(point.row, source.getDimensions().rows - 1), // NOPMD
 					point.col);
 		case Southeast:
-			return PointFactory.point(increment(point.row, source.rows() - 1), // NOPMD
-					increment(point.col, source.cols() - 1));
+			return PointFactory.point(increment(point.row, source.getDimensions().rows - 1), // NOPMD
+					increment(point.col, source.getDimensions().cols - 1));
 		case Southwest:
-			return PointFactory.point(increment(point.row, source.rows() - 1), // NOPMD
-					decrement(point.col, source.cols() - 1));
+			return PointFactory.point(increment(point.row, source.getDimensions().rows - 1), // NOPMD
+					decrement(point.col, source.getDimensions().cols - 1));
 		case West:
 			return PointFactory.point(point.row, // NOPMD
-					decrement(point.col, source.cols() - 1));
+					decrement(point.col, source.getDimensions().cols - 1));
 		default:
 			throw new IllegalStateException("Unhandled case");
 		}

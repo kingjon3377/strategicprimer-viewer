@@ -3,6 +3,7 @@ package model.viewer;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Point;
 import model.map.PointFactory;
@@ -62,6 +63,10 @@ public final class MapModel implements PropertyChangeSource {
 	 */
 	private MapView secondaryMap;
 	/**
+	 * The dimensions of the map.
+	 */
+	private MapDimensions mapDim;
+	/**
 	 * The currently selected tile in the main map.
 	 */
 	private Tile selTile;
@@ -74,16 +79,17 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap the new map
 	 */
 	public void setMainMap(final MapView newMap) {
-		pcs.firePropertyChange("version", map == null ? 0 : map.getVersion(),
-				newMap.getVersion());
+		// map shouldn't ever be null, so we assume it wasn't
+		pcs.firePropertyChange("version", mapDim.version,
+				newMap.getDimensions().version);
 		map = newMap;
-		setSecondaryMap(new MapView(new SPMap(map.getVersion(), map.rows(),
-				map.cols()), map.getPlayers().getCurrentPlayer()
+		mapDim = newMap.getDimensions();
+		setSecondaryMap(new MapView(new SPMap(map.getDimensions()), map.getPlayers().getCurrentPlayer()
 				.getPlayerId(), map.getCurrentTurn()));
 		// TODO: Perhaps clearSelection() instead of setting to (-1, -1)?
 		setSelection(PointFactory.point(-1, -1));
-		setDimensions(new VisibleDimensions(0, getSizeRows() - 1, 0,
-				getSizeCols() - 1));
+		setDimensions(new VisibleDimensions(0, getMapDimensions().rows - 1, 0,
+				getMapDimensions().cols - 1));
 		pcs.firePropertyChange("map", map, newMap);
 	}
 
@@ -91,7 +97,7 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap the new secondary map
 	 */
 	public void setSecondaryMap(final MapView newMap) {
-		if (newMap.rows() == map.rows() && newMap.cols() == map.cols()) {
+		if (newMap.getDimensions().equals(map.getDimensions())) {
 			pcs.firePropertyChange("secondary-map", secondaryMap, newMap);
 			secondaryMap = newMap;
 		} else {
@@ -147,23 +153,12 @@ public final class MapModel implements PropertyChangeSource {
 		secondaryMap.getTile(selection.getLocation()).update(
 				map.getTile(selection.getLocation()));
 	}
-
 	/**
-	 *
-	 * @return the size of the map in rows
+	 * @return the dimensions and version of the map
 	 */
-	public int getSizeRows() {
-		return map.rows();
+	public MapDimensions getMapDimensions() {
+		return mapDim;
 	}
-
-	/**
-	 *
-	 * @return the size of the map in columns
-	 */
-	public int getSizeCols() {
-		return map.cols();
-	}
-
 	/**
 	 * @param point a tile's location
 	 *

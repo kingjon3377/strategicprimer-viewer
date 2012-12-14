@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.viewer.TileViewSize;
@@ -52,7 +53,7 @@ public class DrawHelperComparator { // NOPMD
 	public DrawHelperComparator(final IMap map, final int repetitions) {
 		spmap = map;
 		reps = repetitions;
-		tsize = new TileViewSize().getSize(map.getVersion());
+		tsize = new TileViewSize().getSize(map.getDimensions().version);
 	}
 
 	/**
@@ -110,8 +111,9 @@ public class DrawHelperComparator { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	public long second(final TileDrawHelper helper) {
-		final BufferedImage image = new BufferedImage(tsize * spmap.cols(),
-				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
+		final MapDimensions dim = spmap.getDimensions();
+		final BufferedImage image = new BufferedImage(tsize * dim.cols,
+				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		secondBody(helper, image);
 		final long end = System.nanoTime();
@@ -177,8 +179,9 @@ public class DrawHelperComparator { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	public long fourth(final TileDrawHelper helper) {
-		final BufferedImage image = new BufferedImage(tsize * spmap.cols(), // NOPMD
-				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
+		final MapDimensions dim = spmap.getDimensions();
+		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
+				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -229,8 +232,9 @@ public class DrawHelperComparator { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	public long fifthOne(final TileDrawHelper helper) {
-		final BufferedImage image = new BufferedImage(tsize * spmap.cols(), // NOPMD
-				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
+		final MapDimensions dim = spmap.getDimensions();
+		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
+				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -267,8 +271,9 @@ public class DrawHelperComparator { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	public long fifthTwo(final TileDrawHelper helper) {
-		final BufferedImage image = new BufferedImage(tsize * spmap.cols(), // NOPMD
-				tsize * spmap.rows(), BufferedImage.TYPE_INT_RGB);
+		final MapDimensions dim = spmap.getDimensions();
+		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
+				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();

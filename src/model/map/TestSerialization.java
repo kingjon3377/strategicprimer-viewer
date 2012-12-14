@@ -265,7 +265,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				SPMap.class, false);
-		final SPMap one = new SPMap(2, 1, 1);
+		final SPMap one = new SPMap(new MapDimensions(1, 1, 2));
 		one.addPlayer(setFileOnObject(new Player(1, "playerOne")));
 		one.getPlayers().getPlayer(1).setCurrent(true);
 		one.addTile(setFileOnObject(new Tile(0, 0, TileType.Plains)));
@@ -286,7 +286,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testViewSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final SPMap mOne = setFileOnObject(new SPMap(2, 1, 1));
+		final SPMap mOne = setFileOnObject(new SPMap(new MapDimensions(1, 1, 2)));
 		mOne.addPlayer(setFileOnObject(new Player(1, "playerOne")));
 		mOne.addTile(setFileOnObject(new Tile(0, 0, TileType.Steppe)));
 		final MapView one = setFileOnObject(new MapView(mOne, 1, 0));
@@ -337,7 +337,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testConversion() {
-		final SPMap start = new SPMap(2, 2, 2);
+		final SPMap start = new SPMap(new MapDimensions(2, 2, 2));
 		final Tile tileOne = new Tile(0, 0, TileType.Steppe);
 		final Animal fixture = new Animal("animal", false, true,
 				"domesticated", 1);

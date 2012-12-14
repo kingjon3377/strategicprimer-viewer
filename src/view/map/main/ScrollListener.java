@@ -11,6 +11,7 @@ import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 
+import model.map.MapDimensions;
 import model.viewer.MapModel;
 import model.viewer.VisibleDimensions;
 
@@ -34,10 +35,12 @@ public class ScrollListener implements AdjustmentListener,
 			final JScrollBar vertBar) {
 		model = map;
 		dimensions = map.getDimensions();
+		final MapDimensions mapDim = model.getMapDimensions();
+		mapDimensions = mapDim;
 		hbar = horizBar;
 		hbar.getModel().setRangeProperties(
 				Math.max(model.getSelectedTile().getLocation().col, 0), 1, 0,
-				model.getSizeCols() - model.getDimensions().getWidth(), false);
+				mapDim.cols - model.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -48,14 +51,14 @@ public class ScrollListener implements AdjustmentListener,
 			@Override
 			public boolean verify(final JComponent input) {
 				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), map.getSizeCols()
+						((JScrollBar) input).getValue(), mapDim.cols
 								- map.getDimensions().getWidth());
 			}
 		});
 		vbar = vertBar;
 		vbar.getModel().setRangeProperties(
 				Math.max(model.getSelectedTile().getLocation().row, 0), 1, 0,
-				model.getSizeRows() - model.getDimensions().getHeight(), false);
+				mapDim.rows - model.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -66,7 +69,7 @@ public class ScrollListener implements AdjustmentListener,
 			@Override
 			public boolean verify(final JComponent input) {
 				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), map.getSizeRows()
+						((JScrollBar) input).getValue(), mapDim.rows
 								- map.getDimensions().getHeight());
 			}
 		});
@@ -75,18 +78,21 @@ public class ScrollListener implements AdjustmentListener,
 	/**
 	 * Alternate constructor to reduce complexity in the calling class. The
 	 * uncheckable precondition is that the component is using a BorderLayout,
-	 * and doesn't already have members at south or east.
+	 * and doesn't already have members at south or east. But TODO: Much of the
+	 * duplicated code could be centralized.
 	 *
 	 * @param map the map model to work with
 	 * @param component the component to attach the scrollbars to.
 	 */
 	public ScrollListener(final MapModel map, final JComponent component) {
 		model = map;
+		final MapDimensions mapDim = model.getMapDimensions();
+		mapDimensions = mapDim;
 		dimensions = map.getDimensions();
 		hbar = new JScrollBar(Adjustable.HORIZONTAL);
 		hbar.getModel().setRangeProperties(
 				Math.max(model.getSelectedTile().getLocation().col, 0), 1, 0,
-				model.getSizeCols() - model.getDimensions().getWidth(), false);
+				mapDim.cols - model.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -97,7 +103,7 @@ public class ScrollListener implements AdjustmentListener,
 			@Override
 			public boolean verify(final JComponent input) {
 				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), map.getSizeCols()
+						((JScrollBar) input).getValue(), mapDim.cols
 								- map.getDimensions().getWidth());
 			}
 		});
@@ -105,7 +111,7 @@ public class ScrollListener implements AdjustmentListener,
 		vbar = new JScrollBar(Adjustable.VERTICAL);
 		vbar.getModel().setRangeProperties(
 				Math.max(model.getSelectedTile().getLocation().row, 0), 1, 0,
-				model.getSizeRows() - model.getDimensions().getHeight(), false);
+				mapDim.rows - model.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -116,7 +122,7 @@ public class ScrollListener implements AdjustmentListener,
 			@Override
 			public boolean verify(final JComponent input) {
 				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), map.getSizeRows()
+						((JScrollBar) input).getValue(), mapDim.rows
 								- map.getDimensions().getHeight());
 			}
 		});
@@ -138,7 +144,11 @@ public class ScrollListener implements AdjustmentListener,
 	 */
 	private final MapModel model;
 	/**
-	 * The current dimensions of the map.
+	 * The dimensions of the map.
+	 */
+	private MapDimensions mapDimensions;
+	/**
+	 * The current visible dimensions of the map.
 	 */
 	private VisibleDimensions dimensions;
 	/**
@@ -166,12 +176,12 @@ public class ScrollListener implements AdjustmentListener,
 			hbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().col, 0),
 					1, 0,
-					model.getSizeCols() - model.getDimensions().getWidth(),
+					mapDimensions.cols - model.getDimensions().getWidth(),
 					false);
 			vbar.getModel().setRangeProperties(
 					Math.max(model.getSelectedTile().getLocation().row, 0),
 					1, 0,
-					model.getSizeRows() - model.getDimensions().getHeight(),
+					mapDimensions.rows - model.getDimensions().getHeight(),
 					false);
 		} else if ("tile".equals(evt.getPropertyName())) {
 			if (!isInRange(model.getDimensions().getMinimumCol(), model
@@ -191,11 +201,12 @@ public class ScrollListener implements AdjustmentListener,
 										.row, 0));
 			}
 		} else if ("map".equals(evt.getPropertyName())) {
+			mapDimensions = model.getMapDimensions();
 			hbar.getModel().setRangeProperties(0, 1, 0,
-					model.getSizeCols() - model.getDimensions().getWidth(),
+					mapDimensions.cols - model.getDimensions().getWidth(),
 					false);
 			vbar.getModel().setRangeProperties(0, 1, 0,
-					model.getSizeRows() - model.getDimensions().getHeight(),
+					mapDimensions.rows - model.getDimensions().getHeight(),
 					false);
 			dimensions = model.getDimensions();
 		}

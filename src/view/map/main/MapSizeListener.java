@@ -3,6 +3,7 @@ package view.map.main;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import model.map.MapDimensions;
 import model.viewer.MapModel;
 import model.viewer.VisibleDimensions;
 
@@ -47,8 +48,9 @@ public class MapSizeListener extends ComponentAdapter {
 				int maxCol = model.getDimensions().getMaximumCol();
 				int minRow = model.getDimensions().getMinimumRow();
 				int maxRow = model.getDimensions().getMaximumRow();
-				final int totalRows = model.getSizeRows();
-				final int totalCols = model.getSizeCols();
+				final MapDimensions mapDim = model.getMapDimensions();
+				final int totalRows = mapDim.rows;
+				final int totalCols = mapDim.cols;
 				if (visibleCols != maxCol - minCol
 						|| visibleRows != maxRow - minRow) {
 					if (visibleCols >= totalCols) {

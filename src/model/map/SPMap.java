@@ -15,43 +15,19 @@ public class SPMap implements IMap {
 	 */
 	public static final int MAX_VERSION = 1;
 	/**
-	 * Map version.
+	 * The map's version and dimensions.
 	 */
-	private final int version;
-
+	private final MapDimensions dimensions;
 	/**
-	 * @return the map version
+	 * Constructor taking the size and version as an encapsulated object.
+	 * @param dim the dimensions
 	 */
-	@Override
-	public int getVersion() {
-		return version;
-	}
-
-	/**
-	 * Constructor that takes the size.
-	 *
-	 * @param ver the map version
-	 * @param rows the number of rows
-	 * @param cols the number of columns
-	 */
-	public SPMap(final int ver, final int rows, final int cols) {
+	public SPMap(final MapDimensions dim) {
 		super();
 		tiles = new TileCollection();
 		players = new PlayerCollection();
-		myRows = rows;
-		myCols = cols;
-		version = ver;
+		dimensions = dim;
 	}
-
-	/**
-	 * The number of rows on the map.
-	 */
-	private final int myRows;
-	/**
-	 * The number of columns on the map.
-	 */
-	private final int myCols;
-
 	/**
 	 * The tiles on the map.
 	 */
@@ -60,24 +36,6 @@ public class SPMap implements IMap {
 	 * The players in the game.
 	 */
 	private final PlayerCollection players; // NOPMD
-
-	/**
-	 *
-	 * @return how many rows the map has.
-	 */
-	@Override
-	public final int rows() {
-		return myRows;
-	}
-
-	/**
-	 *
-	 * @return how many columns the map has
-	 */
-	@Override
-	public final int cols() {
-		return myCols;
-	}
 
 	/**
 	 * Add a tile to the map.
@@ -124,8 +82,7 @@ public class SPMap implements IMap {
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof SPMap && myCols == ((IMap) obj).cols()
-						&& myRows == ((IMap) obj).rows()
+				|| (obj instanceof SPMap && getDimensions().equals(((IMap) obj).getDimensions())
 						&& players.equals(((IMap) obj).getPlayers()) && tiles
 							.equals(((SPMap) obj).tiles));
 	}
@@ -136,7 +93,7 @@ public class SPMap implements IMap {
 	 */
 	@Override
 	public int hashCode() {
-		return myRows + myCols << 2 + players.hashCode() << 4 + tiles
+		return getDimensions().hashCode() + players.hashCode() << 4 + tiles
 				.hashCode() << 10;
 	}
 
@@ -147,9 +104,9 @@ public class SPMap implements IMap {
 	@Override
 	public String toString() {
 		final StringBuilder sbuild = new StringBuilder("SP Map with ");
-		sbuild.append(myRows);
+		sbuild.append(dimensions.rows);
 		sbuild.append(" rows and ");
-		sbuild.append(myCols);
+		sbuild.append(dimensions.cols);
 		sbuild.append(" columns. Players:");
 		for (final Player player : players) {
 			sbuild.append("\n\t");
@@ -174,7 +131,7 @@ public class SPMap implements IMap {
 	 */
 	@Override
 	public boolean isSubset(final IMap obj, final PrintStream out) {
-		if (cols() == obj.cols() && rows() == obj.rows()) {
+		if (getDimensions().equals(obj.getDimensions())) {
 			return players.isSubset(obj.getPlayers(), out) // NOPMD
 					&& tiles.isSubset(obj.getTiles(), out);
 		} else {
@@ -200,5 +157,12 @@ public class SPMap implements IMap {
 	@Override
 	public TileCollection getTiles() {
 		return tiles;
+	}
+	/**
+	 * @return The map's dimensions and version.
+	 */
+	@Override
+	public MapDimensions getDimensions() {
+		return dimensions;
 	}
 }

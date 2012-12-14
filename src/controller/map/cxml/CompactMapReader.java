@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
+import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -63,10 +64,10 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			spinUntilEnd(element.getName(), stream);
 			return retval; // NOPMD: TODO: Perhaps split this into parseMap and parseView?
 		} else {
-			final SPMap retval = new SPMap(Integer.parseInt(getParameter(
-					element, "version", "1")), Integer.parseInt(getParameter(
+			final SPMap retval = new SPMap(new MapDimensions(Integer.parseInt(getParameter(
 					element, "rows")), Integer.parseInt(getParameter(element,
-					"columns")));
+					"columns")), Integer.parseInt(getParameter(
+							element, "version", "1"))));
 			for (final XMLEvent event : stream) {
 				if (event.isStartElement()) {
 					parseChild(stream, warner, retval, event.asStartElement(), idFactory);
@@ -169,12 +170,13 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * @throws IOException on I/O error
 	 */
 	private void writeMap(final Writer out, final SPMap obj, final int indent) throws IOException {
+		final MapDimensions dim = obj.getDimensions();
 		out.append("<map version=\"");
-		out.append(Integer.toString(obj.getVersion()));
+		out.append(Integer.toString(dim.version));
 		out.append("\" rows=\"");
-		out.append(Integer.toString(obj.rows()));
+		out.append(Integer.toString(dim.rows));
 		out.append("\" columns=\"");
-		out.append(Integer.toString(obj.cols()));
+		out.append(Integer.toString(dim.cols));
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
 			out.append("\" current_player=\"");
 			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer().getPlayerId()));
@@ -183,9 +185,9 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 		for (Player player : obj.getPlayers()) {
 			CompactReaderAdapter.ADAPTER.write(out, player, indent + 1);
 		}
-		for (int i = 0; i < obj.rows(); i++) {
+		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
-			for (int j = 0; j < obj.cols(); j++) {
+			for (int j = 0; j < dim.cols; j++) {
 				final Tile tile = obj.getTile(PointFactory.point(i, j));
 				if (!tile.isEmpty() && rowEmpty) {
 					out.append(indent(indent + 1));

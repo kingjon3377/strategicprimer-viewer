@@ -11,6 +11,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 
+import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.PointFactory;
 import model.map.Tile;
@@ -51,8 +52,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 		setLayout(new BorderLayout());
 		setDoubleBuffered(true);
 		model = theMap;
-		helper = TileDrawHelperFactory.INSTANCE.factory(model.getMainMap()
-				.getVersion(), this);
+		helper = TileDrawHelperFactory.INSTANCE.factory(
+				model.getMapDimensions().version, this);
 		loadMap(theMap.getMainMap());
 		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
@@ -82,14 +83,15 @@ public final class MapComponent extends JComponent implements MapGUI,
 			context.setColor(Color.white);
 			context.fillRect(0, 0, getWidth(), getHeight());
 			final Rectangle bounds = bounds(context.getClipBounds());
+			final MapDimensions mapDim = model.getMapDimensions();
 			final int tsize = TILE_SIZE
-					.getSize(model.getMainMap().getVersion());
+					.getSize(mapDim.version);
 			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tsize),
 					(int) Math.round(bounds.getMinY() / tsize), Math.min(
 							(int) Math.round(bounds.getMaxX() / tsize + 1),
-							model.getSizeCols()), Math.min(
+							mapDim.cols), Math.min(
 							(int) Math.round(bounds.getMaxY() / tsize + 1),
-							model.getSizeRows()));
+							mapDim.rows));
 		} finally {
 			context.dispose();
 		}
@@ -124,14 +126,18 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return (rect == null) ? new Rectangle(0, 0, (getMapModel()
-				.getDimensions().getMaximumCol() - getMapModel()
-				.getDimensions().getMinimumCol())
-				* TILE_SIZE.getSize(getMapModel().getMainMap().getVersion()),
+		return (rect == null) ? new Rectangle(
+				0,
+				0,
+				(getMapModel().getDimensions().getMaximumCol() - getMapModel()
+						.getDimensions().getMinimumCol())
+						* TILE_SIZE
+								.getSize(getMapModel().getMapDimensions().version),
 				(getMapModel().getDimensions().getMaximumRow() - getMapModel()
 						.getDimensions().getMinimumRow())
-						* TILE_SIZE.getSize(getMapModel().getMainMap()
-								.getVersion())) : rect;
+						* TILE_SIZE
+								.getSize(getMapModel().getMapDimensions().version))
+				: rect;
 	}
 
 	/**
@@ -144,8 +150,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	private void paintTile(final Graphics pen, final Tile tile, final int row,
 			final int col) {
-		final int tsize = TILE_SIZE.getSize(getMapModel().getMainMap()
-				.getVersion());
+		final int tsize = TILE_SIZE
+				.getSize(getMapModel().getMapDimensions().version);
 		helper.drawTile(pen, tile, PointFactory.coordinate(col * tsize, row * tsize),
 				PointFactory.coordinate(tsize, tsize));
 		if (model.getSelectedTile().equals(tile)) {
@@ -168,8 +174,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Override
 	public void loadMap(final MapView newMap) {
 		model.setMainMap(newMap);
-		helper = TileDrawHelperFactory.INSTANCE.factory(newMap.getVersion(),
-				this);
+		helper = TileDrawHelperFactory.INSTANCE.factory(
+				newMap.getDimensions().version, this);
 		repaint();
 	}
 
@@ -210,10 +216,10 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int maxRow = getMapModel().getDimensions().getMaximumRow();
 		final int minCol = getMapModel().getDimensions().getMinimumCol();
 		final int maxCol = getMapModel().getDimensions().getMaximumCol();
+		final MapDimensions mapDim = getMapModel().getMapDimensions();
 		return (selRow <= 0 || selRow >= minRow)
-				&& (selRow >= getMapModel().getSizeRows() || selRow <= maxRow)
-				&& (selCol <= 0 || selCol >= minCol) && (selCol >= getMapModel()
-				.getSizeCols() || selCol <= maxCol);
+				&& (selRow >= mapDim.rows || selRow <= maxRow)
+				&& (selCol <= 0 || selCol >= minCol) && (selCol >= mapDim.cols || selCol <= maxCol);
 	}
 
 	/**
@@ -255,6 +261,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	@Override
 	public int getTileSize() {
-		return TILE_SIZE.getSize(getMapModel().getMainMap().getVersion());
+		return TILE_SIZE.getSize(getMapModel().getMapDimensions().version);
 	}
 }

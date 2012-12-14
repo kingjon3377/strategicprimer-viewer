@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PointFactory;
@@ -52,10 +53,10 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final SPMap map = new SPMap(Integer.parseInt(getAttribute(element,
-				"version", "1")),
+		final SPMap map = new SPMap(new MapDimensions(
 				Integer.parseInt(getAttribute(element, "rows")),
-				Integer.parseInt(getAttribute(element, "columns")));
+				Integer.parseInt(getAttribute(element, "columns")),
+				Integer.parseInt(getAttribute(element, "version", "1"))));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
@@ -138,9 +139,9 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public <S extends SPMap> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"map");
-		retval.addAttribute("version", Integer.toString(obj.getVersion()));
-		retval.addAttribute("rows", Integer.toString(obj.rows()));
-		retval.addAttribute("columns", Integer.toString(obj.cols()));
+		retval.addAttribute("version", Integer.toString(obj.getDimensions().version));
+		retval.addAttribute("rows", Integer.toString(obj.getDimensions().rows));
+		retval.addAttribute("columns", Integer.toString(obj.getDimensions().cols));
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
 			retval.addAttribute(
 					"current_player",
@@ -150,11 +151,12 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		for (final Player player : obj.getPlayers()) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(player));
 		}
-		for (int i = 0; i < obj.rows(); i++) {
+		final MapDimensions dim = obj.getDimensions();
+		for (int i = 0; i < dim.rows; i++) {
 			@SuppressWarnings("unchecked")
 			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(// NOPMD
 					"row", Pair.of("index", Integer.toString(i)));
-			for (int j = 0; j < obj.cols(); j++) {
+			for (int j = 0; j < dim.cols; j++) {
 				final Tile tile = obj.getTile(PointFactory.point(i, j));
 				if (!tile.isEmpty()) {
 					retval.addChild(row);

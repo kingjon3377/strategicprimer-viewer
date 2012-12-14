@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.MapModel;
 import util.IsNumeric;
@@ -174,17 +175,18 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 */
 	private void handleOK(final String rowText, final String colText) {
 		errorLabel.setText("");
-		final State colState = checkNumber(colText, map.getSizeCols() - 1);
+		final MapDimensions dim = map.getMapDimensions();
+		final State colState = checkNumber(colText, dim.cols - 1);
 		if (!(colState == State.Valid)) {
 			errorLabel.setText(errorLabel.getText() + "Column "
-					+ getErrorMessage(colState, map.getSizeCols()));
+					+ getErrorMessage(colState, dim.cols));
 			column.setText("-1");
 			column.selectAll();
 		}
-		final State rowState = checkNumber(rowText, map.getSizeRows() - 1);
+		final State rowState = checkNumber(rowText, dim.rows - 1);
 		if (!(rowState == State.Valid)) {
 			errorLabel.setText(errorLabel.getText() + "Row "
-					+ getErrorMessage(rowState, map.getSizeRows()));
+					+ getErrorMessage(rowState, dim.rows));
 			row.setText("-1");
 			row.selectAll();
 		}

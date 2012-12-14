@@ -30,7 +30,7 @@ public class MapNGAdapter implements IMapNG {
 	 */
 	@Override
 	public boolean isSubset(final IMapNG obj, final PrintStream out) {
-		if (cols() == obj.cols() && rows() == obj.rows()) {
+		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (Player player : obj.players()) {
 				if (!state.getPlayers().contains(player)) {
@@ -104,30 +104,6 @@ public class MapNGAdapter implements IMapNG {
 	}
 
 	/**
-	 * @return the map version
-	 */
-	@Override
-	public int version() {
-		return state.getVersion();
-	}
-
-	/**
-	 * @return how many rows the map has.
-	 */
-	@Override
-	public int rows() {
-		return state.rows();
-	}
-
-	/**
-	 * @return how many columns the map has
-	 */
-	@Override
-	public int cols() {
-		return state.cols();
-	}
-
-	/**
 	 * @return a view of the players in the map.
 	 */
 	@Override
@@ -158,7 +134,7 @@ public class MapNGAdapter implements IMapNG {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isMountainous(final Point location) {
-		if (version() < 2 && TileType.Mountain.equals(getBaseTerrain(location))) {
+		if (dimensions().version < 2 && TileType.Mountain.equals(getBaseTerrain(location))) {
 			return true; // NOPMD
 		}
 		for (TileFixture fix : state.getTile(location)) {
@@ -264,5 +240,12 @@ public class MapNGAdapter implements IMapNG {
 	@Override
 	public int hashCode() {
 		return state.hashCode();
+	}
+	/**
+	 * @return the map's dimensions and version
+	 */
+	@Override
+	public MapDimensions dimensions() {
+		return state.getDimensions();
 	}
 }

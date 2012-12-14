@@ -56,30 +56,6 @@ public class MapView implements IMap {
 	}
 
 	/**
-	 * @return the map version of the wrapped map
-	 */
-	@Override
-	public int getVersion() {
-		return map.getVersion();
-	}
-
-	/**
-	 * @return the number of rows in the wrapped map
-	 */
-	@Override
-	public int rows() {
-		return map.rows();
-	}
-
-	/**
-	 * @return the number of columns in the wrapped map
-	 */
-	@Override
-	public int cols() {
-		return map.cols();
-	}
-
-	/**
 	 * Add a player to the wrapped map.
 	 *
 	 * @param newPlayer the player to add
@@ -184,5 +160,12 @@ public class MapView implements IMap {
 		builder.append("\nMap:\n");
 		builder.append(map);
 		return builder.toString();
+	}
+	/**
+	 * @return The map's dimensions and version.
+	 */
+	@Override
+	public MapDimensions getDimensions() {
+		return map.getDimensions();
 	}
 }

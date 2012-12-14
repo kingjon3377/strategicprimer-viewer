@@ -59,7 +59,7 @@ public final class ViewerFrame extends JFrame {
 		final MapGUI mapPanel = new MapComponent(map);
 //		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel),
 //				BorderLayout.SOUTH);
-		add(new DetailPanelNG(map.getMainMap().getVersion(), map, mapPanel),
+		add(new DetailPanelNG(map.getMapDimensions().version, map, mapPanel),
 				BorderLayout.SOUTH);
 		final JPanel mapSuperPanel = new JPanel(new BorderLayout());
 		mapSuperPanel.add((JComponent) mapPanel, BorderLayout.CENTER);

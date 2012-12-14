@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.IMap;
+import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
 import model.map.PointFactory;
@@ -33,9 +34,9 @@ public class ResolutionDecreaseConverter {
 	 */
 	public MapView convert(final IMap old) {
 		checkRequirements(old);
-		final int newRows = old.rows() / 2;
-		final int newCols = old.cols() / 2;
-		final SPMap newMap = new SPMap(2, newRows, newCols);
+		final int newRows = old.getDimensions().rows / 2;
+		final int newCols = old.getDimensions().cols / 2;
+		final SPMap newMap = new SPMap(new MapDimensions(newRows, newCols, 2));
 		for (final Player player : old.getPlayers()) {
 			newMap.addPlayer(player);
 		}
@@ -61,7 +62,8 @@ public class ResolutionDecreaseConverter {
 	 * @param map the map to check.
 	 */
 	private static void checkRequirements(final IMap map) {
-		if (map.rows() % 2 != 0 || map.cols() % 2 != 0) {
+		if (map.getDimensions().rows % 2 != 0
+				|| map.getDimensions().cols % 2 != 0) {
 			throw new IllegalArgumentException(
 					"Can only convert maps with even numbers of rows and columns.");
 		}

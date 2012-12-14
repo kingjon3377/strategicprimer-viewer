@@ -50,7 +50,7 @@ public final class MapUpdater {
 	 * @param derived the derived map to update.
 	 */
 	public void update(final IMap derived) {
-		if (master.rows() != derived.rows() || master.cols() != derived.cols()) {
+		if (!master.getDimensions().equals(derived.getDimensions())) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
 		for (final Point point : derived.getTiles()) {

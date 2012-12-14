@@ -8,23 +8,10 @@ package model.map;
  */
 // ESCA-JAVA0237:
 public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap> {
-
 	/**
-	 * @return the map version
+	 * @return The map's dimensions and version.
 	 */
-	int getVersion();
-
-	/**
-	 *
-	 * @return how many rows the map has.
-	 */
-	int rows();
-
-	/**
-	 *
-	 * @return how many columns the map has
-	 */
-	int cols();
+	MapDimensions getDimensions();
 
 	/**
 	 * Add a player to the game.

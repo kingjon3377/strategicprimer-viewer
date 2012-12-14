@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import model.exploration.ExplorationRunner;
 import model.exploration.MissingTableException;
 import model.map.IMap;
+import model.map.MapDimensions;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -83,14 +84,15 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	public SPMap convert(final IMap old, final boolean main) {
 		final IDFactory idFactory = new IDFactory();
-		final SPMap retval = new SPMap(2, old.rows() * SUBTILES_PER_TILE,
-				old.cols() * SUBTILES_PER_TILE);
+		final MapDimensions oldDim = old.getDimensions();
+		final SPMap retval = new SPMap(new MapDimensions(oldDim.rows * SUBTILES_PER_TILE,
+				oldDim.cols * SUBTILES_PER_TILE, 2));
 		for (final Player player : old.getPlayers()) {
 			retval.addPlayer(player);
 		}
 		final List<Tile> converted = new LinkedList<Tile>();
-		for (int row = 0; row < old.rows(); row++) {
-			for (int col = 0; col < old.cols(); col++) {
+		for (int row = 0; row < oldDim.rows; row++) {
+			for (int col = 0; col < oldDim.cols; col++) {
 				for (final Tile tile : convertTile(
 						old.getTile(PointFactory.point(row, col)), main,
 						idFactory)) {

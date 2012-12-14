@@ -19,17 +19,9 @@ import model.map.fixtures.terrain.Forest;
  */
 public interface IMapNG extends XMLWritable, Subsettable<IMapNG>, Comparable<IMapNG> {
 	/**
-	 * @return the map version
+	 * @return the map version and dimensions
 	 */
-	int version();
-	/**
-	 * @return how many rows the map has
-	 */
-	int rows();
-	/**
-	 * @return how many columns the map has
-	 */
-	int cols();
+	MapDimensions dimensions();
 	/**
 	 * @return a view of the players in the map.
 	 */

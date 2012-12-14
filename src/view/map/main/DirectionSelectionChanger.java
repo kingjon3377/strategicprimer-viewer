@@ -50,7 +50,7 @@ public class DirectionSelectionChanger {
 	 * Move the cursor down.
 	 */
 	public void down() {
-		if (model.getSelectedTile().getLocation().row < model.getSizeRows() - 1) {
+		if (model.getSelectedTile().getLocation().row < model.getMapDimensions().rows - 1) {
 			model.setSelection(PointFactory.point(model.getSelectedTile()
 					.getLocation().row + 1, model.getSelectedTile()
 					.getLocation().col));
@@ -61,7 +61,7 @@ public class DirectionSelectionChanger {
 	 * Move the cursor right.
 	 */
 	public void right() {
-		if (model.getSelectedTile().getLocation().col < model.getSizeCols() - 1) {
+		if (model.getSelectedTile().getLocation().col < model.getMapDimensions().cols - 1) {
 			model.setSelection(PointFactory.point(model.getSelectedTile()
 					.getLocation().row, model.getSelectedTile().getLocation()
 					.col + 1));

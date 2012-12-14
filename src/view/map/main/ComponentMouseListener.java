@@ -29,7 +29,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 			final PropertyChangeListener list) {
 		super();
 		model = mapModel;
-		menu = new TerrainChangingMenu(model.getMainMap().getVersion(),
+		menu = new TerrainChangingMenu(model.getMapDimensions().version,
 				model.getSelectedTile(), list, model);
 	}
 
@@ -51,7 +51,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 	public void mouseClicked(final MouseEvent event) {
 		final java.awt.Point eventPoint = event.getPoint();
 		final VisibleDimensions dimensions = model.getDimensions();
-		final int tileSize = tsize.getSize(model.getMainMap().getVersion());
+		final int tileSize = tsize.getSize(model.getMapDimensions().version);
 		model.setSelection(PointFactory.point(eventPoint.y / tileSize
 				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
 				+ dimensions.getMinimumCol()));
