@@ -4,9 +4,9 @@ import java.io.PrintStream;
 
 /**
  * A class to get around FindBugs' insistence that System.out is always null.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class SystemOut extends PrintStream {
 	/**
@@ -23,12 +23,20 @@ public final class SystemOut extends PrintStream {
 																// closeWhereCreated
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
 	public String toString() {
 		return "SystemOut";
 	}
-
+	/**
+	 * Chainable print().
+	 * @param string the string to print
+	 * @return this
+	 */
+	public SystemOut printC(final String string) {
+		print(string);
+		return this;
+	}
 }
