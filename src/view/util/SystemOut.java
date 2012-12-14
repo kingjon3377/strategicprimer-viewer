@@ -39,4 +39,13 @@ public final class SystemOut extends PrintStream {
 		print(string);
 		return this;
 	}
+	/**
+	 * Chainable print().
+	 * @param integer the number to print
+	 * @return this
+	 */
+	public SystemOut printC(final int integer) {
+		print(integer);
+		return this;
+	}
 }

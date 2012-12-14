@@ -365,10 +365,10 @@ public class ExplorationCLI {
 		// always see when we want to stop.
 		final List<TileFixture> constants = new ArrayList<TileFixture>();
 		while (movement > 0) {
-			SystemOut.SYS_OUT.print(movement);
-			SystemOut.SYS_OUT.print(" MP of ");
-			SystemOut.SYS_OUT.print(totalMP);
-			SystemOut.SYS_OUT.println(" remaining.");
+			allFixtures.clear();
+			constants.clear();
+			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
+					.printC(totalMP).println(" remaining.");
 			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
 			final int directionNum = inputNumber("Direction to move: ");
@@ -382,12 +382,11 @@ public class ExplorationCLI {
 				movement -= cost;
 			} catch (TraversalImpossibleException except) {
 				movement--;
-				SystemOut.SYS_OUT
-						.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
+				SystemOut.SYS_OUT.printC(
+						"That direction is impassable; we've made sure ")
+						.println("all maps show that at a cost of 1 MP");
 				continue;
 			}
-			allFixtures.clear();
-			constants.clear();
 			final Point dPoint = cli.getDestination(point, direction);
 			for (TileFixture fix : master.getTile(dPoint)) {
 				if (fix instanceof Mountain || fix instanceof RiverFixture
@@ -401,15 +400,15 @@ public class ExplorationCLI {
 					allFixtures.add(fix);
 				}
 			}
-			SystemOut.SYS_OUT.print("The explorer comes to ");
-			SystemOut.SYS_OUT.print(dPoint.toString());
-			SystemOut.SYS_OUT.print(", a tile with terrain ");
-			SystemOut.SYS_OUT.println(master.getTile(dPoint).getTerrain());
+			SystemOut.SYS_OUT.printC("The explorer comes to ")
+					.printC(dPoint.toString()).printC(", a tile with terrain ")
+					.println(master.getTile(dPoint).getTerrain());
 			if (allFixtures.isEmpty()) {
 				SystemOut.SYS_OUT.println("The following fixtures were automatically noticed:");
 			} else {
-				SystemOut.SYS_OUT.print("The following fixtures were noticed, all but the");
-				SystemOut.SYS_OUT.println("last automtically:");
+				SystemOut.SYS_OUT.printC(
+						"The following fixtures were noticed, all but the")
+						.println("last automtically:");
 				Collections.shuffle(allFixtures);
 				constants.add(allFixtures.get(0));
 			}
