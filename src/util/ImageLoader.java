@@ -35,11 +35,6 @@ public final class ImageLoader {
 	 */
 	private final Map<String, Image> cache = new HashMap<String, Image>();
 	/**
-	 * The object we use for our actual file I/O.
-	 */
-	private final FileLoader helper = new FileLoader();
-
-	/**
 	 * Constructor.
 	 */
 	private ImageLoader() {
@@ -79,7 +74,7 @@ public final class ImageLoader {
 			IOException {
 		if (!cache.containsKey(file)) {
 			cache.put(file,
-					ImageIO.read(helper.loadFileAsStream("images/" + file)));
+					ImageIO.read(new ResourceInputStream("images/" + file)));
 		}
 		return cache.get(file);
 	}

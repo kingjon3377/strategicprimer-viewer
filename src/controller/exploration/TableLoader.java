@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +20,8 @@ import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
 import model.exploration.TerrainTable;
 import model.map.TileType;
-import util.FileLoader;
 import util.Pair;
+import util.ResourceInputStream;
 
 /**
  * A class to load encounter tables from file.
@@ -61,7 +62,8 @@ public final class TableLoader { // NOPMD
 	 */
 	public EncounterTable loadTable(final String filename)
 			throws FileNotFoundException, IOException { // NOPMD
-		final BufferedReader reader = new FileLoader().loadFile(filename);
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new ResourceInputStream(filename)));
 		try {
 			return loadTable(reader);
 		} catch (final IllegalArgumentException except) {
