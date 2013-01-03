@@ -148,4 +148,23 @@ public class MapHelper {
 		return ExplorationCLI.inputNumber(prompt);
 	}
 
+	/**
+	 * Turn an Iterable into a List. This is, of course, an eager
+	 * implementation; make sure not to use on anything with an infinite
+	 * iterator!
+	 *
+	 * FIXME: This is probably more generally useful and should be moved
+	 * elsewhere, if it's not already somewhere I forgot about.
+	 *
+	 * @param <T> the type contained in the iterable.
+	 * @param iter the thing to iterate over
+	 * @return a List representing the same data.
+	 */
+	public <T> List<T> toList(final Iterable<T> iter) {
+		final List<T> retval = new ArrayList<T>();
+		for (final T item : iter) {
+			retval.add(item);
+		}
+		return retval;
+	}
 }
