@@ -318,12 +318,7 @@ public class ExplorationCLI {
 		}
 		final Point dPoint = cli.getDestination(point, direction);
 		for (TileFixture fix : master.getTile(dPoint)) {
-			if (fix instanceof Mountain
-					|| fix instanceof RiverFixture
-					|| fix instanceof Hill
-					|| fix instanceof Forest
-					|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
-							.equals(unit.getOwner()))) {
+			if (shouldAlwaysNotice(unit, fix)) {
 				constants.add(fix);
 			} else if ((fix instanceof Ground && ((Ground) fix).isExposed())
 					|| !(fix instanceof Ground || fix.equals(unit))) {
@@ -352,6 +347,20 @@ public class ExplorationCLI {
 			}
 		}
 		return cost;
+	}
+
+	/**
+	 * @param unit a unit
+	 * @param fix a fixture
+	 * @return whether the unit should always notice it.
+	 */
+	private static boolean shouldAlwaysNotice(final Unit unit, final TileFixture fix) {
+		return fix instanceof Mountain
+				|| fix instanceof RiverFixture
+				|| fix instanceof Hill
+				|| fix instanceof Forest
+				|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
+						.equals(unit.getOwner()));
 	}
 	/**
 	 * An enumeration of directions.
