@@ -188,4 +188,15 @@ public class MapHelper {
 		}
 		return retval;
 	}
+	/**
+	 * Read input from stdin. (The input is trimmed of leading and trailing whitespace.)
+	 * @param prompt The prompt to prompt the user with
+	 * @return the string entered.
+	 * @throws IOException on I/O error
+	 */
+	public String inputString(final String prompt) throws IOException {
+		SystemOut.SYS_OUT.print(prompt);
+		final BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));
+		return istream.readLine().trim();
+	}
 }
