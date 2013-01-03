@@ -279,54 +279,60 @@ public class ExplorationCLI {
 			constants.clear();
 			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
 					.printC(totalMP).println(" remaining.");
-			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
+			SystemOut.SYS_OUT
+					.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
+			int cost = 0;
 			final int directionNum = helper.inputNumber("Direction to move: ");
-			if (directionNum > 7) {
-				break;
-			}
-			final Direction direction = Direction.values()[directionNum];
-			final Point point = cli.find(unit);
-			try {
-				final int cost = cli.move(unit, point, direction);
+			if (directionNum <= 7) {
+				final Direction direction = Direction.values()[directionNum];
+				final Point point = cli.find(unit);
+				try {
+					cost = cli.move(unit, point, direction);
+					final Point dPoint = cli.getDestination(point, direction);
+					for (TileFixture fix : master.getTile(dPoint)) {
+						if (fix instanceof Mountain
+								|| fix instanceof RiverFixture
+								|| fix instanceof Hill
+								|| fix instanceof Forest
+								|| (fix instanceof Fortress && ((Fortress) fix)
+										.getOwner().equals(unit.getOwner()))) {
+							constants.add(fix);
+						} else if ((fix instanceof Ground && ((Ground) fix)
+								.isExposed())
+								|| !(fix instanceof Ground || fix.equals(unit))) {
+							// FIXME: *Some* explorers would notice even
+							// unexposed ground.
+							allFixtures.add(fix);
+						}
+					}
+					SystemOut.SYS_OUT.printC("The explorer comes to ")
+							.printC(dPoint.toString())
+							.printC(", a tile with terrain ")
+							.println(master.getTile(dPoint).getTerrain());
+					if (allFixtures.isEmpty()) {
+						SystemOut.SYS_OUT
+								.println("The following fixtures were automatically noticed:");
+					} else {
+						SystemOut.SYS_OUT
+								.printC("The following fixtures were noticed, all but the")
+								.println("last automtically:");
+						Collections.shuffle(allFixtures);
+						constants.add(allFixtures.get(0));
+					}
+					for (TileFixture fix : constants) {
+						SystemOut.SYS_OUT.println(fix);
+						for (IMap map : secondaries) {
+							map.getTile(dPoint).addFixture(fix);
+						}
+					}
+				} catch (TraversalImpossibleException except) {
+					cost = 1;
+					SystemOut.SYS_OUT.printC(
+							"That direction is impassable; we've made sure ")
+							.println("all maps show that at a cost of 1 MP");
+				}
 				movement -= cost;
-			} catch (TraversalImpossibleException except) {
-				movement--;
-				SystemOut.SYS_OUT.printC(
-						"That direction is impassable; we've made sure ")
-						.println("all maps show that at a cost of 1 MP");
-				continue;
-			}
-			final Point dPoint = cli.getDestination(point, direction);
-			for (TileFixture fix : master.getTile(dPoint)) {
-				if (fix instanceof Mountain || fix instanceof RiverFixture
-						|| fix instanceof Hill || fix instanceof Forest
-						|| (fix instanceof Fortress && ((Fortress) fix)
-								.getOwner().equals(unit.getOwner()))) {
-					constants.add(fix);
-				} else if ((fix instanceof Ground && ((Ground) fix).isExposed())
-						|| !(fix instanceof Ground || fix.equals(unit))) {
-					// FIXME: *Some* explorers would notice even unexposed ground.
-					allFixtures.add(fix);
-				}
-			}
-			SystemOut.SYS_OUT.printC("The explorer comes to ")
-					.printC(dPoint.toString()).printC(", a tile with terrain ")
-					.println(master.getTile(dPoint).getTerrain());
-			if (allFixtures.isEmpty()) {
-				SystemOut.SYS_OUT.println("The following fixtures were automatically noticed:");
-			} else {
-				SystemOut.SYS_OUT.printC(
-						"The following fixtures were noticed, all but the")
-						.println("last automtically:");
-				Collections.shuffle(allFixtures);
-				constants.add(allFixtures.get(0));
-			}
-			for (TileFixture fix : constants) {
-				SystemOut.SYS_OUT.println(fix);
-				for (IMap map : secondaries) {
-					map.getTile(dPoint).addFixture(fix);
-				}
 			}
 		}
 	}
