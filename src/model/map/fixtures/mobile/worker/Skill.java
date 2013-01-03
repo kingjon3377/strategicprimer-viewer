@@ -28,11 +28,11 @@ public class Skill implements XMLWritable, HasName {
 	/**
 	 * How many levels the worker has in the skill.
 	 */
-	private final int level;
+	private int level;
 	/**
 	 * How many hours the worker has gained since leveling up last.
 	 */
-	private final int hours;
+	private int hours;
 	/**
 	 * @return the name of the skill
 	 */
@@ -68,5 +68,17 @@ public class Skill implements XMLWritable, HasName {
 	@Override
 	public int hashCode() {
 		return name.hashCode();
+	}
+	/**
+	 * Add hours of training or experience.
+	 * @param hrs the number of hours to add
+	 * @param condition If less than or equal to the number of hours after the addition, level up and zero the hours instead.
+	 */
+	public void addHours(final int hrs, final int condition) {
+		hours += hrs;
+		if (condition <= hours) {
+			level++;
+			hours = 0;
+		}
 	}
 }
