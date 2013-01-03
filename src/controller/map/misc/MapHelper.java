@@ -1,16 +1,18 @@
 package controller.map.misc;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
+import util.IsNumeric;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.SPFormatException;
-import controller.map.drivers.ExplorationCLI;
 
 import model.map.HasName;
 import model.map.IMap;
@@ -145,7 +147,7 @@ public class MapHelper {
 		}
 		SystemOut.SYS_OUT.println(desc);
 		printList(SystemOut.SYS_OUT, items);
-		return ExplorationCLI.inputNumber(prompt);
+		return MapHelper.inputNumber(prompt);
 	}
 
 	/**
@@ -164,6 +166,25 @@ public class MapHelper {
 		final List<T> retval = new ArrayList<T>();
 		for (final T item : iter) {
 			retval.add(item);
+		}
+		return retval;
+	}
+
+	/**
+	 * Read input from stdin repeatedly until a nonnegative integer is entered, and return it.
+	 * @param prompt The prompt to prompt the user with
+	 * @return the number entered
+	 * @throws IOException on I/O error
+	 */
+	public static int inputNumber(final String prompt) throws IOException {
+		int retval = -1;
+		final BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));
+		while (retval < 0) {
+			SystemOut.SYS_OUT.print(prompt);
+			final String input = istream.readLine();
+			if (IsNumeric.isNumeric(input)) {
+				retval = Integer.parseInt(input);
+			}
 		}
 		return retval;
 	}

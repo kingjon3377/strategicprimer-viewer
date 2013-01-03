@@ -1,8 +1,6 @@
 package controller.map.drivers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +22,6 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
-import util.IsNumeric;
 import view.util.SystemOut;
 import controller.map.SPFormatException;
 import controller.map.misc.MapHelper;
@@ -244,7 +241,7 @@ public class ExplorationCLI {
 			SystemOut.SYS_OUT.println("Details of that unit:");
 			SystemOut.SYS_OUT.println(unit.verbose());
 			movementREPL(secondaries, master, cli, unit,
-					inputNumber("MP that unit has: "));
+					MapHelper.inputNumber("MP that unit has: "));
 		} catch (IOException except) {
 			System.exit(4);
 			return; // NOPMD
@@ -281,7 +278,7 @@ public class ExplorationCLI {
 					.printC(totalMP).println(" remaining.");
 			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
-			final int directionNum = inputNumber("Direction to move: ");
+			final int directionNum = MapHelper.inputNumber("Direction to move: ");
 			if (directionNum > 7) {
 				break;
 			}
@@ -329,24 +326,6 @@ public class ExplorationCLI {
 				}
 			}
 		}
-	}
-	/**
-	 * Read input from stdin repeatedly until a nonnegative integer is entered, and return it.
-	 * @param prompt The prompt to prompt the user with
-	 * @return the number entered
-	 * @throws IOException on I/O error
-	 */
-	public static int inputNumber(final String prompt) throws IOException {
-		int retval = -1;
-		final BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));
-		while (retval < 0) {
-			SystemOut.SYS_OUT.print(prompt);
-			final String input = istream.readLine();
-			if (IsNumeric.isNumeric(input)) {
-				retval = Integer.parseInt(input);
-			}
-		}
-		return retval;
 	}
 	/**
 	 * An enumeration of directions.
