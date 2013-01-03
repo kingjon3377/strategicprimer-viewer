@@ -1,6 +1,8 @@
 // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.avoidInnerClasses
 package view.map.main;
 
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -11,14 +13,14 @@ import javax.swing.KeyStroke;
 
 /**
  * A class to handle setting up listeners for the arrow keys.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ArrowKeyListener {
 	/**
 	 * Set up listeners.
-	 * 
+	 *
 	 * @param selListener The actual listener whose methods have to be attached.
 	 * @param inputMap An input map to set up the keybindings.
 	 * @param actionMap The action map we'll be putting the glue listeners into.
@@ -53,10 +55,54 @@ public class ArrowKeyListener {
 				selListener.right();
 			}
 		});
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, CTRL_DOWN_MASK), "ctrlUp");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, CTRL_DOWN_MASK), "ctrlDown");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, CTRL_DOWN_MASK), "ctrlRight");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, CTRL_DOWN_MASK), "ctrlLeft");
+		actionMap.put("ctrlUp", new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.up();
+				selListener.up();
+				selListener.up();
+				selListener.up();
+				selListener.up();
+			}
+		});
+		actionMap.put("ctrlDown", new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.down();
+				selListener.down();
+				selListener.down();
+				selListener.down();
+				selListener.down();
+			}
+		});
+		actionMap.put("ctrlLeft", new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.left();
+				selListener.left();
+				selListener.left();
+				selListener.left();
+				selListener.left();
+			}
+		});
+		actionMap.put("ctrlRight", new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				selListener.right();
+				selListener.right();
+				selListener.right();
+				selListener.right();
+				selListener.right();
+			}
+		});
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
