@@ -2,17 +2,13 @@ package controller.map.misc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
-
-import util.IsNumeric;
-import util.Warning;
-import view.util.SystemOut;
-import controller.map.SPFormatException;
 
 import model.map.HasName;
 import model.map.IMap;
@@ -21,6 +17,10 @@ import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
+import util.IsNumeric;
+import util.Warning;
+import view.util.SystemOut;
+import controller.map.SPFormatException;
 
 /**
  * A helper class to let drivers, especially CLI drivers, interact with a map.
@@ -31,7 +31,23 @@ import model.map.fixtures.mobile.Unit;
  *
  */
 public class MapHelper {
-
+	/**
+	 * The input stream we'll read from.
+	 */
+	private final BufferedReader istream;
+	/**
+	 * No-arg constructor.
+	 */
+	public MapHelper() {
+		this(System.in);
+	}
+	/**
+	 * Constructor.
+	 * @param in the stream to read from.
+	 */
+	public MapHelper(final InputStream in) { // NOPMD
+		istream = new BufferedReader(new InputStreamReader(in));
+	}
 	/**
 	 * Given a list of maps, return a list (also a set, but we won't guarantee
 	 * that) of players listed in all of them. TODO: move to a more general
@@ -178,7 +194,6 @@ public class MapHelper {
 	 */
 	public int inputNumber(final String prompt) throws IOException {
 		int retval = -1;
-		final BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));
 		while (retval < 0) {
 			SystemOut.SYS_OUT.print(prompt);
 			final String input = istream.readLine();
@@ -196,7 +211,6 @@ public class MapHelper {
 	 */
 	public String inputString(final String prompt) throws IOException {
 		SystemOut.SYS_OUT.print(prompt);
-		final BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));
 		return istream.readLine().trim();
 	}
 }
