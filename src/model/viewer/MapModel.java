@@ -79,9 +79,13 @@ public final class MapModel implements PropertyChangeSource {
 	 * @param newMap the new map
 	 */
 	public void setMainMap(final MapView newMap) {
-		// map shouldn't ever be null, so we assume it wasn't
-		pcs.firePropertyChange("version", mapDim.version,
-				newMap.getDimensions().version);
+		if (mapDim == null) {
+			pcs.firePropertyChange("version", -1, newMap.getDimensions()
+					.getVersion());
+		} else {
+			pcs.firePropertyChange("version", mapDim.version,
+					newMap.getDimensions().version);
+		}
 		map = newMap;
 		mapDim = newMap.getDimensions();
 		setSecondaryMap(new MapView(new SPMap(map.getDimensions()), map.getPlayers().getCurrentPlayer()
