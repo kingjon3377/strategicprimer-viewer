@@ -269,72 +269,89 @@ public class ExplorationCLI {
 			final MapHelper helper, final Unit unit, final int totalMP)
 			throws IOException {
 		int movement = totalMP;
-		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
 		// "constants" is the fixtures that *always* get copied (e.g. forests,
 		// mountains, hills, rivers). Also the player's own fortresses, so we'll
 		// always see when we want to stop.
-		final List<TileFixture> constants = new ArrayList<TileFixture>();
 		while (movement > 0) {
-			allFixtures.clear();
-			constants.clear();
 			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
 					.printC(totalMP).println(" remaining.");
 			SystemOut.SYS_OUT
 					.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
 			int cost = 0;
-			final int directionNum = helper.inputNumber("Direction to move: ");
-			if (directionNum <= 7) {
-				final Direction direction = Direction.values()[directionNum];
-				final Point point = cli.find(unit);
-				try {
-					cost = cli.move(unit, point, direction);
-					final Point dPoint = cli.getDestination(point, direction);
-					for (TileFixture fix : master.getTile(dPoint)) {
-						if (fix instanceof Mountain
-								|| fix instanceof RiverFixture
-								|| fix instanceof Hill
-								|| fix instanceof Forest
-								|| (fix instanceof Fortress && ((Fortress) fix)
-										.getOwner().equals(unit.getOwner()))) {
-							constants.add(fix);
-						} else if ((fix instanceof Ground && ((Ground) fix)
-								.isExposed())
-								|| !(fix instanceof Ground || fix.equals(unit))) {
-							// FIXME: *Some* explorers would notice even
-							// unexposed ground.
-							allFixtures.add(fix);
-						}
-					}
-					SystemOut.SYS_OUT.printC("The explorer comes to ")
-							.printC(dPoint.toString())
-							.printC(", a tile with terrain ")
-							.println(master.getTile(dPoint).getTerrain());
-					if (allFixtures.isEmpty()) {
-						SystemOut.SYS_OUT
-								.println("The following fixtures were automatically noticed:");
-					} else {
-						SystemOut.SYS_OUT
-								.printC("The following fixtures were noticed, all but the")
-								.println("last automtically:");
-						Collections.shuffle(allFixtures);
-						constants.add(allFixtures.get(0));
-					}
-					for (TileFixture fix : constants) {
-						SystemOut.SYS_OUT.println(fix);
-						for (IMap map : secondaries) {
-							map.getTile(dPoint).addFixture(fix);
-						}
-					}
-				} catch (TraversalImpossibleException except) {
-					cost = 1;
-					SystemOut.SYS_OUT.printC(
-							"That direction is impassable; we've made sure ")
-							.println("all maps show that at a cost of 1 MP");
-				}
-				movement -= cost;
+			cost = movementAtom(secondaries, master, cli, helper, unit);
+			movement -= cost;
+		}
+	}
+
+	/**
+	 * The stuff from the loop of the movementREPL.
+	 *
+	 * @param secondaries the maps to update with data from the master map
+	 * @param master the main map
+	 * @param cli the object that does the moving of the unit
+	 * @param helper the helper to use to ask the user for directions.
+	 * @param unit the unit in motion
+	 * @return the cost of the specified movement, 1 if not possible (in that
+	 *         case we add the tile but no fixtures), or MAX_INT if "exit".
+	 * @throws IOException on I/O error
+	 */
+	private static int movementAtom(final List<IMap> secondaries,
+			final IMap master, final ExplorationCLI cli,
+			final MapHelper helper, final Unit unit) throws IOException {
+		int cost;
+		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
+		final List<TileFixture> constants = new ArrayList<TileFixture>();
+		final int directionNum = helper.inputNumber("Direction to move: ");
+		if (directionNum > 7) {
+			return Integer.MAX_VALUE; // NOPMD
+		}
+		final Direction direction = Direction.values()[directionNum];
+		final Point point = cli.find(unit);
+		try {
+			cost = cli.move(unit, point, direction);
+		} catch (TraversalImpossibleException except) {
+			SystemOut.SYS_OUT.printC(
+					"That direction is impassable; we've made sure ").println(
+					"all maps show that at a cost of 1 MP");
+			return 1; // NOPMD
+		}
+		final Point dPoint = cli.getDestination(point, direction);
+		for (TileFixture fix : master.getTile(dPoint)) {
+			if (fix instanceof Mountain
+					|| fix instanceof RiverFixture
+					|| fix instanceof Hill
+					|| fix instanceof Forest
+					|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
+							.equals(unit.getOwner()))) {
+				constants.add(fix);
+			} else if ((fix instanceof Ground && ((Ground) fix).isExposed())
+					|| !(fix instanceof Ground || fix.equals(unit))) {
+				// FIXME: *Some* explorers would notice even
+				// unexposed ground.
+				allFixtures.add(fix);
 			}
 		}
+		SystemOut.SYS_OUT.printC("The explorer comes to ")
+				.printC(dPoint.toString()).printC(", a tile with terrain ")
+				.println(master.getTile(dPoint).getTerrain());
+		if (allFixtures.isEmpty()) {
+			SystemOut.SYS_OUT
+					.println("The following fixtures were automatically noticed:");
+		} else {
+			SystemOut.SYS_OUT.printC(
+					"The following fixtures were noticed, all but the")
+					.println("last automtically:");
+			Collections.shuffle(allFixtures);
+			constants.add(allFixtures.get(0));
+		}
+		for (TileFixture fix : constants) {
+			SystemOut.SYS_OUT.println(fix);
+			for (IMap map : secondaries) {
+				map.getTile(dPoint).addFixture(fix);
+			}
+		}
+		return cost;
 	}
 	/**
 	 * An enumeration of directions.
