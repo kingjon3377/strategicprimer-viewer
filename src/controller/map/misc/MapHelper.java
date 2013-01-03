@@ -147,7 +147,7 @@ public class MapHelper {
 		}
 		SystemOut.SYS_OUT.println(desc);
 		printList(SystemOut.SYS_OUT, items);
-		return MapHelper.inputNumber(prompt);
+		return inputNumber(prompt);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class MapHelper {
 	 * @return the number entered
 	 * @throws IOException on I/O error
 	 */
-	public static int inputNumber(final String prompt) throws IOException {
+	public int inputNumber(final String prompt) throws IOException {
 		int retval = -1;
 		final BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));
 		while (retval < 0) {

@@ -240,8 +240,8 @@ public class ExplorationCLI {
 			final Unit unit = units.get(unitNum);
 			SystemOut.SYS_OUT.println("Details of that unit:");
 			SystemOut.SYS_OUT.println(unit.verbose());
-			movementREPL(secondaries, master, cli, unit,
-					MapHelper.inputNumber("MP that unit has: "));
+			movementREPL(secondaries, master, cli, helper, unit,
+					helper.inputNumber("MP that unit has: "));
 		} catch (IOException except) {
 			System.exit(4);
 			return; // NOPMD
@@ -255,16 +255,19 @@ public class ExplorationCLI {
 		}
 	}
 	/**
+	 * TODO: Move much of this logic into class methods, so we don't need as many parameters.
 	 * @param secondaries the maps to update with data from the master map
 	 * @param master the main map
 	 * @param cli the object that does the moving of the unit
+	 * @param helper the helper to use to ask the user for directions.
 	 * @param unit the unit in motion
 	 * @param totalMP the unit's total MP (to start with)
 	 * @throws IOException on I/O error getting input
 	 */
 	private static void movementREPL(final List<IMap> secondaries,
-			final IMap master, final ExplorationCLI cli, final Unit unit,
-			final int totalMP) throws IOException {
+			final IMap master, final ExplorationCLI cli,
+			final MapHelper helper, final Unit unit, final int totalMP)
+			throws IOException {
 		int movement = totalMP;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
 		// "constants" is the fixtures that *always* get copied (e.g. forests,
@@ -278,7 +281,7 @@ public class ExplorationCLI {
 					.printC(totalMP).println(" remaining.");
 			SystemOut.SYS_OUT.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
-			final int directionNum = MapHelper.inputNumber("Direction to move: ");
+			final int directionNum = helper.inputNumber("Direction to move: ");
 			if (directionNum > 7) {
 				break;
 			}
