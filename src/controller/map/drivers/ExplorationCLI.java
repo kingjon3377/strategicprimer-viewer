@@ -206,10 +206,11 @@ public class ExplorationCLI {
 		}
 		final List<IMap> secondaries = new ArrayList<IMap>();
 		final List<IMap> maps = new ArrayList<IMap>();
-		final IMap master = MapHelper.readMaps(args, maps, secondaries);
+		final MapHelper helper = new MapHelper();
+		final IMap master = helper.readMaps(args, maps, secondaries);
 		final ExplorationCLI cli = new ExplorationCLI(master, secondaries);
-		final List<Player> players = MapHelper.getPlayerChoices(maps);
-		final int playerNum = MapHelper.chooseFromList(players,
+		final List<Player> players = helper.getPlayerChoices(maps);
+		final int playerNum = helper.chooseFromList(players,
 				"The players shared by all the maps:",
 				"No players shared by all the maps.",
 				"Please make a selection: ");
@@ -217,8 +218,8 @@ public class ExplorationCLI {
 			return; // NOPMD
 		}
 		final Player player = players.get(playerNum);
-		final List<Unit> units = MapHelper.getUnits(master, player);
-		final int unitNum = MapHelper.chooseFromList(units, "Player's units:",
+		final List<Unit> units = helper.getUnits(master, player);
+		final int unitNum = helper.chooseFromList(units, "Player's units:",
 				"That player has no units in the master map.",
 				"Please make a selection: ");
 		if (unitNum < 0) {
@@ -229,7 +230,7 @@ public class ExplorationCLI {
 		SystemOut.SYS_OUT.println(unit.verbose());
 		movementREPL(secondaries, master, cli, unit,
 				inputNumber("MP that unit has: "));
-		MapHelper.writeMaps(maps, args);
+		helper.writeMaps(maps, args);
 	}
 	/**
 	 * @param secondaries the maps to update with data from the master map

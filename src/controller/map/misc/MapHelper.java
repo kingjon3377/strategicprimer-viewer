@@ -25,9 +25,6 @@ import model.map.fixtures.mobile.Unit;
  *
  * FIXME: Better name
  *
- * FIXME: Replace static methods with either a singleton object or one instance
- * per driver instance.
- *
  * @author Jonathan Lovelace
  *
  */
@@ -40,7 +37,7 @@ public class MapHelper {
 	 * @param maps the maps to consider
 	 * @return the list of players
 	 */
-	public static List<Player> getPlayerChoices(final List<IMap> maps) {
+	public List<Player> getPlayerChoices(final List<IMap> maps) {
 		if (maps.isEmpty()) {
 			throw new IllegalArgumentException("Need at least one map.");
 		}
@@ -64,7 +61,7 @@ public class MapHelper {
 	 * @param player a player
 	 * @return a list of all units in the map belonging to that player.
 	 */
-	public static List<Unit> getUnits(final IMap map, final Player player) {
+	public List<Unit> getUnits(final IMap map, final Player player) {
 		final List<Unit> retval = new ArrayList<Unit>();
 		for (final Point point : map.getTiles()) {
 			final Tile tile = map.getTile(point);
@@ -101,7 +98,7 @@ public class MapHelper {
 	 * @throws XMLStreamException on malformed XML
 	 * @throws IOException on basic file I/O error
 	 */
-	public static IMap readMaps(final String[] filenames,
+	public IMap readMaps(final String[] filenames,
 			final List<IMap> maps, final List<IMap> secondaries)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
@@ -121,7 +118,7 @@ public class MapHelper {
 	 * @param filenames the list of files to write them to
 	 * @throws IOException on I/O error
 	 */
-	public static void writeMaps(final List<IMap> maps,
+	public void writeMaps(final List<IMap> maps,
 			final String[] filenames) throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (int i = 0; i < filenames.length; i++) {
@@ -139,7 +136,7 @@ public class MapHelper {
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
-	public static <T extends HasName> int chooseFromList(
+	public <T extends HasName> int chooseFromList(
 			final List<? extends T> items, final String desc,
 			final String none, final String prompt) throws IOException {
 		if (items.isEmpty()) {
