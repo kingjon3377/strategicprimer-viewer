@@ -78,7 +78,7 @@ public final class AdvancementCLI {
 			final int playerNum = helper.chooseFromList(players,
 					"The players:",
 					"No players in the map.",
-					"Please make a selection: ");
+					"Please make a selection: ", true);
 			if (playerNum < 0) {
 				return; // NOPMD
 			}
@@ -122,7 +122,7 @@ public final class AdvancementCLI {
 			try {
 				jobNum = helper.chooseFromList(jobs,
 						"Jobs the worker can work as:", "Worker has no jobs.",
-						"Please make a selection: ");
+						"Please make a selection: ", false);
 				if (jobNum == jobs.size()) {
 					final Job job = addJob(helper);
 					worker.addJob(job);
@@ -161,7 +161,7 @@ public final class AdvancementCLI {
 		while (skillNum >= 0) {
 			try {
 				skillNum = helper.chooseFromList(skills, "Skills in the Job:",
-						"No skills in the Job.", "Please make a selection: ");
+						"No skills in the Job.", "Please make a selection: ", false);
 				if (skillNum == skills.size()) {
 					final Skill skill = addSkill(helper);
 					job.addSkill(skill);

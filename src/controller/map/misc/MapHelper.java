@@ -151,19 +151,26 @@ public class MapHelper {
 	 * @param desc the description to give before printing the list
 	 * @param none what to print if there are none
 	 * @param prompt what to prompt the user with
+	 * @param auto whether to automatically choose if there's only one choice
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
 	public <T extends HasName> int chooseFromList(
 			final List<? extends T> items, final String desc,
-			final String none, final String prompt) throws IOException {
+			final String none, final String prompt, final boolean auto) throws IOException {
 		if (items.isEmpty()) {
 			SystemOut.SYS_OUT.println(none);
 			return -1; // NOPMD
 		}
 		SystemOut.SYS_OUT.println(desc);
-		printList(SystemOut.SYS_OUT, items);
-		return inputNumber(prompt);
+		if (auto && items.size() == 1) {
+			SystemOut.SYS_OUT.print("Automatically choosing only item, ");
+			SystemOut.SYS_OUT.println(items.get(0));
+			return 0; // NOPMD
+		} else {
+			printList(SystemOut.SYS_OUT, items);
+			return inputNumber(prompt);
+		}
 	}
 
 	/**

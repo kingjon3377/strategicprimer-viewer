@@ -225,7 +225,7 @@ public class ExplorationCLI {
 			final int playerNum = helper.chooseFromList(players,
 					"The players shared by all the maps:",
 					"No players shared by all the maps.",
-					"Please make a selection: ");
+					"Please make a selection: ", true);
 			if (playerNum < 0) {
 				return; // NOPMD
 			}
@@ -233,7 +233,7 @@ public class ExplorationCLI {
 			final List<Unit> units = helper.getUnits(master, player);
 			final int unitNum = helper.chooseFromList(units, "Player's units:",
 					"That player has no units in the master map.",
-					"Please make a selection: ");
+					"Please make a selection: ", true);
 			if (unitNum < 0) {
 				return; // NOPMD
 			}
