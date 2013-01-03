@@ -41,7 +41,9 @@ public final class SimpleMovement {
 	 * @throws TraversalImpossibleException if the tile is impassable.
 	 */
 	public static int getMovementCost(final Tile tile) throws TraversalImpossibleException {
-		if (isForest(tile) || isHill(tile)
+		if (TileType.Ocean.equals(tile.getTerrain())) {
+			throw new TraversalImpossibleException();
+		} else if (isForest(tile) || isHill(tile)
 				|| TileType.Desert.equals(tile.getTerrain())) {
 			return 3; // NOPMD
 		} else if (TileType.Jungle.equals(tile.getTerrain())) {
@@ -49,8 +51,6 @@ public final class SimpleMovement {
 		} else if (EqualsAny.equalsAny(tile.getTerrain(), TileType.Steppe,
 				TileType.Plains, TileType.Tundra)) {
 			return 2;
-		} else if (TileType.Ocean.equals(tile.getTerrain())) {
-			throw new TraversalImpossibleException();
 		} else {
 			throw new IllegalArgumentException("Unknown tile type");
 		}
