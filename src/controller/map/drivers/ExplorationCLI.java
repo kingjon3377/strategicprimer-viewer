@@ -320,10 +320,7 @@ public class ExplorationCLI {
 		for (TileFixture fix : master.getTile(dPoint)) {
 			if (shouldAlwaysNotice(unit, fix)) {
 				constants.add(fix);
-			} else if ((fix instanceof Ground && ((Ground) fix).isExposed())
-					|| !(fix instanceof Ground || fix.equals(unit))) {
-				// FIXME: *Some* explorers would notice even
-				// unexposed ground.
+			} else if (mightNotice(unit, fix)) {
 				allFixtures.add(fix);
 			}
 		}
@@ -347,6 +344,19 @@ public class ExplorationCLI {
 			}
 		}
 		return cost;
+	}
+
+	/**
+	 * FIXME: *Some* explorers *would* notice even unexposed ground.
+	 *
+	 * @param unit a unit
+	 * @param fix a fixture
+	 * @return whether the unit might notice it. Units do not notice themselves,
+	 *         and do not notice unexposed ground.
+	 */
+	private static boolean mightNotice(final Unit unit, final TileFixture fix) {
+		return (fix instanceof Ground && ((Ground) fix).isExposed())
+				|| !(fix instanceof Ground || fix.equals(unit));
 	}
 
 	/**
