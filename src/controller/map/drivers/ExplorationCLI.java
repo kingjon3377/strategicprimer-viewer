@@ -194,12 +194,8 @@ public class ExplorationCLI {
 	/**
 	 * Driver. Takes as its parameters the map files to use.
 	 * @param args the command-line arguments
-	 * @throws SPFormatException on SP format problems
-	 * @throws XMLStreamException on malformed XML
-	 * @throws IOException on basic file I/O error
 	 */
-	public static void main(final String[] args) throws IOException,
-			XMLStreamException, SPFormatException {
+	public static void main(final String[] args)  {
 		if (args.length == 0) {
 			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
 			System.exit(1);
@@ -207,30 +203,59 @@ public class ExplorationCLI {
 		final List<IMap> secondaries = new ArrayList<IMap>();
 		final List<IMap> maps = new ArrayList<IMap>();
 		final MapHelper helper = new MapHelper();
-		final IMap master = helper.readMaps(args, maps, secondaries);
-		final ExplorationCLI cli = new ExplorationCLI(master, secondaries);
-		final List<Player> players = helper.getPlayerChoices(maps);
-		final int playerNum = helper.chooseFromList(players,
-				"The players shared by all the maps:",
-				"No players shared by all the maps.",
-				"Please make a selection: ");
-		if (playerNum < 0) {
+		IMap master;
+		try {
+			master = helper.readMaps(args, maps, secondaries);
+		} catch (IOException except) {
+			System.err.println("I/O error reading maps:");
+			System.err.println(except.getLocalizedMessage());
+			System.exit(1);
+			return; // NOPMD
+		} catch (XMLStreamException except) {
+			System.err.println("Malformed XML in map file:");
+			System.err.println(except.getLocalizedMessage());
+			System.exit(2);
+			return; // NOPMD
+		} catch (SPFormatException except) {
+			System.err.println("SP format error in map file:");
+			System.err.println(except.getLocalizedMessage());
+			System.exit(3);
 			return; // NOPMD
 		}
-		final Player player = players.get(playerNum);
-		final List<Unit> units = helper.getUnits(master, player);
-		final int unitNum = helper.chooseFromList(units, "Player's units:",
-				"That player has no units in the master map.",
-				"Please make a selection: ");
-		if (unitNum < 0) {
-			return;
+		final ExplorationCLI cli = new ExplorationCLI(master, secondaries);
+		final List<Player> players = helper.getPlayerChoices(maps);
+		try {
+			final int playerNum = helper.chooseFromList(players,
+					"The players shared by all the maps:",
+					"No players shared by all the maps.",
+					"Please make a selection: ");
+			if (playerNum < 0) {
+				return; // NOPMD
+			}
+			final Player player = players.get(playerNum);
+			final List<Unit> units = helper.getUnits(master, player);
+			final int unitNum = helper.chooseFromList(units, "Player's units:",
+					"That player has no units in the master map.",
+					"Please make a selection: ");
+			if (unitNum < 0) {
+				return; // NOPMD
+			}
+			final Unit unit = units.get(unitNum);
+			SystemOut.SYS_OUT.println("Details of that unit:");
+			SystemOut.SYS_OUT.println(unit.verbose());
+			movementREPL(secondaries, master, cli, unit,
+					inputNumber("MP that unit has: "));
+		} catch (IOException except) {
+			System.exit(4);
+			return; // NOPMD
 		}
-		final Unit unit = units.get(unitNum);
-		SystemOut.SYS_OUT.println("Details of that unit:");
-		SystemOut.SYS_OUT.println(unit.verbose());
-		movementREPL(secondaries, master, cli, unit,
-				inputNumber("MP that unit has: "));
-		helper.writeMaps(maps, args);
+		try {
+			helper.writeMaps(maps, args);
+		} catch (IOException except) {
+			System.err.println("I/O error writing to a map file:");
+			System.err.println(except.getLocalizedMessage());
+			System.exit(5);
+		}
 	}
 	/**
 	 * @param secondaries the maps to update with data from the master map
