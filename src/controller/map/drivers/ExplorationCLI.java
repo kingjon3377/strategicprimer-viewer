@@ -332,7 +332,7 @@ public class ExplorationCLI {
 					.println("The following fixtures were automatically noticed:");
 		} else {
 			SystemOut.SYS_OUT.printC(
-					"The following fixtures were noticed, all but the")
+					"The following fixtures were noticed, all but the ")
 					.println("last automtically:");
 			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
