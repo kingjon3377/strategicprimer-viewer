@@ -94,7 +94,9 @@ public class PlayerCollection implements Iterable<Player>,
 	public boolean isSubset(final PlayerCollection obj, final PrintStream out) {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
-				out.print("Extra player");
+				out.print("Extra player ");
+				out.print(player.getName());
+				out.print(' ');
 				return false; // NOPMD
 			}
 		}
