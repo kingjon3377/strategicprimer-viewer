@@ -168,6 +168,6 @@ public class Meadow implements HarvestableFixture,
 	public boolean equalsIgnoringID(final TileFixture fix) {
 		return fix instanceof Meadow && kind.equals(((Meadow) fix).kind)
 				&& field == ((Meadow) fix).field
-				&& cultivated == ((Meadow) fix).cultivated;
+				&& cultivated == ((Meadow) fix).cultivated && status == ((Meadow) fix).status;
 	}
 }
