@@ -247,8 +247,8 @@ public final class Tile implements XMLWritable,
 				}
 				return temp.isEmpty(); // NOPMD
 		} else {
-			out.print("Type of " + getLocation().toString()
-					+ " wrong\t");
+			out.println("Type of " + getLocation().toString()
+					+ " wrong");
 			return false;
 		}
 	}
