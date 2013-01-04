@@ -17,6 +17,7 @@ import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.towns.Fortress;
 import util.IsNumeric;
 import util.Warning;
 import view.util.SystemOut;
@@ -86,6 +87,12 @@ public class MapHelper {
 			for (final TileFixture fix : tile) {
 				if (fix instanceof Unit && ((Unit) fix).getOwner().equals(player)) {
 					retval.add((Unit) fix);
+				} else if (fix instanceof Fortress) {
+					for (final Unit unit : ((Fortress) fix).getUnits()) {
+						if (unit.getOwner().equals(player)) {
+							retval.add(unit);
+						}
+					}
 				}
 			}
 		}
