@@ -11,6 +11,8 @@ import model.map.IMap;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.CacheFixture;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.SPFormatException;
@@ -81,7 +83,11 @@ public class DuplicateFixtureRemover {
 		for (TileFixture fix : tile) {
 			boolean already = false;
 			for (TileFixture keptFixture : fixtures) {
-				if (keptFixture.equalsIgnoringID(fix)) {
+				if ((fix instanceof Unit && ((Unit) fix).getKind().contains(
+						"TODO"))
+						|| fix instanceof CacheFixture) {
+					break;
+				} else if (keptFixture.equalsIgnoringID(fix)) {
 					already = true;
 					break;
 				}
