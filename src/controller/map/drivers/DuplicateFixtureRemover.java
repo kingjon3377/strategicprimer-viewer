@@ -37,11 +37,12 @@ public class DuplicateFixtureRemover {
 		final DuplicateFixtureRemover remover = new DuplicateFixtureRemover();
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (final String filename : args) {
-			IMap map;
 			try {
-				map = reader.readMap(filename, Warning.INSTANCE);
+				final IMap map = reader.readMap(filename, Warning.INSTANCE);
+				remover.filter(map, SystemOut.SYS_OUT);
+				reader.write(filename, map);
 			} catch (IOException except) {
-				System.err.print("I/O error reading ");
+				System.err.print("I/O error reading from or writing to ");
 				System.err.println(filename);
 				System.err.println(except.getLocalizedMessage());
 				continue;
@@ -56,19 +57,20 @@ public class DuplicateFixtureRemover {
 				System.err.println(except.getLocalizedMessage());
 				continue;
 			}
-			for (Point point : map.getTiles()) {
-				remover.filter(map.getTile(point), SystemOut.SYS_OUT);
-			}
-			try {
-				reader.write(filename, map);
-			} catch (IOException except) {
-				System.err.println("I/O error writing to a map file:");
-				System.err.println(except.getLocalizedMessage());
-				continue;
-			}
 		}
 	}
-
+	/**
+	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills,
+	 * forests of the same kind, oases, etc.---we use
+	 * TileFixture#equalsIgnoringID(TileFixture)) from every tile in a map.
+	 * @param map the map to filter
+	 * @param out the stream to report IDs of removed fixtures on.
+	 */
+	public void filter(final IMap map, final PrintStream out) {
+		for (Point point : map.getTiles()) {
+			filter(map.getTile(point), out);
+		}
+	}
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills,
 	 * forests of the same kind, oases, etc.---we use
