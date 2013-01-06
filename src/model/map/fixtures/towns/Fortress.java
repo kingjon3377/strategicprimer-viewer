@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
@@ -24,7 +25,7 @@ import model.map.fixtures.mobile.Unit;
  *
  */
 public class Fortress implements HasImage,
-		Subsettable<Fortress>, TownFixture, Iterable<Unit> {
+		Subsettable<Fortress>, TownFixture, FixtureIterable<Unit> {
 	/**
 	 * The player that owns the fortress.
 	 */

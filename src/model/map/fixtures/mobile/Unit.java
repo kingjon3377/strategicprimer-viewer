@@ -3,6 +3,7 @@ package model.map.fixtures.mobile;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
@@ -19,7 +20,7 @@ import util.ArraySet;
  *
  */
 public class Unit implements MobileFixture, HasImage,
-		HasKind, Iterable<UnitMember>, HasName {
+		HasKind, FixtureIterable<UnitMember>, HasName {
 	/**
 	 * The player that owns the unit.
 	 */
