@@ -95,15 +95,15 @@ public class FindDialog extends JDialog implements ActionListener {
 		if (pattern.isEmpty()) {
 			return; // NOPMD
 		}
-		int id = Integer.MIN_VALUE;
+		int idNum = Integer.MIN_VALUE;
 		if (IsNumeric.isNumeric(pattern)) {
-			id = Integer.parseInt(pattern);
+			idNum = Integer.parseInt(pattern);
 		}
 		final Iterable<Point> iter = new IteratorWrapper<Point>(new PointIterator(map, true));
 		for (Point point : iter) {
 			final Tile tile = map.getMainMap().getTile(point);
 			for (final TileFixture fix : tile) {
-				if (matches(pattern, id, fix)) {
+				if (matches(pattern, idNum, fix)) {
 					SystemOut.SYS_OUT.print("Found in point");
 					SystemOut.SYS_OUT.println(point);
 					map.setSelection(point);
@@ -114,12 +114,13 @@ public class FindDialog extends JDialog implements ActionListener {
 	}
 	/**
 	 * @param pattern a pattern
-	 * @param id either MIN_INT, or (if pattern is numeric) its numeric equivalent
+	 * @param idNum either MIN_INT, or (if pattern is numeric) its numeric equivalent
 	 * @param fix a fixture
 	 * @return whether the fixture matches the pattern or has id as its ID.
 	 */
-	private static boolean matches(final String pattern, final int id, final IFixture fix) {
-		if (fix.getID() == id
+	private static boolean matches(final String pattern, final int idNum,
+			final IFixture fix) {
+		if (fix.getID() == idNum
 				|| (fix instanceof HasName && ((HasName) fix).getName()
 						.contains(pattern))
 				|| (fix instanceof HasKind && ((HasKind) fix).getKind()
@@ -127,7 +128,7 @@ public class FindDialog extends JDialog implements ActionListener {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable<?>) {
 			for (IFixture member : (FixtureIterable<?>) fix) {
-				if (matches(pattern, id, member)) {
+				if (matches(pattern, idNum, member)) {
 					return true; // NOPMD
 				}
 			}
