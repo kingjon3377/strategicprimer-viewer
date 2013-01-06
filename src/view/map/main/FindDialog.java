@@ -13,15 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.towns.Fortress;
 import model.viewer.MapModel;
 import model.viewer.PointIterator;
 import util.IsNumeric;
@@ -127,15 +125,8 @@ public class FindDialog extends JDialog implements ActionListener {
 				|| (fix instanceof HasKind && ((HasKind) fix).getKind()
 						.contains(pattern))) {
 			return true; // NOPMD
-		} else if (fix instanceof Fortress) {
-			for (Unit unit : (Fortress) fix) {
-				if (matches(pattern, id, unit)) {
-					return true; // NOPMD
-				}
-			}
-			return false; // NOPMD
-		} else if (fix instanceof Unit) {
-			for (UnitMember member : (Unit) fix) {
+		} else if (fix instanceof FixtureIterable<?>) {
+			for (IFixture member : (FixtureIterable<?>) fix) {
 				if (matches(pattern, id, member)) {
 					return true; // NOPMD
 				}
