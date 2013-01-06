@@ -98,8 +98,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 				"fortress");
 		retval.addAttribute("owner",
 				Integer.toString(obj.getOwner().getPlayerId()));
-		if (!obj.name().isEmpty()) {
-			retval.addAttribute("name", obj.name());
+		if (!obj.getName().isEmpty()) {
+			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		for (final Unit unit : obj.getUnits()) {

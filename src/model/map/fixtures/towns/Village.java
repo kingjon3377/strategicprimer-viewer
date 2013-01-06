@@ -115,7 +115,7 @@ public class Village implements TownFixture, HasImage {
 	 * @return the name of the village
 	 */
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 	/**

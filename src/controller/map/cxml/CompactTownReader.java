@@ -175,9 +175,9 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		} else if (obj instanceof Village) {
 			out.append("<village status=\"");
 			out.append(((Village) obj).status().toString());
-			if (!obj.name().isEmpty()) {
+			if (!obj.getName().isEmpty()) {
 				out.append("\" name=\"");
-				out.append(obj.name());
+				out.append(obj.getName());
 			}
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));
@@ -185,9 +185,9 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		} else if (obj instanceof Fortress) {
 			out.append("<fortress owner=\"");
 			out.append(Integer.toString(((Fortress) obj).getOwner().getPlayerId()));
-			if (!obj.name().isEmpty()) {
+			if (!obj.getName().isEmpty()) {
 				out.append("\" name=\"");
-				out.append(obj.name());
+				out.append(obj.getName());
 			}
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));
@@ -226,9 +226,9 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		out.append(obj.size().toString());
 		out.append("\" dc=\"");
 		out.append(Integer.toString(((IEvent) obj).getDC()));
-		if (!obj.name().isEmpty()) {
+		if (!obj.getName().isEmpty()) {
 			out.append("\" name=\"");
-			out.append(obj.name());
+			out.append(obj.getName());
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));

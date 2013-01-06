@@ -73,8 +73,8 @@ public class VillageReader implements INodeHandler<Village> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"village");
 		retval.addAttribute("status", obj.status().toString());
-		if (!obj.name().isEmpty()) {
-			retval.addAttribute("name", obj.name());
+		if (!obj.getName().isEmpty()) {
+			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		return retval;

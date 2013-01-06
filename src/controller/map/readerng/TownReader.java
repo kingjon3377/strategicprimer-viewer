@@ -76,8 +76,8 @@ public class TownReader implements INodeHandler<TownEvent> {
 		retval.addAttribute("status", obj.status().toString());
 		retval.addAttribute("size", obj.size().toString());
 		retval.addAttribute("dc", Integer.toString(obj.getDC()));
-		if (!obj.name().isEmpty()) {
-			retval.addAttribute("name", obj.name());
+		if (!obj.getName().isEmpty()) {
+			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		return retval;

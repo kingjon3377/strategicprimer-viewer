@@ -1,5 +1,6 @@
 package model.map.fixtures.towns;
 
+import model.map.HasName;
 import model.map.TileFixture;
 
 /**
@@ -9,12 +10,13 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public interface TownFixture extends TileFixture {
+public interface TownFixture extends TileFixture, HasName {
 
 	/**
 	 * @return the name of the town, fortress, or city.
 	 */
-	String name();
+	@Override
+	String getName();
 
 	/**
 	 *

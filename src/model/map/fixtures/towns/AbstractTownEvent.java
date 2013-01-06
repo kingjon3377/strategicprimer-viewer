@@ -39,7 +39,7 @@ public abstract class AbstractTownEvent implements
 	 * @return the name of the town, fortress, or city.
 	 */
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
@@ -138,7 +138,7 @@ public abstract class AbstractTownEvent implements
 	 */
 	private boolean equalsContents(final AbstractTownEvent fix) {
 		return fix.kind().equals(kind) && fix.size().equals(size)
-				&& fix.name().equals(name) && fix.status().equals(status);
+				&& fix.getName().equals(name) && fix.status().equals(status);
 	}
 	/**
 	 *

@@ -230,7 +230,7 @@ public class Fortress implements HasImage,
 	 * @return the fortress's name.
 	 */
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
