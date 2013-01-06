@@ -15,12 +15,12 @@ import javax.swing.JTextField;
 
 import model.map.HasKind;
 import model.map.HasName;
+import model.map.IFixture;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.towns.Fortress;
 import model.viewer.MapModel;
 import model.viewer.PointIterator;
@@ -120,7 +120,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	 * @param fix a fixture
 	 * @return whether the fixture matches the pattern or has id as its ID.
 	 */
-	private static boolean matches(final String pattern, final int id, final TileFixture fix) {
+	private static boolean matches(final String pattern, final int id, final IFixture fix) {
 		if (fix.getID() == id
 				|| (fix instanceof HasName && ((HasName) fix).getName()
 						.contains(pattern))
@@ -136,16 +136,8 @@ public class FindDialog extends JDialog implements ActionListener {
 			return false; // NOPMD
 		} else if (fix instanceof Unit) {
 			for (UnitMember member : (Unit) fix) {
-				// FIXME: Make a SearchableFixture supertype of TileFixture, UnitMember, and Worker, and search on *that* instead.
-				if (member instanceof TileFixture && matches(pattern, id, (TileFixture) member)) {
+				if (matches(pattern, id, member)) {
 					return true; // NOPMD
-				} else if (member instanceof Worker) {
-					final Worker worker = (Worker) member;
-					if (worker.getID() == id
-							|| worker.getName().contains(pattern)
-							|| worker.getRace().contains(pattern)) {
-						return true; // NOPMD
-					}
 				}
 			}
 			return false; // NOPMD
