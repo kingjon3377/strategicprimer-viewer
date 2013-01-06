@@ -1,6 +1,7 @@
 package model.map.fixtures;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.TileFixture;
 
 /**
@@ -123,7 +124,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 * @return whether it's identical to this except ID.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
 }

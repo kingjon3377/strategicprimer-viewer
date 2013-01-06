@@ -1,6 +1,7 @@
 package model.map.fixtures.towns;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.TileFixture;
 
 /**
@@ -107,7 +108,7 @@ public class Village implements TownFixture, HasImage {
 	 * @return whether it's an identical-but-for-ID village.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Village && status.equals(((Village) fix).status)
 				&& name.equals(((Village) fix).name);
 	}

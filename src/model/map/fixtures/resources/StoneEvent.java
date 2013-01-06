@@ -1,6 +1,7 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.events.IEvent;
 
@@ -139,7 +140,7 @@ public final class StoneEvent implements IEvent,
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
 				|| (fix instanceof StoneEvent && ((StoneEvent) fix).stone
 						.equals(stone));

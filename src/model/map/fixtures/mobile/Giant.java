@@ -2,6 +2,7 @@ package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 
@@ -107,7 +108,7 @@ public class Giant implements MobileFixture, HasImage,
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
 }

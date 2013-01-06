@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 
@@ -89,7 +90,7 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	 * @return whether it's identical except ID.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Troll;
 	}
 }

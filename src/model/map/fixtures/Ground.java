@@ -2,6 +2,7 @@ package model.map.fixtures;
 
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.IFixture;
 import model.map.TileFixture;
 
 /**
@@ -117,7 +118,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
 }

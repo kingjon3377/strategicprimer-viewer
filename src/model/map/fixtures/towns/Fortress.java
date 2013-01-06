@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.Player;
 import model.map.Subsettable;
 import model.map.TileFixture;
@@ -194,7 +195,7 @@ public class Fortress implements HasImage,
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
 				|| (fix instanceof Fortress
 						&& (name.equals(((Fortress) fix).name))

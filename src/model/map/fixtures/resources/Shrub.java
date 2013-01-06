@@ -2,6 +2,7 @@ package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.IFixture;
 import model.map.TileFixture;
 
 /**
@@ -108,7 +109,7 @@ public class Shrub implements HarvestableFixture,
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Shrub
 				&& description.equals(((Shrub) fix).description);
 	}

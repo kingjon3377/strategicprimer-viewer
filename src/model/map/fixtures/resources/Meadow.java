@@ -2,6 +2,7 @@ package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.IFixture;
 import model.map.TileFixture;
 
 /**
@@ -165,7 +166,7 @@ public class Meadow implements HarvestableFixture,
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Meadow && kind.equals(((Meadow) fix).kind)
 				&& field == ((Meadow) fix).field
 				&& cultivated == ((Meadow) fix).cultivated && status == ((Meadow) fix).status;

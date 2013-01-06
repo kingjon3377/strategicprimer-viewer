@@ -5,7 +5,7 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
-public interface TileFixture extends XMLWritable, Comparable<TileFixture> {
+public interface TileFixture extends IFixture, Comparable<TileFixture> {
 	// Marker interface; also, TODO: what members should this have?
 	/**
 	 * TODO: This should be user-configurable.
@@ -14,16 +14,4 @@ public interface TileFixture extends XMLWritable, Comparable<TileFixture> {
 	 *         tile.
 	 */
 	int getZValue();
-
-	/**
-	 * @return an ID (UID for most fixtures, though perhaps not for things like
-	 *         mountains and hills) for the fixture.
-	 */
-	int getID();
-
-	/**
-	 * @param fix a fixture
-	 * @return whether it's equal, ignoring ID (and DC for events), to this one
-	 */
-	boolean equalsIgnoringID(TileFixture fix);
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import model.map.HasName;
+import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Job;
 import util.ArraySet;
@@ -63,6 +64,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName {
 	/**
 	 * @return the ID number of the worker.
 	 */
+	@Override
 	public int getID() {
 		return id;
 	}
@@ -108,5 +110,15 @@ public class Worker implements UnitMember, Iterable<Job>, HasName {
 	@Override
 	public String toString() {
 		return name + ", a " + race;
+	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it equals this one except its ID.
+	 */
+	@Override
+	public boolean equalsIgnoringID(final IFixture fix) {
+		return this == fix
+				|| (fix instanceof Worker && ((Worker) fix).name.equals(name) && ((Worker) fix).jobSet
+						.equals(jobSet)) && ((Worker) fix).race.equals(race);
 	}
 }

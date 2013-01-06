@@ -1,6 +1,7 @@
 package model.viewer;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.TileType;
 
@@ -58,7 +59,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	@Deprecated
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
 	/**

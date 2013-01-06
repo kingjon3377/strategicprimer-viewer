@@ -1,6 +1,7 @@
 package model.map.fixtures.terrain;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
 
@@ -89,7 +90,7 @@ public class Hill implements TerrainFixture, HasImage {
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Hill;
 	}
 }

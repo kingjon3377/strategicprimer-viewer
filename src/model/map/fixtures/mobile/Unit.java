@@ -6,6 +6,7 @@ import java.util.Set;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
+import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
@@ -193,7 +194,7 @@ public class Unit implements MobileFixture, HasImage,
 	 * @return whether it's an identical-except-ID unit.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
 				|| (fix instanceof Unit
 						&& ((Unit) fix).owner.getPlayerId() == owner

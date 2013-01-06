@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.IFixture;
 import model.map.River;
 import model.map.Subsettable;
 import model.map.TileFixture;
@@ -161,7 +162,7 @@ public class RiverFixture implements TileFixture,
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
 }

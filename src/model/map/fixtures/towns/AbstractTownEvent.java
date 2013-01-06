@@ -1,6 +1,7 @@
 package model.map.fixtures.towns;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.events.EventKind;
 import model.map.events.IEvent;
@@ -128,7 +129,7 @@ public abstract class AbstractTownEvent implements
 	 * @return whether it's identical to this except ID and DC.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final TileFixture fix) {
+	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
 				|| (fix instanceof AbstractTownEvent && equalsContents((AbstractTownEvent) fix));
 	}
