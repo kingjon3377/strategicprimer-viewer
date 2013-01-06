@@ -2,8 +2,8 @@ package model.map.fixtures.towns;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +24,7 @@ import model.map.fixtures.mobile.Unit;
  *
  */
 public class Fortress implements HasImage,
-		Subsettable<Fortress>, TownFixture {
+		Subsettable<Fortress>, TownFixture, Iterable<Unit> {
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -58,8 +58,9 @@ public class Fortress implements HasImage,
 	 *
 	 * @return the units in the fortress.
 	 */
-	public final List<Unit> getUnits() {
-		return Collections.unmodifiableList(units);
+	@Override
+	public final Iterator<Unit> iterator() {
+		return units.iterator();
 	}
 
 	/**

@@ -128,7 +128,7 @@ public class FindDialog extends JDialog implements ActionListener {
 						.contains(pattern))) {
 			return true; // NOPMD
 		} else if (fix instanceof Fortress) {
-			for (Unit unit : ((Fortress) fix).getUnits()) {
+			for (Unit unit : (Fortress) fix) {
 				if (matches(pattern, id, unit)) {
 					return true; // NOPMD
 				}

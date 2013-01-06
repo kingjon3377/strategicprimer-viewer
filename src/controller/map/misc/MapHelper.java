@@ -88,7 +88,7 @@ public class MapHelper {
 				if (fix instanceof Unit && ((Unit) fix).getOwner().equals(player)) {
 					retval.add((Unit) fix);
 				} else if (fix instanceof Fortress) {
-					for (final Unit unit : ((Fortress) fix).getUnits()) {
+					for (final Unit unit : (Fortress) fix) {
 						if (unit.getOwner().equals(player)) {
 							retval.add(unit);
 						}

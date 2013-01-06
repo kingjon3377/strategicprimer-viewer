@@ -192,9 +192,9 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));
 			out.append("\">");
-			if (!((Fortress) obj).getUnits().isEmpty()) {
+			if (((Fortress) obj).iterator().hasNext()) {
 				out.append('\n');
-				for (final Unit unit : ((Fortress) obj).getUnits()) {
+				for (final Unit unit : (Fortress) obj) {
 					CompactReaderAdapter.ADAPTER.write(out, unit, indent + 1);
 				}
 				out.append(indent(indent));
