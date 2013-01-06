@@ -54,6 +54,28 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
+		final FindDialog finder = new FindDialog(parent, model);
+		add(creator.createMenuItem("Find a fixture", KeyEvent.VK_SLASH,
+				KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
+				"Find a fixture by name, kind, or ID#", new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						if ("Find a fixture".equals(event.getActionCommand())) {
+							finder.setVisible(true);
+						}
+					}
+				}));
+		add(creator.createMenuItem("Find next", KeyEvent.VK_N,
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, 0),
+				"Find the next fixture matching the pattern",
+				new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						if ("Find next".equals(event.getActionCommand())) {
+							finder.search();
+						}
+					}
+				}));
 		add(new Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(
 				Integer.MAX_VALUE, 0)));
 		add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
