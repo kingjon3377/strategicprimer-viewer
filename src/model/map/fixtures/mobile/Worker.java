@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.HasKind;
 import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
@@ -19,7 +20,7 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public class Worker implements UnitMember, Iterable<Job>, HasName {
+public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 	/**
 	 * Constructor.
 	 * @param wName the worker's name
@@ -120,5 +121,12 @@ public class Worker implements UnitMember, Iterable<Job>, HasName {
 		return this == fix
 				|| (fix instanceof Worker && ((Worker) fix).name.equals(name) && ((Worker) fix).jobSet
 						.equals(jobSet)) && ((Worker) fix).race.equals(race);
+	}
+	/**
+	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
+	 */
+	@Override
+	public String getKind() {
+		return getRace();
 	}
 }
