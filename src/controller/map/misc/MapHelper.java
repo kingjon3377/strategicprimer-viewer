@@ -15,7 +15,6 @@ import model.map.IMap;
 import model.map.Player;
 import model.map.Point;
 import model.map.Tile;
-import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import util.IsNumeric;
@@ -84,21 +83,26 @@ public class MapHelper {
 		final List<Unit> retval = new ArrayList<Unit>();
 		for (final Point point : map.getTiles()) {
 			final Tile tile = map.getTile(point);
-			for (final TileFixture fix : tile) {
-				if (fix instanceof Unit && ((Unit) fix).getOwner().equals(player)) {
-					retval.add((Unit) fix);
-				} else if (fix instanceof Fortress) {
-					for (final Unit unit : (Fortress) fix) {
-						if (unit.getOwner().equals(player)) {
-							retval.add(unit);
-						}
-					}
-				}
+			retval.addAll(getUnits(tile, player));
+		}
+		return retval;
+	}
+	/**
+	 * @param iter a sequence of members of that type
+	 * @param player a player
+	 * @return a list of the members of the sequence that are units owned by the player
+	 */
+	private static List<Unit> getUnits(final Iterable<? super Unit> iter, final Player player) {
+		final List<Unit> retval = new ArrayList<Unit>();
+		for (Object obj : iter) {
+			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
+				retval.add((Unit) obj);
+			} else if (obj instanceof Fortress) {
+				retval.addAll(getUnits((Fortress) obj, player));
 			}
 		}
 		return retval;
 	}
-
 	/**
 	 * Print a list of things by name and number.
 	 * @param out the stream to write to
