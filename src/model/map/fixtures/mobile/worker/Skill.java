@@ -81,4 +81,11 @@ public class Skill implements XMLWritable, HasName {
 			hours = 0;
 		}
 	}
+	/**
+	 * @return a string representation of the skill
+	 */
+	@Override
+	public String toString() {
+		return name + " (" + level + ")";
+	}
 }
