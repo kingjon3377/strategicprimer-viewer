@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.View;
 
 import model.map.Player;
 import model.map.fixtures.UnitMember;
@@ -32,7 +33,6 @@ import model.workermgmt.SkillListModel;
 import model.workermgmt.UnitListModel;
 import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
-import view.map.details.FixtureCellRenderer;
 import view.util.AddRemovePanel;
 /**
  * A GUI to let a user manage workers.
@@ -147,7 +147,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 			@Override
 			public void componentResized(final ComponentEvent evt) {
 				final int width = getWidth() / 3;
-				final int minHeight = 20;
+				final int minHeight = 20; // NOPMD
 				final int maxHeight = getHeight();
 				for (JComponent list : lists) {
 					if (list instanceof JComboBox) {
@@ -157,8 +157,10 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 						list.setMaximumSize(new Dimension(width, maxHeight));
 						list.setMinimumSize(new Dimension(width, minHeight));
 					} else if (list instanceof JLabel) {
-						FixtureCellRenderer.setComponentPreferredSize(list, width);
-						list.setMinimumSize(list.getPreferredSize());
+						final Dimension dim = getComponentPreferredSize(list, width);
+						list.setMinimumSize(dim);
+						list.setPreferredSize(dim);
+						list.setMaximumSize(dim);
 					} else if (list instanceof JPanel) {
 						list.setMaximumSize(new Dimension(width, maxHeight));
 						list.setPreferredSize(new Dimension(width, maxHeight));
@@ -210,5 +212,21 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	 */
 	private static String htmlize(final String string) {
 		return "<html><p align=\"left\">" + string + "</p></html>";
+	}
+	/**
+	 * Get a label's size given a fixed width.
+	 * Adapted from http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
+	 * @param component the component we're laying out
+	 * @param width the width we're working within
+	 * @return the "ideal" dimensions for the component
+	 */
+	public static Dimension getComponentPreferredSize(
+			final JComponent component, final int width) {
+	final View view = (View) component
+				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
+		view.setSize(width, 0);
+		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
+		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
+		return new Dimension(wid, height);
 	}
 }

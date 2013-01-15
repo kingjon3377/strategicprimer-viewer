@@ -131,7 +131,7 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	 * @param component the component we're laying out
 	 * @param width the width we're working within
 	 */
-	public static void setComponentPreferredSize(final JComponent component, final int width) {
+	private static void setComponentPreferredSize(final JComponent component, final int width) {
 		final View view = (View) component
 				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
 		view.setSize(width, 0);
