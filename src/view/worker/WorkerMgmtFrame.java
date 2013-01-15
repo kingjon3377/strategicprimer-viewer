@@ -145,6 +145,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 						list.setMinimumSize(new Dimension(width, minHeight));
 					} else if (list instanceof JLabel) {
 						FixtureCellRenderer.setComponentPreferredSize(list, width);
+						list.setMinimumSize(list.getPreferredSize());
 					}
 				}
 			}
