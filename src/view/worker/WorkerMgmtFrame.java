@@ -30,7 +30,6 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
 import model.workermgmt.JobsListModel;
 import model.workermgmt.SkillListModel;
-import model.workermgmt.UnitListModel;
 import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
@@ -49,10 +48,6 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	 * A drop-down list listing the players in the map.
 	 */
 	private final JComboBox<Player> players = new JComboBox<Player>();
-	/**
-	 * A not-drop-down list of the player's units in the map.
-	 */
-	private final JList<Unit> units = new JList<Unit>();
 	/**
 	 * A not-drop-down list of the members of the unit (mostly workers).
 	 */
@@ -82,8 +77,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		panelOne.add(players);
 		final JLabel unitLabel = new JLabel(htmlize("Player's Units:"));
 		panelOne.add(unitLabel);
-		units.addListSelectionListener(this);
-		units.setModel(new UnitListModel(source, source, this));
+		final JList<Unit> units = new UnitList(source, this, source, this);
 		panelOne.add(units);
 		add(panelOne);
 
@@ -177,8 +171,6 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	public void valueChanged(final ListSelectionEvent evt) {
 		if (members.equals(evt.getSource())) {
 			firePropertyChange("member", null, members.getSelectedValue());
-		} else if (units.equals(evt.getSource())) {
-			firePropertyChange("unit", null, units.getSelectedValue());
 		} else if (jobs.equals(evt.getSource())) {
 			firePropertyChange("job", null, jobs.getSelectedValue());
 		}
@@ -193,6 +185,10 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 			players.removeAllItems();
 			for (Player player : model.getMainMap().getPlayers()) {
 				players.addItem(player);
+			}
+		} else if (!equals(evt.getSource())) {
+			for (PropertyChangeListener listener : getPropertyChangeListeners(evt.getPropertyName())) {
+				listener.propertyChange(evt);
 			}
 		}
 	}
