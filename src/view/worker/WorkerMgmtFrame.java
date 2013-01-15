@@ -67,7 +67,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		panelTwo.setLayout(new BoxLayout(panelTwo, BoxLayout.PAGE_AXIS));
 		final JLabel memberLabel = new JLabel(htmlize("Selected Unit's Members:"));
 		panelTwo.add(memberLabel);
-		final JList<UnitMember> members = new UnitMemberList(this);
+		final JList<UnitMember> members = new UnitMemberList(this, this);
 		panelTwo.add(members);
 		final StatsLabel statsLabel = new StatsLabel(this);
 		panelTwo.add(statsLabel);
@@ -152,7 +152,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 				players.addItem(player);
 			}
 		} else if (!equals(evt.getSource())) {
-			for (PropertyChangeListener listener : getPropertyChangeListeners(evt.getPropertyName())) {
+			for (PropertyChangeListener listener : getPropertyChangeListeners()) {
 				listener.propertyChange(evt);
 			}
 		}
