@@ -28,6 +28,7 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
+import model.workermgmt.JobsListModel;
 import model.workermgmt.UnitListModel;
 import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
@@ -58,7 +59,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	/**
 	 * A drop-down list of the worker's jobs. TODO: Make editable, so user can add new job.
 	 */
-	private final JComboBox<Job> jobs = new JComboBox<Job>();
+	private final JList<Job> jobs = new JList<Job>();
 	/**
 	 * A non-drop-down list of the skills associated with that job. TODO: make editable, so user can add new skill.
 	 */
@@ -98,7 +99,9 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		add(panelTwo);
 
 		final JPanel panelThree = new JPanel();
-		jobs.addItemListener(this);
+		jobs.setModel(new JobsListModel(this));
+		jobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jobs.addListSelectionListener(this);
 		final JLabel jobsLabel = new JLabel(htmlize("Worker's Jobs:"));
 		panelThree.add(jobsLabel);
 		panelThree.add(jobs);
@@ -164,19 +167,16 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	public void valueChanged(final ListSelectionEvent evt) {
 		if (members.equals(evt.getSource())) {
 			skills.removeAllItems();
-			jobs.removeAllItems();
-			final UnitMember selection = members.getSelectedValue();
-			// The Java Language Specification specifies that instanceof will
-			// return false if the value is null, so no need to check.
-			if (selection instanceof Worker) {
-				final Worker worker = (Worker) selection;
-				for (Job job : worker) {
-					jobs.addItem(job);
-				}
-			}
-			firePropertyChange("member", null, selection);
+			firePropertyChange("member", null, members.getSelectedValue());
 		} else if (units.equals(evt.getSource())) {
 			firePropertyChange("unit", null, units.getSelectedValue());
+		} else if (jobs.equals(evt.getSource())) {
+			skills.removeAllItems();
+			if (jobs.getSelectedValue() != null) {
+				for (Skill skill : jobs.getSelectedValue()) {
+					skills.addItem(skill);
+				}
+			}
 		}
 	}
 	/**
@@ -199,15 +199,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	public void itemStateChanged(final ItemEvent evt) {
 		if (players.equals(evt.getSource())) {
 			skills.removeAllItems();
-			jobs.removeAllItems();
 			firePropertyChange("player", null, players.getSelectedItem());
-		} else if (jobs.equals(evt.getSource())) {
-			skills.removeAllItems();
-			if (jobs.getSelectedItem() instanceof Job) {
-				for (Skill skill : (Job) jobs.getSelectedItem()) {
-					skills.addItem(skill);
-				}
-			}
 		} else if (skills.equals(evt.getSource())) {
 			// TODO: make it possible to improve that skill ... or at least show
 			// the level and number of hours worked ...
