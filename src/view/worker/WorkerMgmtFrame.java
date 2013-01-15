@@ -24,7 +24,6 @@ import javax.swing.event.ListSelectionListener;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
@@ -34,6 +33,7 @@ import model.workermgmt.UnitListModel;
 import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
 import view.map.details.FixtureCellRenderer;
+import view.util.AddRemovePanel;
 /**
  * A GUI to let a user manage workers.
  * @author Jonathan Lovelace
@@ -101,18 +101,22 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 
 		final JPanel panelThree = new JPanel();
 		panelThree.setLayout(new BoxLayout(panelThree, BoxLayout.PAGE_AXIS));
-		jobs.setModel(new JobsListModel(this));
+		AddRemovePanel jarp = new AddRemovePanel(false);
+		jobs.setModel(new JobsListModel(this, jarp));
 		jobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jobs.addListSelectionListener(this);
 		final JLabel jobsLabel = new JLabel(htmlize("Worker's Jobs:"));
 		panelThree.add(jobsLabel);
 		panelThree.add(jobs);
-		skills.setModel(new SkillListModel(this));
+		panelThree.add(jarp);
+		AddRemovePanel sarp = new AddRemovePanel(false);
+		skills.setModel(new SkillListModel(this, sarp));
 		skills.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		skills.addListSelectionListener(this);
 		final JLabel skillsLabel = new JLabel(htmlize("Skills in selected Job:"));
 		panelThree.add(skillsLabel);
 		panelThree.add(skills);
+		panelThree.add(sarp);
 		add(panelThree);
 
 		addPropertyChangeListener(this);

@@ -46,6 +46,12 @@ public class JobsListModel extends DefaultListModel<Job> implements
 				worker = (Worker) evt.getNewValue();
 				clear();
 			}
+		} else if ("add".equalsIgnoreCase(evt.getPropertyName())) {
+			if (worker != null) {
+				Job job = new Job(evt.getNewValue().toString(), 0);
+				worker.addJob(job);
+				addElement(job);
+			}
 		}
 	}
 }
