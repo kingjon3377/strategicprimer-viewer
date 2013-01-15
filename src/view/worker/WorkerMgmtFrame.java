@@ -18,8 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.text.View;
 
 import model.map.Player;
@@ -28,7 +26,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
-import model.workermgmt.JobsListModel;
 import model.workermgmt.SkillListModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
@@ -38,7 +35,7 @@ import view.util.AddRemovePanel;
  *
  */
 public class WorkerMgmtFrame extends JFrame implements ItemListener,
-		PropertyChangeListener, ListSelectionListener, PropertyChangeSource {
+		PropertyChangeListener, PropertyChangeSource {
 	/**
 	 * The map model containing the data we're working from.
 	 */
@@ -48,11 +45,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	 */
 	private final JComboBox<Player> players = new JComboBox<Player>();
 	/**
-	 * A drop-down list of the worker's jobs. TODO: Make editable, so user can add new job.
-	 */
-	private final JList<Job> jobs = new JList<Job>();
-	/**
-	 * A non-drop-down list of the skills associated with that job. TODO: make editable, so user can add new skill.
+	 * A non-drop-down list of the skills associated with that job.
 	 */
 	private final JList<Skill> skills = new JList<Skill>();
 	/**
@@ -89,9 +82,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		final JPanel panelThree = new JPanel();
 		panelThree.setLayout(new BoxLayout(panelThree, BoxLayout.PAGE_AXIS));
 		final AddRemovePanel jarp = new AddRemovePanel(false);
-		jobs.setModel(new JobsListModel(this, jarp));
-		jobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		jobs.addListSelectionListener(this);
+		final JList<Job> jobs = new JobsList(this, this, jarp);
 		final JLabel jobsLabel = new JLabel(htmlize("Worker's Jobs:"));
 		panelThree.add(jobsLabel);
 		panelThree.add(jobs);
@@ -99,7 +90,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		final AddRemovePanel sarp = new AddRemovePanel(false);
 		skills.setModel(new SkillListModel(this, sarp));
 		skills.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		skills.addListSelectionListener(this);
+//		skills.addListSelectionListener(this);
 		final JLabel skillsLabel = new JLabel(htmlize("Skills in selected Job:"));
 		panelThree.add(skillsLabel);
 		panelThree.add(skills);
@@ -156,15 +147,6 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 				}
 			}
 		});
-	}
-	/**
-	 * @param evt an event indicating a list's selection changed.
-	 */
-	@Override
-	public void valueChanged(final ListSelectionEvent evt) {
-		if (jobs.equals(evt.getSource())) {
-			firePropertyChange("job", null, jobs.getSelectedValue());
-		}
 	}
 	/**
 	 * Handle a property change.
