@@ -83,4 +83,11 @@ public class Job implements XMLWritable, Iterable<Skill>, HasName {
 	public int hashCode() {
 		return name.hashCode();
 	}
+	/**
+	 * @return a String representation of the Job
+	 */
+	@Override
+	public String toString() {
+		return name + " (" + level + ")";
+	}
 }
