@@ -87,6 +87,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		panelThree.add(skillsLabel);
 		panelThree.add(skills);
 		panelThree.add(sarp);
+		panelThree.add(new SkillAdvancementPanel(this));
 		add(panelThree);
 
 		addPropertyChangeListener(this);
