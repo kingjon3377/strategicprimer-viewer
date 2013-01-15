@@ -133,15 +133,18 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 				panelTwo.setPreferredSize(new Dimension(getWidth() / 2 - 1, getHeight()));
 				panelOne.setMinimumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
 				panelTwo.setMinimumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
+				final int width = getWidth() / 2 - 1;
+				final int minHeight = 20;
+				final int maxHeight = getHeight();
 				for (JComponent list : lists) {
 					if (list instanceof JComboBox) {
-						list.setMaximumSize(new Dimension(getWidth() / 2 - 1, 20));
-						list.setPreferredSize(new Dimension(getWidth() / 2 - 1, 20));
+						list.setMaximumSize(new Dimension(width, minHeight));
+						list.setPreferredSize(new Dimension(width, minHeight));
 					} else if (list instanceof JList) {
-						list.setMaximumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
-						list.setMinimumSize(new Dimension(getWidth() / 2 - 1, 20));
+						list.setMaximumSize(new Dimension(width, maxHeight));
+						list.setMinimumSize(new Dimension(width, minHeight));
 					} else if (list instanceof JLabel) {
-						FixtureCellRenderer.setComponentPreferredSize(list, getWidth() / 2 - 1);
+						FixtureCellRenderer.setComponentPreferredSize(list, width);
 					}
 				}
 			}
