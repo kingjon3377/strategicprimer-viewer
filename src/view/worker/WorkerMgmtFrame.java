@@ -17,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
 import javax.swing.text.View;
 
 import model.map.Player;
@@ -26,7 +25,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
-import model.workermgmt.SkillListModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 /**
@@ -44,10 +42,6 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	 * A drop-down list listing the players in the map.
 	 */
 	private final JComboBox<Player> players = new JComboBox<Player>();
-	/**
-	 * A non-drop-down list of the skills associated with that job.
-	 */
-	private final JList<Skill> skills = new JList<Skill>();
 	/**
 	 * Constructor.
 	 * @param source the model containing the data to work from
@@ -88,9 +82,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		panelThree.add(jobs);
 		panelThree.add(jarp);
 		final AddRemovePanel sarp = new AddRemovePanel(false);
-		skills.setModel(new SkillListModel(this, sarp));
-		skills.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		skills.addListSelectionListener(this);
+		final JList<Skill> skills = new SkillList(this, this, sarp);
 		final JLabel skillsLabel = new JLabel(htmlize("Skills in selected Job:"));
 		panelThree.add(skillsLabel);
 		panelThree.add(skills);
