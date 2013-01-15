@@ -42,16 +42,15 @@ public class JobsListModel extends DefaultListModel<Job> implements
 						addElement(job);
 					}
 				}
-			} else if (worker != null && evt.getNewValue() == null) {
+			} else if (evt.getNewValue() == null) {
 				worker = (Worker) evt.getNewValue();
 				clear();
 			}
-		} else if ("add".equalsIgnoreCase(evt.getPropertyName())) {
-			if (worker != null) {
-				Job job = new Job(evt.getNewValue().toString(), 0);
-				worker.addJob(job);
-				addElement(job);
-			}
+		} else if ("add".equalsIgnoreCase(evt.getPropertyName())
+				&& worker != null) {
+			final Job job = new Job(evt.getNewValue().toString(), 0);
+			worker.addJob(job);
+			addElement(job);
 		}
 	}
 }

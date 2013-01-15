@@ -101,7 +101,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 
 		final JPanel panelThree = new JPanel();
 		panelThree.setLayout(new BoxLayout(panelThree, BoxLayout.PAGE_AXIS));
-		AddRemovePanel jarp = new AddRemovePanel(false);
+		final AddRemovePanel jarp = new AddRemovePanel(false);
 		jobs.setModel(new JobsListModel(this, jarp));
 		jobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jobs.addListSelectionListener(this);
@@ -109,7 +109,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		panelThree.add(jobsLabel);
 		panelThree.add(jobs);
 		panelThree.add(jarp);
-		AddRemovePanel sarp = new AddRemovePanel(false);
+		final AddRemovePanel sarp = new AddRemovePanel(false);
 		skills.setModel(new SkillListModel(this, sarp));
 		skills.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		skills.addListSelectionListener(this);
@@ -201,9 +201,6 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	public void itemStateChanged(final ItemEvent evt) {
 		if (players.equals(evt.getSource())) {
 			firePropertyChange("player", null, players.getSelectedItem());
-		} else if (skills.equals(evt.getSource())) {
-			// TODO: make it possible to improve that skill ... or at least show
-			// the level and number of hours worked ...
 		}
 	}
 	/**
