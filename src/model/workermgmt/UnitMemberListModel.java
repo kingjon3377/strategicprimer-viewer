@@ -5,10 +5,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.DefaultListModel;
 
-import util.PropertyChangeSource;
-
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+import util.PropertyChangeSource;
 /**
  * A list moel for a list of a unit's members.
  * @author Jonathan Lovelace
