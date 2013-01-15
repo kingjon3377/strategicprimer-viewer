@@ -57,13 +57,17 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 		add(second);
 	}
 	/**
+	 * The maximum height of the widget.
+	 */
+	private static final int MAX_HEIGHT = 50;
+	/**
 	 * Set the sizes we want on a panel.
 	 * @param panel the panel in question
 	 */
 	private static void setPanelSizes(final JPanel panel) {
 		panel.setMinimumSize(new Dimension(60, 40));
-		panel.setPreferredSize(new Dimension(80, 50));
-		panel.setMaximumSize(new Dimension(90, 50));
+		panel.setPreferredSize(new Dimension(80, MAX_HEIGHT));
+		panel.setMaximumSize(new Dimension(90, MAX_HEIGHT));
 	}
 	/**
 	 * Listen to a button.
