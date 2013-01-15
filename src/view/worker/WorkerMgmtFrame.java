@@ -99,6 +99,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		add(panelTwo);
 
 		final JPanel panelThree = new JPanel();
+		panelThree.setLayout(new BoxLayout(panelThree, BoxLayout.PAGE_AXIS));
 		jobs.setModel(new JobsListModel(this));
 		jobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jobs.addListSelectionListener(this);
