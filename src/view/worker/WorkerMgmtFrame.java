@@ -31,6 +31,7 @@ import model.viewer.MapModel;
 import model.workermgmt.UnitListModel;
 import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
+import view.map.details.FixtureCellRenderer;
 /**
  * A GUI to let a user manage workers.
  * @author Jonathan Lovelace
@@ -74,9 +75,11 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		final JPanel panelOne = new JPanel();
 		panelOne.setLayout(new BoxLayout(panelOne, BoxLayout.PAGE_AXIS));
 		players.addItemListener(this);
-		panelOne.add(new JLabel("Current Player:"));
+		final JLabel playerLabel = new JLabel(htmlize("Current Player:"));
+		panelOne.add(playerLabel);
 		panelOne.add(players);
-		panelOne.add(new JLabel("Player's Units:"));
+		final JLabel unitLabel = new JLabel(htmlize("Player's Units:"));
+		panelOne.add(unitLabel);
 		units.addListSelectionListener(this);
 		units.setModel(new UnitListModel(source, source, this));
 		panelOne.add(units);
@@ -84,17 +87,20 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 
 		final JPanel panelTwo = new JPanel();
 		panelTwo.setLayout(new BoxLayout(panelTwo, BoxLayout.PAGE_AXIS));
-		panelTwo.add(new JLabel("Selected Unit's Members:"));
+		final JLabel memberLabel = new JLabel(htmlize("Selected Unit's Members:"));
+		panelTwo.add(memberLabel);
 		members.setModel(new UnitMemberListModel(this));
 		members.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		members.addListSelectionListener(this);
 		panelTwo.add(members);
 		// TODO: a label showing stats
 		jobs.addItemListener(this);
-		panelTwo.add(new JLabel("Worker's Jobs:"));
+		final JLabel jobsLabel = new JLabel(htmlize("Worker's Jobs:"));
+		panelTwo.add(jobsLabel);
 		panelTwo.add(jobs);
 		skills.addItemListener(this);
-		panelTwo.add(new JLabel("Skills in selected Job:"));
+		final JLabel skillsLabel = new JLabel(htmlize("Skills in selected Job:"));
+		panelTwo.add(skillsLabel);
 		panelTwo.add(skills);
 		add(panelTwo);
 
@@ -109,6 +115,11 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		lists.add(skills);
 		lists.add(units);
 		lists.add(members);
+		lists.add(playerLabel);
+		lists.add(unitLabel);
+		lists.add(memberLabel);
+		lists.add(jobsLabel);
+		lists.add(skillsLabel);
 		getContentPane().addComponentListener(new ComponentAdapter() {
 			/**
 			 * Adjust the size of the sub-panels when this is resized.
@@ -129,6 +140,8 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 					} else if (list instanceof JList) {
 						list.setMaximumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
 						list.setMinimumSize(new Dimension(getWidth() / 2 - 1, 20));
+					} else if (list instanceof JLabel) {
+						FixtureCellRenderer.setComponentPreferredSize(list, getWidth() / 2 - 1);
 					}
 				}
 			}
@@ -188,5 +201,13 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 			// TODO: make it possible to improve that skill ... or at least show
 			// the level and number of hours worked ...
 		}
+	}
+	/**
+	 * Turn a string into left-aligned HTML.
+	 * @param string a string
+	 * @return it wrapped in HTML code that should make it left-aligned.
+	 */
+	private static String htmlize(final String string) {
+		return "<html><p align=\"left\">" + string + "</p></html>";
 	}
 }
