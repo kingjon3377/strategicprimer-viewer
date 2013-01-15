@@ -127,15 +127,15 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 			 */
 			@Override
 			public void componentResized(final ComponentEvent evt) {
-				panelOne.setMaximumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
-				panelTwo.setMaximumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
-				panelOne.setPreferredSize(new Dimension(getWidth() / 2 - 1, getHeight()));
-				panelTwo.setPreferredSize(new Dimension(getWidth() / 2 - 1, getHeight()));
-				panelOne.setMinimumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
-				panelTwo.setMinimumSize(new Dimension(getWidth() / 2 - 1, getHeight()));
 				final int width = getWidth() / 2 - 1;
 				final int minHeight = 20;
 				final int maxHeight = getHeight();
+				panelOne.setMaximumSize(new Dimension(width, maxHeight));
+				panelTwo.setMaximumSize(new Dimension(width, maxHeight));
+				panelOne.setPreferredSize(new Dimension(width, maxHeight));
+				panelTwo.setPreferredSize(new Dimension(width, maxHeight));
+				panelOne.setMinimumSize(new Dimension(width, maxHeight));
+				panelTwo.setMinimumSize(new Dimension(width, maxHeight));
 				for (JComponent list : lists) {
 					if (list instanceof JComboBox) {
 						list.setMaximumSize(new Dimension(width, minHeight));
