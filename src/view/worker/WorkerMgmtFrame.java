@@ -93,16 +93,20 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		members.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		members.addListSelectionListener(this);
 		panelTwo.add(members);
-		// TODO: a label showing stats
+		final StatsLabel statsLabel = new StatsLabel(this);
+		panelTwo.add(statsLabel);
+		add(panelTwo);
+
+		final JPanel panelThree = new JPanel();
 		jobs.addItemListener(this);
 		final JLabel jobsLabel = new JLabel(htmlize("Worker's Jobs:"));
-		panelTwo.add(jobsLabel);
-		panelTwo.add(jobs);
+		panelThree.add(jobsLabel);
+		panelThree.add(jobs);
 		skills.addItemListener(this);
 		final JLabel skillsLabel = new JLabel(htmlize("Skills in selected Job:"));
-		panelTwo.add(skillsLabel);
-		panelTwo.add(skills);
-		add(panelTwo);
+		panelThree.add(skillsLabel);
+		panelThree.add(skills);
+		add(panelThree);
 
 		addPropertyChangeListener(this);
 		firePropertyChange("map", null, null);
@@ -110,6 +114,9 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 
 		setMinimumSize(new Dimension(640, 480));
 		final List<JComponent> lists = new ArrayList<JComponent>();
+		lists.add(panelOne);
+		lists.add(panelTwo);
+		lists.add(panelThree);
 		lists.add(players);
 		lists.add(jobs);
 		lists.add(skills);
@@ -120,6 +127,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		lists.add(memberLabel);
 		lists.add(jobsLabel);
 		lists.add(skillsLabel);
+		lists.add(statsLabel);
 		getContentPane().addComponentListener(new ComponentAdapter() {
 			/**
 			 * Adjust the size of the sub-panels when this is resized.
@@ -127,15 +135,9 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 			 */
 			@Override
 			public void componentResized(final ComponentEvent evt) {
-				final int width = getWidth() / 2 - 1;
+				final int width = getWidth() / 3;
 				final int minHeight = 20;
 				final int maxHeight = getHeight();
-				panelOne.setMaximumSize(new Dimension(width, maxHeight));
-				panelTwo.setMaximumSize(new Dimension(width, maxHeight));
-				panelOne.setPreferredSize(new Dimension(width, maxHeight));
-				panelTwo.setPreferredSize(new Dimension(width, maxHeight));
-				panelOne.setMinimumSize(new Dimension(width, maxHeight));
-				panelTwo.setMinimumSize(new Dimension(width, maxHeight));
 				for (JComponent list : lists) {
 					if (list instanceof JComboBox) {
 						list.setMaximumSize(new Dimension(width, minHeight));
@@ -146,6 +148,10 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 					} else if (list instanceof JLabel) {
 						FixtureCellRenderer.setComponentPreferredSize(list, width);
 						list.setMinimumSize(list.getPreferredSize());
+					} else if (list instanceof JPanel) {
+						list.setMaximumSize(new Dimension(width, maxHeight));
+						list.setPreferredSize(new Dimension(width, maxHeight));
+						list.setMinimumSize(new Dimension(width, maxHeight));
 					}
 				}
 			}
@@ -168,6 +174,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 					jobs.addItem(job);
 				}
 			}
+			firePropertyChange("member", null, selection);
 		} else if (units.equals(evt.getSource())) {
 			firePropertyChange("unit", null, units.getSelectedValue());
 		}
