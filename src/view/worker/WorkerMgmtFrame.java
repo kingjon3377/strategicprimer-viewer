@@ -92,7 +92,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		// TODO: a label showing stats
 		jobs.addItemListener(this);
 		panelTwo.add(new JLabel("Worker's Jobs:"));
-		panelTwo.add(skills);
+		panelTwo.add(jobs);
 		skills.addItemListener(this);
 		panelTwo.add(new JLabel("Skills in selected Job:"));
 		panelTwo.add(skills);
