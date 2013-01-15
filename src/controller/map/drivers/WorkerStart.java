@@ -10,14 +10,15 @@ import javax.swing.JFrame;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.MapModel;
-import controller.map.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
-
 import util.Warning;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
+import view.worker.WorkerMenu;
 import view.worker.WorkerMgmtFrame;
+import controller.map.SPFormatException;
+import controller.map.misc.IOHandler;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A class to start the worker management GUI. TODO: Merge with ViewerStart.
@@ -56,6 +57,7 @@ public final class WorkerStart {
 			final MapModel model = new MapModel(new MapReaderAdapter().readMap(
 					filename, new Warning(Warning.Action.Warn)));
 			final WorkerMgmtFrame frame = new WorkerMgmtFrame(model);
+			frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 		} catch (final XMLStreamException e) {
