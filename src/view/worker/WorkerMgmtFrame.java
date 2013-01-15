@@ -29,6 +29,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
 import model.workermgmt.JobsListModel;
+import model.workermgmt.SkillListModel;
 import model.workermgmt.UnitListModel;
 import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
@@ -63,7 +64,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	/**
 	 * A non-drop-down list of the skills associated with that job. TODO: make editable, so user can add new skill.
 	 */
-	private final JComboBox<Skill> skills = new JComboBox<Skill>();
+	private final JList<Skill> skills = new JList<Skill>();
 	/**
 	 * Constructor.
 	 * @param source the model containing the data to work from
@@ -106,7 +107,9 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		final JLabel jobsLabel = new JLabel(htmlize("Worker's Jobs:"));
 		panelThree.add(jobsLabel);
 		panelThree.add(jobs);
-		skills.addItemListener(this);
+		skills.setModel(new SkillListModel(this));
+		skills.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		skills.addListSelectionListener(this);
 		final JLabel skillsLabel = new JLabel(htmlize("Skills in selected Job:"));
 		panelThree.add(skillsLabel);
 		panelThree.add(skills);
@@ -167,17 +170,11 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	@Override
 	public void valueChanged(final ListSelectionEvent evt) {
 		if (members.equals(evt.getSource())) {
-			skills.removeAllItems();
 			firePropertyChange("member", null, members.getSelectedValue());
 		} else if (units.equals(evt.getSource())) {
 			firePropertyChange("unit", null, units.getSelectedValue());
 		} else if (jobs.equals(evt.getSource())) {
-			skills.removeAllItems();
-			if (jobs.getSelectedValue() != null) {
-				for (Skill skill : jobs.getSelectedValue()) {
-					skills.addItem(skill);
-				}
-			}
+			firePropertyChange("job", null, jobs.getSelectedValue());
 		}
 	}
 	/**
@@ -199,7 +196,6 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	@Override
 	public void itemStateChanged(final ItemEvent evt) {
 		if (players.equals(evt.getSource())) {
-			skills.removeAllItems();
 			firePropertyChange("player", null, players.getSelectedItem());
 		} else if (skills.equals(evt.getSource())) {
 			// TODO: make it possible to improve that skill ... or at least show
