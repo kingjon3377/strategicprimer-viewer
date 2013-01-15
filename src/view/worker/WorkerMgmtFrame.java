@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
@@ -30,7 +31,6 @@ import model.viewer.MapModel;
 import model.workermgmt.UnitListModel;
 import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
-import view.map.details.FixtureCellRenderer;
 /**
  * A GUI to let a user manage workers.
  * @author Jonathan Lovelace
@@ -74,7 +74,9 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		final JPanel panelOne = new JPanel();
 		panelOne.setLayout(new BoxLayout(panelOne, BoxLayout.PAGE_AXIS));
 		players.addItemListener(this);
+		panelOne.add(new JLabel("Current Player:"));
 		panelOne.add(players);
+		panelOne.add(new JLabel("Player's Units:"));
 		units.addListSelectionListener(this);
 		units.setModel(new UnitListModel(source, source, this));
 		panelOne.add(units);
@@ -82,14 +84,17 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 
 		final JPanel panelTwo = new JPanel();
 		panelTwo.setLayout(new BoxLayout(panelTwo, BoxLayout.PAGE_AXIS));
+		panelTwo.add(new JLabel("Selected Unit's Members:"));
 		members.setModel(new UnitMemberListModel(this));
 		members.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		members.addListSelectionListener(this);
 		panelTwo.add(members);
 		// TODO: a label showing stats
 		jobs.addItemListener(this);
+		panelTwo.add(new JLabel("Worker's Jobs:"));
 		panelTwo.add(skills);
 		skills.addItemListener(this);
+		panelTwo.add(new JLabel("Skills in selected Job:"));
 		panelTwo.add(skills);
 		add(panelTwo);
 
