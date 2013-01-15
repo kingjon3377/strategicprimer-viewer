@@ -30,7 +30,6 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
 import model.workermgmt.JobsListModel;
 import model.workermgmt.SkillListModel;
-import model.workermgmt.UnitMemberListModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 /**
@@ -48,10 +47,6 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	 * A drop-down list listing the players in the map.
 	 */
 	private final JComboBox<Player> players = new JComboBox<Player>();
-	/**
-	 * A not-drop-down list of the members of the unit (mostly workers).
-	 */
-	private final JList<UnitMember> members = new JList<UnitMember>();
 	/**
 	 * A drop-down list of the worker's jobs. TODO: Make editable, so user can add new job.
 	 */
@@ -85,9 +80,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 		panelTwo.setLayout(new BoxLayout(panelTwo, BoxLayout.PAGE_AXIS));
 		final JLabel memberLabel = new JLabel(htmlize("Selected Unit's Members:"));
 		panelTwo.add(memberLabel);
-		members.setModel(new UnitMemberListModel(this));
-		members.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		members.addListSelectionListener(this);
+		final JList<UnitMember> members = new UnitMemberList(this);
 		panelTwo.add(members);
 		final StatsLabel statsLabel = new StatsLabel(this);
 		panelTwo.add(statsLabel);
@@ -169,9 +162,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	 */
 	@Override
 	public void valueChanged(final ListSelectionEvent evt) {
-		if (members.equals(evt.getSource())) {
-			firePropertyChange("member", null, members.getSelectedValue());
-		} else if (jobs.equals(evt.getSource())) {
+		if (jobs.equals(evt.getSource())) {
 			firePropertyChange("job", null, jobs.getSelectedValue());
 		}
 	}
