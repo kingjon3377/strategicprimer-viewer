@@ -24,6 +24,9 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	 * @param sources property-change sources to listen to.
 	 */
 	public SkillListModel(final PropertyChangeSource... sources) {
+		if (sources.length == 0) {
+			throw new IllegalStateException("No sources given");
+		}
 		for (final PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(this);
 		}

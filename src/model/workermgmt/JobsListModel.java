@@ -23,6 +23,9 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	 * @param sources property-change sources to listen to.
 	 */
 	public JobsListModel(final PropertyChangeSource... sources) {
+		if (sources.length == 0) {
+			throw new IllegalStateException("No sources given");
+		}
 		for (final PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(this);
 		}

@@ -39,6 +39,9 @@ public class UnitListModel extends DefaultListModel<Unit> implements
 	public UnitListModel(final MapModel mmodel, final PropertyChangeSource... sources) {
 		super();
 		model = mmodel;
+		if (sources.length == 0) {
+			throw new IllegalStateException("No sources given");
+		}
 		for (final PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(this);
 		}
