@@ -43,9 +43,12 @@ public class SkillAdvancementPanel extends JPanel implements
 	private final JTextField hours = new JTextField(3);
 	/**
 	 * Constructor.
+	 * @param listener something to listen to our PropertyChangeEvents.
 	 * @param sources the things we should listen to
 	 */
-	public SkillAdvancementPanel(final PropertyChangeSource... sources) {
+	public SkillAdvancementPanel(final PropertyChangeListener listener,
+			final PropertyChangeSource... sources) {
+		addPropertyChangeListener(listener);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		final JPanel one = new JPanel();
 		one.setLayout(new FlowLayout());
@@ -81,8 +84,12 @@ public class SkillAdvancementPanel extends JPanel implements
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
-			// TODO: Find some way of forcing the GUI to update if level gained.
+			final int level = skill.getLevel();
 			skill.addHours(Integer.parseInt(hours.getText()), SingletonRandom.RANDOM.nextInt(100));
+			final int newLevel = skill.getLevel();
+			if (newLevel != level) {
+				firePropertyChange("level", level, newLevel);
+			}
 		}
 		// Clear if OK and no skill selected, on Cancel, and after successfully adding skill
 		hours.setText("");
