@@ -19,6 +19,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.text.View;
 
+import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -27,6 +28,7 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.viewer.MapModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
+import view.util.SystemOut;
 /**
  * A GUI to let a user manage workers.
  * @author Jonathan Lovelace
@@ -137,6 +139,50 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 						list.setPreferredSize(new Dimension(width, maxHeight));
 						list.setMinimumSize(new Dimension(width, maxHeight));
 					}
+				}
+			}
+		});
+		addPropertyChangeListener(new PropertyChangeListener() {
+			/**
+			 * The current worker.
+			 */
+			private UnitMember worker = null;
+			/**
+			 * The current skill.
+			 */
+			private Skill skill = null;
+			/**
+			 * @param evt the property-change event to handle
+			 */
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if ("member".equals(evt.getPropertyName())
+						&& (evt.getNewValue() instanceof UnitMember || evt
+								.getNewValue() == null)) {
+					worker = (UnitMember) evt.getNewValue();
+				} else if ("skill".equals(evt.getPropertyName())
+						&& (evt.getNewValue() instanceof Skill || evt
+								.getNewValue() == null)) {
+				skill = (Skill) evt.getNewValue();
+				} else if ("level".equals(evt.getPropertyName())) {
+					final StringBuilder builder = new StringBuilder();
+					builder.append(getName(worker));
+					builder.append(" gained a level in ");
+					builder.append(getName(skill));
+					SystemOut.SYS_OUT.println(builder.toString());
+				}
+			}
+			/**
+			 * @param named something that may have a name
+			 * @return its name if it has one, "null" if null, or its toString otherwise.
+			 */
+			private String getName(final Object named) {
+				if (named instanceof HasName) {
+					return ((HasName) named).getName(); // NOPMD
+				} else if (named == null) {
+					return "null"; // NOPMD
+				} else {
+					return named.toString();
 				}
 			}
 		});
