@@ -199,9 +199,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 				players.addItem(player);
 			}
 		} else if (!equals(evt.getSource())) {
-			for (PropertyChangeListener listener : getPropertyChangeListeners()) {
-				listener.propertyChange(evt);
-			}
+			firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 		}
 	}
 	/**
