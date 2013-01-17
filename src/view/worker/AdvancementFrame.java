@@ -34,7 +34,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerMgmtFrame extends JFrame implements ItemListener,
+public class AdvancementFrame extends JFrame implements ItemListener,
 		PropertyChangeListener, PropertyChangeSource {
 	/**
 	 * The map model containing the data we're working from.
@@ -48,7 +48,7 @@ public class WorkerMgmtFrame extends JFrame implements ItemListener,
 	 * Constructor.
 	 * @param source the model containing the data to work from
 	 */
-	public WorkerMgmtFrame(final MapModel source) {
+	public AdvancementFrame(final MapModel source) {
 		model = source;
 		model.addPropertyChangeListener(this);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
