@@ -2,6 +2,7 @@ package model.workermgmt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -18,7 +19,7 @@ import controller.map.misc.MapHelper;
  *
  */
 public class UnitListModel extends DefaultListModel<Unit> implements
-		PropertyChangeListener {
+		PropertyChangeListener, PropertyChangeSource {
 	/**
 	 * The current player.
 	 */
@@ -61,6 +62,25 @@ public class UnitListModel extends DefaultListModel<Unit> implements
 			for (Unit unit : units) {
 				addElement(unit);
 			}
+			pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
 		}
+	}
+	/**
+	 * Our delegate for property-change handling.
+	 */
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	/**
+	 * @param list a listener to listen to us
+	 */
+	@Override
+	public void addPropertyChangeListener(final PropertyChangeListener list) {
+		pcs.addPropertyChangeListener(list);
+	}
+	/**
+	 * @param list a listener to stop listenng to us
+	 */
+	@Override
+	public void removePropertyChangeListener(final PropertyChangeListener list) {
+		pcs.removePropertyChangeListener(list);
 	}
 }

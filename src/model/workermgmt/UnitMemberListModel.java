@@ -2,6 +2,7 @@ package model.workermgmt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import javax.swing.DefaultListModel;
 
@@ -14,7 +15,7 @@ import util.PropertyChangeSource;
  *
  */
 public class UnitMemberListModel extends DefaultListModel<UnitMember> implements
-		PropertyChangeListener {
+		PropertyChangeListener, PropertyChangeSource {
 	/**
 	 * The current unit.
 	 */
@@ -45,11 +46,30 @@ public class UnitMemberListModel extends DefaultListModel<UnitMember> implements
 					for (UnitMember member : unit) {
 						addElement(member);
 					}
+					pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
 				}
 			} else if (unit != null && evt.getNewValue() == null) {
 				unit = (Unit) evt.getNewValue();
 				clear();
 			}
 		}
+	}
+	/**
+	 * Our delegate for property-change handling.
+	 */
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	/**
+	 * @param list a listener to listen to us
+	 */
+	@Override
+	public void addPropertyChangeListener(final PropertyChangeListener list) {
+		pcs.addPropertyChangeListener(list);
+	}
+	/**
+	 * @param list a listener to stop listenng to us
+	 */
+	@Override
+	public void removePropertyChangeListener(final PropertyChangeListener list) {
+		pcs.removePropertyChangeListener(list);
 	}
 }

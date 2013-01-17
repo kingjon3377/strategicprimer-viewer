@@ -1,5 +1,6 @@
 package view.worker;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JList;
@@ -26,7 +27,20 @@ public class UnitList extends JList<Unit> implements PropertyChangeSource, ListS
 	public UnitList(final MapModel mmodel,
 			final PropertyChangeListener listener,
 			final PropertyChangeSource... sources) {
-		setModel(new UnitListModel(mmodel, sources));
+		final UnitListModel lmodel = new UnitListModel(mmodel, sources);
+		setModel(lmodel);
+		lmodel.addPropertyChangeListener(new PropertyChangeListener() {
+			/**
+			 * @param evt the event to handle
+			 */
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if ("finished".equalsIgnoreCase(evt.getPropertyName())
+						&& Integer.valueOf(0).equals(evt.getNewValue())) {
+					setSelectedIndex(0);
+				}
+			}
+		});
 		addPropertyChangeListener(listener);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

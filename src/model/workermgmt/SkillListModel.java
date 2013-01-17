@@ -2,6 +2,7 @@ package model.workermgmt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import javax.swing.DefaultListModel;
 
@@ -14,7 +15,7 @@ import util.PropertyChangeSource;
  * @author Jonathan Lovelace
  */
 public class SkillListModel extends DefaultListModel<Skill> implements
-		PropertyChangeListener {
+		PropertyChangeListener, PropertyChangeSource {
 	/**
 	 * The current Job.
 	 */
@@ -45,6 +46,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 					for (Skill skill : job) {
 						addElement(skill);
 					}
+					pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
 				}
 			} else if (job != null && evt.getNewValue() == null) {
 				job = (Job) evt.getNewValue();
@@ -54,8 +56,27 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			final Skill skill = new Skill(evt.getNewValue().toString(), 0, 0);
 			job.addSkill(skill);
 			addElement(skill);
+			pcs.firePropertyChange("finished", null, skill);
 		} else if ("level".equalsIgnoreCase(evt.getPropertyName())) {
 			fireContentsChanged(evt.getSource(), 0, getSize());
 		}
+	}
+	/**
+	 * Our delegate for property-change handling.
+	 */
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	/**
+	 * @param list a listener to listen to us
+	 */
+	@Override
+	public void addPropertyChangeListener(final PropertyChangeListener list) {
+		pcs.addPropertyChangeListener(list);
+	}
+	/**
+	 * @param list a listener to stop listenng to us
+	 */
+	@Override
+	public void removePropertyChangeListener(final PropertyChangeListener list) {
+		pcs.removePropertyChangeListener(list);
 	}
 }
