@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,6 +46,14 @@ public class FindDialog extends JDialog implements ActionListener {
 	private final JLabel errorLabel = new JLabel(
 			"This text should vanish from the error-message label before the constructor ends.");
 	/**
+	 * The checkbox for searching backwards.
+	 */
+	private final JCheckBox backwards = new JCheckBox("Search backwards");
+	/**
+	 * The checkbox for searching vertically.
+	 */
+	private final JCheckBox vertically = new JCheckBox("Search vertically then horizontally");
+	/**
 	 * Constructor.
 	 *
 	 * @param parent the parent to attach this dialog to
@@ -58,6 +67,8 @@ public class FindDialog extends JDialog implements ActionListener {
 		errorLabel.setMinimumSize(new Dimension(200, 15));
 		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
 		errorLabel.setAlignmentY(LEFT_ALIGNMENT);
+		add(backwards);
+		add(vertically);
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
 		buttonPanel.add(Box.createHorizontalGlue());
@@ -99,7 +110,9 @@ public class FindDialog extends JDialog implements ActionListener {
 		if (IsNumeric.isNumeric(pattern)) {
 			idNum = Integer.parseInt(pattern);
 		}
-		final Iterable<Point> iter = new IteratorWrapper<Point>(new PointIterator(map, true, true, true));
+		final Iterable<Point> iter = new IteratorWrapper<Point>(
+				new PointIterator(map, true, !backwards.isSelected(),
+						!vertically.isSelected()));
 		for (Point point : iter) {
 			final Tile tile = map.getMainMap().getTile(point);
 			for (final TileFixture fix : tile) {
