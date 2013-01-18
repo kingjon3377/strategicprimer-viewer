@@ -12,6 +12,14 @@ import model.map.PointFactory;
  */
 public class PointIterator implements Iterator<Point> {
 	/**
+	 * Whether we're searching forwards (if true) or backwards (if false).
+	 */
+	private final boolean forwards;
+	/**
+	 * Whether we're searching horizontally (if true) or vertically (if false).
+	 */
+	private final boolean horiz;
+	/**
 	 * The maximum row in the map.
 	 */
 	private final int maxRow;
@@ -55,18 +63,28 @@ public class PointIterator implements Iterator<Point> {
 	 * Constructor.
 	 *
 	 * @param model the map we're helping to go through.
-	 * @param startFromSel If true, we start from (the tile after) the
-	 *        current selected tile; if false, we start from 0, 0.
+	 * @param startFromSel If true, we start from (the tile after) the current
+	 *        selected tile; if false, we start from 0, 0.
+	 * @param searchForwards Whether we should search forwards (if true) or
+	 *        backwards (if false)
+	 * @param searchHoriz Whether we should search horizontally (if true) or
+	 *        vertically (if false)
 	 */
-	public PointIterator(final MapModel model, final boolean startFromSel) {
+	public PointIterator(final MapModel model, final boolean startFromSel,
+			final boolean searchForwards, final boolean searchHoriz) {
+		horiz = searchHoriz;
+		forwards = searchForwards;
 		maxRow = model.getMapDimensions().getRows() - 1;
 		maxCol = model.getMapDimensions().getColumns() - 1;
 		if (startFromSel) {
 			startRow = wrap(model.getSelectedTile().getLocation().row, maxRow);
 			startCol = wrap(model.getSelectedTile().getLocation().col, maxCol);
-		} else {
+		} else if (forwards) {
 			startRow = maxRow;
 			startCol = maxCol;
+		} else {
+			startRow = 0;
+			startCol = 0;
 		}
 		row = startRow;
 		col = startCol;
@@ -89,20 +107,86 @@ public class PointIterator implements Iterator<Point> {
 	public Point next() {
 		if (hasNext()) {
 			started = true;
-			if (col == maxCol) {
-				if (row == maxRow) {
-					row = 0;
+			if (horiz) {
+				if (forwards) {
+					return horizNext(); // NOPMD
 				} else {
-					row++;
+					return horizPrev(); // NOPMD
 				}
+			} else {
+				if (forwards) {
+					return vertNext(); // NOPMD
+				} else {
+					return vertPrev();
+				}
+			}
+		} else {
+			throw new NoSuchElementException("We've reached the end");
+		}
+	}
+	/**
+	 * @return the next point, searching horizontally.
+	 */
+	private Point horizNext() {
+		if (col == maxCol) {
+			if (row == maxRow) {
+				row = 0;
+			} else {
+				row++;
+			}
+			col = 0;
+		} else {
+			col++;
+		}
+		return PointFactory.point(row, col);
+	}
+	/**
+	 * @return the previous point, searching horizontally.
+	 */
+	private Point horizPrev() {
+		if (col == 0) {
+			if (row == 0) {
+				row = maxRow;
+			} else {
+				row--;
+			}
+			col = maxCol;
+		} else {
+			col--;
+		}
+		return PointFactory.point(row, col);
+	}
+	/**
+	 * @return the next point, searching vertically.
+	 */
+	private Point vertNext() {
+		if (row == maxRow) {
+			if (col == maxCol) {
 				col = 0;
 			} else {
 				col++;
 			}
-			return PointFactory.point(row, col);
+			row = 0;
 		} else {
-			throw new NoSuchElementException("We've reached the end");
+			row++;
 		}
+		return PointFactory.point(row, col);
+	}
+	/**
+	 * @return the previous point, searching vertically.
+	 */
+	private Point vertPrev() {
+		if (row == 0) {
+			if (col == 0) {
+				col = maxCol;
+			} else {
+				col--;
+			}
+			row = maxRow;
+		} else {
+			row--;
+		}
+		return PointFactory.point(row, col);
 	}
 	/**
 	 * Not implemented.

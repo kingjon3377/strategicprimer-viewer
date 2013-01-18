@@ -61,7 +61,7 @@ public class TestMapHelper {
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
 		final Iterable<Point> iter = new IteratorWrapper<Point>(new PointIterator(
-				new MapModel(new MapView(map, 0, 0)), false));
+				new MapModel(new MapView(map, 0, 0)), false, true, true));
 		for (Point point : iter) {
 			map.getTile(point).addFixture(fixtures.remove(0));
 		}
