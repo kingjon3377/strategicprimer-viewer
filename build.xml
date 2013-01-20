@@ -26,6 +26,7 @@
   <!-- Clean targets -->
   <target name="clean">
     <delete dir="${bin_dir}" />
+    <delete dir="${javadoc_dir}" />
   </target>
   <target depends="clean" name="cleanall">
     <delete dir="${release}" />
@@ -75,6 +76,12 @@
       <exclude name="tables/" />
       <classpath refid="viewer.classpath" />
     </javac>
+  </target>
+  <target name="doc" depends="init">
+    <javadoc sourcepath="${source_dir}" defaultexcludes="yes" destdir="${javadoc_dir}" author="true">
+      <tag name="todo" scope="all" description="To do:"/>
+      <tag name="fixme" scope="all" description="FIXME:" />
+    </javadoc>
   </target>
   
   <!-- Test targets -->
@@ -134,7 +141,7 @@
       </tarfileset>
     </tar>
   </target>
-  <target name="dist" depends="build">
+  <target name="dist" depends="build,doc">
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
       <tarfileset dir="${project_home}" prefix="${basename}">
         <include name="*.properties" />
@@ -151,6 +158,9 @@
         <include name="**" />
       </tarfileset>
       <tarfileset dir="${bin_dir}" prefix="${basename}/bin">
+        <include name="**" />
+      </tarfileset>
+      <tarfileset dir="${javadoc_dir}" prefix="${basename}/javadocs">
         <include name="**" />
       </tarfileset>
     </tar>

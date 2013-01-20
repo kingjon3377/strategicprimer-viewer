@@ -8,6 +8,7 @@ bin/tables
 pmd-eclipse.log
 release/*
 junit/*
+javadocs/*
 bin/*.png
 bin/images/*.png
 .*.swp
