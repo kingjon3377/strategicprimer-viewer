@@ -60,6 +60,8 @@ public class SkillAdvancementPanel extends JPanel implements
 		final JPanel two = new JPanel();
 		two.setLayout(new FlowLayout());
 		two.add(listen(new JButton("OK")));
+		hours.setActionCommand("OK");
+		hours.addActionListener(this);
 		two.add(listen(new JButton("Cancel")));
 		add(two);
 		for (PropertyChangeSource source : sources) {
