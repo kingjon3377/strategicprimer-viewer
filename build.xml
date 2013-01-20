@@ -101,6 +101,13 @@
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
   </target>
 
+  <!-- Release-related tasks. -->
+  <taskdef name="launch4j"
+    classname="net.sf.launch4j.ant.Launch4jTask"
+    classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+  <taskdef name="jarbundler"
+    classname="net.sourceforge.jarbundler.JarBundler" />
+
   <!-- Release targets -->
   <target name="viewer-${version-number}.jar" depends="test,get-builder,get-version">
     <jar destfile="${release}/viewer-${version-number}.jar"
@@ -117,15 +124,10 @@
       <fileset dir="${project_home}/bin" />
     </jar>
   </target>
-  <taskdef name="launch4j"
-    classname="net.sf.launch4j.ant.Launch4jTask"
-    classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
   <target name="viewer-${version-number}.exe" depends="viewer-${version-number}.jar">
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/viewer-${version-number}.exe" jar="${release}/viewer-${version-number}.jar" />
   </target>
-  <taskdef name="jarbundler"
-    classname="net.sourceforge.jarbundler.JarBundler" />
   <target name="viewer-${version-number}.app" depends="viewer-${version-number}.jar">
     <jarbundler dir="${release}" name="viewer-${version-number}"
       mainclass="controller.map.drivers.ViewerStart"
