@@ -128,14 +128,12 @@
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/viewer-${version-number}.exe" jar="${release}/viewer-${version-number}.jar" />
   </target>
-  <target name="viewer-${version-number}.app" depends="jar">
+  <target name="app" depends="jar">
     <jarbundler dir="${release}" name="viewer-${version-number}"
       mainclass="controller.map.drivers.ViewerStart"
       jar="${release}/viewer-${version-number}.jar" />
     <symlink link="${release}/viewer-${version-number}.app/Contents/MacOS/JavaApplicationStub"
       resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
-  </target>
-  <target name="app" depends="viewer-${version-number}.app">
     <tar destfile="${release}/viewer-${version-number}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
         <include name="viewer-${version-number}.app/**" />
