@@ -47,6 +47,7 @@
       <arg value="-i" />
     </exec>
     <property name="version-number" value="${major-version-number}.${minor-version-number}.${scm.revision.number}" />
+    <property name="basename" value="viewer-${version-number}" />
   </target>
 
   <target name="get-builder">
@@ -110,7 +111,7 @@
 
   <!-- Release targets -->
   <target name="jar" depends="test,get-builder,get-version">
-    <jar destfile="${release}/viewer-${version-number}.jar"
+    <jar destfile="${release}/${basename}.jar"
     filesetmanifest="mergewithoutmain">
       <manifest>
         <attribute name="Main-Class"
@@ -126,17 +127,17 @@
   </target>
   <target name="exe" depends="jar">
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
-      outfile="${release}/viewer-${version-number}.exe" jar="${release}/viewer-${version-number}.jar" />
+      outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
   </target>
   <target name="app" depends="jar">
-    <jarbundler dir="${release}" name="viewer-${version-number}"
+    <jarbundler dir="${release}" name="${basename}"
       mainclass="controller.map.drivers.ViewerStart"
-      jar="${release}/viewer-${version-number}.jar" />
-    <symlink link="${release}/viewer-${version-number}.app/Contents/MacOS/JavaApplicationStub"
+      jar="${release}/${basename}.jar" />
+    <symlink link="${release}/${basename}.app/Contents/MacOS/JavaApplicationStub"
       resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
-    <tar destfile="${release}/viewer-${version-number}.app.tbz2" compression="bzip2">
+    <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
-        <include name="viewer-${version-number}.app/**" />
+        <include name="${basename}.app/**" />
       </tarfileset>
     </tar>
   </target>
