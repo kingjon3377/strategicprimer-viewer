@@ -114,8 +114,7 @@
     <jar destfile="${release}/${basename}.jar"
     filesetmanifest="mergewithoutmain">
       <manifest>
-        <attribute name="Main-Class"
-        value="controller.map.drivers.ViewerStart" />
+        <attribute name="Main-Class" value="${main-class}" />
         <attribute name="Class-Path" value="." />
 	<attribute name="Built-By" value="${scm.builder}" />
 	<attribute name="Built-On" value="${TODAY}" />
@@ -130,8 +129,7 @@
       outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
   </target>
   <target name="app" depends="jar">
-    <jarbundler dir="${release}" name="${basename}"
-      mainclass="controller.map.drivers.ViewerStart"
+    <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${basename}.jar" />
     <symlink link="${release}/${basename}.app/Contents/MacOS/JavaApplicationStub"
       resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
