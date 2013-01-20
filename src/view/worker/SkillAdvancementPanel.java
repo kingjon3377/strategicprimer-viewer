@@ -35,6 +35,7 @@ public class SkillAdvancementPanel extends JPanel implements
 		if ("skill".equalsIgnoreCase(evt.getPropertyName())
 				&& (evt.getNewValue() == null || evt.getNewValue() instanceof Skill)) {
 			skill = (Skill) evt.getNewValue();
+			hours.requestFocusInWindow();
 		}
 	}
 	/**
