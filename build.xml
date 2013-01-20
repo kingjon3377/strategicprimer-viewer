@@ -131,8 +131,7 @@
   <target name="app" depends="jar">
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${basename}.jar" />
-    <symlink link="${release}/${basename}.app/Contents/MacOS/JavaApplicationStub"
-      resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
+    <symlink link="${release}/${basename}.app/${stub-path}" resource="${stub-native-path}" />
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
         <include name="${basename}.app/**" />
