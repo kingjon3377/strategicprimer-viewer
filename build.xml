@@ -13,11 +13,7 @@
 
   <!-- Paths within the repository. This should just work, so long as the directories exist. -->
   <path id="junit.classpath">
-    <!-- These are where these files are located on a Gentoo Linux system;
-	     they'll almost certainly be located somewhere else under some
-	     other distribution or on some other operating system. But IMO this
-	     is better than specifying *version-specific* paths under the
-	     Eclipse home directory. -->
+    <!-- See comment in paths.properties. -->
     <pathelement location="${junit.jar.path}" />
     <pathelement location="${hamcrest.jar.path}" />
   </path>
