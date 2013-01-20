@@ -26,11 +26,11 @@
   <!-- Clean targets -->
   <target name="clean">
     <delete dir="${bin_dir}" />
-    <delete dir="${javadoc_dir}" />
   </target>
   <target depends="clean" name="cleanall">
     <delete dir="${release}" />
     <delete dir="${junit.output.dir}" />
+    <delete dir="${javadoc_dir}" />
   </target>
 
   <!-- Target to get the Mercurial revision number, which we use as the micro version. -->
