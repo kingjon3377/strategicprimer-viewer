@@ -109,7 +109,7 @@
     classname="net.sourceforge.jarbundler.JarBundler" />
 
   <!-- Release targets -->
-  <target name="viewer-${version-number}.jar" depends="test,get-builder,get-version">
+  <target name="jar" depends="test,get-builder,get-version">
     <jar destfile="${release}/viewer-${version-number}.jar"
     filesetmanifest="mergewithoutmain">
       <manifest>
@@ -124,18 +124,18 @@
       <fileset dir="${project_home}/bin" />
     </jar>
   </target>
-  <target name="viewer-${version-number}.exe" depends="viewer-${version-number}.jar">
+  <target name="exe" depends="jar">
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/viewer-${version-number}.exe" jar="${release}/viewer-${version-number}.jar" />
   </target>
-  <target name="viewer-${version-number}.app" depends="viewer-${version-number}.jar">
+  <target name="viewer-${version-number}.app" depends="jar">
     <jarbundler dir="${release}" name="viewer-${version-number}"
       mainclass="controller.map.drivers.ViewerStart"
       jar="${release}/viewer-${version-number}.jar" />
     <symlink link="${release}/viewer-${version-number}.app/Contents/MacOS/JavaApplicationStub"
       resource="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
   </target>
-  <target name="viewer-${version-number}.app.tbz2" depends="viewer-${version-number}.app">
+  <target name="app" depends="viewer-${version-number}.app">
     <tar destfile="${release}/viewer-${version-number}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
         <include name="viewer-${version-number}.app/**" />
@@ -143,5 +143,5 @@
     </tar>
   </target>
   <target name="release"
-    depends="viewer-${version-number}.app.tbz2,viewer-${version-number}.exe,viewer-${version-number}.jar" />
+    depends="app,exe,jar" />
 </project>
