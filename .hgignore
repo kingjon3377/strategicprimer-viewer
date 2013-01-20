@@ -10,4 +10,6 @@ release/*
 junit/*
 bin/*.png
 bin/images/*.png
+.*.swp
+.*.swo
 
