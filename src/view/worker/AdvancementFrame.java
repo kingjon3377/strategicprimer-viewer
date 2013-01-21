@@ -244,22 +244,32 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 			final int maxHeight = getHeight();
 			for (JComponent list : components) {
 				if (list instanceof JComboBox) {
-					list.setMaximumSize(new Dimension(width, minHeight));
-					list.setPreferredSize(new Dimension(width, minHeight));
+					final Dimension dim = dimension(width, minHeight);
+					list.setMaximumSize(dim);
+					list.setPreferredSize(dim);
 				} else if (list instanceof JList) {
-					list.setMaximumSize(new Dimension(width, maxHeight));
-					list.setMinimumSize(new Dimension(width, minHeight));
+					list.setMaximumSize(dimension(width, maxHeight));
+					list.setMinimumSize(dimension(width, minHeight));
 				} else if (list instanceof JLabel) {
 					final Dimension dim = getComponentPreferredSize(list, width);
 					list.setMinimumSize(dim);
 					list.setPreferredSize(dim);
 					list.setMaximumSize(dim);
 				} else if (list instanceof JPanel) {
-					list.setMaximumSize(new Dimension(width, maxHeight));
-					list.setPreferredSize(new Dimension(width, maxHeight));
-					list.setMinimumSize(new Dimension(width, maxHeight));
+					final Dimension dim = dimension(width, maxHeight);
+					list.setMaximumSize(dim);
+					list.setPreferredSize(dim);
+					list.setMinimumSize(dim);
 				}
 			}
+		}
+		/**
+		 * @param width a width
+		 * @param height a height
+		 * @return a Dimension with those values.
+		 */
+		private Dimension dimension(final int width, final int height) {
+			return new Dimension(width, height);
 		}
 	}
 }
