@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import sun.security.action.GetLongAction;
-
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
