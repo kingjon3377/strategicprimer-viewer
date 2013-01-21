@@ -49,6 +49,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	 * @param source the model containing the data to work from
 	 */
 	public AdvancementFrame(final MapModel source) {
+		super("Strategic Primer worker advancement");
 		model = source;
 		model.addPropertyChangeListener(this);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
