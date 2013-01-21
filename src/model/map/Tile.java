@@ -235,7 +235,6 @@ public final class Tile implements XMLWritable,
 						obj.contents);
 				temp.removeAll(contents);
 				final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
-				final Map<Integer, Subsettable<?>> theirSubsettables = new HashMap<Integer, Subsettable<?>>();
 				final List<TileFixture> tempList = new ArrayList<TileFixture>(
 						temp);
 				for (final TileFixture fix : contents) {
@@ -243,25 +242,26 @@ public final class Tile implements XMLWritable,
 						mySubsettables.put(Integer.valueOf(fix.getID()), (Subsettable<?>) fix);
 					}
 				}
+				boolean retval = true;
 				for (final TileFixture fix : tempList) {
 					if (shouldSkip(fix)) {
 						temp.remove(fix);
-					} else if (fix instanceof Subsettable && mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {
-						temp.remove(fix);
-						theirSubsettables.put(Integer.valueOf(fix.getID()), (Subsettable<?>) fix);
+				} else if (fix instanceof Subsettable
+						&& mySubsettables.containsKey(Integer.valueOf(fix
+								.getID()))) {
+					temp.remove(fix);
+					final Subsettable<?> mine = mySubsettables.get(Integer
+							.valueOf(fix.getID()));
+					if (mine instanceof Fortress && fix instanceof Fortress) {
+						retval &= ((Fortress) mine).isSubset((Fortress) fix,
+								out);
+					} else {
+						throw new IllegalStateException(
+								"Unhandled Subsettable class");
 					}
 				}
-				boolean retval = true;
-				for (final Subsettable<?> theirs : theirSubsettables.values()) {
-						final Subsettable<?> mine = mySubsettables.get(Integer.valueOf(((TileFixture) theirs).getID()));
-						if (mine instanceof Fortress && theirs instanceof Fortress) {
-							retval &= ((Fortress) mine).isSubset(
-									(Fortress) theirs, out);
-						} else {
-							throw new IllegalStateException("Unhandled Subsettable class");
-						}
-				}
-				if (!temp.isEmpty()) {
+			}
+			if (!temp.isEmpty()) {
 					retval = false;
 					out.print("\nExtra fixture in "
 							+ getLocation().toString() + ":\t");
