@@ -4,15 +4,18 @@ package model.map;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.towns.Fortress;
 import util.ArraySet;
 
 /**
@@ -231,21 +234,42 @@ public final class Tile implements XMLWritable,
 				final Set<TileFixture> temp = new HashSet<TileFixture>(
 						obj.contents);
 				temp.removeAll(contents);
+				final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
+				final Map<Integer, Subsettable<?>> theirSubsettables = new HashMap<Integer, Subsettable<?>>();
 				final List<TileFixture> tempList = new ArrayList<TileFixture>(
 						temp);
+				for (final TileFixture fix : contents) {
+					if (fix instanceof Subsettable) {
+						mySubsettables.put(Integer.valueOf(fix.getID()), (Subsettable<?>) fix);
+					}
+				}
 				for (final TileFixture fix : tempList) {
 					if (shouldSkip(fix)) {
 						temp.remove(fix);
+					} else if (fix instanceof Subsettable && mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {
+						temp.remove(fix);
+						theirSubsettables.put(Integer.valueOf(fix.getID()), (Subsettable<?>) fix);
 					}
 				}
+				boolean retval = true;
+				for (final Subsettable<?> theirs : theirSubsettables.values()) {
+						final Subsettable<?> mine = mySubsettables.get(Integer.valueOf(((TileFixture) theirs).getID()));
+						if (mine instanceof Fortress && theirs instanceof Fortress) {
+							retval &= ((Fortress) mine).isSubset(
+									(Fortress) theirs, out);
+						} else {
+							throw new IllegalStateException("Unhandled Subsettable class");
+						}
+				}
 				if (!temp.isEmpty()) {
+					retval = false;
 					out.print("\nExtra fixture in "
 							+ getLocation().toString() + ":\t");
 					for (final TileFixture fix : temp) {
 						out.print(fix.toString());
 					}
 				}
-				return temp.isEmpty(); // NOPMD
+				return retval; // NOPMD
 		} else {
 			out.println("Type of " + getLocation().toString()
 					+ " wrong");
