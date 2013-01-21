@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import sun.security.action.GetLongAction;
+
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
@@ -171,6 +173,10 @@ public class Fortress implements HasImage,
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
 			final Set<Unit> temp = new HashSet<Unit>(obj.units);
 			temp.removeAll(units);
+			for (final Unit unit : temp) {
+				out.print("\nExtra unit in fortress " + getName() + ":\t");
+				out.print(unit.toString());
+			}
 			return temp.isEmpty(); // NOPMD
 		} else {
 			return false;
