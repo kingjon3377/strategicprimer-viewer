@@ -113,80 +113,8 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		lists.add(jobsLabel);
 		lists.add(skillsLabel);
 		lists.add(statsLabel);
-		getContentPane().addComponentListener(new ComponentAdapter() {
-			/**
-			 * Adjust the size of the sub-panels when this is resized.
-			 * @param evt the event being handled
-			 */
-			@Override
-			public void componentResized(final ComponentEvent evt) {
-				final int width = getWidth() / 3;
-				final int minHeight = 20; // NOPMD
-				final int maxHeight = getHeight();
-				for (JComponent list : lists) {
-					if (list instanceof JComboBox) {
-						list.setMaximumSize(new Dimension(width, minHeight));
-						list.setPreferredSize(new Dimension(width, minHeight));
-					} else if (list instanceof JList) {
-						list.setMaximumSize(new Dimension(width, maxHeight));
-						list.setMinimumSize(new Dimension(width, minHeight));
-					} else if (list instanceof JLabel) {
-						final Dimension dim = getComponentPreferredSize(list, width);
-						list.setMinimumSize(dim);
-						list.setPreferredSize(dim);
-						list.setMaximumSize(dim);
-					} else if (list instanceof JPanel) {
-						list.setMaximumSize(new Dimension(width, maxHeight));
-						list.setPreferredSize(new Dimension(width, maxHeight));
-						list.setMinimumSize(new Dimension(width, maxHeight));
-					}
-				}
-			}
-		});
-		addPropertyChangeListener(new PropertyChangeListener() {
-			/**
-			 * The current worker.
-			 */
-			private UnitMember worker = null;
-			/**
-			 * The current skill.
-			 */
-			private Skill skill = null;
-			/**
-			 * @param evt the property-change event to handle
-			 */
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if ("member".equals(evt.getPropertyName())
-						&& (evt.getNewValue() instanceof UnitMember || evt
-								.getNewValue() == null)) {
-					worker = (UnitMember) evt.getNewValue();
-				} else if ("skill".equals(evt.getPropertyName())
-						&& (evt.getNewValue() instanceof Skill || evt
-								.getNewValue() == null)) {
-				skill = (Skill) evt.getNewValue();
-				} else if ("level".equals(evt.getPropertyName())) {
-					final StringBuilder builder = new StringBuilder();
-					builder.append(getName(worker));
-					builder.append(" gained a level in ");
-					builder.append(getName(skill));
-					SystemOut.SYS_OUT.println(builder.toString());
-				}
-			}
-			/**
-			 * @param named something that may have a name
-			 * @return its name if it has one, "null" if null, or its toString otherwise.
-			 */
-			private String getName(final Object named) {
-				if (named instanceof HasName) {
-					return ((HasName) named).getName(); // NOPMD
-				} else if (named == null) {
-					return "null"; // NOPMD
-				} else {
-					return named.toString();
-				}
-			}
-		});
+		getContentPane().addComponentListener(new Resizer(lists));
+		addPropertyChangeListener(new LevelListener());
 	}
 	/**
 	 * Handle a property change.
@@ -235,5 +163,103 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 		return new Dimension(wid, height);
+	}
+	/**
+	 * A listener to print a line when a worker gains a level.
+	 */
+	private static final class LevelListener implements PropertyChangeListener {
+		/**
+		 * Constructor.
+		 */
+		LevelListener() {
+			// Needed to give access ...
+		}
+		/**
+		 * The current worker.
+		 */
+		private UnitMember worker = null;
+		/**
+		 * The current skill.
+		 */
+		private Skill skill = null;
+		/**
+		 * @param evt the property-change event to handle
+		 */
+		@Override
+		public void propertyChange(final PropertyChangeEvent evt) {
+			if ("member".equals(evt.getPropertyName())
+					&& (evt.getNewValue() instanceof UnitMember || evt
+							.getNewValue() == null)) {
+				worker = (UnitMember) evt.getNewValue();
+			} else if ("skill".equals(evt.getPropertyName())
+					&& (evt.getNewValue() instanceof Skill || evt
+							.getNewValue() == null)) {
+			skill = (Skill) evt.getNewValue();
+			} else if ("level".equals(evt.getPropertyName())) {
+				final StringBuilder builder = new StringBuilder();
+				builder.append(getName(worker));
+				builder.append(" gained a level in ");
+				builder.append(getName(skill));
+				SystemOut.SYS_OUT.println(builder.toString());
+			}
+		}
+		/**
+		 * @param named something that may have a name
+		 * @return its name if it has one, "null" if null, or its toString otherwise.
+		 */
+		private static String getName(final Object named) {
+			if (named instanceof HasName) {
+				return ((HasName) named).getName(); // NOPMD
+			} else if (named == null) {
+				return "null"; // NOPMD
+			} else {
+				return named.toString();
+			}
+		}
+	}
+	/**
+	 * A class to resize components when the frame is resized.
+	 */
+	private final class Resizer extends ComponentAdapter {
+		/**
+		 * Constructor.
+		 * @param list the list of components to resize each time we get the event.
+		 */
+		Resizer(final List<JComponent> list) {
+			// ESCA-JAVA0256:
+			components = list;
+		}
+		/**
+		 * The list of components to reize each time we get an event.
+		 */
+		private final List<JComponent> components;
+		/**
+		 * Adjust the size of the sub-panels when this is resized.
+		 * @param evt the event being handled
+		 */
+		@Override
+		public void componentResized(final ComponentEvent evt) {
+			final int width = getWidth() / 3;
+			final int minHeight = 20; // NOPMD
+			final int maxHeight = getHeight();
+			for (JComponent list : components) {
+				if (list instanceof JComboBox) {
+					list.setMaximumSize(new Dimension(width, minHeight));
+					list.setPreferredSize(new Dimension(width, minHeight));
+				} else if (list instanceof JList) {
+					list.setMaximumSize(new Dimension(width, maxHeight));
+					list.setMinimumSize(new Dimension(width, minHeight));
+				} else if (list instanceof JLabel) {
+					final Dimension dim = getComponentPreferredSize(list, width);
+					list.setMinimumSize(dim);
+					list.setPreferredSize(dim);
+					list.setMaximumSize(dim);
+				} else if (list instanceof JPanel) {
+					list.setMaximumSize(new Dimension(width, maxHeight));
+					list.setPreferredSize(new Dimension(width, maxHeight));
+					list.setMinimumSize(new Dimension(width, maxHeight));
+				}
+			}
+		}
 	}
 }
