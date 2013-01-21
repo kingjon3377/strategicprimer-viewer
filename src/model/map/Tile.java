@@ -230,22 +230,22 @@ public final class Tile implements XMLWritable,
 	 */
 	@Override
 	public boolean isSubset(final Tile obj, final PrintStream out) {
-		if (getLocation().equals(obj.getLocation()) && getTerrain().equals(obj.getTerrain())) {
-				final Set<TileFixture> temp = new HashSet<TileFixture>(
-						obj.contents);
-				temp.removeAll(contents);
-				final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
-				final List<TileFixture> tempList = new ArrayList<TileFixture>(
-						temp);
-				for (final TileFixture fix : contents) {
-					if (fix instanceof Subsettable) {
-						mySubsettables.put(Integer.valueOf(fix.getID()), (Subsettable<?>) fix);
-					}
+		if (getLocation().equals(obj.getLocation())
+				&& getTerrain().equals(obj.getTerrain())) {
+			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
+			temp.removeAll(contents);
+			final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
+			final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
+			for (final TileFixture fix : contents) {
+				if (fix instanceof Subsettable) {
+					mySubsettables.put(Integer.valueOf(fix.getID()),
+							(Subsettable<?>) fix);
 				}
-				boolean retval = true;
-				for (final TileFixture fix : tempList) {
-					if (shouldSkip(fix)) {
-						temp.remove(fix);
+			}
+			boolean retval = true;
+			for (final TileFixture fix : tempList) {
+				if (shouldSkip(fix)) {
+					temp.remove(fix);
 				} else if (fix instanceof Subsettable
 						&& mySubsettables.containsKey(Integer.valueOf(fix
 								.getID()))) {
@@ -261,18 +261,18 @@ public final class Tile implements XMLWritable,
 					}
 				}
 			}
+
 			if (!temp.isEmpty()) {
-					retval = false;
-					out.print("\nExtra fixture in "
-							+ getLocation().toString() + ":\t");
-					for (final TileFixture fix : temp) {
-						out.print(fix.toString());
-					}
+				retval = false;
+				out.print("\nExtra fixture in " + getLocation().toString()
+						+ ":\t");
+				for (final TileFixture fix : temp) {
+					out.print(fix.toString());
 				}
-				return retval; // NOPMD
+			}
+			return retval; // NOPMD
 		} else {
-			out.println("Type of " + getLocation().toString()
-					+ " wrong");
+			out.println("Type of " + getLocation().toString() + " wrong");
 			return false;
 		}
 	}
