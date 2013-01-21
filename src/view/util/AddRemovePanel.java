@@ -85,6 +85,7 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 	public void actionPerformed(final ActionEvent evt) {
 		if ("+".equals(evt.getActionCommand())) {
 			layout.next(this);
+			field.requestFocusInWindow();
 		} else if ("-".equals(evt.getActionCommand())) {
 			firePropertyChange("remove", null, null);
 		} else if ("OK".equals(evt.getActionCommand())) {
