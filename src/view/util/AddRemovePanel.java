@@ -48,6 +48,7 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 		final JPanel second = new JPanel();
 		second.setLayout(new BoxLayout(second, BoxLayout.PAGE_AXIS));
 		second.add(field);
+		field.setActionCommand("OK");
 		final JPanel okPanel = new JPanel();
 		okPanel.setLayout(new BoxLayout(okPanel, BoxLayout.LINE_AXIS));
 		okPanel.add(listen(new JButton("OK")));
