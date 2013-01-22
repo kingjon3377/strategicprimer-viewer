@@ -12,6 +12,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.IteratorWrapper;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
 import controller.map.SPFormatException;
 import controller.map.UnsupportedPropertyException;
 import controller.map.UnwantedChildException;
@@ -86,7 +87,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("skill".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
-					retval.addSkill(parseSkill(event.asStartElement(), stream));
+					retval.addSkill(parseSkill(event.asStartElement(), stream, warner));
 				} else {
 					throw new UnwantedChildException(element.getName().getLocalPart(), event
 							.asStartElement().getName().getLocalPart(), event
@@ -103,17 +104,24 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * Parse a Skill.
 	 * @param element the element to parse
 	 * @param stream the stream to read further elements from (FIXME: do we need this parameter?)
+	 * @param warner the Warning instance to use
 	 * @return the parsed skill
 	 * @throws SPFormatException on SP format problem
 	 */
 	public Skill parseSkill(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream)
+			final IteratorWrapper<XMLEvent> stream, final Warning warner)
 			throws SPFormatException {
 		requireTag(element, "skill");
 		spinUntilEnd(element.getName(), stream);
-		return new Skill(getParameter(element, "name"),
+		final Skill retval = new Skill(getParameter(element, "name"),
 				Integer.parseInt(getParameter(element, "level")),
 				Integer.parseInt(getParameter(element, "hours")));
+		if ("miscellaneous".equals(retval.getName()) && retval.getLevel() > 0) {
+			warner.warn(new DeprecatedPropertyException("skill",
+					"miscellaneous", "other", element.getLocation()
+							.getLineNumber()));
+		}
+		return retval;
 	}
 	/**
 	 * Write an object to a stream.

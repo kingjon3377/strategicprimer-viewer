@@ -9,6 +9,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.worker.Skill;
 import util.Warning;
+import controller.map.DeprecatedPropertyException;
 import controller.map.SPFormatException;
 import controller.map.misc.IDFactory;
 /**
@@ -50,10 +51,16 @@ public class SkillReader implements INodeHandler<Skill> {
 		XMLHelper.requireNonEmptyParameter(element, "level", true, warner);
 		XMLHelper.requireNonEmptyParameter(element, "hours", true, warner);
 		XMLHelper.spinUntilEnd(element.getName(), stream);
-		return new Skill(XMLHelper.getAttribute(element, "name"),
+		final Skill retval = new Skill(XMLHelper.getAttribute(element, "name"),
 				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
 						Integer.parseInt(XMLHelper.getAttribute(element,
 								"hours")));
+		if ("miscellaneous".equals(retval.getName()) && retval.getLevel() > 0) {
+			warner.warn(new DeprecatedPropertyException("skill",
+					"miscellaneous", "other", element.getLocation()
+							.getLineNumber()));
+		}
+		return retval;
 	}
 
 	/**

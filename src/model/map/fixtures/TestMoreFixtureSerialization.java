@@ -338,6 +338,22 @@ public final class TestMoreFixtureSerialization extends
 						"third", "human", 5),
 				"<worker name=\"third\" race=\"human\" id=\"5\" />",
 				Worker.class);
+		assertDeprecatedDeserialization(
+				"'miscellaneous' skill with level should be warned about",
+				new Worker("fourth", "human", 6, new Job("fifth", 0, new Skill(
+						"miscellaneous", 1, 0))),
+				"<worker name=\"fourth\" id=\"6\"><job name=\"fifth\" level=\"0\">"
+						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\" /></job></worker>",
+				Worker.class, "miscellaneous");
+		assertSerialization(
+				"but 'miscellaneous' skill without levels causes no warnings",
+				new Worker("sixth", "human", 7, new Job("seventh", 0,
+						new Skill("miscellaneous", 0, 20))), Worker.class,
+				new Warning(Warning.Action.Die));
+		assertSerialization("and levels in another skill cause no warnings",
+				new Worker("fourth", "human", 8, new Job("fifth", 0, new Skill(
+						"odd-skill", 1, 0))), Worker.class, new Warning(
+						Warning.Action.Die));
 	}
 	/**
 	 * @return a String representation of the object
