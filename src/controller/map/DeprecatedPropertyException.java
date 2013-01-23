@@ -3,9 +3,9 @@ package controller.map;
 /**
  * A custom exception for cases where one property is deprecated in favor of
  * another.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class DeprecatedPropertyException extends SPFormatException {
 	/**
@@ -53,7 +53,7 @@ public class DeprecatedPropertyException extends SPFormatException {
 	public DeprecatedPropertyException(final String tag,
 			final String deprecated, final String newForm, final int line) {
 		super("Use of the property '" + deprecated + "' in tag '" + tag
-				+ "'is deprecated; use '" + newForm + "' instead", line);
+				+ "' is deprecated; use '" + newForm + "' instead", line);
 		context = tag;
 		old = deprecated;
 		preferred = newForm;
