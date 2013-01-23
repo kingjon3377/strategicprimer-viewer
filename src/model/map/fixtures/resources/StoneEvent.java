@@ -1,6 +1,7 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.events.IEvent;
@@ -12,7 +13,7 @@ import model.map.events.IEvent;
  *
  */
 public final class StoneEvent implements IEvent,
-		HasImage, HarvestableFixture {
+		HasImage, HarvestableFixture, HasKind {
 	/**
 	 * Constructor.
 	 *
@@ -144,5 +145,12 @@ public final class StoneEvent implements IEvent,
 		return this == fix
 				|| (fix instanceof StoneEvent && ((StoneEvent) fix).stone
 						.equals(stone));
+	}
+	/**
+	 * @return a string representation of the kind of stone in the deposit
+	 */
+	@Override
+	public String getKind() {
+		return stone.toString();
 	}
 }
