@@ -63,6 +63,7 @@ public class FindDialog extends JDialog implements ActionListener {
 		super(parent);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		add(search);
+		search.setActionCommand("OK");
 		errorLabel.setText("");
 		errorLabel.setMinimumSize(new Dimension(200, 15));
 		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
