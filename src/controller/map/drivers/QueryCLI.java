@@ -14,7 +14,6 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.map.PointFactory;
-import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
@@ -88,9 +87,6 @@ public final class QueryCLI {
 		case '?':
 			usage(ostream);
 			break;
-		case 'x':
-			explore(map, reader, ostream);
-			break;
 		case 'f':
 			fortressInfo(selectTile(map, reader, ostream), ostream);
 			break;
@@ -160,42 +156,6 @@ public final class QueryCLI {
 			}
 		}
 	}
-	/**
-	 * Explore a user-specified tile.
-	 *
-	 * @param map the map
-	 * @param reader source of user input
-	 * @param ostream the stream to write the results to
-	 *
-	 * @throws IOException on I/O error
-	 */
-	private static void explore(final IMap map, final BufferedReader reader,
-			final PrintStream ostream) throws IOException {
-		final Tile tile = selectTile(map, reader, ostream);
-		ostream.print("Tile is ");
-		ostream.println(tile.getTerrain());
-		ostream.print("Fixtures influencing terrain: ");
-		boolean any = false;
-		final List<TileFixture> fixtures = new ArrayList<TileFixture>();
-		for (final TileFixture fix : tile) {
-			if (fix instanceof TerrainFixture) {
-				if (any) {
-					ostream.print("; ");
-				} else {
-					any = true;
-				}
-				ostream.print(fix);
-			}
-			fixtures.add(fix);
-		}
-		ostream.println();
-		ostream.print("Here are four random fixtures from the tile:");
-		Collections.shuffle(fixtures);
-		for (int i = 0; i < 4; i++) {
-			ostream.println(fixtures.get(i));
-		}
-	}
-
 	/**
 	 * Give the data the player automatically knows about a user-specified tile
 	 * if he has a fortress on it.
@@ -307,7 +267,6 @@ public final class QueryCLI {
 	 */
 	public void usage(final PrintStream ostream) {
 		ostream.println("The following commands are supported:");
-		ostream.println("eXplore: prints tile type, any terrain fixtures, and four random fixtures.");
 		ostream.println("Fortress: Prints what a player automatically knows about his fortress's tile.");
 		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;
 		ostream.print("Hunt/fIsh: Generates up to ");
