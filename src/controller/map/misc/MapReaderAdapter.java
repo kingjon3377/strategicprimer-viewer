@@ -11,8 +11,8 @@ import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.io_interfaces.IMapReader;
-import controller.map.io_interfaces.SPWriter;
+import controller.map.iointerfaces.IMapReader;
+import controller.map.iointerfaces.SPWriter;
 
 /**
  * An adapter, so that classes using map readers and writers don't have to

@@ -18,7 +18,7 @@ import view.util.SystemOut;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.io_interfaces.IMapReader;
+import controller.map.iointerfaces.IMapReader;
 import controller.map.readerng.MapReaderNG;
 
 /**

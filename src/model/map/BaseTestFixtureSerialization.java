@@ -22,9 +22,9 @@ import controller.map.formatexceptions.MissingParameterException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.io_interfaces.IMapReader;
-import controller.map.io_interfaces.ISPReader;
-import controller.map.io_interfaces.TestReaderFactory;
+import controller.map.iointerfaces.IMapReader;
+import controller.map.iointerfaces.ISPReader;
+import controller.map.iointerfaces.TestReaderFactory;
 
 // ESCA-JAVA0011:
 /**

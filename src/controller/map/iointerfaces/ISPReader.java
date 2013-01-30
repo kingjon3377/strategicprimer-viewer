@@ -1,4 +1,4 @@
-package controller.map.io_interfaces;
+package controller.map.iointerfaces;
 
 import java.io.Reader;
 import java.util.Arrays;

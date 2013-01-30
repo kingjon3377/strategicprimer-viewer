@@ -6,7 +6,7 @@ import java.io.Writer;
 
 import model.map.IMap;
 import model.map.XMLWritable;
-import controller.map.io_interfaces.SPWriter;
+import controller.map.iointerfaces.SPWriter;
 
 /**
  * Entry point for the new map writing framework.
