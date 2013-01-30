@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.io_interfaces;
 
 import java.io.IOException;
 import java.io.Writer;

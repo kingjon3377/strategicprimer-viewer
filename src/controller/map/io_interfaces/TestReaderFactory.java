@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.io_interfaces;
 
 import controller.map.cxml.CompactXMLReader;
 import controller.map.readerng.MapReaderNG;

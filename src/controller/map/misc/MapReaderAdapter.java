@@ -7,12 +7,12 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import model.map.MapView;
 import util.Warning;
-import controller.map.IMapReader;
-import controller.map.SPWriter;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.io_interfaces.IMapReader;
+import controller.map.io_interfaces.SPWriter;
 
 /**
  * An adapter, so that classes using map readers and writers don't have to

@@ -14,9 +14,6 @@ import javax.xml.stream.XMLStreamException;
 
 import util.FatalWarningException;
 import util.Warning;
-import controller.map.IMapReader;
-import controller.map.ISPReader;
-import controller.map.TestReaderFactory;
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MapVersionException;
@@ -25,6 +22,9 @@ import controller.map.formatexceptions.MissingParameterException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.io_interfaces.IMapReader;
+import controller.map.io_interfaces.ISPReader;
+import controller.map.io_interfaces.TestReaderFactory;
 
 // ESCA-JAVA0011:
 /**

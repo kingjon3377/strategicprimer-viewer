@@ -15,10 +15,10 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import util.Warning;
 import view.util.SystemOut;
-import controller.map.IMapReader;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.io_interfaces.IMapReader;
 import controller.map.readerng.MapReaderNG;
 
 /**

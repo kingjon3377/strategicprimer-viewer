@@ -17,11 +17,11 @@ import model.map.Tile;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
-import controller.map.ISPReader;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.io_interfaces.ISPReader;
 import controller.map.misc.IDFactory;
 
 /**
