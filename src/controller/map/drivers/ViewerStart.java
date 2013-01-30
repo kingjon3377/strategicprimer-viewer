@@ -15,7 +15,7 @@ import view.map.main.MapFileFilter;
 import view.map.main.SPMenu;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 

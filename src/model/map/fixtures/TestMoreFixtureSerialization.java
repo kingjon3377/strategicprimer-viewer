@@ -22,7 +22,7 @@ import model.map.fixtures.towns.Village;
 import org.junit.Test;
 
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * Another class to test serialization of TileFixtures.

@@ -14,7 +14,7 @@ import model.map.fixtures.resources.StoneEvent;
 import model.map.fixtures.resources.StoneKind;
 import util.Pair;
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

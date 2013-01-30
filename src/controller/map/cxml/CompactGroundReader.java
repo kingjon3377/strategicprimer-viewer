@@ -10,7 +10,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.Ground;
 import util.IteratorWrapper;
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

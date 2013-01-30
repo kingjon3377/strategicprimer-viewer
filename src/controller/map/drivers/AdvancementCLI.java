@@ -16,7 +16,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.Warning;
 import view.util.SystemOut;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapHelper;
 import controller.map.misc.MapReaderAdapter;
 

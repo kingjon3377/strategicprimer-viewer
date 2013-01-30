@@ -19,8 +19,8 @@ import model.map.TileType;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.Warning;
-import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**

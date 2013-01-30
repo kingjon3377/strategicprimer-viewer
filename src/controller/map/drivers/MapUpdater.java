@@ -15,8 +15,8 @@ import model.map.Tile;
 import model.map.TileType;
 import util.Warning;
 import view.util.DriverQuit;
-import controller.map.SPFormatException;
 import controller.map.cxml.CompactXMLWriter;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**

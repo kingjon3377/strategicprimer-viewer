@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.formatexceptions;
 
 /**
  * An exception to throw when an "include" tag references a nonexistent file. We

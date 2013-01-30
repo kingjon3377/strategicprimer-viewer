@@ -11,8 +11,8 @@ import model.map.XMLWritable;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import util.Warning;
-import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 /**
  * A reader for Workers.

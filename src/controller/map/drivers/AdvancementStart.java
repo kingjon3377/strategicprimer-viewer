@@ -16,7 +16,7 @@ import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import view.worker.WorkerMenu;
 import view.worker.AdvancementFrame;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 

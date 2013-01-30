@@ -8,11 +8,11 @@ import model.map.IMap;
 import model.map.MapView;
 import util.Warning;
 import controller.map.IMapReader;
-import controller.map.MapVersionException;
-import controller.map.SPFormatException;
 import controller.map.SPWriter;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * An adapter, so that classes using map readers and writers don't have to

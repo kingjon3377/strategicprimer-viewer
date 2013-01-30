@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.formatexceptions;
 
 /**
  * A custom exception for cases where a tag has a property it doesn't support.

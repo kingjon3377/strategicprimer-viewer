@@ -14,8 +14,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import util.Pair;
-import controller.map.MissingParameterException;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that

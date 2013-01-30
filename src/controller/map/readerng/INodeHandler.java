@@ -7,7 +7,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

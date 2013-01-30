@@ -11,9 +11,9 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import util.Warning;
-import controller.map.MissingChildException;
-import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
+import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**

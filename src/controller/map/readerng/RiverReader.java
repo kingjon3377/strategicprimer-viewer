@@ -13,7 +13,7 @@ import model.map.PlayerCollection;
 import model.map.River;
 import util.Pair;
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

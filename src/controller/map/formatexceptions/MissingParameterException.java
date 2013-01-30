@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.formatexceptions;
 
 /**
  * An exception for cases where a parameter is required (or, if this is merely

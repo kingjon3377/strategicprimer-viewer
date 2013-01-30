@@ -11,9 +11,9 @@ import model.map.IMap;
 import model.map.MapView;
 import util.Warning;
 import view.util.SystemOut;
-import controller.map.MapVersionException;
-import controller.map.SPFormatException;
 import controller.map.converter.ResolutionDecreaseConverter;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**

@@ -14,17 +14,17 @@ import javax.xml.stream.XMLStreamException;
 
 import util.FatalWarningException;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
 import controller.map.IMapReader;
 import controller.map.ISPReader;
-import controller.map.MapVersionException;
-import controller.map.MissingChildException;
-import controller.map.MissingParameterException;
-import controller.map.SPFormatException;
 import controller.map.TestReaderFactory;
-import controller.map.UnsupportedTagException;
-import controller.map.UnwantedChildException;
 import controller.map.cxml.CompactXMLWriter;
+import controller.map.formatexceptions.DeprecatedPropertyException;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedTagException;
+import controller.map.formatexceptions.UnwantedChildException;
 
 // ESCA-JAVA0011:
 /**

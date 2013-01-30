@@ -23,8 +23,8 @@ import model.map.fixtures.towns.Fortress;
 import org.junit.Test;
 
 import util.Warning;
-import controller.map.SPFormatException;
 import controller.map.converter.ResolutionDecreaseConverter;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.

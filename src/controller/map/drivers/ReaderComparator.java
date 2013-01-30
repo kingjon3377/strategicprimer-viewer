@@ -16,9 +16,9 @@ import model.map.IMap;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.IMapReader;
-import controller.map.MapVersionException;
-import controller.map.SPFormatException;
 import controller.map.cxml.CompactXMLReader;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.readerng.MapReaderNG;
 
 /**

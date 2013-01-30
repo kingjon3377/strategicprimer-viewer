@@ -15,7 +15,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import util.Warning;
 import view.util.SystemOut;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**

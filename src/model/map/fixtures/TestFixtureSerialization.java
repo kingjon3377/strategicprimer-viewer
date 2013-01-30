@@ -32,7 +32,7 @@ import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
 
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * A class to test serialization of TileFixtures.

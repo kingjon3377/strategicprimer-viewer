@@ -26,7 +26,7 @@ import model.map.fixtures.terrain.Forest;
 import util.Warning;
 import view.util.DriverQuit;
 import view.util.SystemOut;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**

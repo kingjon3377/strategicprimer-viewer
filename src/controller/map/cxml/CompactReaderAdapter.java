@@ -26,7 +26,7 @@ import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.TownFixture;
 import util.IteratorWrapper;
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

@@ -9,8 +9,8 @@ import javax.xml.stream.XMLStreamException;
 
 import util.Warning;
 import view.util.SystemOut;
-import controller.map.MapVersionException;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**

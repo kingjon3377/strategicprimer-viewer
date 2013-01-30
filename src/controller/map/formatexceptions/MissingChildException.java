@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.formatexceptions;
 
 /**
  * A custom exception for when a tag (or a Node) requuires a child and it isn't

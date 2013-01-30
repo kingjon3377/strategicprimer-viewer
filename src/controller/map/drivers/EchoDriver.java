@@ -8,8 +8,8 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import util.Warning;
-import controller.map.MapVersionException;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**

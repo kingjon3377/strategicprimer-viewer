@@ -7,10 +7,10 @@ import javax.xml.stream.events.XMLEvent;
 
 import util.EqualsAny;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
-import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
+import controller.map.formatexceptions.DeprecatedPropertyException;
+import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 

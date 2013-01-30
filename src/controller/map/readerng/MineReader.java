@@ -16,7 +16,7 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.towns.TownStatus;
 import util.Pair;
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

@@ -21,7 +21,7 @@ import view.map.main.TileDrawHelper;
 import view.map.main.Ver2TileDrawHelper;
 import view.util.Coordinate;
 import view.util.SystemOut;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**

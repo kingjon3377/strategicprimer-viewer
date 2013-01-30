@@ -1,5 +1,6 @@
 package controller.map;
 
+import controller.map.formatexceptions.SPFormatException;
 import util.Warning;
 
 /**

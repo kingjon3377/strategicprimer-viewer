@@ -20,7 +20,7 @@ import model.map.fixtures.towns.Fortress;
 import util.IsNumeric;
 import util.Warning;
 import view.util.SystemOut;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * A helper class to let drivers, especially CLI drivers, interact with a map.

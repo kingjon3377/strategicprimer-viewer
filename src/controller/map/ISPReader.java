@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.formatexceptions.SPFormatException;
+
 import model.map.XMLWritable;
 import util.Warning;
 

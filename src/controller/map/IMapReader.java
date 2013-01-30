@@ -5,6 +5,9 @@ import java.io.Reader;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+
 import model.map.IMap;
 import model.map.MapView;
 import util.Warning;

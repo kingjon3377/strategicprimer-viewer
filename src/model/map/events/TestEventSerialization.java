@@ -19,7 +19,7 @@ import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
 
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * A class to test the serialization of Events.

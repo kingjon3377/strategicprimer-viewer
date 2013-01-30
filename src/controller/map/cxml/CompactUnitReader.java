@@ -14,9 +14,9 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.IteratorWrapper;
 import util.Warning;
-import controller.map.MissingParameterException;
-import controller.map.SPFormatException;
-import controller.map.UnwantedChildException;
+import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**

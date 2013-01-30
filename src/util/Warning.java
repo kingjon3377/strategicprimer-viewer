@@ -3,7 +3,7 @@ package util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * A class to log warnings.

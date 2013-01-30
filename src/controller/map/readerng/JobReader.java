@@ -12,9 +12,9 @@ import model.map.XMLWritable;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.Warning;
-import controller.map.SPFormatException;
-import controller.map.UnsupportedPropertyException;
-import controller.map.UnwantedChildException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedPropertyException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
 /**

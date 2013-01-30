@@ -10,7 +10,7 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import util.IteratorWrapper;
 import util.Warning;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

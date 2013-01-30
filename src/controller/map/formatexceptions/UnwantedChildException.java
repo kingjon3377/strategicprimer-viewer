@@ -1,4 +1,4 @@
-package controller.map;
+package controller.map.formatexceptions;
 
 /**
  * A custom exception for when a tag has a child tag it can't handle.

@@ -14,9 +14,9 @@ import model.map.PlayerCollection;
 import model.map.fixtures.resources.Grove;
 import util.Pair;
 import util.Warning;
-import controller.map.DeprecatedPropertyException;
-import controller.map.MissingParameterException;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.DeprecatedPropertyException;
+import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

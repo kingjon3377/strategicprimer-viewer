@@ -16,7 +16,7 @@ import model.map.MapView;
 import model.viewer.MapModel;
 import util.Warning;
 import view.util.ErrorShower;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * An ActionListener to dispatch file I/O.

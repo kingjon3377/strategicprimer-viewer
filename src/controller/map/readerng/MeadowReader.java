@@ -16,8 +16,8 @@ import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Meadow;
 import util.Pair;
 import util.Warning;
-import controller.map.MissingParameterException;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**

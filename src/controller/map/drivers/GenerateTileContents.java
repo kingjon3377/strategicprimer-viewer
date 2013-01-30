@@ -19,8 +19,8 @@ import util.SingletonRandom;
 import util.Warning;
 import view.util.SystemOut;
 import controller.exploration.TableLoader;
-import controller.map.MapVersionException;
-import controller.map.SPFormatException;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
 /**
