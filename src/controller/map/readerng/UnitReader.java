@@ -16,7 +16,7 @@ import model.map.XMLWritable;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.Warning;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -94,12 +94,12 @@ public class UnitReader implements INodeHandler<Unit> {
 		try {
 			retval = getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
-		} catch (final MissingParameterException except) {
+		} catch (final MissingPropertyException except) {
 			warner.warn(except);
 			return ""; // NOPMD
 		}
 		if (retval.isEmpty()) {
-			warner.warn(new MissingParameterException(element.getName()
+			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), KIND_PROPERTY, element.getLocation()
 					.getLineNumber()));
 		}

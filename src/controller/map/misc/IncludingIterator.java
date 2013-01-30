@@ -14,7 +14,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import util.Pair;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 
 /**
@@ -194,7 +194,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
 		if (attr == null) {
-			throw new MissingParameterException(startElement.getName()
+			throw new MissingPropertyException(startElement.getName()
 					.getLocalPart(), attribute, startElement.getLocation()
 					.getLineNumber());
 		}

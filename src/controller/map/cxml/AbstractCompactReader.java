@@ -8,7 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 import util.EqualsAny;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -56,7 +56,7 @@ public abstract class AbstractCompactReader {
 			throws SPFormatException {
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		if (attr == null) {
-			throw new MissingParameterException(element.getName()
+			throw new MissingPropertyException(element.getName()
 					.getLocalPart(), param, element.getLocation()
 					.getLineNumber());
 		} else {
@@ -87,7 +87,7 @@ public abstract class AbstractCompactReader {
 			final String param, final boolean mandatory, final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
-			final SPFormatException except = new MissingParameterException(
+			final SPFormatException except = new MissingPropertyException(
 					element.getName().getLocalPart(), param, element
 							.getLocation().getLineNumber());
 			if (mandatory) {
@@ -141,7 +141,7 @@ public abstract class AbstractCompactReader {
 			retval = idFactory.register(Integer.parseInt(getParameter(element,
 					"id")));
 		} else {
-			warner.warn(new MissingParameterException(element.getName()
+			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), "id", element.getLocation()
 					.getLineNumber()));
 			retval = idFactory.createID();
@@ -185,7 +185,7 @@ public abstract class AbstractCompactReader {
 		final Attribute deprProp = element.getAttributeByName(new QName(
 				deprecated));
 		if (prefProp == null && deprProp == null) {
-			throw new MissingParameterException(element.getName()
+			throw new MissingPropertyException(element.getName()
 					.getLocalPart(), preferred, element.getLocation()
 					.getLineNumber());
 		} else if (prefProp == null) {

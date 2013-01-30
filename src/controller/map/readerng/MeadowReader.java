@@ -16,7 +16,7 @@ import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Meadow;
 import util.Pair;
 import util.Warning;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -53,7 +53,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 		spinUntilEnd(element.getName(), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		if (!hasAttribute(element, STATUS_ATTR)) {
-			warner.warn(new MissingParameterException(element.getName()
+			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), STATUS_ATTR, element.getLocation()
 					.getLineNumber()));
 		}

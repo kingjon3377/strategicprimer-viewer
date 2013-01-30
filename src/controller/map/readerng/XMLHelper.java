@@ -7,7 +7,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -41,7 +41,7 @@ public final class XMLHelper {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
 		if (attr == null) {
-			throw new MissingParameterException(startElement.getName()
+			throw new MissingPropertyException(startElement.getName()
 					.getLocalPart(), attribute, startElement.getLocation()
 					.getLineNumber());
 		}
@@ -86,7 +86,7 @@ public final class XMLHelper {
 		final Attribute deprAttr = element.getAttributeByName(new QName(
 				deprecated));
 		if (prefAttr == null && deprAttr == null) {
-			throw new MissingParameterException(element.getName()
+			throw new MissingPropertyException(element.getName()
 					.getLocalPart(), preferred, element.getLocation()
 					.getLineNumber());
 		} else if (prefAttr == null) {
@@ -145,7 +145,7 @@ public final class XMLHelper {
 			final String parameter, final boolean mandatory,
 			final Warning warner) throws SPFormatException {
 		if (getAttribute(element, parameter, "").isEmpty()) {
-			final SPFormatException except = new MissingParameterException(
+			final SPFormatException except = new MissingPropertyException(
 					element.getName().getLocalPart(), parameter, element
 							.getLocation().getLineNumber());
 			if (mandatory) {
@@ -177,7 +177,7 @@ public final class XMLHelper {
 			retval = idFactory.register(Integer.parseInt(getAttribute(element,
 					"id")));
 		} else {
-			warner.warn(new MissingParameterException(element.getName()
+			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), "id", element.getLocation()
 					.getLineNumber()));
 			retval = idFactory.createID();

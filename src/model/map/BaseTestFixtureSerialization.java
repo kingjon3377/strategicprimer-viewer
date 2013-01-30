@@ -18,7 +18,7 @@ import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.MissingChildException;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -218,12 +218,12 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
 				assertTrue("Missing property",
-						cause instanceof MissingParameterException);
-				if (cause instanceof MissingParameterException) {
+						cause instanceof MissingPropertyException);
+				if (cause instanceof MissingPropertyException) {
 					assertEquals(
 							"The missing property should be the one we're expecting",
 							property,
-							((MissingParameterException) cause).getParam());
+							((MissingPropertyException) cause).getParam());
 				} else {
 					throw new IllegalStateException("Can't get here");
 				}
@@ -233,7 +233,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				reader.readXML(FAKE_FILENAME, new StringReader(xml),
 						desideratum, new Warning(
 								Warning.Action.Ignore));
-			} catch (final MissingParameterException except) {
+			} catch (final MissingPropertyException except) {
 				assertEquals(
 						"Missing property should be the one we're expecting",
 						property, except.getParam());

@@ -15,7 +15,7 @@ import model.map.fixtures.resources.Grove;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -79,7 +79,7 @@ public class GroveReader implements INodeHandler<Grove> {
 						.getLocation().getLineNumber()));
 				return !Boolean.parseBoolean(XMLHelper.getAttribute(element, "wild")); // NOPMD
 			} else {
-				throw new MissingParameterException(element.getName()
+				throw new MissingPropertyException(element.getName()
 						.getLocalPart(), CULTIVATED_ATTR, element.getLocation()
 						.getLineNumber());
 			}

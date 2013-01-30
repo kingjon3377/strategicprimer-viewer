@@ -7,14 +7,14 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  * 
  */
-public class MissingParameterException extends SPFormatException {
+public class MissingPropertyException extends SPFormatException {
 
 	/**
 	 * @param tag the current tag
 	 * @param parameter the missing parameter
 	 * @param errorLine the line where this occurred
 	 */
-	public MissingParameterException(final String tag, final String parameter,
+	public MissingPropertyException(final String tag, final String parameter,
 			final int errorLine) {
 		super("Missing parameter " + parameter + " in tag " + tag, errorLine);
 		context = tag;

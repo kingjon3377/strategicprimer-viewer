@@ -14,7 +14,7 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.IteratorWrapper;
 import util.Warning;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -124,12 +124,12 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		try {
 			retval = getParameterWithDeprecatedForm(element, // NOPMD
 					"kind", "type", warner);
-		} catch (final MissingParameterException except) {
+		} catch (final MissingPropertyException except) {
 			warner.warn(except);
 			return ""; // NOPMD
 		}
 		if (retval.isEmpty()) {
-			warner.warn(new MissingParameterException(element.getName()
+			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), "kind", element.getLocation()
 					.getLineNumber()));
 		}

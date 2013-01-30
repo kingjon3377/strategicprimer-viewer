@@ -29,7 +29,7 @@ import util.ArraySet;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.MissingParameterException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
@@ -246,7 +246,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 			final boolean field, final int idNum, final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PARAM)) {
-			warner.warn(new MissingParameterException(element.getName()
+			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), STATUS_PARAM, element.getLocation()
 					.getLineNumber()));
 		}
@@ -289,7 +289,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 						.getLocation().getLineNumber()));
 				return !Boolean.parseBoolean(getParameter(element, "wild"));
 			} else {
-				throw new MissingParameterException(element.getName()
+				throw new MissingPropertyException(element.getName()
 						.getLocalPart(), CULTIVATED_PARAM, element.getLocation()
 						.getLineNumber());
 			}
