@@ -30,13 +30,24 @@ import controller.map.readerng.MapReaderNG;
 @SuppressWarnings("deprecation")
 public class ReaderComparator {
 	/**
+	 * The first reader.
+	 */
+	private final IMapReader one = new MapReaderNG();
+	/**
+	 * The second reader.
+	 */
+	private final IMapReader two =  new CompactXMLReader();
+	/**
+	 * The stream to print results to.
+	 */
+	private final PrintStream out = SystemOut.SYS_OUT;
+	/**
 	 * Driver method.
 	 *
 	 * @param args The maps to test the two readers on.
 	 */
 	public static void main(final String[] args) {
-		new ReaderComparator(SystemOut.SYS_OUT, new MapReaderNG(),
-				new CompactXMLReader()).compareReaders(args,
+		new ReaderComparator().compareReaders(args,
 				Logger.getLogger(ReaderComparator.class.getName()));
 	}
 
@@ -73,33 +84,6 @@ public class ReaderComparator {
 			}
 		}
 	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param ostream the stream to print results to
-	 * @param readerOne the first reader
-	 * @param readerTwo the second reader
-	 */
-	public ReaderComparator(final PrintStream ostream,
-			final IMapReader readerOne, final IMapReader readerTwo) {
-		out = ostream;
-		one = readerOne;
-		two = readerTwo;
-	}
-
-	/**
-	 * The stream to print results to.
-	 */
-	private final PrintStream out;
-	/**
-	 * The first reader.
-	 */
-	private final IMapReader one;
-	/**
-	 * The second reader.
-	 */
-	private final IMapReader two;
 
 	/**
 	 * Compare the two readers on a file.
