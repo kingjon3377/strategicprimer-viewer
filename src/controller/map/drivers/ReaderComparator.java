@@ -111,21 +111,28 @@ public class ReaderComparator implements ISPDriver {
 		final long startOne = System.nanoTime();
 		final IMap map1 = one.readMap(arg, new StringReader(contents), warner);
 		final long endOne = System.nanoTime();
-		out.print("Old method took ");
-		out.print(endOne - startOne);
-		out.println(" time-units.");
+		printElapsed("Old", endOne - startOne);
 		final long startTwo = System.nanoTime();
 		final IMap map2 = two.readMap(arg, new StringReader(contents), warner);
 		final long endTwo = System.nanoTime();
-		out.print("New method took ");
-		out.print(endTwo - startTwo);
-		out.println(" time-units.");
+		printElapsed("New", endTwo - startTwo);
 		if (map1.equals(map2)) {
 			out.println("Readers produce identical results.");
 		} else {
 			out.print("Readers differ on ");
 			out.println(arg);
 		}
+	}
+	/**
+	 * Print a description of a method's elapsed time.
+	 * @param desc a description of the method ("old" or "new")
+	 * @param time how many time-units it took
+	 */
+	private void printElapsed(final String desc, final long time) {
+		out.print(desc);
+		out.print(" method took ");
+		out.print(time);
+		out.println(" time-units.");
 	}
 
 	/**
