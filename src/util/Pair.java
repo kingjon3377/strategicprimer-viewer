@@ -13,7 +13,7 @@ package util;
  * @param <FIRST> The first type in the pair.
  * @param <SECOND> The second type in the pair.
  */
-public final class Pair<FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>>
+public class Pair<FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>>
 		implements Comparable<Pair<FIRST, SECOND>> {
 	/**
 	 * The first item in the pair.
@@ -48,7 +48,7 @@ public final class Pair<FIRST extends Comparable<FIRST>, SECOND extends Comparab
 	 * @param firstItem The first item in the pair.
 	 * @param secondItem The second item in the pair.
 	 */
-	private Pair(final FIRST firstItem, final SECOND secondItem) {
+	protected Pair(final FIRST firstItem, final SECOND secondItem) {
 		if (firstItem == null || secondItem == null) {
 			throw new IllegalArgumentException("Pair refuses null arguments");
 		}
