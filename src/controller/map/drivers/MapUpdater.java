@@ -25,7 +25,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public final class MapUpdater {
+public final class MapUpdater implements ISPDriver {
 	/**
 	 * Logger.
 	 */
@@ -66,44 +66,10 @@ public final class MapUpdater {
 	 * @param args Command-line arguments: master, then a map to update.
 	 */
 	public static void main(final String[] args) {
-		if (args.length < 2) {
-			throw new IllegalArgumentException("Not enough arguments");
-		}
-		System.out.print("Base ");
-		System.out.print(args[0]);
-		System.out.print(": Reading ");
-		final IMap master = loadMap(args[0]);
-		final MapUpdater updater = new MapUpdater();
-		System.out.println("Finished");
-		for (final String arg : args) {
-			if (arg.equals(args[0])) {
-				continue;
-			}
-			System.out.print(arg);
-			System.out.print(": ");
-			System.out.print("Reading ");
-			// ESCA-JAVA0177:
-			final IMap derived = loadMap(arg);
-			System.out.print("Updating ");
-			updater.update(master, derived);
-			System.out.print("Writing ");
-			// ESCA-JAVA0266:
-			PrintWriter writer;
-			try {
-				writer = new PrintWriter(new FileWriter(arg)); // NOPMD
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE,
-						"I/O error creating writer for updated map", e);
-				continue;
-			}
-			try {
-				new CompactXMLWriter().write(writer, derived); // NOPMD
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
-			} finally {
-				writer.close();
-			}
-			System.out.println("Finished");
+		try {
+			new MapUpdater().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
 
@@ -169,5 +135,51 @@ public final class MapUpdater {
 	@Override
 	public String toString() {
 		return "MapUpdater";
+	}
+	/**
+	 * Start the driver.
+	 * @param args command-line arguments
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		if (args.length < 2) {
+			throw new IllegalArgumentException("Not enough arguments");
+		}
+		System.out.print("Base ");
+		System.out.print(args[0]);
+		System.out.print(": Reading ");
+		final IMap master = loadMap(args[0]);
+		System.out.println("Finished");
+		for (final String arg : args) {
+			if (arg.equals(args[0])) {
+				continue;
+			}
+			System.out.print(arg);
+			System.out.print(": ");
+			System.out.print("Reading ");
+			// ESCA-JAVA0177:
+			final IMap derived = loadMap(arg);
+			System.out.print("Updating ");
+			update(master, derived);
+			System.out.print("Writing ");
+			// ESCA-JAVA0266:
+			PrintWriter writer;
+			try {
+				writer = new PrintWriter(new FileWriter(arg)); // NOPMD
+			} catch (final IOException e) {
+				LOGGER.log(Level.SEVERE,
+						"I/O error creating writer for updated map", e);
+				continue;
+			}
+			try {
+				new CompactXMLWriter().write(writer, derived); // NOPMD
+			} catch (final IOException e) {
+				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
+			} finally {
+				writer.close();
+			}
+			System.out.println("Finished");
+		}
 	}
 }
