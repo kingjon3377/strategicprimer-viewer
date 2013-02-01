@@ -22,7 +22,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public final class ConverterDriver {
+public final class ConverterDriver implements ISPDriver {
 	/**
 	 * Logger.
 	 */
@@ -52,9 +52,24 @@ public final class ConverterDriver {
 	 *        be written back to its original name plus ".new"
 	 */
 	public static void main(final String[] args) {
+		try {
+			new ConverterDriver().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
+		}
+	}
+	/**
+	 * Run the driver.
+	 * @param args command-line argument
+	 * @throws DriverFailedException on fatal error
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
 			SystemOut.SYS_OUT
 					.println("Usage: ConverterDriver filename [filename ...]");
+			throw new DriverFailedException("Need files to convert",
+					new IllegalArgumentException("Not enough arguments"));
 		}
 		for (final String filename : args) {
 			SystemOut.SYS_OUT.print("Reading ");
