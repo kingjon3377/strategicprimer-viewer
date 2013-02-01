@@ -135,6 +135,9 @@ public class MapHelper {
 		maps.add(master);
 		for (int i = 1; i < filenames.length; i++) {
 			final IMap map = reader.readMap(filenames[i], Warning.INSTANCE);
+			if (!map.getDimensions().equals(master.getDimensions())) {
+				throw new IllegalArgumentException("Size mismatch between " + filenames[0] + " and " + filenames[i]);
+			}
 			secondaries.add(map);
 			maps.add(map);
 		}

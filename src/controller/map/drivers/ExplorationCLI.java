@@ -358,11 +358,6 @@ public class ExplorationCLI implements ISPDriver {
 		} catch (SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file", except);
 		}
-		for (IMap map : secondaries) {
-			if (!map.getDimensions().equals(master.getDimensions())) {
-				throw new IllegalArgumentException("Size mismatch");
-			}
-		}
 		final List<Player> players = helper.getPlayerChoices(maps);
 		try {
 			final int playerNum = helper.chooseFromList(players,
