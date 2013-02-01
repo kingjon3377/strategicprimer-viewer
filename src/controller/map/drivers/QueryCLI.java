@@ -24,9 +24,9 @@ import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
 import util.Warning;
-import view.util.DriverQuit;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapHelper;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -40,6 +40,10 @@ public final class QueryCLI implements ISPDriver {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(QueryCLI.class
 			.getName());
+	/**
+	 * Helper to get numbers from the user, etc.
+	 */
+	private final MapHelper helper = new MapHelper();
 	/**
 	 * Constructor.
 	 */
@@ -55,12 +59,10 @@ public final class QueryCLI implements ISPDriver {
 	private void repl(final IMap map, final BufferedReader reader,
 			final PrintStream ostream) {
 		try {
-			ostream.print("Command: ");
-			String input = reader.readLine();
+			String input = helper.inputString("Command: ");
 			while (input != null && input.length() > 0 && input.charAt(0) != 'q') {
-				handleCommand(map, reader, ostream, input.charAt(0));
-				ostream.print("Command: ");
-				input = reader.readLine();
+				handleCommand(map, ostream, input.charAt(0));
+				input = helper.inputString("Command: ");
 			}
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
@@ -76,46 +78,33 @@ public final class QueryCLI implements ISPDriver {
 
 	/**
 	 * @param map the map
-	 * @param reader the stream to read further input from
 	 * @param ostream the stream to write to
 	 * @param input the command
 	 *
 	 * @throws IOException on I/O error
 	 */
-	public void handleCommand(final IMap map, final BufferedReader reader,
-			final PrintStream ostream, final char input) throws IOException {
+	public void handleCommand(final IMap map, final PrintStream ostream,
+			final char input) throws IOException {
 		switch (input) {
 		case '?':
 			usage(ostream);
 			break;
 		case 'f':
-			fortressInfo(selectTile(map, reader, ostream), ostream);
+			fortressInfo(selectTile(map), ostream);
 			break;
 		case 'h':
 		case 'i':
-			hunt(populateList(selectTile(map, reader, ostream)), ostream,
+			hunt(helper.toList(selectTile(map)), ostream,
 					HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(populateList(selectTile(map, reader, ostream)), ostream,
+			gather(helper.toList(selectTile(map)), ostream,
 					HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		default:
 			ostream.println("Unknown command.");
 			break;
 		}
-	}
-	/**
-	 * Adapter between Tile and List<TileFixture>.
-	 * @param tile a tile
-	 * @return a list of the fixtures on it.
-	 */
-	private static List<TileFixture> populateList(final Tile tile) {
-		final List<TileFixture> retval = new ArrayList<TileFixture>();
-		for (TileFixture fix : tile) {
-			retval.add(fix);
-		}
-		return retval;
 	}
 	/**
 	 * Run hunting, fishing, or trapping.
@@ -164,10 +153,10 @@ public final class QueryCLI implements ISPDriver {
 	 * @param tile the selected tile
 	 * @param ostream the stream to print results to
 	 */
-	private static void fortressInfo(final Tile tile, final PrintStream ostream) {
+	private void fortressInfo(final Tile tile, final PrintStream ostream) {
 		ostream.print("Terrain is ");
 		ostream.println(tile.getTerrain());
-		final List<TileFixture> fixtures = populateList(tile);
+		final List<TileFixture> fixtures = helper.toList(tile);
 		final List<Ground> ground = new ArrayList<Ground>();
 		final List<Forest> forests = new ArrayList<Forest>();
 		for (TileFixture fix : fixtures) {
@@ -192,34 +181,15 @@ public final class QueryCLI implements ISPDriver {
 	}
 
 	/**
-	 * @param reader the stream we read from
-	 * @param ostream the stream we write to
-	 * @param string the prompt
-	 * @return the integer the player specified
-	 * @throws IOException on I/O error
-	 */
-	private static int getInteger(final BufferedReader reader,
-			final PrintStream ostream, final String string) throws IOException {
-		ostream.print(string);
-		final String line = reader.readLine();
-		if (line == null) {
-			throw new IOException("End of input");
-		}
-		return Integer.parseInt(line);
-	}
-
-	/**
 	 * @param map The map we're dealing with
-	 * @param reader The stream we're reading from
-	 * @param ostream The stream we write the prompts to
 	 * @return The tile the user specifies.
 	 * @throws IOException on I/O error
 	 */
-	private static Tile selectTile(final IMap map, final BufferedReader reader,
-			final PrintStream ostream) throws IOException {
+	private Tile selectTile(final IMap map)
+			throws IOException {
 		return map.getTile(PointFactory.point(
-				getInteger(reader, ostream, "Row: "),
-				getInteger(reader, ostream, "Column: ")));
+				helper.inputNumber("Row: "),
+				helper.inputNumber("Column: ")));
 	}
 
 	/**
