@@ -127,6 +127,27 @@ public final class MapUpdater implements ISPDriver {
 	public String toString() {
 		return "MapUpdater";
 	}
+
+	/**
+	 * Write a map to file. TODO: Use MapReaderAdapter (or its Writer
+	 * equivalent) rather than CXMLWriter directly; TODO: cache the
+	 * MapReaderAdapter instance.
+	 *
+	 * @param map the map to write
+	 * @param file the name of the file to write to
+	 * @throws IOException if we run into trouble creating the writer or writing
+	 *        the map
+	 */
+	private static void write(final IMap map, final String file) throws IOException {
+		System.out.print("Writing ");
+		final PrintWriter writer = new PrintWriter(new FileWriter(file));
+		try {
+			new CompactXMLWriter().write(writer, map);
+		} finally {
+			writer.close();
+		}
+		System.out.println("Finished");
+	}
 	/**
 	 * Start the driver.
 	 * @param args command-line arguments
@@ -148,24 +169,11 @@ public final class MapUpdater implements ISPDriver {
 			System.out.print("Reading ");
 			// ESCA-JAVA0177:
 			final IMap derived = update(master, loadMap(arg));
-			System.out.print("Writing ");
-			// ESCA-JAVA0266:
-			PrintWriter writer;
 			try {
-				writer = new PrintWriter(new FileWriter(arg)); // NOPMD
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE,
-						"I/O error creating writer for updated map", e);
-				continue;
+				write(derived, arg);
+			} catch (IOException except) {
+				LOGGER.log(Level.SEVERE, "I/O error writing map " + arg, except);
 			}
-			try {
-				new CompactXMLWriter().write(writer, derived); // NOPMD
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error writing updated map", e);
-			} finally {
-				writer.close();
-			}
-			System.out.println("Finished");
 		}
 	}
 }
