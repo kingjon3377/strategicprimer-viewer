@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.MapModel;
@@ -96,11 +97,16 @@ public final class AdvancementStart implements ISPDriver {
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
-		final AdvancementFrame frame = new AdvancementFrame(model);
 		final JFileChooser chooser = new JFileChooser(".");
 		chooser.setFileFilter(new MapFileFilter());
-		frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				final AdvancementFrame frame = new AdvancementFrame(model);
+				frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setVisible(true);
+			}
+		});
 	}
 }
