@@ -13,8 +13,7 @@ package util;
  * @param <FIRST> The first type in the pair.
  * @param <SECOND> The second type in the pair.
  */
-public class Pair<FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>>
-		implements Comparable<Pair<FIRST, SECOND>> {
+public class Pair<FIRST, SECOND> {
 	/**
 	 * The first item in the pair.
 	 */
@@ -65,22 +64,9 @@ public class Pair<FIRST extends Comparable<FIRST>, SECOND extends Comparable<SEC
 	 * @param second The second element in the pair.
 	 * @return a pair containing the two elements
 	 */
-	public static <FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>> Pair<FIRST, SECOND> of(// NOPMD
-			final FIRST first, final SECOND second) {
+	public static <FIRST, SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD
+			final SECOND second) {
 		return new Pair<FIRST, SECOND>(first, second);
-	}
-
-	/**
-	 * Compare to another pair.
-	 *
-	 * @param other the other pair
-	 *
-	 * @return the result of the comparison.
-	 */
-	@Override
-	public int compareTo(final Pair<FIRST, SECOND> other) {
-		final int cmp = first.compareTo(other.first);
-		return (cmp == 0) ? second.compareTo(other.second) : cmp;
 	}
 
 	/**
