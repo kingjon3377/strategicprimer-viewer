@@ -72,12 +72,6 @@ public class ReaderComparator implements ISPDriver {
 						"XMLStreamException (probably badly formed input) in "
 								+ arg, e);
 				continue;
-			} catch (final FileNotFoundException e) {
-				LOGGER.log(Level.SEVERE, arg + " not found", e);
-				continue;
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error while parsing" + arg, e);
-				continue;
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE,
 						"Map version too old for old-style reader in file "
@@ -96,29 +90,24 @@ public class ReaderComparator implements ISPDriver {
 	 *
 	 * @param arg the name of the file to have each read.
 	 * @throws XMLStreamException if either reader claims badly formed input
-	 * @throws FileNotFoundException if either reader can't find the file
-	 * @throws IOException on other I/O error in either reader
-	 * @throws SPFormatException if the new reader claims invalid data
-	 * @throws MapVersionException if the old reader can't handle that map
-	 *         version
+	 * @throws SPFormatException if either reader claims invalid data
 	 */
-	// ESCA-JAVA0160:
 	public void compareReaders(final String arg) throws XMLStreamException,
-			FileNotFoundException, IOException, SPFormatException,
-			MapVersionException {
+			SPFormatException {
 		final Warning warner = new Warning(Warning.Action.Ignore);
 		out.print(arg);
 		out.println(':');
-		final File file = new File(arg);
-		final FileReader reader = new FileReader(file);
-		final CharBuffer buffer = CharBuffer.allocate((int) file.length());
+		// ESCA-JAVA0177:
+		final String contents; // NOPMD
 		try {
-			reader.read(buffer);
-		} finally {
-			reader.close();
+			contents = readIntoBuffer(arg);
+		} catch (FileNotFoundException except) {
+			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
+			return; // NOPMD
+		} catch (IOException except) {
+			LOGGER.log(Level.SEVERE, "I/O error reading file " + arg, except);
+			return;
 		}
-		buffer.position(0);
-		final String contents = buffer.toString();
 		final long startOne = System.nanoTime();
 		final IMap map1 = one.readMap(arg, new StringReader(contents), warner);
 		final long endOne = System.nanoTime();
@@ -139,6 +128,25 @@ public class ReaderComparator implements ISPDriver {
 		}
 	}
 
+	/**
+	 * @param filename the name of a file
+	 * @return a string containing its contents, so reading from it won't be
+	 *         confounded by disk I/O.
+	 * @throws IOException if file not found, or on other I/O error reading from file
+	 */
+	private static String readIntoBuffer(final String filename) throws IOException {
+		final String arg = filename;
+		final File file = new File(arg);
+		final FileReader reader = new FileReader(file);
+		final CharBuffer buffer = CharBuffer.allocate((int) file.length());
+		try {
+			reader.read(buffer);
+		} finally {
+			reader.close();
+		}
+		buffer.position(0);
+		return buffer.toString();
+	}
 	/**
 	 *
 	 * @return a String representation of this object
