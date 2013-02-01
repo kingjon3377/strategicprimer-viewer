@@ -28,7 +28,7 @@ public final class MapChecker implements ISPDriver {
 	/**
 	 * The map reader we'll use.
 	 */
-	private static final MapReaderAdapter READER = new MapReaderAdapter();
+	private final MapReaderAdapter reader = new MapReaderAdapter();
 
 	/**
 	 * Do not instantiate.
@@ -61,29 +61,41 @@ public final class MapChecker implements ISPDriver {
 					new IllegalArgumentException("Need at least one argument"));
 		}
 		for (final String filename : args) {
-			SystemOut.SYS_OUT.print("Starting ");
-			SystemOut.SYS_OUT.println(filename);
-			try {
-				READER.readMap(filename, Warning.INSTANCE); // new
-															// Warning(Warning.Action.Warn)
-			} catch (final MapVersionException e) {
-				LOGGER.log(Level.SEVERE, "Map version in " + filename
-						+ " not acceptable to reader", e);
-				continue;
-			} catch (final FileNotFoundException e) {
-				LOGGER.log(Level.SEVERE, filename + " not found", e);
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error reading " + filename, e);
-				continue;
-			} catch (final XMLStreamException e) {
-				LOGGER.log(Level.SEVERE,
-						"XML stream error reading " + filename, e);
-				continue;
-			} catch (final SPFormatException e) {
-				LOGGER.log(Level.SEVERE, "SP map format error reading "
-						+ filename, e);
-				continue;
-			}
+			check(filename);
+		}
+	}
+
+	/**
+	 * Check a map.
+	 * @param filename the name of the file to check
+	 */
+	private void check(final String filename) {
+		SystemOut.SYS_OUT.print("Starting ");
+		SystemOut.SYS_OUT.println(filename);
+		boolean retval = true;
+		try {
+			reader.readMap(filename, Warning.INSTANCE); // new
+														// Warning(Warning.Action.Warn)
+		} catch (final MapVersionException e) {
+			LOGGER.log(Level.SEVERE, "Map version in " + filename
+					+ " not acceptable to reader", e);
+			retval = false;
+		} catch (final FileNotFoundException e) {
+			LOGGER.log(Level.SEVERE, filename + " not found", e);
+			retval = false;
+		} catch (final IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, e);
+			retval = false;
+		} catch (final XMLStreamException e) {
+			LOGGER.log(Level.SEVERE,
+					"XML stream error reading " + filename, e);
+			retval = false;
+		} catch (final SPFormatException e) {
+			LOGGER.log(Level.SEVERE, "SP map format error reading "
+					+ filename, e);
+			retval = false;
+		}
+		if (retval) {
 			SystemOut.SYS_OUT.print("No errors in ");
 			SystemOut.SYS_OUT.println(filename);
 		}
