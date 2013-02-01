@@ -17,11 +17,11 @@ import controller.map.misc.MapReaderAdapter;
  * primarily to make sure that the map format is properly read, but is also
  * useful for correcting deprecated syntax. (Because of that usage, warnings are
  * disabled.)
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
-public final class EchoDriver {
+public final class EchoDriver implements ISPDriver {
 	/**
 	 * Do not instantiate.
 	 */
@@ -37,14 +37,28 @@ public final class EchoDriver {
 
 	/**
 	 * Main.
-	 * 
+	 *
 	 * @param args command-line arguments: the filename to read from and the
 	 *        filename to write to. These may be the same.
 	 */
 	public static void main(final String[] args) {
+		try {
+			new EchoDriver().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
+		}
+	}
+	/**
+	 * Run the driver.
+	 * @param args command-line arguments
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length != 2) {
 			System.err.println("Usage: EchoDriver in-file out-file");
-			System.exit(1);
+			throw new DriverFailedException("Wrong number of arguments",
+					new IllegalArgumentException("Need exactly two arguments"));
 		}
 		// ESCA-JAVA0177:
 		final IMap map; // NOPMD
@@ -52,28 +66,19 @@ public final class EchoDriver {
 			map = new MapReaderAdapter().readMap(args[0], new Warning(// NOPMD
 					Warning.Action.Ignore));
 		} catch (final MapVersionException except) {
-			LOGGER.log(Level.SEVERE, "Unsupported map version", except);
-			System.exit(2);
-			return; // NOPMD
+			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading file " + args[0],
+			throw new DriverFailedException("I/O error reading file " + args[0],
 					except);
-			System.exit(3);
-			return; // NOPMD
 		} catch (final XMLStreamException except) {
-			LOGGER.log(Level.SEVERE, "Malformed XML", except);
-			System.exit(4);
-			return; // NOPMD
+			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {
-			LOGGER.log(Level.SEVERE, "SP map format error", except);
-			System.exit(5);
-			return; // NOPMD
+			throw new DriverFailedException("SP map format error", except);
 		}
 		try {
 			new MapReaderAdapter().write(args[1], map);
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error writing " + args[1], except);
+			throw new DriverFailedException("I/O error writing " + args[1], except);
 		}
-
 	}
 }
