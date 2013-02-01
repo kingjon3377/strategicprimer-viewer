@@ -23,13 +23,6 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class EchoDriver implements ISPDriver {
 	/**
-	 * Do not instantiate.
-	 */
-	private EchoDriver() {
-		// Do nothing.
-	}
-
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(EchoDriver.class

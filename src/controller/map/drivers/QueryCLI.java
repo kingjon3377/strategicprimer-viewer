@@ -45,13 +45,6 @@ public final class QueryCLI implements ISPDriver {
 	 */
 	private final MapHelper helper = new MapHelper();
 	/**
-	 * Constructor.
-	 */
-	private QueryCLI() {
-		// Not for general use.
-	}
-
-	/**
 	 * @param map the map to explore
 	 * @param reader the stream to read commands from
 	 * @param ostream the stream to write output to

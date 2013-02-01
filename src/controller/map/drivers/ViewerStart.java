@@ -32,13 +32,6 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class ViewerStart implements ISPDriver {
 	/**
-	 * Do not instantiate.
-	 */
-	private ViewerStart() {
-		// Do not use.
-	}
-
-	/**
 	 * An error message refactored from at least four uses.
 	 */
 	private static final String XML_ERROR_STRING = "Error reading XML file";

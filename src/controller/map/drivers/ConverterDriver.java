@@ -28,14 +28,6 @@ public final class ConverterDriver implements ISPDriver {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ConverterDriver.class
 			.getName());
-
-	/**
-	 * Do not instantiate.
-	 */
-	private ConverterDriver() {
-		// Do nothing.
-	}
-
 	/**
 	 * The converter to use.
 	 */

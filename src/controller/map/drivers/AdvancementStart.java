@@ -31,12 +31,6 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class AdvancementStart implements ISPDriver {
 	/**
-	 * Do not instantiate.
-	 */
-	private AdvancementStart() {
-		// Do not use.
-	}
-	/**
 	 * Run the app.
 	 *
 	 * @param args Command-line arguments. args[0] is the map filename, others

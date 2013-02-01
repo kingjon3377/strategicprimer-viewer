@@ -20,12 +20,6 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class SubsetDriver implements ISPDriver {
 	/**
-	 * Do not instantiate.
-	 */
-	private SubsetDriver() {
-		// Do nothing
-	}
-	/**
 	 * Possible return values for sub-maps.
 	 */
 	private enum Returns {

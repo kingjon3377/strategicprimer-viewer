@@ -31,13 +31,6 @@ public final class MapChecker implements ISPDriver {
 	private final MapReaderAdapter reader = new MapReaderAdapter();
 
 	/**
-	 * Do not instantiate.
-	 */
-	private MapChecker() {
-		// Nothing.
-	}
-
-	/**
 	 * @param args the list of filenames to check
 	 */
 	public static void main(final String[] args) {
