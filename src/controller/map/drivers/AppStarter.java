@@ -3,6 +3,7 @@ package controller.map.drivers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,21 +94,31 @@ public class AppStarter implements ISPDriver {
 				gui = true;
 			} else if (EqualsAny.equalsAny(option, "-c", "--cli")) {
 				gui = false;
-			} else if (CACHE.containsKey(option.toLowerCase())) {
-				drivers = CACHE.get(option.toLowerCase());
+			} else if (CACHE.containsKey(option.toLowerCase(Locale.ENGLISH))) {
+				drivers = CACHE.get(option.toLowerCase(Locale.ENGLISH));
 			}
 		}
 		if (drivers == null) {
 			// FIXME: Implement showing a chooser window
 		} else {
 			final Class<? extends ISPDriver> driver = gui ? drivers.second() : drivers.first();
-			try {
-				driver.newInstance().startDriver(others.toArray(new String[others.size()]));
-			} catch (InstantiationException except) {
-				throw new DriverFailedException("Instantiation of proper driver failed", except);
-			} catch (IllegalAccessException except) {
-				throw new DriverFailedException("Instantiation of proper driver failed", except);
-			}
+			startDriver(driver, others);
+		}
+	}
+	/**
+	 * Start a driver.
+	 * @param driver the driver to start
+	 * @param params non-option parameters
+	 * @throws DriverFailedException on fatal error
+	 */
+	private static void startDriver(final Class<? extends ISPDriver> driver, // NOPMD
+			final List<String> params) throws DriverFailedException {
+		try {
+			driver.newInstance().startDriver(params.toArray(new String[params.size()]));
+		} catch (InstantiationException except) {
+			throw new DriverFailedException("Instantiation of proper driver failed", except);
+		} catch (IllegalAccessException except) {
+			throw new DriverFailedException("Instantiation of proper driver failed", except);
 		}
 	}
 	/**
