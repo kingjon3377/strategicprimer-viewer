@@ -52,33 +52,40 @@ public class FileChooser {
 	public String getFilename() throws ChoiceInterruptedException {
 		final JFileChooser fileChooser = chooser;
 		if (!shouldReturn) {
-			try {
-				if (SwingUtilities.isEventDispatchThread()) {
-					if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-						setFilename(fileChooser.getSelectedFile().getPath());
-					}
-				} else {
-					SwingUtilities.invokeAndWait(new Runnable() {
-						@Override
-						public void run() {
-							if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-								setFilename(fileChooser.getSelectedFile()
-										.getPath());
-							}
-						}
-
-					});
+			if (SwingUtilities.isEventDispatchThread()) {
+				if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					setFilename(fileChooser.getSelectedFile().getPath());
 				}
-			} catch (InvocationTargetException except) {
-				throw new ChoiceInterruptedException(except.getCause()); // NOPMD
-			} catch (InterruptedException except) {
-				throw new ChoiceInterruptedException(except);
+			} else {
+				invoke(new Runnable() {
+					@Override
+					public void run() {
+						if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+							setFilename(fileChooser.getSelectedFile().getPath());
+						}
+					}
+
+				});
 			}
 		}
 		if (filename == null || filename.isEmpty()) {
 			throw new ChoiceInterruptedException();
 		} else {
 			return filename;
+		}
+	}
+	/**
+	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or otherwise failing.
+	 * @param runnable the runnable to run.
+	 * @throws ChoiceInterruptedException on error
+	 */
+	private static void invoke(final Runnable runnable) throws ChoiceInterruptedException {
+		try {
+			SwingUtilities.invokeAndWait(runnable);
+		} catch (InvocationTargetException except) {
+			throw new ChoiceInterruptedException(except.getCause()); // NOPMD
+		} catch (InterruptedException except) {
+			throw new ChoiceInterruptedException(except);
 		}
 	}
 	/**
