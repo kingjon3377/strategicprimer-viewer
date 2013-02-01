@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -25,38 +27,17 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class DuplicateFixtureRemover {
+public class DuplicateFixtureRemover implements ISPDriver {
 
 	/**
 	 * @param args the list of maps to run the filter on
 	 */
 	public static void main(final String[] args) {
-		if (args.length == 0) {
-			SystemOut.SYS_OUT.println("Usage: DuplicateFixtureRemover map [map ...]");
-		}
-		final DuplicateFixtureRemover remover = new DuplicateFixtureRemover();
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final String filename : args) {
-			try {
-				final IMap map = reader.readMap(filename, Warning.INSTANCE);
-				remover.filter(map, SystemOut.SYS_OUT);
-				reader.write(filename, map);
-			} catch (IOException except) {
-				System.err.print("I/O error reading from or writing to ");
-				System.err.println(filename);
-				System.err.println(except.getLocalizedMessage());
-				continue;
-			} catch (XMLStreamException except) {
-				System.err.print("XML parsing error reading ");
-				System.err.println(filename);
-				System.err.println(except.getLocalizedMessage());
-				continue;
-			} catch (SPFormatException except) {
-				System.err.print("SP format error in ");
-				System.err.println(filename);
-				System.err.println(except.getLocalizedMessage());
-				continue;
-			}
+		try {
+			new DuplicateFixtureRemover().startDriver(args);
+		} catch (DriverFailedException except) {
+			Logger.getLogger(DuplicateFixtureRemover.class.getName()).log(
+					Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
 	/**
@@ -105,6 +86,41 @@ public class DuplicateFixtureRemover {
 		}
 		for (TileFixture fix : toRemove) {
 			tile.removeFixture(fix);
+		}
+	}
+	/**
+	 * Run the driver.
+	 * @param args Command-line arguments
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		if (args.length == 0) {
+			SystemOut.SYS_OUT.println("Usage: DuplicateFixtureRemover map [map ...]");
+			throw new DriverFailedException("Not enough arguments", new IllegalArgumentException("Need at least one argument"));
+		}
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		for (final String filename : args) {
+			try {
+				final IMap map = reader.readMap(filename, Warning.INSTANCE);
+				filter(map, SystemOut.SYS_OUT);
+				reader.write(filename, map);
+			} catch (IOException except) {
+				System.err.print("I/O error reading from or writing to ");
+				System.err.println(filename);
+				System.err.println(except.getLocalizedMessage());
+				continue;
+			} catch (XMLStreamException except) {
+				System.err.print("XML parsing error reading ");
+				System.err.println(filename);
+				System.err.println(except.getLocalizedMessage());
+				continue;
+			} catch (SPFormatException except) {
+				System.err.print("SP format error in ");
+				System.err.println(filename);
+				System.err.println(except.getLocalizedMessage());
+				continue;
+			}
 		}
 	}
 
