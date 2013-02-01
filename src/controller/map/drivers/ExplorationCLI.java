@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.MapDimensions;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -35,39 +36,29 @@ import controller.map.misc.MapHelper;
  */
 public class ExplorationCLI {
 	/**
-	 * Constructor.
+	 * Check that all sizes are the same.
 	 *
 	 * @param master The master map.
 	 * @param secondaries Any player maps that should be updated with results of
 	 *        exploration.
 	 */
-	public ExplorationCLI(final IMap master, final List<IMap> secondaries) {
-		source = master;
+	private static void checkDims(final IMap master, final List<IMap> secondaries) {
 		for (IMap map : secondaries) {
-			if (map.getDimensions().equals(master.getDimensions())) {
-				dests.add(map);
-			} else {
+			if (!map.getDimensions().equals(master.getDimensions())) {
 				throw new IllegalArgumentException("Size mismatch");
 			}
 		}
 	}
 	/**
-	 * The source map, which we'll get data from but only update to move the moving unit.
-	 */
-	private final IMap source;
-	/**
-	 * The destination maps, which will be updated with things a moving unit sees.
-	 */
-	private final List<IMap> dests = new ArrayList<IMap>();
-	/**
 	 * Find a fixture's location in the master map.
 	 *
 	 * @param fix the fixture to find.
+	 * @param source the map to look in
 	 * @return the first location found (search order is not defined) containing a
 	 *         fixture "equal to" the specified one. (Using it on mountains,
 	 *         e.g., will *not* do what you want ...)
 	 */
-	public Point find(final TileFixture fix) {
+	public Point find(final TileFixture fix, final IMap source) {
 		for (Point point : source.getTiles()) {
 			for (TileFixture item : source.getTile(point)) {
 				if (fix.equals(item)) {
@@ -86,6 +77,8 @@ public class ExplorationCLI {
 	 * subordinate maps with the terrain information showing that, then re-throw
 	 * the exception; callers should deduct a minimal MP cost.
 	 *
+	 * @param source the master map we're mainly dealing with
+	 * @param dests the other maps to move the unit in
 	 * @param unit the unit to move
 	 * @param point the starting location
 	 * @param direction the direction to move
@@ -93,9 +86,9 @@ public class ExplorationCLI {
 	 * @throws TraversalImpossibleException if movement in that direction is
 	 *         impossible
 	 */
-	public int move(final Unit unit, final Point point,
+	public int move(final IMap source, final List<IMap> dests, final Unit unit, final Point point,
 			final Direction direction) throws TraversalImpossibleException {
-		final Point dest = getDestination(point, direction);
+		final Point dest = getDestination(source.getDimensions(), point, direction);
 		// ESCA-JAVA0177:
 		final int retval; //NOPMD
 		try {
@@ -154,36 +147,37 @@ public class ExplorationCLI {
 		return num == 0 ? max : num - 1;
 	}
 	/**
+	 * @param dims the dimensions of the map
 	 * @param point a point
 	 * @param direction a direction
 	 * @return the point one tile in that direction.
 	 */
-	private Point getDestination(final Point point, final Direction direction) {
+	private static Point getDestination(final MapDimensions dims, final Point point, final Direction direction) {
 		switch (direction) {
 		case East:
 			return PointFactory.point(point.row, // NOPMD
-					increment(point.col, source.getDimensions().cols - 1));
+					increment(point.col, dims.cols - 1));
 		case North:
-			return PointFactory.point(decrement(point.row, source.getDimensions().rows - 1), // NOPMD
+			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
 					point.col);
 		case Northeast:
-			return PointFactory.point(decrement(point.row, source.getDimensions().rows - 1), // NOPMD
-					increment(point.col, source.getDimensions().rows - 1));
+			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
+					increment(point.col, dims.rows - 1));
 		case Northwest:
-			return PointFactory.point(decrement(point.row, source.getDimensions().rows - 1), // NOPMD
-					decrement(point.col, source.getDimensions().cols - 1));
+			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
+					decrement(point.col, dims.cols - 1));
 		case South:
-			return PointFactory.point(increment(point.row, source.getDimensions().rows - 1), // NOPMD
+			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
 					point.col);
 		case Southeast:
-			return PointFactory.point(increment(point.row, source.getDimensions().rows - 1), // NOPMD
-					increment(point.col, source.getDimensions().cols - 1));
+			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
+					increment(point.col, dims.cols - 1));
 		case Southwest:
-			return PointFactory.point(increment(point.row, source.getDimensions().rows - 1), // NOPMD
-					decrement(point.col, source.getDimensions().cols - 1));
+			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
+					decrement(point.col, dims.cols - 1));
 		case West:
 			return PointFactory.point(point.row, // NOPMD
-					decrement(point.col, source.getDimensions().cols - 1));
+					decrement(point.col, dims.cols - 1));
 		default:
 			throw new IllegalStateException("Unhandled case");
 		}
@@ -219,7 +213,8 @@ public class ExplorationCLI {
 			System.exit(3);
 			return; // NOPMD
 		}
-		final ExplorationCLI cli = new ExplorationCLI(master, secondaries);
+		final ExplorationCLI cli = new ExplorationCLI();
+		checkDims(master, secondaries);
 		final List<Player> players = helper.getPlayerChoices(maps);
 		try {
 			final int playerNum = helper.chooseFromList(players,
@@ -307,16 +302,16 @@ public class ExplorationCLI {
 			return Integer.MAX_VALUE; // NOPMD
 		}
 		final Direction direction = Direction.values()[directionNum];
-		final Point point = cli.find(unit);
+		final Point point = cli.find(unit, master);
 		try {
-			cost = cli.move(unit, point, direction);
+			cost = cli.move(master, secondaries, unit, point, direction);
 		} catch (TraversalImpossibleException except) {
 			SystemOut.SYS_OUT.printC(
 					"That direction is impassable; we've made sure ").println(
 					"all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
-		final Point dPoint = cli.getDestination(point, direction);
+		final Point dPoint = getDestination(master.getDimensions(), point, direction);
 		for (TileFixture fix : master.getTile(dPoint)) {
 			if (shouldAlwaysNotice(unit, fix)) {
 				constants.add(fix);
