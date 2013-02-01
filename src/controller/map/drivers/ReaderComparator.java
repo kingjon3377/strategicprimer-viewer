@@ -28,7 +28,11 @@ import controller.map.readerng.MapReaderNG;
  *
  */
 @SuppressWarnings("deprecation")
-public class ReaderComparator {
+public class ReaderComparator implements ISPDriver {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(ReaderComparator.class.getName());
 	/**
 	 * The first reader.
 	 */
@@ -47,38 +51,40 @@ public class ReaderComparator {
 	 * @param args The maps to test the two readers on.
 	 */
 	public static void main(final String[] args) {
-		new ReaderComparator().compareReaders(args,
-				Logger.getLogger(ReaderComparator.class.getName()));
+		try {
+			new ReaderComparator().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
+		}
 	}
 
 	/**
 	 * Compare the two readers.
 	 *
 	 * @param args The list of specified files to compare them on
-	 * @param logger The logger to log errors to.
 	 */
-	public void compareReaders(final String[] args, final Logger logger) {
+	public void compareReaders(final String[] args) {
 		for (final String arg : args) {
 			try {
 				compareReaders(arg);
 			} catch (final XMLStreamException e) {
-				logger.log(Level.SEVERE,
+				LOGGER.log(Level.SEVERE,
 						"XMLStreamException (probably badly formed input) in "
 								+ arg, e);
 				continue;
 			} catch (final FileNotFoundException e) {
-				logger.log(Level.SEVERE, arg + " not found", e);
+				LOGGER.log(Level.SEVERE, arg + " not found", e);
 				continue;
 			} catch (final IOException e) {
-				logger.log(Level.SEVERE, "I/O error while parsing" + arg, e);
+				LOGGER.log(Level.SEVERE, "I/O error while parsing" + arg, e);
 				continue;
 			} catch (final MapVersionException e) {
-				logger.log(Level.SEVERE,
+				LOGGER.log(Level.SEVERE,
 						"Map version too old for old-style reader in file "
 								+ arg, e);
 				continue;
 			} catch (final SPFormatException e) {
-				logger.log(Level.SEVERE,
+				LOGGER.log(Level.SEVERE,
 						"New reader claims invalid SP map data in " + arg, e);
 				continue;
 			}
@@ -140,5 +146,14 @@ public class ReaderComparator {
 	@Override
 	public String toString() {
 		return "ReaderComparator";
+	}
+	/**
+	 * Run the driver, comparing the readers' performance.
+	 * @param args The files to test on
+	 * @throws DriverFailedException Probably never?
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		compareReaders(args);
 	}
 }
