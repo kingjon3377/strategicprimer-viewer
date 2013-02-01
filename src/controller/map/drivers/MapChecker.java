@@ -15,11 +15,11 @@ import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to check every map file in a list for errors.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
-public final class MapChecker {
+public final class MapChecker implements ISPDriver {
 	/**
 	 * Logger.
 	 */
@@ -41,9 +41,24 @@ public final class MapChecker {
 	 * @param args the list of filenames to check
 	 */
 	public static void main(final String[] args) {
+		try {
+			new MapChecker().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
+		}
+	}
+	/**
+	 * Run the driver.
+	 * @param args command-line arguments
+	 * @throws DriverFailedException if not enough arguments
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
-			SystemOut.SYS_OUT
-					.println("Usage: MapChecker filename [filename ...]");
+//			SystemOut.SYS_OUT
+//					.println("Usage: MapChecker filename [filename ...]");
+			throw new DriverFailedException("Need at least one argument",
+					new IllegalArgumentException("Need at least one argument"));
 		}
 		for (final String filename : args) {
 			SystemOut.SYS_OUT.print("Starting ");
