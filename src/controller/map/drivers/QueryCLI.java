@@ -1,6 +1,7 @@
 package controller.map.drivers;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -33,7 +34,7 @@ import controller.map.misc.MapReaderAdapter;
  *
  * @author Jonathan Lovelace
  */
-public final class QueryCLI {
+public final class QueryCLI implements ISPDriver {
 	/**
 	 * Logger.
 	 */
@@ -235,21 +236,9 @@ public final class QueryCLI {
 	 */
 	public static void main(final String[] args) {
 		try {
-			new QueryCLI().repl(new MapReaderAdapter().readMap(args[0],
-					new Warning(Warning.Action.Warn)), new BufferedReader(
-					new InputStreamReader(System.in)), SystemOut.SYS_OUT);
-		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, "XML parsing error", e);
-			DriverQuit.quit(1);
-			return; // NOPMD;
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error", e);
-			DriverQuit.quit(2);
-			return; // NOPMD;
-		} catch (final SPFormatException e) {
-			LOGGER.log(Level.SEVERE, "Map contains invalid data", e);
-			DriverQuit.quit(2);
-			return; // NOPMD;
+			new QueryCLI().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
 
@@ -276,5 +265,30 @@ public final class QueryCLI {
 		ostream.print(encounters);
 		ostream.println(" encounters with fields, meadows, groves, orchards, or shrubs.");
 		ostream.println("Quit: Exit the program.");
+	}
+	/**
+	 * Run the driver.
+	 * @param args command-line arguments
+	 * @throws DriverFailedException if something goes wrong
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		if (args.length == 0) {
+			throw new DriverFailedException("Need one argument",
+					new IllegalArgumentException("Need one argument"));
+		}
+		try {
+			repl(new MapReaderAdapter().readMap(args[0],
+					new Warning(Warning.Action.Warn)), new BufferedReader(
+					new InputStreamReader(System.in)), SystemOut.SYS_OUT);
+		} catch (final XMLStreamException e) {
+			throw new DriverFailedException("XML parsing error in " + args[0], e);
+		} catch (final FileNotFoundException e) {
+			throw new DriverFailedException("File " + args[0] + " not found", e);
+		} catch (final IOException e) {
+			throw new DriverFailedException("I/O error reading " + args[0], e);
+		} catch (final SPFormatException e) {
+			throw new DriverFailedException("Map " + args[0] + " contains invalid data", e);
+		}
 	}
 }
