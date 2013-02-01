@@ -1,6 +1,8 @@
 package controller.map.drivers;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -18,7 +20,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public final class SubsetDriver {
+public final class SubsetDriver implements ISPDriver {
 	/**
 	 * Do not instantiate.
 	 */
@@ -31,38 +33,11 @@ public final class SubsetDriver {
 	 */
 	// ESCA-JAVA0177:
 	public static void main(final String[] args) {
-		if (args.length < 2) {
-			SystemOut.SYS_OUT
-					.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
-		}
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final Pair<IMap, Boolean> mainPair = safeLoadMap(reader, args[0]);
-		if (Boolean.TRUE.equals(mainPair.second())) {
-			System.err.println("Error loading main map");
-			System.exit(1);
-			return;
-		}
-		final IMap mainMap = mainPair.first(); // NOPMD
-		SystemOut.SYS_OUT
-				.print("OK if strict subset, WARN if needs manual checking,");
-		SystemOut.SYS_OUT.println("FAIL if error in reading");
-		for (final String arg : args) {
-			if (arg.equals(args[0])) {
-				continue;
-			}
-			SystemOut.SYS_OUT.print(arg);
-			SystemOut.SYS_OUT.print("\t...\t\t");
-			final Pair<IMap, Boolean> pair = safeLoadMap(reader, arg);
-			if (Boolean.TRUE.equals(pair.second())) {
-				SystemOut.SYS_OUT.println("FAIL");
-				continue;
-			}
-			final IMap map = pair.first(); // NOPMD
-			if (mainMap.isSubset(map, SystemOut.SYS_OUT)) {
-				SystemOut.SYS_OUT.println("OK");
-			} else {
-				SystemOut.SYS_OUT.println("WARN");
-			}
+		try {
+			new SubsetDriver().startDriver(args);
+		} catch (DriverFailedException except) {
+			Logger.getLogger(SubsetDriver.class.getName()).log(
+					Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
 
@@ -91,6 +66,52 @@ public final class SubsetDriver {
 		} catch (final SPFormatException e) {
 			Warning.INSTANCE.warn(e);
 			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
+		}
+	}
+	/**
+	 * Run the driver.
+	 * @param args command-line arguments
+	 * @throws DriverFailedException if the main map fails to load
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		if (args.length < 2) {
+			SystemOut.SYS_OUT
+					.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
+			return;
+		}
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		IMap mainMap;
+		try {
+			mainMap = reader.readMap(args[0], new Warning(// NOPMD
+					Warning.Action.Ignore));
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error loading main map " + args[0], except);
+		} catch (XMLStreamException except) {
+			throw new DriverFailedException("XML error reading main map " + args[0], except);
+		} catch (SPFormatException except) {
+			throw new DriverFailedException("Invalid SP XML in main map " + args[0], except);
+		}
+		SystemOut.SYS_OUT
+				.print("OK if strict subset, WARN if needs manual checking,");
+		SystemOut.SYS_OUT.println("FAIL if error in reading");
+		for (final String arg : args) {
+			if (arg.equals(args[0])) {
+				continue;
+			}
+			SystemOut.SYS_OUT.print(arg);
+			SystemOut.SYS_OUT.print("\t...\t\t");
+			final Pair<IMap, Boolean> pair = safeLoadMap(reader, arg);
+			if (Boolean.TRUE.equals(pair.second())) {
+				SystemOut.SYS_OUT.println("FAIL");
+				continue;
+			}
+			final IMap map = pair.first(); // NOPMD
+			if (mainMap.isSubset(map, SystemOut.SYS_OUT)) {
+				SystemOut.SYS_OUT.println("OK");
+			} else {
+				SystemOut.SYS_OUT.println("WARN");
+			}
 		}
 	}
 
