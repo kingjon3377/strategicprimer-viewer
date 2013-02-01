@@ -6,8 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.MapModel;
@@ -104,7 +104,7 @@ public final class AdvancementStart implements ISPDriver {
 			public void run() {
 				final AdvancementFrame frame = new AdvancementFrame(model);
 				frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				frame.setVisible(true);
 			}
 		});
