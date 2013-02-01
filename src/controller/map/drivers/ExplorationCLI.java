@@ -34,21 +34,7 @@ import controller.map.misc.MapHelper;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationCLI {
-	/**
-	 * Check that all sizes are the same.
-	 *
-	 * @param master The master map.
-	 * @param secondaries Any player maps that should be updated with results of
-	 *        exploration.
-	 */
-	private static void checkDims(final IMap master, final List<IMap> secondaries) {
-		for (IMap map : secondaries) {
-			if (!map.getDimensions().equals(master.getDimensions())) {
-				throw new IllegalArgumentException("Size mismatch");
-			}
-		}
-	}
+public class ExplorationCLI implements ISPDriver {
 	/**
 	 * Find a fixture's location in the master map.
 	 *
@@ -187,80 +173,25 @@ public class ExplorationCLI {
 	 * @param args the command-line arguments
 	 */
 	public static void main(final String[] args)  {
-		if (args.length == 0) {
-			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
-			System.exit(1);
-		}
-		final List<IMap> secondaries = new ArrayList<IMap>();
-		final List<IMap> maps = new ArrayList<IMap>();
-		final MapHelper helper = new MapHelper();
-		IMap master;
 		try {
-			master = helper.readMaps(args, maps, secondaries);
-		} catch (IOException except) {
-			System.err.println("I/O error reading maps:");
-			System.err.println(except.getLocalizedMessage());
-			System.exit(1);
-			return; // NOPMD
-		} catch (XMLStreamException except) {
-			System.err.println("Malformed XML in map file:");
-			System.err.println(except.getLocalizedMessage());
-			System.exit(2);
-			return; // NOPMD
-		} catch (SPFormatException except) {
-			System.err.println("SP format error in map file:");
-			System.err.println(except.getLocalizedMessage());
-			System.exit(3);
-			return; // NOPMD
-		}
-		final ExplorationCLI cli = new ExplorationCLI();
-		checkDims(master, secondaries);
-		final List<Player> players = helper.getPlayerChoices(maps);
-		try {
-			final int playerNum = helper.chooseFromList(players,
-					"The players shared by all the maps:",
-					"No players shared by all the maps.",
-					"Please make a selection: ", true);
-			if (playerNum < 0) {
-				return; // NOPMD
-			}
-			final Player player = players.get(playerNum);
-			final List<Unit> units = helper.getUnits(master, player);
-			final int unitNum = helper.chooseFromList(units, "Player's units:",
-					"That player has no units in the master map.",
-					"Please make a selection: ", true);
-			if (unitNum < 0) {
-				return; // NOPMD
-			}
-			final Unit unit = units.get(unitNum);
-			SystemOut.SYS_OUT.println("Details of that unit:");
-			SystemOut.SYS_OUT.println(unit.verbose());
-			movementREPL(secondaries, master, cli, helper, unit,
-					helper.inputNumber("MP that unit has: "));
-		} catch (IOException except) {
-			System.exit(4);
-			return; // NOPMD
-		}
-		try {
-			helper.writeMaps(maps, args);
-		} catch (IOException except) {
-			System.err.println("I/O error writing to a map file:");
-			System.err.println(except.getLocalizedMessage());
-			System.exit(5);
+			new ExplorationCLI().startDriver(args);
+		} catch (DriverFailedException except) {
+			System.err.print(except.getMessage());
+			System.err.println(':');
+			System.err.println(except.getCause().getLocalizedMessage());
 		}
 	}
 	/**
 	 * TODO: Move much of this logic into class methods, so we don't need as many parameters.
 	 * @param secondaries the maps to update with data from the master map
 	 * @param master the main map
-	 * @param cli the object that does the moving of the unit
 	 * @param helper the helper to use to ask the user for directions.
 	 * @param unit the unit in motion
 	 * @param totalMP the unit's total MP (to start with)
 	 * @throws IOException on I/O error getting input
 	 */
-	private static void movementREPL(final List<IMap> secondaries,
-			final IMap master, final ExplorationCLI cli,
+	private void movementREPL(final List<IMap> secondaries,
+			final IMap master,
 			final MapHelper helper, final Unit unit, final int totalMP)
 			throws IOException {
 		int movement = totalMP;
@@ -274,7 +205,7 @@ public class ExplorationCLI {
 					.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
 			int cost = 0;
-			cost = movementAtom(secondaries, master, cli, helper, unit);
+			cost = movementAtom(secondaries, master, helper, unit);
 			movement -= cost;
 		}
 	}
@@ -284,15 +215,14 @@ public class ExplorationCLI {
 	 *
 	 * @param secondaries the maps to update with data from the master map
 	 * @param master the main map
-	 * @param cli the object that does the moving of the unit
 	 * @param helper the helper to use to ask the user for directions.
 	 * @param unit the unit in motion
 	 * @return the cost of the specified movement, 1 if not possible (in that
 	 *         case we add the tile but no fixtures), or MAX_INT if "exit".
 	 * @throws IOException on I/O error
 	 */
-	private static int movementAtom(final List<IMap> secondaries,
-			final IMap master, final ExplorationCLI cli,
+	private int movementAtom(final List<IMap> secondaries,
+			final IMap master,
 			final MapHelper helper, final Unit unit) throws IOException {
 		int cost;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
@@ -302,9 +232,9 @@ public class ExplorationCLI {
 			return Integer.MAX_VALUE; // NOPMD
 		}
 		final Direction direction = Direction.values()[directionNum];
-		final Point point = cli.find(unit, master);
+		final Point point = find(unit, master);
 		try {
-			cost = cli.move(master, secondaries, unit, point, direction);
+			cost = move(master, secondaries, unit, point, direction);
 		} catch (TraversalImpossibleException except) {
 			SystemOut.SYS_OUT.printC(
 					"That direction is impassable; we've made sure ").println(
@@ -403,5 +333,65 @@ public class ExplorationCLI {
 		 * Northwest.
 		 */
 		Northwest;
+	}
+	/**
+	 * Run the driver.
+	 * @param args the command-line arguments
+	 * @throws DriverFailedException on error.
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		if (args.length == 0) {
+			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
+			System.exit(1);
+		}
+		final List<IMap> secondaries = new ArrayList<IMap>();
+		final List<IMap> maps = new ArrayList<IMap>();
+		final MapHelper helper = new MapHelper();
+		IMap master;
+		try {
+			master = helper.readMaps(args, maps, secondaries);
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error reading maps", except);
+		} catch (XMLStreamException except) {
+			throw new DriverFailedException("Malformed XML in map file", except);
+		} catch (SPFormatException except) {
+			throw new DriverFailedException("SP format error in map file", except);
+		}
+		for (IMap map : secondaries) {
+			if (!map.getDimensions().equals(master.getDimensions())) {
+				throw new IllegalArgumentException("Size mismatch");
+			}
+		}
+		final List<Player> players = helper.getPlayerChoices(maps);
+		try {
+			final int playerNum = helper.chooseFromList(players,
+					"The players shared by all the maps:",
+					"No players shared by all the maps.",
+					"Please make a selection: ", true);
+			if (playerNum < 0) {
+				return; // NOPMD
+			}
+			final Player player = players.get(playerNum);
+			final List<Unit> units = helper.getUnits(master, player);
+			final int unitNum = helper.chooseFromList(units, "Player's units:",
+					"That player has no units in the master map.",
+					"Please make a selection: ", true);
+			if (unitNum < 0) {
+				return; // NOPMD
+			}
+			final Unit unit = units.get(unitNum);
+			SystemOut.SYS_OUT.println("Details of that unit:");
+			SystemOut.SYS_OUT.println(unit.verbose());
+			movementREPL(secondaries, master, helper, unit,
+					helper.inputNumber("MP that unit has: "));
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+		try {
+			helper.writeMaps(maps, args);
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error writing to a map file", except);
+		}
 	}
 }
