@@ -34,8 +34,9 @@ public final class MapUpdater implements ISPDriver {
 	 * Update a derived map from the master.
 	 * @param master the master map
 	 * @param derived the derived map to update.
+	 * @return the derived method.
 	 */
-	public void update(final IMap master, final IMap derived) {
+	public IMap update(final IMap master, final IMap derived) {
 		System.out.print("Updating ");
 		if (!master.getDimensions().equals(derived.getDimensions())) {
 			throw new IllegalArgumentException("Map sizes don't match");
@@ -45,6 +46,7 @@ public final class MapUpdater implements ISPDriver {
 				derived.getTile(point).update(master.getTile(point));
 			}
 		}
+		return derived;
 	}
 
 	/**
@@ -145,8 +147,7 @@ public final class MapUpdater implements ISPDriver {
 			}
 			System.out.print("Reading ");
 			// ESCA-JAVA0177:
-			final IMap derived = loadMap(arg);
-			update(master, derived);
+			final IMap derived = update(master, loadMap(arg));
 			System.out.print("Writing ");
 			// ESCA-JAVA0266:
 			PrintWriter writer;
