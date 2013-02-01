@@ -6,7 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.MapModel;
@@ -18,9 +19,9 @@ import view.util.ErrorShower;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between
@@ -29,7 +30,7 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
  * @author Jonathan Lovelace
  *
  */
-public final class ViewerStart {
+public final class ViewerStart implements ISPDriver {
 	/**
 	 * Do not instantiate.
 	 */
@@ -63,6 +64,22 @@ public final class ViewerStart {
 	 *
 	 */
 	public static void main(final String[] args) {
+		try {
+			new ViewerStart().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
+			ErrorShower.showErrorDialog(null, except.getMessage());
+		}
+	}
+	/**
+	 * Run the driver.
+	 * @param args Command-line arguments.
+	 * @throws DriverFailedException if the driver failed to run.
+	 *
+	 * @see controller.map.drivers.ISPDriver#startDriver(java.lang.String[])
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD
 		try {
@@ -71,34 +88,34 @@ public final class ViewerStart {
 			SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
 			return;
 		}
+		final MapModel model; // NOPMD
 		try {
-			final MapModel model = new MapModel(new MapReaderAdapter().readMap(
+			model = new MapModel(new MapReaderAdapter().readMap(
 					filename, new Warning(Warning.Action.Warn)));
-			final ViewerFrame frame = new ViewerFrame(model);
-			final JFileChooser chooser = new JFileChooser(".");
-			chooser.setFileFilter(new MapFileFilter());
-			frame.setJMenuBar(new SPMenu(new IOHandler(model, chooser), frame,
-					model));
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setVisible(true);
 			if (args.length > 1) {
 				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1],
 						new Warning(Warning.Action.Warn)));
 			}
 		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			ErrorShower
-					.showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
+			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
-			ErrorShower.showErrorDialog(null, "File " + filename
-					+ NOT_FOUND_ERROR);
+			throw new DriverFailedException("File " + filename + NOT_FOUND_ERROR, e);
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			ErrorShower.showErrorDialog(null, "I/O error reading " + filename);
+			throw new DriverFailedException("I/O error reading " + filename, e);
 		} catch (final SPFormatException e) {
-			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
-			ErrorShower.showErrorDialog(null, INV_DATA_ERROR);
+			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
+		final JFileChooser chooser = new JFileChooser(".");
+		chooser.setFileFilter(new MapFileFilter());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				final ViewerFrame frame = new ViewerFrame(model);
+				frame.setJMenuBar(new SPMenu(new IOHandler(model, chooser),
+						frame, model));
+				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+				frame.setVisible(true);
+			}
+		});
 	}
 }
