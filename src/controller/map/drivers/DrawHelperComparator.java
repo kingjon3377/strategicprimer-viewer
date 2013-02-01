@@ -30,7 +30,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class DrawHelperComparator { // NOPMD
+public class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
 	 * Label to put before every direct-helper test result.
 	 */
@@ -43,45 +43,21 @@ public class DrawHelperComparator { // NOPMD
 	 * Label to put before every version-2 helper test result.
 	 */
 	private static final String VER_TWO_NAME = "Ver. 2: ";
-
-	/**
-	 * Constructor.
-	 *
-	 * @param map the map we'll be drawing in the tests
-	 * @param repetitions how many times to repeat each test
-	 */
-	public DrawHelperComparator(final IMap map, final int repetitions) {
-		spmap = map;
-		reps = repetitions;
-		tsize = new TileViewSize().getSize(map.getDimensions().version);
-	}
-
-	/**
-	 * The map.
-	 */
-	private final IMap spmap;
-	/**
-	 * How many times to repeat each test.
-	 */
-	private final int reps;
-	/**
-	 * The size of a tile, factored out to reduce number of lines a line of code
-	 * has to use.
-	 */
-	private final int tsize;
-
 	/**
 	 * The first test: all in one place.
 	 *
 	 * @param helper the helper to test
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 *
 	 * @return how long the test took, in ns.
 	 */
-	public long first(final TileDrawHelper helper) {
+	public long first(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize,
 				BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
-		firstBody(helper, image);
+		firstBody(helper, image, spmap, reps, tsize);
 		final long end = System.nanoTime();
 		return end - start;
 	}
@@ -91,9 +67,12 @@ public class DrawHelperComparator { // NOPMD
 	 *
 	 * @param helper the helper to test
 	 * @param image the image used in the test.
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 */
-	private void firstBody(final TileDrawHelper helper,
-			final BufferedImage image) {
+	private static void firstBody(final TileDrawHelper helper,
+			final BufferedImage image, final IMap spmap, final int reps, final int tsize) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.getTiles()) {
@@ -107,15 +86,17 @@ public class DrawHelperComparator { // NOPMD
 	 * The second test: Translating.
 	 *
 	 * @param helper the helper to test
-	 *
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long second(final TileDrawHelper helper) {
+	public long second(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols,
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
-		secondBody(helper, image);
+		secondBody(helper, image, spmap, reps, tsize);
 		final long end = System.nanoTime();
 		return end - start;
 	}
@@ -125,9 +106,12 @@ public class DrawHelperComparator { // NOPMD
 	 *
 	 * @param helper the helper to test
 	 * @param image the image used in the test.
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 */
-	private void secondBody(final TileDrawHelper helper,
-			final BufferedImage image) {
+	private static void secondBody(final TileDrawHelper helper,
+			final BufferedImage image, final IMap spmap, final int reps, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -143,17 +127,19 @@ public class DrawHelperComparator { // NOPMD
 	 * Third test: in-place, reusing Graphics.
 	 *
 	 * @param helper the helper to test
-	 *
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long third(final TileDrawHelper helper) {
+	public long third(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize, // NOPMD
 				BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
-			thirdBody(helper, pen);
+			thirdBody(helper, pen, spmap, tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -164,8 +150,10 @@ public class DrawHelperComparator { // NOPMD
 	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
+	 * @param spmap the map being used for the test
+	 * @param tsize the size to draw each tile
 	 */
-	private void thirdBody(final TileDrawHelper helper, final Graphics pen) {
+	private static void thirdBody(final TileDrawHelper helper, final Graphics pen, final IMap spmap, final int tsize) {
 		for (final Point point : spmap.getTiles()) {
 			helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
 		}
@@ -175,10 +163,12 @@ public class DrawHelperComparator { // NOPMD
 	 * Third test: translating, reusing Graphics.
 	 *
 	 * @param helper the helper to test
-	 *
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long fourth(final TileDrawHelper helper) {
+	public long fourth(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -186,7 +176,7 @@ public class DrawHelperComparator { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
-			fourthBody(helper, pen);
+			fourthBody(helper, pen, spmap, tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -197,8 +187,10 @@ public class DrawHelperComparator { // NOPMD
 	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
+	 * @param spmap the map being used for the test
+	 * @param tsize the size to draw each tile
 	 */
-	private void fourthBody(final TileDrawHelper helper, final Graphics pen) {
+	private static void fourthBody(final TileDrawHelper helper, final Graphics pen, final IMap spmap, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
 			helper.drawTile(pen, spmap.getTile(point),
@@ -228,10 +220,12 @@ public class DrawHelperComparator { // NOPMD
 	 * Fifth test, part one: iterating.
 	 *
 	 * @param helper the helper to test
-	 *
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long fifthOne(final TileDrawHelper helper) {
+	public long fifthOne(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -239,7 +233,7 @@ public class DrawHelperComparator { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
-			fifthOneBody(helper, pen);
+			fifthOneBody(spmap, helper, pen, tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -250,8 +244,10 @@ public class DrawHelperComparator { // NOPMD
 	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
+	 * @param spmap the map being used for the test
+	 * @param tsize the size to draw each tile
 	 */
-	private void fifthOneBody(final TileDrawHelper helper, final Graphics pen) {
+	private static void fifthOneBody(final IMap spmap, final TileDrawHelper helper, final Graphics pen, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
 			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
@@ -267,10 +263,12 @@ public class DrawHelperComparator { // NOPMD
 	 * Fifth test, part two: filtering.
 	 *
 	 * @param helper the helper to test
-	 *
+	 * @param spmap the map being used for the test
+	 * @param reps the number of times to run this test between starting and stopping the timer
+	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long fifthTwo(final TileDrawHelper helper) {
+	public long fifthTwo(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -278,7 +276,7 @@ public class DrawHelperComparator { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
-			fifthTwoBody(helper, pen);
+			fifthTwoBody(helper, pen, spmap, tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -289,8 +287,10 @@ public class DrawHelperComparator { // NOPMD
 	 *
 	 * @param helper the helper being tested
 	 * @param pen the Graphics used to draw to the image
+	 * @param spmap the map being used for the test
+	 * @param tsize the size to draw each tile
 	 */
-	private void fifthTwoBody(final TileDrawHelper helper, final Graphics pen) {
+	private static void fifthTwoBody(final TileDrawHelper helper, final Graphics pen, final IMap spmap, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
 			if (point.row >= TEST_MIN_ROW && point.row < TEST_MAX_ROW
@@ -304,7 +304,10 @@ public class DrawHelperComparator { // NOPMD
 			}
 		}
 	}
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(DrawHelperComparator.class.getName());
 	/**
 	 * A driver method to compare the two helpers, and the two map-GUI
 	 * implementations.
@@ -312,110 +315,79 @@ public class DrawHelperComparator { // NOPMD
 	 * @param args the command-line arguments.
 	 */
 	public static void main(final String[] args) { // NOPMD
-		final Random random = new Random();
-		for (String filename : args) {
-			PointFactory.clearCache();
-			if (random.nextBoolean()) {
-				PointFactory.shouldUseCache(true);
-				System.out.println("Using cache:");
-				runAllTests(filename);
-				PointFactory.shouldUseCache(false);
-				System.out.println("Not using cache:");
-				runAllTests(filename);
-			} else {
-				PointFactory.shouldUseCache(false);
-				System.out.println("Not using cache:");
-				runAllTests(filename);
-				PointFactory.shouldUseCache(true);
-				System.out.println("Using cache:");
-				runAllTests(filename);
-			}
+		try {
+			new DrawHelperComparator().startDriver(args);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
 
 	/**
 	 * Run all the tests on the specified file.
-	 * @param filename the file to use for the tests.
+	 * @param map the map to use for the tests.
+	 * @param reps how many times to repeat each test (more takes longer, but gives more precise result)
 	 */
-	private static void runAllTests(final String filename) {
-		final Logger logger = Logger.getLogger(DrawHelperComparator.class
-				.getName());
-		// ESCA-JAVA0177:
-		final DrawHelperComparator comp; // NOPMD
-		try {
-			comp = new DrawHelperComparator(// NOPMD
-					new MapReaderAdapter().readMap(filename, new Warning(
-							Warning.Action.Ignore)), 50);
-		} catch (final IOException e) {
-			logger.log(Level.SEVERE, "I/O error reading map", e);
-			return; // NOPMD
-		} catch (final XMLStreamException e) {
-			logger.log(Level.SEVERE, "XML error reading map", e);
-			return; // NOPMD
-		} catch (final SPFormatException e) {
-			logger.log(Level.SEVERE, "Map format error reading map", e);
-			return;
-		}
-		SystemOut.SYS_OUT.print("Testing using ");
-		SystemOut.SYS_OUT.println(filename);
+	public void runAllTests(final IMap map, final int reps) {
+		final int repetitions = reps;
+		final int tsize = new TileViewSize().getSize(map.getDimensions().version);
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
 		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null);
 		SystemOut.SYS_OUT.println("1. All in one place:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		long oneTotal = comp.printStats(comp.first(helperOne));
+		long oneTotal = printStats(first(helperOne, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		long twoTotal = comp.printStats(comp.first(helperTwo));
+		long twoTotal = printStats(first(helperTwo, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		long threeTotal = comp.printStats(comp.first(helperThree));
+		long threeTotal = printStats(first(helperThree, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.println("2. Translating:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		oneTotal += comp.printStats(comp.second(helperOne));
+		oneTotal += printStats(second(helperOne, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		twoTotal += comp.printStats(comp.second(helperTwo));
+		twoTotal += printStats(second(helperTwo, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		threeTotal += comp.printStats(comp.second(helperThree));
+		threeTotal += printStats(second(helperThree, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.println("3. In-place, reusing Graphics:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		oneTotal += comp.printStats(comp.third(helperOne));
+		oneTotal += printStats(third(helperOne, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		twoTotal += comp.printStats(comp.third(helperTwo));
+		twoTotal += printStats(third(helperTwo, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		threeTotal += comp.printStats(comp.third(helperThree));
+		threeTotal += printStats(third(helperThree, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.println("4. Translating, reusing Graphics:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		oneTotal += comp.printStats(comp.fourth(helperOne));
+		oneTotal += printStats(fourth(helperOne, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		twoTotal += comp.printStats(comp.fourth(helperTwo));
+		twoTotal += printStats(fourth(helperTwo, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		threeTotal += comp.printStats(comp.fourth(helperThree));
+		threeTotal += printStats(fourth(helperThree, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.println("5. Ordered iteration vs filtering:");
 		SystemOut.SYS_OUT.print("Iteration, ");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		oneTotal += comp.printStats(comp.fifthOne(helperOne));
+		oneTotal += printStats(fifthOne(helperOne, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print("Iteration, ");
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		twoTotal += comp.printStats(comp.fifthOne(helperTwo));
+		twoTotal += printStats(fifthOne(helperTwo, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print("Iteration, ");
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		threeTotal += comp.printStats(comp.fifthOne(helperThree));
+		threeTotal += printStats(fifthOne(helperThree, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print("Filtering, ");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		oneTotal += comp.printStats(comp.fifthTwo(helperOne));
+		oneTotal += printStats(fifthTwo(helperOne, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print("Filtering, ");
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		twoTotal += comp.printStats(comp.fifthTwo(helperTwo));
+		twoTotal += printStats(fifthTwo(helperTwo, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.print("Filtering, ");
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		threeTotal += comp.printStats(comp.fifthTwo(helperThree));
+		threeTotal += printStats(fifthTwo(helperThree, map, repetitions, tsize), repetitions);
 		SystemOut.SYS_OUT.println("--------------------------------------");
 		SystemOut.SYS_OUT.print("Total:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
-		comp.printStats(oneTotal);
+		printStats(oneTotal, repetitions);
 		SystemOut.SYS_OUT.print(DIRECT_NAME);
-		comp.printStats(twoTotal);
+		printStats(twoTotal, repetitions);
 		SystemOut.SYS_OUT.print(VER_TWO_NAME);
-		comp.printStats(threeTotal);
+		printStats(threeTotal, repetitions);
 		SystemOut.SYS_OUT.println();
 	}
 
@@ -423,9 +395,10 @@ public class DrawHelperComparator { // NOPMD
 	 * A helper method to reduce repeated strings.
 	 *
 	 * @param total the total time
+	 * @param reps how many times the test ran
 	 * @return that total
 	 */
-	public long printStats(final long total) {
+	public long printStats(final long total, final int reps) {
 		SystemOut.SYS_OUT.print('\t');
 		SystemOut.SYS_OUT.print(total);
 		SystemOut.SYS_OUT.print(", average of\t");
@@ -441,5 +414,51 @@ public class DrawHelperComparator { // NOPMD
 	@Override
 	public String toString() {
 		return "DrawHelperComparator";
+	}
+	/**
+	 * Run the driver.
+	 * @param args command-line arguments
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		final Random random = new Random();
+		final MapReaderAdapter adapter = new MapReaderAdapter();
+		final int reps = 50; // NOPMD
+		final Warning warner = new Warning(Warning.Action.Ignore);
+		for (String filename : args) {
+			// ESCA-JAVA0177:
+			final IMap map; // NOPMD
+			try {
+				map = adapter.readMap(filename, warner);
+			} catch (final IOException e) {
+				LOGGER.log(Level.SEVERE, "I/O error reading map", e);
+				continue; // NOPMD
+			} catch (final XMLStreamException e) {
+				LOGGER.log(Level.SEVERE, "XML error reading map", e);
+				continue; // NOPMD
+			} catch (final SPFormatException e) {
+				LOGGER.log(Level.SEVERE, "Map format error reading map", e);
+				continue;
+			}
+			SystemOut.SYS_OUT.print("Testing using ");
+			SystemOut.SYS_OUT.println(filename);
+			PointFactory.clearCache();
+			if (random.nextBoolean()) {
+				PointFactory.shouldUseCache(true);
+				System.out.println("Using cache:");
+				runAllTests(map, reps);
+				PointFactory.shouldUseCache(false);
+				System.out.println("Not using cache:");
+				runAllTests(map, reps);
+			} else {
+				PointFactory.shouldUseCache(false);
+				System.out.println("Not using cache:");
+				runAllTests(map, reps);
+				PointFactory.shouldUseCache(true);
+				System.out.println("Using cache:");
+				runAllTests(map, reps);
+			}
+		}
 	}
 }
