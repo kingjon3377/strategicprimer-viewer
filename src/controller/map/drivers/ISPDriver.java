@@ -29,5 +29,13 @@ public interface ISPDriver {
 		public DriverFailedException(final Throwable cause) {
 			super("The driver could not start because of an exception:", cause);
 		}
+		/**
+		 * Constructor.
+		 * @param string a custom error string
+		 * @param cause the cause. Should not be null.
+		 */
+		public DriverFailedException(final String string, final Throwable cause) {
+			super(string, cause);
+		}
 	}
 }
