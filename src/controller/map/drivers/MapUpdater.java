@@ -14,7 +14,6 @@ import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
 import util.Warning;
-import view.util.DriverQuit;
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -89,42 +88,29 @@ public final class MapUpdater implements ISPDriver {
 	}
 
 	/**
-	 * An exception to throw if execution gets past System.exit().
-	 */
-	private static final IllegalStateException PASSED_EXIT = new IllegalStateException(
-			"Execution passed System.exit()");
-
-	/**
-	 * Load a map; if this fails, log a suitable error message and quit.
+	 * Load a map; if this fails, throw a DriverFailedException.
 	 *
 	 * @param filename the name of the map to load
 	 *
 	 * @return the map
+	 * @throws DriverFailedException on any of the errors that may crop up
 	 */
-	private static IMap loadMap(final String filename) {
+	private static IMap loadMap(final String filename) throws DriverFailedException {
 		try {
 			return new MapReaderAdapter().readMap(filename, new Warning(
 					Warning.Action.Ignore));
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE,
-					buildString("File ", filename, " not found"), e);
-			DriverQuit.quit(1);
-			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
+			throw new DriverFailedException(buildString("File ", filename,
+					" not found"), e);
 		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE,
-					buildString("XML stream error parsing ", filename), e);
-			DriverQuit.quit(2);
-			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
+			throw new DriverFailedException(buildString(
+					"XML stream error parsing ", filename), e);
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE,
-					buildString("I/O error processing ", filename), e);
-			DriverQuit.quit(3);
-			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
+			throw new DriverFailedException(buildString(
+					"I/O error processing ", filename), e);
 		} catch (final SPFormatException e) {
-			LOGGER.log(Level.SEVERE,
-					buildString(filename, " contained invalid data"), e);
-			DriverQuit.quit(4);
-			throw PASSED_EXIT; // SUPPRESS CHECKSTYLE This is unreachable
+			throw new DriverFailedException(buildString(filename,
+					" contained invalid data"), e);
 		}
 	}
 
@@ -144,7 +130,8 @@ public final class MapUpdater implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 2) {
-			throw new IllegalArgumentException("Not enough arguments");
+			throw new DriverFailedException("Need at least two arguments",
+					new IllegalArgumentException("Not enough arguments"));
 		}
 		System.out.print("Base ");
 		System.out.print(args[0]);
