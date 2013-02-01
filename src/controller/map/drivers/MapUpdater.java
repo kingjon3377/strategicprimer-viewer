@@ -36,6 +36,7 @@ public final class MapUpdater implements ISPDriver {
 	 * @param derived the derived map to update.
 	 */
 	public void update(final IMap master, final IMap derived) {
+		System.out.print("Updating ");
 		if (!master.getDimensions().equals(derived.getDimensions())) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
@@ -145,7 +146,6 @@ public final class MapUpdater implements ISPDriver {
 			System.out.print("Reading ");
 			// ESCA-JAVA0177:
 			final IMap derived = loadMap(arg);
-			System.out.print("Updating ");
 			update(master, derived);
 			System.out.print("Writing ");
 			// ESCA-JAVA0266:
