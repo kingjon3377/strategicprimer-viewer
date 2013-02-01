@@ -83,15 +83,10 @@ public final class AdvancementStart implements ISPDriver {
 			SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
 			return;
 		}
+		final MapModel model; // NOPMD
 		try {
-			final MapModel model = new MapModel(new MapReaderAdapter().readMap(
+			model = new MapModel(new MapReaderAdapter().readMap(
 					filename, new Warning(Warning.Action.Warn)));
-			final AdvancementFrame frame = new AdvancementFrame(model);
-			final JFileChooser chooser = new JFileChooser(".");
-			chooser.setFileFilter(new MapFileFilter());
-			frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setVisible(true);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 		} catch (final FileNotFoundException e) {
@@ -101,5 +96,11 @@ public final class AdvancementStart implements ISPDriver {
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
+		final AdvancementFrame frame = new AdvancementFrame(model);
+		final JFileChooser chooser = new JFileChooser(".");
+		chooser.setFileFilter(new MapFileFilter());
+		frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}
 }
