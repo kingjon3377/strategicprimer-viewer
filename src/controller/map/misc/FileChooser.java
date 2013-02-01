@@ -53,15 +53,22 @@ public class FileChooser {
 		final JFileChooser fileChooser = chooser;
 		if (!shouldReturn) {
 			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					setFilename(fileChooser.getSelectedFile().getPath());
-				}
+				if (SwingUtilities.isEventDispatchThread()) {
+					if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+						setFilename(fileChooser.getSelectedFile().getPath());
 					}
+				} else {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+								setFilename(fileChooser.getSelectedFile()
+										.getPath());
+							}
+						}
 
-				});
+					});
+				}
 			} catch (InvocationTargetException except) {
 				throw new ChoiceInterruptedException(except.getCause()); // NOPMD
 			} catch (InterruptedException except) {
