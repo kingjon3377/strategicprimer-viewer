@@ -8,8 +8,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import util.EqualsAny;
 import util.Pair;
+import view.util.AppChooserFrame;
 
 /**
  * A driver to start other drivers. At first it just starts one. TODO: make it
@@ -99,11 +102,24 @@ public class AppStarter implements ISPDriver {
 			}
 		}
 		if (drivers == null) {
-			// FIXME: Implement showing a chooser window
+			startChooser(others);
 		} else {
 			final Class<? extends ISPDriver> driver = gui ? drivers.second() : drivers.first();
-			startDriver(driver, others);
+			startChosenDriver(driver, others);
 		}
+	}
+	/**
+	 * Start the app-chooser window.
+	 * @param others the parameters to pass to the chosen driver
+	 */
+	private static void startChooser(final List<String> others) {
+		// TODO: CLI version when --cli
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new AppChooserFrame(others).setVisible(true);
+			}
+		});
 	}
 	/**
 	 * Start a driver.
@@ -111,7 +127,7 @@ public class AppStarter implements ISPDriver {
 	 * @param params non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startDriver(final Class<? extends ISPDriver> driver, // NOPMD
+	private static void startChosenDriver(final Class<? extends ISPDriver> driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
 		try {
 			driver.newInstance().startDriver(params.toArray(new String[params.size()]));
