@@ -7,10 +7,8 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
-import util.Pair;
 import util.Warning;
 import view.util.SystemOut;
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 
@@ -27,7 +25,23 @@ public final class SubsetDriver implements ISPDriver {
 	private SubsetDriver() {
 		// Do nothing
 	}
-
+	/**
+	 * Possible return values for sub-maps.
+	 */
+	private enum Returns {
+		/**
+		 * The map is a subset.
+		 */
+		OK,
+		/**
+		 * The map isn't a subset.
+		 */
+		Warn,
+		/**
+		 * The map failed to load.
+		 */
+		Fail;
+	}
 	/**
 	 * @param args the files to check
 	 */
@@ -41,33 +55,6 @@ public final class SubsetDriver implements ISPDriver {
 		}
 	}
 
-	/**
-	 * Return the specified map (or null) *and* whether an exception was thrown.
-	 * Any thrown exceptions will additionally be warned about.
-	 *
-	 * @param reader the map reader to use
-	 * @param filename the name of a map
-	 * @return a Pair of the map (or null) and whether an exception was thrown.
-	 */
-	private static Pair<IMap, Boolean> safeLoadMap(
-			final MapReaderAdapter reader, final String filename) {
-		try {
-			return Pair.of((IMap) reader.readMap(filename, new Warning(// NOPMD
-					Warning.Action.Ignore)), Boolean.FALSE);
-		} catch (final MapVersionException e) {
-			Warning.INSTANCE.warn(e);
-			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
-		} catch (final IOException e) {
-			Warning.INSTANCE.warn(e);
-			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
-		} catch (final XMLStreamException e) {
-			Warning.INSTANCE.warn(e);
-			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
-		} catch (final SPFormatException e) {
-			Warning.INSTANCE.warn(e);
-			return Pair.of((IMap) null, Boolean.TRUE); // NOPMD
-		}
-	}
 	/**
 	 * Run the driver.
 	 * @param args command-line arguments
@@ -101,18 +88,49 @@ public final class SubsetDriver implements ISPDriver {
 			}
 			SystemOut.SYS_OUT.print(arg);
 			SystemOut.SYS_OUT.print("\t...\t\t");
-			final Pair<IMap, Boolean> pair = safeLoadMap(reader, arg);
-			if (Boolean.TRUE.equals(pair.second())) {
-				SystemOut.SYS_OUT.println("FAIL");
-				continue;
-			}
-			final IMap map = pair.first(); // NOPMD
-			if (mainMap.isSubset(map, SystemOut.SYS_OUT)) {
-				SystemOut.SYS_OUT.println("OK");
-			} else {
-				SystemOut.SYS_OUT.println("WARN");
-			}
+			printReturn(doSubsetTest(arg, reader, mainMap));
 		}
 	}
-
+	/**
+	 * Print a Returns value to stdout.
+	 * @param value the value to print.
+	 */
+	private static void printReturn(final Returns value) {
+		switch (value) {
+		case Fail:
+			SystemOut.SYS_OUT.println("FAIL");
+			break;
+		case OK:
+			SystemOut.SYS_OUT.println("OK");
+			break;
+		case Warn:
+			SystemOut.SYS_OUT.println("WARN");
+			break;
+		default:
+			throw new IllegalStateException("Can't get here");
+		}
+	}
+	/**
+	 * @param filename a filename
+	 * @param reader the map reader to use
+	 * @param mainMap the main map
+	 * @return the result of doing a subset test on the named map
+	 */
+	private static Returns doSubsetTest(final String filename,
+			final MapReaderAdapter reader, final IMap mainMap) {
+		final IMap map; // NOPMD
+		try {
+			map = reader.readMap(filename, new Warning(Warning.Action.Ignore));
+		} catch (IOException except) {
+			Warning.INSTANCE.warn(except);
+			return Returns.Fail; // NOPMD
+		} catch (XMLStreamException except) {
+			Warning.INSTANCE.warn(except);
+			return Returns.Fail; // NOPMD
+		} catch (SPFormatException except) {
+			Warning.INSTANCE.warn(except);
+			return Returns.Fail; // NOPMD
+		}
+		return mainMap.isSubset(map, SystemOut.SYS_OUT) ? Returns.OK : Returns.Warn;
+	}
 }
