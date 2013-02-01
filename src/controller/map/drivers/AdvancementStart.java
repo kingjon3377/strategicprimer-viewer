@@ -14,9 +14,12 @@ import util.Warning;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
+import view.util.SystemOut;
 import view.worker.WorkerMenu;
 import view.worker.AdvancementFrame;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 
@@ -39,24 +42,20 @@ public final class AdvancementStart {
 	 *        are ignored. TODO: add option handling.
 	 */
 	public static void main(final String[] args) {
-		final JFileChooser chooser = new JFileChooser(".");
-		chooser.setFileFilter(new MapFileFilter());
 		// ESCA-JAVA0177:
-		final String filename; // NOPMD // $codepro.audit.disable
-								// localDeclaration
-		if (args.length == 0) {
-			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				filename = chooser.getSelectedFile().getPath();
-			} else {
-				return;
-			}
-		} else {
-			filename = args[0];
+		final String filename; // NOPMD
+		try {
+			filename = new FileChooser(args.length == 0 ? "" : args[0]).getFilename();
+		} catch (ChoiceInterruptedException except) {
+			SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
+			return;
 		}
 		try {
 			final MapModel model = new MapModel(new MapReaderAdapter().readMap(
 					filename, new Warning(Warning.Action.Warn)));
 			final AdvancementFrame frame = new AdvancementFrame(model);
+			final JFileChooser chooser = new JFileChooser(".");
+			chooser.setFileFilter(new MapFileFilter());
 			frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);

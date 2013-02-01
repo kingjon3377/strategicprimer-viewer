@@ -1,0 +1,107 @@
+package controller.map.misc;
+
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+
+import view.map.main.MapFileFilter;
+
+/**
+ * A class to hide the details of choosing a file from the caller.
+ * @author Jonathan Lovelace
+ *
+ */
+public class FileChooser {
+	/**
+	 * The filename we'll return, or null.
+	 */
+	private String filename;
+	/**
+	 * Whether we should return the filename (if not, we'll show the dialog,
+	 * then throw an exception if that fails).
+	 */
+	private boolean shouldReturn;
+	/**
+	 * A file chooser.
+	 */
+	private final JFileChooser chooser = new JFileChooser(".");
+	/**
+	 * Constructor. When the filename is asked for, if the given value is valid,
+	 * we'll return it instead of showing a dialog.
+	 *
+	 * @param file the filename to return.
+	 */
+	public FileChooser(final String file) {
+		setFilename(file);
+		chooser.setFileFilter(new MapFileFilter());
+	}
+	/**
+	 * No-arg constructor. We'll show a dialog unconditionally when the filename
+	 * is asked for.
+	 */
+	public FileChooser() {
+		this(null);
+	}
+	/**
+	 * If no valid filename was passed in, show a dialog for the user to select
+	 * one; return the filename passed in or the filename the user selected.
+	 * @return the file the caller or the user chose
+	 * @throws ChoiceInterruptedException when the choice is interrupted or the user declines to choose a file.
+	 */
+	public String getFilename() throws ChoiceInterruptedException {
+		final JFileChooser fileChooser = chooser;
+		if (!shouldReturn) {
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					setFilename(fileChooser.getSelectedFile().getPath());
+				}
+					}
+
+				});
+			} catch (InvocationTargetException except) {
+				throw new ChoiceInterruptedException(except.getCause()); // NOPMD
+			} catch (InterruptedException except) {
+				throw new ChoiceInterruptedException(except);
+			}
+		}
+		if (filename == null || filename.isEmpty()) {
+			throw new ChoiceInterruptedException();
+		} else {
+			return filename;
+		}
+	}
+	/**
+	 * (Re-)set the filename to return.
+	 * @param file the filename to return
+	 */
+	public final void setFilename(final String file) {
+		if (file == null || file.isEmpty()) {
+			filename = "";
+			shouldReturn = false;
+		} else {
+			filename = file;
+			shouldReturn = true;
+		}
+	}
+	/**
+	 * An exception to throw when no selection was made or selection was interrupted by an exception.
+	 */
+	public static class ChoiceInterruptedException extends Exception {
+		/**
+		 * @param cause an exception that we caught that interrupted the choice
+		 */
+		public ChoiceInterruptedException(final Throwable cause) {
+			super("Choice of a file was interrupted by an exception:", cause);
+		}
+		/**
+		 * No-arg constructor.
+		 */
+		public ChoiceInterruptedException() {
+			super("No file was selected");
+		}
+	}
+}
