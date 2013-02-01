@@ -45,8 +45,8 @@ public final class AdvancementStart implements ISPDriver {
 		try {
 			new AdvancementStart().startDriver(args);
 		} catch (DriverFailedException except) {
-			// Ignore ... every case is dealt with in the method itself.
-			return;
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
+			ErrorShower.showErrorDialog(null, except.getMessage());
 		}
 	}
 	/**
@@ -93,19 +93,13 @@ public final class AdvancementStart implements ISPDriver {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			ErrorShower
-					.showErrorDialog(null, XML_ERROR_STRING + ' ' + filename);
+			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + NOT_FOUND_ERROR, e);
-			ErrorShower.showErrorDialog(null, "File " + filename
-					+ NOT_FOUND_ERROR);
+			throw new DriverFailedException("File " + filename + NOT_FOUND_ERROR, e);
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, XML_ERROR_STRING, e);
-			ErrorShower.showErrorDialog(null, "I/O error reading " + filename);
+			throw new DriverFailedException("I/O error reading " + filename, e);
 		} catch (final SPFormatException e) {
-			LOGGER.log(Level.SEVERE, INV_DATA_ERROR, e);
-			ErrorShower.showErrorDialog(null, INV_DATA_ERROR);
+			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
 	}
 }
