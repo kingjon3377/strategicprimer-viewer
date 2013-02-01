@@ -28,6 +28,10 @@ public final class MapUpdater implements ISPDriver {
 	private static final Logger LOGGER = Logger.getLogger(MapUpdater.class
 			.getName());
 	/**
+	 * To avoid creating instance after instance ...
+	 */
+	private final MapReaderAdapter adapter = new MapReaderAdapter();
+	/**
 	 * Update a derived map from the master.
 	 * @param master the master map
 	 * @param derived the derived map to update.
@@ -95,11 +99,11 @@ public final class MapUpdater implements ISPDriver {
 	 * @return the map
 	 * @throws DriverFailedException on any of the errors that may crop up
 	 */
-	private static IMap loadMap(final String filename) throws DriverFailedException {
+	private IMap loadMap(final String filename) throws DriverFailedException {
 		System.out.print(filename);
 		System.out.print(": Reading ");
 		try {
-			return new MapReaderAdapter().readMap(filename, new Warning(
+			return adapter.readMap(filename, new Warning(
 					Warning.Action.Ignore));
 		} catch (final FileNotFoundException e) {
 			throw new DriverFailedException(buildString("File ", filename,
@@ -148,7 +152,7 @@ public final class MapUpdater implements ISPDriver {
 			final IMap derived = update(master, loadMap(arg));
 			try {
 				System.out.print("Writing ");
-				new MapReaderAdapter().write(arg, derived);
+				adapter.write(arg, derived);
 				System.out.println("Finished");
 			} catch (IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error writing map " + arg, except);
