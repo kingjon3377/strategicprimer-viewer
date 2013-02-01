@@ -15,8 +15,8 @@ import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import view.util.SystemOut;
-import view.worker.WorkerMenu;
 import view.worker.AdvancementFrame;
+import view.worker.WorkerMenu;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
@@ -28,7 +28,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public final class AdvancementStart {
+public final class AdvancementStart implements ISPDriver {
 	/**
 	 * Do not instantiate.
 	 */
@@ -42,6 +42,39 @@ public final class AdvancementStart {
 	 *        are ignored. TODO: add option handling.
 	 */
 	public static void main(final String[] args) {
+		try {
+			new AdvancementStart().startDriver(args);
+		} catch (DriverFailedException except) {
+			// Ignore ... every case is dealt with in the method itself.
+			return;
+		}
+	}
+	/**
+	 * An error message refactored from at least four uses.
+	 */
+	private static final String XML_ERROR_STRING = "Error reading XML file";
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
+			.getName());
+	/**
+	 * Error message fragment when file not found.
+	 */
+	private static final String NOT_FOUND_ERROR = " not found";
+	/**
+	 * Error message when the map contains invalid data.
+	 */
+	private static final String INV_DATA_ERROR = "Map contained invalid data";
+	/**
+	 * Run the driver.
+	 * @param args Command-line arguments.
+	 * @throws DriverFailedException if the driver failed to run.
+	 *
+	 * @see controller.map.drivers.ISPDriver#startDriver(java.lang.String[])
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD
 		try {
@@ -75,21 +108,4 @@ public final class AdvancementStart {
 			ErrorShower.showErrorDialog(null, INV_DATA_ERROR);
 		}
 	}
-	/**
-	 * An error message refactored from at least four uses.
-	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file";
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
-			.getName());
-	/**
-	 * Error message fragment when file not found.
-	 */
-	private static final String NOT_FOUND_ERROR = " not found";
-	/**
-	 * Error message when the map contains invalid data.
-	 */
-	private static final String INV_DATA_ERROR = "Map contained invalid data";
 }
