@@ -32,24 +32,11 @@ public final class MapUpdater {
 	private static final Logger LOGGER = Logger.getLogger(MapUpdater.class
 			.getName());
 	/**
-	 * The master map.
-	 */
-	private final IMap master;
-
-	/**
-	 *
-	 * @param masterMap the master map
-	 */
-	public MapUpdater(final IMap masterMap) {
-		master = masterMap;
-	}
-
-	/**
 	 * Update a derived map from the master.
-	 *
+	 * @param master the master map
 	 * @param derived the derived map to update.
 	 */
-	public void update(final IMap derived) {
+	public void update(final IMap master, final IMap derived) {
 		if (!master.getDimensions().equals(derived.getDimensions())) {
 			throw new IllegalArgumentException("Map sizes don't match");
 		}
@@ -85,8 +72,8 @@ public final class MapUpdater {
 		System.out.print("Base ");
 		System.out.print(args[0]);
 		System.out.print(": Reading ");
-		// ESCA-JAVA0177:
-		final MapUpdater updater = new MapUpdater(loadMap(args[0]));
+		final IMap master = loadMap(args[0]);
+		final MapUpdater updater = new MapUpdater();
 		System.out.println("Finished");
 		for (final String arg : args) {
 			if (arg.equals(args[0])) {
@@ -98,7 +85,7 @@ public final class MapUpdater {
 			// ESCA-JAVA0177:
 			final IMap derived = loadMap(arg);
 			System.out.print("Updating ");
-			updater.update(derived);
+			updater.update(master, derived);
 			System.out.print("Writing ");
 			// ESCA-JAVA0266:
 			PrintWriter writer;
