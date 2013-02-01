@@ -96,6 +96,8 @@ public final class MapUpdater implements ISPDriver {
 	 * @throws DriverFailedException on any of the errors that may crop up
 	 */
 	private static IMap loadMap(final String filename) throws DriverFailedException {
+		System.out.print(filename);
+		System.out.print(": Reading ");
 		try {
 			return new MapReaderAdapter().readMap(filename, new Warning(
 					Warning.Action.Ignore));
@@ -134,16 +136,12 @@ public final class MapUpdater implements ISPDriver {
 					new IllegalArgumentException("Not enough arguments"));
 		}
 		System.out.print("Base ");
-		System.out.print(args[0]);
-		System.out.print(": Reading ");
 		final IMap master = loadMap(args[0]);
 		System.out.println("Finished");
 		for (final String arg : args) {
 			if (arg.equals(args[0])) {
 				continue;
 			}
-			System.out.print(arg);
-			System.out.print(": ");
 			System.out.print("Reading ");
 			// ESCA-JAVA0177:
 			final IMap derived = loadMap(arg);
