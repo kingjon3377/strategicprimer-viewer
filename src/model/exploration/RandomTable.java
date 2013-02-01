@@ -7,19 +7,20 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.Tile;
+import util.ComparablePair;
 import util.Pair;
 import util.SingletonRandom;
 
 /**
  * A table where the event is selected at random.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class RandomTable implements EncounterTable {
 	/**
 	 * @param tile ignored
-	 * 
+	 *
 	 * @return a random item from the table, or the last item in the table if
 	 *         the normal procedure fails.
 	 */
@@ -31,7 +32,7 @@ public class RandomTable implements EncounterTable {
 
 	/**
 	 * @param value a number to check the table against
-	 * 
+	 *
 	 * @return the result of the check
 	 */
 	private String getLowestMatch(final int value) {
@@ -46,15 +47,15 @@ public class RandomTable implements EncounterTable {
 	/**
 	 * A list of items.
 	 */
-	private final List<Pair<Integer, String>> table;
+	private final List<ComparablePair<Integer, String>> table;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param items the items in the table.
 	 */
-	public RandomTable(final List<Pair<Integer, String>> items) {
-		table = new ArrayList<Pair<Integer, String>>(items);
+	public RandomTable(final List<ComparablePair<Integer, String>> items) {
+		table = new ArrayList<ComparablePair<Integer, String>>(items);
 		Collections.sort(table, Collections.reverseOrder());
 	}
 
@@ -71,7 +72,7 @@ public class RandomTable implements EncounterTable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the class
 	 */
 	@Override

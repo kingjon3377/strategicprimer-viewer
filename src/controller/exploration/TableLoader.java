@@ -20,6 +20,7 @@ import model.exploration.QuadrantTable;
 import model.exploration.RandomTable;
 import model.exploration.TerrainTable;
 import model.map.TileType;
+import util.ComparablePair;
 import util.Pair;
 import util.ResourceInputStream;
 
@@ -152,7 +153,7 @@ public final class TableLoader { // NOPMD
 	public RandomTable loadRandomTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
-		final List<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
+		final List<ComparablePair<Integer, String>> list = new ArrayList<ComparablePair<Integer, String>>();
 		try {
 			while (line != null) {
 				final String[] array = line.split(" ", SPLIT_ONCE);
@@ -160,7 +161,7 @@ public final class TableLoader { // NOPMD
 					Logger.getLogger(TableLoader.class.getName()).severe(
 							"Line with no blanks, continuing ...");
 				} else {
-					list.add(Pair.of(Integer.valueOf(array[0]), array[1]));
+					list.add(ComparablePair.of(Integer.valueOf(array[0]), array[1]));
 				}
 				line = reader.readLine();
 			}
