@@ -79,6 +79,7 @@ public class AppChooserFrame extends JFrame implements ActionListener {
 					@Override
 					public void run() {
 						setVisible(false);
+						dispose();
 					}
 				});
 			} catch (InstantiationException except) {
