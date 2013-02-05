@@ -61,9 +61,13 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		final JLabel rowLabel = new JLabel("Row: ");
 		boxPanel.add(rowLabel);
 		boxPanel.add(row);
+		row.setActionCommand("OK");
+		row.addActionListener(this);
 		boxPanel.add(Box.createHorizontalGlue());
 		boxPanel.add(new JLabel("Column: "));
 		boxPanel.add(column);
+		column.setActionCommand("OK");
+		column.addActionListener(this);
 		boxPanel.add(Box.createHorizontalGlue());
 		add(boxPanel);
 		add(errorLabel);
