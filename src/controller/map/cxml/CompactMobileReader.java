@@ -184,7 +184,8 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 				"sphinx", "troll", "unit");
 		// ESCA-JAVA0177:
 		final MobileFixture retval; // NOPMD
-		switch (MAP.get(element.getName().getLocalPart())) {
+		final MobileType type = MAP.get(element.getName().getLocalPart());
+		switch (type) {
 		case UnitType:
 			return CompactUnitReader.READER.read(element, stream, players, // NOPMD
 					warner, idFactory);
@@ -195,9 +196,6 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 		case CentaurType:
 			retval = new Centaur(getKind(element),
 					getOrGenerateID(element, warner, idFactory));
-			break;
-		case DjinnType:
-			retval = new Djinn(getOrGenerateID(element, warner, idFactory));
 			break;
 		case DragonType:
 			retval = new Dragon(getKind(element),
@@ -211,32 +209,9 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 			retval = new Giant(getKind(element),
 					getOrGenerateID(element, warner, idFactory));
 			break;
-		case GriffinType:
-			retval = new Griffin(
-					getOrGenerateID(element, warner, idFactory));
-			break;
-		case MinotaurType:
-			retval = new Minotaur(getOrGenerateID(element, warner,
-					idFactory));
-			break;
-		case OgreType:
-			retval = new Ogre(getOrGenerateID(element, warner, idFactory));
-			break;
-		case PhoenixType:
-			retval = new Phoenix(
-					getOrGenerateID(element, warner, idFactory));
-			break;
-		case SimurghType:
-			retval = new Simurgh(getOrGenerateID(element, warner, idFactory));
-			break;
-		case SphinxType:
-			retval = new Sphinx(getOrGenerateID(element, warner, idFactory));
-			break;
-		case TrollType:
-			retval = new Troll(getOrGenerateID(element, warner, idFactory));
-			break;
 		default:
-			throw new IllegalArgumentException("Shouldn't get here");
+			retval = readSimple(type, getOrGenerateID(element, warner, idFactory));
+			break;
 		}
 		spinUntilEnd(element.getName(), stream);
 		return retval;
@@ -305,6 +280,44 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 			out.append(Integer.toString(obj.getID()));
 			out.append("\" />\n");
 		}
+	}
+	/**
+	 * This is part of the switch statement in read() split off to reduce calculated complexity.
+	 * @param type the type being read
+	 * @param id the ID # to give it.
+	 * @return the thing being read.
+	 */
+	private static MobileFixture readSimple(final MobileType type, final int id) { // NOPMD
+		final MobileFixture retval; // NOPMD
+		switch (type) {
+		case DjinnType:
+			retval = new Djinn(id);
+			break;
+		case GriffinType:
+			retval = new Griffin(id);
+			break;
+		case MinotaurType:
+			retval = new Minotaur(id);
+			break;
+		case OgreType:
+			retval = new Ogre(id);
+			break;
+		case PhoenixType:
+			retval = new Phoenix(id);
+			break;
+		case SimurghType:
+			retval = new Simurgh(id);
+			break;
+		case SphinxType:
+			retval = new Sphinx(id);
+			break;
+		case TrollType:
+			retval = new Troll(id);
+			break;
+		default:
+			throw new IllegalArgumentException("Shouldn't get here");
+		}
+		return retval;
 	}
 }
 
