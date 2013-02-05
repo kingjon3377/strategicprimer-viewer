@@ -6,6 +6,7 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IFixture;
 import model.map.IMap;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -102,7 +103,7 @@ public final class CompactReaderAdapter {
 	 * @return a reader for that type
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T extends TileFixture> CompactReader<T> getFixtureReader(final Class<T> type) {
+	private static <T extends IFixture> CompactReader<T> getFixtureReader(final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
 		if (TerrainFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTerrainReader.READER;
@@ -118,6 +119,8 @@ public final class CompactReaderAdapter {
 			reader = (CompactReader<T>) CompactGroundReader.READER;
 		} else if (TextFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTextReader.READER;
+		} else if (Worker.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactWorkerReader.READER;
 		} else {
 			throw new IllegalStateException("Unhandled type "
 					+ type.getName());
@@ -153,10 +156,8 @@ public final class CompactReaderAdapter {
 				return; // NOPMD
 			} else if (obj instanceof Player) {
 				reader = CompactPlayerReader.READER;
-			} else if (obj instanceof TileFixture) {
-				reader = getFixtureReader(((TileFixture) obj).getClass());
-			} else if (obj instanceof Worker) {
-				reader = CompactWorkerReader.READER;
+			} else if (obj instanceof IFixture) {
+				reader = getFixtureReader(((IFixture) obj).getClass());
 			} else {
 				throw new IllegalStateException("Don't know how to write this type");
 			}
