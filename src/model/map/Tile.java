@@ -120,7 +120,7 @@ public final class Tile implements XMLWritable,
 	 */
 	@Override
 	public int hashCode() {
-		return getLocation().hashCode() + getTerrain().ordinal() << 6 + contents.hashCode() << 8;
+		return getLocation().hashCode() + getTerrain().ordinal() << 6;
 	}
 
 	/**
