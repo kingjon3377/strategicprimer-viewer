@@ -4,6 +4,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.io.Serializable;
 
 import model.map.TileFixture;
 
@@ -13,23 +14,20 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureTransferable implements Transferable {
+public class FixtureTransferable implements Transferable, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Constructor.
 	 *
 	 * @param theData the object
-	 * @param sourceProperty the property the source object listens to
 	 */
-	public FixtureTransferable(final TileFixture theData, final String sourceProperty) {
+	public FixtureTransferable(final TileFixture theData) {
 		data = theData;
-		property = sourceProperty;
 	}
 
-	/**
-	 * The property the source object listens to. Returned for DataFlavor
-	 * "string," to prevent self-drops.
-	 */
-	private final String property;
 	/**
 	 * The object we're transfering.
 	 */
@@ -74,8 +72,6 @@ public class FixtureTransferable implements Transferable {
 			throws UnsupportedFlavorException, IOException {
 		if (isDataFlavorSupported(dflavor)) {
 			return data; // NOPMD
-		} else if (dflavor.isFlavorTextType()) {
-			return property;
 		} else {
 			throw new UnsupportedFlavorException(dflavor);
 		}

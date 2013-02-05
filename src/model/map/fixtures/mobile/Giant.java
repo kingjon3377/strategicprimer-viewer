@@ -15,6 +15,10 @@ import model.map.fixtures.UnitMember;
 public class Giant implements MobileFixture, HasImage,
 		HasKind, UnitMember {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
 	private final String kind;

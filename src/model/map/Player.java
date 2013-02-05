@@ -1,12 +1,18 @@
 package model.map;
 
+import java.io.Serializable;
+
 /**
  * A representation of a player in the game.
  *
  * @author jsl7
  *
  */
-public class Player implements XMLWritable, Comparable<Player>, HasName {
+public class Player implements XMLWritable, Comparable<Player>, HasName, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The player's number.
 	 */

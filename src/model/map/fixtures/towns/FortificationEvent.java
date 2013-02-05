@@ -13,6 +13,10 @@ import model.map.events.EventKind;
  */
 public final class FortificationEvent extends AbstractTownEvent {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param tStatus The status of the fortification

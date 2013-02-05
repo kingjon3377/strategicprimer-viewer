@@ -2,12 +2,12 @@ package model.viewer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 import util.PropertyChangeSource;
@@ -19,7 +19,11 @@ import util.PropertyChangeSource;
  * @author Jonathan Lovelace
  *
  */
-public final class MapModel implements PropertyChangeSource {
+public final class MapModel implements PropertyChangeSource, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Constructor.
 	 *
@@ -59,10 +63,6 @@ public final class MapModel implements PropertyChangeSource {
 	 */
 	private MapView map;
 	/**
-	 * The secondary map.
-	 */
-	private MapView secondaryMap;
-	/**
 	 * The dimensions of the map.
 	 */
 	private MapDimensions mapDim;
@@ -70,11 +70,6 @@ public final class MapModel implements PropertyChangeSource {
 	 * The currently selected tile in the main map.
 	 */
 	private Tile selTile;
-	/**
-	 * The currently-selected tile in the secondary map.
-	 */
-	private Tile secondTile;
-
 	/**
 	 * @param newMap the new map
 	 */
@@ -88,27 +83,12 @@ public final class MapModel implements PropertyChangeSource {
 		}
 		map = newMap;
 		mapDim = newMap.getDimensions();
-		setSecondaryMap(new MapView(new SPMap(map.getDimensions()), map.getPlayers().getCurrentPlayer()
-				.getPlayerId(), map.getCurrentTurn()));
 		// TODO: Perhaps clearSelection() instead of setting to (-1, -1)?
 		setSelection(PointFactory.point(-1, -1));
 		setDimensions(new VisibleDimensions(0, getMapDimensions().rows - 1, 0,
 				getMapDimensions().cols - 1));
 		pcs.firePropertyChange("map", map, newMap);
 	}
-
-	/**
-	 * @param newMap the new secondary map
-	 */
-	public void setSecondaryMap(final MapView newMap) {
-		if (newMap.getDimensions().equals(map.getDimensions())) {
-			pcs.firePropertyChange("secondary-map", secondaryMap, newMap);
-			secondaryMap = newMap;
-		} else {
-			throw new IllegalArgumentException("Map sizes must match");
-		}
-	}
-
 	/**
 	 *
 	 * @return the currently selected tile
@@ -118,44 +98,14 @@ public final class MapModel implements PropertyChangeSource {
 	}
 
 	/**
-	 *
-	 * @return the currently selected tile in the secondary map
-	 */
-	public Tile getSecondarySelectedTile() {
-		return secondTile;
-	}
-
-	/**
 	 * Set the new selected tiles, given coordinates.
 	 *
 	 * @param point the location of the new tile.
 	 */
 	public void setSelection(final Point point) {
 		final Tile oldSelection = selTile;
-		final Tile oldSecSelection = secondTile;
 		selTile = map.getTile(point);
-		secondTile = secondaryMap.getTile(point);
 		pcs.firePropertyChange("tile", oldSelection, selTile);
-		pcs.firePropertyChange("secondary-tile", oldSecSelection, secondTile);
-	}
-
-	/**
-	 * Swap the maps.
-	 */
-	public void swapMaps() {
-		final MapView temp = map;
-		setMainMap(secondaryMap);
-		setSecondaryMap(temp);
-	}
-
-	/**
-	 * Copy a tile from the main map to the secondary map.
-	 *
-	 * @param selection the tile to copy.
-	 */
-	public void copyTile(final Tile selection) {
-		secondaryMap.getTile(selection.getLocation()).update(
-				map.getTile(selection.getLocation()));
 	}
 	/**
 	 * @return the dimensions and version of the map
@@ -179,25 +129,13 @@ public final class MapModel implements PropertyChangeSource {
 	public MapView getMainMap() {
 		return map;
 	}
-
-	/**
-	 *
-	 * @return the secondary map
-	 */
-	public MapView getSecondaryMap() {
-		return secondaryMap;
-	}
-
 	/**
 	 * Clear the selection.
 	 */
 	public void clearSelection() {
 		final Tile oldSelection = selTile;
-		final Tile oldSecSelection = secondTile;
 		selTile = new Tile(-1, -1, TileType.NotVisible);
-		secondTile = new Tile(-1, -1, TileType.NotVisible);
 		pcs.firePropertyChange("tile", oldSelection, selTile);
-		pcs.firePropertyChange("secondary-tile", oldSecSelection, secondTile);
 	}
 
 	/**

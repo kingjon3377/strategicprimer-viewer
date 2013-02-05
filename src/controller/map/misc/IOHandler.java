@@ -34,14 +34,6 @@ public final class IOHandler implements ActionListener {
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
-	 * Command to load the secondary map.
-	 */
-	private static final String LOAD_ALT_MAP_CMD = "<html><p>Load secondary map</p></html>";
-	/**
-	 * Command to save the secondary map.
-	 */
-	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
-	/**
 	 * An error message refactored from at least four uses.
 	 */
 	private static final String XML_ERROR_STRING = "Error reading XML file";
@@ -77,27 +69,6 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
-	 * Handle the "load secondary map" menu item.
-	 *
-	 * @param source the source of the event
-	 */
-	private void handleLoadAltMenu(final Component source) {
-		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final String filename = chooser.getSelectedFile().getPath();
-			// ESCA-JAVA0166:
-			try {
-				model.setSecondaryMap(readMap(filename, Warning.INSTANCE));
-			} catch (final IOException e) {
-				handleError(e, filename, source);
-			} catch (final SPFormatException e) {
-				handleError(e, filename, source);
-			} catch (final XMLStreamException e) {
-				handleError(e, filename, source);
-			}
-		}
-	}
-
-	/**
 	 * Handle menu selections.
 	 *
 	 * @param event the event to handle
@@ -110,12 +81,6 @@ public final class IOHandler implements ActionListener {
 			handleLoadMenu(source);
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMap(model.getMainMap(), source);
-		} else if (LOAD_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			handleLoadAltMenu(source);
-		} else if (SAVE_ALT_MAP_CMD.equals(event.getActionCommand())) {
-			saveMap(model.getSecondaryMap(), source);
-		} else if ("Switch maps".equals(event.getActionCommand())) {
-			model.swapMaps();
 		}
 	}
 

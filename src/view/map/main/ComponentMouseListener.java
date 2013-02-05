@@ -56,9 +56,6 @@ public final class ComponentMouseListener extends MouseAdapter {
 				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
 				+ dimensions.getMinimumCol()));
 		event.getComponent().requestFocusInWindow();
-		if (event.getClickCount() == 2) {
-			model.copyTile(model.getSelectedTile());
-		}
 		if (event.isPopupTrigger()) {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}

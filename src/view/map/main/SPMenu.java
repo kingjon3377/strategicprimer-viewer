@@ -24,15 +24,6 @@ import controller.map.misc.IOHandler;
  */
 public class SPMenu extends JMenuBar {
 	/**
-	 * Command to load the secondary map.
-	 */
-	private static final String LOAD_ALT_MAP_CMD = "<html><p>Load secondary map</p></html>";
-	/**
-	 * Command to save the secondary map.
-	 */
-	private static final String SAVE_ALT_MAP_CMD = "<html><p>Save secondary map</p></html>";
-
-	/**
 	 * Constructor.
 	 *
 	 * @param handler the I/O handler to handle I/O related items
@@ -98,7 +89,7 @@ public class SPMenu extends JMenuBar {
 	/**
 	 * The helper to create menu items for us.
 	 */
-	private final MenuItemCreator creator = new MenuItemCreator();
+	private final transient MenuItemCreator creator = new MenuItemCreator();
 
 	/**
 	 * Create the map menu.
@@ -115,23 +106,6 @@ public class SPMenu extends JMenuBar {
 		mapMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
 				"Save the main map to file", handler));
-		mapMenu.addSeparator();
-		mapMenu.add(creator.createMenuItem(
-				LOAD_ALT_MAP_CMD,
-				KeyEvent.VK_D,
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK
-						+ ActionEvent.ALT_MASK),
-				"Load a secondary map from file", handler));
-		mapMenu.add(creator.createMenuItem(
-				SAVE_ALT_MAP_CMD,
-				KeyEvent.VK_V,
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK
-						+ ActionEvent.ALT_MASK),
-				"Save the secondary map to file", handler));
-		mapMenu.addSeparator();
-		mapMenu.add(creator.createMenuItem("Switch maps", KeyEvent.VK_W,
-				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
-				"Make the secondary map the main map and vice versa", handler));
 		return mapMenu;
 	}
 	/**

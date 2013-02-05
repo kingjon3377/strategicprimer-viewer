@@ -13,6 +13,10 @@ import model.map.fixtures.UnitMember;
  */
 public class Troll implements MobileFixture, HasImage, UnitMember {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param idNum the ID number.

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import model.map.TileFixture;
 import util.EqualsAny;
 
@@ -33,20 +35,18 @@ public class FixtureListDropListener implements DropTargetListener {
 	 */
 	private final FixtureListModel model;
 	/**
-	 * The property it listens to, which we'll make sure any incoming data
-	 * doesn't match to prevent intra-component drags and drops.
-	 */
-	private final String listenedProperty;
-	/**
 	 * Constructor.
 	 * @param listModel the List's model
-	 * @param property the property that model listens to, which we'll make sure any incoming data
-	 * doesn't match to prevent intra-component drags and drops.
+	 * @param parent a parent of the list.
 	 */
-	public FixtureListDropListener(final FixtureListModel listModel, final String property) {
+	public FixtureListDropListener(final JComponent parent, final FixtureListModel listModel) {
 		model = listModel;
-		listenedProperty = property;
+		parentComponent = parent;
 	}
+	/**
+	 * A parent component. If it's an ancestor of the drop, it's an intra-component drop.
+	 */
+	private final JComponent parentComponent;
 	/**
 	 * A possible drag entering the component?
 	 *
@@ -75,15 +75,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	 *         component. I/O etc. problems return true.
 	 */
 	private boolean isIntraComponentDrag(final DropTargetDragEvent dtde) {
-		try {
-			return dtde.getTransferable() // NOPMD
-					.getTransferData(DataFlavor.stringFlavor)
-					.equals(listenedProperty);
-		} catch (UnsupportedFlavorException except) { // $codepro.audit.disable logExceptions
-			return true; // NOPMD
-		} catch (IOException except) { // $codepro.audit.disable logExceptions
-			return true;
-		}
+		return parentComponent.isAncestorOf(dtde.getDropTargetContext().getComponent());
 	}
 	/**
 	 * TODO: We would skip all this (return false) on non-local drags if I could
@@ -94,15 +86,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	 *         component. I/O etc. problems return true.
 	 */
 	private boolean isIntraComponentDrop(final DropTargetDropEvent dtde) {
-		try {
-			return dtde.getTransferable() // NOPMD
-					.getTransferData(DataFlavor.stringFlavor)
-					.equals(listenedProperty);
-		} catch (UnsupportedFlavorException except) { // $codepro.audit.disable logExceptions
-			return true; // NOPMD
-		} catch (IOException except) { // $codepro.audit.disable logExceptions
-			return true;
-		}
+		return parentComponent.isAncestorOf(dtde.getDropTargetContext().getComponent());
 	}
 	/**
 	 * Continued dragging over the component.

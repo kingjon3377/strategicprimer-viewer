@@ -13,6 +13,10 @@ import model.map.TileFixture;
  */
 public class Ground implements TileFixture, HasImage, HasKind {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param desc a description of the ground (the type of rock)

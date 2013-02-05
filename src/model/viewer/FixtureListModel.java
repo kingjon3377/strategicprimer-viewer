@@ -22,7 +22,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	/**
 	 * The property we listen for.
 	 */
-	private final String listenedProperty;
+	private static final String LISTENED_PROP = "tile";
 	/**
 	 * The current tile.
 	 */
@@ -30,13 +30,10 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	/**
 	 * Constructor.
 	 *
-	 * @param property The property to listen for to get the new tile
 	 * @param sources sources to listen to
 	 */
-	public FixtureListModel(final String property,
-			final PropertyChangeSource... sources) {
+	public FixtureListModel(final PropertyChangeSource... sources) {
 		super();
-		listenedProperty = property;
 		for (final PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(this);
 		}
@@ -49,7 +46,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
-		if (listenedProperty.equalsIgnoreCase(evt.getPropertyName())
+		if (LISTENED_PROP.equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Tile) {
 			tile = (Tile) evt.getNewValue();
 			this.clear();
@@ -102,23 +99,21 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof FixtureListModel
-						&& ((FixtureListModel) obj).listenedProperty
-								.equalsIgnoreCase(listenedProperty) && ((FixtureListModel) obj).tile
-							.equals(tile));
+				|| (obj instanceof FixtureListModel && ((FixtureListModel) obj).tile
+						.equals(tile));
 	}
 	/**
 	 * @return a hash code for the object
 	 */
 	@Override
 	public int hashCode() {
-		return listenedProperty.hashCode();
+		return tile.hashCode();
 	}
 	/**
 	 * This is part of a hack to prevent intra-component drops.
 	 * @return the property we listen for
 	 */
 	public String getProperty() {
-		return listenedProperty;
+		return LISTENED_PROP;
 	}
 }

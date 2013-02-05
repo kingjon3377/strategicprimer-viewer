@@ -14,6 +14,10 @@ import model.map.events.IEvent;
 public final class CaveEvent implements IEvent,
 		HasImage, HarvestableFixture {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param discdc the DC to discover the caves

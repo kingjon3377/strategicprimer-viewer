@@ -15,6 +15,10 @@ import model.map.events.IEvent;
 public final class StoneEvent implements IEvent,
 		HasImage, HarvestableFixture, HasKind {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param skind the kind of stone

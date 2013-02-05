@@ -13,6 +13,10 @@ import model.map.TileFixture;
  */
 public class Sandbar implements TerrainFixture, HasImage {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Sandbar(final int idNum) {

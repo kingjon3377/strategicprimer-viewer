@@ -20,7 +20,7 @@ public class WorkerMenu extends JMenuBar {
 	/**
 	 * The helper to create menu items for us.
 	 */
-	private final MenuItemCreator creator = new MenuItemCreator();
+	private final transient MenuItemCreator creator = new MenuItemCreator();
 	/**
 	 * Constructor.
 	 * @param handler the I/O handler to handle I/O related items

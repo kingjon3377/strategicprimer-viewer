@@ -1,5 +1,6 @@
 package util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -12,7 +13,11 @@ import java.util.Set;
  *
  * @param <T> the type of thing stored in the set
  */
-public class ArraySet<T> implements Set<T> { // NOPMD
+public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The backing array.
 	 */

@@ -1,10 +1,17 @@
 package model.map;
+
+import java.io.Serializable;
+
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
  * @author Jonathan Lovelace
  *
  */
-public class MapDimensions {
+public class MapDimensions implements Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Constructor.
 	 * @param numRows the number of rows

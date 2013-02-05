@@ -13,6 +13,10 @@ import model.map.fixtures.UnitMember;
  */
 public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Sphinx(final int idNum) {

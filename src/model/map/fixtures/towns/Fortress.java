@@ -27,6 +27,10 @@ import model.map.fixtures.mobile.Unit;
 public class Fortress implements HasImage,
 		Subsettable<Fortress>, TownFixture, FixtureIterable<Unit> {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * The player that owns the fortress.
 	 */
 	private final Player owner;

@@ -73,14 +73,10 @@ public class DetailPanelNG extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		addListener(new TileDetailPanel(), sources);
 		final JPanel panelOne = new JPanel(new BorderLayout());
-		panelOne.add(createLabel("Contents of the tile on the main map:"),
+		panelOne.add(createLabel("Contents of the tile:"),
 				BorderLayout.NORTH);
-		panelOne.add(createList("tile", sources), BorderLayout.CENTER);
+		panelOne.add(createList(sources), BorderLayout.CENTER);
 		add(panelOne);
-		final JPanel panelTwo = new JPanel(new BorderLayout());
-		panelTwo.add(createLabel("On the secondary map:"), BorderLayout.NORTH);
-		panelTwo.add(createList("secondary-tile", sources), BorderLayout.CENTER);
-		add(panelTwo);
 		addListener(new KeyPanel(version), sources);
 	}
 
@@ -131,14 +127,12 @@ public class DetailPanelNG extends JPanel {
 	}
 	/**
 	 * Create one of the lists/trees. The static constants are effectively parameters.
-	 * @param property the property it should be listening to for changes
 	 * @param sources PropertyChangeSources it should be listening on
 	 * @return a scroll pane containing the list or tree.
 	 */
-	private static JScrollPane createList(final String property,
-			final PropertyChangeSource... sources) {
-		return setComponentSizes(new JScrollPane(new FixtureList(property,
-				sources)), new Dimension(LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT),
+	private JScrollPane createList(final PropertyChangeSource... sources) {
+		return setComponentSizes(new JScrollPane(new FixtureList(this, sources)),
+				new Dimension(LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT),
 				new Dimension(LIST_WIDTH, DETAIL_PANEL_HT), new Dimension(
 						LIST_MAX_WIDTH, DETAIL_PAN_MAX_HT));
 	}

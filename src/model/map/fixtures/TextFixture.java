@@ -14,6 +14,10 @@ import model.map.TileFixture;
  */
 public class TextFixture implements TileFixture, HasImage {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param theText the text

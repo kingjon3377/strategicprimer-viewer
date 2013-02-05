@@ -14,6 +14,10 @@ import model.map.TileFixture;
 public class Grove implements HarvestableFixture,
 		HasImage, HasKind {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Whether this is a fruit orchard.
 	 */
 	private final boolean orchard;

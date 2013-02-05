@@ -15,6 +15,10 @@ import model.map.events.IEvent;
 public final class MineralEvent implements IEvent,
 		HasImage, HarvestableFixture, HasKind {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param minkind what kind of mineral this is

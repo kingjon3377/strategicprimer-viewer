@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.Serializable;
+
 import model.map.HasName;
 import model.map.XMLWritable;
 
@@ -8,7 +10,11 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  *
  */
-public class Skill implements XMLWritable, HasName {
+public class Skill implements XMLWritable, HasName, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Constructor.
 	 * @param skillName the name of the skill

@@ -1,5 +1,7 @@
 package model.map;
 
+import java.io.Serializable;
+
 /**
  * An interface for the map and any wrappers around it.
  *
@@ -7,7 +9,7 @@ package model.map;
  *
  */
 // ESCA-JAVA0237:
-public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap> {
+public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>, Serializable {
 	/**
 	 * @return The map's dimensions and version.
 	 */

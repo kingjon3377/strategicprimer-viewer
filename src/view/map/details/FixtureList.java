@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
@@ -33,18 +34,17 @@ public class FixtureList extends JList<TileFixture> implements
 	/**
 	 * Constructor.
 	 *
-	 * @param property the property the model will be listening for
 	 * @param sources objects the model should listen to
+	 * @param parent a parent of this list
 	 */
-	public FixtureList(final String property,
-			final PropertyChangeSource... sources) {
-		super(new FixtureListModel(property, sources));
+	public FixtureList(final JComponent parent, final PropertyChangeSource... sources) {
+		super(new FixtureListModel(sources));
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY, this);
-		setDropTarget(new DropTarget(this, new FixtureListDropListener(
-				(FixtureListModel) getModel(), property)));
+		setDropTarget(new DropTarget(this, new FixtureListDropListener(parent,
+				(FixtureListModel) getModel())));
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "delete");
@@ -63,9 +63,8 @@ public class FixtureList extends JList<TileFixture> implements
 	public void dragGestureRecognized(final DragGestureEvent dge) {
 		final List<TileFixture> selection = getSelectedValuesList();
 		final Transferable trans = selection.size() == 1 ? new FixtureTransferable(
-				selection.get(0), ((FixtureListModel) getModel()).getProperty())
-				: new CurriedFixtureTransferable(selection,
-						((FixtureListModel) getModel()).getProperty());
+				selection.get(0))
+				: new CurriedFixtureTransferable(selection);
 		dge.startDrag(null, trans);
 	}
 

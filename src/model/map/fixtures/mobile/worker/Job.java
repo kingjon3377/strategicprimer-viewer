@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
@@ -12,7 +13,11 @@ import util.ArraySet;
  * A Job a worker can work at.
  * @author Jonathan Lovelace
  */
-public class Job implements XMLWritable, Iterable<Skill>, HasName {
+public class Job implements XMLWritable, Iterable<Skill>, HasName, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Constructor.
 	 * @param jobName the name of the Job

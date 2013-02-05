@@ -14,6 +14,10 @@ import model.map.TileFixture;
  */
 public class Mountain implements TerrainFixture, HasImage {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * @return a String representation of the forest.
 	 */
 	@Override

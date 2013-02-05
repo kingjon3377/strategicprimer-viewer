@@ -1,5 +1,7 @@
 package model.map;
 
+import java.io.Serializable;
+
 /**
  * A supertype for both TileFixture and any UnitMembers (etc.) that shouldn't be
  * TileFixtures, so we don't have to special-case them for things like
@@ -8,7 +10,7 @@ package model.map;
  * @author Jonathan Lovelace
  *
  */
-public interface IFixture extends XMLWritable {
+public interface IFixture extends XMLWritable, Serializable {
 	/**
 	 * @return an ID (UID for most fixtures, though perhaps not for things like
 	 *         mountains and hills) for the fixture.

@@ -31,7 +31,7 @@ public class UnitListModel extends DefaultListModel<Unit> implements
 	/**
 	 * The helper to use to get the list of units from the model.
 	 */
-	private final MapHelper helper = new MapHelper();
+	private final transient MapHelper helper = new MapHelper();
 	/**
 	 * Constructor.
 	 * @param mmodel the map model to work from

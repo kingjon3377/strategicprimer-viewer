@@ -13,6 +13,10 @@ import model.map.events.IEvent;
 public final class BattlefieldEvent implements IEvent,
 		HasImage, HarvestableFixture {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * A (U)ID.
 	 */
 	private final int id; // NOPMD

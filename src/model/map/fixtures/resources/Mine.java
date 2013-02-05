@@ -15,6 +15,10 @@ import model.map.fixtures.towns.TownStatus;
 public class Mine implements HarvestableFixture,
 		HasImage, HasKind {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 *
 	 * @param mineral what mineral this produces

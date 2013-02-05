@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
+import model.map.MapView;
 import model.viewer.MapModel;
 import util.Warning;
 import view.map.main.MapFileFilter;
@@ -73,33 +74,41 @@ public final class ViewerStart implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		// ESCA-JAVA0177:
-		final String filename; // NOPMD
-		try {
-			filename = new FileChooser(args.length == 0 ? "" : args[0]).getFilename();
-		} catch (ChoiceInterruptedException except) {
-			SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
-			return;
-		}
-		final MapModel model; // NOPMD
-		try {
-			model = new MapModel(new MapReaderAdapter().readMap(
-					filename, new Warning(Warning.Action.Warn)));
-			if (args.length > 1) {
-				model.setSecondaryMap(new MapReaderAdapter().readMap(args[1],
-						new Warning(Warning.Action.Warn)));
+		if (args.length == 0) {
+			try {
+				final String filename = new FileChooser("").getFilename();
+				startDriver(filename);
+			} catch (ChoiceInterruptedException except) {
+				SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
+				return;
 			}
-		} catch (final XMLStreamException e) {
-			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
-		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + filename + NOT_FOUND_ERROR, e);
-		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading " + filename, e);
-		} catch (final SPFormatException e) {
-			throw new DriverFailedException(INV_DATA_ERROR, e);
+		} else {
+			final JFileChooser chooser = new JFileChooser(".");
+			chooser.setFileFilter(new MapFileFilter());
+			final MapReaderAdapter reader = new MapReaderAdapter();
+			final Warning warner = new Warning(Warning.Action.Warn);
+			for (final String filename : args) {
+				try {
+					startFrame(reader.readMap(filename, warner), chooser);
+				} catch (final XMLStreamException e) {
+					throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
+				} catch (final FileNotFoundException e) {
+					throw new DriverFailedException("File " + filename + NOT_FOUND_ERROR, e);
+				} catch (final IOException e) {
+					throw new DriverFailedException("I/O error reading " + filename, e);
+				} catch (final SPFormatException e) {
+					throw new DriverFailedException(INV_DATA_ERROR, e);
+				}
+			}
 		}
-		final JFileChooser chooser = new JFileChooser(".");
-		chooser.setFileFilter(new MapFileFilter());
+	}
+	/**
+	 * Start a viewer frame based on the given map.
+	 * @param map the map object
+	 * @param chooser the file-chooser to pass to the frame
+	 */
+	private static void startFrame(final MapView map, final JFileChooser chooser) {
+		final MapModel model = new MapModel(map);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

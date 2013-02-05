@@ -14,6 +14,10 @@ import model.map.TileFixture;
  */
 public class Hill implements TerrainFixture, HasImage {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Hill(final int idNum) {

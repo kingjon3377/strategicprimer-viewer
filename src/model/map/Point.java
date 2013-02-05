@@ -1,12 +1,18 @@
 package model.map;
 
+import java.io.Serializable;
+
 /**
  * A structure encapsulating two coordinates.
  *
  * @author Jonathan Lovelace
  *
  */
-public class Point implements Comparable<Point> {
+public class Point implements Comparable<Point>, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The first coordinate.
 	 */

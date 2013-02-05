@@ -1,12 +1,18 @@
 package model.viewer;
 
+import java.io.Serializable;
+
 /**
  * The minimum and maximum rows and columns drawn.
- * 
+ *
  * @author kingjon
- * 
+ *
  */
-public class VisibleDimensions {
+public class VisibleDimensions implements Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The lowest row we draw.
 	 */
@@ -26,7 +32,7 @@ public class VisibleDimensions {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param minRow the minimum row
 	 * @param maxRow the maximum row
 	 * @param minCol the minimum column
@@ -41,7 +47,7 @@ public class VisibleDimensions {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the minimum visible row
 	 */
 	public int getMinimumRow() {
@@ -49,7 +55,7 @@ public class VisibleDimensions {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the maximum visible row
 	 */
 	public int getMaximumRow() {
@@ -57,7 +63,7 @@ public class VisibleDimensions {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the minimum visible column
 	 */
 	public int getMinimumCol() {
@@ -65,7 +71,7 @@ public class VisibleDimensions {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the maximum visible column
 	 */
 	public int getMaximumCol() {
@@ -73,7 +79,7 @@ public class VisibleDimensions {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

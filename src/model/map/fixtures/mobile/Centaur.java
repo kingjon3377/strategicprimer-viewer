@@ -14,6 +14,10 @@ import model.map.fixtures.UnitMember;
  */
 public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * What kind of centaur.
 	 */
 	private final String kind;
