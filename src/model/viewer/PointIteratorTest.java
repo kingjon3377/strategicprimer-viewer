@@ -21,6 +21,10 @@ import util.IteratorWrapper;
  */
 public class PointIteratorTest {
 	/**
+	 * The expectation for each test.
+	 */
+	private static final String EXPECTATION = "Iterator produced points in expected order";
+	/**
 	 * Test without startFromSel, horizontally, forwards.
 	 */
 	@Test
@@ -42,7 +46,7 @@ public class PointIteratorTest {
 		for (Point point : iter) {
 			actual.add(point);
 		}
-		assertEquals("Iterator produced points in expected order", expected, actual);
+		assertEquals(EXPECTATION, expected, actual);
 	}
 	/**
 	 * Test with startFromSel, horizontally, forwards.
@@ -67,7 +71,7 @@ public class PointIteratorTest {
 		for (Point point : iter) {
 			actual.add(point);
 		}
-		assertEquals("Iterator produced points in expected order", expected, actual);
+		assertEquals(EXPECTATION, expected, actual);
 	}
 	/**
 	 * Test working from the "selection" that the viewer starts with. And vertically, to exercise that part too.
@@ -92,7 +96,7 @@ public class PointIteratorTest {
 		for (Point point : iter) {
 			actual.add(point);
 		}
-		assertEquals("Iterator produced points in expected order", expected, actual);
+		assertEquals(EXPECTATION, expected, actual);
 	}
 	/**
 	 * Test searching vertically, forwards.
@@ -116,7 +120,7 @@ public class PointIteratorTest {
 		for (Point point : iter) {
 			actual.add(point);
 		}
-		assertEquals("Iterator produced points in expected order", expected, actual);
+		assertEquals(EXPECTATION, expected, actual);
 	}
 	/**
 	 * Test searching backwards, horizontally.
@@ -140,7 +144,7 @@ public class PointIteratorTest {
 		for (Point point : iter) {
 			actual.add(point);
 		}
-		assertEquals("Iterator produced points in expected order", expected, actual);
+		assertEquals(EXPECTATION, expected, actual);
 	}
 	/**
 	 * Test searching vertically, backwards.
@@ -164,6 +168,6 @@ public class PointIteratorTest {
 		for (Point point : iter) {
 			actual.add(point);
 		}
-		assertEquals("Iterator produced points in expected order", expected, actual);
+		assertEquals(EXPECTATION, expected, actual);
 	}
 }
