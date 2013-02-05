@@ -53,7 +53,7 @@ public final class QueryCLI implements ISPDriver {
 			final PrintStream ostream) {
 		try {
 			String input = helper.inputString("Command: ");
-			while (input != null && input.length() > 0 && input.charAt(0) != 'q') {
+			while (input.length() > 0 && input.charAt(0) != 'q') {
 				handleCommand(map, ostream, input.charAt(0));
 				input = helper.inputString("Command: ");
 			}
