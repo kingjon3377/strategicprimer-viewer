@@ -24,6 +24,10 @@ import util.SingletonRandom;
 public class SkillAdvancementPanel extends JPanel implements
 		PropertyChangeListener, ActionListener {
 	/**
+	 * The maximum height of the panel.
+	 */
+	private static final int MAX_PANEL_HEIGHT = 60;
+	/**
 	 * The skill we're dealing with. May be null if no skill is selected.
 	 */
 	private Skill skill = null;
@@ -68,8 +72,8 @@ public class SkillAdvancementPanel extends JPanel implements
 			source.addPropertyChangeListener(this);
 		}
 		setMinimumSize(new Dimension(200, 40));
-		setPreferredSize(new Dimension(220, 60));
-		setMaximumSize(new Dimension(240, 60));
+		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
+		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
 	/**
 	 * Set this as a listener on a button.
