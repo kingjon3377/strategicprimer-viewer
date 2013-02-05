@@ -232,6 +232,7 @@ public class MapHelper {
 	 */
 	public String inputString(final String prompt) throws IOException {
 		SystemOut.SYS_OUT.print(prompt);
-		return istream.readLine().trim();
+		final String retval = istream.readLine();
+		return retval == null ? "" : retval.trim();
 	}
 }
