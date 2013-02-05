@@ -32,6 +32,10 @@ import controller.map.formatexceptions.SPFormatException;
 public final class TestMoreFixtureSerialization extends
 		BaseTestFixtureSerialization {
 	/**
+	 * The default race for a worker.
+	 */
+	private static final String DEFAULT_RACE = "human";
+	/**
 	 * Extracted constant.
 	 */
 	private static final String NAME_PROPERTY = "name";
@@ -329,29 +333,29 @@ public final class TestMoreFixtureSerialization extends
 				"unitName", 1);
 		one.addMember(new Animal("animal", false, true, "wild", 2));
 		assertSerialization("Unit can have an animal as a member", one, Unit.class);
-		one.addMember(new Worker("worker", "human", 3));
+		one.addMember(new Worker("worker", DEFAULT_RACE, 3));
 		assertSerialization("Unit can have a worker as a member", one, Unit.class);
 		one.addMember(new Worker("second", "elf", 4, new Job("job", 0, new Skill("skill", 1, 2))));
 		assertSerialization("Worker can have jobs", one, Unit.class);
 		assertForwardDeserialization(
 				"Explicit specification of default race works", new Worker(
-						"third", "human", 5),
+						"third", DEFAULT_RACE, 5),
 				"<worker name=\"third\" race=\"human\" id=\"5\" />",
 				Worker.class);
 		assertDeprecatedDeserialization(
 				"'miscellaneous' skill with level should be warned about",
-				new Worker("fourth", "human", 6, new Job("fifth", 0, new Skill(
+				new Worker("fourth", DEFAULT_RACE, 6, new Job("fifth", 0, new Skill(
 						"miscellaneous", 1, 0))),
 				"<worker name=\"fourth\" id=\"6\"><job name=\"fifth\" level=\"0\">"
 						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\" /></job></worker>",
 				Worker.class, "miscellaneous");
 		assertSerialization(
 				"but 'miscellaneous' skill without levels causes no warnings",
-				new Worker("sixth", "human", 7, new Job("seventh", 0,
+				new Worker("sixth", DEFAULT_RACE, 7, new Job("seventh", 0,
 						new Skill("miscellaneous", 0, 20))), Worker.class,
 				new Warning(Warning.Action.Die));
 		assertSerialization("and levels in another skill cause no warnings",
-				new Worker("fourth", "human", 8, new Job("fifth", 0, new Skill(
+				new Worker("fourth", DEFAULT_RACE, 8, new Job("fifth", 0, new Skill(
 						"odd-skill", 1, 0))), Worker.class, new Warning(
 						Warning.Action.Die));
 	}
