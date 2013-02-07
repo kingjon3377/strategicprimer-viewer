@@ -1,17 +1,21 @@
 package controller.map.misc;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.map.MapView;
+import model.map.XMLWritable;
 import util.Warning;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.SPWriter;
 
 /**
@@ -27,6 +31,10 @@ public class MapReaderAdapter {
 	 */
 	private final IMapReader reader;
 	/**
+	 * The SP-reader implementation.
+	 */
+	private final ISPReader spReader;
+	/**
 	 * The map writer implementation we use under the hood.
 	 */
 	private final SPWriter writer;
@@ -35,7 +43,9 @@ public class MapReaderAdapter {
 	 * Constructor.
 	 */
 	public MapReaderAdapter() {
-		reader = new CompactXMLReader();
+		final CompactXMLReader impl = new CompactXMLReader();
+		reader = impl;
+		spReader = impl;
 		writer = new CompactXMLWriter();
 	}
 
@@ -64,7 +74,31 @@ public class MapReaderAdapter {
 	public void write(final String filename, final IMap map) throws IOException {
 		writer.write(filename, map);
 	}
+	/**
+	 * Read an arbitrary model object from a string.
+	 * @param string the string to read from
+	 * @return the model object contained in that string
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML error
+	 */
+	public XMLWritable readModelObject(final String string) throws XMLStreamException, SPFormatException {
+		return spReader.readXML("string", new StringReader(string),
+				XMLWritable.class, new Warning(Warning.Action.Ignore));
+	}
 
+	/**
+	 * Write a model object to a string. FIXME: Add writeObject to some
+	 * interface so we don't have to cast to a particular implementation.
+	 *
+	 * @param obj the object to write
+	 * @return a string containing it.
+	 * @throws IOException on I/O error in writing
+	 */
+	public String writeModelObject(final XMLWritable obj) throws IOException {
+		final StringWriter out = new StringWriter();
+		((CompactXMLWriter) writer).writeObject(out, obj);
+		return out.toString();
+	}
 	/**
 	 * @return a String representation of the object
 	 */
