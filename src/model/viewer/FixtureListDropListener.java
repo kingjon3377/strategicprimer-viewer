@@ -152,6 +152,7 @@ public class FixtureListDropListener implements DropTargetListener {
 				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
 						CurriedFixtureTransferable.FLAVOR, DataFlavor.stringFlavor)) {
 					try {
+						dtde.acceptDrop(dtde.getDropAction());
 						handleDrop(dtde.getTransferable());
 					} catch (UnsupportedFlavorException except) {
 						LOGGER.log(Level.SEVERE,
@@ -162,7 +163,6 @@ public class FixtureListDropListener implements DropTargetListener {
 						LOGGER.log(Level.SEVERE, "I/O error getting the data", except);
 						continue;
 					}
-					dtde.acceptDrop(dtde.getDropAction());
 					return; // NOPMD
 				}
 			}
