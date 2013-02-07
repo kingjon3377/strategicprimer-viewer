@@ -69,7 +69,7 @@ public class FixtureListDropListener implements DropTargetListener {
 								dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 							.equalsAny(DataFlavor.stringFlavor,
 									dtde.getCurrentDataFlavorsAsList()))
-				&& !isIntraComponentDrag(dtde)) {
+				&& !isIntraComponentXfr(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -84,18 +84,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	 * @return whether the data it holds come from are (probably) from this
 	 *         component. I/O etc. problems return true.
 	 */
-	private boolean isIntraComponentDrag(final DropTargetDragEvent dtde) {
-		return parentComponent.isAncestorOf(dtde.getDropTargetContext().getComponent());
-	}
-	/**
-	 * TODO: We would skip all this (return false) on non-local drags if I could
-	 * figure out how.
-	 *
-	 * @param dtde an event
-	 * @return whether the data it holds come from are (probably) from this
-	 *         component. I/O etc. problems return true.
-	 */
-	private boolean isIntraComponentDrop(final DropTargetDropEvent dtde) {
+	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
 		return parentComponent.isAncestorOf(dtde.getDropTargetContext().getComponent());
 	}
 	/**
@@ -112,7 +101,7 @@ public class FixtureListDropListener implements DropTargetListener {
 								dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 							.equalsAny(DataFlavor.stringFlavor,
 									dtde.getCurrentDataFlavorsAsList()))
-				&& !isIntraComponentDrag(dtde)) {
+				&& !isIntraComponentXfr(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -132,7 +121,7 @@ public class FixtureListDropListener implements DropTargetListener {
 								dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 							.equalsAny(DataFlavor.stringFlavor,
 									dtde.getCurrentDataFlavorsAsList()))
-				&& !isIntraComponentDrag(dtde)) {
+				&& !isIntraComponentXfr(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
 			dtde.rejectDrag();
@@ -154,7 +143,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	 */
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
-		if (isIntraComponentDrop(dtde)) {
+		if (isIntraComponentXfr(dtde)) {
 			dtde.rejectDrop();
 			return; // NOPMD
 		}
