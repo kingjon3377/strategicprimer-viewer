@@ -1,5 +1,6 @@
 package model.viewer;
 
+import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -85,7 +86,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	 *         component. I/O etc. problems return true.
 	 */
 	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
-		return parentComponent.isAncestorOf(dtde.getDropTargetContext().getComponent());
+		return dtde.getSource() instanceof Component && parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
 	/**
 	 * Continued dragging over the component.
