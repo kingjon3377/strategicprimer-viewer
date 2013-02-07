@@ -15,13 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
-import javax.xml.stream.XMLStreamException;
 
 import model.map.TileFixture;
-import model.map.XMLWritable;
 import util.EqualsAny;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 
 /**
  * The details of inter-FixtureList drag-and-drop, extracted to reduce the
@@ -31,10 +27,6 @@ import controller.map.misc.MapReaderAdapter;
  *
  */
 public class FixtureListDropListener implements DropTargetListener {
-	/**
-	 * Adapter for transferring via XML serialization.
-	 */
-	private static final MapReaderAdapter ADAPTER = new MapReaderAdapter();
 	/**
 	 * Logger.
 	 */
@@ -67,9 +59,7 @@ public class FixtureListDropListener implements DropTargetListener {
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-							.equalsAny(DataFlavor.stringFlavor,
-									dtde.getCurrentDataFlavorsAsList()))
+								dtde.getCurrentDataFlavorsAsList()))
 				&& !isIntraComponentXfr(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
@@ -99,9 +89,7 @@ public class FixtureListDropListener implements DropTargetListener {
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-							.equalsAny(DataFlavor.stringFlavor,
-									dtde.getCurrentDataFlavorsAsList()))
+								dtde.getCurrentDataFlavorsAsList()))
 				&& !isIntraComponentXfr(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
@@ -119,9 +107,7 @@ public class FixtureListDropListener implements DropTargetListener {
 				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
 						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
 						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-							.equalsAny(DataFlavor.stringFlavor,
-									dtde.getCurrentDataFlavorsAsList()))
+								dtde.getCurrentDataFlavorsAsList()))
 				&& !isIntraComponentXfr(dtde)) {
 			dtde.acceptDrag(dtde.getDropAction());
 		} else {
@@ -150,7 +136,7 @@ public class FixtureListDropListener implements DropTargetListener {
 		}
 		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
-						CurriedFixtureTransferable.FLAVOR, DataFlavor.stringFlavor)) {
+						CurriedFixtureTransferable.FLAVOR)) {
 					try {
 						dtde.acceptDrop(dtde.getDropAction());
 						handleDrop(dtde.getTransferable());
@@ -180,20 +166,6 @@ public class FixtureListDropListener implements DropTargetListener {
 				trans.getTransferDataFlavors())) {
 			model.addFixture((TileFixture) trans
 					.getTransferData(FixtureTransferable.FLAVOR));
-		} else if (EqualsAny.equalsAny(DataFlavor.stringFlavor, trans.getTransferDataFlavors())) {
-			try {
-				final XMLWritable obj = ADAPTER.readModelObject((String) trans
-						.getTransferData(DataFlavor.stringFlavor));
-				if (obj instanceof TileFixture) {
-					model.addFixture((TileFixture) obj);
-				} // TODO: else what?
-			} catch (XMLStreamException except) {
-				LOGGER.log(Level.SEVERE, "XML error in dragged 'text'", except);
-				throw new IOException("Ill-formed XML transferred", except);
-			} catch (SPFormatException except) {
-				LOGGER.log(Level.SEVERE, "SP format error in dragged 'text'", except);
-				throw new IOException("Transferred data is not proper SP XML", except);
-			}
 		} else if (EqualsAny.equalsAny(CurriedFixtureTransferable.FLAVOR,
 				trans.getTransferDataFlavors())) {
 			for (Transferable item : (List<Transferable>) trans

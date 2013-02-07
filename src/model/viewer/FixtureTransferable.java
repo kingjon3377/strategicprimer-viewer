@@ -6,8 +6,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.Serializable;
 
-import controller.map.misc.MapReaderAdapter;
-
 import model.map.TileFixture;
 
 /**
@@ -17,10 +15,6 @@ import model.map.TileFixture;
  *
  */
 public class FixtureTransferable implements Transferable, Serializable {
-	/**
-	 * Adapter for transferring via XML serialization.
-	 */
-	private static final MapReaderAdapter ADAPTER = new MapReaderAdapter();
 	/**
 	 * Version UID for serialization.
 	 */
@@ -50,7 +44,7 @@ public class FixtureTransferable implements Transferable, Serializable {
 	 */
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] { FLAVOR, DataFlavor.stringFlavor };
+		return new DataFlavor[] { FLAVOR };
 	}
 
 	/**
@@ -61,7 +55,7 @@ public class FixtureTransferable implements Transferable, Serializable {
 	 */
 	@Override
 	public boolean isDataFlavorSupported(final DataFlavor dflavor) {
-		return dflavor.equals(FLAVOR) || DataFlavor.stringFlavor.equals(dflavor);
+		return dflavor.equals(FLAVOR);
 	}
 
 	/**
@@ -78,8 +72,6 @@ public class FixtureTransferable implements Transferable, Serializable {
 			throws UnsupportedFlavorException, IOException {
 		if (dflavor.equals(FLAVOR)) {
 			return data; // NOPMD
-		} else if (DataFlavor.stringFlavor.equals(dflavor)) {
-			return ADAPTER.writeModelObject(data);
 		} else {
 			throw new UnsupportedFlavorException(dflavor);
 		}
