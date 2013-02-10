@@ -84,10 +84,10 @@ public class SPMenu extends JMenuBar {
 		mapMenu.setMnemonic(KeyEvent.VK_M);
 		mapMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
-				"Load a main map from file", handler));
+				"Load a map from file", handler));
 		mapMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
-				"Save the main map to file", handler));
+				"Save the map to file", handler));
 		mapMenu.addSeparator();
 		mapMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
