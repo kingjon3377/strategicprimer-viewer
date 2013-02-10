@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
@@ -25,7 +26,7 @@ public class WorkerMenu extends JMenuBar {
 	 * Constructor.
 	 * @param handler the I/O handler to handle I/O related items
 	 */
-	public WorkerMenu(final IOHandler handler) {
+	public WorkerMenu(final IOHandler handler, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
@@ -34,6 +35,23 @@ public class WorkerMenu extends JMenuBar {
 		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
 				"Save the map to file", handler));
+		fileMenu.addSeparator();
+		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
+				"Close this window", new ActionListener() {
+					/**
+					 * Close the window when pressed.
+					 *
+					 * @param evt the event to handle
+					 */
+					@Override
+					public void actionPerformed(final ActionEvent evt) {
+						if ("Close".equals(evt.getActionCommand())) {
+							parent.setVisible(false);
+							parent.dispose();
+						}
+					}
+				}));
 		fileMenu.addSeparator();
 		fileMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),

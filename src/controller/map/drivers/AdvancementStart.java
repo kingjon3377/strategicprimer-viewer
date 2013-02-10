@@ -97,7 +97,7 @@ public final class AdvancementStart implements ISPDriver {
 			@Override
 			public void run() {
 				final AdvancementFrame frame = new AdvancementFrame(model);
-				frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser)));
+				frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser), frame));
 				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				frame.setVisible(true);
 			}

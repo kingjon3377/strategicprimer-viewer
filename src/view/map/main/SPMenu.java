@@ -33,7 +33,7 @@ public class SPMenu extends JMenuBar {
 	public SPMenu(final IOHandler handler, final JFrame parent,
 			final MapModel model) {
 		super();
-		add(createMapMenu(handler));
+		add(createMapMenu(handler, parent));
 		add(creator.createMenuItem("Go to tile", KeyEvent.VK_G,
 				KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK),
 				"Go to a tile by coordinates", new ActionListener() {
@@ -95,9 +95,10 @@ public class SPMenu extends JMenuBar {
 	 * Create the map menu.
 	 *
 	 * @param handler the class to handle I/O related menu items
+	 * @param parent the menu-bar's parent window---the window to close on "Close".
 	 * @return the map menu.
 	 */
-	private JMenu createMapMenu(final IOHandler handler) {
+	private JMenu createMapMenu(final IOHandler handler, final JFrame parent) {
 		final JMenu mapMenu = new JMenu("Map");
 		mapMenu.setMnemonic(KeyEvent.VK_M);
 		mapMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
@@ -106,6 +107,23 @@ public class SPMenu extends JMenuBar {
 		mapMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
 				"Save the main map to file", handler));
+		mapMenu.addSeparator();
+		mapMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
+				"Close this window", new ActionListener() {
+					/**
+					 * Close the window when pressed.
+					 *
+					 * @param evt the event to handle
+					 */
+					@Override
+					public void actionPerformed(final ActionEvent evt) {
+						if ("Close".equals(evt.getActionCommand())) {
+							parent.setVisible(false);
+							parent.dispose();
+						}
+					}
+				}));
 		return mapMenu;
 	}
 	/**
