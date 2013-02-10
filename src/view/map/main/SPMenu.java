@@ -9,9 +9,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
+import model.map.MapView;
 import model.viewer.MapModel;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
+import controller.map.drivers.ViewerStart;
 import controller.map.misc.IOHandler;
 
 /**
@@ -82,6 +84,10 @@ public class SPMenu extends JMenuBar {
 	private JMenu createFileMenu(final IOHandler handler, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.add(creator.createMenuItem("New", KeyEvent.VK_N,
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
+				"Create a new map the same size as the current one",
+				handler));
 		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
 				"Load a map from file", handler));

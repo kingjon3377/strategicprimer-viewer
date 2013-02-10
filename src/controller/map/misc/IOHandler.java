@@ -9,12 +9,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.map.MapView;
+import model.map.SPMap;
 import model.viewer.MapModel;
 import util.Warning;
+import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import controller.map.formatexceptions.SPFormatException;
 
@@ -81,9 +84,24 @@ public final class IOHandler implements ActionListener {
 			handleLoadMenu(source);
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMap(model.getMainMap(), source);
+		} else if ("New".equals(event.getActionCommand())) {
+			startNewViewerWindow();
 		}
 	}
-
+	/**
+	 * Start a new viewer window with a blank map of the same size as the model's current map.
+	 */
+	private void startNewViewerWindow() {
+		final ViewerFrame frame = new ViewerFrame(new MapModel(new MapView(
+				new SPMap(model.getMapDimensions()), 0, model.getMainMap()
+						.getCurrentTurn())));
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				frame.setVisible(true);
+			}
+		});
+	}
 	/**
 	 * The map model, which needs to be told about newly loaded maps and holds
 	 * maps to be saved.
