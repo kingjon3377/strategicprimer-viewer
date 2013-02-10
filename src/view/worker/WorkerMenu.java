@@ -25,6 +25,7 @@ public class WorkerMenu extends JMenuBar {
 	/**
 	 * Constructor.
 	 * @param handler the I/O handler to handle I/O related items
+	 * @param parent the window this is to be attached to, which should close on "Close".
 	 */
 	public WorkerMenu(final IOHandler handler, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
