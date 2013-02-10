@@ -1,11 +1,9 @@
 package view.map.main;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.Box.Filler;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -67,23 +65,6 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
-		add(new Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(
-				Integer.MAX_VALUE, 0)));
-		add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
-				"Quit the viewer", new ActionListener() {
-					/**
-					 * Handle the menu "button" press.
-					 *
-					 * @param event the event to handle
-					 */
-					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Quit".equals(event.getActionCommand())) {
-							DriverQuit.quit(0);
-						}
-					}
-		}));
 	}
 
 	/**
@@ -124,6 +105,21 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
+		mapMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
+				"Quit the viewer", new ActionListener() {
+					/**
+					 * Handle the menu "button" press.
+					 *
+					 * @param event the event to handle
+					 */
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						if ("Quit".equals(event.getActionCommand())) {
+							DriverQuit.quit(0);
+						}
+					}
+		}));
 		return mapMenu;
 	}
 	/**
