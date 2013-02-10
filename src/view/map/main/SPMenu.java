@@ -31,7 +31,7 @@ public class SPMenu extends JMenuBar {
 	public SPMenu(final IOHandler handler, final JFrame parent,
 			final MapModel model) {
 		super();
-		add(createMapMenu(handler, parent));
+		add(createFileMenu(handler, parent));
 		add(creator.createMenuItem("Go to tile", KeyEvent.VK_G,
 				KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK),
 				"Go to a tile by coordinates", new ActionListener() {
@@ -79,17 +79,17 @@ public class SPMenu extends JMenuBar {
 	 * @param parent the menu-bar's parent window---the window to close on "Close".
 	 * @return the map menu.
 	 */
-	private JMenu createMapMenu(final IOHandler handler, final JFrame parent) {
-		final JMenu mapMenu = new JMenu("Map");
-		mapMenu.setMnemonic(KeyEvent.VK_M);
-		mapMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
+	private JMenu createFileMenu(final IOHandler handler, final JFrame parent) {
+		final JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
 				"Load a map from file", handler));
-		mapMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
+		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
 				"Save the map to file", handler));
-		mapMenu.addSeparator();
-		mapMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
+		fileMenu.addSeparator();
+		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
 				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
 				"Close this window", new ActionListener() {
 					/**
@@ -105,7 +105,7 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
-		mapMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
+		fileMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
 				"Quit the viewer", new ActionListener() {
 					/**
@@ -120,7 +120,7 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 		}));
-		return mapMenu;
+		return fileMenu;
 	}
 	/**
 	 * @return a String representation of the object
