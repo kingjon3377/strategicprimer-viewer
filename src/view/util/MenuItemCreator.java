@@ -1,6 +1,6 @@
 package view.util;
 
-import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
@@ -38,7 +38,7 @@ public class MenuItemCreator {
 	 * @return the hotkey
 	 */
 	public KeyStroke createHotkey(final int key) {
-		return KeyStroke.getKeyStroke(key, ActionEvent.CTRL_MASK);
+		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 	}
 	/**
 	 * @return a String representation of the object
