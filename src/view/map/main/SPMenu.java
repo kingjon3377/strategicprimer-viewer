@@ -32,8 +32,8 @@ public class SPMenu extends JMenuBar {
 			final MapModel model) {
 		super();
 		add(createFileMenu(handler, parent));
-		add(creator.createMenuItem("Go to tile", KeyEvent.VK_G,
-				creator.createHotkey(KeyEvent.VK_G),
+		add(creator.createMenuItem("Go to tile", KeyEvent.VK_T,
+				creator.createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates", new ActionListener() {
 					@Override
 					public void actionPerformed(final ActionEvent event) {
