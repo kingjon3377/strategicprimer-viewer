@@ -1,5 +1,6 @@
 package view.util;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
@@ -30,6 +31,14 @@ public class MenuItemCreator {
 		mitem.getAccessibleContext().setAccessibleDescription(desc);
 		mitem.addActionListener(list);
 		return mitem;
+	}
+	/**
+	 * Create a hotkey.
+	 * @param key the base key
+	 * @return the hotkey
+	 */
+	public KeyStroke createHotkey(final int key) {
+		return KeyStroke.getKeyStroke(key, ActionEvent.CTRL_MASK);
 	}
 	/**
 	 * @return a String representation of the object

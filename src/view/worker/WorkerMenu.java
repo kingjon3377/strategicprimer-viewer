@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.KeyStroke;
 
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
@@ -31,14 +30,14 @@ public class WorkerMenu extends JMenuBar {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_O),
 				"Load a map from file", handler));
 		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_S),
 				"Save the map to file", handler));
 		fileMenu.addSeparator();
 		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
-				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_W),
 				"Close this window", new ActionListener() {
 					/**
 					 * Close the window when pressed.
@@ -55,7 +54,7 @@ public class WorkerMenu extends JMenuBar {
 				}));
 		fileMenu.addSeparator();
 		fileMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_Q),
 				"Quit the application", new ActionListener() {
 					/**
 					 * Handle the menu "button" press.

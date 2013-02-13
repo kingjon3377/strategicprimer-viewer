@@ -9,11 +9,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
-import model.map.MapView;
 import model.viewer.MapModel;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
-import controller.map.drivers.ViewerStart;
 import controller.map.misc.IOHandler;
 
 /**
@@ -35,7 +33,7 @@ public class SPMenu extends JMenuBar {
 		super();
 		add(createFileMenu(handler, parent));
 		add(creator.createMenuItem("Go to tile", KeyEvent.VK_G,
-				KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_G),
 				"Go to a tile by coordinates", new ActionListener() {
 					@Override
 					public void actionPerformed(final ActionEvent event) {
@@ -85,18 +83,18 @@ public class SPMenu extends JMenuBar {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(creator.createMenuItem("New", KeyEvent.VK_N,
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_N),
 				"Create a new map the same size as the current one",
 				handler));
 		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_O),
 				"Load a map from file", handler));
 		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_S),
 				"Save the map to file", handler));
 		fileMenu.addSeparator();
 		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
-				KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_W),
 				"Close this window", new ActionListener() {
 					/**
 					 * Close the window when pressed.
@@ -112,7 +110,7 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		fileMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK),
+				creator.createHotkey(KeyEvent.VK_Q),
 				"Quit the viewer", new ActionListener() {
 					/**
 					 * Handle the menu "button" press.
