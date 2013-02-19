@@ -38,25 +38,32 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("member".equalsIgnoreCase(evt.getPropertyName())) {
-			if (worker == null || !worker.equals(evt.getNewValue())) {
-				clear();
-				if (evt.getNewValue() instanceof Worker) {
-					worker = (Worker) evt.getNewValue();
-					for (Job job : worker) {
-						addElement(job);
-					}
-					pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
-				}
-			} else if (evt.getNewValue() == null) {
-				worker = (Worker) evt.getNewValue();
-				clear();
-			}
+			handleMemberChange(evt.getNewValue());
 		} else if ("add".equalsIgnoreCase(evt.getPropertyName())
 				&& worker != null) {
 			final Job job = new Job(evt.getNewValue().toString(), 0);
 			worker.addJob(job);
 			addElement(job);
 			pcs.firePropertyChange("finished", null, job);
+		}
+	}
+	/**
+	 * Handle a "worker" property-change.
+	 * @param newValue the "new value" from the PropertyChangeEvent
+	 */
+	private void handleMemberChange(final Object newValue) {
+		if (worker == null || !worker.equals(newValue)) {
+			clear();
+			if (newValue instanceof Worker) {
+				worker = (Worker) newValue;
+				for (Job job : worker) {
+					addElement(job);
+				}
+				pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
+			}
+		} else if (newValue == null) {
+			worker = (Worker) newValue;
+			clear();
 		}
 	}
 	/**
