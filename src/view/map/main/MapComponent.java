@@ -57,8 +57,11 @@ public final class MapComponent extends JComponent implements MapGUI,
 		loadMap(theMap.getMainMap());
 		addMouseListener(new ComponentMouseListener(model, this));
 		model.addPropertyChangeListener(this);
-		new ArrowKeyListener().setUpListeners(new DirectionSelectionChanger(
-				model), getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
+		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
+				model);
+		addMouseWheelListener(dsl);
+		requestFocusInWindow();
+		new ArrowKeyListener().setUpListeners(dsl, getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
 				getActionMap());
 		addComponentListener(new MapSizeListener(model));
 	}
