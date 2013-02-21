@@ -44,7 +44,7 @@
       <arg value="-i" />
     </exec>
     <property name="version-number" value="${major-version-number}.${minor-version-number}.${scm.revision.number}" />
-    <property name="basename" value="viewer-${version-number}" />
+    <property name="basename" value="${shortname}-${version-number}" />
   </target>
 
   <target name="get-builder">
