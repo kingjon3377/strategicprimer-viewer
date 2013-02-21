@@ -141,6 +141,17 @@
       </tarfileset>
     </tar>
   </target>
+  <target name="dmg" depends="app">
+    <exec executable="${mkisofs.path}" dir="${release}/${basename}.app/">
+      <arg value="-V" />
+      <arg value="${appname}" />
+      <arg value="-no-pad" />
+      <arg value="-r" />
+      <arg value="-apple" />
+      <arg line="-o ../${basename}.dmg" />
+      <arg value="." />
+    </exec>
+  </target>
   <target name="dist" depends="build,doc">
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
       <tarfileset dir="${project_home}" prefix="${basename}">
@@ -166,5 +177,5 @@
     </tar>
   </target>
   <target name="release"
-    depends="app,exe,jar,dist" />
+    depends="app,exe,jar,dmg,dist" />
 </project>
