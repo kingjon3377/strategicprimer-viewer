@@ -44,6 +44,7 @@ public class AppChooserFrame extends JFrame implements ActionListener {
 	 * @param params the non-option parameters passed to main().
 	 */
 	public AppChooserFrame(final List<String> params) {
+		super("SP App Chooser");
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		addTarget("Map Viewer", ViewerStart.class);
 		addTarget("Worker Advancement", AdvancementStart.class);
