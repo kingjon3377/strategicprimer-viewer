@@ -132,14 +132,16 @@
       outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
   </target>
   <target name="app" depends="jar">
+    <copy file="${release}/${basename}.jar" tofile="${release}/${shortname}.jar" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
-      jar="${release}/${basename}.jar" />
+      jar="${release}/${shortname}.jar" />
     <symlink link="${release}/${basename}.app/${stub-path}" resource="${stub-native-path}" />
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
         <include name="${basename}.app/**" />
       </tarfileset>
     </tar>
+    <delete file="${release}/${shortname}.jar" />
   </target>
   <target name="dmg" depends="app">
     <exec executable="${mkisofs.path}" dir="${release}/${basename}.app/">
