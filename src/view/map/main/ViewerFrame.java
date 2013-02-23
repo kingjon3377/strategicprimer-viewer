@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import model.viewer.MapModel;
+import model.viewer.TileViewSize;
 import view.map.details.DetailPanelNG;
 
 /**
@@ -68,18 +70,40 @@ public final class ViewerFrame extends JFrame {
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
 		add(mapSuperPanel, BorderLayout.CENTER);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		zoomListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent evt) {
-				if ("zoom in".equalsIgnoreCase(evt.getActionCommand())) {
-					((MapComponent) mapPanel).getTileSize().increase(2);
-				} else if ("zoom out".equalsIgnoreCase(evt.getActionCommand())) {
-					((MapComponent) mapPanel).getTileSize().decrease(2);
-				}
-			}
-		};
+		zoomListener = new ZoomListener(((MapComponent) mapPanel).getTileSize());
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
+	}
+	/**
+	 * A class to listen for zoom menu events.
+	 */
+	private static final class ZoomListener implements ActionListener, Serializable {
+		/**
+		 * Version UID for serialization.
+		 */
+		private static final long serialVersionUID = 1L;
+		/**
+		 * Constructor.
+		 * @param tsize the tile-size-encapsulating object
+		 */
+		ZoomListener(final TileViewSize tsize) {
+			tvs = tsize;
+		}
+		/**
+		 * The tile-size-encapsulating object.
+		 */
+		private final TileViewSize tvs;
+		/**
+		 * @param evt the event to handle
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent evt) {
+			if ("zoom in".equalsIgnoreCase(evt.getActionCommand())) {
+				tvs.increase(2);
+			} else if ("zoom out".equalsIgnoreCase(evt.getActionCommand())) {
+				tvs.decrease(2);
+			}
+		}
 	}
 	/**
 	 * A listener to handle menu- or keypress-based zooming.
