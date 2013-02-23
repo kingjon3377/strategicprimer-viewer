@@ -267,7 +267,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @return the size of each tile
 	 */
 	@Override
-	public int getTileSize() {
-		return tileSize.getSize();
+	public TileViewSize getTileSize() {
+		return tileSize;
 	}
 }

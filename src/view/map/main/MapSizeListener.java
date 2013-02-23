@@ -40,10 +40,11 @@ public class MapSizeListener extends ComponentAdapter {
 	public void componentResized(final ComponentEvent event) {
 		if (event.getComponent() instanceof MapGUI) {
 			synchronized (model) {
+				final int tsize = ((MapGUI) event.getSource()).getTileSize().getSize();
 				final int visibleCols = event.getComponent().getWidth()
-						/ ((MapGUI) event.getSource()).getTileSize();
+						/ tsize;
 				final int visibleRows = event.getComponent().getHeight()
-						/ ((MapGUI) event.getSource()).getTileSize();
+						/ tsize;
 				int minCol = model.getDimensions().getMinimumCol();
 				int maxCol = model.getDimensions().getMaximumCol();
 				int minRow = model.getDimensions().getMinimumRow();
