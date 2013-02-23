@@ -329,7 +329,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 */
 	public void runAllTests(final IMap map, final int reps) {
 		final int repetitions = reps;
-		final int tsize = new TileViewSize().getSize(map.getDimensions().version);
+		final int tsize = TileViewSize.getDefaultSize(map.getDimensions().version);
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
 		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null);

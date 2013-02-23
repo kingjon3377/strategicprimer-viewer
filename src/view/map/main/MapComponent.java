@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -36,7 +38,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	/**
 	 * Tile size.
 	 */
-	private static final TileViewSize TILE_SIZE = new TileViewSize();
+	private final TileViewSize tileSize;
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
@@ -49,16 +51,18 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	public MapComponent(final MapModel theMap) {
 		super();
+		tileSize = new TileViewSize(theMap.getMainMap());
+		tileSize.addPropertyChangeListener(this);
 		setLayout(new BorderLayout());
 		setDoubleBuffered(true);
 		model = theMap;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this);
 		loadMap(theMap.getMainMap());
-		addMouseListener(new ComponentMouseListener(model, this));
+		addMouseListener(new ComponentMouseListener(model, tileSize, this));
 		model.addPropertyChangeListener(this);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
-				model);
+				model, tileSize);
 		addMouseWheelListener(dsl);
 		requestFocusInWindow();
 		new ArrowKeyListener().setUpListeners(dsl, getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
@@ -87,8 +91,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 			context.fillRect(0, 0, getWidth(), getHeight());
 			final Rectangle bounds = bounds(context.getClipBounds());
 			final MapDimensions mapDim = model.getMapDimensions();
-			final int tsize = TILE_SIZE
-					.getSize(mapDim.version);
+			final int tsize = tileSize.getSize();
 			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tsize),
 					(int) Math.round(bounds.getMinY() / tsize), Math.min(
 							(int) Math.round(bounds.getMaxX() / tsize + 1),
@@ -129,18 +132,13 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(final Rectangle rect) {
-		return (rect == null) ? new Rectangle(
-				0,
-				0,
-				(getMapModel().getDimensions().getMaximumCol() - getMapModel()
-						.getDimensions().getMinimumCol())
-						* TILE_SIZE
-								.getSize(getMapModel().getMapDimensions().version),
-				(getMapModel().getDimensions().getMaximumRow() - getMapModel()
-						.getDimensions().getMinimumRow())
-						* TILE_SIZE
-								.getSize(getMapModel().getMapDimensions().version))
-				: rect;
+		return (rect == null) ? new Rectangle(0, 0, (getMapModel()
+				.getDimensions().getMaximumCol() - getMapModel()
+				.getDimensions().getMinimumCol())
+				* tileSize.getSize(), (getMapModel().getDimensions()
+				.getMaximumRow() - getMapModel().getDimensions()
+				.getMinimumRow())
+				* tileSize.getSize()) : rect;
 	}
 
 	/**
@@ -153,8 +151,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	private void paintTile(final Graphics pen, final Tile tile, final int row,
 			final int col) {
-		final int tsize = TILE_SIZE
-				.getSize(getMapModel().getMapDimensions().version);
+		final int tsize = tileSize.getSize();
 		helper.drawTile(pen, tile, PointFactory.coordinate(col * tsize, row * tsize),
 				PointFactory.coordinate(tsize, tsize));
 		if (model.getSelectedTile().equals(tile)) {
@@ -202,8 +199,15 @@ public final class MapComponent extends JComponent implements MapGUI,
 				evt.getNewValue());
 		if ("tile".equals(evt.getPropertyName()) && !isSelectionVisible()) {
 			fixVisibility();
+		} else if ("map".equals(evt.getPropertyName())) {
+			tileSize.reset(model.getMainMap());
+		} else if ("tsize".equals(evt.getPropertyName())) {
+			final ComponentEvent resizeEvt = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
+			for (final ComponentListener list : getComponentListeners()) {
+				list.componentResized(resizeEvt);
+			}
 		}
-		if (equalsAny(evt.getPropertyName(), "map", "tile", "dimensions")) {
+		if (equalsAny(evt.getPropertyName(), "map", "tile", "dimensions", "tsize")) {
 			repaint();
 		}
 	}
@@ -264,6 +268,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	@Override
 	public int getTileSize() {
-		return TILE_SIZE.getSize(getMapModel().getMapDimensions().version);
+		return tileSize.getSize();
 	}
 }

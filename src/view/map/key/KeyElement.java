@@ -14,7 +14,7 @@ import view.map.main.TileUIHelper;
 
 /**
  * An element of the key.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public final class KeyElement extends JPanel {
@@ -37,7 +37,7 @@ public final class KeyElement extends JPanel {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param version the map version
 	 * @param type the type this is the key element for.
 	 */
@@ -53,7 +53,7 @@ public final class KeyElement extends JPanel {
 				type));
 		tile.setMinimumSize(MIN_SIZE);
 		tile.setPreferredSize(PREF_SIZE);
-		final int tsize = new TileViewSize().getSize(version);
+		final int tsize = TileViewSize.getDefaultSize(version);
 		tile.setMaximumSize(new Dimension(tsize, tsize));
 		panel.add(tile);
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));
