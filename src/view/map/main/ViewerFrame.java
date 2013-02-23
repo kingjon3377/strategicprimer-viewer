@@ -3,6 +3,8 @@ package view.map.main;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -66,10 +68,29 @@ public final class ViewerFrame extends JFrame {
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
 		add(mapSuperPanel, BorderLayout.CENTER);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		zoomListener = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				if ("zoom in".equalsIgnoreCase(evt.getActionCommand())) {
+					((MapComponent) mapPanel).getTileSize().increase(2);
+				} else if ("zoom out".equalsIgnoreCase(evt.getActionCommand())) {
+					((MapComponent) mapPanel).getTileSize().decrease(2);
+				}
+			}
+		};
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
 	}
-
+	/**
+	 * A listener to handle menu- or keypress-based zooming.
+	 */
+	private final ActionListener zoomListener;
+	/**
+	 * @return the listener to handle menu-based zooming
+	 */
+	public ActionListener getZoomListener() {
+		return zoomListener;
+	}
 	/**
 	 * @return this frame
 	 */
