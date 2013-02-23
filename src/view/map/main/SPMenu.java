@@ -32,7 +32,18 @@ public class SPMenu extends JMenuBar {
 			final MapModel model) {
 		super();
 		add(createFileMenu(handler, parent));
-		add(creator.createMenuItem("Go to tile", KeyEvent.VK_T,
+		add(createMapMenu(parent, model));
+	}
+	/**
+	 * Create the "map" menu, including go-to-tile, find, and zooming function.
+	 * @param parent the menu-bar's parent window
+	 * @param model the map model
+	 * @return the menu created
+	 */
+	private JMenu createMapMenu(final JFrame parent, final MapModel model) {
+		final JMenu retval = new JMenu("Map");
+		retval.setMnemonic(KeyEvent.VK_M);
+		retval.add(creator.createMenuItem("Go to tile", KeyEvent.VK_T,
 				creator.createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates", new ActionListener() {
 					@Override
@@ -44,7 +55,7 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		final FindDialog finder = new FindDialog(parent, model);
-		add(creator.createMenuItem("Find a fixture", KeyEvent.VK_SLASH,
+		retval.add(creator.createMenuItem("Find a fixture", KeyEvent.VK_SLASH,
 				KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
 				"Find a fixture by name, kind, or ID#", new ActionListener() {
 					@Override
@@ -54,7 +65,7 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
-		add(creator.createMenuItem("Find next", KeyEvent.VK_N,
+		retval.add(creator.createMenuItem("Find next", KeyEvent.VK_N,
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, 0),
 				"Find the next fixture matching the pattern",
 				new ActionListener() {
@@ -65,6 +76,7 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
+		return retval;
 	}
 
 	/**
