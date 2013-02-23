@@ -39,18 +39,8 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("job".equalsIgnoreCase(evt.getPropertyName())) {
-			if (evt.getNewValue() instanceof Job) {
-				if (job == null || !job.equals(evt.getNewValue())) {
-					clear();
-					job = (Job) evt.getNewValue();
-					for (Skill skill : job) {
-						addElement(skill);
-					}
-					pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
-				}
-			} else if (job != null && evt.getNewValue() == null) {
-				job = (Job) evt.getNewValue();
-				clear();
+			if (evt.getNewValue() == null || evt.getNewValue() instanceof Job) {
+				handleNewJob((Job) evt.getNewValue());
 			}
 		} else if ("add".equalsIgnoreCase(evt.getPropertyName()) && job != null) {
 			final Skill skill = new Skill(evt.getNewValue().toString(), 0, 0);
@@ -59,6 +49,27 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			pcs.firePropertyChange("finished", null, skill);
 		} else if ("level".equalsIgnoreCase(evt.getPropertyName())) {
 			fireContentsChanged(evt.getSource(), 0, getSize());
+		}
+	}
+	/**
+	 * Handle the "job" property changing.
+	 * @param newValue the new value
+	 */
+	private void handleNewJob(final Job newValue) {
+		if (newValue == null) {
+			if (job != null) {
+				job = newValue;
+				clear();
+			}
+		} else {
+			if (job == null || !job.equals(newValue)) {
+				clear();
+				job = newValue;
+				for (Skill skill : job) {
+					addElement(skill);
+				}
+				pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
+			}
 		}
 	}
 	/**
