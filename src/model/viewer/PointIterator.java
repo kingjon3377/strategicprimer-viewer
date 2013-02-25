@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import model.map.Point;
 import model.map.PointFactory;
+import model.misc.IDriverModel;
 /**
  * An view of locations on the map in order, starting at a given point.
  * @author Jonathan Lovelace
@@ -70,15 +71,15 @@ public class PointIterator implements Iterator<Point> {
 	 * @param searchHoriz Whether we should search horizontally (if true) or
 	 *        vertically (if false)
 	 */
-	public PointIterator(final IViewerModel model, final boolean startFromSel,
+	public PointIterator(final IDriverModel model, final boolean startFromSel,
 			final boolean searchForwards, final boolean searchHoriz) {
 		horiz = searchHoriz;
 		forwards = searchForwards;
 		maxRow = model.getMapDimensions().getRows() - 1;
 		maxCol = model.getMapDimensions().getColumns() - 1;
-		if (startFromSel) {
-			startRow = wrap(model.getSelectedTile().getLocation().row, maxRow);
-			startCol = wrap(model.getSelectedTile().getLocation().col, maxCol);
+		if (startFromSel && model instanceof IViewerModel) {
+			startRow = wrap(((IViewerModel) model).getSelectedTile().getLocation().row, maxRow);
+			startCol = wrap(((IViewerModel) model).getSelectedTile().getLocation().col, maxCol);
 		} else if (forwards) {
 			startRow = maxRow;
 			startCol = maxCol;
