@@ -14,7 +14,6 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 
 import model.map.MapDimensions;
-import model.map.MapView;
 import model.map.PointFactory;
 import model.map.Tile;
 import model.viewer.IViewerModel;
@@ -58,7 +57,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 		model = theMap;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this);
-		loadMap(theMap.getMap(), "");
 		addMouseListener(new ComponentMouseListener(model, tileSize, this));
 		model.addPropertyChangeListener(this);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
@@ -165,27 +163,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 			}
 		}
 	}
-
-	/**
-	 * Load and draw a map.
-	 *
-	 * @param newMap the map to load
-	 * @deprecated use other form instead
-	 */
-	/**
-	 * Load and draw a map.
-	 *
-	 * @param newMap the map to load
-	 * @param filename the filename it's loaded from
-	 */
-	@Override
-	public void loadMap(final MapView newMap, final String filename) {
-		model.setMap(newMap, filename);
-		helper = TileDrawHelperFactory.INSTANCE.factory(
-				newMap.getDimensions().version, this);
-		repaint();
-	}
-
 	/**
 	 *
 	 * @return the map model
@@ -208,6 +185,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 			fixVisibility();
 		} else if ("map".equals(evt.getPropertyName())) {
 			tileSize.reset(model.getMap());
+			helper = TileDrawHelperFactory.INSTANCE.factory(
+					model.getMapDimensions().version, this);
 		} else if ("tsize".equals(evt.getPropertyName())) {
 			final ComponentEvent resizeEvt = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
 			for (final ComponentListener list : getComponentListeners()) {

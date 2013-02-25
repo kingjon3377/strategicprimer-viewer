@@ -13,14 +13,6 @@ import util.PropertyChangeSource;
  */
 public interface MapGUI extends PropertyChangeSource {
 	/**
-	 * Load and draw a map.
-	 *
-	 * @param newMap the map to load
-	 * @param filename the filename it's loaded from
-	 */
-	void loadMap(final MapView newMap, String filename);
-
-	/**
 	 *
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */
