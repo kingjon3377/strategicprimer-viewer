@@ -1,4 +1,4 @@
-package model.viewer;
+package model.misc;
 
 import java.io.Serializable;
 

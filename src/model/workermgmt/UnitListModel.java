@@ -9,7 +9,7 @@ import javax.swing.DefaultListModel;
 
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
-import model.viewer.IDriverModel;
+import model.misc.IDriverModel;
 import util.PropertyChangeSource;
 import controller.map.misc.MapHelper;
 

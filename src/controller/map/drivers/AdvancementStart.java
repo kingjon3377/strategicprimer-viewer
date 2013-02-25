@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
-import model.viewer.IDriverModel;
+import model.misc.IDriverModel;
 import model.viewer.ViewerModel;
 import util.Warning;
 import view.map.main.MapFileFilter;

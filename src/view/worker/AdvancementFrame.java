@@ -25,7 +25,7 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
-import model.viewer.IDriverModel;
+import model.misc.IDriverModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;

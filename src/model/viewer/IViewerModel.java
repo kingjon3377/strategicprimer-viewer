@@ -2,6 +2,7 @@ package model.viewer;
 
 import model.map.Point;
 import model.map.Tile;
+import model.misc.IDriverModel;
 
 /**
  * An interface for a model behind the map viewer, handling the selected tile

@@ -9,7 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.map.fixtures.mobile.Unit;
-import model.viewer.IDriverModel;
+import model.misc.IDriverModel;
 import model.workermgmt.UnitListModel;
 import util.PropertyChangeSource;
 /**

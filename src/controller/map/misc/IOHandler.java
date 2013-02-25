@@ -15,7 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import model.map.MapView;
 import model.map.SPMap;
-import model.viewer.IDriverModel;
+import model.misc.IDriverModel;
 import model.viewer.ViewerModel;
 import util.Warning;
 import view.map.main.ViewerFrame;
