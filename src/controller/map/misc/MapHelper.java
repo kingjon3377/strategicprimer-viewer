@@ -78,7 +78,9 @@ public class MapHelper {
 	 * @param map a map
 	 * @param player a player
 	 * @return a list of all units in the map belonging to that player.
+	 * @deprecated Use a WorkerModel instead.
 	 */
+	@Deprecated
 	public List<Unit> getUnits(final IMap map, final Player player) {
 		final List<Unit> retval = new ArrayList<Unit>();
 		for (final Point point : map.getTiles()) {
