@@ -111,6 +111,7 @@ public final class MapModel implements IViewerModel {
 	/**
 	 * @return the dimensions and version of the map
 	 */
+	@Override
 	public MapDimensions getMapDimensions() {
 		return mapDim;
 	}

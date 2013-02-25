@@ -25,7 +25,7 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
-import model.viewer.MapModel;
+import model.viewer.IDriverModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
@@ -39,7 +39,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	/**
 	 * The map model containing the data we're working from.
 	 */
-	private final MapModel model;
+	private final IDriverModel model;
 	/**
 	 * A drop-down list listing the players in the map.
 	 */
@@ -48,7 +48,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	 * Constructor.
 	 * @param source the model containing the data to work from
 	 */
-	public AdvancementFrame(final MapModel source) {
+	public AdvancementFrame(final IDriverModel source) {
 		super("Strategic Primer worker advancement");
 		model = source;
 		model.addPropertyChangeListener(this);

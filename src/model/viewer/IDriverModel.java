@@ -2,6 +2,7 @@ package model.viewer;
 
 import java.io.Serializable;
 
+import model.map.MapDimensions;
 import model.map.MapView;
 import util.PropertyChangeSource;
 
@@ -24,5 +25,10 @@ public interface IDriverModel extends PropertyChangeSource, Serializable {
 	 * @return the map
 	 */
 	MapView getMap();
+
+	/**
+	 * @return the dimensions and version of the map
+	 */
+	MapDimensions getMapDimensions();
 
 }
