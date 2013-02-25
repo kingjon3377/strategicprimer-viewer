@@ -20,9 +20,10 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	/**
 	 * Constructor.
 	 * @param map the map we're wrapping.
+	 * @param filename the name of the file the map was loaded from or should be saved to
 	 */
-	public WorkerModel(final MapView map) {
-		setMap(map);
+	public WorkerModel(final MapView map, final String filename) {
+		setMap(map, filename);
 	}
 	/**
 	 * @param player a player in the map

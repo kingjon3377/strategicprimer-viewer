@@ -82,7 +82,7 @@ public final class AdvancementStart implements ISPDriver {
 		final IWorkerModel model; // NOPMD
 		try {
 			model = new WorkerModel(new MapReaderAdapter().readMap(
-					filename, new Warning(Warning.Action.Warn)));
+					filename, new Warning(Warning.Action.Warn)), filename);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 		} catch (final FileNotFoundException e) {

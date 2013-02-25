@@ -59,7 +59,7 @@ public class TestWorkerModel {
 		addItem(new Unit(players.get(0), "four", "unitFour", 6), fixtures, listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
-		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0));
+		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0), "string");
 		final Iterable<Point> iter = new IteratorWrapper<Point>(
 				new PointIterator(model, false, true, true));
 		for (Point point : iter) {

@@ -53,9 +53,10 @@ public class PointIteratorTest {
 		private final Point selection;
 		/**
 		 * @param newMap ignored
+		 * @param name ignored
 		 */
 		@Override
-		public void setMap(final MapView newMap) {
+		public void setMap(final MapView newMap, final String name) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
 		/**
@@ -125,6 +126,13 @@ public class PointIteratorTest {
 		 */
 		@Override
 		public VisibleDimensions getDimensions() {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @return nothing
+		 */
+		@Override
+		public String getMapFilename() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
 	}

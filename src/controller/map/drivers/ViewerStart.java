@@ -109,7 +109,7 @@ public final class ViewerStart implements ISPDriver {
 	 * @param chooser the file-chooser to pass to the frame
 	 */
 	private static void startFrame(final MapView map, final JFileChooser chooser) {
-		final IViewerModel model = new ViewerModel(map);
+		final IViewerModel model = new ViewerModel(map, "");
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

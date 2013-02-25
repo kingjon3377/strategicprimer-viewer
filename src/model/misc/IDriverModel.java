@@ -14,11 +14,11 @@ import util.PropertyChangeSource;
  *
  */
 public interface IDriverModel extends PropertyChangeSource, Serializable {
-
 	/**
 	 * @param newMap the new map
+	 * @param name the filename from which it was loaded
 	 */
-	void setMap(final MapView newMap);
+	void setMap(final MapView newMap, String name);
 
 	/**
 	 *
@@ -30,5 +30,8 @@ public interface IDriverModel extends PropertyChangeSource, Serializable {
 	 * @return the dimensions and version of the map
 	 */
 	MapDimensions getMapDimensions();
-
+	/**
+	 * @return the filename from which the map was loaded
+	 */
+	String getMapFilename();
 }

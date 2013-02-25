@@ -58,7 +58,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		model = theMap;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this);
-		loadMap(theMap.getMap());
+		loadMap(theMap.getMap(), "");
 		addMouseListener(new ComponentMouseListener(model, tileSize, this));
 		model.addPropertyChangeListener(this);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
@@ -170,10 +170,17 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * Load and draw a map.
 	 *
 	 * @param newMap the map to load
+	 * @deprecated use other form instead
+	 */
+	/**
+	 * Load and draw a map.
+	 *
+	 * @param newMap the map to load
+	 * @param filename the filename it's loaded from
 	 */
 	@Override
-	public void loadMap(final MapView newMap) {
-		model.setMap(newMap);
+	public void loadMap(final MapView newMap, final String filename) {
+		model.setMap(newMap, filename);
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				newMap.getDimensions().version, this);
 		repaint();

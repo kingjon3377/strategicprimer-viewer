@@ -49,10 +49,15 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 */
 	private MapDimensions mapDim;
 	/**
+	 * The name from which the map was loaded.
+	 */
+	private String filename;
+	/**
 	 * @param newMap the new map
+	 * @param name the filename from which the map was loaded
 	 */
 	@Override
-	public void setMap(final MapView newMap) {
+	public void setMap(final MapView newMap, final String name) {
 		if (mapDim == null) {
 			pcs.firePropertyChange("version", -1, newMap.getDimensions()
 					.getVersion());
@@ -62,6 +67,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 		}
 		map = newMap;
 		mapDim = newMap.getDimensions();
+		filename = name;
 		pcs.firePropertyChange("map", map, newMap);
 	}
 	/**
@@ -87,5 +93,12 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 */
 	protected void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
 		pcs.firePropertyChange(propertyName, oldValue, newValue);
+	}
+	/**
+	 * @return the filename from which the map was loaded or to which it should be saved
+	 */
+	@Override
+	public String getMapFilename() {
+		return filename;
 	}
 }

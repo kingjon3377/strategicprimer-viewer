@@ -23,9 +23,10 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	 * Constructor.
 	 *
 	 * @param firstMap the initial map
+	 * @param filename the name the map was loaded from or should be saved to
 	 */
-	public ViewerModel(final MapView firstMap) {
-		setMap(firstMap);
+	public ViewerModel(final MapView firstMap, final String filename) {
+		setMap(firstMap, filename);
 	}
 
 	/**
@@ -34,10 +35,11 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	private Tile selTile;
 	/**
 	 * @param newMap the new map
+	 * @param name the filename the map was loaded from or should be saved to
 	 */
 	@Override
-	public void setMap(final MapView newMap) {
-		super.setMap(newMap);
+	public void setMap(final MapView newMap, final String name) {
+		super.setMap(newMap, name);
 		// TODO: Perhaps clearSelection() instead of setting to (-1, -1)?
 		setSelection(PointFactory.point(-1, -1));
 		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1, 0,
