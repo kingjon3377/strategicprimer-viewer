@@ -17,7 +17,7 @@ import model.map.TileType;
  * @author Jonathan Lovelace
  *
  */
-public final class MapModel implements IDriverModel {
+public final class MapModel implements IViewerModel {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -92,6 +92,7 @@ public final class MapModel implements IDriverModel {
 	 *
 	 * @return the currently selected tile
 	 */
+	@Override
 	public Tile getSelectedTile() {
 		return selTile;
 	}
@@ -101,6 +102,7 @@ public final class MapModel implements IDriverModel {
 	 *
 	 * @param point the location of the new tile.
 	 */
+	@Override
 	public void setSelection(final Point point) {
 		final Tile oldSelection = selTile;
 		selTile = map.getTile(point);
@@ -117,6 +119,7 @@ public final class MapModel implements IDriverModel {
 	 *
 	 * @return the tile at that location
 	 */
+	@Override
 	public Tile getTile(final Point point) {
 		return map.getTile(point);
 	}
@@ -146,6 +149,7 @@ public final class MapModel implements IDriverModel {
 	/**
 	 * @param dim the new visible dimensions of the map
 	 */
+	@Override
 	public void setDimensions(final VisibleDimensions dim) {
 		pcs.firePropertyChange("dimensions", dimensions, dim);
 		dimensions = dim;
@@ -155,6 +159,7 @@ public final class MapModel implements IDriverModel {
 	 *
 	 * @return the visible dimensions of the map
 	 */
+	@Override
 	public VisibleDimensions getDimensions() {
 		return dimensions;
 	}
