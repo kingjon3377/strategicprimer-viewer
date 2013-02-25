@@ -17,12 +17,12 @@ public interface IDriverModel extends PropertyChangeSource, Serializable {
 	/**
 	 * @param newMap the new map
 	 */
-	void setMainMap(final MapView newMap);
+	void setMap(final MapView newMap);
 
 	/**
 	 *
 	 * @return the map
 	 */
-	MapView getMainMap();
+	MapView getMap();
 
 }

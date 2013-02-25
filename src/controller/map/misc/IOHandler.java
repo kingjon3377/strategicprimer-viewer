@@ -60,7 +60,7 @@ public final class IOHandler implements ActionListener {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
 			try {
-				model.setMainMap(readMap(filename, Warning.INSTANCE));
+				model.setMap(readMap(filename, Warning.INSTANCE));
 			} catch (final IOException e) {
 				handleError(e, filename, source);
 			} catch (final SPFormatException e) {
@@ -83,7 +83,7 @@ public final class IOHandler implements ActionListener {
 		if ("Load".equals(event.getActionCommand())) {
 			handleLoadMenu(source);
 		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(model.getMainMap(), source);
+			saveMap(model.getMap(), source);
 		} else if ("New".equals(event.getActionCommand())) {
 			startNewViewerWindow();
 		}
@@ -93,7 +93,7 @@ public final class IOHandler implements ActionListener {
 	 */
 	private void startNewViewerWindow() {
 		final ViewerFrame frame = new ViewerFrame(new MapModel(new MapView(
-				new SPMap(model.getMapDimensions()), 0, model.getMainMap()
+				new SPMap(model.getMapDimensions()), 0, model.getMap()
 						.getCurrentTurn())));
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

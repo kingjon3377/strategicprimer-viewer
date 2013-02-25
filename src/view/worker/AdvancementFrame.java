@@ -124,7 +124,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("map".equals(evt.getPropertyName())) {
 			players.removeAllItems();
-			for (Player player : model.getMainMap().getPlayers()) {
+			for (Player player : model.getMap().getPlayers()) {
 				players.addItem(player);
 			}
 		} else if (!equals(evt.getSource())) {

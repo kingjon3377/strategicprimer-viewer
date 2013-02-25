@@ -116,7 +116,7 @@ public class FindDialog extends JDialog implements ActionListener {
 				new PointIterator(map, true, !backwards.isSelected(),
 						!vertically.isSelected()));
 		for (Point point : iter) {
-			final Tile tile = map.getMainMap().getTile(point);
+			final Tile tile = map.getMap().getTile(point);
 			for (final TileFixture fix : tile) {
 				if (matches(pattern, idNum, fix)) {
 					SystemOut.SYS_OUT.print("Found in point");

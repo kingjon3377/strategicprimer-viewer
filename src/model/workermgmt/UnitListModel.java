@@ -58,7 +58,7 @@ public class UnitListModel extends DefaultListModel<Unit> implements
 				&& !player.equals(evt.getNewValue())) {
 			player = (Player) evt.getNewValue();
 			clear();
-			final List<Unit> units = helper.getUnits(model.getMainMap(), player);
+			final List<Unit> units = helper.getUnits(model.getMap(), player);
 			for (Unit unit : units) {
 				addElement(unit);
 			}

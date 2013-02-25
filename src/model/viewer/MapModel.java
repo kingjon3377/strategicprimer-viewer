@@ -28,7 +28,7 @@ public final class MapModel implements IDriverModel {
 	 * @param firstMap the initial map
 	 */
 	public MapModel(final MapView firstMap) {
-		setMainMap(firstMap);
+		setMap(firstMap);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public final class MapModel implements IDriverModel {
 	 * @param newMap the new map
 	 */
 	@Override
-	public void setMainMap(final MapView newMap) {
+	public void setMap(final MapView newMap) {
 		if (mapDim == null) {
 			pcs.firePropertyChange("version", -1, newMap.getDimensions()
 					.getVersion());
@@ -126,7 +126,7 @@ public final class MapModel implements IDriverModel {
 	 * @return the main map
 	 */
 	@Override
-	public MapView getMainMap() {
+	public MapView getMap() {
 		return map;
 	}
 	/**

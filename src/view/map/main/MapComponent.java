@@ -51,14 +51,14 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	public MapComponent(final MapModel theMap) {
 		super();
-		tileSize = new TileViewSize(theMap.getMainMap());
+		tileSize = new TileViewSize(theMap.getMap());
 		tileSize.addPropertyChangeListener(this);
 		setLayout(new BorderLayout());
 		setDoubleBuffered(true);
 		model = theMap;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this);
-		loadMap(theMap.getMainMap());
+		loadMap(theMap.getMap());
 		addMouseListener(new ComponentMouseListener(model, tileSize, this));
 		model.addPropertyChangeListener(this);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
@@ -173,7 +173,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	@Override
 	public void loadMap(final MapView newMap) {
-		model.setMainMap(newMap);
+		model.setMap(newMap);
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				newMap.getDimensions().version, this);
 		repaint();
@@ -200,7 +200,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		if ("tile".equals(evt.getPropertyName()) && !isSelectionVisible()) {
 			fixVisibility();
 		} else if ("map".equals(evt.getPropertyName())) {
-			tileSize.reset(model.getMainMap());
+			tileSize.reset(model.getMap());
 		} else if ("tsize".equals(evt.getPropertyName())) {
 			final ComponentEvent resizeEvt = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
 			for (final ComponentListener list : getComponentListeners()) {
