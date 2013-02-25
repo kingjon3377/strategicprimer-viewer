@@ -60,7 +60,7 @@ public class TestMapHelper {
 		addItem(new Unit(players.get(0), "four", "unitFour", 6), fixtures, listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
-		// TODO: Use a mocking IViewerModel implementation here.
+		// TODO: Move the relevant methods from MapHelper into a "AdvancementModel" class.
 		final Iterable<Point> iter = new IteratorWrapper<Point>(new PointIterator(
 				new MapModel(new MapView(map, 0, 0)), false, true, true));
 		for (Point point : iter) {
