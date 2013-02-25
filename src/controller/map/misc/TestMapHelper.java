@@ -19,8 +19,9 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
-import model.viewer.ViewerModel;
 import model.viewer.PointIterator;
+import model.workermgmt.IWorkerModel;
+import model.workermgmt.WorkerModel;
 
 import org.junit.Test;
 
@@ -60,20 +61,19 @@ public class TestMapHelper {
 		addItem(new Unit(players.get(0), "four", "unitFour", 6), fixtures, listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
-		// TODO: Move the relevant methods from MapHelper into a "AdvancementModel" class.
-		final Iterable<Point> iter = new IteratorWrapper<Point>(new PointIterator(
-				new ViewerModel(new MapView(map, 0, 0)), false, true, true));
+		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0));
+		final Iterable<Point> iter = new IteratorWrapper<Point>(
+				new PointIterator(model, false, true, true));
 		for (Point point : iter) {
 			map.getTile(point).addFixture(fixtures.remove(0));
 		}
-		final MapHelper helper = new MapHelper();
-		final List<Unit> listOneA = helper.getUnits(map, players.get(0));
+		final List<Unit> listOneA = model.getUnits(players.get(0));
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
 		assertTrue("And didn't miss any for player 1", listOne.containsAll(listOneA));
-		final List<Unit> listTwoA = helper.getUnits(map, players.get(1));
+		final List<Unit> listTwoA = model.getUnits(players.get(1));
 		assertTrue("Got all units for player 2", listTwoA.containsAll(listTwo));
 		assertTrue("And didn't miss any for player 2", listTwo.containsAll(listTwoA));
-		final List<Unit> listThreeA = helper.getUnits(map, players.get(2));
+		final List<Unit> listThreeA = model.getUnits(players.get(2));
 		assertTrue("Got all units for player 3", listThreeA.containsAll(listThree));
 		assertTrue("And didn't miss any for player 3", listThree.containsAll(listThreeA));
 	}
