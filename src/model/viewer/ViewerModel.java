@@ -1,14 +1,11 @@
 package model.viewer;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
-import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
 import model.map.TileType;
+import model.misc.AbstractDriverModel;
 
 /**
  * A class to encapsulate the various model-type things views need to do with
@@ -17,7 +14,7 @@ import model.map.TileType;
  * @author Jonathan Lovelace
  *
  */
-public final class ViewerModel implements IViewerModel {
+public final class ViewerModel extends AbstractDriverModel implements IViewerModel {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -32,39 +29,6 @@ public final class ViewerModel implements IViewerModel {
 	}
 
 	/**
-	 * A helper object to handle property-change listeners for us.
-	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-	/**
-	 * Add a property-change listener.
-	 *
-	 * @param list the listener to add
-	 */
-	@Override
-	public void addPropertyChangeListener(final PropertyChangeListener list) {
-		pcs.addPropertyChangeListener(list);
-	}
-
-	/**
-	 * Remove a property-change listener.
-	 *
-	 * @param list the listener to remove.
-	 */
-	@Override
-	public void removePropertyChangeListener(final PropertyChangeListener list) {
-		pcs.removePropertyChangeListener(list);
-	}
-
-	/**
-	 * The main map.
-	 */
-	private MapView map;
-	/**
-	 * The dimensions of the map.
-	 */
-	private MapDimensions mapDim;
-	/**
 	 * The currently selected tile in the main map.
 	 */
 	private Tile selTile;
@@ -73,20 +37,11 @@ public final class ViewerModel implements IViewerModel {
 	 */
 	@Override
 	public void setMap(final MapView newMap) {
-		if (mapDim == null) {
-			pcs.firePropertyChange("version", -1, newMap.getDimensions()
-					.getVersion());
-		} else {
-			pcs.firePropertyChange("version", mapDim.version,
-					newMap.getDimensions().version);
-		}
-		map = newMap;
-		mapDim = newMap.getDimensions();
+		super.setMap(newMap);
 		// TODO: Perhaps clearSelection() instead of setting to (-1, -1)?
 		setSelection(PointFactory.point(-1, -1));
-		setDimensions(new VisibleDimensions(0, getMapDimensions().rows - 1, 0,
-				getMapDimensions().cols - 1));
-		pcs.firePropertyChange("map", map, newMap);
+		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1, 0,
+				newMap.getDimensions().cols - 1));
 	}
 	/**
 	 *
@@ -105,15 +60,8 @@ public final class ViewerModel implements IViewerModel {
 	@Override
 	public void setSelection(final Point point) {
 		final Tile oldSelection = selTile;
-		selTile = map.getTile(point);
-		pcs.firePropertyChange("tile", oldSelection, selTile);
-	}
-	/**
-	 * @return the dimensions and version of the map
-	 */
-	@Override
-	public MapDimensions getMapDimensions() {
-		return mapDim;
+		selTile = getMap().getTile(point);
+		firePropertyChange("tile", oldSelection, selTile);
 	}
 	/**
 	 * @param point a tile's location
@@ -122,24 +70,16 @@ public final class ViewerModel implements IViewerModel {
 	 */
 	@Override
 	public Tile getTile(final Point point) {
-		return map.getTile(point);
+		return getMap().getTile(point);
 	}
 
-	/**
-	 *
-	 * @return the main map
-	 */
-	@Override
-	public MapView getMap() {
-		return map;
-	}
 	/**
 	 * Clear the selection.
 	 */
 	public void clearSelection() {
 		final Tile oldSelection = selTile;
 		selTile = new Tile(-1, -1, TileType.NotVisible);
-		pcs.firePropertyChange("tile", oldSelection, selTile);
+		firePropertyChange("tile", oldSelection, selTile);
 	}
 
 	/**
@@ -152,7 +92,7 @@ public final class ViewerModel implements IViewerModel {
 	 */
 	@Override
 	public void setDimensions(final VisibleDimensions dim) {
-		pcs.firePropertyChange("dimensions", dimensions, dim);
+		firePropertyChange("dimensions", dimensions, dim);
 		dimensions = dim;
 	}
 
