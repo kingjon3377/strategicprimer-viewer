@@ -29,7 +29,7 @@ import util.IteratorWrapper;
  * @author Jonathan Lovelace
  *
  */
-public class TestMapHelper {
+public class TestWorkerModel {
 	/**
 	 * Test for getUnits().
 	 */
