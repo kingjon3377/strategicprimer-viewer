@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.misc.IDriverModel;
+import model.workermgmt.IWorkerModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
@@ -48,7 +49,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	 * Constructor.
 	 * @param source the model containing the data to work from
 	 */
-	public AdvancementFrame(final IDriverModel source) {
+	public AdvancementFrame(final IWorkerModel source) {
 		super("Strategic Primer worker advancement");
 		model = source;
 		model.addPropertyChangeListener(this);

@@ -9,9 +9,7 @@ import javax.swing.DefaultListModel;
 
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
-import model.misc.IDriverModel;
 import util.PropertyChangeSource;
-import controller.map.misc.MapHelper;
 
 /**
  * A list-model for the list of a player's units.
@@ -27,17 +25,13 @@ public class UnitListModel extends DefaultListModel<Unit> implements
 	/**
 	 * The map model to work from.
 	 */
-	private final IDriverModel model;
-	/**
-	 * The helper to use to get the list of units from the model.
-	 */
-	private final transient MapHelper helper = new MapHelper();
+	private final IWorkerModel model;
 	/**
 	 * Constructor.
 	 * @param mmodel the map model to work from
 	 * @param sources property change sources to listen to
 	 */
-	public UnitListModel(final IDriverModel mmodel, final PropertyChangeSource... sources) {
+	public UnitListModel(final IWorkerModel mmodel, final PropertyChangeSource... sources) {
 		super();
 		model = mmodel;
 		if (sources.length == 0) {
@@ -58,7 +52,7 @@ public class UnitListModel extends DefaultListModel<Unit> implements
 				&& !player.equals(evt.getNewValue())) {
 			player = (Player) evt.getNewValue();
 			clear();
-			final List<Unit> units = helper.getUnits(model.getMap(), player);
+			final List<Unit> units = model.getUnits(player);
 			for (Unit unit : units) {
 				addElement(unit);
 			}

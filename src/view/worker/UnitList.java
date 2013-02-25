@@ -9,7 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.map.fixtures.mobile.Unit;
-import model.misc.IDriverModel;
+import model.workermgmt.IWorkerModel;
 import model.workermgmt.UnitListModel;
 import util.PropertyChangeSource;
 /**
@@ -24,7 +24,7 @@ public class UnitList extends JList<Unit> implements PropertyChangeSource, ListS
 	 * @param listener something to listen to us
 	 * @param sources what our model should listen to
 	 */
-	public UnitList(final IDriverModel mmodel,
+	public UnitList(final IWorkerModel mmodel,
 			final PropertyChangeListener listener,
 			final PropertyChangeSource... sources) {
 		final UnitListModel lmodel = new UnitListModel(mmodel, sources);
