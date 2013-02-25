@@ -17,7 +17,7 @@ import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.PointFactory;
 import model.map.Tile;
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 
@@ -34,7 +34,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * The map model encapsulating the map this represents, the secondary map,
 	 * and the selected tile.
 	 */
-	private final MapModel model;
+	private final IViewerModel model;
 	/**
 	 * Tile size.
 	 */
@@ -49,7 +49,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 *
 	 * @param theMap The model containing the map this represents
 	 */
-	public MapComponent(final MapModel theMap) {
+	public MapComponent(final IViewerModel theMap) {
 		super();
 		tileSize = new TileViewSize(theMap.getMap());
 		tileSize.addPropertyChangeListener(this);
@@ -184,7 +184,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @return the map model
 	 */
 	@Override
-	public MapModel getMapModel() {
+	public IViewerModel getMapModel() {
 		return model;
 	}
 

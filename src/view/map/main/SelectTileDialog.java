@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 import model.map.MapDimensions;
 import model.map.PointFactory;
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import util.IsNumeric;
 
 /**
@@ -41,7 +41,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	/**
 	 * The map model to change the selection in.
 	 */
-	private final MapModel map;
+	private final IViewerModel map;
 
 	/**
 	 * Constructor.
@@ -49,7 +49,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 * @param parent the parent to attach this dialog to
 	 * @param model the map model to change the selection in
 	 */
-	public SelectTileDialog(final Frame parent, final MapModel model) {
+	public SelectTileDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		final JLabel mainLabel = new JLabel("Coordinates of tile to select:");

@@ -4,7 +4,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import model.map.MapDimensions;
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
 
 /**
@@ -18,14 +18,14 @@ public class MapSizeListener extends ComponentAdapter {
 	/**
 	 * The map model we'll be modifying.
 	 */
-	private final MapModel model;
+	private final IViewerModel model;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param map the map model we'll be modifying.
 	 */
-	public MapSizeListener(final MapModel map) {
+	public MapSizeListener(final IViewerModel map) {
 		super();
 		model = map;
 	}

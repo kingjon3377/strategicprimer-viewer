@@ -9,7 +9,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
 import controller.map.misc.IOHandler;
@@ -29,7 +29,7 @@ public class SPMenu extends JMenuBar {
 	 * @param model the map model
 	 */
 	public SPMenu(final IOHandler handler, final JFrame parent,
-			final MapModel model) {
+			final IViewerModel model) {
 		super();
 		add(createFileMenu(handler, parent));
 		add(createMapMenu(parent, model));
@@ -40,7 +40,7 @@ public class SPMenu extends JMenuBar {
 	 * @param model the map model
 	 * @return the menu created
 	 */
-	private JMenu createMapMenu(final JFrame parent, final MapModel model) {
+	private JMenu createMapMenu(final JFrame parent, final IViewerModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		retval.add(creator.createMenuItem("Go to tile", KeyEvent.VK_T,

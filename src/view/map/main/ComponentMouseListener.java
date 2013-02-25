@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 
 import model.map.PointFactory;
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 
@@ -20,13 +20,13 @@ public final class ComponentMouseListener extends MouseAdapter {
 	/**
 	 * The map model we refer to.
 	 */
-	private final MapModel model;
+	private final IViewerModel model;
 	/**
 	 * @param mapModel the map model we'll refer to
 	 * @param tileSize the object to tell us the size of a tile
 	 * @param list a listener to send encounter events to
 	 */
-	public ComponentMouseListener(final MapModel mapModel,
+	public ComponentMouseListener(final IViewerModel mapModel,
 			final TileViewSize tileSize, final PropertyChangeListener list) {
 		super();
 		model = mapModel;

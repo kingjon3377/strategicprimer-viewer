@@ -4,7 +4,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import model.map.PointFactory;
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 
 /**
@@ -18,7 +18,7 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	/**
 	 * The map model we'll be referring to.
 	 */
-	private final MapModel model;
+	private final IViewerModel model;
 
 	/**
 	 * Constructor.
@@ -26,7 +26,7 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	 * @param mapModel the map model we're to use
 	 * @param tileSize the object encapsulating the size of a visible tile, to use to zoom.
 	 */
-	public DirectionSelectionChanger(final MapModel mapModel, final TileViewSize tileSize) {
+	public DirectionSelectionChanger(final IViewerModel mapModel, final TileViewSize tileSize) {
 		model = mapModel;
 		tvs = tileSize;
 	}

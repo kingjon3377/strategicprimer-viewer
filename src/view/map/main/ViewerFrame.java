@@ -12,7 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import view.map.details.DetailPanelNG;
 
@@ -56,7 +56,7 @@ public final class ViewerFrame extends JFrame {
 	 *
 	 * @param map The map model.
 	 */
-	public ViewerFrame(final MapModel map) {
+	public ViewerFrame(final IViewerModel map) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		chooser.setFileFilter(new MapFileFilter());

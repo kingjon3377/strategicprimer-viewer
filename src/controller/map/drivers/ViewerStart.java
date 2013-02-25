@@ -11,6 +11,7 @@ import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.MapView;
+import model.viewer.IViewerModel;
 import model.viewer.MapModel;
 import util.Warning;
 import view.map.main.MapFileFilter;
@@ -108,7 +109,7 @@ public final class ViewerStart implements ISPDriver {
 	 * @param chooser the file-chooser to pass to the frame
 	 */
 	private static void startFrame(final MapView map, final JFileChooser chooser) {
-		final MapModel model = new MapModel(map);
+		final IViewerModel model = new MapModel(map);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

@@ -70,7 +70,7 @@ public class PointIterator implements Iterator<Point> {
 	 * @param searchHoriz Whether we should search horizontally (if true) or
 	 *        vertically (if false)
 	 */
-	public PointIterator(final MapModel model, final boolean startFromSel,
+	public PointIterator(final IViewerModel model, final boolean startFromSel,
 			final boolean searchForwards, final boolean searchHoriz) {
 		horiz = searchHoriz;
 		forwards = searchForwards;

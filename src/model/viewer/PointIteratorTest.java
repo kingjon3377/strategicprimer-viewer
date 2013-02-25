@@ -29,8 +29,9 @@ public class PointIteratorTest {
 	 */
 	@Test
 	public void testFromBeginning() {
+		// TODO: Use a mocking IViewerModel implementation here.
 		final MapView map = new MapView(new SPMap(new MapDimensions(3, 3, 1)), 0, 0);
-		final MapModel model = new MapModel(map);
+		final IViewerModel model = new MapModel(map);
 		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(new PointIterator(model, false, true, true));
 		final List<Point> expected = new ArrayList<Point>();
 		expected.add(PointFactory.point(0, 0));
@@ -54,7 +55,7 @@ public class PointIteratorTest {
 	@Test
 	public void testFromSelection() {
 		final MapView map = new MapView(new SPMap(new MapDimensions(3, 3, 1)), 0, 0);
-		final MapModel model = new MapModel(map);
+		final IViewerModel model = new MapModel(map);
 		model.setSelection(PointFactory.point(1, 1));
 		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(new PointIterator(model, true, true, true));
 		final List<Point> expected = new ArrayList<Point>();
@@ -79,7 +80,7 @@ public class PointIteratorTest {
 	@Test
 	public void testInitialSelection() {
 		final MapView map = new MapView(new SPMap(new MapDimensions(3, 3, 1)), 0, 0);
-		final MapModel model = new MapModel(map);
+		final IViewerModel model = new MapModel(map);
 		model.setSelection(PointFactory.point(-1, -1));
 		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(new PointIterator(model, true, true, false));
 		final List<Point> expected = new ArrayList<Point>();
@@ -104,7 +105,7 @@ public class PointIteratorTest {
 	@Test
 	public void testVertical() {
 		final MapView map = new MapView(new SPMap(new MapDimensions(3, 3, 1)), 0, 0);
-		final MapModel model = new MapModel(map);
+		final IViewerModel model = new MapModel(map);
 		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(new PointIterator(model, false, true, false));
 		final List<Point> expected = new ArrayList<Point>();
 		expected.add(PointFactory.point(0, 0));
@@ -128,7 +129,7 @@ public class PointIteratorTest {
 	@Test
 	public void testReverse() {
 		final MapView map = new MapView(new SPMap(new MapDimensions(3, 3, 1)), 0, 0);
-		final MapModel model = new MapModel(map);
+		final IViewerModel model = new MapModel(map);
 		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(new PointIterator(model, false, false, true));
 		final List<Point> expected = new ArrayList<Point>();
 		expected.add(PointFactory.point(2, 2));
@@ -152,7 +153,7 @@ public class PointIteratorTest {
 	@Test
 	public void testVerticalReverse() {
 		final MapView map = new MapView(new SPMap(new MapDimensions(3, 3, 1)), 0, 0);
-		final MapModel model = new MapModel(map);
+		final IViewerModel model = new MapModel(map);
 		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(new PointIterator(model, false, false, false));
 		final List<Point> expected = new ArrayList<Point>();
 		expected.add(PointFactory.point(2, 2));

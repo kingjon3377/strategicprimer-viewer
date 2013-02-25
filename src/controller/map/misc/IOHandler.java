@@ -15,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import model.map.MapView;
 import model.map.SPMap;
+import model.viewer.IDriverModel;
 import model.viewer.MapModel;
 import util.Warning;
 import view.map.main.ViewerFrame;
@@ -106,7 +107,7 @@ public final class IOHandler implements ActionListener {
 	 * The map model, which needs to be told about newly loaded maps and holds
 	 * maps to be saved.
 	 */
-	private final MapModel model;
+	private final IDriverModel model;
 
 	/**
 	 * Constructor.
@@ -114,7 +115,7 @@ public final class IOHandler implements ActionListener {
 	 * @param map the map model
 	 * @param fchooser the file chooser
 	 */
-	public IOHandler(final MapModel map, final JFileChooser fchooser) {
+	public IOHandler(final IDriverModel map, final JFileChooser fchooser) {
 		model = map;
 		chooser = fchooser;
 	}

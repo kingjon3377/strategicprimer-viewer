@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 
 import model.map.MapDimensions;
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
 
 /**
@@ -31,7 +31,7 @@ public class ScrollListener implements AdjustmentListener,
 	 * @param horizBar the horizontal scroll bar to work with
 	 * @param vertBar the vertical scroll bar to work with
 	 */
-	public ScrollListener(final MapModel map, final JScrollBar horizBar,
+	public ScrollListener(final IViewerModel map, final JScrollBar horizBar,
 			final JScrollBar vertBar) {
 		model = map;
 		dimensions = map.getDimensions();
@@ -84,7 +84,7 @@ public class ScrollListener implements AdjustmentListener,
 	 * @param map the map model to work with
 	 * @param component the component to attach the scrollbars to.
 	 */
-	public ScrollListener(final MapModel map, final JComponent component) {
+	public ScrollListener(final IViewerModel map, final JComponent component) {
 		model = map;
 		final MapDimensions mapDim = model.getMapDimensions();
 		mapDimensions = mapDim;
@@ -142,7 +142,7 @@ public class ScrollListener implements AdjustmentListener,
 	/**
 	 * The map model we're working with.
 	 */
-	private final MapModel model;
+	private final IViewerModel model;
 	/**
 	 * The dimensions of the map.
 	 */

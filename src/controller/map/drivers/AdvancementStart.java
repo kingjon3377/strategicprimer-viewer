@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
+import model.viewer.IDriverModel;
 import model.viewer.MapModel;
 import util.Warning;
 import view.map.main.MapFileFilter;
@@ -78,7 +79,7 @@ public final class AdvancementStart implements ISPDriver {
 			SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
 			return;
 		}
-		final MapModel model; // NOPMD
+		final IDriverModel model; // NOPMD
 		try {
 			model = new MapModel(new MapReaderAdapter().readMap(
 					filename, new Warning(Warning.Action.Warn)));

@@ -21,7 +21,7 @@ import model.map.IFixture;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.viewer.MapModel;
+import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
 import util.IsNumeric;
 import util.IteratorWrapper;
@@ -39,7 +39,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * The map model to change the selection in.
 	 */
-	private final MapModel map;
+	private final IViewerModel map;
 	/**
 	 * A label to display error messages.
 	 */
@@ -59,7 +59,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	 * @param parent the parent to attach this dialog to
 	 * @param model the map model to change the selection in
 	 */
-	public FindDialog(final Frame parent, final MapModel model) {
+	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		add(search);
