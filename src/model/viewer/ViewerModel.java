@@ -17,7 +17,7 @@ import model.map.TileType;
  * @author Jonathan Lovelace
  *
  */
-public final class MapModel implements IViewerModel {
+public final class ViewerModel implements IViewerModel {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -27,7 +27,7 @@ public final class MapModel implements IViewerModel {
 	 *
 	 * @param firstMap the initial map
 	 */
-	public MapModel(final MapView firstMap) {
+	public ViewerModel(final MapView firstMap) {
 		setMap(firstMap);
 	}
 

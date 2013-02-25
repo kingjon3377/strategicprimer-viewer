@@ -19,7 +19,7 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
-import model.viewer.MapModel;
+import model.viewer.ViewerModel;
 import model.viewer.PointIterator;
 
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class TestMapHelper {
 		Collections.shuffle(fixtures);
 		// TODO: Move the relevant methods from MapHelper into a "AdvancementModel" class.
 		final Iterable<Point> iter = new IteratorWrapper<Point>(new PointIterator(
-				new MapModel(new MapView(map, 0, 0)), false, true, true));
+				new ViewerModel(new MapView(map, 0, 0)), false, true, true));
 		for (Point point : iter) {
 			map.getTile(point).addFixture(fixtures.remove(0));
 		}

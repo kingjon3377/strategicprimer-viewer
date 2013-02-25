@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.viewer.IDriverModel;
-import model.viewer.MapModel;
+import model.viewer.ViewerModel;
 import util.Warning;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
@@ -81,7 +81,7 @@ public final class AdvancementStart implements ISPDriver {
 		}
 		final IDriverModel model; // NOPMD
 		try {
-			model = new MapModel(new MapReaderAdapter().readMap(
+			model = new ViewerModel(new MapReaderAdapter().readMap(
 					filename, new Warning(Warning.Action.Warn)));
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);

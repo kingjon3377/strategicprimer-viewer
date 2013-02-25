@@ -16,7 +16,7 @@ import model.map.IMap;
 import model.map.MapView;
 import model.map.SPMap;
 import model.viewer.IDriverModel;
-import model.viewer.MapModel;
+import model.viewer.ViewerModel;
 import util.Warning;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
@@ -93,7 +93,7 @@ public final class IOHandler implements ActionListener {
 	 * Start a new viewer window with a blank map of the same size as the model's current map.
 	 */
 	private void startNewViewerWindow() {
-		final ViewerFrame frame = new ViewerFrame(new MapModel(new MapView(
+		final ViewerFrame frame = new ViewerFrame(new ViewerModel(new MapView(
 				new SPMap(model.getMapDimensions()), 0, model.getMap()
 						.getCurrentTurn())));
 		SwingUtilities.invokeLater(new Runnable() {
