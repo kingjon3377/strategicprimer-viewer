@@ -1,7 +1,7 @@
 package view.map.main;
 
 import model.map.MapView;
-import model.viewer.MapModel;
+import model.viewer.IDriverModel;
 import model.viewer.TileViewSize;
 import util.PropertyChangeSource;
 
@@ -23,7 +23,7 @@ public interface MapGUI extends PropertyChangeSource {
 	 *
 	 * @return the model encapsulating the map, secondary map, etc.
 	 */
-	MapModel getMapModel();
+	IDriverModel getMapModel();
 
 	/**
 	 * @return an object that will tell us the size of a tile in this GUI.

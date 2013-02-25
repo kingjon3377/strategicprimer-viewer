@@ -2,7 +2,6 @@ package model.viewer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -10,7 +9,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
 import model.map.TileType;
-import util.PropertyChangeSource;
 
 /**
  * A class to encapsulate the various model-type things views need to do with
@@ -19,7 +17,7 @@ import util.PropertyChangeSource;
  * @author Jonathan Lovelace
  *
  */
-public final class MapModel implements PropertyChangeSource, Serializable {
+public final class MapModel implements IDriverModel {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -73,6 +71,7 @@ public final class MapModel implements PropertyChangeSource, Serializable {
 	/**
 	 * @param newMap the new map
 	 */
+	@Override
 	public void setMainMap(final MapView newMap) {
 		if (mapDim == null) {
 			pcs.firePropertyChange("version", -1, newMap.getDimensions()
@@ -126,6 +125,7 @@ public final class MapModel implements PropertyChangeSource, Serializable {
 	 *
 	 * @return the main map
 	 */
+	@Override
 	public MapView getMainMap() {
 		return map;
 	}
