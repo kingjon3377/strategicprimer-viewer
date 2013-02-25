@@ -1,4 +1,4 @@
-package controller.map.misc;
+package model.workermgmt;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,8 +20,6 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
 import model.viewer.PointIterator;
-import model.workermgmt.IWorkerModel;
-import model.workermgmt.WorkerModel;
 
 import org.junit.Test;
 
