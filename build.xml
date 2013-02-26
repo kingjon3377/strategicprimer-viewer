@@ -150,7 +150,7 @@
       <arg value="${appname}" />
       <arg value="-no-pad" />
       <arg value="-r" />
-      <arg value="-apple" />
+      <arg value="-hfs" />
       <arg line="-o ../${basename}.dmg" />
       <arg value="." />
     </exec>
