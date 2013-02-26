@@ -5,11 +5,11 @@ import java.util.List;
 
 import model.map.HasName;
 /**
- * An interface for the "map helper", to make automated testing of exploration possible.
+ * An interface for the "CLI helper", to make automated testing of exploration possible.
  * @author Jonathan Lovelace
  *
  */
-public interface IMapHelper {
+public interface ICLIHelper {
 
 	/**
 	 * Have the user choose an item from a list.

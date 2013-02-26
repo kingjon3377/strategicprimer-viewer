@@ -21,7 +21,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import util.Pair;
 import view.util.SystemOut;
-import controller.map.misc.MapHelper;
+import controller.map.misc.CLIHelper;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to
@@ -38,12 +38,12 @@ public class ExplorationCLI {
 	/**
 	 * The helper to handle user I/O.
 	 */
-	private final MapHelper helper;
+	private final CLIHelper helper;
 	/**
 	 * @param emodel the exploration model to use
 	 * @param mhelper the helper to handle user I/O
 	 */
-	public ExplorationCLI(final IExplorationModel emodel, final MapHelper mhelper) {
+	public ExplorationCLI(final IExplorationModel emodel, final CLIHelper mhelper) {
 		model = emodel;
 		helper = mhelper;
 	}

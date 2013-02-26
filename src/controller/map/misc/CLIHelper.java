@@ -13,14 +13,12 @@ import util.IsNumeric;
 import view.util.SystemOut;
 
 /**
- * A helper class to let drivers, especially CLI drivers, interact with a map.
- *
- * FIXME: Better name
+ * A helper class to let help CLIs interact with the user.
  *
  * @author Jonathan Lovelace
  *
  */
-public class MapHelper implements IMapHelper {
+public class CLIHelper implements ICLIHelper {
 	/**
 	 * The input stream we'll read from.
 	 */
@@ -28,14 +26,14 @@ public class MapHelper implements IMapHelper {
 	/**
 	 * No-arg constructor.
 	 */
-	public MapHelper() {
+	public CLIHelper() {
 		this(System.in);
 	}
 	/**
 	 * Constructor.
 	 * @param in the stream to read from.
 	 */
-	public MapHelper(final InputStream in) { // NOPMD
+	public CLIHelper(final InputStream in) { // NOPMD
 		istream = new BufferedReader(new InputStreamReader(in));
 	}
 	/**

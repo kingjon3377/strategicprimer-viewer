@@ -15,7 +15,7 @@ import util.Warning;
 import view.exploration.ExplorationCLI;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapHelper;
+import controller.map.misc.CLIHelper;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -87,7 +87,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 		} catch (SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file", except);
 		}
-		final ExplorationCLI cli = new ExplorationCLI(model, new MapHelper());
+		final ExplorationCLI cli = new ExplorationCLI(model, new CLIHelper());
 		try {
 			final Player player = cli.choosePlayer();
 			if (player.getPlayerId() < 0) {

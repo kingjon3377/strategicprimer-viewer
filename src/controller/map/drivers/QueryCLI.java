@@ -26,7 +26,7 @@ import model.map.fixtures.terrain.Forest;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapHelper;
+import controller.map.misc.CLIHelper;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -43,7 +43,7 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
-	private final MapHelper helper = new MapHelper();
+	private final CLIHelper helper = new CLIHelper();
 	/**
 	 * @param map the map to explore
 	 * @param reader the stream to read commands from
