@@ -76,5 +76,10 @@ public interface IExplorationModel extends IMultiMapModel {
 	 */
 	int move(final Unit unit, final Point point, final Direction direction)
 			throws TraversalImpossibleException;
-	public abstract Point getDestination(final Point point, final Direction direction);
+	/**
+	 * @param point a point
+	 * @param direction a direction
+	 * @return the point bordering the specified one in the specified direction
+	 */
+	Point getDestination(final Point point, final Direction direction);
 }
