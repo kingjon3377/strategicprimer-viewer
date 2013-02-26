@@ -40,27 +40,6 @@ public class ExplorationCLIDriver implements ISPDriver {
 		}
 	}
 	/**
-	 * TODO: Move much of this logic into class methods, so we don't need as many parameters.
-	 * @param unit the unit in motion
-	 * @param cli the interface object that does most of this for us.
-	 * @param totalMP the unit's total MP (to start with)
-	 * @throws IOException on I/O error getting input
-	 */
-	private static void movementREPL(final ExplorationCLI cli,
-			final Unit unit, final int totalMP)
-			throws IOException {
-		int movement = totalMP;
-		while (movement > 0) {
-			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
-					.printC(totalMP).println(" remaining.");
-			SystemOut.SYS_OUT
-					.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
-			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
-			movement -= cli.move(unit);
-		}
-	}
-
-	/**
 	 * Read maps.
 	 * @param filenames the files to read from
 	 * @return an exploration-model containing all of them
@@ -97,7 +76,6 @@ public class ExplorationCLIDriver implements ISPDriver {
 			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
 			System.exit(1);
 		}
-		final MapHelper helper = new MapHelper();
 		final IExplorationModel model;
 		try {
 			model = readMaps(args);
@@ -108,7 +86,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 		} catch (SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file", except);
 		}
-		final ExplorationCLI cli = new ExplorationCLI(model, helper);
+		final ExplorationCLI cli = new ExplorationCLI(model, new MapHelper());
 		try {
 			final Player player = cli.choosePlayer();
 			if (player.getPlayerId() < 0) {
@@ -118,9 +96,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 			if (unit.getID() < 0) {
 				return; // NOPMD
 			}
-			SystemOut.SYS_OUT.println("Details of that unit:");
-			SystemOut.SYS_OUT.println(unit.verbose());
-			movementREPL(cli, unit, helper.inputNumber("MP that unit has: "));
+			cli.moveUntilDone(unit);
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}

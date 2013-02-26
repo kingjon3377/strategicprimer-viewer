@@ -91,7 +91,8 @@ public class ExplorationCLI {
 		}
 		final Direction direction = Direction.values()[directionNum];
 		final Point point = model.find(unit);
-		final int cost;
+		// ESCA-JAVA0177:
+		final int cost; // NOPMD
 		try {
 			cost = model.move(unit, point, direction);
 		} catch (TraversalImpossibleException except) {
@@ -155,5 +156,25 @@ public class ExplorationCLI {
 				|| fix instanceof Forest
 				|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
 						.equals(unit.getOwner()));
+	}
+	/**
+	 * Ask the user for directions the unit should move until it runs out of MP or the user decides to quit.
+	 * @param unit the unit to move
+	 * @throws IOException on I/O error.
+	 */
+	public void moveUntilDone(final Unit unit) throws IOException {
+		SystemOut.SYS_OUT.println("Details of the unit:");
+		SystemOut.SYS_OUT.println(unit.verbose());
+		final int totalMP = helper.inputNumber("MP the unit has: ");
+		int movement = totalMP;
+		final String prompt = new StringBuilder(
+				"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ").append(
+				"6 = W, 7 = NW, 8 = Quit.").toString();
+		while (movement > 0) {
+			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
+					.printC(totalMP).println(" remaining.");
+			SystemOut.SYS_OUT.println(prompt);
+			movement -= move(unit);
+		}
 	}
 }
