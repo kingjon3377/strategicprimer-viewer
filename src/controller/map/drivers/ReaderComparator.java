@@ -19,6 +19,8 @@ import controller.map.cxml.CompactXMLReader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
+import controller.map.misc.DriverUsage;
+import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.readerng.MapReaderNG;
 
 /**
@@ -170,5 +172,21 @@ public class ReaderComparator implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		compareReaders(args);
+	}
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-t",
+			"--test", ParamCount.One, "Test map readers",
+			"Test the two map-reading implementations by "
+					+ "comparing their results on the same file.",
+			ReaderComparator.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

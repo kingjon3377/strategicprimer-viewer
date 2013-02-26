@@ -13,7 +13,9 @@ import model.map.Tile;
 import model.map.TileType;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to update derived maps (such as players' maps) from a master map.
@@ -158,5 +160,21 @@ public final class MapUpdater implements ISPDriver {
 				LOGGER.log(Level.SEVERE, "I/O error writing map " + arg, except);
 			}
 		}
+	}
+
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-u",
+			"--update", ParamCount.Many, "Update player maps",
+			"Update subordinate maps from 'master' data in main map",
+			MapUpdater.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

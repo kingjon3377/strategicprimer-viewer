@@ -21,7 +21,9 @@ import view.util.ErrorShower;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.FileChooser;
+import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
+import controller.map.misc.DriverUsage;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 
@@ -120,5 +122,21 @@ public final class ViewerStart implements ISPDriver {
 				frame.setVisible(true);
 			}
 		});
+	}
+
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-m",
+			"--map", ParamCount.One, "Map viewer",
+			"Look at the map visually. This is probably the app you want.",
+			ViewerStart.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

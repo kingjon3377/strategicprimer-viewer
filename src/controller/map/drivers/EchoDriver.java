@@ -10,7 +10,9 @@ import model.map.IMap;
 import util.Warning;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver that reads in maps and then writes them out again---this is
@@ -73,5 +75,20 @@ public final class EchoDriver implements ISPDriver {
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error writing " + args[1], except);
 		}
+	}
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-e",
+			"--echo", ParamCount.One, "Read, then write a map.",
+			"Read and write a map, correcting deprecated syntax.",
+			EchoDriver.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import controller.map.misc.DriverUsage;
+
 /**
  * An interface for drivers, so one main() method can start different ones
  * depending on options.
@@ -38,4 +40,8 @@ public interface ISPDriver {
 			super(string, cause);
 		}
 	}
+	/**
+	 * @return an object indicating how to use and invoke the driver.
+	 */
+	DriverUsage usage();
 }

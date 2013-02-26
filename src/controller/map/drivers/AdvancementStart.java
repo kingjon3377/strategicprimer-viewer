@@ -20,7 +20,9 @@ import view.util.SystemOut;
 import view.worker.AdvancementFrame;
 import view.worker.WorkerMenu;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.DriverUsage;
 import controller.map.misc.FileChooser;
+import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
@@ -103,5 +105,21 @@ public final class AdvancementStart implements ISPDriver {
 				frame.setVisible(true);
 			}
 		});
+	}
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(
+			true, "-a", "--adv", ParamCount.One,
+			"View a player's workers and manage their advancement",
+			"View a player's units, the workers in those units, each worker's Jobs, "
+					+ "and his or her level in each Skill in each Job.", AdvancementStart.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

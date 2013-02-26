@@ -27,6 +27,8 @@ import util.Warning;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
+import controller.map.misc.DriverUsage;
+import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -253,5 +255,20 @@ public final class QueryCLI implements ISPDriver {
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException("Map " + args[0] + " contains invalid data", e);
 		}
+	}
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-m",
+			"--map", ParamCount.One, "Answer questions about a map.",
+			"Look at tiles on a map. Or run hunting, gathering, or fishing.",
+			QueryCLI.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

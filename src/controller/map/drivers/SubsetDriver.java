@@ -10,7 +10,9 @@ import model.map.IMap;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to check whether player maps are subsets of the main map.
@@ -126,5 +128,21 @@ public final class SubsetDriver implements ISPDriver {
 			return Returns.Fail; // NOPMD
 		}
 		return mainMap.isSubset(map, SystemOut.SYS_OUT) ? Returns.OK : Returns.Warn;
+	}
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-s",
+			"--subset", ParamCount.Many, "Check players' maps against master",
+			"Check that subordinate maps are subsets of the main map, containing "
+					+ "nothing that it does not contain in the same place",
+			SubsetDriver.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

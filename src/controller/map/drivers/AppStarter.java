@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
+import controller.map.misc.DriverUsage;
+import controller.map.misc.DriverUsage.ParamCount;
+
 import util.EqualsAny;
 import util.Pair;
 import view.util.AppChooserFrame;
@@ -151,5 +154,20 @@ public class AppStarter implements ISPDriver {
 		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(), except.getCause());
 		}
+	}
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-p",
+			"--app-starter", ParamCount.Many, "App Chooser",
+			"Let the user choose an app to start, or handle options.",
+			AppStarter.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }

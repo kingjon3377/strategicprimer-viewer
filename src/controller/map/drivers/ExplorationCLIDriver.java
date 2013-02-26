@@ -16,7 +16,9 @@ import view.exploration.ExplorationCLI;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
+import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A CLI to help running exploration. TODO: Some of this should be made more
@@ -117,5 +119,21 @@ public class ExplorationCLIDriver implements ISPDriver {
 		for (Pair<IMap, String> pair : model.getAllMaps()) {
 			reader.write(pair.second(), pair.first());
 		}
+	}
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-x",
+			"--explore", ParamCount.Many, "Run exploration.",
+			"Move a unit around the map, "
+					+ "updating the player's map with what it sees.",
+			ExplorationCLIDriver.class);
+
+	/**
+	 * @return an object indicating how to use and invoke this driver.
+	 */
+	@Override
+	public DriverUsage usage() {
+		return USAGE_OBJ;
 	}
 }
