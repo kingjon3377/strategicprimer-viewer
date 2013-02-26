@@ -29,6 +29,7 @@ import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import util.Pair;
 import util.Warning;
+import view.exploration.ExplorationCLI;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapHelper;
@@ -387,24 +388,16 @@ public class ExplorationCLIDriver implements ISPDriver {
 		} catch (SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file", except);
 		}
-		final List<Player> players = model.getPlayerChoices();
+		final ExplorationCLI cli = new ExplorationCLI(model, helper);
 		try {
-			final int playerNum = helper.chooseFromList(players,
-					"The players shared by all the maps:",
-					"No players shared by all the maps.",
-					"Please make a selection: ", true);
-			if (playerNum < 0) {
+			final Player player = cli.choosePlayer();
+			if (player.getPlayerId() < 0) {
 				return; // NOPMD
 			}
-			final Player player = players.get(playerNum);
-			final List<Unit> units = model.getUnits(player);
-			final int unitNum = helper.chooseFromList(units, "Player's units:",
-					"That player has no units in the master map.",
-					"Please make a selection: ", true);
-			if (unitNum < 0) {
+			final Unit unit = cli.chooseUnit(player);
+			if (unit.getID() < 0) {
 				return; // NOPMD
 			}
-			final Unit unit = units.get(unitNum);
 			SystemOut.SYS_OUT.println("Details of that unit:");
 			SystemOut.SYS_OUT.println(unit.verbose());
 			movementREPL(model, helper, unit,
