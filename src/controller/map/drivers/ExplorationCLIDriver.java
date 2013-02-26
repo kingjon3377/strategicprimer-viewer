@@ -9,17 +9,15 @@ import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
+import model.exploration.IExplorationModel.Direction;
 import model.map.IMap;
-import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
@@ -62,120 +60,6 @@ public class ExplorationCLIDriver implements ISPDriver {
 			}
 		}
 		return PointFactory.point(-1, -1);
-	}
-
-	/**
-	 * Move a unit from the specified tile one tile in the specified direction.
-	 * Moves the unit in all maps where the unit *was* in the specified tile,
-	 * copying terrain information if the tile didn't exist in a subordinate
-	 * map. If movement in the specified direction is impossible, we update all
-	 * subordinate maps with the terrain information showing that, then re-throw
-	 * the exception; callers should deduct a minimal MP cost.
-	 *
-	 * @param model the exploration-model to use.
-	 * @param unit the unit to move
-	 * @param point the starting location
-	 * @param direction the direction to move
-	 * @return the movement cost
-	 * @throws TraversalImpossibleException if movement in that direction is
-	 *         impossible
-	 */
-	public int move(final IExplorationModel model, final Unit unit, final Point point,
-			final Direction direction) throws TraversalImpossibleException {
-		final Point dest = getDestination(model.getMapDimensions(), point, direction);
-		// ESCA-JAVA0177:
-		final int retval; //NOPMD
-		final Tile destTile = model.getMap().getTile(dest);
-		try {
-			retval = SimpleMovement.getMovementCost(destTile);
-		} catch (final TraversalImpossibleException except) {
-			for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
-				final IMap map = pair.first();
-				if (map.getTile(dest).isEmpty()) {
-					map.getTiles().addTile(
-							new Tile(dest.row, dest.col, destTile.getTerrain())); // NOPMD
-				}
-			}
-			throw except;
-		}
-		model.getMap().getTile(point).removeFixture(unit);
-		destTile.addFixture(unit);
-		for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
-			final IMap map = pair.first();
-			final Tile stile = map.getTile(point);
-			boolean hasUnit = false;
-			for (final TileFixture fix : stile) {
-				if (fix.equals(unit)) {
-					hasUnit = true;
-					break;
-				}
-			}
-			if (!hasUnit) {
-				continue;
-			}
-			Tile dtile = map.getTile(dest);
-			if (dtile.isEmpty()) {
-				dtile = new Tile(dest.row, dest.col, destTile.getTerrain()); // NOPMD
-				map.getTiles().addTile(dtile);
-			}
-			stile.removeFixture(unit);
-			dtile.addFixture(unit);
-		}
-		return retval;
-	}
-	/**
-	 * A "plus one" method with a configurable, low "overflow".
-	 * @param num the number to increment
-	 * @param max the maximum number we want to return
-	 * @return either num + 1, if max or lower, or 0.
-	 */
-	public static int increment(final int num, final int max) {
-		return num >= max - 1 ? 0 : num + 1;
-	}
-	/**
-	 * A "minus one" method that "underflows" after 0 to a configurable, low value.
-	 * @param num the number to decrement.
-	 * @param max the number to "underflow" to.
-	 * @return either num - 1, if 1 or higher, or max.
-	 */
-	public static int decrement(final int num, final int max) {
-		return num == 0 ? max : num - 1;
-	}
-	/**
-	 * @param dims the dimensions of the map
-	 * @param point a point
-	 * @param direction a direction
-	 * @return the point one tile in that direction.
-	 */
-	private static Point getDestination(final MapDimensions dims, final Point point, final Direction direction) {
-		switch (direction) {
-		case East:
-			return PointFactory.point(point.row, // NOPMD
-					increment(point.col, dims.cols - 1));
-		case North:
-			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
-					point.col);
-		case Northeast:
-			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
-					increment(point.col, dims.rows - 1));
-		case Northwest:
-			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
-					decrement(point.col, dims.cols - 1));
-		case South:
-			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
-					point.col);
-		case Southeast:
-			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
-					increment(point.col, dims.cols - 1));
-		case Southwest:
-			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
-					decrement(point.col, dims.cols - 1));
-		case West:
-			return PointFactory.point(point.row, // NOPMD
-					decrement(point.col, dims.cols - 1));
-		default:
-			throw new IllegalStateException("Unhandled case");
-		}
 	}
 	/**
 	 * Driver. Takes as its parameters the map files to use.
@@ -239,14 +123,14 @@ public class ExplorationCLIDriver implements ISPDriver {
 		final Direction direction = Direction.values()[directionNum];
 		final Point point = find(unit, model);
 		try {
-			cost = move(model, unit, point, direction);
+			cost = model.move(unit, point, direction);
 		} catch (TraversalImpossibleException except) {
 			SystemOut.SYS_OUT.printC(
 					"That direction is impassable; we've made sure ").println(
 					"all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
-		final Point dPoint = getDestination(model.getMapDimensions(), point, direction);
+		final Point dPoint = model.getDestination(point, direction);
 		for (TileFixture fix : model.getMap().getTile(dPoint)) {
 			if (shouldAlwaysNotice(unit, fix)) {
 				constants.add(fix);
@@ -302,43 +186,6 @@ public class ExplorationCLIDriver implements ISPDriver {
 				|| fix instanceof Forest
 				|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
 						.equals(unit.getOwner()));
-	}
-	/**
-	 * An enumeration of directions.
-	 */
-	public enum Direction {
-		/**
-		 * North.
-		 */
-		North,
-		/**
-		 * Northeast.
-		 */
-		Northeast,
-		/**
-		 * East.
-		 */
-		East,
-		/**
-		 * Southeast.
-		 */
-		Southeast,
-		/**
-		 * South.
-		 */
-		South,
-		/**
-		 * Southwest.
-		 */
-		Southwest,
-		/**
-		 * West.
-		 */
-		West,
-		/**
-		 * Northwest.
-		 */
-		Northwest;
 	}
 	/**
 	 * Read maps.

@@ -3,6 +3,8 @@ package model.exploration;
 import java.util.List;
 
 import model.map.Player;
+import model.map.Point;
+import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.misc.IMultiMapModel;
 /**
@@ -12,6 +14,43 @@ import model.misc.IMultiMapModel;
  */
 public interface IExplorationModel extends IMultiMapModel {
 	/**
+	 * An enumeration of directions.
+	 */
+	enum Direction {
+		/**
+		 * North.
+		 */
+		North,
+		/**
+		 * Northeast.
+		 */
+		Northeast,
+		/**
+		 * East.
+		 */
+		East,
+		/**
+		 * Southeast.
+		 */
+		Southeast,
+		/**
+		 * South.
+		 */
+		South,
+		/**
+		 * Southwest.
+		 */
+		Southwest,
+		/**
+		 * West.
+		 */
+		West,
+		/**
+		 * Northwest.
+		 */
+		Northwest;
+	}
+	/**
 	 * @return all the players that are shared by all the maps
 	 */
 	List<Player> getPlayerChoices();
@@ -20,4 +59,22 @@ public interface IExplorationModel extends IMultiMapModel {
 	 * @return all that player's units in the master map
 	 */
 	List<Unit> getUnits(final Player player);
+	/**
+	 * Move a unit from the specified tile one tile in the specified direction.
+	 * Moves the unit in all maps where the unit *was* in the specified tile,
+	 * copying terrain information if the tile didn't exist in a subordinate
+	 * map. If movement in the specified direction is impossible, we update all
+	 * subordinate maps with the terrain information showing that, then re-throw
+	 * the exception; callers should deduct a minimal MP cost.
+	 *
+	 * @param unit the unit to move
+	 * @param point the starting location
+	 * @param direction the direction to move
+	 * @return the movement cost
+	 * @throws TraversalImpossibleException if movement in that direction is
+	 *         impossible
+	 */
+	int move(final Unit unit, final Point point, final Direction direction)
+			throws TraversalImpossibleException;
+	public abstract Point getDestination(final Point point, final Direction direction);
 }
