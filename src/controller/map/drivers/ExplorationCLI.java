@@ -7,8 +7,11 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.exploration.ExplorationModel;
+import model.exploration.IExplorationModel;
 import model.map.IMap;
 import model.map.MapDimensions;
+import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -23,9 +26,13 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
+import model.misc.IDriverModel;
+import util.Pair;
+import util.Warning;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapHelper;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A CLI to help running exploration. TODO: Some of this should be made more
@@ -39,12 +46,13 @@ public class ExplorationCLI implements ISPDriver {
 	 * Find a fixture's location in the master map.
 	 *
 	 * @param fix the fixture to find.
-	 * @param source the map to look in
+	 * @param model the map model
 	 * @return the first location found (search order is not defined) containing a
 	 *         fixture "equal to" the specified one. (Using it on mountains,
 	 *         e.g., will *not* do what you want ...)
 	 */
-	public Point find(final TileFixture fix, final IMap source) {
+	public Point find(final TileFixture fix, final IDriverModel model) {
+		final IMap source = model.getMap();
 		for (Point point : source.getTiles()) {
 			for (TileFixture item : source.getTile(point)) {
 				if (fix.equals(item)) {
@@ -63,8 +71,7 @@ public class ExplorationCLI implements ISPDriver {
 	 * subordinate maps with the terrain information showing that, then re-throw
 	 * the exception; callers should deduct a minimal MP cost.
 	 *
-	 * @param source the master map we're mainly dealing with
-	 * @param dests the other maps to move the unit in
+	 * @param model the exploration-model to use.
 	 * @param unit the unit to move
 	 * @param point the starting location
 	 * @param direction the direction to move
@@ -72,26 +79,28 @@ public class ExplorationCLI implements ISPDriver {
 	 * @throws TraversalImpossibleException if movement in that direction is
 	 *         impossible
 	 */
-	public int move(final IMap source, final List<IMap> dests, final Unit unit, final Point point,
+	public int move(final IExplorationModel model, final Unit unit, final Point point,
 			final Direction direction) throws TraversalImpossibleException {
-		final Point dest = getDestination(source.getDimensions(), point, direction);
+		final Point dest = getDestination(model.getMapDimensions(), point, direction);
 		// ESCA-JAVA0177:
 		final int retval; //NOPMD
+		final Tile destTile = model.getMap().getTile(dest);
 		try {
-			retval = SimpleMovement.getMovementCost(source.getTile(dest));
+			retval = SimpleMovement.getMovementCost(destTile);
 		} catch (final TraversalImpossibleException except) {
-			for (IMap map : dests) {
+			for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
+				final IMap map = pair.first();
 				if (map.getTile(dest).isEmpty()) {
 					map.getTiles().addTile(
-							new Tile(dest.row, dest.col, source.getTile(dest)//NOPMD
-									.getTerrain()));
+							new Tile(dest.row, dest.col, destTile.getTerrain())); // NOPMD
 				}
 			}
 			throw except;
 		}
-		source.getTile(point).removeFixture(unit);
-		source.getTile(dest).addFixture(unit);
-		for (IMap map : dests) {
+		model.getMap().getTile(point).removeFixture(unit);
+		destTile.addFixture(unit);
+		for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
+			final IMap map = pair.first();
 			final Tile stile = map.getTile(point);
 			boolean hasUnit = false;
 			for (final TileFixture fix : stile) {
@@ -105,8 +114,7 @@ public class ExplorationCLI implements ISPDriver {
 			}
 			Tile dtile = map.getTile(dest);
 			if (dtile.isEmpty()) {
-				dtile = new Tile(dest.row, dest.col, source.getTile(dest) // NOPMD
-						.getTerrain());
+				dtile = new Tile(dest.row, dest.col, destTile.getTerrain()); // NOPMD
 				map.getTiles().addTile(dtile);
 			}
 			stile.removeFixture(unit);
@@ -183,15 +191,13 @@ public class ExplorationCLI implements ISPDriver {
 	}
 	/**
 	 * TODO: Move much of this logic into class methods, so we don't need as many parameters.
-	 * @param secondaries the maps to update with data from the master map
-	 * @param master the main map
+	 * @param model the exploration-model to use.
 	 * @param helper the helper to use to ask the user for directions.
 	 * @param unit the unit in motion
 	 * @param totalMP the unit's total MP (to start with)
 	 * @throws IOException on I/O error getting input
 	 */
-	private void movementREPL(final List<IMap> secondaries,
-			final IMap master,
+	private void movementREPL(final IExplorationModel model,
 			final MapHelper helper, final Unit unit, final int totalMP)
 			throws IOException {
 		int movement = totalMP;
@@ -205,7 +211,7 @@ public class ExplorationCLI implements ISPDriver {
 					.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
 			int cost = 0;
-			cost = movementAtom(secondaries, master, helper, unit);
+			cost = movementAtom(model, helper, unit);
 			movement -= cost;
 		}
 	}
@@ -213,16 +219,14 @@ public class ExplorationCLI implements ISPDriver {
 	/**
 	 * The stuff from the loop of the movementREPL.
 	 *
-	 * @param secondaries the maps to update with data from the master map
-	 * @param master the main map
+	 * @param model the exploration model to use
 	 * @param helper the helper to use to ask the user for directions.
 	 * @param unit the unit in motion
 	 * @return the cost of the specified movement, 1 if not possible (in that
 	 *         case we add the tile but no fixtures), or MAX_INT if "exit".
 	 * @throws IOException on I/O error
 	 */
-	private int movementAtom(final List<IMap> secondaries,
-			final IMap master,
+	private int movementAtom(final IExplorationModel model,
 			final MapHelper helper, final Unit unit) throws IOException {
 		int cost;
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
@@ -232,17 +236,17 @@ public class ExplorationCLI implements ISPDriver {
 			return Integer.MAX_VALUE; // NOPMD
 		}
 		final Direction direction = Direction.values()[directionNum];
-		final Point point = find(unit, master);
+		final Point point = find(unit, model);
 		try {
-			cost = move(master, secondaries, unit, point, direction);
+			cost = move(model, unit, point, direction);
 		} catch (TraversalImpossibleException except) {
 			SystemOut.SYS_OUT.printC(
 					"That direction is impassable; we've made sure ").println(
 					"all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
-		final Point dPoint = getDestination(master.getDimensions(), point, direction);
-		for (TileFixture fix : master.getTile(dPoint)) {
+		final Point dPoint = getDestination(model.getMapDimensions(), point, direction);
+		for (TileFixture fix : model.getMap().getTile(dPoint)) {
 			if (shouldAlwaysNotice(unit, fix)) {
 				constants.add(fix);
 			} else if (mightNotice(unit, fix)) {
@@ -251,7 +255,7 @@ public class ExplorationCLI implements ISPDriver {
 		}
 		SystemOut.SYS_OUT.printC("The explorer comes to ")
 				.printC(dPoint.toString()).printC(", a tile with terrain ")
-				.println(master.getTile(dPoint).getTerrain());
+				.println(model.getMap().getTile(dPoint).getTerrain());
 		if (allFixtures.isEmpty()) {
 			SystemOut.SYS_OUT
 					.println("The following fixtures were automatically noticed:");
@@ -264,7 +268,8 @@ public class ExplorationCLI implements ISPDriver {
 		}
 		for (TileFixture fix : constants) {
 			SystemOut.SYS_OUT.println(fix);
-			for (IMap map : secondaries) {
+			for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
+				final IMap map = pair.first();
 				map.getTile(dPoint).addFixture(fix);
 			}
 		}
@@ -335,6 +340,32 @@ public class ExplorationCLI implements ISPDriver {
 		Northwest;
 	}
 	/**
+	 * Read maps.
+	 * @param filenames the files to read from
+	 * @return an exploration-model containing all of them
+	 * @throws SPFormatException on SP format problems
+	 * @throws XMLStreamException on malformed XML
+	 * @throws IOException on basic file I/O error
+	 */
+	private static IExplorationModel readMaps(final String[] filenames)
+			throws IOException, XMLStreamException, SPFormatException {
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		final MapView master = reader.readMap(filenames[0], Warning.INSTANCE);
+		final IExplorationModel model = new ExplorationModel(master, filenames[0]);
+		for (final String filename : filenames) {
+			if (filename.equals(filenames[0])) {
+				continue;
+			}
+			final IMap map = reader.readMap(filename, Warning.INSTANCE);
+			if (!map.getDimensions().equals(master.getDimensions())) {
+				throw new IllegalArgumentException("Size mismatch between " + filenames[0] + " and " + filename);
+			}
+			model.addSubordinateMap(map, filename);
+		}
+		return model;
+	}
+
+	/**
 	 * Run the driver.
 	 * @param args the command-line arguments
 	 * @throws DriverFailedException on error.
@@ -345,12 +376,10 @@ public class ExplorationCLI implements ISPDriver {
 			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
 			System.exit(1);
 		}
-		final List<IMap> secondaries = new ArrayList<IMap>();
-		final List<IMap> maps = new ArrayList<IMap>();
 		final MapHelper helper = new MapHelper();
-		IMap master;
+		final IExplorationModel model;
 		try {
-			master = helper.readMaps(args, maps, secondaries);
+			model = readMaps(args);
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error reading maps", except);
 		} catch (XMLStreamException except) {
@@ -358,7 +387,7 @@ public class ExplorationCLI implements ISPDriver {
 		} catch (SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file", except);
 		}
-		final List<Player> players = helper.getPlayerChoices(maps);
+		final List<Player> players = model.getPlayerChoices();
 		try {
 			final int playerNum = helper.chooseFromList(players,
 					"The players shared by all the maps:",
@@ -368,7 +397,7 @@ public class ExplorationCLI implements ISPDriver {
 				return; // NOPMD
 			}
 			final Player player = players.get(playerNum);
-			final List<Unit> units = helper.getUnits(master, player);
+			final List<Unit> units = model.getUnits(player);
 			final int unitNum = helper.chooseFromList(units, "Player's units:",
 					"That player has no units in the master map.",
 					"Please make a selection: ", true);
@@ -378,15 +407,26 @@ public class ExplorationCLI implements ISPDriver {
 			final Unit unit = units.get(unitNum);
 			SystemOut.SYS_OUT.println("Details of that unit:");
 			SystemOut.SYS_OUT.println(unit.verbose());
-			movementREPL(secondaries, master, helper, unit,
+			movementREPL(model, helper, unit,
 					helper.inputNumber("MP that unit has: "));
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
 		try {
-			helper.writeMaps(maps, args);
+			writeMaps(model);
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error writing to a map file", except);
+		}
+	}
+	/**
+	 * Write maps to disk.
+	 * @param model the model containing all the maps
+	 * @throws IOException on I/O error
+	 */
+	private static void writeMaps(final IExplorationModel model) throws IOException {
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		for (Pair<IMap, String> pair : model.getAllMaps()) {
+			reader.write(pair.second(), pair.first());
 		}
 	}
 }
