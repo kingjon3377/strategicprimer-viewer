@@ -20,7 +20,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class MapHelper {
+public class MapHelper implements IMapHelper {
 	/**
 	 * The input stream we'll read from.
 	 */
@@ -63,6 +63,7 @@ public class MapHelper {
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
+	@Override
 	public <T extends HasName> int chooseFromList(
 			final List<? extends T> items, final String desc,
 			final String none, final String prompt, final boolean auto) throws IOException {
@@ -107,6 +108,7 @@ public class MapHelper {
 	 * @return the number entered
 	 * @throws IOException on I/O error
 	 */
+	@Override
 	public int inputNumber(final String prompt) throws IOException {
 		int retval = -1;
 		while (retval < 0) {
@@ -124,6 +126,7 @@ public class MapHelper {
 	 * @return the string entered.
 	 * @throws IOException on I/O error
 	 */
+	@Override
 	public String inputString(final String prompt) throws IOException {
 		SystemOut.SYS_OUT.print(prompt);
 		final String retval = istream.readLine();
