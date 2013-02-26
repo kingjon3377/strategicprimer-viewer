@@ -76,7 +76,8 @@ public class ExplorationCLIDriver implements ISPDriver {
 			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
 			System.exit(1);
 		}
-		final IExplorationModel model;
+		// ESCA-JAVA0177:
+		final IExplorationModel model; // NOPMD
 		try {
 			model = readMaps(args);
 		} catch (IOException except) {
