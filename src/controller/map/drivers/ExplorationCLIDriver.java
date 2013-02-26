@@ -41,7 +41,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationCLI implements ISPDriver {
+public class ExplorationCLIDriver implements ISPDriver {
 	/**
 	 * Find a fixture's location in the master map.
 	 *
@@ -182,7 +182,7 @@ public class ExplorationCLI implements ISPDriver {
 	 */
 	public static void main(final String[] args)  {
 		try {
-			new ExplorationCLI().startDriver(args);
+			new ExplorationCLIDriver().startDriver(args);
 		} catch (DriverFailedException except) {
 			System.err.print(except.getMessage());
 			System.err.println(':');

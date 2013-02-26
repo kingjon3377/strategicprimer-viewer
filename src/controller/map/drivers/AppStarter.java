@@ -59,7 +59,7 @@ public class AppStarter implements ISPDriver {
 		// FIXME: Write a proper worker-management GUI
 		addChoice(AdvancementStart.class, AdvancementStart.class, "-w", "--worker");
 		// FIXME: Write an ExplorationGUI
-		addChoice(ExplorationCLI.class, ViewerStart.class, "-x", "--explore");
+		addChoice(ExplorationCLIDriver.class, ViewerStart.class, "-x", "--explore");
 		addChoice(ReaderComparator.class, DrawHelperComparator.class, "-t", "--test");
 		// FIXME: Write a GUI for the map-checker.
 		addChoice(MapChecker.class, MapChecker.class, "-k", "--check");
