@@ -3,7 +3,6 @@ package model.exploration;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.exploration.IExplorationModel.Direction;
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -13,8 +12,8 @@ import model.map.PointFactory;
 import model.map.Tile;
 import model.map.TileCollection;
 import model.map.TileFixture;
-import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.SimpleMovement;
+import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractMultiMapModel;
@@ -201,5 +200,23 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	public static int decrement(final int num, final int max) {
 		return num == 0 ? max : num - 1;
+	}
+	/**
+	 * @param fix a fixture
+	 * @return the first location found (search order is not defined) containing a
+	 *         fixture "equal to" the specified one. (Using it on mountains,
+	 *         e.g., will *not* do what you want ...)
+	 */
+	@Override
+	public Point find(final TileFixture fix) {
+		final IMap source = getMap();
+		for (Point point : source.getTiles()) {
+			for (TileFixture item : source.getTile(point)) {
+				if (fix.equals(item)) {
+					return point; // NOPMD
+				}
+			}
+		}
+		return PointFactory.point(-1, -1);
 	}
 }

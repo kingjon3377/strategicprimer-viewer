@@ -1,30 +1,15 @@
 package controller.map.drivers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
-import model.exploration.IExplorationModel.Direction;
 import model.map.IMap;
 import model.map.MapView;
 import model.map.Player;
-import model.map.Point;
-import model.map.PointFactory;
-import model.map.TileFixture;
-import model.map.fixtures.Ground;
-import model.map.fixtures.RiverFixture;
-import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
-import model.map.fixtures.towns.Fortress;
-import model.misc.IDriverModel;
 import util.Pair;
 import util.Warning;
 import view.exploration.ExplorationCLI;
@@ -42,26 +27,6 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class ExplorationCLIDriver implements ISPDriver {
 	/**
-	 * Find a fixture's location in the master map.
-	 *
-	 * @param fix the fixture to find.
-	 * @param model the map model
-	 * @return the first location found (search order is not defined) containing a
-	 *         fixture "equal to" the specified one. (Using it on mountains,
-	 *         e.g., will *not* do what you want ...)
-	 */
-	public Point find(final TileFixture fix, final IDriverModel model) {
-		final IMap source = model.getMap();
-		for (Point point : source.getTiles()) {
-			for (TileFixture item : source.getTile(point)) {
-				if (fix.equals(item)) {
-					return point; // NOPMD
-				}
-			}
-		}
-		return PointFactory.point(-1, -1);
-	}
-	/**
 	 * Driver. Takes as its parameters the map files to use.
 	 * @param args the command-line arguments
 	 */
@@ -76,117 +41,25 @@ public class ExplorationCLIDriver implements ISPDriver {
 	}
 	/**
 	 * TODO: Move much of this logic into class methods, so we don't need as many parameters.
-	 * @param model the exploration-model to use.
-	 * @param helper the helper to use to ask the user for directions.
 	 * @param unit the unit in motion
+	 * @param cli the interface object that does most of this for us.
 	 * @param totalMP the unit's total MP (to start with)
 	 * @throws IOException on I/O error getting input
 	 */
-	private void movementREPL(final IExplorationModel model,
-			final MapHelper helper, final Unit unit, final int totalMP)
+	private static void movementREPL(final ExplorationCLI cli,
+			final Unit unit, final int totalMP)
 			throws IOException {
 		int movement = totalMP;
-		// "constants" is the fixtures that *always* get copied (e.g. forests,
-		// mountains, hills, rivers). Also the player's own fortresses, so we'll
-		// always see when we want to stop.
 		while (movement > 0) {
 			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
 					.printC(totalMP).println(" remaining.");
 			SystemOut.SYS_OUT
 					.print("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ");
 			SystemOut.SYS_OUT.println("6 = W, 7 = NW, 8 = Quit.");
-			int cost = 0;
-			cost = movementAtom(model, helper, unit);
-			movement -= cost;
+			movement -= cli.move(unit);
 		}
 	}
 
-	/**
-	 * The stuff from the loop of the movementREPL.
-	 *
-	 * @param model the exploration model to use
-	 * @param helper the helper to use to ask the user for directions.
-	 * @param unit the unit in motion
-	 * @return the cost of the specified movement, 1 if not possible (in that
-	 *         case we add the tile but no fixtures), or MAX_INT if "exit".
-	 * @throws IOException on I/O error
-	 */
-	private int movementAtom(final IExplorationModel model,
-			final MapHelper helper, final Unit unit) throws IOException {
-		int cost;
-		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
-		final List<TileFixture> constants = new ArrayList<TileFixture>();
-		final int directionNum = helper.inputNumber("Direction to move: ");
-		if (directionNum > 7) {
-			return Integer.MAX_VALUE; // NOPMD
-		}
-		final Direction direction = Direction.values()[directionNum];
-		final Point point = find(unit, model);
-		try {
-			cost = model.move(unit, point, direction);
-		} catch (TraversalImpossibleException except) {
-			SystemOut.SYS_OUT.printC(
-					"That direction is impassable; we've made sure ").println(
-					"all maps show that at a cost of 1 MP");
-			return 1; // NOPMD
-		}
-		final Point dPoint = model.getDestination(point, direction);
-		for (TileFixture fix : model.getMap().getTile(dPoint)) {
-			if (shouldAlwaysNotice(unit, fix)) {
-				constants.add(fix);
-			} else if (mightNotice(unit, fix)) {
-				allFixtures.add(fix);
-			}
-		}
-		SystemOut.SYS_OUT.printC("The explorer comes to ")
-				.printC(dPoint.toString()).printC(", a tile with terrain ")
-				.println(model.getMap().getTile(dPoint).getTerrain());
-		if (allFixtures.isEmpty()) {
-			SystemOut.SYS_OUT
-					.println("The following fixtures were automatically noticed:");
-		} else {
-			SystemOut.SYS_OUT.printC(
-					"The following fixtures were noticed, all but the ")
-					.println("last automtically:");
-			Collections.shuffle(allFixtures);
-			constants.add(allFixtures.get(0));
-		}
-		for (TileFixture fix : constants) {
-			SystemOut.SYS_OUT.println(fix);
-			for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
-				final IMap map = pair.first();
-				map.getTile(dPoint).addFixture(fix);
-			}
-		}
-		return cost;
-	}
-
-	/**
-	 * FIXME: *Some* explorers *would* notice even unexposed ground.
-	 *
-	 * @param unit a unit
-	 * @param fix a fixture
-	 * @return whether the unit might notice it. Units do not notice themselves,
-	 *         and do not notice unexposed ground.
-	 */
-	private static boolean mightNotice(final Unit unit, final TileFixture fix) {
-		return (fix instanceof Ground && ((Ground) fix).isExposed())
-				|| !(fix instanceof Ground || fix.equals(unit));
-	}
-
-	/**
-	 * @param unit a unit
-	 * @param fix a fixture
-	 * @return whether the unit should always notice it.
-	 */
-	private static boolean shouldAlwaysNotice(final Unit unit, final TileFixture fix) {
-		return fix instanceof Mountain
-				|| fix instanceof RiverFixture
-				|| fix instanceof Hill
-				|| fix instanceof Forest
-				|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
-						.equals(unit.getOwner()));
-	}
 	/**
 	 * Read maps.
 	 * @param filenames the files to read from
@@ -247,8 +120,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 			}
 			SystemOut.SYS_OUT.println("Details of that unit:");
 			SystemOut.SYS_OUT.println(unit.verbose());
-			movementREPL(model, helper, unit,
-					helper.inputNumber("MP that unit has: "));
+			movementREPL(cli, unit, helper.inputNumber("MP that unit has: "));
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.map.Player;
 import model.map.Point;
+import model.map.TileFixture;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.misc.IMultiMapModel;
@@ -82,4 +83,11 @@ public interface IExplorationModel extends IMultiMapModel {
 	 * @return the point bordering the specified one in the specified direction
 	 */
 	Point getDestination(final Point point, final Direction direction);
+	/**
+	 * @param fix a fixture
+	 * @return the first location found (search order is not defined) containing a
+	 *         fixture "equal to" the specified one. (Using it on mountains,
+	 *         e.g., will *not* do what you want ...)
+	 */
+	Point find(final TileFixture fix);
 }
