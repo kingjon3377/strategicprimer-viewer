@@ -5,6 +5,7 @@ import java.awt.event.ComponentEvent;
 
 import model.map.MapDimensions;
 import model.viewer.IViewerModel;
+import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 
 /**
@@ -40,7 +41,9 @@ public class MapSizeListener extends ComponentAdapter {
 	public void componentResized(final ComponentEvent event) {
 		if (event.getComponent() instanceof MapGUI) {
 			synchronized (model) {
-				final int tsize = ((MapGUI) event.getSource()).getTileSize().getSize();
+				((MapGUI) event.getSource()).getTileSize();
+				final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
+						model.getMapDimensions().getVersion());
 				final int visibleCols = event.getComponent().getWidth()
 						/ tsize;
 				final int visibleRows = event.getComponent().getHeight()

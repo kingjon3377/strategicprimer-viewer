@@ -14,6 +14,7 @@ import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.viewer.TileViewSize;
+import model.viewer.ViewerModel;
 import util.Warning;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
@@ -331,7 +332,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 */
 	public void runAllTests(final IMap map, final int reps) {
 		final int repetitions = reps;
-		final int tsize = TileViewSize.getDefaultSize(map.getDimensions().version);
+		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL, map.getDimensions().version);
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
 		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null);

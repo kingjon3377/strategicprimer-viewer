@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import model.map.TileType;
 import model.viewer.TileViewSize;
+import model.viewer.ViewerModel;
 import view.map.main.TileUIHelper;
 
 /**
@@ -53,7 +54,7 @@ public final class KeyElement extends JPanel {
 				type));
 		tile.setMinimumSize(MIN_SIZE);
 		tile.setPreferredSize(PREF_SIZE);
-		final int tsize = TileViewSize.getDefaultSize(version);
+		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL, version);
 		tile.setMaximumSize(new Dimension(tsize, tsize));
 		panel.add(tile);
 		panel.add(Box.createRigidArea(new Dimension(0, 4)));

@@ -5,7 +5,6 @@ import java.awt.event.MouseWheelListener;
 
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
-import model.viewer.TileViewSize;
 
 /**
  * A class for moving the cursor around the single-component map UI, including
@@ -24,16 +23,10 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	 * Constructor.
 	 *
 	 * @param mapModel the map model we're to use
-	 * @param tileSize the object encapsulating the size of a visible tile, to use to zoom.
 	 */
-	public DirectionSelectionChanger(final IViewerModel mapModel, final TileViewSize tileSize) {
+	public DirectionSelectionChanger(final IViewerModel mapModel) {
 		model = mapModel;
-		tvs = tileSize;
 	}
-	/**
-	 * The object encapsulating the size of a visible tile.
-	 */
-	private final TileViewSize tvs;
 	/**
 	 * Move the cursor up.
 	 */
@@ -120,10 +113,13 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 		if (evt.isControlDown() || evt.isMetaDown()) {
 			final int count = evt.getWheelRotation();
 			if (count < 0) {
-				// Negative is away from the user, forward, "in"
-				tvs.increase(0 - count);
+				for (int i = 0; i > count; i--) {
+					model.zoomIn();
+				}
 			} else {
-				tvs.decrease(count);
+				for (int i = 0; i < count; i++) {
+					model.zoomOut();
+				}
 			}
 		} else if (evt.isShiftDown()) {
 			// Scroll sideways on Shift+scroll

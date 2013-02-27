@@ -44,6 +44,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 		setSelection(PointFactory.point(-1, -1));
 		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1, 0,
 				newMap.getDimensions().cols - 1));
+		resetZoom();
 	}
 	/**
 	 *
@@ -114,5 +115,56 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	@Override
 	public String toString() {
 		return "MapModel";
+	}
+	/**
+	 * The current zoom level.
+	 */
+	private int zoomLevel = DEF_ZOOM_LEVEL;
+	/**
+	 * The starting zoom level.
+	 */
+	public static final int DEF_ZOOM_LEVEL = 8;
+	/**
+	 * The maximum zoom level, to make sure that the tile size never overflows.
+	 */
+	private static final int MAX_ZOOM_LEVEL = Integer.MAX_VALUE / 4;
+	/**
+	 * @return the current zoom level.
+	 */
+	@Override
+	public int getZoomLevel() {
+		return zoomLevel;
+	}
+	/**
+	 * Zoom in, increasing the zoom level.
+	 */
+	@Override
+	public void zoomIn() {
+		if (zoomLevel < MAX_ZOOM_LEVEL) {
+			zoomLevel++;
+			firePropertyChange("tsize", Integer.valueOf(zoomLevel - 1),
+					Integer.valueOf(zoomLevel));
+		}
+	}
+	/**
+	 * Zoom out, decreasing the zoom level.
+	 */
+	@Override
+	public void zoomOut() {
+		if (zoomLevel > 1) {
+			zoomLevel--;
+			firePropertyChange("tsize", Integer.valueOf(zoomLevel + 1),
+					Integer.valueOf(zoomLevel));
+		}
+	}
+	/**
+	 * Reset the zoom level to the default.
+	 */
+	@Override
+	public void resetZoom() {
+		final int old = zoomLevel;
+		zoomLevel = DEF_ZOOM_LEVEL;
+		firePropertyChange("tsize", Integer.valueOf(old),
+				Integer.valueOf(zoomLevel));
 	}
 }

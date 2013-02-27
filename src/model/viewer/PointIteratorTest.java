@@ -135,6 +135,34 @@ public class PointIteratorTest {
 		public String getMapFilename() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+		/**
+		 * @return nothing
+		 */
+		@Override
+		public int getZoomLevel() {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * Should never be called.
+		 */
+		@Override
+		public void zoomIn() {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * Should never be called.
+		 */
+		@Override
+		public void zoomOut() {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * Should never be called.
+		 */
+		@Override
+		public void resetZoom() {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
 	}
 	/**
 	 * Test without startFromSel, horizontally, forwards.

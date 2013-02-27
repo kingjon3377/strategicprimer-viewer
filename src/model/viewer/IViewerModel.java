@@ -44,5 +44,20 @@ public interface IViewerModel extends IDriverModel {
 	 * @return the visible dimensions of the map
 	 */
 	VisibleDimensions getDimensions();
-
+	/**
+	 * @return the current zoom level
+	 */
+	int getZoomLevel();
+	/**
+	 * Zoom in.
+	 */
+	void zoomIn();
+	/**
+	 * Zoom out.
+	 */
+	void zoomOut();
+	/**
+	 * Reset the zoom level to the default.
+	 */
+	void resetZoom();
 }

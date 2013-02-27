@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import model.viewer.IViewerModel;
-import model.viewer.TileViewSize;
 import view.map.details.DetailPanelNG;
 
 /**
@@ -70,7 +69,7 @@ public final class ViewerFrame extends JFrame {
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
 		add(mapSuperPanel, BorderLayout.CENTER);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		zoomListener = new ZoomListener(((MapComponent) mapPanel).getTileSize());
+		zoomListener = new ZoomListener(map);
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
 	}
@@ -84,24 +83,24 @@ public final class ViewerFrame extends JFrame {
 		private static final long serialVersionUID = 1L;
 		/**
 		 * Constructor.
-		 * @param tsize the tile-size-encapsulating object
+		 * @param vmodel the viewer model, which now handles the zoom level
 		 */
-		ZoomListener(final TileViewSize tsize) {
-			tvs = tsize;
+		ZoomListener(final IViewerModel vmodel) {
+			model = vmodel;
 		}
 		/**
-		 * The tile-size-encapsulating object.
+		 * The map model.
 		 */
-		private final TileViewSize tvs;
+		private final IViewerModel model;
 		/**
 		 * @param evt the event to handle
 		 */
 		@Override
 		public void actionPerformed(final ActionEvent evt) {
 			if ("zoom in".equalsIgnoreCase(evt.getActionCommand())) {
-				tvs.increase(2);
+				model.zoomIn();
 			} else if ("zoom out".equalsIgnoreCase(evt.getActionCommand())) {
-				tvs.decrease(2);
+				model.zoomOut();
 			}
 		}
 	}

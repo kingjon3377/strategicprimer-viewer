@@ -23,27 +23,20 @@ public final class ComponentMouseListener extends MouseAdapter {
 	private final IViewerModel model;
 	/**
 	 * @param mapModel the map model we'll refer to
-	 * @param tileSize the object to tell us the size of a tile
 	 * @param list a listener to send encounter events to
 	 */
 	public ComponentMouseListener(final IViewerModel mapModel,
-			final TileViewSize tileSize, final PropertyChangeListener list) {
+			final PropertyChangeListener list) {
 		super();
 		model = mapModel;
 		menu = new TerrainChangingMenu(model.getMapDimensions().version,
 				model.getSelectedTile(), list, model);
-		tsize = tileSize;
 	}
 
 	/**
 	 * The terrain-changing menu.
 	 */
 	private final TerrainChangingMenu menu;
-	/**
-	 * The helper to tell us the size of a tile.
-	 */
-	private final TileViewSize tsize;
-
 	/**
 	 * Handle mouse clicks.
 	 *
@@ -53,7 +46,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	public void mouseClicked(final MouseEvent event) {
 		final java.awt.Point eventPoint = event.getPoint();
 		final VisibleDimensions dimensions = model.getDimensions();
-		final int tileSize = tsize.getSize();
+		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(), model
+				.getMapDimensions().getVersion());
 		model.setSelection(PointFactory.point(eventPoint.y / tileSize
 				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
 				+ dimensions.getMinimumCol()));
