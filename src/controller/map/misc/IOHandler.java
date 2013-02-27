@@ -84,7 +84,7 @@ public final class IOHandler implements ActionListener {
 		if ("Load".equals(event.getActionCommand())) {
 			handleLoadMenu(source);
 		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMap(model.getMap(), source);
+			saveMapAs(model.getMap(), source);
 		} else if ("New".equals(event.getActionCommand())) {
 			startNewViewerWindow();
 		}
@@ -152,7 +152,7 @@ public final class IOHandler implements ActionListener {
 	 * @param map the map to save.
 	 * @param source the source of the event
 	 */
-	private void saveMap(final IMap map, final Component source) {
+	private void saveMapAs(final IMap map, final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new MapReaderAdapter().write(chooser.getSelectedFile()
