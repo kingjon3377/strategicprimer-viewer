@@ -92,7 +92,7 @@ public final class ViewerStart implements ISPDriver {
 			final Warning warner = new Warning(Warning.Action.Warn);
 			for (final String filename : args) {
 				try {
-					startFrame(reader.readMap(filename, warner), chooser);
+					startFrame(reader.readMap(filename, warner), filename, chooser);
 				} catch (final XMLStreamException e) {
 					throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 				} catch (final FileNotFoundException e) {
@@ -108,10 +108,11 @@ public final class ViewerStart implements ISPDriver {
 	/**
 	 * Start a viewer frame based on the given map.
 	 * @param map the map object
+	 * @param filename the file it was loaded from
 	 * @param chooser the file-chooser to pass to the frame
 	 */
-	private static void startFrame(final MapView map, final JFileChooser chooser) {
-		final IViewerModel model = new ViewerModel(map, "");
+	private static void startFrame(final MapView map, final String filename, final JFileChooser chooser) {
+		final IViewerModel model = new ViewerModel(map, filename);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
