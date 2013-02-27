@@ -17,9 +17,18 @@ import util.PropertyChangeSource;
 public class SkillListModel extends DefaultListModel<Skill> implements
 		PropertyChangeListener, PropertyChangeSource {
 	/**
+	 * A non-null "null" Job. Adjusted here to prevent modification.
+	 */
+	private static final Job NULL_JOB = new Job("null", -1) {
+		@Override
+		public boolean addSkill(final Skill skill) {
+			return false;
+		}
+	};
+	/**
 	 * The current Job.
 	 */
-	private Job job = null;
+	private Job job = NULL_JOB;
 	/**
 	 * Constructor.
 	 * @param sources property-change sources to listen to.
@@ -42,7 +51,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			if (evt.getNewValue() == null || evt.getNewValue() instanceof Job) {
 				handleNewJob((Job) evt.getNewValue());
 			}
-		} else if ("add".equalsIgnoreCase(evt.getPropertyName()) && job != null) {
+		} else if ("add".equalsIgnoreCase(evt.getPropertyName()) && job != null && !NULL_JOB.equals(job)) {
 			final Skill skill = new Skill(evt.getNewValue().toString(), 0, 0);
 			job.addSkill(skill);
 			addElement(skill);
@@ -57,11 +66,10 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	 */
 	private void handleNewJob(final Job newValue) {
 		if (newValue == null) {
-			if (job != null) {
-				job = newValue;
-				clear();
-			}
+			job = NULL_JOB;
+			clear();
 		} else {
+			// With NULL_JOB, job should never be null ... but it's probably best to check.
 			if (job == null || !job.equals(newValue)) {
 				clear();
 				job = newValue;

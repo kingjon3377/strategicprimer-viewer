@@ -18,6 +18,10 @@ import model.misc.AbstractDriverModel;
  */
 public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor.
 	 * @param map the map we're wrapping.
 	 * @param filename the name of the file the map was loaded from or should be saved to

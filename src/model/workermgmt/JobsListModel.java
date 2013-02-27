@@ -16,9 +16,18 @@ import util.PropertyChangeSource;
 public class JobsListModel extends DefaultListModel<Job> implements
 		PropertyChangeListener, PropertyChangeSource {
 	/**
+	 * A non-null "null" worker. Adjusted to prevent modification.
+	 */
+	private static final Worker NULL_WORKER = new Worker("null", "null", -1) {
+		@Override
+		public boolean addJob(final Job job) {
+			return false;
+		}
+	};
+	/**
 	 * The current worker.
 	 */
-	private Worker worker = null;
+	private Worker worker = NULL_WORKER;
 	/**
 	 * Constructor.
 	 * @param sources property-change sources to listen to.
@@ -40,7 +49,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 		if ("member".equalsIgnoreCase(evt.getPropertyName())) {
 			handleMemberChange(evt.getNewValue());
 		} else if ("add".equalsIgnoreCase(evt.getPropertyName())
-				&& worker != null) {
+				&& worker != null && !NULL_WORKER.equals(worker)) {
 			final Job job = new Job(evt.getNewValue().toString(), 0);
 			worker.addJob(job);
 			addElement(job);
@@ -52,6 +61,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	 * @param newValue the "new value" from the PropertyChangeEvent
 	 */
 	private void handleMemberChange(final Object newValue) {
+		// Worker shouldn't be null, now we have NULL_WORKER, but it's probably best to check for now.
 		if (worker == null || !worker.equals(newValue)) {
 			clear();
 			if (newValue instanceof Worker) {
@@ -62,7 +72,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 				pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
 			}
 		} else if (newValue == null) {
-			worker = (Worker) newValue;
+			worker = NULL_WORKER;
 			clear();
 		}
 	}
