@@ -2,6 +2,8 @@ package view.util;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
@@ -39,6 +41,15 @@ public class MenuItemCreator {
 	 */
 	public KeyStroke createHotkey(final int key) {
 		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+	}
+	/**
+	 * Create a hotkey with the additional Shift modifier.
+	 * @param key the base key
+	 * @return the hotkey
+	 */
+	public KeyStroke createShiftHotkey(final int key) {
+		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask() | InputEvent.SHIFT_DOWN_MASK);
 	}
 	/**
 	 * @return a String representation of the object

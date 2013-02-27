@@ -112,8 +112,11 @@ public class SPMenu extends JMenuBar {
 		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
 				creator.createHotkey(KeyEvent.VK_O),
 				"Load a map from file", handler));
-		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_S,
+		fileMenu.add(creator.createMenuItem("Save", KeyEvent.VK_S,
 				creator.createHotkey(KeyEvent.VK_S),
+				"Save the map to the file it was loaded from", handler));
+		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_A,
+				creator.createShiftHotkey(KeyEvent.VK_S),
 				"Save the map to file", handler));
 		fileMenu.addSeparator();
 		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,

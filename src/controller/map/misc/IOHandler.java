@@ -83,6 +83,8 @@ public final class IOHandler implements ActionListener {
 				.getSource() : null; // NOPMD
 		if ("Load".equals(event.getActionCommand())) {
 			handleLoadMenu(source);
+		} else if ("Save".equals(event.getActionCommand())) {
+			saveMap(source);
 		} else if ("Save As".equals(event.getActionCommand())) {
 			saveMapAs(model.getMap(), source);
 		} else if ("New".equals(event.getActionCommand())) {
@@ -145,7 +147,20 @@ public final class IOHandler implements ActionListener {
 		LOGGER.log(Level.SEVERE, msg, except);
 		ErrorShower.showErrorDialog(source, msg);
 	}
-
+	/**
+	 * Save a map to the filename it was loaded from.
+	 * @param source the source of the event that triggered this
+	 */
+	private void saveMap(final Component source) {
+		try {
+			new MapReaderAdapter().write(model.getMapFilename(), model.getMap());
+		} catch (final IOException e) {
+			ErrorShower.showErrorDialog(source,
+					"I/O error writing to file "
+							+ model.getMapFilename());
+			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+		}
+	}
 	/**
 	 * Save a map.
 	 *
