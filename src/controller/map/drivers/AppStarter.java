@@ -54,27 +54,60 @@ public class AppStarter implements ISPDriver {
 		CACHE.put(shrt, pair);
 		CACHE.put(lng, pair);
 	}
+	/**
+	 * @param driver a driver to add twice.
+	 */
+	private static void addChoice(final ISPDriver driver) {
+		final ClassPair pair = new ClassPair(driver.getClass(), driver.getClass());
+		final DriverUsage usage = driver.usage();
+		CACHE.put(usage.getShortOption(), pair);
+		CACHE.put(usage.getLongOption(), pair);
+	}
+
+	/**
+	 * If the two drivers don't have the same short and long options, or if both
+	 * are or neither is graphical, logs a warning.
+	 *
+	 * @param one a first driver
+	 * @param two a second driver
+	 */
+	private static void addChoice(final ISPDriver one, final ISPDriver two) {
+		final ClassPair pair = new ClassPair(one.getClass(), two.getClass());
+		final DriverUsage oneUsage = one.usage();
+		final DriverUsage twoUsage = two.usage();
+		if (oneUsage.isGraphical() || !twoUsage.isGraphical()) {
+			LOGGER.warning("Two-arg addChoice didn't match non-graphical / graphical pair");
+		} else if (!oneUsage.getShortOption().equals(twoUsage.getShortOption())
+				|| !oneUsage.getLongOption().equals(twoUsage.getLongOption())) {
+	LOGGER.warning("Two-arg addChoice called but options of args don't match");
+		}
+		CACHE.put(oneUsage.getShortOption(), pair);
+		CACHE.put(oneUsage.getLongOption(), pair);
+	}
 	static {
-		addChoice(QueryCLI.class, ViewerStart.class, "-m", "--map");
+		addChoice(new QueryCLI(), new ViewerStart());
 		// FIXME: Write a CLI to *automate* advancement
-		addChoice(AdvancementStart.class, AdvancementStart.class, "-a", "--adv");
+		addChoice(new AdvancementStart());
 		// FIXME: Write a CLI to print a report of a player's workers
 		// FIXME: Write a proper worker-management GUI
+		// We leave this as the old-style addChoice because here it's a
+		// placeholder for a proper worker GUI
 		addChoice(AdvancementStart.class, AdvancementStart.class, "-w", "--worker");
 		// FIXME: Write an ExplorationGUI
+		// Similarly, we leave this as an old-style AddChoice because
+		// ViewerStart here is a placeholder for an ExplorationGUI
 		addChoice(ExplorationCLIDriver.class, ViewerStart.class, "-x", "--explore");
-		addChoice(ReaderComparator.class, DrawHelperComparator.class, "-t", "--test");
+		addChoice(new ReaderComparator(), new DrawHelperComparator());
 		// FIXME: Write a GUI for the map-checker.
-		addChoice(MapChecker.class, MapChecker.class, "-k", "--check");
+		addChoice(new MapChecker());
 		// FIXME: Write a GUI for the subset-driver
-		addChoice(SubsetDriver.class, SubsetDriver.class, "-s", "--subset");
-		addChoice(EchoDriver.class, EchoDriver.class, "-e", "--echo");
+		addChoice(new SubsetDriver());
+		addChoice(new EchoDriver());
 		// FIXME: Write a GUI for the duplicate feature remover
-		addChoice(DuplicateFixtureRemover.class, DuplicateFixtureRemover.class, "-d", "--dupl");
+		addChoice(new DuplicateFixtureRemover());
 		// FIXME: Write a GUI fo the map-updater
-		addChoice(MapUpdater.class, MapUpdater.class, "-u", "--update");
-		addChoice(AppStarter.class, AppStarter.class, "-p", "--app-starter");
-
+		addChoice(new MapUpdater());
+		addChoice(new AppStarter());
 	}
 	/**
 	 * Start the driver, and then start the specified other driver.
