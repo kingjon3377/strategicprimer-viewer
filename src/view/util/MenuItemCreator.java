@@ -3,7 +3,6 @@ package view.util;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
