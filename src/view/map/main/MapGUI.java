@@ -1,6 +1,5 @@
 package view.map.main;
 
-import model.map.MapView;
 import model.misc.IDriverModel;
 import model.viewer.TileViewSize;
 import util.PropertyChangeSource;

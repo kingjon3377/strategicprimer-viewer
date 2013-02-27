@@ -7,7 +7,6 @@ import controller.map.drivers.ISPDriver;
  * and in help text.
  *
  * @author Jonathan Lovelace
- *@param <T> the driver this is usage for.
  */
 public class DriverUsage {
 	/**
