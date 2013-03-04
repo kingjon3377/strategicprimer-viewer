@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.exploration.ExplorationRunner;
-import model.exploration.MissingTableException;
+import model.exploration.old.ExplorationRunner;
+import model.exploration.old.MissingTableException;
 import model.map.IMap;
 import model.map.Point;
 import model.map.PointFactory;

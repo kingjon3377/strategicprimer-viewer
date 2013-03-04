@@ -1,10 +1,10 @@
-package model.exploration;
+package model.exploration.old;
 
 /**
  * An exception to throw when a table is missing.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MissingTableException extends Exception {
 	/**
@@ -14,7 +14,7 @@ public class MissingTableException extends Exception {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param table the missing table
 	 */
 	public MissingTableException(final String table) {

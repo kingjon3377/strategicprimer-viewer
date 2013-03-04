@@ -1,4 +1,4 @@
-package model.exploration;
+package model.exploration.old;
 
 import java.util.ArrayList;
 import java.util.Collections;

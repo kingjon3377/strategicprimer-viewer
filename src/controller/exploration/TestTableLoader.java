@@ -8,7 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
-import model.exploration.EncounterTable;
+import model.exploration.old.EncounterTable;
 import model.map.Tile;
 import model.map.TileType;
 

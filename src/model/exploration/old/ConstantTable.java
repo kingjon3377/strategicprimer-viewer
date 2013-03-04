@@ -1,4 +1,4 @@
-package model.exploration;
+package model.exploration.old;
 
 import java.util.HashSet;
 import java.util.Set;

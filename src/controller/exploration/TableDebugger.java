@@ -4,9 +4,9 @@ import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import model.exploration.EncounterTable;
-import model.exploration.ExplorationRunner;
-import model.exploration.MissingTableException;
+import model.exploration.old.EncounterTable;
+import model.exploration.old.ExplorationRunner;
+import model.exploration.old.MissingTableException;
 import view.util.SystemOut;
 
 /**

@@ -1,4 +1,4 @@
-package model.exploration;
+package model.exploration.old;
 
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -13,9 +13,9 @@ import util.Pair;
 /**
  * A table that gives its result based on the terrain type of the tile in
  * question.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class TerrainTable implements EncounterTable {
 	/**
@@ -26,7 +26,7 @@ public class TerrainTable implements EncounterTable {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param items the items to add to the list
 	 */
 	public TerrainTable(final List<Pair<TileType, String>> items) {
@@ -53,7 +53,7 @@ public class TerrainTable implements EncounterTable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the class
 	 */
 	@Override

@@ -1,4 +1,4 @@
-package model.exploration;
+package model.exploration.old;
 
 import java.io.PrintStream;
 import java.util.HashMap;

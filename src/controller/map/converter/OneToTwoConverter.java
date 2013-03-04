@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.exploration.ExplorationRunner;
-import model.exploration.MissingTableException;
+import model.exploration.old.ExplorationRunner;
+import model.exploration.old.MissingTableException;
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.Player;
