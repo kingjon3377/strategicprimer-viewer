@@ -3,11 +3,20 @@ package view.map.main;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Iterator;
+import java.util.Set;
 
+import model.map.Point;
 import model.map.PointFactory;
+import model.map.TerrainFixture;
+import model.map.Tile;
+import model.map.TileFixture;
+import model.viewer.FixtureComparator;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+import util.ArraySet;
+import util.IteratorWrapper;
 
 /**
  * A mouse listener for the MapComponent, to show the terrain-changing menu as
@@ -32,7 +41,54 @@ public final class ComponentMouseListener extends MouseAdapter {
 		menu = new TerrainChangingMenu(model.getMapDimensions().version,
 				model.getSelectedTile(), list, model);
 	}
+	/**
+	 * @param event an event representing the current mouse position
+	 * @return a tool-tip message for the tile the mouse is currently over
+	 */
+	public String getToolTipText(final MouseEvent event) {
+		final java.awt.Point eventPoint = event.getPoint();
+		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(), model
+				.getMapDimensions().getVersion());
+		final VisibleDimensions dimensions = model.getDimensions();
+		final Point point = PointFactory.point(eventPoint.y / tileSize
+				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
+				+ dimensions.getMinimumCol());
+		final Tile tile = model.getTile(point);
+		return new StringBuilder("<html><body>").append(point.toString()).append(": ")
+				.append(tile.getTerrain()).append("<br />")
+				.append(getTerrainFixturesAndTop(tile)).append("</body></html>").toString();
+	}
+	/**
+	 * Comparator to find which fixture is on top of a tile.
+	 */
+	private final FixtureComparator fixComp = new FixtureComparator();
 
+	/**
+	 * @param tile a tile
+	 * @return a HTML-ized String (including final newline entity) representing the
+	 *         TerrainFixtures on it, and the fixture the user can see as its
+	 *         top fixture.
+	 */
+	private String getTerrainFixturesAndTop(final Tile tile) {
+		final Set<TileFixture> fixes = new ArraySet<TileFixture>();
+		final Iterable<TileFixture> iter = new IteratorWrapper<TileFixture>(
+				tile.iterator(), fixComp);
+		final Iterator<TileFixture> iterat = iter.iterator();
+		if (iterat.hasNext()) {
+			fixes.add(iterat.next());
+		}
+		for (TileFixture fix : iter) {
+			if (fix instanceof TerrainFixture) {
+				fixes.add(fix);
+			}
+		}
+		final StringBuilder sbuild = new StringBuilder();
+		for (TileFixture fix : fixes) {
+			sbuild.append(fix.toString());
+			sbuild.append("<br />");
+		}
+		return sbuild.toString();
+	}
 	/**
 	 * The terrain-changing menu.
 	 */

@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -41,7 +43,11 @@ public final class MapComponent extends JComponent implements MapGUI,
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
-	private TileDrawHelper helper;
+	private transient TileDrawHelper helper;
+	/**
+	 * The mouse listener that handles showing the terrain-changing popup menu.
+	 */
+	private final transient ComponentMouseListener cml;
 
 	/**
 	 * Constructor.
@@ -56,7 +62,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 		model = theMap;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this);
-		addMouseListener(new ComponentMouseListener(model, this));
+		cml = new ComponentMouseListener(model, this);
+		addMouseListener(cml);
 		model.addPropertyChangeListener(this);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
 				model);
@@ -65,8 +72,22 @@ public final class MapComponent extends JComponent implements MapGUI,
 		new ArrowKeyListener().setUpListeners(dsl, getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
 				getActionMap());
 		addComponentListener(new MapSizeListener(model));
+		setToolTipText("");
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(final MouseEvent evt) {
+				repaint();
+			}
+		});
 	}
-
+	/**
+	 * @param event an event indicating where the mouse is
+	 * @return an appropriate tool-tip
+	 */
+	@Override
+	public String getToolTipText(final MouseEvent event) {
+		return cml.getToolTipText(event);
+	}
 	/**
 	 * Paint.
 	 *
