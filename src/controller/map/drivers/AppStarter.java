@@ -105,8 +105,6 @@ public class AppStarter implements ISPDriver {
 		addChoice(new EchoDriver());
 		// FIXME: Write a GUI for the duplicate feature remover
 		addChoice(new DuplicateFixtureRemover());
-		// FIXME: Write a GUI fo the map-updater
-		addChoice(new MapUpdater());
 		addChoice(new AppStarter());
 	}
 	/**

@@ -171,27 +171,6 @@ public final class Tile implements XMLWritable,
 	}
 
 	/**
-	 * Update with data from a tile in another map.
-	 *
-	 * @param tile the same tile in another map.
-	 */
-	public void update(final Tile tile) {
-		setTerrain(tile.getTerrain());
-			final Set<TileFixture> unmatchedContents = new HashSet<TileFixture>(
-					contents);
-			unmatchedContents.removeAll(tile.contents);
-			for (final TileFixture local : unmatchedContents) {
-				for (final TileFixture remote : tile) {
-					if (local.equalsIgnoringID(remote)) {
-						removeFixture(local);
-						addFixture(remote);
-						break;
-					}
-				}
-			}
-	}
-
-	/**
 	 * A tile is "empty" if its tile type is NotVisible and it has no contents.
 	 *
 	 * @return whether this tile is "empty".
