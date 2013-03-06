@@ -1,6 +1,5 @@
 package model.map.fixtures.towns;
 
-import model.map.events.EventKind;
 
 /**
  * An abandoned, ruined, or burned-out city.
@@ -24,7 +23,7 @@ public final class CityEvent extends AbstractTownEvent {
 	 */
 	public CityEvent(final TownStatus tStatus, final TownSize tSize,
 			final int discdc, final String tName, final int idNum) {
-		super(EventKind.City, tStatus, tSize, tName);
+		super(TownKind.City, tStatus, tSize, tName);
 		dc = discdc;
 		id = idNum;
 	}

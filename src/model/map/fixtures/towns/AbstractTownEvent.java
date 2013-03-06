@@ -3,7 +3,6 @@ package model.map.fixtures.towns;
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
-import model.map.events.EventKind;
 import model.map.events.IEvent;
 
 /**
@@ -22,7 +21,7 @@ public abstract class AbstractTownEvent implements
 	 * @param tStatus the status of the town, fortress, or city
 	 * @param tName the name of the town, fortress, or city
 	 */
-	protected AbstractTownEvent(final EventKind eKind,
+	protected AbstractTownEvent(final TownKind eKind,
 			final TownStatus tStatus, final TownSize tSize, final String tName) {
 		super();
 		kind = eKind;
@@ -65,7 +64,7 @@ public abstract class AbstractTownEvent implements
 	/**
 	 * What kind of event this is.
 	 */
-	private final EventKind kind;
+	private final TownKind kind;
 
 	/**
 	 *
@@ -165,7 +164,7 @@ public abstract class AbstractTownEvent implements
 	 *
 	 * @return what kind of event this is
 	 */
-	public EventKind kind() {
+	public TownKind kind() {
 		return kind;
 	}
 

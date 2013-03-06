@@ -1,4 +1,4 @@
-package model.map.events;
+package model.map.fixtures.towns;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @author Jonathan Lovelace
  */
-public enum EventKind {
+public enum TownKind {
 	/**
 	 * "Nothing of interest here ...". Useful primarily as an alternative to
 	 * null.
@@ -55,7 +55,7 @@ public enum EventKind {
 	/**
 	 * A mapping from strings to EventKinds.
 	 */
-	private static final Map<String, EventKind> EK_MAP = new HashMap<String, EventKind>();
+	private static final Map<String, TownKind> EK_MAP = new HashMap<String, TownKind>();
 	/**
 	 * A string representing the event.
 	 */
@@ -67,12 +67,12 @@ public enum EventKind {
 	 * @param string a string representing the event, to be used in non-specific
 	 *        event tags.
 	 */
-	private EventKind(final String string) {
+	private TownKind(final String string) {
 		str = string;
 	}
 
 	static {
-		for (final EventKind ek : values()) {
+		for (final TownKind ek : values()) {
 			EK_MAP.put(ek.str, ek);
 		}
 	}
@@ -82,7 +82,7 @@ public enum EventKind {
 	 *
 	 * @return the EventKind it represents
 	 */
-	public static EventKind parseEventKind(final String string) {
+	public static TownKind parseKind(final String string) {
 		return EK_MAP.get(string);
 	}
 

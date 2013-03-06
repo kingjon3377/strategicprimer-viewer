@@ -1,6 +1,5 @@
 package model.map.fixtures.towns;
 
-import model.map.events.EventKind;
 
 /**
  * An abandoned, ruined, or burned-out fortification.
@@ -27,7 +26,7 @@ public final class FortificationEvent extends AbstractTownEvent {
 	 */
 	public FortificationEvent(final TownStatus tStatus, final TownSize tSize,
 			final int discdc, final String tName, final int idNum) {
-		super(EventKind.Fortification, tStatus, tSize, tName);
+		super(TownKind.Fortification, tStatus, tSize, tName);
 		dc = discdc;
 		id = idNum;
 	}
