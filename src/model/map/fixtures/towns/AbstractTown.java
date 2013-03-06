@@ -11,7 +11,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  */
 // ESCA-JAVA0011:
-public abstract class AbstractTownEvent implements
+public abstract class AbstractTown implements
 		IEvent, HasImage, ITownFixture {
 	/**
 	 * Constructor.
@@ -21,7 +21,7 @@ public abstract class AbstractTownEvent implements
 	 * @param tStatus the status of the town, fortress, or city
 	 * @param tName the name of the town, fortress, or city
 	 */
-	protected AbstractTownEvent(final TownKind eKind,
+	protected AbstractTown(final TownKind eKind,
 			final TownStatus tStatus, final TownSize tSize, final String tName) {
 		super();
 		kind = eKind;
@@ -115,11 +115,11 @@ public abstract class AbstractTownEvent implements
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof AbstractTownEvent
-						&& ((AbstractTownEvent) obj).kind().equals(kind())
-						&& ((AbstractTownEvent) obj).size.equals(size)
-						&& ((AbstractTownEvent) obj).name.equals(name)
-						&& ((AbstractTownEvent) obj).status.equals(status) && ((TileFixture) obj)
+				|| (obj instanceof AbstractTown
+						&& ((AbstractTown) obj).kind().equals(kind())
+						&& ((AbstractTown) obj).size.equals(size)
+						&& ((AbstractTown) obj).name.equals(name)
+						&& ((AbstractTown) obj).status.equals(status) && ((TileFixture) obj)
 						.getID() == getID());
 	}
 
@@ -130,13 +130,13 @@ public abstract class AbstractTownEvent implements
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| (fix instanceof AbstractTownEvent && equalsContents((AbstractTownEvent) fix));
+				|| (fix instanceof AbstractTown && equalsContents((AbstractTown) fix));
 	}
 	/**
 	 * @param fix a town-event
 	 * @return whether it's equal to this one ignoring ID.
 	 */
-	private boolean equalsContents(final AbstractTownEvent fix) {
+	private boolean equalsContents(final AbstractTown fix) {
 		return fix.kind().equals(kind) && fix.size().equals(size)
 				&& fix.getName().equals(name) && fix.status().equals(status);
 	}

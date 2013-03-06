@@ -9,7 +9,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.towns.AbstractTownEvent;
+import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.CityEvent;
 import model.map.fixtures.towns.FortificationEvent;
 import model.map.fixtures.towns.Fortress;
@@ -106,7 +106,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	private AbstractTownEvent parseTown(final StartElement element,
+	private AbstractTown parseTown(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
@@ -115,7 +115,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		final TownSize size = TownSize.parseTownSize(getParameter(element, "size"));
 		final int dc = Integer.parseInt(getParameter(element, "dc")); // NOPMD
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
-		final AbstractTownEvent retval; // NOPMD
+		final AbstractTown retval; // NOPMD
 		if ("town".equals(element.getName().getLocalPart())) {
 			retval = new TownEvent(status, size, dc, name, id);
 		} else if ("city".equals(element.getName().getLocalPart())) {
@@ -170,8 +170,8 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	@Override
 	public void write(final Writer out, final ITownFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
-		if (obj instanceof AbstractTownEvent) {
-			writeAbstractTown(out, (AbstractTownEvent) obj);
+		if (obj instanceof AbstractTown) {
+			writeAbstractTown(out, (AbstractTown) obj);
 		} else if (obj instanceof Village) {
 			out.append("<village status=\"");
 			out.append(((Village) obj).status().toString());
@@ -209,7 +209,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @param obj the AbstractTownEvent to write
 	 * @throws IOException on I/O error
 	 */
-	private static void writeAbstractTown(final Writer out, final AbstractTownEvent obj)
+	private static void writeAbstractTown(final Writer out, final AbstractTown obj)
 			throws IOException {
 		if (obj instanceof FortificationEvent) {
 			out.append("<fortification ");

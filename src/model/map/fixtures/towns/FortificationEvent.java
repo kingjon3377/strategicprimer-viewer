@@ -10,7 +10,7 @@ package model.map.fixtures.towns;
  * @author Jonathan Lovelace
  *
  */
-public final class FortificationEvent extends AbstractTownEvent {
+public final class FortificationEvent extends AbstractTown {
 	/**
 	 * Version UID for serialization.
 	 */

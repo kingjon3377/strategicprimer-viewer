@@ -7,7 +7,7 @@ package model.map.fixtures.towns;
  * @author Jonathan Lovelace
  *
  */
-public final class CityEvent extends AbstractTownEvent {
+public final class CityEvent extends AbstractTown {
 	/**
 	 * Version UID for serialization.
 	 */
