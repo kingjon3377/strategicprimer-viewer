@@ -92,17 +92,6 @@ public class RiverFixture implements TileFixture,
 	public int hashCode() {
 		return 0;
 	}
-
-	/**
-	 * Update to match the rivers in another RiverFixture.
-	 *
-	 * @param source the fixture to update from
-	 */
-	public void update(final RiverFixture source) {
-		rivers.addAll(source.getRivers());
-		rivers.retainAll(source.getRivers());
-	}
-
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
