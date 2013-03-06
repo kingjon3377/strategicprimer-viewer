@@ -25,7 +25,7 @@ import model.map.fixtures.mobile.Unit;
  *
  */
 public class Fortress implements HasImage,
-		Subsettable<Fortress>, TownFixture, FixtureIterable<Unit> {
+		Subsettable<Fortress>, ITownFixture, FixtureIterable<Unit> {
 	/**
 	 * Version UID for serialization.
 	 */

@@ -14,7 +14,7 @@ import model.map.fixtures.towns.CityEvent;
 import model.map.fixtures.towns.FortificationEvent;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownEvent;
-import model.map.fixtures.towns.TownFixture;
+import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
@@ -30,7 +30,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTownReader extends AbstractCompactReader implements CompactReader<TownFixture> {
+public final class CompactTownReader extends AbstractCompactReader implements CompactReader<ITownFixture> {
 	/**
 	 * The 'name' parameter.
 	 */
@@ -64,12 +64,12 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public TownFixture read(final StartElement element,
+	public ITownFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city", "fortification");
 		// ESCA-JAVA0177:
-		final TownFixture retval; // NOPMD
+		final ITownFixture retval; // NOPMD
 		if ("village".equals(element.getName().getLocalPart())) {
 			retval = parseVillage(element, stream, warner, idFactory);
 		} else if ("fortress".equals(element.getName().getLocalPart())) {
@@ -168,7 +168,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TownFixture obj, final int indent) throws IOException {
+	public void write(final Writer out, final ITownFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof AbstractTownEvent) {
 			writeAbstractTown(out, (AbstractTownEvent) obj);

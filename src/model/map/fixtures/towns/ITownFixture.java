@@ -10,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public interface TownFixture extends TileFixture, HasName {
+public interface ITownFixture extends TileFixture, HasName {
 
 	/**
 	 * @return the name of the town, fortress, or city.

@@ -12,7 +12,7 @@ import model.map.TileFixture;
  */
 // ESCA-JAVA0011:
 public abstract class AbstractTownEvent implements
-		IEvent, HasImage, TownFixture {
+		IEvent, HasImage, ITownFixture {
 	/**
 	 * Constructor.
 	 *

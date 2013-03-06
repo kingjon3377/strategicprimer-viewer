@@ -10,7 +10,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Village implements TownFixture, HasImage {
+public class Village implements ITownFixture, HasImage {
 	/**
 	 * Version UID for serialization.
 	 */

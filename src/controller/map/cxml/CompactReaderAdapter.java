@@ -24,7 +24,7 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.resources.HarvestableFixture;
-import model.map.fixtures.towns.TownFixture;
+import model.map.fixtures.towns.ITownFixture;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -107,7 +107,7 @@ public final class CompactReaderAdapter {
 		final CompactReader<T> reader; // NOPMD
 		if (TerrainFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTerrainReader.READER;
-		} else if (TownFixture.class.isAssignableFrom(type)) {
+		} else if (ITownFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTownReader.READER;
 		} else if (HarvestableFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactResourceReader.READER;
