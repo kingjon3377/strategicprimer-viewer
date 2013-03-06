@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.events.IEvent;
@@ -64,10 +65,11 @@ public class LegacyTable implements EncounterTable {
 
 	/**
 	 * @param tile the tile in question
+	 * @param point the tile's location
 	 * @return the event on that tile
 	 */
 	@Override
-	public String generateEvent(final Tile tile) {
+	public String generateEvent(final Point point, final Tile tile) {
 		for (final TileFixture fix : tile) {
 			if (fix instanceof IEvent) {
 				return ((IEvent) fix).getText(); // NOPMD

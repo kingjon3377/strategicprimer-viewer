@@ -26,7 +26,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	/**
 	 * The current tile.
 	 */
-	private Tile tile = new Tile(-1, -1, TileType.NotVisible);
+	private Tile tile = new Tile(TileType.NotVisible);
 	/**
 	 * Constructor.
 	 *

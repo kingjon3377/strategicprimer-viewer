@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
 
@@ -19,20 +20,21 @@ import model.map.TileType;
 public class ExplorationRunner { // NOPMD
 	/**
 	 * @param tile a tile
+	 * @param point the tile's location
 	 *
 	 * @return what the owner of a fortress on the tile knows
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String defaultResults(final Tile tile) throws MissingTableException {
+	public String defaultResults(final Point point, final Tile tile) throws MissingTableException {
 		final StringBuilder sb = new StringBuilder(// NOPMD
 				"The primary rock type here is ");
-		sb.append(getPrimaryRock(tile));
+		sb.append(getPrimaryRock(point, tile));
 		sb.append(".\n");
 		if (TileType.BorealForest.equals(tile.getTerrain())
 				|| TileType.TemperateForest.equals(tile.getTerrain())) {
 			sb.append("The main kind of tree is ");
-			sb.append(getPrimaryTree(tile));
+			sb.append(getPrimaryTree(point, tile));
 			sb.append(".\n");
 		}
 		return sb.toString();
@@ -55,26 +57,28 @@ public class ExplorationRunner { // NOPMD
 
 	/**
 	 * @param tile a tile
+	 * @param point the location of the tile
 	 *
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
 	 */
-	public String getPrimaryRock(final Tile tile) throws MissingTableException {
-		return getTable("major_rock").generateEvent(tile);
+	public String getPrimaryRock(final Point point, final Tile tile) throws MissingTableException {
+		return getTable("major_rock").generateEvent(point, tile);
 	}
 
 	/**
 	 * @param tile a forest tile
+	 * @param point the location of the tile
 	 *
 	 * @return the main kind of tree on the tile
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String getPrimaryTree(final Tile tile) throws MissingTableException {
+	public String getPrimaryTree(final Point point, final Tile tile) throws MissingTableException {
 		if (TileType.BorealForest.equals(tile.getTerrain())) {
-			return getTable("boreal_major_tree").generateEvent(tile); // NOPMD
+			return getTable("boreal_major_tree").generateEvent(point, tile); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
-			return getTable("temperate_major_tree").generateEvent(tile);
+			return getTable("temperate_major_tree").generateEvent(point, tile);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
@@ -88,13 +92,14 @@ public class ExplorationRunner { // NOPMD
 	 *
 	 * @param table the name of the table to consult
 	 * @param tile the tile to refer to
+	 * @param point the location of the tile
 	 *
 	 * @return the result of the consultation
 	 * @throws MissingTableException if the table is missing
 	 */
-	public String consultTable(final String table, final Tile tile)
+	public String consultTable(final String table, final Point point, final Tile tile)
 			throws MissingTableException {
-		return getTable(table).generateEvent(tile);
+		return getTable(table).generateEvent(point, tile);
 	}
 
 	/**
@@ -123,13 +128,14 @@ public class ExplorationRunner { // NOPMD
 	 *
 	 * @param table the name of the table to consult
 	 * @param tile the tile to refer to
+	 * @param point the location of the tile
 	 *
 	 * @return the result of the consultation
 	 * @throws MissingTableException on missing table
 	 */
-	public String recursiveConsultTable(final String table, final Tile tile)
+	public String recursiveConsultTable(final String table, final Point point, final Tile tile)
 			throws MissingTableException {
-		String result = consultTable(table, tile);
+		String result = consultTable(table, point, tile);
 		if (result == null) {
 			throw new MissingTableException("Table " + table
 					+ " generated null result");
@@ -137,9 +143,9 @@ public class ExplorationRunner { // NOPMD
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
 			if (split.length < 3) {
-				result = split[0] + recursiveConsultTable(split[1], tile);
+				result = split[0] + recursiveConsultTable(split[1], point, tile);
 			} else {
-				result = split[0] + recursiveConsultTable(split[1], tile)
+				result = split[0] + recursiveConsultTable(split[1], point, tile)
 						+ split[2];
 			}
 		}

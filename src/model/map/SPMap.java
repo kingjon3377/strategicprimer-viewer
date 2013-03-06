@@ -41,9 +41,10 @@ public class SPMap implements IMap {
 	 * Add a tile to the map.
 	 *
 	 * @param tile the tile to add
+	 * @param point the point at which to add the tile
 	 */
-	public final void addTile(final Tile tile) {
-		tiles.addTile(tile);
+	public final void addTile(final Point point, final Tile tile) {
+		tiles.addTile(point, tile);
 	}
 
 	/**

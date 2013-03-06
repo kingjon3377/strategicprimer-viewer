@@ -31,10 +31,10 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor up.
 	 */
 	public void up() { // NOPMD
-		if (model.getSelectedTile().getLocation().row > 0) {
-			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row - 1, model.getSelectedTile()
-					.getLocation().col));
+		if (model.getSelectedPoint().row > 0) {
+			model.setSelection(PointFactory.point(
+					model.getSelectedPoint().row - 1,
+					model.getSelectedPoint().col));
 		}
 	}
 
@@ -42,10 +42,9 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor left.
 	 */
 	public void left() {
-		if (model.getSelectedTile().getLocation().col > 0) {
-			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row, model.getSelectedTile().getLocation()
-					.col - 1));
+		if (model.getSelectedPoint().col > 0) {
+			model.setSelection(PointFactory.point(model.getSelectedPoint().row,
+					model.getSelectedPoint().col - 1));
 		}
 	}
 
@@ -53,10 +52,10 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor down.
 	 */
 	public void down() {
-		if (model.getSelectedTile().getLocation().row < model.getMapDimensions().rows - 1) {
-			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row + 1, model.getSelectedTile()
-					.getLocation().col));
+		if (model.getSelectedPoint().row < model.getMapDimensions().rows - 1) {
+			model.setSelection(PointFactory.point(
+					model.getSelectedPoint().row + 1,
+					model.getSelectedPoint().col));
 		}
 	}
 
@@ -64,10 +63,9 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	 * Move the cursor right.
 	 */
 	public void right() {
-		if (model.getSelectedTile().getLocation().col < model.getMapDimensions().cols - 1) {
-			model.setSelection(PointFactory.point(model.getSelectedTile()
-					.getLocation().row, model.getSelectedTile().getLocation()
-					.col + 1));
+		if (model.getSelectedPoint().col < model.getMapDimensions().cols - 1) {
+			model.setSelection(PointFactory.point(model.getSelectedPoint().row,
+					model.getSelectedPoint().col + 1));
 		}
 	}
 

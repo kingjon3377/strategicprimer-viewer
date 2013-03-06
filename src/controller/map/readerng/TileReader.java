@@ -1,9 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.ReaderAdapter.checkedCast;
-import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
-import static java.lang.Integer.parseInt;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.Point;
 import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
@@ -46,8 +45,7 @@ public class TileReader implements INodeHandler<Tile> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Tile tile = new Tile(parseInt(getAttribute(element, "row")), // NOPMD
-				parseInt(getAttribute(element, "column")),
+		final Tile tile = new Tile(
 				TileType.getTileType(getAttributeWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
@@ -159,15 +157,24 @@ public class TileReader implements INodeHandler<Tile> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Tile obj) {
+		throw new IllegalStateException("Never call this; call writeTile() instead");
+	}
+	/**
+	 * Create an intermediate representation to write to a writer.
+	 * @param obj the Tile to write
+	 * @param point its location
+	 * @return an intermediate representation
+	 */
+	public SPIntermediateRepresentation writeTile(final Point point, final Tile obj) {
 		if (obj.isEmpty()) {
 			return new SPIntermediateRepresentation(""); // NOPMD
 		} else {
 			final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 					"tile");
 			retval.addAttribute("row",
-					Integer.toString(obj.getLocation().row));
+					Integer.toString(point.row));
 			retval.addAttribute("column",
-					Integer.toString(obj.getLocation().col));
+					Integer.toString(point.col));
 			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
@@ -179,7 +186,6 @@ public class TileReader implements INodeHandler<Tile> {
 			return retval;
 		}
 	}
-
 	/**
 	 * "Write" a TileFixture by creating its SPIR and attaching it to the proper parent.
 	 * @param fix the current fixture

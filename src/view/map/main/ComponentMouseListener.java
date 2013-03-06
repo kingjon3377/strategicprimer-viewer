@@ -39,7 +39,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 		super();
 		model = mapModel;
 		menu = new TerrainChangingMenu(model.getMapDimensions().version,
-				model.getSelectedTile(), list, model);
+				model.getMap().getTile(model.getSelectedPoint()), list, model);
 	}
 	/**
 	 * @param event an event representing the current mouse position

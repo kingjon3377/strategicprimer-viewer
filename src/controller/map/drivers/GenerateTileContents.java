@@ -90,20 +90,21 @@ public final class GenerateTileContents {
 	 */
 	public void generateTileContents(final Point point)
 			throws MissingTableException {
-		generateTileContents(map.getTile(point));
+		generateTileContents(point, map.getTile(point));
 	}
 
 	/**
 	 * Generate the contents of a tile.
 	 *
 	 * @param tile the tile
+	 * @param point the location of the tile
 	 * @throws MissingTableException if a missing table is referenced
 	 */
-	private void generateTileContents(final Tile tile)
+	private void generateTileContents(final Point point, final Tile tile)
 			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
-			println(runner.recursiveConsultTable("fisher", tile));
+			println(runner.recursiveConsultTable("fisher", point, tile));
 		}
 	}
 

@@ -35,6 +35,7 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.TownFixture;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import util.Pair;
 import controller.exploration.TableLoader;
 import controller.map.misc.IDFactory;
 
@@ -90,21 +91,22 @@ public class OneToTwoConverter { // NOPMD
 		for (final Player player : old.getPlayers()) {
 			retval.addPlayer(player);
 		}
-		final List<Tile> converted = new LinkedList<Tile>();
+		final List<Pair<Point, Tile>> converted = new LinkedList<Pair<Point, Tile>>();
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
-				for (final Tile tile : convertTile(
-						old.getTile(PointFactory.point(row, col)), main,
+				final Point point = PointFactory.point(row,  col);
+				for (final Pair<Point, Tile> pair : convertTile(
+						point, old.getTile(point), main,
 						idFactory)) {
-					retval.addTile(tile);
-					converted.add(tile);
+					retval.addTile(pair.first(), pair.second());
+					converted.add(pair);
 				}
 			}
 		}
 		final Random random = new Random(MAX_ITERATIONS);
 		Collections.shuffle(converted, random);
-		for (final Tile tile : converted) {
-			perturb(tile, retval, random, main, idFactory);
+		for (final Pair<Point, Tile> pair : converted) {
+			perturb(pair.first(), pair.second(), retval, random, main, idFactory);
 		}
 		return retval;
 	}
@@ -113,21 +115,24 @@ public class OneToTwoConverter { // NOPMD
 	 * Create the initial list of subtiles for a tile.
 	 *
 	 * @param tile the tile on the old map
+	 * @param point its location
 	 * @param main whether this is the main map or a player's map
 	 * @return the equivalent higher-resolution tiles, in initial form
 	 */
-	private List<Tile> createInitialSubtiles(final Tile tile, final boolean main) {
-		final List<Tile> initial = new LinkedList<Tile>();
+	private List<Pair<Point, Tile>> createInitialSubtiles(final Point point,
+			final Tile tile, final boolean main) {
+		final List<Pair<Point, Tile>> initial = new LinkedList<Pair<Point, Tile>>();
 		if (!tile.isEmpty()) {
 			for (int i = 0; i < SUBTILES_PER_TILE; i++) {
 				for (int j = 0; j < SUBTILES_PER_TILE; j++) {
-					final int row = tile.getLocation().row
+					final int row = point.row
 							* SUBTILES_PER_TILE + i;
-					final int col = tile.getLocation().col
+					final int col = point.col
 							* SUBTILES_PER_TILE + j;
-					final Tile subtile = new Tile(row, col, tile.getTerrain()); // NOPMD
-					initial.add(subtile);
-					convertSubtile(subtile, main);
+					final Point subpoint = PointFactory.point(row, col);
+					final Tile subtile = new Tile(tile.getTerrain()); // NOPMD
+					initial.add(Pair.of(subpoint, subtile));
+					convertSubtile(subpoint, subtile, main);
 				}
 			}
 		}
@@ -136,13 +141,14 @@ public class OneToTwoConverter { // NOPMD
 
 	/**
 	 * @param tile a tile on the old map
+	 * @param point its location
 	 * @param main whether this is the main map or a player's map
 	 * @param idFactory the IDFactory to use to get IDs.
 	 * @return the equivalent higher-resolution tiles.
 	 */
-	private List<Tile> convertTile(final Tile tile, final boolean main,
-			final IDFactory idFactory) {
-		final List<Tile> initial = createInitialSubtiles(tile, main);
+	private List<Pair<Point, Tile>> convertTile(final Point point, final Tile tile,
+			final boolean main, final IDFactory idFactory) {
+		final List<Pair<Point, Tile>> initial = createInitialSubtiles(point, tile, main);
 		if (!tile.isEmpty()) {
 			tile.addFixture(new Village(TownStatus.Active, "", idFactory
 					.createID()));
@@ -151,24 +157,24 @@ public class OneToTwoConverter { // NOPMD
 				fixtures.add(fixture);
 			}
 			separateRivers(tile, initial, fixtures);
-			final Random random = new Random(getSeed(tile));
+			final Random random = new Random(getSeed(point));
 			Collections.shuffle(initial, random);
 			Collections.shuffle(fixtures, random);
 			int iterations = 0;
 			while (iterations < MAX_ITERATIONS && !fixtures.isEmpty()) {
-				if (isSubtileSuitable(initial.get(0))) {
-					changeFor(initial.get(0), fixtures.get(0));
-					initial.get(0).addFixture(fixtures.remove(0));
+				if (isSubtileSuitable(initial.get(0).second())) {
+					changeFor(initial.get(0).second(), fixtures.get(0));
+					initial.get(0).second().addFixture(fixtures.remove(0));
 				}
 				initial.add(initial.remove(0));
 				iterations++;
 			}
 			if (iterations == MAX_ITERATIONS) {
 				LOGGER.severe("Maximum number of iterations reached on tile ("
-						+ tile.getLocation().row + ", "
-						+ tile.getLocation().col + "); forcing ...");
+						+ point.row + ", "
+						+ point.col + "); forcing ...");
 				while (!fixtures.isEmpty()) {
-					final Tile subtile = initial.get(0);
+					final Tile subtile = initial.get(0).second();
 					subtile.addFixture(fixtures.remove(0));
 					subtile.addFixture(new TextFixture(// NOPMD
 							"FIXME: A fixture here was force-added after MAX_ITER",
@@ -185,7 +191,8 @@ public class OneToTwoConverter { // NOPMD
 	 * @param initial the initial set of subtiles
 	 * @param fixtures the list of fixtures on the initial tile, to be parceled out among the subtiles
 	 */
-	private static void separateRivers(final Tile tile, final List<Tile> initial,
+	private static void separateRivers(final Tile tile,
+			final List<Pair<Point, Tile>> initial,
 			final List<TileFixture> fixtures) {
 		if (tile.hasRiver()) {
 			final RiverFixture rivers = tile.getRivers();
@@ -207,28 +214,29 @@ public class OneToTwoConverter { // NOPMD
 	 * the proper Ground.
 	 *
 	 * @param tile the tile to convert
+	 * @param point the location of the tile
 	 * @param main whether this is the main map or a player's map
 	 */
 	@SuppressWarnings("deprecation")
-	private void convertSubtile(final Tile tile, final boolean main) {
+	private void convertSubtile(final Point point, final Tile tile, final boolean main) {
 		try {
 			if (TileType.Mountain.equals(tile.getTerrain())) {
 				tile.setTerrain(TileType.Plains);
 				tile.addFixture(new Mountain());
 			} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
-					tile.addFixture(new Forest(runner.getPrimaryTree(tile),
+					tile.addFixture(new Forest(runner.getPrimaryTree(point, tile),
 							false));
 				}
 				tile.setTerrain(TileType.Plains);
 			} else if (TileType.BorealForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
-					tile.addFixture(new Forest(runner.getPrimaryTree(tile),
+					tile.addFixture(new Forest(runner.getPrimaryTree(point, tile),
 							false));
 				}
 				tile.setTerrain(TileType.Steppe);
 			}
-			addFixture(tile, new Ground(runner.getPrimaryRock(tile), false), main);
+			addFixture(tile, new Ground(runner.getPrimaryRock(point, tile), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing table", e);
 		}
@@ -279,6 +287,7 @@ public class OneToTwoConverter { // NOPMD
 	 * Possibly make a random change to a tile.
 	 *
 	 * @param tile the tile under consideration
+	 * @param point its location
 	 * @param map the map it's on, so we can consider adjacent tiles
 	 * @param random the source of randomness (so this is repeatable with
 	 *        players' maps)
@@ -286,17 +295,17 @@ public class OneToTwoConverter { // NOPMD
 	 *        main map)
 	 * @param idFactory the factory to use to create ID numbers
 	 */
-	private void perturb(final Tile tile, final IMap map, final Random random,
+	private void perturb(final Point point, final Tile tile, final IMap map, final Random random,
 			final boolean main, final IDFactory idFactory) {
 		if (!TileType.Ocean.equals(tile.getTerrain())) {
-			if (isAdjacentToTown(tile, map)
+			if (isAdjacentToTown(point, map)
 					&& random.nextDouble() < SIXTY_PERCENT) {
-				addFieldOrOrchard(random.nextBoolean(), tile, main, idFactory);
+				addFieldOrOrchard(random.nextBoolean(), point, tile, main, idFactory);
 			} else if (TileType.Desert.equals(tile.getTerrain())) {
-				final boolean watered = isAdjacentToWater(tile, map);
+				final boolean watered = isAdjacentToWater(point, map);
 				waterDesert(tile, random, watered);
 			} else if (random.nextDouble() < .1) {
-				addForest(tile, main);
+				addForest(point, tile, main);
 			}
 		}
 	}
@@ -322,24 +331,25 @@ public class OneToTwoConverter { // NOPMD
 	 *
 	 * @param field if true, a field; if false, an orchard.
 	 * @param tile the tile under consideration
+	 * @param point the location of the tile under consideration
 	 * @param main whether we should actually add the fixtures (i.e. is this the
 	 *        main map)
 	 * @param idFactory the factory to use to create ID numbers.
 	 */
-	private void addFieldOrOrchard(final boolean field, final Tile tile,
+	private void addFieldOrOrchard(final boolean field, final Point point, final Tile tile,
 			final boolean main, final IDFactory idFactory) {
 		try {
 			final int id = idFactory.createID(); // NOPMD
 			if (field) {
 				addFixture(
 						tile,
-						new Meadow(runner.recursiveConsultTable("grain", tile),
+						new Meadow(runner.recursiveConsultTable("grain", point, tile),
 								true, true, id, FieldStatus.random(id)), main);
 			} else {
 				addFixture(
 						tile,
 						new Grove(true, true, runner.recursiveConsultTable(
-								"fruit_trees", tile), id), main);
+								"fruit_trees", point, tile), id), main);
 			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
@@ -350,15 +360,16 @@ public class OneToTwoConverter { // NOPMD
 	 * Add a forest.
 	 *
 	 * @param tile the tile under consideration
+	 * @param point the location of the tile under consideration
 	 * @param main whether we should actually add the fixtures (i.e. is this the
 	 *        main map)
 	 */
-	private void addForest(final Tile tile, final boolean main) {
+	private void addForest(final Point point, final Tile tile, final boolean main) {
 		try {
 			addFixture(
 					tile,
 					new Forest(runner.recursiveConsultTable(
-							"temperate_major_tree", tile), false), main);
+							"temperate_major_tree", point, tile), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}
@@ -385,12 +396,12 @@ public class OneToTwoConverter { // NOPMD
 	 * shouldn't affect the caller at all; it should be as if it wasn't in the
 	 * Iterable.
 	 *
-	 * @param tile a tile
+	 * @param point the location of the tile
 	 * @return the locations of its neighbors.
 	 */
-	private static Iterable<Point> getNeighbors(final Tile tile) {
-		final int row = tile.getLocation().row;
-		final int col = tile.getLocation().col;
+	private static Iterable<Point> getNeighbors(final Point point) {
+		final int row = point.row;
+		final int col = point.col;
 		return Arrays.asList(PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),
@@ -402,13 +413,13 @@ public class OneToTwoConverter { // NOPMD
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param point the tile's location
 	 * @param map the map it's in
 	 * @return whether the tile is adjacent to a town.
 	 */
-	private static boolean isAdjacentToTown(final Tile tile, final IMap map) {
-		for (final Point point : getNeighbors(tile)) {
-			final Tile neighbor = map.getTile(point);
+	private static boolean isAdjacentToTown(final Point point, final IMap map) {
+		for (final Point npoint : getNeighbors(point)) {
+			final Tile neighbor = map.getTile(npoint);
 			for (final TileFixture fix : neighbor) {
 				if (fix instanceof Village || fix instanceof TownFixture) {
 					return true; // NOPMD
@@ -419,13 +430,13 @@ public class OneToTwoConverter { // NOPMD
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param point the location of the tile
 	 * @param map the map it's in
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
-	private static boolean isAdjacentToWater(final Tile tile, final IMap map) {
-		for (final Point point : getNeighbors(tile)) {
-			final Tile neighbor = map.getTile(point);
+	private static boolean isAdjacentToWater(final Point point, final IMap map) {
+		for (final Point npoint : getNeighbors(point)) {
+			final Tile neighbor = map.getTile(npoint);
 			if (!neighbor.hasRiver()
 					|| TileType.Ocean.equals(neighbor.getTerrain())) {
 				return true; // NOPMD
@@ -460,38 +471,39 @@ public class OneToTwoConverter { // NOPMD
 	 * @param tiles the subtiles to apply it to
 	 */
 	// ESCA-JAVA0076:
-	private static void addRiver(final River river, final List<Tile> tiles) {
-		if (SUBTILES_PER_TILE != optSubtilesPerTile()) {
+	private static void addRiver(final River river,
+			final List<Pair<Point, Tile>> tiles) {
+	if (SUBTILES_PER_TILE != optSubtilesPerTile()) {
 			throw new IllegalStateException(
 					"This function is tuned for 4 subtiles per tile per axis");
 		}
 		switch (river) {
 		case East:
-			tiles.get(10).addRiver(River.East);
-			tiles.get(11).addRiver(River.East);
-			tiles.get(11).addRiver(River.West);
+			tiles.get(10).second().addRiver(River.East);
+			tiles.get(11).second().addRiver(River.East);
+			tiles.get(11).second().addRiver(River.West);
 			break;
 		case Lake:
-			tiles.get(10).addRiver(River.Lake);
+			tiles.get(10).second().addRiver(River.Lake);
 			break;
 		case North:
-			tiles.get(2).addRiver(River.North);
-			tiles.get(2).addRiver(River.South);
-			tiles.get(6).addRiver(River.North);
-			tiles.get(6).addRiver(River.South);
-			tiles.get(10).addRiver(River.North);
+			tiles.get(2).second().addRiver(River.North);
+			tiles.get(2).second().addRiver(River.South);
+			tiles.get(6).second().addRiver(River.North);
+			tiles.get(6).second().addRiver(River.South);
+			tiles.get(10).second().addRiver(River.North);
 			break;
 		case South:
-			tiles.get(10).addRiver(River.South);
-			tiles.get(14).addRiver(River.South);
-			tiles.get(14).addRiver(River.North);
+			tiles.get(10).second().addRiver(River.South);
+			tiles.get(14).second().addRiver(River.South);
+			tiles.get(14).second().addRiver(River.North);
 			break;
 		case West:
-			tiles.get(8).addRiver(River.West);
-			tiles.get(8).addRiver(River.East);
-			tiles.get(9).addRiver(River.West);
-			tiles.get(9).addRiver(River.East);
-			tiles.get(10).addRiver(River.West);
+			tiles.get(8).second().addRiver(River.West);
+			tiles.get(8).second().addRiver(River.East);
+			tiles.get(9).second().addRiver(River.West);
+			tiles.get(9).second().addRiver(River.East);
+			tiles.get(10).second().addRiver(River.West);
 			break;
 		default:
 			throw new IllegalStateException("Unknown River");
@@ -499,12 +511,11 @@ public class OneToTwoConverter { // NOPMD
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param point the location of the tile
 	 * @return a seed for the RNG for conversion based on the given tile
 	 */
-	private static long getSeed(final Tile tile) {
-		return (long) (tile.getLocation().col) << 32L + tile.getLocation()
-				.row;
+	private static long getSeed(final Point point) {
+		return (long) (point.col) << 32L + point.row;
 	}
 	/**
 	 * @return a String representation of the object

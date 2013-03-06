@@ -4,7 +4,6 @@ import model.map.MapView;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
-import model.map.TileType;
 import model.misc.AbstractDriverModel;
 
 /**
@@ -30,9 +29,9 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	}
 
 	/**
-	 * The currently selected tile in the main map.
+	 * The currently selected point in the main map.
 	 */
-	private Tile selTile;
+	private Point selPoint;
 	/**
 	 * @param newMap the new map
 	 * @param name the filename the map was loaded from or should be saved to
@@ -47,24 +46,16 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 		resetZoom();
 	}
 	/**
-	 *
-	 * @return the currently selected tile
-	 */
-	@Override
-	public Tile getSelectedTile() {
-		return selTile;
-	}
-
-	/**
 	 * Set the new selected tiles, given coordinates.
 	 *
 	 * @param point the location of the new tile.
 	 */
 	@Override
 	public void setSelection(final Point point) {
-		final Tile oldSelection = selTile;
-		selTile = getMap().getTile(point);
-		firePropertyChange("tile", oldSelection, selTile);
+		final Point oldSel = selPoint;
+		selPoint = point;
+		firePropertyChange("point", oldSel, selPoint);
+		firePropertyChange("tile", getMap().getTile(oldSel), getMap().getTile(selPoint));
 	}
 	/**
 	 * @param point a tile's location
@@ -80,9 +71,10 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	 * Clear the selection.
 	 */
 	public void clearSelection() {
-		final Tile oldSelection = selTile;
-		selTile = new Tile(-1, -1, TileType.NotVisible);
-		firePropertyChange("tile", oldSelection, selTile);
+		final Point oldSel = selPoint;
+		selPoint = PointFactory.point(-1, -1);
+		firePropertyChange("point", oldSel, selPoint);
+		firePropertyChange("tile", getMap().getTile(oldSel), getMap().getTile(selPoint));
 	}
 
 	/**
@@ -166,5 +158,12 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 		zoomLevel = DEF_ZOOM_LEVEL;
 		firePropertyChange("tsize", Integer.valueOf(old),
 				Integer.valueOf(zoomLevel));
+	}
+	/**
+	 * @return the location of the currently selected tile
+	 */
+	@Override
+	public Point getSelectedPoint() {
+		return selPoint;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import model.map.Point;
 import model.map.Tile;
 import util.Pair;
 
@@ -79,12 +80,12 @@ public class QuadrantTable implements EncounterTable {
 
 	/**
 	 * @param tile a tile
+	 * @param point the location of the tile
 	 * @return what the table has for that tile
 	 */
 	@Override
-	public String generateEvent(final Tile tile) {
-		return getQuadrantValue(tile.getLocation().row, tile.getLocation()
-				.col);
+	public String generateEvent(final Point point, final Tile tile) {
+		return getQuadrantValue(point.row, point.col);
 	}
 
 	/**

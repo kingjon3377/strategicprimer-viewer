@@ -115,8 +115,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
 				final IMap map = pair.first();
 				if (map.getTile(dest).isEmpty()) {
-					map.getTiles().addTile(
-							new Tile(dest.row, dest.col, destTile.getTerrain())); // NOPMD
+					map.getTiles().addTile(dest,
+							new Tile(destTile.getTerrain())); // NOPMD
 				}
 			}
 			throw except;
@@ -138,8 +138,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			}
 			Tile dtile = map.getTile(dest);
 			if (dtile.isEmpty()) {
-				dtile = new Tile(dest.row, dest.col, destTile.getTerrain()); // NOPMD
-				map.getTiles().addTile(dtile);
+				dtile = new Tile(destTile.getTerrain()); // NOPMD
+				map.getTiles().addTile(dest, dtile);
 			}
 			stile.removeFixture(unit);
 			dtile.addFixture(unit);

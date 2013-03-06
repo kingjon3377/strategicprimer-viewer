@@ -10,6 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+import model.map.Point;
 import model.map.River;
 import model.map.Tile;
 import model.map.TileFixture;
@@ -52,8 +53,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	public Tile read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final Tile retval = new Tile(Integer.parseInt(getParameter(element, "row")),
-				Integer.parseInt(getParameter(element, "column")),
+		final Tile retval = new Tile(
 				TileType.getTileType(getParameterWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
@@ -154,12 +154,23 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 */
 	@Override
 	public void write(final Writer out, final Tile obj, final int indent) throws IOException {
+		throw new IllegalStateException("Don't call this; call writeTile() instead");
+	}
+	/**
+	 * Write a tile to a stream.
+	 * @param out the stream to write to
+	 * @param obj the tile to write
+	 * @param point the location of the tile
+	 * @param indent the current indentation level
+	 * @throws IOException on I/O error
+	 */
+	public void writeTile(final Writer out, final Point point, final Tile obj, final int indent) throws IOException {
 		if (!obj.isEmpty()) {
 			out.append(indent(indent));
 			out.append("<tile row=\"");
-			out.append(Integer.toString(obj.getLocation().row));
+			out.append(Integer.toString(point.row));
 			out.append("\" column=\"");
-			out.append(Integer.toString(obj.getLocation().col));
+			out.append(Integer.toString(point.col));
 			if (!TileType.NotVisible.equals(obj.getTerrain())) {
 				out.append("\" kind=\"");
 				out.append(obj.getTerrain().toXML());

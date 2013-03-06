@@ -2,6 +2,7 @@ package model.exploration.old;
 
 import java.util.Set;
 
+import model.map.Point;
 import model.map.Tile;
 
 /**
@@ -20,10 +21,11 @@ public interface EncounterTable {
 	 * from that table.
 	 *
 	 * @param tile a tile
+	 * @param point the location of the tile
 	 *
 	 * @return an appropriate event for that tile
 	 */
-	String generateEvent(final Tile tile);
+	String generateEvent(final Point point, final Tile tile);
 
 	/**
 	 * For table-debugging purposes.

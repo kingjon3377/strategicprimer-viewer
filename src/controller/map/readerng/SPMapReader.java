@@ -1,6 +1,7 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
+import static java.lang.Integer.parseInt;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
 import model.map.Tile;
@@ -99,7 +101,10 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			// We deliberately ignore "row"; that had been a "continue",
 			// but we want to extract this as a method.
 			if ("tile".equalsIgnoreCase(type)) {
-				map.addTile(TILE_READER.parse(elem, stream, map.getPlayers(),
+				final int row = parseInt(getAttribute(elem, "row"));
+				final int col = parseInt(getAttribute(elem, "column"));
+				final Point loc = PointFactory.point(row, col);
+				map.addTile(loc, TILE_READER.parse(elem, stream, map.getPlayers(),
 						warner, idFactory));
 			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 				warner.warn(new UnsupportedTagException(type, elem // NOPMD
@@ -157,10 +162,11 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(// NOPMD
 					"row", Pair.of("index", Integer.toString(i)));
 			for (int j = 0; j < dim.cols; j++) {
-				final Tile tile = obj.getTile(PointFactory.point(i, j));
+				final Point point = PointFactory.point(i, j);
+				final Tile tile = obj.getTile(point);
 				if (!tile.isEmpty()) {
 					retval.addChild(row);
-					row.addChild(ReaderAdapter.ADAPTER.write(tile));
+					row.addChild(TILE_READER.writeTile(point, tile));
 				}
 			}
 		}

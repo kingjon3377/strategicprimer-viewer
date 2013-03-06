@@ -11,7 +11,6 @@ import model.map.MapView;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
-import model.map.TileType;
 
 import org.junit.Test;
 
@@ -92,14 +91,6 @@ public class PointIteratorTest {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
 		/**
-		 * TODO: Replace this in the interface with getSelectedPoint().
-		 * @return a "tile at" the "selected tile" location passed in at creation
-		 */
-		@Override
-		public Tile getSelectedTile() {
-			return new Tile(selection.row, selection.col, TileType.NotVisible);
-		}
-		/**
 		 * @param point ignored
 		 */
 		@Override
@@ -162,6 +153,13 @@ public class PointIteratorTest {
 		@Override
 		public void resetZoom() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @return the selected point
+		 */
+		@Override
+		public Point getSelectedPoint() {
+			return selection;
 		}
 	}
 	/**

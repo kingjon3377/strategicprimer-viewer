@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A collection of tiles. This is a wrapper around the Map that had been used by
@@ -26,9 +27,10 @@ public final class TileCollection implements Iterable<Point>,
 	 * Add a Tile to the map.
 	 *
 	 * @param tile the tile to add.
+	 * @param point the point at which to add it
 	 */
-	public void addTile(final Tile tile) {
-		tiles.put(tile.getLocation(), tile);
+	public void addTile(final Point point, final Tile tile) {
+		tiles.put(point, tile);
 	}
 
 	/**
@@ -41,8 +43,7 @@ public final class TileCollection implements Iterable<Point>,
 	 */
 	public Tile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
-			tiles.put(point, new Tile(point.row, point.col,
-					TileType.NotVisible));
+			tiles.put(point, new Tile(TileType.NotVisible));
 		}
 		return tiles.get(point);
 	}
@@ -63,10 +64,23 @@ public final class TileCollection implements Iterable<Point>,
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this
-				|| (obj instanceof TileCollection && ((TileCollection) obj).tiles
-						.equals(tiles));
+				|| (obj instanceof TileCollection && withoutEmptyTiles(((TileCollection) obj).tiles)
+						.equals(withoutEmptyTiles(tiles)));
 	}
-
+	/**
+	 * @param mapping a point-tile mapping
+	 * @return an equivalent one without any empty tiles.
+	 */
+	private static Map<Point, Tile> withoutEmptyTiles(final Map<Point, Tile> mapping) {
+		final Map<Point, Tile> retval = new HashMap<Point, Tile>();
+		for (final Entry<Point, Tile> entry : mapping.entrySet()) {
+			final Tile tile = entry.getValue();
+			if (!tile.isEmpty()) {
+				retval.put(entry.getKey(), tile);
+			}
+		}
+		return retval;
+	}
 	/**
 	 *
 	 * @return a hash value for the object
@@ -98,7 +112,7 @@ public final class TileCollection implements Iterable<Point>,
 	public boolean isSubset(final TileCollection obj, final PrintStream out) {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
-			if (!tiles.containsKey(point)
+			if ((!tiles.containsKey(point) && !obj.getTile(point).isEmpty())
 					|| !tiles.get(point).isSubset(obj.getTile(point), out)) {
 				retval = false; // NOPMD
 			}

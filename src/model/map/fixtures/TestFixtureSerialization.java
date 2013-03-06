@@ -5,7 +5,11 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
+import model.map.MapDimensions;
 import model.map.Player;
+import model.map.Point;
+import model.map.PointFactory;
+import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
@@ -268,10 +272,13 @@ public final class TestFixtureSerialization extends
 				"two", true), Ground.class);
 		assertSerialization("Third test of Ground serialization", new Ground(
 				"three", false), Ground.class);
-		final Tile tile = new Tile(0, 0, TileType.Steppe);
+		final Point point = PointFactory.point(0, 0);
+		final Tile tile = new Tile(TileType.Steppe);
 		tile.addFixture(new Ground("four", true));
+		final SPMap map = new SPMap(new MapDimensions(1, 1, 2));
+		map.addTile(point, tile);
 		assertSerialization("Test that reader handles ground as a fixture",
-				tile, Tile.class);
+				map, SPMap.class);
 		assertUnwantedChild(
 				"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>",
 				Ground.class, false);

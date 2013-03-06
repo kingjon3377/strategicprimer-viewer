@@ -11,6 +11,7 @@ import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
 import model.map.Tile;
@@ -93,14 +94,17 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @throws SPFormatException on SP format problem
 	 */
-	private static void parseChild(final IteratorWrapper<XMLEvent> stream, final Warning warner,
+	private void parseChild(final IteratorWrapper<XMLEvent> stream, final Warning warner,
 			final SPMap map, final StartElement elem, final IDFactory idFactory) throws SPFormatException {
 		final String tag = elem.getName().getLocalPart();
 		if ("player".equalsIgnoreCase(tag)) {
 			map.addPlayer(CompactPlayerReader.READER.read(elem, stream,
 					map.getPlayers(), warner, idFactory));
 		} else if ("tile".equalsIgnoreCase(tag)) {
-			map.addTile(CompactTileReader.READER.read(elem, stream, map.getPlayers(), warner, idFactory));
+			final int row = Integer.parseInt(getParameter(elem, "row"));
+			final int col = Integer.parseInt(getParameter(elem, "column"));
+			final Point loc = PointFactory.point(row, col);
+			map.addTile(loc, CompactTileReader.READER.read(elem, stream, map.getPlayers(), warner, idFactory));
 		} else if (EqualsAny.equalsAny(tag, ISPReader.FUTURE)) {
 			warner.warn(new UnsupportedTagException(tag, elem.getLocation().getLineNumber()));
 		} else if (!"row".equalsIgnoreCase(tag)) {
@@ -196,7 +200,8 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 					out.append("\">\n");
 					rowEmpty = false;
 				}
-				CompactReaderAdapter.ADAPTER.write(out, obj.getTile(PointFactory.point(i, j)), indent + 2);
+				final Point point = PointFactory.point(i, j);
+				CompactTileReader.READER.writeTile(out, point, obj.getTile(point), indent + 2);
 			}
 			if (!rowEmpty) {
 				out.append(indent(indent + 1));

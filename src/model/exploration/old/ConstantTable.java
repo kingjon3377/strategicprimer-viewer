@@ -3,6 +3,7 @@ package model.exploration.old;
 import java.util.HashSet;
 import java.util.Set;
 
+import model.map.Point;
 import model.map.Tile;
 
 /**
@@ -35,10 +36,11 @@ public class ConstantTable implements EncounterTable {
 
 	/**
 	 * @param tile ignored
+	 * @param point ignored
 	 * @return our specified value.
 	 */
 	@Override
-	public String generateEvent(final Tile tile) {
+	public String generateEvent(final Point point, final Tile tile) {
 		return value;
 	}
 

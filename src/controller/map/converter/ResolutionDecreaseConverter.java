@@ -10,6 +10,7 @@ import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.SPMap;
@@ -44,7 +45,8 @@ public class ResolutionDecreaseConverter {
 				.getCurrentPlayer().getPlayerId(), 0);
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
-				retval.getMap().addTile(
+				final Point point = PointFactory.point(row, col);
+				retval.getMap().addTile(point,
 						convertTile(old.getTile(PointFactory.point(row * 2,
 								col * 2)), old.getTile(PointFactory.point(
 								row * 2, col * 2 + 1)), old
@@ -82,10 +84,9 @@ public class ResolutionDecreaseConverter {
 		final RiverFixture upperRightRivers = getRivers(upperRight);
 		final RiverFixture lowerLeftRivers = getRivers(lowerLeft);
 		final RiverFixture lowerRightRivers = getRivers(lowerRight);
-		final Tile retval = new Tile(upperLeft.getLocation().row / 2,
-				upperLeft.getLocation().col / 2, consensus(
-						upperLeft.getTerrain(), upperRight.getTerrain(),
-						lowerLeft.getTerrain(), lowerRight.getTerrain()));
+		final Tile retval = new Tile(consensus(upperLeft.getTerrain(),
+				upperRight.getTerrain(), lowerLeft.getTerrain(),
+				lowerRight.getTerrain()));
 		addAllFixtures(upperLeft, retval);
 		addAllFixtures(upperRight, retval);
 		addAllFixtures(lowerLeft, retval);

@@ -34,13 +34,10 @@ public final class Tile implements XMLWritable,
 	/**
 	 * Constructor.
 	 *
-	 * @param tileRow The row number
-	 * @param tileCol The column number
 	 * @param tileType The tile type
 	 */
-	public Tile(final int tileRow, final int tileCol, final TileType tileType) {
+	public Tile(final TileType tileType) {
 		super();
-		location = PointFactory.point(tileRow, tileCol);
 		type = tileType;
 		// Can't be an otherwise-preferable TreeSet because of Java bug
 		// #7030899: TreeSet ignores equals() entirely.
@@ -113,8 +110,6 @@ public final class Tile implements XMLWritable,
 	public boolean equals(final Object obj) {
 		return this == obj
 				|| ((obj instanceof Tile)
-						&& getLocation().equals(
-								((Tile) obj).getLocation())
 						&& getTerrain().equals(((Tile) obj).getTerrain()) && contents
 							.equals(((Tile) obj).contents));
 	}
@@ -125,7 +120,7 @@ public final class Tile implements XMLWritable,
 	 */
 	@Override
 	public int hashCode() {
-		return getLocation().hashCode() + getTerrain().ordinal() << 6;
+		return getTerrain().ordinal();
 	}
 
 	/**
@@ -134,9 +129,7 @@ public final class Tile implements XMLWritable,
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuilder = new StringBuilder(getLocation().toString());
-		sbuilder.append(": ");
-		sbuilder.append(getTerrain());
+		final StringBuilder sbuilder = new StringBuilder(getTerrain().toString());
 		sbuilder.append('.');
 		sbuilder.append(" Contents:");
 		for (final TileFixture fix : contents) {
@@ -214,8 +207,7 @@ public final class Tile implements XMLWritable,
 	 */
 	@Override
 	public boolean isSubset(final Tile obj, final PrintStream out) {
-		if (getLocation().equals(obj.getLocation())
-				&& getTerrain().equals(obj.getTerrain())) {
+		if (getTerrain().equals(obj.getTerrain())) {
 			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
 			temp.removeAll(contents);
 			final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
@@ -247,13 +239,14 @@ public final class Tile implements XMLWritable,
 			}
 			for (TileFixture fix : temp) {
 				retval = false;
-				out.print("\nExtra fixture in " + getLocation().toString()
-						+ ":\t");
+				// FIXME: Figure out some way to get the location here.
+				out.print("\nExtra fixture in a tile:\t");
 				out.print(fix.toString());
 			}
 			return retval; // NOPMD
 		} else {
-			out.println("Type of " + getLocation().toString() + " wrong");
+			// FIXME: Figure out some way to get the location here.
+			out.println("Type of a tile wrong");
 			return false;
 		}
 	}
@@ -265,18 +258,6 @@ public final class Tile implements XMLWritable,
 	public static boolean shouldSkip(final TileFixture fix) {
 		return fix instanceof CacheFixture || fix instanceof TextFixture
 				|| (fix instanceof Animal && ((Animal) fix).isTraces());
-	}
-
-	/**
-	 * The tile's location.
-	 */
-	private final Point location;
-
-	/**
-	 * @return the tile's location
-	 */
-	public Point getLocation() {
-		return location;
 	}
 
 	/**

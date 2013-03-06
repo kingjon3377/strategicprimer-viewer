@@ -13,13 +13,10 @@ import model.misc.IDriverModel;
  *
  */
 public interface IViewerModel extends IDriverModel {
-
 	/**
-	 *
-	 * @return the currently selected tile
+	 * @return the location of the currently selected tile.
 	 */
-	Tile getSelectedTile();
-
+	Point getSelectedPoint();
 	/**
 	 * Set the new selected tiles, given coordinates.
 	 *

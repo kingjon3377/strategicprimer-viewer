@@ -101,14 +101,11 @@ public class TestSubsets {
 	 */
 	@Test
 	public void testTileSubset() {
-		final Tile one = new Tile(0, 0, TileType.Steppe);
-		final Tile two = new Tile(0, 1, TileType.Steppe);
-		assertFalse("Subset tile must match in location", one.isSubset(two, BIT_BUCKET));
-		assertFalse("Subset tile must match in location", two.isSubset(one, BIT_BUCKET));
-		final Tile three = new Tile(0, 0, TileType.Desert);
+		final Tile one = new Tile(TileType.Steppe);
+		final Tile three = new Tile(TileType.Desert);
 		assertFalse("Subset tile must match in type", one.isSubset(three, BIT_BUCKET));
 		assertFalse("Subset tile must match in type", three.isSubset(one, BIT_BUCKET));
-		final Tile four = new Tile(0, 0, TileType.Steppe);
+		final Tile four = new Tile(TileType.Steppe);
 		assertTrue("Tile is subset of self", one.isSubset(one, BIT_BUCKET));
 		assertTrue("Tile is subset of equal tile", one.isSubset(four, BIT_BUCKET));
 		assertTrue("Tile is subset of equal tile", four.isSubset(one, BIT_BUCKET));
@@ -133,10 +130,12 @@ public class TestSubsets {
 	public void testTileCollectionSubset() {
 		final TileCollection zero = new TileCollection();
 		final TileCollection one = new TileCollection();
-		one.addTile(new Tile(0, 0, TileType.Jungle));
+		final Point pointOne = PointFactory.point(0, 0);
+		one.addTile(pointOne, new Tile(TileType.Jungle));
 		final TileCollection two = new TileCollection();
-		two.addTile(new Tile(0, 0, TileType.Jungle));
-		two.addTile(new Tile(1, 1, TileType.Ocean));
+		two.addTile(pointOne, new Tile(TileType.Jungle));
+		final Point pointTwo = PointFactory.point(1, 1);
+		two.addTile(pointTwo, new Tile(TileType.Ocean));
 		assertTrue("None is a subset of itself", zero.isSubset(zero, BIT_BUCKET));
 		assertTrue("None is a subset of one", one.isSubset(zero, BIT_BUCKET));
 		assertTrue("None is a subset of two", two.isSubset(zero, BIT_BUCKET));
@@ -146,7 +145,7 @@ public class TestSubsets {
 		assertFalse("TWo is not a subset of none", zero.isSubset(two, BIT_BUCKET));
 		assertFalse("Two is not a subset of one", one.isSubset(two, BIT_BUCKET));
 		assertTrue("Two is a subset of itself", two.isSubset(two, BIT_BUCKET));
-		one.addTile(new Tile(1, 1, TileType.Plains));
+		one.addTile(pointTwo, new Tile(TileType.Plains));
 		assertFalse("Corresponding but non-matching tile breaks subset", two.isSubset(one, BIT_BUCKET));
 		assertFalse("Corresponding but non-matching tile breaks subset", one.isSubset(two, BIT_BUCKET));
 	}

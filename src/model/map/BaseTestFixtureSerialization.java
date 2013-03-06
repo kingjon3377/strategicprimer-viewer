@@ -539,6 +539,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @param <T> the type of the object
 	 * @param obj an object
 	 * @return it, with its file set to "string"
+	 * FIXME: Drop this method entirely, as it's a no-op.
 	 */
 	public static <T extends XMLWritable> T setFileOnObject(final T obj) {
 		return obj;

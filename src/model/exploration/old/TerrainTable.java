@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
 import util.Pair;
@@ -37,10 +38,11 @@ public class TerrainTable implements EncounterTable {
 
 	/**
 	 * @param tile a tile
+	 * @param point the location of the tile
 	 * @return what the table has for that kind of tile.
 	 */
 	@Override
-	public String generateEvent(final Tile tile) {
+	public String generateEvent(final Point point, final Tile tile) {
 		return mapping.get(tile.getTerrain());
 	}
 

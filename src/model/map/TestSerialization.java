@@ -73,7 +73,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		}
 		return tile;
 	}
-
+	/**
+	 * @param tile a tile
+	 * @param point its location
+	 * @return a map containing the tile
+	 */
+	private static SPMap encapsulateTile(final Point point, final Tile tile) {
+		final SPMap retval = new SPMap(new MapDimensions(point.row + 1, point.col + 1, 2));
+		retval.addTile(point, tile);
+		return retval;
+	}
 	/**
 	 * Test River serialization.
 	 *
@@ -94,17 +103,21 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<tile row=\"1\" column=\"1\" kind=\"plains\"><river /></tile>",
 				Tile.class, "direction", false);
+		final Point point = PointFactory.point(0, 0);
 		assertSerialization(
 				"Second River serialization test, reflection",
-				addRivers(setFileOnObject(new Tile(0, 0, TileType.Plains)), River.East), Tile.class);
+				encapsulateTile(
+						point,
+						addRivers(setFileOnObject(new Tile(TileType.Plains)),
+								River.East)), SPMap.class);
 		assertSerialization(
 				"Third River serialization test, reflection",
-				addRivers(new Tile(0, 0, TileType.Plains),
-						River.Lake), Tile.class);
+				encapsulateTile(point, addRivers(new Tile(TileType.Plains),
+						River.Lake)), SPMap.class);
 		assertSerialization(
 				"Fourth River serialization test, reflection",
-				addRivers(new Tile(0, 0, TileType.Plains),
-						River.North), Tile.class);
+				encapsulateTile(point, addRivers(new Tile(TileType.Plains),
+						River.North)), SPMap.class);
 		final Set<River> setOne = EnumSet.noneOf(River.class);
 		final Set<River> setTwo = EnumSet.noneOf(River.class);
 		assertEquals("Empty sets are equal", setOne, setTwo);
@@ -126,28 +139,28 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Set<TileFixture> hsetTwo = new HashSet<TileFixture>();
 		hsetTwo.add(fixTwo);
 		assertEquals("Check Set.equals()", fixOne, fixTwo);
-		final Tile tone = new Tile(0, 0, TileType.Plains);
+		final Tile tone = new Tile(TileType.Plains);
 		tone.addFixture(fixOne);
-		final Tile ttwo = new Tile(0, 0, TileType.Plains);
+		final Tile ttwo = new Tile(TileType.Plains);
 		ttwo.addFixture(fixTwo);
 		assertEquals("Tile.equals(), RiverFixtures constructed separately",
 				tone, ttwo);
 		assertEquals(
 				"Make sure equals() works properly for rivers",
-				addRivers(new Tile(0, 0, TileType.Plains),
+				addRivers(new Tile(TileType.Plains),
 						River.North, River.South),
-				addRivers(new Tile(0, 0, TileType.Plains),
+				addRivers(new Tile(TileType.Plains),
 						River.North, River.South));
 		assertEquals(
 				"Make sure equals() works properly if rivers added in different order",
-				addRivers(new Tile(0, 0, TileType.Plains),
+				addRivers(new Tile(TileType.Plains),
 						River.North, River.South),
-				addRivers(new Tile(0, 0, TileType.Plains),
+				addRivers(new Tile(TileType.Plains),
 						River.South, River.North));
 		assertSerialization(
 				"Fifth River serialization test, reflection",
-				addRivers(new Tile(0, 0, TileType.Plains),
-						River.North, River.South), Tile.class);
+				encapsulateTile(point, addRivers(new Tile(TileType.Plains),
+						River.North, River.South)), SPMap.class);
 	}
 
 	/**
@@ -161,38 +174,38 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testTileSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("First Tile serialization test, reflection",
-				new Tile(0, 0, TileType.Desert), Tile.class);
-		final Tile two = new Tile(1, 1, TileType.Plains);
+				encapsulateTile(PointFactory.point(0, 0), new Tile(TileType.Desert)), SPMap.class);
+		final Tile two = new Tile(TileType.Plains);
 		two.addFixture(setFileOnObject(new Griffin(1)));
-		assertSerialization("Second Tile serialization test, reflection", two,
-				Tile.class);
-		final Tile three = new Tile(2, 2, TileType.Steppe);
+		assertSerialization("Second Tile serialization test, reflection", encapsulateTile(PointFactory.point(1, 1), two),
+				SPMap.class);
+		final Tile three = new Tile(TileType.Steppe);
 		three.addFixture(setFileOnObject(new Unit(setFileOnObject(new Player(1,
 				"")), "unitOne", "firstUnit", 1)));
 		three.addFixture(setFileOnObject(new Forest("forestKind", true)));
-		assertSerialization("Third Tile serialization test, reflection", three,
-				Tile.class);
-		final Tile four = new Tile(3, 3, TileType.Jungle);
+		assertSerialization("Third Tile serialization test, reflection", encapsulateTile(PointFactory.point(2, 2), three),
+				SPMap.class);
+		final Tile four = new Tile(TileType.Jungle);
 		final Fortress fort = setFileOnObject(new Fortress(new Player(2, ""), "fortOne", 1));
 		fort.addUnit(setFileOnObject(new Unit(new Player(2, ""),
 				"unitTwo", "secondUnit", 2)));
 		four.addFixture(fort);
 		four.addFixture(setFileOnObject(new TextFixture("Random text here", 5)));
 		four.addRiver(River.Lake);
-		assertSerialization("Fourth Tile serialization test, reflection", four,
-				Tile.class);
-		final Tile five = new Tile(4, 4, TileType.Plains);
+		assertSerialization("Fourth Tile serialization test, reflection", encapsulateTile(PointFactory.point(3, 3), four),
+				SPMap.class);
+		final SPMap five = encapsulateTile(PointFactory.point(4, 4), new Tile(TileType.Plains));
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
 				five,
 				createSerializedForm(five, true).replace("kind",
-						oldKindProperty), Tile.class, oldKindProperty);
+						oldKindProperty), SPMap.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
 				five,
 				createSerializedForm(five, false).replace("kind",
-						oldKindProperty), Tile.class, oldKindProperty);
+						oldKindProperty), SPMap.class, oldKindProperty);
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
 		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />", Tile.class,
@@ -202,31 +215,31 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild("<tile row=\"0\" column=\"0\" kind=\"plains\">"
 				+ "<tile row=\"1\" column=\"1\" kind=\"plains\" /></tile>",
 				Tile.class, false);
-		final Tile six = new Tile(2, 3, TileType.Jungle);
+		final Tile six = new Tile(TileType.Jungle);
 		six.addFixture(setFileOnObject(new Unit(
 				new Player(2, ""), "explorer", "name one", 1)));
 		six.addFixture(setFileOnObject(new Unit(
 				new Player(2, ""), "explorer", "name two", 2)));
 		assertEquals("Just checking ...", 2, iteratorSize(six));
-		assertSerialization("Multiple units should come through", six,
-				Tile.class);
-		final String xmlTwo = new StringBuilder(
-				"<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
-				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
-				.append("\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
-				.append("</tile>\n").toString();
+		assertSerialization("Multiple units should come through", encapsulateTile(PointFactory.point(2, 3), six),
+				SPMap.class);
+		final String xmlTwo = new StringBuilder("<map version=\"2\" rows=\"3\" columns=\"4\">\n").append("\t<row index=\"2\">\n")
+				.append("\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
+				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
+				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
+				.append("\t\t</tile>\n").append("\t</row>\n</map>\n").toString();
 		assertEquals("Multiple units should come through", xmlTwo,
-				createSerializedForm(six, true));
+				createSerializedForm(encapsulateTile(PointFactory.point(2, 3), six), true));
 		assertEquals("Multiple units should come through", xmlTwo,
-				createSerializedForm(six, false));
+				createSerializedForm(encapsulateTile(PointFactory.point(2, 3), six), false));
 		assertEquals(
 				"Shouldn't print empty not-visible tiles",
-				"",
-				createSerializedForm(new Tile(0, 0, TileType.NotVisible), true));
+				"<map version=\"2\" rows=\"1\" columns=\"1\" />\n",
+				createSerializedForm(encapsulateTile(PointFactory.point(0, 0), new Tile(TileType.NotVisible)), true));
 		assertEquals(
 				"Shouldn't print empty not-visible tiles",
-				"",
-				createSerializedForm(new Tile(0, 0, TileType.NotVisible), false));
+				"<map version=\"2\" rows=\"1\" columns=\"1\">\n</map>\n",
+				createSerializedForm(encapsulateTile(PointFactory.point(0, 0), new Tile(TileType.NotVisible)), false));
 	}
 
 	/**
@@ -268,7 +281,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final SPMap one = new SPMap(new MapDimensions(1, 1, 2));
 		one.addPlayer(setFileOnObject(new Player(1, "playerOne")));
 		one.getPlayers().getPlayer(1).setCurrent(true);
-		one.addTile(setFileOnObject(new Tile(0, 0, TileType.Plains)));
+		final Point point = PointFactory.point(0, 0);
+		one.addTile(point, setFileOnObject(new Tile(TileType.Plains)));
 		assertSerialization("Simple Map serialization", one, SPMap.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
 				SPMap.class, "rows", false);
@@ -288,7 +302,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final SPMap mOne = setFileOnObject(new SPMap(new MapDimensions(1, 1, 2)));
 		mOne.addPlayer(setFileOnObject(new Player(1, "playerOne")));
-		mOne.addTile(setFileOnObject(new Tile(0, 0, TileType.Steppe)));
+		final Point point = PointFactory.point(0, 0);
+		mOne.addTile(point, setFileOnObject(new Tile(TileType.Steppe)));
 		final MapView one = setFileOnObject(new MapView(mOne, 1, 0));
 		assertSerialization("MapView serialization", one, MapView.class);
 		assertMissingProperty(
@@ -338,24 +353,28 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testConversion() {
 		final SPMap start = new SPMap(new MapDimensions(2, 2, 2));
-		final Tile tileOne = new Tile(0, 0, TileType.Steppe);
+		final Point pointOne = PointFactory.point(0, 0);
+		final Tile tileOne = new Tile(TileType.Steppe);
 		final Animal fixture = new Animal("animal", false, true,
 				"domesticated", 1);
 		tileOne.addFixture(fixture);
-		start.addTile(tileOne);
-		final Tile tileTwo = new Tile(0, 1, TileType.Ocean);
+		start.addTile(pointOne, tileOne);
+		final Point pointTwo = PointFactory.point(0, 1);
+		final Tile tileTwo = new Tile(TileType.Ocean);
 		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
 				2);
 		tileTwo.addFixture(fixtureTwo);
-		start.addTile(tileTwo);
-		final Tile tileThree = new Tile(1, 0, TileType.Plains);
+		start.addTile(pointTwo, tileTwo);
+		final Point pointThree = PointFactory.point(1, 0);
+		final Tile tileThree = new Tile(TileType.Plains);
 		final Unit fixtureThree = new Unit(new Player(0, "A. Player"), "legion", "eagles", 3);
 		tileThree.addFixture(fixtureThree);
-		start.addTile(tileThree);
-		final Tile tileFour = new Tile(1, 1, TileType.Jungle);
+		start.addTile(pointThree, tileThree);
+		final Point pointFour = PointFactory.point(1, 1);
+		final Tile tileFour = new Tile(TileType.Jungle);
 		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4);
 		tileFour.addFixture(fixtureFour);
-		start.addTile(tileFour);
+		start.addTile(pointFour, tileFour);
 		final ResolutionDecreaseConverter converter = new ResolutionDecreaseConverter();
 		final MapView converted = converter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
