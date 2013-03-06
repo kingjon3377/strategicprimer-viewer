@@ -12,7 +12,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.towns.TownEvent;
+import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import util.Warning;
@@ -26,7 +26,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class TownReader implements INodeHandler<TownEvent> {
+public class TownReader implements INodeHandler<Town> {
 	/**
 	 * Parse a town.
 	 *
@@ -40,13 +40,13 @@ public class TownReader implements INodeHandler<TownEvent> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public TownEvent parse(final StartElement element,
+	public Town parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final TownEvent fix = new TownEvent(
+		final Town fix = new Town(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				TownSize.parseTownSize(XMLHelper.getAttribute(element, "size")),
 				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
@@ -70,7 +70,7 @@ public class TownReader implements INodeHandler<TownEvent> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public SPIntermediateRepresentation write(final TownEvent obj) {
+	public SPIntermediateRepresentation write(final Town obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"town");
 		retval.addAttribute("status", obj.status().toString());
@@ -87,8 +87,8 @@ public class TownReader implements INodeHandler<TownEvent> {
 	 * @return the class we can write
 	 */
 	@Override
-	public Class<TownEvent> writes() {
-		return TownEvent.class;
+	public Class<Town> writes() {
+		return Town.class;
 	}
 	/**
 	 * @return a String representation of the object

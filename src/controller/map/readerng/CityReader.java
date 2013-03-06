@@ -12,7 +12,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.towns.CityEvent;
+import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import util.Warning;
@@ -26,7 +26,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class CityReader implements INodeHandler<CityEvent> {
+public class CityReader implements INodeHandler<City> {
 	/**
 	 * Parse a city.
 	 *
@@ -40,13 +40,13 @@ public class CityReader implements INodeHandler<CityEvent> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public CityEvent parse(final StartElement element,
+	public City parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final CityEvent fix = new CityEvent(
+		final City fix = new City(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				TownSize.parseTownSize(XMLHelper.getAttribute(element, "size")),
 				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
@@ -67,8 +67,8 @@ public class CityReader implements INodeHandler<CityEvent> {
 	 * @return the class we know how to read
 	 */
 	@Override
-	public Class<CityEvent> writes() {
-		return CityEvent.class;
+	public Class<City> writes() {
+		return City.class;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class CityReader implements INodeHandler<CityEvent> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public SPIntermediateRepresentation write(final CityEvent obj) {
+	public SPIntermediateRepresentation write(final City obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"city");
 		retval.addAttribute("status", obj.status().toString());

@@ -12,7 +12,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.towns.FortificationEvent;
+import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import util.Warning;
@@ -26,7 +26,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class FortificationReader implements INodeHandler<FortificationEvent> {
+public class FortificationReader implements INodeHandler<Fortification> {
 	/**
 	 * Parse a city.
 	 *
@@ -40,13 +40,13 @@ public class FortificationReader implements INodeHandler<FortificationEvent> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public FortificationEvent parse(final StartElement element,
+	public Fortification parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final FortificationEvent fix = new FortificationEvent(
+		final Fortification fix = new Fortification(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				TownSize.parseTownSize(XMLHelper.getAttribute(element, "size")),
 				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
@@ -67,8 +67,8 @@ public class FortificationReader implements INodeHandler<FortificationEvent> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<FortificationEvent> writes() {
-		return FortificationEvent.class;
+	public Class<Fortification> writes() {
+		return Fortification.class;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class FortificationReader implements INodeHandler<FortificationEvent> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public SPIntermediateRepresentation write(final FortificationEvent obj) {
+	public SPIntermediateRepresentation write(final Fortification obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"fortification");
 		retval.addAttribute("status", obj.status().toString());

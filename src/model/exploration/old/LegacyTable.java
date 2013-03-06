@@ -15,9 +15,9 @@ import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.MineralKind;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
-import model.map.fixtures.towns.CityEvent;
-import model.map.fixtures.towns.FortificationEvent;
-import model.map.fixtures.towns.TownEvent;
+import model.map.fixtures.towns.City;
+import model.map.fixtures.towns.Fortification;
+import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 
@@ -48,9 +48,9 @@ public class LegacyTable implements EncounterTable {
 		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
-				addData(new CityEvent(status, size, 0, "", 0)); // NOPMD
-				addData(new FortificationEvent(status, size, 0, "", 0)); // NOPMD
-				addData(new TownEvent(status, size, 0, "", 0)); // NOPMD
+				addData(new City(status, size, 0, "", 0)); // NOPMD
+				addData(new Fortification(status, size, 0, "", 0)); // NOPMD
+				addData(new Town(status, size, 0, "", 0)); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {

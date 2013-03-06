@@ -10,7 +10,7 @@ package model.map.fixtures.towns;
  * @author Jonathan Lovelace
  *
  */
-public final class FortificationEvent extends AbstractTown {
+public final class Fortification extends AbstractTown {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -24,7 +24,7 @@ public final class FortificationEvent extends AbstractTown {
 	 * @param tName the name of the town, fortress, or city
 	 * @param idNum the ID number.
 	 */
-	public FortificationEvent(final TownStatus tStatus, final TownSize tSize,
+	public Fortification(final TownStatus tStatus, final TownSize tSize,
 			final int discdc, final String tName, final int idNum) {
 		super(TownKind.Fortification, tStatus, tSize, tName);
 		dc = discdc;

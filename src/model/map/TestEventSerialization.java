@@ -9,9 +9,9 @@ import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
-import model.map.fixtures.towns.CityEvent;
-import model.map.fixtures.towns.FortificationEvent;
-import model.map.fixtures.towns.TownEvent;
+import model.map.fixtures.towns.City;
+import model.map.fixtures.towns.Fortification;
+import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 
@@ -77,30 +77,30 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"First CityEvent serialization test, reflection, status "
-								+ status + ", size " + size, new CityEvent(// NOPMD
-								status, size, 10, "oneCity", 0), CityEvent.class);
+								+ status + ", size " + size, new City(// NOPMD
+								status, size, 10, "oneCity", 0), City.class);
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"Second CityEvent serialization test, reflection, status "
-								+ status + ", size " + size, new CityEvent(// NOPMD
-								status, size, 40, "twoCity", 1), CityEvent.class);
+								+ status + ", size " + size, new City(// NOPMD
+								status, size, 40, "twoCity", 1), City.class);
 			}
 		}
-		final CityEvent three = new CityEvent(TownStatus.Active,
+		final City three = new City(TownStatus.Active,
 				TownSize.Small, 30, "", 3);
 		assertSerialization(
 				"Serialization of CityEvent without a name, reflection", three,
-				CityEvent.class, new Warning(Warning.Action.Ignore));
+				City.class, new Warning(Warning.Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true),
-				CityEvent.class, NAME_PROPERTY, true);
+				City.class, NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false),
-				CityEvent.class, NAME_PROPERTY, true);
+				City.class, NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
-				CityEvent.class, "id", true);
+				City.class, "id", true);
 		assertUnwantedChild(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></city>",
-				CityEvent.class, false);
+				City.class, false);
 	}
 
 	/**
@@ -118,32 +118,32 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				assertSerialization(
 						"First FortificationEvent serialization test, reflection, status "
 								+ status + ", size " + size,
-						new FortificationEvent(status, size, 10, "one", 1), // NOPMD
-						FortificationEvent.class);
+						new Fortification(status, size, 10, "one", 1), // NOPMD
+						Fortification.class);
 				assertSerialization(
 						"Second FortificationEvent serialization test, reflection, status "
 								+ status + " and size " + size,
-						new FortificationEvent(status, size, 40, "two", 2), // NOPMD
-						FortificationEvent.class);
+						new Fortification(status, size, 40, "two", 2), // NOPMD
+						Fortification.class);
 			}
 		}
-		final FortificationEvent three = new FortificationEvent(
+		final Fortification three = new Fortification(
 				TownStatus.Active, TownSize.Small, 30, "", 3);
 		assertSerialization(
 				"Serialization of FortificationEvent without a name, reflection",
-				three, FortificationEvent.class, new Warning(
+				three, Fortification.class, new Warning(
 						Warning.Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true),
-				FortificationEvent.class, NAME_PROPERTY, true);
+				Fortification.class, NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false),
-				FortificationEvent.class, NAME_PROPERTY, true);
+				Fortification.class, NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
-				FortificationEvent.class, "id", true);
+				Fortification.class, "id", true);
 		assertUnwantedChild(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
 						+ "<troll /></fortification>",
-				FortificationEvent.class, false);
+				Fortification.class, false);
 	}
 
 	/**
@@ -241,35 +241,35 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			for (final TownSize size : TownSize.values()) {
 				assertSerialization(
 						"First TownEvent serialization test, reflection, status "
-								+ status + " and size " + size, new TownEvent(// NOPMD
-								status, size, 10, "one", 1), TownEvent.class);
+								+ status + " and size " + size, new Town(// NOPMD
+								status, size, 10, "one", 1), Town.class);
 				assertSerialization(
 						"Second TownEvent serialization test, reflection, status "
-								+ status + " and size " + size, new TownEvent(// NOPMD
-								status, size, 40, "two", 2), TownEvent.class);
+								+ status + " and size " + size, new Town(// NOPMD
+								status, size, 40, "two", 2), Town.class);
 			}
 		}
-		final TownEvent three = new TownEvent(TownStatus.Active,
+		final Town three = new Town(TownStatus.Active,
 				TownSize.Small, 30, "", 3);
 		assertSerialization(
 				"Serialization of TownEvent without a name, reflection", three,
-				TownEvent.class, new Warning(Warning.Action.Ignore));
+				Town.class, new Warning(Warning.Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true),
-				TownEvent.class, NAME_PROPERTY, true);
+				Town.class, NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false),
-				TownEvent.class, NAME_PROPERTY, true);
+				Town.class, NAME_PROPERTY, true);
 		assertMissingProperty("<town status=\"active\" size=\"small\"/>",
-				TownEvent.class, "dc", false);
+				Town.class, "dc", false);
 		assertMissingProperty("<town dc=\"0\" status=\"active\" />",
-				TownEvent.class, "size", false);
+				Town.class, "size", false);
 		assertMissingProperty("<town dc=\"0\" size=\"small\" />",
-				TownEvent.class, STATUS_PROPERTY, false);
+				Town.class, STATUS_PROPERTY, false);
 		assertMissingProperty(
 				"<town dc=\"0\" size=\"small\" status=\"active\" name=\"name\" />",
-				TownEvent.class, "id", true);
+				Town.class, "id", true);
 		assertUnwantedChild(
 				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></town>",
-				TownEvent.class, false);
+				Town.class, false);
 	}
 	/**
 	 * First test of serialization of BattlefieldEvents.

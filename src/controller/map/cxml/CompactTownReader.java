@@ -10,10 +10,10 @@ import model.map.IEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
-import model.map.fixtures.towns.CityEvent;
-import model.map.fixtures.towns.FortificationEvent;
+import model.map.fixtures.towns.City;
+import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
-import model.map.fixtures.towns.TownEvent;
+import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
@@ -117,11 +117,11 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		final AbstractTown retval; // NOPMD
 		if ("town".equals(element.getName().getLocalPart())) {
-			retval = new TownEvent(status, size, dc, name, id);
+			retval = new Town(status, size, dc, name, id);
 		} else if ("city".equals(element.getName().getLocalPart())) {
-			retval = new CityEvent(status, size, dc, name, id);
+			retval = new City(status, size, dc, name, id);
 		} else {
-			retval = new FortificationEvent(status, size, dc, name, id);
+			retval = new Fortification(status, size, dc, name, id);
 		}
 		spinUntilEnd(element.getName(), stream);
 		return retval;
@@ -211,11 +211,11 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 */
 	private static void writeAbstractTown(final Writer out, final AbstractTown obj)
 			throws IOException {
-		if (obj instanceof FortificationEvent) {
+		if (obj instanceof Fortification) {
 			out.append("<fortification ");
-		} else if (obj instanceof TownEvent) {
+		} else if (obj instanceof Town) {
 			out.append("<town ");
-		} else if (obj instanceof CityEvent) {
+		} else if (obj instanceof City) {
 			out.append("<city ");
 		} else {
 			throw new IllegalStateException("Unknown AbstractTownEvent type");

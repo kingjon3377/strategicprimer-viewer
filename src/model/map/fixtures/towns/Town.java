@@ -2,12 +2,12 @@ package model.map.fixtures.towns;
 
 
 /**
- * An abandoned, ruined, or burned-out city.
+ * An abandoned, ruined, or burned-out town.
  *
  * @author Jonathan Lovelace
  *
  */
-public final class CityEvent extends AbstractTown {
+public final class Town extends AbstractTown {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -15,21 +15,21 @@ public final class CityEvent extends AbstractTown {
 	/**
 	 * Constructor.
 	 *
-	 * @param tStatus The status of the city
-	 * @param tSize The size of the city
+	 * @param tStatus The status of the town
+	 * @param tSize The size of the town
 	 * @param discdc The DC to discover it.
 	 * @param tName the name of the town, fortress, or city
 	 * @param idNum the ID number.
 	 */
-	public CityEvent(final TownStatus tStatus, final TownSize tSize,
+	public Town(final TownStatus tStatus, final TownSize tSize,
 			final int discdc, final String tName, final int idNum) {
-		super(TownKind.City, tStatus, tSize, tName);
+		super(TownKind.Town, tStatus, tSize, tName);
 		dc = discdc;
 		id = idNum;
 	}
 
 	/**
-	 * The DC to discover the city. TODO: Should perhaps be mutable.
+	 * The DC to discover the town. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
 
