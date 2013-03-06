@@ -11,7 +11,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class CaveEvent implements IEvent,
+public final class Cave implements IEvent,
 		HasImage, HarvestableFixture {
 	/**
 	 * Version UID for serialization.
@@ -23,7 +23,7 @@ public final class CaveEvent implements IEvent,
 	 * @param discdc the DC to discover the caves
 	 * @param idNum the ID number for the event.
 	 */
-	public CaveEvent(final int discdc, final int idNum) {
+	public Cave(final int discdc, final int idNum) {
 		super();
 		dc = discdc;
 		id = idNum;
@@ -60,7 +60,7 @@ public final class CaveEvent implements IEvent,
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof CaveEvent && ((TileFixture) obj).getID() == id);
+				|| (obj instanceof Cave && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public final class CaveEvent implements IEvent,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof CaveEvent;
+		return fix instanceof Cave;
 	}
 
 	/**

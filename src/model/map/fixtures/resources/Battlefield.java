@@ -10,7 +10,7 @@ import model.map.TileFixture;
  *
  * @author Jonathan Lovelace
  */
-public final class BattlefieldEvent implements IEvent,
+public final class Battlefield implements IEvent,
 		HasImage, HarvestableFixture {
 	/**
 	 * Version UID for serialization.
@@ -27,7 +27,7 @@ public final class BattlefieldEvent implements IEvent,
 	 * @param discdc the DC to discover the battlefield.
 	 * @param idNum the ID number for the event.
 	 */
-	public BattlefieldEvent(final int discdc, final int idNum) {
+	public Battlefield(final int discdc, final int idNum) {
 		super();
 		dc = discdc;
 		id = idNum;
@@ -65,7 +65,7 @@ public final class BattlefieldEvent implements IEvent,
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof BattlefieldEvent && ((TileFixture) obj)
+				|| (obj instanceof Battlefield && ((TileFixture) obj)
 						.getID() == id);
 	}
 
@@ -119,7 +119,7 @@ public final class BattlefieldEvent implements IEvent,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof BattlefieldEvent;
+		return fix instanceof Battlefield;
 	}
 
 	/**

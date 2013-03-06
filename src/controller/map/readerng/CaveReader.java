@@ -10,7 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.resources.CaveEvent;
+import model.map.fixtures.resources.Cave;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -23,7 +23,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class CaveReader implements INodeHandler<CaveEvent> {
+public class CaveReader implements INodeHandler<Cave> {
 	/**
 	 * Parse a cave.
 	 *
@@ -37,12 +37,12 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public CaveEvent parse(final StartElement element,
+	public Cave parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final CaveEvent fix = new CaveEvent(Integer.parseInt(XMLHelper
+		final Cave fix = new Cave(Integer.parseInt(XMLHelper
 				.getAttribute(element, "dc")), getOrGenerateID(element, warner,
 				idFactory));
 		return fix;
@@ -58,8 +58,8 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<CaveEvent> writes() {
-		return CaveEvent.class;
+	public Class<Cave> writes() {
+		return Cave.class;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class CaveReader implements INodeHandler<CaveEvent> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public SPIntermediateRepresentation write(final CaveEvent obj) {
+	public SPIntermediateRepresentation write(final Cave obj) {
 		return new SPIntermediateRepresentation("cave", Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",
 				Long.toString(obj.getID())));

@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.fixtures.resources.BattlefieldEvent;
-import model.map.fixtures.resources.CaveEvent;
+import model.map.fixtures.resources.Battlefield;
+import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
@@ -52,14 +52,14 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			IOException {
 		// ESCA-JAVA0076:
 		assertSerialization("First CaveEvent serialization test, reflection",
-				new CaveEvent(10, 0), CaveEvent.class);
+				new Cave(10, 0), Cave.class);
 		assertSerialization(
 				"Second CaveEvent serialization test, reflection",
-				new CaveEvent(30, 1), CaveEvent.class);
+				new Cave(30, 1), Cave.class);
 		assertUnwantedChild("<cave dc=\"10\"><troll /></cave>",
-				CaveEvent.class, false);
-		assertMissingProperty("<cave />", CaveEvent.class, "dc", false);
-		assertMissingProperty("<cave dc=\"10\" />", CaveEvent.class, "id", true);
+				Cave.class, false);
+		assertMissingProperty("<cave />", Cave.class, "dc", false);
+		assertMissingProperty("<cave dc=\"10\" />", Cave.class, "id", true);
 	}
 
 	/**
@@ -281,15 +281,15 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testBattlefieldSerialization() throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First BattlefieldEvent serialization test",
-				new BattlefieldEvent(10, 0), BattlefieldEvent.class);
+				new Battlefield(10, 0), Battlefield.class);
 		assertSerialization("Second BattlefieldEvent serialization test",
-				new BattlefieldEvent(30, 1), BattlefieldEvent.class);
+				new Battlefield(30, 1), Battlefield.class);
 		assertUnwantedChild("<battlefield dc=\"10\"><troll /></battlefield>",
-				BattlefieldEvent.class, false);
-		assertMissingProperty("<battlefield />", BattlefieldEvent.class, "dc",
+				Battlefield.class, false);
+		assertMissingProperty("<battlefield />", Battlefield.class, "dc",
 				false);
 		assertMissingProperty("<battlefield dc=\"10\" />",
-				BattlefieldEvent.class, "id", true);
+				Battlefield.class, "id", true);
 	}
 
 	/**

@@ -9,8 +9,8 @@ import model.map.IEvent;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.fixtures.resources.BattlefieldEvent;
-import model.map.fixtures.resources.CaveEvent;
+import model.map.fixtures.resources.Battlefield;
+import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.MineralKind;
 import model.map.fixtures.resources.StoneDeposit;
@@ -44,8 +44,8 @@ public class LegacyTable implements EncounterTable {
 	 */
 	public LegacyTable() {
 		data = new ArrayList<String>();
-		addData(new BattlefieldEvent(0, -1));
-		addData(new CaveEvent(0, -1));
+		addData(new Battlefield(0, -1));
+		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				addData(new CityEvent(status, size, 0, "", 0)); // NOPMD

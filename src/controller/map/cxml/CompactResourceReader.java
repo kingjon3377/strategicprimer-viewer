@@ -12,9 +12,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IEvent;
 import model.map.PlayerCollection;
-import model.map.fixtures.resources.BattlefieldEvent;
+import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.resources.CaveEvent;
+import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.HarvestableFixture;
@@ -164,7 +164,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		final HarvestableFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case BattlefieldType:
-			retval = new BattlefieldEvent(getDC(element), getOrGenerateID(
+			retval = new Battlefield(getDC(element), getOrGenerateID(
 					element, warner, idFactory));
 			break;
 		case CacheType:
@@ -173,7 +173,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 							warner, idFactory));
 			break;
 		case CaveType:
-			retval = new CaveEvent(getDC(element), getOrGenerateID(element, warner, idFactory));
+			retval = new Cave(getDC(element), getOrGenerateID(element, warner, idFactory));
 			break;
 		case FieldType:
 			retval = createMeadow(element, true,
@@ -374,9 +374,9 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * @throws IOException on I/O error
 	 */
 	private static void writeSimpleEvent(final Writer out, final IEvent event) throws IOException {
-		if (event instanceof BattlefieldEvent) {
+		if (event instanceof Battlefield) {
 			out.append("<battlefield ");
-		} else if (event instanceof CaveEvent) {
+		} else if (event instanceof Cave) {
 			out.append("<cave ");
 		} else {
 			throw new IllegalStateException("Unhandled IEvent subtype");

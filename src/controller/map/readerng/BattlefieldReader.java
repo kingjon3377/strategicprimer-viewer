@@ -11,7 +11,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.resources.BattlefieldEvent;
+import model.map.fixtures.resources.Battlefield;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -24,7 +24,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
+public class BattlefieldReader implements INodeHandler<Battlefield> {
 	/**
 	 * Parse a battlefield.
 	 *
@@ -38,12 +38,12 @@ public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public BattlefieldEvent parse(final StartElement element,
+	public Battlefield parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final BattlefieldEvent fix = new BattlefieldEvent(
+		final Battlefield fix = new Battlefield(
 				Integer.parseInt(getAttribute(element, "dc")), getOrGenerateID(
 						element, warner, idFactory));
 		return fix;
@@ -59,8 +59,8 @@ public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<BattlefieldEvent> writes() {
-		return BattlefieldEvent.class;
+	public Class<Battlefield> writes() {
+		return Battlefield.class;
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class BattlefieldReader implements INodeHandler<BattlefieldEvent> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public SPIntermediateRepresentation write(final BattlefieldEvent obj) {
+	public SPIntermediateRepresentation write(final Battlefield obj) {
 		return new SPIntermediateRepresentation("battlefield", Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",
 				Long.toString(obj.getID())));
