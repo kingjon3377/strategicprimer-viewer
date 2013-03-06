@@ -91,9 +91,10 @@ public class ViewReader implements INodeHandler<MapView> {
 		}
 		throw new MissingChildException("map", line);
 	}
+
 	/**
-	 * Create an intermediate representation to write to a Writer. TODO:
-	 * changesets
+	 * Create an intermediate representation of the view to write to a Writer.
+	 * TODO: changesets
 	 *
 	 * @param <S> the type of the object
 	 * @param obj the object to write
