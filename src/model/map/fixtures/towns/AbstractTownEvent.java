@@ -1,9 +1,9 @@
 package model.map.fixtures.towns;
 
 import model.map.HasImage;
+import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 
 /**
  * An abstract superclass for towns etc.

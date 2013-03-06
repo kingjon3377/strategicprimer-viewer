@@ -2,9 +2,9 @@ package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 
 /**
  * A vein of a mineral.

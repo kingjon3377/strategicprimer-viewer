@@ -6,8 +6,8 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IEvent;
 import model.map.PlayerCollection;
-import model.map.events.IEvent;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTownEvent;
 import model.map.fixtures.towns.CityEvent;

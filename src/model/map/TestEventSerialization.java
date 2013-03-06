@@ -1,10 +1,9 @@
-package model.map.events;
+package model.map;
 
 import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.BaseTestFixtureSerialization;
 import model.map.fixtures.resources.BattlefieldEvent;
 import model.map.fixtures.resources.CaveEvent;
 import model.map.fixtures.resources.MineralEvent;

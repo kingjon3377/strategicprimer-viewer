@@ -10,8 +10,8 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IEvent;
 import model.map.PlayerCollection;
-import model.map.events.IEvent;
 import model.map.fixtures.resources.BattlefieldEvent;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.CaveEvent;

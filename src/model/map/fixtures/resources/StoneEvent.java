@@ -2,9 +2,9 @@ package model.map.fixtures.resources;
 
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 
 /**
  * A deposit (always exposed for now) of stone. TODO: Implement HasKind when stone() returns a String rather than an enumerated type

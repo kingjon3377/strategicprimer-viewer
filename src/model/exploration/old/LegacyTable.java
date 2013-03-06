@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import model.map.IEvent;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 import model.map.fixtures.resources.BattlefieldEvent;
 import model.map.fixtures.resources.CaveEvent;
 import model.map.fixtures.resources.MineralEvent;

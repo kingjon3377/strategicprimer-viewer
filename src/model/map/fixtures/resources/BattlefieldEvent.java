@@ -1,9 +1,9 @@
 package model.map.fixtures.resources;
 
 import model.map.HasImage;
+import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-import model.map.events.IEvent;
 
 /**
  * "There are the signs of a long-ago battle here".

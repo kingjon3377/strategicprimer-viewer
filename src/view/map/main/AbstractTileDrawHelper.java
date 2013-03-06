@@ -3,10 +3,10 @@ package view.map.main;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import model.map.IEvent;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.events.IEvent;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 
