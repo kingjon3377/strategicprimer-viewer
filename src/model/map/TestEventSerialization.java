@@ -6,8 +6,8 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.fixtures.resources.BattlefieldEvent;
 import model.map.fixtures.resources.CaveEvent;
-import model.map.fixtures.resources.MineralEvent;
-import model.map.fixtures.resources.StoneEvent;
+import model.map.fixtures.resources.MineralVein;
+import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.CityEvent;
 import model.map.fixtures.towns.FortificationEvent;
@@ -158,34 +158,34 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		assertSerialization(
 				"First MineralEvent serialization test, reflection",
-				new MineralEvent("one", true, 10, 1), MineralEvent.class);
-		final MineralEvent two = new MineralEvent("two", false, 35, 2);
+				new MineralVein("one", true, 10, 1), MineralVein.class);
+		final MineralVein two = new MineralVein("two", false, 35, 2);
 		assertSerialization(
 				"Second MineralEvent serialization test, reflection", two,
-				MineralEvent.class);
+				MineralVein.class);
 		final String oldKindProperty = "mineral"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom",
 				two,
 				createSerializedForm(two, true).replace(KIND_PROPERTY,
-						oldKindProperty), MineralEvent.class, oldKindProperty);
+						oldKindProperty), MineralVein.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom",
 				two,
 				createSerializedForm(two, false).replace(KIND_PROPERTY,
-						oldKindProperty), MineralEvent.class, oldKindProperty);
+						oldKindProperty), MineralVein.class, oldKindProperty);
 		assertUnwantedChild(
 				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
-				MineralEvent.class, false);
+				MineralVein.class, false);
 		assertMissingProperty("<mineral dc=\"0\" exposed=\"false\" />",
-				MineralEvent.class, KIND_PROPERTY, false);
+				MineralVein.class, KIND_PROPERTY, false);
 		assertMissingProperty("<mineral kind=\"gold\" exposed=\"false\" />",
-				MineralEvent.class, "dc", false);
+				MineralVein.class, "dc", false);
 		assertMissingProperty("<mineral dc=\"0\" kind=\"gold\" />",
-				MineralEvent.class, "exposed", false);
+				MineralVein.class, "exposed", false);
 		assertMissingProperty(
 				"<mineral kind=\"kind\" exposed=\"true\" dc=\"0\" />",
-				MineralEvent.class, "id", true);
+				MineralVein.class, "id", true);
 	}
 
 	/**
@@ -200,31 +200,31 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		for (final StoneKind kind : StoneKind.values()) {
 			assertSerialization("First StoneEvent test, reflection, kind: "
-					+ kind, new StoneEvent(kind, 8, 1), StoneEvent.class); // NOPMD
+					+ kind, new StoneDeposit(kind, 8, 1), StoneDeposit.class); // NOPMD
 			assertSerialization("Second StoneEvent test, reflection, kind: "
-					+ kind, new StoneEvent(kind, 15, 2), StoneEvent.class); // NOPMD
+					+ kind, new StoneDeposit(kind, 15, 2), StoneDeposit.class); // NOPMD
 		}
-		final StoneEvent three = new StoneEvent(StoneKind.Marble, 10, 3);
+		final StoneDeposit three = new StoneDeposit(StoneKind.Marble, 10, 3);
 		final String oldKindProperty = "stone"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom",
 				three,
 				createSerializedForm(three, true).replace(KIND_PROPERTY,
-						oldKindProperty), StoneEvent.class, oldKindProperty);
+						oldKindProperty), StoneDeposit.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom",
 				three,
 				createSerializedForm(three, false).replace(KIND_PROPERTY,
-						oldKindProperty), StoneEvent.class, oldKindProperty);
+						oldKindProperty), StoneDeposit.class, oldKindProperty);
 		assertUnwantedChild(
 				"<stone kind=\"stone\" dc=\"10\"><troll /></stone>",
-				StoneEvent.class, false);
-		assertMissingProperty("<stone kind=\"stone\" />", StoneEvent.class,
+				StoneDeposit.class, false);
+		assertMissingProperty("<stone kind=\"stone\" />", StoneDeposit.class,
 				"dc", false);
-		assertMissingProperty("<stone dc=\"10\" />", StoneEvent.class,
+		assertMissingProperty("<stone dc=\"10\" />", StoneDeposit.class,
 				KIND_PROPERTY, false);
 		assertMissingProperty("<stone kind=\"kind\" dc=\"0\" />",
-				StoneEvent.class, "id", true);
+				StoneDeposit.class, "id", true);
 	}
 
 	/**

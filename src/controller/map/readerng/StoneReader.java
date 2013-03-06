@@ -10,7 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.resources.StoneEvent;
+import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import util.Pair;
 import util.Warning;
@@ -24,7 +24,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class StoneReader implements INodeHandler<StoneEvent> {
+public class StoneReader implements INodeHandler<StoneDeposit> {
 	/**
 	 * Parse a Stone.
 	 *
@@ -38,12 +38,12 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public StoneEvent parse(final StartElement element,
+	public StoneDeposit parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final StoneEvent fix = new StoneEvent(
+		final StoneDeposit fix = new StoneDeposit(
 				StoneKind.parseStoneKind(XMLHelper
 						.getAttributeWithDeprecatedForm(element, "kind",
 								"stone", warner)), Integer.parseInt(XMLHelper
@@ -64,8 +64,8 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 	 * @return The class we know how to write.
 	 */
 	@Override
-	public Class<StoneEvent> writes() {
-		return StoneEvent.class;
+	public Class<StoneDeposit> writes() {
+		return StoneDeposit.class;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class StoneReader implements INodeHandler<StoneEvent> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public SPIntermediateRepresentation write(final StoneEvent obj) {
+	public SPIntermediateRepresentation write(final StoneDeposit obj) {
 		return new SPIntermediateRepresentation("stone", Pair.of("kind", obj
 				.stone().toString()), Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",

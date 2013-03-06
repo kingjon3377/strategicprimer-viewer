@@ -12,7 +12,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class StoneEvent implements IEvent,
+public final class StoneDeposit implements IEvent,
 		HasImage, HarvestableFixture, HasKind {
 	/**
 	 * Version UID for serialization.
@@ -25,7 +25,7 @@ public final class StoneEvent implements IEvent,
 	 * @param discdc the dc to discover the stone.
 	 * @param idNum the ID number.
 	 */
-	public StoneEvent(final StoneKind skind, final int discdc, final int idNum) {
+	public StoneDeposit(final StoneKind skind, final int discdc, final int idNum) {
 		super();
 		stone = skind;
 		dc = discdc;
@@ -78,8 +78,8 @@ public final class StoneEvent implements IEvent,
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || obj instanceof StoneEvent
-				&& ((StoneEvent) obj).stone.equals(stone)
+		return this == obj || obj instanceof StoneDeposit
+				&& ((StoneDeposit) obj).stone.equals(stone)
 				&& ((TileFixture) obj).getID() == id;
 	}
 
@@ -147,7 +147,7 @@ public final class StoneEvent implements IEvent,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| (fix instanceof StoneEvent && ((StoneEvent) fix).stone
+				|| (fix instanceof StoneDeposit && ((StoneDeposit) fix).stone
 						.equals(stone));
 	}
 	/**

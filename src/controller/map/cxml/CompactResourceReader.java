@@ -20,9 +20,9 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Mine;
-import model.map.fixtures.resources.MineralEvent;
+import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
-import model.map.fixtures.resources.StoneEvent;
+import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
 import util.ArraySet;
@@ -198,7 +198,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 					getOrGenerateID(element, warner, idFactory));
 			break;
 		case MineralType:
-			retval = new MineralEvent(getParameterWithDeprecatedForm(
+			retval = new MineralVein(getParameterWithDeprecatedForm(
 					element, KIND_PARAM, "mineral", warner),
 					Boolean.parseBoolean(getParameter(element, "exposed")),
 					getDC(element), getOrGenerateID(element, warner, idFactory));
@@ -214,7 +214,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 					idFactory));
 			break;
 		case StoneType:
-			retval = new StoneEvent(
+			retval = new StoneDeposit(
 					StoneKind.parseStoneKind(getParameterWithDeprecatedForm(
 							element, KIND_PARAM, "stone", warner)), getDC(element),
 					getOrGenerateID(element, warner, idFactory));
@@ -331,21 +331,21 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 			out.append(((Mine) obj).getKind());
 			out.append("\" status=\"");
 			out.append(((Mine) obj).getStatus().toString());
-		} else if (obj instanceof MineralEvent) {
+		} else if (obj instanceof MineralVein) {
 			out.append("<mineral kind=\"");
-			out.append(((MineralEvent) obj).getKind());
+			out.append(((MineralVein) obj).getKind());
 			out.append("\" exposed=\"");
-			out.append(Boolean.toString(((MineralEvent) obj).isExposed()));
+			out.append(Boolean.toString(((MineralVein) obj).isExposed()));
 			out.append("\" dc=\"");
 			out.append(Integer.toString(((IEvent) obj).getDC()));
 		} else if (obj instanceof Shrub) {
 			out.append("<shrub kind=\"");
 			out.append(((Shrub) obj).getKind());
-		} else if (obj instanceof StoneEvent) {
+		} else if (obj instanceof StoneDeposit) {
 			out.append("<stone kind=\"");
-			out.append(((StoneEvent) obj).stone().toString());
+			out.append(((StoneDeposit) obj).stone().toString());
 			out.append("\" dc=\"");
-			out.append(Integer.toString(((StoneEvent) obj).getDC()));
+			out.append(Integer.toString(((StoneDeposit) obj).getDC()));
 		} else if (obj instanceof IEvent) {
 			writeSimpleEvent(out, (IEvent) obj);
 		}

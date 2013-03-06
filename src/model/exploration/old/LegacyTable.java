@@ -11,9 +11,9 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.resources.BattlefieldEvent;
 import model.map.fixtures.resources.CaveEvent;
-import model.map.fixtures.resources.MineralEvent;
+import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.MineralKind;
-import model.map.fixtures.resources.StoneEvent;
+import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.CityEvent;
 import model.map.fixtures.towns.FortificationEvent;
@@ -54,12 +54,12 @@ public class LegacyTable implements EncounterTable {
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
-			addData(new MineralEvent(mineral.toString(), true, 0, 0)); // NOPMD
-			addData(new MineralEvent(mineral.toString(), false, 0, 0)); // NOPMD
+			addData(new MineralVein(mineral.toString(), true, 0, 0)); // NOPMD
+			addData(new MineralVein(mineral.toString(), false, 0, 0)); // NOPMD
 		}
 		data.add("Nothing interesting here ...");
 		for (final StoneKind stone : StoneKind.values()) {
-			addData(new StoneEvent(stone, 0, 0)); // NOPMD
+			addData(new StoneDeposit(stone, 0, 0)); // NOPMD
 		}
 	}
 

@@ -12,7 +12,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.fixtures.resources.MineralEvent;
+import model.map.fixtures.resources.MineralVein;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -25,7 +25,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MineralReader implements INodeHandler<MineralEvent> {
+public class MineralReader implements INodeHandler<MineralVein> {
 	/**
 	 * Parse a Mineral.
 	 *
@@ -39,12 +39,12 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public MineralEvent parse(final StartElement element,
+	public MineralVein parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final MineralEvent fix = new MineralEvent(
+		final MineralVein fix = new MineralVein(
 				getAttributeWithDeprecatedForm(element, "kind", "mineral",
 						warner), Boolean.parseBoolean(XMLHelper.getAttribute(
 						element, "exposed")), Integer.parseInt(getAttribute(
@@ -65,8 +65,8 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<MineralEvent> writes() {
-		return MineralEvent.class;
+	public Class<MineralVein> writes() {
+		return MineralVein.class;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class MineralReader implements INodeHandler<MineralEvent> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public SPIntermediateRepresentation write(final MineralEvent obj) {
+	public SPIntermediateRepresentation write(final MineralVein obj) {
 		return new SPIntermediateRepresentation("mineral", Pair.of("kind",
 				obj.getKind()), Pair.of("exposed",
 				Boolean.toString(obj.isExposed())), Pair.of("dc",

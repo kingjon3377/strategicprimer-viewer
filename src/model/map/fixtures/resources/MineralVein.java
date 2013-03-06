@@ -12,7 +12,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class MineralEvent implements IEvent,
+public final class MineralVein implements IEvent,
 		HasImage, HarvestableFixture, HasKind {
 	/**
 	 * Version UID for serialization.
@@ -26,7 +26,7 @@ public final class MineralEvent implements IEvent,
 	 * @param discdc the dc to discover the vein
 	 * @param idNum the ID number.
 	 */
-	public MineralEvent(final String minkind, final boolean exp,
+	public MineralVein(final String minkind, final boolean exp,
 			final int discdc, final int idNum) {
 		super();
 		mineral = minkind;
@@ -105,9 +105,9 @@ public final class MineralEvent implements IEvent,
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof MineralEvent
-						&& ((MineralEvent) obj).mineral.equals(mineral)
-						&& ((MineralEvent) obj).exposed == exposed && ((TileFixture) obj)
+				|| (obj instanceof MineralVein
+						&& ((MineralVein) obj).mineral.equals(mineral)
+						&& ((MineralVein) obj).exposed == exposed && ((TileFixture) obj)
 						.getID() == id);
 	}
 
@@ -184,14 +184,14 @@ public final class MineralEvent implements IEvent,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| (fix instanceof MineralEvent
-						&& equalsContents((MineralEvent) fix));
+				|| (fix instanceof MineralVein
+						&& equalsContents((MineralVein) fix));
 	}
 	/**
 	 * @param fix another MineralEvent
 	 * @return whether its contents equal ours
 	 */
-	private boolean equalsContents(final MineralEvent fix) {
+	private boolean equalsContents(final MineralVein fix) {
 		return fix.mineral.equals(mineral) && fix.exposed == exposed;
 	}
 }
