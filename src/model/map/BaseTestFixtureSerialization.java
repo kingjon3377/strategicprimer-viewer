@@ -536,16 +536,6 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	}
 
 	/**
-	 * @param <T> the type of the object
-	 * @param obj an object
-	 * @return it, with its file set to "string"
-	 * FIXME: Drop this method entirely, as it's a no-op.
-	 */
-	public static <T extends XMLWritable> T setFileOnObject(final T obj) {
-		return obj;
-	}
-
-	/**
 	 * Assert that reading the given XML will give a MissingChildException. If
 	 * it's only supposed to be a warning, assert that it'll pass with warnings
 	 * disabled but object with them made fatal. This version tests both old and

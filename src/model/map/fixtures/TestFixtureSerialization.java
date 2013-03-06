@@ -222,8 +222,8 @@ public final class TestFixtureSerialization extends
 				new Fortress(secondPlayer, "four", 4),
 				Fortress.class);
 		final Fortress five = new Fortress(secondPlayer, "five", 5);
-		five.addUnit(setFileOnObject(new Unit(secondPlayer, "unitOne",
-				"unitTwo", 1)));
+		five.addUnit(new Unit(secondPlayer, "unitOne",
+				"unitTwo", 1));
 		assertSerialization("Fifth test of Fortress serialization", five,
 				Fortress.class);
 		assertUnwantedChild("<fortress><hill /></fortress>", Fortress.class,
