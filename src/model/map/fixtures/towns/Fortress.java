@@ -174,6 +174,7 @@ public class Fortress implements HasImage,
 		if (name.equals(obj.name)
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
 			final Set<Unit> temp = new HashSet<Unit>(obj.units);
+			// TODO: Differences between *versions* of a unit
 			temp.removeAll(units);
 			for (final Unit unit : temp) {
 				out.println("Extra unit in fortress " + getName() + ":\t" + unit.toString());
