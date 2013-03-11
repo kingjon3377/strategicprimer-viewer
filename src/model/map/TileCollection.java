@@ -112,8 +112,13 @@ public final class TileCollection implements Iterable<Point>,
 	public boolean isSubset(final TileCollection obj, final PrintWriter out) {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
-			if ((!tiles.containsKey(point) && !obj.getTile(point).isEmpty())
-					|| !tiles.get(point).isSubset(obj.getTile(point), out)) {
+			if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
+				if (!tiles.get(point).isSubset(obj.getTile(point), out)) {
+					retval = false; // NOPMD
+				}
+			} else {
+				out.print("Extra tile at ");
+				out.println(point.toString());
 				retval = false; // NOPMD
 			}
 		}
