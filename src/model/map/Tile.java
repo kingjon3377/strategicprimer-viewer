@@ -1,7 +1,7 @@
 // $codepro.audit.disable booleanMethodNamingConvention
 package model.map;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -206,7 +206,7 @@ public final class Tile implements XMLWritable,
 	 * @param out the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final Tile obj, final PrintStream out) {
+	public boolean isSubset(final Tile obj, final PrintWriter out) {
 		if (getTerrain().equals(obj.getTerrain())) {
 			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
 			temp.removeAll(contents);

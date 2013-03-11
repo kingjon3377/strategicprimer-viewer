@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -101,7 +101,7 @@ public final class TileCollection implements Iterable<Point>,
 
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(Tile, PrintStream)} has the side effect of printing what
+	 * {@link Tile#isSubset(Tile, PrintWriter)} has the side effect of printing what
 	 * makes it *not* a subset; we want that done for *all* relevant tiles.
 	 *
 	 * @param obj another TileCollection
@@ -109,7 +109,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * @param out the stream to write details of differences to
 	 */
 	@Override
-	public boolean isSubset(final TileCollection obj, final PrintStream out) {
+	public boolean isSubset(final TileCollection obj, final PrintWriter out) {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
 			if ((!tiles.containsKey(point) && !obj.getTile(point).isEmpty())

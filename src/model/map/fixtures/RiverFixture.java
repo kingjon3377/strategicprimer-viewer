@@ -1,6 +1,6 @@
 package model.map.fixtures;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -131,7 +131,7 @@ public class RiverFixture implements TileFixture,
 	 * @param out ignored (no output)
 	 */
 	@Override
-	public boolean isSubset(final RiverFixture obj, final PrintStream out) {
+	public boolean isSubset(final RiverFixture obj, final PrintWriter out) {
 		final Set<River> temp = EnumSet.copyOf(obj.rivers);
 		temp.removeAll(rivers);
 		return temp.isEmpty();

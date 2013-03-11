@@ -1,6 +1,6 @@
 package model.map.fixtures.towns;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -170,7 +170,7 @@ public class Fortress implements HasImage,
 	 * @param out a stream to write details to
 	 */
 	@Override
-	public boolean isSubset(final Fortress obj, final PrintStream out) {
+	public boolean isSubset(final Fortress obj, final PrintWriter out) {
 		if (name.equals(obj.name)
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
 			final Set<Unit> temp = new HashSet<Unit>(obj.units);

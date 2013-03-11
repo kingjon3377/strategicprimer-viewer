@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * An interface to let us check converted player maps against the main map.
@@ -16,5 +16,5 @@ public interface Subsettable<T> {
 	 *         that aren't also in this.
 	 * @param out the stream to write details to
 	 */
-	boolean isSubset(T obj, PrintStream out);
+	boolean isSubset(T obj, PrintWriter out);
 }

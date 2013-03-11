@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -91,7 +91,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @param out the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final PlayerCollection obj, final PrintStream out) {
+	public boolean isSubset(final PlayerCollection obj, final PrintWriter out) {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
 				out.print("Extra player ");

@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.EnumSet;
 
 import model.map.fixtures.Ground;
@@ -29,7 +29,7 @@ public class MapNGAdapter implements IMapNG {
 	 * @return whether it is a strict subset of this map.
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final PrintStream out) {
+	public boolean isSubset(final IMapNG obj, final PrintWriter out) {
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (Player player : obj.players()) {
@@ -56,7 +56,7 @@ public class MapNGAdapter implements IMapNG {
 	 * @param point the current location
 	 * @return whether that location fits the "subset" hypothesis.
 	 */
-	private boolean isTileSubset(final IMapNG obj, final PrintStream out,
+	private boolean isTileSubset(final IMapNG obj, final PrintWriter out,
 			final Point point) {
 		boolean retval = true;
 		if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))) { // NOPMD

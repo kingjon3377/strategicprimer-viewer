@@ -3,7 +3,8 @@ package model.map;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
@@ -29,7 +30,7 @@ public class TestSubsets {
 	/**
 	 * A bit-bucket to send subset output to.
 	 */
-	private static final PrintStream BIT_BUCKET = new PrintStream(new NullStream());
+	private static final PrintWriter BIT_BUCKET = new PrintWriter(new OutputStreamWriter(new NullStream()));
 	/**
 	 * A test of PlayerCollection's subset feature.
 	 */

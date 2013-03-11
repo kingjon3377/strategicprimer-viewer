@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
@@ -131,7 +131,7 @@ public class SPMap implements IMap {
 	 * @param out the stream to write details of the difference to
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final PrintStream out) {
+	public boolean isSubset(final IMap obj, final PrintWriter out) {
 		if (getDimensions().equals(obj.getDimensions())) {
 			return players.isSubset(obj.getPlayers(), out) // NOPMD
 					&& tiles.isSubset(obj.getTiles(), out);

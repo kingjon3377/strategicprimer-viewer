@@ -1,6 +1,8 @@
 package controller.map.drivers;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,8 +13,8 @@ import util.Warning;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
-import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.DriverUsage.ParamCount;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to check whether player maps are subsets of the main map.
@@ -127,7 +129,8 @@ public final class SubsetDriver implements ISPDriver {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
 		}
-		return mainMap.isSubset(map, SystemOut.SYS_OUT) ? Returns.OK : Returns.Warn;
+		return mainMap.isSubset(map, new PrintWriter(new OutputStreamWriter(
+				SystemOut.SYS_OUT))) ? Returns.OK : Returns.Warn;
 	}
 	/**
 	 * An object indicating how to use and invoke this driver.

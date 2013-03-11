@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
@@ -42,7 +42,7 @@ public class MapView implements IMap {
 	 * @param out the stream to write details to
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final PrintStream out) {
+	public boolean isSubset(final IMap obj, final PrintWriter out) {
 		return map.isSubset(obj, out);
 	}
 
