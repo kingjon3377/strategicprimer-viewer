@@ -1,10 +1,13 @@
 package model.map;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import util.PrefixingPrintWriter;
 
 /**
  * A collection of tiles. This is a wrapper around the Map that had been used by
@@ -113,7 +116,13 @@ public final class TileCollection implements Iterable<Point>,
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
 			if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
-				if (!tiles.get(point).isSubset(obj.getTile(point), out)) {
+				final StringWriter str = new StringWriter();
+				if (!tiles.get(point)
+						.isSubset(
+								obj.getTile(point),
+								new PrefixingPrintWriter(str, point.toString()
+										+ ":\t"))) {
+					out.print(str.toString());
 					retval = false; // NOPMD
 				}
 			} else {

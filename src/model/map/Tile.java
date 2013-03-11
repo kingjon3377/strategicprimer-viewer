@@ -239,14 +239,11 @@ public final class Tile implements XMLWritable,
 			}
 			for (TileFixture fix : temp) {
 				retval = false;
-				// FIXME: Figure out some way to get the location here.
-				out.print("\nExtra fixture in a tile:\t");
-				out.print(fix.toString());
+				out.println("Extra fixture:\t" + fix.toString());
 			}
 			return retval; // NOPMD
 		} else {
-			// FIXME: Figure out some way to get the location here.
-			out.println("Type of a tile wrong");
+			out.println("Tile type wrong");
 			return false;
 		}
 	}
