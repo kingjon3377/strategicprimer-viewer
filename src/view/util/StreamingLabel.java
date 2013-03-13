@@ -28,20 +28,20 @@ public class StreamingLabel extends JLabel {
 	private final transient PrintWriter writer = new PrintWriter(string) {
 		/**
 		 * Print a string and update the label.
-		 * @param string the string to print
+		 * @param str the string to print
 		 */
 		@Override
-		public void print(final String string) {
-			super.print(string);
+		public void print(final String str) {
+			super.print(str);
 			updateText();
 		}
 		/**
 		 * Print a line and update the label.
-		 * @param string the string to print
+		 * @param str the string to print
 		 */
 		@Override
-		public void println(final String string) {
-			super.println(string);
+		public void println(final String str) {
+			super.println(str);
 			updateText();
 		}
 	};
