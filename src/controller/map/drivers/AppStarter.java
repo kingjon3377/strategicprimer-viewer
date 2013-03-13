@@ -99,8 +99,7 @@ public class AppStarter implements ISPDriver {
 		addChoice(ExplorationCLIDriver.class, ViewerStart.class, "-x", "--explore");
 		addChoice(new ReaderComparator(), new DrawHelperComparator());
 		addChoice(new MapChecker(), new MapCheckerGUI());
-		// FIXME: Write a GUI for the subset-driver
-		addChoice(new SubsetDriver());
+		addChoice(new SubsetDriver(), new SubsetGUIDriver());
 		addChoice(new EchoDriver());
 		// FIXME: Write a GUI for the duplicate feature remover
 		addChoice(new DuplicateFixtureRemover());
