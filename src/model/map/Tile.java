@@ -91,9 +91,6 @@ public final class Tile implements XMLWritable,
 	}
 
 	/**
-	 * FIXME: Should return a copy, not the real collection.
-	 *
-	 *
 	 * @return the contents of the tile
 	 */
 	@Override
