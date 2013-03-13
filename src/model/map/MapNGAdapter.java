@@ -1,7 +1,10 @@
 package model.map;
 
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.EnumSet;
+
+import view.util.NullStream;
 
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
@@ -238,15 +241,21 @@ public class MapNGAdapter implements IMapNG {
 		return retval;
 	}
 	/**
-	 * FIXME: This should, like Set equality, ignore implementation details, but at present does not.
+	 * A bit-bucket output stream.
+	 */
+	private static final PrintWriter DEVNULL = new PrintWriter(
+			new OutputStreamWriter(new NullStream()));
+
+	/**
+	 * FIXME: Subset calculation is slow; instead, check each method specified by the interface.
 	 * @param obj an object
-	 * @return whether it's the same as us
+	 * @return whether it's the same as us---we're a subset of it and it's a subset of us
 	 */
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof MapNGAdapter && ((MapNGAdapter) obj).state
-						.equals(state));
+				|| (obj instanceof IMapNG && isSubset((IMapNG) obj, DEVNULL) && ((IMapNG) obj)
+						.isSubset(this, DEVNULL));
 	}
 	/**
 	 * @return a hash value for the object
