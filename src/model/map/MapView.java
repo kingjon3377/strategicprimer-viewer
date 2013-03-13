@@ -11,6 +11,10 @@ import java.io.PrintWriter;
  */
 public class MapView implements IMap {
 	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
 	 *
 	 * @param wrapped the map this wraps

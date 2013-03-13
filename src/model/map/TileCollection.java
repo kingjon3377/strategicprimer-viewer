@@ -1,6 +1,7 @@
 package model.map;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,7 +21,11 @@ import util.PrefixingPrintWriter;
  *
  */
 public final class TileCollection implements Iterable<Point>,
-		Subsettable<TileCollection> {
+		Subsettable<TileCollection>, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The Map this is a wrapper around.
 	 */
@@ -116,11 +121,11 @@ public final class TileCollection implements Iterable<Point>,
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
 			if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
-				final StringWriter str = new StringWriter();
+				final StringWriter str = new StringWriter(); // NOPMD
 				if (!tiles.get(point)
 						.isSubset(
 								obj.getTile(point),
-								new PrefixingPrintWriter(str, point.toString()
+								new PrefixingPrintWriter(str, point.toString() // NOPMD
 										+ ":\t"))) {
 					out.print(str.toString());
 					retval = false; // NOPMD

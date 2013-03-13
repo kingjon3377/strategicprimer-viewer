@@ -1,6 +1,7 @@
 package model.map;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,7 +14,11 @@ import java.util.Map;
  *
  */
 public class PlayerCollection implements Iterable<Player>,
-		Subsettable<PlayerCollection> {
+		Subsettable<PlayerCollection>, Serializable {
+	/**
+	 * Version UID for serialization.
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The collection this class wraps.
 	 */
