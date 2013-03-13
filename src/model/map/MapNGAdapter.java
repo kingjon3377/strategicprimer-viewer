@@ -67,11 +67,9 @@ public class MapNGAdapter implements IMapNG {
 			// return false;
 			retval = false;
 			out.println("Reports of mountains differ at " + point);
-		} else if (!getRivers(point).equals(obj.getRivers(point))) { // NOPMD
-			// FIXME: Shouldn't rely on getRivers() returning a RiverFixture ...
-			// return false;
+		} else if (!areRiversSubset(getRivers(point), obj.getRivers(point))) { // NOPMD
 			retval = false;
-			out.println("Rivers differ at " + point);
+			out.println("Extra rivers at " + point);
 		} else if (!getForest(point).equals(obj.getForest(point))) { // NOPMD
 			// return false;
 			retval = false;
@@ -90,6 +88,22 @@ public class MapNGAdapter implements IMapNG {
 			}
 		}
 		return retval;
+	}
+	/**
+	 * @param ours Our rivers
+	 * @param theirs Another map's rivers for the same location
+	 * @return whether theirs are a subset of ours.
+	 */
+	private static boolean areRiversSubset(final Iterable<River> ours,
+			final Iterable<River> theirs) {
+		final EnumSet<River> theirRivers = EnumSet.noneOf(River.class);
+		for (River river : theirs) {
+			theirRivers.add(river);
+		}
+		for (River river : ours) {
+			theirRivers.remove(river);
+		}
+		return !theirRivers.isEmpty();
 	}
 
 	/**
