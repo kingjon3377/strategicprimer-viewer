@@ -64,8 +64,10 @@ public final class CompactReaderAdapter {
 		final CompactReader<T> reader; // NOPMD
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
-			return (T) CompactTileReader.READER.parseRiver(element, stream, // NOPMD
+			final T river = (T) CompactTileReader.READER.parseRiver(element,
 					warner);
+			AbstractCompactReader.spinUntilEnd(element.getName(), stream);
+			return river; // NOPMD
 		} else {
 			reader = getReader(type);
 		}

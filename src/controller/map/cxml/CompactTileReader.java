@@ -60,7 +60,8 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName())) {
 					retval.addFixture(new RiverFixture(parseRiver(//NOPMD
-							event.asStartElement(), stream, warner)));
+							event.asStartElement(), warner)));
+					spinUntilEnd(event.asStartElement().getName(), stream);
 				} else {
 					retval.addFixture(parseFixture(event.asStartElement(), stream, players, idFactory, warner));
 				}
@@ -119,17 +120,15 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 				|| "lake".equalsIgnoreCase(name.getLocalPart());
 	}
 	/**
-	 * Parse a river from XML.
+	 * Parse a river from XML. The caller is now responsible for getting past the closing tag.
 	 * @param element the element to parse
-	 * @param stream the stream to read further elements from (FIXME: do we need this parameter?)
 	 * @param warner the Warning instance to use as needed
 	 * @return the parsed river
 	 * @throws SPFormatException on SP format problem
 	 */
-	public River parseRiver(final StartElement element, final IteratorWrapper<XMLEvent> stream,
-			final Warning warner) throws SPFormatException {
+	public River parseRiver(final StartElement element, final Warning warner)
+			throws SPFormatException {
 		requireTag(element, "river", "lake");
-		spinUntilEnd(element.getName(), stream);
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
 			return River.Lake; // NOPMD
 		} else {

@@ -106,7 +106,7 @@ public abstract class AbstractCompactReader {
 	 * @param reader the XML stream we're reading from
 	 * @throws SPFormatException on unwanted child
 	 */
-	protected void spinUntilEnd(final QName tag,
+	public static void spinUntilEnd(final QName tag,
 			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
