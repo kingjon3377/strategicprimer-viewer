@@ -86,7 +86,7 @@ public class AppStarter implements ISPDriver {
 	}
 	static {
 		addChoice(new QueryCLI(), new ViewerStart());
-		// FIXME: Write a CLI to *automate* advancement
+		// FIXME: Write a CLI to _automate_ advancement
 		addChoice(new AdvancementStart());
 		// FIXME: Write a CLI to print a report of a player's workers
 		// FIXME: Write a proper worker-management GUI
