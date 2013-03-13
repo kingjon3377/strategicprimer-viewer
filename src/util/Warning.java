@@ -11,7 +11,7 @@ import controller.map.formatexceptions.SPFormatException;
  * @author Jonathan Lovelace
  *
  */
-public final class Warning {
+public class Warning {
 	/**
 	 * An instance.
 	 */
