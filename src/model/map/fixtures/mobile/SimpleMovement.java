@@ -23,9 +23,11 @@ public final class SimpleMovement {
 	private SimpleMovement() {
 		// Do not instantiate.
 	}
+
 	/**
-	 * An exception thrown to signal traversal is impossible. FIXME: Ocean isn't
-	 * impassable to everything, of course.
+	 * An exception thrown to signal traversal is impossible.
+	 *
+	 * FIXME: Ocean isn't impassable to everything, of course.
 	 */
 	public static final class TraversalImpossibleException extends Exception {
 		/**
