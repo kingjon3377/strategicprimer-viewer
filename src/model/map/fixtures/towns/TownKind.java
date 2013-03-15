@@ -10,19 +10,6 @@ import java.util.Map;
  */
 public enum TownKind {
 	/**
-	 * "Nothing of interest here ...". Useful primarily as an alternative to
-	 * null.
-	 * @deprecated Should never actually be used.
-	 */
-	@Deprecated
-	Nothing("nothing"),
-	/**
-	 * A mineral vein.
-	 * @deprecated We don't treat MineralEvents as Events anymore.
-	 */
-	@Deprecated
-	Mineral("mineral"),
-	/**
 	 * A fortification.
 	 */
 	Fortification("fortification"),
@@ -31,27 +18,9 @@ public enum TownKind {
 	 */
 	Town("town"),
 	/**
-	 * Signs of a long-ago battle.
-	 * @deprecated We don't treat BattlefieldEvents as Events anymore.
-	 */
-	@Deprecated
-	Battlefield("battlefield"),
-	/**
 	 * A city.
 	 */
-	City("city"),
-	/**
-	 * A stone deposit.
-	 * @deprecated We don't treat StoneEvents as events anymore.
-	 */
-	@Deprecated
-	Stone("stone"),
-	/**
-	 * Caves beneath the tile.
-	 * @deprecated We don't treat CaveEvents as Events anymore.
-	 */
-	@Deprecated
-	Caves("cave");
+	City("city");
 	/**
 	 * A mapping from strings to EventKinds.
 	 */
