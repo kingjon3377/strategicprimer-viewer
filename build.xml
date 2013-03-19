@@ -92,10 +92,10 @@
       <formatter type="xml" />
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
       <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
-      <test name="model.exploration.TestExplorationRunner" todir="${junit.output.dir}" />
+      <test name="model.exploration.old.TestExplorationRunner" todir="${junit.output.dir}" />
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
-      <test name="model.map.events.TestEventSerialization" todir="${junit.output.dir}" />
+      <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestFixtureSerialization" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestMoreFixtureSerialization" todir="${junit.output.dir}" />
       <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
