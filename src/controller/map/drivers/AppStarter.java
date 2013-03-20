@@ -26,6 +26,14 @@ import view.util.AppChooserFrame;
  */
 public class AppStarter implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-p",
+			"--app-starter", ParamCount.Many, "App Chooser",
+			"Let the user choose an app to start, or handle options.",
+			AppStarter.class);
+
+	/**
 	 * A pair of Class objects.
 	 */
 	private static final class ClassPair extends Pair<Class<? extends ISPDriver>, Class<? extends ISPDriver>> {
@@ -184,14 +192,6 @@ public class AppStarter implements ISPDriver {
 			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(), except.getCause());
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-p",
-			"--app-starter", ParamCount.Many, "App Chooser",
-			"Let the user choose an app to start, or handle options.",
-			AppStarter.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
