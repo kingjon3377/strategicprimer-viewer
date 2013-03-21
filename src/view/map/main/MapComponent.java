@@ -16,6 +16,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 
 import model.map.MapDimensions;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
 import model.viewer.IViewerModel;
@@ -139,8 +140,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int maxCol = getMapModel().getDimensions().getMaximumCol(); // NOPMD
 		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
-				paintTile(pen, model.getTile(PointFactory.point(i + minRow, j
-						+ minCol)), i, j);
+				final Point location = PointFactory.point(i + minRow, j + minCol);
+				paintTile(pen, model.getTile(location), i, j, getMapModel()
+						.getSelectedPoint().equals(location));
 			}
 		}
 	}
@@ -166,14 +168,15 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param tile the tile to paint
 	 * @param row which row this is
 	 * @param col which column this is
+	 * @param selected whether the tile is the selected tile
 	 */
 	private void paintTile(final Graphics pen, final Tile tile, final int row,
-			final int col) {
+			final int col, final boolean selected) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
 		helper.drawTile(pen, tile, PointFactory.coordinate(col * tsize, row * tsize),
 				PointFactory.coordinate(tsize, tsize));
-		if (model.getMap().getTile(model.getSelectedPoint()).equals(tile)) {
+		if (selected) {
 			final Graphics context = pen.create();
 			try {
 				context.setColor(Color.black);
