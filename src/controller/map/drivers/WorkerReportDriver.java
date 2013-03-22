@@ -11,7 +11,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
 import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.ReportGenerator;
+import controller.map.report.ReportGenerator;
 /**
  * A driver to produce a report of the units in a map.
  * @author Jonathan Lovelace

@@ -1,4 +1,4 @@
-package controller.map.misc;
+package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +41,7 @@ import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
 import util.IntMap;
 import util.Pair;
+import controller.map.misc.TownComparator;
 
 /**
  * A class to produce a report based on a map for a player. TODO: Use some sort
