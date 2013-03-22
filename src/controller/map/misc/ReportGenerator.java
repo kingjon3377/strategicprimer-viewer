@@ -120,7 +120,23 @@ public class ReportGenerator {
 		final List<Pair<Point, StoneDeposit>> stone = new ArrayList<Pair<Point, StoneDeposit>>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof HarvestableFixture) {
-
+				final HarvestableFixture harvestable = (HarvestableFixture) pair.second();
+				final Point point = pair.first();
+				if (harvestable instanceof CacheFixture) {
+					caches.add(Pair.of(point, (CacheFixture) harvestable));
+				} else if (harvestable instanceof Grove) {
+					groves.add(Pair.of(point, (Grove) harvestable));
+				} else if (harvestable instanceof Meadow) {
+					meadows.add(Pair.of(point, (Meadow) harvestable));
+				} else if (harvestable instanceof Mine) {
+					mines.add(Pair.of(point, (Mine) harvestable));
+				} else if (harvestable instanceof MineralVein) {
+					minerals.add(Pair.of(point, (MineralVein) harvestable));
+				} else if (harvestable instanceof Shrub) {
+					shrubs.add(Pair.of(point, (Shrub) harvestable));
+				} else if (harvestable instanceof StoneDeposit) {
+					stone.add(Pair.of(point, (StoneDeposit) harvestable));
+				}
 			}
 		}
 		return builder.toString();
