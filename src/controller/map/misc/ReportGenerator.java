@@ -110,8 +110,11 @@ public class ReportGenerator {
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	private static String harvestableReport(final IntMap<Pair<Point, IFixture>> fixtures) {
-		final StringBuilder builder = new StringBuilder("<h4>Resource Sources</h4>");
-		final List<Pair<Point, CacheFixture>> caches = new ArrayList<Pair<Point, CacheFixture>>();
+		final StringBuilder builder = new StringBuilder("<h4>Resource Sources</h4>\n");
+		final StringBuilder caches = new StringBuilder(
+				"<h5>Caches collected by your explorers and workers:</h5>\n")
+				.append(OPEN_LIST);
+		boolean anyCaches = false;
 		final List<Pair<Point, Grove>> groves = new ArrayList<Pair<Point, Grove>>();
 		final List<Pair<Point, Meadow>> meadows = new ArrayList<Pair<Point, Meadow>>();
 		final List<Pair<Point, Mine>> mines = new ArrayList<Pair<Point, Mine>>();
@@ -123,7 +126,14 @@ public class ReportGenerator {
 				final HarvestableFixture harvestable = (HarvestableFixture) pair.second();
 				final Point point = pair.first();
 				if (harvestable instanceof CacheFixture) {
-					caches.add(Pair.of(point, (CacheFixture) harvestable));
+					anyCaches = true;
+					final CacheFixture cache = (CacheFixture) harvestable;
+					caches.append(OPEN_LIST_ITEM).append(atPoint(pair.first()))
+							.append("A cache of ").append(cache.getKind())
+							.append(", containing ")
+							.append(cache.getContents())
+							.append(CLOSE_LIST_ITEM);
+					fixtures.remove(pair);
 				} else if (harvestable instanceof Grove) {
 					groves.add(Pair.of(point, (Grove) harvestable));
 				} else if (harvestable instanceof Meadow) {
@@ -138,6 +148,10 @@ public class ReportGenerator {
 					stone.add(Pair.of(point, (StoneDeposit) harvestable));
 				}
 			}
+		}
+		caches.append(CLOSE_LIST);
+		if (anyCaches) {
+			builder.append(caches.toString());
 		}
 		return builder.toString();
 	}
