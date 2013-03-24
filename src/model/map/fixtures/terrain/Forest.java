@@ -63,7 +63,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 */
 	@Override
 	public String getImage() {
-		return "tree.png";
+		return "trees.png";
 	}
 
 	/**

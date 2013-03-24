@@ -56,7 +56,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	public Ver2TileDrawHelper(final ImageObserver iobs) {
 		super();
 		observer = iobs;
-		final String[] files = new String[] { "tree.png", "mountain.png" };
+		final String[] files = new String[] { "trees.png", "mountain.png" };
 		createRiverFiles();
 		for (final String file : files) {
 			try {

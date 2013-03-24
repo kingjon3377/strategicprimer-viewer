@@ -73,7 +73,7 @@ public class Grove implements HarvestableFixture,
 	 */
 	@Override
 	public String getImage() {
-		return orchard ? "orchard.png" : "grove.png";
+		return orchard ? "orchard.png" : "tree.png";
 	}
 
 	/**
