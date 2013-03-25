@@ -2,10 +2,13 @@ package controller.map.drivers;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
 import util.Warning;
+import view.map.main.ViewerFrame;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
@@ -19,6 +22,11 @@ import controller.map.report.ReportGenerator;
  */
 public class WorkerReportDriver implements ISPDriver {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
+			.getName());
+	/**
 	 * Run the driver.
 	 * @param args command-line arguments.
 	 */
@@ -26,8 +34,7 @@ public class WorkerReportDriver implements ISPDriver {
 		try {
 			new WorkerReportDriver().startDriver(args);
 		} catch (DriverFailedException except) {
-			// TODO Auto-generated catch block
-			except.printStackTrace();
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
 	/**
