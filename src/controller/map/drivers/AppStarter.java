@@ -10,12 +10,11 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
-
 import util.EqualsAny;
 import util.Pair;
 import view.util.AppChooserFrame;
+import controller.map.misc.DriverUsage;
+import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to start other drivers. At first it just starts one. TODO: make it
@@ -100,7 +99,7 @@ public class AppStarter implements ISPDriver {
 		// FIXME: Write a proper worker-management GUI
 		// We leave this as the old-style addChoice because here it's a
 		// placeholder for a proper worker GUI
-		addChoice(AdvancementStart.class, AdvancementStart.class, "-w", "--worker");
+		addChoice(WorkerReportDriver.class, AdvancementStart.class, "-w", "--worker");
 		// FIXME: Write an ExplorationGUI
 		// Similarly, we leave this as an old-style AddChoice because
 		// ViewerStart here is a placeholder for an ExplorationGUI
