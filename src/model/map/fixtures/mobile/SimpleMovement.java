@@ -39,12 +39,18 @@ public final class SimpleMovement {
 	}
 	/**
 	 * @param tile a tile
-	 * @return the movement cost to traverse it.
-	 * @throws TraversalImpossibleException if the tile is impassable.
+	 * @return whether it's passable by land movement.
 	 */
-	public static int getMovementCost(final Tile tile) throws TraversalImpossibleException {
+	public static boolean isLandMovementPossible(final Tile tile) {
+		return !TileType.Ocean.equals(tile.getTerrain());
+	}
+	/**
+	 * @param tile a tile
+	 * @return the movement cost to traverse it.
+	 */
+	public static int getMovementCost(final Tile tile) {
 		if (TileType.Ocean.equals(tile.getTerrain())) {
-			throw new TraversalImpossibleException();
+			return Integer.MAX_VALUE; // NOPMD
 		} else if (isForest(tile) || isHill(tile)
 				|| TileType.Desert.equals(tile.getTerrain())) {
 			return 3; // NOPMD

@@ -112,11 +112,35 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
 		// ESCA-JAVA0177:
-		final int retval; //NOPMD
 		final Tile destTile = getMap().getTile(dest);
-		try {
-			retval = SimpleMovement.getMovementCost(destTile);
-		} catch (final TraversalImpossibleException except) {
+		if (SimpleMovement.isLandMovementPossible(destTile)) {
+			final int retval = SimpleMovement.getMovementCost(destTile);
+			getMap().getTile(point).removeFixture(unit);
+			destTile.addFixture(unit);
+			for (Pair<IMap, String> pair : getSubordinateMaps()) {
+				final IMap map = pair.first();
+				final Tile stile = map.getTile(point);
+				boolean hasUnit = false;
+				for (final TileFixture fix : stile) {
+					if (fix.equals(unit)) {
+						hasUnit = true;
+						break;
+					}
+				}
+				if (!hasUnit) {
+					continue;
+				}
+				Tile dtile = map.getTile(dest);
+				if (dtile.isEmpty()) {
+					dtile = new Tile(destTile.getTerrain()); // NOPMD
+					map.getTiles().addTile(dest, dtile);
+				}
+				stile.removeFixture(unit);
+				dtile.addFixture(unit);
+			}
+			selUnitLoc = dest;
+			return retval;
+		} else {
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
 				final IMap map = pair.first();
 				if (map.getTile(dest).isEmpty()) {
@@ -124,33 +148,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 							new Tile(destTile.getTerrain())); // NOPMD
 				}
 			}
-			throw except;
+			throw new TraversalImpossibleException();
 		}
-		getMap().getTile(point).removeFixture(unit);
-		destTile.addFixture(unit);
-		for (Pair<IMap, String> pair : getSubordinateMaps()) {
-			final IMap map = pair.first();
-			final Tile stile = map.getTile(point);
-			boolean hasUnit = false;
-			for (final TileFixture fix : stile) {
-				if (fix.equals(unit)) {
-					hasUnit = true;
-					break;
-				}
-			}
-			if (!hasUnit) {
-				continue;
-			}
-			Tile dtile = map.getTile(dest);
-			if (dtile.isEmpty()) {
-				dtile = new Tile(destTile.getTerrain()); // NOPMD
-				map.getTiles().addTile(dest, dtile);
-			}
-			stile.removeFixture(unit);
-			dtile.addFixture(unit);
-		}
-		selUnitLoc = dest;
-		return retval;
 	}
 	/**
 	 * @param point a point
