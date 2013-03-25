@@ -1,0 +1,85 @@
+package controller.map.report;
+
+import java.util.List;
+
+import model.map.IFixture;
+import model.map.Point;
+import model.map.TileCollection;
+import model.map.XMLWritable;
+import util.IntMap;
+import util.Pair;
+
+/**
+ * An interface for classes that generate reports for particular kinds of SP objects.
+ * @author Jonathan Lovelace
+ * @param <T> the type of thing the class knows how to generate a report on
+ */
+public abstract class AbstractReportGenerator<T extends XMLWritable> {
+	/**
+	 * The HTML tag for the end of a bulleted list. Plus a newline.
+	 */
+	protected static final String CLOSE_LIST = "</ul>\n";
+	/**
+	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep the HTML human-readable.
+	 */
+	protected static final String OPEN_LIST = "<ul>\n";
+	/**
+	 * The HTML tag for the end of a list item ... plus a newline, to keep the HTML mostly human-readable.
+	 */
+	protected static final String CLOSE_LIST_ITEM = "</li>\n";
+	/**
+	 * The HTML tag for the start of a list item.
+	 */
+	protected static final String OPEN_LIST_ITEM = "<li>";
+	/**
+	 * All fixtures that this report references should be removed from the set before returning.
+	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
+	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * @return the (sub-)report, or the empty string if nothing to report.
+	 */
+	public abstract String produce(final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles);
+	/**
+	 * Produce a report on a single item.
+	 * All fixtures that this report references should be removed from the set before returning.
+	 * @param item the particular item we are to be reporting on.
+	 * @param loc the location of that item, if it's a fixture.
+	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
+	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * @return the (sub-)report, or the empty string if nothing to report.
+	 */
+	public abstract String produce(
+			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
+			final T item, final Point loc);
+
+	/**
+	 * @param point a point
+	 * @return the string "At " followed by the point's location
+	 */
+	protected String atPoint(final Point point) {
+		return "At " + point.toString() + ": ";
+	}
+	/**
+	 * @param points a list of points
+	 * @return a comma-separated string representing them.
+	 */
+	protected String pointCSL(final List<Point> points) {
+		if (points.isEmpty()) {
+			return ""; // NOPMD
+		} else if (points.size() == 1) {
+			return points.get(0).toString(); // NOPMD
+		} else if (points.size() == 2) {
+			return points.get(0) + " and " + points.get(1); // NOPMD
+		} else {
+			final StringBuilder builder = new StringBuilder();
+			for (int i = 0; i < points.size(); i++) {
+				if (i == points.size() - 1) {
+					builder.append(", and ");
+				} else if (i != 0) {
+					builder.append(", ");
+				}
+				builder.append(points.get(i));
+			}
+			return builder.toString();
+		}
+	}
+}
