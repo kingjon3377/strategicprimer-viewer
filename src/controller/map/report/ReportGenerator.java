@@ -52,8 +52,6 @@ public class ReportGenerator {
 		fixtures.coalesce();
 		builder.append(new UnitReportGenerator().produce(fixtures, tiles));
 		fixtures.coalesce();
-		builder.append(new VillageReportGenerator().produce(fixtures, tiles));
-		fixtures.coalesce();
 		builder.append(new TownReportGenerator().produce(fixtures, tiles));
 		fixtures.coalesce();
 		builder.append(new ExplorableReportGenerator().produce(fixtures, tiles));
@@ -61,6 +59,8 @@ public class ReportGenerator {
 		builder.append(new HarvestableReportGenerator().produce(fixtures, tiles));
 		fixtures.coalesce();
 		builder.append(new AnimalReportGenerator().produce(fixtures, tiles));
+		fixtures.coalesce();
+		builder.append(new VillageReportGenerator().produce(fixtures, tiles));
 		fixtures.coalesce();
 		builder.append(remainderReport(fixtures));
 		fixtures.coalesce();
