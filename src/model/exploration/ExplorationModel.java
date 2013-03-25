@@ -87,24 +87,29 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		}
 		return retval;
 	}
+
 	/**
-	 * Move a unit from the specified tile one tile in the specified direction.
-	 * Moves the unit in all maps where the unit *was* in the specified tile,
-	 * copying terrain information if the tile didn't exist in a subordinate
-	 * map. If movement in the specified direction is impossible, we update all
-	 * subordinate maps with the terrain information showing that, then re-throw
-	 * the exception; callers should deduct a minimal MP cost.
+	 * Move the currently selected unit from its current location one tile in
+	 * the specified direction. Moves the unit in all maps where the unit *was*
+	 * in the specified tile, copying terrain information if the tile didn't
+	 * exist in a subordinate map. If movement in the specified direction is
+	 * impossible, we update all subordinate maps with the terrain information
+	 * showing that, then re-throw the exception; callers should deduct a
+	 * minimal MP cost.
 	 *
-	 * @param unit the unit to move
-	 * @param point the starting location
 	 * @param direction the direction to move
 	 * @return the movement cost
 	 * @throws TraversalImpossibleException if movement in that direction is
 	 *         impossible
 	 */
 	@Override
-	public int move(final Unit unit, final Point point, final Direction direction)
+	public int move(final Direction direction)
 			throws TraversalImpossibleException {
+		final Unit unit = selUnit;
+		if (unit == null) {
+			throw new IllegalStateException("move() called when no unit selected");
+		}
+		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
 		// ESCA-JAVA0177:
 		final int retval; //NOPMD
@@ -144,6 +149,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			stile.removeFixture(unit);
 			dtile.addFixture(unit);
 		}
+		selUnitLoc = dest;
 		return retval;
 	}
 	/**
@@ -218,5 +224,36 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			}
 		}
 		return PointFactory.point(-1, -1);
+	}
+	/**
+	 * The currently selected unit.
+	 */
+	private Unit selUnit = null;
+	/**
+	 * Its location.
+	 */
+	private Point selUnitLoc = PointFactory.point(-1, -1);
+	/**
+	 * @return the currently selected unit
+	 */
+	@Override
+	public Unit getSelectedUnit() {
+		return selUnit;
+	}
+	/**
+	 * @param unit the new selected unit
+	 */
+	public void selectUnit(final Unit unit) {
+		final Unit old = selUnit;
+		selUnit = unit;
+		selUnitLoc = find(unit);
+		firePropertyChange("selected-unit", old, unit);
+	}
+	/**
+	 * @return the location of the currently selected unit.
+	 */
+	@Override
+	public Point getSelectedUnitLocation() {
+		return selUnitLoc;
 	}
 }

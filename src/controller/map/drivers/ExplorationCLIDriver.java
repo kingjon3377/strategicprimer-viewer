@@ -17,8 +17,8 @@ import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.DriverUsage;
-import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.DriverUsage.ParamCount;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A CLI to help running exploration. TODO: Some of this should be made more
@@ -49,11 +49,11 @@ public class ExplorationCLIDriver implements ISPDriver {
 	 * @throws XMLStreamException on malformed XML
 	 * @throws IOException on basic file I/O error
 	 */
-	private static IExplorationModel readMaps(final String[] filenames)
+	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final MapView master = reader.readMap(filenames[0], Warning.INSTANCE);
-		final IExplorationModel model = new ExplorationModel(master, filenames[0]);
+		final ExplorationModel model = new ExplorationModel(master, filenames[0]);
 		for (final String filename : filenames) {
 			if (filename.equals(filenames[0])) {
 				continue;
@@ -79,7 +79,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 			System.exit(1);
 		}
 		// ESCA-JAVA0177:
-		final IExplorationModel model; // NOPMD
+		final ExplorationModel model; // NOPMD
 		try {
 			model = readMaps(args);
 		} catch (IOException except) {
@@ -99,7 +99,8 @@ public class ExplorationCLIDriver implements ISPDriver {
 			if (unit.getID() < 0) {
 				return; // NOPMD
 			}
-			cli.moveUntilDone(unit);
+			model.selectUnit(unit);
+			cli.moveUntilDone();
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}

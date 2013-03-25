@@ -60,22 +60,22 @@ public interface IExplorationModel extends IMultiMapModel {
 	 * @return all that player's units in the master map
 	 */
 	List<Unit> getUnits(final Player player);
+
 	/**
-	 * Move a unit from the specified tile one tile in the specified direction.
-	 * Moves the unit in all maps where the unit *was* in the specified tile,
-	 * copying terrain information if the tile didn't exist in a subordinate
-	 * map. If movement in the specified direction is impossible, we update all
-	 * subordinate maps with the terrain information showing that, then re-throw
-	 * the exception; callers should deduct a minimal MP cost.
+	 * Move the currently selected unit from its current tile one tile in the
+	 * specified direction. Moves the unit in all maps where the unit *was* in
+	 * the specified tile, copying terrain information if the tile didn't exist
+	 * in a subordinate map. If movement in the specified direction is
+	 * impossible, we update all subordinate maps with the terrain information
+	 * showing that, then re-throw the exception; callers should deduct a
+	 * minimal MP cost.
 	 *
-	 * @param unit the unit to move
-	 * @param point the starting location
 	 * @param direction the direction to move
 	 * @return the movement cost
 	 * @throws TraversalImpossibleException if movement in that direction is
 	 *         impossible
 	 */
-	int move(final Unit unit, final Point point, final Direction direction)
+	int move(final Direction direction)
 			throws TraversalImpossibleException;
 	/**
 	 * @param point a point
@@ -90,4 +90,12 @@ public interface IExplorationModel extends IMultiMapModel {
 	 *         e.g., will *not* do what you want ...)
 	 */
 	Point find(final TileFixture fix);
+	/**
+	 * @return the currently selected unit---may be null!
+	 */
+	Unit getSelectedUnit();
+	/**
+	 * @return its location. This will *not* be null.
+	 */
+	Point getSelectedUnitLocation();
 }
