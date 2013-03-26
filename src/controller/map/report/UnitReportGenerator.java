@@ -69,7 +69,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		builder.append(", a ");
 		builder.append(worker.getRace());
 		if (worker.iterator().hasNext()) {
-			builder.append(", with training or experience in the following Jobs (Skill levels in parentheses):\n<ul>\n");
+			builder.append(
+					", with training or experience in the following Jobs (Skill levels in parentheses):\n")
+					.append(OPEN_LIST);
 			for (final Job job : worker) {
 				builder.append(OPEN_LIST_ITEM);
 				builder.append(job.getLevel());
@@ -92,6 +94,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				}
 				builder.append(CLOSE_LIST_ITEM);
 			}
+			builder.append(CLOSE_LIST);
 		}
 		return builder.toString();
 	}
