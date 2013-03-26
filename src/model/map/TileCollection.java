@@ -138,4 +138,11 @@ public final class TileCollection implements Iterable<Point>,
 		}
 		return retval;
 	}
+	/**
+	 * @param point a point
+	 * @return whether there's a non-empty tile at that point
+	 */
+	public boolean hasTile(final Point point) {
+		return tiles.containsKey(point) && !tiles.get(point).isEmpty();
+	}
 }

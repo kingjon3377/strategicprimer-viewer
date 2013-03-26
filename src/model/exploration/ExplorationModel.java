@@ -118,27 +118,24 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			getMap().getTile(point).removeFixture(unit);
 			destTile.addFixture(unit);
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
-				final IMap map = pair.first();
-				final Tile stile = map.getTile(point);
+				final TileCollection mapTiles = pair.first().getTiles();
+				final Tile stile = mapTiles.getTile(point);
 				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
-				Tile dtile = map.getTile(dest);
-				if (dtile.isEmpty()) {
-					dtile = new Tile(destTile.getTerrain()); // NOPMD
-					map.getTiles().addTile(dest, dtile);
+				if (!mapTiles.hasTile(dest)) {
+					mapTiles.addTile(dest, new Tile(destTile.getTerrain())); // NOPMD
 				}
 				stile.removeFixture(unit);
-				dtile.addFixture(unit);
+				mapTiles.getTile(dest).addFixture(unit);
 			}
 			selUnitLoc = dest;
 			return retval;
 		} else {
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
-				final IMap map = pair.first();
-				if (map.getTile(dest).isEmpty()) {
-					map.getTiles().addTile(dest,
-							new Tile(destTile.getTerrain())); // NOPMD
+				final TileCollection mapTiles = pair.first().getTiles();
+				if (!mapTiles.hasTile(dest)) {
+					mapTiles.addTile(dest, new Tile(destTile.getTerrain())); // NOPMD
 				}
 			}
 			throw new TraversalImpossibleException();
