@@ -120,14 +120,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
 				final IMap map = pair.first();
 				final Tile stile = map.getTile(point);
-				boolean hasUnit = false;
-				for (final TileFixture fix : stile) {
-					if (fix.equals(unit)) {
-						hasUnit = true;
-						break;
-					}
-				}
-				if (!hasUnit) {
+				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
 				Tile dtile = map.getTile(dest);
@@ -150,6 +143,19 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			}
 			throw new TraversalImpossibleException();
 		}
+	}
+	/**
+	 * @param tile a tile
+	 * @param fix a fixture
+	 * @return whether the tile contains it
+	 */
+	private static boolean tileHasFixture(final Tile tile, final TileFixture fix) {
+		for (final TileFixture fixture : tile) {
+			if (fixture.equals(fix)) {
+				return true; // NOPMD
+			}
+		}
+		return false;
 	}
 	/**
 	 * @param point a point
