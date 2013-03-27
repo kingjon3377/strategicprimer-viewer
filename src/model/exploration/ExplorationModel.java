@@ -130,11 +130,13 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			}
 			selUnitLoc = dest;
 			firePropertyChange("point", point, dest);
+			firePropertyChange("cost", Integer.valueOf(0), Integer.valueOf(retval));
 			return retval;
 		} else {
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
 				ensureTerrain(pair.first().getTiles(), dest, destTile.getTerrain());
 			}
+			firePropertyChange("cost", Integer.valueOf(0), Integer.valueOf(1));
 			throw new TraversalImpossibleException();
 		}
 	}
