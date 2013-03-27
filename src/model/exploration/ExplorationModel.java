@@ -129,6 +129,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				mapTiles.getTile(dest).addFixture(unit);
 			}
 			selUnitLoc = dest;
+			firePropertyChange("point", point, dest);
 			return retval;
 		} else {
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
@@ -256,9 +257,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	public void selectUnit(final Unit unit) {
 		final Unit old = selUnit;
+		final Point oldLoc = selUnitLoc;
 		selUnit = unit;
 		selUnitLoc = find(unit);
 		firePropertyChange("selected-unit", old, unit);
+		firePropertyChange("point", oldLoc, selUnitLoc);
 	}
 	/**
 	 * @return the location of the currently selected unit.
