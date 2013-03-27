@@ -49,7 +49,11 @@ public interface IExplorationModel extends IMultiMapModel {
 		/**
 		 * Northwest.
 		 */
-		Northwest;
+		Northwest,
+		/**
+		 * Stay still.
+		 */
+		Nowhere;
 	}
 	/**
 	 * @return all the players that are shared by all the maps

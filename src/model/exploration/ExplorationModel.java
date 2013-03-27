@@ -114,7 +114,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		// ESCA-JAVA0177:
 		final Tile destTile = getMap().getTile(dest);
 		if (SimpleMovement.isLandMovementPossible(destTile)) {
-			final int retval = SimpleMovement.getMovementCost(destTile);
+			final int retval = dest.equals(point) ? 1 : SimpleMovement.getMovementCost(destTile);
 			getMap().getTile(point).removeFixture(unit);
 			destTile.addFixture(unit);
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
@@ -160,7 +160,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return the point one tile in that direction.
 	 */
 	@Override
-	public Point getDestination(final Point point, final Direction direction) {
+	public Point getDestination(final Point point, final Direction direction) { // NOPMD
 		final MapDimensions dims = getMapDimensions();
 		switch (direction) {
 		case East:
@@ -187,6 +187,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		case West:
 			return PointFactory.point(point.row, // NOPMD
 					decrement(point.col, dims.cols - 1));
+		case Nowhere:
+			return point; // NOPMD
 		default:
 			throw new IllegalStateException("Unhandled case");
 		}
