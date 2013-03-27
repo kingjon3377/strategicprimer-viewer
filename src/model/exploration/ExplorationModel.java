@@ -12,6 +12,7 @@ import model.map.PointFactory;
 import model.map.Tile;
 import model.map.TileCollection;
 import model.map.TileFixture;
+import model.map.TileType;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
@@ -123,9 +124,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
-				if (!mapTiles.hasTile(dest)) {
-					mapTiles.addTile(dest, new Tile(destTile.getTerrain())); // NOPMD
-				}
+				ensureTerrain(mapTiles, dest, destTile.getTerrain());
 				stile.removeFixture(unit);
 				mapTiles.getTile(dest).addFixture(unit);
 			}
@@ -133,12 +132,20 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			return retval;
 		} else {
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
-				final TileCollection mapTiles = pair.first().getTiles();
-				if (!mapTiles.hasTile(dest)) {
-					mapTiles.addTile(dest, new Tile(destTile.getTerrain())); // NOPMD
-				}
+				ensureTerrain(pair.first().getTiles(), dest, destTile.getTerrain());
 			}
 			throw new TraversalImpossibleException();
+		}
+	}
+	/**
+	 * Ensure that a given collection of tiles has at least terrain information for the specified location.
+	 * @param tiles the collection we're operating on
+	 * @param point the location to look at
+	 * @param terrain the terrain type it should be
+	 */
+	private static void ensureTerrain(final TileCollection tiles, final Point point, final TileType terrain) {
+		if (!tiles.hasTile(point)) {
+			tiles.addTile(point, new Tile(terrain));
 		}
 	}
 	/**
