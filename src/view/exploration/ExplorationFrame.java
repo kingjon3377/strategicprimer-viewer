@@ -122,10 +122,9 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		}
 		});
 		final JTextField mpField2 = new JTextField(mpField.getDocument(), null, 5);
-		final JPanel mpPanel2 = new JPanel();
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		headerPanel.add(mpField2);
-		explorationPanel.add(mpPanel2, BorderLayout.NORTH);
+		explorationPanel.add(headerPanel, BorderLayout.NORTH);
 		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
 		addTileGUI(tilePanel, emodel, Direction.Northwest);
 		addTileGUI(tilePanel, emodel, Direction.North);
