@@ -99,10 +99,7 @@ public class AppStarter implements ISPDriver {
 		// We leave this as the old-style addChoice because here it's a
 		// placeholder for a proper worker GUI
 		addChoice(WorkerReportDriver.class, AdvancementStart.class, "-w", "--worker");
-		// FIXME: Write an ExplorationGUI
-		// Similarly, we leave this as an old-style AddChoice because
-		// ViewerStart here is a placeholder for an ExplorationGUI
-		addChoice(ExplorationCLIDriver.class, ViewerStart.class, "-x", "--explore");
+		addChoice(new ExplorationCLIDriver(), new ExplorationGUI());
 		addChoice(new ReaderComparator(), new DrawHelperComparator());
 		addChoice(new MapChecker(), new MapCheckerGUI());
 		addChoice(new SubsetDriver(), new SubsetGUIDriver());
