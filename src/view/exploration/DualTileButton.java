@@ -15,15 +15,6 @@ import view.map.main.TileDrawHelperFactory;
  * @author Jonathan Lovelace
  */
 public class DualTileButton extends JButton {
-//	/**
-//	 * Constructor.
-//	 */
-//	public DualTileButton() {
-//		setMinimumSize(new Dimension(12, 12));
-//		setMaximumSize(new Dimension(48, 48));
-//		setPreferredSize(new Dimension(24, 24));
-//		setSize(24, 24);
-//	}
 	/**
 	 * The main-map tile to paint.
 	 */
