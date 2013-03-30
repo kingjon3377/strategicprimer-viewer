@@ -89,11 +89,13 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		mpPanel.add(mpField);
 		uspSecond.add(mpPanel);
 		final JButton explButton = new JButton("Start exploring!");
+		final JPanel explorationPanel = new JPanel(new BorderLayout());
 		explButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				if (!unitList.isSelectionEmpty()) {
 					layout.next(outer);
+					explorationPanel.validate();
 					emodel.selectUnit(unitList.getSelectedValue());
 				}
 			}
@@ -102,12 +104,12 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		unitSelPanel.add(uspSecond);
 		add(unitSelPanel);
 
-		final JPanel explorationPanel = new JPanel(new BorderLayout());
 		final JPanel headerPanel = new JPanel();
 		final JButton backButton = new JButton("Select a different explorer");
 		backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
+				unitSelPanel.validate();
 				layout.first(outer);
 			}
 		});
