@@ -114,15 +114,19 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 			}
 		});
 		headerPanel.add(backButton);
+		final JLabel locLabel = new JLabel("<html><body>Currently exploring (-1, -1); click a tile to explore it.</body></html>");
 		final IExplorationModel labelModel = emodel;
-		headerPanel.add(new JLabel("text") {
+		emodel.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public String getText() {
-				return "<html><body>Currently exploring "
+			public final void propertyChange(final PropertyChangeEvent evt) {
+				if ("point".equalsIgnoreCase(evt.getPropertyName())) {
+					locLabel.setText("<html><body>Currently exploring "
 						+ labelModel.getSelectedUnitLocation()
-						+ "; click a tile to explore it.</body></html>";
-		}
+						+ "; click a tile to explore it.</body></html>");
+				}
+			}
 		});
+		headerPanel.add(locLabel);
 		final JTextField mpField2 = new JTextField(mpField.getDocument(), null, 5);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		headerPanel.add(mpField2);
