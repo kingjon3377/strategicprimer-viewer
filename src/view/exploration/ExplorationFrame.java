@@ -60,6 +60,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 	public ExplorationFrame(final ExplorationModel emodel) {
 		model = emodel;
 		setMinimumSize(new Dimension(640, 480));
+		setPreferredSize(new Dimension(800, 600));
 		final Container outer = getContentPane();
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
@@ -138,6 +139,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		explorationPanel.add(tilePanel, BorderLayout.SOUTH);
 		add(explorationPanel);
 		emodel.addPropertyChangeListener(this);
+		pack();
 	}
 	/**
 	 * The collection of proxies for main-map tile-fixture-lists.
