@@ -64,30 +64,27 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		final Container outer = getContentPane();
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
-		final JPanel unitSelPanel = new JPanel();
-		unitSelPanel.setLayout(new BoxLayout(unitSelPanel, BoxLayout.LINE_AXIS));
-		final JPanel uspFirst = new JPanel();
-		uspFirst.setLayout(new BoxLayout(uspFirst, BoxLayout.PAGE_AXIS));
-		uspFirst.add(new JLabel("Players in all maps:"));
+		final JPanel unitSelPanel = new JPanel(new BorderLayout());
+		final JPanel uspFirst = new JPanel(new BorderLayout());
+		uspFirst.add(new JLabel("Players in all maps:"), BorderLayout.NORTH);
 		playerList = new JList<Player>(new PlayerListModel(emodel));
 		playerList.addListSelectionListener(this);
-		uspFirst.add(playerList);
-		unitSelPanel.add(uspFirst);
-		final JPanel uspSecond = new JPanel();
-		uspSecond.setLayout(new BoxLayout(uspSecond, BoxLayout.PAGE_AXIS));
-		uspSecond.add(new JLabel("Units belonging to that player:"));
-		uspSecond.add(new JLabel("(Selected unit will be used for exploration.)"));
+		uspFirst.add(playerList, BorderLayout.CENTER);
+		unitSelPanel.add(uspFirst, BorderLayout.WEST);
+		final JPanel uspSecond = new JPanel(new BorderLayout());
+		uspSecond
+				.add(new JLabel(
+						"<html><body><p>Units belonging to that player:</p>"
+								+ "<p>(Selected unit will be used for exploration.)</p></body></html>"), BorderLayout.NORTH);
 		final JList<Unit> unitList = new JList<Unit>(new ExplorationUnitListModel(emodel, this));
-		uspSecond.add(unitList);
-		final JPanel mpPanel = new JPanel();
-		mpPanel.setLayout(new BoxLayout(mpPanel, BoxLayout.LINE_AXIS));
-		mpPanel.add(new JLabel("Unit's Movement Points: "));
+		uspSecond.add(unitList, BorderLayout.CENTER);
+		final JPanel mpPanel = new JPanel(new BorderLayout());
+		mpPanel.add(new JLabel("Unit's Movement Points: "), BorderLayout.WEST);
 		/**
 		 * The field storing the unit's available movement points.
 		 */
 		final JTextField mpField = new JTextField(5);
-		mpPanel.add(mpField);
-		uspSecond.add(mpPanel);
+		mpPanel.add(mpField, BorderLayout.EAST);
 		final JButton explButton = new JButton("Start exploring!");
 		final JPanel explorationPanel = new JPanel(new BorderLayout());
 		explButton.addActionListener(new ActionListener() {
@@ -100,8 +97,9 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 				}
 			}
 		});
-		uspSecond.add(explButton);
-		unitSelPanel.add(uspSecond);
+		mpPanel.add(explButton, BorderLayout.SOUTH);
+		uspSecond.add(mpPanel, BorderLayout.SOUTH);
+		unitSelPanel.add(uspSecond, BorderLayout.EAST);
 		add(unitSelPanel);
 
 		final JPanel headerPanel = new JPanel();
@@ -127,9 +125,8 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 			}
 		});
 		headerPanel.add(locLabel);
-		final JTextField mpField2 = new JTextField(mpField.getDocument(), null, 5);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
-		headerPanel.add(mpField2);
+		headerPanel.add(new JTextField(mpField.getDocument(), null, 5));
 		explorationPanel.add(headerPanel, BorderLayout.NORTH);
 		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
 		addTileGUI(tilePanel, emodel, Direction.Northwest);
@@ -141,7 +138,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		addTileGUI(tilePanel, emodel, Direction.Southwest);
 		addTileGUI(tilePanel, emodel, Direction.South);
 		addTileGUI(tilePanel, emodel, Direction.Southeast);
-		explorationPanel.add(tilePanel, BorderLayout.SOUTH);
+		explorationPanel.add(new JScrollPane(tilePanel), BorderLayout.CENTER);
 		add(explorationPanel);
 		emodel.addPropertyChangeListener(this);
 		pack();
@@ -175,7 +172,8 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		final PropertyChangeSupportSource mainPCS = new PropertyChangeSupportSource(this);
 		panel.add(new JScrollPane(new FixtureList(panel, mainPCS)));
 		final DualTileButton dtb = new DualTileButton();
-		panel.add(new JScrollPane(dtb));
+//		panel.add(new JScrollPane(dtb));
+		panel.add(dtb);
 		dtb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent evt) {
