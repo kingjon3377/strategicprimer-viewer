@@ -40,7 +40,7 @@ public class DualTileButton extends JButton {
 	 * @param pen the Graphics object to draw with.
 	 */
 	@Override
-	public void paintComponent(final Graphics pen) {
+	protected void paintComponent(final Graphics pen) {
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2, this);
 		pen.setClip(new Polygon(
 				new int[] { getWidth() - MARGIN, MARGIN, MARGIN }, new int[] {
