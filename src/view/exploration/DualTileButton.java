@@ -32,15 +32,23 @@ public class DualTileButton extends JButton {
 		two = second;
 	}
 	/**
+	 * How much margin to give.
+	 */
+	private static final int MARGIN = 2;
+	/**
 	 * Paint the component.
 	 * @param pen the Graphics object to draw with.
 	 */
 	@Override
 	public void paintComponent(final Graphics pen) {
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2, this);
-		pen.setClip(new Polygon(new int[] { getWidth(), 0, 0 }, new int[] { 0, getHeight(), 0 }, 3));
+		pen.setClip(new Polygon(
+				new int[] { getWidth() - MARGIN, MARGIN, MARGIN }, new int[] {
+						MARGIN, getHeight() - MARGIN, MARGIN }, 3));
 		helper.drawTile(pen, one, getWidth(), getHeight());
-		pen.setClip(new Polygon(new int[] { getWidth(), getWidth(), 0 }, new int[] { 0, getHeight(), getHeight() }, 3));
+		pen.setClip(new Polygon(new int[] { getWidth() - MARGIN,
+				getWidth() - MARGIN, MARGIN }, new int[] { MARGIN,
+				getHeight() - MARGIN, getHeight() - MARGIN }, 3));
 		helper.drawTile(pen, two, getWidth(), getHeight());
 	}
 }
