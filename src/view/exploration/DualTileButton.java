@@ -47,9 +47,9 @@ public class DualTileButton extends JButton {
 	@Override
 	public void paintComponent(final Graphics pen) {
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2, this);
-		pen.setClip(new Polygon(new int[] { getHeight(), 0, 0 }, new int[] { 0, getWidth(), 0 }, 3));
+		pen.setClip(new Polygon(new int[] { getWidth(), 0, 0 }, new int[] { 0, getHeight(), 0 }, 3));
 		helper.drawTile(pen, one, getWidth(), getHeight());
-		pen.setClip(new Polygon(new int[] { getHeight(), getHeight(), 0 }, new int[] { 0, getWidth(), getWidth() }, 3));
+		pen.setClip(new Polygon(new int[] { getWidth(), getWidth(), 0 }, new int[] { 0, getHeight(), getHeight() }, 3));
 		helper.drawTile(pen, two, getWidth(), getHeight());
 	}
 }
