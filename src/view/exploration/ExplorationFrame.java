@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -64,13 +65,11 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		final Container outer = getContentPane();
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
-		final JPanel unitSelPanel = new JPanel(new BorderLayout());
 		final JPanel uspFirst = new JPanel(new BorderLayout());
 		uspFirst.add(new JLabel("Players in all maps:"), BorderLayout.NORTH);
 		playerList = new JList<Player>(new PlayerListModel(emodel));
 		playerList.addListSelectionListener(this);
 		uspFirst.add(playerList, BorderLayout.CENTER);
-		unitSelPanel.add(uspFirst, BorderLayout.WEST);
 		final JPanel uspSecond = new JPanel(new BorderLayout());
 		uspSecond
 				.add(new JLabel(
@@ -86,7 +85,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		final JTextField mpField = new JTextField(5);
 		mpPanel.add(mpField, BorderLayout.EAST);
 		final JButton explButton = new JButton("Start exploring!");
-		final JPanel explorationPanel = new JPanel(new BorderLayout());
+		final JSplitPane explorationPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		explButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
@@ -99,10 +98,14 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		});
 		mpPanel.add(explButton, BorderLayout.SOUTH);
 		uspSecond.add(mpPanel, BorderLayout.SOUTH);
-		unitSelPanel.add(uspSecond, BorderLayout.EAST);
+		final JSplitPane unitSelPanel = new JSplitPane(
+				JSplitPane.HORIZONTAL_SPLIT, uspFirst, uspSecond);
+		unitSelPanel.setDividerLocation(0.5);
+		unitSelPanel.setResizeWeight(0.5);
 		add(unitSelPanel);
 
 		final JPanel headerPanel = new JPanel();
+		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
 		final JButton backButton = new JButton("Select a different explorer");
 		backButton.addActionListener(new ActionListener() {
 			@Override
@@ -127,7 +130,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		headerPanel.add(new JTextField(mpField.getDocument(), null, 5));
-		explorationPanel.add(headerPanel, BorderLayout.NORTH);
+		explorationPanel.setTopComponent(headerPanel);
 		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
 		addTileGUI(tilePanel, emodel, Direction.Northwest);
 		addTileGUI(tilePanel, emodel, Direction.North);
@@ -138,7 +141,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		addTileGUI(tilePanel, emodel, Direction.Southwest);
 		addTileGUI(tilePanel, emodel, Direction.South);
 		addTileGUI(tilePanel, emodel, Direction.Southeast);
-		explorationPanel.add(new JScrollPane(tilePanel), BorderLayout.CENTER);
+		explorationPanel.setBottomComponent(tilePanel);
 		add(explorationPanel);
 		emodel.addPropertyChangeListener(this);
 		pack();
