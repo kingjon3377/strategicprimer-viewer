@@ -60,8 +60,8 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 	 */
 	public ExplorationFrame(final ExplorationModel emodel) {
 		model = emodel;
-		setMinimumSize(new Dimension(640, 480));
-		setPreferredSize(new Dimension(800, 600));
+		setMinimumSize(new Dimension(768, 480));
+		setPreferredSize(new Dimension(1024, 640));
 		final Container outer = getContentPane();
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
