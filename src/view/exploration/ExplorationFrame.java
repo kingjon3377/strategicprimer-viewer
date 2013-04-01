@@ -59,6 +59,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 	 * @param emodel the exploration model
 	 */
 	public ExplorationFrame(final ExplorationModel emodel) {
+		super("Strategic Primer Exploration");
 		model = emodel;
 		setMinimumSize(new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));
