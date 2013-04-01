@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
@@ -11,11 +12,13 @@ import model.map.IMap;
 import model.map.MapView;
 import util.Warning;
 import view.exploration.ExplorationFrame;
+import view.exploration.ExplorationMenu;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
 import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.MultiIOHandler;
 /**
  * A class to start the exploration GUI.
  * @author Jonathan Lovelace
@@ -85,6 +88,7 @@ public class ExplorationGUI implements ISPDriver {
 			@Override
 			public void run() {
 				final ExplorationFrame gui = new ExplorationFrame(model);
+				gui.setJMenuBar(new ExplorationMenu(new MultiIOHandler(model, new JFileChooser(".")), gui));
 				gui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				gui.setVisible(true);
 			}
