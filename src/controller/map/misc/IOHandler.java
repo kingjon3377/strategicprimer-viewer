@@ -28,19 +28,19 @@ import controller.map.formatexceptions.SPFormatException;
  * @author Jonathan Lovelace
  *
  */
-public final class IOHandler implements ActionListener {
+public class IOHandler implements ActionListener {
 	/**
 	 * Error message fragment when file not found.
 	 */
-	private static final String NOT_FOUND_ERROR = " not found";
+	protected static final String NOT_FOUND_ERROR = " not found";
 	/**
 	 * Error message when the map contains invalid data.
 	 */
-	private static final String INV_DATA_ERROR = "Map contained invalid data";
+	protected static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
 	 * An error message refactored from at least four uses.
 	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file";
+	protected static final String XML_ERROR_STRING = "Error reading XML file";
 	/**
 	 * Logger.
 	 */
@@ -49,7 +49,7 @@ public final class IOHandler implements ActionListener {
 	/**
 	 * File chooser.
 	 */
-	private final JFileChooser chooser;
+	protected final JFileChooser chooser;
 
 	/**
 	 * Handle the "load" menu item.
@@ -129,7 +129,7 @@ public final class IOHandler implements ActionListener {
 	 * @param filename the file we were trying to process
 	 * @param source the component to use as the parent of the error dialog
 	 */
-	private static void handleError(final Exception except,
+	protected static void handleError(final Exception except,
 			final String filename, final Component source) {
 		// ESCA-JAVA0177:
 		String msg;
@@ -189,7 +189,7 @@ public final class IOHandler implements ActionListener {
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException if the file contains invalid data
 	 */
-	private static MapView readMap(final String filename, final Warning warner)
+	protected static MapView readMap(final String filename, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		return new MapReaderAdapter().readMap(filename, warner);
 	}
