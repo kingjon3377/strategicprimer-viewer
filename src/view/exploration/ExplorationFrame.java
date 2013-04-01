@@ -218,7 +218,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 				if (subs.hasNext()) {
 					tileTwo = subs.next().first().getTile(point);
 				} else {
-					tileTwo = new Tile(TileType.NotVisible);
+					tileTwo = new Tile(TileType.NotVisible); // NOPMD
 				}
 				mains.get(dir).firePropertyChange("tile", null, tileOne);
 				seconds.get(dir).firePropertyChange("tile", null, tileTwo);
