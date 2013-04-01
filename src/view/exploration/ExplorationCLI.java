@@ -133,22 +133,26 @@ public class ExplorationCLI {
 	/**
 	 * FIXME: *Some* explorers *would* notice even unexposed ground.
 	 *
+	 * FIXME: Move to some class separate from this and ExplorationFrame, or a superclass.
+	 *
 	 * @param unit a unit
 	 * @param fix a fixture
 	 * @return whether the unit might notice it. Units do not notice themselves,
 	 *         and do not notice unexposed ground.
 	 */
-	private static boolean mightNotice(final Unit unit, final TileFixture fix) {
+	static boolean mightNotice(final Unit unit, final TileFixture fix) {
 		return (fix instanceof Ground && ((Ground) fix).isExposed())
 				|| !(fix instanceof Ground || fix.equals(unit));
 	}
 
 	/**
+	 * FIXME: Move to some class separate from this and ExplorationFrame, or a superclass.
+	 *
 	 * @param unit a unit
 	 * @param fix a fixture
 	 * @return whether the unit should always notice it.
 	 */
-	private static boolean shouldAlwaysNotice(final Unit unit, final TileFixture fix) {
+	static boolean shouldAlwaysNotice(final Unit unit, final TileFixture fix) {
 		return fix instanceof Mountain
 				|| fix instanceof RiverFixture
 				|| fix instanceof Hill
