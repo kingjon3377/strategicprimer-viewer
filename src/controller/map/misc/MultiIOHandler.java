@@ -9,14 +9,12 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
-import controller.map.formatexceptions.SPFormatException;
-
+import model.map.IMap;
+import model.misc.IMultiMapModel;
 import util.Pair;
 import util.Warning;
 import view.util.ErrorShower;
-
-import model.map.IMap;
-import model.misc.IMultiMapModel;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * An extension of the IOHandler class to handle I/O items dealing with subordinate maps.
