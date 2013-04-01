@@ -36,6 +36,7 @@ import model.map.Tile;
 import model.map.TileType;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
+import util.IsNumeric;
 import util.Pair;
 import util.PropertyChangeSource;
 import util.PropertyChangeSupportSource;
@@ -131,6 +132,19 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		headerPanel.add(new JTextField(mpField.getDocument(), null, 5));
+		emodel.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public final void propertyChange(final PropertyChangeEvent evt) {
+				if ("cost".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Integer) {
+					final int cost = ((Integer) evt.getNewValue()).intValue();
+					if (IsNumeric.isNumeric(mpField.getText().trim())) {
+						int mpoints = Integer.parseInt(mpField.getText().trim());
+						mpoints -= cost;
+						mpField.setText(Integer.toString(mpoints));
+					}
+				}
+			}
+		});
 		explorationPanel.setTopComponent(headerPanel);
 		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
 		addTileGUI(tilePanel, emodel, Direction.Northwest);
@@ -185,6 +199,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 					emodel.move(direction);
 				} catch (TraversalImpossibleException except) {
 					propertyChange(new PropertyChangeEvent(this, "point", null, emodel.getSelectedUnitLocation()));
+					propertyChange(new PropertyChangeEvent(this, "cost", Integer.valueOf(0), Integer.valueOf(1)));
 				}
 			}
 		});
