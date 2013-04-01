@@ -58,13 +58,130 @@ import view.map.details.FixtureList;
 public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		ListSelectionListener, PropertyChangeListener {
 	/**
+	 * A list-data-listener to select a random but suitable set of fixtures to be 'discovered' if the tile is explored.
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private final class ExplorationListListener implements ListDataListener {
+		/**
+		 * The list this is attached to.
+		 */
+		private final FixtureList list;
+		/**
+		 * Constructor.
+		 * @param mainList the list this is attached to
+		 */
+		ExplorationListListener(final FixtureList mainList) {
+			list = mainList;
+		}
+		/**
+		 * @param evt an event indicating items were removed from the list
+		 */
+		@Override
+		public void intervalRemoved(final ListDataEvent evt) {
+			randomizeSelection();
+		}
+		/**
+		 * @param evt an event indicating items were added to the list
+		 */
+		@Override
+		public void intervalAdded(final ListDataEvent evt) {
+			randomizeSelection();
+		}
+		/**
+		 * @param evt an event indicating items were changed in the list
+		 */
+		@Override
+		public void contentsChanged(final ListDataEvent evt) {
+			randomizeSelection();
+		}
+		/**
+		 * Select a suitable but randomized selection of fixtures.
+		 */
+		private void randomizeSelection() {
+			list.clearSelection();
+			final List<Pair<Integer, TileFixture>> constants = new ArrayList<Pair<Integer, TileFixture>>();
+			final List<Pair<Integer, TileFixture>> possibles = new ArrayList<Pair<Integer, TileFixture>>();
+			for (int i = 0; i < list.getModel().getSize(); i++) {
+				final TileFixture fix = list.getModel().getElementAt(i);
+				if (ExplorationCLI.shouldAlwaysNotice(
+						model.getSelectedUnit(), fix)) {
+					constants.add(Pair.of(Integer.valueOf(i), fix));
+				} else if (ExplorationCLI.mightNotice(
+						model.getSelectedUnit(), fix)) {
+					possibles.add(Pair.of(Integer.valueOf(i), fix));
+				}
+			}
+			Collections.shuffle(possibles);
+			if (!possibles.isEmpty()) {
+				constants.add(possibles.get(0));
+			}
+			final int[] indices = new int[constants.size()];
+			for (int i = 0; i < constants.size(); i++) {
+				indices[i] = constants.get(i).first().intValue();
+			}
+			list.setSelectedIndices(indices);
+		}
+	}
+	/**
+	 * The listener for clicks on tile buttons indicating movement.
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private final class TileClickListener implements ActionListener {
+		/**
+		 * The direction this button is from the currently selected tile.
+		 */
+		private final Direction direction;
+		/**
+		 * The list of fixtures on this tile in the main map.
+		 */
+		private final FixtureList list;
+		/**
+		 * Constructor.
+		 * @param direct what direction this button is from the center.
+		 * @param mainList the list of fixtures on this tile in the main map.
+		 */
+		TileClickListener(final Direction direct, final FixtureList mainList) {
+			direction = direct;
+			list = mainList;
+		}
+		/**
+		 * @param evt the event to handle.
+		 *
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent evt) {
+			try {
+				final List<TileFixture> fixtures = list
+						.getSelectedValuesList();
+				model.move(direction);
+				for (final Pair<IMap, String> pair : model
+						.getSubordinateMaps()) {
+					final IMap map = pair.first();
+					final Tile tile = map.getTile(model
+							.getSelectedUnitLocation());
+					for (final TileFixture fix : fixtures) {
+						tile.addFixture(fix);
+					}
+				}
+			} catch (TraversalImpossibleException except) {
+				propertyChange(new PropertyChangeEvent(this, "point", null,
+						model.getSelectedUnitLocation()));
+				propertyChange(new PropertyChangeEvent(this, "cost",
+						Integer.valueOf(0), Integer.valueOf(1)));
+			}
+		}
+	}
+	/**
 	 * The list of players.
 	 */
 	private final JList<Player> playerList;
 	/**
 	 * The exploration model.
 	 */
-	private final ExplorationModel model;
+	protected final ExplorationModel model;
 
 	/**
 	 * Constructor.
@@ -133,15 +250,15 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		headerPanel.add(new JTextField(mpField.getDocument(), null, 5));
 		explorationPanel.setTopComponent(headerPanel);
 		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
-		addTileGUI(tilePanel, emodel, Direction.Northwest);
-		addTileGUI(tilePanel, emodel, Direction.North);
-		addTileGUI(tilePanel, emodel, Direction.Northeast);
-		addTileGUI(tilePanel, emodel, Direction.West);
-		addTileGUI(tilePanel, emodel, Direction.Nowhere);
-		addTileGUI(tilePanel, emodel, Direction.East);
-		addTileGUI(tilePanel, emodel, Direction.Southwest);
-		addTileGUI(tilePanel, emodel, Direction.South);
-		addTileGUI(tilePanel, emodel, Direction.Southeast);
+		addTileGUI(tilePanel, Direction.Northwest);
+		addTileGUI(tilePanel, Direction.North);
+		addTileGUI(tilePanel, Direction.Northeast);
+		addTileGUI(tilePanel, Direction.West);
+		addTileGUI(tilePanel, Direction.Nowhere);
+		addTileGUI(tilePanel, Direction.East);
+		addTileGUI(tilePanel, Direction.Southwest);
+		addTileGUI(tilePanel, Direction.South);
+		addTileGUI(tilePanel, Direction.Southeast);
 		explorationPanel.setBottomComponent(tilePanel);
 		add(explorationPanel);
 		emodel.addPropertyChangeListener(this);
@@ -170,12 +287,10 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 	 * secondary map.
 	 *
 	 * @param panel the panel to add them to
-	 * @param emodel the exploration model to refer to
 	 * @param direction which direction from the currently selected tile this
 	 *        GUI represents.
 	 */
-	private void addTileGUI(final JPanel panel, final ExplorationModel emodel,
-			final Direction direction) {
+	private void addTileGUI(final JPanel panel, final Direction direction) {
 		final PropertyChangeSupportSource mainPCS = new PropertyChangeSupportSource(
 				this);
 		final FixtureList mainList = new FixtureList(panel, mainPCS);
@@ -183,71 +298,8 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		final DualTileButton dtb = new DualTileButton();
 		// panel.add(new JScrollPane(dtb));
 		panel.add(dtb);
-		dtb.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent evt) {
-				try {
-					final List<TileFixture> fixtures = mainList
-							.getSelectedValuesList();
-					emodel.move(direction);
-					for (final Pair<IMap, String> pair : emodel
-							.getSubordinateMaps()) {
-						final IMap map = pair.first();
-						final Tile tile = map.getTile(emodel
-								.getSelectedUnitLocation());
-						for (final TileFixture fix : fixtures) {
-							tile.addFixture(fix);
-						}
-					}
-				} catch (TraversalImpossibleException except) {
-					propertyChange(new PropertyChangeEvent(this, "point", null,
-							emodel.getSelectedUnitLocation()));
-					propertyChange(new PropertyChangeEvent(this, "cost",
-							Integer.valueOf(0), Integer.valueOf(1)));
-				}
-			}
-		});
-		mainList.getModel().addListDataListener(new ListDataListener() {
-			@Override
-			public void intervalRemoved(final ListDataEvent evt) {
-				randomizeSelection();
-			}
-
-			@Override
-			public void intervalAdded(final ListDataEvent evt) {
-				randomizeSelection();
-			}
-
-			@Override
-			public void contentsChanged(final ListDataEvent evt) {
-				randomizeSelection();
-			}
-
-			private void randomizeSelection() {
-				mainList.clearSelection();
-				final List<Pair<Integer, TileFixture>> constants = new ArrayList<Pair<Integer, TileFixture>>();
-				final List<Pair<Integer, TileFixture>> list = new ArrayList<Pair<Integer, TileFixture>>();
-				for (int i = 0; i < mainList.getModel().getSize(); i++) {
-					final TileFixture fix = mainList.getModel().getElementAt(i);
-					if (ExplorationCLI.shouldAlwaysNotice(
-							emodel.getSelectedUnit(), fix)) {
-						constants.add(Pair.of(Integer.valueOf(i), fix));
-					} else if (ExplorationCLI.mightNotice(
-							emodel.getSelectedUnit(), fix)) {
-						list.add(Pair.of(Integer.valueOf(i), fix));
-					}
-				}
-				Collections.shuffle(list);
-				if (!list.isEmpty()) {
-					constants.add(list.get(0));
-				}
-				final int[] indices = new int[constants.size()];
-				for (int i = 0; i < constants.size(); i++) {
-					indices[i] = constants.get(i).first().intValue();
-				}
-				mainList.setSelectedIndices(indices);
-			}
-		});
+		dtb.addActionListener(new TileClickListener(direction, mainList));
+		mainList.getModel().addListDataListener(new ExplorationListListener(mainList));
 		final PropertyChangeSupportSource secPCS = new PropertyChangeSupportSource(
 				this);
 		panel.add(new JScrollPane(new FixtureList(panel, secPCS)));
