@@ -31,7 +31,6 @@ import javax.swing.event.ListSelectionListener;
 
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
-import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.exploration.PlayerListModel;
 import model.map.IMap;
@@ -96,10 +95,6 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		uspSecond.add(unitList, BorderLayout.CENTER);
 		final JPanel mpPanel = new JPanel(new BorderLayout());
 		mpPanel.add(new JLabel("Unit's Movement Points: "), BorderLayout.WEST);
-		/**
-		 * The field storing the unit's available movement points.
-		 */
-		final JTextField mpField = new JTextField(5);
 		mpPanel.add(mpField, BorderLayout.EAST);
 		final JButton explButton = new JButton("Start exploring!");
 		final JSplitPane explorationPanel = new JSplitPane(
@@ -133,38 +128,9 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 			}
 		});
 		headerPanel.add(backButton);
-		final JLabel locLabel = new JLabel(
-				"<html><body>Currently exploring (-1, -1); click a tile to explore it. "
-						+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
-		final IExplorationModel labelModel = emodel;
-		emodel.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public final void propertyChange(final PropertyChangeEvent evt) {
-				if ("point".equalsIgnoreCase(evt.getPropertyName())) {
-					locLabel.setText("<html><body>Currently exploring "
-							+ labelModel.getSelectedUnitLocation()
-							+ "; click a tile to explore it.</body></html>");
-				}
-			}
-		});
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		headerPanel.add(new JTextField(mpField.getDocument(), null, 5));
-		emodel.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public final void propertyChange(final PropertyChangeEvent evt) {
-				if ("cost".equalsIgnoreCase(evt.getPropertyName())
-						&& evt.getNewValue() instanceof Integer) {
-					final int cost = ((Integer) evt.getNewValue()).intValue();
-					if (IsNumeric.isNumeric(mpField.getText().trim())) {
-						int mpoints = Integer
-								.parseInt(mpField.getText().trim());
-						mpoints -= cost;
-						mpField.setText(Integer.toString(mpoints));
-					}
-				}
-			}
-		});
 		explorationPanel.setTopComponent(headerPanel);
 		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
 		addTileGUI(tilePanel, emodel, Direction.Northwest);
@@ -326,6 +292,28 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 				buttons.get(dir).setTiles(tileOne, tileTwo);
 
 			}
+			locLabel.setText("<html><body>Currently exploring "
+					+ model.getSelectedUnitLocation()
+					+ "; click a tile to explore it. "
+					+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
+		} else if ("cost".equalsIgnoreCase(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Integer) {
+			final int cost = ((Integer) evt.getNewValue()).intValue();
+			if (IsNumeric.isNumeric(mpField.getText().trim())) {
+				int mpoints = Integer.parseInt(mpField.getText().trim());
+				mpoints -= cost;
+				mpField.setText(Integer.toString(mpoints));
+			}
 		}
 	}
+	/**
+	 * The text-field containing the running MP total.
+	 */
+	private final JTextField mpField = new JTextField(5);
+	/**
+	 * The label showing the current location of the explorer.
+	 */
+	private final JLabel locLabel = new JLabel(
+			"<html><body>Currently exploring (-1, -1); click a tile to explore it. "
+					+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
 }
