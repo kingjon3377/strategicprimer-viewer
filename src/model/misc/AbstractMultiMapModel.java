@@ -1,12 +1,11 @@
 package model.misc;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import model.map.IMap;
-import util.IteratorStack;
-import util.IteratorWrapper;
 import util.Pair;
 import util.SetPairConverter;
 /**
@@ -46,13 +45,19 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel implemen
 	/**
 	 * @return an iterator over both the main map and the subordinate maps
 	 */
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<Pair<IMap, String>> getAllMaps() {
-		return new IteratorWrapper<Pair<IMap, String>>(
-				new IteratorStack<Pair<IMap, String>>(
-						Collections.singletonList(Pair.of((IMap) getMap(),
-								getMapFilename())), getSubordinateMaps()));
+		final List<Pair<IMap, String>> retval = new ArrayList<Pair<IMap, String>>();
+		retval.add(Pair.of((IMap) getMap(), getMapFilename()));
+		for (Pair<IMap, String> pair : getSubordinateMaps()) {
+			retval.add(pair);
+		}
+		return retval;
+//		return new IteratorWrapper<Pair<IMap, String>>(
+//				new IteratorStack<Pair<IMap, String>>(
+//						Collections.singletonList(Pair.of((IMap) getMap(),
+//								getMapFilename())), getSubordinateMaps()));
 	}
 
 }
