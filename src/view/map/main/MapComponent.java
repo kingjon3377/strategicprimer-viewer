@@ -205,7 +205,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	public void propertyChange(final PropertyChangeEvent evt) {
 		firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
 				evt.getNewValue());
-		if ("tile".equals(evt.getPropertyName()) && !isSelectionVisible()) {
+		if (equalsAny(evt.getPropertyName(), "tile", "point") && !isSelectionVisible()) {
 			fixVisibility();
 		} else if ("map".equals(evt.getPropertyName())) {
 			helper = TileDrawHelperFactory.INSTANCE.factory(
@@ -216,7 +216,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 				list.componentResized(resizeEvt);
 			}
 		}
-		if (equalsAny(evt.getPropertyName(), "map", "tile", "dimensions", "tsize")) {
+		if (equalsAny(evt.getPropertyName(), "map", "point", "tile", "dimensions", "tsize")) {
 			repaint();
 		}
 	}
