@@ -1,6 +1,5 @@
 package view.exploration;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -16,24 +15,17 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import model.exploration.ExplorationModel;
-import model.exploration.ExplorationUnitListModel;
 import model.exploration.IExplorationModel.Direction;
-import model.exploration.PlayerListModel;
 import model.map.IMap;
-import model.map.Player;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
-import model.map.fixtures.mobile.Unit;
 import util.IsNumeric;
 import util.Pair;
 import util.PropertyChangeSource;
@@ -49,11 +41,7 @@ import view.map.details.FixtureList;
  * @author Jonathan Lovelace
  */
 public class ExplorationFrame extends JFrame implements PropertyChangeSource,
-		ListSelectionListener, PropertyChangeListener {
-	/**
-	 * The list of players.
-	 */
-	private final JList<Player> playerList;
+		PropertyChangeListener {
 	/**
 	 * The exploration model.
 	 */
@@ -72,43 +60,19 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		final Container outer = getContentPane();
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
-		final JPanel uspFirst = new JPanel(new BorderLayout());
-		uspFirst.add(new JLabel("Players in all maps:"), BorderLayout.NORTH);
-		playerList = new JList<Player>(new PlayerListModel(emodel));
-		playerList.addListSelectionListener(this);
-		uspFirst.add(playerList, BorderLayout.CENTER);
-		final JPanel uspSecond = new JPanel(new BorderLayout());
-		uspSecond
-				.add(new JLabel(
-						"<html><body><p>Units belonging to that player:</p>"
-								+ "<p>(Selected unit will be used for exploration.)</p></body></html>"),
-						BorderLayout.NORTH);
-		final JList<Unit> unitList = new JList<Unit>(
-				new ExplorationUnitListModel(emodel, this));
-		uspSecond.add(unitList, BorderLayout.CENTER);
-		final JPanel mpPanel = new JPanel(new BorderLayout());
-		mpPanel.add(new JLabel("Unit's Movement Points: "), BorderLayout.WEST);
-		mpPanel.add(mpField, BorderLayout.EAST);
-		final JButton explButton = new JButton("Start exploring!");
+		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
 		final JSplitPane explorationPanel = new JSplitPane(
 				JSplitPane.VERTICAL_SPLIT);
-		explButton.addActionListener(new ActionListener() {
+		esp.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void actionPerformed(final ActionEvent event) {
-				if (!unitList.isSelectionEmpty()) {
-					layout.next(outer);
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if ("switch".equalsIgnoreCase(evt.getPropertyName())) {
 					explorationPanel.validate();
-					emodel.selectUnit(unitList.getSelectedValue());
+					layout.next(outer);
 				}
 			}
 		});
-		mpPanel.add(explButton, BorderLayout.SOUTH);
-		uspSecond.add(mpPanel, BorderLayout.SOUTH);
-		final JSplitPane unitSelPanel = new JSplitPane(
-				JSplitPane.HORIZONTAL_SPLIT, uspFirst, uspSecond);
-		unitSelPanel.setDividerLocation(0.5);
-		unitSelPanel.setResizeWeight(0.5);
-		add(unitSelPanel);
+		add(esp);
 
 		final JPanel headerPanel = new JPanel();
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
@@ -116,14 +80,15 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent event) {
-				unitSelPanel.validate();
+				esp.validate();
 				layout.first(outer);
 			}
 		});
 		headerPanel.add(backButton);
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
-		headerPanel.add(new JTextField(mpField.getDocument(), null, 5));
+		mpField = new JTextField(esp.getMPDocument(), null, 5);
+		headerPanel.add(mpField);
 		explorationPanel.setTopComponent(headerPanel);
 		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
 		addTileGUI(tilePanel, Direction.Northwest);
@@ -187,16 +152,6 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 	}
 
 	/**
-	 * Handle the user selecting a different player.
-	 *
-	 * @param evt event
-	 */
-	@Override
-	public void valueChanged(final ListSelectionEvent evt) {
-		firePropertyChange("player", null, playerList.getSelectedValue());
-	}
-
-	/**
 	 * Handle change in selected location.
 	 *
 	 * @param evt the event to handle
@@ -239,7 +194,7 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 	/**
 	 * The text-field containing the running MP total.
 	 */
-	private final JTextField mpField = new JTextField(5);
+	private final JTextField mpField;
 	/**
 	 * The label showing the current location of the explorer.
 	 */
