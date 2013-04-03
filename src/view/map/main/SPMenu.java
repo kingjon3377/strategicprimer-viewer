@@ -76,17 +76,14 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
-		if (parent instanceof ViewerFrame) {
-			retval.addSeparator();
-			retval.add(creator.createMenuItem("Zoom in", KeyEvent.VK_I,
-					creator.createHotkey(KeyEvent.VK_PLUS),
-					"Increase the visible size of each tile",
-					((ViewerFrame) parent).getZoomListener()));
-			retval.add(creator.createMenuItem("Zoom out", KeyEvent.VK_O,
-					creator.createHotkey(KeyEvent.VK_MINUS),
-					"Decrease the visible size of each tile",
-					((ViewerFrame) parent).getZoomListener()));
-		}
+		retval.addSeparator();
+		final ActionListener zoomListener = new ZoomListener(model);
+		retval.add(creator.createMenuItem("Zoom in", KeyEvent.VK_I,
+				creator.createHotkey(KeyEvent.VK_PLUS),
+				"Increase the visible size of each tile", zoomListener));
+		retval.add(creator.createMenuItem("Zoom out", KeyEvent.VK_O,
+				creator.createHotkey(KeyEvent.VK_MINUS),
+				"Decrease the visible size of each tile", zoomListener));
 		return retval;
 	}
 
