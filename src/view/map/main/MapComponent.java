@@ -2,7 +2,6 @@ package view.map.main;
 
 import static util.EqualsAny.equalsAny;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -53,7 +52,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	public MapComponent(final IViewerModel theMap) {
 		super();
-		setLayout(new BorderLayout());
 		setDoubleBuffered(true);
 		model = theMap;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
