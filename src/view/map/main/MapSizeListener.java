@@ -41,7 +41,6 @@ public class MapSizeListener extends ComponentAdapter {
 	public void componentResized(final ComponentEvent event) {
 		if (event.getComponent() instanceof MapGUI) {
 			synchronized (model) {
-				((MapGUI) event.getSource()).getTileSize();
 				final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
 						model.getMapDimensions().getVersion());
 				final int visibleCols = event.getComponent().getWidth()
