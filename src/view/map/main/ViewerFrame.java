@@ -2,7 +2,6 @@ package view.map.main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -60,11 +59,5 @@ public final class ViewerFrame extends JFrame {
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
-	}
-	/**
-	 * @return this frame
-	 */
-	public Frame getFrame() {
-		return this;
 	}
 }
