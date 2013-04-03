@@ -7,7 +7,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
 
 import model.exploration.ExplorationModel;
 import util.PropertyChangeSource;
@@ -40,8 +39,8 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource {
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
 		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
-		final JSplitPane explorationPanel = new JSplitPane(
-				JSplitPane.VERTICAL_SPLIT);
+		final ExplorationPanel explorationPanel = new ExplorationPanel(emodel,
+				esp.getMPDocument());
 		esp.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
