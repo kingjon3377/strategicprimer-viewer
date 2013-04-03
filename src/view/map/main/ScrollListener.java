@@ -85,47 +85,8 @@ public class ScrollListener implements AdjustmentListener,
 	 * @param component the component to attach the scrollbars to.
 	 */
 	public ScrollListener(final IViewerModel map, final JComponent component) {
-		model = map;
-		final MapDimensions mapDim = model.getMapDimensions();
-		mapDimensions = mapDim;
-		dimensions = map.getDimensions();
-		hbar = new JScrollBar(Adjustable.HORIZONTAL);
-		hbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedPoint().col, 0), 1, 0,
-				mapDim.cols - model.getDimensions().getWidth(), false);
-		hbar.setInputVerifier(new InputVerifier() {
-			/**
-			 * Verify input
-			 *
-			 * @param input the input event to verify
-			 * @return whether to let it proceed
-			 */
-			@Override
-			public boolean verify(final JComponent input) {
-				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), mapDim.cols
-								- map.getDimensions().getWidth());
-			}
-		});
+		this(map, new JScrollBar(Adjustable.HORIZONTAL), new JScrollBar(Adjustable.VERTICAL));
 		component.add(hbar, BorderLayout.SOUTH);
-		vbar = new JScrollBar(Adjustable.VERTICAL);
-		vbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedPoint().row, 0), 1, 0,
-				mapDim.rows - model.getDimensions().getHeight(), false);
-		vbar.setInputVerifier(new InputVerifier() {
-			/**
-			 * Verify input
-			 *
-			 * @param input the input event to verify
-			 * @return whether to let it proceed
-			 */
-			@Override
-			public boolean verify(final JComponent input) {
-				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), mapDim.rows
-								- map.getDimensions().getHeight());
-			}
-		});
 		component.add(vbar, BorderLayout.EAST);
 	}
 
