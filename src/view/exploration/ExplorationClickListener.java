@@ -6,6 +6,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.IMap;
@@ -48,11 +50,24 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 	}
 	/**
 	 * @param evt the event to handle.
-	 *
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				handleMove();
+			}
+		});
+	}
+
+	/**
+	 * Handle a button press. This was refactored out of the actionPerformed
+	 * method because it has to be run on the EDT to prevent concurrency issues,
+	 * and putting this code in the Runnable means accessing private members
+	 * from that inner class ...
+	 */
+	protected void handleMove() {
 		try {
 			final List<TileFixture> fixtures = list
 					.getSelectedValuesList();
