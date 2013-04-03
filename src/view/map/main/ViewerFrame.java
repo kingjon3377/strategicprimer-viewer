@@ -3,9 +3,7 @@ package view.map.main;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
@@ -48,10 +46,8 @@ public final class ViewerFrame extends JFrame {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
 		final MapGUI mapPanel = new MapComponent(map);
-		final JPanel mapSuperPanel = new JPanel(new BorderLayout());
-		mapSuperPanel.add((JComponent) mapPanel, BorderLayout.CENTER);
-		new ScrollListener(map, mapSuperPanel).setUpListeners();
-		add(mapSuperPanel, BorderLayout.CENTER);
+		add(new MapScrollPanel(map, (MapComponent) mapPanel),
+				BorderLayout.CENTER);
 		add(new DetailPanelNG(map.getMapDimensions().version, map),
 				BorderLayout.SOUTH);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
