@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.io.Serializable;
 
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -31,12 +30,6 @@ public final class ViewerFrame extends JFrame {
 	 */
 	private static final int DEFAULT_HEIGHT = 600;
 	/**
-	 * File-choosing dialog. Used often, but immutable, so we don't want to have
-	 * to construct it every time.
-	 */
-	private final JFileChooser chooser = new JFileChooser(".");
-
-	/**
 	 * Initialize size to the specified dimensions. Not that this actually works
 	 * ...
 	 *
@@ -58,7 +51,6 @@ public final class ViewerFrame extends JFrame {
 	public ViewerFrame(final IViewerModel map) {
 		super("Strategic Primer Map Viewer");
 		setLayout(new BorderLayout());
-		chooser.setFileFilter(new MapFileFilter());
 		final MapGUI mapPanel = new MapComponent(map);
 //		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel),
 //				BorderLayout.SOUTH);
