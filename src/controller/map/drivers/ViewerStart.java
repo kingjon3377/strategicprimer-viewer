@@ -18,12 +18,13 @@ import view.map.main.MapFileFilter;
 import view.map.main.SPMenu;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
+import view.util.FilteredFileChooser;
 import view.util.SystemOut;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.FileChooser;
-import controller.map.misc.DriverUsage.ParamCount;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.DriverUsage;
+import controller.map.misc.DriverUsage.ParamCount;
+import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 
@@ -86,13 +87,12 @@ public final class ViewerStart implements ISPDriver {
 				return;
 			}
 		} else {
-			final JFileChooser chooser = new JFileChooser(".");
-			chooser.setFileFilter(new MapFileFilter());
 			final MapReaderAdapter reader = new MapReaderAdapter();
 			final Warning warner = new Warning(Warning.Action.Warn);
 			for (final String filename : args) {
 				try {
-					startFrame(reader.readMap(filename, warner), filename, chooser);
+					startFrame(reader.readMap(filename, warner), filename,
+							new FilteredFileChooser(".", new MapFileFilter()));
 				} catch (final XMLStreamException e) {
 					throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 				} catch (final FileNotFoundException e) {

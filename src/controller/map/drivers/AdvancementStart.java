@@ -16,13 +16,14 @@ import util.Warning;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
+import view.util.FilteredFileChooser;
 import view.util.SystemOut;
 import view.worker.AdvancementFrame;
 import view.worker.WorkerMenu;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
-import controller.map.misc.FileChooser;
 import controller.map.misc.DriverUsage.ParamCount;
+import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
@@ -94,13 +95,13 @@ public final class AdvancementStart implements ISPDriver {
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
-		final JFileChooser chooser = new JFileChooser(".");
-		chooser.setFileFilter(new MapFileFilter());
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				final AdvancementFrame frame = new AdvancementFrame(model);
-				frame.setJMenuBar(new WorkerMenu(new IOHandler(model, chooser), frame));
+				frame.setJMenuBar(new WorkerMenu(new IOHandler(model,
+						new FilteredFileChooser(".", new MapFileFilter())),
+						frame));
 				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				frame.setVisible(true);
 			}

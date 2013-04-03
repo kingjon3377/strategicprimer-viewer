@@ -6,6 +6,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
 import view.map.main.MapFileFilter;
+import view.util.FilteredFileChooser;
 
 /**
  * A class to hide the details of choosing a file from the caller.
@@ -25,7 +26,9 @@ public class FileChooser {
 	/**
 	 * A file chooser.
 	 */
-	private final JFileChooser chooser = new JFileChooser(".");
+	private final FilteredFileChooser chooser = new FilteredFileChooser(".",
+			new MapFileFilter());
+
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid,
 	 * we'll return it instead of showing a dialog.
@@ -34,7 +37,6 @@ public class FileChooser {
 	 */
 	public FileChooser(final String file) {
 		setFilename(file);
-		chooser.setFileFilter(new MapFileFilter());
 	}
 	/**
 	 * No-arg constructor. We'll show a dialog unconditionally when the filename
@@ -50,7 +52,7 @@ public class FileChooser {
 	 * @throws ChoiceInterruptedException when the choice is interrupted or the user declines to choose a file.
 	 */
 	public String getFilename() throws ChoiceInterruptedException {
-		final JFileChooser fileChooser = chooser;
+		final FilteredFileChooser fileChooser = chooser;
 		if (!shouldReturn) {
 			if (SwingUtilities.isEventDispatchThread()) {
 				if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
