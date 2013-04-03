@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
-import view.map.main.SubsetFrame;
+import view.map.misc.SubsetFrame;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
 import controller.map.misc.DriverUsage.ParamCount;

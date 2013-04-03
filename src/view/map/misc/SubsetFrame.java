@@ -1,4 +1,4 @@
-package view.map.main;
+package view.map.misc;
 
 import java.awt.Dimension;
 import java.io.FileNotFoundException;

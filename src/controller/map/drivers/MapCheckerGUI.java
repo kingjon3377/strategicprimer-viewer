@@ -3,7 +3,7 @@ package controller.map.drivers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import view.map.main.MapCheckerFrame;
+import view.map.misc.MapCheckerFrame;
 import controller.map.misc.DriverUsage;
 import controller.map.misc.DriverUsage.ParamCount;
 

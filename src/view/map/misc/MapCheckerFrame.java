@@ -1,4 +1,4 @@
-package view.map.main;
+package view.map.misc;
 
 import java.awt.Color;
 import java.awt.Dimension;
