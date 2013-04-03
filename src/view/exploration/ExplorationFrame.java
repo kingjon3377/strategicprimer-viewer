@@ -9,11 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -24,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -37,9 +32,7 @@ import model.map.IMap;
 import model.map.Player;
 import model.map.Point;
 import model.map.Tile;
-import model.map.TileFixture;
 import model.map.TileType;
-import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import util.IsNumeric;
 import util.Pair;
@@ -57,123 +50,6 @@ import view.map.details.FixtureList;
  */
 public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		ListSelectionListener, PropertyChangeListener {
-	/**
-	 * A list-data-listener to select a random but suitable set of fixtures to be 'discovered' if the tile is explored.
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	private final class ExplorationListListener implements ListDataListener {
-		/**
-		 * The list this is attached to.
-		 */
-		private final FixtureList list;
-		/**
-		 * Constructor.
-		 * @param mainList the list this is attached to
-		 */
-		ExplorationListListener(final FixtureList mainList) {
-			list = mainList;
-		}
-		/**
-		 * @param evt an event indicating items were removed from the list
-		 */
-		@Override
-		public void intervalRemoved(final ListDataEvent evt) {
-			randomizeSelection();
-		}
-		/**
-		 * @param evt an event indicating items were added to the list
-		 */
-		@Override
-		public void intervalAdded(final ListDataEvent evt) {
-			randomizeSelection();
-		}
-		/**
-		 * @param evt an event indicating items were changed in the list
-		 */
-		@Override
-		public void contentsChanged(final ListDataEvent evt) {
-			randomizeSelection();
-		}
-		/**
-		 * Select a suitable but randomized selection of fixtures.
-		 */
-		private void randomizeSelection() {
-			list.clearSelection();
-			final List<Pair<Integer, TileFixture>> constants = new ArrayList<Pair<Integer, TileFixture>>();
-			final List<Pair<Integer, TileFixture>> possibles = new ArrayList<Pair<Integer, TileFixture>>();
-			for (int i = 0; i < list.getModel().getSize(); i++) {
-				final TileFixture fix = list.getModel().getElementAt(i);
-				if (ExplorationCLI.shouldAlwaysNotice(
-						model.getSelectedUnit(), fix)) {
-					constants.add(Pair.of(Integer.valueOf(i), fix));
-				} else if (ExplorationCLI.mightNotice(
-						model.getSelectedUnit(), fix)) {
-					possibles.add(Pair.of(Integer.valueOf(i), fix));
-				}
-			}
-			Collections.shuffle(possibles);
-			if (!possibles.isEmpty()) {
-				constants.add(possibles.get(0));
-			}
-			final int[] indices = new int[constants.size()];
-			for (int i = 0; i < constants.size(); i++) {
-				indices[i] = constants.get(i).first().intValue();
-			}
-			list.setSelectedIndices(indices);
-		}
-	}
-	/**
-	 * The listener for clicks on tile buttons indicating movement.
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	private final class TileClickListener implements ActionListener {
-		/**
-		 * The direction this button is from the currently selected tile.
-		 */
-		private final Direction direction;
-		/**
-		 * The list of fixtures on this tile in the main map.
-		 */
-		private final FixtureList list;
-		/**
-		 * Constructor.
-		 * @param direct what direction this button is from the center.
-		 * @param mainList the list of fixtures on this tile in the main map.
-		 */
-		TileClickListener(final Direction direct, final FixtureList mainList) {
-			direction = direct;
-			list = mainList;
-		}
-		/**
-		 * @param evt the event to handle.
-		 *
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		@Override
-		public void actionPerformed(final ActionEvent evt) {
-			try {
-				final List<TileFixture> fixtures = list
-						.getSelectedValuesList();
-				model.move(direction);
-				for (final Pair<IMap, String> pair : model
-						.getSubordinateMaps()) {
-					final IMap map = pair.first();
-					final Tile tile = map.getTile(model
-							.getSelectedUnitLocation());
-					for (final TileFixture fix : fixtures) {
-						tile.addFixture(fix);
-					}
-				}
-			} catch (TraversalImpossibleException except) {
-				propertyChange(new PropertyChangeEvent(this, "point", null,
-						model.getSelectedUnitLocation()));
-				propertyChange(new PropertyChangeEvent(this, "cost",
-						Integer.valueOf(0), Integer.valueOf(1)));
-			}
-		}
-	}
 	/**
 	 * The list of players.
 	 */
@@ -298,8 +174,10 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource,
 		final DualTileButton dtb = new DualTileButton();
 		// panel.add(new JScrollPane(dtb));
 		panel.add(dtb);
-		dtb.addActionListener(new TileClickListener(direction, mainList));
-		mainList.getModel().addListDataListener(new ExplorationListListener(mainList));
+		final ExplorationClickListener ecl = new ExplorationClickListener(model, direction, mainList);
+		dtb.addActionListener(ecl);
+		ecl.addPropertyChangeListener(this);
+		mainList.getModel().addListDataListener(new ExplorationListListener(model, mainList));
 		final PropertyChangeSupportSource secPCS = new PropertyChangeSupportSource(
 				this);
 		panel.add(new JScrollPane(new FixtureList(panel, secPCS)));
