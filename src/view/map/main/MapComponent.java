@@ -38,10 +38,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	private final IViewerModel model;
 	/**
-	 * Tile size.
-	 */
-	private final TileViewSize tileSize;
-	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
 	private transient TileDrawHelper helper;
@@ -57,7 +53,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	public MapComponent(final IViewerModel theMap) {
 		super();
-		tileSize = new TileViewSize();
 		setLayout(new BorderLayout());
 		setDoubleBuffered(true);
 		model = theMap;
@@ -268,13 +263,5 @@ public final class MapComponent extends JComponent implements MapGUI,
 		}
 		getMapModel().setDimensions(
 				new VisibleDimensions(minRow, maxRow, minCol, maxCol));
-	}
-
-	/**
-	 * @return the size of each tile
-	 */
-	@Override
-	public TileViewSize getTileSize() {
-		return tileSize;
 	}
 }
