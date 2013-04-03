@@ -57,5 +57,8 @@ public final class ViewerFrame extends JFrame {
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
+		final MapWindowSizeListener mwsl = new MapWindowSizeListener((MapComponent) mapPanel);
+		addWindowListener(mwsl);
+		addWindowStateListener(mwsl);
 	}
 }
