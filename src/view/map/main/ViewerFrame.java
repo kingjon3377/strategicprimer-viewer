@@ -54,12 +54,12 @@ public final class ViewerFrame extends JFrame {
 		final MapGUI mapPanel = new MapComponent(map);
 //		add(new DetailPanel(map.getMainMap().getVersion(), map, mapPanel),
 //				BorderLayout.SOUTH);
-		add(new DetailPanelNG(map.getMapDimensions().version, map, mapPanel),
-				BorderLayout.SOUTH);
 		final JPanel mapSuperPanel = new JPanel(new BorderLayout());
 		mapSuperPanel.add((JComponent) mapPanel, BorderLayout.CENTER);
 		new ScrollListener(map, mapSuperPanel).setUpListeners();
 		add(mapSuperPanel, BorderLayout.CENTER);
+		add(new DetailPanelNG(map.getMapDimensions().version, map),
+				BorderLayout.SOUTH);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		zoomListener = new ZoomListener(map);
 		pack();
