@@ -49,7 +49,6 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
 		super(new BorderLayout());
 		model = emodel;
-		final JSplitPane impl = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		final JPanel headerPanel = new JPanel();
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
 		final JButton backButton = new JButton(BACK_TEXT);
@@ -59,7 +58,6 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpField = new JTextField(mpDoc, null, 5);
 		headerPanel.add(mpField);
-		impl.setTopComponent(headerPanel);
 		/**
 		 * TODO: Make the tilePanel and its logic a separate class.
 		 */
@@ -73,7 +71,8 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 		addTileGUI(tilePanel, Direction.Southwest);
 		addTileGUI(tilePanel, Direction.South);
 		addTileGUI(tilePanel, Direction.Southeast);
-		impl.setBottomComponent(tilePanel);
+		final JSplitPane impl = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				headerPanel, tilePanel);
 		add(impl, BorderLayout.CENTER);
 		emodel.addPropertyChangeListener(this);
 	}
