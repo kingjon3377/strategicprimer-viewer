@@ -1,9 +1,9 @@
 package view.map.main;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
@@ -23,6 +23,10 @@ public final class ViewerFrame extends JFrame {
 	 * Default height of the Frame.
 	 */
 	private static final int DEFAULT_HEIGHT = 600;
+	/**
+	 * The default proportion between map and detail panels.
+	 */
+	private static final double MAP_PROPORTION = 0.9;
 	/**
 	 * Initialize size to the specified dimensions. Not that this actually works
 	 * ...
@@ -44,12 +48,13 @@ public final class ViewerFrame extends JFrame {
 	 */
 	public ViewerFrame(final IViewerModel map) {
 		super("Strategic Primer Map Viewer");
-		setLayout(new BorderLayout());
 		final MapGUI mapPanel = new MapComponent(map);
-		add(new MapScrollPanel(map, (MapComponent) mapPanel),
-				BorderLayout.CENTER);
-		add(new DetailPanelNG(map.getMapDimensions().version, map),
-				BorderLayout.SOUTH);
+		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				new MapScrollPanel(map, (MapComponent) mapPanel),
+						new DetailPanelNG(map.getMapDimensions().version, map));
+		split.setDividerLocation(MAP_PROPORTION);
+		split.setResizeWeight(MAP_PROPORTION);
+		setContentPane(split);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
