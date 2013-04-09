@@ -17,6 +17,7 @@ import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
+import model.viewer.TileTypeFixture;
 import util.ArraySet;
 
 /**
@@ -63,6 +64,10 @@ public final class Tile implements XMLWritable,
 		if ((fix instanceof TextFixture) && ((TextFixture) fix).getText()
 				.isEmpty()) {
 			return false; // NOPMD
+		} else if (fix instanceof TileTypeFixture) {
+			final TileType old = getTerrain();
+			setTerrain(((TileTypeFixture) fix).getTileType());
+			return !getTerrain().equals(old); // NOPMD
 		} else {
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {

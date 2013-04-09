@@ -25,6 +25,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.ITownFixture;
+import model.viewer.TileTypeFixture;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -158,6 +159,9 @@ public final class CompactReaderAdapter {
 				return; // NOPMD
 			} else if (obj instanceof Player) {
 				reader = CompactPlayerReader.READER;
+			} else if (obj instanceof TileTypeFixture) {
+				// Skip it.
+				return;
 			} else if (obj instanceof IFixture) {
 				reader = getFixtureReader(((IFixture) obj).getClass());
 			} else {
