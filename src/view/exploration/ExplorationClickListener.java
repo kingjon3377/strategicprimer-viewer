@@ -4,8 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JList;
+import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
 import model.exploration.IExplorationModel;
@@ -69,8 +72,7 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 	 */
 	protected void handleMove() {
 		try {
-			final List<TileFixture> fixtures = list
-					.getSelectedValuesList();
+			final List<TileFixture> fixtures = getSelectedValuesList(list);
 			model.move(direction);
 			for (final Pair<IMap, String> pair : model
 					.getSubordinateMaps()) {
@@ -87,6 +89,27 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 			pcs.firePropertyChange("cost",
 					Integer.valueOf(0), Integer.valueOf(1));
 		}
+	}
+
+	/**
+	 * A reimplementation of {@link JList#getSelectedValuesList()} that's
+	 * guaranteed not to throw an ArrayIndexOutOfBoundsException.
+	 *
+	 * @param list the list to operate on
+	 * @return a list of its selected members
+	 */
+	private static List<TileFixture> getSelectedValuesList(final FixtureList list) {
+		final int[] selections = list.getSelectedIndices();
+		final ListModel<TileFixture> model = list.getModel();
+		final List<TileFixture> retval = new ArrayList<TileFixture>();
+		for (int sel : selections) {
+			if (sel < model.getSize()) {
+				retval.add(model.getElementAt(sel));
+			} else {
+				retval.add(model.getElementAt(model.getSize() - 1));
+			}
+		}
+		return retval;
 	}
 	/**
 	 * A helper to handle notifying listeners of property changes.
