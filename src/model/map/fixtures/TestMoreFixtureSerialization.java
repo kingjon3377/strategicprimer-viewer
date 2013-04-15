@@ -32,6 +32,10 @@ import controller.map.formatexceptions.SPFormatException;
 public final class TestMoreFixtureSerialization extends
 		BaseTestFixtureSerialization {
 	/**
+	 * Extracted constant.
+	 */
+	private static final String OWNER_PROPERTY = "owner";
+	/**
 	 * The default race for a worker.
 	 */
 	private static final String DEFAULT_RACE = "human";
@@ -261,7 +265,7 @@ public final class TestMoreFixtureSerialization extends
 				Village.class, "id", true);
 		assertMissingProperty(
 				"<village name=\"name\" status=\"active\" id=\"0\" />",
-				Village.class, "owner", true);
+				Village.class, OWNER_PROPERTY, true);
 	}
 
 	/**
@@ -275,8 +279,8 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testUnitWarnings() throws XMLStreamException,
 			SPFormatException, IOException { // NOPMD
-		assertMissingProperty("<unit name=\"name\" />", Unit.class, "owner", true);
-		assertMissingProperty("<unit owner=\"\" name=\"name\" />", Unit.class, "owner", true);
+		assertMissingProperty("<unit name=\"name\" />", Unit.class, OWNER_PROPERTY, true);
+		assertMissingProperty("<unit owner=\"\" name=\"name\" />", Unit.class, OWNER_PROPERTY, true);
 		assertMissingProperty("<unit owner=\"1\" name=\"name\" id=\"0\" />",
 				Unit.class, KIND_PROPERTY, true);
 		assertMissingProperty(
@@ -306,7 +310,7 @@ public final class TestMoreFixtureSerialization extends
 				"Deserialize unit with no owner properly", new Unit(new Player(
 						-1, ""), "kind", "unitThree", 3),
 				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />",
-				Unit.class, "owner");
+				Unit.class, OWNER_PROPERTY);
 		final Unit four = new Unit(new Player(3, ""),
 				"unitKind", "", 4);
 		assertMissingPropertyDeserialization(
