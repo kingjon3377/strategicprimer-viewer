@@ -1,6 +1,7 @@
 package model.map.fixtures.towns;
 
 import model.map.HasName;
+import model.map.Player;
 import model.map.TileFixture;
 
 /**
@@ -29,5 +30,10 @@ public interface ITownFixture extends TileFixture, HasName {
 	 * @return the size of the town, fortress, or city
 	 */
 	TownSize size();
+
+	/**
+	 * @return the player that owns the town, fortress, or city
+	 */
+	Player getOwner();
 
 }

@@ -120,6 +120,9 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @return whether the collection was changed by the operation.
 	 */
 	public boolean add(final Player player) {
+		if ("independent".equalsIgnoreCase(player.getName())) {
+			independent = player;
+		}
 		final boolean retval = !players.containsValue(player);
 		players.put(Integer.valueOf(player.getPlayerId()), player);
 		return retval;
@@ -141,5 +144,15 @@ public class PlayerCollection implements Iterable<Player>,
 		} else {
 			return false;
 		}
+	}
+	/**
+	 * The player for "independent" fixtures.
+	 */
+	private Player independent = new Player(-1, "Independent");
+	/**
+	 * @return a player for "independent" fixtures.
+	 */
+	public Player getIndependent() {
+		return independent;
 	}
 }

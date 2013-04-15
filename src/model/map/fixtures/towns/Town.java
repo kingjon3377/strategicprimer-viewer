@@ -1,5 +1,7 @@
 package model.map.fixtures.towns;
 
+import model.map.Player;
+
 
 /**
  * An abandoned, ruined, or burned-out town.
@@ -20,10 +22,12 @@ public final class Town extends AbstractTown {
 	 * @param discdc The DC to discover it.
 	 * @param tName the name of the town, fortress, or city
 	 * @param idNum the ID number.
+	 * @param player the owner of the town
 	 */
 	public Town(final TownStatus tStatus, final TownSize tSize,
-			final int discdc, final String tName, final int idNum) {
-		super(TownKind.Town, tStatus, tSize, tName);
+			final int discdc, final String tName, final int idNum,
+			final Player player) {
+		super(TownKind.Town, tStatus, tSize, tName, player);
 		dc = discdc;
 		id = idNum;
 	}

@@ -90,6 +90,7 @@ public class Fortress implements HasImage,
 	 *
 	 * @return the player that owns the fortress
 	 */
+	@Override
 	public final Player getOwner() {
 		return owner;
 	}

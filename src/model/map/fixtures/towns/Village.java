@@ -2,6 +2,7 @@ package model.map.fixtures.towns;
 
 import model.map.HasImage;
 import model.map.IFixture;
+import model.map.Player;
 import model.map.TileFixture;
 
 /**
@@ -30,15 +31,20 @@ public class Village implements ITownFixture, HasImage {
 	 * @param vstatus the status of the village.
 	 * @param vName the name of the village
 	 * @param idNum the ID number.
+	 * @param player the owner of the village
 	 */
 	public Village(final TownStatus vstatus, final String vName,
-			final int idNum) {
+			final int idNum, final Player player) {
 		super();
 		status = vstatus;
 		name = vName;
 		id = idNum;
+		owner = player;
 	}
-
+	/**
+	 * The "owner" of the village---the player it's pledged to serve.
+	 */
+	private final Player owner;
 	/**
 	 * @return a String representation of the village
 	 */
@@ -137,5 +143,12 @@ public class Village implements ITownFixture, HasImage {
 	@Override
 	public TownSize size() {
 		return TownSize.Small;
+	}
+	/**
+	 * @return the "owner" of the village---the player it's pledged to serve and support
+	 */
+	@Override
+	public final Player getOwner() {
+		return owner;
 	}
 }

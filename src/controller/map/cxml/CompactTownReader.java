@@ -7,20 +7,22 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IEvent;
+import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
-import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.ITownFixture;
+import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -71,11 +73,11 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		// ESCA-JAVA0177:
 		final ITownFixture retval; // NOPMD
 		if ("village".equals(element.getName().getLocalPart())) {
-			retval = parseVillage(element, stream, warner, idFactory);
+			retval = parseVillage(element, stream, players, warner, idFactory);
 		} else if ("fortress".equals(element.getName().getLocalPart())) {
 			retval = parseFortress(element, stream, players, warner, idFactory);
 		} else {
-			retval = parseTown(element, stream, warner, idFactory);
+			retval = parseTown(element, stream, players, warner, idFactory);
 		}
 		return retval;
 	}
@@ -83,31 +85,33 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * Parse a village.
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
+	 * @param players the collection of players in the map
 	 * @param warner the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed village
 	 * @throws SPFormatException on SP format problems
 	 */
 	private Village parseVillage(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final Warning warner,
+			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(element.getName(), stream);
 		return new Village(TownStatus.parseTownStatus(getParameter(element,
 				"status")), getParameter(element, NAME_PARAM, ""), getOrGenerateID(
-				element, warner, idFactory));
+				element, warner, idFactory), getOwnerOrIndependent(element, warner, players));
 	}
 	/**
 	 * Parse a town, city, or fortification.
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
+	 * @param players the collection of players in the map
 	 * @param warner the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
 	private AbstractTown parseTown(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final Warning warner,
+			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final String name = getParameter(element, NAME_PARAM, "");
@@ -115,15 +119,42 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		final TownSize size = TownSize.parseTownSize(getParameter(element, "size"));
 		final int dc = Integer.parseInt(getParameter(element, "dc")); // NOPMD
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
+		final Player owner = getOwnerOrIndependent(element, warner, players); // NOPMD
 		final AbstractTown retval; // NOPMD
 		if ("town".equals(element.getName().getLocalPart())) {
-			retval = new Town(status, size, dc, name, id);
+			retval = new Town(status, size, dc, name, id, owner);
 		} else if ("city".equals(element.getName().getLocalPart())) {
-			retval = new City(status, size, dc, name, id);
+			retval = new City(status, size, dc, name, id, owner);
 		} else {
-			retval = new Fortification(status, size, dc, name, id);
+			retval = new Fortification(status, size, dc, name, id, owner);
 		}
 		spinUntilEnd(element.getName(), stream);
+		return retval;
+	}
+
+	/**
+	 * If the tag has an "owner" parameter, return the player it indicates;
+	 * otherwise, trigger a warning and return the "independent" player.
+	 *
+	 * @param element the tag being parsed
+	 * @param warner the Warning instance to send the warning on
+	 * @param players the collection of players to refer to
+	 * @return the indicated player, or the independent player if none
+	 * @throws SPFormatException on SP format error reading the parameter.
+	 */
+	private Player getOwnerOrIndependent(final StartElement element,
+			final Warning warner, final PlayerCollection players)
+			throws SPFormatException {
+		// ESCA-JAVA0177:
+		final Player retval; // NOPMD
+		if (hasParameter(element, "owner")) {
+			retval = players.getPlayer(Integer.parseInt(getParameter(element, "owner")));
+		} else {
+			warner.warn(new MissingPropertyException(element.getName()
+					.getLocalPart(), "owner", element.getLocation()
+					.getLineNumber()));
+			retval = players.getIndependent();
+		}
 		return retval;
 	}
 	/**
@@ -181,10 +212,12 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			}
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));
+			out.append("\" owner=\"");
+			out.append(Integer.toString(obj.getOwner().getPlayerId()));
 			out.append("\" />\n");
 		} else if (obj instanceof Fortress) {
 			out.append("<fortress owner=\"");
-			out.append(Integer.toString(((Fortress) obj).getOwner().getPlayerId()));
+			out.append(Integer.toString(obj.getOwner().getPlayerId()));
 			if (!obj.getName().isEmpty()) {
 				out.append("\" name=\"");
 				out.append(obj.getName());
@@ -232,6 +265,8 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
+		out.append("\" owner=\"");
+		out.append(Integer.toString(obj.getOwner().getPlayerId()));
 		out.append("\" />\n");
 	}
 }

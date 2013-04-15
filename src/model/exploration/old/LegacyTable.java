@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.IEvent;
+import model.map.Player;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.Cave;
-import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.MineralKind;
+import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.City;
@@ -43,14 +44,15 @@ public class LegacyTable implements EncounterTable {
 	 * Constructor.
 	 */
 	public LegacyTable() {
+		final Player independent = new Player(-1, "Independent");
 		data = new ArrayList<String>();
 		addData(new Battlefield(0, -1));
 		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
-				addData(new City(status, size, 0, "", 0)); // NOPMD
-				addData(new Fortification(status, size, 0, "", 0)); // NOPMD
-				addData(new Town(status, size, 0, "", 0)); // NOPMD
+				addData(new City(status, size, 0, "", 0, independent)); // NOPMD
+				addData(new Fortification(status, size, 0, "", 0, independent)); // NOPMD
+				addData(new Town(status, size, 0, "", 0, independent)); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {

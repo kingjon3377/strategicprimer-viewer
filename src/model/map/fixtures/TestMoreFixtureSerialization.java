@@ -235,15 +235,16 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testVillageSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
+		final Player owner = new Player(-1, "independent");
 		for (final TownStatus status : TownStatus.values()) {
-			final Village one = new Village(status, "villageOne", 1); // NOPMD
+			final Village one = new Village(status, "villageOne", 1, owner); // NOPMD
 			assertSerialization("First Village serialization test, " + status,
 					one, Village.class);
-			final Village two = new Village(status, "villageTwo", 2); // NOPMD
+			final Village two = new Village(status, "villageTwo", 2, owner); // NOPMD
 			assertSerialization("2nd Village serialization test,  " + status,
 					two, Village.class);
 		}
-		final Village three = new Village(TownStatus.Abandoned, "", 3);
+		final Village three = new Village(TownStatus.Abandoned, "", 3, owner);
 		assertMissingPropertyDeserialization(
 				"Serialization of village with no or empty name does The Right Thing",
 				three, createSerializedForm(three, true), Village.class,
@@ -258,6 +259,9 @@ public final class TestMoreFixtureSerialization extends
 				false);
 		assertMissingProperty("<village name=\"name\" status=\"active\" />",
 				Village.class, "id", true);
+		assertMissingProperty(
+				"<village name=\"name\" status=\"active\" id=\"0\" />",
+				Village.class, "owner", true);
 	}
 
 	/**

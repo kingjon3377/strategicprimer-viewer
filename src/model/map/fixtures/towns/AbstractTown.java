@@ -3,6 +3,7 @@ package model.map.fixtures.towns;
 import model.map.HasImage;
 import model.map.IEvent;
 import model.map.IFixture;
+import model.map.Player;
 import model.map.TileFixture;
 
 /**
@@ -20,16 +21,21 @@ public abstract class AbstractTown implements
 	 * @param tSize the size of the town, fortress, or city
 	 * @param tStatus the status of the town, fortress, or city
 	 * @param tName the name of the town, fortress, or city
+	 * @param player the owner of the town, fortress, or city
 	 */
-	protected AbstractTown(final TownKind eKind,
-			final TownStatus tStatus, final TownSize tSize, final String tName) {
+	protected AbstractTown(final TownKind eKind, final TownStatus tStatus,
+			final TownSize tSize, final String tName, final Player player) {
 		super();
 		kind = eKind;
 		status = tStatus;
 		size = tSize;
 		name = tName;
+		owner = player;
 	}
-
+	/**
+	 * The owner of this town, fortress, or city.
+	 */
+	private final Player owner;
 	/**
 	 * The name of this town, fortress, or city.
 	 */
@@ -195,5 +201,12 @@ public abstract class AbstractTown implements
 	@Override
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * @return the player that owns the town
+	 */
+	@Override
+	public final Player getOwner() {
+		return owner;
 	}
 }

@@ -72,22 +72,23 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testCitySerialization() throws XMLStreamException,
 			SPFormatException, IOException {
+		final Player owner = new Player(-1, "independent");
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"First CityEvent serialization test, reflection, status "
 								+ status + ", size " + size, new City(// NOPMD
-								status, size, 10, "oneCity", 0), City.class);
+								status, size, 10, "oneCity", 0, owner), City.class);
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"Second CityEvent serialization test, reflection, status "
 								+ status + ", size " + size, new City(// NOPMD
-								status, size, 40, "twoCity", 1), City.class);
+								status, size, 40, "twoCity", 1, owner), City.class);
 			}
 		}
 		final City three = new City(TownStatus.Active,
-				TownSize.Small, 30, "", 3);
+				TownSize.Small, 30, "", 3, owner);
 		assertSerialization(
 				"Serialization of CityEvent without a name, reflection", three,
 				City.class, new Warning(Warning.Action.Ignore));
@@ -101,6 +102,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></city>",
 				City.class, false);
+		assertMissingProperty(
+				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
+				City.class, "owner", true);
 	}
 
 	/**
@@ -113,22 +117,23 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testFortificationSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
+		final Player owner = new Player(-1, "independent");
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				assertSerialization(
 						"First FortificationEvent serialization test, reflection, status "
 								+ status + ", size " + size,
-						new Fortification(status, size, 10, "one", 1), // NOPMD
+						new Fortification(status, size, 10, "one", 1, owner), // NOPMD
 						Fortification.class);
 				assertSerialization(
 						"Second FortificationEvent serialization test, reflection, status "
 								+ status + " and size " + size,
-						new Fortification(status, size, 40, "two", 2), // NOPMD
+						new Fortification(status, size, 40, "two", 2, owner), // NOPMD
 						Fortification.class);
 			}
 		}
 		final Fortification three = new Fortification(
-				TownStatus.Active, TownSize.Small, 30, "", 3);
+				TownStatus.Active, TownSize.Small, 30, "", 3, owner);
 		assertSerialization(
 				"Serialization of FortificationEvent without a name, reflection",
 				three, Fortification.class, new Warning(
@@ -144,6 +149,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
 						+ "<troll /></fortification>",
 				Fortification.class, false);
+		assertMissingProperty(
+				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
+				Fortification.class, "owner", true);
 	}
 
 	/**
@@ -237,20 +245,21 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testTownSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
+		final Player owner = new Player(-1, "independent");
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				assertSerialization(
 						"First TownEvent serialization test, reflection, status "
 								+ status + " and size " + size, new Town(// NOPMD
-								status, size, 10, "one", 1), Town.class);
+								status, size, 10, "one", 1, owner), Town.class);
 				assertSerialization(
 						"Second TownEvent serialization test, reflection, status "
 								+ status + " and size " + size, new Town(// NOPMD
-								status, size, 40, "two", 2), Town.class);
+								status, size, 40, "two", 2, owner), Town.class);
 			}
 		}
 		final Town three = new Town(TownStatus.Active,
-				TownSize.Small, 30, "", 3);
+				TownSize.Small, 30, "", 3, owner);
 		assertSerialization(
 				"Serialization of TownEvent without a name, reflection", three,
 				Town.class, new Warning(Warning.Action.Ignore));
@@ -270,6 +279,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></town>",
 				Town.class, false);
+		assertMissingProperty(
+				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
+				Town.class, "owner", true);
 	}
 	/**
 	 * First test of serialization of BattlefieldEvents.

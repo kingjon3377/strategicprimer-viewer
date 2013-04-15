@@ -92,12 +92,13 @@ public class OneToTwoConverter { // NOPMD
 			retval.addPlayer(player);
 		}
 		final List<Pair<Point, Tile>> converted = new LinkedList<Pair<Point, Tile>>();
+		final Player independent = retval.getPlayers().getIndependent();
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
 				final Point point = PointFactory.point(row,  col);
 				for (final Pair<Point, Tile> pair : convertTile(
 						point, old.getTile(point), main,
-						idFactory)) {
+						idFactory, independent)) {
 					retval.addTile(pair.first(), pair.second());
 					converted.add(pair);
 				}
@@ -144,14 +145,15 @@ public class OneToTwoConverter { // NOPMD
 	 * @param point its location
 	 * @param main whether this is the main map or a player's map
 	 * @param idFactory the IDFactory to use to get IDs.
+	 * @param independentPlayer the Player to own villages
 	 * @return the equivalent higher-resolution tiles.
 	 */
 	private List<Pair<Point, Tile>> convertTile(final Point point, final Tile tile,
-			final boolean main, final IDFactory idFactory) {
+			final boolean main, final IDFactory idFactory, final Player independentPlayer) {
 		final List<Pair<Point, Tile>> initial = createInitialSubtiles(point, tile, main);
 		if (!tile.isEmpty()) {
 			tile.addFixture(new Village(TownStatus.Active, "", idFactory
-					.createID()));
+					.createID(), independentPlayer));
 			final List<TileFixture> fixtures = new LinkedList<TileFixture>();
 			for (final TileFixture fixture : tile) {
 				fixtures.add(fixture);

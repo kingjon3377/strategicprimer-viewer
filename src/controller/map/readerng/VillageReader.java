@@ -2,6 +2,7 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -48,7 +49,7 @@ public class VillageReader implements INodeHandler<Village> {
 		final Village fix = new Village(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory));
+						warner, idFactory), getPlayerOrIndependent(element, warner, players));
 		return fix;
 	}
 
@@ -77,6 +78,7 @@ public class VillageReader implements INodeHandler<Village> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
+		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
 		return retval;
 	}
 

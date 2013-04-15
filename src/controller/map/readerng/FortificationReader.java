@@ -2,6 +2,7 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -51,7 +52,7 @@ public class FortificationReader implements INodeHandler<Fortification> {
 				TownSize.parseTownSize(XMLHelper.getAttribute(element, "size")),
 				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
 						element, "name", ""), getOrGenerateID(element, warner,
-						idFactory));
+						idFactory), getPlayerOrIndependent(element, warner, players));
 		return fix;
 	}
 
@@ -88,6 +89,7 @@ public class FortificationReader implements INodeHandler<Fortification> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
+		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
 		return retval;
 	}
 	/**

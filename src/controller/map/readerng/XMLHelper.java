@@ -5,6 +5,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.Player;
+import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -156,6 +158,31 @@ public final class XMLHelper {
 		}
 	}
 
+	/**
+	 * If the specified tag has an "owner" property, return the player it
+	 * indicates; otherwise warn about its absence and return the "independent"
+	 * player from the player collection.
+	 * @param element the tag we're working with
+	 * @param warner the Warning instance to send the warning on
+	 * @param players the collection of players to refer to
+	 * @return a suitable player
+	 * @throws SPFormatException on SP format problems reading the attribute.
+	 */
+	public static Player getPlayerOrIndependent(final StartElement element,
+			final Warning warner, final PlayerCollection players)
+			throws SPFormatException {
+		// ESCA-JAVA0177:
+		final Player retval; // NOPMD
+		if (hasAttribute(element, "owner")) {
+			retval = players.getPlayer(Integer.parseInt(getAttribute(element, "owner")));
+		} else {
+			warner.warn(new MissingPropertyException(element.getName()
+					.getLocalPart(), "owner", element.getLocation()
+					.getLineNumber()));
+			retval = players.getIndependent();
+		}
+		return retval;
+	}
 	/**
 	 * If the specified tag has an ID as a property, return it; otherwise warn
 	 * about its absence and generate one.
