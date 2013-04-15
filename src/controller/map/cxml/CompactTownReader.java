@@ -172,10 +172,9 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
-		final Fortress retval = new Fortress(players.getPlayer(Integer
-				.parseInt(getParameter(element, "owner", "-1"))), getParameter(
-				element, NAME_PARAM, ""), getOrGenerateID(element, warner,
-				idFactory));
+		final Fortress retval = new Fortress(getOwnerOrIndependent(element,
+				warner, players), getParameter(element, NAME_PARAM, ""),
+				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && "unit".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
 				retval.addUnit(CompactUnitReader.READER.read(
