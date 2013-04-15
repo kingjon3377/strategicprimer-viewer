@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +27,52 @@ import controller.map.misc.MapReaderAdapter;
  *
  */
 public class SubsetFrame extends JFrame {
+	/**
+	 * A writer to put each line into an HTML paragraph, coloring them appropriately.
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private static final class HTMLWriter extends PrintWriter {
+		/**
+		 * Whether we're in the middle of a line.
+		 */
+		private boolean middle = false;
+		/**
+		 * Constructor.
+		 * @param writer the writer we wrap
+		 */
+		HTMLWriter(final Writer writer) {
+			super(writer);
+		}
+
+		/**
+		 * Start or continue a line.
+		 * @param str the string to print
+		 */
+		@Override
+		public void print(final String str) {
+			if (!middle) {
+				super.print("<p style=\"color:white\">");
+			}
+			super.print(str.replaceAll("\n", "</p><p style=\"color:white\">"));
+			middle = true;
+		}
+
+		/**
+		 * Finish a line.
+		 * @param line the end of the line
+		 */
+		@Override
+		public void println(final String line) {
+			if (!middle) {
+				super.print("<p style=\"color:white\">");
+			}
+			super.print(line.replaceAll("\n", "</p><p style=\"color:white\">"));
+			super.println("</p>");
+			middle = false;
+		}
+	}
+
 	/**
 	 * Logger.
 	 */
@@ -166,37 +213,7 @@ public class SubsetFrame extends JFrame {
 			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			return;
 		}
-		final PrintWriter out = new PrintWriter(label.getWriter()) {
-			/**
-			 * Whether we're in the middle of a line.
-			 */
-			private boolean middle = false;
-			/**
-			 * Start or continue a line.
-			 * @param str the string to print
-			 */
-			@Override
-			public void print(final String str) {
-				if (!middle) {
-					super.print("<p style=\"color:white\">");
-				}
-				super.print(str.replaceAll("\n", "</p><p style=\"color:white\">"));
-				middle = true;
-			}
-			/**
-			 * Finish a line.
-			 * @param line the end of the line
-			 */
-			@Override
-			public void println(final String line) {
-				if (!middle) {
-					super.print("<p style=\"color:white\">");
-				}
-				super.print(line.replaceAll("\n", "</p><p style=\"color:white\">"));
-				super.println("</p>");
-				middle = false;
-			}
-		};
+		final PrintWriter out = new HTMLWriter(label.getWriter());
 		if (mainMap.isSubset(map, out)) {
 			printParagraph("OK", "green");
 		} else {
