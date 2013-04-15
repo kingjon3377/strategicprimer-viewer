@@ -8,6 +8,7 @@ import model.viewer.IViewerModel;
 
 /**
  * A class to listen for zoom menu events.
+ * @author Jonathan Lovelace
  */
 public final class ZoomListener implements ActionListener, Serializable {
 	/**

@@ -34,6 +34,10 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactTownReader extends AbstractCompactReader implements CompactReader<ITownFixture> {
 	/**
+	 * The "owner" parameter.
+	 */
+	private static final String OWNER_PARAM = "owner";
+	/**
 	 * The 'name' parameter.
 	 */
 	private static final String NAME_PARAM = "name";
@@ -147,11 +151,11 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			throws SPFormatException {
 		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
-		if (hasParameter(element, "owner")) {
-			retval = players.getPlayer(Integer.parseInt(getParameter(element, "owner")));
+		if (hasParameter(element, OWNER_PARAM)) {
+			retval = players.getPlayer(Integer.parseInt(getParameter(element, OWNER_PARAM)));
 		} else {
 			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), "owner", element.getLocation()
+					.getLocalPart(), OWNER_PARAM, element.getLocation()
 					.getLineNumber()));
 			retval = players.getIndependent();
 		}
@@ -170,7 +174,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	private Fortress parseFortress(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		requireNonEmptyParameter(element, "owner", false, warner);
+		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final Fortress retval = new Fortress(getOwnerOrIndependent(element,
 				warner, players), getParameter(element, NAME_PARAM, ""),
