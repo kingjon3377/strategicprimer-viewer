@@ -164,7 +164,7 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 				mains.get(dir).firePropertyChange("tile", null, tileOne);
 				seconds.get(dir).firePropertyChange("tile", null, tileTwo);
 				buttons.get(dir).setTiles(tileOne, tileTwo);
-
+				buttons.get(dir).repaint();
 			}
 			locLabel.setText("<html><body>Currently exploring "
 					+ model.getSelectedUnitLocation()
