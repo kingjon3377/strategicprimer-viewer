@@ -34,7 +34,8 @@ public class MapWindowSizeListener extends WindowAdapter {
 	@Override
 	public void windowDeiconified(final WindowEvent evt) {
 		final int addend = add ? 1 : -1;
-		add = !add;
+//		add = !add;
+		add ^= true;
 		component.setSize(component.getWidth() + addend, component.getHeight() + addend);
 	}
 
@@ -45,7 +46,8 @@ public class MapWindowSizeListener extends WindowAdapter {
 	@Override
 	public void windowStateChanged(final WindowEvent evt) {
 		final int addend = add ? 1 : -1;
-		add = !add;
+//		add = !add;
+		add ^= true;
 		component.setSize(component.getWidth() + addend, component.getHeight() + addend);
 	}
 }
