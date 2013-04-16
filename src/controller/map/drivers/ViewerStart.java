@@ -89,10 +89,11 @@ public final class ViewerStart implements ISPDriver {
 		} else {
 			final MapReaderAdapter reader = new MapReaderAdapter();
 			final Warning warner = new Warning(Warning.Action.Warn);
+			final FilteredFileChooser chooser = new FilteredFileChooser(".", new MapFileFilter());
 			for (final String filename : args) {
 				try {
 					startFrame(reader.readMap(filename, warner), filename,
-							new FilteredFileChooser(".", new MapFileFilter()));
+							chooser);
 				} catch (final XMLStreamException e) {
 					throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 				} catch (final FileNotFoundException e) {
