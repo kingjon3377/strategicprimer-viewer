@@ -20,10 +20,6 @@ import util.PropertyChangeSource;
 public class FixtureListModel extends DefaultListModel<TileFixture> implements
 		PropertyChangeListener {
 	/**
-	 * The property we listen for.
-	 */
-	private static final String LISTENED_PROP = "tile";
-	/**
 	 * The current tile.
 	 */
 	private Tile tile = new Tile(TileType.NotVisible);
@@ -46,7 +42,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
-		if (LISTENED_PROP.equalsIgnoreCase(evt.getPropertyName())
+		if ("tile".equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Tile) {
 			tile = (Tile) evt.getNewValue();
 			this.clear();
@@ -108,12 +104,5 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	@Override
 	public int hashCode() {
 		return tile.hashCode();
-	}
-	/**
-	 * This is part of a hack to prevent intra-component drops.
-	 * @return the property we listen for
-	 */
-	public String getProperty() {
-		return LISTENED_PROP;
 	}
 }
