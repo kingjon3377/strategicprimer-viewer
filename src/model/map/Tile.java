@@ -210,44 +210,63 @@ public final class Tile implements XMLWritable,
 	@Override
 	public boolean isSubset(final Tile obj, final PrintWriter out) {
 		if (getTerrain().equals(obj.getTerrain())) {
-			final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
-			temp.removeAll(contents);
-			final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
-			final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
-			for (final TileFixture fix : contents) {
-				if (fix instanceof Subsettable) {
-					mySubsettables.put(Integer.valueOf(fix.getID()),
-							(Subsettable<?>) fix);
-				}
-			}
-			boolean retval = true;
-			for (final TileFixture fix : tempList) {
-				if (shouldSkip(fix)) {
-					temp.remove(fix);
-				} else if (fix instanceof Subsettable
-						&& mySubsettables.containsKey(Integer.valueOf(fix
-								.getID()))) {
-					temp.remove(fix);
-					final Subsettable<?> mine = mySubsettables.get(Integer
-							.valueOf(fix.getID()));
-					if (mine instanceof Fortress && fix instanceof Fortress) {
-						retval &= ((Fortress) mine).isSubset((Fortress) fix,
-								out);
-					} else {
-						throw new IllegalStateException(
-								"Unhandled Subsettable class");
-					}
-				}
-			}
-			for (TileFixture fix : temp) {
-				retval = false;
-				out.println("Extra fixture:\t" + fix.toString());
-			}
-			return retval; // NOPMD
+			return isSubsetImpl(obj, out); // NOPMD
 		} else {
 			out.println("Tile type wrong");
 			return false;
 		}
+	}
+	/**
+	 * Implementation of isSubset() assuming that the terrain types match.
+	 * @param obj another Tile
+	 * @return whether it's a strict subset of this one, having no members this
+	 *         one doesn't
+	 * @param out the stream to write details of the differences to
+	 */
+	protected boolean isSubsetImpl(final Tile obj, final PrintWriter out) {
+		final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
+		temp.removeAll(contents);
+		final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
+		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
+		boolean retval = true;
+		for (final TileFixture fix : tempList) {
+			if (shouldSkip(fix)) {
+				temp.remove(fix);
+			} else if (fix instanceof Subsettable
+					&& mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {
+				temp.remove(fix);
+				final Subsettable<?> mine = mySubsettables.get(Integer
+						.valueOf(fix.getID()));
+				if (mine instanceof Fortress && fix instanceof Fortress) {
+					if (!((Fortress) mine).isSubset((Fortress) fix, out)) {
+						retval = false;
+					}
+				} else {
+					throw new IllegalStateException(
+							"Unhandled Subsettable class");
+				}
+			}
+		}
+		for (TileFixture fix : temp) {
+			retval = false;
+			out.println("Extra fixture:\t" + fix.toString());
+		}
+		return retval; // NOPMD
+	}
+
+	/**
+	 * @return the contents of the tile that are Subsettable implementations,
+	 *         each mapped from its ID # to itself.
+	 */
+	private Map<Integer, Subsettable<?>> getSubsettableContents() {
+		final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
+		for (final TileFixture fix : contents) {
+			if (fix instanceof Subsettable) {
+				mySubsettables.put(Integer.valueOf(fix.getID()),
+						(Subsettable<?>) fix);
+			}
+		}
+		return mySubsettables;
 	}
 
 	/**
