@@ -72,7 +72,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testCitySerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final Player owner = new Player(-1, "independent");
+		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				// ESCA-JAVA0076:
@@ -117,7 +117,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testFortificationSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final Player owner = new Player(-1, "independent");
+		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				assertSerialization(
@@ -245,7 +245,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testTownSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final Player owner = new Player(-1, "independent");
+		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				assertSerialization(

@@ -239,7 +239,7 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testVillageSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final Player owner = new Player(-1, "independent");
+		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
 			final Village one = new Village(status, "villageOne", 1, owner); // NOPMD
 			assertSerialization("First Village serialization test, " + status,

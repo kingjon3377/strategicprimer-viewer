@@ -84,7 +84,7 @@ public class Village implements ITownFixture, HasImage {
 	public boolean equals(final Object obj) {
 		return this == obj || (obj instanceof Village && status.equals(((Village) obj).status)
 				&& name.equals(((Village) obj).name)
-				&& id == ((TileFixture) obj).getID());
+				&& id == ((TileFixture) obj).getID()) && owner.equals(((Village) obj).owner);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class Village implements ITownFixture, HasImage {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Village && status.equals(((Village) fix).status)
-				&& name.equals(((Village) fix).name);
+				&& name.equals(((Village) fix).name) && owner.equals(((Village) fix).owner);
 	}
 	/**
 	 * @return the name of the village

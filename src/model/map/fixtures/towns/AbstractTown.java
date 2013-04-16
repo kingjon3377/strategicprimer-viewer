@@ -125,7 +125,8 @@ public abstract class AbstractTown implements
 						&& ((AbstractTown) obj).kind().equals(kind())
 						&& ((AbstractTown) obj).size.equals(size)
 						&& ((AbstractTown) obj).name.equals(name)
-						&& ((AbstractTown) obj).status.equals(status) && ((TileFixture) obj)
+						&& ((AbstractTown) obj).status.equals(status)
+						&& ((AbstractTown) obj).owner.equals(owner) && ((TileFixture) obj)
 						.getID() == getID());
 	}
 
@@ -144,7 +145,7 @@ public abstract class AbstractTown implements
 	 */
 	private boolean equalsContents(final AbstractTown fix) {
 		return fix.kind().equals(kind) && fix.size().equals(size)
-				&& fix.getName().equals(name) && fix.status().equals(status);
+				&& fix.getName().equals(name) && fix.status().equals(status) && fix.owner.equals(owner);
 	}
 	/**
 	 *
