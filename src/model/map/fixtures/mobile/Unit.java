@@ -7,6 +7,7 @@ import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
+import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
@@ -20,7 +21,7 @@ import util.ArraySet;
  *
  */
 public class Unit implements MobileFixture, HasImage,
-		HasKind, FixtureIterable<UnitMember>, HasName {
+		HasKind, FixtureIterable<UnitMember>, HasName, HasOwner {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -65,6 +66,7 @@ public class Unit implements MobileFixture, HasImage,
 	 *
 	 * @return the player that owns the unit
 	 */
+	@Override
 	public final Player getOwner() {
 		return owner;
 	}
