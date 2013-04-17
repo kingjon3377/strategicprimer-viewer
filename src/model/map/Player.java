@@ -113,4 +113,10 @@ public class Player implements XMLWritable, Comparable<Player>, HasName, Seriali
 	public final boolean isCurrent() {
 		return current;
 	}
+	/**
+	 * @return whether this is the (or an) "independent" player---the "owner" of unowned fixtures.
+	 */
+	public final boolean isIndependent() {
+		return "independent".equalsIgnoreCase(getName());
+	}
 }

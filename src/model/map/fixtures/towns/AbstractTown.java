@@ -165,12 +165,8 @@ public abstract class AbstractTown implements
 		final String middle = size.toString() + ' ' + status.toString() + ' '
 				+ kind().toString() + " of DC " + getDC()
 				+ (name.isEmpty() ? " with no name" : " with name " + name);
-		final String ownerName = owner.getName();
-		if ("independent".equalsIgnoreCase(ownerName)) {
-			return "An independent " + middle; // NOPMD
-		} else {
-			return "A " + middle + ", owned by " + ownerName;
-		}
+		return owner.isIndependent() ? "An independent " + middle : "A "
+				+ middle + ", owned by " + owner.getName();
 	}
 
 	/**

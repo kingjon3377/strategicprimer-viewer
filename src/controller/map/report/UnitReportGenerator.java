@@ -34,7 +34,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		builder.append(unit.getKind());
 		builder.append(", named ");
 		builder.append(unit.getName());
-		if ("independent".equalsIgnoreCase(unit.getOwner().getName())) {
+		if (unit.getOwner().isIndependent()) {
 			builder.append(", independent");
 		} else {
 			builder.append(", owned by ");

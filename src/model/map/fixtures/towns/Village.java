@@ -52,12 +52,8 @@ public class Village implements ITownFixture, HasImage {
 	public String toString() {
 		final String middle = status.toString() + " village"
 				+ (name.isEmpty() ? name : " named " + name);
-		final String ownerName = owner.getName();
-		if ("independent".equalsIgnoreCase(ownerName)) {
-			return "Independent " + middle; // NOPMD
-		} else {
-			return middle + ", owned by " + ownerName;
-		}
+		return owner.isIndependent() ? "Independent " + middle : middle
+				+ ", owned by " + owner.getName();
 	}
 
 	/**

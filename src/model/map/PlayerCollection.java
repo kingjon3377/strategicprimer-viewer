@@ -120,7 +120,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @return whether the collection was changed by the operation.
 	 */
 	public boolean add(final Player player) {
-		if ("independent".equalsIgnoreCase(player.getName())) {
+		if (player.isIndependent()) {
 			independent = player;
 		}
 		final boolean retval = !players.containsValue(player);
