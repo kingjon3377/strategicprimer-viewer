@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.mobile.Animal;
@@ -22,11 +23,12 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 * Produce the sub-report on sightings of animals.
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the report
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles) {
+			final TileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> sightings = new HashMap<String, List<Point>>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
@@ -66,6 +68,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	}
 	/**
 	 * @param fixtures the set of fixtures
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @param tiles ignored
 	 * @param item an animal
 	 * @param loc its location
@@ -73,7 +76,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Animal item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer, final Animal item, final Point loc) {
 		return new StringBuilder(atPoint(loc)).append(
 				item.isTraces() ? "tracks or traces of "
 						: (item.isTalking() ? "talking " : "")).append(

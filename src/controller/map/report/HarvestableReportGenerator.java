@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.resources.CacheFixture;
@@ -42,11 +43,12 @@ public class HarvestableReportGenerator extends // NOPMD
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, // NOPMD
-			final TileCollection tiles) {
+			final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder("<h4>Resource Sources</h4>\n");
 		final List<Pair<Point, HarvestableFixture>> list = new ArrayList<Pair<Point, HarvestableFixture>>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -66,16 +68,16 @@ public class HarvestableReportGenerator extends // NOPMD
 			final HarvestableFixture harvestable = pair.second();
 			final Point point = pair.first();
 			if (harvestable instanceof CacheFixture) {
-				caches.add(produce(fixtures, tiles, harvestable, point));
+				caches.add(produce(fixtures, tiles, currentPlayer, harvestable, point));
 			} else if (harvestable instanceof Grove) {
-				groves.add(produce(fixtures, tiles, harvestable, point));
+				groves.add(produce(fixtures, tiles, currentPlayer, harvestable, point));
 			} else if (harvestable instanceof Meadow) {
-				meadows.add(produce(fixtures, tiles, harvestable, point));
+				meadows.add(produce(fixtures, tiles, currentPlayer, harvestable, point));
 			} else if (harvestable instanceof Mine) {
-				mines.add(produce(fixtures, tiles, harvestable, point));
+				mines.add(produce(fixtures, tiles, currentPlayer, harvestable, point));
 			} else if (harvestable instanceof MineralVein) {
 				// TODO: Handle these like shrubs.
-				minerals.add(produce(fixtures, tiles, harvestable, point));
+				minerals.add(produce(fixtures, tiles, currentPlayer, harvestable, point));
 			} else if (harvestable instanceof Shrub) {
 				// ESCA-JAVA0177:
 				final List<Point> shrubPoints; // NOPMD
@@ -89,7 +91,7 @@ public class HarvestableReportGenerator extends // NOPMD
 				fixtures.remove(Integer.valueOf(harvestable.getID()));
 			} else if (harvestable instanceof StoneDeposit) {
 				// TODO: Handle these like shrubs.
-				stone.add(produce(fixtures, tiles, harvestable, point));
+				stone.add(produce(fixtures, tiles, currentPlayer, harvestable, point));
 			}
 		}
 		final HtmlList shrubsText = new HtmlList("<h5>Shrubs, small trees, and such</h5>");
@@ -111,11 +113,12 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @param tiles ignored
 	 * @param item the fixture to report on
 	 * @param loc its location
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report dealing with the fixture
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final HarvestableFixture item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer, final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new StringBuilder(atPoint(loc)).append("A cache of ")// NOPMD
@@ -163,7 +166,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					.toString();
 		} else {
 			// It's a battlefield or cave.
-			return new ExplorableReportGenerator().produce(fixtures, tiles, item, loc);
+			return new ExplorableReportGenerator().produce(fixtures, tiles, currentPlayer, item, loc);
 		}
 	}
 	/**

@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.List;
 
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.map.XMLWritable;
@@ -35,21 +36,23 @@ public abstract class AbstractReportGenerator<T extends XMLWritable> {
 	 * All fixtures that this report references should be removed from the set before returning.
 	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
 	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
-	public abstract String produce(final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles);
+	public abstract String produce(final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles, Player currentPlayer);
 	/**
 	 * Produce a report on a single item.
 	 * All fixtures that this report references should be removed from the set before returning.
-	 * @param item the particular item we are to be reporting on.
-	 * @param loc the location of that item, if it's a fixture.
 	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
 	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * @param currentPlayer the player for whom the report is being produced
+	 * @param item the particular item we are to be reporting on.
+	 * @param loc the location of that item, if it's a fixture.
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	public abstract String produce(
 			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
-			final T item, final Point loc);
+			Player currentPlayer, final T item, final Point loc);
 
 	/**
 	 * @param point a point

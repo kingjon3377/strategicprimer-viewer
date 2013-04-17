@@ -3,6 +3,7 @@ package controller.map.report;
 import util.IntMap;
 import util.Pair;
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.resources.Battlefield;
@@ -19,11 +20,12 @@ public class ExplorableReportGenerator extends
 	 * All fixtures referred to in this report are removed from the collection.
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles) {
+			final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder("<h4>Caves and Battlefields</h4>\n").append(OPEN_LIST);
 		boolean anyCaves = false;
 		boolean anyBattles = false;
@@ -58,11 +60,12 @@ public class ExplorableReportGenerator extends
 	 * @param tiles ignored
 	 * @param item the item to report on
 	 * @param loc its location
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report (more verbose than the bulk produce() above reports) on the item
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final HarvestableFixture item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer, final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new StringBuilder("Caves beneath ").append(loc.toString())// NOPMD

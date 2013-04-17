@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.UnitMember;
@@ -22,11 +23,12 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @param tiles ignored
 	 * @param unit a unit
 	 * @param loc the unit's location
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report on the unit
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Unit unit, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer, final Unit unit, final Point loc) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Unit of type ");
 		builder.append(unit.getKind());
@@ -102,10 +104,11 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * All fixtures referred to in this report are removed from the collection.
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with units
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles) {
+	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units reported above are not described again.)</p>\n");
 		builder.append(OPEN_LIST);
@@ -114,7 +117,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			if (pair.second() instanceof Unit) {
 				anyUnits = true;
 				builder.append(OPEN_LIST_ITEM).append(atPoint(pair.first()))
-						.append(produce(fixtures, tiles, (Unit) pair.second(), pair.first()))
+						.append(produce(fixtures, tiles, currentPlayer, (Unit) pair.second(), pair.first()))
 						.append(CLOSE_LIST_ITEM);
 			}
 		}

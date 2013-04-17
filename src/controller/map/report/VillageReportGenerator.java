@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.towns.Village;
@@ -19,18 +20,19 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 *
 	 * @param fixtures the set of fixtures
 	 * @return the part of the report dealing with villages.
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @param tiles ignored
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles) {
+			final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder("<h4>Villages you know about:</h4>\n").append(OPEN_LIST);
 		boolean any = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
 				any = true;
 				builder.append(OPEN_LIST_ITEM)
-						.append(produce(fixtures, tiles,
+						.append(produce(fixtures, tiles, currentPlayer,
 								(Village) pair.second(), pair.first()))
 						.append(CLOSE_LIST_ITEM);
 			}
@@ -47,11 +49,12 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @param tiles ignored
 	 * @param item the village to report on
 	 * @param loc its location
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the report on the village (its location and name, nothing more)
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Village item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer, final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return new StringBuilder(atPoint(loc)).append(item.getName()).toString();
 	}

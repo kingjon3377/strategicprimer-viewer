@@ -10,6 +10,7 @@ import controller.map.misc.TownComparator;
 import util.IntMap;
 import util.Pair;
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.towns.AbstractTown;
@@ -31,12 +32,13 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with towns, sorted in a way I hope
 	 *         is helpful.
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles) {
+			final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder(
 				"<h4>Cities, towns, and/or fortifications you know about:</h4>\n")
 				.append(OPEN_LIST);
@@ -50,7 +52,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		Collections.sort(sorted, new TownComparator());
 		for (final AbstractTown town : sorted) {
 			builder.append(OPEN_LIST_ITEM)
-					.append(produce(fixtures, tiles, town, townLocs.get(town)))
+					.append(produce(fixtures, tiles, currentPlayer, town, townLocs.get(town)))
 					.append(CLOSE_LIST_ITEM);
 		}
 		builder.append(CLOSE_LIST);
@@ -65,15 +67,16 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * @param tiles ignored
 	 * @param item the town to report on
 	 * @param loc its location
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final ITownFixture item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer, final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produce(fixtures, tiles, (Village) item, loc); // NOPMD
+			return new VillageReportGenerator().produce(fixtures, tiles, currentPlayer, (Village) item, loc); // NOPMD
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produce(fixtures, tiles, (Fortress) item, loc); // NOPMD
+			return new FortressReportGenerator().produce(fixtures, tiles, currentPlayer, (Fortress) item, loc); // NOPMD
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new StringBuilder(atPoint(loc))

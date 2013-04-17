@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import model.map.IFixture;
+import model.map.Player;
 import model.map.Point;
 import model.map.River;
 import model.map.Tile;
@@ -32,19 +33,20 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param fixtures the set of fixtures
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @param tiles the tiles in the map (needed to get terrain information)
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles) {
+			final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder(
 				"<h4>Fortresses in the map:</h4>\n");
 		boolean anyforts = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
 				anyforts = true;
-				builder.append(produce(fixtures, tiles, (Fortress) pair.second(), pair.first()));
+				builder.append(produce(fixtures, tiles, currentPlayer, (Fortress) pair.second(), pair.first()));
 			}
 		}
 		return anyforts ? builder.toString() : "";
@@ -115,11 +117,12 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @param loc its location
 	 * @param fixtures the set of fixtures
 	 * @param tiles the tiles in the map (needed to get terrain information)
+	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Fortress item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer, final Fortress item, final Point loc) {
 		final StringBuilder builder = new StringBuilder("<h5>Fortress ")
 				.append(item.getName()).append(" belonging to ")
 				.append(item.getOwner().toString()).append("</h5>\n")
@@ -134,7 +137,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			builder.append("Units on the tile:\n").append(OPEN_LIST);
 			for (final Unit unit : item) {
 				builder.append(OPEN_LIST_ITEM)
-						.append(urg.produce(fixtures, tiles, unit, loc))
+						.append(urg.produce(fixtures, tiles, currentPlayer, unit, loc))
 						.append(CLOSE_LIST_ITEM);
 			}
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
