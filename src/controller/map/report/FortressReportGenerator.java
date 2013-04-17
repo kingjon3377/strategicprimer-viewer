@@ -125,7 +125,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			final TileCollection tiles, final Player currentPlayer, final Fortress item, final Point loc) {
 		final StringBuilder builder = new StringBuilder("<h5>Fortress ")
 				.append(item.getName()).append(" belonging to ")
-				.append(item.getOwner().toString()).append("</h5>\n")
+				.append(playerNameOrYou(item.getOwner())).append("</h5>\n")
 				.append(OPEN_LIST).append(OPEN_LIST_ITEM).append("Located at ")
 				.append(loc).append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
 		final Tile tile = tiles.getTile(loc);

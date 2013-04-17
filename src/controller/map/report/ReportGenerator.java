@@ -67,9 +67,7 @@ public class ReportGenerator {
 		builder.append(remainderReport(fixtures));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
-		return builder.toString().replaceAll(
-				"owned by " + map.getPlayers().getCurrentPlayer().getName(),
-				"owned by you");
+		return builder.toString();
 	}
 	/**
 	 * TODO: Move to an abstract superclass.

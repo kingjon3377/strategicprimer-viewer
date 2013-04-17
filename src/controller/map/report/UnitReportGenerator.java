@@ -38,7 +38,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			builder.append(", independent");
 		} else {
 			builder.append(", owned by ");
-			builder.append(unit.getOwner().toString());
+			builder.append(playerNameOrYou(unit.getOwner()));
 		}
 		boolean hasMembers = false;
 		for (final UnitMember member : unit) {

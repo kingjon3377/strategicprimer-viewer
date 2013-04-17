@@ -26,19 +26,33 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builder = new StringBuilder("<h4>Villages you know about:</h4>\n").append(OPEN_LIST);
-		boolean any = false;
+		final StringBuilder builderOthers = new StringBuilder("<h4>Villages you know about:</h4>\n").append(OPEN_LIST);
+		boolean anyOthers = false;
+		final StringBuilder builderOwn = new StringBuilder(
+				"<h4>Villages pledged to your service:</h4>\n")
+				.append(OPEN_LIST);
+		boolean anyOwn = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
-				any = true;
-				builder.append(OPEN_LIST_ITEM)
+				final Village village = (Village) pair.second();
+				// ESCA-JAVA0177:
+				final StringBuilder appropriateBuilder; // NOPMD
+				if (village.getOwner().isCurrent()) {
+					anyOwn = true;
+					appropriateBuilder = builderOwn;
+				} else {
+					anyOthers = true;
+					appropriateBuilder = builderOthers;
+				}
+				appropriateBuilder.append(OPEN_LIST_ITEM)
 						.append(produce(fixtures, tiles, currentPlayer,
 								(Village) pair.second(), pair.first()))
 						.append(CLOSE_LIST_ITEM);
 			}
 		}
-		builder.append(CLOSE_LIST);
-		return any ? builder.toString() : "";
+		builderOthers.append(CLOSE_LIST);
+		builderOwn.append(CLOSE_LIST);
+		return (anyOwn ? builderOwn.toString() : "") + (anyOthers ? builderOthers.toString() : "");
 	}
 
 	/**
@@ -56,7 +70,11 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer, final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return new StringBuilder(atPoint(loc)).append(item.getName()).toString();
+		return new StringBuilder(atPoint(loc))
+				.append(item.getName())
+				.append(item.getOwner().isIndependent() ? ", independent"
+						: ", sworn to " + playerNameOrYou(item.getOwner()))
+				.toString();
 	}
 
 }

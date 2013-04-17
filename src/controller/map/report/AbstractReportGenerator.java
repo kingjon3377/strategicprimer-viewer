@@ -85,4 +85,11 @@ public abstract class AbstractReportGenerator<T extends XMLWritable> {
 			return builder.toString();
 		}
 	}
+	/**
+	 * @param player a player
+	 * @return the player's name, or "you" if the player is the current player
+	 */
+	protected String playerNameOrYou(final Player player) {
+		return player.isCurrent() ? "you" : player.getName();
+	}
 }

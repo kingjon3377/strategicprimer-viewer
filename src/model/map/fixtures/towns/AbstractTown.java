@@ -166,7 +166,8 @@ public abstract class AbstractTown implements
 				+ kind().toString() + " of DC " + getDC()
 				+ (name.isEmpty() ? " with no name" : " with name " + name);
 		return owner.isIndependent() ? "An independent " + middle : "A "
-				+ middle + ", owned by " + owner.getName();
+				+ middle + ", owned by "
+				+ (owner.isCurrent() ? "you" : owner.getName());
 	}
 
 	/**
