@@ -54,18 +54,6 @@ public class DetailPanelNG extends JSplitPane {
 
 	}
 	/**
-	 * Maximum height of this panel, in pixels.
-	 */
-	public static final int DETAIL_PAN_MAX_HT = 175;
-	/**
-	 * Preferred width of this panel, in pixels.
-	 */
-	public static final int DETAIL_PANEL_HT = 125;
-	/**
-	 * Minimum width of this panel, in pixels.
-	 */
-	public static final int DETAIL_PAN_MIN_HT = 50;
-	/**
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
