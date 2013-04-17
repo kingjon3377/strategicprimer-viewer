@@ -1,15 +1,15 @@
 package view.map.details;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
+import model.map.Point;
 import util.PropertyChangeSource;
 import view.map.key.KeyPanel;
 
@@ -20,7 +20,39 @@ import view.map.key.KeyPanel;
  * @author Jonathan Lovelace
  *
  */
-public class DetailPanelNG extends JPanel {
+public class DetailPanelNG extends JSplitPane {
+	/**
+	 * A label giving the header for the list of fixtures and saying what the
+	 * current tile's coordinates are.
+	 */
+	private static class HeaderLabel extends JLabel implements PropertyChangeListener {
+		/**
+		 * Constructor.
+		 * @param sources things to listen to for property changes
+		 */
+		HeaderLabel(final PropertyChangeSource... sources) {
+			super(
+					"<html><body><p>Contents of the tile at (-1, -1):</p></body></html>");
+			for (final PropertyChangeSource source : sources) {
+				source.addPropertyChangeListener(this);
+			}
+		}
+		/**
+		 * Handle a property change.
+		 *
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void propertyChange(final PropertyChangeEvent evt) {
+			if ("point".equalsIgnoreCase(evt.getPropertyName())
+					&& evt.getNewValue() instanceof Point) {
+				setText("<html><body><p>Contents of the tile at "
+						+ ((Point) evt.getNewValue()).toString()
+						+ ":</p></body></html>");
+			}
+		}
+
+	}
 	/**
 	 * Maximum height of this panel, in pixels.
 	 */
@@ -34,30 +66,6 @@ public class DetailPanelNG extends JPanel {
 	 */
 	public static final int DETAIL_PAN_MIN_HT = 50;
 	/**
-	 * The maximum width of a list.
-	 */
-	private static final int LIST_MAX_WIDTH = 300;
-	/**
-	 * The minimum width of a list.
-	 */
-	private static final int LIST_MIN_WIDTH = 180;
-	/**
-	 * The preferred width of a list.
-	 */
-	private static final int LIST_WIDTH = 240;
-	/**
-	 * The maximum height of the title labels.
-	 */
-	private static final int LABEL_MAX_HT = 30;
-	/**
-	 * The minimum height of the title labels.
-	 */
-	private static final int LABEL_MIN_HT = 10;
-	/**
-	 * The preferred height of the title labels.
-	 */
-	private static final int LABEL_HEIGHT = 20;
-	/**
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
@@ -65,75 +73,13 @@ public class DetailPanelNG extends JPanel {
 	 */
 	public DetailPanelNG(final int version,
 			final PropertyChangeSource... sources) {
-		super();
-		setComponentSizes(this, new Dimension(Integer.MAX_VALUE,
-				DETAIL_PAN_MIN_HT), new Dimension(Integer.MAX_VALUE,
-				DETAIL_PANEL_HT), new Dimension(Integer.MAX_VALUE,
-				DETAIL_PAN_MAX_HT));
-		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		addListener(new TileDetailPanel(), sources);
+		super(HORIZONTAL_SPLIT, true);
 		final JPanel panelOne = new JPanel(new BorderLayout());
-		panelOne.add(createLabel("Contents of the tile:"),
-				BorderLayout.NORTH);
-		panelOne.add(createList(sources), BorderLayout.CENTER);
-		add(panelOne);
-		addListener(new KeyPanel(version), sources);
-	}
-
-	/**
-	 * Add a subpanel and make it a property-change listener, if it is one.
-	 *
-	 * @param panel the panel to add
-	 *
-	 * @param tileEventSources Sources of property-changing events we want
-	 *        sub-panels to listen to.
-	 */
-	private void addListener(final JPanel panel,
-			final PropertyChangeSource... tileEventSources) {
-		add(panel);
-		if (panel instanceof PropertyChangeListener) {
-			addPropertyChangeListener((PropertyChangeListener) panel);
-			for (final PropertyChangeSource source : tileEventSources) {
-				source.addPropertyChangeListener((PropertyChangeListener) panel);
-			}
-		}
-	}
-	/**
-	 * Set a component's sizes.
-	 * @param <T> the type of the component
-	 * @param component the component
-	 * @param min the minimum size
-	 * @param pref the preferred size
-	 * @param max the maximum size
-	 * @return the component
-	 */
-	private static <T extends JComponent> T setComponentSizes(
-			final T component, final Dimension min, final Dimension pref,
-			final Dimension max) {
-		component.setMinimumSize(min);
-		component.setPreferredSize(pref);
-		component.setMaximumSize(max);
-		return component;
-	}
-	/**
-	 * Create one of the labels. The static constants are effectively parameters.
-	 * @param text the text it should have.
-	 * @return the constructed label
-	 */
-	private static JLabel createLabel(final String text) {
-		return setComponentSizes(new JLabel(text), new Dimension(
-				LIST_MIN_WIDTH, LABEL_MIN_HT), new Dimension(LIST_WIDTH,
-				LABEL_HEIGHT), new Dimension(LIST_MAX_WIDTH, LABEL_MAX_HT));
-	}
-	/**
-	 * Create one of the lists/trees. The static constants are effectively parameters.
-	 * @param sources PropertyChangeSources it should be listening on
-	 * @return a scroll pane containing the list or tree.
-	 */
-	private JScrollPane createList(final PropertyChangeSource... sources) {
-		return setComponentSizes(new JScrollPane(new FixtureList(this, sources)),
-				new Dimension(LIST_MIN_WIDTH, DETAIL_PAN_MIN_HT),
-				new Dimension(LIST_WIDTH, DETAIL_PANEL_HT), new Dimension(
-						LIST_MAX_WIDTH, DETAIL_PAN_MAX_HT));
+		panelOne.add(new HeaderLabel(sources), BorderLayout.NORTH);
+		panelOne.add(new JScrollPane(new FixtureList(this, sources)), BorderLayout.CENTER);
+		setLeftComponent(panelOne);
+		setRightComponent(new KeyPanel(version, sources));
+		setDividerLocation(0.9);
+		setResizeWeight(0.9);
 	}
 }
