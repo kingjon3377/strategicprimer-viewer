@@ -5,8 +5,9 @@ import java.io.Serializable;
 /**
  * A class to encapsulate how big the GUI representation of a tile should be.
  * Now suppoting zooming in and out (changing the size to view more tiles or see
- * the tiles more clearly, not changing what's on them yet). TODO: Even better
- * zoom support.
+ * the tiles more clearly, not changing what's on them yet).
+ *
+ * TODO: Even better zoom support.
  *
  * @author Jonathan Lovelace
  *
