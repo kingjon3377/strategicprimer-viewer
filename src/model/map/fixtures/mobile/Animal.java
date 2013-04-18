@@ -45,8 +45,9 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	private final boolean talking;
 	/**
-	 * The domestication status of the animal. TODO: Should this be an
-	 * enumerated type?
+	 * The domestication status of the animal.
+	 *
+	 * TODO: Should this be an enumerated type?
 	 */
 	private final String status;
 	/**

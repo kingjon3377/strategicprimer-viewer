@@ -18,8 +18,9 @@ public class CacheFixture implements
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * What kind of things this is a cache of. TODO: Should perhaps be
-	 * enumerated, so we can make images more granular.
+	 * What kind of things this is a cache of.
+	 *
+	 * TODO: Should perhaps be enumerated, so we can make images more granular.
 	 */
 	private final String kind;
 	/**

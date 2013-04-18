@@ -49,8 +49,9 @@ public final class MineralVein implements IEvent,
 	}
 
 	/**
-	 * Whether the vein is exposed. TODO: Perhaps this should be mutable and
-	 * protected by accessor methods?
+	 * Whether the vein is exposed.
+	 *
+	 * TODO: Perhaps this should be mutable and protected by accessor methods?
 	 */
 	private final boolean exposed;
 
