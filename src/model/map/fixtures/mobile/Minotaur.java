@@ -6,7 +6,7 @@ import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 
 /**
- * A minotaur. TODO:Should probably be a unit, or something.
+ * A minotaur. TODO: Should probably be a unit, or something.
  *
  * @author Jonathan Lovelace
  *
