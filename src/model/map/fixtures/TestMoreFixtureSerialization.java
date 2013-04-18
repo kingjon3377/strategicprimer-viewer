@@ -270,7 +270,6 @@ public final class TestMoreFixtureSerialization extends
 
 	/**
 	 * Test that a Unit should have an owner, and other errors and warnings.
-	 * TODO: Combine this method with the main Unit tests.
 	 *
 	 * @throws SPFormatException always
 	 * @throws XMLStreamException never
