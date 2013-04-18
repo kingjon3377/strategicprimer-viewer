@@ -27,8 +27,9 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * Produce the part of the report dealing with towns. Note that while this
 	 * class specifies {@link ITownFixture}, this method ignores
 	 * {@link Fortress}es and {@link Village}s. All fixtures referred to in this
-	 * report are removed from the collection. TODO: Figure out some way of
-	 * reporting what was found at any of the towns.
+	 * report are removed from the collection.
+	 *
+	 * TODO: Figure out some way to report what was found at any of the towns.
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
