@@ -55,7 +55,6 @@ public class ExplorableReportGenerator extends
 	}
 	/**
 	 * Produces a more verbose sub-report on a cave or battlefield.
-	 * TODO: Delegate other Harvestables to the dedicated class rather than skipping.
 	 * @param fixtures the set of fixtures.
 	 * @param tiles ignored
 	 * @param item the item to report on
@@ -75,7 +74,8 @@ public class ExplorableReportGenerator extends
 			return new StringBuilder("Signs of a long-ago battle on ").append(// NOPMD
 					loc.toString()).toString();
 		} else {
-			return ""; // TODO: Delegate to a HarvestableReportGenerator class.
+			return new HarvestableReportGenerator().produce(fixtures, tiles,
+					currentPlayer, item, loc);
 		}
 	}
 
