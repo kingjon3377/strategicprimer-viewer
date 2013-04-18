@@ -138,8 +138,9 @@ public class RiverFixture implements TileFixture,
 	}
 
 	/**
-	 * Perhaps (TODO: investigate how FreeCol does it) rivers should have IDs
-	 * (and names ..), though.
+	 * Perhaps rivers should have IDs (and names ..), though.
+	 *
+	 * TODO: investigate how FreeCol does it.
 	 *
 	 * @return an ID for the fixture. This is constant because it's really a
 	 *         container for a ollection of rivers.
