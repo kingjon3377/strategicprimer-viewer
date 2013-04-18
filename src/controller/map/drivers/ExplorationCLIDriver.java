@@ -137,4 +137,11 @@ public class ExplorationCLIDriver implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+	/**
+	 * @return what to call the driver in a CLI list.
+	 */
+	@Override
+	public String getName() {
+		return USAGE_OBJ.getShortDescription();
+	}
 }

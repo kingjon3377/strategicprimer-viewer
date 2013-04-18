@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import model.map.HasName;
 import controller.map.misc.DriverUsage;
 
 /**
@@ -9,7 +10,7 @@ import controller.map.misc.DriverUsage;
  * @author Jonathan Lovelace
  *
  */
-public interface ISPDriver {
+public interface ISPDriver extends HasName {
 	/**
 	 * Run the driver. If the driver is a GUIDriver, this should use
 	 * SwingUtilities.invokeLater(); if it's a CLIDriver, that's not necessary.
