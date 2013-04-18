@@ -132,8 +132,7 @@ public final class TownComparator implements Comparator<AbstractTown>, Serializa
 	/**
 	 * This is hackishly implemented; fortunately, in each case I can rely
 	 * on there being only three (or four, for status) possibilities and the
-	 * two towns' values for them not being the same. TODO: Create proper
-	 * comparators for TownStatus.
+	 * two towns' values for them not being the same.
 	 *
 	 * @param one the first town
 	 * @param two the second
