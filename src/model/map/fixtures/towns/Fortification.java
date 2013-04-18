@@ -6,8 +6,7 @@ import model.map.Player;
 /**
  * An abandoned, ruined, or burned-out fortification.
  *
- * FIXME: We want this to share a tag, and thus probably model code as well,
- * with Fortress.
+ * FIXME: We want this to share a tag, and model code, with Fortress.
  *
  * @author Jonathan Lovelace
  *

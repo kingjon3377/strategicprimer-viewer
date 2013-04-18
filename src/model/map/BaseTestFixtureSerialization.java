@@ -376,7 +376,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		assertEquals(message, obj, reader.readXML(FAKE_FILENAME,
 				new StringReader(createSerializedForm(obj, true)), type, warner));
 
-		// FIXME: We shouldn't require the two to produce *identical* output.
+		// FIXME: We shouldn't require the two to produce _identical_ output.
 		// But adding this in caused a test that should have been passing but
 		// was instead erroring out to start passing.
 		assertEquals(createSerializedForm(obj, false), createSerializedForm(obj, true));
