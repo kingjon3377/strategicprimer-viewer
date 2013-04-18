@@ -29,7 +29,6 @@ public class WorkerReader implements INodeHandler<Worker> {
 		return Worker.class;
 	}
 	/**
-	 * TODO: expand as it gets subtags.
 	 * @return the list of tags this knows how to read.
 	 */
 	@Override

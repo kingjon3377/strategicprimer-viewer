@@ -195,7 +195,6 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		out.append("\" />\n");
 	}
 	/**
-	 * TODO: extend when Worker grows sub-tags.
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
