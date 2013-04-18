@@ -78,8 +78,7 @@ public final class TestExplorationRunner {
 	/**
 	 * Test the getPrimaryTree method.
 	 *
-	 * TODO Use a mock object rather than a real object for the Tile, and even
-	 * for the Tables.
+	 * TODO Use mock objects rather than real Tiles and even Tables.
 	 *
 	 * @throws MissingTableException if a table is missing
 	 */
