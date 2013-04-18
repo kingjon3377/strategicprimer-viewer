@@ -14,9 +14,6 @@ import util.PropertyChangeSource;
 /**
  * The main window for the exploration GUI.
  *
- * FIXME: Too many methods; move some of the inline anonymous classes to their
- * own files.
- *
  * @author Jonathan Lovelace
  */
 public class ExplorationFrame extends JFrame implements PropertyChangeSource {
