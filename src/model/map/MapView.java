@@ -38,8 +38,9 @@ public class MapView implements IMap {
 	private int turn;
 
 	/**
-	 * Test whether another map or map view is a subset of this one. TODO: Check
-	 * changesets.
+	 * Test whether another map or map view is a subset of this one.
+	 *
+	 * TODO: Check changesets.
 	 *
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
