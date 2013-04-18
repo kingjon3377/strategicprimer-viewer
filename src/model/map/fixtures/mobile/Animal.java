@@ -7,8 +7,9 @@ import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 
 /**
- * An animal or group of animals. TODO: Add more features (population, to start
- * with).
+ * An animal or group of animals.
+ *
+ * TODO: Add more features (population, to start with).
  *
  * @author Jonathan Lovelace
  *
