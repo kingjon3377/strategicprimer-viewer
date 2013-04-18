@@ -80,7 +80,7 @@ public class ReportGenerator {
 
 	/**
 	 * All fixtures referred to in this report are removed from the collection,
-	 * just so's it's empty by the end. TODO: Eventually, don't list *everything*.
+	 * just so's it's empty by the end.
 	 *
 	 * @param fixtures the set of fixtures
 	 * @return the part of the report listing the (eventually only notable)
