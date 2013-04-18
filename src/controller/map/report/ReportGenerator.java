@@ -15,9 +15,9 @@ import util.IntMap;
 import util.Pair;
 
 /**
- * A class to produce a report based on a map for a player. TODO: Use some sort
- * of IR for lists, producing the empty string if no members, to simplify these
- * methods!
+ * A class to produce a report based on a map for a player.
+ *
+ * TODO: Use an IR for lists, producing "" if empty, to simplify these methods!
  *
  * @author Jonathan Lovelace
  *
