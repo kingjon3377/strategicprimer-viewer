@@ -7,7 +7,7 @@ import model.map.IFixture;
 import model.map.TileFixture;
 
 /**
- * A deposit (always exposed for now) of stone. TODO: Implement HasKind when stone() returns a String rather than an enumerated type
+ * A deposit (always exposed for now) of stone.
  *
  * @author Jonathan Lovelace
  *
