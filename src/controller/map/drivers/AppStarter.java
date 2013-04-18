@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.swing.SwingUtilities;
 import util.EqualsAny;
 import util.Pair;
 import view.util.AppChooserFrame;
+import controller.map.misc.CLIHelper;
 import controller.map.misc.DriverUsage;
 import controller.map.misc.DriverUsage.ParamCount;
 
@@ -135,8 +137,9 @@ public class AppStarter implements ISPDriver {
 	 * Start the app-chooser window.
 	 * @param gui whether to show the GUI chooser (or a CLI list)
 	 * @param others the parameters to pass to the chosen driver
+	 * @throws DriverFailedException if the chosen driver fails
 	 */
-	private static void startChooser(final boolean gui, final List<String> others) {
+	private static void startChooser(final boolean gui, final List<String> others) throws DriverFailedException {
 		if (gui) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -145,7 +148,21 @@ public class AppStarter implements ISPDriver {
 				}
 			});
 		} else {
-			// TODO: CLI version when --cli
+			final List<ISPDriver> drivers = new ArrayList<ISPDriver>();
+			for (final Pair<ISPDriver, ISPDriver> pair : CACHE.values()) {
+				if (!drivers.contains(pair.first())) {
+					drivers.add(pair.first());
+				}
+			}
+			try {
+				startChosenDriver(drivers.get(new CLIHelper().chooseFromList(
+						drivers, "CLI apps available:",
+						"No applications available", "App to start:", true)),
+						others);
+			} catch (final IOException except) {
+				LOGGER.log(Level.SEVERE, "I/O error prompting user for app to start", except);
+				return;
+			}
 		}
 	}
 	/**
