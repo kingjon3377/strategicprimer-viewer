@@ -13,8 +13,7 @@ import model.map.MapView;
 //ESCA-JAVA0011:
 public abstract class AbstractDriverModel implements IDriverModel {
 	/**
-	 * A helper object to handle property-change listeners for us. TODO: instead
-	 * of making this protected, add a protected firePropertyChange method.
+	 * A helper object to handle property-change listeners for us.
 	 */
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	/**
