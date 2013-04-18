@@ -33,31 +33,19 @@ public class AppStarter implements ISPDriver {
 			AppStarter.class);
 
 	/**
-	 * A pair of Class objects.
-	 */
-	private static final class ClassPair extends Pair<Class<? extends ISPDriver>, Class<? extends ISPDriver>> {
-		/**
-		 * @param first the first class in the pair
-		 * @param second the second class in the pair
-		 */
-		ClassPair(final Class<? extends ISPDriver> first, final Class<? extends ISPDriver> second) {
-			super(first, second);
-		}
-	}
-	/**
 	 * A map from options to the drivers they represent.
 	 */
-	private static final Map<String, ClassPair> CACHE = new HashMap<String, ClassPair>();
+	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE = new HashMap<String, Pair<ISPDriver, ISPDriver>>();
 	/**
 	 * @param first the driver to use if --cli
 	 * @param second the driveer to use if --gui
 	 * @param shrt its short option
 	 * @param lng its long option
 	 */
-	private static void addChoice(final Class<? extends ISPDriver> first,
-			final Class<? extends ISPDriver> second,
+	private static void addChoice(final ISPDriver first,
+			final ISPDriver second,
 			final String shrt, final String lng) {
-		final ClassPair pair = new ClassPair(first, second);
+		final Pair<ISPDriver, ISPDriver> pair = Pair.of(first, second);
 		CACHE.put(shrt, pair);
 		CACHE.put(lng, pair);
 	}
@@ -65,8 +53,8 @@ public class AppStarter implements ISPDriver {
 	 * @param driver a driver to add twice.
 	 */
 	private static void addChoice(final ISPDriver driver) {
-		final ClassPair pair = new ClassPair(driver.getClass(), driver.getClass());
 		final DriverUsage usage = driver.usage();
+		final Pair<ISPDriver, ISPDriver> pair = Pair.of(driver, driver);
 		CACHE.put(usage.getShortOption(), pair);
 		CACHE.put(usage.getLongOption(), pair);
 	}
@@ -79,7 +67,6 @@ public class AppStarter implements ISPDriver {
 	 * @param two a second driver
 	 */
 	private static void addChoice(final ISPDriver one, final ISPDriver two) {
-		final ClassPair pair = new ClassPair(one.getClass(), two.getClass());
 		final DriverUsage oneUsage = one.usage();
 		final DriverUsage twoUsage = two.usage();
 		if (oneUsage.isGraphical() || !twoUsage.isGraphical()) {
@@ -88,6 +75,7 @@ public class AppStarter implements ISPDriver {
 				|| !oneUsage.getLongOption().equals(twoUsage.getLongOption())) {
 	LOGGER.warning("Two-arg addChoice called but options of args don't match");
 		}
+		final Pair<ISPDriver, ISPDriver> pair = Pair.of(one, two);
 		CACHE.put(oneUsage.getShortOption(), pair);
 		CACHE.put(oneUsage.getLongOption(), pair);
 	}
@@ -98,7 +86,7 @@ public class AppStarter implements ISPDriver {
 		// FIXME: Write a proper worker-management GUI
 		// We leave this as the old-style addChoice because here it's a
 		// placeholder for a proper worker GUI
-		addChoice(WorkerReportDriver.class, AdvancementStart.class, "-w", "--worker");
+		addChoice(new WorkerReportDriver(), new AdvancementStart(), "-w", "--worker");
 		addChoice(new ExplorationCLIDriver(), new ExplorationGUI());
 		addChoice(new ReaderComparator(), new DrawHelperComparator());
 		addChoice(new MapChecker(), new MapCheckerGUI());
@@ -126,7 +114,7 @@ public class AppStarter implements ISPDriver {
 		}
 		// FIXME: We assume no driver uses options.
 		boolean gui = true;
-		ClassPair drivers = null;
+		Pair<ISPDriver, ISPDriver> drivers = null;
 		for (final String option : options) {
 			if (EqualsAny.equalsAny(option, "-g", "--gui")) {
 				gui = true;
@@ -139,7 +127,7 @@ public class AppStarter implements ISPDriver {
 		if (drivers == null) {
 			startChooser(gui, others);
 		} else {
-			final Class<? extends ISPDriver> driver = gui ? drivers.second() : drivers.first();
+			final ISPDriver driver = gui ? drivers.second() : drivers.first();
 			startChosenDriver(driver, others);
 		}
 	}
@@ -166,15 +154,9 @@ public class AppStarter implements ISPDriver {
 	 * @param params non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final Class<? extends ISPDriver> driver, // NOPMD
+	private static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
-		try {
-			driver.newInstance().startDriver(params.toArray(new String[params.size()]));
-		} catch (InstantiationException except) {
-			throw new DriverFailedException("Instantiation of proper driver failed", except);
-		} catch (IllegalAccessException except) {
-			throw new DriverFailedException("Instantiation of proper driver failed", except);
-		}
+		driver.startDriver(params.toArray(new String[params.size()]));
 	}
 	/**
 	 * Logger.
