@@ -231,7 +231,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			if (((Fortress) obj).iterator().hasNext()) {
 				out.append('\n');
 				for (final Unit unit : (Fortress) obj) {
-					CompactReaderAdapter.ADAPTER.write(out, unit, indent + 1);
+					CompactUnitReader.READER.write(out, unit, indent + 1);
 				}
 				out.append(indent(indent));
 			}

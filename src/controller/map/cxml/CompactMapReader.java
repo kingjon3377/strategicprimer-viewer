@@ -160,7 +160,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			out.append("\" current_turn=\"");
 			out.append(Integer.toString(((MapView) obj).getCurrentTurn()));
 			out.append("\">\n");
-			CompactReaderAdapter.ADAPTER.write(out, ((MapView) obj).getMap(), indent + 1);
+			write(out, ((MapView) obj).getMap(), indent + 1);
 			out.append(indent(indent));
 			out.append("</view>\n");
 		} else if (obj instanceof SPMap) {
@@ -187,7 +187,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 		}
 		out.append("\">\n");
 		for (Player player : obj.getPlayers()) {
-			CompactReaderAdapter.ADAPTER.write(out, player, indent + 1);
+			CompactPlayerReader.READER.write(out, player, indent + 1);
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
