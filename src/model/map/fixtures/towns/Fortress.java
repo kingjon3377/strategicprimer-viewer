@@ -107,7 +107,8 @@ public class Fortress implements HasImage,
 						&& (name.equals(((Fortress) obj).name))
 						&& ((Fortress) obj).owner.getPlayerId() == owner
 								.getPlayerId()
-						&& ((Fortress) obj).units.equals(units) && ((TileFixture) obj)
+						&& ((Fortress) obj).units.containsAll(units)
+						&& units.containsAll(((Fortress) obj).units) && ((TileFixture) obj)
 						.getID() == id);
 	}
 
@@ -200,8 +201,6 @@ public class Fortress implements HasImage,
 	}
 
 	/**
-	 * FIXME: Uses equals() to compare units.
-	 *
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
@@ -211,8 +210,9 @@ public class Fortress implements HasImage,
 				|| (fix instanceof Fortress
 						&& (name.equals(((Fortress) fix).name))
 						&& ((Fortress) fix).owner.getPlayerId() == owner
-								.getPlayerId() && ((Fortress) fix).units
-							.equals(units));
+								.getPlayerId()
+						&& ((Fortress) fix).units.containsAll(units) && units
+							.containsAll(((Fortress) fix).units));
 	}
 
 	/**
