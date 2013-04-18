@@ -15,8 +15,7 @@ import util.Pair;
 public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	/**
 	 * Produce the report on all villages. All fixtures referred to in this
-	 * report are removed from the collection. TODO: add owners to villages, and
-	 * sort this by owner.
+	 * report are removed from the collection. TODO: sort this by owner.
 	 *
 	 * @param fixtures the set of fixtures
 	 * @return the part of the report dealing with villages.
