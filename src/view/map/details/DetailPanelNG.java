@@ -54,6 +54,25 @@ public class DetailPanelNG extends JSplitPane {
 
 	}
 	/**
+	 * The panel containing the list.
+	 */
+	private static final class ListPanel extends JPanel {
+		/**
+		 * Constructor.
+		 * @param sources PropertyChangeSources to pass to both members of the panel.
+		 */
+		ListPanel(final PropertyChangeSource... sources) {
+			super(new BorderLayout());
+			add(new HeaderLabel(sources), BorderLayout.NORTH);
+			add(new JScrollPane(new FixtureList(this, sources)), BorderLayout.CENTER);
+		}
+	}
+	/**
+	 * The "weight" to give the divider. We want the 'key' to get very little of
+	 * any extra space, but to get some.
+	 */
+	private static final double DIVIDER_LOCATION = 0.9;
+	/**
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
@@ -61,13 +80,8 @@ public class DetailPanelNG extends JSplitPane {
 	 */
 	public DetailPanelNG(final int version,
 			final PropertyChangeSource... sources) {
-		super(HORIZONTAL_SPLIT, true);
-		final JPanel panelOne = new JPanel(new BorderLayout());
-		panelOne.add(new HeaderLabel(sources), BorderLayout.NORTH);
-		panelOne.add(new JScrollPane(new FixtureList(this, sources)), BorderLayout.CENTER);
-		setLeftComponent(panelOne);
-		setRightComponent(new KeyPanel(version, sources));
-		setDividerLocation(0.9);
-		setResizeWeight(0.9);
+		super(HORIZONTAL_SPLIT, true, new ListPanel(sources), new KeyPanel(version, sources));
+		setResizeWeight(DIVIDER_LOCATION);
+		setDividerLocation(DIVIDER_LOCATION);
 	}
 }
