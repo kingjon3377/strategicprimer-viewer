@@ -18,7 +18,6 @@ public class ComparablePair<FIRST extends Comparable<FIRST>, SECOND extends Comp
 	 */
 	protected ComparablePair(final FIRST firstItem, final SECOND secondItem) {
 		super(firstItem, secondItem);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
