@@ -78,8 +78,7 @@ public class ScrollListener implements AdjustmentListener,
 	/**
 	 * Alternate constructor to reduce complexity in the calling class. The
 	 * uncheckable precondition is that the component is using a BorderLayout,
-	 * and doesn't already have members at south or east. But TODO: Much of the
-	 * duplicated code could be centralized.
+	 * and doesn't already have members at south or east.
 	 *
 	 * @param map the map model to work with
 	 * @param component the component to attach the scrollbars to.
