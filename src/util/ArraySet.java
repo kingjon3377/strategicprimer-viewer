@@ -154,11 +154,10 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 				&& containsAll((Set) obj));
 	}
 	/**
-	 * TODO: Should perhaps include data on its contents.
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "ArraySet";
+		return "ArraySet " + impl.toString();
 	}
 }
