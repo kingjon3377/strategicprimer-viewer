@@ -11,14 +11,9 @@ import model.map.IMap;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
-import model.map.fixtures.Ground;
-import model.map.fixtures.RiverFixture;
+import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Hill;
-import model.map.fixtures.terrain.Mountain;
-import model.map.fixtures.towns.Fortress;
 import util.Pair;
 import view.util.SystemOut;
 import controller.map.misc.CLIHelper;
@@ -102,9 +97,9 @@ public class ExplorationCLI {
 		}
 		final Point dPoint = model.getDestination(point, direction);
 		for (TileFixture fix : model.getMap().getTile(dPoint)) {
-			if (shouldAlwaysNotice(model.getSelectedUnit(), fix)) {
+			if (SimpleMovement.shouldAlwaysNotice(model.getSelectedUnit(), fix)) {
 				constants.add(fix);
-			} else if (mightNotice(model.getSelectedUnit(), fix)) {
+			} else if (SimpleMovement.mightNotice(model.getSelectedUnit(), fix)) {
 				allFixtures.add(fix);
 			}
 		}
@@ -129,36 +124,6 @@ public class ExplorationCLI {
 			}
 		}
 		return cost;
-	}
-	/**
-	 * FIXME: *Some* explorers *would* notice even unexposed ground.
-	 *
-	 * FIXME: Move to some class separate from this and ExplorationFrame, or a superclass.
-	 *
-	 * @param unit a unit
-	 * @param fix a fixture
-	 * @return whether the unit might notice it. Units do not notice themselves,
-	 *         and do not notice unexposed ground.
-	 */
-	static boolean mightNotice(final Unit unit, final TileFixture fix) {
-		return (fix instanceof Ground && ((Ground) fix).isExposed())
-				|| !(fix instanceof Ground || fix.equals(unit));
-	}
-
-	/**
-	 * FIXME: Move to some class separate from this and ExplorationFrame, or a superclass.
-	 *
-	 * @param unit a unit
-	 * @param fix a fixture
-	 * @return whether the unit should always notice it.
-	 */
-	static boolean shouldAlwaysNotice(final Unit unit, final TileFixture fix) {
-		return fix instanceof Mountain
-				|| fix instanceof RiverFixture
-				|| fix instanceof Hill
-				|| fix instanceof Forest
-				|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
-						.equals(unit.getOwner()));
 	}
 	/**
 	 * Ask the user for directions the unit should move until it runs out of MP or the user decides to quit.

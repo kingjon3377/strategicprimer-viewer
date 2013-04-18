@@ -9,6 +9,7 @@ import javax.swing.event.ListDataListener;
 
 import model.exploration.IExplorationModel;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.SimpleMovement;
 import util.Pair;
 import view.map.details.FixtureList;
 
@@ -65,11 +66,9 @@ public final class ExplorationListListener implements ListDataListener {
 		final List<Pair<Integer, TileFixture>> possibles = new ArrayList<Pair<Integer, TileFixture>>();
 		for (int i = 0; i < list.getModel().getSize(); i++) {
 			final TileFixture fix = list.getModel().getElementAt(i);
-			if (ExplorationCLI.shouldAlwaysNotice(
-					model.getSelectedUnit(), fix)) {
+			if (SimpleMovement.shouldAlwaysNotice(model.getSelectedUnit(), fix)) {
 				constants.add(Pair.of(Integer.valueOf(i), fix));
-			} else if (ExplorationCLI.mightNotice(
-					model.getSelectedUnit(), fix)) {
+			} else if (SimpleMovement.mightNotice(model.getSelectedUnit(), fix)) {
 				possibles.add(Pair.of(Integer.valueOf(i), fix));
 			}
 		}

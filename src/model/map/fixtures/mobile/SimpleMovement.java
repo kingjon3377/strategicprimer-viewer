@@ -3,9 +3,12 @@ package model.map.fixtures.mobile;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.Ground;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
+import model.map.fixtures.towns.Fortress;
 import util.EqualsAny;
 
 /**
@@ -97,5 +100,31 @@ public final class SimpleMovement {
 			}
 			return false;
 		}
+	}
+	/**
+	 * FIXME: *Some* explorers *would* notice even unexposed ground.
+	 *
+	 * @param unit a unit
+	 * @param fix a fixture
+	 * @return whether the unit might notice it. Units do not notice themselves,
+	 *         and do not notice unexposed ground.
+	 */
+	public static boolean mightNotice(final Unit unit, final TileFixture fix) {
+		return (fix instanceof Ground && ((Ground) fix).isExposed())
+				|| !(fix instanceof Ground || fix.equals(unit));
+	}
+
+	/**
+	 * @param unit a unit
+	 * @param fix a fixture
+	 * @return whether the unit should always notice it.
+	 */
+	public static boolean shouldAlwaysNotice(final Unit unit, final TileFixture fix) {
+		return fix instanceof Mountain
+				|| fix instanceof RiverFixture
+				|| fix instanceof Hill
+				|| fix instanceof Forest
+				|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
+						.equals(unit.getOwner()));
 	}
 }
