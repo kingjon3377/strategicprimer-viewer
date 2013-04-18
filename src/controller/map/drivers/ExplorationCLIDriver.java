@@ -21,8 +21,7 @@ import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 
 /**
- * A CLI to help running exploration. TODO: Some of this should be made more
- * usable from other UIs.
+ * A CLI to help running exploration.
  *
  * @author Jonathan Lovelace
  *
