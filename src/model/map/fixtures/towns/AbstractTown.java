@@ -82,9 +82,6 @@ public abstract class AbstractTown implements
 	}
 
 	/**
-	 * FIXME: What about towns we've already rolled up?
-	 *
-	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -105,11 +102,7 @@ public abstract class AbstractTown implements
 			builder.append(',');
 		}
 		builder.append(" here");
-		if (TownStatus.Active.equals(status) && name.isEmpty()) {
-			builder.append(" (roll it up)");
-		} else {
-			builder.append('.');
-		}
+		builder.append('.');
 		return builder.toString();
 	}
 
