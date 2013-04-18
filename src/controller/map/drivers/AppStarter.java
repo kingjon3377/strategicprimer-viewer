@@ -137,7 +137,7 @@ public class AppStarter implements ISPDriver {
 			}
 		}
 		if (drivers == null) {
-			startChooser(others);
+			startChooser(gui, others);
 		} else {
 			final Class<? extends ISPDriver> driver = gui ? drivers.second() : drivers.first();
 			startChosenDriver(driver, others);
@@ -145,16 +145,20 @@ public class AppStarter implements ISPDriver {
 	}
 	/**
 	 * Start the app-chooser window.
+	 * @param gui whether to show the GUI chooser (or a CLI list)
 	 * @param others the parameters to pass to the chosen driver
 	 */
-	private static void startChooser(final List<String> others) {
-		// TODO: CLI version when --cli
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new AppChooserFrame(others).setVisible(true);
-			}
-		});
+	private static void startChooser(final boolean gui, final List<String> others) {
+		if (gui) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					new AppChooserFrame(others).setVisible(true);
+				}
+			});
+		} else {
+			// TODO: CLI version when --cli
+		}
 	}
 	/**
 	 * Start a driver.
