@@ -16,7 +16,6 @@ import util.ArraySet;
  * these should only be part of a unit, not as a top-level tag. (And TODO: some
  * of the other MobileFixtures should be similarly converted.)
  *
- * TODO: Add Jobs, skills, etc.
  * @author Jonathan Lovelace
  *
  */
