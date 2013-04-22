@@ -68,7 +68,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	}
 
 	/**
-	 * TODO: Figure out how to skip all this (return false) on non-local drags
+	 * TODO: Figure out how to skip all this (return false) on non-local drags.
 	 *
 	 * @param dtde an event
 	 * @return whether the data it holds come from are (probably) from this
