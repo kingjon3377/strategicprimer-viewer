@@ -7,7 +7,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JList;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
@@ -92,7 +91,7 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 	}
 
 	/**
-	 * A reimplementation of {@link JList#getSelectedValuesList()} that's
+	 * A reimplementation of {@link javax.swing.JList#getSelectedValuesList()} that's
 	 * guaranteed not to throw an ArrayIndexOutOfBoundsException.
 	 *
 	 * @param list the list to operate on
