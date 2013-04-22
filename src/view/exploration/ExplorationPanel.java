@@ -124,7 +124,8 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 	private void addTileGUI(final JPanel panel, final Direction direction) {
 		final PropertyChangeSupportSource mainPCS = new PropertyChangeSupportSource(
 				this);
-		final FixtureList mainList = new FixtureList(panel, mainPCS);
+		final FixtureList mainList = new FixtureList(panel, model.getMap()
+				.getPlayers(), mainPCS);
 		panel.add(new JScrollPane(mainList));
 		final DualTileButton dtb = new DualTileButton();
 		// panel.add(new JScrollPane(dtb));
@@ -135,7 +136,9 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 		mainList.getModel().addListDataListener(new ExplorationListListener(model, mainList));
 		final PropertyChangeSupportSource secPCS = new PropertyChangeSupportSource(
 				this);
-		panel.add(new JScrollPane(new FixtureList(panel, secPCS)));
+		panel.add(new JScrollPane(new FixtureList(panel, model
+				.getSubordinateMaps().iterator().next().first().getPlayers(),
+				secPCS)));
 		mains.put(direction, mainPCS);
 		buttons.put(direction, dtb);
 		seconds.put(direction, secPCS);

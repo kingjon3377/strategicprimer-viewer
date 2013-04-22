@@ -8,6 +8,8 @@ import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -17,6 +19,7 @@ import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
+import model.map.PlayerCollection;
 import model.map.TileFixture;
 import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
@@ -36,8 +39,9 @@ public class FixtureList extends JList<TileFixture> implements
 	 *
 	 * @param sources objects the model should listen to
 	 * @param parent a parent of this list
+	 * @param players the players in the map
 	 */
-	public FixtureList(final JComponent parent, final PropertyChangeSource... sources) {
+	public FixtureList(final JComponent parent, final PlayerCollection players, final PropertyChangeSource... sources) {
 		super(new FixtureListModel(sources));
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -54,6 +58,7 @@ public class FixtureList extends JList<TileFixture> implements
 				((FixtureListModel) getModel()).remove(getSelectedValuesList());
 			}
 		});
+		addMouseListener(new FixtureMouseListener(players));
 	}
 	/**
 	 * Start a drag when appropriate.
@@ -87,5 +92,52 @@ public class FixtureList extends JList<TileFixture> implements
 	@Override
 	public int hashCode() {
 		return getModel().hashCode();
+	}
+	/**
+	 * A listener to set up pop-up menus.
+	 */
+	private class FixtureMouseListener extends MouseAdapter {
+		/**
+		 * The collection of players in the map.
+		 */
+		private final PlayerCollection players;
+		/**
+		 * Constructor.
+		 * @param playerColl the collection of players in the map
+		 */
+		FixtureMouseListener(final PlayerCollection playerColl) {
+			players = playerColl;
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		@Override
+		public void mouseClicked(final MouseEvent event) {
+			handleMouseEvent(event);
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		@Override
+		public void mousePressed(final MouseEvent event) {
+			handleMouseEvent(event);
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		@Override
+		public void mouseReleased(final MouseEvent event) {
+			handleMouseEvent(event);
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		private void handleMouseEvent(final MouseEvent event) {
+			if (event.isPopupTrigger() && event.getClickCount() == 1) {
+				new FixtureEditMenu(getModel().getElementAt(
+						locationToIndex(event.getPoint())), players).show(
+						event.getComponent(), event.getX(), event.getY());
+			}
+		}
 	}
 }

@@ -155,4 +155,10 @@ public class PlayerCollection implements Iterable<Player>,
 	public Player getIndependent() {
 		return independent;
 	}
+	/**
+	 * @return an array of the players
+	 */
+	public Player[] asArray() {
+		return players.values().toArray(new Player[players.size()]);
+	}
 }

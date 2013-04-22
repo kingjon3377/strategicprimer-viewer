@@ -48,9 +48,10 @@ public final class ViewerFrame extends JFrame {
 	public ViewerFrame(final IViewerModel map) {
 		super("Strategic Primer Map Viewer");
 		final MapGUI mapPanel = new MapComponent(map);
-		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
-				new MapScrollPanel(map, (MapComponent) mapPanel),
-						new DetailPanelNG(map.getMapDimensions().version, map));
+		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				true, new MapScrollPanel(map, (MapComponent) mapPanel),
+				new DetailPanelNG(map.getMapDimensions().version, map.getMap()
+						.getPlayers(), map));
 		split.setDividerLocation(MAP_PROPORTION);
 		split.setResizeWeight(MAP_PROPORTION);
 		setContentPane(split);

@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import model.map.PlayerCollection;
 import model.map.Point;
 import util.PropertyChangeSource;
 import view.map.key.KeyPanel;
@@ -59,12 +60,13 @@ public class DetailPanelNG extends JSplitPane {
 	private static final class ListPanel extends JPanel {
 		/**
 		 * Constructor.
+		 * @param players the players in the map
 		 * @param sources PropertyChangeSources to pass to both members of the panel.
 		 */
-		ListPanel(final PropertyChangeSource... sources) {
+		ListPanel(final PlayerCollection players, final PropertyChangeSource... sources) {
 			super(new BorderLayout());
 			add(new HeaderLabel(sources), BorderLayout.NORTH);
-			add(new JScrollPane(new FixtureList(this, sources)), BorderLayout.CENTER);
+			add(new JScrollPane(new FixtureList(this, players, sources)), BorderLayout.CENTER);
 		}
 	}
 	/**
@@ -76,11 +78,12 @@ public class DetailPanelNG extends JSplitPane {
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
+		 * @param players the players in the map
 	 * @param sources Sources of PropertyChangeEvents we want to listen to.
 	 */
-	public DetailPanelNG(final int version,
+	public DetailPanelNG(final int version, final PlayerCollection players,
 			final PropertyChangeSource... sources) {
-		super(HORIZONTAL_SPLIT, true, new ListPanel(sources), new KeyPanel(version, sources));
+		super(HORIZONTAL_SPLIT, true, new ListPanel(players, sources), new KeyPanel(version, sources));
 		setResizeWeight(DIVIDER_LOCATION);
 		setDividerLocation(DIVIDER_LOCATION);
 	}
