@@ -35,7 +35,7 @@ public final class StoneDeposit implements IEvent,
 	/**
 	 * What kind of stone this deposit is.
 	 */
-	private final StoneKind stone;
+	private StoneKind stone;
 
 	/**
 	 *
@@ -156,5 +156,18 @@ public final class StoneDeposit implements IEvent,
 	@Override
 	public String getKind() {
 		return stone.toString();
+	}
+	/**
+	 * TODO: Allow arbitrary-text.
+	 * @param kind the new kind
+	 */
+	@Override
+	public void setKind(final String kind) {
+		final StoneKind skind = StoneKind.parseStoneKind(kind);
+		if (skind == null) {
+			throw new IllegalArgumentException("Not a known kind of stone");
+		} else {
+			stone = skind;
+		}
 	}
 }

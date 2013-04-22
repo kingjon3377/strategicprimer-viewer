@@ -10,4 +10,8 @@ public interface HasKind {
 	 * @return the kind of whatever this is
 	 */
 	String getKind();
+	/**
+	 * @param nKind the thing's new kind
+	 */
+	void setKind(final String nKind);
 }

@@ -28,7 +28,7 @@ public class Grove implements HarvestableFixture,
 	/**
 	 * Kind of tree.
 	 */
-	private final String kind;
+	private String kind;
 
 	/**
 	 * Constructor.
@@ -145,5 +145,12 @@ public class Grove implements HarvestableFixture,
 		return fix instanceof Grove && kind.equals(((Grove) fix).kind)
 				&& orchard == ((Grove) fix).orchard
 				&& cultivated == ((Grove) fix).cultivated;
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

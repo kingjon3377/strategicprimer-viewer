@@ -33,11 +33,11 @@ public class Fortress implements HasImage,
 	/**
 	 * The player that owns the fortress.
 	 */
-	private final Player owner;
+	private Player owner;
 	/**
 	 * The name of the fortress.
 	 */
-	private final String name;
+	private String name;
 	/**
 	 * The units in the fortress.
 	 */
@@ -240,5 +240,19 @@ public class Fortress implements HasImage,
 	@Override
 	public TownSize size() {
 		return TownSize.Small;
+	}
+	/**
+	 * @param player the fort's new owner
+	 */
+	@Override
+	public final void setOwner(final Player player) {
+		owner = player;
+	}
+	/**
+	 * @param nomen the fort's new name
+	 */
+	@Override
+	public final void setName(final String nomen) {
+		name = nomen;
 	}
 }

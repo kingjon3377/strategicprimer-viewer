@@ -33,7 +33,7 @@ public class Meadow implements HarvestableFixture,
 	/**
 	 * Kind of grass or grain growing there.
 	 */
-	private final String kind;
+	private String kind;
 
 	/**
 	 * Constructor.
@@ -174,5 +174,12 @@ public class Meadow implements HarvestableFixture,
 		return fix instanceof Meadow && kind.equals(((Meadow) fix).kind)
 				&& field == ((Meadow) fix).field
 				&& cultivated == ((Meadow) fix).cultivated && status == ((Meadow) fix).status;
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

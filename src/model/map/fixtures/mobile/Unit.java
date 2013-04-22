@@ -29,15 +29,15 @@ public class Unit implements MobileFixture, HasImage,
 	/**
 	 * The player that owns the unit.
 	 */
-	private final Player owner;
+	private Player owner;
 	/**
 	 * What kind of unit this is.
 	 */
-	private final String kind;
+	private String kind;
 	/**
 	 * The name of this unit.
 	 */
-	private final String name;
+	private String name;
 
 	/**
 	 * The members of the unit.
@@ -208,5 +208,26 @@ public class Unit implements MobileFixture, HasImage,
 								.getPlayerId()
 						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
 							.equals(name)));
+	}
+	/**
+	 * @param player the town's new owner
+	 */
+	@Override
+	public final void setOwner(final Player player) {
+		owner = player;
+	}
+	/**
+	 * @param nomen the unit's new name
+	 */
+	@Override
+	public final void setName(final String nomen) {
+		name = nomen;
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

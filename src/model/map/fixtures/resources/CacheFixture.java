@@ -22,7 +22,7 @@ public class CacheFixture implements
 	 *
 	 * TODO: Should perhaps be enumerated, so we can make images more granular.
 	 */
-	private final String kind;
+	private String kind;
 	/**
 	 * The contents of this cache. TODO: Should be turned into objects
 	 * (serialized as children) as part of the general Resource framework.
@@ -138,5 +138,12 @@ public class CacheFixture implements
 		return fix instanceof CacheFixture
 				&& kind.equals(((CacheFixture) fix).kind)
 				&& contents.equals(((CacheFixture) fix).contents);
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

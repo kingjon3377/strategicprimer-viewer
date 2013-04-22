@@ -20,7 +20,7 @@ public class Player implements XMLWritable, Comparable<Player>, HasName, Seriali
 	/**
 	 * The player's code name.
 	 */
-	private final String playerName;
+	private String playerName;
 
 	/**
 	 * Constructor.
@@ -118,5 +118,12 @@ public class Player implements XMLWritable, Comparable<Player>, HasName, Seriali
 	 */
 	public final boolean isIndependent() {
 		return "independent".equalsIgnoreCase(getName());
+	}
+	/**
+	 * @param name the player's new name
+	 */
+	@Override
+	public final void setName(final String name) {
+		playerName = name;
 	}
 }

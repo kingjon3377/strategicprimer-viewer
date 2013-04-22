@@ -39,7 +39,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * Kind of animal.
 	 */
-	private final String kind;
+	private String kind;
 	/**
 	 * Whether this is a talking animal.
 	 */
@@ -168,5 +168,12 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 				&& ((Animal) fix).traces == traces
 				&& ((Animal) fix).status.equals(status)
 				&& ((Animal) fix).talking == talking;
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

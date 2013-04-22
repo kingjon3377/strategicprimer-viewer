@@ -35,7 +35,7 @@ public class Mine implements HarvestableFixture,
 	/**
 	 * What the mine produces.
 	 */
-	private final String kind;
+	private String kind;
 	/**
 	 * The status of the mine.
 	 */
@@ -130,5 +130,12 @@ public class Mine implements HarvestableFixture,
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Mine && kind.equals(((Mine) fix).kind)
 				&& status.equals(((Mine) fix).status);
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

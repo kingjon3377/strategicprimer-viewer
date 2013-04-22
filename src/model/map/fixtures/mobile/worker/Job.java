@@ -33,7 +33,7 @@ public class Job implements XMLWritable, Iterable<Skill>, HasName, Serializable 
 	/**
 	 * The name of the job.
 	 */
-	private final String name;
+	private String name;
 	/**
 	 * How many levels the worker has in the job.
 	 */
@@ -94,5 +94,12 @@ public class Job implements XMLWritable, Iterable<Skill>, HasName, Serializable 
 	@Override
 	public String toString() {
 		return name + " (" + level + ")";
+	}
+	/**
+	 * @param nomen the job's new name
+	 */
+	@Override
+	public final void setName(final String nomen) {
+		name = nomen;
 	}
 }

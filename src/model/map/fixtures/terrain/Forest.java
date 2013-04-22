@@ -45,7 +45,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	/**
 	 * What kind of trees dominate the forest.
 	 */
-	private final String trees;
+	private String trees;
 
 	/**
 	 * @return a String representation of the forest.
@@ -126,5 +126,12 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
+	}
+	/**
+	 * @param kind the new kind
+	 */
+	@Override
+	public final void setKind(final String kind) {
+		trees = kind;
 	}
 }

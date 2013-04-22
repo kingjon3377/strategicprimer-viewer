@@ -23,7 +23,7 @@ public class Village implements ITownFixture, HasImage {
 	/**
 	 * The name of the village.
 	 */
-	private final String name;
+	private String name;
 
 	/**
 	 * Constructor.
@@ -44,7 +44,7 @@ public class Village implements ITownFixture, HasImage {
 	/**
 	 * The "owner" of the village---the player it's pledged to serve.
 	 */
-	private final Player owner;
+	private Player owner;
 	/**
 	 * @return a String representation of the village
 	 */
@@ -152,5 +152,19 @@ public class Village implements ITownFixture, HasImage {
 	@Override
 	public final Player getOwner() {
 		return owner;
+	}
+	/**
+	 * @param player the town's new owner
+	 */
+	@Override
+	public final void setOwner(final Player player) {
+		owner = player;
+	}
+	/**
+	 * @param nomen the town's new name
+	 */
+	@Override
+	public final void setName(final String nomen) {
+		name = nomen;
 	}
 }

@@ -32,7 +32,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	/**
 	 * The kind of ground.
 	 */
-	private final String kind;
+	private String kind;
 	/**
 	 * Whether the ground is exposed.
 	 */
@@ -124,5 +124,12 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

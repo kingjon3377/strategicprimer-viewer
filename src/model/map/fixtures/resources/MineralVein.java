@@ -38,7 +38,7 @@ public final class MineralVein implements IEvent,
 	/**
 	 * What kind of mineral this is.
 	 */
-	private final String mineral;
+	private String mineral;
 
 	/**
 	 *
@@ -194,5 +194,12 @@ public final class MineralVein implements IEvent,
 	 */
 	private boolean equalsContents(final MineralVein fix) {
 		return fix.mineral.equals(mineral) && fix.exposed == exposed;
+	}
+	/**
+	 * @param kind the new kind
+	 */
+	@Override
+	public void setKind(final String kind) {
+		mineral = kind;
 	}
 }

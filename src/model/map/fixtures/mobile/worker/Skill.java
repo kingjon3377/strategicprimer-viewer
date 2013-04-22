@@ -30,7 +30,7 @@ public class Skill implements XMLWritable, HasName, Serializable {
 	/**
 	 * The name of the skill.
 	 */
-	private final String name;
+	private String name;
 	/**
 	 * How many levels the worker has in the skill.
 	 */
@@ -93,5 +93,12 @@ public class Skill implements XMLWritable, HasName, Serializable {
 	@Override
 	public String toString() {
 		return name + " (" + level + ")";
+	}
+	/**
+	 * @param nomen the skill's new name
+	 */
+	@Override
+	public final void setName(final String nomen) {
+		name = nomen;
 	}
 }

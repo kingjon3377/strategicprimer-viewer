@@ -21,7 +21,7 @@ public class Fairy implements MobileFixture, HasImage,
 	/**
 	 * What kind of fairy (great, lesser, snow ...).
 	 */
-	private final String kind;
+	private String kind;
 
 	/**
 	 * Constructor.
@@ -114,5 +114,12 @@ public class Fairy implements MobileFixture, HasImage,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Fairy && ((Fairy) fix).kind.equals(kind);
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

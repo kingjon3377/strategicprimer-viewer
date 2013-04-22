@@ -101,4 +101,11 @@ public class WorkerReportDriver implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+	/**
+	 * @param nomen ignored
+	 */
+	@Override
+	public void setName(final String nomen) {
+		throw new IllegalStateException("Can't rename a driver");
+	}
 }

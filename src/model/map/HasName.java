@@ -9,4 +9,8 @@ public interface HasName {
 	 * @return the name
 	 */
 	String getName();
+	/**
+	 * @param nomen the thing's new name
+	 */
+	void setName(final String nomen);
 }

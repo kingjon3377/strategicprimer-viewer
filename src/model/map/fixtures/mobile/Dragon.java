@@ -20,7 +20,7 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * What kind of dragon. (Usually blank, at least at first.)
 	 */
-	private final String kind;
+	private String kind;
 
 	/**
 	 * Constructor.
@@ -113,5 +113,12 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Dragon && ((Dragon) fix).kind.equals(kind);
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

@@ -35,11 +35,11 @@ public abstract class AbstractTown implements
 	/**
 	 * The owner of this town, fortress, or city.
 	 */
-	private final Player owner;
+	private Player owner;
 	/**
 	 * The name of this town, fortress, or city.
 	 */
-	private final String name;
+	private String name;
 
 	/**
 	 * @return the name of the town, fortress, or city.
@@ -205,5 +205,19 @@ public abstract class AbstractTown implements
 	@Override
 	public final Player getOwner() {
 		return owner;
+	}
+	/**
+	 * @param player the town's new owner
+	 */
+	@Override
+	public final void setOwner(final Player player) {
+		owner = player;
+	}
+	/**
+	 * @param nomen the town's new name
+	 */
+	@Override
+	public final void setName(final String nomen) {
+		name = nomen;
 	}
 }

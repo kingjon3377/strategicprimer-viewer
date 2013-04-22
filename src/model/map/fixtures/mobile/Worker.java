@@ -42,7 +42,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 	/**
 	 * The worker's race (elf, dwarf, human, etc.).
 	 */
-	private final String race;
+	private String race;
 	/**
 	 * The set of jobs the worker is trained or experienced in.
 	 */
@@ -82,7 +82,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 	/**
 	 * The worker's name.
 	 */
-	private final String name;
+	private String name;
 	/**
 	 * @return the worker's name
 	 */
@@ -132,5 +132,19 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 	@Override
 	public String getKind() {
 		return getRace();
+	}
+	/**
+	 * @param nomen the worker's new name
+	 */
+	@Override
+	public final void setName(final String nomen) {
+		name = nomen;
+	}
+	/**
+	 * @param kind the worker's new race
+	 */
+	@Override
+	public void setKind(final String kind) {
+		race = kind;
 	}
 }

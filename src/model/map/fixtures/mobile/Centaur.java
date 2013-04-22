@@ -20,7 +20,7 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * What kind of centaur.
 	 */
-	private final String kind;
+	private String kind;
 
 	/**
 	 * Constructor.
@@ -113,5 +113,12 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Centaur && ((Centaur) fix).kind.equals(kind);
+	}
+	/**
+	 * @param nKind the new kind
+	 */
+	@Override
+	public final void setKind(final String nKind) {
+		kind = nKind;
 	}
 }

@@ -20,7 +20,7 @@ public class Shrub implements HarvestableFixture,
 	/**
 	 * A description of what kind of shrub this is.
 	 */
-	private final String description;
+	private String description;
 
 	/**
 	 * Constructor.
@@ -116,5 +116,12 @@ public class Shrub implements HarvestableFixture,
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Shrub
 				&& description.equals(((Shrub) fix).description);
+	}
+	/**
+	 * @param kind the new kind
+	 */
+	@Override
+	public final void setKind(final String kind) {
+		description = kind;
 	}
 }
