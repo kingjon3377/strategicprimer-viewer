@@ -47,6 +47,8 @@ public enum River implements XMLWritable {
 	/**
 	 * Parse a river direction.
 	 *
+	 * TODO: improve testing of this
+	 *
 	 * @param string a string giving the direction
 	 *
 	 * @return the river direction

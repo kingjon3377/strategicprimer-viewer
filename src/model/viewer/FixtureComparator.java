@@ -10,6 +10,8 @@ import model.map.TileFixture;
  * A Comparator for TileFixtures. In the new map version, only the upper-most of
  * a tile's fixtures is visible.
  *
+ * TODO: tests
+ *
  * @author Jonathan Lovelace
  *
  */

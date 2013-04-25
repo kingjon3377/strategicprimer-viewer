@@ -9,6 +9,8 @@ import java.io.Serializable;
  *
  * TODO: Even better zoom support.
  *
+ * TODO: tests
+ *
  * @author Jonathan Lovelace
  *
  */

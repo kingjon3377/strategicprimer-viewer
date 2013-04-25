@@ -10,6 +10,8 @@ import model.misc.AbstractDriverModel;
  * A class to encapsulate the various model-type things views need to do with
  * maps.
  *
+ * TODO: tests
+ *
  * @author Jonathan Lovelace
  *
  */

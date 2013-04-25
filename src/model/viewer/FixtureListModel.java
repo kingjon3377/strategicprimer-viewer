@@ -14,6 +14,8 @@ import util.PropertyChangeSource;
 /**
  * A model for a FixtureList.
  *
+ * TODO: tests
+ *
  * @author Jonathan Lovelace
  *
  */

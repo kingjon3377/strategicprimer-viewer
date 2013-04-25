@@ -5,6 +5,8 @@ import java.io.Serializable;
 /**
  * The minimum and maximum rows and columns drawn.
  *
+ * TODO: tests
+ *
  * @author kingjon
  *
  */

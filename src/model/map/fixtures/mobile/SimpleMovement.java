@@ -16,6 +16,8 @@ import util.EqualsAny;
  * tile types. FIXME: This ought to be per-unit-type, rather than one
  * centralized set of figures.
  *
+ * TODO: tests
+ *
  * @author Jonathan Lovelace
  *
  */
