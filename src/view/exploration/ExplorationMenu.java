@@ -7,7 +7,15 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.SwingUtilities;
 
+import model.exploration.IExplorationModel;
+import model.map.IMap;
+import model.map.MapView;
+import model.map.SPMap;
+import model.viewer.ViewerModel;
+import util.Pair;
+import view.map.main.ViewerFrame;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
 import controller.map.misc.MultiIOHandler;
@@ -24,9 +32,10 @@ public class ExplorationMenu extends JMenuBar {
 	/**
 	 * Constructor.
 	 * @param handler the I/O handler to handle I/O related items
+	 * @param model the exploration model
 	 * @param parent the window this is to be attached to, which should close on "Close".
 	 */
-	public ExplorationMenu(final MultiIOHandler handler, final JFrame parent) {
+	public ExplorationMenu(final MultiIOHandler handler, final IExplorationModel model, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
@@ -44,6 +53,33 @@ public class ExplorationMenu extends JMenuBar {
 		fileMenu.add(creator.createMenuItem("Save All", KeyEvent.VK_V,
 				creator.createHotkey(KeyEvent.VK_L),
 				"Save all maps to their files", handler));
+		fileMenu.addSeparator();
+		fileMenu.add(creator.createMenuItem("Open in map viewer",
+				KeyEvent.VK_M, creator.createHotkey(KeyEvent.VK_M),
+				"Open the main map in the map viewer for a broader view",
+				new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						SwingUtilities.invokeLater(new ViewerOpener(model
+								.getMap(), model.getMapFilename(), -1, -1));
+					}
+				}));
+		fileMenu.add(creator.createMenuItem(
+				"Open secondary map in map viewer",
+				KeyEvent.VK_E,
+				creator.createHotkey(KeyEvent.VK_E),
+				"Open the first secondary map in the map viewer for a broader view",
+				new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent event) {
+						final Pair<IMap, String> mapPair = model
+								.getSubordinateMaps().iterator().next();
+						SwingUtilities.invokeLater(new ViewerOpener(mapPair
+								.first(), mapPair.second(), model.getMap()
+								.getPlayers().getCurrentPlayer().getPlayerId(),
+								model.getMap().getCurrentTurn()));
+					}
+				}));
 		fileMenu.addSeparator();
 		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
 				creator.createHotkey(KeyEvent.VK_W),
@@ -78,5 +114,40 @@ public class ExplorationMenu extends JMenuBar {
 					}
 		}));
 		add(fileMenu);
+	}
+	/**
+	 * A class to open a ViewerFrame.
+	 */
+	private static class ViewerOpener implements Runnable {
+		/**
+		 * Constructor.
+		 * @param map the map (view) to open
+		 * @param file the filename it was loaded from
+		 * @param player the current player's number---ignored if map is a MapView.
+		 * @param turn the current turn---ignored if map is a MapView.
+		 */
+		ViewerOpener(final IMap map, final String file, final int player, final int turn) {
+			if (map instanceof MapView) {
+				view = (MapView) map;
+			} else {
+				view = new MapView((SPMap) map, player, turn);
+			}
+			filename = file;
+		}
+		/**
+		 * The map view to open.
+		 */
+		private final MapView view;
+		/**
+		 * The file name the map was loaded from.
+		 */
+		private final String filename;
+		/**
+		 * Run the thread.
+		 */
+		@Override
+		public void run() {
+			new ViewerFrame(new ViewerModel(view, filename)).setVisible(true);
+		}
 	}
 }

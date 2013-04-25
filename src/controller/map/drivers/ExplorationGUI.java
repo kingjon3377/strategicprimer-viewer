@@ -99,7 +99,7 @@ public class ExplorationGUI implements ISPDriver {
 			public void run() {
 				final ExplorationFrame gui = new ExplorationFrame(model);
 				gui.setJMenuBar(new ExplorationMenu(new MultiIOHandler(model,
-						new FilteredFileChooser(".", new MapFileFilter())), gui));
+						new FilteredFileChooser(".", new MapFileFilter())), model, gui));
 				gui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				gui.setVisible(true);
 			}
