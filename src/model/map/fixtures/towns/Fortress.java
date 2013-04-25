@@ -132,9 +132,13 @@ public class Fortress implements HasImage,
 		sbuild.append(", owned by player ");
 		sbuild.append(owner);
 		sbuild.append(". Units:");
+		int count = 0;
 		for (final Unit unit : units) {
 			sbuild.append("\n\t\t\t");
-			sbuild.append(unit);
+			sbuild.append(unit.toStringInner(owner));
+			if (++count < units.size() - 1) {
+				sbuild.append(';');
+			}
 		}
 		return sbuild.toString();
 	}

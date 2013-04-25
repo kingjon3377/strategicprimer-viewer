@@ -139,6 +139,15 @@ public class Unit implements MobileFixture, HasImage,
 				+ ", belonging to " + owner + ", named " + name;
 	}
 	/**
+	 * @param player the container's player
+	 * @return a briefer String representation of the Unit, only naming the owner if different
+	 */
+	public String toStringInner(final Player player) {
+		return owner.equals(player) ? name + " (" + kind + ')' : (owner
+				.isIndependent() ? name + ", an independent " + kind : name
+				+ " (" + kind + "), belonging to " + owner);
+	}
+	/**
 	 * @return a verbose description of the Unit.
 	 */
 	public String verbose() {
