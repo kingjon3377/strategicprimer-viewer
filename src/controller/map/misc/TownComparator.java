@@ -10,9 +10,11 @@ import model.map.fixtures.towns.TownStatus;
 
 /**
  * A comparator for towns, to put active ones before abandoned ones before
- * ruined ones before burned-out ones, bigger ones before smaller ones,
- * cities before towns before fortifications, and thereafter alphabetically.
- * We only accept AbstractTowns because I don't want to have to deal with villages and fortresses too ...
+ * ruined ones before burned-out ones, bigger ones before smaller ones, cities
+ * before towns before fortifications, and thereafter alphabetically. We only
+ * accept AbstractTowns because I don't want to have to deal with villages and
+ * fortresses too ...
+ *
  * @author Jonathan Lovelace
  */
 public final class TownComparator implements Comparator<AbstractTown>, Serializable {
