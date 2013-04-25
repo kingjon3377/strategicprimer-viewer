@@ -130,6 +130,8 @@ public class SPMap implements IMap {
 	}
 
 	/**
+	 * TODO: Write tests for this.
+	 *
 	 * @param obj another map
 	 * @return whether it's a strict subset of this one
 	 * @param out the stream to write details of the difference to

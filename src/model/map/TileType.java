@@ -81,6 +81,7 @@ public enum TileType {
 	private static final Map<Integer, Set<TileType>> VALS_BY_VER;
 
 	/**
+	 * TODO: Write test code using this.
 	 * @param ver a map version
 	 * @return a list of all tile-types that version supports.
 	 */

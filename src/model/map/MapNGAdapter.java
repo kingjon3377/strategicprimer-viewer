@@ -11,6 +11,9 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 /**
  * An implementation of IMapNG that is, under the hood, just a MapView.
+ *
+ * TODO: Write tests.
+ *
  * @author Jonathan Lovelace
  *
  */

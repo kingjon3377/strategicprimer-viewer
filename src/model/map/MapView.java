@@ -42,6 +42,8 @@ public class MapView implements IMap {
 	 *
 	 * TODO: Check changesets.
 	 *
+	 * TODO: Test this.
+	 *
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
 	 * @param out the stream to write details to

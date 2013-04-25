@@ -14,6 +14,10 @@ import model.map.fixtures.terrain.Forest;
  *
  * We extend Comparable so we can put one of these in a Pair.
  *
+ * TODO: Write tests.
+ *
+ * TODO: Write a proper implementation (not using MapView), and serialization for it.
+ *
  * @author Jonathan Lovelace
  *
  */

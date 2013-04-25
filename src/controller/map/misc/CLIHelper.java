@@ -15,6 +15,8 @@ import view.util.SystemOut;
 /**
  * A helper class to let help CLIs interact with the user.
  *
+ * TODO: Write tests (using string streams).
+ *
  * @author Jonathan Lovelace
  *
  */

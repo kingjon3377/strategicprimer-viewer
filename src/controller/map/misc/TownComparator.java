@@ -15,6 +15,8 @@ import model.map.fixtures.towns.TownStatus;
  * accept AbstractTowns because I don't want to have to deal with villages and
  * fortresses too ...
  *
+ * TODO: Write tests.
+ *
  * @author Jonathan Lovelace
  */
 public final class TownComparator implements Comparator<AbstractTown>, Serializable {
