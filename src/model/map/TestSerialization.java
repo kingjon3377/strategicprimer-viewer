@@ -1,7 +1,6 @@
 package model.map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -12,18 +11,15 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
-import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
 
 import util.Warning;
-import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.formatexceptions.SPFormatException;
 
 /**
@@ -341,48 +337,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertForwardDeserialization("Reading Ogre via <include>", new Ogre(1),
 				"<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />",
 				Ogre.class);
-	}
-
-	/**
-	 * Test conversion.
-	 */
-	@Test
-	public void testConversion() {
-		final SPMap start = new SPMap(new MapDimensions(2, 2, 2));
-		final Point pointOne = PointFactory.point(0, 0);
-		final Tile tileOne = new Tile(TileType.Steppe);
-		final Animal fixture = new Animal("animal", false, true,
-				"domesticated", 1);
-		tileOne.addFixture(fixture);
-		start.addTile(pointOne, tileOne);
-		final Point pointTwo = PointFactory.point(0, 1);
-		final Tile tileTwo = new Tile(TileType.Ocean);
-		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
-				2);
-		tileTwo.addFixture(fixtureTwo);
-		start.addTile(pointTwo, tileTwo);
-		final Point pointThree = PointFactory.point(1, 0);
-		final Tile tileThree = new Tile(TileType.Plains);
-		final Unit fixtureThree = new Unit(new Player(0, "A. Player"), "legion", "eagles", 3);
-		tileThree.addFixture(fixtureThree);
-		start.addTile(pointThree, tileThree);
-		final Point pointFour = PointFactory.point(1, 1);
-		final Tile tileFour = new Tile(TileType.Jungle);
-		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4);
-		tileFour.addFixture(fixtureFour);
-		start.addTile(pointFour, tileFour);
-		final ResolutionDecreaseConverter converter = new ResolutionDecreaseConverter();
-		final MapView converted = converter.convert(start);
-		final Point zeroPoint = PointFactory.point(0, 0);
-		assertTrue("Combined tile should contain fixtures from tile one",
-				doesIterableContain(converted.getTile(zeroPoint), fixture));
-		assertTrue("Combined tile should contain fixtures from tile two",
-				doesIterableContain(converted.getTile(zeroPoint), fixtureTwo));
-		assertTrue(
-				"Combined tile should contain fixtures from tile three",
-				doesIterableContain(converted.getTile(zeroPoint), fixtureThree));
-		assertTrue("Combined tile should contain fixtures from tile four",
-				doesIterableContain(converted.getTile(zeroPoint), fixtureFour));
 	}
 	/**
 	 * @return a String representation of the object

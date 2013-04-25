@@ -614,25 +614,6 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				FAKE_FILENAME, new StringReader(xml), new Warning(
 						Warning.Action.Die)));
 	}
-
-	/**
-	 * Test whether an item is in an iterable. Note that the iterable's iterator
-	 * will have advanced either to the item searched for or to the end.
-	 *
-	 * @param iter an iterable
-	 * @param item an item
-	 * @param <T> the type of the items in the iterator
-	 * @param <U> the type of the item
-	 * @return whether the iterable contains the item
-	 */
-	public <T, U extends T> boolean doesIterableContain(final Iterable<T> iter, final U item) {
-		for (final T each : iter) {
-			if (each.equals(item)) {
-				return true; // NOPMD
-			}
-		}
-		return false;
-	}
 	/**
 	 * Determine the size of an iterable. Note that its iterator will have been advanced to the end.
 	 * @param iter an iterable
