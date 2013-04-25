@@ -14,6 +14,14 @@ import controller.map.misc.DriverUsage.ParamCount;
  */
 public class MapCheckerGUI implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-k",
+			"--check", ParamCount.Many, "Check map for errors",
+			"Check a map file for errors, deprecated syntax, etc.",
+			MapCheckerGUI.class);
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(MapCheckerGUI.class
@@ -41,14 +49,6 @@ public class MapCheckerGUI implements ISPDriver {
 			window.check(filename);
 		}
 	}
-
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-k",
-			"--check", ParamCount.Many, "Check map for errors",
-			"Check a map file for errors, deprecated syntax, etc.",
-			MapCheckerGUI.class);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

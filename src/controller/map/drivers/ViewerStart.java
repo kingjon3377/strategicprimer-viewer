@@ -37,6 +37,14 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class ViewerStart implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-m",
+			"--map", ParamCount.One, "Map viewer",
+			"Look at the map visually. This is probably the app you want.",
+			ViewerStart.class);
+
+	/**
 	 * An error message refactored from at least four uses.
 	 */
 	private static final String XML_ERROR_STRING = "Error reading XML file";
@@ -125,14 +133,6 @@ public final class ViewerStart implements ISPDriver {
 			}
 		});
 	}
-
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-m",
-			"--map", ParamCount.One, "Map viewer",
-			"Look at the map visually. This is probably the app you want.",
-			ViewerStart.class);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

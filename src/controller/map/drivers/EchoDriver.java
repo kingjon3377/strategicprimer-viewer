@@ -25,6 +25,14 @@ import controller.map.misc.DriverUsage.ParamCount;
  */
 public final class EchoDriver implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-e",
+			"--echo", ParamCount.One, "Read, then write a map.",
+			"Read and write a map, correcting deprecated syntax.",
+			EchoDriver.class);
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(EchoDriver.class
@@ -76,14 +84,6 @@ public final class EchoDriver implements ISPDriver {
 			throw new DriverFailedException("I/O error writing " + args[1], except);
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-e",
-			"--echo", ParamCount.One, "Read, then write a map.",
-			"Read and write a map, correcting deprecated syntax.",
-			EchoDriver.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

@@ -30,6 +30,15 @@ import controller.map.misc.DriverUsage.ParamCount;
  *
  */
 public class DuplicateFixtureRemover implements ISPDriver {
+	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-d",
+			"--dupl", ParamCount.One, "Remove duplicate fixtures",
+			"Remove duplicate fixtures---identical except ID# "
+					+ "and on the same tile---from a map.",
+			DuplicateFixtureRemover.class);
+
 
 	/**
 	 * @param args the list of maps to run the filter on
@@ -125,15 +134,6 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-d",
-			"--dupl", ParamCount.One, "Remove duplicate fixtures",
-			"Remove duplicate fixtures---identical except ID# "
-					+ "and on the same tile---from a map.",
-			DuplicateFixtureRemover.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

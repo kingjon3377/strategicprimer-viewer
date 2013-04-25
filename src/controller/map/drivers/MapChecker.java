@@ -23,6 +23,14 @@ import controller.map.misc.DriverUsage.ParamCount;
  */
 public final class MapChecker implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-k",
+			"--check", ParamCount.One, "Check map for errors",
+			"Check a map file for errors, deprecated syntax, etc.",
+			MapChecker.class);
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(MapChecker.class
@@ -95,14 +103,6 @@ public final class MapChecker implements ISPDriver {
 			SystemOut.SYS_OUT.println(filename);
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-k",
-			"--check", ParamCount.One, "Check map for errors",
-			"Check a map file for errors, deprecated syntax, etc.",
-			MapChecker.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

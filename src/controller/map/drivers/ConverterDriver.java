@@ -26,6 +26,14 @@ import controller.map.misc.DriverUsage.ParamCount;
  */
 public final class ConverterDriver implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-v",
+			"--convert", ParamCount.One, "Convert a map's format",
+			"Convert a map. At present, this means reducing its resolution.",
+			ConverterDriver.class);
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ConverterDriver.class
@@ -97,14 +105,6 @@ public final class ConverterDriver implements ISPDriver {
 			}
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-v",
-			"--convert", ParamCount.One, "Convert a map's format",
-			"Convert a map. At present, this means reducing its resolution.",
-			ConverterDriver.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

@@ -28,6 +28,15 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class ExplorationCLIDriver implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-x",
+			"--explore", ParamCount.Many, "Run exploration.",
+			"Move a unit around the map, "
+					+ "updating the player's map with what it sees.",
+			ExplorationCLIDriver.class);
+
+	/**
 	 * Driver. Takes as its parameters the map files to use.
 	 * @param args the command-line arguments
 	 */
@@ -120,15 +129,6 @@ public class ExplorationCLIDriver implements ISPDriver {
 			reader.write(pair.second(), pair.first());
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-x",
-			"--explore", ParamCount.Many, "Run exploration.",
-			"Move a unit around the map, "
-					+ "updating the player's map with what it sees.",
-			ExplorationCLIDriver.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

@@ -38,6 +38,14 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class QueryCLI implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-m",
+			"--map", ParamCount.One, "Answer questions about a map.",
+			"Look at tiles on a map. Or run hunting, gathering, or fishing.",
+			QueryCLI.class);
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(QueryCLI.class
@@ -256,14 +264,6 @@ public final class QueryCLI implements ISPDriver {
 			throw new DriverFailedException("Map " + args[0] + " contains invalid data", e);
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-m",
-			"--map", ParamCount.One, "Answer questions about a map.",
-			"Look at tiles on a map. Or run hunting, gathering, or fishing.",
-			QueryCLI.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

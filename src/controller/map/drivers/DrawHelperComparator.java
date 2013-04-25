@@ -35,6 +35,18 @@ import controller.map.misc.DriverUsage.ParamCount;
  */
 public class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
+	 * An object indicating how to use and invoke this driver. We say that this
+	 * is graphical, even though it's not, so we can share an option with the
+	 * ReaderComparator.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-t",
+			"--test", ParamCount.Many, "Test drawing performance",
+			"Test the performance of the TileDrawHelper classes---which "
+					+ "do the heavy lifting of rendering the map\n"
+					+ "in the viewer---using a variety of automated tests.",
+			DrawHelperComparator.class);
+
+	/**
 	 * Label to put before every direct-helper test result.
 	 */
 	private static final String DIRECT_NAME = "Direct:  ";
@@ -464,18 +476,6 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			}
 		}
 	}
-
-	/**
-	 * An object indicating how to use and invoke this driver. We say that this
-	 * is graphical, even though it's not, so we can share an option with the
-	 * ReaderComparator.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-t",
-			"--test", ParamCount.Many, "Test drawing performance",
-			"Test the performance of the TileDrawHelper classes---which "
-					+ "do the heavy lifting of rendering the map\n"
-					+ "in the viewer---using a variety of automated tests.",
-			DrawHelperComparator.class);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.

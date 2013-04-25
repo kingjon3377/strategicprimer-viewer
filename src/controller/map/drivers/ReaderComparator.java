@@ -32,6 +32,15 @@ import controller.map.readerng.MapReaderNG;
 @SuppressWarnings("deprecation")
 public class ReaderComparator implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-t",
+			"--test", ParamCount.One, "Test map readers",
+			"Test the two map-reading implementations by "
+					+ "comparing their results on the same file.",
+			ReaderComparator.class);
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ReaderComparator.class.getName());
@@ -173,15 +182,6 @@ public class ReaderComparator implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		compareReaders(args);
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-t",
-			"--test", ParamCount.One, "Test map readers",
-			"Test the two map-reading implementations by "
-					+ "comparing their results on the same file.",
-			ReaderComparator.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

@@ -22,6 +22,13 @@ import controller.map.report.ReportGenerator;
  */
 public class WorkerReportDriver implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-w",
+			"--worker", ParamCount.One, "Worker Report Generator",
+			"Produce HTML report of units, workers, etc., in a map.",
+			WorkerReportDriver.class);
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
@@ -80,13 +87,6 @@ public class WorkerReportDriver implements ISPDriver {
 			}
 		}
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-w",
-			"--worker", ParamCount.One, "Worker Report Generator",
-			"Produce HTML report of units, workers, etc., in a map.",
-			WorkerReportDriver.class);
 	/**
 	 * @return an object indicating how to use and invoke this driver
 	 */

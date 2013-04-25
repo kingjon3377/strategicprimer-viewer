@@ -34,6 +34,15 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class AdvancementStart implements ISPDriver {
 	/**
+	 * An object indicating how to use and invoke this driver.
+	 */
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(
+			true, "-a", "--adv", ParamCount.One,
+			"View a player's workers and manage their advancement",
+			"View a player's units, the workers in those units, each worker's Jobs, "
+					+ "and his or her level in each Skill in each Job.", AdvancementStart.class);
+
+	/**
 	 * Run the app.
 	 *
 	 * @param args Command-line arguments. args[0] is the map filename, others
@@ -106,15 +115,6 @@ public final class AdvancementStart implements ISPDriver {
 			}
 		});
 	}
-	/**
-	 * An object indicating how to use and invoke this driver.
-	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(
-			true, "-a", "--adv", ParamCount.One,
-			"View a player's workers and manage their advancement",
-			"View a player's units, the workers in those units, each worker's Jobs, "
-					+ "and his or her level in each Skill in each Job.", AdvancementStart.class);
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
