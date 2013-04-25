@@ -33,7 +33,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-d",
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-u",
 			"--dupl", ParamCount.One, "Remove duplicate fixtures",
 			"Remove duplicate fixtures---identical except ID# "
 					+ "and on the same tile---from a map.",
