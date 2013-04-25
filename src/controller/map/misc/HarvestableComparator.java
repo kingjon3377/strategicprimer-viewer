@@ -16,6 +16,9 @@ import model.map.fixtures.resources.StoneDeposit;
 import util.IntPair;
 /**
  * A comparator for Harvestables. Needed for the report generator.
+ *
+ * TODO: Write tests.
+ *
  * @author Jonathan Lovelace
  *
  */

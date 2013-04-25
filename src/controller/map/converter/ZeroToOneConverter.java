@@ -27,6 +27,8 @@ import util.IteratorWrapper;
  *
  * We ignore namespaces, as I'm not sure quite how to handle them.
  *
+ * TODO: Write tests.
+ *
  * @author Jonathan Lovelace
  *
  */

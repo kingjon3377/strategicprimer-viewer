@@ -43,6 +43,8 @@ import controller.map.misc.IDFactory;
  * A class to convert a version-1 map to a version-2 map with greater
  * resolution.
  *
+ * TODO: Write tests.
+ *
  * @author Jonathan Lovelace
  *
  */
