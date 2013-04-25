@@ -85,13 +85,4 @@ public class Point implements Comparable<Point>, Serializable {
 	public String toString() {
 		return "(" + row + ", " + col + ")";
 	}
-
-	/**
-	 * @return an XML representation of the point
-	 * @deprecated Replaced by SPIntermediateRepresentation-based output
-	 */
-	@Deprecated
-	public String toXML() {
-		return "row=\"" + row + "\" column=\"" + col + "\"";
-	}
 }
