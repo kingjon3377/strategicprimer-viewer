@@ -134,8 +134,9 @@ public class Unit implements MobileFixture, HasImage,
 	 */
 	@Override
 	public String toString() {
-		return "Unit of type " + kind + ", belonging to player " + owner
-				+ ", named " + name;
+		return owner.isIndependent() ? "Independent unit of type " + kind
+				+ ", named " + name : "Unit of type " + kind
+				+ ", belonging to " + owner + ", named " + name;
 	}
 	/**
 	 * @return a verbose description of the Unit.
