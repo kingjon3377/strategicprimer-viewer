@@ -42,4 +42,11 @@ public interface ICLIHelper {
 	 */
 	String inputString(final String prompt) throws IOException;
 
+	/**
+	 * Ask the user a yes-or-no question.
+	 * @param prompt the string to prompt the user with
+	 * @return true if yes, false if no
+	 * @throws IOException on I/O error
+	 */
+	public boolean inputBoolean(final String prompt) throws IOException;
 }

@@ -14,6 +14,7 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.towns.Village;
 import util.Pair;
 import view.util.SystemOut;
 import controller.map.misc.CLIHelper;
@@ -68,6 +69,22 @@ public class ExplorationCLI {
 				"Please make a selection: ", true);
 		return unitNum < 0 ? new Unit(new Player(-1, "abort"), "", "", -1) : units.get(unitNum);
 	}
+
+	/**
+	 * Change the owner of all the villages on the specified tile in all the
+	 * maps to the owner of the currently selected unit.
+	 * @param point the location of the tile in question
+	 */
+	private void swearVillages(final Point point) {
+		for (Pair<IMap, String> mapPair : model.getAllMaps()) {
+			final IMap map = mapPair.first();
+			for (final TileFixture fix : map.getTile(point)) {
+				if (fix instanceof Village) {
+					((Village) fix).setOwner(model.getSelectedUnit().getOwner());
+				}
+			}
+		}
+	}
 	/**
 	 * Have the player move the selected unit.
 	 *
@@ -86,7 +103,7 @@ public class ExplorationCLI {
 		final Direction direction = Direction.values()[directionNum];
 		final Point point = model.getSelectedUnitLocation();
 		// ESCA-JAVA0177:
-		final int cost; // NOPMD
+		int cost; // NOPMD
 		try {
 			cost = model.move(direction);
 		} catch (TraversalImpossibleException except) {
@@ -102,6 +119,10 @@ public class ExplorationCLI {
 			} else if (SimpleMovement.mightNotice(model.getSelectedUnit(), fix)) {
 				allFixtures.add(fix);
 			}
+		}
+		if (Direction.Nowhere.equals(direction) && helper.inputBoolean("Should any village here swear to the player?  ")) {
+			swearVillages(dPoint);
+			cost += 5;
 		}
 		SystemOut.SYS_OUT.printC("The explorer comes to ")
 				.printC(dPoint.toString()).printC(", a tile with terrain ")

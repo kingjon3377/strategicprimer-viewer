@@ -132,4 +132,23 @@ public class CLIHelper implements ICLIHelper {
 		final String retval = istream.readLine();
 		return retval == null ? "" : retval.trim();
 	}
+	/**
+	 * Ask the user a yes-or-no question.
+	 * @param prompt the string to prompt the user with
+	 * @return true if yes, false if no
+	 * @throws IOException on I/O error
+	 */
+	@Override
+	public boolean inputBoolean(final String prompt) throws IOException {
+		while (true) {
+			final String input = inputString(prompt);
+			if ("yes".equalsIgnoreCase(input) || "true".equalsIgnoreCase(input)) {
+				return true; // NOPMD
+			} else if ("no".equalsIgnoreCase(input) || "false".equalsIgnoreCase(input)) {
+				return false;
+			} else {
+				SystemOut.SYS_OUT.println("Please enter 'yes', 'no', 'true', or 'false'");
+			}
+		}
+	}
 }
