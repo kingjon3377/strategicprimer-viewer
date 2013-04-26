@@ -97,7 +97,7 @@ public class ExplorationCLI {
 		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
 		final List<TileFixture> constants = new ArrayList<TileFixture>();
 		final int directionNum = helper.inputNumber("Direction to move: ");
-		if (directionNum > 7) {
+		if (directionNum > 8) {
 			return Integer.MAX_VALUE; // NOPMD
 		}
 		final Direction direction = Direction.values()[directionNum];
@@ -157,7 +157,7 @@ public class ExplorationCLI {
 		int movement = totalMP;
 		final String prompt = new StringBuilder(
 				"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ").append(
-				"6 = W, 7 = NW, 8 = Quit.").toString();
+				"6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.").toString();
 		while (movement > 0) {
 			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
 					.printC(totalMP).println(" remaining.");
