@@ -7,8 +7,10 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import model.map.HasName;
+import util.EqualsAny;
 import util.IsNumeric;
 import view.util.SystemOut;
 
@@ -142,12 +144,15 @@ public class CLIHelper implements ICLIHelper {
 	public boolean inputBoolean(final String prompt) throws IOException {
 		while (true) {
 			final String input = inputString(prompt);
-			if ("yes".equalsIgnoreCase(input) || "true".equalsIgnoreCase(input)) {
+			if (EqualsAny.equalsAny(input.toLowerCase(Locale.US), "yes",
+					"true", "y", "t")) {
 				return true; // NOPMD
-			} else if ("no".equalsIgnoreCase(input) || "false".equalsIgnoreCase(input)) {
+			} else if (EqualsAny.equalsAny(input.toLowerCase(Locale.US), "no",
+					"false", "n", "f")) {
 				return false;
 			} else {
-				SystemOut.SYS_OUT.println("Please enter 'yes', 'no', 'true', or 'false'");
+				SystemOut.SYS_OUT
+						.println("Please enter 'yes', 'no', 'true', or 'false', or the first character of any of those.");
 			}
 		}
 	}
