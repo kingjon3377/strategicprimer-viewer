@@ -48,5 +48,5 @@ public interface ICLIHelper {
 	 * @return true if yes, false if no
 	 * @throws IOException on I/O error
 	 */
-	public boolean inputBoolean(final String prompt) throws IOException;
+	boolean inputBoolean(final String prompt) throws IOException;
 }
