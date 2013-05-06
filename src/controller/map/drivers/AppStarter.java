@@ -97,6 +97,8 @@ public class AppStarter implements ISPDriver {
 		addChoice(new EchoDriver());
 		// FIXME: Write a GUI for the duplicate feature remover
 		addChoice(new DuplicateFixtureRemover());
+		// FIXME: Write a trapping (and hunting, etc.) GUI.
+		addChoice(new TrapModelDriver());
 		addChoice(new AppStarter());
 	}
 	/**
