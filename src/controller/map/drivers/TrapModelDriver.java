@@ -128,20 +128,22 @@ public class TrapModelDriver implements ISPDriver {
 	private void repl(final IMap map, final BufferedReader reader,
 			final PrintStream ostream) {
 		try {
-			int minutes = helper.inputNumber("How many hours will the trapper work? ") * MINS_PER_HOUR;
-			final int row = helper.inputNumber("Row of the tile where the trapper is working: ");
+			final boolean fishing = helper.inputBoolean("Is this a fisherman trapping fish rather than a trapper? ");
+			final String name = fishing ? "fisherman" : "trapper";
+			int minutes = helper.inputNumber("How many hours will the " + name + " work? ") * MINS_PER_HOUR;
+			final int row = helper.inputNumber("Row of the tile where the " + name + " is working: ");
 			final int col = helper.inputNumber("Column of that tile: ");
 			final List<TileFixture> fixtures = getChoices(map, row, col);
 			int input = -1;
 			while (minutes > 0 && input < TrapperCommand.values().length) {
 				if (input >= 0) {
-					minutes -= handleCommand(fixtures, ostream, TrapperCommand.values()[input]);
+					minutes -= handleCommand(fixtures, ostream, TrapperCommand.values()[input], fishing);
 					ostream.print(inHours(minutes));
 					ostream.println(" remaining");
 				}
 				input = helper.chooseFromList(COMMANDS,
-						"What should the trapper do next?",
-						"Oops! No commands", "Trapper action: ", false);
+						"What should the " + name + " do next?",
+						"Oops! No commands", "Next action: ", false);
 				if (TrapperCommand.values()[input] == TrapperCommand.Quit) {
 					break;
 				}
@@ -197,11 +199,12 @@ public class TrapModelDriver implements ISPDriver {
 	 * @param fixtures the fixtures to choose from
 	 * @param ostream the output stream to write to
 	 * @param command the command to handle
+	 * @param fishing whether we're dealing with *fish* traps .. which take different amounts of time
 	 * @return how many minutes it took to execute the command
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private int handleCommand(final List<TileFixture> fixtures, final PrintStream ostream,
-			final TrapperCommand command) throws IOException {
+			final TrapperCommand command, final boolean fishing) throws IOException {
 		switch (command) {
 		case Check:
 			Collections.shuffle(fixtures);
@@ -212,17 +215,17 @@ public class TrapModelDriver implements ISPDriver {
 				retval = helper.inputNumber("How long to check and deal with animal? ");
 			} else {
 				ostream.println("Nothing in the trap");
-				retval = 10;
+				retval = fishing ? 5 : 10;
 			}
 			return retval; // NOPMD
 		case EasyReset:
-			return 5; // NOPMD
+			return fishing ? 20 : 5; // NOPMD
 		case Move:
 			return 2; // NOPMD
 		case Quit:
 			return 0; // NOPMD
 		case Set:
-			return 45; // NOPMD
+			return fishing ? 30 : 45; // NOPMD
 		default:
 			throw new IllegalArgumentException("Unhandled case");
 		}
