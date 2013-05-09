@@ -11,6 +11,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
@@ -365,6 +366,9 @@ public final class TestMoreFixtureSerialization extends
 				new Worker("fourth", DEFAULT_RACE, 8, new Job("fifth", 0, new Skill(
 						"odd-skill", 1, 0))), Worker.class, new Warning(
 						Warning.Action.Die));
+		final Worker two = new Worker("sixth", "dwarf", 9);
+		two.setStats(new WorkerStats(1, 2, 3, 4, 5, 6));
+		assertSerialization("Worker can have skills", two, Worker.class);
 	}
 	/**
 	 * @return a String representation of the object

@@ -119,9 +119,8 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 				new FortificationReader(), new TownReader());
 		factoryFour(new MineralReader(), new StoneReader(), new RiverReader(),
 				new ViewReader());
-		factory(new WorkerReader());
-		factory(new JobReader());
-		factory(new SkillReader());
+		factoryFour(new WorkerReader(), new JobReader(), new SkillReader(),
+				new StatsReader());
 	}
 
 	/**

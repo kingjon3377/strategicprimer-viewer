@@ -10,6 +10,7 @@ import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
@@ -54,6 +55,8 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			if (event.isStartElement()) {
 				if ("job".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
 					retval.addJob(parseJob(event.asStartElement(), stream, warner));
+				} else if ("stats".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+					retval.setStats(parseStats(event.asStartElement(), stream));
 				} else {
 					throw new UnwantedChildException(element.getName().getLocalPart(), event
 							.asStartElement().getName().getLocalPart(), event
@@ -64,6 +67,26 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 				break;
 			}
 		}
+		return retval;
+	}
+	/**
+	 * Parse the worker's stats.
+	 * @param element the element to parse
+	 * @param stream the stream to read further elements from
+	 * @return the parsed stats
+	 * @throws SPFormatException on SP format problem
+	 */
+	private WorkerStats parseStats(final StartElement element,
+			final IteratorWrapper<XMLEvent> stream) throws SPFormatException {
+		requireTag(element, "stats");
+		final WorkerStats retval = new WorkerStats(
+				Integer.parseInt(getParameter(element, "str")),
+				Integer.parseInt(getParameter(element, "dex")),
+				Integer.parseInt(getParameter(element, "con")),
+				Integer.parseInt(getParameter(element, "int")),
+				Integer.parseInt(getParameter(element, "wis")),
+				Integer.parseInt(getParameter(element, "cha")));
+		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
 	/**
@@ -140,8 +163,9 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
 		out.append('"');
-		if (obj.iterator().hasNext()) {
+		if (obj.iterator().hasNext() || obj.getStats() != null) {
 			out.append(">\n");
+			writeStats(out, obj.getStats(), indent + 1);
 			for (Job job : obj) {
 				writeJob(out, job, indent + 1);
 			}
@@ -149,6 +173,31 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			out.append("</worker>\n");
 		} else {
 			out.append(" />\n");
+		}
+	}
+	/**
+	 * Write the worker's stats.
+	 * @param out the writer to write to
+	 * @param stats the object to write
+	 * @param indent the current indentation level
+	 * @throws IOException on I/O error
+	 */
+	private void writeStats(final Writer out, final WorkerStats stats, final int indent) throws IOException {
+		if (stats != null) {
+			out.append(indent(indent));
+			out.append("<stats str=\"");
+			out.append(Integer.toString(stats.getStrength()));
+			out.append("\" dex=\"");
+			out.append(Integer.toString(stats.getDexterity()));
+			out.append("\" con=\"");
+			out.append(Integer.toString(stats.getConstitution()));
+			out.append("\" int=\"");
+			out.append(Integer.toString(stats.getIntelligence()));
+			out.append("\" wis=\"");
+			out.append(Integer.toString(stats.getWisdom()));
+			out.append("\" cha=\"");
+			out.append(Integer.toString(stats.getCharisma()));
+			out.append("\" />\n");
 		}
 	}
 	/**

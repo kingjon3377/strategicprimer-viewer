@@ -10,6 +10,7 @@ import model.map.PlayerCollection;
 import model.map.XMLWritable;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -61,6 +62,8 @@ public class WorkerReader implements INodeHandler<Worker> {
 						idFactory);
 				if (result instanceof Job) {
 					retval.addJob((Job) result);
+				} else if (result instanceof WorkerStats) {
+					retval.setStats((WorkerStats) result);
 				} else {
 					throw new UnwantedChildException(element.getName()
 							.getLocalPart(), event.asStartElement().getName()
@@ -86,6 +89,9 @@ public class WorkerReader implements INodeHandler<Worker> {
 			retval.addAttribute("race", obj.getRace());
 		}
 		retval.addAttribute("id", Integer.toString(obj.getID()));
+		if (obj.getStats() != null) {
+			retval.addChild(ReaderAdapter.ADAPTER.write(obj.getStats()));
+		}
 		for (Job job : obj) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(job));
 		}

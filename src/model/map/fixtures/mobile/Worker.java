@@ -9,6 +9,7 @@ import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import util.ArraySet;
 
 /**
@@ -100,7 +101,9 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 				|| (obj instanceof Worker && ((Worker) obj).name.equals(name)
 						&& ((Worker) obj).id == id && ((Worker) obj).jobSet
 							.equals(jobSet))
-				&& ((Worker) obj).race.equals(race);
+				&& ((Worker) obj).race.equals(race)
+				&& (stats == null ? ((Worker) obj).stats == null : stats
+						.equals(((Worker) obj).stats));
 	}
 	/**
 	 * @return a hash code for the object
@@ -124,7 +127,10 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
 				|| (fix instanceof Worker && ((Worker) fix).name.equals(name) && ((Worker) fix).jobSet
-						.equals(jobSet)) && ((Worker) fix).race.equals(race);
+						.equals(jobSet))
+				&& ((Worker) fix).race.equals(race)
+				&& (stats == null ? ((Worker) fix).stats == null : stats
+						.equals(((Worker) fix).stats));
 	}
 	/**
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
@@ -146,5 +152,21 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 	@Override
 	public void setKind(final String kind) {
 		race = kind;
+	}
+	/**
+	 * The worker's stats.
+	 */
+	private WorkerStats stats;
+	/**
+	 * @return the worker's stats
+	 */
+	public WorkerStats getStats() {
+		return stats;
+	}
+	/**
+	 * @param wstats the worker's new stats
+	 */
+	public void setStats(final WorkerStats wstats) {
+		stats = wstats;
 	}
 }
