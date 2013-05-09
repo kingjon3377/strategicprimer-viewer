@@ -63,6 +63,7 @@ public class StatsLabel extends JLabel implements PropertyChangeListener {
 				builder.append(stats.getCharisma());
 				builder.append(NEWLINE);
 				setText(builder.toString());
+				getParent().invalidate();
 			} else {
 				setText("Worker stats will appear here.");
 			}

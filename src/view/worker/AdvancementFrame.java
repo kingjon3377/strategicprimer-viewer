@@ -1,29 +1,23 @@
 package view.worker;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.text.View;
 
 import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
@@ -57,71 +51,69 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		super("Strategic Primer worker advancement");
 		model = source;
 		model.addPropertyChangeListener(this);
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
+		setMinimumSize(new Dimension(640, 480));
 
-		final JPanel panelOne = new JPanel();
-		panelOne.setLayout(new BoxLayout(panelOne, BoxLayout.PAGE_AXIS));
+
 		players.addItemListener(this);
-		final JLabel playerLabel = new JLabel(htmlize("Current Player:"));
-		panelOne.add(playerLabel);
-		panelOne.add(players);
-		final JLabel unitLabel = new JLabel(htmlize("Player's Units:"));
-		panelOne.add(unitLabel);
-		final JList<Unit> units = new UnitList(source, this, source, this);
-		panelOne.add(units);
-		add(panelOne);
+		final JPanel playerPanel = new JPanel(new BorderLayout());
+		playerPanel.add(new JLabel(htmlize("Current Player:")), BorderLayout.NORTH);
+		playerPanel.add(players, BorderLayout.CENTER);
 
-		final JPanel panelTwo = new JPanel();
-		panelTwo.setLayout(new BoxLayout(panelTwo, BoxLayout.PAGE_AXIS));
-		final JLabel memberLabel = new JLabel(
-				htmlize("Selected Unit's Members:"));
-		panelTwo.add(memberLabel);
-		final JList<UnitMember> members = new UnitMemberList(this, this);
-		panelTwo.add(members);
-		final StatsLabel statsLabel = new StatsLabel(this);
-		panelTwo.add(statsLabel);
-		add(panelTwo);
+		final JPanel unitPanel = new JPanel(new BorderLayout());
+		unitPanel.add(new JLabel(htmlize("Player's Units:")), BorderLayout.NORTH);
+		unitPanel.add(new UnitList(source, this, source, this), BorderLayout.CENTER);
 
-		final JPanel panelThree = new JPanel();
-		panelThree.setLayout(new BoxLayout(panelThree, BoxLayout.PAGE_AXIS));
+		final JSplitPane panelOne = new JSplitPane(JSplitPane.VERTICAL_SPLIT, playerPanel, unitPanel);
+
+		final JPanel panelTwo = new JPanel(new BorderLayout());
+		panelTwo.add(new JLabel(htmlize("Selected Unit's Members:")),
+				BorderLayout.NORTH);
+		panelTwo.add(new UnitMemberList(this, this), BorderLayout.CENTER);
+
+		final JSplitPane jspOne = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelTwo, new StatsLabel(this));
+		jspOne.setContinuousLayout(true);
+		jspOne.setResizeWeight(.6);
+		jspOne.setDividerLocation(.6);
+
+		final JSplitPane jspTwo = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelOne, jspOne);
+		jspTwo.setContinuousLayout(true);
+		jspTwo.setResizeWeight(.5);
+		jspTwo.setDividerLocation(.5);
+
+		final JPanel jobsPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel jarp = new AddRemovePanel(false);
-		final JList<Job> jobs = new JobsList(this, this, jarp);
-		final JLabel jobsLabel = new JLabel(htmlize("Worker's Jobs:"));
-		panelThree.add(jobsLabel);
-		panelThree.add(jobs);
-		panelThree.add(jarp);
+		jobsPanel.add(new JLabel(htmlize("Worker's Jobs:")), BorderLayout.NORTH);
+		jobsPanel.add(new JobsList(this, this, jarp), BorderLayout.CENTER);
+		jobsPanel.add(jarp, BorderLayout.SOUTH);
+
+		final JPanel skillPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel sarp = new AddRemovePanel(false);
-		final JList<Skill> skills = new SkillList(this, this, sarp);
-		final JLabel skillsLabel = new JLabel(
-				htmlize("Skills in selected Job:"));
-		panelThree.add(skillsLabel);
-		panelThree.add(skills);
-		panelThree.add(sarp);
-		panelThree.add(new SkillAdvancementPanel(this, this));
-		add(panelThree);
+		skillPanel.add(new JLabel(htmlize("Skills in selected Job:")),
+				BorderLayout.NORTH);
+		skillPanel.add(new SkillList(this, this, sarp), BorderLayout.CENTER);
+		skillPanel.add(sarp, BorderLayout.SOUTH);
+
+		final JPanel skillSuperPanel = new JPanel(new BorderLayout());
+		skillSuperPanel.add(skillPanel, BorderLayout.CENTER);
+		skillSuperPanel.add(new SkillAdvancementPanel(this, this), BorderLayout.SOUTH);
+
+		final JSplitPane panelThree = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jobsPanel, skillSuperPanel);
+		panelThree.setContinuousLayout(true);
+		panelThree.setResizeWeight(.3);
+		panelThree.setDividerLocation(.5);
+
+		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jspTwo, panelThree);
+		jspThree.setContinuousLayout(true);
+		jspThree.setResizeWeight(2.0 / 3.0);
+		jspThree.setDividerLocation(2.0 / 3.0);
+		setContentPane(jspThree);
 
 		addPropertyChangeListener(this);
 		firePropertyChange("map", null, null);
 		removePropertyChangeListener(this);
 
-		setMinimumSize(new Dimension(640, 480));
-		final List<JComponent> lists = new ArrayList<JComponent>();
-		lists.add(panelOne);
-		lists.add(panelTwo);
-		lists.add(panelThree);
-		lists.add(players);
-		lists.add(jobs);
-		lists.add(skills);
-		lists.add(units);
-		lists.add(members);
-		lists.add(playerLabel);
-		lists.add(unitLabel);
-		lists.add(memberLabel);
-		lists.add(jobsLabel);
-		lists.add(skillsLabel);
-		lists.add(statsLabel);
-		getContentPane().addComponentListener(new Resizer(lists));
 		addPropertyChangeListener(new LevelListener());
+		pack();
 	}
 
 	/**
@@ -240,68 +232,6 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 			} else {
 				return named.toString();
 			}
-		}
-	}
-
-	/**
-	 * A class to resize components when the frame is resized.
-	 */
-	private final class Resizer extends ComponentAdapter {
-		/**
-		 * Constructor.
-		 *
-		 * @param list the list of components to resize each time we get the
-		 *        event.
-		 */
-		Resizer(final List<JComponent> list) {
-			// ESCA-JAVA0256:
-			components = list;
-		}
-
-		/**
-		 * The list of components to reize each time we get an event.
-		 */
-		private final List<JComponent> components;
-
-		/**
-		 * Adjust the size of the sub-panels when this is resized.
-		 *
-		 * @param evt the event being handled
-		 */
-		@Override
-		public void componentResized(final ComponentEvent evt) {
-			final int width = getWidth() / 3;
-			final int minHeight = 20; // NOPMD
-			final int maxHeight = getHeight();
-			for (JComponent list : components) {
-				if (list instanceof JComboBox) {
-					final Dimension dim = dimension(width, minHeight);
-					list.setMaximumSize(dim);
-					list.setPreferredSize(dim);
-				} else if (list instanceof JList) {
-					list.setMaximumSize(dimension(width, maxHeight));
-					list.setMinimumSize(dimension(width, minHeight));
-				} else if (list instanceof JLabel) {
-					final Dimension dim = getComponentPreferredSize(list, width);
-					list.setMinimumSize(dim);
-					list.setPreferredSize(dim);
-					list.setMaximumSize(dim);
-				} else if (list instanceof JPanel) {
-					final Dimension dim = dimension(width, maxHeight);
-					list.setMaximumSize(dim);
-					list.setPreferredSize(dim);
-					list.setMinimumSize(dim);
-				}
-			}
-		}
-
-		/**
-		 * @param width a width
-		 * @param height a height
-		 * @return a Dimension with those values.
-		 */
-		private Dimension dimension(final int width, final int height) {
-			return new Dimension(width, height);
 		}
 	}
 }

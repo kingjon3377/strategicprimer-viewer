@@ -1,8 +1,11 @@
 package view.worker;
 
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -28,6 +31,21 @@ public class UnitList extends JList<Unit> implements PropertyChangeSource, ListS
 			final PropertyChangeListener listener,
 			final PropertyChangeSource... sources) {
 		final UnitListModel lmodel = new UnitListModel(mmodel, sources);
+		setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(
+					final JList<?> list, final Object value, final int index,
+					final boolean isSelected, final boolean cellHasFocus) {
+				final Component retval = super.getListCellRendererComponent(
+						list, value, index, isSelected, cellHasFocus);
+				if (retval instanceof JLabel && value instanceof Unit) {
+					((JLabel) retval).setText("<html><p>"
+						+ ((Unit) value).toStringInner(mmodel.getMap().getPlayers()
+								.getCurrentPlayer()) + "</p></html>");
+				}
+				return retval;
+			}
+		});
 		setModel(lmodel);
 		lmodel.addPropertyChangeListener(new PropertyChangeListener() {
 			/**
