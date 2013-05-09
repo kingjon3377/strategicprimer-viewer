@@ -30,8 +30,10 @@ import model.workermgmt.IWorkerModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
+
 /**
  * A GUI to let a user manage workers.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -45,8 +47,10 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	 * A drop-down list listing the players in the map.
 	 */
 	private final JComboBox<Player> players = new JComboBox<Player>();
+
 	/**
 	 * Constructor.
+	 *
 	 * @param source the model containing the data to work from
 	 */
 	public AdvancementFrame(final IWorkerModel source) {
@@ -69,7 +73,8 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 
 		final JPanel panelTwo = new JPanel();
 		panelTwo.setLayout(new BoxLayout(panelTwo, BoxLayout.PAGE_AXIS));
-		final JLabel memberLabel = new JLabel(htmlize("Selected Unit's Members:"));
+		final JLabel memberLabel = new JLabel(
+				htmlize("Selected Unit's Members:"));
 		panelTwo.add(memberLabel);
 		final JList<UnitMember> members = new UnitMemberList(this, this);
 		panelTwo.add(members);
@@ -87,7 +92,8 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		panelThree.add(jarp);
 		final AddRemovePanel sarp = new AddRemovePanel(false);
 		final JList<Skill> skills = new SkillList(this, this, sarp);
-		final JLabel skillsLabel = new JLabel(htmlize("Skills in selected Job:"));
+		final JLabel skillsLabel = new JLabel(
+				htmlize("Skills in selected Job:"));
 		panelThree.add(skillsLabel);
 		panelThree.add(skills);
 		panelThree.add(sarp);
@@ -117,8 +123,10 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		getContentPane().addComponentListener(new Resizer(lists));
 		addPropertyChangeListener(new LevelListener());
 	}
+
 	/**
 	 * Handle a property change.
+	 *
 	 * @param evt the property-change event to handle
 	 */
 	@Override
@@ -129,11 +137,14 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 				players.addItem(player);
 			}
 		} else if (!equals(evt.getSource())) {
-			firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+			firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
+					evt.getNewValue());
 		}
 	}
+
 	/**
-	 * @param evt an event indicating an item's changed in one of the combo-boxes we listen to
+	 * @param evt an event indicating an item's changed in one of the
+	 *        combo-boxes we listen to
 	 */
 	@Override
 	public void itemStateChanged(final ItemEvent evt) {
@@ -141,30 +152,36 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 			firePropertyChange("player", null, players.getSelectedItem());
 		}
 	}
+
 	/**
 	 * Turn a string into left-aligned HTML.
+	 *
 	 * @param string a string
 	 * @return it wrapped in HTML code that should make it left-aligned.
 	 */
 	private static String htmlize(final String string) {
 		return "<html><p align=\"left\">" + string + "</p></html>";
 	}
+
 	/**
-	 * Get a label's size given a fixed width.
-	 * Adapted from http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
+	 * Get a label's size given a fixed width. Adapted from
+	 * http://blog.nobel-joergensen
+	 * .com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
+	 *
 	 * @param component the component we're laying out
 	 * @param width the width we're working within
 	 * @return the "ideal" dimensions for the component
 	 */
 	public static Dimension getComponentPreferredSize(
 			final JComponent component, final int width) {
-	final View view = (View) component
+		final View view = (View) component
 				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
 		view.setSize(width, 0);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 		return new Dimension(wid, height);
 	}
+
 	/**
 	 * A listener to print a line when a worker gains a level.
 	 */
@@ -175,6 +192,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		LevelListener() {
 			// Needed to give access ...
 		}
+
 		/**
 		 * The current worker.
 		 */
@@ -183,6 +201,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		 * The current skill.
 		 */
 		private Skill skill = null;
+
 		/**
 		 * @param evt the property-change event to handle
 		 */
@@ -193,9 +212,8 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 							.getNewValue() == null)) {
 				worker = (UnitMember) evt.getNewValue();
 			} else if ("skill".equals(evt.getPropertyName())
-					&& (evt.getNewValue() instanceof Skill || evt
-							.getNewValue() == null)) {
-			skill = (Skill) evt.getNewValue();
+					&& (evt.getNewValue() instanceof Skill || evt.getNewValue() == null)) {
+				skill = (Skill) evt.getNewValue();
 			} else if ("level".equals(evt.getPropertyName())) {
 				final StringBuilder builder = new StringBuilder();
 				builder.append(getName(worker));
@@ -204,9 +222,11 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 				SystemOut.SYS_OUT.println(builder.toString());
 			}
 		}
+
 		/**
 		 * @param named something that may have a name
-		 * @return its name if it has one, "null" if null, or its toString otherwise.
+		 * @return its name if it has one, "null" if null, or its toString
+		 *         otherwise.
 		 */
 		private static String getName(final Object named) {
 			if (named instanceof HasName) {
@@ -218,24 +238,30 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 			}
 		}
 	}
+
 	/**
 	 * A class to resize components when the frame is resized.
 	 */
 	private final class Resizer extends ComponentAdapter {
 		/**
 		 * Constructor.
-		 * @param list the list of components to resize each time we get the event.
+		 *
+		 * @param list the list of components to resize each time we get the
+		 *        event.
 		 */
 		Resizer(final List<JComponent> list) {
 			// ESCA-JAVA0256:
 			components = list;
 		}
+
 		/**
 		 * The list of components to reize each time we get an event.
 		 */
 		private final List<JComponent> components;
+
 		/**
 		 * Adjust the size of the sub-panels when this is resized.
+		 *
 		 * @param evt the event being handled
 		 */
 		@Override
@@ -264,6 +290,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 				}
 			}
 		}
+
 		/**
 		 * @param width a width
 		 * @param height a height
