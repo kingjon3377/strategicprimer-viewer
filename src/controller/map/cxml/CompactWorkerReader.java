@@ -80,6 +80,8 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			final IteratorWrapper<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval = new WorkerStats(
+				Integer.parseInt(getParameter(element, "hp")),
+				Integer.parseInt(getParameter(element, "max")),
 				Integer.parseInt(getParameter(element, "str")),
 				Integer.parseInt(getParameter(element, "dex")),
 				Integer.parseInt(getParameter(element, "con")),
@@ -185,7 +187,11 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	private void writeStats(final Writer out, final WorkerStats stats, final int indent) throws IOException {
 		if (stats != null) {
 			out.append(indent(indent));
-			out.append("<stats str=\"");
+			out.append("<stats hp=\"");
+			out.append(Integer.toString(stats.getHitPoints()));
+			out.append("\" max=\"");
+			out.append(Integer.toString(stats.getMaxHitPoints()));
+			out.append("\" str=\"");
 			out.append(Integer.toString(stats.getStrength()));
 			out.append("\" dex=\"");
 			out.append(Integer.toString(stats.getDexterity()));

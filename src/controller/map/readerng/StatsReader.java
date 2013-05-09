@@ -48,6 +48,8 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 			final PlayerCollection players, final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final WorkerStats retval = new WorkerStats(Integer.parseInt(XMLHelper
+				.getAttribute(element, "hp")), Integer.parseInt(XMLHelper
+				.getAttribute(element, "max")), Integer.parseInt(XMLHelper
 				.getAttribute(element, "str")), Integer.parseInt(XMLHelper
 				.getAttribute(element, "dex")), Integer.parseInt(XMLHelper
 				.getAttribute(element, "con")), Integer.parseInt(XMLHelper
@@ -64,7 +66,9 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public SPIntermediateRepresentation write(final WorkerStats obj) {
-		return new SPIntermediateRepresentation("stats", Pair.of("str",
+		return new SPIntermediateRepresentation("stats", Pair.of("hp",
+				Integer.toString(obj.getHitPoints())), Pair.of("max",
+				Integer.toString(obj.getMaxHitPoints())), Pair.of("str",
 				Integer.toString(obj.getStrength())), Pair.of("dex",
 				Integer.toString(obj.getDexterity())), Pair.of("con",
 				Integer.toString(obj.getConstitution())), Pair.of("int",

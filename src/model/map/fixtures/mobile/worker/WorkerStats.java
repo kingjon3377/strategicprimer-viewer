@@ -16,8 +16,11 @@ public class WorkerStats implements Serializable, XMLWritable {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+	// ESCA-JAVA0138:
 	/**
 	 * Constructor.
+	 * @param hitPoints the worker's health
+	 * @param maxHitPoints the worker's max health
 	 * @param strength the worker's strength
 	 * @param dexterity the worker's dexterity
 	 * @param constitution the worker's constitution
@@ -25,9 +28,11 @@ public class WorkerStats implements Serializable, XMLWritable {
 	 * @param wisdom the worker's wisdom
 	 * @param charisma th worker's charisma
 	 */
-	public WorkerStats(final int strength, final int dexterity,
-			final int constitution, final int intelligence, final int wisdom,
-			final int charisma) {
+	public WorkerStats(final int hitPoints, final int maxHitPoints,
+			final int strength, final int dexterity, final int constitution,
+			final int intelligence, final int wisdom, final int charisma) {
+		hp = hitPoints;
+		maxHP = maxHitPoints;
 		str = strength;
 		dex = dexterity;
 		con = constitution;
@@ -35,6 +40,14 @@ public class WorkerStats implements Serializable, XMLWritable {
 		wis = wisdom;
 		cha = charisma;
 	}
+	/**
+	 * The worker's health.
+	 */
+	private int hp; // NOPMD
+	/**
+	 * The worker's max health.
+	 */
+	private int maxHP;
 	/**
 	 * The worker's strength.
 	 */
@@ -59,6 +72,30 @@ public class WorkerStats implements Serializable, XMLWritable {
 	 * The worker's charisma.
 	 */
 	private int cha;
+	/**
+	 * @return the worker's health
+	 */
+	public int getHitPoints() {
+		return hp;
+	}
+	/**
+	 * @param hitPoints the worker's health
+	 */
+	public void setHitPoints(final int hitPoints) {
+		hp = hitPoints;
+	}
+	/**
+	 * @return the worker's max health
+	 */
+	public int getMaxHitPoints() {
+		return maxHP;
+	}
+	/**
+	 * @param maxHitPoints the worker's max health
+	 */
+	public void setMaxHitPoints(final int maxHitPoints) {
+		maxHP = maxHitPoints;
+	}
 	/**
 	 * @return the worker's strength
 	 */
@@ -139,6 +176,8 @@ public class WorkerStats implements Serializable, XMLWritable {
 	public boolean equals(final Object obj) {
 		return obj == this
 				|| (obj instanceof WorkerStats
+						&& hp == ((WorkerStats) obj).hp
+						&& maxHP == ((WorkerStats) obj).maxHP
 						&& str == ((WorkerStats) obj).str
 						&& dex == ((WorkerStats) obj).dex
 						&& con == ((WorkerStats) obj).con
@@ -150,6 +189,6 @@ public class WorkerStats implements Serializable, XMLWritable {
 	 */
 	@Override
 	public int hashCode() {
-		return str + dex << 4 + con << 8 + intel << 12 + wis << 16 + cha << 20;
+		return str + dex << 3 + con << 6 + intel << 9 + wis << 12 + cha << 15 + hp << 18 + maxHP << 22;
 	}
 }

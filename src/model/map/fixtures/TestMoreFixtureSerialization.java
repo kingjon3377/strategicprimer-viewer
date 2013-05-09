@@ -367,7 +367,7 @@ public final class TestMoreFixtureSerialization extends
 						"odd-skill", 1, 0))), Worker.class, new Warning(
 						Warning.Action.Die));
 		final Worker two = new Worker("sixth", "dwarf", 9);
-		two.setStats(new WorkerStats(1, 2, 3, 4, 5, 6));
+		two.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have skills", two, Worker.class);
 	}
 	/**
