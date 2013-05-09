@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 
+import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import util.PropertyChangeSource;
 
 /**
@@ -23,14 +25,7 @@ public class StatsLabel extends JLabel implements PropertyChangeListener {
 		for (PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(this);
 		}
-		addPropertyChangeListener(this);
-		firePropertyChange("member", null, null);
-		removePropertyChangeListener(this);
 	}
-	/**
-	 * A placeholder string.
-	 */
-	private static final String PLACEHOLDER = "stat";
 	/**
 	 * A HTML newline.
 	 */
@@ -42,31 +37,34 @@ public class StatsLabel extends JLabel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("member".equals(evt.getPropertyName())) {
-			if (evt.getNewValue() == null) {
+			if (evt.getNewValue() instanceof Worker && ((Worker) evt.getNewValue()).getStats() != null) {
+				final WorkerStats stats = ((Worker) evt.getNewValue()).getStats();
 				final StringBuilder builder = new StringBuilder("<html>HP: ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getHitPoints());
 				builder.append(" / ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getMaxHitPoints());
 				builder.append(NEWLINE);
 				builder.append("Str: ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getStrength());
 				builder.append(NEWLINE);
 				builder.append("Dex: ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getDexterity());
 				builder.append(NEWLINE);
 				builder.append("Con: ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getConstitution());
 				builder.append(NEWLINE);
 				builder.append("Int: ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getIntelligence());
 				builder.append(NEWLINE);
 				builder.append("Wis: ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getWisdom());
 				builder.append(NEWLINE);
 				builder.append("Cha: ");
-				builder.append(PLACEHOLDER);
+				builder.append(stats.getCharisma());
 				builder.append(NEWLINE);
 				setText(builder.toString());
+			} else {
+				setText("Worker stats will appear here.");
 			}
 		}
 	}
