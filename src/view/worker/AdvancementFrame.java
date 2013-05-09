@@ -176,10 +176,14 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 			final JComponent component, final int width) {
 		final View view = (View) component
 				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
-		view.setSize(width, 0);
-		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
-		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
-		return new Dimension(wid, height);
+		if (view == null) {
+			return component.getPreferredSize(); // NOPMD
+		} else {
+			view.setSize(width, 0);
+			final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
+			final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
+			return new Dimension(wid, height);
+		}
 	}
 
 	/**
