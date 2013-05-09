@@ -160,7 +160,7 @@ public class AppStarter implements ISPDriver {
 			try {
 				startChosenDriver(drivers.get(new CLIHelper().chooseFromList(
 						drivers, "CLI apps available:",
-						"No applications available", "App to start:", true)),
+						"No applications available", "App to start: ", true)),
 						others);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error prompting user for app to start", except);
