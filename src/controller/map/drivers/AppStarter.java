@@ -100,6 +100,8 @@ public class AppStarter implements ISPDriver {
 		// FIXME: Write a trapping (and hunting, etc.) GUI.
 		addChoice(new TrapModelDriver());
 		addChoice(new AppStarter());
+		// FIXME: Write a stat-generating/stat-entering GUI.
+		addChoice(new StatGeneratingCLIDriver());
 	}
 	/**
 	 * Start the driver, and then start the specified other driver.
