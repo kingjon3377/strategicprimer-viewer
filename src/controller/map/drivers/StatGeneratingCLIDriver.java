@@ -27,6 +27,7 @@ import model.misc.IMultiMapModel;
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
+import controller.map.drivers.ISPDriver.DriverFailedException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.DriverUsage;
@@ -101,6 +102,22 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+		try {
+			writeMaps(model);
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error writing to a map file", except);
+		}
+	}
+	/**
+	 * Write maps to disk.
+	 * @param model the model containing all the maps
+	 * @throws IOException on I/O error
+	 */
+	private static void writeMaps(final IExplorationModel model) throws IOException {
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		for (Pair<IMap, String> pair : model.getAllMaps()) {
+			reader.write(pair.second(), pair.first());
 		}
 	}
 	/**
