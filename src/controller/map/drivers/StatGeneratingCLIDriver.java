@@ -196,18 +196,47 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private void enterStats(final IExplorationModel model, final Player player) throws IOException {
-		final List<Unit> units = model.getUnits(player);
+		final List<Unit> units = removeStattedUnits(model.getUnits(player));
 		while (true) {
 			final int unitNum = helper.chooseFromList(units,
 					"Which unit contains the worker in question?",
-					"There are no units owned by that player",
+					"There are no units owned by that player that are not already fully statted",
 					"Unit selection: ", false);
 			if (unitNum < 0 || unitNum >= units.size() || units.isEmpty()) {
 				break;
 			} else {
-				enterStats(model, units.get(unitNum));
+				final Unit unit = units.get(unitNum);
+				enterStats(model, unit);
+				if (!hasUnstattedWorker(unit)) {
+					units.remove(unit);
+				}
 			}
 		}
+	}
+	/**
+	 * @param unit a unit
+	 * @return whether it contains any workers without stats
+	 */
+	private boolean hasUnstattedWorker(final Unit unit) {
+		for (final UnitMember member : unit) {
+			if (member instanceof Worker && ((Worker) member).getStats() == null) {
+				return true; // NOPMD
+			}
+		}
+		return false;
+	}
+	/**
+	 * @param units a list of units
+	 * @return a list of the units in the list that have workers without stats
+	 */
+	private List<Unit> removeStattedUnits(final List<Unit> units) {
+		final List<Unit> retval = new ArrayList<Unit>();
+		for (final Unit unit : units) {
+			if (hasUnstattedWorker(unit)) {
+				retval.add(unit);
+			}
+		}
+		return retval;
 	}
 	/**
 	 * Let the user enter stats for workers already in the maps that are part of one particular unit.
