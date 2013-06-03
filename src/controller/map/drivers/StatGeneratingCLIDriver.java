@@ -207,11 +207,20 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			} else {
 				final Unit unit = units.get(unitNum);
 				enterStats(model, unit);
-				if (!hasUnstattedWorker(unit)) {
+				if (!hasUnstattedWorker(model, unit.getID())) {
 					units.remove(unit);
 				}
 			}
 		}
+	}
+	/**
+	 * @oaram model the exploration model
+	 * @param idNum an ID number
+	 * @return true if the number designates a unit containing an unstatted worker, and false otherwise.
+	 */
+	private boolean hasUnstattedWorker(final IExplorationModel model, final int idNum) {
+		final IFixture fix = find(model.getMap(), idNum);
+		return fix instanceof Unit && hasUnstattedWorker((Unit) fix);
 	}
 	/**
 	 * @param unit a unit
