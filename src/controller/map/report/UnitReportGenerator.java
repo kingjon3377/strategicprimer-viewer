@@ -9,6 +9,8 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.WorkerStats;
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import util.IntMap;
 import util.Pair;
 /**
@@ -70,9 +72,37 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		builder.append(worker.getName());
 		builder.append(", a ");
 		builder.append(worker.getRace());
+		builder.append(". ");
+		if (worker.getStats() != null) {
+			final WorkerStats stats = worker.getStats();
+			builder.append("He or she has the following stats:").append(
+					OPEN_LIST);
+			builder.append(OPEN_LIST_ITEM).append("Hit points: ")
+					.append(stats.getHitPoints()).append(" / ")
+					.append(stats.getMaxHitPoints()).append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append("Strength: ")
+					.append(getModifierString(stats.getStrength()))
+					.append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append("Dexterity: ")
+					.append(getModifierString(stats.getDexterity()))
+					.append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append("Constitution: ")
+					.append(getModifierString(stats.getConstitution()))
+					.append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append("Intelligence: ")
+					.append(getModifierString(stats.getIntelligence()))
+					.append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append("Wisdom: ")
+					.append(getModifierString(stats.getWisdom()))
+					.append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append("Charisma: ")
+					.append(getModifierString(stats.getCharisma()))
+					.append(CLOSE_LIST_ITEM);
+			builder.append(CLOSE_LIST);
+		}
 		if (worker.iterator().hasNext()) {
 			builder.append(
-					", with training or experience in the following Jobs (Skill levels in parentheses):\n")
+					"He or she has training or experience in the following Jobs (Skills):\n")
 					.append(OPEN_LIST);
 			for (final Job job : worker) {
 				builder.append(OPEN_LIST_ITEM);
