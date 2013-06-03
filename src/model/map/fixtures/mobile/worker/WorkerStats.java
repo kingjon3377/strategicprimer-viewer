@@ -191,4 +191,12 @@ public class WorkerStats implements Serializable, XMLWritable {
 	public int hashCode() {
 		return str + dex << 3 + con << 6 + intel << 9 + wis << 12 + cha << 15 + hp << 18 + maxHP << 22;
 	}
+	/**
+	 * @param stat a stat
+	 * @return a String representing the modifier it conveys.
+	 */
+	public static String getModifierString(final int stat) {
+		final int modifier = (stat - 10) / 2;
+		return modifier > 0 ? "+" + Integer.toString(modifier) : Integer.toString(modifier);
+	}
 }
