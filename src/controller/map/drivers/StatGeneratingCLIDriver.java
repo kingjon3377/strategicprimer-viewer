@@ -27,7 +27,6 @@ import model.misc.IMultiMapModel;
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
-import controller.map.drivers.ISPDriver.DriverFailedException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.DriverUsage;
