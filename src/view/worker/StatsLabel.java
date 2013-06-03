@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import util.PropertyChangeSource;
 
 /**
@@ -45,22 +46,22 @@ public class StatsLabel extends JLabel implements PropertyChangeListener {
 				builder.append(stats.getMaxHitPoints());
 				builder.append(NEWLINE);
 				builder.append("Str: ");
-				builder.append(stats.getStrength());
+				builder.append(getModifierString(stats.getStrength()));
 				builder.append(NEWLINE);
 				builder.append("Dex: ");
-				builder.append(stats.getDexterity());
+				builder.append(getModifierString(stats.getDexterity()));
 				builder.append(NEWLINE);
 				builder.append("Con: ");
-				builder.append(stats.getConstitution());
+				builder.append(getModifierString(stats.getConstitution()));
 				builder.append(NEWLINE);
 				builder.append("Int: ");
-				builder.append(stats.getIntelligence());
+				builder.append(getModifierString(stats.getIntelligence()));
 				builder.append(NEWLINE);
 				builder.append("Wis: ");
-				builder.append(stats.getWisdom());
+				builder.append(getModifierString(stats.getWisdom()));
 				builder.append(NEWLINE);
 				builder.append("Cha: ");
-				builder.append(stats.getCharisma());
+				builder.append(getModifierString(stats.getCharisma()));
 				builder.append(NEWLINE);
 				setText(builder.toString());
 				getParent().invalidate();
