@@ -243,7 +243,6 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with user.
 	 */
 	private void enterStats(final IExplorationModel model, final int idNum) throws IOException {
-		final int hp = helper.inputNumber("HP: "); // NOPMD
 		final int maxHP = helper.inputNumber("Max HP: ");
 		final int str = helper.inputNumber("Str: ");
 		final int dex = helper.inputNumber("Dex: ");
@@ -251,7 +250,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final int intel = helper.inputNumber("Int: ");
 		final int wis = helper.inputNumber("Wis: ");
 		final int cha = helper.inputNumber("Cha: ");
-		final WorkerStats stats = new WorkerStats(hp, maxHP, str, dex, con, intel, wis, cha);
+		final WorkerStats stats = new WorkerStats(maxHP, maxHP, str, dex, con, intel, wis, cha);
 		for (final Pair<IMap, String> pair : model.getAllMaps()) {
 			final IMap map = pair.first();
 			final IFixture fix = find(map, idNum);
