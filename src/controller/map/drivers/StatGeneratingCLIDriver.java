@@ -214,11 +214,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		}
 	}
 	/**
-	 * @oaram model the exploration model
+	 * @param model the exploration model
 	 * @param idNum an ID number
 	 * @return true if the number designates a unit containing an unstatted worker, and false otherwise.
 	 */
-	private boolean hasUnstattedWorker(final IExplorationModel model, final int idNum) {
+	private static boolean hasUnstattedWorker(final IExplorationModel model, final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
 		return fix instanceof Unit && hasUnstattedWorker((Unit) fix);
 	}
@@ -226,7 +226,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
-	private boolean hasUnstattedWorker(final Unit unit) {
+	private static boolean hasUnstattedWorker(final Unit unit) {
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker && ((Worker) member).getStats() == null) {
 				return true; // NOPMD
@@ -238,7 +238,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param units a list of units
 	 * @return a list of the units in the list that have workers without stats
 	 */
-	private List<Unit> removeStattedUnits(final List<Unit> units) {
+	private static List<Unit> removeStattedUnits(final List<Unit> units) {
 		final List<Unit> retval = new ArrayList<Unit>();
 		for (final Unit unit : units) {
 			if (hasUnstattedWorker(unit)) {
@@ -374,7 +374,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				final Point point = PointFactory.point(
 						helper.inputNumber("Row to put new unit: "),
 						helper.inputNumber("Column to put new unit: "));
-				final Unit unit = new Unit(player,
+				final Unit unit = new Unit(player, // NOPMD
 						helper.inputString("Kind of unit: "),
 						helper.inputString("Unit name: "),
 						idf.createID());
@@ -421,6 +421,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		RACES.add("elf");
 		RACES.add("gnome");
 		RACES.add("half-elf");
+		// ESCA-JAVA0076:
 		while (RACES.size() < 20) {
 			RACES.add("human");
 		}
@@ -448,8 +449,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				idf.createID());
 		retval.setStats(stats);
 		for (int i = 0; i < 3; i++) {
+			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
-				retval.addJob(new Job(helper.inputString("Worker has a level in a Job, which Job? "), 1));
+				retval.addJob(new Job(//NOPMD
+						helper.inputString("Worker has a level in a Job, which Job? "),
+						1));
 			}
 		}
 		return retval;
