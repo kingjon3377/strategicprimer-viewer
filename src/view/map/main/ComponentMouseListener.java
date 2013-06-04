@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TerrainFixture;
@@ -47,16 +48,23 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 */
 	public String getToolTipText(final MouseEvent event) {
 		final java.awt.Point eventPoint = event.getPoint();
-		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(), model
-				.getMapDimensions().getVersion());
+		final MapDimensions mapDim = model.getMapDimensions();
+		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
+				mapDim.getVersion());
 		final VisibleDimensions dimensions = model.getDimensions();
 		final Point point = PointFactory.point(eventPoint.y / tileSize
 				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
 				+ dimensions.getMinimumCol());
-		final Tile tile = model.getTile(point);
-		return new StringBuilder("<html><body>").append(point.toString()).append(": ")
-				.append(tile.getTerrain()).append("<br />")
-				.append(getTerrainFixturesAndTop(tile)).append("</body></html>").toString();
+		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
+			final Tile tile = model.getTile(point);
+			return new StringBuilder("<html><body>")// NOPMD
+					.append(point.toString()).append(": ")
+					.append(tile.getTerrain()).append("<br />")
+					.append(getTerrainFixturesAndTop(tile))
+					.append("</body></html>").toString();
+		} else {
+			return null;
+		}
 	}
 	/**
 	 * Comparator to find which fixture is on top of a tile.
@@ -100,16 +108,20 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(final MouseEvent event) {
+		event.getComponent().requestFocusInWindow();
 		final java.awt.Point eventPoint = event.getPoint();
 		final VisibleDimensions dimensions = model.getDimensions();
-		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(), model
-				.getMapDimensions().getVersion());
-		model.setSelection(PointFactory.point(eventPoint.y / tileSize
+		final MapDimensions mapDim = model.getMapDimensions();
+		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
+				mapDim.getVersion());
+		final Point point = PointFactory.point(eventPoint.y / tileSize
 				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
-				+ dimensions.getMinimumCol()));
-		event.getComponent().requestFocusInWindow();
-		if (event.isPopupTrigger()) {
-			menu.show(event.getComponent(), event.getX(), event.getY());
+				+ dimensions.getMinimumCol());
+		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
+			model.setSelection(point);
+			if (event.isPopupTrigger()) {
+				menu.show(event.getComponent(), event.getX(), event.getY());
+			}
 		}
 	}
 
