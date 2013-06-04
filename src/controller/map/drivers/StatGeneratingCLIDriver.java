@@ -389,6 +389,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				}
 				createWorkers(model, idf, unit);
 			}
+			again = helper.inputBoolean("Add more workers to another new or existing unit?");
 		}
 	}
 	/**
