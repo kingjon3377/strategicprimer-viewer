@@ -23,7 +23,9 @@ public final class IDFactory {
 	 * @return the id, so this can be used functionally.
 	 */
 	public int register(final int id) { // NOPMD
-		usedIDs.set(id);
+		if (id >= 0) {
+			usedIDs.set(id);
+		}
 		return id;
 	}
 
