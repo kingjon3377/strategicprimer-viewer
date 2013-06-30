@@ -40,19 +40,6 @@ public class AppStarter implements ISPDriver {
 	 */
 	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE = new HashMap<String, Pair<ISPDriver, ISPDriver>>();
 	/**
-	 * @param first the driver to use if --cli
-	 * @param second the driveer to use if --gui
-	 * @param shrt its short option
-	 * @param lng its long option
-	 */
-	private static void addChoice(final ISPDriver first,
-			final ISPDriver second,
-			final String shrt, final String lng) {
-		final Pair<ISPDriver, ISPDriver> pair = Pair.of(first, second);
-		CACHE.put(shrt, pair);
-		CACHE.put(lng, pair);
-	}
-	/**
 	 * @param driver a driver to add twice.
 	 */
 	private static void addChoice(final ISPDriver driver) {
@@ -86,10 +73,7 @@ public class AppStarter implements ISPDriver {
 		addChoice(new QueryCLI(), new ViewerStart());
 		// FIXME: Write a CLI to _automate_ advancement
 		addChoice(new AdvancementStart());
-		// FIXME: Write a proper worker-management GUI
-		// We leave this as the old-style addChoice because here it's a
-		// placeholder for a proper worker GUI
-		addChoice(new WorkerReportDriver(), new AdvancementStart(), "-w", "--worker");
+		addChoice(new WorkerReportDriver(), new WorkerStart());
 		addChoice(new ExplorationCLIDriver(), new ExplorationGUI());
 		addChoice(new ReaderComparator(), new DrawHelperComparator());
 		addChoice(new MapChecker(), new MapCheckerGUI());
