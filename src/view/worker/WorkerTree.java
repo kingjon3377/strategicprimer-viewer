@@ -19,5 +19,6 @@ public class WorkerTree extends JTree {
 		super(new WorkerTreeModel(player, model));
 		setRootVisible(false);
 		setDragEnabled(true);
+		setShowsRootHandles(true);
 	}
 }
