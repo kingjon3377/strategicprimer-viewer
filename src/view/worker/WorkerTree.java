@@ -17,5 +17,6 @@ public class WorkerTree extends JTree {
 	 */
 	public WorkerTree(final Player player, final IWorkerModel model) {
 		super(new WorkerTreeModel(player, model));
+		setRootVisible(false);
 	}
 }
