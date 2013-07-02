@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.IFixture;
@@ -21,7 +22,7 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
+public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasImage {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -168,5 +169,13 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind {
 	 */
 	public void setStats(final WorkerStats wstats) {
 		stats = wstats;
+	}
+	/**
+	 * This is just for icons in lists and such, not for the map, since this isn't a TileFixture.
+	 * @return the filename of the image representing a worker.
+	 */
+	@Override
+	public String getImage() {
+		return "worker.png";
 	}
 }
