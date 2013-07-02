@@ -3,6 +3,7 @@ package view.worker;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 import model.workermgmt.IWorkerModel;
 /**
@@ -17,7 +18,7 @@ public class WorkerMgmtFrame extends JFrame {
 	 */
 	public WorkerMgmtFrame(final IWorkerModel model) {
 		setMinimumSize(new Dimension(640, 480));
-		add(new WorkerTree(model.getMap().getPlayers().getCurrentPlayer(), model));
+		add(new JScrollPane(new WorkerTree(model.getMap().getPlayers().getCurrentPlayer(), model)));
 		pack();
 	}
 }
