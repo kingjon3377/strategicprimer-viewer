@@ -2,6 +2,8 @@ package view.worker;
 
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,10 +11,13 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import model.map.IFixture;
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.workermgmt.IWorkerModel;
@@ -22,6 +27,7 @@ import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
 import model.workermgmt.WorkerTreeModelAlt;
 import model.workermgmt.WorkerTreeModelAlt.UnitMemberNode;
 import model.workermgmt.WorkerTreeModelAlt.UnitNode;
+import view.map.details.FixtureEditMenu;
 /**
  * A tree of a player's units.
  * @author Jonathan Lovelace
@@ -39,6 +45,7 @@ public class WorkerTree extends JTree {
 		setShowsRootHandles(true);
 		setTransferHandler(new WorkerTreeTransferHandler(getSelectionModel(), (IWorkerTreeModel) getModel()));
 		setCellRenderer(new UnitMemberCellRenderer());
+		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 	}
 	/**
 	 * A replacement transfer handler to make drag-and-drop work properly.
@@ -158,6 +165,62 @@ public class WorkerTree extends JTree {
 				}
 			} else {
 				return false;
+			}
+		}
+	}
+	/**
+	 * A listener to set up pop-up menus.
+	 */
+	private class TreeMouseListener extends MouseAdapter {
+		/**
+		 * The collection of players in the map.
+		 */
+		private final PlayerCollection players;
+		/**
+		 * Constructor.
+		 * @param playerColl the collection of players in the map
+		 */
+		TreeMouseListener(final PlayerCollection playerColl) {
+			players = playerColl;
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		@Override
+		public void mouseClicked(final MouseEvent event) {
+			handleMouseEvent(event);
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		@Override
+		public void mousePressed(final MouseEvent event) {
+			handleMouseEvent(event);
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		@Override
+		public void mouseReleased(final MouseEvent event) {
+			handleMouseEvent(event);
+		}
+		/**
+		 * @param event the event to handle
+		 */
+		private void handleMouseEvent(final MouseEvent event) {
+			if (event.isPopupTrigger() && event.getClickCount() == 1) {
+				final Object obj = getClosestPathForLocation(event.getX(), event.getY()).getLastPathComponent();
+				final IFixture fixture;
+				if (obj instanceof IFixture) {
+					fixture = (IFixture) obj;
+				} else if (obj instanceof DefaultMutableTreeNode
+						&& ((DefaultMutableTreeNode) obj).getUserObject() instanceof IFixture) {
+					fixture = (IFixture) ((DefaultMutableTreeNode) obj).getUserObject();
+				} else {
+					return; // NOPMD
+				}
+				new FixtureEditMenu(fixture, players).show(
+						event.getComponent(), event.getX(), event.getY());
 			}
 		}
 	}
