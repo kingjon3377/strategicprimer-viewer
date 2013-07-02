@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import model.map.Player;
@@ -17,7 +17,7 @@ import model.map.fixtures.mobile.Unit;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerTreeModel implements TreeModel {
+public class WorkerTreeModel implements IWorkerTreeModel {
 	/**
 	 * Logger.
 	 */
@@ -147,9 +147,7 @@ public class WorkerTreeModel implements TreeModel {
 	 */
 	@Override
 	public void addTreeModelListener(final TreeModelListener list) {
-		if (!listeners.contains(list)) {
-			listeners.add(list);
-		}
+		listeners.add(list);
 	}
 	/**
 	 * @param list something that doesn't want to listen for tree model changes anymore
@@ -162,4 +160,33 @@ public class WorkerTreeModel implements TreeModel {
 	 * The listeners registered to listen for model changes.
 	 */
 	private final List<TreeModelListener> listeners = new ArrayList<TreeModelListener>();
+	/**
+	 * Move a member between units.
+	 * @param member a unit member
+	 * @param old the prior owner
+	 * @param newOwner the new owner
+	 */
+	@Override
+	public void moveMember(final UnitMember member, final Unit old, final Unit newOwner) {
+		final int oldIndex = getIndexOfChild(old, member);
+		old.removeMember(member);
+		final TreeModelEvent removedEvent = new TreeModelEvent(this,
+				new TreePath(new Object[] { root, old }), new int[] { oldIndex },
+				new Object[] { member });
+		final TreeModelEvent removedChangedEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, old }));
+		for (final TreeModelListener listener : listeners) {
+			listener.treeNodesRemoved(removedEvent); // FIXME: Somehow removed nodes are still visible!
+			listener.treeStructureChanged(removedChangedEvent);
+		}
+		newOwner.addMember(member);
+//		final int newIndex = getIndexOfChild(member, newOwner);
+//		final TreeModelEvent insertedEvent = new TreeModelEvent(this,
+//				new TreePath(new Object[] { root, newOwner }),
+//				new int[] { newIndex }, new Object[] { member });
+		final TreeModelEvent insertedChangedEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, newOwner }));
+		for (final TreeModelListener listener : listeners) {
+//			listener.treeNodesInserted(insertedEvent);
+			listener.treeStructureChanged(insertedChangedEvent);
+		}
+	}
 }

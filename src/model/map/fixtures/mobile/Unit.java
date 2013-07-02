@@ -96,6 +96,13 @@ public class Unit implements MobileFixture, HasImage,
 		members.add(member);
 	}
 	/**
+	 * Remove a member from the unit.
+	 * @param member the member to remove
+	 */
+	public void removeMember(final UnitMember member) {
+		members.remove(member);
+	}
+	/**
 	 * @return an iterator over the unit's members
 	 */
 	@Override
