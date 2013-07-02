@@ -38,6 +38,7 @@ public class WorkerTree extends JTree {
 		setDragEnabled(true);
 		setShowsRootHandles(true);
 		setTransferHandler(new WorkerTreeTransferHandler(getSelectionModel(), (IWorkerTreeModel) getModel()));
+		setCellRenderer(new UnitMemberCellRenderer());
 	}
 	/**
 	 * A replacement transfer handler to make drag-and-drop work properly.
