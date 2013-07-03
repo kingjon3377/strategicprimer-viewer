@@ -64,6 +64,8 @@ public class ReportGenerator {
 		fixtures.coalesce();
 		builder.append(new VillageReportGenerator().produce(fixtures, tiles, player));
 		fixtures.coalesce();
+		builder.append(new ImmortalsReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
 		builder.append(remainderReport(fixtures));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
