@@ -19,6 +19,7 @@ import controller.map.drivers.AdvancementStart;
 import controller.map.drivers.ISPDriver;
 import controller.map.drivers.ISPDriver.DriverFailedException;
 import controller.map.drivers.ViewerStart;
+import controller.map.drivers.WorkerStart;
 /**
  * A GUI to let the user choose which GUI to use.
  * @author Jonathan Lovelace
@@ -47,7 +48,8 @@ public class AppChooserFrame extends JFrame implements ActionListener {
 		super("SP App Chooser");
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		addTarget("Map Viewer", ViewerStart.class);
-		addTarget("Worker Advancement", AdvancementStart.class);
+		addTarget("Worker Skill Advancement", AdvancementStart.class);
+		addTarget("Unit Orders and Worker Management", WorkerStart.class);
 		add(new JLabel("Please choose one of the applications below:"));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		parameters = Collections.unmodifiableList(params);
