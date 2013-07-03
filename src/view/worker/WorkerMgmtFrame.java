@@ -58,6 +58,9 @@ public class WorkerMgmtFrame extends JFrame {
 			}
 		});
 		bottom.add(newUnitButton, BorderLayout.NORTH);
+		final OrdersPanel ordersPanel = new OrdersPanel();
+		tree.addTreeSelectionListener(ordersPanel);
+		bottom.add(ordersPanel, BorderLayout.CENTER);
 		splitpane.setBottomComponent(bottom);
 		setContentPane(splitpane);
 		pack();
