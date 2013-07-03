@@ -1,5 +1,7 @@
 package view.worker;
 
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
+
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseAdapter;
@@ -10,6 +12,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JTree;
+import javax.swing.ToolTipManager;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -20,6 +23,8 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.UnitMemberTransferable;
@@ -46,6 +51,7 @@ public class WorkerTree extends JTree {
 		setTransferHandler(new WorkerTreeTransferHandler(getSelectionModel(), (IWorkerTreeModel) getModel()));
 		setCellRenderer(new UnitMemberCellRenderer());
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
+		ToolTipManager.sharedInstance().registerComponent(this);
 	}
 	/**
 	 * A replacement transfer handler to make drag-and-drop work properly.
@@ -222,6 +228,45 @@ public class WorkerTree extends JTree {
 				new FixtureEditMenu(fixture, players).show(
 						event.getComponent(), event.getX(), event.getY());
 			}
+		}
+	}
+	/**
+	 * @param evt an event indicating the mouse cursor
+	 * @return a tooltip if over a worker, null otherwise
+	 */
+	@Override
+	public String getToolTipText(final MouseEvent evt) {
+	    if (getRowForLocation(evt.getX(), evt.getY()) == -1) {
+			return null;
+		}
+	    TreePath curPath = getPathForLocation(evt.getX(), evt.getY());
+	    Object node = curPath.getLastPathComponent();
+	    return getStatsToolTip(node);
+	  }
+	/**
+	 * @param node a node in the tree
+	 * @return a tooltip if it's a worker or a worker node, null otherwise
+	 */
+	private String getStatsToolTip(final Object node) {
+		if (node instanceof DefaultMutableTreeNode) {
+			return getStatsToolTip(((DefaultMutableTreeNode) node).getUserObject());
+		} else if (node instanceof Worker && ((Worker) node).getStats() != null) {
+			final WorkerStats stats = ((Worker) node).getStats();
+			return new StringBuilder("<html><p>Str ")
+					.append(getModifierString(stats.getStrength()))
+					.append(", Dex ")
+					.append(getModifierString(stats.getDexterity()))
+					.append(", Con ")
+					.append(getModifierString(stats.getConstitution()))
+					.append(", Int ")
+					.append(getModifierString(stats.getIntelligence()))
+					.append(", Wis ")
+					.append(getModifierString(stats.getWisdom()))
+					.append(", Cha ")
+					.append(getModifierString(stats.getCharisma()))
+					.append("</p></html>").toString();
+		} else {
+			return null;
 		}
 	}
 }
