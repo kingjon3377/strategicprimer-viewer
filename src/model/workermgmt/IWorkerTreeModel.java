@@ -18,5 +18,10 @@ public interface IWorkerTreeModel extends TreeModel {
 	 * @param newOwner the new owner
 	 */
 	void moveMember(final UnitMember member, final Unit old, final Unit newOwner);
+	/**
+	 * Add a new unit. Also handles adding it to the map (via the driver model).
+	 * @param unit the unit to add.
+	 */
+	void addUnit(final Unit unit);
 
 }

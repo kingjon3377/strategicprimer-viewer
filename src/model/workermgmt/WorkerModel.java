@@ -8,6 +8,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileCollection;
+import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractDriverModel;
@@ -58,5 +59,23 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 			}
 		}
 		return retval;
+	}
+	/**
+	 * @param unit the unit to add
+	 */
+	@Override
+	public void addUnit(final Unit unit) {
+		final TileCollection tiles = getMap().getTiles();
+		for (final Point point : tiles) {
+			final Tile tile = tiles.getTile(point);
+			for (final TileFixture fix : tile) {
+				if (fix instanceof Fortress
+						&& unit.getOwner().equals(((Fortress) fix).getOwner())
+						&& "HQ".equals(((Fortress) fix).getName())) {
+					((Fortress) fix).addUnit(unit);
+					return;
+				}
+			}
+		}
 	}
 }

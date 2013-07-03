@@ -149,4 +149,17 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 	}
+	/**
+	 * Add a unit.
+	 * @param unit the unit to add
+	 */
+	@Override
+	public void addUnit(final Unit unit) {
+		model.addUnit(unit);
+		final UnitNode node = new UnitNode(unit);
+		((DefaultMutableTreeNode) getRoot()).add(node);
+		fireTreeNodesInserted(this, new Object[] { root },
+				new int[] { ((DefaultMutableTreeNode) getRoot())
+						.getChildCount() - 1 }, new Object[] { node });
+	}
 }

@@ -189,4 +189,17 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			listener.treeStructureChanged(insertedChangedEvent);
 		}
 	}
+	/**
+	 * Add a unit.
+	 * @param unit the unit to add
+	 */
+	@Override
+	public void addUnit(final Unit unit) {
+		model.addUnit(unit);
+		for (final TreeModelListener listener : listeners) {
+			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(
+					root), new int[] { model.getUnits(root).size() },
+					new Object[] { unit }));
+		}
+	}
 }
