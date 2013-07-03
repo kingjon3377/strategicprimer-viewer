@@ -50,7 +50,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 			builder.append(OPEN_LIST_ITEM);
 			if (member instanceof Worker) {
-				builder.append(workerReport((Worker) member));
+				builder.append(workerReport((Worker) member,
+						currentPlayer.equals(unit.getOwner())));
 			} else {
 				builder.append(member.toString());
 			}
@@ -63,17 +64,20 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		return builder.toString();
 	}
+
 	/**
 	 * @param worker a Worker.
+	 * @param details whether we should give details of the worker's stats and
+	 *        experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static String workerReport(final Worker worker) {
+	private static String workerReport(final Worker worker, final boolean details) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(worker.getName());
 		builder.append(", a ");
 		builder.append(worker.getRace());
 		builder.append(". ");
-		if (worker.getStats() != null) {
+		if (worker.getStats() != null && details) {
 			final WorkerStats stats = worker.getStats();
 			builder.append("He or she has the following stats:").append(
 					OPEN_LIST);
@@ -100,7 +104,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 					.append(CLOSE_LIST_ITEM);
 			builder.append(CLOSE_LIST);
 		}
-		if (worker.iterator().hasNext()) {
+		if (worker.iterator().hasNext() && details) {
 			builder.append(
 					"He or she has training or experience in the following Jobs (Skills):\n")
 					.append(OPEN_LIST);
