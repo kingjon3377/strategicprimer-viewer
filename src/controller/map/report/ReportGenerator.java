@@ -8,7 +8,6 @@ import model.map.IFixture;
 import model.map.IMap;
 import model.map.Player;
 import model.map.Point;
-import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileCollection;
 import util.IntMap;
@@ -23,22 +22,6 @@ import util.Pair;
  *
  */
 public class ReportGenerator {
-	/**
-	 * The HTML tag for the end of a bulleted list. Plus a newline.
-	 */
-	private static final String CLOSE_LIST = "</ul>\n";
-	/**
-	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep the HTML human-readable.
-	 */
-	private static final String OPEN_LIST = "<ul>\n";
-	/**
-	 * The HTML tag for the end of a list item ... plus a newline, to keep the HTML mostly human-readable.
-	 */
-	private static final String CLOSE_LIST_ITEM = "</li>\n";
-	/**
-	 * The HTML tag for the start of a list item.
-	 */
-	private static final String OPEN_LIST_ITEM = "<li>";
 	/**
 	 * @param map the map to base the report on
 	 * @return the report, in HTML, as a String
@@ -66,44 +49,8 @@ public class ReportGenerator {
 		fixtures.coalesce();
 		builder.append(new ImmortalsReportGenerator().produce(fixtures, tiles, player));
 		fixtures.coalesce();
-		builder.append(remainderReport(fixtures));
-		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
 		return builder.toString();
-	}
-	/**
-	 * TODO: Move to an abstract superclass.
-	 * @param point a point
-	 * @return the string "At " followed by the point's location
-	 */
-	private static String atPoint(final Point point) {
-		return "At " + point.toString();
-	}
-
-	/**
-	 * All fixtures referred to in this report are removed from the collection,
-	 * just so's it's empty by the end.
-	 *
-	 * @param fixtures the set of fixtures
-	 * @return the part of the report listing the (eventually only notable)
-	 *         fixtures that remain in the set.
-	 */
-	private static String remainderReport(final IntMap<Pair<Point, IFixture>> fixtures) {
-		final StringBuilder builder = new StringBuilder("<h4>Remaining fixtures:</h4>\n").append(OPEN_LIST);
-		boolean any = false;
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
-			fixtures.remove(Integer.valueOf(pair.second().getID()));
-			if (pair.second() instanceof TerrainFixture) {
-				continue;
-			}
-			any = true;
-			builder.append(OPEN_LIST_ITEM).append(atPoint(pair.first()))
-					.append(", with ID #").append(pair.second().getID())
-					.append(": ").append(pair.second().toString())
-					.append(CLOSE_LIST_ITEM);
-		}
-		builder.append(CLOSE_LIST);
-		return any ? builder.toString() : "";
 	}
 	/**
 	 * @param map a map
