@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.map.FixtureIterable;
+import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMap;
 import model.map.Player;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileCollection;
+import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.towns.Fortress;
 import util.IntMap;
 import util.Pair;
 
@@ -33,6 +36,44 @@ public class ReportGenerator {
 		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final TileCollection tiles = map.getTiles();
 		final Player player = map.getPlayers().getCurrentPlayer();
+		builder.append(new FortressReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append(new UnitReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append(new TownReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append(new ExplorableReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append(new HarvestableReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append(new AnimalReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append(new VillageReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append(new ImmortalsReportGenerator().produce(fixtures, tiles, player));
+		fixtures.coalesce();
+		builder.append("</body>\n</html>\n");
+		return builder.toString();
+	}
+	/**
+	 * Creates a slightly abbreviated report, omitting the player's fortresses and units.
+	 * @param map the map to base the report on
+	 * @return the report, in HTML, as a string.
+	 */
+	public String createAbbreviatedReport(final IMap map) {
+		final StringBuilder builder = new StringBuilder("<html>\n");
+		builder.append("<head><title>Strategic Primer map summary abbreviated report</title></head>\n");
+		builder.append("<body>");
+		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final TileCollection tiles = map.getTiles();
+		final Player player = map.getPlayers().getCurrentPlayer();
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
+					&& player.equals(((HasOwner) pair.second()).getOwner())) {
+				fixtures.remove(Integer.valueOf(pair.second().getID()));
+			}
+		}
+		fixtures.coalesce();
 		builder.append(new FortressReportGenerator().produce(fixtures, tiles, player));
 		fixtures.coalesce();
 		builder.append(new UnitReportGenerator().produce(fixtures, tiles, player));
