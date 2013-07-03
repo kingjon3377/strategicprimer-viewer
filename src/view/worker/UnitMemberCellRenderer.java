@@ -17,12 +17,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import util.ImageLoader;
-import view.map.details.FixtureCellRenderer;
-
 import model.map.HasImage;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
+import util.ImageLoader;
 /**
  * A cell renderer for the worker management tree.
  * @author Jonathan Lovelace
