@@ -58,6 +58,7 @@ public class UnitReader implements INodeHandler<Unit> {
 						element, "owner", "-1")))), parseKind(element, warner),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
 						warner, idFactory));
+		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
@@ -71,11 +72,14 @@ public class UnitReader implements INodeHandler<Unit> {
 							.getLocalPart(), event.getLocation()
 							.getLineNumber());
 				}
+			} else if (event.isCharacters()) {
+				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
+		fix.setOrders(orders.toString().trim());
 		return fix;
 	}
 
@@ -145,6 +149,9 @@ public class UnitReader implements INodeHandler<Unit> {
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		for (final UnitMember member : obj) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(member));
+		}
+		if (!obj.getOrders().trim().isEmpty()) {
+			retval.addAttribute("text-contents", obj.getOrders().trim() + '\n');
 		}
 		return retval;
 	}

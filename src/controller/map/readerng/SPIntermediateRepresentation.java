@@ -143,8 +143,7 @@ public class SPIntermediateRepresentation {
 			writeIfTagNotEmpty(writer, tag);
 			// final String text = "text".equals(tag) ? attrs
 			// .remove("text-contents") : "";
-			final String text = "text".equals(tag) ? removeAttribute("text-contents")
-					: "";
+			final String text = removeAttribute("text-contents");
 			// for (String attr : attrs.keySet()) {
 			// for (Pair<String, String> attr : attrs) {
 			for (int index = 0; index < attrs.size(); index++) {
@@ -159,7 +158,7 @@ public class SPIntermediateRepresentation {
 				writeIfTagNotEmpty(writer, "\"");
 			}
 			if (children.isEmpty()) {
-				if (shouldSeparateClosingTag(tag)) {
+				if (shouldSeparateClosingTag(tag) || !"".equals(text)) {
 					writeIfTagNotEmpty(writer, ">");
 					writeIfTagNotEmpty(writer, text);
 					writeIfTagNotEmpty(writer, "</");

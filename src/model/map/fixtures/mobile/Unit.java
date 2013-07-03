@@ -60,6 +60,7 @@ public class Unit implements MobileFixture, HasImage,
 		kind = unitType;
 		name = unitName;
 		id = idNum;
+		orders = "";
 	}
 
 	/**
@@ -246,5 +247,22 @@ public class Unit implements MobileFixture, HasImage,
 	@Override
 	public final void setKind(final String nKind) {
 		kind = nKind;
+	}
+	/**
+	 * The unit's orders. This is serialized to and from XML, but does not
+	 * affect equality or hashing, and is not printed in toString.
+	 */
+	private String orders;
+	/**
+	 * @param newOrders the unit's new orders
+	 */
+	public void setOrders(final String newOrders) {
+		orders = newOrders;
+	}
+	/**
+	 * @return the unit's orders
+	 */
+	public String getOrders() {
+		return orders;
 	}
 }

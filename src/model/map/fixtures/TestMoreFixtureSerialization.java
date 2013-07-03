@@ -1,5 +1,8 @@
 package model.map.fixtures;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
@@ -370,6 +373,28 @@ public final class TestMoreFixtureSerialization extends
 		final Worker two = new Worker("sixth", "dwarf", 9);
 		two.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have skills", two, Worker.class);
+	}
+	/**
+	 * Test serialization of units' orders.
+	 * @throws SPFormatException on XML format error
+	 * @throws XMLStreamException on XML reader error
+	 * @throws IOException on I/O error creating serialized form
+	 */
+	@Test
+	public void testOrdersSerialization() throws XMLStreamException,
+	SPFormatException, IOException {
+		final Player player = new Player(0, "");
+		final Unit one = new Unit(player, "kind of unit", "name of unit", 2);
+		final Unit two = new Unit(player, "kind of unit", "name of unit", 2);
+		two.setOrders("some orders");
+		assertEquals("Orders have no effect on equals", one, two);
+		assertSerialization("Orders don't mess up deserialization", two,
+				Unit.class, new Warning(Warning.Action.Die));
+		assertTrue("Serialized form contains orders",
+				createSerializedForm(two, true).contains("some orders"));
+		assertTrue("Serialized form contains orders",
+				createSerializedForm(two, false).contains("some orders"));
+
 	}
 	/**
 	 * @return a String representation of the object

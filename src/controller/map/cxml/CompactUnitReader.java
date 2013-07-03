@@ -61,14 +61,18 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 						element, "owner", "-1")))), parseKind(element, warner),
 				getParameter(element, "name", ""), getOrGenerateID(element,
 						warner, idFactory));
+		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				retval.addMember(parseChild(event.asStartElement(), stream, players, idFactory, warner));
+			} else if (event.isCharacters()) {
+				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
+		retval.setOrders(orders.toString().trim());
 		return retval;
 	}
 	/**
@@ -173,8 +177,8 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
 		out.append('"');
-		if (obj.iterator().hasNext()) {
-			out.append(">\n");
+		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
+			out.append(">").append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
 				CompactReaderAdapter.ADAPTER.write(out, member, indent + 1);
 			}
