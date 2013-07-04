@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 import model.map.HasImage;
+import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import util.ImageLoader;
@@ -77,6 +78,12 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			}
 			builder.append("</p></html>");
 			((JLabel) component).setText(builder.toString());
+		} else if (internal instanceof Unit) {
+			final Unit unit = (Unit) internal;
+			((JLabel) component).setText(new StringBuilder("<html><p>")
+					.append("Unit of type ").append(unit.getKind())
+					.append(", named ").append(unit.getName())
+					.append("</p></html>").toString());
 		}
 		return component;
 	}
