@@ -427,13 +427,6 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final String name = helper.inputString("Worker is a " + race
 				+ ". Worker name: ");
 		final Worker retval = new Worker(name, race, idf.createID());
-		final boolean pregenStats = helper.inputBoolean("Enter pregenerated stats? ");
-		if (pregenStats) {
-			retval.setStats(enterStats());
-		} else {
-			retval.setStats(new WorkerStats(8, 8, threeDeeSix(), threeDeeSix(),
-					threeDeeSix(), threeDeeSix(), threeDeeSix(), threeDeeSix()));
-		}
 		for (int i = 0; i < 3; i++) {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
@@ -441,6 +434,13 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						helper.inputString("Worker has a level in a Job, which Job? "),
 						1));
 			}
+		}
+		final boolean pregenStats = helper.inputBoolean("Enter pregenerated stats? ");
+		if (pregenStats) {
+			retval.setStats(enterStats());
+		} else {
+			retval.setStats(new WorkerStats(8, 8, threeDeeSix(), threeDeeSix(),
+					threeDeeSix(), threeDeeSix(), threeDeeSix(), threeDeeSix()));
 		}
 		return retval;
 	}
