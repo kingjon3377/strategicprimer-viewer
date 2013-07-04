@@ -280,14 +280,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with user.
 	 */
 	private void enterStats(final IExplorationModel model, final int idNum) throws IOException {
-		final int maxHP = helper.inputNumber("Max HP: ");
-		final int str = helper.inputNumber("Str: ");
-		final int dex = helper.inputNumber("Dex: ");
-		final int con = helper.inputNumber("Con: ");
-		final int intel = helper.inputNumber("Int: ");
-		final int wis = helper.inputNumber("Wis: ");
-		final int cha = helper.inputNumber("Cha: ");
-		final WorkerStats stats = new WorkerStats(maxHP, maxHP, str, dex, con, intel, wis, cha);
+		final WorkerStats stats = enterStats();
 		for (final Pair<IMap, String> pair : model.getAllMaps()) {
 			final IMap map = pair.first();
 			final IFixture fix = find(map, idNum);
@@ -295,6 +288,21 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				((Worker) fix).setStats(stats);
 			}
 		}
+	}
+	/**
+	 * Let the user enter stats for a worker.
+	 * @return the stats the user entered
+	 * @throws IOException on I/O error interacting with the user.
+	 */
+	private WorkerStats enterStats() throws IOException {
+		final int maxHP = helper.inputNumber("Max HP: ");
+		final int str = helper.inputNumber("Str: ");
+		final int dex = helper.inputNumber("Dex: ");
+		final int con = helper.inputNumber("Con: ");
+		final int intel = helper.inputNumber("Int: ");
+		final int wis = helper.inputNumber("Wis: ");
+		final int cha = helper.inputNumber("Cha: ");
+		return new WorkerStats(maxHP, maxHP, str, dex, con, intel, wis, cha);
 	}
 	/**
 	 * @param map a map
@@ -441,13 +449,17 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return the generated worker
 	 */
 	private Worker createWorker(final IDFactory idf) throws IOException {
-		final WorkerStats stats = new WorkerStats(8, 8, threeDeeSix(),
-				threeDeeSix(), threeDeeSix(), threeDeeSix(), threeDeeSix(),
-				threeDeeSix());
-		final Worker retval = new Worker(helper.inputString("Worker name: "),
-				RACES.get(SingletonRandom.RANDOM.nextInt(RACES.size())),
-				idf.createID());
-		retval.setStats(stats);
+		final String race = RACES.get(SingletonRandom.RANDOM.nextInt(RACES.size()));
+		final String name = helper.inputString("Worker is a " + race
+				+ ". Worker name: ");
+		final Worker retval = new Worker(name, race, idf.createID());
+		final boolean pregenStats = helper.inputBoolean("Enter pregenerated stats?");
+		if (pregenStats) {
+			retval.setStats(enterStats());
+		} else {
+			retval.setStats(new WorkerStats(8, 8, threeDeeSix(), threeDeeSix(),
+					threeDeeSix(), threeDeeSix(), threeDeeSix(), threeDeeSix()));
+		}
 		for (int i = 0; i < 3; i++) {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
