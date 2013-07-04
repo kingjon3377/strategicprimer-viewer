@@ -371,7 +371,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				}
 				createWorkers(model, idf, unit);
 			}
-			again = helper.inputBoolean("Add more workers to another new or existing unit?");
+			again = helper.inputBoolean("Add more workers to another new or existing unit? ");
 		}
 	}
 	/**
@@ -427,7 +427,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final String name = helper.inputString("Worker is a " + race
 				+ ". Worker name: ");
 		final Worker retval = new Worker(name, race, idf.createID());
-		final boolean pregenStats = helper.inputBoolean("Enter pregenerated stats?");
+		final boolean pregenStats = helper.inputBoolean("Enter pregenerated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats());
 		} else {
