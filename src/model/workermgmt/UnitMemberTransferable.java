@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
-import util.Pair;
 
 /**
  * A class to transfer a UnitMember.

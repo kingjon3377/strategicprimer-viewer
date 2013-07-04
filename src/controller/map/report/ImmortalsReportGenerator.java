@@ -59,7 +59,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point point = pair.first();
-			Integer id = Integer.valueOf(pair.second().getID());
+			final Integer idNum = Integer.valueOf(pair.second().getID());
 			if (pair.second() instanceof Dragon) {
 				separateByKind(dragons, (Dragon) pair.second(), point);
 			} else if (pair.second() instanceof Fairy) {
@@ -87,7 +87,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 			} else {
 				continue;
 			}
-			fixtures.remove(id);
+			fixtures.remove(idNum);
 		}
 		optionallyPrint(dragons, "(s) at ", builder);
 		optionallyPrint(fairies, " at ", builder);
