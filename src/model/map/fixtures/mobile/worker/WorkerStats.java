@@ -197,6 +197,6 @@ public class WorkerStats implements Serializable, XMLWritable {
 	 */
 	public static String getModifierString(final int stat) {
 		final int modifier = (stat - 10) / 2;
-		return modifier > 0 ? "+" + Integer.toString(modifier) : Integer.toString(modifier);
+		return modifier >= 0 ? "+" + Integer.toString(modifier) : Integer.toString(modifier);
 	}
 }
