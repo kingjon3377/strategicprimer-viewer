@@ -23,7 +23,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import model.misc.IMultiMapModel;
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
@@ -32,6 +31,7 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.DriverUsage;
 import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -97,7 +97,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					.inputBoolean("Enter pregenerated stats for existing workers? ")) {
 				enterStats(model);
 			} else {
-				createWorkers(model, getIDFactory(model));
+				createWorkers(model, IDFactoryFiller.createFactory(model));
 			}
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
@@ -117,32 +117,6 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (Pair<IMap, String> pair : model.getAllMaps()) {
 			reader.write(pair.second(), pair.first());
-		}
-	}
-	/**
-	 * @param model a driver model
-	 * @return an IDFactory instance with all the IDs used in any of its maps marked as used.
-	 */
-	private static IDFactory getIDFactory(final IMultiMapModel model) {
-		final IDFactory retval = new IDFactory();
-		for (final Pair<IMap, String> pair : model.getAllMaps()) {
-			final TileCollection tiles = pair.first().getTiles();
-			for (final Point point : tiles) {
-				recursiveRegister(retval, tiles.getTile(point));
-			}
-		}
-		return retval;
-	}
-	/**
-	 * @param idf an IDFactory instance
-	 * @param iter a collection of fixtures, all of which (recursively) should have their IDs marked as used.
-	 */
-	private static void recursiveRegister(final IDFactory idf, final FixtureIterable<?> iter) {
-		for (final IFixture fix : iter) {
-			idf.register(fix.getID());
-			if (fix instanceof FixtureIterable<?>) {
-				recursiveRegister(idf, (FixtureIterable<?>) fix);
-			}
 		}
 	}
 	/**

@@ -5,6 +5,7 @@ import model.map.IFixture;
 import model.map.IMap;
 import model.map.Point;
 import model.map.TileCollection;
+import model.misc.IMultiMapModel;
 import util.Pair;
 
 /**
@@ -21,6 +22,20 @@ public class IDFactoryFiller {
 		final TileCollection tiles = map.getTiles();
 		for (final Point point : tiles) {
 			recursiveRegister(retval, tiles.getTile(point));
+		}
+		return retval;
+	}
+	/**
+	 * @param model a collection of maps
+	 * @return an ID factory that won't generate an ID any of the maps already uses.
+	 */
+	public static IDFactory createFactory(final IMultiMapModel model) {
+		final IDFactory retval = new IDFactory();
+		for (final Pair<IMap, String> pair : model.getAllMaps()) {
+			final TileCollection tiles = pair.first().getTiles();
+			for (final Point point : tiles) {
+				recursiveRegister(retval, tiles.getTile(point));
+			}
 		}
 		return retval;
 	}
