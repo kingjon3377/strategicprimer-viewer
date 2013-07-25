@@ -27,7 +27,7 @@ public class SPIntermediateRepresentation {
 	 */
 	public SPIntermediateRepresentation(final String name) {
 		tag = name;
-		children = new LinkedHashSet<SPIntermediateRepresentation>();
+		children = new LinkedHashSet<>();
 	}
 
 	/**
@@ -36,6 +36,7 @@ public class SPIntermediateRepresentation {
 	 * @param name the tag this represents
 	 * @param attributes a list of attributes to add.
 	 */
+	@SafeVarargs
 	public SPIntermediateRepresentation(final String name,
 			final Pair<String, String>... attributes) {
 		this(name);
@@ -52,15 +53,13 @@ public class SPIntermediateRepresentation {
 	/**
 	 * The list of attributes.
 	 */
-	// private final Map<String, String> attrs = new LinkedHashMap<String,
-	// String>();
-	// private final List<Pair<String, String>> attrs = new
-	// ArrayList<Pair<String, String>>();
-	private final List<String> attrs = new ArrayList<String>();
+	// private final Map<String, String> attrs = new LinkedHashMap<>();
+	// private final List<Pair<String, String>> attrs = new ArrayList<>();
+	private final List<String> attrs = new ArrayList<>();
 	/**
 	 * The list of attribute values.
 	 */
-	private final List<String> vals = new ArrayList<String>();
+	private final List<String> vals = new ArrayList<>();
 
 	/**
 	 * Add an attribute.

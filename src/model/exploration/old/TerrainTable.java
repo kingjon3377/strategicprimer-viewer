@@ -22,7 +22,7 @@ public class TerrainTable implements EncounterTable {
 	/**
 	 * Mapping from terrain type to "events".
 	 */
-	private final Map<TileType, String> mapping = new EnumMap<TileType, String>(
+	private final Map<TileType, String> mapping = new EnumMap<>(
 			TileType.class);
 
 	/**
@@ -51,7 +51,7 @@ public class TerrainTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		return new HashSet<String>(mapping.values());
+		return new HashSet<>(mapping.values());
 	}
 
 	/**

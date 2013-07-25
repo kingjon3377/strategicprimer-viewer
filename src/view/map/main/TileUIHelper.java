@@ -33,10 +33,9 @@ public class TileUIHelper {
 	// ESCA-JAVA0076:
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
-		colors = new HashMap<Integer, Map<TileType, Color>>(
+		colors = new HashMap<>(
 				SPMap.MAX_VERSION + 1);
-		final Map<TileType, Color> one = new EnumMap<TileType, Color>(
-				TileType.class);
+		final Map<TileType, Color> one = new EnumMap<>(TileType.class);
 		one.put(TileType.BorealForest, new Color(72, 218, 164));
 		one.put(TileType.Desert, new Color(249, 233, 28));
 		one.put(TileType.Jungle, new Color(229, 46, 46));
@@ -47,8 +46,7 @@ public class TileUIHelper {
 		one.put(TileType.TemperateForest, new Color(72, 250, 72));
 		one.put(TileType.Tundra, new Color(153, 153, 153));
 		colors.put(Integer.valueOf(1), one);
-		final Map<TileType, Color> two = new EnumMap<TileType, Color>(
-				TileType.class);
+		final Map<TileType, Color> two = new EnumMap<>(TileType.class);
 		two.put(TileType.Desert, new Color(249, 233, 28));
 		two.put(TileType.Jungle, new Color(229, 46, 46));
 		two.put(TileType.NotVisible, new Color(255, 255, 255));
@@ -69,7 +67,7 @@ public class TileUIHelper {
 				"<html><p>Temperate Forest</p></html>");
 		descriptions.put(TileType.Tundra, "<html><p>Tundra</p></html>");
 		descriptions.put(TileType.Steppe, "<html><p>Steppe</p></html>");
-		featureColors = new HashMap<Class<? extends TileFixture>, Color>();
+		featureColors = new HashMap<>();
 		featureColors.put(Forest.class, new Color(0, 117, 0));
 		featureColors.put(Mountain.class, new Color(249, 137, 28));
 		featureColors.put(Oasis.class, new Color(72, 218, 164));
@@ -99,7 +97,7 @@ public class TileUIHelper {
 	/**
 	 * Descriptions of the types.
 	 */
-	private final Map<TileType, String> descriptions = new EnumMap<TileType, String>(
+	private final Map<TileType, String> descriptions = new EnumMap<>(
 			TileType.class);
 
 	/**

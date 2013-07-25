@@ -29,7 +29,7 @@ public final class TileCollection implements Iterable<Point>,
 	/**
 	 * The Map this is a wrapper around.
 	 */
-	private final Map<Point, Tile> tiles = new HashMap<Point, Tile>();
+	private final Map<Point, Tile> tiles = new HashMap<>();
 
 	/**
 	 * Add a Tile to the map.
@@ -80,7 +80,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * @return an equivalent one without any empty tiles.
 	 */
 	private static Map<Point, Tile> withoutEmptyTiles(final Map<Point, Tile> mapping) {
-		final Map<Point, Tile> retval = new HashMap<Point, Tile>();
+		final Map<Point, Tile> retval = new HashMap<>();
 		for (final Entry<Point, Tile> entry : mapping.entrySet()) {
 			final Tile tile = entry.getValue();
 			if (!tile.isEmpty()) {

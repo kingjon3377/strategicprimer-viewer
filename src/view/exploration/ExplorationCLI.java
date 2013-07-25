@@ -94,8 +94,8 @@ public class ExplorationCLI {
 	 * @throws IOException on I/O error
 	 */
 	public int move() throws IOException {
-		final List<TileFixture> allFixtures = new ArrayList<TileFixture>();
-		final List<TileFixture> constants = new ArrayList<TileFixture>();
+		final List<TileFixture> allFixtures = new ArrayList<>();
+		final List<TileFixture> constants = new ArrayList<>();
 		final int directionNum = helper.inputNumber("Direction to move: ");
 		if (directionNum > 8) {
 			return Integer.MAX_VALUE; // NOPMD

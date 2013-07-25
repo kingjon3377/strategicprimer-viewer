@@ -18,11 +18,11 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	/**
 	 * The map that we use as a backing store.
 	 */
-	private final Map<Integer, V> backing = new HashMap<Integer, V>();
+	private final Map<Integer, V> backing = new HashMap<>();
 	/**
 	 * The list of items to remove when we're told to remove them.
 	 */
-	private final List<Integer> toRemove = new ArrayList<Integer>();
+	private final List<Integer> toRemove = new ArrayList<>();
 	/**
 	 * @return the size of the map
 	 */

@@ -100,7 +100,7 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 	private static List<TileFixture> getSelectedValuesList(final FixtureList list) {
 		final int[] selections = list.getSelectedIndices();
 		final ListModel<TileFixture> model = list.getModel();
-		final List<TileFixture> retval = new ArrayList<TileFixture>();
+		final List<TileFixture> retval = new ArrayList<>();
 		for (int sel : selections) {
 			if (sel < model.getSize()) {
 				retval.add(model.getElementAt(sel));

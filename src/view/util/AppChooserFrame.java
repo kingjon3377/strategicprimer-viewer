@@ -29,7 +29,7 @@ public class AppChooserFrame extends JFrame implements ActionListener {
 	/**
 	 * A list of GUIs, with how we'd describe them.
 	 */
-	private final Map<String, Class<? extends ISPDriver>> targets = new HashMap<String, Class<? extends ISPDriver>>();
+	private final Map<String, Class<? extends ISPDriver>> targets = new HashMap<>();
 
 	/**
 	 * Add a target.

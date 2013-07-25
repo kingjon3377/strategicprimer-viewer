@@ -98,7 +98,7 @@ public class ReportGenerator {
 	 * @return the fixtures in it, a mapping from their ID to a Pair of the fixture's location and the fixture itself.
 	 */
 	private static IntMap<Pair<Point, IFixture>> getFixtures(final IMap map) {
-		final IntMap<Pair<Point, IFixture>> retval = new IntMap<Pair<Point, IFixture>>();
+		final IntMap<Pair<Point, IFixture>> retval = new IntMap<>();
 		for (final Point point : map.getTiles()) {
 			final Tile tile = map.getTile(point);
 			for (final IFixture fix : getFixtures(tile)) {
@@ -115,7 +115,7 @@ public class ReportGenerator {
 	 */
 	private static List<IFixture> getFixtures(
 			final Iterable<? extends IFixture> iter) {
-		final List<IFixture> retval = new ArrayList<IFixture>();
+		final List<IFixture> retval = new ArrayList<>();
 		for (final IFixture fix : iter) {
 			retval.add(fix);
 			if (fix instanceof FixtureIterable) {

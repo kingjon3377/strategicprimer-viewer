@@ -32,8 +32,8 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * @param iter the iterator we'll start with.
 	 */
 	public IncludingIterator(final String file, final Iterator<XMLEvent> iter) {
-		stack = new LinkedList<Pair<String, ComparableIterator<XMLEvent>>>();
-		stack.addFirst(Pair.of(file, new ComparableIterator<XMLEvent>(iter)));
+		stack = new LinkedList<>();
+		stack.addFirst(Pair.of(file, new ComparableIterator<>(iter)));
 	}
 
 	/**

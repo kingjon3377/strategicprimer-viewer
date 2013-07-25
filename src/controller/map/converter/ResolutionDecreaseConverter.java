@@ -159,7 +159,7 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static TileType consensus(final TileType one, final TileType two,
 			final TileType three, final TileType four) {
-		final EnumCounter<TileType> counter = new EnumCounter<TileType>(
+		final EnumCounter<TileType> counter = new EnumCounter<>(
 				TileType.class);
 		counter.countMany(one, two, three, four);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);

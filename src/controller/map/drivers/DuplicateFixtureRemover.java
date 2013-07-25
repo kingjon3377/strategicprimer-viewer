@@ -72,8 +72,8 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param out the stream to report IDs of removed fixtures on.
 	 */
 	public void filter(final Tile tile, final PrintStream out) {
-		final List<TileFixture> fixtures = new ArrayList<TileFixture>();
-		final List<TileFixture> toRemove = new ArrayList<TileFixture>();
+		final List<TileFixture> fixtures = new ArrayList<>();
+		final List<TileFixture> toRemove = new ArrayList<>();
 		for (TileFixture fix : tile) {
 			boolean already = false;
 			for (TileFixture keptFixture : fixtures) {

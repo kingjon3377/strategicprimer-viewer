@@ -57,11 +57,12 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 * Map from tags to readers. Initializer moved to static block below because
 	 * here it made the line *way* too long.
 	 */
-	private static final Map<String, INodeHandler<? extends XMLWritable>> READ_CACHE;
+	private static final Map<String, INodeHandler<? extends XMLWritable>> READ_CACHE = new TreeMap<>(
+			String.CASE_INSENSITIVE_ORDER);
 	/**
 	 * Map from writable objects to writers. Initializer in static block below.
 	 */
-	private static final Map<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>> WRITE_CACHE;
+	private static final Map<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>> WRITE_CACHE = new HashMap<>();
 
 	/**
 	 * Add a reader to the cache.
@@ -96,9 +97,6 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	}
 
 	static {
-		READ_CACHE = new TreeMap<String, INodeHandler<? extends XMLWritable>>(
-				String.CASE_INSENSITIVE_ORDER);
-		WRITE_CACHE = new HashMap<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>>();
 		factoryFour(new SPMapReader(), new PlayerReader(), new TileReader(),
 				new AnimalReader());
 		factoryFour(new CacheReader(), new CentaurReader(), new DjinnReader(),

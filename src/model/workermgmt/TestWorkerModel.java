@@ -33,18 +33,17 @@ public class TestWorkerModel {
 	/**
 	 * Test for getUnits().
 	 */
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetUnits() {
 		final SPMap map = new SPMap(new MapDimensions(3, 3, 2));
-		final List<Player> players = new ArrayList<Player>();
+		final List<Player> players = new ArrayList<>();
 		players.add(new Player(0, "player1"));
 		players.add(new Player(1, "player2"));
 		players.add(new Player(2, "player3"));
-		final List<TileFixture> fixtures = new ArrayList<TileFixture>();
-		final List<Unit> listOne = new ArrayList<Unit>();
-		final List<Unit> listTwo = new ArrayList<Unit>();
-		final List<Unit> listThree = new ArrayList<Unit>();
+		final List<TileFixture> fixtures = new ArrayList<>();
+		final List<Unit> listOne = new ArrayList<>();
+		final List<Unit> listTwo = new ArrayList<>();
+		final List<Unit> listThree = new ArrayList<>();
 		fixtures.add(new Mountain());
 		fixtures.add(new Animal("animal", false, false, "wild", 1));
 		addItem(new Unit(players.get(0), "one", "unitOne", 2), fixtures, listOne);
@@ -60,8 +59,8 @@ public class TestWorkerModel {
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
 		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0), "string");
-		final Iterable<Point> iter = new IteratorWrapper<Point>(
-				new PointIterator(model, false, true, true));
+		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
+				model, false, true, true));
 		for (Point point : iter) {
 			map.getTile(point).addFixture(fixtures.remove(0));
 		}
@@ -81,6 +80,7 @@ public class TestWorkerModel {
 	 * @param item the item to add
 	 * @param lists the lists to add to
 	 */
+	@SafeVarargs
 	private static <T> void addItem(final T item,
 			final List<? super T>... lists) {
 		for (List<? super T> list : lists) {

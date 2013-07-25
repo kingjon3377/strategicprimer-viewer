@@ -66,7 +66,7 @@ public class Pair<FIRST, SECOND> {
 	 */
 	public static <FIRST, SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD
 			final SECOND second) {
-		return new Pair<FIRST, SECOND>(first, second);
+		return new Pair<>(first, second);
 	}
 
 	/**

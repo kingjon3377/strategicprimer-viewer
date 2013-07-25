@@ -78,14 +78,14 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
-	private static final Map<String, TerrainFixtureType> MAP = new HashMap<String, TerrainFixtureType>(
+	private static final Map<String, TerrainFixtureType> MAP = new HashMap<>(
 			TerrainFixtureType.values().length);
 	/**
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
 	static {
-		final Set<String> suppTagsTemp = new ArraySet<String>();
+		final Set<String> suppTagsTemp = new ArraySet<>();
 		for (TerrainFixtureType mt : TerrainFixtureType.values()) {
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);

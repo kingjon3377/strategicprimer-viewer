@@ -36,7 +36,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 */
 	@Override
 	public List<Unit> getUnits(final Player player) {
-		final List<Unit> retval = new ArrayList<Unit>();
+		final List<Unit> retval = new ArrayList<>();
 		final TileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			final Tile tile = tiles.getTile(point);
@@ -50,7 +50,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
 	private static List<Unit> getUnits(final Iterable<? super Unit> iter, final Player player) {
-		final List<Unit> retval = new ArrayList<Unit>();
+		final List<Unit> retval = new ArrayList<>();
 		for (Object obj : iter) {
 			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
 				retval.add((Unit) obj);

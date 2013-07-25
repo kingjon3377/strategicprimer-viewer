@@ -42,7 +42,7 @@ public final class Tile implements XMLWritable,
 		type = tileType;
 		// Can't be an otherwise-preferable TreeSet because of Java bug
 		// #7030899: TreeSet ignores equals() entirely.
-		contents = new ArraySet<TileFixture>();
+		contents = new ArraySet<>();
 	}
 
 	/**
@@ -224,9 +224,9 @@ public final class Tile implements XMLWritable,
 	 * @param out the stream to write details of the differences to
 	 */
 	protected boolean isSubsetImpl(final Tile obj, final PrintWriter out) {
-		final Set<TileFixture> temp = new HashSet<TileFixture>(obj.contents);
+		final Set<TileFixture> temp = new HashSet<>(obj.contents);
 		temp.removeAll(contents);
-		final List<TileFixture> tempList = new ArrayList<TileFixture>(temp);
+		final List<TileFixture> tempList = new ArrayList<>(temp);
 		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
 		boolean retval = true;
 		for (final TileFixture fix : tempList) {
@@ -259,7 +259,7 @@ public final class Tile implements XMLWritable,
 	 *         each mapped from its ID # to itself.
 	 */
 	private Map<Integer, Subsettable<?>> getSubsettableContents() {
-		final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<Integer, Subsettable<?>>();
+		final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<>();
 		for (final TileFixture fix : contents) {
 			if (fix instanceof Subsettable) {
 				mySubsettables.put(Integer.valueOf(fix.getID()),

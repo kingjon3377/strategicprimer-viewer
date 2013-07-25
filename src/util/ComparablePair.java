@@ -43,7 +43,7 @@ public class ComparablePair<FIRST extends Comparable<FIRST>, SECOND extends Comp
 	 */
 	public static <FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>> ComparablePair<FIRST, SECOND> of(// NOPMD
 			final FIRST first, final SECOND second) {
-		return new ComparablePair<FIRST, SECOND>(first, second);
+		return new ComparablePair<>(first, second);
 	}
 
 }

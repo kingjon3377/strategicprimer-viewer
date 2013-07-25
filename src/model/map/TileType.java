@@ -78,7 +78,7 @@ public enum TileType {
 	 * Initializer in the static block below because here it made the line too
 	 * long.
 	 */
-	private static final Map<Integer, Set<TileType>> VALS_BY_VER;
+	private static final Map<Integer, Set<TileType>> VALS_BY_VER = new HashMap<>();
 
 	/**
 	 * TODO: Write test code using this.
@@ -108,7 +108,7 @@ public enum TileType {
 	 * @param vers the map versions that support the tile type.
 	 */
 	private TileType(final String descr, final int... vers) {
-		versions = new ArrayList<Integer>();
+		versions = new ArrayList<>();
 		for (final int ver : vers) {
 			versions.add(Integer.valueOf(ver));
 		}
@@ -131,9 +131,8 @@ public enum TileType {
 	 * The mapping from descriptive strings to tile types. Used to make
 	 * multiple-return-points warnings go away.
 	 */
-	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<String, TileType>(); // NOPMD
+	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<>(); // NOPMD
 	static {
-		VALS_BY_VER = new HashMap<Integer, Set<TileType>>();
 		for (final TileType type : values()) {
 			TILE_TYPE_MAP.put(type.toXML(), type);
 		}

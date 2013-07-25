@@ -137,7 +137,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture on that tile.
 	 */
 	private TileFixture getTopFixture(final Tile tile) {
-		return new IteratorWrapper<TileFixture>(tile.iterator(),
+		return new IteratorWrapper<>(tile.iterator(),
 				fixComp).iterator().next();
 	}
 
@@ -229,11 +229,11 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * The images we've already determined aren't there.
 	 */
-	private final Set<String> missingFiles = new HashSet<String>();
+	private final Set<String> missingFiles = new HashSet<>();
 	/**
 	 * A mapping from river-sets to filenames.
 	 */
-	private final Map<Set<River>, String> riverFiles = new HashMap<Set<River>, String>();
+	private final Map<Set<River>, String> riverFiles = new HashMap<>();
 
 	/**
 	 * Create the mapping from river-sets to filenames.

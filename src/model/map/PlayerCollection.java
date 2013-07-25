@@ -22,7 +22,7 @@ public class PlayerCollection implements Iterable<Player>,
 	/**
 	 * The collection this class wraps.
 	 */
-	private final Map<Integer, Player> players = new HashMap<Integer, Player>();
+	private final Map<Integer, Player> players = new HashMap<>();
 
 	/**
 	 * @param player a player-id

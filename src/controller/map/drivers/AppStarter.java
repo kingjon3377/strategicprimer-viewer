@@ -38,7 +38,7 @@ public class AppStarter implements ISPDriver {
 	/**
 	 * A map from options to the drivers they represent.
 	 */
-	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE = new HashMap<String, Pair<ISPDriver, ISPDriver>>();
+	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE = new HashMap<>();
 	/**
 	 * @param driver a driver to add twice.
 	 */
@@ -94,8 +94,8 @@ public class AppStarter implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		final List<String> options = new ArrayList<String>();
-		final List<String> others = new ArrayList<String>();
+		final List<String> options = new ArrayList<>();
+		final List<String> others = new ArrayList<>();
 		for (final String arg : args) {
 			if (arg.trim().charAt(0) == '-') {
 				options.add(arg);
@@ -137,7 +137,7 @@ public class AppStarter implements ISPDriver {
 				}
 			});
 		} else {
-			final List<ISPDriver> drivers = new ArrayList<ISPDriver>();
+			final List<ISPDriver> drivers = new ArrayList<>();
 			for (final Pair<ISPDriver, ISPDriver> pair : CACHE.values()) {
 				if (!drivers.contains(pair.first())) {
 					drivers.add(pair.first());

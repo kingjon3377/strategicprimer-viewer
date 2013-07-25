@@ -24,7 +24,7 @@ public enum TownSize {
 	/**
 	 * A mapping from string to TownSize.
 	 */
-	private static final Map<String, TownSize> TSZ_MAP = new HashMap<String, TownSize>();
+	private static final Map<String, TownSize> TSZ_MAP = new HashMap<>();
 	/**
 	 * A string representing the size.
 	 */

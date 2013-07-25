@@ -27,9 +27,9 @@ import view.util.Coordinate;
 /**
  * A class to do the drawing of a tile, whether on a GUITile or on a
  * single-component map.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
@@ -47,7 +47,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * The shapes representing the rivers on the tile.
 	 */
-	private final Map<River, Shape> rivers = new EnumMap<River, Shape>(// NOPMD
+	private final Map<River, Shape> rivers = new EnumMap<>(// NOPMD
 			River.class);
 	/**
 	 * Shape representing the fortress that might be on the tile.
@@ -65,7 +65,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Check, and possibly regenerate, the cache.
-	 * 
+	 *
 	 * @param width the current width
 	 * @param height the current height
 	 */
@@ -102,7 +102,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * origin is the tile's upper-left-hand corner. Note that this makes few
 	 * assumptions about the graphics context's initial state, but unlike Chits
 	 * it makes no attempt to save and restore that state either.
-	 * 
+	 *
 	 * @param pen the graphics context
 	 * @param tile the tile to draw
 	 * @param width the width of the drawing area
@@ -150,10 +150,10 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Compare two floating-point values.
-	 * 
+	 *
 	 * @param one the first value
 	 * @param two the second value
-	 * 
+	 *
 	 * @return whether the two are approximately equal
 	 */
 	private static boolean equalFloats(final double one, final double two) {
@@ -162,7 +162,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * Draw a tile at the specified coordinates.
-	 * 
+	 *
 	 * @param pen the graphics context.
 	 * @param tile the tile to draw
 	 * @param coordinates the coordinates of the tile's upper-left corner
@@ -181,7 +181,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

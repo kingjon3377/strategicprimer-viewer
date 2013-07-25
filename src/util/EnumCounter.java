@@ -17,7 +17,7 @@ public class EnumCounter<T extends Enum<T>> {
 	 * @param type the enumerated type we're dealing with
 	 */
 	public EnumCounter(final Class<T> type) {
-		map = new EnumMap<T, Integer>(type);
+		map = new EnumMap<>(type);
 	}
 
 	/**

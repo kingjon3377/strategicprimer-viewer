@@ -45,7 +45,7 @@ public class LegacyTable implements EncounterTable {
 	 */
 	public LegacyTable() {
 		final Player independent = new Player(-1, "Independent");
-		data = new ArrayList<String>();
+		data = new ArrayList<>();
 		addData(new Battlefield(0, -1));
 		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
@@ -85,7 +85,7 @@ public class LegacyTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		return new HashSet<String>(data);
+		return new HashSet<>(data);
 	}
 
 	/**

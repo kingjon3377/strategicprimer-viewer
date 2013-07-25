@@ -78,8 +78,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 *         top fixture.
 	 */
 	private String getTerrainFixturesAndTop(final Tile tile) {
-		final Set<TileFixture> fixes = new ArraySet<TileFixture>();
-		final Iterable<TileFixture> iter = new IteratorWrapper<TileFixture>(
+		final Set<TileFixture> fixes = new ArraySet<>();
+		final Iterable<TileFixture> iter = new IteratorWrapper<>(
 				tile.iterator(), fixComp);
 		final Iterator<TileFixture> iterat = iter.iterator();
 		if (iterat.hasNext()) {

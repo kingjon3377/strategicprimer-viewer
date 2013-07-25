@@ -55,7 +55,7 @@ public class Fortress implements HasImage,
 		super();
 		owner = fortOwner;
 		name = fortName;
-		units = new ArrayList<Unit>();
+		units = new ArrayList<>();
 		id = idNum;
 	}
 
@@ -179,7 +179,7 @@ public class Fortress implements HasImage,
 	public boolean isSubset(final Fortress obj, final PrintWriter out) {
 		if (name.equals(obj.name)
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
-			final Set<Unit> temp = new HashSet<Unit>(obj.units);
+			final Set<Unit> temp = new HashSet<>(obj.units);
 			// TODO: Differences between _versions_ of a unit
 			temp.removeAll(units);
 			for (final Unit unit : temp) {

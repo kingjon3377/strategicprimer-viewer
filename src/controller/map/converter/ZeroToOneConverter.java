@@ -105,7 +105,7 @@ public class ZeroToOneConverter {
 	private static String convertTile(final StartElement element,
 			final Iterable<Attribute> attrs) {
 		final StringBuilder builder = new StringBuilder();
-		final Stack<Integer> events = new Stack<Integer>();
+		final Stack<Integer> events = new Stack<>();
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
 		for (final Attribute attr : attrs) {
@@ -128,7 +128,7 @@ public class ZeroToOneConverter {
 	 * @return a wrapper
 	 */
 	private static Iterable<Attribute> iFactory(final Iterator<Attribute> iter) {
-		return new IteratorWrapper<Attribute>(iter);
+		return new IteratorWrapper<>(iter);
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class ZeroToOneConverter {
 	private static String printStartElement(final StartElement element) {
 		final StringBuilder builder = new StringBuilder().append('<');
 		builder.append(element.getName().getLocalPart());
-		final Iterable<Attribute> attrs = new IteratorWrapper<Attribute>(// NOPMD
+		final Iterable<Attribute> attrs = new IteratorWrapper<>(// NOPMD
 				element.getAttributes());
 		for (final Attribute attr : attrs) {
 			builder.append(printAttribute(attr));
@@ -182,7 +182,7 @@ public class ZeroToOneConverter {
 	 * A mapping from numeric events to XML representations of their version-1
 	 * equivalents.
 	 */
-	private static final Map<Integer, String> EQUIVS = new HashMap<Integer, String>();
+	private static final Map<Integer, String> EQUIVS = new HashMap<>();
 
 	/**
 	 * Add XML for the specified numbers.

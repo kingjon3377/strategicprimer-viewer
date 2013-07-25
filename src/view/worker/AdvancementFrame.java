@@ -42,7 +42,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	/**
 	 * A drop-down list listing the players in the map.
 	 */
-	private final JComboBox<Player> players = new JComboBox<Player>();
+	private final JComboBox<Player> players = new JComboBox<>();
 
 	/**
 	 * Constructor.

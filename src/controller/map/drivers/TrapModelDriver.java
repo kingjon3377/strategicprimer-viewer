@@ -180,7 +180,7 @@ public class TrapModelDriver implements ISPDriver {
 	 * @return the list of all fixtures in the map in that tile or an adjacent tile
 	 */
 	private  static List<TileFixture> getChoices(final IMap map, final int row, final int col) {
-		final List<TileFixture> retval = new ArrayList<TileFixture>();
+		final List<TileFixture> retval = new ArrayList<>();
 		final MapDimensions dims = map.getDimensions();
 		for (int i = row - 1; i < row + 2; i++) {
 			for (int j = col - 1; j < col + 2; j++) {

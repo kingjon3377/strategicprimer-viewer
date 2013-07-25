@@ -29,7 +29,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		final Map<String, List<Point>> sightings = new HashMap<String, List<Point>>();
+		final Map<String, List<Point>> sightings = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
@@ -47,7 +47,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 				if (sightings.containsKey(string)) {
 					points = sightings.get(string);
 				} else {
-					points = new ArrayList<Point>(); // NOPMD
+					points = new ArrayList<>(); // NOPMD
 					sightings.put(string, points);
 				}
 				points.add(pair.first());

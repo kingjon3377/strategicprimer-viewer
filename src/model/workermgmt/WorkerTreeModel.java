@@ -159,7 +159,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	/**
 	 * The listeners registered to listen for model changes.
 	 */
-	private final List<TreeModelListener> listeners = new ArrayList<TreeModelListener>();
+	private final List<TreeModelListener> listeners = new ArrayList<>();
 	/**
 	 * Move a member between units.
 	 * @param member a unit member

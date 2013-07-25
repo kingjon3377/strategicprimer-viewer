@@ -19,13 +19,14 @@ public class IteratorStack<T> implements Iterator<T> {
 	/**
 	 * The queue of iterators.
 	 */
-	private final Deque<Iterator<T>> queue = new LinkedList<Iterator<T>>();
+	private final Deque<Iterator<T>> queue = new LinkedList<>();
 
 	/**
 	 * Constructor.
 	 *
 	 * @param iters sources for iterators to put in the queue.
 	 */
+	@SafeVarargs
 	public IteratorStack(final Iterable<T>... iters) {
 		for (final Iterable<T> iter : iters) {
 			queue.addFirst(iter.iterator());
@@ -38,6 +39,7 @@ public class IteratorStack<T> implements Iterator<T> {
 	 *
 	 * @param iters the iterators to put in the queue.
 	 */
+	@SafeVarargs
 	public IteratorStack(final Iterator<T>... iters) {
 		for (final Iterator<T> iter : iters) {
 			queue.addFirst(iter);

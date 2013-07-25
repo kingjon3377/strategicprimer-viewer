@@ -97,7 +97,7 @@ public class CLIHelper implements ICLIHelper {
 	 * @return a List representing the same data.
 	 */
 	public <T> List<T> toList(final Iterable<T> iter) {
-		final List<T> retval = new ArrayList<T>();
+		final List<T> retval = new ArrayList<>();
 		for (final T item : iter) {
 			retval.add(item);
 		}

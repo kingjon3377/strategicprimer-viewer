@@ -43,11 +43,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	@Override
 	public List<Player> getPlayerChoices() {
-		final List<Player> retval = new ArrayList<Player>();
+		final List<Player> retval = new ArrayList<>();
 		for (Player player : getMap().getPlayers()) {
 			retval.add(player);
 		}
-		final List<Player> temp = new ArrayList<Player>();
+		final List<Player> temp = new ArrayList<>();
 		for (Pair<IMap, String> pair : getSubordinateMaps()) {
 			final IMap map = pair.first();
 			temp.clear();
@@ -64,7 +64,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	@Override
 	public List<Unit> getUnits(final Player player) {
-		final List<Unit> retval = new ArrayList<Unit>();
+		final List<Unit> retval = new ArrayList<>();
 		final TileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			final Tile tile = tiles.getTile(point);
@@ -78,7 +78,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
 	private static List<Unit> getUnits(final Iterable<? super Unit> iter, final Player player) {
-		final List<Unit> retval = new ArrayList<Unit>();
+		final List<Unit> retval = new ArrayList<>();
 		for (Object obj : iter) {
 			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
 				retval.add((Unit) obj);

@@ -44,18 +44,18 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder("<h4>Immortals</h4>\n").append(OPEN_LIST);
-		final Map<String, List<Point>> dragons = new HashMap<String, List<Point>>();
-		final Map<String, List<Point>> fairies = new HashMap<String, List<Point>>();
-		final List<Point> trolls = new ArrayList<Point>();
-		final List<Point> djinni = new ArrayList<Point>();
-		final List<Point> sphinxes = new ArrayList<Point>();
-		final Map<String, List<Point>> giants = new HashMap<String, List<Point>>();
-		final List<Point> minotaurs = new ArrayList<Point>();
-		final List<Point> ogres = new ArrayList<Point>();
-		final Map<String, List<Point>> centaurs = new HashMap<String, List<Point>>();
-		final List<Point> phoenixes = new ArrayList<Point>();
-		final List<Point> simurghs = new ArrayList<Point>();
-		final List<Point> griffins = new ArrayList<Point>();
+		final Map<String, List<Point>> dragons = new HashMap<>();
+		final Map<String, List<Point>> fairies = new HashMap<>();
+		final List<Point> trolls = new ArrayList<>();
+		final List<Point> djinni = new ArrayList<>();
+		final List<Point> sphinxes = new ArrayList<>();
+		final Map<String, List<Point>> giants = new HashMap<>();
+		final List<Point> minotaurs = new ArrayList<>();
+		final List<Point> ogres = new ArrayList<>();
+		final Map<String, List<Point>> centaurs = new HashMap<>();
+		final List<Point> phoenixes = new ArrayList<>();
+		final List<Point> simurghs = new ArrayList<>();
+		final List<Point> griffins = new ArrayList<>();
 
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point point = pair.first();
@@ -197,7 +197,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		if (mapping.containsKey(item.toString())) {
 			points = mapping.get(item.toString());
 		} else {
-			points = new ArrayList<Point>();
+			points = new ArrayList<>();
 			mapping.put(item.toString(), points);
 		}
 		points.add(point);

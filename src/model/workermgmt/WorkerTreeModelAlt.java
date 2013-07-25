@@ -46,7 +46,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		final List<Unit> units = model.getUnits(player);
 		final UnitNode oldNode = (UnitNode) pnode.getChildAt(units.indexOf(old));
 		final UnitNode newNode = (UnitNode) pnode.getChildAt(units.indexOf(newOwner));
-		final Iterable<TreeNode> iter = new IteratorWrapper<TreeNode>(new EnumerationWrapper<TreeNode>(oldNode.children()));
+		final Iterable<TreeNode> iter = new IteratorWrapper<>(new EnumerationWrapper<TreeNode>(oldNode.children()));
 		int index = -1;
 		for (TreeNode node : iter) {
 			if (node instanceof UnitMemberNode && ((UnitMemberNode) node).getUserObject().equals(member)) {

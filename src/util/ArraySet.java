@@ -21,7 +21,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	/**
 	 * The backing array.
 	 */
-	private final List<T> impl = new ArrayList<T>();
+	private final List<T> impl = new ArrayList<>();
 	/**
 	 * @return the size of the set
 	 */

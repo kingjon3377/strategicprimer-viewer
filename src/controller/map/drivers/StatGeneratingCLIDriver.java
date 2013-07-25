@@ -213,7 +213,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return a list of the units in the list that have workers without stats
 	 */
 	private static List<Unit> removeStattedUnits(final List<Unit> units) {
-		final List<Unit> retval = new ArrayList<Unit>();
+		final List<Unit> retval = new ArrayList<>();
 		for (final Unit unit : units) {
 			if (hasUnstattedWorker(unit)) {
 				retval.add(unit);
@@ -228,7 +228,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private void enterStats(final IExplorationModel model, final Unit unit) throws IOException {
-		final List<Worker> workers = new ArrayList<Worker>();
+		final List<Worker> workers = new ArrayList<>();
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker && ((Worker) member).getStats() == null) {
 				workers.add((Worker) member);

@@ -19,7 +19,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel implemen
 	/**
 	 * The collection of subordinate maps.
 	 */
-	private final Map<IMap, String> subordinateMaps = new HashMap<IMap, String>();
+	private final Map<IMap, String> subordinateMaps = new HashMap<>();
 	/**
 	 * @param map the subordinate map to add
 	 * @param filename the name of the file it was loaded from
@@ -40,7 +40,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel implemen
 	 */
 	@Override
 	public Iterable<Pair<IMap, String>> getSubordinateMaps() {
-		return new SetPairConverter<IMap, String>(subordinateMaps);
+		return new SetPairConverter<>(subordinateMaps);
 	}
 	/**
 	 * @return an iterator over both the main map and the subordinate maps
@@ -48,14 +48,14 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel implemen
 //	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<Pair<IMap, String>> getAllMaps() {
-		final List<Pair<IMap, String>> retval = new ArrayList<Pair<IMap, String>>();
+		final List<Pair<IMap, String>> retval = new ArrayList<>();
 		retval.add(Pair.of((IMap) getMap(), getMapFilename()));
 		for (Pair<IMap, String> pair : getSubordinateMaps()) {
 			retval.add(pair);
 		}
 		return retval;
-//		return new IteratorWrapper<Pair<IMap, String>>(
-//				new IteratorStack<Pair<IMap, String>>(
+//		return new IteratorWrapper<>(
+//				new IteratorStack<>(
 //						Collections.singletonList(Pair.of((IMap) getMap(),
 //								getMapFilename())), getSubordinateMaps()));
 	}

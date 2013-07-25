@@ -93,7 +93,7 @@ public class OneToTwoConverter { // NOPMD
 		for (final Player player : old.getPlayers()) {
 			retval.addPlayer(player);
 		}
-		final List<Pair<Point, Tile>> converted = new LinkedList<Pair<Point, Tile>>();
+		final List<Pair<Point, Tile>> converted = new LinkedList<>();
 		final Player independent = retval.getPlayers().getIndependent();
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
@@ -124,7 +124,7 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private List<Pair<Point, Tile>> createInitialSubtiles(final Point point,
 			final Tile tile, final boolean main) {
-		final List<Pair<Point, Tile>> initial = new LinkedList<Pair<Point, Tile>>();
+		final List<Pair<Point, Tile>> initial = new LinkedList<>();
 		if (!tile.isEmpty()) {
 			for (int i = 0; i < SUBTILES_PER_TILE; i++) {
 				for (int j = 0; j < SUBTILES_PER_TILE; j++) {
@@ -156,7 +156,7 @@ public class OneToTwoConverter { // NOPMD
 		if (!tile.isEmpty()) {
 			tile.addFixture(new Village(TownStatus.Active, "", idFactory
 					.createID(), independentPlayer));
-			final List<TileFixture> fixtures = new LinkedList<TileFixture>();
+			final List<TileFixture> fixtures = new LinkedList<>();
 			for (final TileFixture fixture : tile) {
 				fixtures.add(fixture);
 			}
@@ -275,7 +275,7 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static void changeFor(final Tile tile, final TileFixture fix) {
 		if (fix instanceof Village || fix instanceof ITownFixture) {
-			final List<TileFixture> forests = new ArrayList<TileFixture>();
+			final List<TileFixture> forests = new ArrayList<>();
 			for (final TileFixture fixture : tile) {
 				if (fixture instanceof Forest) {
 					forests.add(fixture);

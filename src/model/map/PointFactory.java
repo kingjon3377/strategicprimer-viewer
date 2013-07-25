@@ -37,7 +37,7 @@ public final class PointFactory {
 	/**
 	 * The point cache.
 	 */
-	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE;
+	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE = new ConcurrentHashMap<>();
 
 	/**
 	 * Factory method. I considered replacing the cache with simply a
@@ -70,14 +70,7 @@ public final class PointFactory {
 	/**
 	 * Coordinate cache.
 	 */
-	private static final Map<Integer, Map<Integer, Coordinate>> COORD_CACHE;
-	// Moved into a static block because every static-analysis plugin complained
-	// about the line length but reformatting wouldn't move anything to the next
-	// line.
-	static {
-		POINT_CACHE = new ConcurrentHashMap<Integer, Map<Integer, Point>>();
-		COORD_CACHE = new ConcurrentHashMap<Integer, Map<Integer, Coordinate>>();
-	}
+	private static final Map<Integer, Map<Integer, Coordinate>> COORD_CACHE = new ConcurrentHashMap<>();
 	/**
 	 * @param xCoord an X coordinate or extent
 	 * @param yCoord a Y coordinate or extent

@@ -48,7 +48,7 @@ public class ExplorerSelectingPanel extends JPanel implements
 		model = emodel;
 		final JPanel uspFirst = new JPanel(new BorderLayout());
 		uspFirst.add(new JLabel("Players in all maps:"), BorderLayout.NORTH);
-		playerList = new JList<Player>(new PlayerListModel(emodel));
+		playerList = new JList<>(new PlayerListModel(emodel));
 		playerList.addListSelectionListener(this);
 		uspFirst.add(playerList, BorderLayout.CENTER);
 		final JPanel uspSecond = new JPanel(new BorderLayout());
@@ -57,8 +57,7 @@ public class ExplorerSelectingPanel extends JPanel implements
 						"<html><body><p>Units belonging to that player:</p>"
 								+ "<p>(Selected unit will be used for exploration.)</p></body></html>"),
 						BorderLayout.NORTH);
-		unitList = new JList<Unit>(
-				new ExplorationUnitListModel(emodel, this));
+		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
 		uspSecond.add(unitList, BorderLayout.CENTER);
 		final JPanel mpPanel = new JPanel(new BorderLayout());
 		mpPanel.add(new JLabel("Unit's Movement Points: "), BorderLayout.WEST);

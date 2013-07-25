@@ -158,14 +158,14 @@ public class WorkerMgmtFrame extends JFrame {
 			builder.append("\nTurn ");
 			builder.append(model.getMap().getCurrentTurn());
 			builder.append("]\n\nInventions: TODO: any?\n\n");
-			final Map<String, List<Unit>> unitsByKind = new HashMap<String, List<Unit>>();
+			final Map<String, List<Unit>> unitsByKind = new HashMap<>();
 			for (final Unit unit : model.getUnits(model.getMap().getPlayers().getCurrentPlayer())) {
 				// ESCA-JAVA0177:
 				final List<Unit> list; // NOPMD
 				if (unitsByKind.containsKey(unit.getKind())) {
 					list = unitsByKind.get(unit.getKind());
 				} else {
-					list = new ArrayList<Unit>(); // NOPMD
+					list = new ArrayList<>(); // NOPMD
 					unitsByKind.put(unit.getKind(), list);
 				}
 				list.add(unit);

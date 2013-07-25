@@ -55,7 +55,7 @@ public class HarvestableReportGenerator extends // NOPMD
 		final HtmlList meadows = new HtmlList("<h5>Meadows and fields</h5>");
 		final HtmlList mines = new HtmlList("<h5>Mines</h5>");
 		final HtmlList minerals = new HtmlList("<h5>Mineral deposits</h5>");
-		final Map<String, List<Point>> shrubs = new HashMap<String, List<Point>>();
+		final Map<String, List<Point>> shrubs = new HashMap<>();
 		final HtmlList stone = new HtmlList("<h5>Exposed stone deposits</h5>");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof HarvestableFixture) {
@@ -78,7 +78,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					if (shrubs.containsKey(((Shrub) harvestable).getKind())) {
 						shrubPoints = shrubs.get(((Shrub) harvestable).getKind());
 					} else {
-						shrubPoints = new ArrayList<Point>(); // NOPMD
+						shrubPoints = new ArrayList<>(); // NOPMD
 						shrubs.put(((Shrub) harvestable).getKind(), shrubPoints);
 					}
 					shrubPoints.add(point);

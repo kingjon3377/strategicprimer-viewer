@@ -124,13 +124,13 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
-	private static final Map<String, HarvestableType> MAP = new HashMap<String, HarvestableType>(HarvestableType.values().length);
+	private static final Map<String, HarvestableType> MAP = new HashMap<>(HarvestableType.values().length);
 	/**
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
 	static {
-		final Set<String> suppTagsTemp = new ArraySet<String>();
+		final Set<String> suppTagsTemp = new ArraySet<>();
 		for (HarvestableType mt : HarvestableType.values()) {
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);

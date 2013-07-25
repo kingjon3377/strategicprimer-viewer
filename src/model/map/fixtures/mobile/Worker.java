@@ -48,7 +48,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	/**
 	 * The set of jobs the worker is trained or experienced in.
 	 */
-	private final Set<Job> jobSet = new ArraySet<Job>();
+	private final Set<Job> jobSet = new ArraySet<>();
 	/**
 	 * Add a job.
 	 * @param job the job to add.

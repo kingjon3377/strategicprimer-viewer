@@ -57,7 +57,7 @@ public class RandomTable implements EncounterTable {
 	 * @param items the items in the table.
 	 */
 	public RandomTable(final List<ComparablePair<Integer, String>> items) {
-		table = new ArrayList<ComparablePair<Integer, String>>(items);
+		table = new ArrayList<>(items);
 		Collections.sort(table, Collections.reverseOrder());
 	}
 
@@ -66,7 +66,7 @@ public class RandomTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		final Set<String> retval = new HashSet<String>();
+		final Set<String> retval = new HashSet<>();
 		for (final Pair<Integer, String> pair : table) {
 			retval.add(pair.second());
 		}

@@ -99,17 +99,17 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 	/**
 	 * The collection of proxies for main-map tile-fixture-lists.
 	 */
-	private final EnumMap<Direction, PropertyChangeSupportSource> mains = new EnumMap<Direction, PropertyChangeSupportSource>(
+	private final EnumMap<Direction, PropertyChangeSupportSource> mains = new EnumMap<>(
 			Direction.class);
 	/**
 	 * The collection of proxies for secondary-map tile-fixture lists.
 	 */
-	private final EnumMap<Direction, PropertyChangeSupportSource> seconds = new EnumMap<Direction, PropertyChangeSupportSource>(
+	private final EnumMap<Direction, PropertyChangeSupportSource> seconds = new EnumMap<>(
 			Direction.class);
 	/**
 	 * The collection of dual-tile-buttons.
 	 */
-	private final EnumMap<Direction, DualTileButton> buttons = new EnumMap<Direction, DualTileButton>(
+	private final EnumMap<Direction, DualTileButton> buttons = new EnumMap<>(
 			Direction.class);
 
 	/**

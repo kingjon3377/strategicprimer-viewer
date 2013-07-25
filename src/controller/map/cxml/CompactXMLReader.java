@@ -40,7 +40,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner) throws XMLStreamException,
 			SPFormatException {
-		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<XMLEvent>(
+		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, XMLInputFactory.newInstance()
 						.createXMLEventReader(istream)));
 		final PlayerCollection players = new PlayerCollection();

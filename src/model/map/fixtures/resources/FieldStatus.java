@@ -7,9 +7,9 @@ import java.util.Random;
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should
  * rotate between these, at a rate determined by the kind of field.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public enum FieldStatus {
 	/**
@@ -31,7 +31,7 @@ public enum FieldStatus {
 	/**
 	 * A mapping from strings to FieldStatus.
 	 */
-	private static final Map<String, FieldStatus> FST_MAP = new HashMap<String, FieldStatus>();
+	private static final Map<String, FieldStatus> FST_MAP = new HashMap<>();
 	/**
 	 * A string representing the FieldStatus.
 	 */
@@ -39,7 +39,7 @@ public enum FieldStatus {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param string a string representing the status.
 	 */
 	private FieldStatus(final String string) {

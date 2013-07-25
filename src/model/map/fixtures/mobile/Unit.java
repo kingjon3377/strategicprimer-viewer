@@ -42,7 +42,7 @@ public class Unit implements MobileFixture, HasImage,
 	/**
 	 * The members of the unit.
 	 */
-	private final Set<UnitMember> members = new ArraySet<UnitMember>();
+	private final Set<UnitMember> members = new ArraySet<>();
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
 	 *

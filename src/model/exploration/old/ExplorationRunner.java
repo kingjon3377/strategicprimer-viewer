@@ -43,7 +43,7 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * The tables we know about.
 	 */
-	private final Map<String, EncounterTable> tables = new HashMap<String, EncounterTable>();
+	private final Map<String, EncounterTable> tables = new HashMap<>();
 
 	/**
 	 * Add a table. This is package-visibility so our test-case can use it.
@@ -211,7 +211,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	public boolean recursiveCheck() { // $codepro.audit.disable
 										// booleanMethodNamingConvention
-		final Set<String> state = new HashSet<String>(); // NOPMD
+		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			if (recursiveCheck(table, state)) {
 				return true; // NOPMD;
@@ -226,7 +226,7 @@ public class ExplorationRunner { // NOPMD
 	 * @param ostream The stream to print results on.
 	 */
 	public void verboseRecursiveCheck(final PrintStream ostream) {
-		final Set<String> state = new HashSet<String>(); // NOPMD
+		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			verboseRecursiveCheck(table, ostream, state);
 		}

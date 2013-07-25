@@ -121,7 +121,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
-	private static final Map<String, MobileType> MAP = new HashMap<String, MobileType>(MobileType.values().length);
+	private static final Map<String, MobileType> MAP = new HashMap<>(MobileType.values().length);
 	/**
 	 * List of supported tags.
 	 */
@@ -131,13 +131,13 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	 */
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 	static {
-		final Set<String> suppTagsTemp = new ArraySet<String>();
+		final Set<String> suppTagsTemp = new ArraySet<>();
 		for (MobileType mt : MobileType.values()) {
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);
 		}
 		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
-		TAG_MAP = new HashMap<Class<? extends MobileFixture>, String>();
+		TAG_MAP = new HashMap<>();
 		TAG_MAP.put(Animal.class, "animal");
 		TAG_MAP.put(Centaur.class, "centaur");
 		TAG_MAP.put(Djinn.class, "djinn");

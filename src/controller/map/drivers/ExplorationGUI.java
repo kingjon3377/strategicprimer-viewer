@@ -3,7 +3,6 @@ package controller.map.drivers;
 import java.io.IOException;
 
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationModel;
@@ -11,7 +10,6 @@ import model.map.IMap;
 import model.map.MapView;
 import util.Warning;
 import view.exploration.ExplorationFrame;
-import view.exploration.ExplorationMenu;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 import view.util.SystemOut;

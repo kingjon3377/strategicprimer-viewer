@@ -43,13 +43,13 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		final StringBuilder builder = new StringBuilder(
 				"<h4>Cities, towns, and/or fortifications you know about:</h4>\n")
 				.append(OPEN_LIST);
-		final Map<AbstractTown, Point> townLocs = new HashMap<AbstractTown, Point>();
+		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof AbstractTown) {
 				townLocs.put((AbstractTown) pair.second(), pair.first());
 			}
 		}
-		final List<AbstractTown> sorted = new ArrayList<AbstractTown>(townLocs.keySet());
+		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		for (final AbstractTown town : sorted) {
 			builder.append(OPEN_LIST_ITEM)

@@ -208,7 +208,7 @@ public final class TestExplorationRunner {
 				"( #existent_table# )"));
 		runner.loadTable(
 				"referent_three",
-				new QuadrantTable(1, new ArrayList<String>(Arrays
+				new QuadrantTable(1, new ArrayList<>(Arrays
 						.asList(new String[] { "#referent_one#",
 								"#referent_two#" }))));
 		assertFalse("recursive case to exercise cache-hits",

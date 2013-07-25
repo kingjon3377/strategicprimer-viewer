@@ -49,7 +49,7 @@ public class ConstantTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		final Set<String> retval = new HashSet<String>();
+		final Set<String> retval = new HashSet<>();
 		retval.add(value);
 		return retval;
 	}

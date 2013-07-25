@@ -127,7 +127,7 @@ public final class TableLoader { // NOPMD
 					"File doesn't start with the number of rows of quadrants");
 		}
 		final int rows = Integer.parseInt(line);
-		final List<String> items = new LinkedList<String>();
+		final List<String> items = new LinkedList<>();
 		line = reader.readLine();
 		try {
 			while (line != null) {
@@ -153,7 +153,7 @@ public final class TableLoader { // NOPMD
 	public RandomTable loadRandomTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
-		final List<ComparablePair<Integer, String>> list = new ArrayList<ComparablePair<Integer, String>>();
+		final List<ComparablePair<Integer, String>> list = new ArrayList<>();
 		try {
 			while (line != null) {
 				final String[] array = line.split(" ", SPLIT_ONCE);
@@ -181,7 +181,7 @@ public final class TableLoader { // NOPMD
 	public TerrainTable loadTerrainTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
-		final List<Pair<TileType, String>> list = new ArrayList<Pair<TileType, String>>();
+		final List<Pair<TileType, String>> list = new ArrayList<>();
 		try {
 			while (line != null) {
 				final String[] array = line.split(" ", SPLIT_ONCE);
@@ -252,7 +252,7 @@ public final class TableLoader { // NOPMD
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
 					+ filename, e);
-			return new QuadrantTable(defaultRows, new LinkedList<String>(
+			return new QuadrantTable(defaultRows, new LinkedList<>(
 					defaultItems));
 		}
 	}
@@ -286,7 +286,7 @@ public final class TableLoader { // NOPMD
 	 */
 	private List<String> createList(final String stem, final int iterations) {
 		if (iterations == 0) {
-			return new ArrayList<String>(); // NOPMD
+			return new ArrayList<>(); // NOPMD
 		} else {
 			final List<String> list = createList(stem, iterations - 1);
 			list.add(stem + iterations);

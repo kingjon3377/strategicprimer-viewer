@@ -169,9 +169,9 @@ public class PointIteratorTest {
 	public void testFromBeginning() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
 				1), PointFactory.point(-1, -1));
-		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(
+		final IteratorWrapper<Point> iter = new IteratorWrapper<>(
 				new PointIterator(model, false, true, true));
-		final List<Point> expected = new ArrayList<Point>();
+		final List<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(0, 0));
 		expected.add(PointFactory.point(0, 1));
 		expected.add(PointFactory.point(0, 2));
@@ -181,7 +181,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(2, 0));
 		expected.add(PointFactory.point(2, 1));
 		expected.add(PointFactory.point(2, 2));
-		final List<Point> actual = new ArrayList<Point>();
+		final List<Point> actual = new ArrayList<>();
 		for (Point point : iter) {
 			actual.add(point);
 		}
@@ -194,9 +194,9 @@ public class PointIteratorTest {
 	public void testFromSelection() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
 				1), PointFactory.point(1, 1));
-		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(
+		final IteratorWrapper<Point> iter = new IteratorWrapper<>(
 				new PointIterator(model, true, true, true));
-		final List<Point> expected = new ArrayList<Point>();
+		final List<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 0));
 		expected.add(PointFactory.point(2, 1));
@@ -206,7 +206,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(1, 1));
-		final List<Point> actual = new ArrayList<Point>();
+		final List<Point> actual = new ArrayList<>();
 		for (Point point : iter) {
 			actual.add(point);
 		}
@@ -219,9 +219,9 @@ public class PointIteratorTest {
 	public void testInitialSelection() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
 				1), PointFactory.point(-1, -1));
-		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(
+		final IteratorWrapper<Point> iter = new IteratorWrapper<>(
 				new PointIterator(model, true, true, false));
-		final List<Point> expected = new ArrayList<Point>();
+		final List<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(0, 0));
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(2, 0));
@@ -231,7 +231,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 2));
-		final List<Point> actual = new ArrayList<Point>();
+		final List<Point> actual = new ArrayList<>();
 		for (Point point : iter) {
 			actual.add(point);
 		}
@@ -244,9 +244,9 @@ public class PointIteratorTest {
 	public void testVertical() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
 				1), PointFactory.point(-1, -1));
-		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(
+		final IteratorWrapper<Point> iter = new IteratorWrapper<>(
 				new PointIterator(model, false, true, false));
-		final List<Point> expected = new ArrayList<Point>();
+		final List<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(0, 0));
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(2, 0));
@@ -256,7 +256,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 2));
-		final List<Point> actual = new ArrayList<Point>();
+		final List<Point> actual = new ArrayList<>();
 		for (Point point : iter) {
 			actual.add(point);
 		}
@@ -269,9 +269,9 @@ public class PointIteratorTest {
 	public void testReverse() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
 				1), PointFactory.point(-1, -1));
-		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(
+		final IteratorWrapper<Point> iter = new IteratorWrapper<>(
 				new PointIterator(model, false, false, true));
-		final List<Point> expected = new ArrayList<Point>();
+		final List<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(2, 2));
 		expected.add(PointFactory.point(2, 1));
 		expected.add(PointFactory.point(2, 0));
@@ -281,7 +281,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(0, 1));
 		expected.add(PointFactory.point(0, 0));
-		final List<Point> actual = new ArrayList<Point>();
+		final List<Point> actual = new ArrayList<>();
 		for (Point point : iter) {
 			actual.add(point);
 		}
@@ -294,9 +294,9 @@ public class PointIteratorTest {
 	public void testVerticalReverse() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
 				1), PointFactory.point(-1, -1));
-		final IteratorWrapper<Point> iter = new IteratorWrapper<Point>(
+		final IteratorWrapper<Point> iter = new IteratorWrapper<>(
 				new PointIterator(model, false, false, false));
-		final List<Point> expected = new ArrayList<Point>();
+		final List<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(2, 2));
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(0, 2));
@@ -306,7 +306,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(2, 0));
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(0, 0));
-		final List<Point> actual = new ArrayList<Point>();
+		final List<Point> actual = new ArrayList<>();
 		for (Point point : iter) {
 			actual.add(point);
 		}

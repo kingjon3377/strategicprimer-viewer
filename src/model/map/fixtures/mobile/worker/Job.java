@@ -41,7 +41,7 @@ public class Job implements XMLWritable, Iterable<Skill>, HasName, Serializable 
 	/**
 	 * The worker's level in various skills associated with the job.
 	 */
-	private final Set<Skill> skillSet = new ArraySet<Skill>();
+	private final Set<Skill> skillSet = new ArraySet<>();
 	/**
 	 * Add a skill.
 	 * @param skill the skill to add

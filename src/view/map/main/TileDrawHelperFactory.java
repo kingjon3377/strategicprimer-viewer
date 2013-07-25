@@ -15,7 +15,7 @@ public final class TileDrawHelperFactory {
 	 * Constructor. Needed because some initializers make lines too long.
 	 */
 	private TileDrawHelperFactory() {
-		verTwoHelpers = new HashMap<ImageObserver, TileDrawHelper>();
+		verTwoHelpers = new HashMap<>();
 	}
 	/**
 	 * An instance of this class, for callers who don't want to create their

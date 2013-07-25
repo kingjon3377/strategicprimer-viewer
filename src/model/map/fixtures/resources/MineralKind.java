@@ -35,7 +35,7 @@ public enum MineralKind {
 	/**
 	 * A mapping from string to MineralKind.
 	 */
-	private static final Map<String, MineralKind> M_MAP = new HashMap<String, MineralKind>();
+	private static final Map<String, MineralKind> M_MAP = new HashMap<>();
 	/**
 	 * A string representing the MineralKind.
 	 */

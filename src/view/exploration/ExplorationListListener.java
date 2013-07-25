@@ -62,8 +62,8 @@ public final class ExplorationListListener implements ListDataListener {
 	 */
 	private void randomizeSelection() {
 		list.clearSelection();
-		final List<Pair<Integer, TileFixture>> constants = new ArrayList<Pair<Integer, TileFixture>>();
-		final List<Pair<Integer, TileFixture>> possibles = new ArrayList<Pair<Integer, TileFixture>>();
+		final List<Pair<Integer, TileFixture>> constants = new ArrayList<>();
+		final List<Pair<Integer, TileFixture>> possibles = new ArrayList<>();
 		for (int i = 0; i < list.getModel().getSize(); i++) {
 			final TileFixture fix = list.getModel().getElementAt(i);
 			if (SimpleMovement.shouldAlwaysNotice(model.getSelectedUnit(), fix)) {

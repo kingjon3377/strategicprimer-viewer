@@ -29,7 +29,7 @@ public class CurriedFixtureTransferable implements Transferable {
 	 * @param list a list of TileFixtures to be transferred
 	 */
 	public CurriedFixtureTransferable(final List<TileFixture> list) {
-		final List<Transferable> payloadTemp = new ArrayList<Transferable>();
+		final List<Transferable> payloadTemp = new ArrayList<>();
 		for (TileFixture fix : list) {
 			payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
 		}

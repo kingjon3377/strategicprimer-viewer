@@ -33,7 +33,7 @@ public final class ImageLoader {
 	/**
 	 * The cache.
 	 */
-	private final Map<String, Image> cache = new HashMap<String, Image>();
+	private final Map<String, Image> cache = new HashMap<>();
 	/**
 	 * Constructor.
 	 */
@@ -82,7 +82,7 @@ public final class ImageLoader {
 	/**
 	 * An icon cache.
 	 */
-	private final Map<String, Icon> iconCache = new HashMap<String, Icon>();
+	private final Map<String, Icon> iconCache = new HashMap<>();
 
 	/**
 	 * Load an icon from the cache, or if not in it, from file.

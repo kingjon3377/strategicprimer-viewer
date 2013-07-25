@@ -61,7 +61,7 @@ public class JobReader implements INodeHandler<Job> {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
 					element.getLocation().getLineNumber()));
 		}
-		final List<Skill> skills = new ArrayList<Skill>();
+		final List<Skill> skills = new ArrayList<>();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final XMLWritable result = ReaderAdapter.ADAPTER.parse(

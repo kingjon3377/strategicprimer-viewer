@@ -112,9 +112,8 @@ public class FindDialog extends JDialog implements ActionListener {
 		if (IsNumeric.isNumeric(pattern)) {
 			idNum = Integer.parseInt(pattern);
 		}
-		final Iterable<Point> iter = new IteratorWrapper<Point>(
-				new PointIterator(map, true, !backwards.isSelected(),
-						!vertically.isSelected()));
+		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
+				map, true, !backwards.isSelected(), !vertically.isSelected()));
 		for (Point point : iter) {
 			final Tile tile = map.getMap().getTile(point);
 			for (final TileFixture fix : tile) {

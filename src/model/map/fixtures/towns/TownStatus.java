@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Possible status of towns, fortifications, and cities.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public enum TownStatus {
@@ -28,7 +28,7 @@ public enum TownStatus {
 	/**
 	 * A mapping from strings to TownStatus.
 	 */
-	private static final Map<String, TownStatus> TST_MAP = new HashMap<String, TownStatus>();
+	private static final Map<String, TownStatus> TST_MAP = new HashMap<>();
 	/**
 	 * A string representing the TownStatus.
 	 */
@@ -36,7 +36,7 @@ public enum TownStatus {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param string a string representing the status.
 	 */
 	private TownStatus(final String string) {
@@ -51,7 +51,7 @@ public enum TownStatus {
 
 	/**
 	 * @param string a string representing a TownStatus
-	 * 
+	 *
 	 * @return the TownStatus it represents
 	 */
 	public static TownStatus parseTownStatus(final String string) {
@@ -59,7 +59,7 @@ public enum TownStatus {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the status
 	 */
 	@Override

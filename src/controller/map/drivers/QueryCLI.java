@@ -160,8 +160,8 @@ public final class QueryCLI implements ISPDriver {
 		ostream.print("Terrain is ");
 		ostream.println(tile.getTerrain());
 		final List<TileFixture> fixtures = helper.toList(tile);
-		final List<Ground> ground = new ArrayList<Ground>();
-		final List<Forest> forests = new ArrayList<Forest>();
+		final List<Ground> ground = new ArrayList<>();
+		final List<Forest> forests = new ArrayList<>();
 		for (TileFixture fix : fixtures) {
 			if (fix instanceof Ground) {
 				ground.add((Ground) fix);

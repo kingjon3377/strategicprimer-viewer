@@ -24,7 +24,7 @@ public enum TownKind {
 	/**
 	 * A mapping from strings to EventKinds.
 	 */
-	private static final Map<String, TownKind> EK_MAP = new HashMap<String, TownKind>();
+	private static final Map<String, TownKind> EK_MAP = new HashMap<>();
 	/**
 	 * A string representing the event.
 	 */
