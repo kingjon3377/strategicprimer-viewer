@@ -39,10 +39,6 @@ public final class ConverterDriver implements ISPDriver {
 	private static final Logger LOGGER = Logger.getLogger(ConverterDriver.class
 			.getName());
 	/**
-	 * The converter to use.
-	 */
-	private static final ResolutionDecreaseConverter CONV = new ResolutionDecreaseConverter();
-	/**
 	 * The map reader we'll use.
 	 */
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
@@ -81,7 +77,7 @@ public final class ConverterDriver implements ISPDriver {
 				final IMap old = READER.readMap(filename, Warning.INSTANCE);
 				SystemOut.SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
-				final MapView map = CONV.convert(old);
+				final MapView map = ResolutionDecreaseConverter.convert(old);
 				SystemOut.SYS_OUT.print("About to write ");
 				SystemOut.SYS_OUT.println(newFilename);
 				new MapReaderAdapter().write(newFilename, map); // NOPMD

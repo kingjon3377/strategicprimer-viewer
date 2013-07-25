@@ -160,7 +160,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	 * @param infix what to print in the middle of each item
 	 * @param builder the builder to print to
 	 */
-	private void optionallyPrint(final Map<String, List<Point>> mapping, final String infix, final StringBuilder builder) {
+	private static void optionallyPrint(final Map<String, List<Point>> mapping, final String infix, final StringBuilder builder) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix)
 					.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
@@ -175,7 +175,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	 * @param prefix what to prepend to it if non-empty
 	 * @param builder the builder to print to
 	 */
-	private void optionallyPrint(final List<Point> points, final String prefix, final StringBuilder builder) {
+	private static void optionallyPrint(final List<Point> points, final String prefix, final StringBuilder builder) {
 		if (!points.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM).append(prefix).append(pointCSL(points)).append(CLOSE_LIST_ITEM);
 		}

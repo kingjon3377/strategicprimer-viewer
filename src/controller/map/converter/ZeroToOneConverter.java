@@ -43,7 +43,7 @@ public class ZeroToOneConverter {
 	 * @param stream a stream representing a SP map, format version 0
 	 * @return the XML representing an equivalent map, format version 1.
 	 */
-	public String convert(final Iterable<XMLEvent> stream) {
+	public static String convert(final Iterable<XMLEvent> stream) {
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -232,11 +232,6 @@ public class ZeroToOneConverter {
 		addXML("<cave dc=\"0\" />", 253, 254, 255);
 	}
 	/**
-	 * Singleton instance, for use in the main method.
-	 */
-	private static final ZeroToOneConverter CONVERTER = new ZeroToOneConverter();
-
-	/**
 	 * Driver.
 	 *
 	 * @param args the filenames to try it on. Prints results to stdout.
@@ -252,9 +247,9 @@ public class ZeroToOneConverter {
 				continue;
 			}
 			try {
-				System.out.println(CONVERTER
-						.convert(new IteratorWrapper<XMLEvent>(XMLInputFactory // NOPMD
-								.newInstance().createXMLEventReader(reader))));
+				System.out.println(convert(new IteratorWrapper<XMLEvent>(
+						XMLInputFactory.newInstance().createXMLEventReader(
+								reader))));
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);
 			} finally {

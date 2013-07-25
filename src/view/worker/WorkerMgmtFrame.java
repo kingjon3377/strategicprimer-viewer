@@ -122,8 +122,10 @@ public class WorkerMgmtFrame extends JFrame {
 				new JLabel(
 						"A report on everything except your units and fortresses, for reference:"),
 				BorderLayout.NORTH);
-		right.add(new JScrollPane(new JEditorPane("text/html", new ReportGenerator()
-				.createAbbreviatedReport(model.getMap()))), BorderLayout.CENTER);
+		right.add(
+				new JScrollPane(new JEditorPane("text/html", ReportGenerator
+						.createAbbreviatedReport(model.getMap()))),
+				BorderLayout.CENTER);
 		final JSplitPane main = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 		main.setDividerLocation(.5);
 		main.setResizeWeight(.5);

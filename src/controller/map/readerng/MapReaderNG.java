@@ -44,7 +44,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	public MapView readMap(final String file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException,
 			MapVersionException {
-		final Reader istream = new FileOpener().createReader(file);
+		final Reader istream = FileOpener.createReader(file);
 		try {
 			return readMap(file, istream, warner);
 		} finally {

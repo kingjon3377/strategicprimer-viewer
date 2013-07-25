@@ -31,7 +31,7 @@ public abstract class AbstractCompactReader {
 	 * @param element the element to check
 	 * @param tags the tags we accept here
 	 */
-	protected void requireTag(final StartElement element, final String... tags) {
+	protected static void requireTag(final StartElement element, final String... tags) {
 		if (!(EqualsAny.equalsAny(element.getName().getLocalPart(), tags))) {
 			final StringBuilder sbuild = new StringBuilder("Unexpected tag ");
 			sbuild.append(element.getName().getLocalPart());
@@ -52,7 +52,7 @@ public abstract class AbstractCompactReader {
 	 * @return the value for that parameter
 	 * @throws SPFormatException if the tag doesn't have that parameter.
 	 */
-	protected String getParameter(final StartElement element, final String param)
+	protected static String getParameter(final StartElement element, final String param)
 			throws SPFormatException {
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		if (attr == null) {
@@ -70,7 +70,7 @@ public abstract class AbstractCompactReader {
 	 * @param defaultValue the value to return if the tag doesn't have that parameter
 	 * @return the value for that parameter
 	 */
-	protected String getParameter(final StartElement element,
+	protected static String getParameter(final StartElement element,
 			final String param, final String defaultValue) {
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		return attr == null ? defaultValue : attr.getValue();
@@ -83,7 +83,7 @@ public abstract class AbstractCompactReader {
 	 * @param warner the Warning instance to use for the warning.
 	 * @throws SPFormatException if mandatory and missing
 	 */
-	protected void requireNonEmptyParameter(final StartElement element,
+	protected static void requireNonEmptyParameter(final StartElement element,
 			final String param, final boolean mandatory, final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
@@ -132,7 +132,7 @@ public abstract class AbstractCompactReader {
 	 * @return the ID the tag has if it has one, or otherwise a generated one.
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
-	protected int getOrGenerateID(final StartElement element,
+	protected static int getOrGenerateID(final StartElement element,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		// ESCA-JAVA0177:
@@ -153,7 +153,7 @@ public abstract class AbstractCompactReader {
 	 * @param param the parameter we want
 	 * @return whether the tag has that parameter
 	 */
-	protected boolean hasParameter(final StartElement element, final String param) {
+	protected static boolean hasParameter(final StartElement element, final String param) {
 		return !(element.getAttributeByName(new QName(param)) == null);
 	}
 	/**
@@ -161,7 +161,7 @@ public abstract class AbstractCompactReader {
 	 * @return the file currently being read from if it's an
 	 *         {@link IncludingIterator}, or the empty string otherwise.
 	 */
-	protected String getFile(final Iterable<XMLEvent> stream) {
+	protected static String getFile(final Iterable<XMLEvent> stream) {
 		return stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
 				.iterator()).getFile() : "";
 	}
@@ -206,7 +206,7 @@ public abstract class AbstractCompactReader {
 	 * @param tabs a nonnegative integer
 	 * @return that many tabs
 	 */
-	protected String indent(final int tabs) {
+	protected static String indent(final int tabs) {
 		final StringBuilder buf = new StringBuilder();
 		for (int i = 0; i < tabs; i++) {
 			buf.append('\t');

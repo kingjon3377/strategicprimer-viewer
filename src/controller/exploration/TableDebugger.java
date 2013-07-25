@@ -26,7 +26,7 @@ public class TableDebugger {
 	 */
 	public static void main(final String[] args) {
 		final ExplorationRunner runner = new ExplorationRunner();
-		new TableLoader().loadAllTables("tables", runner);
+		TableLoader.loadAllTables("tables", runner);
 		try {
 			new TableDebugger(runner).debugTables(System.out);
 		} catch (final MissingTableException e) { // $codepro.audit.disable logExceptions

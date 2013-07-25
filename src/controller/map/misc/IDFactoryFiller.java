@@ -12,7 +12,13 @@ import util.Pair;
  * A class to create an IDFactory with all IDs in a map, or in a collection of fixtures, already registered as used.
  * @author Jonathan Lovelace
  */
-public class IDFactoryFiller {
+public final class IDFactoryFiller {
+	/**
+	 * Don't instantiate.
+	 */
+	private IDFactoryFiller() {
+		// Only static methods.
+	}
 	/**
 	 * @param map a map
 	 * @return an ID factory that won't generate an ID the map already uses

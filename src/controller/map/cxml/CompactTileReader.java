@@ -126,8 +126,8 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 * @return the parsed river
 	 * @throws SPFormatException on SP format problem
 	 */
-	public River parseRiver(final StartElement element, final Warning warner)
-			throws SPFormatException {
+	public static River parseRiver(final StartElement element,
+			final Warning warner) throws SPFormatException {
 		requireTag(element, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
 			return River.Lake; // NOPMD
@@ -163,7 +163,8 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public void writeTile(final Writer out, final Point point, final Tile obj, final int indent) throws IOException {
+	public static void writeTile(final Writer out, final Point point,
+			final Tile obj, final int indent) throws IOException {
 		if (!obj.isEmpty()) {
 			out.append(indent(indent));
 			out.append("<tile row=\"");
@@ -178,7 +179,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 			if (obj.iterator().hasNext()) {
 				out.append('\n');
 				for (final TileFixture fix : obj) {
-					CompactReaderAdapter.ADAPTER.write(out, fix, indent + 1);
+					CompactReaderAdapter.write(out, fix, indent + 1);
 				}
 				out.append(indent(indent));
 			}
@@ -192,7 +193,8 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error
 	 */
-	public void writeRiver(final Writer out, final River obj, final int indent) throws IOException {
+	public static void writeRiver(final Writer out, final River obj,
+			final int indent) throws IOException {
 		for (int i = 0; i < indent; i++) {
 			out.append('\t');
 		}
@@ -212,8 +214,8 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error
 	 */
-	public void writeRivers(final Writer out, final Iterable<River> iter,
-			final int indent) throws IOException {
+	public static void writeRivers(final Writer out,
+			final Iterable<River> iter, final int indent) throws IOException {
 		for (River river : iter) {
 			writeRiver(out, river, indent);
 		}

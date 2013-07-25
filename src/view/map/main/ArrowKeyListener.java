@@ -25,7 +25,7 @@ public class ArrowKeyListener {
 	 * @param inputMap An input map to set up the keybindings.
 	 * @param actionMap The action map we'll be putting the glue listeners into.
 	 */
-	public void setUpListeners(final DirectionSelectionChanger selListener,
+	public static void setUpListeners(final DirectionSelectionChanger selListener,
 			final InputMap inputMap, final ActionMap actionMap) {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");

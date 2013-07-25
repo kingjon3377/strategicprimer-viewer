@@ -230,7 +230,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * @return the value of its 'dc' property.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private int getDC(final StartElement element) throws SPFormatException {
+	private static int getDC(final StartElement element) throws SPFormatException {
 		return Integer.parseInt(getParameter(element, "dc"));
 	}
 	/**
@@ -242,7 +242,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * @return the parsed Meadow object.
 	 * @throws SPFormatException on SP format problems
 	 */
-	private Meadow createMeadow(final StartElement element,
+	private static Meadow createMeadow(final StartElement element,
 			final boolean field, final int idNum, final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PARAM)) {
@@ -264,7 +264,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * @return the parsed Grove object
 	 * @throws SPFormatException on SP format problems
 	 */
-	private Grove createGrove(final StartElement element,
+	private static Grove createGrove(final StartElement element,
 			final boolean orchard, final int idNum, final Warning warner)
 			throws SPFormatException {
 		return new Grove(
@@ -279,7 +279,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 * @return whether the grove or orchard is cultivated
 	 * @throws SPFormatException on SP format problems: use of 'wild' if warnings are fatal, or if both properties are missing.
 	 */
-	private boolean isCultivated(final StartElement element, final Warning warner) throws SPFormatException {
+	private static boolean isCultivated(final StartElement element, final Warning warner) throws SPFormatException {
 		if (hasParameter(element, CULTIVATED_PARAM)) {
 			return Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {

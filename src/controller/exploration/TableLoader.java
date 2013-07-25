@@ -61,7 +61,7 @@ public final class TableLoader { // NOPMD
 	 * @throws FileNotFoundException when file not found
 	 * @throws IOException on I/O error
 	 */
-	public EncounterTable loadTable(final String filename)
+	public static EncounterTable loadTable(final String filename)
 			throws FileNotFoundException, IOException { // NOPMD
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new ResourceInputStream(filename)));
@@ -84,7 +84,7 @@ public final class TableLoader { // NOPMD
 	 * @return the table constructed from the file
 	 * @throws IOException on I/O error or badly formed table.
 	 */
-	EncounterTable loadTable(final BufferedReader reader) throws IOException { // NOPMD
+	static EncounterTable loadTable(final BufferedReader reader) throws IOException { // NOPMD
 		final String line = reader.readLine();
 		if (line == null) {
 			throw new IOException(
@@ -119,7 +119,7 @@ public final class TableLoader { // NOPMD
 	 * @return the quadrant table the file describes.
 	 * @throws IOException on I/O error reading the number of rows
 	 */
-	public QuadrantTable loadQuadrantTable(final BufferedReader reader)
+	public static QuadrantTable loadQuadrantTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
 		if (line == null) {
@@ -150,7 +150,7 @@ public final class TableLoader { // NOPMD
 	 * @return the random-table the file describes.
 	 * @throws IOException on I/O error
 	 */
-	public RandomTable loadRandomTable(final BufferedReader reader)
+	public static RandomTable loadRandomTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
 		final List<ComparablePair<Integer, String>> list = new ArrayList<>();
@@ -178,7 +178,7 @@ public final class TableLoader { // NOPMD
 	 * @return the terrain-table the file describes.
 	 * @throws IOException on I/O error.
 	 */
-	public TerrainTable loadTerrainTable(final BufferedReader reader)
+	public static TerrainTable loadTerrainTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
 		final List<Pair<TileType, String>> list = new ArrayList<>();
@@ -206,7 +206,7 @@ public final class TableLoader { // NOPMD
 	 * @return the terrain-table the file describes.
 	 * @throws IOException on I/O error.
 	 */
-	public ConstantTable loadConstantTable(final BufferedReader reader)
+	public static ConstantTable loadConstantTable(final BufferedReader reader)
 			throws IOException {
 		try {
 			return new ConstantTable(reader.readLine());
@@ -221,7 +221,7 @@ public final class TableLoader { // NOPMD
 	 *
 	 * @return the table the file describes.
 	 */
-	public LegacyTable loadLegacyTable() {
+	public static LegacyTable loadLegacyTable() {
 		return new LegacyTable();
 	}
 
@@ -245,7 +245,7 @@ public final class TableLoader { // NOPMD
 	 * @return a valid table, from file if that works, using the default data if
 	 *         not.
 	 */
-	public EncounterTable tryLoading(final String filename,
+	public static EncounterTable tryLoading(final String filename,
 			final int defaultRows, final List<String> defaultItems) {
 		try {
 			return loadTable(filename); // NOPMD
@@ -300,8 +300,8 @@ public final class TableLoader { // NOPMD
 	 * @param path the directory to look in
 	 * @param runner the runner to add them to
 	 */
-	public void loadAllTables(final String path, final ExplorationRunner runner) {
-		final TableLoader loader = new TableLoader(); // NOPMD
+	public static void loadAllTables(final String path,
+			final ExplorationRunner runner) {
 		final File dir = new File(path);
 		final String[] children = dir.list();
 		if (children != null) {
@@ -313,7 +313,7 @@ public final class TableLoader { // NOPMD
 				}
 				try {
 					runner.loadTable(table,
-							loader.loadTable(path + '/' + table));
+							loadTable(path + '/' + table));
 				} catch (final FileNotFoundException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 				} catch (final IOException e) {

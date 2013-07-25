@@ -95,7 +95,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @return the parsed village
 	 * @throws SPFormatException on SP format problems
 	 */
-	private Village parseVillage(final StartElement element,
+	private static Village parseVillage(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
@@ -114,7 +114,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	private AbstractTown parseTown(final StartElement element,
+	private static AbstractTown parseTown(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
@@ -146,7 +146,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @return the indicated player, or the independent player if none
 	 * @throws SPFormatException on SP format error reading the parameter.
 	 */
-	private Player getOwnerOrIndependent(final StartElement element,
+	private static Player getOwnerOrIndependent(final StartElement element,
 			final Warning warner, final PlayerCollection players)
 			throws SPFormatException {
 		// ESCA-JAVA0177:
@@ -171,7 +171,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	private Fortress parseFortress(final StartElement element,
+	private static Fortress parseFortress(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);

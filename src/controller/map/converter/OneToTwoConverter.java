@@ -53,7 +53,7 @@ public class OneToTwoConverter { // NOPMD
 	 * Constructor.
 	 */
 	public OneToTwoConverter() {
-		new TableLoader().loadAllTables("tables", runner);
+		TableLoader.loadAllTables("tables", runner);
 	}
 
 	/**

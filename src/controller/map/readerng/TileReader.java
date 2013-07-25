@@ -165,7 +165,7 @@ public class TileReader implements INodeHandler<Tile> {
 	 * @param point its location
 	 * @return an intermediate representation
 	 */
-	public SPIntermediateRepresentation writeTile(final Point point, final Tile obj) {
+	public static SPIntermediateRepresentation writeTile(final Point point, final Tile obj) {
 		if (obj.isEmpty()) {
 			return new SPIntermediateRepresentation(""); // NOPMD
 		} else {

@@ -24,6 +24,10 @@ import view.util.NullStream;
  */
 public class TestSubsets {
 	/**
+	 * The string "static-method", used in an annotation on each method.
+	 */
+	private static final String ST_MET = "static-method";
+	/**
 	 * A commonly-used string.
 	 */
 	private static final String ONE_STR = "one";
@@ -34,6 +38,7 @@ public class TestSubsets {
 	/**
 	 * A test of PlayerCollection's subset feature.
 	 */
+	@SuppressWarnings(ST_MET)
 	@Test
 	public void testPlayerCollectionSubset() {
 		final PlayerCollection zero = new PlayerCollection();
@@ -55,6 +60,7 @@ public class TestSubsets {
 	/**
 	 * A test of RiverFixture's subset feature.
 	 */
+	@SuppressWarnings(ST_MET)
 	@Test
 	public void testRiverSubset() {
 		final RiverFixture zero = new RiverFixture();
@@ -81,6 +87,7 @@ public class TestSubsets {
 	/**
 	 * A test of Fortress's subset feature.
 	 */
+	@SuppressWarnings(ST_MET)
 	@Test
 	public void testFortressSubset() {
 		final Fortress one = new Fortress(new Player(1, ONE_STR), "fOne", 1);
@@ -100,6 +107,7 @@ public class TestSubsets {
 	/**
 	 * A test of Tile's subset feature.
 	 */
+	@SuppressWarnings(ST_MET)
 	@Test
 	public void testTileSubset() {
 		final Tile one = new Tile(TileType.Steppe);
@@ -127,6 +135,7 @@ public class TestSubsets {
 	/**
 	 * Test the TileCollection subset feature.
 	 */
+	@SuppressWarnings(ST_MET)
 	@Test
 	public void testTileCollectionSubset() {
 		final TileCollection zero = new TileCollection();

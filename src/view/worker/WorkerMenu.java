@@ -18,10 +18,6 @@ import controller.map.misc.IOHandler;
  */
 public class WorkerMenu extends JMenuBar {
 	/**
-	 * The helper to create menu items for us.
-	 */
-	private final transient MenuItemCreator creator = new MenuItemCreator();
-	/**
 	 * Constructor.
 	 * @param handler the I/O handler to handle I/O related items
 	 * @param parent the window this is to be attached to, which should close on "Close".
@@ -29,18 +25,18 @@ public class WorkerMenu extends JMenuBar {
 	public WorkerMenu(final IOHandler handler, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
-				creator.createHotkey(KeyEvent.VK_O),
+		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
+				MenuItemCreator.createHotkey(KeyEvent.VK_O),
 				"Load a map from file", handler));
-		fileMenu.add(creator.createMenuItem("Save", KeyEvent.VK_S,
-				creator.createHotkey(KeyEvent.VK_S),
+		fileMenu.add(MenuItemCreator.createMenuItem("Save", KeyEvent.VK_S,
+				MenuItemCreator.createHotkey(KeyEvent.VK_S),
 				"Save the map to the file it was loaded from", handler));
-		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_A,
-				creator.createShiftHotkey(KeyEvent.VK_S),
+		fileMenu.add(MenuItemCreator.createMenuItem("Save As", KeyEvent.VK_A,
+				MenuItemCreator.createShiftHotkey(KeyEvent.VK_S),
 				"Save the map to file", handler));
 		fileMenu.addSeparator();
-		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
-				creator.createHotkey(KeyEvent.VK_W),
+		fileMenu.add(MenuItemCreator.createMenuItem("Close", KeyEvent.VK_W,
+				MenuItemCreator.createHotkey(KeyEvent.VK_W),
 				"Close this window", new ActionListener() {
 					/**
 					 * Close the window when pressed.
@@ -56,8 +52,8 @@ public class WorkerMenu extends JMenuBar {
 					}
 				}));
 		fileMenu.addSeparator();
-		fileMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
-				creator.createHotkey(KeyEvent.VK_Q),
+		fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
+				MenuItemCreator.createHotkey(KeyEvent.VK_Q),
 				"Quit the application", new ActionListener() {
 					/**
 					 * Handle the menu "button" press.

@@ -397,7 +397,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	/**
 	 * A list of races.
 	 */
-	private static final List<String> RACES = new ArrayList<String>();
+	private static final List<String> RACES = new ArrayList<>();
 	static {
 		RACES.add("dwarf");
 		RACES.add("elf");

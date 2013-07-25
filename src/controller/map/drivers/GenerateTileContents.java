@@ -74,7 +74,7 @@ public final class GenerateTileContents {
 	 */
 	private GenerateTileContents(final IMap theMap) {
 		map = theMap;
-		new TableLoader().loadAllTables("tables", runner);
+		TableLoader.loadAllTables("tables", runner);
 	}
 
 	/**

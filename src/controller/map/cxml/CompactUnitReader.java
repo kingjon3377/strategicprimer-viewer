@@ -180,7 +180,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			out.append(">").append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
-				CompactReaderAdapter.ADAPTER.write(out, member, indent + 1);
+				CompactReaderAdapter.write(out, member, indent + 1);
 			}
 			out.append(indent(indent));
 			out.append("</unit>\n");

@@ -24,12 +24,18 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class ReportGenerator {
+public final class ReportGenerator {
+	/**
+	 * No non-static members anymore.
+	 */
+	private ReportGenerator() {
+		// So don't instantiate.
+	}
 	/**
 	 * @param map the map to base the report on
 	 * @return the report, in HTML, as a String
 	 */
-	public String createReport(final IMap map) {
+	public static String createReport(final IMap map) {
 		final StringBuilder builder = new StringBuilder("<html>\n");
 		builder.append("<head><title>Strategic Primer map summary report</title></head>\n");
 		builder.append("<body>");
@@ -60,7 +66,7 @@ public class ReportGenerator {
 	 * @param map the map to base the report on
 	 * @return the report, in HTML, as a string.
 	 */
-	public String createAbbreviatedReport(final IMap map) {
+	public static String createAbbreviatedReport(final IMap map) {
 		final StringBuilder builder = new StringBuilder("<html>\n");
 		builder.append("<head><title>Strategic Primer map summary abbreviated report</title></head>\n");
 		builder.append("<body>");

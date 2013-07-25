@@ -97,11 +97,11 @@ public final class QueryCLI implements ISPDriver {
 			break;
 		case 'h':
 		case 'i':
-			hunt(helper.toList(selectTile(map)), ostream,
+			hunt(CLIHelper.toList(selectTile(map)), ostream,
 					HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(helper.toList(selectTile(map)), ostream,
+			gather(CLIHelper.toList(selectTile(map)), ostream,
 					HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		default:
@@ -156,10 +156,10 @@ public final class QueryCLI implements ISPDriver {
 	 * @param tile the selected tile
 	 * @param ostream the stream to print results to
 	 */
-	private void fortressInfo(final Tile tile, final PrintStream ostream) {
+	private static void fortressInfo(final Tile tile, final PrintStream ostream) {
 		ostream.print("Terrain is ");
 		ostream.println(tile.getTerrain());
-		final List<TileFixture> fixtures = helper.toList(tile);
+		final List<TileFixture> fixtures = CLIHelper.toList(tile);
 		final List<Ground> ground = new ArrayList<>();
 		final List<Forest> forests = new ArrayList<>();
 		for (TileFixture fix : fixtures) {
@@ -227,7 +227,7 @@ public final class QueryCLI implements ISPDriver {
 	 * Prints a usage message.
 	 * @param ostream the stream to write it to.
 	 */
-	public void usage(final PrintStream ostream) {
+	public static void usage(final PrintStream ostream) {
 		ostream.println("The following commands are supported:");
 		ostream.println("Fortress: Prints what a player automatically knows about his fortress's tile.");
 		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;

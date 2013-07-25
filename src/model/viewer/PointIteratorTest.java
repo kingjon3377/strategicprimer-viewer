@@ -165,6 +165,7 @@ public class PointIteratorTest {
 	/**
 	 * Test without startFromSel, horizontally, forwards.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testFromBeginning() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
@@ -190,6 +191,7 @@ public class PointIteratorTest {
 	/**
 	 * Test with startFromSel, horizontally, forwards.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testFromSelection() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
@@ -215,6 +217,7 @@ public class PointIteratorTest {
 	/**
 	 * Test working from the "selection" that the viewer starts with. And vertically, to exercise that part too.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testInitialSelection() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
@@ -240,6 +243,7 @@ public class PointIteratorTest {
 	/**
 	 * Test searching vertically, forwards.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testVertical() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
@@ -265,6 +269,7 @@ public class PointIteratorTest {
 	/**
 	 * Test searching backwards, horizontally.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testReverse() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,
@@ -290,6 +295,7 @@ public class PointIteratorTest {
 	/**
 	 * Test searching vertically, backwards.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testVerticalReverse() {
 		final IViewerModel model = new MockViewerModel(new MapDimensions(3, 3,

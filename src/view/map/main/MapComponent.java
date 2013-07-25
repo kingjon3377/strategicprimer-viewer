@@ -63,7 +63,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 				model);
 		addMouseWheelListener(dsl);
 		requestFocusInWindow();
-		new ArrowKeyListener().setUpListeners(dsl, getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
+		ArrowKeyListener.setUpListeners(dsl, getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
 				getActionMap());
 		addComponentListener(new MapSizeListener(model));
 		setToolTipText("");

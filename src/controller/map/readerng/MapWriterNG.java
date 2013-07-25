@@ -48,7 +48,8 @@ public class MapWriterNG implements SPWriter {
 	 * @param obj the object to write.
 	 * @throws IOException on error opening the file
 	 */
-	public void writeObject(final String filename, final XMLWritable obj) throws IOException {
+	public static void writeObject(final String filename, final XMLWritable obj)
+			throws IOException {
 		final Writer writer = new FileWriter(filename);
 		try {
 			writeObject(writer, obj);
@@ -64,7 +65,8 @@ public class MapWriterNG implements SPWriter {
 	 * @param obj the object to write.
 	 * @throws IOException on I/O error in writing
 	 */
-	public void writeObject(final Writer out, final XMLWritable obj) throws IOException {
+	public static void writeObject(final Writer out, final XMLWritable obj)
+			throws IOException {
 		ReaderAdapter.ADAPTER.write(obj).write(out, 0);
 	}
 	/**

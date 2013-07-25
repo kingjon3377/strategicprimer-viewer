@@ -25,7 +25,7 @@ public class MenuItemCreator {
 	 *
 	 * @return the configured menu item.
 	 */
-	public JMenuItem createMenuItem(final String item, final int mnemonic,
+	public static JMenuItem createMenuItem(final String item, final int mnemonic,
 			final KeyStroke accel, final String desc, final ActionListener list) {
 		final JMenuItem mitem = new JMenuItem(item, mnemonic);
 		mitem.setAccelerator(accel);
@@ -38,7 +38,7 @@ public class MenuItemCreator {
 	 * @param key the base key
 	 * @return the hotkey
 	 */
-	public KeyStroke createHotkey(final int key) {
+	public static KeyStroke createHotkey(final int key) {
 		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 	}
 	/**
@@ -46,7 +46,7 @@ public class MenuItemCreator {
 	 * @param key the base key
 	 * @return the hotkey
 	 */
-	public KeyStroke createShiftHotkey(final int key) {
+	public static KeyStroke createShiftHotkey(final int key) {
 		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask() | InputEvent.SHIFT_DOWN_MASK);
 	}

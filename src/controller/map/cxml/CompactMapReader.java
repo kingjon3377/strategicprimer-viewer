@@ -94,7 +94,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @throws SPFormatException on SP format problem
 	 */
-	private void parseChild(final IteratorWrapper<XMLEvent> stream, final Warning warner,
+	private static void parseChild(final IteratorWrapper<XMLEvent> stream, final Warning warner,
 			final SPMap map, final StartElement elem, final IDFactory idFactory) throws SPFormatException {
 		final String tag = elem.getName().getLocalPart();
 		if ("player".equalsIgnoreCase(tag)) {
@@ -173,7 +173,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private void writeMap(final Writer out, final SPMap obj, final int indent) throws IOException {
+	private static void writeMap(final Writer out, final SPMap obj, final int indent) throws IOException {
 		final MapDimensions dim = obj.getDimensions();
 		out.append("<map version=\"");
 		out.append(Integer.toString(dim.version));
@@ -201,7 +201,7 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 					rowEmpty = false;
 				}
 				final Point point = PointFactory.point(i, j);
-				CompactTileReader.READER.writeTile(out, point, obj.getTile(point), indent + 2);
+				CompactTileReader.writeTile(out, point, obj.getTile(point), indent + 2);
 			}
 			if (!rowEmpty) {
 				out.append(indent(indent + 1));

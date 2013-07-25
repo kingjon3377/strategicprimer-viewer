@@ -57,7 +57,7 @@ public final class CompactReaderAdapter {
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public <T extends XMLWritable> T parse(final Class<T> type,
+	public static <T extends XMLWritable> T parse(final Class<T> type,
 			final StartElement element, final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
@@ -65,8 +65,7 @@ public final class CompactReaderAdapter {
 		final CompactReader<T> reader; // NOPMD
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
-			final T river = (T) CompactTileReader.READER.parseRiver(element,
-					warner);
+			final T river = (T) CompactTileReader.parseRiver(element, warner);
 			AbstractCompactReader.spinUntilEnd(element.getName(), stream);
 			return river; // NOPMD
 		} else {
@@ -138,7 +137,8 @@ public final class CompactReaderAdapter {
 	 * @throws IOException on I/O problems
 	 */
 	@SuppressWarnings("unchecked")
-	public void write(final Writer out, final XMLWritable obj, final int indent) throws IOException {
+	public static void write(final Writer out, final XMLWritable obj,
+			final int indent) throws IOException {
 			@SuppressWarnings("rawtypes") // NOPMD
 			final CompactReader reader; // NOPMD
 			if (obj instanceof IMap) {
@@ -146,16 +146,16 @@ public final class CompactReaderAdapter {
 			} else if (obj instanceof Tile) {
 				reader = CompactTileReader.READER;
 			} else if (obj instanceof River) {
-				CompactTileReader.READER.writeRiver(out, (River) obj, indent);
+				CompactTileReader.writeRiver(out, (River) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof RiverFixture) {
-				CompactTileReader.READER.writeRivers(out, (RiverFixture) obj, indent);
+				CompactTileReader.writeRivers(out, (RiverFixture) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof Job) {
-				CompactWorkerReader.READER.writeJob(out, (Job) obj, indent);
+				CompactWorkerReader.writeJob(out, (Job) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof Skill) {
-				CompactWorkerReader.READER.writeSkill(out, (Skill) obj, indent);
+				CompactWorkerReader.writeSkill(out, (Skill) obj, indent);
 				return; // NOPMD
 			} else if (obj instanceof Player) {
 				reader = CompactPlayerReader.READER;

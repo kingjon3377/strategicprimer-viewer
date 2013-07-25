@@ -68,7 +68,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 *
 	 * @return how long the test took, in ns.
 	 */
-	public long first(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
+	public static long first(final TileDrawHelper helper, final IMap spmap,
+			final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize,
 				BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
@@ -106,7 +107,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long second(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
+	public static long second(final TileDrawHelper helper, final IMap spmap,
+			final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols,
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -147,7 +149,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long third(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
+	public static long third(final TileDrawHelper helper, final IMap spmap,
+			final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize, // NOPMD
 				BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
@@ -183,7 +186,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long fourth(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
+	public static long fourth(final TileDrawHelper helper, final IMap spmap,
+			final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -240,7 +244,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long fifthOne(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
+	public static long fifthOne(final TileDrawHelper helper, final IMap spmap,
+			final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -283,7 +288,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public long fifthTwo(final TileDrawHelper helper, final IMap spmap, final int reps, final int tsize) {
+	public static long fifthTwo(final TileDrawHelper helper, final IMap spmap,
+			final int reps, final int tsize) {
 		final MapDimensions dim = spmap.getDimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -342,7 +348,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param map the map to use for the tests.
 	 * @param reps how many times to repeat each test (more takes longer, but gives more precise result)
 	 */
-	public void runAllTests(final IMap map, final int reps) {
+	public static void runAllTests(final IMap map, final int reps) {
 		final int repetitions = reps;
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL, map.getDimensions().version);
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
@@ -413,7 +419,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param reps how many times the test ran
 	 * @return that total
 	 */
-	public long printStats(final long total, final int reps) {
+	public static long printStats(final long total, final int reps) {
 		SystemOut.SYS_OUT.print('\t');
 		SystemOut.SYS_OUT.print(total);
 		SystemOut.SYS_OUT.print(", average of\t");

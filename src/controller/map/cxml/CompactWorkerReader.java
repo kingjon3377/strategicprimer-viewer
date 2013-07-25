@@ -76,7 +76,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @return the parsed stats
 	 * @throws SPFormatException on SP format problem
 	 */
-	private WorkerStats parseStats(final StartElement element,
+	private static WorkerStats parseStats(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval = new WorkerStats(
@@ -99,7 +99,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format problem
 	 */
-	public Job parseJob(final StartElement element,
+	public static Job parseJob(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final Warning warner)
 			throws SPFormatException {
 		requireTag(element, "job");
@@ -133,7 +133,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @return the parsed skill
 	 * @throws SPFormatException on SP format problem
 	 */
-	public Skill parseSkill(final StartElement element, final Warning warner)
+	public static Skill parseSkill(final StartElement element, final Warning warner)
 			throws SPFormatException {
 		requireTag(element, "skill");
 		final Skill retval = new Skill(getParameter(element, "name"),
@@ -184,7 +184,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private void writeStats(final Writer out, final WorkerStats stats, final int indent) throws IOException {
+	private static void writeStats(final Writer out, final WorkerStats stats, final int indent) throws IOException {
 		if (stats != null) {
 			out.append(indent(indent));
 			out.append("<stats hp=\"");
@@ -213,7 +213,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public void writeJob(final Writer out, final Job obj, final int indent) throws IOException {
+	public static void writeJob(final Writer out, final Job obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<job name=\"");
 		out.append(obj.getName());
@@ -239,7 +239,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public void writeSkill(final Writer out, final Skill obj, final int indent) throws IOException {
+	public static void writeSkill(final Writer out, final Skill obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<skill name=\"");
 		out.append(obj.getName());

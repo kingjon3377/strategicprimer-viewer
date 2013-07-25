@@ -31,7 +31,7 @@ public class FileOpener {
 	 * @return a Reader reading the file it contains (but see method summary)
 	 * @throws FileNotFoundException if file not found.
 	 */
-	public Reader createReader(final String filename)
+	public static Reader createReader(final String filename)
 			throws FileNotFoundException {
 		// ESCA-JAVA0177:
 		final Reader istream; // NOPMD

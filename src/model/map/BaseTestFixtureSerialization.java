@@ -530,7 +530,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		if (deprecated) {
 			controller.map.readerng.ReaderAdapter.ADAPTER.write(obj).write(writer, 0);
 		} else {
-			new CompactXMLWriter().writeObject(writer, obj);
+			CompactXMLWriter.writeObject(writer, obj);
 		}
 		return writer.toString();
 	}
@@ -620,7 +620,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @param <T> the type of thing it contains
 	 * @return the number of items in the iterable
 	 */
-	public <T> int iteratorSize(final Iterable<T> iter) {
+	public static <T> int iteratorSize(final Iterable<T> iter) {
 		int size = 0; // NOPMD
 		final Iterator<T> iterator = iter.iterator();
 		// ESCA-JAVA0254:

@@ -26,6 +26,7 @@ public class TestConverter {
 	/**
 	 * Test conversion.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testConversion() {
 		final SPMap start = new SPMap(new MapDimensions(2, 2, 2));
@@ -51,8 +52,7 @@ public class TestConverter {
 		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4);
 		tileFour.addFixture(fixtureFour);
 		start.addTile(pointFour, tileFour);
-		final ResolutionDecreaseConverter converter = new ResolutionDecreaseConverter();
-		final MapView converted = converter.convert(start);
+		final MapView converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertTrue("Combined tile should contain fixtures from tile one",
 				doesIterableContain(converted.getTile(zeroPoint), fixture));

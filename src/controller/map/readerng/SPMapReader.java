@@ -158,7 +158,6 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		}
 		final MapDimensions dim = obj.getDimensions();
 		for (int i = 0; i < dim.rows; i++) {
-			@SuppressWarnings("unchecked")
 			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(// NOPMD
 					"row", Pair.of("index", Integer.toString(i)));
 			for (int j = 0; j < dim.cols; j++) {
@@ -166,7 +165,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				final Tile tile = obj.getTile(point);
 				if (!tile.isEmpty()) {
 					retval.addChild(row);
-					row.addChild(TILE_READER.writeTile(point, tile));
+					row.addChild(TileReader.writeTile(point, tile));
 				}
 			}
 		}

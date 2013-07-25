@@ -41,7 +41,8 @@ public class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	public void writeObject(final String filename, final XMLWritable obj) throws IOException {
+	public static void writeObject(final String filename, final XMLWritable obj)
+			throws IOException {
 		final Writer writer = new FileWriter(filename);
 		try {
 			writeObject(writer, obj);
@@ -56,7 +57,8 @@ public class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	public void writeObject(final Writer out, final XMLWritable obj) throws IOException {
-		CompactReaderAdapter.ADAPTER.write(out, obj, 0);
+	public static void writeObject(final Writer out, final XMLWritable obj)
+			throws IOException {
+		CompactReaderAdapter.write(out, obj, 0);
 	}
 }

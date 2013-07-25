@@ -40,11 +40,11 @@ public class SPMenu extends JMenuBar {
 	 * @param model the map model
 	 * @return the menu created
 	 */
-	private JMenu createMapMenu(final JFrame parent, final IViewerModel model) {
+	private static JMenu createMapMenu(final JFrame parent, final IViewerModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
-		retval.add(creator.createMenuItem("Go to tile", KeyEvent.VK_T,
-				creator.createHotkey(KeyEvent.VK_T),
+		retval.add(MenuItemCreator.createMenuItem("Go to tile", KeyEvent.VK_T,
+				MenuItemCreator.createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates", new ActionListener() {
 					@Override
 					public void actionPerformed(final ActionEvent event) {
@@ -55,7 +55,7 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		final FindDialog finder = new FindDialog(parent, model);
-		retval.add(creator.createMenuItem("Find a fixture", KeyEvent.VK_SLASH,
+		retval.add(MenuItemCreator.createMenuItem("Find a fixture", KeyEvent.VK_SLASH,
 				KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
 				"Find a fixture by name, kind, or ID#", new ActionListener() {
 					@Override
@@ -65,7 +65,7 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
-		retval.add(creator.createMenuItem("Find next", KeyEvent.VK_N,
+		retval.add(MenuItemCreator.createMenuItem("Find next", KeyEvent.VK_N,
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, 0),
 				"Find the next fixture matching the pattern",
 				new ActionListener() {
@@ -78,19 +78,14 @@ public class SPMenu extends JMenuBar {
 				}));
 		retval.addSeparator();
 		final ActionListener zoomListener = new ZoomListener(model);
-		retval.add(creator.createMenuItem("Zoom in", KeyEvent.VK_I,
-				creator.createHotkey(KeyEvent.VK_PLUS),
+		retval.add(MenuItemCreator.createMenuItem("Zoom in", KeyEvent.VK_I,
+				MenuItemCreator.createHotkey(KeyEvent.VK_PLUS),
 				"Increase the visible size of each tile", zoomListener));
-		retval.add(creator.createMenuItem("Zoom out", KeyEvent.VK_O,
-				creator.createHotkey(KeyEvent.VK_MINUS),
+		retval.add(MenuItemCreator.createMenuItem("Zoom out", KeyEvent.VK_O,
+				MenuItemCreator.createHotkey(KeyEvent.VK_MINUS),
 				"Decrease the visible size of each tile", zoomListener));
 		return retval;
 	}
-
-	/**
-	 * The helper to create menu items for us.
-	 */
-	private final transient MenuItemCreator creator = new MenuItemCreator();
 
 	/**
 	 * Create the map menu.
@@ -99,25 +94,25 @@ public class SPMenu extends JMenuBar {
 	 * @param parent the menu-bar's parent window---the window to close on "Close".
 	 * @return the map menu.
 	 */
-	private JMenu createFileMenu(final IOHandler handler, final JFrame parent) {
+	private static JMenu createFileMenu(final IOHandler handler, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.add(creator.createMenuItem("New", KeyEvent.VK_N,
-				creator.createHotkey(KeyEvent.VK_N),
+		fileMenu.add(MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
+				MenuItemCreator.createHotkey(KeyEvent.VK_N),
 				"Create a new map the same size as the current one",
 				handler));
-		fileMenu.add(creator.createMenuItem("Load", KeyEvent.VK_L,
-				creator.createHotkey(KeyEvent.VK_O),
+		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
+				MenuItemCreator.createHotkey(KeyEvent.VK_O),
 				"Load a map from file", handler));
-		fileMenu.add(creator.createMenuItem("Save", KeyEvent.VK_S,
-				creator.createHotkey(KeyEvent.VK_S),
+		fileMenu.add(MenuItemCreator.createMenuItem("Save", KeyEvent.VK_S,
+				MenuItemCreator.createHotkey(KeyEvent.VK_S),
 				"Save the map to the file it was loaded from", handler));
-		fileMenu.add(creator.createMenuItem("Save As", KeyEvent.VK_A,
-				creator.createShiftHotkey(KeyEvent.VK_S),
+		fileMenu.add(MenuItemCreator.createMenuItem("Save As", KeyEvent.VK_A,
+				MenuItemCreator.createShiftHotkey(KeyEvent.VK_S),
 				"Save the map to file", handler));
 		fileMenu.addSeparator();
-		fileMenu.add(creator.createMenuItem("Close", KeyEvent.VK_W,
-				creator.createHotkey(KeyEvent.VK_W),
+		fileMenu.add(MenuItemCreator.createMenuItem("Close", KeyEvent.VK_W,
+				MenuItemCreator.createHotkey(KeyEvent.VK_W),
 				"Close this window", new ActionListener() {
 					/**
 					 * Close the window when pressed.
@@ -132,8 +127,8 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
-		fileMenu.add(creator.createMenuItem("Quit", KeyEvent.VK_Q,
-				creator.createHotkey(KeyEvent.VK_Q),
+		fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
+				MenuItemCreator.createHotkey(KeyEvent.VK_Q),
 				"Quit the viewer", new ActionListener() {
 					/**
 					 * Handle the menu "button" press.

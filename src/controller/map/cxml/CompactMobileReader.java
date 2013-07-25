@@ -221,7 +221,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	 * @return the value of its 'kind' parameter
 	 * @throws SPFormatException on SP format error---if the parameter is missing, e.g.
 	 */
-	private String getKind(final StartElement element) throws SPFormatException {
+	private static String getKind(final StartElement element) throws SPFormatException {
 		return getParameter(element, "kind");
 	}
 	/**
@@ -231,7 +231,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
-	private Animal createAnimal(final StartElement element, final int idNum)
+	private static Animal createAnimal(final StartElement element, final int idNum)
 			throws SPFormatException {
 		return new Animal(
 				getKind(element),

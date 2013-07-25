@@ -26,6 +26,8 @@ import controller.map.misc.DriverUsage.ParamCount;
  * A driver to remove duplicate hills, forests, etc. from the map (to reduce the
  * size it takes up on disk and the memory and CPU it takes to deal with it).
  *
+ * TODO: Refactor the actual app out from the ISPDriver implementation.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -58,7 +60,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param map the map to filter
 	 * @param out the stream to report IDs of removed fixtures on.
 	 */
-	public void filter(final IMap map, final PrintStream out) {
+	public static void filter(final IMap map, final PrintStream out) {
 		for (Point point : map.getTiles()) {
 			filter(map.getTile(point), out);
 		}
@@ -71,7 +73,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param tile the tile to filter
 	 * @param out the stream to report IDs of removed fixtures on.
 	 */
-	public void filter(final Tile tile, final PrintStream out) {
+	public static void filter(final Tile tile, final PrintStream out) {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
 		for (TileFixture fix : tile) {

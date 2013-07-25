@@ -136,7 +136,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 					file,
 					new ComparableIterator<XMLEvent>(XMLInputFactory
 							.newInstance().createXMLEventReader(
-									new FileOpener().createReader(file)))));
+									FileOpener.createReader(file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
 					"File referenced by <include> not found", e);

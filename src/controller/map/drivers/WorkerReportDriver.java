@@ -51,14 +51,13 @@ public class WorkerReportDriver implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		final ReportGenerator generator = new ReportGenerator();
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final Warning warner = new Warning(Warning.Action.Ignore);
 		for (final String filename : args) {
 			// ESCA-JAVA0177:
 			final String report; // NOPMD
 			try {
-				report = generator.createReport(reader.readMap(filename, warner));
+				report = ReportGenerator.createReport(reader.readMap(filename, warner));
 			} catch (MapVersionException except) {
 				throw new DriverFailedException(filename + " contained a map format version we can't handle", except);
 			} catch (IOException except) {

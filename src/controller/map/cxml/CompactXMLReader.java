@@ -47,9 +47,9 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final T retval = CompactReaderAdapter.ADAPTER.parse(type,
-					event.asStartElement(), eventReader,
-					players, warner, idFactory);
+				final T retval = CompactReaderAdapter.parse(type,
+						event.asStartElement(), eventReader, players, warner,
+						idFactory);
 				return retval;
 			}
 		}
@@ -68,7 +68,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	@Override
 	public MapView readMap(final String file, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException {
-		final Reader istream = new FileOpener().createReader(file);
+		final Reader istream = FileOpener.createReader(file);
 		try {
 			return readMap(file, istream, warner);
 		} finally {

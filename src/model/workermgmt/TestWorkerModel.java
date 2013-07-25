@@ -33,6 +33,7 @@ public class TestWorkerModel {
 	/**
 	 * Test for getUnits().
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetUnits() {
 		final SPMap map = new SPMap(new MapDimensions(3, 3, 2));

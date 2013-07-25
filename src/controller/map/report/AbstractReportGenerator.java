@@ -58,14 +58,14 @@ public abstract class AbstractReportGenerator<T extends XMLWritable> {
 	 * @param point a point
 	 * @return the string "At " followed by the point's location
 	 */
-	protected String atPoint(final Point point) {
+	protected static String atPoint(final Point point) {
 		return "At " + point.toString() + ": ";
 	}
 	/**
 	 * @param points a list of points
 	 * @return a comma-separated string representing them.
 	 */
-	protected String pointCSL(final List<Point> points) {
+	protected static String pointCSL(final List<Point> points) {
 		if (points.isEmpty()) {
 			return ""; // NOPMD
 		} else if (points.size() == 1) {
@@ -89,7 +89,7 @@ public abstract class AbstractReportGenerator<T extends XMLWritable> {
 	 * @param player a player
 	 * @return the player's name, or "you" if the player is the current player
 	 */
-	protected String playerNameOrYou(final Player player) {
+	protected static String playerNameOrYou(final Player player) {
 		return player.isCurrent() ? "you" : player.toString();
 	}
 }

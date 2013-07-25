@@ -33,7 +33,7 @@ public class ResolutionDecreaseConverter {
 	 * @param old the map to convert.
 	 * @return an equivalent MapView.
 	 */
-	public MapView convert(final IMap old) {
+	public static MapView convert(final IMap old) {
 		checkRequirements(old);
 		final int newRows = old.getDimensions().rows / 2;
 		final int newCols = old.getDimensions().cols / 2;
