@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.WindowConstants;
 
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -35,6 +36,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
 /**
  * A window to let the player manage units.
@@ -45,8 +47,9 @@ public class WorkerMgmtFrame extends JFrame {
 	/**
 	 * At this point (proof-of-concept) we default to the first player of the choices.
 	 * @param model the driver model.
+	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
 	 */
-	public WorkerMgmtFrame(final IWorkerModel model) {
+	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Strategic Primer worker management");
 		setMinimumSize(new Dimension(640, 480));
 		final JSplitPane left = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
@@ -125,6 +128,9 @@ public class WorkerMgmtFrame extends JFrame {
 		main.setDividerLocation(.5);
 		main.setResizeWeight(.5);
 		setContentPane(main);
+
+		setJMenuBar(new WorkerMenu(ioHandler, this));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 	/**

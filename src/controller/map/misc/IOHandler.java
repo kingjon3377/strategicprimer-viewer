@@ -97,7 +97,7 @@ public class IOHandler implements ActionListener {
 	private void startNewViewerWindow() {
 		final ViewerFrame frame = new ViewerFrame(new ViewerModel(new MapView(
 				new SPMap(model.getMapDimensions()), 0, model.getMap()
-						.getCurrentTurn()), ""));
+						.getCurrentTurn()), ""), this);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

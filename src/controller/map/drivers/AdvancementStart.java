@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.workermgmt.IWorkerModel;
@@ -18,7 +17,6 @@ import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
 import view.util.SystemOut;
 import view.worker.AdvancementFrame;
-import view.worker.WorkerMenu;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
 import controller.map.misc.DriverUsage.ParamCount;
@@ -106,11 +104,9 @@ public final class AdvancementStart implements ISPDriver {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final AdvancementFrame frame = new AdvancementFrame(model);
-				frame.setJMenuBar(new WorkerMenu(new IOHandler(model,
-						new FilteredFileChooser(".", new MapFileFilter())),
-						frame));
-				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+				final AdvancementFrame frame = new AdvancementFrame(model,
+						new IOHandler(model, new FilteredFileChooser(".",
+								new MapFileFilter())));
 				frame.setVisible(true);
 			}
 		});

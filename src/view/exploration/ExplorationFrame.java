@@ -7,9 +7,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import model.exploration.ExplorationModel;
 import util.PropertyChangeSource;
+import controller.map.misc.MultiIOHandler;
 
 /**
  * The main window for the exploration GUI.
@@ -26,8 +28,9 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource {
 	 * Constructor.
 	 *
 	 * @param emodel the exploration model
+	 * @param ioHandler the I/O handler to let the menu handle the 'save all', etc.
 	 */
-	public ExplorationFrame(final ExplorationModel emodel) {
+	public ExplorationFrame(final ExplorationModel emodel, final MultiIOHandler ioHandler) {
 		super("Strategic Primer Exploration");
 		model = emodel;
 		setMinimumSize(new Dimension(768, 480));
@@ -58,6 +61,9 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource {
 		});
 		add(esp);
 		add(explorationPanel);
+
+		setJMenuBar(new ExplorationMenu(ioHandler, emodel, this));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 }

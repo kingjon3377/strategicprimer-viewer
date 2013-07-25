@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.MapView;
@@ -15,7 +14,6 @@ import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import util.Warning;
 import view.map.main.MapFileFilter;
-import view.map.main.SPMenu;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
@@ -125,11 +123,7 @@ public final class ViewerStart implements ISPDriver {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final ViewerFrame frame = new ViewerFrame(model);
-				frame.setJMenuBar(new SPMenu(new IOHandler(model, chooser),
-						frame, model));
-				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-				frame.setVisible(true);
+				new ViewerFrame(model, new IOHandler(model, chooser)).setVisible(true);
 			}
 		});
 	}

@@ -97,11 +97,9 @@ public class ExplorationGUI implements ISPDriver {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final ExplorationFrame gui = new ExplorationFrame(model);
-				gui.setJMenuBar(new ExplorationMenu(new MultiIOHandler(model,
-						new FilteredFileChooser(".", new MapFileFilter())), model, gui));
-				gui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-				gui.setVisible(true);
+				new ExplorationFrame(model,
+						new MultiIOHandler(model, new FilteredFileChooser(".",
+								new MapFileFilter()))).setVisible(true);
 			}
 		});
 	}

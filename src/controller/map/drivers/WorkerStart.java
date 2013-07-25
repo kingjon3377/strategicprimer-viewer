@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.xml.stream.XMLStreamException;
 
 import model.workermgmt.IWorkerModel;
@@ -17,7 +16,6 @@ import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
 import view.util.SystemOut;
-import view.worker.WorkerMenu;
 import view.worker.WorkerMgmtFrame;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DriverUsage;
@@ -93,12 +91,9 @@ public class WorkerStart implements ISPDriver {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final WorkerMgmtFrame frame = new WorkerMgmtFrame(model);
-				frame.setJMenuBar(new WorkerMenu(new IOHandler(model,
-						new FilteredFileChooser(".", new MapFileFilter())),
-						frame));
-				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-				frame.setVisible(true);
+				new WorkerMgmtFrame(model,
+						new IOHandler(model, new FilteredFileChooser(".",
+								new MapFileFilter()))).setVisible(true);
 			}
 		});
 	}

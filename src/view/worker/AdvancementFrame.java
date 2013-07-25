@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
 import model.map.HasName;
@@ -24,6 +25,7 @@ import model.workermgmt.IWorkerModel;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
+import controller.map.misc.IOHandler;
 
 /**
  * A GUI to let a user manage workers.
@@ -46,8 +48,9 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	 * Constructor.
 	 *
 	 * @param source the model containing the data to work from
+	 * @param ioHandler the I/O handler so the menu 'open' item, etc., will work
 	 */
-	public AdvancementFrame(final IWorkerModel source) {
+	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Strategic Primer worker advancement");
 		model = source;
 		model.addPropertyChangeListener(this);
@@ -113,6 +116,9 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		removePropertyChangeListener(this);
 
 		addPropertyChangeListener(new LevelListener());
+
+		setJMenuBar(new WorkerMenu(ioHandler, this));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 

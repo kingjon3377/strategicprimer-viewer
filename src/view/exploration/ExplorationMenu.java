@@ -18,6 +18,7 @@ import util.Pair;
 import view.map.main.ViewerFrame;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
+import controller.map.misc.IOHandler;
 import controller.map.misc.MultiIOHandler;
 /**
  * Menus for the exploration GUI.
@@ -61,7 +62,7 @@ public class ExplorationMenu extends JMenuBar {
 					@Override
 					public void actionPerformed(final ActionEvent event) {
 						SwingUtilities.invokeLater(new ViewerOpener(model
-								.getMap(), model.getMapFilename(), -1, -1));
+								.getMap(), model.getMapFilename(), -1, -1, handler));
 					}
 				}));
 		fileMenu.add(creator.createMenuItem(
@@ -77,7 +78,7 @@ public class ExplorationMenu extends JMenuBar {
 						SwingUtilities.invokeLater(new ViewerOpener(mapPair
 								.first(), mapPair.second(), model.getMap()
 								.getPlayers().getCurrentPlayer().getPlayerId(),
-								model.getMap().getCurrentTurn()));
+								model.getMap().getCurrentTurn(), handler));
 					}
 				}));
 		fileMenu.addSeparator();
@@ -125,14 +126,16 @@ public class ExplorationMenu extends JMenuBar {
 		 * @param file the filename it was loaded from
 		 * @param player the current player's number---ignored if map is a MapView.
 		 * @param turn the current turn---ignored if map is a MapView.
+		 * @param ioHandler the I/O handler to let the menu handle 'open', etc.
 		 */
-		ViewerOpener(final IMap map, final String file, final int player, final int turn) {
+		ViewerOpener(final IMap map, final String file, final int player, final int turn, final IOHandler ioHandler) {
 			if (map instanceof MapView) {
 				view = (MapView) map;
 			} else {
 				view = new MapView((SPMap) map, player, turn);
 			}
 			filename = file;
+			ioHelper = ioHandler;
 		}
 		/**
 		 * The map view to open.
@@ -143,11 +146,15 @@ public class ExplorationMenu extends JMenuBar {
 		 */
 		private final String filename;
 		/**
+		 * The I/O handler to let the menu handle 'open', etc.
+		 */
+		private final IOHandler ioHelper;
+		/**
 		 * Run the thread.
 		 */
 		@Override
 		public void run() {
-			new ViewerFrame(new ViewerModel(view, filename)).setVisible(true);
+			new ViewerFrame(new ViewerModel(view, filename), ioHelper).setVisible(true);
 		}
 	}
 }

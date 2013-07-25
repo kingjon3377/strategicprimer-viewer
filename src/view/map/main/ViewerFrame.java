@@ -4,9 +4,11 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
+import javax.swing.WindowConstants;
 
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
+import controller.map.misc.IOHandler;
 
 /**
  * The main driver class for the viewer app.
@@ -44,8 +46,9 @@ public final class ViewerFrame extends JFrame {
 	 * Constructor.
 	 *
 	 * @param map The map model.
+	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
 	 */
-	public ViewerFrame(final IViewerModel map) {
+	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Strategic Primer Map Viewer");
 		final MapGUI mapPanel = new MapComponent(map);
 		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -61,5 +64,8 @@ public final class ViewerFrame extends JFrame {
 		final MapWindowSizeListener mwsl = new MapWindowSizeListener((MapComponent) mapPanel);
 		addWindowListener(mwsl);
 		addWindowStateListener(mwsl);
+
+		setJMenuBar(new SPMenu(ioHandler, this, map));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 }
