@@ -68,11 +68,8 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	@Override
 	public MapView readMap(final String file, final Warning warner) throws IOException,
 			XMLStreamException, SPFormatException {
-		final Reader istream = FileOpener.createReader(file);
-		try {
+		try (final Reader istream = FileOpener.createReader(file)) {
 			return readMap(file, istream, warner);
-		} finally {
-			istream.close();
 		}
 	}
 

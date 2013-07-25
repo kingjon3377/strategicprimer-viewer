@@ -238,26 +238,17 @@ public class ZeroToOneConverter {
 	 */
 	public static void main(final String[] args) {
 		for (final String arg : args) {
-			// ESCA-JAVA0177:
-			final Reader reader; // NOPMD
-			try {
-				reader = new FileReader(arg); // NOPMD
-			} catch (final FileNotFoundException except) {
-				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
-				continue;
-			}
-			try {
+			try (final Reader reader = new FileReader(arg)) {
 				System.out.println(convert(new IteratorWrapper<XMLEvent>(
 						XMLInputFactory.newInstance().createXMLEventReader(
 								reader))));
+			} catch (final FileNotFoundException except) {
+				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
+				continue;
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);
-			} finally {
-				try {
-					reader.close();
-				} catch (final IOException except) {
-					LOGGER.log(Level.SEVERE, "I/O error closing file", except);
-				}
+			} catch (IOException except) {
+				LOGGER.log(Level.SEVERE, "I/O error dealing with file " + arg, except);
 			}
 		}
 	}

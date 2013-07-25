@@ -1,9 +1,7 @@
 package controller.map.drivers;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,11 +54,9 @@ public final class QueryCLI implements ISPDriver {
 	private final CLIHelper helper = new CLIHelper();
 	/**
 	 * @param map the map to explore
-	 * @param reader the stream to read commands from
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final IMap map, final BufferedReader reader,
-			final PrintStream ostream) {
+	private void repl(final IMap map, final PrintStream ostream) {
 		try {
 			String input = helper.inputString("Command: ");
 			while (input.length() > 0 && input.charAt(0) != 'q') {
@@ -69,13 +65,6 @@ public final class QueryCLI implements ISPDriver {
 			}
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
-		} finally {
-			try {
-				reader.close();
-			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O exception while closing reader",
-						except);
-			}
 		}
 	}
 
@@ -251,9 +240,8 @@ public final class QueryCLI implements ISPDriver {
 					new IllegalArgumentException("Need one argument"));
 		}
 		try {
-			repl(new MapReaderAdapter().readMap(args[0],
-					new Warning(Warning.Action.Warn)), new BufferedReader(
-					new InputStreamReader(System.in)), SystemOut.SYS_OUT);
+			repl(new MapReaderAdapter().readMap(args[0], new Warning(
+					Warning.Action.Warn)), SystemOut.SYS_OUT);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException("XML parsing error in " + args[0], e);
 		} catch (final FileNotFoundException e) {

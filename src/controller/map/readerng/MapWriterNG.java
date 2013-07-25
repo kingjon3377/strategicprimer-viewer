@@ -48,13 +48,11 @@ public class MapWriterNG implements SPWriter {
 	 * @param obj the object to write.
 	 * @throws IOException on error opening the file
 	 */
+	// ESCA-JAVA0173: The filename parameter is *too* used.
 	public static void writeObject(final String filename, final XMLWritable obj)
 			throws IOException {
-		final Writer writer = new FileWriter(filename);
-		try {
+		try (final Writer writer = new FileWriter(filename)) {
 			writeObject(writer, obj);
-		} finally {
-			writer.close();
 		}
 	}
 

@@ -67,22 +67,10 @@ public class WorkerReportDriver implements ISPDriver {
 			} catch (SPFormatException except) {
 				throw new DriverFailedException(filename + " didn't contain a valid SP map", except);
 			}
-			final FileWriter writer; // NOPMD
-			try {
-				writer = new FileWriter(filename + ".report.html"); // NOPMD
-			} catch (IOException except) {
-				throw new DriverFailedException("I/O error writing report", except);
-			}
-			try {
+			try (final FileWriter writer = new FileWriter(filename + ".report.html")) {
 				writer.write(report);
 			} catch (IOException except) {
 				throw new DriverFailedException("I/O error writing report", except);
-			} finally { // NOPMD
-				try {
-					writer.close();
-				} catch (IOException except) {
-					throw new DriverFailedException("I/O error writing report", except);
-				}
 			}
 		}
 	}

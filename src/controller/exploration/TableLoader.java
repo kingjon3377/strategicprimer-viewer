@@ -61,11 +61,11 @@ public final class TableLoader { // NOPMD
 	 * @throws FileNotFoundException when file not found
 	 * @throws IOException on I/O error
 	 */
+	// ESCA-JAVA0160: it does too throw a FileNotFoundException.
 	public static EncounterTable loadTable(final String filename)
 			throws FileNotFoundException, IOException { // NOPMD
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new ResourceInputStream(filename)));
-		try {
+		try (final BufferedReader reader = new BufferedReader(
+				new InputStreamReader(new ResourceInputStream(filename)))) {
 			return loadTable(reader);
 		} catch (final IllegalArgumentException except) {
 			if ("unknown table type".equals(except.getMessage())) {
@@ -74,8 +74,6 @@ public final class TableLoader { // NOPMD
 			} else {
 				throw except;
 			}
-		} finally {
-			reader.close();
 		}
 	}
 
@@ -137,8 +135,6 @@ public final class TableLoader { // NOPMD
 		} catch (final IOException except) {
 			Logger.getLogger(TableLoader.class.getName()).log(Level.SEVERE,
 					IO_ERR_STRING, except);
-		} finally {
-			reader.close();
 		}
 		return new QuadrantTable(rows, items);
 	}
@@ -154,19 +150,15 @@ public final class TableLoader { // NOPMD
 			throws IOException {
 		String line = reader.readLine();
 		final List<ComparablePair<Integer, String>> list = new ArrayList<>();
-		try {
-			while (line != null) {
-				final String[] array = line.split(" ", SPLIT_ONCE);
-				if (array.length < SPLIT_ONCE) {
-					Logger.getLogger(TableLoader.class.getName()).severe(
-							"Line with no blanks, continuing ...");
-				} else {
-					list.add(ComparablePair.of(Integer.valueOf(array[0]), array[1]));
-				}
-				line = reader.readLine();
+		while (line != null) {
+			final String[] array = line.split(" ", SPLIT_ONCE);
+			if (array.length < SPLIT_ONCE) {
+				Logger.getLogger(TableLoader.class.getName()).severe(
+						"Line with no blanks, continuing ...");
+			} else {
+				list.add(ComparablePair.of(Integer.valueOf(array[0]), array[1]));
 			}
-		} finally {
-			reader.close();
+			line = reader.readLine();
 		}
 		return new RandomTable(list);
 	}
@@ -182,19 +174,15 @@ public final class TableLoader { // NOPMD
 			throws IOException {
 		String line = reader.readLine();
 		final List<Pair<TileType, String>> list = new ArrayList<>();
-		try {
-			while (line != null) {
-				final String[] array = line.split(" ", SPLIT_ONCE);
-				if (array.length < SPLIT_ONCE) {
-					Logger.getLogger(TableLoader.class.getName()).severe(
-							"Line with no blanks, continuing ...");
-				} else {
-					list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
-				}
-				line = reader.readLine();
+		while (line != null) {
+			final String[] array = line.split(" ", SPLIT_ONCE);
+			if (array.length < SPLIT_ONCE) {
+				Logger.getLogger(TableLoader.class.getName()).severe(
+						"Line with no blanks, continuing ...");
+			} else {
+				list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
 			}
-		} finally {
-			reader.close();
+			line = reader.readLine();
 		}
 		return new TerrainTable(list);
 	}
@@ -208,11 +196,7 @@ public final class TableLoader { // NOPMD
 	 */
 	public static ConstantTable loadConstantTable(final BufferedReader reader)
 			throws IOException {
-		try {
-			return new ConstantTable(reader.readLine());
-		} finally {
-			reader.close();
-		}
+		return new ConstantTable(reader.readLine());
 	}
 
 	/**

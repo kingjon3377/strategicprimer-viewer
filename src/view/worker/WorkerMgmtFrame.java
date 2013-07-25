@@ -92,25 +92,11 @@ public class WorkerMgmtFrame extends JFrame {
 			@Override
 			public void actionPerformed(final ActionEvent evt) {
 				if (chooser.showSaveDialog(outer) == JFileChooser.APPROVE_OPTION) {
-					// ESCA-JAVA0177:
-					final FileWriter writer; // NOPMD
-					try {
-						writer = new FileWriter(chooser
-								.getSelectedFile());
-					} catch (IOException except) {
-						logger.log(Level.SEVERE, "I/O error opening file for strategy", except);
-						return;
-					}
-					try {
+					try (final FileWriter writer = new FileWriter(chooser
+							.getSelectedFile())) {
 						writer.append(exp.createStrategy());
 					} catch (IOException except) {
 						logger.log(Level.SEVERE, "I/O error exporting strategy", except);
-					} finally {
-						try {
-							writer.close();
-						} catch (IOException except) {
-							logger.log(Level.SEVERE, "I/O error closing file", except);
-						}
 					}
 				}
 			}

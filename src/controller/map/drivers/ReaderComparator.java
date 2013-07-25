@@ -153,17 +153,13 @@ public class ReaderComparator implements ISPDriver {
 	 * @throws IOException if file not found, or on other I/O error reading from file
 	 */
 	private static String readIntoBuffer(final String filename) throws IOException {
-		final String arg = filename;
-		final File file = new File(arg);
-		final FileReader reader = new FileReader(file);
-		final CharBuffer buffer = CharBuffer.allocate((int) file.length());
-		try {
+		final File file = new File(filename);
+		try (final FileReader reader = new FileReader(file)) {
+			final CharBuffer buffer = CharBuffer.allocate((int) file.length());
 			reader.read(buffer);
-		} finally {
-			reader.close();
+			buffer.position(0);
+			return buffer.toString();
 		}
-		buffer.position(0);
-		return buffer.toString();
 	}
 	/**
 	 *
