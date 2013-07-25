@@ -39,7 +39,8 @@ public class EnumCounter<T extends Enum<T>> {
 	/**
 	 * @param values a sequence of values to count.
 	 */
-	public void countMany(final T... values) {
+	@SafeVarargs
+	public final void countMany(final T... values) {
 		for (final T value : values) {
 			count(value);
 		}
