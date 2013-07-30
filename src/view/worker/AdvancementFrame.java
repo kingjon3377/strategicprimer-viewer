@@ -31,6 +31,10 @@ import controller.map.misc.IOHandler;
 public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		PropertyChangeSource {
 	/**
+	 * Dividers start at half-way.
+	 */
+	private static final double HALF_WAY = .5;
+	/**
 	 * Constructor.
 	 *
 	 * @param source the model containing the data to work from
@@ -68,12 +72,12 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final JSplitPane panelThree = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jobsPanel, skillSuperPanel);
 		panelThree.setContinuousLayout(true);
 		panelThree.setResizeWeight(.3);
-		panelThree.setDividerLocation(.5);
+		panelThree.setDividerLocation(HALF_WAY);
 
 		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, unitPanel, panelThree);
 		jspThree.setContinuousLayout(true);
-		jspThree.setResizeWeight(.5);
-		jspThree.setDividerLocation(.5);
+		jspThree.setResizeWeight(HALF_WAY);
+		jspThree.setDividerLocation(HALF_WAY);
 		setContentPane(jspThree);
 
 		addPropertyChangeListener(this);
