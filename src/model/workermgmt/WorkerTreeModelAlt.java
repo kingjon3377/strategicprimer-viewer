@@ -176,6 +176,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		} else if ("unit".equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Unit) {
 			addUnit((Unit) evt.getNewValue());
+		} else if ("map".equalsIgnoreCase(evt.getPropertyName())) {
+			setRoot(new PlayerNode(model.getMap().getPlayers().getCurrentPlayer(), model));
 		}
 	}
 }
