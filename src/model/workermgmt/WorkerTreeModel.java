@@ -215,6 +215,9 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			for (final TreeModelListener listener : listeners) {
 				listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
 			}
+		} else if ("unit".equalsIgnoreCase(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Unit) {
+			addUnit((Unit) evt.getNewValue());
 		}
 	}
 }

@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +32,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
-import model.workermgmt.IWorkerTreeModel;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
@@ -55,23 +52,15 @@ public class WorkerMgmtFrame extends JFrame {
 		final JSplitPane left = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
 		left.setDividerLocation(0.7);
 		left.setResizeWeight(0.7);
-		final JTree tree = new WorkerTree(model.getMap().getPlayers()
-				.getCurrentPlayer(), model);
-		left.setTopComponent(new JScrollPane(tree));
-		final JPanel bottom = new JPanel(new BorderLayout());
-		final JButton newUnitButton = new JButton("Add New Unit");
 		final NewUnitDialog newUnitFrame = new NewUnitDialog(model.getMap()
 				.getPlayers().getCurrentPlayer(),
 				IDFactoryFiller.createFactory(model.getMap()));
+		final JTree tree = new WorkerTree(model.getMap().getPlayers()
+				.getCurrentPlayer(), model, newUnitFrame);
+		left.setTopComponent(new JScrollPane(tree));
+		final JPanel bottom = new JPanel(new BorderLayout());
+		final JButton newUnitButton = new JButton("Add New Unit");
 		model.addPropertyChangeListener(newUnitFrame);
-		newUnitFrame.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if ("unit".equals(evt.getPropertyName())) {
-					((IWorkerTreeModel) tree.getModel()).addUnit((Unit) evt.getNewValue());
-				}
-			}
-		});
 		newUnitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent evt) {

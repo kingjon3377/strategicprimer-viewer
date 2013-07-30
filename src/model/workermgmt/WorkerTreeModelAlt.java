@@ -173,6 +173,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		if ("player".equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Player) {
 			setRoot(new PlayerNode((Player) evt.getNewValue(), model));
+		} else if ("unit".equalsIgnoreCase(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Unit) {
+			addUnit((Unit) evt.getNewValue());
 		}
 	}
 }
