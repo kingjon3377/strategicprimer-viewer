@@ -1,5 +1,7 @@
 package model.workermgmt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -19,7 +21,7 @@ import util.IteratorWrapper;
  *
  */
 public class WorkerTreeModelAlt extends DefaultTreeModel implements
-		IWorkerTreeModel {
+		IWorkerTreeModel, PropertyChangeListener {
 	/**
 	 * Constructor.
 	 * @param player the player whose units and workers will be shown in the tree
@@ -161,5 +163,16 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		fireTreeNodesInserted(this, new Object[] { root },
 				new int[] { ((DefaultMutableTreeNode) getRoot())
 						.getChildCount() - 1 }, new Object[] { node });
+	}
+	/**
+	 * Handle a property change.
+	 * @param evt the even to handle.
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		if ("player".equalsIgnoreCase(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Player) {
+			setRoot(new PlayerNode((Player) evt.getNewValue(), model));
+		}
 	}
 }

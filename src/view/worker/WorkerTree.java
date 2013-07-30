@@ -32,6 +32,7 @@ import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
 import model.workermgmt.WorkerTreeModelAlt;
 import model.workermgmt.WorkerTreeModelAlt.UnitMemberNode;
 import model.workermgmt.WorkerTreeModelAlt.UnitNode;
+import util.PropertyChangeSource;
 import view.map.details.FixtureEditMenu;
 /**
  * A tree of a player's units.
@@ -42,9 +43,15 @@ public class WorkerTree extends JTree {
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
+	 * @param sources things for the model to listen to for property changes
 	 */
-	public WorkerTree(final Player player, final IWorkerModel model) {
+	public WorkerTree(final Player player, final IWorkerModel model,
+			final PropertyChangeSource... sources) {
 		super(new WorkerTreeModelAlt(player, model));
+		final WorkerTreeModelAlt tmodel = (WorkerTreeModelAlt) getModel();
+		for (final PropertyChangeSource source : sources) {
+			source.addPropertyChangeListener(tmodel);
+		}
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
