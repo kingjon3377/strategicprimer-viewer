@@ -117,7 +117,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 
 		addPropertyChangeListener(new LevelListener());
 
-		setJMenuBar(new WorkerMenu(ioHandler, this));
+		setJMenuBar(new WorkerMenu(ioHandler, this, null)); // FIXME
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
