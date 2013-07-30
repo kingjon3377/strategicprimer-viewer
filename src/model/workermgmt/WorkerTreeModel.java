@@ -174,20 +174,20 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 		final TreeModelEvent removedEvent = new TreeModelEvent(this,
 				new TreePath(new Object[] { root, old }), new int[] { oldIndex },
 				new Object[] { member });
-		final TreeModelEvent removedChangedEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, old }));
+		final TreeModelEvent removedChEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, old }));
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesRemoved(removedEvent); // FIXME: Somehow removed nodes are still visible!
-			listener.treeStructureChanged(removedChangedEvent);
+			listener.treeStructureChanged(removedChEvent);
 		}
 		newOwner.addMember(member);
 //		final int newIndex = getIndexOfChild(member, newOwner);
 //		final TreeModelEvent insertedEvent = new TreeModelEvent(this,
 //				new TreePath(new Object[] { root, newOwner }),
 //				new int[] { newIndex }, new Object[] { member });
-		final TreeModelEvent insertedChangedEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, newOwner }));
+		final TreeModelEvent insertedChEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, newOwner }));
 		for (final TreeModelListener listener : listeners) {
 //			listener.treeNodesInserted(insertedEvent);
-			listener.treeStructureChanged(insertedChangedEvent);
+			listener.treeStructureChanged(insertedChEvent);
 		}
 	}
 	/**
@@ -198,10 +198,26 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public void addUnit(final Unit unit) {
 		model.addUnit(unit);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(
-					root), new int[] { model.getUnits(root).size() },
-					new Object[] { unit }));
+			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(//NOPMD
+					root), singletonInt(model.getUnits(root).size()),
+					singletonObj(unit)));
 		}
+	}
+	/**
+	 * Create a singleton array.
+	 * @param obj the object it should contain
+	 * @return the array
+	 */
+	private static Object[] singletonObj(final Object obj) {
+		return new Object[] { obj };
+	}
+	/**
+	 * Create a singleton array.
+	 * @param num the integer it should contain
+	 * @return the array
+	 */
+	private static int[] singletonInt(final int num) {
+		return new int[] { num };
 	}
 	/**
 	 * Handle a property change.
