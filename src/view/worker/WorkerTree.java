@@ -14,6 +14,8 @@ import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.TransferHandler;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -39,7 +41,7 @@ import view.map.details.FixtureEditMenu;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerTree extends JTree {
+public class WorkerTree extends JTree implements PropertyChangeSource {
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
@@ -59,6 +61,7 @@ public class WorkerTree extends JTree {
 		setCellRenderer(new UnitMemberCellRenderer());
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 		ToolTipManager.sharedInstance().registerComponent(this);
+		addTreeSelectionListener(new WorkerTreeSelectionListener());
 	}
 	/**
 	 * A replacement transfer handler to make drag-and-drop work properly.
@@ -274,6 +277,36 @@ public class WorkerTree extends JTree {
 					.append("</p></html>").toString();
 		} else {
 			return null;
+		}
+	}
+	/**
+	 * A selection listener.
+	 */
+	private class WorkerTreeSelectionListener implements TreeSelectionListener {
+		/**
+		 * Constuctor.
+		 */
+		WorkerTreeSelectionListener() {
+			// Needed to change visibility.
+		}
+		/**
+		 * @param evt the event to handle
+		 */
+		@Override
+		public void valueChanged(final TreeSelectionEvent evt) {
+			handleSelection(evt.getNewLeadSelectionPath().getLastPathComponent());
+		}
+		/**
+		 * Handle a selection.
+		 * @param sel the new selection
+		 */
+		@SuppressWarnings("synthetic-access") // TODO: fix this properly
+		private void handleSelection(final Object sel) {
+			if (sel instanceof DefaultMutableTreeNode) {
+				handleSelection(((DefaultMutableTreeNode) sel).getUserObject());
+			} else if (sel instanceof UnitMember || sel == null) {
+				firePropertyChange("member", null, sel);
+			}
 		}
 	}
 }

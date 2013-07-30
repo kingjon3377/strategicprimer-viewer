@@ -11,17 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.View;
 
 import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.IWorkerModel;
-import model.workermgmt.WorkerTreeModelAlt.UnitMemberNode;
 import util.PropertyChangeSource;
-import util.PropertyChangeSupportSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
 import controller.map.misc.IOHandler;
@@ -52,26 +48,10 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
 		unitPanel.add(tree, BorderLayout.CENTER);
-		final PropertyChangeSupportSource pcss = new PropertyChangeSupportSource(this);
-		tree.addTreeSelectionListener(new TreeSelectionListener() {
-			@Override
-			public void valueChanged(final TreeSelectionEvent evt) {
-				if (evt.getNewLeadSelectionPath().getLastPathComponent() instanceof UnitMember
-						|| evt.getNewLeadSelectionPath().getLastPathComponent() == null) {
-					pcss.firePropertyChange("member", null, evt.getNewLeadSelectionPath().getLastPathComponent());
-					System.out.println("Unit member changed.");
-				} else if (evt.getNewLeadSelectionPath().getLastPathComponent() instanceof UnitMemberNode) {
-					pcss.firePropertyChange("member", null,
-							((UnitMemberNode) evt.getNewLeadSelectionPath()
-									.getLastPathComponent()).getUserObject());
-				}
-			}
-		});
-
 		final JPanel jobsPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		jobsPanel.add(new JLabel(htmlize("Worker's Jobs:")), BorderLayout.NORTH);
-		jobsPanel.add(new JobsList(this, this, jarp, pcss), BorderLayout.CENTER);
+		jobsPanel.add(new JobsList(this, this, jarp, tree), BorderLayout.CENTER);
 		jobsPanel.add(jarp, BorderLayout.SOUTH);
 
 		final JPanel skillPanel = new JPanel(new BorderLayout());
