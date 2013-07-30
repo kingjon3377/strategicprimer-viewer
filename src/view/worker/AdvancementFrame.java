@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.View;
 
 import model.map.HasName;
@@ -22,7 +24,10 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
+import model.workermgmt.WorkerTreeModelAlt.UnitMemberNode;
+import sun.management.counter.Units;
 import util.PropertyChangeSource;
+import util.PropertyChangeSupportSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
 import controller.map.misc.IOHandler;
@@ -60,27 +65,29 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 
 		final JPanel unitPanel = new JPanel(new BorderLayout());
 		unitPanel.add(new JLabel(htmlize("Player's Units:")), BorderLayout.NORTH);
-		unitPanel.add(new UnitList(source, this, source, this, pch), BorderLayout.CENTER);
-
-		final JPanel panelTwo = new JPanel(new BorderLayout());
-		panelTwo.add(new JLabel(htmlize("Selected Unit's Members:")),
-				BorderLayout.NORTH);
-		panelTwo.add(new UnitMemberList(this, this), BorderLayout.CENTER);
-
-		final JSplitPane jspOne = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelTwo, new StatsLabel(this));
-		jspOne.setContinuousLayout(true);
-		jspOne.setResizeWeight(.6);
-		jspOne.setDividerLocation(.6);
-
-		final JSplitPane jspTwo = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, unitPanel, jspOne);
-		jspTwo.setContinuousLayout(true);
-		jspTwo.setResizeWeight(.5);
-		jspTwo.setDividerLocation(.5);
+		final WorkerTree tree = new WorkerTree(model.getMap().getPlayers()
+				.getCurrentPlayer(), source, this, pch, model);
+		unitPanel.add(tree, BorderLayout.CENTER);
+		final PropertyChangeSupportSource pcss = new PropertyChangeSupportSource(this);
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+			@Override
+			public void valueChanged(final TreeSelectionEvent evt) {
+				if (evt.getNewLeadSelectionPath().getLastPathComponent() instanceof UnitMember
+						|| evt.getNewLeadSelectionPath().getLastPathComponent() == null) {
+					pcss.firePropertyChange("member", null, evt.getNewLeadSelectionPath().getLastPathComponent());
+					System.out.println("Unit member changed.");
+				} else if (evt.getNewLeadSelectionPath().getLastPathComponent() instanceof UnitMemberNode) {
+					pcss.firePropertyChange("member", null,
+							((UnitMemberNode) evt.getNewLeadSelectionPath()
+									.getLastPathComponent()).getUserObject());
+				}
+			}
+		});
 
 		final JPanel jobsPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		jobsPanel.add(new JLabel(htmlize("Worker's Jobs:")), BorderLayout.NORTH);
-		jobsPanel.add(new JobsList(this, this, jarp), BorderLayout.CENTER);
+		jobsPanel.add(new JobsList(this, this, jarp, pcss), BorderLayout.CENTER);
 		jobsPanel.add(jarp, BorderLayout.SOUTH);
 
 		final JPanel skillPanel = new JPanel(new BorderLayout());
@@ -99,10 +106,10 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		panelThree.setResizeWeight(.3);
 		panelThree.setDividerLocation(.5);
 
-		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jspTwo, panelThree);
+		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, unitPanel, panelThree);
 		jspThree.setContinuousLayout(true);
-		jspThree.setResizeWeight(2.0 / 3.0);
-		jspThree.setDividerLocation(2.0 / 3.0);
+		jspThree.setResizeWeight(.5);
+		jspThree.setDividerLocation(.5);
 		setContentPane(jspThree);
 
 		addPropertyChangeListener(this);
