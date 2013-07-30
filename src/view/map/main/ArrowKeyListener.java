@@ -31,74 +31,18 @@ public class ArrowKeyListener {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
-		actionMap.put("up", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.up();
-			}
-		});
-		actionMap.put("down", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.down();
-			}
-		});
-		actionMap.put("left", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.left();
-			}
-		});
-		actionMap.put("right", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.right();
-			}
-		});
+		actionMap.put("up", new UpListener(selListener, 1));
+		actionMap.put("down", new DownListener(selListener, 1));
+		actionMap.put("left", new LeftListener(selListener, 1));
+		actionMap.put("right", new RightListener(selListener, 1));
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, CTRL_DOWN_MASK), "ctrlUp");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, CTRL_DOWN_MASK), "ctrlDown");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, CTRL_DOWN_MASK), "ctrlRight");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, CTRL_DOWN_MASK), "ctrlLeft");
-		actionMap.put("ctrlUp", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.up();
-				selListener.up();
-				selListener.up();
-				selListener.up();
-				selListener.up();
-			}
-		});
-		actionMap.put("ctrlDown", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.down();
-				selListener.down();
-				selListener.down();
-				selListener.down();
-				selListener.down();
-			}
-		});
-		actionMap.put("ctrlLeft", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.left();
-				selListener.left();
-				selListener.left();
-				selListener.left();
-				selListener.left();
-			}
-		});
-		actionMap.put("ctrlRight", new AbstractAction() {
-			@Override
-			public void actionPerformed(final ActionEvent event) {
-				selListener.right();
-				selListener.right();
-				selListener.right();
-				selListener.right();
-				selListener.right();
-			}
-		});
+		actionMap.put("ctrlUp", new UpListener(selListener, 5));
+		actionMap.put("ctrlDown", new DownListener(selListener, 5));
+		actionMap.put("ctrlLeft", new LeftListener(selListener, 5));
+		actionMap.put("ctrlRight", new RightListener(selListener, 5));
 	}
 
 	/**
@@ -109,5 +53,119 @@ public class ArrowKeyListener {
 	public String toString() {
 		return "ArrowKeyListener";
 	}
-
+	/**
+	 * A listener to move the cursor in a direction.
+	 */
+	private abstract static class AbstractDirListener extends AbstractAction {
+		/**
+		 * Do the actual motion.
+		 */
+		protected abstract void move();
+		/**
+		 * The listener that handles the motion.
+		 */
+		protected final DirectionSelectionChanger dsc;
+		/**
+		 * How many times to repeat the motion on each user action.
+		 */
+		private final int count;
+		/**
+		 * @param selListener the listener that handles the motion
+		 * @param countNum how many times to move on each user action
+		 */
+		AbstractDirListener(final DirectionSelectionChanger selListener, final int countNum) {
+			dsc = selListener;
+			count = countNum;
+		}
+		/**
+		 * Handle user action.
+		 * @param event the event to handle
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent event) {
+			for (int i = 0; i < count; i++) {
+				move();
+			}
+		}
+	}
+	/**
+	 * A listener to move the cursor up.
+	 */
+	// ESCA-JAVA0237:
+	private static class UpListener extends AbstractDirListener {
+		/**
+		 * @param selListener the listener that handles the motion
+		 * @param countNum how many times to move on each user action
+		 */
+		UpListener(final DirectionSelectionChanger selListener, final int countNum) {
+			super(selListener, countNum);
+		}
+		/**
+		 * Do the motion.
+		 */
+		@Override
+		protected void move() {
+			dsc.up();
+		}
+	}
+	/**
+	 * A listener to move the cursor down.
+	 */
+	// ESCA-JAVA0237:
+	private static class DownListener extends AbstractDirListener {
+		/**
+		 * @param selListener the listener that handles the motion
+		 * @param countNum how many times to move on each user action
+		 */
+		DownListener(final DirectionSelectionChanger selListener, final int countNum) {
+			super(selListener, countNum);
+		}
+		/**
+		 * Do the motion.
+		 */
+		@Override
+		protected void move() {
+			dsc.down();
+		}
+	}
+	/**
+	 * A listener to move the cursor left.
+	 */
+	// ESCA-JAVA0237:
+	private static class LeftListener extends AbstractDirListener {
+		/**
+		 * @param selListener the listener that handles the motion
+		 * @param countNum how many times to move on each user action
+		 */
+		LeftListener(final DirectionSelectionChanger selListener, final int countNum) {
+			super(selListener, countNum);
+		}
+		/**
+		 * Do the motion.
+		 */
+		@Override
+		protected void move() {
+			dsc.left();
+		}
+	}
+	/**
+	 * A listener to move the cursor right.
+	 */
+	// ESCA-JAVA0237:
+	private static class RightListener extends AbstractDirListener {
+		/**
+		 * @param selListener the listener that handles the motion
+		 * @param countNum how many times to move on each user action
+		 */
+		RightListener(final DirectionSelectionChanger selListener, final int countNum) {
+			super(selListener, countNum);
+		}
+		/**
+		 * Do the motion.
+		 */
+		@Override
+		protected void move() {
+			dsc.right();
+		}
+	}
 }
