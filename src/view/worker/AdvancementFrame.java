@@ -2,12 +2,9 @@ package view.worker;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,13 +16,11 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.View;
 
 import model.map.HasName;
-import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerTreeModelAlt.UnitMemberNode;
-import sun.management.counter.Units;
 import util.PropertyChangeSource;
 import util.PropertyChangeSupportSource;
 import view.util.AddRemovePanel;
@@ -38,17 +33,12 @@ import controller.map.misc.IOHandler;
  * @author Jonathan Lovelace
  *
  */
-public class AdvancementFrame extends JFrame implements ItemListener,
-		PropertyChangeListener, PropertyChangeSource {
+public class AdvancementFrame extends JFrame implements PropertyChangeListener,
+		PropertyChangeSource {
 	/**
 	 * The map model containing the data we're working from.
 	 */
 	private final IDriverModel model;
-	/**
-	 * A drop-down list listing the players in the map.
-	 */
-	private final JComboBox<Player> players = new JComboBox<>();
-
 	/**
 	 * Constructor.
 	 *
@@ -131,25 +121,9 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("map".equals(evt.getPropertyName())) {
-			players.removeAllItems();
-			for (Player player : model.getMap().getPlayers()) {
-				players.addItem(player);
-			}
-		} else if (!equals(evt.getSource())) {
+		if (!equals(evt.getSource())) {
 			firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
 					evt.getNewValue());
-		}
-	}
-
-	/**
-	 * @param evt an event indicating an item's changed in one of the
-	 *        combo-boxes we listen to
-	 */
-	@Override
-	public void itemStateChanged(final ItemEvent evt) {
-		if (players.equals(evt.getSource())) {
-			firePropertyChange("player", null, players.getSelectedItem());
 		}
 	}
 
