@@ -15,7 +15,11 @@ public class PlayerLabel extends JLabel implements PropertyChangeListener {
 	/**
 	 * Text to give before the current player's name.
 	 */
-	private final String text;
+	private final String before;
+	/**
+	 * Text to give after the current player's name.
+	 */
+	private final String after;
 	/**
 	 * Wrap a string in HTML tags.
 	 * @param string the string to wrap
@@ -24,14 +28,21 @@ public class PlayerLabel extends JLabel implements PropertyChangeListener {
 	private static String htmlize(final String string) {
 		return "<html><body>" + string + "</body></html>";
 	}
+
 	/**
 	 * Constructor.
-	 * @param prefix text to give before the current player's name.
+	 *
+	 * @param prefix text to give before the current player's name. Doesn't have
+	 *        to include delimiting space.
 	 * @param player the initial player
+	 * @param postfix text to give after the current player's name. Must include
+	 *        delimiting space, since the first character after the name might
+	 *        be punctuation instead.
 	 */
-	public PlayerLabel(final String prefix, final Player player) {
-		super(htmlize(prefix + ' ' + player.getName()));
-		text = prefix;
+	public PlayerLabel(final String prefix, final Player player, final String postfix) {
+		super(htmlize(prefix + ' ' + player.getName() + postfix));
+		before = prefix;
+		after = postfix;
 	}
 	/**
 	 * @param evt the event to handle
@@ -39,7 +50,9 @@ public class PlayerLabel extends JLabel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("player".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Player) {
-			setText(htmlize(text + ' ' + ((Player) evt.getNewValue()).getName()));
+			setText(htmlize(before + ' '
+					+ ((Player) evt.getNewValue()).getName())
+					+ after);
 		}
 	}
 }

@@ -48,7 +48,10 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
 
 		final JPanel unitPanel = new JPanel(new BorderLayout());
-		unitPanel.add(new JLabel(htmlize("Player's Units:")), BorderLayout.NORTH);
+		final PlayerLabel plabel = new PlayerLabel("", source.getMap()
+				.getPlayers().getCurrentPlayer(), "'s Units:");
+		pch.addPropertyChangeListener(plabel);
+		unitPanel.add(plabel, BorderLayout.NORTH);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
 		unitPanel.add(tree, BorderLayout.CENTER);

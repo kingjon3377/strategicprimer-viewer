@@ -64,7 +64,7 @@ public class WorkerMgmtFrame extends JFrame {
 		final JScrollPane treePanel = new JScrollPane(tree);
 		final JPanel top = new JPanel(new BorderLayout());
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
-				.getMap().getPlayers().getCurrentPlayer());
+				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPropertyChangeListener(plabel);
 		top.add(plabel, BorderLayout.NORTH);
 		top.add(treePanel, BorderLayout.CENTER);
