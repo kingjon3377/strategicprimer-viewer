@@ -75,22 +75,7 @@ public class WorkerMgmtFrame extends JFrame {
 		final JButton exportButton = new JButton("Export a proto-strategy from units' orders");
 		final Component outer = this;
 		final IWorkerModel smodel = model;
-		final Logger logger = Logger.getLogger(WorkerMgmtFrame.class.getName());
-		exportButton.addActionListener(new ActionListener() {
-			private final JFileChooser chooser = new JFileChooser(".");
-			private final StrategyExporter exp = new StrategyExporter(smodel);
-			@Override
-			public void actionPerformed(final ActionEvent evt) {
-				if (chooser.showSaveDialog(outer) == JFileChooser.APPROVE_OPTION) {
-					try (final FileWriter writer = new FileWriter(chooser
-							.getSelectedFile())) {
-						writer.append(exp.createStrategy());
-					} catch (IOException except) {
-						logger.log(Level.SEVERE, "I/O error exporting strategy", except);
-					}
-				}
-			}
-		});
+		exportButton.addActionListener(new ExportButtonHandler(outer, smodel));
 		bottom.add(exportButton, BorderLayout.SOUTH);
 		left.setBottomComponent(bottom);
 		final JPanel right = new JPanel(new BorderLayout());
@@ -110,6 +95,52 @@ public class WorkerMgmtFrame extends JFrame {
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
+	}
+	/**
+	 * Handle the strategy-export button.
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private static final class ExportButtonHandler implements ActionListener {
+		/**
+		 * The surrounding frame.
+		 */
+		private final Component parent;
+		/**
+		 * The logger. FIXME: Should be private static final on the outer class.
+		 */
+		private static final Logger LOGGER = Logger.getLogger(WorkerMgmtFrame.class.getName());
+		/**
+		 * The file chooser.
+		 */
+		private final JFileChooser chooser = new JFileChooser(".");
+		/**
+		 * The strategy-exporter.
+		 */
+		private final StrategyExporter exp;
+		/**
+		 * @param outer the surrounding frame.
+		 * @param smodel the driver model.
+		 */
+		ExportButtonHandler(final Component outer, final IWorkerModel smodel) {
+			parent = outer;
+			exp = new StrategyExporter(smodel);
+		}
+		/**
+		 * Handle button press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent evt) {
+			if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+				try (final FileWriter writer = new FileWriter(chooser
+						.getSelectedFile())) {
+					writer.append(exp.createStrategy());
+				} catch (IOException except) {
+					LOGGER.log(Level.SEVERE, "I/O error exporting strategy", except);
+				}
+			}
+		}
 	}
 	/**
 	 * A class to export a "proto-strategy" to file.
