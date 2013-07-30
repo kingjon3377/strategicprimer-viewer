@@ -56,17 +56,11 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		model.addPropertyChangeListener(this);
 		setMinimumSize(new Dimension(640, 480));
 
-
-		players.addItemListener(this);
-		final JPanel playerPanel = new JPanel(new BorderLayout());
-		playerPanel.add(new JLabel(htmlize("Current Player:")), BorderLayout.NORTH);
-		playerPanel.add(players, BorderLayout.CENTER);
+		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 
 		final JPanel unitPanel = new JPanel(new BorderLayout());
 		unitPanel.add(new JLabel(htmlize("Player's Units:")), BorderLayout.NORTH);
-		unitPanel.add(new UnitList(source, this, source, this), BorderLayout.CENTER);
-
-		final JSplitPane panelOne = new JSplitPane(JSplitPane.VERTICAL_SPLIT, playerPanel, unitPanel);
+		unitPanel.add(new UnitList(source, this, source, this, pch), BorderLayout.CENTER);
 
 		final JPanel panelTwo = new JPanel(new BorderLayout());
 		panelTwo.add(new JLabel(htmlize("Selected Unit's Members:")),
@@ -78,7 +72,7 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 		jspOne.setResizeWeight(.6);
 		jspOne.setDividerLocation(.6);
 
-		final JSplitPane jspTwo = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelOne, jspOne);
+		final JSplitPane jspTwo = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, unitPanel, jspOne);
 		jspTwo.setContinuousLayout(true);
 		jspTwo.setResizeWeight(.5);
 		jspTwo.setDividerLocation(.5);
@@ -113,11 +107,12 @@ public class AdvancementFrame extends JFrame implements ItemListener,
 
 		addPropertyChangeListener(this);
 		firePropertyChange("map", null, null);
+		firePropertyChange("player", null, model.getMap().getPlayers().getCurrentPlayer());
 		removePropertyChangeListener(this);
 
 		addPropertyChangeListener(new LevelListener());
 
-		setJMenuBar(new WorkerMenu(ioHandler, this, null)); // FIXME
+		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
