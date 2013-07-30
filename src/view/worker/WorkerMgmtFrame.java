@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.WindowConstants;
 
+import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
@@ -83,10 +86,19 @@ public class WorkerMgmtFrame extends JFrame {
 				new JLabel(
 						"A report on everything except your units and fortresses, for reference:"),
 				BorderLayout.NORTH);
-		right.add(
-				new JScrollPane(new JEditorPane("text/html", ReportGenerator
-						.createAbbreviatedReport(model.getMap()))),
-				BorderLayout.CENTER);
+		final JEditorPane report = new JEditorPane("text/html", ReportGenerator
+				.createAbbreviatedReport(model.getMap(), model.getMap().getPlayers().getCurrentPlayer()));
+		pch.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if ("player".equalsIgnoreCase(evt.getPropertyName())
+						&& evt.getNewValue() instanceof Player) {
+					report.setText(ReportGenerator.createAbbreviatedReport(
+							model.getMap(), (Player) evt.getNewValue()));
+				}
+			}
+		});
+		right.add(new JScrollPane(report), BorderLayout.CENTER);
 		final JSplitPane main = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 		main.setDividerLocation(.5);
 		main.setResizeWeight(.5);

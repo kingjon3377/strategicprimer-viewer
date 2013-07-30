@@ -65,14 +65,14 @@ public final class ReportGenerator {
 	 * Creates a slightly abbreviated report, omitting the player's fortresses and units.
 	 * @param map the map to base the report on
 	 * @return the report, in HTML, as a string.
+	 * @param player the player to report on
 	 */
-	public static String createAbbreviatedReport(final IMap map) {
+	public static String createAbbreviatedReport(final IMap map, final Player player) {
 		final StringBuilder builder = new StringBuilder("<html>\n");
 		builder.append("<head><title>Strategic Primer map summary abbreviated report</title></head>\n");
 		builder.append("<body>");
 		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final TileCollection tiles = map.getTiles();
-		final Player player = map.getPlayers().getCurrentPlayer();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
 					&& player.equals(((HasOwner) pair.second()).getOwner())) {
