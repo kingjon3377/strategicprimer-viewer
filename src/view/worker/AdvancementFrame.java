@@ -18,7 +18,6 @@ import javax.swing.text.View;
 import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
-import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerTreeModelAlt.UnitMemberNode;
 import util.PropertyChangeSource;
@@ -36,10 +35,6 @@ import controller.map.misc.IOHandler;
 public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		PropertyChangeSource {
 	/**
-	 * The map model containing the data we're working from.
-	 */
-	private final IDriverModel model;
-	/**
 	 * Constructor.
 	 *
 	 * @param source the model containing the data to work from
@@ -47,16 +42,15 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Strategic Primer worker advancement");
-		model = source;
-		model.addPropertyChangeListener(this);
+		source.addPropertyChangeListener(this);
 		setMinimumSize(new Dimension(640, 480));
 
-		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
+		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
 
 		final JPanel unitPanel = new JPanel(new BorderLayout());
 		unitPanel.add(new JLabel(htmlize("Player's Units:")), BorderLayout.NORTH);
-		final WorkerTree tree = new WorkerTree(model.getMap().getPlayers()
-				.getCurrentPlayer(), source, this, pch, model);
+		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
+				.getCurrentPlayer(), source, this, pch, source);
 		unitPanel.add(tree, BorderLayout.CENTER);
 		final PropertyChangeSupportSource pcss = new PropertyChangeSupportSource(this);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -104,7 +98,7 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 
 		addPropertyChangeListener(this);
 		firePropertyChange("map", null, null);
-		firePropertyChange("player", null, model.getMap().getPlayers().getCurrentPlayer());
+		firePropertyChange("player", null, source.getMap().getPlayers().getCurrentPlayer());
 		removePropertyChangeListener(this);
 
 		addPropertyChangeListener(new LevelListener());
