@@ -55,8 +55,9 @@ public class WorkerMgmtFrame extends JFrame {
 		final NewUnitDialog newUnitFrame = new NewUnitDialog(model.getMap()
 				.getPlayers().getCurrentPlayer(),
 				IDFactoryFiller.createFactory(model.getMap()));
+		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final JTree tree = new WorkerTree(model.getMap().getPlayers()
-				.getCurrentPlayer(), model, newUnitFrame);
+				.getCurrentPlayer(), model, newUnitFrame, pch, model);
 		left.setTopComponent(new JScrollPane(tree));
 		final JPanel bottom = new JPanel(new BorderLayout());
 		final JButton newUnitButton = new JButton("Add New Unit");
@@ -106,7 +107,7 @@ public class WorkerMgmtFrame extends JFrame {
 		main.setResizeWeight(.5);
 		setContentPane(main);
 
-		setJMenuBar(new WorkerMenu(ioHandler, this));
+		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}

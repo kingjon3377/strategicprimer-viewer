@@ -21,8 +21,9 @@ public class WorkerMenu extends JMenuBar {
 	 * Constructor.
 	 * @param handler the I/O handler to handle I/O related items
 	 * @param parent the window this is to be attached to, which should close on "Close".
+	 * @param pch a handler to listen to the 'change player' menu item.
 	 */
-	public WorkerMenu(final IOHandler handler, final JFrame parent) {
+	public WorkerMenu(final IOHandler handler, final JFrame parent, final PlayerChooserHandler pch) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
@@ -68,5 +69,12 @@ public class WorkerMenu extends JMenuBar {
 					}
 		}));
 		add(fileMenu);
+		final JMenu editMenu = new JMenu("Edit");
+		editMenu.setMnemonic(KeyEvent.VK_E);
+		editMenu.add(MenuItemCreator.createMenuItem(
+				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P,
+				MenuItemCreator.createHotkey(KeyEvent.VK_P),
+				"Look at a different player's units and workers", pch));
+		add(editMenu);
 	}
 }
