@@ -225,4 +225,12 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			}
 		}
 	}
+	/**
+	 * @param obj an object
+	 * @return it
+	 */
+	@Override
+	public Object getModelObject(final Object obj) {
+		return obj;
+	}
 }

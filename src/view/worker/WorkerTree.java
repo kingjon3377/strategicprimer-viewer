@@ -16,7 +16,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.TransferHandler;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -32,8 +31,6 @@ import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.UnitMemberTransferable;
 import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
 import model.workermgmt.WorkerTreeModelAlt;
-import model.workermgmt.WorkerTreeModelAlt.UnitMemberNode;
-import model.workermgmt.WorkerTreeModelAlt.UnitNode;
 import util.PropertyChangeSource;
 import view.map.details.FixtureEditMenu;
 /**
@@ -107,16 +104,11 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		@Override
 		protected Transferable createTransferable(final JComponent component) {
 			final TreePath path = smodel.getSelectionPath();
-			final Object selection = path.getLastPathComponent();
-			if (selection instanceof UnitMember) {
+			final Object selection = model.getModelObject(path.getLastPathComponent());
+			final Object parent = model.getModelObject(path.getPathComponent(path.getPathCount() - 2));
+			if (selection instanceof UnitMember && parent instanceof Unit) {
 				return new UnitMemberTransferable((UnitMember) selection, // NOPMD
-						(Unit) path.getPathComponent(path.getPathCount() - 2));
-			} else if (selection instanceof UnitMemberNode) {
-				return new UnitMemberTransferable(// NOPMD
-						(UnitMember) ((UnitMemberNode) selection)
-								.getUserObject(),
-						(Unit) ((UnitNode) path.getPathComponent(path
-								.getPathCount() - 2)).getUserObject());
+						(Unit) parent);
 			} else {
 				return null;
 			}
@@ -134,8 +126,7 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 				}
 				final TreePath path = ((JTree.DropLocation) dloc).getPath();
 				return path != null // NOPMD
-						&& (path.getLastPathComponent() instanceof Unit || path
-								.getLastPathComponent() instanceof UnitNode);
+						&& (model.getModelObject(path.getLastPathComponent()) instanceof Unit);
 			} else {
 				return false;
 			}
@@ -153,21 +144,12 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 					return false; // NOPMD
 				}
 				final TreePath path = ((JTree.DropLocation) dloc).getPath();
-				if (path.getLastPathComponent() instanceof Unit || path.getLastPathComponent() instanceof UnitNode) {
+				final Object tempTarget = model.getModelObject(path.getLastPathComponent());
+				if (tempTarget instanceof Unit) {
 					try {
 						final UnitMemberTransferable.UnitMemberPair pair = (UnitMemberPair) trans
 								.getTransferData(UnitMemberTransferable.FLAVOR);
-						// ESCA-JAVA0177:
-						Unit target;
-						if (path.getLastPathComponent() instanceof Unit) {
-							target = (Unit) path.getLastPathComponent();
-						} else if (path.getLastPathComponent() instanceof UnitNode) {
-							target = (Unit) ((UnitNode) path.getLastPathComponent()).getUserObject();
-						} else {
-							LOGGER.severe("Impossible instanceof failure");
-							return false; // NOPMD
-						}
-						model.moveMember(pair.member, pair.unit, target);
+						model.moveMember(pair.member, pair.unit, (Unit) tempTarget);
 						return true; // NOPMD
 					} catch (UnsupportedFlavorException except) {
 						LOGGER.log(Level.SEVERE, "Impossible unsupported data flavor", except);
@@ -225,18 +207,13 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		 */
 		private void handleMouseEvent(final MouseEvent event) {
 			if (event.isPopupTrigger() && event.getClickCount() == 1) {
-				final Object obj = getClosestPathForLocation(event.getX(), event.getY()).getLastPathComponent();
-				final IFixture fixture;
+				final Object obj = ((IWorkerTreeModel) getModel())
+						.getModelObject(getClosestPathForLocation(event.getX(),
+								event.getY()).getLastPathComponent());
 				if (obj instanceof IFixture) {
-					fixture = (IFixture) obj;
-				} else if (obj instanceof DefaultMutableTreeNode
-						&& ((DefaultMutableTreeNode) obj).getUserObject() instanceof IFixture) {
-					fixture = (IFixture) ((DefaultMutableTreeNode) obj).getUserObject();
-				} else {
-					return; // NOPMD
+					new FixtureEditMenu((IFixture) obj, players).show(
+							event.getComponent(), event.getX(), event.getY());
 				}
-				new FixtureEditMenu(fixture, players).show(
-						event.getComponent(), event.getX(), event.getY());
 			}
 		}
 	}
@@ -247,22 +224,19 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 	@Override
 	public String getToolTipText(final MouseEvent evt) {
 	    if (getRowForLocation(evt.getX(), evt.getY()) == -1) {
-			return null;
+			return null; // NOPMD
 		}
-	    TreePath curPath = getPathForLocation(evt.getX(), evt.getY());
-	    Object node = curPath.getLastPathComponent();
-	    return getStatsToolTip(node);
+	    return getStatsToolTip(getPathForLocation(evt.getX(), evt.getY()).getLastPathComponent());
 	  }
 	/**
 	 * @param node a node in the tree
 	 * @return a tooltip if it's a worker or a worker node, null otherwise
 	 */
 	private String getStatsToolTip(final Object node) {
-		if (node instanceof DefaultMutableTreeNode) {
-			return getStatsToolTip(((DefaultMutableTreeNode) node).getUserObject());
-		} else if (node instanceof Worker && ((Worker) node).getStats() != null) {
-			final WorkerStats stats = ((Worker) node).getStats();
-			return new StringBuilder("<html><p>Str ")
+		final Object localNode = ((IWorkerTreeModel) getModel()).getModelObject(node);
+		if (localNode instanceof Worker && ((Worker) localNode).getStats() != null) {
+			final WorkerStats stats = ((Worker) localNode).getStats();
+			return new StringBuilder("<html><p>Str ")// NOPMD
 					.append(getModifierString(stats.getStrength()))
 					.append(", Dex ")
 					.append(getModifierString(stats.getDexterity()))
@@ -294,7 +268,8 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		 */
 		@Override
 		public void valueChanged(final TreeSelectionEvent evt) {
-			handleSelection(evt.getNewLeadSelectionPath().getLastPathComponent());
+			handleSelection(((IWorkerTreeModel) getModel()).getModelObject(evt
+					.getNewLeadSelectionPath().getLastPathComponent()));
 		}
 		/**
 		 * Handle a selection.
@@ -302,9 +277,7 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		 */
 		@SuppressWarnings("synthetic-access") // TODO: fix this properly
 		private void handleSelection(final Object sel) {
-			if (sel instanceof DefaultMutableTreeNode) {
-				handleSelection(((DefaultMutableTreeNode) sel).getUserObject());
-			} else if (sel instanceof UnitMember || sel == null) {
+			if (sel instanceof UnitMember || sel == null) {
 				firePropertyChange("member", null, sel);
 			}
 		}

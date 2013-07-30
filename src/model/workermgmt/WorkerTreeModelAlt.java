@@ -180,4 +180,12 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			setRoot(new PlayerNode(model.getMap().getPlayers().getCurrentPlayer(), model));
 		}
 	}
+	/**
+	 * @param obj an object
+	 * @return the model object it contains if it's a node, otherwise the object itself
+	 */
+	@Override
+	public Object getModelObject(final Object obj) {
+		return obj instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) obj).getUserObject() : obj;
+	}
 }

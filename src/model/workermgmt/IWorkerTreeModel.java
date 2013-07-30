@@ -25,5 +25,10 @@ public interface IWorkerTreeModel extends TreeModel, PropertyChangeListener {
 	 * @param unit the unit to add.
 	 */
 	void addUnit(final Unit unit);
+	/**
+	 * @param obj an object, possibly a node in the tree
+	 * @return the model object it represents, if it is a node, or the object itself otherwise
+	 */
+	Object getModelObject(final Object obj);
 
 }
