@@ -41,18 +41,15 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @param hasFocus whether the tree has the focus
 	 * @return a component representing the cell
 	 */
+	// ESCA-JAVA0138: We have to have this many params to override the superclass method.
 	@Override
 	public Component getTreeCellRendererComponent(final JTree tree, final Object value,
 			final boolean selected, final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
 		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
 				value, selected, expanded, leaf, row, hasFocus);
-		final Object internal;
-		if (value instanceof DefaultMutableTreeNode) {
-			internal = ((DefaultMutableTreeNode) value).getUserObject();
-		} else {
-			internal = value;
-		}
+		final Object internal = value instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) value)
+				.getUserObject() : value;
 		if (internal instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
 		}
