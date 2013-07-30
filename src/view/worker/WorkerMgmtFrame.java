@@ -95,6 +95,10 @@ public class WorkerMgmtFrame extends JFrame {
 						&& evt.getNewValue() instanceof Player) {
 					report.setText(ReportGenerator.createAbbreviatedReport(
 							model.getMap(), (Player) evt.getNewValue()));
+				} else if ("map".equalsIgnoreCase(evt.getPropertyName())) {
+					report.setText(ReportGenerator.createAbbreviatedReport(
+							model.getMap(), model.getMap().getPlayers()
+									.getCurrentPlayer()));
 				}
 			}
 		});
