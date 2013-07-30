@@ -1,5 +1,6 @@
 package model.workermgmt;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +35,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	/**
 	 * The player to whom the units and workers belong, the root of the tree.
 	 */
-	private final Player root;
+	private Player root;
 	/**
 	 * The driver model.
 	 */
@@ -200,6 +201,20 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(
 					root), new int[] { model.getUnits(root).size() },
 					new Object[] { unit }));
+		}
+	}
+	/**
+	 * Handle a property change.
+	 * @param evt the even to handle.
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		if ("player".equalsIgnoreCase(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Player) {
+			root = (Player) evt.getNewValue();
+			for (final TreeModelListener listener : listeners) {
+				listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
+			}
 		}
 	}
 }

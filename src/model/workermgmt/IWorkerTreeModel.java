@@ -1,5 +1,7 @@
 package model.workermgmt;
 
+import java.beans.PropertyChangeListener;
+
 import javax.swing.tree.TreeModel;
 
 import model.map.fixtures.UnitMember;
@@ -9,7 +11,7 @@ import model.map.fixtures.mobile.Unit;
  * @author Jonathan Lovelace
  *
  */
-public interface IWorkerTreeModel extends TreeModel {
+public interface IWorkerTreeModel extends TreeModel, PropertyChangeListener {
 
 	/**
 	 * Move a member between units.

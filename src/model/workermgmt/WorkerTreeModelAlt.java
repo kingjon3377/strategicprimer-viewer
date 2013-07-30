@@ -21,7 +21,7 @@ import util.IteratorWrapper;
  *
  */
 public class WorkerTreeModelAlt extends DefaultTreeModel implements
-		IWorkerTreeModel, PropertyChangeListener {
+		IWorkerTreeModel {
 	/**
 	 * Constructor.
 	 * @param player the player whose units and workers will be shown in the tree
