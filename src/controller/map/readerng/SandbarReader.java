@@ -71,7 +71,6 @@ public class SandbarReader implements INodeHandler<Sandbar> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Sandbar> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("sandbar", Pair.of("id",

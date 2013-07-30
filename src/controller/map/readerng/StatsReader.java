@@ -63,7 +63,6 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	 * @param obj a stats object
 	 * @return the SPIR representing it
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public SPIntermediateRepresentation write(final WorkerStats obj) {
 		return new SPIntermediateRepresentation("stats", Pair.of("hp",

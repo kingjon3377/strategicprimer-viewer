@@ -74,7 +74,6 @@ public class StoneReader implements INodeHandler<StoneDeposit> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public SPIntermediateRepresentation write(final StoneDeposit obj) {
 		return new SPIntermediateRepresentation("stone", Pair.of("kind", obj

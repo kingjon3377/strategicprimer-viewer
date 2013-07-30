@@ -71,7 +71,6 @@ public class SimurghReader implements INodeHandler<Simurgh> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Simurgh> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("simurgh", Pair.of("id",

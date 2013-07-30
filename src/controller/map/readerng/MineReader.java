@@ -77,7 +77,6 @@ public class MineReader implements INodeHandler<Mine> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Mine> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("mine", Pair.of("kind",

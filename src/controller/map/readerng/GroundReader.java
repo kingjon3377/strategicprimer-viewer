@@ -73,7 +73,6 @@ public class GroundReader implements INodeHandler<Ground> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Ground> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("ground", Pair.of("kind",

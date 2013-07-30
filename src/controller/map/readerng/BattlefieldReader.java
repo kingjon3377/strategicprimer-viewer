@@ -69,7 +69,6 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public SPIntermediateRepresentation write(final Battlefield obj) {
 		return new SPIntermediateRepresentation("battlefield", Pair.of("dc",

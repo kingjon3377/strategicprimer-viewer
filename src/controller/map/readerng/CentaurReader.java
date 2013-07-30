@@ -70,7 +70,6 @@ public class CentaurReader implements INodeHandler<Centaur> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Centaur> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("centaur", Pair.of("kind",

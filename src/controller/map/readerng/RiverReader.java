@@ -70,7 +70,6 @@ public class RiverReader implements INodeHandler<River> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public SPIntermediateRepresentation write(final River obj) {
 		return River.Lake.equals(obj) ? new SPIntermediateRepresentation("lake")

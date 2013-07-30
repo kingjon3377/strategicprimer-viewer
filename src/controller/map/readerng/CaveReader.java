@@ -68,7 +68,6 @@ public class CaveReader implements INodeHandler<Cave> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public SPIntermediateRepresentation write(final Cave obj) {
 		return new SPIntermediateRepresentation("cave", Pair.of("dc",

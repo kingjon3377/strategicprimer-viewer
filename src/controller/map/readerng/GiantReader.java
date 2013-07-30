@@ -72,7 +72,6 @@ public class GiantReader implements INodeHandler<Giant> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Giant> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("giant", Pair.of("kind",

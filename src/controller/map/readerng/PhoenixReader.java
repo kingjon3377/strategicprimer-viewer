@@ -71,7 +71,6 @@ public class PhoenixReader implements INodeHandler<Phoenix> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Phoenix> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("phoenix", Pair.of("id",

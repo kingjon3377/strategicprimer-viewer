@@ -69,7 +69,6 @@ public class OgreReader implements INodeHandler<Ogre> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Ogre> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("ogre", Pair.of("id",

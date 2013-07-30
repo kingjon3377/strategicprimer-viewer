@@ -71,7 +71,6 @@ public class PlayerReader implements INodeHandler<Player> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Player> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("player", Pair.of("number",

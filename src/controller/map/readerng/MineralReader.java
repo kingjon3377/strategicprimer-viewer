@@ -75,7 +75,6 @@ public class MineralReader implements INodeHandler<MineralVein> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public SPIntermediateRepresentation write(final MineralVein obj) {
 		return new SPIntermediateRepresentation("mineral", Pair.of("kind",

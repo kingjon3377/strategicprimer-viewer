@@ -71,7 +71,6 @@ public class MinotaurReader implements INodeHandler<Minotaur> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Minotaur> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("minotaur", Pair.of("id",

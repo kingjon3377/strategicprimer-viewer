@@ -69,7 +69,6 @@ public class HillReader implements INodeHandler<Hill> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Hill> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("hill", Pair.of("id",

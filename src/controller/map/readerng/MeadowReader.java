@@ -89,7 +89,6 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation(obj.isField() ? "field"

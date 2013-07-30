@@ -73,7 +73,6 @@ public class ShrubReader implements INodeHandler<Shrub> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Shrub> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("shrub", Pair.of("kind",

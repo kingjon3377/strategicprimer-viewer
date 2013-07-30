@@ -71,7 +71,6 @@ public class SphinxReader implements INodeHandler<Sphinx> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Sphinx> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("sphinx", Pair.of("id",

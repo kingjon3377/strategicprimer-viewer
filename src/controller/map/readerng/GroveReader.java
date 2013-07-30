@@ -110,7 +110,6 @@ public class GroveReader implements INodeHandler<Grove> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation(obj.isOrchard() ? "orchard"

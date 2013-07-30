@@ -72,7 +72,6 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends CacheFixture> SPIntermediateRepresentation write(
 			final S obj) {

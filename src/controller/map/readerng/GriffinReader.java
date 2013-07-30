@@ -71,7 +71,6 @@ public class GriffinReader implements INodeHandler<Griffin> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Griffin> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("griffin", Pair.of("id",

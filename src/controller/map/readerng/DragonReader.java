@@ -70,7 +70,6 @@ public class DragonReader implements INodeHandler<Dragon> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Dragon> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("dragon", Pair.of("kind",

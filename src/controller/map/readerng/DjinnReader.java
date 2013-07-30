@@ -69,7 +69,6 @@ public class DjinnReader implements INodeHandler<Djinn> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Djinn> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("djinn", Pair.of("id",

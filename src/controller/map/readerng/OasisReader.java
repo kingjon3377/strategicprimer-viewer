@@ -71,7 +71,6 @@ public class OasisReader implements INodeHandler<Oasis> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Oasis> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("oasis", Pair.of("id",

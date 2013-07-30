@@ -63,7 +63,6 @@ public class TrollReader implements INodeHandler<Troll> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Troll> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("troll", Pair.of("id",

@@ -70,7 +70,6 @@ public class FairyReader implements INodeHandler<Fairy> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Fairy> SPIntermediateRepresentation write(final S obj) {
 		return new SPIntermediateRepresentation("fairy", Pair.of("kind",
