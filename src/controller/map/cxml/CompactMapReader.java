@@ -118,7 +118,8 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * @throws SPFormatException if there is no child tag
 	 */
 	private static StartElement getFirstStartElement(
-			final IteratorWrapper<XMLEvent> stream,			final int line) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream, final int line)
+			throws SPFormatException {
 		for (XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				return event.asStartElement();
