@@ -81,10 +81,11 @@ public class ExplorationGUI implements ISPDriver {
 			SystemOut.SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
 			System.exit(1);
 		}
-		// ESCA-JAVA0177:
-		final ExplorationModel model; // NOPMD
 		try {
-			model = readMaps(args);
+			final ExplorationModel model = readMaps(args);
+			SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
+					new MultiIOHandler(model, new FilteredFileChooser(".",
+							new MapFileFilter())))));
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error reading maps", except);
 		} catch (XMLStreamException except) {
@@ -92,9 +93,6 @@ public class ExplorationGUI implements ISPDriver {
 		} catch (SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file", except);
 		}
-		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
-						new MultiIOHandler(model, new FilteredFileChooser(".",
-								new MapFileFilter())))));
 	}
 	/**
 	 * @return an object indicating how to use and invoke this driver.

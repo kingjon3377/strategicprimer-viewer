@@ -88,10 +88,12 @@ public final class AdvancementStart implements ISPDriver {
 			SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
 			return;
 		}
-		final IWorkerModel model; // NOPMD
 		try {
-			model = new WorkerModel(new MapReaderAdapter().readMap(
+			final IWorkerModel model = new WorkerModel(new MapReaderAdapter().readMap(
 					filename, new Warning(Warning.Action.Warn)), filename);
+			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
+					new IOHandler(model, new FilteredFileChooser(".",
+							new MapFileFilter())))));
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
 		} catch (final FileNotFoundException e) {
@@ -101,9 +103,6 @@ public final class AdvancementStart implements ISPDriver {
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
-		SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
-				new IOHandler(model, new FilteredFileChooser(".",
-						new MapFileFilter())))));
 	}
 	/**
 	 * @return an object indicating how to use and invoke this driver.
