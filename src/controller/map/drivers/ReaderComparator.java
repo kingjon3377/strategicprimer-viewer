@@ -16,11 +16,10 @@ import model.map.IMap;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.cxml.CompactXMLReader;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.readerng.MapReaderNG;
 
 /**

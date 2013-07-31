@@ -8,9 +8,8 @@ import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
 import view.map.misc.SubsetFrame;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to check whether player maps are subsets of the main map and display

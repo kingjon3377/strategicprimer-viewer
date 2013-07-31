@@ -22,10 +22,9 @@ import view.map.main.TileDrawHelper;
 import view.map.main.Ver2TileDrawHelper;
 import view.util.Coordinate;
 import view.util.SystemOut;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to compare the performance of TileDrawHelpers.

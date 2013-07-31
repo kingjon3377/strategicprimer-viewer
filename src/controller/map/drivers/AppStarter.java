@@ -14,9 +14,8 @@ import javax.swing.SwingUtilities;
 import util.EqualsAny;
 import util.Pair;
 import view.util.AppChooserFrame;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to start other drivers. At first it just starts one.

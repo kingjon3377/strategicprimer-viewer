@@ -13,9 +13,8 @@ import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 import view.util.SystemOut;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.MultiIOHandler;
 /**

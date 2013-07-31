@@ -17,10 +17,9 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import util.Warning;
 import view.util.SystemOut;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to remove duplicate hills, forests, etc. from the map (to reduce the

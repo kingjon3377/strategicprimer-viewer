@@ -23,10 +23,9 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
 import util.Warning;
 import view.util.SystemOut;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 
 /**

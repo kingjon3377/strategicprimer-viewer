@@ -11,9 +11,8 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import util.Warning;
 import view.util.SystemOut;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 
 /**

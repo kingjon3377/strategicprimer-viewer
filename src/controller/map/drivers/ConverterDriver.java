@@ -12,11 +12,10 @@ import model.map.MapView;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.converter.ResolutionDecreaseConverter;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver to convert maps to the new format.

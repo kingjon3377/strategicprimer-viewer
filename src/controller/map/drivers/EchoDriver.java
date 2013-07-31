@@ -8,11 +8,10 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import util.Warning;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.DriverUsage;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.DriverUsage.ParamCount;
 
 /**
  * A driver that reads in maps and then writes them out again---this is

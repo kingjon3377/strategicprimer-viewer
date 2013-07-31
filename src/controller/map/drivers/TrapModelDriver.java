@@ -21,10 +21,9 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
 import util.Warning;
 import view.util.SystemOut;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 /**
  * A driver to run a player's trapping activity.

@@ -4,8 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import view.map.misc.MapCheckerFrame;
-import controller.map.misc.DriverUsage;
-import controller.map.misc.DriverUsage.ParamCount;
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 
 /**
  * A driver to check every map file in a list for errors and report the results in a window.
