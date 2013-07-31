@@ -23,6 +23,7 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.WindowThread;
 /**
  * A class to start the user worker management GUI.
  * @author Jonathan Lovelace
@@ -87,14 +88,9 @@ public class WorkerStart implements ISPDriver {
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new WorkerMgmtFrame(model,
+		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(model,
 						new IOHandler(model, new FilteredFileChooser(".",
-								new MapFileFilter()))).setVisible(true);
-			}
-		});
+								new MapFileFilter())))));
 	}
 	/**
 	 * Run the app.

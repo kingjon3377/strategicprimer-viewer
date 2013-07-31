@@ -24,6 +24,7 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.WindowThread;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between
@@ -119,12 +120,8 @@ public final class ViewerStart implements ISPDriver {
 	 */
 	private static void startFrame(final MapView map, final String filename, final JFileChooser chooser) {
 		final IViewerModel model = new ViewerModel(map, filename);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new ViewerFrame(model, new IOHandler(model, chooser)).setVisible(true);
-			}
-		});
+		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
+				new IOHandler(model, chooser))));
 	}
 
 	/**

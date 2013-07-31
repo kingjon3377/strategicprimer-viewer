@@ -23,6 +23,7 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.WindowThread;
 
 /**
  * A class to start the worker management GUI. TODO: Merge with ViewerStart.
@@ -100,15 +101,9 @@ public final class AdvancementStart implements ISPDriver {
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				final AdvancementFrame frame = new AdvancementFrame(model,
-						new IOHandler(model, new FilteredFileChooser(".",
-								new MapFileFilter())));
-				frame.setVisible(true);
-			}
-		});
+		SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
+				new IOHandler(model, new FilteredFileChooser(".",
+						new MapFileFilter())))));
 	}
 	/**
 	 * @return an object indicating how to use and invoke this driver.

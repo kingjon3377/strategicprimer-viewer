@@ -71,6 +71,7 @@ public class ExplorationMenu extends JMenuBar {
 					public void actionPerformed(final ActionEvent event) {
 						final Pair<IMap, String> mapPair = model
 								.getSubordinateMaps().iterator().next();
+						// TODO: Convert to WindowThread?
 						SwingUtilities.invokeLater(new ViewerOpener(mapPair
 								.first(), mapPair.second(), model.getMap()
 								.getPlayers().getCurrentPlayer().getPlayerId(),

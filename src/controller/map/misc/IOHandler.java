@@ -95,15 +95,10 @@ public class IOHandler implements ActionListener {
 	 * Start a new viewer window with a blank map of the same size as the model's current map.
 	 */
 	private void startNewViewerWindow() {
-		final ViewerFrame frame = new ViewerFrame(new ViewerModel(new MapView(
-				new SPMap(model.getMapDimensions()), 0, model.getMap()
-						.getCurrentTurn()), ""), this);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				frame.setVisible(true);
-			}
-		});
+		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(
+				new ViewerModel(new MapView(
+						new SPMap(model.getMapDimensions()), 0, model.getMap()
+								.getCurrentTurn()), ""), this)));
 	}
 	/**
 	 * The map model, which needs to be told about newly loaded maps and holds

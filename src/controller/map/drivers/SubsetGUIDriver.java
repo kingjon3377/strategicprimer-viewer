@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import view.map.misc.SubsetFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.WindowThread;
 
 /**
  * A driver to check whether player maps are subsets of the main map and display
@@ -52,12 +53,7 @@ public class SubsetGUIDriver implements ISPDriver {
 					new IllegalArgumentException("Need at least two arguments"));
 		}
 		final SubsetFrame frame = new SubsetFrame();
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				frame.setVisible(true);
-			}
-		});
+		SwingUtilities.invokeLater(new WindowThread(frame));
 		try {
 			frame.loadMain(args[0]);
 		} catch (IOException except) {

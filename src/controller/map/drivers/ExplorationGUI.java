@@ -17,6 +17,7 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.MultiIOHandler;
+import controller.map.misc.WindowThread;
 /**
  * A class to start the exploration GUI.
  * @author Jonathan Lovelace
@@ -91,14 +92,9 @@ public class ExplorationGUI implements ISPDriver {
 		} catch (SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file", except);
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new ExplorationFrame(model,
+		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
 						new MultiIOHandler(model, new FilteredFileChooser(".",
-								new MapFileFilter()))).setVisible(true);
-			}
-		});
+								new MapFileFilter())))));
 	}
 	/**
 	 * @return an object indicating how to use and invoke this driver.

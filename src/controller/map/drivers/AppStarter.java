@@ -16,6 +16,7 @@ import util.Pair;
 import view.util.AppChooserFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
+import controller.map.misc.WindowThread;
 
 /**
  * A driver to start other drivers. At first it just starts one.
@@ -129,12 +130,7 @@ public class AppStarter implements ISPDriver {
 	 */
 	private static void startChooser(final boolean gui, final List<String> others) throws DriverFailedException {
 		if (gui) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					new AppChooserFrame(others).setVisible(true);
-				}
-			});
+			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(others)));
 		} else {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			for (final Pair<ISPDriver, ISPDriver> pair : CACHE.values()) {
