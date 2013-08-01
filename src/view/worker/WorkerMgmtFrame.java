@@ -61,13 +61,12 @@ public class WorkerMgmtFrame extends JFrame {
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final JTree tree = new WorkerTree(model.getMap().getPlayers()
 				.getCurrentPlayer(), model, newUnitFrame, pch, model);
-		final JScrollPane treePanel = new JScrollPane(tree);
 		final JPanel top = new JPanel(new BorderLayout());
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPropertyChangeListener(plabel);
 		top.add(plabel, BorderLayout.NORTH);
-		top.add(treePanel, BorderLayout.CENTER);
+		top.add(new JScrollPane(tree), BorderLayout.CENTER);
 		left.setTopComponent(top);
 		final JPanel bottom = new JPanel(new BorderLayout());
 		final JButton newUnitButton = new JButton("Add New Unit");
