@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 import javax.swing.text.View;
@@ -54,7 +55,7 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		unitPanel.add(plabel, BorderLayout.NORTH);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
-		unitPanel.add(tree, BorderLayout.CENTER);
+		unitPanel.add(new JScrollPane(tree), BorderLayout.CENTER);
 		final JPanel jobsPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		jobsPanel.add(new JLabel(htmlize("Worker's Jobs:")), BorderLayout.NORTH);
