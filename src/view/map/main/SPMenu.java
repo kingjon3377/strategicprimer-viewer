@@ -99,7 +99,7 @@ public class SPMenu extends JMenuBar {
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
 				MenuItemCreator.createHotkey(KeyEvent.VK_N),
-				"Create a new map the same size as the current one",
+				"Create a new, empty map the same size as the current one",
 				handler));
 		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
 				MenuItemCreator.createHotkey(KeyEvent.VK_O),
