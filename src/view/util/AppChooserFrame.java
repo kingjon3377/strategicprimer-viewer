@@ -1,5 +1,7 @@
 package view.util;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
@@ -7,10 +9,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import controller.map.drivers.AdvancementStart;
@@ -25,16 +28,17 @@ import controller.map.drivers.WorkerStart;
  */
 public class AppChooserFrame extends JFrame {
 	/**
-	 * Add a target.
+	 * Create a button for a target.
 	 * @param desc the descriptive string
 	 * @param params the parameters to pass to the chosen app
 	 * @param target the class
+	 * @return the button
 	 */
-	private void addTarget(final String desc, final List<String> params,
+	private JButton button(final String desc, final List<String> params,
 			final Class<? extends ISPDriver> target) {
 		final JButton button = new JButton(desc);
 		button.addActionListener(new AppChoiceListener(target, params, this));
-		add(button);
+		return button;
 	}
 	/**
 	 * Constructor.
@@ -42,13 +46,15 @@ public class AppChooserFrame extends JFrame {
 	 */
 	public AppChooserFrame(final List<String> params) {
 		super("SP App Chooser");
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		add(new JLabel("Please choose one of the applications below:"));
+		setLayout(new BorderLayout());
+		add(new JLabel("Please choose one of the applications below:"), BorderLayout.NORTH);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		final List<String> parameters = Collections.unmodifiableList(params);
-		addTarget("Map Viewer", parameters, ViewerStart.class);
-		addTarget("Worker Skill Advancement", parameters, AdvancementStart.class);
-		addTarget("Unit Orders and Worker Management", parameters, WorkerStart.class);
+		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
+		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
+		buttonPanel.add(button("Worker Skill Advancement", parameters, AdvancementStart.class));
+		buttonPanel.add(button("Unit Orders and Worker Management", parameters, WorkerStart.class));
+		add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
 		pack();
 	}
 	/**
