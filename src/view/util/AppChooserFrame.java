@@ -3,9 +3,7 @@ package view.util;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,20 +23,18 @@ import controller.map.drivers.WorkerStart;
  * @author Jonathan Lovelace
  *
  */
-public class AppChooserFrame extends JFrame implements ActionListener {
-	/**
-	 * A list of GUIs, with how we'd describe them.
-	 */
-	private final Map<String, Class<? extends ISPDriver>> targets = new HashMap<>();
-
+public class AppChooserFrame extends JFrame {
 	/**
 	 * Add a target.
 	 * @param desc the descriptive string
+	 * @param params the parameters to pass to the chosen app
 	 * @param target the class
 	 */
-	private void addTarget(final String desc,
+	private void addTarget(final String desc, final List<String> params,
 			final Class<? extends ISPDriver> target) {
-		targets.put(desc, target);
+		final JButton button = new JButton(desc);
+		button.addActionListener(new AppChoiceListener(target, params, this));
+		add(button);
 	}
 	/**
 	 * Constructor.
@@ -47,54 +43,73 @@ public class AppChooserFrame extends JFrame implements ActionListener {
 	public AppChooserFrame(final List<String> params) {
 		super("SP App Chooser");
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		addTarget("Map Viewer", ViewerStart.class);
-		addTarget("Worker Skill Advancement", AdvancementStart.class);
-		addTarget("Unit Orders and Worker Management", WorkerStart.class);
 		add(new JLabel("Please choose one of the applications below:"));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		parameters = Collections.unmodifiableList(params);
-		for (String string : targets.keySet()) {
-			final JButton button = new JButton(string); // NOPMD
-			button.addActionListener(this);
-			add(button);
-		}
+		final List<String> parameters = Collections.unmodifiableList(params);
+		addTarget("Map Viewer", parameters, ViewerStart.class);
+		addTarget("Worker Skill Advancement", parameters, AdvancementStart.class);
+		addTarget("Unit Orders and Worker Management", parameters, WorkerStart.class);
 		pack();
 	}
 	/**
-	 * The parameters passed to our caller's main(), other than options.
+	 * A class to start the selected app.
 	 */
-	private final List<String> parameters;
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(AppChooserFrame.class.getName());
-	/**
-	 * Handle button press.
-	 * @param evt the event to handle
-	 */
-	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if (targets.containsKey(evt.getActionCommand())) {
-			final Class<? extends ISPDriver> driver = targets.get(evt.getActionCommand());
+	private static class AppChoiceListener implements ActionListener, Runnable {
+		/**
+		 * The app to start.
+		 */
+		private final Class<? extends ISPDriver> app;
+		/**
+		 * The parameters.
+		 */
+		private final String[] params;
+		/**
+		 * The app-chooser frame. So we can close it properly.
+		 */
+		private final AppChooserFrame outer;
+		/**
+		 * Constructor.
+		 * @param frame the app to start if invoked
+		 * @param parameters the parameters to pass to it
+		 * @param acf the app-chooser frame, so we can close it when something is selected.
+		 */
+		AppChoiceListener(final Class<? extends ISPDriver> frame,
+				final List<String> parameters, final AppChooserFrame acf) {
+			app = frame;
+			params = parameters.toArray(new String[parameters.size()]);
+			outer = acf;
+		}
+		/**
+		 * Handle button press.
+		 * @param evt the event to handle
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent evt) {
 			try {
-				driver.newInstance().startDriver(parameters.toArray(new String[parameters.size()]));
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setVisible(false);
-						dispose();
-					}
-				});
+				app.newInstance().startDriver(params);
 			} catch (InstantiationException except) {
 				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-				ErrorShower.showErrorDialog(this, except.getMessage());
+				ErrorShower.showErrorDialog(outer, except.getMessage());
 			} catch (IllegalAccessException except) {
 				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-				ErrorShower.showErrorDialog(this, except.getMessage());
+				ErrorShower.showErrorDialog(outer, except.getMessage());
 			} catch (DriverFailedException except) {
 				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-				ErrorShower.showErrorDialog(this, except.getMessage());
+				ErrorShower.showErrorDialog(outer, except.getMessage());
 			}
+			SwingUtilities.invokeLater(this);
 		}
+		/**
+		 * Close the frame.
+		 */
+		@Override
+		public void run() {
+			outer.setVisible(false);
+			outer.dispose();
+		}
+		/**
+		 * Logger.
+		 */
+		private static final Logger LOGGER = Logger.getLogger(AppChooserFrame.class.getName());
 	}
 }
