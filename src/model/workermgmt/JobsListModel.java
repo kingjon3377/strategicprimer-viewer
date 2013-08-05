@@ -48,7 +48,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("member".equalsIgnoreCase(evt.getPropertyName())) {
 			handleMemberChange(evt.getNewValue());
-		} else if ("add".equalsIgnoreCase(evt.getPropertyName())
+		} else if (("add".equalsIgnoreCase(evt.getPropertyName()) || "add_job".equalsIgnoreCase(evt.getPropertyName()))
 				&& worker != null && !NULL_WORKER.equals(worker)) {
 			final Job job = new Job(evt.getNewValue().toString(), 0);
 			worker.addJob(job);

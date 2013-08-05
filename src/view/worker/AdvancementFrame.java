@@ -18,6 +18,7 @@ import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.IWorkerModel;
+import util.PropertyChangeAdapter;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
@@ -59,14 +60,16 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final JPanel jobsPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		jobsPanel.add(new JLabel(htmlize("Worker's Jobs:")), BorderLayout.NORTH);
-		jobsPanel.add(new JobsList(this, this, jarp, tree), BorderLayout.CENTER);
+		jobsPanel.add(new JobsList(this, this, new PropertyChangeAdapter(jarp,
+				"add", "add_job"), tree), BorderLayout.CENTER);
 		jobsPanel.add(jarp, BorderLayout.SOUTH);
 
 		final JPanel skillPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel sarp = new AddRemovePanel(false);
 		skillPanel.add(new JLabel(htmlize("Skills in selected Job:")),
 				BorderLayout.NORTH);
-		skillPanel.add(new SkillList(this, this, sarp), BorderLayout.CENTER);
+		skillPanel.add(new SkillList(this, this, new PropertyChangeAdapter(
+				sarp, "add", "add_skill")), BorderLayout.CENTER);
 		skillPanel.add(sarp, BorderLayout.SOUTH);
 
 		final JPanel skillSuperPanel = new JPanel(new BorderLayout());

@@ -51,7 +51,10 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			if (evt.getNewValue() == null || evt.getNewValue() instanceof Job) {
 				handleNewJob((Job) evt.getNewValue());
 			}
-		} else if ("add".equalsIgnoreCase(evt.getPropertyName()) && job != null && !NULL_JOB.equals(job)) {
+		} else if (("add".equalsIgnoreCase(evt.getPropertyName()) || "add_skill"
+				.equalsIgnoreCase(evt.getPropertyName()))
+				&& job != null
+				&& !NULL_JOB.equals(job)) {
 			final Skill skill = new Skill(evt.getNewValue().toString(), 0, 0);
 			job.addSkill(skill);
 			addElement(skill);
