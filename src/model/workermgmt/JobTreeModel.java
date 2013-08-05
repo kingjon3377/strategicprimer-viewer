@@ -179,10 +179,10 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 		if ("member".equalsIgnoreCase(evt.getPropertyName())) {
 			if (evt.getNewValue() instanceof Worker) {
 				root = (Worker) evt.getNewValue();
-				fireTreeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
+				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
 			} else if (evt.getNewValue() instanceof UnitMember || evt.getNewValue() == null) {
 				root = null;
-				fireTreeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
+				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
 			}
 		} else if ("add_job".equalsIgnoreCase(evt.getPropertyName()) && root != null) {
 			final Job job = new Job(evt.getNewValue().toString(), 0);
@@ -228,9 +228,9 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * Send an event to all listeners.
 	 * @param event the event to send
 	 */
-	private void fireTreeNodesChanged(final TreeModelEvent event) {
+	private void fireTreeStructureChanged(final TreeModelEvent event) {
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(event);
+			listener.treeStructureChanged(event);
 		}
 	}
 }
