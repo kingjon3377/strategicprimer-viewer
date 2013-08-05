@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTree;
 import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
@@ -57,23 +58,28 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
 		unitPanel.add(new JScrollPane(tree), BorderLayout.CENTER);
+
 		final JPanel jobsPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel jarp = new AddRemovePanel(false);
-		jobsPanel.add(new JLabel(htmlize("Worker's Jobs:")), BorderLayout.NORTH);
-		jobsPanel.add(new JobsList(this, this, new PropertyChangeAdapter(jarp,
-				"add", "add_job"), tree), BorderLayout.CENTER);
-		jobsPanel.add(jarp, BorderLayout.SOUTH);
-
-		final JPanel skillPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel sarp = new AddRemovePanel(false);
-		skillPanel.add(new JLabel(htmlize("Skills in selected Job:")),
-				BorderLayout.NORTH);
-		skillPanel.add(new SkillList(this, this, new PropertyChangeAdapter(
-				sarp, "add", "add_skill")), BorderLayout.CENTER);
-		skillPanel.add(sarp, BorderLayout.SOUTH);
+		jobsPanel.add(new JLabel(htmlize("Worker's Jobs and Skills:")), BorderLayout.NORTH);
+		final JTree jobsTree = new JobsTree(this, new PropertyChangeAdapter(
+				jarp, "add", "add_job"), new PropertyChangeAdapter(sarp, "add",
+				"add_skill"), tree);
+		jobsPanel.add(new JScrollPane(jobsTree), BorderLayout.CENTER);
+		jobsTree.addPropertyChangeListener(this);
+		final JPanel arpPanel = new JPanel(new BorderLayout());
+		final JPanel jarpPanel = new JPanel(new BorderLayout());
+		jarpPanel.add(new JLabel(htmlize("Add a job to the Worker:")), BorderLayout.NORTH);
+		jarpPanel.add(jarp, BorderLayout.SOUTH);
+		arpPanel.add(jarpPanel, BorderLayout.NORTH);
+		final JPanel sarpPanel = new JPanel(new BorderLayout());
+		sarpPanel.add(new JLabel(htmlize("Add a Skill to the selected Job:")), BorderLayout.NORTH);
+		sarpPanel.add(sarp, BorderLayout.SOUTH);
+		arpPanel.add(sarpPanel, BorderLayout.SOUTH);
 
 		final JPanel skillSuperPanel = new JPanel(new BorderLayout());
-		skillSuperPanel.add(skillPanel, BorderLayout.CENTER);
+		skillSuperPanel.add(arpPanel, BorderLayout.CENTER);
 		skillSuperPanel.add(new SkillAdvancementPanel(this, this), BorderLayout.SOUTH);
 
 		final JSplitPane panelThree = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jobsPanel, skillSuperPanel);
