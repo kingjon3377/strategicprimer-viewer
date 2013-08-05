@@ -13,4 +13,4 @@ bin/*.png
 bin/images/*.png
 .*.swp
 .*.swo
-
+.sawja_prefs
