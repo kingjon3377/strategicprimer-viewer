@@ -89,7 +89,7 @@ public class Meadow implements HarvestableFixture,
 	 * @return the name of an image to represent the field or meadow
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return field ? "field.png" : "meadow.png";
 	}
 
@@ -181,5 +181,23 @@ public class Meadow implements HarvestableFixture,
 	@Override
 	public final void setKind(final String nKind) {
 		kind = nKind;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

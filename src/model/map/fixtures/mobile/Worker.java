@@ -175,7 +175,25 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	 * @return the filename of the image representing a worker.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "worker.png";
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

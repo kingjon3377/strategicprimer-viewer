@@ -65,7 +65,7 @@ public class CacheFixture implements
 	 * @return the name of an image to represent the cache
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "cache.png";
 	}
 
@@ -145,5 +145,23 @@ public class CacheFixture implements
 	@Override
 	public final void setKind(final String nKind) {
 		kind = nKind;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

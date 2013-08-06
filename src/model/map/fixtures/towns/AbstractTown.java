@@ -177,7 +177,7 @@ public abstract class AbstractTown implements
 	 * @return the name of an image to represent the event.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "town.png";
 	}
 
@@ -219,5 +219,23 @@ public abstract class AbstractTown implements
 	@Override
 	public final void setName(final String nomen) {
 		name = nomen;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

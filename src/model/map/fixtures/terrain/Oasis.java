@@ -36,7 +36,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	 * @return the name of an image to represent the oasis.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "oasis.png";
 	}
 
@@ -95,5 +95,23 @@ public class Oasis implements TerrainFixture, HasImage {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Oasis;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

@@ -99,7 +99,26 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 * @return a "filename" for an image to represent the object.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return ttype.toXML() + ".png";
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 * FIXME: Maybe don't allow this? It doesn't really make sense for a TileTypeFixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

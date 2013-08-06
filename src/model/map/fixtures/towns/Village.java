@@ -60,7 +60,7 @@ public class Village implements ITownFixture, HasImage {
 	 * @return the name of an image to represent the village
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "village.png";
 	}
 
@@ -166,5 +166,23 @@ public class Village implements ITownFixture, HasImage {
 	@Override
 	public final void setName(final String nomen) {
 		name = nomen;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

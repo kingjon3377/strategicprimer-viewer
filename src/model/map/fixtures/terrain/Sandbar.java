@@ -36,7 +36,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 * @return the name o an image to represent the sandbar.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "sandbar.png";
 	}
 
@@ -95,5 +95,23 @@ public class Sandbar implements TerrainFixture, HasImage {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Sandbar;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

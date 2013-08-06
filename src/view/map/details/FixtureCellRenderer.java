@@ -71,10 +71,14 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	private Icon getIcon(final HasImage obj) {
 		// ESCA-JAVA0177:
 		Icon retval;
+		String image = obj.getImage();
+		if (image == null || image.isEmpty()) {
+			image = obj.getDefaultImage();
+		}
 		try {
-			retval = ImageLoader.getLoader().loadIcon(obj.getImage());
+			retval = ImageLoader.getLoader().loadIcon(image);
 		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
-			LOGGER.log(Level.SEVERE, "image file images/" + (obj.getImage())
+			LOGGER.log(Level.SEVERE, "image file images/" + image
 					+ " not found");
 			retval = defaultFixtIcon;
 		} catch (final IOException e) { // $codepro.audit.disable logExceptions

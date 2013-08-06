@@ -129,7 +129,25 @@ public final class Cave implements IEvent,
 	 * @return the name of the image representing a cave
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "cave.png";
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

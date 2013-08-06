@@ -51,6 +51,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
 				getParameter(element, "race", "human"), getOrGenerateID(element, warner, idFactory));
+		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("job".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
@@ -164,6 +165,11 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
+		final String image = obj.getImage();
+		if (image != null && !image.isEmpty() && !image.equals(obj.getDefaultImage())) {
+			out.append("\" image=\"");
+			out.append(image);
+		}
 		out.append('"');
 		if (obj.iterator().hasNext() || obj.getStats() != null) {
 			out.append(">\n");

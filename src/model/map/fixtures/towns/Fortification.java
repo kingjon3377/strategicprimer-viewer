@@ -52,7 +52,7 @@ public final class Fortification extends AbstractTown {
 	 * @return the name of an image to represent the event.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "fortification.png";
 	}
 

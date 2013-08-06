@@ -46,7 +46,7 @@ public class Shrub implements HarvestableFixture,
 	 * @return the name of an image to represent the shrub.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "shrub.png";
 	}
 
@@ -123,5 +123,23 @@ public class Shrub implements HarvestableFixture,
 	@Override
 	public final void setKind(final String kind) {
 		description = kind;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

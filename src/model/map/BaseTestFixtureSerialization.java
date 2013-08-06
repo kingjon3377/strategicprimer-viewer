@@ -630,4 +630,58 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		}
 		return size;
 	}
+
+	/**
+	 * Assert that the given object, if serialized and deserialized, will have
+	 * its image property preserved. We modify its image property, but set it
+	 * back to the original value before exiting the method.
+	 *
+	 * @param <T> the type of the object
+	 * @param message the message to use for assertions
+	 * @param obj the object to serialize
+	 * @param type its type,
+	 * @throws SPFormatException on SP XML problem
+	 * @throws XMLStreamException on XML reading problem
+	 * @throws IOException on I/O error creating serialized form
+	 */
+	public <T extends XMLWritable & HasImage> void assertImageSerialization(
+			final String message, final T obj, final Class<T> type)
+			throws XMLStreamException, SPFormatException, IOException {
+		final String origImage = obj.getImage();
+		obj.setImage("imageForSerialization");
+		assertImageSerialization(message, obj, type, oldReader);
+		assertImageSerialization(message, obj, type, newReader);
+		obj.setImage(origImage);
+	}
+	/**
+	 * Assert that the given object, if serialized and deserialized, will have
+	 * its image property preserved. We modify its image property, but set it
+	 * back to the original value before exiting the method.
+	 *
+	 * @param <T> the type of the object
+	 * @param message the message to use for assertions
+	 * @param obj the object to serialize
+	 * @param type its type,
+	 * @param reader the reader to use
+	 * @throws SPFormatException on SP XML problem
+	 * @throws XMLStreamException on XML reading problem
+	 * @throws IOException on I/O error creating serialized form
+	 */
+	private static <T extends XMLWritable & HasImage> void assertImageSerialization(
+			final String message, final T obj, final Class<T> type,
+			final ISPReader reader) throws XMLStreamException,
+			SPFormatException, IOException {
+		assertEquals(
+				message,
+				obj.getImage(),
+				reader.readXML(FAKE_FILENAME,
+						new StringReader(createSerializedForm(obj, true)),
+						type, new Warning(Warning.Action.Die)).getImage());
+		assertEquals(
+				message,
+				obj.getImage(),
+				reader.readXML(FAKE_FILENAME,
+						new StringReader(createSerializedForm(obj, false)),
+						type, new Warning(Warning.Action.Die)).getImage());
+	}
 }

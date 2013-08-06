@@ -36,7 +36,7 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	 * @return the name of an image to represent the phoenix
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "phoenix.png";
 	}
 
@@ -94,5 +94,23 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Phoenix;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

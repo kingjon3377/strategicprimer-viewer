@@ -194,7 +194,19 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Image getImageForFixture(final TileFixture fix) {
 		if (fix instanceof HasImage) {
-			return getImage(((HasImage) fix).getImage()); // NOPMD
+			// FIXME: Simplify this case.
+			String image = ((HasImage) fix).getImage();
+			boolean isDefault = false;
+			if (image == null || image.isEmpty()) {
+				image = ((HasImage) fix).getDefaultImage();
+				isDefault = true;
+			}
+			final Image retval = getImage(image);
+			if (missingFiles.contains(image) && !isDefault) {
+				return getImage(((HasImage) fix).getDefaultImage());
+			} else {
+				return retval;
+			}
 		} else if (fix instanceof RiverFixture) {
 			return getImage(riverFiles.get(((RiverFixture) fix).getRivers())); // NOPMD
 		} else {

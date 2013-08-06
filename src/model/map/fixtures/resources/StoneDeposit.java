@@ -105,7 +105,7 @@ public final class StoneDeposit implements IEvent,
 	 * @return the name of an image to represent the event
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "stone.png";
 	}
 
@@ -169,5 +169,23 @@ public final class StoneDeposit implements IEvent,
 		} else {
 			stone = skind;
 		}
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

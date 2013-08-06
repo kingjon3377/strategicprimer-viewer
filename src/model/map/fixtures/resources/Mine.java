@@ -60,7 +60,7 @@ public class Mine implements HarvestableFixture,
 	 * @return the name of an image to represent the mine
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "mine.png";
 	}
 
@@ -137,5 +137,23 @@ public class Mine implements HarvestableFixture,
 	@Override
 	public final void setKind(final String nKind) {
 		kind = nKind;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

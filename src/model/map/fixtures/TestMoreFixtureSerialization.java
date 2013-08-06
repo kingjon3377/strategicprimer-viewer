@@ -373,6 +373,7 @@ public final class TestMoreFixtureSerialization extends
 		final Worker two = new Worker("sixth", "dwarf", 9);
 		two.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have skills", two, Worker.class);
+		assertImageSerialization("Worker image property is preserved", two, Worker.class);
 	}
 	/**
 	 * Test serialization of units' orders.

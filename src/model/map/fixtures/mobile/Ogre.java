@@ -36,7 +36,7 @@ public class Ogre implements MobileFixture, HasImage, UnitMember {
 	 * @return the name of an image to represent the ogre
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "ogre.png";
 	}
 
@@ -94,5 +94,23 @@ public class Ogre implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Ogre;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

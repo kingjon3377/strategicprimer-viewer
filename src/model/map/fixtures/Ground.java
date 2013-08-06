@@ -57,7 +57,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 * @return the name of an image to represent the ground.
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return exposed ? "expground.png" : "blank.png";
 	}
 
@@ -131,5 +131,23 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	@Override
 	public final void setKind(final String nKind) {
 		kind = nKind;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }

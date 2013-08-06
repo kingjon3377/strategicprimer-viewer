@@ -113,7 +113,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @return the name of an image to represent the animal
 	 */
 	@Override
-	public String getImage() {
+	public String getDefaultImage() {
 		return "animal.png";
 	}
 
@@ -175,5 +175,23 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public final void setKind(final String nKind) {
 		kind = nKind;
+	}
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+	/**
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public void setImage(final String img) {
+		image = img;
+	}
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		return image;
 	}
 }
