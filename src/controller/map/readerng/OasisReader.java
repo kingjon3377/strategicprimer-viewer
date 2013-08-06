@@ -44,6 +44,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 		spinUntilEnd(element.getName(), stream);
 		final Oasis fix = new Oasis(
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -73,8 +74,10 @@ public class OasisReader implements INodeHandler<Oasis> {
 	 */
 	@Override
 	public <S extends Oasis> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("oasis", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("oasis", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

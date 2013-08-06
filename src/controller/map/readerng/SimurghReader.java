@@ -44,6 +44,7 @@ public class SimurghReader implements INodeHandler<Simurgh> {
 		spinUntilEnd(element.getName(), stream);
 		final Simurgh fix = new Simurgh(getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -73,8 +74,10 @@ public class SimurghReader implements INodeHandler<Simurgh> {
 	 */
 	@Override
 	public <S extends Simurgh> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("simurgh", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("simurgh", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

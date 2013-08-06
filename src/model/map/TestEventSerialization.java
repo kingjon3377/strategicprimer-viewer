@@ -60,6 +60,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				Cave.class, false);
 		assertMissingProperty("<cave />", Cave.class, "dc", false);
 		assertMissingProperty("<cave dc=\"10\" />", Cave.class, "id", true);
+		assertImageSerialization("Cave image property is preserved", new Cave(
+				20, 2), Cave.class);
 	}
 
 	/**
@@ -105,6 +107,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
 				City.class, "owner", true);
+		assertImageSerialization("City image property is preserved", three,
+				City.class);
 	}
 
 	/**
@@ -152,6 +156,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
 				Fortification.class, "owner", true);
+		assertImageSerialization("Fortification image property is preserved", three,
+				Fortification.class);
 	}
 
 	/**
@@ -194,6 +200,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<mineral kind=\"kind\" exposed=\"true\" dc=\"0\" />",
 				MineralVein.class, "id", true);
+		assertImageSerialization("Mineral image property is preserved", two,
+				MineralVein.class);
 	}
 
 	/**
@@ -233,6 +241,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				KIND_PROPERTY, false);
 		assertMissingProperty("<stone kind=\"kind\" dc=\"0\" />",
 				StoneDeposit.class, "id", true);
+		assertImageSerialization("Stone image property is preserved", three,
+				StoneDeposit.class);
 	}
 
 	/**
@@ -282,6 +292,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
 				Town.class, "owner", true);
+		assertImageSerialization("Town image property is preserved", three,
+				Town.class);
 	}
 	/**
 	 * First test of serialization of BattlefieldEvents.
@@ -302,6 +314,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				false);
 		assertMissingProperty("<battlefield dc=\"10\" />",
 				Battlefield.class, "id", true);
+		assertImageSerialization("Battlefield image property is preserved", new Battlefield(20, 2),
+				Battlefield.class);
 	}
 
 	/**

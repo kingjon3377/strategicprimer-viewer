@@ -44,6 +44,7 @@ public class PhoenixReader implements INodeHandler<Phoenix> {
 		spinUntilEnd(element.getName(), stream);
 		final Phoenix fix = new Phoenix(getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -73,8 +74,10 @@ public class PhoenixReader implements INodeHandler<Phoenix> {
 	 */
 	@Override
 	public <S extends Phoenix> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("phoenix", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("phoenix", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

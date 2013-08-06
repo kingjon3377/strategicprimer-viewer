@@ -44,6 +44,7 @@ public class GriffinReader implements INodeHandler<Griffin> {
 		spinUntilEnd(element.getName(), stream);
 		final Griffin fix = new Griffin(getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -73,8 +74,10 @@ public class GriffinReader implements INodeHandler<Griffin> {
 	 */
 	@Override
 	public <S extends Griffin> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("griffin", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("griffin", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

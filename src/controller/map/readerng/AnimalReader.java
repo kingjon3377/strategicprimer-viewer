@@ -47,6 +47,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 				Boolean.parseBoolean(getAttribute(element, "talking", "false")),
 				getAttribute(element, "status", "wild"),
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -87,6 +88,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 			retval.addAttribute("status", obj.getStatus());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
+		retval.addImageAttribute(obj);
 		return retval;
 	}
 

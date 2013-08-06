@@ -47,7 +47,9 @@ public final class CompactGroundReader extends AbstractCompactReader implements 
 		final String kind = getParameterWithDeprecatedForm(element, "kind", "ground", warner);
 		requireNonEmptyParameter(element, "exposed", true, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new Ground(kind, Boolean.parseBoolean(getParameter(element, "exposed")));
+		final Ground retval = new Ground(kind, Boolean.parseBoolean(getParameter(element, "exposed")));
+		retval.setImage(getParameter(element, "image", ""));
+		return retval;
 	}
 	/**
 	 * @param tag a tag
@@ -73,6 +75,6 @@ public final class CompactGroundReader extends AbstractCompactReader implements 
 		out.append(obj.getKind());
 		out.append("\" exposed=\"");
 		out.append(Boolean.toString(obj.isExposed()));
-		out.append("\" />\n");
+		out.append("\"").append(imageXML(obj)).append(" />\n");
 	}
 }

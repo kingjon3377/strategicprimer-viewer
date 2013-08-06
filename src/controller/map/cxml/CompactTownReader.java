@@ -100,9 +100,11 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(element.getName(), stream);
-		return new Village(TownStatus.parseTownStatus(getParameter(element,
+		final Village retval = new Village(TownStatus.parseTownStatus(getParameter(element,
 				"status")), getParameter(element, NAME_PARAM, ""), getOrGenerateID(
 				element, warner, idFactory), getOwnerOrIndependent(element, warner, players));
+		retval.setImage(getParameter(element, "image", ""));
+		return retval;
 	}
 	/**
 	 * Parse a town, city, or fortification.
@@ -133,6 +135,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			retval = new Fortification(status, size, dc, name, id, owner);
 		}
 		spinUntilEnd(element.getName(), stream);
+		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 
@@ -192,6 +195,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 						.getLocalPart(), event.getLocation().getLineNumber());
 			}
 		}
+		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 	/**
@@ -217,7 +221,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			out.append(Integer.toString(obj.getID()));
 			out.append("\" owner=\"");
 			out.append(Integer.toString(obj.getOwner().getPlayerId()));
-			out.append("\" />\n");
+			out.append("\" ").append(imageXML((Village) obj)).append("/>\n");
 		} else if (obj instanceof Fortress) {
 			out.append("<fortress owner=\"");
 			out.append(Integer.toString(obj.getOwner().getPlayerId()));
@@ -227,7 +231,7 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			}
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));
-			out.append("\">");
+			out.append("\"").append(imageXML((Fortress) obj)).append('>');
 			if (((Fortress) obj).iterator().hasNext()) {
 				out.append('\n');
 				for (final Unit unit : (Fortress) obj) {
@@ -270,6 +274,6 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		out.append(Integer.toString(obj.getID()));
 		out.append("\" owner=\"");
 		out.append(Integer.toString(obj.getOwner().getPlayerId()));
-		out.append("\" />\n");
+		out.append("\"").append(imageXML(obj)).append(" />\n");
 	}
 }

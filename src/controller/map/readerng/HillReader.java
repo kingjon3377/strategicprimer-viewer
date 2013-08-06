@@ -42,7 +42,9 @@ public class HillReader implements INodeHandler<Hill> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Hill(getOrGenerateID(element, warner, idFactory));
+		final Hill fix = new Hill(getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
+		return fix;
 	}
 
 	/**
@@ -71,8 +73,10 @@ public class HillReader implements INodeHandler<Hill> {
 	 */
 	@Override
 	public <S extends Hill> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("hill", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("hill", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

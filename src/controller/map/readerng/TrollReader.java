@@ -44,6 +44,7 @@ public class TrollReader implements INodeHandler<Troll> {
 		spinUntilEnd(element.getName(), stream);
 		final Troll fix = new Troll(
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -65,8 +66,10 @@ public class TrollReader implements INodeHandler<Troll> {
 	 */
 	@Override
 	public <S extends Troll> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("troll", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("troll", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

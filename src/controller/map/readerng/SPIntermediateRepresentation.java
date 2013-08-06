@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import model.map.HasImage;
 import util.EqualsAny;
 import util.Pair;
 
@@ -223,5 +224,16 @@ public class SPIntermediateRepresentation {
 	@Override
 	public String toString() {
 		return "SPIntermediateRepresentation";
+	}
+	/**
+	 * If the object's image attribute is the default, null, or empty, do
+	 * nothing; if not, add the image attribute to this representation.
+	 * @param obj the object to consider.
+	 */
+	public void addImageAttribute(final HasImage obj) {
+		final String image = obj.getImage();
+		if (image != null && !image.isEmpty() && !image.equals(obj.getDefaultImage())) {
+			addAttribute("image", image);
+		}
 	}
 }

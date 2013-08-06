@@ -5,6 +5,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.HasImage;
+
 import util.EqualsAny;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
@@ -212,5 +214,15 @@ public abstract class AbstractCompactReader {
 			buf.append('\t');
 		}
 		return buf.toString();
+	}
+	/**
+	 * @param obj an object being written out that might have a custom image
+	 * @return the XML for the image if it does, or the empty string if not
+	 */
+	protected static String imageXML(final HasImage obj) {
+		final String image = obj.getImage();
+		return image == null || image.isEmpty()
+				|| image.equals(obj.getDefaultImage()) ? "" : " image=\""
+				+ image + "\"";
 	}
 }

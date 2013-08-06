@@ -96,6 +96,8 @@ public final class TestMoreFixtureSerialization extends
 				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
 				"<grove cultivated=\"false\" kind=\"tree\" id=\"0\" />",
 				Grove.class, Warning.Action.Ignore);
+		assertImageSerialization("Grove image property is preserved",
+				new Grove(false, false, "five", 5), Grove.class);
 	}
 
 	/**
@@ -128,6 +130,8 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty(
 				"<field kind=\"kind\" cultivated=\"true\" id=\"0\" />",
 				Meadow.class, "status", true);
+		assertImageSerialization("Meadow image property is preserved",
+				new Meadow("five", false, false, 5, FieldStatus.Fallow), Meadow.class);
 	}
 
 	/**
@@ -172,6 +176,8 @@ public final class TestMoreFixtureSerialization extends
 				STATUS_PROPERTY, false);
 		assertMissingProperty("<mine kind=\"kind\" status=\"active\" />",
 				Mine.class, "id", true);
+		assertImageSerialization("Mine image property is preserved", four,
+				Mine.class);
 	}
 
 	/**
@@ -205,6 +211,8 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty("<shrub />", Shrub.class, KIND_PROPERTY, false);
 		assertMissingProperty("<shrub kind=\"kind\" />", Shrub.class, "id",
 				true);
+		assertImageSerialization("Shrub image property is preserved", two,
+				Shrub.class);
 	}
 
 	/**
@@ -231,6 +239,8 @@ public final class TestMoreFixtureSerialization extends
 				TextFixture.class);
 		assertUnwantedChild("<text turn=\"1\"><troll /></text>",
 				TextFixture.class, false);
+		assertImageSerialization("Text image property is preserved", three,
+				TextFixture.class);
 	}
 
 	/**
@@ -270,6 +280,8 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty(
 				"<village name=\"name\" status=\"active\" id=\"0\" />",
 				Village.class, OWNER_PROPERTY, true);
+		assertImageSerialization("Village image property is preserved", three,
+				Village.class);
 	}
 
 	/**

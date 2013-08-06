@@ -45,6 +45,7 @@ public class GiantReader implements INodeHandler<Giant> {
 		spinUntilEnd(element.getName(), stream);
 		final Giant fix = new Giant(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -74,8 +75,10 @@ public class GiantReader implements INodeHandler<Giant> {
 	 */
 	@Override
 	public <S extends Giant> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("giant", Pair.of("kind",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("giant", Pair.of("kind",
 				obj.getKind()), Pair.of("id", Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

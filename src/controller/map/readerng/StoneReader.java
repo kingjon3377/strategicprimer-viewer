@@ -49,6 +49,7 @@ public class StoneReader implements INodeHandler<StoneDeposit> {
 								"stone", warner)), Integer.parseInt(XMLHelper
 						.getAttribute(element, "dc")), getOrGenerateID(element,
 						warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -76,10 +77,12 @@ public class StoneReader implements INodeHandler<StoneDeposit> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final StoneDeposit obj) {
-		return new SPIntermediateRepresentation("stone", Pair.of("kind", obj
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("stone", Pair.of("kind", obj
 				.stone().toString()), Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

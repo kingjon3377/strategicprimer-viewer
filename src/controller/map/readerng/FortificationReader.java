@@ -29,7 +29,7 @@ import controller.map.misc.IDFactory;
 @Deprecated
 public class FortificationReader implements INodeHandler<Fortification> {
 	/**
-	 * Parse a city.
+	 * Parse a fortification.
 	 *
 	 * @param element the element to read from
 	 * @param stream a stream of more elements
@@ -53,6 +53,7 @@ public class FortificationReader implements INodeHandler<Fortification> {
 				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
 						element, "name", ""), getOrGenerateID(element, warner,
 						idFactory), getPlayerOrIndependent(element, warner, players));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -90,6 +91,7 @@ public class FortificationReader implements INodeHandler<Fortification> {
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
+		retval.addImageAttribute(obj);
 		return retval;
 	}
 	/**

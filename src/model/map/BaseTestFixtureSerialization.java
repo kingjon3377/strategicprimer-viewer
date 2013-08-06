@@ -676,12 +676,12 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, true)),
-						type, new Warning(Warning.Action.Die)).getImage());
+						type, new Warning(Warning.Action.Ignore)).getImage());
 		assertEquals(
 				message,
 				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, false)),
-						type, new Warning(Warning.Action.Die)).getImage());
+						type, new Warning(Warning.Action.Ignore)).getImage());
 	}
 }

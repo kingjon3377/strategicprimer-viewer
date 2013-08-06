@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.HasImage;
 import model.map.PlayerCollection;
 import model.map.TerrainFixture;
 import model.map.fixtures.terrain.Forest;
@@ -138,6 +139,9 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
 		spinUntilEnd(element.getName(), stream);
+		if (retval instanceof HasImage) {
+			((HasImage) retval).setImage(getParameter(element, "image", ""));
+		}
 		return retval;
 	}
 	/**
@@ -151,7 +155,7 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 	public void write(final Writer out, final TerrainFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof Mountain) {
-			out.append("<mountain />\n");
+			out.append("<mountain").append(imageXML((Mountain) obj)).append(" />\n");
 			return; // NOPMD Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
 			out.append("<forest kind=\"");
@@ -159,18 +163,21 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 			if (((Forest) obj).isRows()) {
 				out.append("\" rows=\"true");
 			}
-			out.append("\" />\n");
+			out.append("\"").append(imageXML((Forest) obj)).append(" />\n");
 			return; // NOPMD Neither do Forests.
 		} else if (obj instanceof Hill) {
-			out.append("<hill ");
+			out.append("<hill");
+			out.append(imageXML((Hill) obj));
 		} else if (obj instanceof Oasis) {
-			out.append("<oasis ");
+			out.append("<oasis");
+			out.append(imageXML((Oasis) obj));
 		} else if (obj instanceof Sandbar) {
-			out.append("<sandbar ");
+			out.append("<sandbar");
+			out.append(imageXML((Sandbar) obj));
 		} else {
 			throw new IllegalStateException("Unexpected TerrainFixture type.");
 		}
-		out.append("id=\"");
+		out.append(" id=\"");
 		out.append(Integer.toString(obj.getID()));
 		out.append("\" />\n");
 	}

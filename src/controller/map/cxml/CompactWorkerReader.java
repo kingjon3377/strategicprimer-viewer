@@ -165,12 +165,8 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
-		final String image = obj.getImage();
-		if (image != null && !image.isEmpty() && !image.equals(obj.getDefaultImage())) {
-			out.append("\" image=\"");
-			out.append(image);
-		}
 		out.append('"');
+		out.append(imageXML(obj));
 		if (obj.iterator().hasNext() || obj.getStats() != null) {
 			out.append(">\n");
 			writeStats(out, obj.getStats(), indent + 1);

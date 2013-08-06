@@ -44,6 +44,7 @@ public class SandbarReader implements INodeHandler<Sandbar> {
 		spinUntilEnd(element.getName(), stream);
 		final Sandbar fix = new Sandbar(getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -73,8 +74,10 @@ public class SandbarReader implements INodeHandler<Sandbar> {
 	 */
 	@Override
 	public <S extends Sandbar> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("sandbar", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("sandbar", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

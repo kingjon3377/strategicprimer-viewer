@@ -45,6 +45,7 @@ public class DragonReader implements INodeHandler<Dragon> {
 		spinUntilEnd(element.getName(), stream);
 		final Dragon fix = new Dragon(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -72,8 +73,10 @@ public class DragonReader implements INodeHandler<Dragon> {
 	 */
 	@Override
 	public <S extends Dragon> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("dragon", Pair.of("kind",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("dragon", Pair.of("kind",
 				obj.getKind()), Pair.of("id", Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

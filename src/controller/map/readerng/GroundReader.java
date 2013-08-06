@@ -46,6 +46,7 @@ public class GroundReader implements INodeHandler<Ground> {
 		final Ground fix = new Ground(getAttributeWithDeprecatedForm(element,
 				"kind", "ground", warner), Boolean.parseBoolean(getAttribute(
 				element, "exposed")));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -75,9 +76,11 @@ public class GroundReader implements INodeHandler<Ground> {
 	 */
 	@Override
 	public <S extends Ground> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("ground", Pair.of("kind",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("ground", Pair.of("kind",
 				obj.getKind()), Pair.of("exposed",
 				Boolean.toString(obj.isExposed())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

@@ -232,6 +232,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"Shouldn't print empty not-visible tiles",
 				"<map version=\"2\" rows=\"1\" columns=\"1\">\n</map>\n",
 				createSerializedForm(encapsulateTile(PointFactory.point(0, 0), new Tile(TileType.NotVisible)), false));
+		assertImageSerialization("Unit image property is preserved", new Unit(
+				new Player(5, ""), "herder", "herderName", 9), Unit.class);
 	}
 
 	/**

@@ -50,6 +50,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 				players.getPlayer(parseInt(getAttribute(element, "owner", "-1"))),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
 						warner, idFactory));
+		XMLHelper.addImage(element, fort);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
@@ -105,6 +106,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 		for (final Unit unit : obj) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(unit));
 		}
+		retval.addImageAttribute(obj);
 		return retval;
 	}
 

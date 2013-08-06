@@ -55,9 +55,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 				XMLHelper.getAttribute(element, "race", "human"),
 				XMLHelper.getOrGenerateID(element,
 						warner, idFactory));
-		if (XMLHelper.hasAttribute(element, "image")) {
-			retval.setImage(XMLHelper.getAttribute(element, "image"));
-		}
+		XMLHelper.addImage(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
@@ -95,10 +93,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 		if (obj.getStats() != null) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(obj.getStats()));
 		}
-		final String image = obj.getImage();
-		if (image != null && !image.isEmpty() && !image.equals(obj.getDefaultImage())) {
-			retval.addAttribute("image", image);
-		}
+		retval.addImageAttribute(obj);
 		for (Job job : obj) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(job));
 		}

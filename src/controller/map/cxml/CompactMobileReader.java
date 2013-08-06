@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.HasImage;
 import model.map.HasKind;
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Animal;
@@ -214,6 +215,9 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 			break;
 		}
 		spinUntilEnd(element.getName(), stream);
+		if (retval instanceof HasImage) {
+			((HasImage) retval).setImage(getParameter(element, "image", ""));
+		}
 		return retval;
 	}
 	/**
@@ -266,7 +270,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 			}
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));
-			out.append("\" />\n");
+			out.append("\"").append(imageXML((Animal) obj)).append(" />\n");
 		} else {
 			out.append(indent(indent));
 			out.append('<');
@@ -278,7 +282,11 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 			}
 			out.append(" id=\"");
 			out.append(Integer.toString(obj.getID()));
-			out.append("\" />\n");
+			out.append("\"");
+			if (obj instanceof HasImage) {
+				out.append(imageXML((HasImage) obj));
+			}
+			out.append(" />\n");
 		}
 	}
 	/**

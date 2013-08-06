@@ -5,6 +5,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.HasImage;
 import model.map.Player;
 import model.map.PlayerCollection;
 import util.Warning;
@@ -220,5 +221,16 @@ public final class XMLHelper {
 	public static String getFile(final Iterable<XMLEvent> stream) {
 		return stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
 				.iterator()).getFile() : "";
+	}
+	/**
+	 * If there is an image attribute on the element, add that to the object being constructed. If not, do nothing.
+	 * @param element the XML element being read
+	 * @param obj the object being constructed.
+	 * @throws SPFormatException on SP format error
+	 */
+	public static void addImage(final StartElement element, final HasImage obj) throws SPFormatException {
+		if (hasAttribute(element, "image")) {
+			obj.setImage(getAttribute(element, "image"));
+		}
 	}
 }

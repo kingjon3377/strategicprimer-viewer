@@ -40,7 +40,9 @@ public class MountainReader implements INodeHandler<Mountain> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		return new Mountain();
+		final Mountain fix = new Mountain();
+		XMLHelper.addImage(element, fix);
+		return fix;
 	}
 
 	/**
@@ -69,7 +71,9 @@ public class MountainReader implements INodeHandler<Mountain> {
 	 */
 	@Override
 	public <S extends Mountain> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("mountain");
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("mountain");
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

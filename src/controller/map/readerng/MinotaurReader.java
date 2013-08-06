@@ -44,6 +44,7 @@ public class MinotaurReader implements INodeHandler<Minotaur> {
 		spinUntilEnd(element.getName(), stream);
 		final Minotaur fix = new Minotaur(getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -73,8 +74,10 @@ public class MinotaurReader implements INodeHandler<Minotaur> {
 	 */
 	@Override
 	public <S extends Minotaur> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("minotaur", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("minotaur", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

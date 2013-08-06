@@ -46,6 +46,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 		final Shrub fix = new Shrub(getAttributeWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -75,9 +76,11 @@ public class ShrubReader implements INodeHandler<Shrub> {
 	 */
 	@Override
 	public <S extends Shrub> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("shrub", Pair.of("kind",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("shrub", Pair.of("kind",
 				obj.getKind()),
 				Pair.of("id", Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

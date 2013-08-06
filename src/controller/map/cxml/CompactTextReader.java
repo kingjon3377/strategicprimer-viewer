@@ -68,6 +68,7 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 		}
 		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
 				Integer.parseInt(getParameter(element, "turn", "-1")));
+		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}
 	/**
@@ -81,12 +82,14 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 	public void write(final Writer out, final TextFixture obj, final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj.getTurn() == -1) {
-			out.append("<text>");
+			out.append("<text");
 		} else {
 			out.append("<text turn=\"");
 			out.append(Integer.toString(obj.getTurn()));
-			out.append("\">");
+			out.append("\"");
 		}
+		out.append(imageXML(obj));
+		out.append('>');
 		out.append(obj.getText().trim());
 		out.append("</text>\n");
 	}

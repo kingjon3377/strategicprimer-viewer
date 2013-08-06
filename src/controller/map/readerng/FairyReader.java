@@ -45,6 +45,7 @@ public class FairyReader implements INodeHandler<Fairy> {
 		spinUntilEnd(element.getName(), stream);
 		final Fairy fix = new Fairy(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -72,8 +73,10 @@ public class FairyReader implements INodeHandler<Fairy> {
 	 */
 	@Override
 	public <S extends Fairy> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("fairy", Pair.of("kind",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("fairy", Pair.of("kind",
 				obj.getKind()), Pair.of("id", Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

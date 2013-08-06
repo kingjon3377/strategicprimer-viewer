@@ -44,6 +44,7 @@ public class ForestReader implements INodeHandler<Forest> {
 		spinUntilEnd(element.getName(), stream);
 		final Forest fix = new Forest(getAttribute(element, "kind"),
 				hasAttribute(element, "rows"));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -77,6 +78,7 @@ public class ForestReader implements INodeHandler<Forest> {
 		if (obj.isRows()) {
 			retval.addAttribute("rows", "true");
 		}
+		retval.addImageAttribute(obj);
 		return retval;
 	}
 

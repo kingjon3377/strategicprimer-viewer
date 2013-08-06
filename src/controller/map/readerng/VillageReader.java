@@ -50,6 +50,7 @@ public class VillageReader implements INodeHandler<Village> {
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
 						warner, idFactory), getPlayerOrIndependent(element, warner, players));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -79,6 +80,7 @@ public class VillageReader implements INodeHandler<Village> {
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
+		retval.addImageAttribute(obj);
 		return retval;
 	}
 

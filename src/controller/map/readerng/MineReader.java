@@ -50,6 +50,7 @@ public class MineReader implements INodeHandler<Mine> {
 						warner),
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -79,9 +80,11 @@ public class MineReader implements INodeHandler<Mine> {
 	 */
 	@Override
 	public <S extends Mine> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("mine", Pair.of("kind",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("mine", Pair.of("kind",
 				obj.getKind()), Pair.of("status", obj.getStatus().toString()),
 				Pair.of("id", Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

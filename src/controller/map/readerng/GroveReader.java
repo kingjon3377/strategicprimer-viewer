@@ -55,6 +55,7 @@ public class GroveReader implements INodeHandler<Grove> {
 				cultivated,
 				getAttributeWithDeprecatedForm(element, "kind", "tree", warner),
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -112,10 +113,12 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation(obj.isOrchard() ? "orchard"
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(obj.isOrchard() ? "orchard"
 				: "grove", Pair.of(CULTIVATED_ATTR, Boolean.toString(obj.isCultivated())),
 				Pair.of("kind", obj.getKind()), Pair.of("id",
 						Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

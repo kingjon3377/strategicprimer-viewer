@@ -58,6 +58,7 @@ public class UnitReader implements INodeHandler<Unit> {
 						element, "owner", "-1")))), parseKind(element, warner),
 				getAttribute(element, "name", ""), getOrGenerateID(element,
 						warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -153,6 +154,7 @@ public class UnitReader implements INodeHandler<Unit> {
 		if (!obj.getOrders().trim().isEmpty()) {
 			retval.addAttribute("text-contents", obj.getOrders().trim() + '\n');
 		}
+		retval.addImageAttribute(obj);
 		return retval;
 	}
 

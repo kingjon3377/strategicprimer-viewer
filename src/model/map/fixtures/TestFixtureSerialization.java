@@ -83,6 +83,8 @@ public final class TestFixtureSerialization extends
 				new Animal("animalSeven", false, false, "wild", 4),
 				"<animal kind=\"animalSeven\" status=\"wild\" id=\"4\" />",
 				Animal.class);
+		assertImageSerialization("Animal image property is preserved", four,
+				Animal.class);
 	}
 
 	/**
@@ -110,6 +112,9 @@ public final class TestFixtureSerialization extends
 				"contents", false);
 		assertMissingProperty("<cache kind=\"ind\" contents=\"contents\" />",
 				CacheFixture.class, "id", true);
+		assertImageSerialization("Cache image property is preserved",
+				new CacheFixture("kindThree", "contentsThree", 3),
+				CacheFixture.class);
 	}
 
 	/**
@@ -132,6 +137,8 @@ public final class TestFixtureSerialization extends
 				false);
 		assertMissingProperty("<centaur kind=\"kind\" />", Centaur.class, "id",
 				true);
+		assertImageSerialization("Centaur image property is preserved", new Centaur("thirdCentaur", 2),
+				Centaur.class);
 	}
 
 	/**
@@ -153,6 +160,8 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<dragon />", Dragon.class, KIND_PROPERTY, false);
 		assertMissingProperty("<dragon kind=\"kind\" />", Dragon.class, "id",
 				true);
+		assertImageSerialization("Dragon image property is preserved",
+				new Dragon("thirdDragon", 3), Dragon.class);
 	}
 
 	/**
@@ -174,6 +183,8 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<fairy />", Fairy.class, KIND_PROPERTY, false);
 		assertMissingProperty("<fairy kind=\"kind\" />", Fairy.class, "id",
 				true);
+		assertImageSerialization("Fairy image property is preserved",
+				new Fairy("threeFairy", 3), Fairy.class);
 	}
 
 	/**
@@ -193,6 +204,8 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild("<forest kind=\"trees\"><hill /></forest>",
 				Forest.class, false);
 		assertMissingProperty("<forest />", Forest.class, KIND_PROPERTY, false);
+		assertImageSerialization("Forest image property is preserved", new Forest("thirdForest", true),
+				Forest.class);
 	}
 
 	/**
@@ -233,6 +246,8 @@ public final class TestFixtureSerialization extends
 				"name", true);
 		assertMissingProperty("<fortress owner=\"1\" name=\"name\" />",
 				Fortress.class, "id", true);
+		assertImageSerialization("Fortress image property is preserved", five,
+				Fortress.class);
 	}
 
 	/**
@@ -254,6 +269,8 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<giant />", Giant.class, KIND_PROPERTY, false);
 		assertMissingProperty("<giant kind=\"kind\" />", Giant.class, "id",
 				true);
+		assertImageSerialization("Giant image property is preserved",
+				new Giant("three", 3), Giant.class);
 	}
 
 	/**
@@ -288,6 +305,8 @@ public final class TestFixtureSerialization extends
 		assertDeprecatedProperty(
 				"<ground ground=\"ground\" exposed=\"true\" />", Ground.class,
 				"ground", true);
+		assertImageSerialization("Ground image property is preserved", new Ground("five", true),
+				Ground.class);
 	}
 
 	/**
@@ -305,54 +324,78 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Test of Djinn serialization", new Djinn(2), Djinn.class);
 		assertUnwantedChild("<djinn><troll /></djinn>", Djinn.class, false);
 		assertMissingProperty("<djinn />", Djinn.class, "id", true);
+		assertImageSerialization("Djinn image property is preserved", new Djinn(3),
+				Djinn.class);
 		assertSerialization("Test of Griffin serialization", new Griffin(1), Griffin.class);
 		assertSerialization("Test of Griffin serialization", new Griffin(2), Griffin.class);
 		assertUnwantedChild("<griffin><djinn /></griffin>", Griffin.class,
 				false);
 		assertMissingProperty("<griffin />", Griffin.class, "id", true);
+		assertImageSerialization("Griffin image property is preserved", new Griffin(3),
+				Griffin.class);
 		assertSerialization("Test of Hill serialization", new Hill(1), Hill.class);
 		assertSerialization("Test of Hill serialization", new Hill(2), Hill.class);
 		assertUnwantedChild("<hill><griffin /></hill>", Hill.class, false);
 		assertMissingProperty("<hill />", Hill.class, "id", true);
+		assertImageSerialization("Hill image property is preserved", new Hill(3),
+				Hill.class);
 		assertSerialization("Test of Minotaur serialization", new Minotaur(1), Minotaur.class);
 		assertSerialization("Test of Minotaur serialization", new Minotaur(2), Minotaur.class);
 		assertUnwantedChild("<minotaur><troll /></minotaur>", Minotaur.class,
 				false);
 		assertMissingProperty("<minotaur />", Minotaur.class, "id", true);
+		assertImageSerialization("Minotaur image property is preserved", new Minotaur(3),
+				Minotaur.class);
 		assertSerialization("Test of Mountain serialization", new Mountain(), Mountain.class);
 		assertUnwantedChild("<mountain><troll /></mountain>", Mountain.class,
 				false);
+		assertImageSerialization("Mountain image property is preserved", new Mountain(),
+				Mountain.class);
 		assertSerialization("Test of Oasis serialization", new Oasis(1), Oasis.class);
 		assertSerialization("Test of Oasis serialization", new Oasis(2), Oasis.class);
 		assertUnwantedChild("<oasis><troll /></oasis>", Oasis.class, false);
 		assertMissingProperty("<oasis />", Oasis.class, "id", true);
+		assertImageSerialization("Oasis image property is preserved", new Oasis(3),
+				Oasis.class);
 		assertSerialization("Test of Ogre serialization", new Ogre(1), Ogre.class);
 		assertSerialization("Test of Ogre serialization", new Ogre(2), Ogre.class);
 		assertUnwantedChild("<ogre><troll /></ogre>", Ogre.class, false);
 		assertMissingProperty("<ogre />", Ogre.class, "id", true);
+		assertImageSerialization("Ogre image property is preserved", new Ogre(3),
+				Ogre.class);
 		assertSerialization("Test of Phoenix serialization", new Phoenix(1), Phoenix.class);
 		assertSerialization("Test of Phoenix serialization", new Phoenix(2), Phoenix.class);
 		assertUnwantedChild("<phoenix><troll /></phoenix>", Phoenix.class,
 				false);
 		assertMissingProperty("<phoenix />", Phoenix.class, "id", true);
+		assertImageSerialization("Phoenix image property is preserved", new Phoenix(3),
+				Phoenix.class);
 		assertSerialization("Test of Sandbar serialization", new Sandbar(1), Sandbar.class);
 		assertSerialization("Test of Sandbar serialization", new Sandbar(2), Sandbar.class);
 		assertUnwantedChild("<sandbar><troll /></sandbar>", Sandbar.class,
 				false);
 		assertMissingProperty("<sandbar />", Sandbar.class, "id", true);
+		assertImageSerialization("Sandbar image property is preserved", new Sandbar(3),
+				Sandbar.class);
 		assertSerialization("Test of Simurgh serialization", new Simurgh(1), Simurgh.class);
 		assertSerialization("Test of Simurgh serialization", new Simurgh(2), Simurgh.class);
 		assertUnwantedChild("<simurgh><troll /></simurgh>", Simurgh.class,
 				false);
 		assertMissingProperty("<simurgh />", Simurgh.class, "id", true);
+		assertImageSerialization("Simurgh image property is preserved", new Simurgh(3),
+				Simurgh.class);
 		assertSerialization("Test of Sphinx serialization", new Sphinx(1), Sphinx.class);
 		assertSerialization("Test of Sphinx serialization", new Sphinx(2), Sphinx.class);
 		assertUnwantedChild("<sphinx><troll /></sphinx>", Sphinx.class, false);
 		assertMissingProperty("<sphinx />", Sphinx.class, "id", true);
+		assertImageSerialization("Sphinx image property is preserved", new Sphinx(3),
+				Sphinx.class);
 		assertSerialization("Test of Troll serialization", new Troll(1), Troll.class);
 		assertSerialization("Test of Troll serialization", new Troll(2), Troll.class);
 		assertUnwantedChild("<troll><troll /></troll>", Troll.class, false);
 		assertMissingProperty("<troll />", Troll.class, "id", true);
+		assertImageSerialization("Troll image property is preserved", new Troll(3),
+				Troll.class);
 	}
 	/**
 	 * @return a String representation of the object

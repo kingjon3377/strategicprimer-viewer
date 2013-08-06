@@ -62,6 +62,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 				Boolean.parseBoolean(getAttribute(element, "cultivated")), id,
 				FieldStatus.parse(getAttribute(element, STATUS_ATTR,
 						FieldStatus.random(id).toString())));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -91,11 +92,13 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation(obj.isField() ? "field"
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(obj.isField() ? "field"
 				: "meadow", Pair.of("kind", obj.getKind()), Pair.of(
 				"cultivated", Boolean.toString(obj.isCultivated())), Pair.of(
 				STATUS_ATTR, obj.getStatus().toString()), Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

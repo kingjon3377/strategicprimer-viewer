@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.HasImage;
 import model.map.IEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.resources.Battlefield;
@@ -223,6 +224,9 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
 		spinUntilEnd(element.getName(), stream);
+		if (retval instanceof HasImage) {
+			((HasImage) retval).setImage(getParameter(element, "image", ""));
+		}
 		return retval;
 	}
 	/**
@@ -351,7 +355,11 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
-		out.append("\" />\n");
+		out.append("\"");
+		if (obj instanceof HasImage) {
+			out.append(imageXML((HasImage) obj));
+		}
+		out.append(" />\n");
 	}
 	/**
 	 * @param meadow a meadow or field

@@ -45,6 +45,7 @@ public class CaveReader implements INodeHandler<Cave> {
 		final Cave fix = new Cave(Integer.parseInt(XMLHelper
 				.getAttribute(element, "dc")), getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -70,9 +71,11 @@ public class CaveReader implements INodeHandler<Cave> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Cave obj) {
-		return new SPIntermediateRepresentation("cave", Pair.of("dc",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("cave", Pair.of("dc",
 				Integer.toString(obj.getDC())), Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

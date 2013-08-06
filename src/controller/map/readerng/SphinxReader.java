@@ -44,6 +44,7 @@ public class SphinxReader implements INodeHandler<Sphinx> {
 		spinUntilEnd(element.getName(), stream);
 		final Sphinx fix = new Sphinx(getOrGenerateID(element, warner,
 				idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -73,8 +74,10 @@ public class SphinxReader implements INodeHandler<Sphinx> {
 	 */
 	@Override
 	public <S extends Sphinx> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("sphinx", Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("sphinx", Pair.of("id",
 				Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 	/**
 	 * @return a String representation of the object

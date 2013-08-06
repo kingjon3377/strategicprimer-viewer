@@ -45,6 +45,7 @@ public class CentaurReader implements INodeHandler<Centaur> {
 		spinUntilEnd(element.getName(), stream);
 		final Centaur fix = new Centaur(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
+		XMLHelper.addImage(element, fix);
 		return fix;
 	}
 
@@ -72,8 +73,10 @@ public class CentaurReader implements INodeHandler<Centaur> {
 	 */
 	@Override
 	public <S extends Centaur> SPIntermediateRepresentation write(final S obj) {
-		return new SPIntermediateRepresentation("centaur", Pair.of("kind",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("centaur", Pair.of("kind",
 				obj.getKind()), Pair.of("id", Long.toString(obj.getID())));
+		retval.addImageAttribute(obj);
+		return retval;
 	}
 
 	/**

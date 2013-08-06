@@ -61,6 +61,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 						element, "owner", "-1")))), parseKind(element, warner),
 				getParameter(element, "name", ""), getOrGenerateID(element,
 						warner, idFactory));
+		retval.setImage(getParameter(element, "image", ""));
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -177,6 +178,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
 		out.append('"');
+		out.append(imageXML(obj));
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			out.append(">").append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
