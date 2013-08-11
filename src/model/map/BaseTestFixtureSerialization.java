@@ -647,11 +647,12 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	public <T extends XMLWritable & HasImage> void assertImageSerialization(
 			final String message, final T obj, final Class<T> type)
 			throws XMLStreamException, SPFormatException, IOException {
-		final String origImage = obj.getImage();
-		obj.setImage("imageForSerialization");
+		final HasImage objInternal = obj;
+		final String origImage = objInternal.getImage();
+		objInternal.setImage("imageForSerialization");
 		assertImageSerialization(message, obj, type, oldReader);
 		assertImageSerialization(message, obj, type, newReader);
-		obj.setImage(origImage);
+		objInternal.setImage(origImage);
 	}
 	/**
 	 * Assert that the given object, if serialized and deserialized, will have
@@ -671,15 +672,16 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final String message, final T obj, final Class<T> type,
 			final ISPReader reader) throws XMLStreamException,
 			SPFormatException, IOException {
+		final HasImage objInternal = obj;
 		assertEquals(
 				message,
-				obj.getImage(),
+				objInternal.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, true)),
 						type, new Warning(Warning.Action.Ignore)).getImage());
 		assertEquals(
 				message,
-				obj.getImage(),
+				objInternal.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, false)),
 						type, new Warning(Warning.Action.Ignore)).getImage());
