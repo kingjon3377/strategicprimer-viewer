@@ -402,6 +402,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		RACES.add("elf");
 		RACES.add("gnome");
 		RACES.add("half-elf");
+		RACES.add("Danan");
 		// ESCA-JAVA0076:
 		while (RACES.size() < 20) {
 			RACES.add("human");
