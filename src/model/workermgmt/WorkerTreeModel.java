@@ -249,4 +249,18 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public Object getModelObject(final Object obj) {
 		return obj;
 	}
+	/**
+	 * Add a member to a unit.
+	 * @param unit the unit to contain the member
+	 * @param member the member to add to it
+	 */
+	@Override
+	public void addUnitMember(final Unit unit, final UnitMember member) {
+		unit.addMember(member);
+		for (final TreeModelListener listener : listeners) {
+			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(
+					new Object[] { root, unit }), new int[] { getIndexOfChild(
+					unit, member) }, new Object[] { member }));
+		}
+	}
 }

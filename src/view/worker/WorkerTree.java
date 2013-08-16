@@ -14,6 +14,7 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerModel;
@@ -161,6 +162,9 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		private void handleSelection(final Object sel) {
 			if (sel instanceof UnitMember || sel == null) {
 				firePropertyChange("member", null, sel);
+			}
+			if (sel instanceof Unit || sel == null) {
+				firePropertyChange("selUnit", null, sel);
 			}
 		}
 	}

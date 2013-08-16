@@ -2,9 +2,13 @@ package view.worker;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,12 +21,17 @@ import javax.swing.text.View;
 
 import model.map.HasName;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.IWorkerModel;
+import model.workermgmt.IWorkerTreeModel;
 import util.PropertyChangeAdapter;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.SystemOut;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 
 /**
@@ -33,6 +42,10 @@ import controller.map.misc.IOHandler;
  */
 public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		PropertyChangeSource {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(AdvancementFrame.class.getName());
 	/**
 	 * Dividers start at half-way.
 	 */
@@ -58,6 +71,19 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
 		unitPanel.add(new JScrollPane(tree), BorderLayout.CENTER);
+		final IDFactory idf = IDFactoryFiller.createFactory(source.getMap());
+		final JButton addWorkerButton = new JButton("Add worker to selected unit ...");
+		final NewWorkerListener nwl = new NewWorkerListener((IWorkerTreeModel) tree.getModel(), LOGGER);
+		tree.addPropertyChangeListener(nwl);
+		addWorkerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent evt) {
+				final WorkerConstructionFrame frame = new WorkerConstructionFrame(idf);
+				frame.addPropertyChangeListener(nwl);
+				frame.setVisible(true);
+			}
+		});
+		unitPanel.add(addWorkerButton, BorderLayout.SOUTH);
 
 		final JPanel jobsPanel = new JPanel(new BorderLayout());
 		final AddRemovePanel jarp = new AddRemovePanel(false);
@@ -204,6 +230,53 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				return "null"; // NOPMD
 			} else {
 				return named.toString();
+			}
+		}
+	}
+	/**
+	 * A listener to keep track of the currently selected unit and listen for
+	 * new-worker notifications, then pass this information on to the tree
+	 * model.
+	 */
+	private static class NewWorkerListener implements PropertyChangeListener {
+		/**
+		 * The tree model.
+		 */
+		private final IWorkerTreeModel tmodel;
+		/**
+		 * The logger to use for logging.
+		 */
+		private final Logger lgr; // NOPMD
+		/**
+		 * The current unit. May be null, if nothing is selected.
+		 */
+		private Unit selUnit;
+		/**
+		 * Constructor.
+		 * @param treeModel the tree model
+		 * @param logger the logger to use for logging
+		 */
+		NewWorkerListener(final IWorkerTreeModel treeModel, final Logger logger) {
+			tmodel = treeModel;
+			lgr = logger;
+		}
+		/**
+		 * Handle a property change event.
+		 * @param evt the event to handle
+		 */
+		@Override
+		public void propertyChange(final PropertyChangeEvent evt) {
+			if ("selUnit".equalsIgnoreCase(evt.getPropertyName())
+					&& (evt.getNewValue() == null || evt.getNewValue() instanceof Unit)) {
+				selUnit = (Unit) evt.getNewValue();
+			} else if ("worker".equalsIgnoreCase(evt.getPropertyName())
+					&& evt.getNewValue() instanceof Worker) {
+				if (selUnit == null) {
+					lgr.warning("New worker created when no unit selected");
+					// FIXME: Warn the user of this, using a dialog or something.
+				} else {
+					tmodel.addUnitMember(selUnit, (UnitMember) evt.getNewValue());
+				}
 			}
 		}
 	}
