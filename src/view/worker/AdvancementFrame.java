@@ -108,13 +108,13 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		skillSuperPanel.add(arpPanel, BorderLayout.CENTER);
 		skillSuperPanel.add(new SkillAdvancementPanel(this, this), BorderLayout.SOUTH);
 
-		final JSplitPane panelThree = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jobsPanel, skillSuperPanel);
-		panelThree.setContinuousLayout(true);
+		final JSplitPane panelThree = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				true, jobsPanel, skillSuperPanel);
 		panelThree.setResizeWeight(.3);
 		panelThree.setDividerLocation(HALF_WAY);
 
-		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, unitPanel, panelThree);
-		jspThree.setContinuousLayout(true);
+		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				true, unitPanel, panelThree);
 		jspThree.setResizeWeight(HALF_WAY);
 		jspThree.setDividerLocation(HALF_WAY);
 		setContentPane(jspThree);
