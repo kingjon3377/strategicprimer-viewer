@@ -33,7 +33,7 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	/**
 	 * The worker who the Jobs and Skills describe.
 	 */
-	private Worker root = null;
+	private Worker root; // NOPMD: Claims only initialized in constructor, which is Not True.
 	/**
 	 * The tree's selection model.
 	 */
@@ -52,36 +52,32 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 */
 	@Override
 	public Object getChild(final Object parent, final int index) {
-		if (index < 0 || parent == null) {
-			return null; // NOPMD
-		} else if (parent instanceof Worker && parent.equals(root)) {
-			final Iterator<Job> iter = root.iterator();
-			for (int i = 0; i < index; i++) {
-				if (iter.hasNext()) {
-					iter.next();
-				} else {
-					return null; // NOPMD
-				}
-			}
+		if (index >= 0 && parent instanceof Worker && parent.equals(root)) {
+			return getFromIter(root, index);
+		} else if (index >= 0 && parent instanceof Job) {
+			return getFromIter((Job) parent, index);
+		} else {
+			return null;
+		}
+	}
+	/**
+	 * @param <T> the type of thing we want to get
+	 * @param iterable an iterable
+	 * @param index the index of the item we want to return
+	 * @return that item, or null if there aren't enough items
+	 */
+	private static <T> T getFromIter(final Iterable<T> iterable, final int index) {
+		final Iterator<T> iter = iterable.iterator();
+		for (int i = 0; i < index; i++) {
 			if (iter.hasNext()) {
-				return iter.next(); // NOPMD
+				// ESCA-JAVA0282:
+				iter.next();
 			} else {
 				return null; // NOPMD
 			}
-		} else if (parent instanceof Job) {
-			final Iterator<Skill> iter = ((Job) parent).iterator();
-			for (int i = 0; i < index; i++) {
-				if (iter.hasNext()) {
-					iter.next(); // NOPMD
-				} else {
-					return null; // NOPMD
-				}
-			}
-			if (iter.hasNext()) {
-				return iter.next(); // NOPMD
-			} else {
-				return null; // NOPMD
-			}
+		}
+		if (iter.hasNext()) {
+			return iter.next(); // NOPMD
 		} else {
 			return null;
 		}

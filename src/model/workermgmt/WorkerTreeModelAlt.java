@@ -138,7 +138,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		// ESCA-JAVA0126:
 		// ESCA-JAVA0277:
 		@Override
-		public T next() throws NoSuchElementException {
+		public T next() throws NoSuchElementException { // NOPMD: throws clause is required by superclass
 			return wrapped.nextElement();
 		}
 		/**
