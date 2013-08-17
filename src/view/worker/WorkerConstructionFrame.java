@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -19,6 +17,7 @@ import javax.swing.JTextField;
 
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import model.workermgmt.RaceFactory;
 import util.IsNumeric;
 import util.Pair;
 import util.SingletonRandom;
@@ -38,7 +37,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 	public WorkerConstructionFrame(final IDFactory idFac) {
 		super("Create Worker");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		race.setText(RACES.get(SingletonRandom.RANDOM.nextInt(RACES.size())));
+		race.setText(RaceFactory.getRace());
 		idf = idFac;
 
 		final JPanel textPanel = new JPanel(new GridLayout(0, 2));
@@ -189,21 +188,6 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		final Random rng = SingletonRandom.RANDOM;
 		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6) + rng.nextInt(6) + 3;
 		stat.setText(Integer.toString(threeDeeSix));
-	}
-	/**
-	 * A list of races.
-	 */
-	private static final List<String> RACES = new ArrayList<>();
-	static {
-		RACES.add("dwarf");
-		RACES.add("elf");
-		RACES.add("gnome");
-		RACES.add("half-elf");
-		RACES.add("Danan");
-		// ESCA-JAVA0076:
-		while (RACES.size() < 20) {
-			RACES.add("human");
-		}
 	}
 	/**
 	 * The 'name' field.

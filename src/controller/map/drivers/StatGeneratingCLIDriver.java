@@ -23,6 +23,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import model.workermgmt.RaceFactory;
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
@@ -394,21 +395,6 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		}
 	}
 	/**
-	 * A list of races.
-	 */
-	private static final List<String> RACES = new ArrayList<>();
-	static {
-		RACES.add("dwarf");
-		RACES.add("elf");
-		RACES.add("gnome");
-		RACES.add("half-elf");
-		RACES.add("Danan");
-		// ESCA-JAVA0076:
-		while (RACES.size() < 20) {
-			RACES.add("human");
-		}
-	}
-	/**
 	 * Let the user create a randomly-generated worker.
 	 *
 	 * Each non-human race has a 1 in 20 chance of coming up; stats are all 3d6
@@ -423,7 +409,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return the generated worker
 	 */
 	private Worker createWorker(final IDFactory idf) throws IOException {
-		final String race = RACES.get(SingletonRandom.RANDOM.nextInt(RACES.size()));
+		final String race = RaceFactory.getRace();
 		final String name = helper.inputString("Worker is a " + race
 				+ ". Worker name: ");
 		final Worker retval = new Worker(name, race, idf.createID());
