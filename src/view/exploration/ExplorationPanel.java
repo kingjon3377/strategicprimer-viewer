@@ -71,9 +71,8 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 		addTileGUI(tilePanel, Direction.Southwest);
 		addTileGUI(tilePanel, Direction.South);
 		addTileGUI(tilePanel, Direction.Southeast);
-		final JSplitPane impl = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				headerPanel, tilePanel);
-		setCenter(impl);
+		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				headerPanel, tilePanel));
 		emodel.addPropertyChangeListener(this);
 	}
 	/**
