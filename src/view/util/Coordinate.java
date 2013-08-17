@@ -30,6 +30,6 @@ public class Coordinate {
 	 */
 	@Override
 	public String toString() {
-		return "[" + x + ", " + y + "]";
+		return '[' + Integer.toString(x) + ", " + Integer.toString(y) + ']';
 	}
 }

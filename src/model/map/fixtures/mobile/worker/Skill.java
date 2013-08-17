@@ -92,7 +92,7 @@ public class Skill implements XMLWritable, HasName, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return name + " (" + level + ")";
+		return name + " (" + Integer.toString(level) + ')';
 	}
 	/**
 	 * @param nomen the skill's new name

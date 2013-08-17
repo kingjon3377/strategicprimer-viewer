@@ -83,6 +83,6 @@ public class Point implements Comparable<Point>, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "(" + row + ", " + col + ")";
+		return '(' + Integer.toString(row) + ", " + Integer.toString(col) + ')';
 	}
 }

@@ -93,7 +93,7 @@ public class Job implements XMLWritable, Iterable<Skill>, HasName, Serializable 
 	 */
 	@Override
 	public String toString() {
-		return name + " (" + level + ")";
+		return name + " (" + Integer.toString(level) + ')';
 	}
 	/**
 	 * @param nomen the job's new name
