@@ -64,14 +64,11 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
 
-		final BorderedPanel unitPanel = new BorderedPanel();
 		final PlayerLabel plabel = new PlayerLabel("", source.getMap()
 				.getPlayers().getCurrentPlayer(), "'s Units:");
 		pch.addPropertyChangeListener(plabel);
-		unitPanel.setNorth(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
-		unitPanel.setCenter(new JScrollPane(tree));
 		final IDFactory idf = IDFactoryFiller.createFactory(source.getMap());
 		final JButton addWorkerButton = new JButton("Add worker to selected unit ...");
 		final NewWorkerListener nwl = new NewWorkerListener((IWorkerTreeModel) tree.getModel(), LOGGER);
@@ -85,38 +82,41 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				frame.setVisible(true);
 			}
 		});
-		unitPanel.setSouth(addWorkerButton);
-
-		final BorderedPanel jobsPanel = new BorderedPanel();
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		final AddRemovePanel sarp = new AddRemovePanel(false);
-		jobsPanel.setNorth(new JLabel(htmlize("Worker's Jobs and Skills:")));
 		final JTree jobsTree = new JobsTree(this, new PropertyChangeAdapter(
 				jarp, "add", "add_job"), new PropertyChangeAdapter(sarp, "add",
 				"add_skill"), tree);
-		jobsPanel.setCenter(new JScrollPane(jobsTree));
 		jobsTree.addPropertyChangeListener(this);
-		final BorderedPanel arpPanel = new BorderedPanel();
-		final BorderedPanel jarpPanel = new BorderedPanel();
-		jarpPanel.setNorth(new JLabel(htmlize("Add a job to the Worker:")));
-		jarpPanel.setSouth(jarp);
-		arpPanel.setNorth(jarpPanel);
-		final BorderedPanel sarpPanel = new BorderedPanel();
-		sarpPanel.setNorth(new JLabel(htmlize("Add a Skill to the selected Job:")));
-		sarpPanel.setSouth(sarp);
-		arpPanel.setSouth(sarpPanel);
-
-		final BorderedPanel skillSuperPanel = new BorderedPanel();
-		skillSuperPanel.setCenter(arpPanel);
-		skillSuperPanel.setSouth(new SkillAdvancementPanel(this, this));
-
-		final JSplitPane panelThree = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				true, jobsPanel, skillSuperPanel);
+		final JSplitPane panelThree = new JSplitPane(
+				JSplitPane.VERTICAL_SPLIT,
+				true,
+				new BorderedPanel().setNorth(
+						new JLabel(htmlize("Worker's Jobs and Skills:")))
+						.setCenter(new JScrollPane(jobsTree)),
+				new BorderedPanel()
+						.setCenter(
+								new BorderedPanel()
+										.setNorth(
+												new BorderedPanel()
+														.setNorth(
+																new JLabel(
+																		htmlize("Add a job to the Worker:")))
+														.setSouth(jarp))
+										.setSouth(
+												new BorderedPanel()
+														.setNorth(
+																new JLabel(
+																		htmlize("Add a Skill to the selected Job:")))
+														.setSouth(sarp)))
+						.setSouth(new SkillAdvancementPanel(this, this)));
 		panelThree.setResizeWeight(.3);
 		panelThree.setDividerLocation(HALF_WAY);
 
 		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				true, unitPanel, panelThree);
+				true, new BorderedPanel().setNorth(plabel)
+						.setCenter(new JScrollPane(tree))
+						.setSouth(addWorkerButton), panelThree);
 		jspThree.setResizeWeight(HALF_WAY);
 		jspThree.setDividerLocation(HALF_WAY);
 		setContentPane(jspThree);

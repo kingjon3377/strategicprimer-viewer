@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  */
 public class BorderedPanel extends JPanel {
 	/**
-	 * Constructor.
+	 * Constructor. TODO: Add a form that takes components as arguments.
 	 */
 	public BorderedPanel() {
 		super(new BorderLayout());

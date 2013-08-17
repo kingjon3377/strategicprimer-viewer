@@ -61,14 +61,11 @@ public class WorkerMgmtFrame extends JFrame {
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final JTree tree = new WorkerTree(model.getMap().getPlayers()
 				.getCurrentPlayer(), model, newUnitFrame, pch, model);
-		final BorderedPanel top = new BorderedPanel();
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPropertyChangeListener(plabel);
-		top.setNorth(plabel);
-		top.add(new JScrollPane(tree), BorderLayout.CENTER);
-		left.setTopComponent(top);
-		final BorderedPanel bottom = new BorderedPanel();
+		left.setTopComponent(new BorderedPanel().setNorth(plabel).setCenter(
+				new JScrollPane(tree)));
 		final JButton newUnitButton = new JButton("Add New Unit");
 		model.addPropertyChangeListener(newUnitFrame);
 		newUnitButton.addActionListener(new ActionListener() {
@@ -77,22 +74,19 @@ public class WorkerMgmtFrame extends JFrame {
 				newUnitFrame.setVisible(true);
 			}
 		});
-		bottom.setNorth(newUnitButton);
 		final OrdersPanel ordersPanel = new OrdersPanel();
 		tree.addTreeSelectionListener(ordersPanel);
-		bottom.setCenter(ordersPanel);
 		final JButton exportButton = new JButton("Export a proto-strategy from units' orders");
 		final Component outer = this;
 		final IWorkerModel smodel = model;
 		exportButton.addActionListener(new ExportButtonHandler(outer, smodel));
-		bottom.setSouth(exportButton);
-		left.setBottomComponent(bottom);
-		final BorderedPanel right = new BorderedPanel();
-		right.setNorth(new JLabel(
-				"A report on everything except your units and fortresses, for reference:"));
+		left.setBottomComponent(new BorderedPanel()
+				.setNorth(newUnitButton).setCenter(ordersPanel)
+				.setSouth(exportButton));
 		final JEditorPane report = new JEditorPane("text/html", ReportGenerator
 				.createAbbreviatedReport(model.getMap(), model.getMap().getPlayers().getCurrentPlayer()));
 		pch.addPropertyChangeListener(new PropertyChangeListener() {
+			// TODO: Make a named subclass
 			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if ("player".equalsIgnoreCase(evt.getPropertyName())
@@ -106,8 +100,14 @@ public class WorkerMgmtFrame extends JFrame {
 				}
 			}
 		});
-		right.setCenter(new JScrollPane(report));
-		final JSplitPane main = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
+		final JSplitPane main = new JSplitPane(
+				JSplitPane.HORIZONTAL_SPLIT,
+				left,
+				new BorderedPanel()
+						.setNorth(
+								new JLabel(
+										"A report on everything except your units and fortresses, for reference:"))
+						.setCenter(new JScrollPane(report)));
 		main.setDividerLocation(.5);
 		main.setResizeWeight(.5);
 		setContentPane(main);

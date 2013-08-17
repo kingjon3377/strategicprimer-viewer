@@ -47,15 +47,14 @@ public class AppChooserFrame extends JFrame {
 		super("SP App Chooser");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		final BorderedPanel contentPane = new BorderedPanel();
-		contentPane.setNorth(new JLabel("Please choose one of the applications below:"));
 		final List<String> parameters = Collections.unmodifiableList(params);
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", parameters, AdvancementStart.class));
 		buttonPanel.add(button("Unit Orders and Worker Management", parameters, WorkerStart.class));
-		contentPane.setCenter(new JScrollPane(buttonPanel));
-		setContentPane(contentPane);
+		setContentPane(new BorderedPanel().setNorth(
+				new JLabel("Please choose one of the applications below:"))
+				.setCenter(new JScrollPane(buttonPanel)));
 		pack();
 	}
 	/**

@@ -44,27 +44,28 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	public ExplorerSelectingPanel(final ExplorationModel emodel) {
 		model = emodel;
-		final BorderedPanel uspFirst = new BorderedPanel();
-		uspFirst.setNorth(new JLabel("Players in all maps:"));
 		playerList = new JList<>(new PlayerListModel(emodel));
 		playerList.addListSelectionListener(this);
-		uspFirst.setCenter(playerList);
-		final BorderedPanel uspSecond = new BorderedPanel();
-		uspSecond
-				.setNorth(new JLabel(
-						"<html><body><p>Units belonging to that player:</p>"
-								+ "<p>(Selected unit will be used for exploration.)</p></body></html>"));
 		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
-		uspSecond.setCenter(unitList);
-		final BorderedPanel mpPanel = new BorderedPanel();
-		mpPanel.setWest(new JLabel("Unit's Movement Points: "));
-		mpPanel.setEast(mpField);
 		final JButton explButton = new JButton(BUTTON_TEXT);
 		explButton.addActionListener(this);
-		mpPanel.setSouth(explButton);
-		uspSecond.setSouth(mpPanel);
 		final JSplitPane unitSelPanel = new JSplitPane(
-				JSplitPane.HORIZONTAL_SPLIT, uspFirst, uspSecond);
+				JSplitPane.HORIZONTAL_SPLIT,
+				new BorderedPanel()
+						.setNorth(new JLabel("Players in all maps:"))
+						.setCenter(playerList),
+				new BorderedPanel()
+						.setNorth(
+								new JLabel(// FIXME: Extract method to create this HTML
+										"<html><body><p>Units belonging to that player:</p>"
+												+ "<p>(Selected unit will be used for exploration.)</p></body></html>"))
+						.setCenter(unitList)
+						.setSouth(
+								new BorderedPanel()
+										.setWest(
+												new JLabel(
+														"Unit's Movement Points: "))
+										.setEast(mpField).setSouth(explButton)));
 		unitSelPanel.setDividerLocation(PROPORTION);
 		unitSelPanel.setResizeWeight(PROPORTION);
 		setCenter(unitSelPanel);

@@ -38,12 +38,9 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		race.setText(RACES.get(SingletonRandom.RANDOM.nextInt(RACES.size())));
 		idf = idFac;
 
-		final BorderedPanel contentPane = new BorderedPanel();
-
 		final JPanel textPanel = new JPanel(new GridLayout(0, 2));
 		addLabeledField(textPanel, "Worker Name:", name);
 		addLabeledField(textPanel, "Worker Race:", race);
-		contentPane.setNorth(textPanel);
 
 		final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
 		createStats();
@@ -55,7 +52,6 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		addLabeledField(statsPanel, "Wisdom:", wis);
 		addLabeledField(statsPanel, "Constitution:", con);
 		addLabeledField(statsPanel, "Charisma:", cha);
-		contentPane.setCenter(statsPanel);
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
 		final JButton ok = new JButton("Add Worker");
@@ -64,8 +60,8 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		final JButton cancel = new JButton("Cancel");
 		cancel.addActionListener(this);
 		buttonPanel.add(cancel);
-		contentPane.setSouth(buttonPanel);
-		setContentPane(contentPane);
+		setContentPane(new BorderedPanel().setNorth(textPanel)
+				.setCenter(statsPanel).setSouth(buttonPanel));
 		setMinimumSize(new Dimension(320, 240));
 		pack();
 	}

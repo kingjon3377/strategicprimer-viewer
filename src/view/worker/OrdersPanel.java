@@ -26,17 +26,15 @@ public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelecti
 	 * Constructor.
 	 */
 	public OrdersPanel() {
-		setNorth(new JLabel("Orders for current selection, if a unit:"));
-		setCenter(new JScrollPane(area));
 		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
-		final BorderedPanel buttonPanel = new BorderedPanel();
 		final JButton applyButton = new JButton("Apply");
 		applyButton.addActionListener(handler);
-		buttonPanel.setLineStart(applyButton);
 		final JButton revertButton = new JButton("Revert");
 		revertButton.addActionListener(handler);
-		buttonPanel.setLineEnd(revertButton);
-		setSouth(buttonPanel);
+		setNorth(new JLabel("Orders for current selection, if a unit:"))
+				.setCenter(new JScrollPane(area)).setSouth(
+						new BorderedPanel().setLineStart(applyButton)
+								.setLineEnd(revertButton));
 	}
 	/**
 	 * The current selection.
