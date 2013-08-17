@@ -29,6 +29,7 @@ import model.workermgmt.IWorkerTreeModel;
 import util.PropertyChangeAdapter;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
+import view.util.BorderedPanel;
 import view.util.SystemOut;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
@@ -63,19 +64,20 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
 
-		final JPanel unitPanel = new JPanel(new BorderLayout());
+		final BorderedPanel unitPanel = new BorderedPanel();
 		final PlayerLabel plabel = new PlayerLabel("", source.getMap()
 				.getPlayers().getCurrentPlayer(), "'s Units:");
 		pch.addPropertyChangeListener(plabel);
-		unitPanel.add(plabel, BorderLayout.NORTH);
+		unitPanel.setNorth(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
-		unitPanel.add(new JScrollPane(tree), BorderLayout.CENTER);
+		unitPanel.setCenter(new JScrollPane(tree));
 		final IDFactory idf = IDFactoryFiller.createFactory(source.getMap());
 		final JButton addWorkerButton = new JButton("Add worker to selected unit ...");
 		final NewWorkerListener nwl = new NewWorkerListener((IWorkerTreeModel) tree.getModel(), LOGGER);
 		tree.addPropertyChangeListener(nwl);
 		addWorkerButton.addActionListener(new ActionListener() {
+			// TODO: Add this functionality to NewWorkerListener
 			@Override
 			public void actionPerformed(final ActionEvent evt) {
 				final WorkerConstructionFrame frame = new WorkerConstructionFrame(idf);
@@ -83,30 +85,30 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				frame.setVisible(true);
 			}
 		});
-		unitPanel.add(addWorkerButton, BorderLayout.SOUTH);
+		unitPanel.setSouth(addWorkerButton);
 
-		final JPanel jobsPanel = new JPanel(new BorderLayout());
+		final BorderedPanel jobsPanel = new BorderedPanel();
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		final AddRemovePanel sarp = new AddRemovePanel(false);
-		jobsPanel.add(new JLabel(htmlize("Worker's Jobs and Skills:")), BorderLayout.NORTH);
+		jobsPanel.setNorth(new JLabel(htmlize("Worker's Jobs and Skills:")));
 		final JTree jobsTree = new JobsTree(this, new PropertyChangeAdapter(
 				jarp, "add", "add_job"), new PropertyChangeAdapter(sarp, "add",
 				"add_skill"), tree);
-		jobsPanel.add(new JScrollPane(jobsTree), BorderLayout.CENTER);
+		jobsPanel.setCenter(new JScrollPane(jobsTree));
 		jobsTree.addPropertyChangeListener(this);
-		final JPanel arpPanel = new JPanel(new BorderLayout());
-		final JPanel jarpPanel = new JPanel(new BorderLayout());
-		jarpPanel.add(new JLabel(htmlize("Add a job to the Worker:")), BorderLayout.NORTH);
-		jarpPanel.add(jarp, BorderLayout.SOUTH);
-		arpPanel.add(jarpPanel, BorderLayout.NORTH);
-		final JPanel sarpPanel = new JPanel(new BorderLayout());
-		sarpPanel.add(new JLabel(htmlize("Add a Skill to the selected Job:")), BorderLayout.NORTH);
-		sarpPanel.add(sarp, BorderLayout.SOUTH);
-		arpPanel.add(sarpPanel, BorderLayout.SOUTH);
+		final BorderedPanel arpPanel = new BorderedPanel();
+		final BorderedPanel jarpPanel = new BorderedPanel();
+		jarpPanel.setNorth(new JLabel(htmlize("Add a job to the Worker:")));
+		jarpPanel.setSouth(jarp);
+		arpPanel.setNorth(jarpPanel);
+		final BorderedPanel sarpPanel = new BorderedPanel();
+		sarpPanel.setNorth(new JLabel(htmlize("Add a Skill to the selected Job:")));
+		sarpPanel.setSouth(sarp);
+		arpPanel.setSouth(sarpPanel);
 
-		final JPanel skillSuperPanel = new JPanel(new BorderLayout());
-		skillSuperPanel.add(arpPanel, BorderLayout.CENTER);
-		skillSuperPanel.add(new SkillAdvancementPanel(this, this), BorderLayout.SOUTH);
+		final BorderedPanel skillSuperPanel = new BorderedPanel();
+		skillSuperPanel.setCenter(arpPanel);
+		skillSuperPanel.setSouth(new SkillAdvancementPanel(this, this));
 
 		final JSplitPane panelThree = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				true, jobsPanel, skillSuperPanel);

@@ -1,11 +1,9 @@
 package view.map.details;
 
-import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
@@ -13,6 +11,7 @@ import model.map.PlayerCollection;
 import model.map.Point;
 import util.PropertyChangeSource;
 import view.map.key.KeyPanel;
+import view.util.BorderedPanel;
 
 /**
  * A panel to show the details of a tile, using a tree rather than subpanels
@@ -57,16 +56,15 @@ public class DetailPanelNG extends JSplitPane {
 	/**
 	 * The panel containing the list.
 	 */
-	private static final class ListPanel extends JPanel {
+	private static final class ListPanel extends BorderedPanel {
 		/**
 		 * Constructor.
 		 * @param players the players in the map
 		 * @param sources PropertyChangeSources to pass to both members of the panel.
 		 */
 		ListPanel(final PlayerCollection players, final PropertyChangeSource... sources) {
-			super(new BorderLayout());
-			add(new HeaderLabel(sources), BorderLayout.NORTH);
-			add(new JScrollPane(new FixtureList(this, players, sources)), BorderLayout.CENTER);
+			setNorth(new HeaderLabel(sources));
+			setCenter(new JScrollPane(new FixtureList(this, players, sources)));
 		}
 	}
 	/**

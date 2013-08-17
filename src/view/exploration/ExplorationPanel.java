@@ -1,6 +1,5 @@
 package view.exploration;
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,11 +27,12 @@ import util.IsNumeric;
 import util.Pair;
 import util.PropertyChangeSupportSource;
 import view.map.details.FixtureList;
+import view.util.BorderedPanel;
 /**
  * A panel to let the user explore using a unit.
  * @author Jonathan Lovelace
  */
-public class ExplorationPanel extends JPanel implements ActionListener, PropertyChangeListener {
+public class ExplorationPanel extends BorderedPanel implements ActionListener, PropertyChangeListener {
 	/**
 	 * The exploration model.
 	 */
@@ -47,7 +47,7 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 	 * @param mpDoc the model underlying the remaining-MP text boxes.
 	 */
 	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
-		super(new BorderLayout());
+		super();
 		model = emodel;
 		final JPanel headerPanel = new JPanel();
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
@@ -73,7 +73,7 @@ public class ExplorationPanel extends JPanel implements ActionListener, Property
 		addTileGUI(tilePanel, Direction.Southeast);
 		final JSplitPane impl = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				headerPanel, tilePanel);
-		add(impl, BorderLayout.CENTER);
+		setCenter(impl);
 		emodel.addPropertyChangeListener(this);
 	}
 	/**

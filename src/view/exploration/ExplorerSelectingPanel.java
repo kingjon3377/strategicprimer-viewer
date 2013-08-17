@@ -1,13 +1,11 @@
 package view.exploration;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
@@ -20,12 +18,13 @@ import model.exploration.PlayerListModel;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 import util.PropertyChangeSource;
+import view.util.BorderedPanel;
 /**
  * The panel that lets the user select the unit to explore with.
  * @author Jonathan Lovelace
  *
  */
-public class ExplorerSelectingPanel extends JPanel implements
+public class ExplorerSelectingPanel extends BorderedPanel implements
 		ListSelectionListener, PropertyChangeSource, ActionListener {
 	/**
 	 * The proportion between the two sides.
@@ -44,33 +43,31 @@ public class ExplorerSelectingPanel extends JPanel implements
 	 * @param emodel the driver model
 	 */
 	public ExplorerSelectingPanel(final ExplorationModel emodel) {
-		super(new BorderLayout());
 		model = emodel;
-		final JPanel uspFirst = new JPanel(new BorderLayout());
-		uspFirst.add(new JLabel("Players in all maps:"), BorderLayout.NORTH);
+		final BorderedPanel uspFirst = new BorderedPanel();
+		uspFirst.setNorth(new JLabel("Players in all maps:"));
 		playerList = new JList<>(new PlayerListModel(emodel));
 		playerList.addListSelectionListener(this);
-		uspFirst.add(playerList, BorderLayout.CENTER);
-		final JPanel uspSecond = new JPanel(new BorderLayout());
+		uspFirst.setCenter(playerList);
+		final BorderedPanel uspSecond = new BorderedPanel();
 		uspSecond
-				.add(new JLabel(
+				.setNorth(new JLabel(
 						"<html><body><p>Units belonging to that player:</p>"
-								+ "<p>(Selected unit will be used for exploration.)</p></body></html>"),
-						BorderLayout.NORTH);
+								+ "<p>(Selected unit will be used for exploration.)</p></body></html>"));
 		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
-		uspSecond.add(unitList, BorderLayout.CENTER);
-		final JPanel mpPanel = new JPanel(new BorderLayout());
-		mpPanel.add(new JLabel("Unit's Movement Points: "), BorderLayout.WEST);
-		mpPanel.add(mpField, BorderLayout.EAST);
+		uspSecond.setCenter(unitList);
+		final BorderedPanel mpPanel = new BorderedPanel();
+		mpPanel.setWest(new JLabel("Unit's Movement Points: "));
+		mpPanel.setEast(mpField);
 		final JButton explButton = new JButton(BUTTON_TEXT);
 		explButton.addActionListener(this);
-		mpPanel.add(explButton, BorderLayout.SOUTH);
-		uspSecond.add(mpPanel, BorderLayout.SOUTH);
+		mpPanel.setSouth(explButton);
+		uspSecond.setSouth(mpPanel);
 		final JSplitPane unitSelPanel = new JSplitPane(
 				JSplitPane.HORIZONTAL_SPLIT, uspFirst, uspSecond);
 		unitSelPanel.setDividerLocation(PROPORTION);
 		unitSelPanel.setResizeWeight(PROPORTION);
-		add(unitSelPanel, BorderLayout.CENTER);
+		setCenter(unitSelPanel);
 	}
 	/**
 	 * The text-field containing the running MP total.

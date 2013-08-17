@@ -2,7 +2,6 @@ package view.worker;
 
 import static util.IsNumeric.isNumeric;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,6 +20,7 @@ import javax.swing.JTextField;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import util.SingletonRandom;
+import view.util.BorderedPanel;
 import controller.map.misc.IDFactory;
 /**
  * A window to let the user add a new worker.
@@ -35,14 +35,15 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 	public WorkerConstructionFrame(final IDFactory idFac) {
 		super("Create Worker");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLayout(new BorderLayout());
 		race.setText(RACES.get(SingletonRandom.RANDOM.nextInt(RACES.size())));
 		idf = idFac;
+
+		final BorderedPanel contentPane = new BorderedPanel();
 
 		final JPanel textPanel = new JPanel(new GridLayout(0, 2));
 		addLabeledField(textPanel, "Worker Name:", name);
 		addLabeledField(textPanel, "Worker Race:", race);
-		add(textPanel, BorderLayout.NORTH);
+		contentPane.setNorth(textPanel);
 
 		final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
 		createStats();
@@ -54,7 +55,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		addLabeledField(statsPanel, "Wisdom:", wis);
 		addLabeledField(statsPanel, "Constitution:", con);
 		addLabeledField(statsPanel, "Charisma:", cha);
-		add(statsPanel, BorderLayout.CENTER);
+		contentPane.setCenter(statsPanel);
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
 		final JButton ok = new JButton("Add Worker");
@@ -63,7 +64,8 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		final JButton cancel = new JButton("Cancel");
 		cancel.addActionListener(this);
 		buttonPanel.add(cancel);
-		add(buttonPanel, BorderLayout.SOUTH);
+		contentPane.setSouth(buttonPanel);
+		setContentPane(contentPane);
 		setMinimumSize(new Dimension(320, 240));
 		pack();
 	}

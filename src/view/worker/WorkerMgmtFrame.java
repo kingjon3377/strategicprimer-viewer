@@ -23,7 +23,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -35,6 +34,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
+import view.util.BorderedPanel;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
@@ -61,14 +61,14 @@ public class WorkerMgmtFrame extends JFrame {
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final JTree tree = new WorkerTree(model.getMap().getPlayers()
 				.getCurrentPlayer(), model, newUnitFrame, pch, model);
-		final JPanel top = new JPanel(new BorderLayout());
+		final BorderedPanel top = new BorderedPanel();
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPropertyChangeListener(plabel);
-		top.add(plabel, BorderLayout.NORTH);
+		top.setNorth(plabel);
 		top.add(new JScrollPane(tree), BorderLayout.CENTER);
 		left.setTopComponent(top);
-		final JPanel bottom = new JPanel(new BorderLayout());
+		final BorderedPanel bottom = new BorderedPanel();
 		final JButton newUnitButton = new JButton("Add New Unit");
 		model.addPropertyChangeListener(newUnitFrame);
 		newUnitButton.addActionListener(new ActionListener() {
@@ -77,21 +77,19 @@ public class WorkerMgmtFrame extends JFrame {
 				newUnitFrame.setVisible(true);
 			}
 		});
-		bottom.add(newUnitButton, BorderLayout.NORTH);
+		bottom.setNorth(newUnitButton);
 		final OrdersPanel ordersPanel = new OrdersPanel();
 		tree.addTreeSelectionListener(ordersPanel);
-		bottom.add(ordersPanel, BorderLayout.CENTER);
+		bottom.setCenter(ordersPanel);
 		final JButton exportButton = new JButton("Export a proto-strategy from units' orders");
 		final Component outer = this;
 		final IWorkerModel smodel = model;
 		exportButton.addActionListener(new ExportButtonHandler(outer, smodel));
-		bottom.add(exportButton, BorderLayout.SOUTH);
+		bottom.setSouth(exportButton);
 		left.setBottomComponent(bottom);
-		final JPanel right = new JPanel(new BorderLayout());
-		right.add(
-				new JLabel(
-						"A report on everything except your units and fortresses, for reference:"),
-				BorderLayout.NORTH);
+		final BorderedPanel right = new BorderedPanel();
+		right.setNorth(new JLabel(
+				"A report on everything except your units and fortresses, for reference:"));
 		final JEditorPane report = new JEditorPane("text/html", ReportGenerator
 				.createAbbreviatedReport(model.getMap(), model.getMap().getPlayers().getCurrentPlayer()));
 		pch.addPropertyChangeListener(new PropertyChangeListener() {
@@ -108,7 +106,7 @@ public class WorkerMgmtFrame extends JFrame {
 				}
 			}
 		});
-		right.add(new JScrollPane(report), BorderLayout.CENTER);
+		right.setCenter(new JScrollPane(report));
 		final JSplitPane main = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 		main.setDividerLocation(.5);
 		main.setResizeWeight(.5);

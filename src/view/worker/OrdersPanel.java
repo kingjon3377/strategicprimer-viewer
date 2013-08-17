@@ -1,10 +1,7 @@
 package view.worker;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.TreeSelectionEvent;
@@ -14,12 +11,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import model.map.fixtures.mobile.Unit;
 import view.util.ApplyButtonHandler;
 import view.util.Applyable;
+import view.util.BorderedPanel;
 /**
  * A panel for the user to enter a unit's orders.
  * @author Jonathan Lovelace
  *
  */
-public class OrdersPanel extends JPanel implements Applyable, TreeSelectionListener {
+public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelectionListener {
 	/**
 	 * The text area in which the user writes the orders.
 	 */
@@ -28,18 +26,17 @@ public class OrdersPanel extends JPanel implements Applyable, TreeSelectionListe
 	 * Constructor.
 	 */
 	public OrdersPanel() {
-		super(new BorderLayout());
-		add(new JLabel("Orders for current selection, if a unit:"), BorderLayout.NORTH);
-		add(new JScrollPane(area), BorderLayout.CENTER);
+		setNorth(new JLabel("Orders for current selection, if a unit:"));
+		setCenter(new JScrollPane(area));
 		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
-		final JPanel buttonPanel = new JPanel(new BorderLayout());
+		final BorderedPanel buttonPanel = new BorderedPanel();
 		final JButton applyButton = new JButton("Apply");
 		applyButton.addActionListener(handler);
-		buttonPanel.add(applyButton, BorderLayout.LINE_START);
+		buttonPanel.setLineStart(applyButton);
 		final JButton revertButton = new JButton("Revert");
 		revertButton.addActionListener(handler);
-		buttonPanel.add(revertButton, BorderLayout.LINE_END);
-		add(buttonPanel, BorderLayout.SOUTH);
+		buttonPanel.setLineEnd(revertButton);
+		setSouth(buttonPanel);
 	}
 	/**
 	 * The current selection.

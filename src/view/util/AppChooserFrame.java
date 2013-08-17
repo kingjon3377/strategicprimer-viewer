@@ -1,6 +1,5 @@
 package view.util;
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,15 +45,17 @@ public class AppChooserFrame extends JFrame {
 	 */
 	public AppChooserFrame(final List<String> params) {
 		super("SP App Chooser");
-		setLayout(new BorderLayout());
-		add(new JLabel("Please choose one of the applications below:"), BorderLayout.NORTH);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+		final BorderedPanel contentPane = new BorderedPanel();
+		contentPane.setNorth(new JLabel("Please choose one of the applications below:"));
 		final List<String> parameters = Collections.unmodifiableList(params);
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", parameters, AdvancementStart.class));
 		buttonPanel.add(button("Unit Orders and Worker Management", parameters, WorkerStart.class));
-		add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
+		contentPane.setCenter(new JScrollPane(buttonPanel));
+		setContentPane(contentPane);
 		pack();
 	}
 	/**
