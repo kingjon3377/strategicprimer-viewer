@@ -19,6 +19,7 @@ import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 import util.PropertyChangeSource;
 import view.util.BorderedPanel;
+import view.util.SplitWithWeights;
 /**
  * The panel that lets the user select the unit to explore with.
  * @author Jonathan Lovelace
@@ -49,14 +50,17 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
 		final JButton explButton = new JButton(BUTTON_TEXT);
 		explButton.addActionListener(this);
-		final JSplitPane unitSelPanel = new JSplitPane(
+		setCenter(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
+				PROPORTION,
+				PROPORTION,
 				new BorderedPanel()
 						.setNorth(new JLabel("Players in all maps:"))
 						.setCenter(playerList),
 				new BorderedPanel()
 						.setNorth(
-								new JLabel(// FIXME: Extract method to create this HTML
+								new JLabel(// FIXME: Extract method to create
+											// this HTML
 										"<html><body><p>Units belonging to that player:</p>"
 												+ "<p>(Selected unit will be used for exploration.)</p></body></html>"))
 						.setCenter(unitList)
@@ -65,10 +69,7 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 										.setWest(
 												new JLabel(
 														"Unit's Movement Points: "))
-										.setEast(mpField).setSouth(explButton)));
-		unitSelPanel.setDividerLocation(PROPORTION);
-		unitSelPanel.setResizeWeight(PROPORTION);
-		setCenter(unitSelPanel);
+										.setEast(mpField).setSouth(explButton))));
 	}
 	/**
 	 * The text-field containing the running MP total.

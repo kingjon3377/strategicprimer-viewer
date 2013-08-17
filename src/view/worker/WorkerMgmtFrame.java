@@ -1,6 +1,5 @@
 package view.worker;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -35,6 +34,7 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
 import view.util.BorderedPanel;
+import view.util.SplitWithWeights;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
@@ -52,9 +52,6 @@ public class WorkerMgmtFrame extends JFrame {
 	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Strategic Primer worker management");
 		setMinimumSize(new Dimension(640, 480));
-		final JSplitPane left = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-		left.setDividerLocation(0.7);
-		left.setResizeWeight(0.7);
 		final NewUnitDialog newUnitFrame = new NewUnitDialog(model.getMap()
 				.getPlayers().getCurrentPlayer(),
 				IDFactoryFiller.createFactory(model.getMap()));
@@ -64,8 +61,6 @@ public class WorkerMgmtFrame extends JFrame {
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPropertyChangeListener(plabel);
-		left.setTopComponent(new BorderedPanel().setNorth(plabel).setCenter(
-				new JScrollPane(tree)));
 		final JButton newUnitButton = new JButton("Add New Unit");
 		model.addPropertyChangeListener(newUnitFrame);
 		newUnitButton.addActionListener(new ActionListener() {
@@ -80,9 +75,6 @@ public class WorkerMgmtFrame extends JFrame {
 		final Component outer = this;
 		final IWorkerModel smodel = model;
 		exportButton.addActionListener(new ExportButtonHandler(outer, smodel));
-		left.setBottomComponent(new BorderedPanel()
-				.setNorth(newUnitButton).setCenter(ordersPanel)
-				.setSouth(exportButton));
 		final JEditorPane report = new JEditorPane("text/html", ReportGenerator
 				.createAbbreviatedReport(model.getMap(), model.getMap().getPlayers().getCurrentPlayer()));
 		pch.addPropertyChangeListener(new PropertyChangeListener() {
@@ -100,17 +92,20 @@ public class WorkerMgmtFrame extends JFrame {
 				}
 			}
 		});
-		final JSplitPane main = new JSplitPane(
+		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
-				left,
+				.5,
+				.5,
+				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, 0.7, 0.7,
+						new BorderedPanel().setNorth(plabel).setCenter(
+								new JScrollPane(tree)), new BorderedPanel()
+								.setNorth(newUnitButton).setCenter(ordersPanel)
+								.setSouth(exportButton)),
 				new BorderedPanel()
 						.setNorth(
 								new JLabel(
 										"A report on everything except your units and fortresses, for reference:"))
-						.setCenter(new JScrollPane(report)));
-		main.setDividerLocation(.5);
-		main.setResizeWeight(.5);
-		setContentPane(main);
+						.setCenter(new JScrollPane(report))));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
