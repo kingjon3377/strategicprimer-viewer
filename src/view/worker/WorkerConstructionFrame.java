@@ -19,8 +19,11 @@ import javax.swing.JTextField;
 
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import util.IsNumeric;
+import util.Pair;
 import util.SingletonRandom;
 import view.util.BorderedPanel;
+import view.util.ErrorShower;
 import controller.map.misc.IDFactory;
 /**
  * A window to let the user add a new worker.
@@ -66,20 +69,59 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		pack();
 	}
 	/**
+	 * @return an explanation of what's wrong with the user's input.
+	 */
+	private String getErrorExpl() {
+		final StringBuilder builder = new StringBuilder();
+		if (name.getText().trim().isEmpty()) {
+			builder.append("Worker needs a name.\n");
+		}
+		if (race.getText().trim().isEmpty()) {
+			builder.append("Worker needs a race.\n");
+		}
+		builder.append(numericExpl(Pair.of(hpBox.getText(), "HP"),
+				Pair.of(maxHP.getText(), "Max HP"),
+				Pair.of(str.getText(), "Strength"),
+				Pair.of(dex.getText(), "Dexterity"),
+				Pair.of(con.getText(), "Constitution"),
+				Pair.of(intel.getText(), "Intelligence"),
+				Pair.of(wis.getText(), "Wisdom"),
+				Pair.of(cha.getText(), "Charisma")));
+		return builder.toString();
+	}
+
+	/**
+	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what
+	 *        they represent. If any is nonnumeric, the return String includes
+	 *        "such-and-such must be a number."
+	 * @return such an explanation
+	 */
+	@SafeVarargs
+	private static String numericExpl(final Pair<String, String>... numbers) {
+		final StringBuilder builder = new StringBuilder();
+		for (final Pair<String, String> number : numbers) {
+			if (!IsNumeric.isNumeric(number.first().trim())) {
+				builder.append(number.second());
+				builder.append(" must be a number.\n");
+			}
+		}
+		return builder.toString();
+	}
+	/**
 	 * Handle button presses.
 	 * @param evt the action to handle.
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent evt) {
 		if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
-			if (name.getText().isEmpty()
-					|| race.getText().isEmpty()
-					|| anyNonNumeric(hpBox.getText(), maxHP.getText(),
-							str.getText(), dex.getText(), con.getText(),
-							intel.getText(), wis.getText(), cha.getText())) {
-				// TODO: Report the error to the user
+			if (name.getText().trim().isEmpty()
+					|| race.getText().trim().isEmpty()
+					|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText().trim(),
+							str.getText().trim(), dex.getText().trim(), con.getText().trim(),
+							intel.getText().trim(), wis.getText().trim(), cha.getText().trim())) {
+				ErrorShower.showErrorDialog(this, getErrorExpl());
 			} else {
-				final Worker retval = new Worker(name.getText(), race.getText(), idf.createID());
+				final Worker retval = new Worker(name.getText().trim(), race.getText().trim(), idf.createID());
 				retval.setStats(new WorkerStats(parseInt(hpBox),
 						parseInt(maxHP), parseInt(str), parseInt(dex),
 						parseInt(con), parseInt(intel), parseInt(wis),
@@ -98,7 +140,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 	 * @return the integer value of its text
 	 */
 	private static int parseInt(final JTextField box) {
-		return Integer.parseInt(box.getText());
+		return Integer.parseInt(box.getText().trim());
 	}
 	/**
 	 * @param strings a collection of strings
