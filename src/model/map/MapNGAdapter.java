@@ -42,7 +42,8 @@ public class MapNGAdapter implements IMapNG {
 				if (!state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
-					out.println("Extra player " + player);
+					out.print("Extra player ");
+					out.println(player);
 				}
 			}
 			for (Point point : obj.locations()) {
@@ -68,28 +69,38 @@ public class MapNGAdapter implements IMapNG {
 		if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))) { // NOPMD
 			// return false;
 			retval = false;
-			out.println("Tile types differ at " + point);
+			out.print("Tile types differ at ");
+			out.println(point);
 		} else if (isMountainous(point) != obj.isMountainous(point)) { // NOPMD
 			// return false;
 			retval = false;
-			out.println("Reports of mountains differ at " + point);
+			out.print("Reports of mountains differ at ");
+			out.println(point);
 		} else if (!areRiversSubset(getRivers(point), obj.getRivers(point))) { // NOPMD
 			retval = false;
-			out.println("Extra rivers at " + point);
+			out.print("Extra rivers at ");
+			out.println(point);
 		} else if (!getForest(point).equals(obj.getForest(point))) { // NOPMD
 			// return false;
 			retval = false;
-			out.println("Primary forests differ at " + point + ", may be representation error");
+			out.print("Primary forests differ at ");
+			out.print(point);
+			out.println(", may be representation error");
 		} else if (!getGround(point).equals(obj.getGround(point))) { // NOPMD
 			// return false;
 			retval = false;
-			out.println("Primary Ground differs at " + point + ", may be representation error");
+			out.print("Primary Ground differs at ");
+			out.print(point);
+			out.println(", may be representation error");
 		} else {
 			for (TileFixture fix : obj.getOtherFixtures(point)) {
 				if (!state.getTile(point).getContents().contains(fix) && !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
-					out.println("Extra fixture " + fix + " at " + point);
+					out.print("Extra fixture ");
+					out.print(fix);
+					out.print(" at ");
+					out.println(point);
 				}
 			}
 		}

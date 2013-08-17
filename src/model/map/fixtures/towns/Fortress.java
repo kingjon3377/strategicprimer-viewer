@@ -183,7 +183,10 @@ public class Fortress implements HasImage,
 			// TODO: Differences between _versions_ of a unit
 			temp.removeAll(units);
 			for (final Unit unit : temp) {
-				out.println("Extra unit in fortress " + getName() + ":\t" + unit.toString());
+				out.print("Extra unit in fortress ");
+				out.print(getName());
+				out.print(":\t");
+				out.println(unit.toString());
 			}
 			return temp.isEmpty(); // NOPMD
 		} else {

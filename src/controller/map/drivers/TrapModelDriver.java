@@ -199,7 +199,9 @@ public class TrapModelDriver implements ISPDriver {
 			// ESCA-JAVA0177:
 			final int retval; // NOPMD
 			if (fixtures.get(0) instanceof Animal) {
-				ostream.println("Found either " + fixtures.get(0).toString() + " or evidence of it escaping.");
+				ostream.print("Found either ");
+				ostream.print(fixtures.get(0).toString());
+				ostream.println(" or evidence of it escaping.");
 				retval = helper.inputNumber("How long to check and deal with animal? ");
 			} else {
 				ostream.println("Nothing in the trap");

@@ -67,8 +67,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			if (fix instanceof Forest) {
 				if (!hasForest) {
 					hasForest = true;
-					builder.append(", forested with "
-							+ ((Forest) fix).getKind());
+					builder.append(", forested with ").append(
+							((Forest) fix).getKind());
 				}
 				fixtures.remove(Integer.valueOf(fix.getID()));
 			} else if (fix instanceof Mountain) {

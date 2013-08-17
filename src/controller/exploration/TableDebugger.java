@@ -82,10 +82,15 @@ public class TableDebugger {
 			final PrintStream out, final Set<EncounterTable> set)
 			throws MissingTableException {
 		if (set.contains(table)) {
-			out.println("table " + tableName
-					+ " is already on the stack, skipping ...");
-			out.println("The cause was: " + before + "#" + tableName + "#"
-					+ after);
+			out.print("table ");
+			out.print(tableName);
+			out.println(" is already on the stack, skipping ...");
+			out.print("The cause was: ");
+			out.print(before);
+			out.print('#');
+			out.print(tableName);
+			out.print('#');
+			out.println(after);
 			return;
 		} else {
 			set.add(table);
