@@ -57,22 +57,32 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 		mpField = new JTextField(mpDoc, null, 5);
 		// TODO: store the reference to the document, not the text field, in the class body.
 		headerPanel.add(mpField);
-		/**
-		 * TODO: Make the tilePanel and its logic a separate class.
-		 */
-		final JPanel tilePanel = new JPanel(new GridLayout(3, 12, 2, 2));
-		addTileGUI(tilePanel, Direction.Northwest);
-		addTileGUI(tilePanel, Direction.North);
-		addTileGUI(tilePanel, Direction.Northeast);
-		addTileGUI(tilePanel, Direction.West);
-		addTileGUI(tilePanel, Direction.Nowhere);
-		addTileGUI(tilePanel, Direction.East);
-		addTileGUI(tilePanel, Direction.Southwest);
-		addTileGUI(tilePanel, Direction.South);
-		addTileGUI(tilePanel, Direction.Southeast);
-		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				headerPanel, tilePanel));
+		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
+				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
 		emodel.addPropertyChangeListener(this);
+	}
+	/**
+	 * Set up the GUI for the surrounding tiles.
+	 * @param panel the panel to add them all to.
+	 * @return it
+	 */
+	private JPanel setupTilesGUI(final JPanel panel) {
+		return setupTilesGUIImpl(panel, Direction.Northwest, Direction.North,
+				Direction.Northeast, Direction.West, Direction.Nowhere,
+				Direction.East, Direction.Southwest, Direction.South,
+				Direction.Southeast);
+	}
+	/**
+	 * Set up the GUI for multiple tiles.
+	 * @param panel the panel to add them all to.
+	 * @param directions the directions to create GUIs for
+	 * @return the panel
+	 */
+	private JPanel setupTilesGUIImpl(final JPanel panel, final Direction... directions) {
+		for (final Direction direction : directions) {
+			addTileGUI(panel, direction);
+		}
+		return panel;
 	}
 	/**
 	 * Handle a button press.
