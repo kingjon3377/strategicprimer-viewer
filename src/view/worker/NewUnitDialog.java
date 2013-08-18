@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -16,6 +14,7 @@ import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 import util.PropertyChangeSource;
 import view.util.BoxPanel;
+import view.util.ListenedButton;
 import controller.map.misc.IDFactory;
 
 /**
@@ -55,8 +54,8 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 		contentPane.add(kindPanel);
 
 		final BoxPanel buttonPanel = new BoxPanel(true);
-		buttonPanel.add(listen(new JButton("OK")));
-		buttonPanel.add(listen(new JButton("Cancel")));
+		buttonPanel.add(new ListenedButton("OK", this));
+		buttonPanel.add(new ListenedButton("Cancel", this));
 		contentPane.add(buttonPanel);
 
 		setContentPane(contentPane);
@@ -81,14 +80,6 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 	 * The field to let the user give the kind of unit.
 	 */
 	private final JTextField kindField = new JTextField(10);
-	/**
-	 * @param button a button
-	 * @return it after adding us as an action listener to it.
-	 */
-	private AbstractButton listen(final AbstractButton button) {
-		button.addActionListener(this);
-		return button;
-	}
 	/**
 	 * @param evt the event to handle
 	 */

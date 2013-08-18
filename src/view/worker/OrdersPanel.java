@@ -1,6 +1,5 @@
 package view.worker;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -12,6 +11,7 @@ import model.map.fixtures.mobile.Unit;
 import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.BorderedPanel;
+import view.util.ListenedButton;
 /**
  * A panel for the user to enter a unit's orders.
  * @author Jonathan Lovelace
@@ -27,14 +27,12 @@ public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelecti
 	 */
 	public OrdersPanel() {
 		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
-		final JButton applyButton = new JButton("Apply");
-		applyButton.addActionListener(handler);
-		final JButton revertButton = new JButton("Revert");
-		revertButton.addActionListener(handler);
 		setNorth(new JLabel("Orders for current selection, if a unit:"))
 				.setCenter(new JScrollPane(area)).setSouth(
-						new BorderedPanel().setLineStart(applyButton)
-								.setLineEnd(revertButton));
+						new BorderedPanel().setLineStart(
+								new ListenedButton("Apply", handler))
+								.setLineEnd(
+										new ListenedButton("Revert", handler)));
 	}
 	/**
 	 * The current selection.

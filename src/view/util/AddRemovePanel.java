@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -37,9 +36,9 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 		setLayout(layout);
 		setPanelSizes(this);
 		final BoxPanel first = new BoxPanel(true);
-		first.add(listen(new JButton("+")));
+		first.add(new ListenedButton("+", this));
 		if (removalPossible) {
-			first.add(listen(new JButton("-")));
+			first.add(new ListenedButton("-", this));
 		}
 		setPanelSizes(first);
 		add(first);
@@ -48,8 +47,8 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 		field.addActionListener(this);
 		field.setActionCommand("OK");
 		final BoxPanel okPanel = new BoxPanel(true);
-		okPanel.add(listen(new JButton("OK")));
-		okPanel.add(listen(new JButton("Cancel")));
+		okPanel.add(new ListenedButton("OK", this));
+		okPanel.add(new ListenedButton("Cancel", this));
 		second.add(okPanel);
 		setPanelSizes(second);
 		add(second);
@@ -66,15 +65,6 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 		panel.setMinimumSize(new Dimension(60, 40));
 		panel.setPreferredSize(new Dimension(80, MAX_HEIGHT));
 		panel.setMaximumSize(new Dimension(90, MAX_HEIGHT));
-	}
-	/**
-	 * Listen to a button.
-	 * @param button the button to listen to
-	 * @return it
-	 */
-	private JButton listen(final JButton button) {
-		button.addActionListener(this);
-		return button;
 	}
 	/**
 	 * @param evt the event to handle

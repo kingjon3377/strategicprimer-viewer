@@ -35,9 +35,8 @@ public class AppChooserFrame extends JFrame {
 	 */
 	private JButton button(final String desc, final List<String> params,
 			final Class<? extends ISPDriver> target) {
-		final JButton button = new JButton(desc);
-		button.addActionListener(new AppChoiceListener(target, params, this));
-		return button;
+		return new ListenedButton(desc, new AppChoiceListener(
+				target, params, this));
 	}
 	/**
 	 * Constructor.

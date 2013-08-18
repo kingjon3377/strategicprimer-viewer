@@ -5,7 +5,6 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -23,6 +22,7 @@ import model.viewer.PointIterator;
 import util.IsNumeric;
 import util.IteratorWrapper;
 import view.util.BoxPanel;
+import view.util.ListenedButton;
 import view.util.SystemOut;
 /**
  * A dialog to let the user find fixtures by ID, name, or "kind".
@@ -73,13 +73,9 @@ public class FindDialog extends JDialog implements ActionListener {
 
 		final BoxPanel buttonPanel = new BoxPanel(true);
 		buttonPanel.addGlue();
-		final JButton okButton = new JButton("OK");
-		okButton.addActionListener(this);
-		buttonPanel.add(okButton);
+		buttonPanel.add(new ListenedButton("OK", this));
 		buttonPanel.addGlue();
-		final JButton cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(this);
-		buttonPanel.add(cancelButton);
+		buttonPanel.add(new ListenedButton("Cancel", this));
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		setContentPane(contentPane);

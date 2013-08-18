@@ -8,7 +8,6 @@ import java.beans.PropertyChangeListener;
 import java.util.EnumMap;
 import java.util.Iterator;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +28,7 @@ import util.PropertyChangeSupportSource;
 import view.map.details.FixtureList;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
+import view.util.ListenedButton;
 /**
  * A panel to let the user explore using a unit.
  * @author Jonathan Lovelace
@@ -51,12 +51,11 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 		super();
 		model = emodel;
 		final BoxPanel headerPanel = new BoxPanel(true);
-		final JButton backButton = new JButton(BACK_TEXT);
-		backButton.addActionListener(this);
-		headerPanel.add(backButton);
+		headerPanel.add(new ListenedButton(BACK_TEXT, this));
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpField = new JTextField(mpDoc, null, 5);
+		// TODO: store the reference to the document, not the text field, in the class body.
 		headerPanel.add(mpField);
 		/**
 		 * TODO: Make the tilePanel and its logic a separate class.

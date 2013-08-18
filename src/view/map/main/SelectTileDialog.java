@@ -5,7 +5,6 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -15,6 +14,7 @@ import model.map.PointFactory;
 import model.viewer.IViewerModel;
 import util.IsNumeric;
 import view.util.BoxPanel;
+import view.util.ListenedButton;
 
 /**
  * A dialog to let the user select a tile by coordinates.
@@ -75,13 +75,9 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		errorLabel.setAlignmentY(LEFT_ALIGNMENT);
 		final BoxPanel buttonPanel = new BoxPanel(true);
 		buttonPanel.addGlue();
-		final JButton okButton = new JButton("OK");
-		okButton.addActionListener(this);
-		buttonPanel.add(okButton);
+		buttonPanel.add(new ListenedButton("OK", this));
 		buttonPanel.addGlue();
-		final JButton cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(this);
-		buttonPanel.add(cancelButton);
+		buttonPanel.add(new ListenedButton("Cancel", this));
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		setContentPane(contentPane);

@@ -7,7 +7,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,6 +27,7 @@ import util.PropertyChangeAdapter;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
+import view.util.ListenedButton;
 import view.util.SystemOut;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
@@ -68,18 +68,8 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
 		final IDFactory idf = IDFactoryFiller.createFactory(source.getMap());
-		final JButton addWorkerButton = new JButton("Add worker to selected unit ...");
 		final NewWorkerListener nwl = new NewWorkerListener((IWorkerTreeModel) tree.getModel(), LOGGER);
 		tree.addPropertyChangeListener(nwl);
-		addWorkerButton.addActionListener(new ActionListener() {
-			// TODO: Add this functionality to NewWorkerListener
-			@Override
-			public void actionPerformed(final ActionEvent evt) {
-				final WorkerConstructionFrame frame = new WorkerConstructionFrame(idf);
-				frame.addPropertyChangeListener(nwl);
-				frame.setVisible(true);
-			}
-		});
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		final AddRemovePanel sarp = new AddRemovePanel(false);
 		final JTree jobsTree = new JobsTree(this, new PropertyChangeAdapter(
@@ -114,7 +104,17 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				true, new BorderedPanel().setNorth(plabel)
 						.setCenter(new JScrollPane(tree))
-						.setSouth(addWorkerButton), panelThree);
+						.setSouth(new ListenedButton(
+								"Add worker to selected unit ...", new ActionListener() {
+									// TODO: Add this functionality to NewWorkerListener
+									@Override
+									public void actionPerformed(final ActionEvent evt) {
+										final WorkerConstructionFrame frame = new WorkerConstructionFrame(
+												idf);
+										frame.addPropertyChangeListener(nwl);
+										frame.setVisible(true);
+									}
+								})), panelThree);
 		jspThree.setResizeWeight(HALF_WAY);
 		jspThree.setDividerLocation(HALF_WAY);
 		setContentPane(jspThree);

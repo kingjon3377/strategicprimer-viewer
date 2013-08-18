@@ -17,7 +17,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -34,6 +33,7 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
 import view.util.BorderedPanel;
+import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
@@ -61,20 +61,11 @@ public class WorkerMgmtFrame extends JFrame {
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPropertyChangeListener(plabel);
-		final JButton newUnitButton = new JButton("Add New Unit");
 		model.addPropertyChangeListener(newUnitFrame);
-		newUnitButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent evt) {
-				newUnitFrame.setVisible(true);
-			}
-		});
 		final OrdersPanel ordersPanel = new OrdersPanel();
 		tree.addTreeSelectionListener(ordersPanel);
-		final JButton exportButton = new JButton("Export a proto-strategy from units' orders");
 		final Component outer = this;
 		final IWorkerModel smodel = model;
-		exportButton.addActionListener(new ExportButtonHandler(outer, smodel));
 		final JEditorPane report = new JEditorPane("text/html", ReportGenerator
 				.createAbbreviatedReport(model.getMap(), model.getMap().getPlayers().getCurrentPlayer()));
 		pch.addPropertyChangeListener(new PropertyChangeListener() {
@@ -99,8 +90,23 @@ public class WorkerMgmtFrame extends JFrame {
 				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, 0.7, 0.7,
 						new BorderedPanel().setNorth(plabel).setCenter(
 								new JScrollPane(tree)), new BorderedPanel()
-								.setNorth(newUnitButton).setCenter(ordersPanel)
-								.setSouth(exportButton)),
+								.setNorth(
+										new ListenedButton("Add New Unit",
+												new ActionListener() {
+											// TODO: move to named class to improve code readability.
+													@Override
+													public void actionPerformed(
+															final ActionEvent evt) {
+														newUnitFrame
+																.setVisible(true);
+													}
+												}))
+								.setCenter(ordersPanel)
+								.setSouth(
+										new ListenedButton(
+												"Export a proto-strategy from units' orders",
+												new ExportButtonHandler(outer,
+														smodel)))),
 				new BorderedPanel()
 						.setNorth(
 								new JLabel(

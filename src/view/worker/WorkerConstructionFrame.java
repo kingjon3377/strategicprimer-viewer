@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +22,7 @@ import util.Pair;
 import util.SingletonRandom;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
+import view.util.ListenedButton;
 import controller.map.misc.IDFactory;
 /**
  * A window to let the user add a new worker.
@@ -56,12 +56,8 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		addLabeledField(statsPanel, "Charisma:", cha);
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
-		final JButton ok = new JButton("Add Worker");
-		ok.addActionListener(this);
-		buttonPanel.add(ok);
-		final JButton cancel = new JButton("Cancel");
-		cancel.addActionListener(this);
-		buttonPanel.add(cancel);
+		buttonPanel.add(new ListenedButton("Add Worker", this));
+		buttonPanel.add(new ListenedButton("Cancel", this));
 		setContentPane(new BorderedPanel().setNorth(textPanel)
 				.setCenter(statsPanel).setSouth(buttonPanel));
 		setMinimumSize(new Dimension(320, 240));

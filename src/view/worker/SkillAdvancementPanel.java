@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -16,6 +15,7 @@ import model.map.fixtures.mobile.worker.Skill;
 import util.PropertyChangeSource;
 import util.SingletonRandom;
 import view.util.BoxPanel;
+import view.util.ListenedButton;
 /**
  * A panel to let a user add hours to a skill.
  * @author Jonathan Lovelace
@@ -63,10 +63,10 @@ public class SkillAdvancementPanel extends BoxPanel implements
 		add(one);
 		final JPanel two = new JPanel();
 		two.setLayout(new FlowLayout());
-		two.add(listen(new JButton("OK")));
+		two.add(new ListenedButton("OK", this));
 		hours.setActionCommand("OK");
 		hours.addActionListener(this);
-		two.add(listen(new JButton("Cancel")));
+		two.add(new ListenedButton("Cancel", this));
 		add(two);
 		for (PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(this);
@@ -74,15 +74,6 @@ public class SkillAdvancementPanel extends BoxPanel implements
 		setMinimumSize(new Dimension(200, 40));
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
-	}
-	/**
-	 * Set this as a listener on a button.
-	 * @param button the button
-	 * @return the button
-	 */
-	private JButton listen(final JButton button) {
-		button.addActionListener(this);
-		return button;
 	}
 	/**
 	 * Handle a button press.

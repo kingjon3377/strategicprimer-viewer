@@ -3,7 +3,6 @@ package view.exploration;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JSplitPane;
@@ -19,6 +18,7 @@ import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 import util.PropertyChangeSource;
 import view.util.BorderedPanel;
+import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 /**
  * The panel that lets the user select the unit to explore with.
@@ -48,8 +48,6 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 		playerList = new JList<>(new PlayerListModel(emodel));
 		playerList.addListSelectionListener(this);
 		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
-		final JButton explButton = new JButton(BUTTON_TEXT);
-		explButton.addActionListener(this);
 		setCenter(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
 				PROPORTION,
@@ -69,7 +67,7 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 										.setWest(
 												new JLabel(
 														"Unit's Movement Points: "))
-										.setEast(mpField).setSouth(explButton))));
+										.setEast(mpField).setSouth(new ListenedButton(BUTTON_TEXT, this)))));
 	}
 	/**
 	 * The text-field containing the running MP total.
