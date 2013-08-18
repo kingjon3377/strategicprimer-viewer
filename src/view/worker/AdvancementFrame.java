@@ -78,20 +78,10 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				jarp, "add", "add_job"), new PropertyChangeAdapter(sarp, "add",
 				"add_skill"), tree);
 		jobsTree.addPropertyChangeListener(this);
-		final JSplitPane panelThree = new SplitWithWeights(
-				JSplitPane.VERTICAL_SPLIT,
-				HALF_WAY, .3,
-				new BorderedPanel(new JScrollPane(jobsTree), new JLabel(
-						htmlize("Worker's Jobs and Skills:")), null, null, null),
-				new BorderedPanel(new BorderedPanel(null, new BorderedPanel(
-						null, new JLabel(htmlize("Add a job to the Worker:")),
-						jarp, null, null), new BorderedPanel(null, new JLabel(
-						htmlize("Add a Skill to the selected Job:")), sarp,
-						null, null), null, null), null,
-						new SkillAdvancementPanel(this, this), null, null));
-		// TODO: Inline both of these panels.
-		final JSplitPane jspThree = new SplitWithWeights(
-				JSplitPane.HORIZONTAL_SPLIT, HALF_WAY, HALF_WAY,
+		setContentPane(new SplitWithWeights(
+				JSplitPane.HORIZONTAL_SPLIT,
+				HALF_WAY,
+				HALF_WAY,
 				new BorderedPanel(new JScrollPane(tree), plabel,
 						new ListenedButton("Add worker to selected unit ...",
 								new ActionListener() {
@@ -105,8 +95,30 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 										frame.addPropertyChangeListener(nwl);
 										frame.setVisible(true);
 									}
-								}), null, null), panelThree);
-		setContentPane(jspThree);
+								}), null, null),
+				new SplitWithWeights(
+						JSplitPane.VERTICAL_SPLIT,
+						HALF_WAY,
+						.3,
+						new BorderedPanel(
+								new JScrollPane(jobsTree),
+								new JLabel(htmlize("Worker's Jobs and Skills:")),
+								null, null, null),
+						new BorderedPanel(
+								new BorderedPanel(
+										null,
+										new BorderedPanel(
+												null,
+												new JLabel(
+														htmlize("Add a job to the Worker:")),
+												jarp, null, null),
+										new BorderedPanel(
+												null,
+												new JLabel(
+														htmlize("Add a Skill to the selected Job:")),
+												sarp, null, null), null, null),
+								null, new SkillAdvancementPanel(this, this),
+								null, null))));
 
 		addPropertyChangeListener(this);
 		firePropertyChange("map", null, null);
