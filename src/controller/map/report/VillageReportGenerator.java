@@ -71,6 +71,9 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return new StringBuilder(atPoint(loc))
 				.append(item.getName())
+				.append(", a(n) ")
+				.append(item.getRace())
+				.append(" village")
 				.append(item.getOwner().isIndependent() ? ", independent"
 						: ", sworn to " + playerNameOrYou(item.getOwner()))
 				.toString();
