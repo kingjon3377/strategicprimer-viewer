@@ -77,15 +77,8 @@ public class WorkerMgmtFrame extends JFrame {
 						new BorderedPanel(new JScrollPane(tree), plabel, null,
 								null, null),
 						new BorderedPanel(ordersPanel, new ListenedButton(
-								"Add New Unit", new ActionListener() {
-									// TODO: move to named class to improve code
-									// readability.
-									@Override
-									public void actionPerformed(
-											final ActionEvent evt) {
-										newUnitFrame.setVisible(true);
-									}
-								}), new ListenedButton(
+								"Add New Unit", new WindowShower(newUnitFrame,
+										"Add New Unit")), new ListenedButton(
 								"Export a proto-strategy from units' orders",
 								new ExportButtonHandler(outer, smodel)), null,
 								null)),
@@ -98,6 +91,39 @@ public class WorkerMgmtFrame extends JFrame {
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
+	}
+	/**
+	 * A listener to show a window on button press.
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private static final class WindowShower implements ActionListener {
+		/**
+		 * The window to show.
+		 */
+		private final JFrame frame;
+		/**
+		 * The button to listen for.
+		 */
+		private final String action;
+		/**
+		 * @param window the window to show
+		 * @param buttonText the button to listen for.
+		 */
+		WindowShower(final JFrame window, final String buttonText) {
+			frame = window;
+			action = buttonText;
+		}
+		/**
+		 * Handle button press.
+		 * @param evt the event to handle
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent evt) {
+			if (action.equals(evt.getActionCommand())) {
+				frame.setVisible(true);
+			}
+		}
 	}
 	/**
 	 * A class to update the report when a new map is loaded.
