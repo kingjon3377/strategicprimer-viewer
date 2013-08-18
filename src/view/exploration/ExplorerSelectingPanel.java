@@ -52,22 +52,39 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 				JSplitPane.HORIZONTAL_SPLIT,
 				PROPORTION,
 				PROPORTION,
-				new BorderedPanel()
-						.setNorth(new JLabel("Players in all maps:"))
+				new BorderedPanel().setNorth(label("Players in all maps:"))
 						.setCenter(playerList),
 				new BorderedPanel()
 						.setNorth(
-								new JLabel(// FIXME: Extract method to create
-											// this HTML
-										"<html><body><p>Units belonging to that player:</p>"
-												+ "<p>(Selected unit will be used for exploration.)</p></body></html>"))
+								label(html("Units belonging to that player:",
+										"(Selected unit will be used for exploration.)")))
 						.setCenter(unitList)
 						.setSouth(
 								new BorderedPanel()
 										.setWest(
-												new JLabel(
-														"Unit's Movement Points: "))
-										.setEast(mpField).setSouth(new ListenedButton(BUTTON_TEXT, this)))));
+												label("Unit's Movement Points: "))
+										.setEast(mpField)
+										.setSouth(
+												new ListenedButton(BUTTON_TEXT,
+														this)))));
+	}
+	/**
+	 * @param string a String
+	 * @return a JLabel with that string on it
+	 */
+	private static JLabel label(final String string) {
+		return new JLabel(string);
+	}
+	/**
+	 * @param paras Strings, each of which should be put in its own paragraph.
+	 * @return them wrapped in HTML.
+	 */
+	private static String html(final String... paras) {
+		final StringBuilder builder = new StringBuilder("<html><body>");
+		for (final String para : paras) {
+			builder.append("<p>").append(para).append("</p>");
+		}
+		return builder.append("</body></html>").toString();
 	}
 	/**
 	 * The text-field containing the running MP total.
