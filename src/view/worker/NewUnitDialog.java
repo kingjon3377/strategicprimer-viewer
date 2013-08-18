@@ -1,6 +1,7 @@
 package view.worker;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -13,7 +14,6 @@ import javax.swing.JTextField;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 import util.PropertyChangeSource;
-import view.util.BoxPanel;
 import view.util.ListenedButton;
 import controller.map.misc.IDFactory;
 
@@ -33,31 +33,23 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 	 */
 	public NewUnitDialog(final Player player, final IDFactory idFactory) {
 		super("Add a new unit");
-		// TODO: Refactor using GridLayout?
-		final BoxPanel contentPane = new BoxPanel(false);
+		setLayout(new GridLayout(0, 2));
 
 		owner = player;
 		idf = idFactory;
 
-		final BoxPanel namePanel = new BoxPanel(true);
-		namePanel.add(new JLabel("Unit name: "));
-		namePanel.add(setupField(nameField));
-		contentPane.add(namePanel);
+		add(new JLabel("Unit name: "));
+		add(setupField(nameField));
 
-		final BoxPanel kindPanel = new BoxPanel(true);
-		kindPanel.add(new JLabel("Kind of unit: "));
-		kindPanel.add(setupField(kindField));
-		contentPane.add(kindPanel);
+		add(new JLabel("Kind of unit: "));
+		add(setupField(kindField));
 
-		final BoxPanel buttonPanel = new BoxPanel(true);
-		buttonPanel.add(new ListenedButton("OK", this));
-		buttonPanel.add(new ListenedButton("Cancel", this));
-		contentPane.add(buttonPanel);
+		add(new ListenedButton("OK", this));
+		add(new ListenedButton("Cancel", this));
 
-		setContentPane(contentPane);
-		setMinimumSize(new Dimension(100, 80));
-		setPreferredSize(new Dimension(150, 90));
-		setMaximumSize(new Dimension(200, 90));
+		setMinimumSize(new Dimension(150, 80));
+		setPreferredSize(new Dimension(200, 90));
+		setMaximumSize(new Dimension(300, 90));
 		pack();
 	}
 	/**
