@@ -44,6 +44,10 @@ import controller.map.misc.IOHandler;
 public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		PropertyChangeSource {
 	/**
+	 * The text of the relevant button. Can't be private without causing warnings, since it's used in an inner class.
+	 */
+	static final String NEW_WORKER_ACTION = "Add worker to selected unit ..."; // NOPMD
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(AdvancementFrame.class.getName());
@@ -69,8 +73,9 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		pch.addPropertyChangeListener(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, this, pch, source);
-		final IDFactory idf = IDFactoryFiller.createFactory(source.getMap());
-		final NewWorkerListener nwl = new NewWorkerListener((IWorkerTreeModel) tree.getModel(), LOGGER);
+		final NewWorkerListener nwl = new NewWorkerListener(
+				(IWorkerTreeModel) tree.getModel(),
+				IDFactoryFiller.createFactory(source.getMap()), LOGGER);
 		tree.addPropertyChangeListener(nwl);
 		final AddRemovePanel jarp = new AddRemovePanel(false);
 		final AddRemovePanel sarp = new AddRemovePanel(false);
@@ -83,19 +88,7 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				HALF_WAY,
 				HALF_WAY,
 				new BorderedPanel(new JScrollPane(tree), plabel,
-						new ListenedButton("Add worker to selected unit ...",
-								new ActionListener() {
-									// TODO: Add this functionality to
-									// NewWorkerListener
-									@Override
-									public void actionPerformed(
-											final ActionEvent evt) {
-										final WorkerConstructionFrame frame = new WorkerConstructionFrame(
-												idf);
-										frame.addPropertyChangeListener(nwl);
-										frame.setVisible(true);
-									}
-								}), null, null),
+						new ListenedButton(NEW_WORKER_ACTION, nwl), null, null),
 				new SplitWithWeights(
 						JSplitPane.VERTICAL_SPLIT,
 						HALF_WAY,
@@ -236,7 +229,7 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 	 * new-worker notifications, then pass this information on to the tree
 	 * model.
 	 */
-	private static class NewWorkerListener implements PropertyChangeListener {
+	private static class NewWorkerListener implements PropertyChangeListener, ActionListener {
 		/**
 		 * The tree model.
 		 */
@@ -250,12 +243,18 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		 */
 		private Unit selUnit;
 		/**
+		 * The ID factory to pass to the worker-creation window.
+		 */
+		private final IDFactory idf;
+		/**
 		 * Constructor.
 		 * @param treeModel the tree model
+		 * @param idFac the ID factory to pass to the worker-creation window.
 		 * @param logger the logger to use for logging
 		 */
-		NewWorkerListener(final IWorkerTreeModel treeModel, final Logger logger) {
+		NewWorkerListener(final IWorkerTreeModel treeModel, final IDFactory idFac, final Logger logger) {
 			tmodel = treeModel;
+			idf = idFac;
 			lgr = logger;
 		}
 		/**
@@ -279,5 +278,19 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				}
 			}
 		}
+		/**
+		 * Handle button press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(final ActionEvent evt) {
+			if (NEW_WORKER_ACTION.equalsIgnoreCase(evt.getActionCommand())) {
+				final WorkerConstructionFrame frame = new WorkerConstructionFrame(
+						idf);
+				frame.addPropertyChangeListener(this);
+				frame.setVisible(true);
+			}
+		}
+
 	}
 }
