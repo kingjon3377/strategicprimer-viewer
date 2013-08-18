@@ -68,21 +68,7 @@ public class WorkerMgmtFrame extends JFrame {
 		final IWorkerModel smodel = model;
 		final JEditorPane report = new JEditorPane("text/html", ReportGenerator
 				.createAbbreviatedReport(model.getMap(), model.getMap().getPlayers().getCurrentPlayer()));
-		pch.addPropertyChangeListener(new PropertyChangeListener() {
-			// TODO: Make a named subclass
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if ("player".equalsIgnoreCase(evt.getPropertyName())
-						&& evt.getNewValue() instanceof Player) {
-					report.setText(ReportGenerator.createAbbreviatedReport(
-							model.getMap(), (Player) evt.getNewValue()));
-				} else if ("map".equalsIgnoreCase(evt.getPropertyName())) {
-					report.setText(ReportGenerator.createAbbreviatedReport(
-							model.getMap(), model.getMap().getPlayers()
-									.getCurrentPlayer()));
-				}
-			}
-		});
+		pch.addPropertyChangeListener(new ReportUpdater(model, report));
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
 				.5,
@@ -112,6 +98,47 @@ public class WorkerMgmtFrame extends JFrame {
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
+	}
+	/**
+	 * A class to update the report when a new map is loaded.
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private static final class ReportUpdater implements PropertyChangeListener {
+		/**
+		 * The driver model, to get the map from.
+		 */
+		private final IWorkerModel model;
+		/**
+		 * The pane that we update.
+		 */
+		private final JEditorPane report;
+		/**
+		 * Constructor.
+		 * @param wmodel The driver model to get the map from
+		 * @param reportPane The pane that we update.
+		 */
+		ReportUpdater(final IWorkerModel wmodel, final JEditorPane reportPane) {
+			model = wmodel;
+			report = reportPane;
+		}
+
+		/**
+		 * Handle fired properties.
+		 * @param evt the event to handle
+		 */
+		@Override
+		public void propertyChange(final PropertyChangeEvent evt) {
+			if ("player".equalsIgnoreCase(evt.getPropertyName())
+					&& evt.getNewValue() instanceof Player) {
+				report.setText(ReportGenerator.createAbbreviatedReport(
+						model.getMap(), (Player) evt.getNewValue()));
+			} else if ("map".equalsIgnoreCase(evt.getPropertyName())) {
+				report.setText(ReportGenerator.createAbbreviatedReport(
+						model.getMap(), model.getMap().getPlayers()
+								.getCurrentPlayer()));
+			}
+		}
 	}
 	/**
 	 * Handle the strategy-export button.
