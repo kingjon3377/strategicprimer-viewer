@@ -41,16 +41,12 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 
 		final BoxPanel namePanel = new BoxPanel(true);
 		namePanel.add(new JLabel("Unit name: "));
-		namePanel.add(nameField);
-		nameField.setActionCommand("OK");
-		nameField.addActionListener(this);
+		namePanel.add(setupField(nameField));
 		contentPane.add(namePanel);
 
 		final BoxPanel kindPanel = new BoxPanel(true);
 		kindPanel.add(new JLabel("Kind of unit: "));
-		kindPanel.add(kindField);
-		kindField.setActionCommand("OK");
-		kindField.addActionListener(this);
+		kindPanel.add(setupField(kindField));
 		contentPane.add(kindPanel);
 
 		final BoxPanel buttonPanel = new BoxPanel(true);
@@ -63,6 +59,16 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 		setPreferredSize(new Dimension(150, 90));
 		setMaximumSize(new Dimension(200, 90));
 		pack();
+	}
+	/**
+	 * Set up a field so that pressing Enter there will press the OK button.
+	 * @param field the field to set up
+	 * @return the field
+	 */
+	private JTextField setupField(final JTextField field) {
+		field.setActionCommand("OK");
+		field.addActionListener(this);
+		return field;
 	}
 	/**
 	 * The player to own created units.
