@@ -41,8 +41,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	@Override
 	public void setMap(final MapView newMap, final String name) {
 		super.setMap(newMap, name);
-		// TODO: Perhaps clearSelection() instead of setting to (-1, -1)?
-		setSelection(PointFactory.point(-1, -1));
+		clearSelection();
 		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1, 0,
 				newMap.getDimensions().cols - 1));
 		resetZoom();
