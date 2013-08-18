@@ -29,6 +29,7 @@ import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
+import view.util.SplitWithWeights;
 import view.util.SystemOut;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
@@ -77,47 +78,34 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				jarp, "add", "add_job"), new PropertyChangeAdapter(sarp, "add",
 				"add_skill"), tree);
 		jobsTree.addPropertyChangeListener(this);
-		final JSplitPane panelThree = new JSplitPane(
+		final JSplitPane panelThree = new SplitWithWeights(
 				JSplitPane.VERTICAL_SPLIT,
-				true,
-				new BorderedPanel().setNorth(
-						new JLabel(htmlize("Worker's Jobs and Skills:")))
-						.setCenter(new JScrollPane(jobsTree)),
-				new BorderedPanel()
-						.setCenter(
-								new BorderedPanel()
-										.setNorth(
-												new BorderedPanel()
-														.setNorth(
-																new JLabel(
-																		htmlize("Add a job to the Worker:")))
-														.setSouth(jarp))
-										.setSouth(
-												new BorderedPanel()
-														.setNorth(
-																new JLabel(
-																		htmlize("Add a Skill to the selected Job:")))
-														.setSouth(sarp)))
-						.setSouth(new SkillAdvancementPanel(this, this)));
-		panelThree.setResizeWeight(.3);
-		panelThree.setDividerLocation(HALF_WAY);
-
-		final JSplitPane jspThree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				true, new BorderedPanel().setNorth(plabel)
-						.setCenter(new JScrollPane(tree))
-						.setSouth(new ListenedButton(
-								"Add worker to selected unit ...", new ActionListener() {
-									// TODO: Add this functionality to NewWorkerListener
+				HALF_WAY, .3,
+				new BorderedPanel(new JScrollPane(jobsTree), new JLabel(
+						htmlize("Worker's Jobs and Skills:")), null, null, null),
+				new BorderedPanel(new BorderedPanel(null, new BorderedPanel(
+						null, new JLabel(htmlize("Add a job to the Worker:")),
+						jarp, null, null), new BorderedPanel(null, new JLabel(
+						htmlize("Add a Skill to the selected Job:")), sarp,
+						null, null), null, null), null,
+						new SkillAdvancementPanel(this, this), null, null));
+		// TODO: Inline both of these panels.
+		final JSplitPane jspThree = new SplitWithWeights(
+				JSplitPane.HORIZONTAL_SPLIT, HALF_WAY, HALF_WAY,
+				new BorderedPanel(new JScrollPane(tree), plabel,
+						new ListenedButton("Add worker to selected unit ...",
+								new ActionListener() {
+									// TODO: Add this functionality to
+									// NewWorkerListener
 									@Override
-									public void actionPerformed(final ActionEvent evt) {
+									public void actionPerformed(
+											final ActionEvent evt) {
 										final WorkerConstructionFrame frame = new WorkerConstructionFrame(
 												idf);
 										frame.addPropertyChangeListener(nwl);
 										frame.setVisible(true);
 									}
-								})), panelThree);
-		jspThree.setResizeWeight(HALF_WAY);
-		jspThree.setDividerLocation(HALF_WAY);
+								}), null, null), panelThree);
 		setContentPane(jspThree);
 
 		addPropertyChangeListener(this);

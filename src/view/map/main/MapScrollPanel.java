@@ -16,8 +16,7 @@ public class MapScrollPanel extends BorderedPanel {
 	 * @param component the map component
 	 */
 	public MapScrollPanel(final IViewerModel map, final JComponent component) {
-		super();
-		setCenter(component);
+		super(component, null, null, null, null);
 		new ScrollListener(map, this).setUpListeners();
 	}
 }

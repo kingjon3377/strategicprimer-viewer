@@ -27,6 +27,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelecti
 	 */
 	public OrdersPanel() {
 		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
+		// Can't use the multi-arg constructor, because of the references to 'this' below.
 		setNorth(new JLabel("Orders for current selection, if a unit:"))
 				.setCenter(new JScrollPane(area)).setSouth(
 						new BorderedPanel().setLineStart(

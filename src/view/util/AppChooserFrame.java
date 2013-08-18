@@ -51,9 +51,9 @@ public class AppChooserFrame extends JFrame {
 		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", parameters, AdvancementStart.class));
 		buttonPanel.add(button("Unit Orders and Worker Management", parameters, WorkerStart.class));
-		setContentPane(new BorderedPanel().setNorth(
-				new JLabel("Please choose one of the applications below:"))
-				.setCenter(new JScrollPane(buttonPanel)));
+		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
+				new JLabel("Please choose one of the applications below:"),
+				null, null, null));
 		pack();
 	}
 	/**

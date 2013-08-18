@@ -58,8 +58,8 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
 		buttonPanel.add(new ListenedButton("Add Worker", this));
 		buttonPanel.add(new ListenedButton("Cancel", this));
-		setContentPane(new BorderedPanel().setNorth(textPanel)
-				.setCenter(statsPanel).setSouth(buttonPanel));
+		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
+				null, null));
 		setMinimumSize(new Dimension(320, 240));
 		pack();
 	}

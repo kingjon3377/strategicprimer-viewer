@@ -48,25 +48,15 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 		playerList = new JList<>(new PlayerListModel(emodel));
 		playerList.addListSelectionListener(this);
 		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
-		setCenter(new SplitWithWeights(
-				JSplitPane.HORIZONTAL_SPLIT,
-				PROPORTION,
-				PROPORTION,
-				new BorderedPanel().setNorth(label("Players in all maps:"))
-						.setCenter(playerList),
-				new BorderedPanel()
-						.setNorth(
-								label(html("Units belonging to that player:",
-										"(Selected unit will be used for exploration.)")))
-						.setCenter(unitList)
-						.setSouth(
-								new BorderedPanel()
-										.setWest(
-												label("Unit's Movement Points: "))
-										.setEast(mpField)
-										.setSouth(
-												new ListenedButton(BUTTON_TEXT,
-														this)))));
+		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,
+				PROPORTION, new BorderedPanel(playerList,
+						label("Players in all maps:"), null, null, null),
+				new BorderedPanel(unitList, label(html(
+						"Units belonging to that player:",
+						"(Selected unit will be used for exploration.)")),
+						new BorderedPanel(null, null, new ListenedButton(
+								BUTTON_TEXT, this), mpField,
+								label("Unit's Movement Points: ")), null, null)));
 	}
 	/**
 	 * @param string a String

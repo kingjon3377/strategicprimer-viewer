@@ -88,30 +88,26 @@ public class WorkerMgmtFrame extends JFrame {
 				.5,
 				.5,
 				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, 0.7, 0.7,
-						new BorderedPanel().setNorth(plabel).setCenter(
-								new JScrollPane(tree)), new BorderedPanel()
-								.setNorth(
-										new ListenedButton("Add New Unit",
-												new ActionListener() {
-											// TODO: move to named class to improve code readability.
-													@Override
-													public void actionPerformed(
-															final ActionEvent evt) {
-														newUnitFrame
-																.setVisible(true);
-													}
-												}))
-								.setCenter(ordersPanel)
-								.setSouth(
-										new ListenedButton(
-												"Export a proto-strategy from units' orders",
-												new ExportButtonHandler(outer,
-														smodel)))),
-				new BorderedPanel()
-						.setNorth(
-								new JLabel(
-										"A report on everything except your units and fortresses, for reference:"))
-						.setCenter(new JScrollPane(report))));
+						new BorderedPanel(new JScrollPane(tree), plabel, null,
+								null, null),
+						new BorderedPanel(ordersPanel, new ListenedButton(
+								"Add New Unit", new ActionListener() {
+									// TODO: move to named class to improve code
+									// readability.
+									@Override
+									public void actionPerformed(
+											final ActionEvent evt) {
+										newUnitFrame.setVisible(true);
+									}
+								}), new ListenedButton(
+								"Export a proto-strategy from units' orders",
+								new ExportButtonHandler(outer, smodel)), null,
+								null)),
+				new BorderedPanel(
+						new JScrollPane(report),
+						new JLabel(
+								"A report on everything except your units and fortresses, for reference:"),
+						null, null, null)));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

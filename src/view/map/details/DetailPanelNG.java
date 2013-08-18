@@ -63,6 +63,7 @@ public class DetailPanelNG extends JSplitPane {
 		 * @param sources PropertyChangeSources to pass to both members of the panel.
 		 */
 		ListPanel(final PlayerCollection players, final PropertyChangeSource... sources) {
+			// We can't use the multi-arg super() because the center component references "this".
 			setNorth(new HeaderLabel(sources));
 			setCenter(new JScrollPane(new FixtureList(this, players, sources)));
 		}
