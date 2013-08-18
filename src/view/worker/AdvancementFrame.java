@@ -27,6 +27,7 @@ import util.PropertyChangeAdapter;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
+import view.util.ErrorShower;
 import view.util.ListenedButton;
 import view.util.SystemOut;
 import controller.map.misc.IDFactory;
@@ -273,7 +274,9 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 					&& evt.getNewValue() instanceof Worker) {
 				if (selUnit == null) {
 					lgr.warning("New worker created when no unit selected");
-					// FIXME: Warn the user of this, using a dialog or something.
+					ErrorShower
+							.showErrorDialog(null,
+									"The new worker was not added to a unit because no unit was selected.");
 				} else {
 					tmodel.addUnitMember(selUnit, (UnitMember) evt.getNewValue());
 				}
