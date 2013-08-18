@@ -394,15 +394,16 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Let the user create a randomly-generated worker.
 	 *
-	 * Each non-human race has a 1 in 20 chance of coming up; stats are all 3d6
-	 * (TODO: racial adjustments); there are five 1-in-20 chances of starting
-	 * with a level in some Job, and the user will be prompted for what Job for
-	 * each.
+	 * Each non-human race has a 1 in 20 chance of coming up; stats are all 3d6;
+	 * there are five 1-in-20 chances of starting with a level in some Job, and
+	 * the user will be prompted for what Job for each.
 	 *
 	 * TODO: extra HP for Job levels.
+	 * TODO: racial adjustments to stats.
 	 *
 	 * @param idf the ID factory
 	 * @throws IOException on I/O error interacting with the user
