@@ -35,6 +35,7 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import model.workermgmt.RaceFactory;
 import util.Pair;
 import controller.exploration.TableLoader;
 import controller.map.misc.IDFactory;
@@ -154,8 +155,9 @@ public class OneToTwoConverter { // NOPMD
 			final boolean main, final IDFactory idFactory, final Player independentPlayer) {
 		final List<Pair<Point, Tile>> initial = createInitialSubtiles(point, tile, main);
 		if (!tile.isEmpty()) {
-			tile.addFixture(new Village(TownStatus.Active, "", idFactory
-					.createID(), independentPlayer));
+			int id = idFactory.createID();
+			tile.addFixture(new Village(TownStatus.Active, "", id,
+					independentPlayer, RaceFactory.getRace(new Random(id))));
 			final List<TileFixture> fixtures = new LinkedList<>();
 			for (final TileFixture fixture : tile) {
 				fixtures.add(fixture);

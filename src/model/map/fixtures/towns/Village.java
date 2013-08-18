@@ -32,14 +32,16 @@ public class Village implements ITownFixture, HasImage {
 	 * @param vName the name of the village
 	 * @param idNum the ID number.
 	 * @param player the owner of the village
+	 * @param vRace the dominant race of the village
 	 */
 	public Village(final TownStatus vstatus, final String vName,
-			final int idNum, final Player player) {
+			final int idNum, final Player player, final String vRace) {
 		super();
 		status = vstatus;
 		name = vName;
 		id = idNum;
 		owner = player;
+		race = vRace;
 	}
 	/**
 	 * The "owner" of the village---the player it's pledged to serve.
@@ -78,9 +80,12 @@ public class Village implements ITownFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || (obj instanceof Village && status.equals(((Village) obj).status)
-				&& name.equals(((Village) obj).name)
-				&& id == ((TileFixture) obj).getID()) && owner.equals(((Village) obj).owner);
+		return this == obj
+				|| (obj instanceof Village
+						&& status.equals(((Village) obj).status)
+						&& name.equals(((Village) obj).name) && id == ((TileFixture) obj)
+						.getID()) && owner.equals(((Village) obj).owner)
+				&& race.equals(((Village) obj).race);
 	}
 
 	/**
@@ -122,7 +127,9 @@ public class Village implements ITownFixture, HasImage {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Village && status.equals(((Village) fix).status)
-				&& name.equals(((Village) fix).name) && owner.equals(((Village) fix).owner);
+				&& name.equals(((Village) fix).name)
+				&& owner.equals(((Village) fix).owner)
+				&& race.equals(((Village) fix).race);
 	}
 	/**
 	 * @return the name of the village
@@ -184,5 +191,21 @@ public class Village implements ITownFixture, HasImage {
 	@Override
 	public String getImage() {
 		return image;
+	}
+	/**
+	 * The dominant race of the village.
+	 */
+	private String race;
+	/**
+	 * @return the dominant race of the village.
+	 */
+	public String getRace() {
+		return race;
+	}
+	/**
+	 * @param vRace the new dominant race of the village.
+	 */
+	public void setRace(final String vRace) {
+		race = vRace;
 	}
 }

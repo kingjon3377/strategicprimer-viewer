@@ -2,6 +2,7 @@ package controller.map.cxml;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Random;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -19,6 +20,7 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import model.workermgmt.RaceFactory;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
@@ -100,9 +102,12 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final Village retval = new Village(TownStatus.parseTownStatus(getParameter(element,
-				"status")), getParameter(element, NAME_PARAM, ""), getOrGenerateID(
-				element, warner, idFactory), getOwnerOrIndependent(element, warner, players));
+		final int id = getOrGenerateID(element, warner, idFactory);
+		final Village retval = new Village(
+				TownStatus.parseTownStatus(getParameter(element, "status")),
+				getParameter(element, NAME_PARAM, ""), id,
+				getOwnerOrIndependent(element, warner, players), getParameter(
+						element, "race", RaceFactory.getRace(new Random(id))));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -221,6 +226,8 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			out.append(Integer.toString(obj.getID()));
 			out.append("\" owner=\"");
 			out.append(Integer.toString(obj.getOwner().getPlayerId()));
+			out.append("\" race=\"");
+			out.append(((Village) obj).getRace());
 			out.append("\" ").append(imageXML((Village) obj)).append("/>\n");
 		} else if (obj instanceof Fortress) {
 			out.append("<fortress owner=\"");

@@ -255,14 +255,14 @@ public final class TestMoreFixtureSerialization extends
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
-			final Village one = new Village(status, "villageOne", 1, owner); // NOPMD
+			final Village one = new Village(status, "villageOne", 1, owner, "human"); // NOPMD
 			assertSerialization("First Village serialization test, " + status,
 					one, Village.class);
-			final Village two = new Village(status, "villageTwo", 2, owner); // NOPMD
+			final Village two = new Village(status, "villageTwo", 2, owner, "dwarf"); // NOPMD
 			assertSerialization("2nd Village serialization test,  " + status,
 					two, Village.class);
 		}
-		final Village three = new Village(TownStatus.Abandoned, "", 3, owner);
+		final Village three = new Village(TownStatus.Abandoned, "", 3, owner, "elf");
 		assertMissingPropertyDeserialization(
 				"Serialization of village with no or empty name does The Right Thing",
 				three, createSerializedForm(three, true), Village.class,

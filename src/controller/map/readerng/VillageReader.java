@@ -8,6 +8,7 @@ import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -15,6 +16,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import model.workermgmt.RaceFactory;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -46,10 +48,12 @@ public class VillageReader implements INodeHandler<Village> {
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
+		final int id = getOrGenerateID(element, warner, idFactory);
 		final Village fix = new Village(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
-				getAttribute(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory), getPlayerOrIndependent(element, warner, players));
+				getAttribute(element, "name", ""), id, getPlayerOrIndependent(
+						element, warner, players), getAttribute(element,
+						"race", RaceFactory.getRace(new Random(id))));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -80,6 +84,7 @@ public class VillageReader implements INodeHandler<Village> {
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
 		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
+		retval.addAttribute("race", obj.getRace());
 		retval.addImageAttribute(obj);
 		return retval;
 	}
