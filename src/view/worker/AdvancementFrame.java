@@ -100,22 +100,19 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 						JSplitPane.VERTICAL_SPLIT,
 						HALF_WAY,
 						.3,
-						new BorderedPanel(
-								new JScrollPane(jobsTree),
-								new JLabel(htmlize("Worker's Jobs and Skills:")),
-								null, null, null),
+						new BorderedPanel(new JScrollPane(jobsTree),
+								htmlize("Worker's Jobs and Skills:"), null,
+								null, null),
 						new BorderedPanel(
 								new BorderedPanel(
 										null,
 										new BorderedPanel(
 												null,
-												new JLabel(
-														htmlize("Add a job to the Worker:")),
+												htmlize("Add a job to the Worker:"),
 												jarp, null, null),
 										new BorderedPanel(
 												null,
-												new JLabel(
-														htmlize("Add a Skill to the selected Job:")),
+												htmlize("Add a Skill to the selected Job:"),
 												sarp, null, null), null, null),
 								null, new SkillAdvancementPanel(this, this),
 								null, null))));
@@ -149,10 +146,10 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 	 * Turn a string into left-aligned HTML.
 	 *
 	 * @param string a string
-	 * @return it wrapped in HTML code that should make it left-aligned.
+	 * @return a label, with its text that string wrapped in HTML code that should make it left-aligned.
 	 */
-	private static String htmlize(final String string) {
-		return "<html><p align=\"left\">" + string + "</p></html>";
+	private static JLabel htmlize(final String string) {
+		return new JLabel("<html><p align=\"left\">" + string + "</p></html>");
 	}
 
 	/**
