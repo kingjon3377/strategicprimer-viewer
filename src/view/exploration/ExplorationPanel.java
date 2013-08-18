@@ -28,6 +28,7 @@ import util.Pair;
 import util.PropertyChangeSupportSource;
 import view.map.details.FixtureList;
 import view.util.BorderedPanel;
+import view.util.BoxPanel;
 /**
  * A panel to let the user explore using a unit.
  * @author Jonathan Lovelace
@@ -49,8 +50,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
 		super();
 		model = emodel;
-		final JPanel headerPanel = new JPanel();
-		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.LINE_AXIS));
+		final BoxPanel headerPanel = new BoxPanel(true);
 		final JButton backButton = new JButton(BACK_TEXT);
 		backButton.addActionListener(this);
 		headerPanel.add(backButton);

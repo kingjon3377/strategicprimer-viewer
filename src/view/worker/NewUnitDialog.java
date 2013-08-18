@@ -7,16 +7,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractButton;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 import util.PropertyChangeSource;
+import view.util.BoxPanel;
 import controller.map.misc.IDFactory;
 
 /**
@@ -35,33 +34,32 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 	 */
 	public NewUnitDialog(final Player player, final IDFactory idFactory) {
 		super("Add a new unit");
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+		// TODO: Refactor using GridLayout?
+		final BoxPanel contentPane = new BoxPanel(false);
 
 		owner = player;
 		idf = idFactory;
 
-		final JPanel namePanel = new JPanel();
-		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
+		final BoxPanel namePanel = new BoxPanel(true);
 		namePanel.add(new JLabel("Unit name: "));
 		namePanel.add(nameField);
 		nameField.setActionCommand("OK");
 		nameField.addActionListener(this);
-		add(namePanel);
+		contentPane.add(namePanel);
 
-		final JPanel kindPanel = new JPanel();
-		kindPanel.setLayout(new BoxLayout(kindPanel, BoxLayout.LINE_AXIS));
+		final BoxPanel kindPanel = new BoxPanel(true);
 		kindPanel.add(new JLabel("Kind of unit: "));
 		kindPanel.add(kindField);
 		kindField.setActionCommand("OK");
 		kindField.addActionListener(this);
-		add(kindPanel);
+		contentPane.add(kindPanel);
 
-		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+		final BoxPanel buttonPanel = new BoxPanel(true);
 		buttonPanel.add(listen(new JButton("OK")));
 		buttonPanel.add(listen(new JButton("Cancel")));
-		add(buttonPanel);
+		contentPane.add(buttonPanel);
 
+		setContentPane(contentPane);
 		setMinimumSize(new Dimension(100, 80));
 		setPreferredSize(new Dimension(150, 90));
 		setMaximumSize(new Dimension(200, 90));

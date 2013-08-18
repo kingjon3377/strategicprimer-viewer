@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -37,21 +36,18 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 		layout = new CardLayout();
 		setLayout(layout);
 		setPanelSizes(this);
-		final JPanel first = new JPanel();
-		first.setLayout(new BoxLayout(first, BoxLayout.LINE_AXIS));
+		final BoxPanel first = new BoxPanel(true);
 		first.add(listen(new JButton("+")));
 		if (removalPossible) {
 			first.add(listen(new JButton("-")));
 		}
 		setPanelSizes(first);
 		add(first);
-		final JPanel second = new JPanel();
-		second.setLayout(new BoxLayout(second, BoxLayout.PAGE_AXIS));
+		final BoxPanel second = new BoxPanel(false);
 		second.add(field);
 		field.addActionListener(this);
 		field.setActionCommand("OK");
-		final JPanel okPanel = new JPanel();
-		okPanel.setLayout(new BoxLayout(okPanel, BoxLayout.LINE_AXIS));
+		final BoxPanel okPanel = new BoxPanel(true);
 		okPanel.add(listen(new JButton("OK")));
 		okPanel.add(listen(new JButton("Cancel")));
 		second.add(okPanel);

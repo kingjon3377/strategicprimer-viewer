@@ -5,13 +5,10 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import model.map.FixtureIterable;
@@ -25,6 +22,7 @@ import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
 import util.IsNumeric;
 import util.IteratorWrapper;
+import view.util.BoxPanel;
 import view.util.SystemOut;
 /**
  * A dialog to let the user find fixtures by ID, name, or "kind".
@@ -61,28 +59,30 @@ public class FindDialog extends JDialog implements ActionListener {
 	 */
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		add(search);
 		search.addActionListener(this);
 		search.setActionCommand("OK");
 		errorLabel.setText("");
 		errorLabel.setMinimumSize(new Dimension(200, 15));
 		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
 		errorLabel.setAlignmentY(LEFT_ALIGNMENT);
-		add(backwards);
-		add(vertically);
-		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
-		buttonPanel.add(Box.createHorizontalGlue());
+
+		final BoxPanel contentPane = new BoxPanel(false);
+		contentPane.add(search);
+		contentPane.add(backwards);
+		contentPane.add(vertically);
+
+		final BoxPanel buttonPanel = new BoxPanel(true);
+		buttonPanel.addGlue();
 		final JButton okButton = new JButton("OK");
 		okButton.addActionListener(this);
 		buttonPanel.add(okButton);
-		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.addGlue();
 		final JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		buttonPanel.add(cancelButton);
-		buttonPanel.add(Box.createHorizontalGlue());
-		add(buttonPanel);
+		buttonPanel.addGlue();
+		contentPane.add(buttonPanel);
+		setContentPane(contentPane);
 		map = model;
 		pack();
 	}

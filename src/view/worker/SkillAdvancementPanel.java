@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,12 +15,13 @@ import javax.swing.JTextField;
 import model.map.fixtures.mobile.worker.Skill;
 import util.PropertyChangeSource;
 import util.SingletonRandom;
+import view.util.BoxPanel;
 /**
  * A panel to let a user add hours to a skill.
  * @author Jonathan Lovelace
  *
  */
-public class SkillAdvancementPanel extends JPanel implements
+public class SkillAdvancementPanel extends BoxPanel implements
 		PropertyChangeListener, ActionListener {
 	/**
 	 * The maximum height of the panel.
@@ -53,8 +53,8 @@ public class SkillAdvancementPanel extends JPanel implements
 	 */
 	public SkillAdvancementPanel(final PropertyChangeListener listener,
 			final PropertyChangeSource... sources) {
+		super(false);
 		addPropertyChangeListener(listener);
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		final JPanel one = new JPanel();
 		one.setLayout(new FlowLayout());
 		one.add(new JLabel("Add "));

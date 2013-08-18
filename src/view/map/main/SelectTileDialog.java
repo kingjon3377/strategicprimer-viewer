@@ -5,18 +5,16 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
 import util.IsNumeric;
+import view.util.BoxPanel;
 
 /**
  * A dialog to let the user select a tile by coordinates.
@@ -51,42 +49,42 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 */
 	public SelectTileDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		final JLabel mainLabel = new JLabel("Coordinates of tile to select:");
 		mainLabel.setAlignmentX(CENTER_ALIGNMENT);
 		mainLabel.setAlignmentY(LEFT_ALIGNMENT);
-		add(mainLabel);
-		final JPanel boxPanel = new JPanel();
-		boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.LINE_AXIS));
+
+		final BoxPanel contentPane = new BoxPanel(false);
+		contentPane.add(mainLabel);
+		final BoxPanel boxPanel = new BoxPanel(true);
 		final JLabel rowLabel = new JLabel("Row: ");
 		boxPanel.add(rowLabel);
 		boxPanel.add(row);
 		row.setActionCommand("OK");
 		row.addActionListener(this);
-		boxPanel.add(Box.createHorizontalGlue());
+		boxPanel.addGlue();
 		boxPanel.add(new JLabel("Column: "));
 		boxPanel.add(column);
 		column.setActionCommand("OK");
 		column.addActionListener(this);
-		boxPanel.add(Box.createHorizontalGlue());
-		add(boxPanel);
-		add(errorLabel);
+		boxPanel.addGlue();
+		contentPane.add(boxPanel);
+		contentPane.add(errorLabel);
 		errorLabel.setText("");
 		errorLabel.setMinimumSize(new Dimension(200, 15));
 		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
 		errorLabel.setAlignmentY(LEFT_ALIGNMENT);
-		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
-		buttonPanel.add(Box.createHorizontalGlue());
+		final BoxPanel buttonPanel = new BoxPanel(true);
+		buttonPanel.addGlue();
 		final JButton okButton = new JButton("OK");
 		okButton.addActionListener(this);
 		buttonPanel.add(okButton);
-		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.addGlue();
 		final JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		buttonPanel.add(cancelButton);
-		buttonPanel.add(Box.createHorizontalGlue());
-		add(buttonPanel);
+		buttonPanel.addGlue();
+		contentPane.add(buttonPanel);
+		setContentPane(contentPane);
 		map = model;
 		pack();
 	}

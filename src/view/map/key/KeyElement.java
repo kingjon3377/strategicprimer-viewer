@@ -2,23 +2,21 @@ package view.map.key;
 
 import java.awt.Dimension;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import model.map.TileType;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
 import view.map.main.TileUIHelper;
+import view.util.BoxPanel;
 
 /**
  * An element of the key.
  *
  * @author Jonathan Lovelace
  */
-public final class KeyElement extends JPanel {
+public final class KeyElement extends BoxPanel {
 	/**
 	 * UI helper for the terrain type descriptions and colors.
 	 */
@@ -43,13 +41,11 @@ public final class KeyElement extends JPanel {
 	 * @param type the type this is the key element for.
 	 */
 	public KeyElement(final int version, final TileType type) {
-		super();
-		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		add(Box.createHorizontalGlue());
-		add(Box.createRigidArea(new Dimension(HORIZ_BUFFER, 0)));
-		final JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.add(Box.createRigidArea(new Dimension(0, 4)));
+		super(true);
+		addGlue();
+		addRigidArea(HORIZ_BUFFER);
+		final BoxPanel panel = new BoxPanel(false);
+		panel.addRigidArea(4);
 		final JComponent tile = new KeyElementComponent(TUI_HELPER.get(version,
 				type));
 		tile.setMinimumSize(MIN_SIZE);
@@ -57,13 +53,13 @@ public final class KeyElement extends JPanel {
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL, version);
 		tile.setMaximumSize(new Dimension(tsize, tsize));
 		panel.add(tile);
-		panel.add(Box.createRigidArea(new Dimension(0, 4)));
+		panel.addRigidArea(4);
 		final JLabel label = new JLabel(TUI_HELPER.getDescription(type));
 		panel.add(label);
-		panel.add(Box.createRigidArea(new Dimension(0, 4)));
+		panel.addRigidArea(4);
 		add(panel);
-		add(Box.createRigidArea(new Dimension(HORIZ_BUFFER, 0)));
-		add(Box.createHorizontalGlue());
+		addRigidArea(HORIZ_BUFFER);
+		addGlue();
 		setMinimumSize(new Dimension(Math.max(tile.getMinimumSize().width,
 				label.getMinimumSize().width) + HORIZ_BUFFER * 2,
 				tile.getMinimumSize().height + label.getMinimumSize().height
