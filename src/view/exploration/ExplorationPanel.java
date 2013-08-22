@@ -8,7 +8,6 @@ import java.beans.PropertyChangeListener;
 import java.util.EnumMap;
 import java.util.Iterator;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
