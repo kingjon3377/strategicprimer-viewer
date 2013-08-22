@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
+import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.Tile;
@@ -134,7 +135,15 @@ public class FindDialog extends JDialog implements ActionListener {
 				|| (fix instanceof HasName && ((HasName) fix).getName()
 						.contains(pattern))
 				|| (fix instanceof HasKind && ((HasKind) fix).getKind()
-						.contains(pattern))) {
+						.contains(pattern))
+				|| (fix instanceof HasOwner
+						&& ((HasOwner) fix).getOwner().getName()
+								.contains(pattern)
+						|| "me".equalsIgnoreCase(pattern.trim())
+						&& ((HasOwner) fix).getOwner().isCurrent()
+						|| "none".equalsIgnoreCase(pattern.trim())
+						&& ((HasOwner) fix).getOwner().isIndependent() || ((HasOwner) fix)
+						.getOwner().getPlayerId() == idNum)) {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable<?>) {
 			for (IFixture member : (FixtureIterable<?>) fix) {
