@@ -116,7 +116,7 @@ public class Hill implements TerrainFixture, HasImage {
 		return image;
 	}
 	/**
-	 * @retrn a string describing all hills as a class
+	 * @return a string describing all hills as a class
 	 */
 	@Override
 	public String plural() {
