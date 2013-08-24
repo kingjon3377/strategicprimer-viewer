@@ -74,7 +74,7 @@ public class OneToTwoConverter { // NOPMD
 	/**
 	 * The number of subtiles per tile on each axis.
 	 */
-	private static final int SUBTILES_PER_TILE = 4;
+	private static final int RES_JUMP = 4;
 	/**
 	 * The maximum number of iterations per tile.
 	 */
@@ -89,8 +89,8 @@ public class OneToTwoConverter { // NOPMD
 	public SPMap convert(final IMap old, final boolean main) {
 		final IDFactory idFactory = new IDFactory();
 		final MapDimensions oldDim = old.getDimensions();
-		final SPMap retval = new SPMap(new MapDimensions(oldDim.rows * SUBTILES_PER_TILE,
-				oldDim.cols * SUBTILES_PER_TILE, 2));
+		final SPMap retval = new SPMap(new MapDimensions(
+				oldDim.rows * RES_JUMP, oldDim.cols * RES_JUMP, 2));
 		for (final Player player : old.getPlayers()) {
 			retval.addPlayer(player);
 		}
@@ -127,12 +127,12 @@ public class OneToTwoConverter { // NOPMD
 			final Tile tile, final boolean main) {
 		final List<Pair<Point, Tile>> initial = new LinkedList<>();
 		if (!tile.isEmpty()) {
-			for (int i = 0; i < SUBTILES_PER_TILE; i++) {
-				for (int j = 0; j < SUBTILES_PER_TILE; j++) {
+			for (int i = 0; i < RES_JUMP; i++) {
+				for (int j = 0; j < RES_JUMP; j++) {
 					final int row = point.row
-							* SUBTILES_PER_TILE + i;
+							* RES_JUMP + i;
 					final int col = point.col
-							* SUBTILES_PER_TILE + j;
+							* RES_JUMP + j;
 					final Point subpoint = PointFactory.point(row, col);
 					final Tile subtile = new Tile(tile.getTerrain()); // NOPMD
 					initial.add(Pair.of(subpoint, subtile));
@@ -155,7 +155,7 @@ public class OneToTwoConverter { // NOPMD
 			final boolean main, final IDFactory idFactory, final Player independentPlayer) {
 		final List<Pair<Point, Tile>> initial = createInitialSubtiles(point, tile, main);
 		if (!tile.isEmpty()) {
-			int id = idFactory.createID();
+			final int id = idFactory.createID();
 			tile.addFixture(new Village(TownStatus.Active, "", id,
 					independentPlayer, RaceFactory.getRace(new Random(id))));
 			final List<TileFixture> fixtures = new LinkedList<>();
@@ -479,7 +479,7 @@ public class OneToTwoConverter { // NOPMD
 	// ESCA-JAVA0076:
 	private static void addRiver(final River river,
 			final List<Pair<Point, Tile>> tiles) {
-	if (SUBTILES_PER_TILE != optSubtilesPerTile()) {
+	if (RES_JUMP != optSubtilesPerTile()) {
 			throw new IllegalStateException(
 					"This function is tuned for 4 subtiles per tile per axis");
 		}
