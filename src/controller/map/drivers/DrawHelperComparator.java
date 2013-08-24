@@ -352,7 +352,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL, map.getDimensions().version);
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
-		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null);
+		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null, null);
 		SystemOut.SYS_OUT.println("1. All in one place:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		long oneTotal = printStats(first(helperOne, map, repetitions, tsize), repetitions);

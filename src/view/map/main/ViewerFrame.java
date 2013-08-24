@@ -50,7 +50,8 @@ public final class ViewerFrame extends JFrame {
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Strategic Primer Map Viewer");
-		final MapGUI mapPanel = new MapComponent(map);
+		final FixtureFilterMenu ffmenu = new FixtureFilterMenu();
+		final MapGUI mapPanel = new MapComponent(map, ffmenu);
 		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				true, new MapScrollPanel(map, (MapComponent) mapPanel),
 				new DetailPanelNG(map.getMapDimensions().version, map.getMap()
@@ -66,6 +67,7 @@ public final class ViewerFrame extends JFrame {
 		addWindowStateListener(mwsl);
 
 		setJMenuBar(new SPMenu(ioHandler, this, map));
+		getJMenuBar().add(ffmenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 }

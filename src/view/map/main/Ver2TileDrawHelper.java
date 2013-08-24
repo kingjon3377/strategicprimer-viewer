@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,7 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureComparator;
+import model.viewer.ZOrderFilter;
 import util.ImageLoader;
 import util.IteratorWrapper;
 import view.util.Coordinate;
@@ -39,6 +42,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private final ImageObserver observer;
 	/**
+	 * The object to query about whether we should display a given tile.
+	 */
+	private final ZOrderFilter zof;
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = Logger
@@ -52,10 +59,12 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * Constructor. We need to initialize the cache.
 	 *
 	 * @param iobs the class to notify when images finish drawing.
+	 * @param zofilt the class to query about whether to display a fixture
 	 */
-	public Ver2TileDrawHelper(final ImageObserver iobs) {
+	public Ver2TileDrawHelper(final ImageObserver iobs, final ZOrderFilter zofilt) {
 		super();
 		observer = iobs;
+		zof = zofilt;
 		final String[] files = new String[] { "trees.png", "mountain.png" };
 		createRiverFiles();
 		for (final String file : files) {
@@ -123,8 +132,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param tile a tile
 	 * @return whether that tile has any fixtures (or any river
 	 */
-	private static boolean hasFixture(final Tile tile) {
-		return tile.iterator().hasNext();
+	private boolean hasFixture(final Tile tile) {
+		return new FilteredIterator(tile.iterator(), zof).hasNext();
 	}
 
 	/**
@@ -137,7 +146,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture on that tile.
 	 */
 	private TileFixture getTopFixture(final Tile tile) {
-		return new IteratorWrapper<>(tile.iterator(),
+		return new IteratorWrapper<>(new FilteredIterator(tile.iterator(), zof),
 				fixComp).iterator().next();
 	}
 
@@ -161,8 +170,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param tile a tile
 	 * @return whether it has a TerrainFixture.
 	 */
-	private static boolean hasTerrainFixture(final Tile tile) {
-		for (final TileFixture fix : tile) {
+	private boolean hasTerrainFixture(final Tile tile) {
+		for (final TileFixture fix : new IteratorWrapper<>(
+				new FilteredIterator(tile.iterator(), zof))) {
 			if (fix instanceof TerrainFixture) {
 				return true; // NOPMD
 			}
@@ -174,8 +184,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param tile a tile
 	 * @return a color to represent its not-on-top terrain feature.
 	 */
-	private static Color getFixtureColor(final Tile tile) {
-		for (final TileFixture fix : tile) {
+	private Color getFixtureColor(final Tile tile) {
+		for (final TileFixture fix : new IteratorWrapper<>(
+				new FilteredIterator(tile.iterator(), zof))) {
 			if (fix instanceof TerrainFixture) {
 				return getHelper().getFeatureColor(fix); // NOPMD
 			}
@@ -322,5 +333,74 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public String toString() {
 		return "Ver2TileDrawHelper";
+	}
+	/**
+	 * A filtered iterator. Only returns items that should be displayed.
+	 */
+	private static class FilteredIterator implements Iterator<TileFixture> {
+		/**
+		 * Constructor.
+		 * @param iter the iterator to wrap
+		 * @param zofilt the filter to use
+		 */
+		FilteredIterator(final Iterator<TileFixture> iter, final ZOrderFilter zofilt) {
+			wrapped = iter;
+			zof = zofilt;
+			hasCached = false;
+			hasNext();
+		}
+		/**
+		 * The wrapped iterator.
+		 */
+		private final Iterator<TileFixture> wrapped;
+		/**
+		 * The filter to use.
+		 */
+		private final ZOrderFilter zof;
+		/**
+		 * The next item.
+		 */
+		private TileFixture cached;
+		/**
+		 * Whether we have a cached next item.
+		 */
+		private boolean hasCached;
+		/**
+		 * @return whether there is a next item in the iterator
+		 */
+		@Override
+		public final boolean hasNext() {
+			if (hasCached) {
+				return true;
+			} else {
+				while (wrapped.hasNext()) {
+					cached = wrapped.next();
+					if (zof == null || zof.shouldDisplay(cached)) {
+						hasCached = true;
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		/**
+		 * @return the next element
+		 */
+		@Override
+		public TileFixture next() {
+			if (hasNext()) {
+				hasCached = false;
+				return cached;
+			} else {
+				throw new NoSuchElementException("No next element");
+			}
+		}
+		/**
+	 	 * Implemented only if wrapped iterator does.
+		 */
+		@Override
+		public void remove() {
+			wrapped.remove();
+		}
 	}
 }

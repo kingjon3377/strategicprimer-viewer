@@ -21,6 +21,7 @@ import model.map.Tile;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+import model.viewer.ZOrderFilter;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -44,18 +45,23 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * The mouse listener that handles showing the terrain-changing popup menu.
 	 */
 	private final transient ComponentMouseListener cml;
-
+	/**
+	 * The fixture filter (probably a menu).
+	 */
+	private final transient ZOrderFilter zof;
 	/**
 	 * Constructor.
 	 *
 	 * @param theMap The model containing the map this represents
+	 * @param zofilt the filter telling which fixtures to draw
 	 */
-	public MapComponent(final IViewerModel theMap) {
+	public MapComponent(final IViewerModel theMap, final ZOrderFilter zofilt) {
 		super();
 		setDoubleBuffered(true);
 		model = theMap;
+		zof = zofilt;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
-				model.getMapDimensions().version, this);
+				model.getMapDimensions().version, this, zof);
 		cml = new ComponentMouseListener(model, this);
 		addMouseListener(cml);
 		model.addPropertyChangeListener(this);
@@ -202,7 +208,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 			fixVisibility();
 		} else if ("map".equals(evt.getPropertyName())) {
 			helper = TileDrawHelperFactory.INSTANCE.factory(
-					model.getMapDimensions().version, this);
+					model.getMapDimensions().version, this, zof);
 		} else if ("tsize".equals(evt.getPropertyName())) {
 			final ComponentEvent resizeEvt = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
 			for (final ComponentListener list : getComponentListeners()) {
