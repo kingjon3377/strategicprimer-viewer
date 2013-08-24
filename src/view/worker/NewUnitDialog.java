@@ -27,6 +27,10 @@ import controller.map.misc.IDFactory;
  */
 public class NewUnitDialog extends JFrame implements ActionListener, PropertyChangeSource, PropertyChangeListener {
 	/**
+	 * Maximum and preferred height for the dialog.
+	 */
+	private static final int PREF_HEIGHT = 90;
+	/**
 	 * Constructor.
 	 * @param player the player to own the units
 	 * @param idFactory a factory to generate ID numbers
@@ -48,8 +52,8 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 		add(new ListenedButton("Cancel", this));
 
 		setMinimumSize(new Dimension(150, 80));
-		setPreferredSize(new Dimension(200, 90));
-		setMaximumSize(new Dimension(300, 90));
+		setPreferredSize(new Dimension(200, PREF_HEIGHT));
+		setMaximumSize(new Dimension(300, PREF_HEIGHT));
 		pack();
 	}
 	/**
