@@ -48,12 +48,12 @@ public class VillageReader implements INodeHandler<Village> {
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final int id = getOrGenerateID(element, warner, idFactory);
+		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village fix = new Village(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
-				getAttribute(element, "name", ""), id, getPlayerOrIndependent(
+				getAttribute(element, "name", ""), idNum, getPlayerOrIndependent(
 						element, warner, players), getAttribute(element,
-						"race", RaceFactory.getRace(new Random(id))));
+						"race", RaceFactory.getRace(new Random(idNum))));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

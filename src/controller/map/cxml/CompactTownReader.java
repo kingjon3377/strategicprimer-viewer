@@ -102,12 +102,12 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final int id = getOrGenerateID(element, warner, idFactory);
+		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village retval = new Village(
 				TownStatus.parseTownStatus(getParameter(element, "status")),
-				getParameter(element, NAME_PARAM, ""), id,
+				getParameter(element, NAME_PARAM, ""), idNum,
 				getOwnerOrIndependent(element, warner, players), getParameter(
-						element, "race", RaceFactory.getRace(new Random(id))));
+						element, "race", RaceFactory.getRace(new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
