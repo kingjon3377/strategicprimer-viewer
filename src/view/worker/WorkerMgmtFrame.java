@@ -45,6 +45,14 @@ import controller.map.report.ReportGenerator;
  */
 public class WorkerMgmtFrame extends JFrame {
 	/**
+	 * A constant for when a split panel should be divided evenly in half.
+	 */
+	private static final double HALF_WAY = .5;
+	/**
+	 * A constant for when a split panel should be divided not quite evenly.
+	 */
+	private static final double TWO_THIRDS = 2.0 / 3.0;
+	/**
 	 * At this point (proof-of-concept) we default to the first player of the choices.
 	 * @param model the driver model.
 	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
@@ -71,9 +79,9 @@ public class WorkerMgmtFrame extends JFrame {
 		pch.addPropertyChangeListener(new ReportUpdater(model, report));
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
-				.5,
-				.5,
-				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, 0.7, 0.7,
+				HALF_WAY,
+				HALF_WAY,
+				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
 						new BorderedPanel(new JScrollPane(tree), plabel, null,
 								null, null),
 						new BorderedPanel(ordersPanel, new ListenedButton(
