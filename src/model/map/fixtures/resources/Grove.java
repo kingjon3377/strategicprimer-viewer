@@ -171,4 +171,11 @@ public class Grove implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all groves and orchards as a class.
+	 */
+	@Override
+	public String plural() {
+		return "Groves and orchards";
+	}
 }

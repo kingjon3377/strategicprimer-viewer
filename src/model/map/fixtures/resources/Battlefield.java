@@ -147,4 +147,11 @@ public final class Battlefield implements IEvent,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all battlefields as a class
+	 */
+	@Override
+	public String plural() {
+		return "Battlefields";
+	}
 }

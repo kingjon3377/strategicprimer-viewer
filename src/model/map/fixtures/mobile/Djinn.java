@@ -113,4 +113,11 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all djinni as a class
+	 */
+	@Override
+	public String plural() {
+		return "Djinni";
+	}
 }

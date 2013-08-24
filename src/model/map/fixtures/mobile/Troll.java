@@ -115,4 +115,11 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all trolls as a class
+	 */
+	@Override
+	public String plural() {
+		return "Trolls";
+	}
 }

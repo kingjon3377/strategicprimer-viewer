@@ -8,6 +8,8 @@ import model.map.fixtures.UnitMember;
 /**
  * A sphinx. TODO: should probably be a unit, or something.
  *
+ * TODO: combine with other "simple" immortals
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -112,5 +114,12 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public String getImage() {
 		return image;
+	}
+	/**
+	 * @return a string describing all sphinxes as a class
+	 */
+	@Override
+	public String plural() {
+		return "Sphinxes";
 	}
 }

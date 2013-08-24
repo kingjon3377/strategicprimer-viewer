@@ -58,4 +58,11 @@ public final class Town extends AbstractTown {
 	public int getID() {
 		return id;
 	}
+	/**
+	 * @return a string describing all towns as a class
+	 */
+	@Override
+	public String plural() {
+		return "Towns";
+	}
 }

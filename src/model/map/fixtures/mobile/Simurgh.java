@@ -113,4 +113,11 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string decribing all simurghs as a class
+	 */
+	@Override
+	public String plural() {
+		return "Simurghs";
+	}
 }

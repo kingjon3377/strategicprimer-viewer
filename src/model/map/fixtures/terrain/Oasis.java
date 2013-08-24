@@ -114,4 +114,11 @@ public class Oasis implements TerrainFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all oases as a class
+	 */
+	@Override
+	public String plural() {
+		return "Oases";
+	}
 }

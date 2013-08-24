@@ -113,4 +113,11 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a String describing all phoenixes as a class
+	 */
+	@Override
+	public String plural() {
+		return "Phoenixes";
+	}
 }

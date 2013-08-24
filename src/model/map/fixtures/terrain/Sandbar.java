@@ -114,4 +114,11 @@ public class Sandbar implements TerrainFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all sandbars as a class
+	 */
+	@Override
+	public String plural() {
+		return "Sandbars";
+	}
 }

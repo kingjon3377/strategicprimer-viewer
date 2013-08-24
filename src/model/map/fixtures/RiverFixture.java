@@ -159,4 +159,11 @@ public class RiverFixture implements TileFixture,
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+	/**
+	 * @return a string describing all river fixtures as a class
+	 */
+	@Override
+	public String plural() {
+		return "Rivers";
+	}
 }

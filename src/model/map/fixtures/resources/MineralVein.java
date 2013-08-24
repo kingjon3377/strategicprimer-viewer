@@ -220,4 +220,11 @@ public final class MineralVein implements IEvent,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all mineral veins as a class
+	 */
+	@Override
+	public String plural() {
+		return "Mineral veins";
+	}
 }

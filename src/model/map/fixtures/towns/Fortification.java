@@ -68,4 +68,11 @@ public final class Fortification extends AbstractTown {
 	public int getID() {
 		return id;
 	}
+	/**
+	 * @return a string describing all fortifications as a class
+	 */
+	@Override
+	public String plural() {
+		return "Fortifications";
+	}
 }

@@ -200,4 +200,11 @@ public class Meadow implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all meadows as a class
+	 */
+	@Override
+	public String plural() {
+		return "Fields and meadows";
+	}
 }

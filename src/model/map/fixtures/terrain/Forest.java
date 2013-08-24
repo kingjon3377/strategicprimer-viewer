@@ -152,4 +152,11 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all forests as a class
+	 */
+	@Override
+	public String plural() {
+		return "Forests";
+	}
 }

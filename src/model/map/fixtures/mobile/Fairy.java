@@ -140,4 +140,11 @@ public class Fairy implements MobileFixture, HasImage,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all fairies as a class
+	 */
+	@Override
+	public String plural() {
+		return "Fairies";
+	}
 }

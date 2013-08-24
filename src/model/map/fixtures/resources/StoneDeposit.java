@@ -188,4 +188,11 @@ public final class StoneDeposit implements IEvent,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all stone deposits as a class
+	 */
+	@Override
+	public String plural() {
+		return "Stone deposits";
+	}
 }

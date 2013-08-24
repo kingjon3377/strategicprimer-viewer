@@ -280,4 +280,11 @@ public class Fortress implements HasImage,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all fortresses as a class
+	 */
+	@Override
+	public String plural() {
+		return "Fortresses";
+	}
 }

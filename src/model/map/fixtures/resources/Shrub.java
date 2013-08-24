@@ -142,4 +142,11 @@ public class Shrub implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all shrubs as a class
+	 */
+	@Override
+	public String plural() {
+		return "Shrubs";
+	}
 }

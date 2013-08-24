@@ -150,4 +150,11 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all Ground as a class
+	 */
+	@Override
+	public String plural() {
+		return "Ground";
+	}
 }

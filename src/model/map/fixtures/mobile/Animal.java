@@ -194,4 +194,11 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all animals as a class
+	 */
+	@Override
+	public String plural() {
+		return "Animals";
+	}
 }

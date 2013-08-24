@@ -139,4 +139,11 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all centaurs as a class
+	 */
+	@Override
+	public String plural() {
+		return "Centaurs";
+	}
 }

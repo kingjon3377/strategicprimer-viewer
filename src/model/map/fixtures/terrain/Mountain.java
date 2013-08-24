@@ -104,4 +104,11 @@ public class Mountain implements TerrainFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all mountains as a class
+	 */
+	@Override
+	public String plural() {
+		return "Mountain";
+	}
 }

@@ -150,4 +150,11 @@ public final class Cave implements IEvent,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all caves as a class
+	 */
+	@Override
+	public String plural() {
+		return "Caves";
+	}
 }

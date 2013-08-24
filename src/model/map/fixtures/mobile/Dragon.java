@@ -139,4 +139,11 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all dragons as a class
+	 */
+	@Override
+	public String plural() {
+		return "Dragons";
+	}
 }

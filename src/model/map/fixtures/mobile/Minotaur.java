@@ -113,4 +113,11 @@ public class Minotaur implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all minotaurs as a class
+	 */
+	@Override
+	public String plural() {
+		return "Minotaurs";
+	}
 }

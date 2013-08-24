@@ -283,4 +283,11 @@ public class Unit implements MobileFixture, HasImage,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a phrase describing all units as a class
+	 */
+	@Override
+	public String plural() {
+		return "Units";
+	}
 }

@@ -121,4 +121,11 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a String indicating that this method shouldn't be called
+	 */
+	@Override
+	public String plural() {
+		return "You shouldn't see this text; report this";
+	}
 }

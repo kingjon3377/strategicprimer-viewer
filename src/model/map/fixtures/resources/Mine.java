@@ -156,4 +156,11 @@ public class Mine implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all mines as a class
+	 */
+	@Override
+	public String plural() {
+		return "Mines";
+	}
 }

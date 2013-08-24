@@ -208,4 +208,11 @@ public class Village implements ITownFixture, HasImage {
 	public void setRace(final String vRace) {
 		race = vRace;
 	}
+	/**
+	 * @return a phrase describing all villages as a class.
+	 */
+	@Override
+	public String plural() {
+		return "Villages";
+	}
 }

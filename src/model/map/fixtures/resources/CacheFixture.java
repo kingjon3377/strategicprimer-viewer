@@ -164,4 +164,11 @@ public class CacheFixture implements
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all caches as a class
+	 */
+	@Override
+	public String plural() {
+		return "Caches";
+	}
 }

@@ -113,4 +113,11 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a string describing all griffins as a class
+	 */
+	@Override
+	public String plural() {
+		return "Griffins";
+	}
 }
