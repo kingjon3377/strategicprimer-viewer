@@ -26,6 +26,7 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	 */
 	@Override
 	public boolean shouldDisplay(final TileFixture fix) {
+		// ESCA-JAVA0177:
 		final JCheckBoxMenuItem item;
 		if (mapping.containsKey(fix.getClass())) {
 			item = mapping.get(fix.getClass());
