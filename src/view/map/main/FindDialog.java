@@ -8,22 +8,30 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
+import model.map.IMap;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
+import model.viewer.ZOrderFilter;
 import util.IsNumeric;
 import util.IteratorWrapper;
+import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
+import view.util.SplitWithWeights;
 import view.util.SystemOut;
 /**
  * A dialog to let the user find fixtures by ID, name, or "kind".
@@ -53,6 +61,10 @@ public class FindDialog extends JDialog implements ActionListener {
 	 */
 	private final JCheckBox vertically = new JCheckBox("Search vertically then horizontally");
 	/**
+	 * The filter, to let the user filter which fixtures are displayed.
+	 */
+	private FixtureFilterList ffl;
+	/**
 	 * Constructor.
 	 *
 	 * @param parent the parent to attach this dialog to
@@ -79,7 +91,13 @@ public class FindDialog extends JDialog implements ActionListener {
 		buttonPanel.add(new ListenedButton("Cancel", this));
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
-		setContentPane(contentPane);
+		ffl = new FixtureFilterList();
+		SwingUtilities.invokeLater(new FilterPopulator(ffl, model));
+		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, .6,
+				.6, contentPane, new BorderedPanel(new JScrollPane(ffl,
+						ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+						ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+						new JLabel("Find only ..."), null, null, null)));
 		map = model;
 		pack();
 	}
@@ -129,21 +147,23 @@ public class FindDialog extends JDialog implements ActionListener {
 	 * @param fix a fixture
 	 * @return whether the fixture matches the pattern or has id as its ID.
 	 */
-	private static boolean matches(final String pattern, final int idNum,
+	private boolean matches(final String pattern, final int idNum,
 			final IFixture fix) {
-		if (fix.getID() == idNum
-				|| (fix instanceof HasName && ((HasName) fix).getName()
-						.contains(pattern))
-				|| (fix instanceof HasKind && ((HasKind) fix).getKind()
-						.contains(pattern))
-				|| (fix instanceof HasOwner
+		if (!pattern.isEmpty()
+				&& (!(fix instanceof TileFixture) || ffl
+						.shouldDisplay((TileFixture) fix))
+				&& (fix.getID() == idNum
+						|| (fix instanceof HasName && ((HasName) fix).getName()
+								.contains(pattern))
+						|| (fix instanceof HasKind && ((HasKind) fix).getKind()
+								.contains(pattern)) || (fix instanceof HasOwner
 						&& ((HasOwner) fix).getOwner().getName()
 								.contains(pattern)
 						|| "me".equalsIgnoreCase(pattern.trim())
 						&& ((HasOwner) fix).getOwner().isCurrent()
 						|| "none".equalsIgnoreCase(pattern.trim())
 						&& ((HasOwner) fix).getOwner().isIndependent() || ((HasOwner) fix)
-						.getOwner().getPlayerId() == idNum)) {
+						.getOwner().getPlayerId() == idNum))) {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable<?>) {
 			for (IFixture member : (FixtureIterable<?>) fix) {
@@ -154,5 +174,51 @@ public class FindDialog extends JDialog implements ActionListener {
 			return false; // NOPMD
 		}
 		return false;
+	}
+
+	/**
+	 * A class to make sure the filter knows about all kinds of fixtures.
+	 */
+	private static final class FilterPopulator implements Runnable {
+		/**
+		 * Constructor.
+		 * @param ffm the filter to populate
+		 * @param model the map to populate it from
+		 */
+		FilterPopulator(final ZOrderFilter ffm, final IViewerModel model) {
+			filter = ffm;
+			map = model.getMap();
+		}
+		/**
+		 * The filter to populate.
+		 */
+		private final ZOrderFilter filter;
+		/**
+		 * The map to populate it from.
+		 */
+		private final IMap map;
+		/**
+		 * Run.
+		 */
+		@Override
+		public void run() {
+			for (final Point point : map.getTiles()) {
+				populate(map.getTiles().getTile(point));
+			}
+		}
+		/**
+		 * Populate the filter.
+		 * @param iter an iterable of fixtures.
+		 */
+		private void populate(final FixtureIterable<? extends IFixture> iter) {
+			for (final IFixture item : iter) {
+				if (item instanceof TileFixture) {
+					filter.shouldDisplay((TileFixture) item);
+				}
+				if (item instanceof FixtureIterable<?>) {
+					populate((FixtureIterable<?>) item);
+				}
+			}
+		}
 	}
 }
