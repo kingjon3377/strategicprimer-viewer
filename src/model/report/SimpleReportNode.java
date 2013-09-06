@@ -18,5 +18,20 @@ public class SimpleReportNode extends AbstractReportNode {
 	public String produce() {
 		return getText();
 	}
+	/**
+	 * @param obj a node
+	 * @return whether it equals this one
+	 */
+	@Override
+	protected boolean equalsImpl(final AbstractReportNode obj) {
+		return obj instanceof SimpleReportNode && getText().equals(obj.getText());
+	}
+	/**
+	 * @return a hash code for the object
+	 */
+	@Override
+	protected int hashCodeImpl() {
+		return getText().hashCode();
+	}
 
 }

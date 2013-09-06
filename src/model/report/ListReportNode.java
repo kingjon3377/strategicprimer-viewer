@@ -31,4 +31,19 @@ public class ListReportNode extends AbstractReportNode {
 		builder.append("</ul>\n");
 		return builder.toString();
 	}
+	/**
+	 * @param obj a node
+	 * @return whether it equals this one
+	 */
+	@Override
+	protected boolean equalsImpl(final AbstractReportNode obj) {
+		return obj instanceof ListReportNode && getText().equals(obj.getText()) && children().equals(obj.children());
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	protected int hashCodeImpl() {
+		return getText().hashCode() /*| children().hashCode()*/;
+	}
 }

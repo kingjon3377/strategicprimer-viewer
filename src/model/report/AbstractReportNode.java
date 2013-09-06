@@ -42,15 +42,22 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj
-				|| (obj instanceof AbstractReportNode && produce().equals(
-						((AbstractReportNode) obj).produce()));
+				|| (obj instanceof AbstractReportNode && equalsImpl((AbstractReportNode) obj));
 	}
 	/**
-	 * Must be implemented by subclasses.
-	 * @return nothing; always throws
+	 * @param obj a node
+	 * @return whether it's equal to this one.
+	 */
+	protected abstract boolean equalsImpl(final AbstractReportNode obj);
+	/**
+	 * @return a hash code for the object
 	 */
 	@Override
 	public int hashCode() {
-		throw new IllegalStateException("Must be implemented by subclass");
+		return hashCodeImpl();
 	}
+	/**
+	 * @return a hash code for the object
+	 */
+	protected abstract int hashCodeImpl();
 }

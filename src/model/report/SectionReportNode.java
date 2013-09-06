@@ -46,8 +46,24 @@ public class SectionReportNode extends AbstractReportNode {
 	/**
 	 * @return the header level
 	 */
-	@Override
-	public final int getLevel() {
+	public final int getHeaderLevel() {
 		return level;
+	}
+	/**
+	 * @param obj an object
+	 * @return whether it's the same as this
+	 */
+	@Override
+	protected boolean equalsImpl(final AbstractReportNode obj) {
+		return obj instanceof SectionReportNode && level == obj.getLevel()
+				&& getText().equals(obj.getText())
+				&& children().equals(obj.children());
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	protected int hashCodeImpl() {
+		return level + getText().hashCode() /*| children.hashCode()*/;
 	}
 }
