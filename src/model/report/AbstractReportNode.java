@@ -68,4 +68,11 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	 * @return a hash code for the object
 	 */
 	protected abstract int hashCodeImpl();
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return getText();
+	}
 }
