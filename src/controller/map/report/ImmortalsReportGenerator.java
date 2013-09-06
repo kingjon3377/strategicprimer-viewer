@@ -25,6 +25,9 @@ import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
+import model.report.AbstractReportNode;
+import model.report.SectionListReportNode;
+import model.report.SimpleReportNode;
 import util.IntMap;
 import util.Pair;
 /**
@@ -107,6 +110,77 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 				CLOSE_LIST).toString();
 	}
 	/**
+	 * Produce the sub-report dealing with "immortals".
+	 * @param fixtures the set of fixtures
+	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
+	 * @return the part of the report listing "immortals"
+	 */
+	@Override
+	public AbstractReportNode produceRIR(
+			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
+			final Player currentPlayer) {
+		final AbstractReportNode retval = new SectionListReportNode(4, "Immortals");
+		final Map<String, List<Point>> dragons = new HashMap<>();
+		final Map<String, List<Point>> fairies = new HashMap<>();
+		final List<Point> trolls = new ArrayList<>();
+		final List<Point> djinni = new ArrayList<>();
+		final List<Point> sphinxes = new ArrayList<>();
+		final Map<String, List<Point>> giants = new HashMap<>();
+		final List<Point> minotaurs = new ArrayList<>();
+		final List<Point> ogres = new ArrayList<>();
+		final Map<String, List<Point>> centaurs = new HashMap<>();
+		final List<Point> phoenixes = new ArrayList<>();
+		final List<Point> simurghs = new ArrayList<>();
+		final List<Point> griffins = new ArrayList<>();
+
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			final Point point = pair.first();
+			final Integer idNum = Integer.valueOf(pair.second().getID());
+			if (pair.second() instanceof Dragon) {
+				separateByKind(dragons, (Dragon) pair.second(), point);
+			} else if (pair.second() instanceof Fairy) {
+				separateByKind(fairies, (Fairy) pair.second(), point);
+			} else if (pair.second() instanceof Troll) {
+				trolls.add(point);
+			} else if (pair.second() instanceof Djinn) {
+				djinni.add(point);
+			} else if (pair.second() instanceof Sphinx) {
+				sphinxes.add(point);
+			} else if (pair.second() instanceof Giant) {
+				separateByKind(giants, (Giant) pair.second(), point);
+			} else if (pair.second() instanceof Minotaur) {
+				minotaurs.add(point);
+			} else if (pair.second() instanceof Ogre) {
+				ogres.add(point);
+			} else if (pair.second() instanceof Centaur) {
+				separateByKind(centaurs, (Centaur) pair.second(), point);
+			} else if (pair.second() instanceof Phoenix) {
+				phoenixes.add(point);
+			} else if (pair.second() instanceof Simurgh) {
+				simurghs.add(point);
+			} else if (pair.second() instanceof Griffin) {
+				griffins.add(point);
+			} else {
+				continue;
+			}
+			fixtures.remove(idNum);
+		}
+		optionallyAdd(dragons, "(s) at ", retval);
+		optionallyAdd(fairies, " at ", retval);
+		optionallyAdd(trolls, "Troll(s) at ", retval);
+		optionallyAdd(djinni, "Djinn(i) at ", retval);
+		optionallyAdd(sphinxes, "Sphinx(es) at ", retval);
+		optionallyAdd(giants, "(s) at ", retval);
+		optionallyAdd(minotaurs, "Minotaur(s) at ", retval);
+		optionallyAdd(ogres, "Ogre(s) at ", retval);
+		optionallyAdd(centaurs, "(s) at ", retval);
+		optionallyAdd(phoenixes, "Phoenix(es) at ", retval);
+		optionallyAdd(simurghs, "Simurgh(s) at ", retval);
+		optionallyAdd(griffins, "Griffin(s) at ", retval);
+		return retval.getChildCount() == 0 ? null : retval;
+	}
+	/**
 	 * @param maps a list of maps
 	 * @return true if all are empty, false if even one is not.
 	 */
@@ -151,7 +225,26 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 				atPoint(loc)).append("A(n) ").append(item.toString())
 				.toString() : "";
 	}
-
+	/**
+	 * @param fixtures The set of fixtures
+	 * @param tiles ignored
+	 * @param currentPlayer the current player
+	 * @param item a fixture
+	 * @param loc its location
+	 * @return a sub-sub-report on just that fixture, or null if it's not one we handle here.
+	 */
+	@Override
+	public AbstractReportNode produceRIR(
+			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
+			final Player currentPlayer, final MobileFixture item, final Point loc) {
+		return item instanceof Dragon || item instanceof Fairy
+				|| item instanceof Troll || item instanceof Djinn
+				|| item instanceof Sphinx || item instanceof Giant
+				|| item instanceof Minotaur || item instanceof Ogre
+				|| item instanceof Centaur || item instanceof Phoenix
+				|| item instanceof Simurgh || item instanceof Griffin ? new SimpleReportNode(
+				atPoint(loc) + "A(n) " + item.toString()) : null;
+	}
 	/**
 	 * Prints (to the builder) nothing if the map is empty, or for each entry in
 	 * the entry set a list item beginning with the key, followed by the infix,
@@ -164,6 +257,21 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix)
 					.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
+		}
+	}
+
+	/**
+	 * Add to the parent node nothing if the map is empty, or for each entry in
+	 * the entry set a simple node containing the key plus the infix plus a
+	 * comma-separated list of the points.
+	 * @param parent the parent node
+	 * @param mapping the mapping from kinds (or whatever) to lists of points
+	 * @param infix what to print in the middle of each item
+	 */
+	private static void optionallyAdd(final Map<String, List<Point>> mapping,
+			final String infix, final AbstractReportNode parent) {
+		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
+			parent.add(new SimpleReportNode(entry.getKey() + infix + pointCSL(entry.getValue())));
 		}
 	}
 	/**
@@ -181,6 +289,20 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		}
 	}
 
+	/**
+	 * Add to the parent node nothing if the list is empty, or a simple node of
+	 * the prefix followed by a comma-separated list of all the points if it is
+	 * not.
+	 * @param parent the parent to add the item to.
+	 * @param points a list of points
+	 * @param prefix what to prepend to it if non-empty
+	 */
+	private static void optionallyAdd(final List<Point> points,
+			final String prefix, final AbstractReportNode parent) {
+		if (!points.isEmpty()) {
+			parent.add(new SimpleReportNode(prefix + pointCSL(points)));
+		}
+	}
 	/**
 	 * If there's an entry in the map for the thing's kind already, add the
 	 * point to its list; if not, create such an entry and add the point to it.

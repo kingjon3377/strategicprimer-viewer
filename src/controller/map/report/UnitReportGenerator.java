@@ -10,6 +10,11 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import model.report.AbstractReportNode;
+import model.report.ComplexReportNode;
+import model.report.ListReportNode;
+import model.report.SectionListReportNode;
+import model.report.SimpleReportNode;
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import util.IntMap;
 import util.Pair;
@@ -46,7 +51,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		for (final UnitMember member : unit) {
 			if (!hasMembers) {
 				hasMembers = true;
-				builder.append("\n<ul>Members of the unit:\n");
+				builder.append(". Members of the unit:\n<ul>\n");
 			}
 			builder.append(OPEN_LIST_ITEM);
 			if (member instanceof Worker) {
@@ -64,7 +69,40 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		return builder.toString();
 	}
-
+	/**
+	 * We assume we're already in the middle of a paragraph or bullet point.
+	 * @param fixtures the set of fixtures, so we can remove the unit and its members from it.
+	 * @param tiles ignored
+	 * @param unit a unit
+	 * @param loc the unit's location
+	 * @param currentPlayer the player for whom the report is being produced
+	 * @return a sub-report on the unit
+	 */
+	@Override
+	public AbstractReportNode produceRIR(
+			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
+			final Player currentPlayer, final Unit unit, final Point loc) {
+		final String simple = "Unit of type "
+				+ unit.getKind()
+				+ ", named "
+				+ unit.getName()
+				+ (unit.getOwner().isIndependent() ? ", independent"
+						: ", owned by " + playerNameOrYou(unit.getOwner()));
+		final AbstractReportNode retval = unit.iterator().hasNext() ? new ListReportNode(
+				simple + ". Members of the unit:") : new SimpleReportNode(
+				simple);
+		for (final UnitMember member : unit) {
+			if (member instanceof Worker) {
+				retval.add(produceWorkerRIR((Worker) member, currentPlayer.equals(unit.getOwner())));
+			} else {
+				// TODO: what about others?
+				retval.add(new SimpleReportNode(member.toString()));
+			}
+			fixtures.remove(Integer.valueOf(member.getID()));
+		}
+		fixtures.remove(Integer.valueOf(unit.getID()));
+		return retval;
+	}
 	/**
 	 * @param worker a Worker.
 	 * @param details whether we should give details of the worker's stats and
@@ -113,26 +151,66 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				builder.append(job.getLevel());
 				builder.append(" levels in ");
 				builder.append(job.getName());
-				if (job.iterator().hasNext()) {
-					boolean first = true;
-					for (final Skill skill : job) {
-						// We had written this using an if statement rather than
-						// a ternary, but static analysis complained about the
-						// block depth ... and I don't want to factor out *yet
-						// another function*.
-						builder.append(first ? " (" : ", ");
-						first = false;
-						builder.append(skill.getName());
-						builder.append(' ');
-						builder.append(skill.getLevel());
-					}
-					builder.append(')');
-				}
+				builder.append(getSkills(job));
 				builder.append(CLOSE_LIST_ITEM);
 			}
 			builder.append(CLOSE_LIST);
 		}
 		return builder.toString();
+	}
+	/**
+	 * @param job a Job
+	 * @return a String describing its skills.
+	 */
+	private static String getSkills(final Job job) {
+		final StringBuilder builder = new StringBuilder();
+		if (job.iterator().hasNext()) {
+			boolean first = true;
+			for (final Skill skill : job) {
+				if (first) {
+					builder.append(" (");
+					first = false;
+				} else {
+					builder.append(", ");
+				}
+				builder.append(skill.getName());
+				builder.append(' ');
+				builder.append(skill.getLevel());
+			}
+			builder.append(')');
+		}
+		return builder.toString();
+	}
+	/**
+	 * @param worker a Worker.
+	 * @param details whether we should give details of the worker's stats and
+	 *        experience---true only if the current player owns the worker.
+	 * @return a sub-report on that worker.
+	 */
+	private static AbstractReportNode produceWorkerRIR(final Worker worker, final boolean details) {
+		final AbstractReportNode retval = new ComplexReportNode(worker.getName() + ", a " + worker.getRace() + ". ");
+		if (worker.getStats() != null && details) {
+			final WorkerStats stats = worker.getStats();
+			final AbstractReportNode statsNode = new ListReportNode("He or she has the following stats:");
+			statsNode.add(new StatReportNode(stats.getHitPoints(), stats.getMaxHitPoints()));
+			statsNode.add(new StatReportNode("Strength: ", stats.getStrength()));
+			statsNode.add(new StatReportNode("Dexterity: ", stats.getDexterity()));
+			statsNode.add(new StatReportNode("Constitution: ", stats.getConstitution()));
+			statsNode.add(new StatReportNode("Intelligence: ", stats.getIntelligence()));
+			statsNode.add(new StatReportNode("Wisdom: ", stats.getWisdom()));
+			statsNode.add(new StatReportNode("Charisma: ", stats.getCharisma()));
+			retval.add(statsNode);
+		}
+		if (worker.iterator().hasNext() && details) {
+			final AbstractReportNode jobs = new ListReportNode(
+					"He or she has training or experience in the following Jobs (Skills):");
+			for (Job job : worker) {
+				jobs.add(new SimpleReportNode(Integer.toString(job.getLevel())
+						+ " levels in " + job.getName() + getSkills(job)));
+			}
+			retval.add(jobs);
+		}
+		return retval;
 	}
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
@@ -157,5 +235,47 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		builder.append(CLOSE_LIST);
 		return anyUnits ? builder.toString() : "";
+	}
+	/**
+	 * All fixtures referred to in this report are removed from the collection.
+	 * @param fixtures the set of fixtures
+	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
+	 * @return the part of the report dealing with units
+	 */
+	@Override
+	public AbstractReportNode produceRIR(
+			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
+			final Player currentPlayer) {
+		final AbstractReportNode retval = new SectionListReportNode(4,
+				"Units in the map",
+				"(Any units reported above are not described again.)");
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			if (pair.second() instanceof Unit) {
+				final AbstractReportNode unit = produceRIR(fixtures, tiles, currentPlayer, (Unit) pair.second(), pair.first());
+				unit.setText(atPoint(pair.first()) + unit.getText());
+				retval.add(unit);
+			}
+		}
+		return retval.getChildCount() == 0 ? null : retval;
+	}
+	/**
+	 * A {@link SimpleReportNode} with a constructor designed for worker stats.
+	 */
+	private static class StatReportNode extends SimpleReportNode {
+		/**
+		 * @param hitPoints the worker's HP
+		 * @param max the worker's max HP
+		 */
+		StatReportNode(final int hitPoints, final int max) {
+			super("Hit points: " + hitPoints + " / " + max);
+		}
+		/**
+		 * @param stat which stat
+		 * @param value its value
+		 */
+		StatReportNode(final String stat, final int value) {
+			super(stat + getModifierString(value));
+		}
 	}
 }

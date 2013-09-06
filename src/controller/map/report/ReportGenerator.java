@@ -13,6 +13,8 @@ import model.map.Tile;
 import model.map.TileCollection;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
+import model.report.AbstractReportNode;
+import model.report.RootReportNode;
 import util.IntMap;
 import util.Pair;
 
@@ -98,6 +100,68 @@ public final class ReportGenerator {
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
 		return builder.toString();
+	}
+	/**
+	 * @param map the map to base the report on
+	 * @return the report, in ReportIntermediateRepresentation
+	 */
+	public static AbstractReportNode createReportIR(final IMap map) {
+		final AbstractReportNode retval = new RootReportNode("Strategic Primer map summary report");
+		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final TileCollection tiles = map.getTiles();
+		final Player player = map.getPlayers().getCurrentPlayer();
+		retval.add(new FortressReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new UnitReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new TownReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new ExplorableReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new HarvestableReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new AnimalReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new VillageReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new ImmortalsReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		return retval;
+	}
+	/**
+	 * Creates a slightly abbreviated report, omitting the player's fortresses and units.
+	 * @param map the map to base the report on
+	 * @return the report, in HTML, as a string.
+	 * @param player the player to report on
+	 */
+	public static AbstractReportNode createAbbreviatedReportIR(final IMap map, final Player player) {
+		final AbstractReportNode retval = new RootReportNode("Strategic Primer map summary abbreviated report");
+		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final TileCollection tiles = map.getTiles();
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
+					&& player.equals(((HasOwner) pair.second()).getOwner())) {
+				fixtures.remove(Integer.valueOf(pair.second().getID()));
+			}
+		}
+		fixtures.coalesce();
+		retval.add(new FortressReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new UnitReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new TownReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new ExplorableReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new HarvestableReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new AnimalReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new VillageReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new ImmortalsReportGenerator().produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		return retval;
 	}
 	/**
 	 * @param map a map

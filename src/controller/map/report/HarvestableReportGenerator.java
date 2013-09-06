@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
@@ -21,6 +24,10 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
+import model.report.AbstractReportNode;
+import model.report.SectionReportNode;
+import model.report.SimpleReportNode;
+import model.report.SortedSectionListReportNode;
 import util.IntMap;
 import util.Pair;
 import controller.map.misc.HarvestableComparator;
@@ -50,7 +57,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, // NOPMD
 			final TileCollection tiles, final Player currentPlayer) {
 		final StringBuilder builder = new StringBuilder("<h4>Resource Sources</h4>\n");
-		final HtmlList caches = new HtmlList("<h5>Caches collected by your explorers and workers:</h5>\n");
+		final HtmlList caches = new HtmlList("<h5>Caches collected by your explorers and workers:</h5>");
 		final HtmlList groves = new HtmlList("<h5>Groves and orchards</h5>");
 		final HtmlList meadows = new HtmlList("<h5>Meadows and fields</h5>");
 		final HtmlList mines = new HtmlList("<h5>Mines</h5>");
@@ -111,6 +118,83 @@ public class HarvestableReportGenerator extends // NOPMD
 				&& shrubs.isEmpty() ? "" : builder.toString();
 	}
 	/**
+	 * Produce the sub-reports dealing with "harvestable" fixtures.
+	 * All fixtures referred to in this report are to be removed from the
+	 * collection. Caves and battlefields, though HarvestableFixtures, are
+	 * presumed to have been handled already.
+	 *
+	 * @param fixtures the set of fixtures
+	 * @param tiles ignored
+	 * @param currentPlayer the player for whom the report is being produced
+	 * @return the part of the report listing things that can be harvested.
+	 */
+	@Override
+	public AbstractReportNode produceRIR(
+			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
+			final Player currentPlayer) {
+		final AbstractReportNode retval = new SectionReportNode(4, "Resource Sources");
+		final AbstractReportNode caches = new SortedSectionListReportNode(5, "Caches collected by your explorers and workers:");
+		final AbstractReportNode groves = new SortedSectionListReportNode(5, "Groves and orchards");
+		final AbstractReportNode meadows = new SortedSectionListReportNode(5, "Meadows and fields");
+		final AbstractReportNode mines = new SortedSectionListReportNode(5, "Mines");
+		final AbstractReportNode minerals = new SortedSectionListReportNode(5, "Mineral deposits");
+		final Map<String, List<Point>> shrubs = new HashMap<>();
+		final AbstractReportNode stone = new SortedSectionListReportNode(5, "Exposed stone deposits");
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			if (pair.second() instanceof HarvestableFixture) {
+				final HarvestableFixture harvestable = (HarvestableFixture) pair.second();
+				final Point point = pair.first();
+				if (harvestable instanceof CacheFixture) {
+					caches.add(produceRIR(fixtures, tiles, currentPlayer, harvestable, point));
+				} else if (harvestable instanceof Grove) {
+					groves.add(produceRIR(fixtures, tiles, currentPlayer, harvestable, point));
+				} else if (harvestable instanceof Meadow) {
+					meadows.add(produceRIR(fixtures, tiles, currentPlayer, harvestable, point));
+				} else if (harvestable instanceof Mine) {
+					mines.add(produceRIR(fixtures, tiles, currentPlayer, harvestable, point));
+				} else if (harvestable instanceof MineralVein) {
+					// TODO: Handle these like shrubs.
+					minerals.add(produceRIR(fixtures, tiles, currentPlayer, harvestable, point));
+				} else if (harvestable instanceof Shrub) {
+					// ESCA-JAVA0177:
+					final List<Point> shrubPoints; // NOPMD
+					if (shrubs.containsKey(((Shrub) harvestable).getKind())) {
+						shrubPoints = shrubs.get(((Shrub) harvestable).getKind());
+					} else {
+						shrubPoints = new ArrayList<>(); // NOPMD
+						shrubs.put(((Shrub) harvestable).getKind(), shrubPoints);
+					}
+					shrubPoints.add(point);
+					fixtures.remove(Integer.valueOf(harvestable.getID()));
+				} else if (harvestable instanceof StoneDeposit) {
+					// TODO: Handle these like shrubs.
+					stone.add(produceRIR(fixtures, tiles, currentPlayer, harvestable, point));
+				}
+			}
+		}
+		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(5, "Shrubs, small trees, and such");
+		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
+			shrubsNode.add(new SimpleReportNode(entry.getKey() + ": at " + pointCSL(entry.getValue())));
+		}
+		return maybeAdd(retval, caches, groves, meadows, mines, minerals,
+				stone, shrubsNode) ? retval : null;
+	}
+	/**
+	 * @param parent a parent node
+	 * @param children nodes to add iff they have children of their own
+	 * @return whether any of them was added
+	 */
+	public static boolean maybeAdd(final DefaultMutableTreeNode parent, final MutableTreeNode... children) {
+		boolean retval = false;
+		for (final MutableTreeNode child : children) {
+			if (child.getChildCount() != 0) {
+				parent.add(child);
+				retval = true;
+			}
+		}
+		return retval;
+	}
+	/**
 	 * Produce the sub-sub-report dealing with a harvestable fixture.
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
@@ -156,7 +240,7 @@ public class HarvestableReportGenerator extends // NOPMD
 			return new StringBuilder(atPoint(loc))// NOPMD
 					.append("An ")
 					.append(ternary(((MineralVein) item).isExposed(),
-							"exposed ", "unexposed ")).append(" vein of ")
+							"exposed ", "unexposed ")).append("vein of ")
 					.append(((MineralVein) item).getKind()).toString();
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -170,6 +254,61 @@ public class HarvestableReportGenerator extends // NOPMD
 		} else {
 			// It's a battlefield or cave.
 			return new ExplorableReportGenerator().produce(fixtures, tiles, currentPlayer, item, loc);
+		}
+	}
+	/**
+	 * Produce the sub-sub-report dealing with a harvestable fixture.
+	 * @param fixtures the set of fixtures
+	 * @param tiles ignored
+	 * @param item the fixture to report on
+	 * @param loc its location
+	 * @param currentPlayer the player for whom the report is being produced
+	 * @return a sub-report dealing with the fixture
+	 */
+	@Override
+	public AbstractReportNode produceRIR(
+			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
+			final Player currentPlayer, final HarvestableFixture item, final Point loc) {
+		if (item instanceof CacheFixture) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc) + "A cache of "
+					+ ((CacheFixture) item).getKind() + ", containing "
+					+ ((CacheFixture) item).getContents());
+		} else if (item instanceof Grove) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc)
+					+ "A "
+					+ ternary(((Grove) item).isCultivated(), "cultivated ",
+							"wild ") + ((Grove) item).getKind()
+					+ ternary(((Grove) item).isOrchard(), " orchard", " grove"));
+		} else if (item instanceof Meadow) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc)
+					+ "A "
+					+ ((Meadow) item).getStatus().toString()
+					+ ternary(((Meadow) item).isCultivated(), " cultivated ",
+							" wild or abandoned ") + ((Meadow) item).getKind()
+					+ ternary(((Meadow) item).isField(), " field", " meadow"));
+		} else if (item instanceof Mine) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc) + item.toString());
+		} else if (item instanceof MineralVein) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc)
+					+ "An "
+					+ ternary(((MineralVein) item).isExposed(), "exposed ",
+							"unexposed ") + "vein of "
+					+ ((MineralVein) item).getKind());
+		} else if (item instanceof Shrub) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc) + ((Shrub) item).getKind());
+		} else if (item instanceof StoneDeposit) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc) + "An exposed " + ((StoneDeposit) item).getKind() + " deposit");
+		} else {
+			// It's a battlefield or cave.
+			return new ExplorableReportGenerator().produceRIR(fixtures, tiles,
+					currentPlayer, item, loc);
 		}
 	}
 	/**
@@ -234,7 +373,7 @@ public class HarvestableReportGenerator extends // NOPMD
 			if (isEmpty()) {
 				return ""; // NOPMD
 			} else {
-				final StringBuilder builder = new StringBuilder(header).append(OPEN_LIST);
+				final StringBuilder builder = new StringBuilder(header).append("\n").append(OPEN_LIST);
 				for (String item : this) {
 					builder.append(OPEN_LIST_ITEM).append(item).append(CLOSE_LIST_ITEM);
 				}
