@@ -6,8 +6,8 @@ import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.towns.Village;
 import model.report.AbstractReportNode;
-import model.report.ComplexReportNode;
 import model.report.SectionListReportNode;
+import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
 import util.Pair;
@@ -70,9 +70,9 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	public AbstractReportNode produceRIR(
 			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
 			final Player currentPlayer) {
-		final AbstractReportNode retval = new ComplexReportNode("");
-		final AbstractReportNode others = new SectionListReportNode(4, "Villages you know about:");
-		final AbstractReportNode own = new SectionListReportNode(4, "Villages pledged to your service:");
+		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
+		final AbstractReportNode others = new SectionListReportNode(5, "Villages you know about:");
+		final AbstractReportNode own = new SectionListReportNode(5, "Villages pledged to your service:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
 				final AbstractReportNode node = ((Village) pair.second())
