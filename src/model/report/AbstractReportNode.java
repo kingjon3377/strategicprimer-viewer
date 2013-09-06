@@ -1,6 +1,7 @@
 package model.report;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 /**
  * A superclass for report-nodes.
  * @author Jonathan Lovelace
@@ -74,5 +75,15 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	@Override
 	public String toString() {
 		return getText();
+	}
+	/**
+	 * Add a node. Do nothing if null, rather than crashing.
+	 * @param node the node to add
+	 */
+	@Override
+	public void add(final MutableTreeNode node) {
+		if (node != null) {
+			super.add(node);
+		}
 	}
 }
