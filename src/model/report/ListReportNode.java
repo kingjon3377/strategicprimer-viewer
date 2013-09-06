@@ -11,7 +11,7 @@ public class ListReportNode extends AbstractReportNode {
 	 * @param text the header text
 	 */
 	public ListReportNode(final String text) {
-		setText(text);
+		super(text);
 	}
 	/**
 	 * @return the HTML representation of the node.

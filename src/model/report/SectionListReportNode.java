@@ -27,8 +27,8 @@ public class SectionListReportNode extends AbstractReportNode {
 	 * @param subtext the sub-header text
 	 */
 	public SectionListReportNode(final int lvl, final String header, final String subtext) {
+		super(header);
 		setLevel(lvl);
-		setText(header);
 		subheader = subtext;
 	}
 	/**

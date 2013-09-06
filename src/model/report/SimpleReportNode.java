@@ -9,7 +9,7 @@ public class SimpleReportNode extends AbstractReportNode {
 	 * @param text the text of the node
 	 */
 	public SimpleReportNode(final String text) {
-		setText(text);
+		super(text);
 	}
 	/**
 	 * @return the HTML representation of the node, its text.

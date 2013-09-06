@@ -13,7 +13,7 @@ public class RootReportNode extends AbstractReportNode {
 	 * @param title the title text
 	 */
 	public RootReportNode(final String title) {
-		setText(title);
+		super(title);
 	}
 	/**
 	 * @return the HTML representation of the tree of nodes.

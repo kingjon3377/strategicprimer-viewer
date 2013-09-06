@@ -8,6 +8,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode implements Comparable<AbstractReportNode> {
 	/**
+	 * Constructor.
+	 * @param txt the (header) text.
+	 */
+	protected AbstractReportNode(final String txt) {
+		super(txt);
+		setText(txt);
+	}
+	/**
 	 * @return the HTML representation of the node.
 	 */
 	public abstract String produce();

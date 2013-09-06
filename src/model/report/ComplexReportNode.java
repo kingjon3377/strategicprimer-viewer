@@ -16,7 +16,7 @@ public class ComplexReportNode extends AbstractReportNode {
 	 * @param text the main text of the node
 	 */
 	public ComplexReportNode(final String text) {
-		setText(text);
+		super(text);
 	}
 	/**
 	 * @return an HTML representation of the node.

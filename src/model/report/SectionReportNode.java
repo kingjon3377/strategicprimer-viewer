@@ -14,8 +14,8 @@ public class SectionReportNode extends AbstractReportNode {
 	 * @param header the header text
 	 */
 	public SectionReportNode(final int lvl, final String header) {
+		super(header);
 		setLevel(lvl);
-		setText(header);
 	}
 	/**
 	 * @return the HTML representation of the node
