@@ -3,15 +3,20 @@ package view.map.main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
+import model.map.Player;
+import model.map.PlayerCollection;
 import model.viewer.IViewerModel;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
+import view.worker.PlayerChooserHandler;
 import controller.map.misc.IOHandler;
 
 /**
@@ -84,6 +89,27 @@ public class SPMenu extends JMenuBar {
 		retval.add(MenuItemCreator.createMenuItem("Zoom out", KeyEvent.VK_O,
 				MenuItemCreator.createHotkey(KeyEvent.VK_MINUS),
 				"Decrease the visible size of each tile", zoomListener));
+		retval.addSeparator();
+		final PlayerChooserHandler pch = new PlayerChooserHandler(parent, model);
+		retval.add(MenuItemCreator.createMenuItem(
+				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
+				"Mark a player as the current player in the map", pch));
+		pch.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if ("player".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Player) {
+					final PlayerCollection pc = model.getMap().getPlayers();
+					final Player current = (Player) evt.getNewValue();
+					for (final Player player : pc) {
+						if (player.equals(current)) {
+							player.setCurrent(true);
+						} else {
+							player.setCurrent(false);
+						}
+					}
+				}
+			}
+		});
 		return retval;
 	}
 
