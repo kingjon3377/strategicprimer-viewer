@@ -34,6 +34,20 @@ public class ListReportNode extends AbstractReportNode {
 		return builder.toString();
 	}
 	/**
+	 * @return approximately how long the HTML representation of this node will be.
+	 */
+	@Override
+	public int size() {
+		int retval = 16 + getText().length();
+		for (int i = 0; i < getChildCount(); i++) {
+			final TreeNode child = getChildAt(i);
+			if (child instanceof AbstractReportNode) {
+				retval += ((AbstractReportNode) child).size() + 10;
+			}
+		}
+		return retval;
+	}
+	/**
 	 * @param obj a node
 	 * @return whether it equals this one
 	 */

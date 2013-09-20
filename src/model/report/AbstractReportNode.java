@@ -21,6 +21,10 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	 */
 	public abstract String produce();
 	/**
+	 * @return an approximation of how large the HTML produced by this node will be.
+	 */
+	public abstract int size();
+	/**
 	 * The (usually header) text. May be empty, but not null.
 	 */
 	private String text;

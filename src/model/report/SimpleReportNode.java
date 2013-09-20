@@ -34,6 +34,13 @@ public class SimpleReportNode extends AbstractReportNode {
 		return getText();
 	}
 	/**
+	 * @return the size of the HTML representation of the node.
+	 */
+	@Override
+	public int size() {
+		return getText().length();
+	}
+	/**
 	 * @param obj a node
 	 * @return whether it equals this one
 	 */

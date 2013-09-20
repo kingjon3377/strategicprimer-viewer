@@ -61,6 +61,20 @@ public class SectionListReportNode extends AbstractReportNode {
 		return builder.toString();
 	}
 	/**
+	 * @return approximately how long the HTML representation of this node will be.
+	 */
+	@Override
+	public int size() {
+		int retval = 32 + getText().length() + subheader.length();
+		for (int i = 0; i < getChildCount(); i++) {
+			final TreeNode child = getChildAt(i);
+			if (child instanceof AbstractReportNode) {
+				retval += ((AbstractReportNode) child).size() + 10;
+			}
+		}
+		return retval;
+	}
+	/**
 	 * The header level.
 	 */
 	private int level;
