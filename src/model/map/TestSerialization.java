@@ -215,11 +215,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquals("Just checking ...", 2, iteratorSize(six));
 		assertSerialization("Multiple units should come through", encapsulateTile(PointFactory.point(2, 3), six),
 				SPMap.class);
-		final String xmlTwo = new StringBuilder(280).append("<map version=\"2\" rows=\"3\" columns=\"4\">\n").append("\t<row index=\"2\">\n")
+		final String xmlTwo = new StringBuilder(280)
+				.append("<map version=\"2\" rows=\"3\" columns=\"4\">\n")
+				.append("\t<row index=\"2\">\n")
 				.append("\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
-				.append("\t\t</tile>\n").append("\t</row>\n</map>\n").toString();
+				.append("\t\t</tile>\n").append("\t</row>\n</map>\n")
+				.toString();
 		assertEquals("Multiple units should come through", xmlTwo,
 				createSerializedForm(encapsulateTile(PointFactory.point(2, 3), six), true));
 		assertEquals("Multiple units should come through", xmlTwo,
