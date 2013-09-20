@@ -34,6 +34,25 @@ public class ListReportNode extends AbstractReportNode {
 		return builder.toString();
 	}
 	/**
+	 * @param builder a StringBuilder
+	 * @return it, with this node's HTML representation appended.
+	 */
+	@Override
+	public StringBuilder produce(final StringBuilder builder) {
+		builder.append(getText());
+		builder.append("\n<ul>\n");
+		for (int i = 0; i < getChildCount(); i++) {
+			final TreeNode child = getChildAt(i);
+			if (child instanceof AbstractReportNode) {
+				builder.append("<li>");
+				((AbstractReportNode) child).produce(builder);
+				builder.append("</li>\n");
+			}
+		}
+		builder.append("</ul>\n");
+		return builder;
+	}
+	/**
 	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override

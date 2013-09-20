@@ -34,6 +34,14 @@ public class SimpleReportNode extends AbstractReportNode {
 		return getText();
 	}
 	/**
+	 * @param builder a StringBuilder
+	 * @return it, with this node's HTML representation appended.
+	 */
+	@Override
+	public StringBuilder produce(final StringBuilder builder) {
+		return builder.append(getText());
+	}
+	/**
 	 * @return the size of the HTML representation of the node.
 	 */
 	@Override

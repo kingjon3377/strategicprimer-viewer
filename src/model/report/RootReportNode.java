@@ -16,6 +16,7 @@ public class RootReportNode extends AbstractReportNode {
 		super(title);
 	}
 	/**
+	 * FIXME: Adjust to use the StringBuilder version of this method.
 	 * @return the HTML representation of the tree of nodes.
 	 */
 	@Override
@@ -33,6 +34,24 @@ public class RootReportNode extends AbstractReportNode {
 		}
 		builder.append("</body>\n</html>\n");
 		return builder.toString();
+	}
+	/**
+	 * @param builder a StringBuilder
+	 * @return it, with this node's HTML representation appended.
+	 */
+	@Override
+	public StringBuilder produce(final StringBuilder builder) {
+		builder.append("<html>\n");
+		builder.append("<head><title>").append(getText()).append("</title></head>\n");
+		builder.append("<body>");
+		for (int i = 0; i < getChildCount(); i++) {
+			final TreeNode child = getChildAt(i);
+			if (child instanceof AbstractReportNode) {
+				((AbstractReportNode) child).produce(builder);
+			}
+		}
+		builder.append("</body>\n</html>\n");
+		return builder;
 	}
 	/**
 	 * @return approximately how long the HTML representation of this node will be.

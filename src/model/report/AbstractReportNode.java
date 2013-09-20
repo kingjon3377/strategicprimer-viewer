@@ -21,6 +21,11 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	 */
 	public abstract String produce();
 	/**
+	 * @param builder a string builder
+	 * @return that builder, with an HTML representation of the node added.
+	 */
+	public abstract StringBuilder produce(final StringBuilder builder);
+	/**
 	 * @return an approximation of how large the HTML produced by this node will be.
 	 */
 	public abstract int size();

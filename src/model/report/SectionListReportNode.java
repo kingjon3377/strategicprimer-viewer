@@ -36,11 +36,37 @@ public class SectionListReportNode extends AbstractReportNode {
 	 */
 	private final String subheader;
 	/**
+	 * FIXME: Adjust to call the StringBuilder version of this method.
 	 * @return the HTML representation of the node
 	 */
 	@Override
 	public String produce() {
 		final StringBuilder builder = new StringBuilder();
+		builder.append("<h").append(level).append('>').append(getText())
+				.append("</h").append(level).append(">\n");
+		if (!subheader.isEmpty()) {
+			builder.append("<p>").append(subheader).append("</p>\n");
+		}
+		if (getChildCount() != 0) {
+			builder.append("<ul>\n");
+			for (int i = 0; i < getChildCount(); i++) {
+				final TreeNode child = getChildAt(i);
+				if (child instanceof AbstractReportNode) {
+					builder.append("<li>");
+					((AbstractReportNode) child).produce(builder);
+					builder.append("</li>\n");
+				}
+			}
+			builder.append("</ul>\n");
+		}
+		return builder.toString();
+	}
+	/**
+	 * @param builder a StringBuilder
+	 * @return it, with this node's HTML representation appended.
+	 */
+	@Override
+	public StringBuilder produce(final StringBuilder builder) {
 		builder.append("<h").append(level).append('>').append(getText())
 				.append("</h").append(level).append(">\n");
 		if (!subheader.isEmpty()) {
@@ -58,7 +84,7 @@ public class SectionListReportNode extends AbstractReportNode {
 			}
 			builder.append("</ul>\n");
 		}
-		return builder.toString();
+		return builder;
 	}
 	/**
 	 * @return approximately how long the HTML representation of this node will be.
