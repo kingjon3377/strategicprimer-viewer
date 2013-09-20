@@ -130,7 +130,17 @@ public class ExplorableReportGenerator extends
 	public AbstractReportNode produceRIR(
 			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
 			final Player currentPlayer, final HarvestableFixture item, final Point loc) {
-		return new SimpleReportNode(produce(fixtures, tiles, currentPlayer, item, loc));
+		if (item instanceof Cave) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode("Caves beneath ", loc.toString()); // NOPMD
+		} else if (item instanceof Battlefield) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode("Signs of a long-ago battle on ", //NOPMD
+					loc.toString());
+		} else {
+			return new HarvestableReportGenerator().produceRIR(fixtures, tiles,
+					currentPlayer, item, loc);
+		}
 	}
 
 }

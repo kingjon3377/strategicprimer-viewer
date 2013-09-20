@@ -1,5 +1,6 @@
 package controller.map.report;
 
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
@@ -15,7 +16,6 @@ import model.report.ComplexReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import util.IntMap;
 import util.Pair;
 /**
@@ -86,8 +86,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				.append(unit.getKind())
 				.append(", named ")
 				.append(unit.getName())
-				.append((unit.getOwner().isIndependent() ? ", independent"
-						: ", owned by " + playerNameOrYou(unit.getOwner())))
+				.append(unit.getOwner().isIndependent() ? ", independent"
+						: ", owned by " + playerNameOrYou(unit.getOwner()))
 				.toString();
 		final AbstractReportNode retval = unit.iterator().hasNext() ? new ListReportNode(
 				simple + ". Members of the unit:") : new SimpleReportNode(
@@ -206,10 +206,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			final AbstractReportNode jobs = new ListReportNode(
 					"He or she has training or experience in the following Jobs (Skills):");
 			for (Job job : worker) {
-				jobs.add(new SimpleReportNode(new StringBuilder(Integer
-						.toString(job.getLevel())).append(" levels in ")
-						.append(job.getName()).append(getSkills(job))
-						.toString()));
+				jobs.add(new SimpleReportNode(Integer.toString(job.getLevel()), // NOPMD
+						" levels in ", job.getName(), getSkills(job)));
 			}
 			retval.add(jobs);
 		}
@@ -272,15 +270,14 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		 * @param max the worker's max HP
 		 */
 		StatReportNode(final int hitPoints, final int max) {
-			super(new StringBuilder("Hit points: ").append(hitPoints)
-					.append(" / ").append(max).toString());
+			super("Hit points: ", Integer.toString(hitPoints), " / ", Integer.toString(max));
 		}
 		/**
 		 * @param stat which stat
 		 * @param value its value
 		 */
 		StatReportNode(final String stat, final int value) {
-			super(stat + getModifierString(value));
+			super(stat, getModifierString(value));
 		}
 	}
 }

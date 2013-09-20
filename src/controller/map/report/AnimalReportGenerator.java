@@ -110,9 +110,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		} else {
 			final AbstractReportNode retval = new SectionListReportNode(4, "Animal sightings or encounters");
 			for (Entry<String, List<Point>> entry : sightings.entrySet()) {
-				retval.add(new SimpleReportNode(new StringBuilder(entry
-						.getKey()).append(": at ")
-						.append(pointCSL(entry.getValue())).toString()));
+				retval.add(new SimpleReportNode(entry.getKey(), ": at ",
+						pointCSL(entry.getValue())));
 			}
 			return retval; // NOPMD
 		}
@@ -145,7 +144,10 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	public AbstractReportNode produceRIR(
 			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
 			final Player currentPlayer, final Animal item, final Point loc) {
-		return new SimpleReportNode(produce(fixtures, tiles, currentPlayer, item, loc));
+		return new SimpleReportNode(atPoint(loc),
+				item.isTraces() ? "tracks or traces of "
+						: (item.isTalking() ? "talking " : ""), item.getKind()
+						.toString());
 	}
 
 }

@@ -6,10 +6,25 @@ package model.report;
  */
 public class SimpleReportNode extends AbstractReportNode {
 	/**
-	 * @param text the text of the node
+	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
-	public SimpleReportNode(final String text) {
-		super(text);
+	public SimpleReportNode(final String... texts) {
+		super(concat(texts));
+	}
+	/**
+	 * @param strings a number of strings
+	 * @return them all concatenated together
+	 */
+	private static String concat(final String... strings) {
+		int len = 2; // We build in a little tolerance just in case.
+		for (final String string : strings) {
+			len += string.length();
+		}
+		final StringBuilder builder = new StringBuilder(len);
+		for (final String string : strings) {
+			builder.append(string);
+		}
+		return builder.toString();
 	}
 	/**
 	 * @return the HTML representation of the node, its text.

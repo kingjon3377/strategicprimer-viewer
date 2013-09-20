@@ -243,8 +243,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 				|| item instanceof Minotaur || item instanceof Ogre
 				|| item instanceof Centaur || item instanceof Phoenix
 				|| item instanceof Simurgh || item instanceof Griffin ? new SimpleReportNode(
-				new StringBuilder(atPoint(loc)).append("A(n) ")
-						.append(item.toString()).toString()) : null;
+				atPoint(loc), "A(n) ", item.toString()) : null;
 	}
 	/**
 	 * Prints (to the builder) nothing if the map is empty, or for each entry in
@@ -272,9 +271,8 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	private static void optionallyAdd(final Map<String, List<Point>> mapping,
 			final String infix, final AbstractReportNode parent) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
-			parent.add(new SimpleReportNode(new StringBuilder(entry.getKey())
-					.append(infix).append(pointCSL(entry.getValue()))
-					.toString()));
+			parent.add(new SimpleReportNode(entry.getKey(), infix,
+					pointCSL(entry.getValue())));
 		}
 	}
 	/**
@@ -303,8 +301,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	private static void optionallyAdd(final List<Point> points,
 			final String prefix, final AbstractReportNode parent) {
 		if (!points.isEmpty()) {
-			parent.add(new SimpleReportNode(new StringBuilder(prefix).append(
-					pointCSL(points)).toString()));
+			parent.add(new SimpleReportNode(prefix, pointCSL(points)));
 		}
 	}
 	/**

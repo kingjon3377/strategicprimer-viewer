@@ -207,9 +207,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
 			final Player currentPlayer, final Fortress item, final Point loc) {
 		final AbstractReportNode retval = new SectionListReportNode(5,
-				"Fortress " + item.getName() + " belonging to "
-						+ playerNameOrYou(item.getOwner()));
-		retval.add(new SimpleReportNode("Located at " + loc));
+				new StringBuilder("Fortress ").append(item.getName())
+						.append(" belonging to ")
+						.append(playerNameOrYou(item.getOwner())).toString());
+		retval.add(new SimpleReportNode("Located at ", loc.toString()));
 		final Tile tile = tiles.getTile(loc);
 		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));
 		if (tile.hasRiver()) {
