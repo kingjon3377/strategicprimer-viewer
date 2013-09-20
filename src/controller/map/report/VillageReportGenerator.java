@@ -29,35 +29,24 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		// TODO: Move HtmlList to AbstractReportGenerator and use it here.
-		final StringBuilder builderOthers = new StringBuilder(1024).append(
-				"<h4>Villages you know about:</h4>\n").append(OPEN_LIST);
-		boolean anyOthers = false;
-		final StringBuilder builderOwn = new StringBuilder(1024).append(
-				"<h4>Villages pledged to your service:</h4>\n").append(
-				OPEN_LIST);
-		boolean anyOwn = false;
+		final HtmlList others = new HtmlList("<h4>Villages you know about:</h4>");
+		final HtmlList own = new HtmlList("<h4>Villages pledged to your service:</h4>");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
 				// ESCA-JAVA0177:
-				final StringBuilder appropriateBuilder; // NOPMD
+				final HtmlList appropriateList; //NOPMD
 				if (village.getOwner().isCurrent()) {
-					anyOwn = true;
-					appropriateBuilder = builderOwn;
+					appropriateList = own;
 				} else {
-					anyOthers = true;
-					appropriateBuilder = builderOthers;
+					appropriateList = others;
 				}
-				appropriateBuilder.append(OPEN_LIST_ITEM)
-						.append(produce(fixtures, tiles, currentPlayer,
-								(Village) pair.second(), pair.first()))
-						.append(CLOSE_LIST_ITEM);
+				appropriateList.add(produce(fixtures, tiles, currentPlayer,
+						(Village) pair.second(), pair.first()));
 			}
 		}
-		builderOthers.append(CLOSE_LIST);
-		builderOwn.append(CLOSE_LIST);
-		return (anyOwn ? builderOwn.toString() : "") + (anyOthers ? builderOthers.toString() : "");
+		// HtmlLists will return the empty string if they are empty.
+		return own.toString() + others.toString();
 	}
 	/**
 	 * Produce the report on all villages. All fixtures referred to in this
