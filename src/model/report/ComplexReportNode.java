@@ -19,21 +19,11 @@ public class ComplexReportNode extends AbstractReportNode {
 		super(text);
 	}
 	/**
-	 * FIXME: Adjust to use the StringBuilder version of this method.
 	 * @return an HTML representation of the node.
 	 */
 	@Override
 	public String produce() {
-		// Assume each child will be at least a K in size.
-		final StringBuilder builder = new StringBuilder(getText().length()
-				+ getChildCount() * 512).append(getText());
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode node = getChildAt(i);
-			if (node instanceof AbstractReportNode) {
-				builder.append(((AbstractReportNode) node).produce());
-			}
-		}
-		return builder.toString();
+		return produce(new StringBuilder(size())).toString();
 	}
 	/**
 	 * @param builder a StringBuilder

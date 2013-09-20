@@ -36,30 +36,11 @@ public class SectionListReportNode extends AbstractReportNode {
 	 */
 	private final String subheader;
 	/**
-	 * FIXME: Adjust to call the StringBuilder version of this method.
 	 * @return the HTML representation of the node
 	 */
 	@Override
 	public String produce() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("<h").append(level).append('>').append(getText())
-				.append("</h").append(level).append(">\n");
-		if (!subheader.isEmpty()) {
-			builder.append("<p>").append(subheader).append("</p>\n");
-		}
-		if (getChildCount() != 0) {
-			builder.append("<ul>\n");
-			for (int i = 0; i < getChildCount(); i++) {
-				final TreeNode child = getChildAt(i);
-				if (child instanceof AbstractReportNode) {
-					builder.append("<li>");
-					((AbstractReportNode) child).produce(builder);
-					builder.append("</li>\n");
-				}
-			}
-			builder.append("</ul>\n");
-		}
-		return builder.toString();
+		return produce(new StringBuilder(size())).toString();
 	}
 	/**
 	 * @param builder a StringBuilder

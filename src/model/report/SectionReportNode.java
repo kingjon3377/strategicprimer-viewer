@@ -18,21 +18,11 @@ public class SectionReportNode extends AbstractReportNode {
 		setLevel(lvl);
 	}
 	/**
-	 * FIXME: Adjust to use the StringBuilder version.
 	 * @return the HTML representation of the node
 	 */
 	@Override
 	public String produce() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("<h").append(level).append('>').append(getText())
-				.append("</h").append(level).append(">\n");
-		for (int i = 0; i < getChildCount(); i++) {
-			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
-				builder.append(((AbstractReportNode) child).produce());
-			}
-		}
-		return builder.toString();
+		return produce(new StringBuilder(size())).toString();
 	}
 	/**
 	 * @param builder a StringBuilder
