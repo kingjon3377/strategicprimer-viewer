@@ -338,44 +338,4 @@ public class HarvestableReportGenerator extends // NOPMD
 		}
 
 	}
-	/**
-	 * A list that produces HTML in its toString().
-	 */
-	private static class HtmlList extends ArrayList<String> {
-		/**
-		 * Version UID for serialization.
-		 */
-		private static final long serialVersionUID = 1L;
-		/**
-		 * The header: what to print before opening the list.
-		 */
-		private final String header;
-		/**
-		 * Constructor.
-		 * @param head what to print before opening the list
-		 */
-		HtmlList(final String head) {
-			header = head;
-		}
-		/**
-		 * @return a HTML representation of the list if there's anything in it, or the empty string otherwise.
-		 */
-		@Override
-		public String toString() {
-			if (isEmpty()) {
-				return ""; // NOPMD
-			} else {
-				int len = header.length() + 15;
-				for (final String item : this) {
-					len += item.length() + 12;
-				}
-				final StringBuilder builder = new StringBuilder(len)
-						.append(header).append("\n").append(OPEN_LIST);
-				for (String item : this) {
-					builder.append(OPEN_LIST_ITEM).append(item).append(CLOSE_LIST_ITEM);
-				}
-				return builder.append(CLOSE_LIST).toString();
-			}
-		}
-	}
 }
