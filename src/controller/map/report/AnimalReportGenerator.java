@@ -87,9 +87,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 				// ESCA-JAVA0177:
 				final String string; // NOPMD
 				if (animal.isTraces()) {
-					string = "tracks or traces of " + animal.getKind();
+					string = new StringBuilder("tracks or traces of ").append(animal.getKind()).toString();
 				} else if (animal.isTalking()) {
-					string = "talking " + animal.getKind();
+					string = new StringBuilder("talking ").append(animal.getKind()).toString();
 				} else {
 					string = animal.getKind();
 				}
@@ -110,8 +110,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		} else {
 			final AbstractReportNode retval = new SectionListReportNode(4, "Animal sightings or encounters");
 			for (Entry<String, List<Point>> entry : sightings.entrySet()) {
-				retval.add(new SimpleReportNode(entry.getKey() + ": at "
-						+ pointCSL(entry.getValue())));
+				retval.add(new SimpleReportNode(new StringBuilder(entry
+						.getKey()).append(": at ")
+						.append(pointCSL(entry.getValue())).toString()));
 			}
 			return retval; // NOPMD
 		}

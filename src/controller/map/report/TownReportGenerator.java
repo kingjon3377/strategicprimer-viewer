@@ -153,17 +153,20 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			return new FortressReportGenerator().produceRIR(fixtures, tiles, currentPlayer, (Fortress) item, loc); // NOPMD
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc)
-					+ item.getName()
-					+ (item.getOwner().isIndependent() ? ", an independent "
-							: ", a ")
-					+ item.size().toString()
-					+ ' '
-					+ item.status().toString()
-					+ ' '
-					+ ((AbstractTown) item).kind().toString()
-					+ (item.getOwner().isIndependent() ? "" : " allied with "
-							+ playerNameOrYou(item.getOwner())));
+			return new SimpleReportNode(
+					new StringBuilder(atPoint(loc))
+							.append(item.getName())
+							.append(item.getOwner().isIndependent() ? ", an independent "
+									: ", a ")
+							.append(item.size().toString())
+							.append(' ')
+							.append(item.status().toString())
+							.append(' ')
+							.append(((AbstractTown) item).kind().toString())
+							.append(item.getOwner().isIndependent() ? ""
+									: " allied with "
+											+ playerNameOrYou(item.getOwner()))
+							.toString());
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
 		}

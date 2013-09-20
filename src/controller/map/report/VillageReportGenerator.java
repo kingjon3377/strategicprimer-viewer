@@ -128,13 +128,14 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
 			final Player currentPlayer, final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return new SimpleReportNode(atPoint(loc)
-				+ item.getName()
-				+ ", a(n) "
-				+ item.getRace()
-				+ " village"
-				+ (item.getOwner().isIndependent() ? ", independent"
-						: ", sworn to " + playerNameOrYou(item.getOwner())));
+		return new SimpleReportNode(new StringBuilder(atPoint(loc))
+				.append(item.getName())
+				.append(", a(n) ")
+				.append(item.getRace())
+				.append(" village")
+				.append(item.getOwner().isIndependent() ? ", independent"
+						: ", sworn to " + playerNameOrYou(item.getOwner()))
+				.toString());
 	}
 
 }

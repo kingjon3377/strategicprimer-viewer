@@ -174,7 +174,9 @@ public class HarvestableReportGenerator extends // NOPMD
 		}
 		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(5, "Shrubs, small trees, and such");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
-			shrubsNode.add(new SimpleReportNode(entry.getKey() + ": at " + pointCSL(entry.getValue())));
+			shrubsNode.add(new SimpleReportNode(new StringBuilder(entry
+					.getKey()).append(": at ")
+					.append(pointCSL(entry.getValue())).toString()));
 		}
 		return maybeAdd(retval, caches, groves, meadows, mines, minerals,
 				stone, shrubsNode) ? retval : null;
@@ -271,40 +273,49 @@ public class HarvestableReportGenerator extends // NOPMD
 			final Player currentPlayer, final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc) + "A cache of "
-					+ ((CacheFixture) item).getKind() + ", containing "
-					+ ((CacheFixture) item).getContents());
+			return new SimpleReportNode(new StringBuilder(atPoint(loc)).append("A cache of ")
+					.append(((CacheFixture) item).getKind()).append(", containing ")
+					.append(((CacheFixture) item).getContents()).toString());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc)
-					+ "A "
-					+ ternary(((Grove) item).isCultivated(), "cultivated ",
-							"wild ") + ((Grove) item).getKind()
-					+ ternary(((Grove) item).isOrchard(), " orchard", " grove"));
+			return new SimpleReportNode(new StringBuilder(atPoint(loc))
+					.append("A ")
+					.append(ternary(((Grove) item).isCultivated(),
+							"cultivated ", "wild "))
+					.append(((Grove) item).getKind())
+					.append(ternary(((Grove) item).isOrchard(), " orchard",
+							" grove")).toString());
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc)
-					+ "A "
-					+ ((Meadow) item).getStatus().toString()
-					+ ternary(((Meadow) item).isCultivated(), " cultivated ",
-							" wild or abandoned ") + ((Meadow) item).getKind()
-					+ ternary(((Meadow) item).isField(), " field", " meadow"));
+			return new SimpleReportNode(new StringBuilder(atPoint(loc))
+					.append("A ")
+					.append(((Meadow) item).getStatus().toString())
+					.append(ternary(((Meadow) item).isCultivated(),
+							" cultivated ", " wild or abandoned "))
+					.append(((Meadow) item).getKind())
+					.append(ternary(((Meadow) item).isField(), " field",
+							" meadow")).toString());
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc) + item.toString());
+			return new SimpleReportNode(new StringBuilder(atPoint(loc)).append(
+					item.toString()).toString());
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc)
-					+ "An "
-					+ ternary(((MineralVein) item).isExposed(), "exposed ",
-							"unexposed ") + "vein of "
-					+ ((MineralVein) item).getKind());
+			return new SimpleReportNode(new StringBuilder(atPoint(loc))
+					.append("An ")
+					.append(ternary(((MineralVein) item).isExposed(),
+							"exposed ", "unexposed ")).append("vein of ")
+					.append(((MineralVein) item).getKind()).toString());
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc) + ((Shrub) item).getKind());
+			return new SimpleReportNode(new StringBuilder(atPoint(loc)).append(
+					((Shrub) item).getKind()).toString());
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc) + "An exposed " + ((StoneDeposit) item).getKind() + " deposit");
+			return new SimpleReportNode(new StringBuilder(atPoint(loc))
+					.append("An exposed ")
+					.append(((StoneDeposit) item).getKind()).append(" deposit")
+					.toString());
 		} else {
 			// It's a battlefield or cave.
 			return new ExplorableReportGenerator().produceRIR(fixtures, tiles,

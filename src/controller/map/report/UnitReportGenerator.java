@@ -82,12 +82,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	public AbstractReportNode produceRIR(
 			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
 			final Player currentPlayer, final Unit unit, final Point loc) {
-		final String simple = "Unit of type "
-				+ unit.getKind()
-				+ ", named "
-				+ unit.getName()
-				+ (unit.getOwner().isIndependent() ? ", independent"
-						: ", owned by " + playerNameOrYou(unit.getOwner()));
+		final String simple = new StringBuilder("Unit of type ")
+				.append(unit.getKind())
+				.append(", named ")
+				.append(unit.getName())
+				.append((unit.getOwner().isIndependent() ? ", independent"
+						: ", owned by " + playerNameOrYou(unit.getOwner())))
+				.toString();
 		final AbstractReportNode retval = unit.iterator().hasNext() ? new ListReportNode(
 				simple + ". Members of the unit:") : new SimpleReportNode(
 				simple);
@@ -205,8 +206,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			final AbstractReportNode jobs = new ListReportNode(
 					"He or she has training or experience in the following Jobs (Skills):");
 			for (Job job : worker) {
-				jobs.add(new SimpleReportNode(Integer.toString(job.getLevel())
-						+ " levels in " + job.getName() + getSkills(job)));
+				jobs.add(new SimpleReportNode(new StringBuilder(Integer
+						.toString(job.getLevel())).append(" levels in ")
+						.append(job.getName()).append(getSkills(job))
+						.toString()));
 			}
 			retval.add(jobs);
 		}
@@ -253,7 +256,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
 				final AbstractReportNode unit = produceRIR(fixtures, tiles, currentPlayer, (Unit) pair.second(), pair.first());
-				unit.setText(atPoint(pair.first()) + unit.getText());
+				unit.setText(new StringBuilder(atPoint(pair.first())).append(
+						unit.getText()).toString());
 				retval.add(unit);
 			}
 		}
@@ -268,7 +272,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		 * @param max the worker's max HP
 		 */
 		StatReportNode(final int hitPoints, final int max) {
-			super("Hit points: " + hitPoints + " / " + max);
+			super(new StringBuilder("Hit points: ").append(hitPoints)
+					.append(" / ").append(max).toString());
 		}
 		/**
 		 * @param stat which stat
