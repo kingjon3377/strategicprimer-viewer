@@ -119,7 +119,8 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		final Object localNode = ((IWorkerTreeModel) getModel()).getModelObject(node);
 		if (localNode instanceof Worker && ((Worker) localNode).getStats() != null) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
-			return new StringBuilder("<html><p>Str ")// NOPMD
+			return new StringBuilder(92)// NOPMD
+					.append("<html><p>Str ")
 					.append(getModifierString(stats.getStrength()))
 					.append(", Dex ")
 					.append(getModifierString(stats.getDexterity()))

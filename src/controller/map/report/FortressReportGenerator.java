@@ -45,8 +45,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builder = new StringBuilder(
-				"<h4>Fortresses in the map:</h4>\n");
+		// This can get long. We'll give it 16K.
+		final StringBuilder builder = new StringBuilder(16384)
+				.append("<h4>Fortresses in the map:</h4>\n");
 		boolean anyforts = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
@@ -84,8 +85,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 */
 	private static String getTerrain(final Tile tile,
 			final IntMap<Pair<Point, IFixture>> fixtures) {
-		final StringBuilder builder = new StringBuilder("Surrounding terrain: ")
-				.append(tile.getTerrain().toXML().replace('_', ' '));
+		final StringBuilder builder = new StringBuilder(130).append(
+				"Surrounding terrain: ").append(
+				tile.getTerrain().toXML().replace('_', ' '));
 		boolean hasForest = false;
 		for (final TileFixture fix : tile) {
 			if (fix instanceof Forest) {
@@ -144,7 +146,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			final StringBuilder builder = new StringBuilder("There is a river on the tile, ");
+			final StringBuilder builder = new StringBuilder(100)
+					.append("There is a river on the tile, ");
 			builder.append("flowing through the following borders: ");
 			boolean first = true;
 			for (final River river : rivers) {
@@ -170,8 +173,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer, final Fortress item, final Point loc) {
-		final StringBuilder builder = new StringBuilder("<h5>Fortress ")
-				.append(item.getName()).append(" belonging to ")
+		// This can get long. we'll give it 16K.
+		final StringBuilder builder = new StringBuilder(16384)
+				.append("<h5>Fortress ").append(item.getName())
+				.append(" belonging to ")
 				.append(playerNameOrYou(item.getOwner())).append("</h5>\n")
 				.append(OPEN_LIST).append(OPEN_LIST_ITEM).append("Located at ")
 				.append(loc).append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
@@ -204,12 +209,12 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer, final Fortress item, final Point loc) {
-		final AbstractReportNode retval = new SectionListReportNode(5,
-				new StringBuilder("Fortress ").append(item.getName())
-						.append(" belonging to ")
-						.append(playerNameOrYou(item.getOwner())).toString());
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer,
+			final Fortress item, final Point loc) {
+		final AbstractReportNode retval = new SectionListReportNode(5, concat(
+				"Fortress ", item.getName(), " belonging to ",
+				playerNameOrYou(item.getOwner())));
 		retval.add(new SimpleReportNode("Located at ", loc.toString()));
 		final Tile tile = tiles.getTile(loc);
 		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));

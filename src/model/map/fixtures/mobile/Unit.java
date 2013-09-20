@@ -137,7 +137,7 @@ public class Unit implements MobileFixture, HasImage,
 	}
 
 	/**
-	 *
+	 * TODO: Use a StringBuilder, specifying the size.
 	 * @return a String representation of the Unit.
 	 */
 	@Override
@@ -147,6 +147,7 @@ public class Unit implements MobileFixture, HasImage,
 				+ ", belonging to " + owner + ", named " + name;
 	}
 	/**
+	 * TODO: Use a StringBuilder, specifying the size.
 	 * @param player the container's player
 	 * @return a briefer String representation of the Unit, only naming the owner if different
 	 */
@@ -159,7 +160,10 @@ public class Unit implements MobileFixture, HasImage,
 	 * @return a verbose description of the Unit.
 	 */
 	public String verbose() {
-		final StringBuilder builder = new StringBuilder(toString());
+		// Assume each member is half a K.
+		final String orig = toString();
+		final int len = orig.length() + members.size() * 512;
+		final StringBuilder builder = new StringBuilder(len).append(orig);
 		builder.append(", consisting of:");
 		for (final UnitMember member : members) {
 			builder.append('\n');

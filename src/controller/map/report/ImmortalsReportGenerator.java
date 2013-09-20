@@ -46,7 +46,6 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builder = new StringBuilder("<h4>Immortals</h4>\n").append(OPEN_LIST);
 		final Map<String, List<Point>> dragons = new HashMap<>();
 		final Map<String, List<Point>> fairies = new HashMap<>();
 		final List<Point> trolls = new ArrayList<>();
@@ -92,6 +91,12 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 			}
 			fixtures.remove(idNum);
 		}
+		final int len = 36 + 512 * (dragons.size() + fairies.size() + trolls.size()
+				+ djinni.size() + sphinxes.size() + giants.size()
+				+ minotaurs.size() + ogres.size() + centaurs.size()
+				+ phoenixes.size() + simurghs.size() + griffins.size());
+		final StringBuilder builder = new StringBuilder(len).append(
+				"<h4>Immortals</h4>\n").append(OPEN_LIST);
 		optionallyPrint(dragons, "(s) at ", builder);
 		optionallyPrint(fairies, " at ", builder);
 		optionallyPrint(trolls, "Troll(s) at ", builder);
@@ -221,9 +226,8 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 				|| item instanceof Sphinx || item instanceof Giant
 				|| item instanceof Minotaur || item instanceof Ogre
 				|| item instanceof Centaur || item instanceof Phoenix
-				|| item instanceof Simurgh || item instanceof Griffin ? new StringBuilder(
-				atPoint(loc)).append("A(n) ").append(item.toString())
-				.toString() : "";
+				|| item instanceof Simurgh || item instanceof Griffin ? concat(
+				atPoint(loc), "A(n) ", item.toString()) : "";
 	}
 	/**
 	 * @param fixtures The set of fixtures

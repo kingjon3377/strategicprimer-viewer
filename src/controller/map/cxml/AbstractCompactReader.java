@@ -35,10 +35,13 @@ public abstract class AbstractCompactReader {
 	 */
 	protected static void requireTag(final StartElement element, final String... tags) {
 		if (!(EqualsAny.equalsAny(element.getName().getLocalPart(), tags))) {
-			final StringBuilder sbuild = new StringBuilder("Unexpected tag ");
-			sbuild.append(element.getName().getLocalPart());
+			final String elemStr = element.getName().getLocalPart();
+			final String line = Integer.toString(element.getLocation().getLineNumber());
+			final int len = 60 + elemStr.length() + line.length() + tags.length * 10; // Overestimate just in case
+			final StringBuilder sbuild = new StringBuilder(len).append("Unexpected tag ");
+			sbuild.append(elemStr);
 			sbuild.append(" on line ");
-			sbuild.append(element.getLocation().getLineNumber());
+			sbuild.append(line);
 			sbuild.append(", expected one of the following: ");
 			for (String tag : tags) {
 				sbuild.append(tag);

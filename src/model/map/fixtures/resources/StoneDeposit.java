@@ -65,8 +65,10 @@ public final class StoneDeposit implements IEvent,
 	 */
 	@Override
 	public String getText() {
-		final StringBuilder build = new StringBuilder("There is an exposed ");
-		build.append(stone.toString());
+		final String stoneStr = stone.toString();
+		final StringBuilder build = new StringBuilder(40 + stoneStr.length())
+				.append("There is an exposed ");
+		build.append(stoneStr);
 		build.append(" deposit here.");
 		return build.toString();
 	}

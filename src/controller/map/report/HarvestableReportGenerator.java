@@ -56,7 +56,6 @@ public class HarvestableReportGenerator extends // NOPMD
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, // NOPMD
 			final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builder = new StringBuilder("<h4>Resource Sources</h4>\n");
 		final HtmlList caches = new HtmlList("<h5>Caches collected by your explorers and workers:</h5>");
 		final HtmlList groves = new HtmlList("<h5>Groves and orchards</h5>");
 		final HtmlList meadows = new HtmlList("<h5>Meadows and fields</h5>");
@@ -99,8 +98,8 @@ public class HarvestableReportGenerator extends // NOPMD
 		final HtmlList shrubsText = new HtmlList(
 				"<h5>Shrubs, small trees, and such</h5>");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
-			shrubsText.add(new StringBuilder(entry.getKey()).append(": at ")//NOPMD
-					.append(pointCSL(entry.getValue())).toString());
+			shrubsText.add(concat(entry.getKey(), ": at ",
+					pointCSL(entry.getValue())));
 		}
 		Collections.sort(caches);
 		Collections.sort(groves);
@@ -109,13 +108,12 @@ public class HarvestableReportGenerator extends // NOPMD
 		Collections.sort(minerals);
 		Collections.sort(stone);
 		Collections.sort(shrubsText);
-		builder.append(caches.toString()).append(groves.toString())
-				.append(meadows.toString()).append(mines.toString())
-				.append(minerals.toString()).append(stone.toString())
-				.append(shrubsText.toString());
+		final String retval = concat("<h4>Resource Sources</h4>\n",
+				caches.toString(), groves.toString(), meadows.toString(),
+				mines.toString(), minerals.toString(), stone.toString(), shrubsText.toString());
 		return caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
 				&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
-				&& shrubs.isEmpty() ? "" : builder.toString();
+				&& shrubs.isEmpty() ? "" : retval;
 	}
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures.
@@ -209,49 +207,44 @@ public class HarvestableReportGenerator extends // NOPMD
 			final TileCollection tiles, final Player currentPlayer, final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc)).append("A cache of ")// NOPMD
-					.append(((CacheFixture) item).getKind())
-					.append(", containing ")
-					.append(((CacheFixture) item).getContents()).toString();
+			return concat(atPoint(loc), "A cache of ", // NOPMD
+					((CacheFixture) item).getKind(), ", containing ",
+					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc))// NOPMD
-					.append("A ")
-					.append(ternary(((Grove) item).isCultivated(),
-							"cultivated ", "wild "))
-					.append(((Grove) item).getKind())
-					.append(ternary(((Grove) item).isOrchard(), " orchard",
-							" grove")).toString();
+			return concat(
+					atPoint(loc),
+					"A ",
+					ternary(((Grove) item).isCultivated(), "cultivated ",
+							"wild "), ((Grove) item).getKind(),
+					ternary(((Grove) item).isOrchard(), " orchard", " grove"));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc))//NOPMD
-					.append("A ")
-					.append(((Meadow) item).getStatus().toString())
-					.append(ternary(((Meadow) item).isCultivated(),
-							" cultivated ", " wild or abandoned "))
-					.append(((Meadow) item).getKind())
-					.append(ternary(((Meadow) item).isField(), " field",
-							" meadow")).toString();
+			return concat(
+					atPoint(loc),
+					"A ",
+					((Meadow) item).getStatus().toString(),
+					ternary(((Meadow) item).isCultivated(), " cultivated ",
+							" wild or abandoned "), ((Meadow) item).getKind(),
+					ternary(((Meadow) item).isField(), " field", " meadow"));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc)).append(item.toString())// NOPMD
-					.toString();
+			return concat(atPoint(loc), item.toString());
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc))// NOPMD
-					.append("An ")
-					.append(ternary(((MineralVein) item).isExposed(),
-							"exposed ", "unexposed ")).append("vein of ")
-					.append(((MineralVein) item).getKind()).toString();
+			return concat(
+					atPoint(loc),
+					"An ",
+					ternary(((MineralVein) item).isExposed(), "exposed ",
+							"unexposed "), "vein of ",
+					((MineralVein) item).getKind());
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc)).append(// NOPMD
-					((Shrub) item).getKind()).toString();
+			return concat(atPoint(loc), ((Shrub) item).getKind());
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc)).append("An exposed ")// NOPMD
-					.append(((StoneDeposit) item).getKind()).append(" deposit")
-					.toString();
+			return concat(atPoint(loc), "An exposed ",
+					((StoneDeposit) item).getKind(), " deposit");
 		} else {
 			// It's a battlefield or cave.
 			return new ExplorableReportGenerator().produce(fixtures, tiles, currentPlayer, item, loc);
@@ -372,7 +365,12 @@ public class HarvestableReportGenerator extends // NOPMD
 			if (isEmpty()) {
 				return ""; // NOPMD
 			} else {
-				final StringBuilder builder = new StringBuilder(header).append("\n").append(OPEN_LIST);
+				int len = header.length() + 15;
+				for (final String item : this) {
+					len += item.length() + 12;
+				}
+				final StringBuilder builder = new StringBuilder(len)
+						.append(header).append("\n").append(OPEN_LIST);
 				for (String item : this) {
 					builder.append(OPEN_LIST_ITEM).append(item).append(CLOSE_LIST_ITEM);
 				}

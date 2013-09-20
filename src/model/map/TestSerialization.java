@@ -215,7 +215,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquals("Just checking ...", 2, iteratorSize(six));
 		assertSerialization("Multiple units should come through", encapsulateTile(PointFactory.point(2, 3), six),
 				SPMap.class);
-		final String xmlTwo = new StringBuilder("<map version=\"2\" rows=\"3\" columns=\"4\">\n").append("\t<row index=\"2\">\n")
+		final String xmlTwo = new StringBuilder(280).append("<map version=\"2\" rows=\"3\" columns=\"4\">\n").append("\t<row index=\"2\">\n")
 				.append("\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
 				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
@@ -309,8 +309,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				MapView.class, false);
 		assertUnwantedChild(
-				new StringBuilder(
-						"<view current_player=\"0\" current_turn=\"0\">")
+				new StringBuilder(150)
+						.append("<view current_player=\"0\" current_turn=\"0\">")
 						.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
 						.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
 						.append("</view>").toString(), MapView.class, false);
@@ -320,8 +320,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertMapDeserialization(
 				"Proper deserialization of map into view",
 				one,
-				new StringBuilder(
-						"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">")
+				new StringBuilder(200)
+						.append("<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">")
 						.append("<player number=\"1\" code_name=\"playerOne\" />")
 						.append("<row index=\"0\">")
 						.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")

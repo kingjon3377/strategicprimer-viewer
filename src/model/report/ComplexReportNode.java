@@ -23,7 +23,9 @@ public class ComplexReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public String produce() {
-		final StringBuilder builder = new StringBuilder(getText());
+		// Assume each child will be at least a K in size.
+		final StringBuilder builder = new StringBuilder(getText().length()
+				+ getChildCount() * 512).append(getText());
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode node = getChildAt(i);
 			if (node instanceof AbstractReportNode) {

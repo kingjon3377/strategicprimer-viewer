@@ -105,8 +105,8 @@ public class RiverFixture implements TileFixture,
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuild = new StringBuilder(
-				"RiverFixture with rivers: ");
+		final StringBuilder sbuild = new StringBuilder(32 + 10 * rivers.size())
+				.append("RiverFixture with rivers: ");
 		for (final River river : rivers) {
 			sbuild.append(river.toString());
 			sbuild.append(' ');

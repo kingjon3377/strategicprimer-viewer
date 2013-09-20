@@ -131,9 +131,11 @@ public final class Tile implements XMLWritable,
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuilder = new StringBuilder(getTerrain().toString());
-		sbuilder.append('.');
-		sbuilder.append(" Contents:");
+		// This can get big; fortunately it's rarely called. Assume each item on the tile is half a K.
+		final String terrain = getTerrain().toString();
+		int len = terrain.length() + 12 + (contents.size() * 512);
+		final StringBuilder sbuilder = new StringBuilder(len).append(terrain);
+		sbuilder.append(". Contents:");
 		for (final TileFixture fix : contents) {
 			sbuilder.append("\n\t\t");
 			sbuilder.append(fix);

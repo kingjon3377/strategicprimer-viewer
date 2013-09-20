@@ -18,7 +18,9 @@ public class ListReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public String produce() {
-		final StringBuilder builder = new StringBuilder(getText());
+		// Assume each child is half a K.
+		final StringBuilder builder = new StringBuilder(getText().length() + 10
+				+ getChildCount() * 512).append(getText());
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);

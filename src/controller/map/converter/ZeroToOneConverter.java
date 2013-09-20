@@ -146,10 +146,17 @@ public class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printEndElement(final EndElement element) {
-		return new StringBuilder("</").append(element.getName().getLocalPart())
-				.append('>').toString();
+		return printEndElement(element.getName().getLocalPart());
 	}
-
+	/**
+	 * Print an end element.
+	 * @param elemStr the local part of the element
+	 * @return its XML representation.
+	 */
+	private static String printEndElement(final String elemStr) {
+		return new StringBuilder(elemStr.length() + 5).append("</")
+				.append(elemStr).append('>').toString();
+	}
 	/**
 	 * Print a start element.
 	 *

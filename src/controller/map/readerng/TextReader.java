@@ -41,7 +41,10 @@ public class TextReader implements INodeHandler<TextFixture> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final StringBuilder sbuild = new StringBuilder(""); // NOPMD
+		// Of all our uses of StringBuilder, here we can't know how much size
+		// we're going to need beforehand. But cases where we'll need more than
+		// 2K will be vanishingly rare in practice.
+		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("text", event.asStartElement()

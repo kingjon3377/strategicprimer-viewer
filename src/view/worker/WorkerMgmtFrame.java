@@ -286,7 +286,8 @@ public class WorkerMgmtFrame extends JFrame {
 		 */
 		private static String unitMembers(final Unit unit) {
 			if (unit.iterator().hasNext()) {
-				final StringBuilder builder = new StringBuilder(" [");
+				// Assume at least two K.
+				final StringBuilder builder = new StringBuilder(2048).append(" [");
 				final Iterator<UnitMember> iter = unit.iterator();
 				while (iter.hasNext()) {
 					final UnitMember member = iter.next();
@@ -308,7 +309,9 @@ public class WorkerMgmtFrame extends JFrame {
 		private static String memberString(final UnitMember member) {
 			if (member instanceof Worker) {
 				final Worker worker = (Worker) member;
-				final StringBuilder builder = new StringBuilder(worker.getName());
+				// To save calculations, assume a half-K every time.
+				final StringBuilder builder = new StringBuilder(512)
+						.append(worker.getName());
 				if (worker.iterator().hasNext()) {
 					builder.append(" (");
 					final Iterator<Job> iter = worker.iterator();

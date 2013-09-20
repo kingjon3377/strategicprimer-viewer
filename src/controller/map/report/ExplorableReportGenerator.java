@@ -29,13 +29,19 @@ public class ExplorableReportGenerator extends
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builder = new StringBuilder("<h4>Caves and Battlefields</h4>\n").append(OPEN_LIST);
+		// At only two (albeit potentially rather long) list items, I doubt this
+		// will ever be over one K ... but we'll give it two just in case.
+		final StringBuilder builder = new StringBuilder(2048).append(
+				"<h4>Caves and Battlefields</h4>\n").append(OPEN_LIST);
 		boolean anyCaves = false;
 		boolean anyBattles = false;
-		final StringBuilder caveBuilder = new StringBuilder(OPEN_LIST_ITEM)
-				.append("Caves beneath the following tiles: ");
-		final StringBuilder battleBuilder = new StringBuilder(OPEN_LIST_ITEM)
-				.append("Signs of long-ago battles on the following tiles: ");
+		// Similarly, I doubt either of these will ever be over half a K, but
+		// we'll give each a whole K just in case.
+		final StringBuilder caveBuilder = new StringBuilder(1024).append(
+				OPEN_LIST_ITEM).append("Caves beneath the following tiles: ");
+		final StringBuilder battleBuilder = new StringBuilder(1024).append(
+				OPEN_LIST_ITEM).append(
+				"Signs of long-ago battles on the following tiles: ");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Cave) {
 				anyCaves = true;
@@ -71,8 +77,11 @@ public class ExplorableReportGenerator extends
 		final AbstractReportNode retval = new SectionListReportNode(4, "Caves and Battlefields");
 		boolean anyCaves = false;
 		boolean anyBattles = false;
-		final StringBuilder caveBuilder = new StringBuilder("Caves beneath the following tiles: ");
-		final StringBuilder battleBuilder = new StringBuilder("Signs of long-ago battles on the following tiles: ");
+		// We doubt either of these will be over half a K, but we'll give each a whole K just in case.
+		final StringBuilder caveBuilder = new StringBuilder(1024)
+				.append("Caves beneath the following tiles: ");
+		final StringBuilder battleBuilder = new StringBuilder(1024)
+				.append("Signs of long-ago battles on the following tiles: ");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Cave) {
 				anyCaves = true;
@@ -106,12 +115,10 @@ public class ExplorableReportGenerator extends
 			final TileCollection tiles, final Player currentPlayer, final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder("Caves beneath ").append(loc.toString())// NOPMD
-					.toString();
+			return concat("Caves beneath ", loc.toString()); // NOPMD
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder("Signs of a long-ago battle on ").append(// NOPMD
-					loc.toString()).toString();
+			return concat("Signs of a long-ago battle on ", loc.toString()); // NOPMD
 		} else {
 			return new HarvestableReportGenerator().produce(fixtures, tiles,
 					currentPlayer, item, loc);

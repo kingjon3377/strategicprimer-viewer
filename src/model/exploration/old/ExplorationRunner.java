@@ -27,8 +27,8 @@ public class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String defaultResults(final Point point, final Tile tile) throws MissingTableException {
-		final StringBuilder sb = new StringBuilder(// NOPMD
-				"The primary rock type here is ");
+		final StringBuilder sb = new StringBuilder(80)
+				.append("The primary rock type here is ");
 		sb.append(getPrimaryRock(point, tile));
 		sb.append(".\n");
 		if (TileType.BorealForest.equals(tile.getTerrain())

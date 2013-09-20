@@ -82,15 +82,12 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	public AbstractReportNode produceRIR(
 			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
 			final Player currentPlayer, final Unit unit, final Point loc) {
-		final String simple = new StringBuilder("Unit of type ")
-				.append(unit.getKind())
-				.append(", named ")
-				.append(unit.getName())
-				.append(unit.getOwner().isIndependent() ? ", independent"
-						: ", owned by " + playerNameOrYou(unit.getOwner()))
-				.toString();
+		final String simple = concat("Unit of type ", unit.getKind(),
+				", named ", unit.getName(),
+				unit.getOwner().isIndependent() ? ", independent"
+						: ", owned by " + playerNameOrYou(unit.getOwner()));
 		final AbstractReportNode retval = unit.iterator().hasNext() ? new ListReportNode(
-				simple + ". Members of the unit:") : new SimpleReportNode(
+				concat(simple, ". Members of the unit:")) : new SimpleReportNode(
 				simple);
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker) {
@@ -222,7 +219,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builder = new StringBuilder("<h4>Units in the map</h4>\n");
+		// This can get big; we'll say 8K.
+		final StringBuilder builder = new StringBuilder(8192).append("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units reported above are not described again.)</p>\n");
 		builder.append(OPEN_LIST);
 		boolean anyUnits = false;
@@ -254,8 +252,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
 				final AbstractReportNode unit = produceRIR(fixtures, tiles, currentPlayer, (Unit) pair.second(), pair.first());
-				unit.setText(new StringBuilder(atPoint(pair.first())).append(
-						unit.getText()).toString());
+				unit.setText(concat(atPoint(pair.first()), unit.getText()));
 				retval.add(unit);
 			}
 		}

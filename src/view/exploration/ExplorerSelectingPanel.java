@@ -70,7 +70,12 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @return them wrapped in HTML.
 	 */
 	private static String html(final String... paras) {
-		final StringBuilder builder = new StringBuilder("<html><body>");
+		int len = 30;
+		for (final String para : paras) {
+			len += para.length() + 8;
+		}
+		final StringBuilder builder = new StringBuilder(len)
+				.append("<html><body>");
 		for (final String para : paras) {
 			builder.append("<p>").append(para).append("</p>");
 		}

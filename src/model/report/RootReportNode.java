@@ -20,7 +20,9 @@ public class RootReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public String produce() {
-		final StringBuilder builder = new StringBuilder("<html>\n");
+		// Assume each child is at least a K in size.
+		final StringBuilder builder = new StringBuilder(
+				64 + getChildCount() * 1024).append("<html>\n");
 		builder.append("<head><title>").append(getText()).append("</title></head>\n");
 		builder.append("<body>");
 		for (int i = 0; i < getChildCount(); i++) {

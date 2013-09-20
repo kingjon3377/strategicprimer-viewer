@@ -155,9 +155,9 @@ public class ExplorationCLI {
 		SystemOut.SYS_OUT.println(model.getSelectedUnit().verbose());
 		final int totalMP = helper.inputNumber("MP the unit has: ");
 		int movement = totalMP;
-		final String prompt = new StringBuilder(
-				"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ").append(
-				"6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.").toString();
+		final String prompt = new StringBuilder(90)
+				.append("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ")
+				.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.").toString();
 		while (movement > 0) {
 			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
 					.printC(totalMP).println(" remaining.");

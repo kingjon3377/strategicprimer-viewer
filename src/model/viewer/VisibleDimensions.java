@@ -86,7 +86,7 @@ public class VisibleDimensions implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return new StringBuilder("VisibleDimensions: (").append(minimumRow)
+		return new StringBuilder(256).append("VisibleDimensions: (").append(minimumRow)
 				.append(", ").append(minimumCol).append(") to (")
 				.append(maximumRow).append(", ").append(maximumCol).append(')')
 				.toString();

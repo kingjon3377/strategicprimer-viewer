@@ -86,7 +86,8 @@ public abstract class AbstractTown implements
 	 */
 	@Override
 	public String getText() {
-		final StringBuilder builder = new StringBuilder("There is a ");
+		final StringBuilder builder = new StringBuilder(56)
+				.append("There is a ");
 		builder.append(TownSize.Medium.equals(size) ? "medium-size" : size
 				.toString());
 		if (!TownStatus.Active.equals(status)) {
@@ -101,8 +102,7 @@ public abstract class AbstractTown implements
 			builder.append(name);
 			builder.append(',');
 		}
-		builder.append(" here");
-		builder.append('.');
+		builder.append(" here.");
 		return builder.toString();
 	}
 

@@ -43,9 +43,6 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builder = new StringBuilder(
-				"<h4>Cities, towns, and/or fortifications you know about:</h4>\n")
-				.append(OPEN_LIST);
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof AbstractTown) {
@@ -54,6 +51,10 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		}
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
+		final int len = 80 + sorted.size() * 512;
+		final StringBuilder builder = new StringBuilder(len)
+				.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n")
+				.append(OPEN_LIST);
 		for (final AbstractTown town : sorted) {
 			builder.append(OPEN_LIST_ITEM)
 					.append(produce(fixtures, tiles, currentPlayer, town, townLocs.get(town)))
@@ -115,19 +116,12 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			return new FortressReportGenerator().produce(fixtures, tiles, currentPlayer, (Fortress) item, loc); // NOPMD
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new StringBuilder(atPoint(loc))
-					.append(item.getName())
-					.append(item.getOwner().isIndependent() ? ", an independent "
-							: ", a ")
-					.append(item.size().toString())
-					.append(' ')
-					.append(item.status().toString())
-					.append(' ')
-					.append(((AbstractTown) item).kind().toString())
-					.append(item.getOwner().isIndependent() ? ""
-							: " allied with "
-									+ playerNameOrYou(item.getOwner()))
-					.toString();
+			return concat(atPoint(loc), item.getName(), item.getOwner()
+					.isIndependent() ? ", an independent " : ", a ", item
+					.size().toString(), " ", item.status().toString(), " ",
+					((AbstractTown) item).kind().toString(), item.getOwner()
+							.isIndependent() ? "" : " allied with "
+							+ playerNameOrYou(item.getOwner()));
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
 		}

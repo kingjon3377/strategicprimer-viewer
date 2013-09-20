@@ -38,7 +38,10 @@ public final class ReportGenerator {
 	 * @return the report, in HTML, as a String
 	 */
 	public static String createReport(final IMap map) {
-		final StringBuilder builder = new StringBuilder("<html>\n");
+		// The full report for the world map, as of turn 11, is 8 megs. So we
+		// make a 10 meg buffer.
+		final StringBuilder builder = new StringBuilder(10485760)
+				.append("<html>\n");
 		builder.append("<head><title>Strategic Primer map summary report</title></head>\n");
 		builder.append("<body>");
 		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
@@ -70,7 +73,10 @@ public final class ReportGenerator {
 	 * @param player the player to report on
 	 */
 	public static String createAbbreviatedReport(final IMap map, final Player player) {
-		final StringBuilder builder = new StringBuilder("<html>\n");
+		// The full report for the world map, as of turn 11, is 8 megs. So we
+		// make a 10 meg buffer.
+		final StringBuilder builder = new StringBuilder(10485760)
+				.append("<html>\n");
 		builder.append("<head><title>Strategic Primer map summary abbreviated report</title></head>\n");
 		builder.append("<body>");
 		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);

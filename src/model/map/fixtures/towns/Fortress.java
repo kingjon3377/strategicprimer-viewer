@@ -127,10 +127,14 @@ public class Fortress implements HasImage,
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuild = new StringBuilder("Fortress ");
+		final String ownerStr = owner.toString();
+		// Assume each unit is at least half a K.
+		final int len = 40 + name.length()
+				+ ownerStr.length() + units.size() * 512;
+		final StringBuilder sbuild = new StringBuilder(len).append("Fortress ");
 		sbuild.append(name);
 		sbuild.append(", owned by player ");
-		sbuild.append(owner);
+		sbuild.append(ownerStr);
 		sbuild.append(". Units:");
 		int count = 0;
 		for (final Unit unit : units) {

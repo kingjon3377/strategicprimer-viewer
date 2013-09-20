@@ -83,7 +83,8 @@ public final class MineralVein implements IEvent,
 	 */
 	@Override
 	public String getText() {
-		final StringBuilder build = new StringBuilder("There is a");
+		final StringBuilder build = new StringBuilder(48 + mineral.length())
+				.append("There is a");
 		if (exposed) {
 			build.append("n exposed");
 		}

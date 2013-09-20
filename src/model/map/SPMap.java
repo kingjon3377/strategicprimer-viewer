@@ -108,7 +108,8 @@ public class SPMap implements IMap {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuild = new StringBuilder("SP Map with ");
+		// This will be big; assume at least half a meg. Fortunately it is rarely called.
+		final StringBuilder sbuild = new StringBuilder(524288).append("SP Map with ");
 		sbuild.append(dimensions.rows);
 		sbuild.append(" rows and ");
 		sbuild.append(dimensions.cols);

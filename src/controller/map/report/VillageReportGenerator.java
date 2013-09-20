@@ -29,11 +29,13 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
-		final StringBuilder builderOthers = new StringBuilder("<h4>Villages you know about:</h4>\n").append(OPEN_LIST);
+		// TODO: Move HtmlList to AbstractReportGenerator and use it here.
+		final StringBuilder builderOthers = new StringBuilder(1024).append(
+				"<h4>Villages you know about:</h4>\n").append(OPEN_LIST);
 		boolean anyOthers = false;
-		final StringBuilder builderOwn = new StringBuilder(
-				"<h4>Villages pledged to your service:</h4>\n")
-				.append(OPEN_LIST);
+		final StringBuilder builderOwn = new StringBuilder(1024).append(
+				"<h4>Villages pledged to your service:</h4>\n").append(
+				OPEN_LIST);
 		boolean anyOwn = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
@@ -104,14 +106,9 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer, final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return new StringBuilder(atPoint(loc))
-				.append(item.getName())
-				.append(", a(n) ")
-				.append(item.getRace())
-				.append(" village")
-				.append(item.getOwner().isIndependent() ? ", independent"
-						: ", sworn to " + playerNameOrYou(item.getOwner()))
-				.toString();
+		return concat(atPoint(loc), item.getName(), ", a(n) ", item.getRace(),
+				" village", item.getOwner().isIndependent() ? ", independent"
+						: ", sworn to " + playerNameOrYou(item.getOwner()));
 	}
 	/**
 	 * Produce the (very brief) report for a particular village.

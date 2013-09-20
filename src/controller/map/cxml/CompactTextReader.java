@@ -52,8 +52,10 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 	public TextFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		final StringBuilder sbuild = new StringBuilder(""); // NOPMD
 		requireTag(element, "text");
+		// Of all the uses of a StringBuilder, this one can't know what size we
+		// need. But cases above 2K will be vanishingly rare in practice.
+		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("text", event.asStartElement()

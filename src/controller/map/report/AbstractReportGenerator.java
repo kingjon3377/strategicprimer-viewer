@@ -116,4 +116,19 @@ public abstract class AbstractReportGenerator<T extends XMLWritable> {
 	protected static String playerNameOrYou(final Player player) {
 		return player.isCurrent() ? "you" : player.toString();
 	}
+	/**
+	 * @param strings a series of strings
+	 * @return them concatenated
+	 */
+	protected static String concat(final String... strings) {
+		int len = 5; // Start with a little cushion, just in case.
+		for (final String string : strings) {
+			len += string.length();
+		}
+		final StringBuilder buf = new StringBuilder(len);
+		for (final String string : strings) {
+			buf.append(string);
+		}
+		return buf.toString();
+	}
 }

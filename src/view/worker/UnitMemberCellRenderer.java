@@ -55,7 +55,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		if (internal instanceof Worker) {
 			final Worker worker = (Worker) internal;
-			final StringBuilder builder = new StringBuilder("<html><p>");
+			// Assume at least a K in size.
+			final StringBuilder builder = new StringBuilder(1024).append("<html><p>");
 			builder.append(worker.getName());
 			if (!"human".equals(worker.getRace())) {
 				builder.append(", a ").append(worker.getRace());
@@ -77,10 +78,12 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			((JLabel) component).setText(builder.toString());
 		} else if (internal instanceof Unit) {
 			final Unit unit = (Unit) internal;
-			((JLabel) component).setText(new StringBuilder("<html><p>")
-					.append("Unit of type ").append(unit.getKind())
-					.append(", named ").append(unit.getName())
-					.append("</p></html>").toString());
+			final String kind = unit.getKind();
+			final String name = unit.getName();
+			((JLabel) component).setText(new StringBuilder(48 + kind.length()
+					+ name.length()).append("<html><p>")
+					.append("Unit of type ").append(kind).append(", named ")
+					.append(name).append("</p></html>").toString());
 		}
 		return component;
 	}

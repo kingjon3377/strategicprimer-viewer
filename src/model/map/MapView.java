@@ -160,7 +160,8 @@ public class MapView implements IMap {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder("Map view at turn ");
+		// This will be big ... assume at least half a meg. Fortunately this is rarely called.
+		final StringBuilder builder = new StringBuilder(524288).append("Map view at turn ");
 		builder.append(turn);
 		builder.append(":\nCurrent player:");
 		builder.append(map.getPlayers().getCurrentPlayer());

@@ -57,14 +57,27 @@ public final class ComponentMouseListener extends MouseAdapter {
 				+ dimensions.getMinimumCol());
 		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
 			final Tile tile = model.getTile(point);
-			return new StringBuilder("<html><body>")// NOPMD
-					.append(point.toString()).append(": ")
-					.append(tile.getTerrain()).append("<br />")
-					.append(getTerrainFixturesAndTop(tile))
-					.append("</body></html>").toString();
+			return concat("<html><body>", point.toString(), ": ", tile
+					.getTerrain().toString(), "<br />",
+					getTerrainFixturesAndTop(tile), "</body></html>");
 		} else {
 			return null;
 		}
+	}
+	/**
+	 * @param strings strings
+	 * @return them concatenated together
+	 */
+	private static String concat(final String... strings) {
+		int len = 0;
+		for (final String string : strings) {
+			len += string.length();
+		}
+		final StringBuilder build = new StringBuilder(len);
+		for (final String string : strings) {
+			build.append(string);
+		}
+		return build.toString();
 	}
 	/**
 	 * Comparator to find which fixture is on top of a tile.

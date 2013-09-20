@@ -60,7 +60,10 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		if (sightings.isEmpty()) {
 			return ""; // NOPMD
 		} else {
-			final StringBuilder builder = new StringBuilder("<h4>Animal sightings or encounters</h4>\n").append(OPEN_LIST);
+			// We doubt this list will ever be over 16K.
+			final StringBuilder builder = new StringBuilder(16384).append(
+					"<h4>Animal sightings or encounters</h4>\n").append(
+					OPEN_LIST);
 			for (Entry<String, List<Point>> entry : sightings.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
 						.append(": at ").append(pointCSL(entry.getValue()))
@@ -87,9 +90,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 				// ESCA-JAVA0177:
 				final String string; // NOPMD
 				if (animal.isTraces()) {
-					string = new StringBuilder("tracks or traces of ").append(animal.getKind()).toString();
+					string = concat("tracks or traces of ", animal.getKind());
 				} else if (animal.isTalking()) {
-					string = new StringBuilder("talking ").append(animal.getKind()).toString();
+					string = concat("talking ", animal.getKind());
 				} else {
 					string = animal.getKind();
 				}
@@ -127,10 +130,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer, final Animal item, final Point loc) {
-		return new StringBuilder(atPoint(loc)).append(
-				item.isTraces() ? "tracks or traces of "
-						: (item.isTalking() ? "talking " : "")).append(
-				item.getKind()).toString();
+		return concat(atPoint(loc), item.isTraces() ? "tracks or traces of "
+				: (item.isTalking() ? "talking " : ""), item.getKind());
 	}
 	/**
 	 * @param fixtures the set of fixtures
