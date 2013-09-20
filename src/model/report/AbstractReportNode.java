@@ -35,6 +35,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	 */
 	public final void setText(final String txt) {
 		text = txt;
+		setUserObject(text);
 	}
 	/**
 	 * @param obj an object to compare to.
