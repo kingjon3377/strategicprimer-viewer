@@ -213,11 +213,12 @@ public class SubsetFrame extends JFrame {
 			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			return;
 		}
-		final PrintWriter out = new HTMLWriter(label.getWriter());
-		if (mainMap.isSubset(map, out)) {
-			printParagraph("OK", "green");
-		} else {
-			printParagraph("WARN", "yellow");
+		try (final PrintWriter out = new HTMLWriter(label.getWriter())) {
+			if (mainMap.isSubset(map, out)) {
+				printParagraph("OK", "green");
+			} else {
+				printParagraph("WARN", "yellow");
+			}
 		}
 	}
 }
