@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import model.map.IMap;
-import model.map.XMLWritable;
 import controller.map.iointerfaces.SPWriter;
 /**
  * CompactXML's Writer implementation.
@@ -42,7 +41,7 @@ public class CompactXMLWriter implements SPWriter {
 	 * @throws IOException on I/O error
 	 */
 	// ESCA-JAVA0173: The filename parameter is *too* used.
-	public static void writeObject(final String filename, final XMLWritable obj)
+	public static void writeObject(final String filename, final Object obj)
 			throws IOException {
 		try (final Writer writer = new FileWriter(filename)) {
 			writeObject(writer, obj);
@@ -55,7 +54,7 @@ public class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	public static void writeObject(final Writer out, final XMLWritable obj)
+	public static void writeObject(final Writer out, final Object obj)
 			throws IOException {
 		CompactReaderAdapter.write(out, obj, 0);
 	}

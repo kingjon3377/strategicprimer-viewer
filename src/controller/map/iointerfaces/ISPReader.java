@@ -7,10 +7,8 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import controller.map.formatexceptions.SPFormatException;
-
-import model.map.XMLWritable;
 import util.Warning;
+import controller.map.formatexceptions.SPFormatException;
 
 /**
  * An interface for readers of any SP model type.
@@ -38,6 +36,6 @@ public interface ISPReader {
 	 * @throws XMLStreamException if XML isn't well-formed.
 	 * @throws SPFormatException if the data is invalid.
 	 */
-	<T extends XMLWritable> T readXML(final String file, final Reader istream, final Class<T> type,
+	<T> T readXML(final String file, final Reader istream, final Class<T> type,
 			final Warning warner) throws XMLStreamException, SPFormatException;
 }

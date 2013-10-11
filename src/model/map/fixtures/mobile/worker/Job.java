@@ -6,14 +6,13 @@ import java.util.Iterator;
 import java.util.Set;
 
 import model.map.HasName;
-import model.map.XMLWritable;
 import util.ArraySet;
 
 /**
  * A Job a worker can work at.
  * @author Jonathan Lovelace
  */
-public class Job implements XMLWritable, Iterable<Skill>, HasName, Serializable {
+public class Job implements Iterable<Skill>, HasName, Serializable {
 	/**
 	 * Version UID for serialization.
 	 */

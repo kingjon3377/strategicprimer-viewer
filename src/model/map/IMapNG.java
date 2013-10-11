@@ -21,7 +21,7 @@ import model.map.fixtures.terrain.Forest;
  * @author Jonathan Lovelace
  *
  */
-public interface IMapNG extends XMLWritable, Subsettable<IMapNG>, Comparable<IMapNG> {
+public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	/**
 	 * @return the map version and dimensions
 	 */

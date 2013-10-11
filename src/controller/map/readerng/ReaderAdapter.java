@@ -10,7 +10,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.XMLWritable;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -26,7 +25,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ReaderAdapter implements INodeHandler<XMLWritable> {
+public class ReaderAdapter implements INodeHandler<Object> {
 	/**
 	 * Parse an element.
 	 *
@@ -40,7 +39,7 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 * @throws SPFormatException on SP format problems.
 	 */
 	@Override
-	public XMLWritable parse(final StartElement element,
+	public Object parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
@@ -57,19 +56,19 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 * Map from tags to readers. Initializer moved to static block below because
 	 * here it made the line *way* too long.
 	 */
-	private static final Map<String, INodeHandler<? extends XMLWritable>> READ_CACHE = new TreeMap<>(
+	private static final Map<String, INodeHandler<?>> READ_CACHE = new TreeMap<>(
 			String.CASE_INSENSITIVE_ORDER);
 	/**
 	 * Map from writable objects to writers. Initializer in static block below.
 	 */
-	private static final Map<Class<? extends XMLWritable>, INodeHandler<? extends XMLWritable>> WRITE_CACHE = new HashMap<>();
+	private static final Map<Class<?>, INodeHandler<?>> WRITE_CACHE = new HashMap<>();
 
 	/**
 	 * Add a reader to the cache.
 	 *
 	 * @param reader the reader to add
 	 */
-	private static void factory(final INodeHandler<? extends XMLWritable> reader) {
+	private static void factory(final INodeHandler<?> reader) {
 		for (final String tag : reader.understands()) {
 			READ_CACHE.put(tag, reader);
 		}
@@ -85,11 +84,9 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 * @param three the third reader
 	 * @param four the fourth reader
 	 */
-	private static void factoryFour(
-			final INodeHandler<? extends XMLWritable> one,
-			final INodeHandler<? extends XMLWritable> two,
-			final INodeHandler<? extends XMLWritable> three,
-			final INodeHandler<? extends XMLWritable> four) {
+	private static void factoryFour(final INodeHandler<?> one,
+			final INodeHandler<?> two, final INodeHandler<?> three,
+			final INodeHandler<?> four) {
 		factory(one);
 		factory(two);
 		factory(three);
@@ -158,7 +155,7 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends XMLWritable> SPIntermediateRepresentation write(
+	public <S> SPIntermediateRepresentation write(
 			final S obj) {
 		if (WRITE_CACHE.containsKey(obj.getClass())) {
 			return ((INodeHandler<S>) WRITE_CACHE.get(obj.getClass()))
@@ -175,7 +172,7 @@ public class ReaderAdapter implements INodeHandler<XMLWritable> {
 	 *         exception.
 	 */
 	@Override
-	public Class<XMLWritable> writes() {
+	public Class<Object> writes() {
 		throw new IllegalStateException("This should never be called.");
 	}
 

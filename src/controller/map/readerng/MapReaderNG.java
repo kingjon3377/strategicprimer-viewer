@@ -10,7 +10,6 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
-import model.map.XMLWritable;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.MapVersionException;
@@ -76,7 +75,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
+	public <T> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
@@ -84,7 +83,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 						.createXMLEventReader(istream)));
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final XMLWritable retval = ReaderAdapter.ADAPTER.parse(
+				final Object retval = ReaderAdapter.ADAPTER.parse(
 						// NOPMD
 						event.asStartElement(), eventReader,
 						new PlayerCollection(), warner, new IDFactory()); // NOPMD
@@ -106,7 +105,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @return the object, if it matches the desired type.
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T> T checkType(final XMLWritable obj, final Class<T> type) {
+	private static <T> T checkType(final Object obj, final Class<T> type) {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj; // NOPMD
 		} else if (type.equals(MapView.class) && obj instanceof SPMap) {

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import model.map.IMap;
-import model.map.XMLWritable;
 import controller.map.iointerfaces.SPWriter;
 
 /**
@@ -49,7 +48,7 @@ public class MapWriterNG implements SPWriter {
 	 * @throws IOException on error opening the file
 	 */
 	// ESCA-JAVA0173: The filename parameter is *too* used.
-	public static void writeObject(final String filename, final XMLWritable obj)
+	public static void writeObject(final String filename, final Object obj)
 			throws IOException {
 		try (final Writer writer = new FileWriter(filename)) {
 			writeObject(writer, obj);
@@ -63,7 +62,7 @@ public class MapWriterNG implements SPWriter {
 	 * @param obj the object to write.
 	 * @throws IOException on I/O error in writing
 	 */
-	public static void writeObject(final Writer out, final XMLWritable obj)
+	public static void writeObject(final Writer out, final Object obj)
 			throws IOException {
 		ReaderAdapter.ADAPTER.write(obj).write(out, 0);
 	}

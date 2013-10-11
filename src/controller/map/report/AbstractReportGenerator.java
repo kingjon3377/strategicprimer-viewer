@@ -7,7 +7,6 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
-import model.map.XMLWritable;
 import model.report.AbstractReportNode;
 import util.IntMap;
 import util.Pair;
@@ -17,7 +16,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  * @param <T> the type of thing the class knows how to generate a report on
  */
-public abstract class AbstractReportGenerator<T extends XMLWritable> {
+public abstract class AbstractReportGenerator<T> {
 	/**
 	 * A list that produces HTML in its toString().
 	 */

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author jsl7
  *
  */
-public class Player implements XMLWritable, Comparable<Player>, HasName, Serializable {
+public class Player implements Comparable<Player>, HasName, Serializable {
 	/**
 	 * Version UID for serialization.
 	 */

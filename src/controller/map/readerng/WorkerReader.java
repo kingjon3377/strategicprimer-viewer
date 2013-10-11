@@ -7,7 +7,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.XMLWritable;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
@@ -58,7 +57,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 		XMLHelper.addImage(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
+				final Object result = ReaderAdapter.ADAPTER.parse(
 						event.asStartElement(), stream, players, warner,
 						idFactory);
 				if (result instanceof Job) {

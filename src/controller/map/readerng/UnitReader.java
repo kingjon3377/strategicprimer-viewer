@@ -12,7 +12,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.XMLWritable;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.Warning;
@@ -62,7 +61,7 @@ public class UnitReader implements INodeHandler<Unit> {
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
+				final Object result = ReaderAdapter.ADAPTER.parse(
 						event.asStartElement(), stream, players, warner,
 						idFactory);
 				if (result instanceof UnitMember) {

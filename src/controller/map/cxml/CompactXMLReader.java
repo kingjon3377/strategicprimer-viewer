@@ -11,7 +11,6 @@ import model.map.IMap;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
-import model.map.XMLWritable;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -37,7 +36,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP XML format error
 	 */
 	@Override
-	public <T extends XMLWritable> T readXML(final String file, final Reader istream,
+	public <T> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner) throws XMLStreamException,
 			SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(

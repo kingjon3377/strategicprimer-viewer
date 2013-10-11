@@ -8,7 +8,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.XMLWritable;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.Warning;
@@ -64,7 +63,7 @@ public class JobReader implements INodeHandler<Job> {
 		final List<Skill> skills = new ArrayList<>();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final XMLWritable result = ReaderAdapter.ADAPTER.parse(
+				final Object result = ReaderAdapter.ADAPTER.parse(
 						event.asStartElement(), stream, players, warner,
 						idFactory);
 				if (result instanceof Skill) {

@@ -26,8 +26,8 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public final class Tile implements XMLWritable,
-		FixtureIterable<TileFixture>, Subsettable<Tile>, Serializable {
+public final class Tile implements FixtureIterable<TileFixture>,
+		Subsettable<Tile>, Serializable {
 	/**
 	 * Version UID for serialization.
 	 */

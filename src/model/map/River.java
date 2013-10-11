@@ -9,7 +9,7 @@ package model.map;
  * @author Jonathan Lovelace
  *
  */
-public enum River implements XMLWritable {
+public enum River {
 	/**
 	 * North.
 	 */

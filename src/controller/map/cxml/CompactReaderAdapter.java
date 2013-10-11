@@ -14,7 +14,6 @@ import model.map.River;
 import model.map.TerrainFixture;
 import model.map.Tile;
 import model.map.TileFixture;
-import model.map.XMLWritable;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
@@ -57,7 +56,7 @@ public final class CompactReaderAdapter {
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static <T extends XMLWritable> T parse(final Class<T> type,
+	public static <T> T parse(final Class<T> type,
 			final StartElement element, final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
@@ -81,7 +80,7 @@ public final class CompactReaderAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	// We *do* check ... but neither Java nor Eclipse can know that
-	private static <T extends XMLWritable> CompactReader<T> getReader(final Class<T> type) {
+	private static <T> CompactReader<T> getReader(final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
 		if (IMap.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapReader.READER;
@@ -137,7 +136,7 @@ public final class CompactReaderAdapter {
 	 * @throws IOException on I/O problems
 	 */
 	@SuppressWarnings("unchecked")
-	public static void write(final Writer out, final XMLWritable obj,
+	public static void write(final Writer out, final Object obj,
 			final int indent) throws IOException {
 			@SuppressWarnings("rawtypes") // NOPMD
 			final CompactReader reader; // NOPMD

@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Jonathan Lovelace
  *
  */
-public interface IFixture extends XMLWritable, Serializable {
+public interface IFixture extends Serializable {
 	/**
 	 * @return an ID (UID for most fixtures, though perhaps not for things like
 	 *         mountains and hills) for the fixture.

@@ -61,7 +61,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	public void assertUnwantedChild(final String xml,
-			final Class<? extends XMLWritable> desideratum, final boolean warning)
+			final Class<?> desideratum, final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		assertUnwantedChild(oldReader, xml, desideratum, warning);
 		assertUnwantedChild(newReader, xml, desideratum, warning);
@@ -81,7 +81,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	public void assertUnsupportedTag(final String xml,
-			final Class<? extends XMLWritable> desideratum, final String tag, final boolean warning)
+			final Class<?> desideratum, final String tag, final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		assertUnsupportedTag(oldReader, xml, desideratum, tag, warning);
 		assertUnsupportedTag(newReader, xml, desideratum, tag, warning);
@@ -101,7 +101,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	private static void assertUnsupportedTag(final ISPReader reader,
-			final String xml, final Class<? extends XMLWritable> desideratum, final String tag,
+			final String xml, final Class<?> desideratum, final String tag,
 			final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		if (warning) {
@@ -146,7 +146,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	private static void assertUnwantedChild(final ISPReader reader,
-			final String xml, final Class<? extends XMLWritable> desideratum,
+			final String xml, final Class<?> desideratum,
 			final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		if (warning) {
@@ -186,7 +186,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	public void assertMissingProperty(final String xml,
-			final Class<? extends XMLWritable> desideratum, final String property,
+			final Class<?> desideratum, final String property,
 			final boolean warning) throws XMLStreamException, SPFormatException {
 		assertMissingProperty(oldReader, xml, desideratum, property, warning);
 		assertMissingProperty(newReader, xml, desideratum, property, warning);
@@ -206,7 +206,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	private static void assertMissingProperty(final ISPReader reader,
-			final String xml, final Class<? extends XMLWritable> desideratum,
+			final String xml, final Class<?> desideratum,
 			final String property, final boolean warning) throws XMLStreamException, SPFormatException {
 		if (warning) {
 			reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum,
@@ -255,7 +255,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	public void assertDeprecatedProperty(final String xml,
-			final Class<? extends XMLWritable> desideratum, final String deprecated,
+			final Class<?> desideratum, final String deprecated,
 			final boolean warning) throws XMLStreamException, SPFormatException {
 		assertDeprecatedProperty(oldReader, xml, desideratum, deprecated,
 				warning);
@@ -278,7 +278,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	private static void assertDeprecatedProperty(final ISPReader reader,
-			final String xml, final Class<? extends XMLWritable> desideratum,
+			final String xml, final Class<?> desideratum,
 			final String deprecated, final boolean warning) throws XMLStreamException, SPFormatException {
 		if (warning) {
 			reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum,
@@ -326,7 +326,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	public <T extends XMLWritable> void assertSerialization(
+	public <T> void assertSerialization(
 			final String message, final T obj, final Class<T> type)
 			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization(message, obj, type, new Warning(Warning.Action.Die));
@@ -345,7 +345,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	public <T extends XMLWritable> void assertSerialization(
+	public <T> void assertSerialization(
 			final String message, final T obj, final Class<T> type,
 			final Warning warning) throws XMLStreamException,
 			SPFormatException, IOException {
@@ -367,7 +367,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	private static <T extends XMLWritable> void assertSerialization(
+	private static <T> void assertSerialization(
 			final String message, final ISPReader reader, final T obj,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException, IOException {
@@ -401,7 +401,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	public <T extends XMLWritable> void assertDeprecatedDeserialization(
+	public <T> void assertDeprecatedDeserialization(
 			final String message, final T expected, final String xml,
 			final Class<T> type, final String property)
 			throws XMLStreamException, SPFormatException {
@@ -434,7 +434,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	public <T extends XMLWritable> void assertMissingPropertyDeserialization(
+	public <T> void assertMissingPropertyDeserialization(
 			final String message, final T expected, final String xml,
 			final Class<T> type, final String property)
 			throws XMLStreamException, SPFormatException {
@@ -466,7 +466,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	public <T extends XMLWritable> void assertForwardDeserialization(
+	public <T> void assertForwardDeserialization(
 			final String message, final T expected, final String xml,
 			final Class<T> type) throws XMLStreamException, SPFormatException {
 		assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME,
@@ -496,7 +496,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	public <T extends XMLWritable> void assertEquivalentForms(
+	public <T> void assertEquivalentForms(
 			final String message, final String one, final String two,
 			final Class<T> type, final Warning.Action warningLevel)
 			throws SPFormatException, XMLStreamException {
@@ -524,7 +524,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @return its serialized form
 	 * @throws IOException on I/O error creating it
 	 */
-	public static String createSerializedForm(final XMLWritable obj,
+	public static String createSerializedForm(final Object obj,
 			final boolean deprecated) throws IOException {
 		final StringWriter writer = new StringWriter();
 		if (deprecated) {
@@ -548,7 +548,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	public void assertMissingChild(final String xml,
-			final Class<? extends XMLWritable> desideratum, final boolean warning)
+			final Class<?> desideratum, final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		assertMissingChild(oldReader, xml, desideratum, warning);
 		assertMissingChild(newReader, xml, desideratum, warning);
@@ -567,7 +567,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	private static void assertMissingChild(final ISPReader reader,
-			final String xml, final Class<? extends XMLWritable> desideratum,
+			final String xml, final Class<?> desideratum,
 			final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		if (warning) {
@@ -644,7 +644,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	public <T extends XMLWritable & HasImage> void assertImageSerialization(
+	public <T extends HasImage> void assertImageSerialization(
 			final String message, final T obj, final Class<T> type)
 			throws XMLStreamException, SPFormatException, IOException {
 		final HasImage objInternal = obj;
@@ -668,7 +668,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	private static <T extends XMLWritable & HasImage> void assertImageSerialization(
+	private static <T extends HasImage> void assertImageSerialization(
 			final String message, final T obj, final Class<T> type,
 			final ISPReader reader) throws XMLStreamException,
 			SPFormatException, IOException {

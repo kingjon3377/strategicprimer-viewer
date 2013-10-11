@@ -9,7 +9,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.XMLWritable;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.IteratorWrapper;
@@ -94,14 +93,13 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	 * @return the parsed fixture.
 	 * @throws SPFormatException on SP format problem
 	 */
-	@SuppressWarnings("unchecked")
 	private UnitMember parseChild(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
 			final IDFactory idFactory, final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
 		for (AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
-				final XMLWritable retval = ((CompactReader<? extends XMLWritable>) item).read(
+				final Object retval = ((CompactReader<?>) item).read(
 						element, stream, players, warner, idFactory);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;

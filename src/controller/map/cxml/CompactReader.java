@@ -7,7 +7,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
-import model.map.XMLWritable;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -19,7 +18,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public interface CompactReader<T extends XMLWritable> {
+public interface CompactReader<T> {
 	/**
 	 * @param element the element being parsed
 	 * @param stream to read more elements from

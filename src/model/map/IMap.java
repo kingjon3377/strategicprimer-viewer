@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  */
 // ESCA-JAVA0237:
-public interface IMap extends XMLWritable, Subsettable<IMap>, Comparable<IMap>, Serializable {
+public interface IMap extends Subsettable<IMap>, Comparable<IMap>, Serializable {
 	/**
 	 * @return The map's dimensions and version.
 	 */

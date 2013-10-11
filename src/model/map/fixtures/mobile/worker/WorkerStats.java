@@ -2,8 +2,6 @@ package model.map.fixtures.mobile.worker;
 
 import java.io.Serializable;
 
-import model.map.XMLWritable;
-
 /**
  * A class representing a worker's core statistical attributes.
  *
@@ -11,7 +9,7 @@ import model.map.XMLWritable;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerStats implements Serializable, XMLWritable {
+public class WorkerStats implements Serializable {
 	/**
 	 * Version UID for serialization.
 	 */

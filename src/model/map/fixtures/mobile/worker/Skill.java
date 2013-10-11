@@ -3,14 +3,13 @@ package model.map.fixtures.mobile.worker;
 import java.io.Serializable;
 
 import model.map.HasName;
-import model.map.XMLWritable;
 
 /**
  * A skill a worker has experience or training in.
  * @author Jonathan Lovelace
  *
  */
-public class Skill implements XMLWritable, HasName, Serializable {
+public class Skill implements HasName, Serializable {
 	/**
 	 * Version UID for serialization.
 	 */
