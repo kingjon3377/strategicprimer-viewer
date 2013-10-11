@@ -182,17 +182,19 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 			}
 		} else if ("add_job".equalsIgnoreCase(evt.getPropertyName()) && root != null) {
 			final Job job = new Job(evt.getNewValue().toString(), 0);
+			final int childCount = getChildCount(root);
 			root.addJob(job);
-			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(root), arrayOfInt(getChildCount(root)), arrayOfObj(job)));
+			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(root), arrayOfInt(childCount), arrayOfObj(job)));
 		} else if ("add_skill".equalsIgnoreCase(evt.getPropertyName())) {
 			final TreePath selPath = tsm.getSelectionPath();
 			if (selPath != null && selPath.getLastPathComponent() instanceof Job) {
 				final Job job = (Job) selPath.getLastPathComponent();
 				final Skill skill = new Skill(evt.getNewValue().toString(), 0, 0);
+				final int childCount = getChildCount(job);
 				job.addSkill(skill);
 				fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
 						new Object[] { root, job }),
-						arrayOfInt(getChildCount(job)), arrayOfObj(skill)));
+						arrayOfInt(childCount), arrayOfObj(skill)));
 			} // Need to handle added skills ... at least firing
 				// notification of changes to the tree, and on level-up as well.
 		}
