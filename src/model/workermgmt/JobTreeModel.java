@@ -57,7 +57,7 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 		} else if (index >= 0 && parent instanceof Job) {
 			return getFromIter((Job) parent, index);
 		} else {
-			return null;
+			throw new ArrayIndexOutOfBoundsException("Parent does not have that child.");
 		}
 	}
 	/**
@@ -73,13 +73,13 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 				// ESCA-JAVA0282:
 				iter.next();
 			} else {
-				return null; // NOPMD
+				throw new ArrayIndexOutOfBoundsException("Parent does not have that many children");
 			}
 		}
 		if (iter.hasNext()) {
 			return iter.next(); // NOPMD
 		} else {
-			return null;
+			throw new ArrayIndexOutOfBoundsException("Parent does not have that many children");
 		}
 	}
 	/**
