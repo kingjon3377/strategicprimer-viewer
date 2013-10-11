@@ -19,6 +19,7 @@ public class ResourceInputStream extends InputStream {
 	 * @param filename the name of the file to read
 	 * @throws FileNotFoundException if it's not found on disk or in the classpath
 	 */
+	@SuppressWarnings("resource") // The resource is *not* leaked; it's closed when this is.
 	public ResourceInputStream(final String filename) throws FileNotFoundException {
 		// ESCA-JAVA0177:
 		InputStream temp;

@@ -122,13 +122,12 @@ public final class TileCollection implements Iterable<Point>,
 		for (final Point point : obj) {
 			if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
 				final StringWriter str = new StringWriter(); // NOPMD
-				if (!tiles.get(point)
-						.isSubset(
-								obj.getTile(point),
-								new PrefixingPrintWriter(str, point.toString() // NOPMD
-										+ ":\t"))) {
-					out.print(str.toString());
-					retval = false; // NOPMD
+				try (final PrefixingPrintWriter writer = new PrefixingPrintWriter(
+						str, point.toString() + ":\t")) {
+					if (!tiles.get(point).isSubset(obj.getTile(point), writer)) {
+						out.print(str.toString());
+						retval = false; // NOPMD
+					}
 				}
 			} else {
 				out.print("Extra tile at ");

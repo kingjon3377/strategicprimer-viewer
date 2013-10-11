@@ -73,8 +73,10 @@ public final class ImageLoader {
 	public Image loadImage(final String file) throws FileNotFoundException,
 			IOException {
 		if (!cache.containsKey(file)) {
-			cache.put(file,
-					ImageIO.read(new ResourceInputStream("images/" + file)));
+			try (final ResourceInputStream res = new ResourceInputStream(
+					"images/" + file)) {
+				cache.put(file, ImageIO.read(res));
+			}
 		}
 		return cache.get(file);
 	}
