@@ -165,10 +165,10 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		}
 		/**
 		 * Handle a selection.
-		 * @param sel the new selection
+		 * @param sel the new selection. Might be null.
 		 */
 		@SuppressWarnings("synthetic-access") // TODO: fix this properly
-		private void handleSelection(final Object sel) {
+		private void handleSelection(@Nullable final Object sel) {
 			if (sel instanceof UnitMember || sel == null) {
 				firePropertyChange("member", null, sel);
 			}

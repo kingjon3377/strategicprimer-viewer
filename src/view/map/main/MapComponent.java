@@ -12,10 +12,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.MapDimensions;
 import model.map.Point;
@@ -25,6 +24,9 @@ import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import model.viewer.ZOrderFilter;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A component to display the map, even a large one, without the performance
@@ -72,8 +74,15 @@ public final class MapComponent extends JComponent implements MapGUI,
 				model);
 		addMouseWheelListener(dsl);
 		requestFocusInWindow();
-		ArrowKeyListener.setUpListeners(dsl, getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
-				getActionMap());
+		final ActionMap actionMap = getActionMap();
+		if (actionMap == null) {
+			throw new IllegalStateException("Action map was null ... bailing out!");
+		}
+		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		if (inputMap == null) {
+			throw new IllegalStateException("Input map was null ... bailing out!");
+		}
+		ArrowKeyListener.setUpListeners(dsl, inputMap, actionMap);
 		addComponentListener(new MapSizeListener(model));
 		setToolTipText("");
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -161,7 +170,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 *
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
-	private Rectangle bounds(final Rectangle rect) {
+	private Rectangle bounds(@Nullable final Rectangle rect) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
 		final VisibleDimensions dim = getMapModel().getDimensions();

@@ -209,7 +209,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			// FIXME: Simplify this case.
 			String image = ((HasImage) fix).getImage();
 			boolean isDefault = false;
-			if (image == null || image.isEmpty()) {
+			if (image.isEmpty()) {
 				image = ((HasImage) fix).getDefaultImage();
 				isDefault = true;
 			}

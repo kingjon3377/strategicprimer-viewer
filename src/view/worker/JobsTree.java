@@ -44,6 +44,7 @@ public class JobsTree extends JTree implements PropertyChangeSource, TreeSelecti
 	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 		if (evt != null) {
 			final TreePath selPath = evt.getNewLeadSelectionPath();
+			// ESCA-JAVA0177:
 			final Object component;
 			if (selPath == null) {
 				LOGGER.warning("Selection path was null.");

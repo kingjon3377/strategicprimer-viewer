@@ -106,9 +106,9 @@ public class SPMenu extends JMenuBar {
 				if (evt != null
 						&& "player".equalsIgnoreCase(evt.getPropertyName())
 						&& evt.getNewValue() instanceof Player) {
-					final PlayerCollection pc = model.getMap().getPlayers();
+					final PlayerCollection pColl = model.getMap().getPlayers();
 					final Player current = (Player) evt.getNewValue();
-					for (final Player player : pc) {
+					for (final Player player : pColl) {
 						if (player.equals(current)) {
 							player.setCurrent(true);
 						} else {

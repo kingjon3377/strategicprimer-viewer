@@ -2,7 +2,10 @@ package util;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A wrapper around an iterator to let it be used in for-each loops. XML parsing
@@ -26,8 +29,25 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	 *
 	 * @param iterator the iterator to wrap
 	 */
-	public IteratorWrapper(final Iterator<T> iterator) {
-		iter = iterator;
+	public IteratorWrapper(@Nullable final Iterator<T> iterator) {
+		if (iterator == null) {
+			iter = new Iterator<T>() {
+				@Override
+				public boolean hasNext() {
+					return false;
+				}
+				@Override
+				public T next() {
+					throw new NoSuchElementException("Iterator substituted for null is empty");
+				}
+				@Override
+				public void remove() {
+					throw new UnsupportedOperationException("Iterator substituted for null doesn't support remove()");
+				}
+			};
+		} else {
+			iter = iterator;
+		}
 	}
 
 	/**
@@ -42,7 +62,12 @@ public class IteratorWrapper<T> implements Iterable<T> {
 		while (iterator.hasNext()) {
 			queue.add(iterator.next());
 		}
-		iter = queue.iterator();
+		final Iterator<T> qIterator = queue.iterator();
+		if (qIterator == null) {
+			throw new IllegalStateException("Somehow the PriorityQueue's iterator was null");
+		} else {
+			iter = qIterator;
+		}
 	}
 	/**
 	 *
@@ -59,6 +84,7 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	 */
 	@Override
 	public String toString() {
-		return iter.toString();
+		final String retval = iter.toString();
+		return retval == null ? "IteratorWrapper" : retval;
 	}
 }

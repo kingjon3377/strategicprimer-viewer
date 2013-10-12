@@ -169,10 +169,16 @@ public class ZeroToOneConverter {
 		final Iterable<Attribute> attrs = new IteratorWrapper<>(// NOPMD
 				element.getAttributes());
 		for (final Attribute attr : attrs) {
-			builder.append(printAttribute(attr));
+			if (attr != null) {
+				builder.append(printAttribute(attr));
+			}
 		}
 		builder.append('>');
-		return builder.toString();
+		final String retval = builder.toString();
+		if (retval == null) {
+			throw new IllegalStateException("Somehow StringBuilder produced null rather than a string");
+		}
+		return retval;
 	}
 
 	/**

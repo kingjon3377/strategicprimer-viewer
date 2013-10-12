@@ -57,9 +57,11 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 				.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n")
 				.append(OPEN_LIST);
 		for (final AbstractTown town : sorted) {
-			builder.append(OPEN_LIST_ITEM)
-					.append(produce(fixtures, tiles, currentPlayer, town, townLocs.get(town)))
-					.append(CLOSE_LIST_ITEM);
+			if (town != null) {
+				builder.append(OPEN_LIST_ITEM)
+						.append(produce(fixtures, tiles, currentPlayer, town,
+								townLocs.get(town))).append(CLOSE_LIST_ITEM);
+			}
 		}
 		builder.append(CLOSE_LIST);
 		return sorted.isEmpty() ? "" : builder.toString();
@@ -93,7 +95,10 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		for (final AbstractTown town : sorted) {
-			retval.add(produceRIR(fixtures, tiles, currentPlayer, town, townLocs.get(town)));
+			if (town != null) {
+				retval.add(produceRIR(fixtures, tiles, currentPlayer, town,
+						townLocs.get(town)));
+			}
 		}
 		return sorted.isEmpty() ? EmptyReportNode.NULL_NODE : retval;
 	}
