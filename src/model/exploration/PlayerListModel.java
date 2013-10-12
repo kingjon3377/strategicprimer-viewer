@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.DefaultListModel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 /**
  * A list model for players in the exploration GUI.
@@ -32,8 +34,8 @@ public class PlayerListModel extends DefaultListModel<Player> implements
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("map".equals(evt.getPropertyName())) {
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && "map".equals(evt.getPropertyName())) {
 			clear();
 			for (final Player player : model.getPlayerChoices()) {
 				addElement(player);

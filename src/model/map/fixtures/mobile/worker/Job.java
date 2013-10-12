@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasName;
 import util.ArraySet;
 
@@ -74,7 +76,7 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 	 * @return whether it's the same as this
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Job && name.equals(((Job) obj).name)
 						&& level == ((Job) obj).level && skillSet

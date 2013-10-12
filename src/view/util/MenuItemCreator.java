@@ -7,6 +7,8 @@ import java.awt.event.InputEvent;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A utility class to create menu items in a more functional style.
  *
@@ -19,14 +21,14 @@ public class MenuItemCreator {
 	 *
 	 * @param item the text of the item
 	 * @param mnemonic the mnemonic key
-	 * @param accel the keyboard accelerator
+	 * @param accel the keyboard accelerator. Null if none is wanted.
 	 * @param desc the accessibile description.
 	 * @param list the listener to hande when the item is selected.
 	 *
 	 * @return the configured menu item.
 	 */
 	public static JMenuItem createMenuItem(final String item, final int mnemonic,
-			final KeyStroke accel, final String desc, final ActionListener list) {
+			@Nullable final KeyStroke accel, final String desc, final ActionListener list) {
 		final JMenuItem mitem = new JMenuItem(item, mnemonic);
 		mitem.setAccelerator(accel);
 		mitem.getAccessibleContext().setAccessibleDescription(desc);

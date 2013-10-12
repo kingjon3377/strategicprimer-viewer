@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.swing.JLabel;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A label that can be written to using a PrintWriter.
  * @author Jonathan Lovelace
@@ -31,7 +33,7 @@ public class StreamingLabel extends JLabel {
 		 * @param str the string to print
 		 */
 		@Override
-		public void print(final String str) {
+		public void print(@Nullable final String str) {
 			super.print(str);
 			updateText();
 		}
@@ -40,7 +42,7 @@ public class StreamingLabel extends JLabel {
 		 * @param str the string to print
 		 */
 		@Override
-		public void println(final String str) {
+		public void println(@Nullable final String str) {
 			super.println(str);
 			updateText();
 		}

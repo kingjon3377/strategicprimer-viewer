@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -53,7 +55,7 @@ public class Minotaur implements MobileFixture, HasImage, UnitMember {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof Minotaur && id == ((TileFixture) obj).getID());
 	}
 

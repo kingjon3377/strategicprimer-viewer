@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A structure encapsulating two coordinates.
  *
@@ -53,7 +55,7 @@ public class Point implements Comparable<Point>, Serializable {
 	 * @return whether this object equals another.
 	 */
 	@Override
-	public final boolean equals(final Object obj) {
+	public final boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Point && (((Point) obj).row == row && ((Point) obj).col == col));
 	}

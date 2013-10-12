@@ -9,6 +9,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.map.IMap;
 import model.map.MapView;
@@ -56,7 +58,7 @@ public class ExplorationMenu extends JMenuBar {
 				"Open the main map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
 						SwingUtilities.invokeLater(new ViewerOpener(model
 								.getMap(), model.getMapFilename(), -1, -1, handler));
 					}
@@ -68,7 +70,7 @@ public class ExplorationMenu extends JMenuBar {
 				"Open the first secondary map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
 						final Pair<IMap, String> mapPair = model
 								.getSubordinateMaps().iterator().next();
 						SwingUtilities.invokeLater(new ViewerOpener(mapPair
@@ -87,8 +89,8 @@ public class ExplorationMenu extends JMenuBar {
 					 * @param evt the event to handle
 					 */
 					@Override
-					public void actionPerformed(final ActionEvent evt) {
-						if ("Close".equals(evt.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
+						if (evt != null && "Close".equals(evt.getActionCommand())) {
 							parent.setVisible(false);
 							parent.dispose();
 						}
@@ -104,8 +106,8 @@ public class ExplorationMenu extends JMenuBar {
 					 * @param event the event to handle
 					 */
 					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Quit".equals(event.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
+						if (event != null && "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
 						}
 					}

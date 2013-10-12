@@ -1,7 +1,9 @@
 package controller.map.drivers;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -9,12 +11,16 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.TileFixture;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
+import model.viewer.ZOrderFilter;
 import util.Warning;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
@@ -352,7 +358,19 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL, map.getDimensions().version);
 		final TileDrawHelper helperOne = new CachingTileDrawHelper();
 		final TileDrawHelper helperTwo = new DirectTileDrawHelper();
-		final TileDrawHelper helperThree = new Ver2TileDrawHelper(null, null);
+		final TileDrawHelper helperThree = new Ver2TileDrawHelper(new ImageObserver() {
+			@Override
+					public boolean imageUpdate(@Nullable final Image img,
+							final int infoflags, final int xCoord,
+							final int yCoord, final int width, final int height) {
+				return false;
+			}
+		}, new ZOrderFilter() {
+			@Override
+			public boolean shouldDisplay(final TileFixture fix) {
+				return true;
+			}
+		});
 		SystemOut.SYS_OUT.println("1. All in one place:");
 		SystemOut.SYS_OUT.print(CACHING_NAME);
 		long oneTotal = printStats(first(helperOne, map, repetitions, tsize), repetitions);

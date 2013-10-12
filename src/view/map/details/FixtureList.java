@@ -19,6 +19,8 @@ import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.PlayerCollection;
 import model.map.TileFixture;
 import model.viewer.CurriedFixtureTransferable;
@@ -54,7 +56,7 @@ public class FixtureList extends JList<TileFixture> implements
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "delete");
 		getActionMap().put("delete", new AbstractAction() {
 			@Override
-			public void actionPerformed(final ActionEvent event) {
+			public void actionPerformed(@Nullable final ActionEvent event) {
 				((FixtureListModel) getModel()).remove(getSelectedValuesList());
 			}
 		});
@@ -65,12 +67,14 @@ public class FixtureList extends JList<TileFixture> implements
 	 * @param dge the event to handle
 	 */
 	@Override
-	public void dragGestureRecognized(final DragGestureEvent dge) {
-		final List<TileFixture> selection = getSelectedValuesList();
-		final Transferable trans = selection.size() == 1 ? new FixtureTransferable(
-				selection.get(0))
-				: new CurriedFixtureTransferable(selection);
-		dge.startDrag(null, trans);
+	public void dragGestureRecognized(@Nullable final DragGestureEvent dge) {
+		if (dge != null) {
+			final List<TileFixture> selection = getSelectedValuesList();
+			final Transferable trans = selection.size() == 1 ? new FixtureTransferable(
+					selection.get(0)) : new CurriedFixtureTransferable(
+					selection);
+			dge.startDrag(null, trans);
+		}
 	}
 
 	/**
@@ -82,7 +86,7 @@ public class FixtureList extends JList<TileFixture> implements
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof JList
 						&& getModel().equals(((JList) obj).getModel()));
 	}
@@ -112,28 +116,28 @@ public class FixtureList extends JList<TileFixture> implements
 		 * @param event the event to handle
 		 */
 		@Override
-		public void mouseClicked(final MouseEvent event) {
+		public void mouseClicked(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 		/**
 		 * @param event the event to handle
 		 */
 		@Override
-		public void mousePressed(final MouseEvent event) {
+		public void mousePressed(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 		/**
 		 * @param event the event to handle
 		 */
 		@Override
-		public void mouseReleased(final MouseEvent event) {
+		public void mouseReleased(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 		/**
-		 * @param event the event to handle
+		 * @param event the event to handle. Marked as @Nullable so we only have to handle the null-event case once.
 		 */
-		private void handleMouseEvent(final MouseEvent event) {
-			if (event.isPopupTrigger() && event.getClickCount() == 1) {
+		private void handleMouseEvent(@Nullable final MouseEvent event) {
+			if (event != null && event.isPopupTrigger() && event.getClickCount() == 1) {
 				new FixtureEditMenu(getModel().getElementAt(
 						locationToIndex(event.getPoint())), players).show(
 						event.getComponent(), event.getX(), event.getY());

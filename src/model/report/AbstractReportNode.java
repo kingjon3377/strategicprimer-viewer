@@ -2,6 +2,8 @@ package model.report;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A superclass for report-nodes.
  * @author Jonathan Lovelace
@@ -14,6 +16,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	 */
 	protected AbstractReportNode(final String txt) {
 		super(txt);
+		text = txt;
 		setText(txt);
 	}
 	/**
@@ -59,7 +62,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof AbstractReportNode && equalsImpl((AbstractReportNode) obj));
 	}
@@ -91,8 +94,8 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	 * @param node the node to add
 	 */
 	@Override
-	public void add(final MutableTreeNode node) {
-		if (node != null) {
+	public void add(@Nullable final MutableTreeNode node) {
+		if (node != null && !(node instanceof EmptyReportNode)) {
 			super.add(node);
 		}
 	}

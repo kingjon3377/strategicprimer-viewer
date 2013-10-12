@@ -1,6 +1,8 @@
 // $codepro.audit.disable lineLength
 package util;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * From
  * <http://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-
@@ -85,7 +87,7 @@ public class Pair<FIRST, SECOND> {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return (this == obj)
 				|| ((obj instanceof Pair)
 						&& ((first == ((Pair) obj).first || first

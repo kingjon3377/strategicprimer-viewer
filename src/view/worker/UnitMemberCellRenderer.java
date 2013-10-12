@@ -17,6 +17,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
@@ -43,7 +45,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 */
 	// ESCA-JAVA0138: We have to have this many params to override the superclass method.
 	@Override
-	public Component getTreeCellRendererComponent(final JTree tree, final Object value,
+	public Component getTreeCellRendererComponent(@Nullable final JTree tree, @Nullable final Object value,
 			final boolean selected, final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
 		final Component component = DEFAULT.getTreeCellRendererComponent(tree,

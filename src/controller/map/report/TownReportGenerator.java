@@ -18,6 +18,7 @@ import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.Village;
 import model.report.AbstractReportNode;
+import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 /**
@@ -94,7 +95,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		for (final AbstractTown town : sorted) {
 			retval.add(produceRIR(fixtures, tiles, currentPlayer, town, townLocs.get(town)));
 		}
-		return sorted.isEmpty() ? null : retval;
+		return sorted.isEmpty() ? EmptyReportNode.NULL_NODE : retval;
 	}
 	/**
 	 * Produce a report for a town. Handling of fortresses and villages is

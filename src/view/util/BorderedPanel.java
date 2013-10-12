@@ -5,6 +5,8 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A panel laid out by a BorderLayout, with helper methods to assign components
  * to its different sectors in a more functional style.
@@ -27,8 +29,9 @@ public class BorderedPanel extends JPanel {
 	 * @param west the west component. Ignored if null.
 	 * @param center the central component. Ignored if null.
 	 */
-	public BorderedPanel(final Component center, final Component north,
-			final Component south, final Component east, final Component west) {
+	public BorderedPanel(@Nullable final Component center,
+			@Nullable final Component north, @Nullable final Component south,
+			@Nullable final Component east, @Nullable final Component west) {
 		this();
 		if (center != null) {
 			setCenter(center);

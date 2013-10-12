@@ -3,6 +3,8 @@ package model.exploration;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -242,7 +244,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	/**
 	 * The currently selected unit.
 	 */
-	private Unit selUnit = null;
+	@Nullable private Unit selUnit = null;
 	/**
 	 * Its location.
 	 */
@@ -251,7 +253,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return the currently selected unit
 	 */
 	@Override
-	public Unit getSelectedUnit() {
+	@Nullable public Unit getSelectedUnit() {
 		return selUnit;
 	}
 	/**

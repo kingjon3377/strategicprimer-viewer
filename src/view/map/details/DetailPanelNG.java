@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.PlayerCollection;
 import model.map.Point;
 import util.PropertyChangeSource;
@@ -43,8 +45,8 @@ public class DetailPanelNG extends JSplitPane {
 		 * @param evt the event to handle.
 		 */
 		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			if ("point".equalsIgnoreCase(evt.getPropertyName())
+		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+			if (evt != null && "point".equalsIgnoreCase(evt.getPropertyName())
 					&& evt.getNewValue() instanceof Point) {
 				setText("<html><body><p>Contents of the tile at "
 						+ ((Point) evt.getNewValue()).toString()

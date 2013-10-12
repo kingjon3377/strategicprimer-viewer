@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.PrintWriter;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
  * tile; each unit is either in a fortress or on a tile directly.
@@ -85,7 +87,7 @@ public class SPMap implements IMap {
 	 * @return whether it is an identical map.
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof SPMap && getDimensions().equals(((IMap) obj).getDimensions())
 						&& players.equals(((IMap) obj).getPlayers()) && tiles

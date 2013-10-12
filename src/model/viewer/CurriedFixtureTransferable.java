@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.TileFixture;
 /**
  * A class to transfer a list of TileFixtures.
@@ -50,7 +52,7 @@ public class CurriedFixtureTransferable implements Transferable {
 	 * @return whether it's the one we support
 	 */
 	@Override
-	public boolean isDataFlavorSupported(final DataFlavor dFlavor) {
+	public boolean isDataFlavorSupported(@Nullable final DataFlavor dFlavor) {
 		return FLAVOR.equals(dFlavor);
 	}
 
@@ -64,7 +66,7 @@ public class CurriedFixtureTransferable implements Transferable {
 	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
-	public Object getTransferData(final DataFlavor dFlavor)
+	public Object getTransferData(@Nullable final DataFlavor dFlavor)
 			throws UnsupportedFlavorException, IOException {
 		if (isDataFlavorSupported(dFlavor)) {
 			// ESCA-JAVA0259: The collection is unmodifiable.

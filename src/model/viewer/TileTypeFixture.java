@@ -1,5 +1,7 @@
 package model.viewer;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -77,7 +79,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 * @return whether it's the same as this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof TileTypeFixture && ((TileTypeFixture) obj).ttype == ttype);
 	}

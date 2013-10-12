@@ -9,6 +9,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.ExplorationModel;
 import util.PropertyChangeSource;
 import controller.map.misc.MultiIOHandler;
@@ -43,8 +45,8 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource {
 				esp.getMPDocument());
 		esp.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if ("switch".equalsIgnoreCase(evt.getPropertyName())) {
+			public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+				if (evt != null && "switch".equalsIgnoreCase(evt.getPropertyName())) {
 					explorationPanel.validate();
 					layout.next(outer);
 				}
@@ -52,8 +54,8 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource {
 		});
 		explorationPanel.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if ("switch".equalsIgnoreCase(evt.getPropertyName())) {
+			public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+				if (evt != null && "switch".equalsIgnoreCase(evt.getPropertyName())) {
 					esp.validate();
 					layout.first(outer);
 				}

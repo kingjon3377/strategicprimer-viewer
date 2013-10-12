@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -106,11 +108,13 @@ public class FindDialog extends JDialog implements ActionListener {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent event) {
-		if ("OK".equals(event.getActionCommand())) {
-			search();
+	public void actionPerformed(@Nullable final ActionEvent event) {
+		if (event != null) {
+			if ("OK".equals(event.getActionCommand())) {
+				search();
+			}
+			setVisible(false);
 		}
-		setVisible(false);
 	}
 
 	/**

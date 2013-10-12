@@ -1,5 +1,7 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IEvent;
 import model.map.IFixture;
@@ -58,7 +60,7 @@ public final class Cave implements IEvent,
 	 * @return whether it's an identical CaveEvent.
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Cave && ((TileFixture) obj).getID() == id);
 	}

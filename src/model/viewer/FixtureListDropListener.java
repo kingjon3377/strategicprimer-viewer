@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.TileFixture;
 import util.EqualsAny;
 
@@ -54,16 +56,18 @@ public class FixtureListDropListener implements DropTargetListener {
 	 * @param dtde the event to handle
 	 */
 	@Override
-	public void dragEnter(final DropTargetDragEvent dtde) {
-		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
-						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()))
-				&& !isIntraComponentXfr(dtde)) {
-			dtde.acceptDrag(dtde.getDropAction());
-		} else {
-			dtde.rejectDrag();
+	public void dragEnter(@Nullable final DropTargetDragEvent dtde) {
+		if (dtde != null) {
+			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+					&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
+							dtde.getCurrentDataFlavorsAsList()) || EqualsAny
+							.equalsAny(CurriedFixtureTransferable.FLAVOR,
+									dtde.getCurrentDataFlavorsAsList()))
+					&& !isIntraComponentXfr(dtde)) {
+				dtde.acceptDrag(dtde.getDropAction());
+			} else {
+				dtde.rejectDrag();
+			}
 		}
 	}
 
@@ -83,16 +87,18 @@ public class FixtureListDropListener implements DropTargetListener {
 	 * @param dtde the event to handle
 	 */
 	@Override
-	public void dragOver(final DropTargetDragEvent dtde) {
-		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
-						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()))
-				&& !isIntraComponentXfr(dtde)) {
-			dtde.acceptDrag(dtde.getDropAction());
-		} else {
-			dtde.rejectDrag();
+	public void dragOver(@Nullable final DropTargetDragEvent dtde) {
+		if (dtde != null) {
+			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+					&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
+							dtde.getCurrentDataFlavorsAsList()) || EqualsAny
+							.equalsAny(CurriedFixtureTransferable.FLAVOR,
+									dtde.getCurrentDataFlavorsAsList()))
+					&& !isIntraComponentXfr(dtde)) {
+				dtde.acceptDrag(dtde.getDropAction());
+			} else {
+				dtde.rejectDrag();
+			}
 		}
 	}
 	/**
@@ -101,16 +107,18 @@ public class FixtureListDropListener implements DropTargetListener {
 	 * @param dtde the event to handle.
 	 */
 	@Override
-	public void dropActionChanged(final DropTargetDragEvent dtde) {
-		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-				&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
-						dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-						.equalsAny(CurriedFixtureTransferable.FLAVOR,
-								dtde.getCurrentDataFlavorsAsList()))
-				&& !isIntraComponentXfr(dtde)) {
-			dtde.acceptDrag(dtde.getDropAction());
-		} else {
-			dtde.rejectDrag();
+	public void dropActionChanged(@Nullable final DropTargetDragEvent dtde) {
+		if (dtde != null) {
+			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+					&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
+							dtde.getCurrentDataFlavorsAsList()) || EqualsAny
+							.equalsAny(CurriedFixtureTransferable.FLAVOR,
+									dtde.getCurrentDataFlavorsAsList()))
+					&& !isIntraComponentXfr(dtde)) {
+				dtde.acceptDrag(dtde.getDropAction());
+			} else {
+				dtde.rejectDrag();
+			}
 		}
 	}
 	/**
@@ -119,7 +127,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	 * @param dte ignored
 	 */
 	@Override
-	public void dragExit(final DropTargetEvent dte) {
+	public void dragExit(@Nullable final DropTargetEvent dte) {
 		// ignored
 	}
 	/**
@@ -128,30 +136,37 @@ public class FixtureListDropListener implements DropTargetListener {
 	 * @param dtde the event to handle.
 	 */
 	@Override
-	public void drop(final DropTargetDropEvent dtde) {
-		if (isIntraComponentXfr(dtde)) {
+	public void drop(@Nullable final DropTargetDropEvent dtde) {
+		if (dtde == null) {
+			return; // NOPMD
+		} else if (isIntraComponentXfr(dtde)) {
 			dtde.rejectDrop();
 			return; // NOPMD
-		}
-		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-				if (EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
-						CurriedFixtureTransferable.FLAVOR)) {
+		} else {
+			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
+				if (flavor != null
+						&& EqualsAny.equalsAny(flavor,
+								FixtureTransferable.FLAVOR,
+								CurriedFixtureTransferable.FLAVOR)) {
 					try {
 						dtde.acceptDrop(dtde.getDropAction());
 						handleDrop(dtde.getTransferable());
 					} catch (UnsupportedFlavorException except) {
-						LOGGER.log(Level.SEVERE,
+						LOGGER.log(
+								Level.SEVERE,
 								"Unsupported flavor when it said it was supported",
 								except);
 						continue;
 					} catch (IOException except) {
-						LOGGER.log(Level.SEVERE, "I/O error getting the data", except);
+						LOGGER.log(Level.SEVERE, "I/O error getting the data",
+								except);
 						continue;
 					}
 					return; // NOPMD
 				}
 			}
-		dtde.rejectDrop();
+			dtde.rejectDrop();
+		}
 	}
 	/**
 	 * Handle a drop.

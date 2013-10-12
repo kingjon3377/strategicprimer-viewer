@@ -5,8 +5,12 @@ import java.awt.Polygon;
 
 import javax.swing.JButton;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Tile;
+import model.map.TileFixture;
 import model.map.TileType;
+import model.viewer.ZOrderFilter;
 import view.map.main.TileDrawHelper;
 import view.map.main.TileDrawHelperFactory;
 
@@ -36,13 +40,39 @@ public class DualTileButton extends JButton {
 	 */
 	private static final int MARGIN = 2;
 	/**
+	 * A ZOrderFilter implementation that does  nothing, to avoid passing null to the factory.
+	 */
+	private static final class NullZOrderFilter implements ZOrderFilter {
+		/**
+		 * Constructor. Only explicit to fix a synthetic-access warning.
+		 */
+		NullZOrderFilter() {
+			// Do nothing
+		}
+		/**
+		 * @param fix ignored
+		 * @return true
+		 */
+		@Override
+		public boolean shouldDisplay(final TileFixture fix) {
+			return true;
+		}
+	}
+	/**
+	 * The ZOrderFilter instance to pass to the factory rather than null.
+	 */
+	private static final ZOrderFilter NULL_ZOF = new NullZOrderFilter();
+	/**
 	 * Paint the component.
 	 * @param pen the Graphics object to draw with.
 	 */
 	@Override
-	protected void paintComponent(final Graphics pen) {
+	protected void paintComponent(@Nullable final Graphics pen) {
+		if (pen == null) {
+			throw new IllegalArgumentException("Graphics cannot be null");
+		}
 		super.paintComponent(pen);
-		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2, this, null);
+		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2, this, NULL_ZOF);
 		pen.setClip(new Polygon(
 				new int[] { getWidth() - MARGIN, MARGIN, MARGIN }, new int[] {
 						MARGIN, getHeight() - MARGIN, MARGIN }, 3));

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
@@ -97,14 +99,14 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	 * @return whether it's the same as this
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Worker && ((Worker) obj).name.equals(name)
 						&& ((Worker) obj).id == id && ((Worker) obj).jobSet
 							.equals(jobSet))
 				&& ((Worker) obj).race.equals(race)
-				&& (stats == null ? ((Worker) obj).stats == null : stats
-						.equals(((Worker) obj).stats));
+				&& (stats != null ? stats
+						.equals(((Worker) obj).stats) : ((Worker) obj).stats == null);
 	}
 	/**
 	 * @return a hash code for the object
@@ -130,8 +132,8 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 				|| (fix instanceof Worker && ((Worker) fix).name.equals(name) && ((Worker) fix).jobSet
 						.equals(jobSet))
 				&& ((Worker) fix).race.equals(race)
-				&& (stats == null ? ((Worker) fix).stats == null : stats
-						.equals(((Worker) fix).stats));
+				&& (stats != null ? stats
+						.equals(((Worker) fix).stats) : ((Worker) fix).stats == null);
 	}
 	/**
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
@@ -157,11 +159,11 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	/**
 	 * The worker's stats.
 	 */
-	private WorkerStats stats;
+	@Nullable private WorkerStats stats;
 	/**
 	 * @return the worker's stats
 	 */
-	public WorkerStats getStats() {
+	@Nullable public WorkerStats getStats() {
 		return stats;
 	}
 	/**

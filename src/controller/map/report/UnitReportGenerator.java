@@ -13,6 +13,7 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.report.AbstractReportNode;
 import model.report.ComplexReportNode;
+import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
@@ -113,8 +114,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		builder.append(", a ");
 		builder.append(worker.getRace());
 		builder.append(". ");
-		if (worker.getStats() != null && details) {
-			final WorkerStats stats = worker.getStats();
+		final WorkerStats stats = worker.getStats();
+		if (stats != null && details) {
 			builder.append("He or she has the following stats:").append(
 					OPEN_LIST);
 			builder.append(OPEN_LIST_ITEM).append("Hit points: ")
@@ -187,8 +188,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	private static AbstractReportNode produceWorkerRIR(final Worker worker, final boolean details) {
 		final AbstractReportNode retval = new ComplexReportNode(worker.getName() + ", a " + worker.getRace() + ". ");
-		if (worker.getStats() != null && details) {
-			final WorkerStats stats = worker.getStats();
+		final WorkerStats stats = worker.getStats();
+		if (stats != null && details) {
 			final AbstractReportNode statsNode = new ListReportNode("He or she has the following stats:");
 			statsNode.add(new StatReportNode(stats.getHitPoints(), stats.getMaxHitPoints()));
 			statsNode.add(new StatReportNode("Strength: ", stats.getStrength()));
@@ -256,7 +257,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				retval.add(unit);
 			}
 		}
-		return retval.getChildCount() == 0 ? null : retval;
+		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
 	}
 	/**
 	 * A {@link SimpleReportNode} with a constructor designed for worker stats.

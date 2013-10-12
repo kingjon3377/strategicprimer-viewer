@@ -14,6 +14,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -75,7 +78,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		setToolTipText("");
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
-			public void mouseMoved(final MouseEvent evt) {
+			public void mouseMoved(@Nullable final MouseEvent evt) {
 				repaint();
 			}
 		});
@@ -85,8 +88,12 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @return an appropriate tool-tip
 	 */
 	@Override
-	public String getToolTipText(final MouseEvent event) {
-		return cml.getToolTipText(event);
+	@Nullable public String getToolTipText(@Nullable final MouseEvent event) {
+		if (event == null) {
+			return null;
+		} else {
+			return cml.getToolTipText(event);
+		}
 	}
 	/**
 	 * Paint.
@@ -94,7 +101,10 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param pen the graphics context
 	 */
 	@Override
-	public void paint(final Graphics pen) {
+	public void paint(@Nullable final Graphics pen) {
+		if (pen == null) {
+			throw new IllegalStateException("Given a null Graphics");
+		}
 		drawMap(pen);
 		super.paint(pen);
 	}
@@ -201,22 +211,28 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
-				evt.getNewValue());
-		if (equalsAny(evt.getPropertyName(), "tile", "point") && !isSelectionVisible()) {
-			fixVisibility();
-		} else if ("map".equals(evt.getPropertyName())) {
-			helper = TileDrawHelperFactory.INSTANCE.factory(
-					model.getMapDimensions().version, this, zof);
-		} else if ("tsize".equals(evt.getPropertyName())) {
-			final ComponentEvent resizeEvt = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
-			for (final ComponentListener list : getComponentListeners()) {
-				list.componentResized(resizeEvt);
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && evt.getPropertyName() != null) {
+			@NonNull final String propName = evt.getPropertyName();
+			firePropertyChange(propName, evt.getOldValue(),
+					evt.getNewValue());
+			if (equalsAny(propName, "tile", "point")
+					&& !isSelectionVisible()) {
+				fixVisibility();
+			} else if ("map".equals(evt.getPropertyName())) {
+				helper = TileDrawHelperFactory.INSTANCE.factory(
+						model.getMapDimensions().version, this, zof);
+			} else if ("tsize".equals(evt.getPropertyName())) {
+				final ComponentEvent resizeEvt = new ComponentEvent(this,
+						ComponentEvent.COMPONENT_RESIZED);
+				for (final ComponentListener list : getComponentListeners()) {
+					list.componentResized(resizeEvt);
+				}
 			}
-		}
-		if (equalsAny(evt.getPropertyName(), "map", "point", "tile", "dimensions", "tsize")) {
-			repaint();
+			if (equalsAny(propName, "map", "point", "tile",
+					"dimensions", "tsize")) {
+				repaint();
+			}
 		}
 	}
 

@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
@@ -132,7 +134,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof Animal && ((Animal) obj).kind.equals(kind)
 				&& ((Animal) obj).traces == traces
 				&& ((Animal) obj).talking == talking

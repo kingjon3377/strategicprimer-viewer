@@ -3,6 +3,8 @@ package view.map.main;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.MapDimensions;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
@@ -38,8 +40,8 @@ public class MapSizeListener extends ComponentAdapter {
 	 * @param event the resize event
 	 */
 	@Override
-	public void componentResized(final ComponentEvent event) {
-		if (event.getComponent() instanceof MapGUI) {
+	public void componentResized(@Nullable final ComponentEvent event) {
+		if (event != null && event.getComponent() instanceof MapGUI) {
 			synchronized (model) {
 				final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
 						model.getMapDimensions().getVersion());
@@ -87,7 +89,7 @@ public class MapSizeListener extends ComponentAdapter {
 	 * @param event the event to handle.
 	 */
 	@Override
-	public void componentShown(final ComponentEvent event) {
+	public void componentShown(@Nullable final ComponentEvent event) {
 		componentResized(event);
 	}
 	/**

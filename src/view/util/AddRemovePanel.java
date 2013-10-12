@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.PropertyChangeSource;
 
 /**
@@ -70,8 +72,10 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if ("+".equals(evt.getActionCommand())) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("+".equals(evt.getActionCommand())) {
 			layout.next(this);
 			field.requestFocusInWindow();
 		} else if ("-".equals(evt.getActionCommand())) {

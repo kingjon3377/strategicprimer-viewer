@@ -15,6 +15,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.IMap;
@@ -88,8 +90,8 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if (BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
+		if (evt != null && BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
 			firePropertyChange("switch", false, true);
 		}
 	}
@@ -156,8 +158,10 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 	 * @param evt the event to handle
 	 */
 	@Override
-	public final void propertyChange(final PropertyChangeEvent evt) {
-		if ("point".equalsIgnoreCase(evt.getPropertyName())) {
+	public final void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("point".equalsIgnoreCase(evt.getPropertyName())) {
 			final Point selPoint = model.getSelectedUnitLocation();
 			for (final Direction dir : Direction.values()) {
 				final Point point = model.getDestination(selPoint, dir);

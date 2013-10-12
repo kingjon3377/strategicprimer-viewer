@@ -1,5 +1,7 @@
 package model.map;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 
@@ -55,17 +57,17 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * "extra" forest Fixtures in the "et cetera" collection.
 	 *
 	 * @param location a location
-	 * @return the forest (if any) at that location
+	 * @return the forest (if any) at that location; null if there is none
 	 */
-	Forest getForest(final Point location);
+	@Nullable Forest getForest(final Point location);
 
 	/**
 	 * Implementations should aim to have only the "main" Ground here, and any
 	 * exposed or otherwise "extra" Fixtures in the "et cetera" collection.
 	 * @param location a location
-	 * @return the Ground at that location
+	 * @return the Ground at that location; null if there is none
 	 */
-	Ground getGround(final Point location);
+	@Nullable Ground getGround(final Point location);
 	/**
 	 * @param location a location
 	 * @return a view of any fixtures on the map that aren't covered in the other querying methods.

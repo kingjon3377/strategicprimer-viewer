@@ -5,6 +5,8 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.River;
 import model.map.Subsettable;
@@ -78,7 +80,7 @@ public class RiverFixture implements TileFixture,
 	 * @return whether it's an identical RiverFixture
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof RiverFixture && ((RiverFixture) obj).rivers
 						.equals(rivers));

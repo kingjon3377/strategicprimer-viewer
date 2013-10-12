@@ -27,6 +27,10 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	 * @param filename the name the map was loaded from or should be saved to
 	 */
 	public ViewerModel(final MapView firstMap, final String filename) {
+		dimensions = new VisibleDimensions(0,
+				firstMap.getDimensions().rows - 1, 0,
+				firstMap.getDimensions().cols - 1);
+		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, filename);
 	}
 

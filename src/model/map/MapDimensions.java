@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
  * @author Jonathan Lovelace
@@ -58,7 +60,7 @@ public class MapDimensions implements Serializable {
 	 * @return whether it equals this
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return obj == this
 				|| (obj instanceof MapDimensions
 						&& ((MapDimensions) obj).rows == rows

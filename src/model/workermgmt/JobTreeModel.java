@@ -17,6 +17,8 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A model for a tree of a worker's Jobs and Skills.
  * @author Jonathan Lovelace
@@ -33,7 +35,7 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	/**
 	 * The worker who the Jobs and Skills describe.
 	 */
-	private Worker root; // NOPMD: Claims only initialized in constructor, which is Not True.
+	@Nullable private Worker root; // NOPMD: Claims only initialized in constructor, which is Not True.
 	/**
 	 * The tree's selection model.
 	 */
@@ -42,7 +44,7 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @return the root of the tree, the worker.
 	 */
 	@Override
-	public Object getRoot() {
+	@Nullable public Object getRoot() {
 		return root;
 	}
 	/**
@@ -51,9 +53,11 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @return the specified child
 	 */
 	@Override
-	public Object getChild(final Object parent, final int index) {
-		if (index >= 0 && parent instanceof Worker && parent.equals(root)) {
-			return getFromIter(root, index);
+	public Object getChild(@Nullable final Object parent, final int index) {
+		final Worker currRoot = root;
+		if (index >= 0 && currRoot != null && parent instanceof Worker
+				&& parent.equals(currRoot)) {
+			return getFromIter(currRoot, index);
 		} else if (index >= 0 && parent instanceof Job) {
 			return getFromIter((Job) parent, index);
 		} else {
@@ -87,8 +91,9 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @return how many children it has
 	 */
 	@Override
-	public int getChildCount(final Object parent) {
+	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof Worker || parent instanceof Job) {
+			assert parent != null;
 			final Iterator<?> iter = ((Iterable<?>) parent).iterator();
 			int count = 0;
 			// ESCA-JAVA0254:
@@ -108,7 +113,7 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @return whether it's a leaf node
 	 */
 	@Override
-	public boolean isLeaf(final Object node) {
+	public boolean isLeaf(@Nullable final Object node) {
 		return !(node instanceof Worker) && !(node instanceof Job);
 	}
 	/**
@@ -123,7 +128,7 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
 	 */
 	@Override
-	public void valueForPathChanged(final TreePath path, final Object newValue) {
+	public void valueForPathChanged(@Nullable final TreePath path, @Nullable final Object newValue) {
 		LOGGER.severe("valueForPathChanged needs to be implemented");
 	}
 	/**
@@ -134,9 +139,10 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public int getIndexOfChild(final Object parent, final Object child) {
+	public int getIndexOfChild(@Nullable final Object parent, @Nullable final Object child) {
 		if (parent instanceof Worker ||  parent instanceof Job) {
 			int index = 0;
+			assert parent != null;
 			for (Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
 					return index;
@@ -152,14 +158,14 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @param list something to listen for tree model changes
 	 */
 	@Override
-	public void addTreeModelListener(final TreeModelListener list) {
+	public void addTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.add(list);
 	}
 	/**
 	 * @param list something that doesn't want to listen for tree model changes anymore
 	 */
 	@Override
-	public void removeTreeModelListener(final TreeModelListener list) {
+	public void removeTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.remove(list);
 	}
 	/**
@@ -171,32 +177,45 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 * @param evt the even to handle.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("member".equalsIgnoreCase(evt.getPropertyName())) {
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("member".equalsIgnoreCase(evt.getPropertyName())) {
 			if (evt.getNewValue() instanceof Worker) {
 				root = (Worker) evt.getNewValue();
-				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
-			} else if (evt.getNewValue() instanceof UnitMember || evt.getNewValue() == null) {
+				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(
+						root)));
+			} else if (evt.getNewValue() instanceof UnitMember
+					|| evt.getNewValue() == null) {
 				root = null;
-				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
+				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(
+						root)));
 			}
-		} else if ("add_job".equalsIgnoreCase(evt.getPropertyName()) && root != null) {
-			final Job job = new Job(evt.getNewValue().toString(), 0);
-			final int childCount = getChildCount(root);
-			root.addJob(job);
-			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(root), arrayOfInt(childCount), arrayOfObj(job)));
-		} else if ("add_skill".equalsIgnoreCase(evt.getPropertyName())) {
-			final TreePath selPath = tsm.getSelectionPath();
-			if (selPath != null && selPath.getLastPathComponent() instanceof Job) {
-				final Job job = (Job) selPath.getLastPathComponent();
-				final Skill skill = new Skill(evt.getNewValue().toString(), 0, 0);
-				final int childCount = getChildCount(job);
-				job.addSkill(skill);
+		} else {
+			final Worker currRoot = root;
+			if ("add_job".equalsIgnoreCase(evt.getPropertyName())
+					&& currRoot != null) {
+				final Job job = new Job(evt.getNewValue().toString(), 0);
+				final int childCount = getChildCount(currRoot);
+				currRoot.addJob(job);
 				fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-						new Object[] { root, job }),
-						arrayOfInt(childCount), arrayOfObj(skill)));
-			} // Need to handle added skills ... at least firing
-				// notification of changes to the tree, and on level-up as well.
+						currRoot), arrayOfInt(childCount), arrayOfObj(job)));
+			} else if ("add_skill".equalsIgnoreCase(evt.getPropertyName())) {
+				final TreePath selPath = tsm.getSelectionPath();
+				if (selPath != null
+						&& selPath.getLastPathComponent() instanceof Job) {
+					final Job job = (Job) selPath.getLastPathComponent();
+					final Skill skill = new Skill(evt.getNewValue().toString(),
+							0, 0);
+					final int childCount = getChildCount(job);
+					job.addSkill(skill);
+					fireTreeNodesInserted(new TreeModelEvent(this,
+							new TreePath(new Object[] { root, job }),
+							arrayOfInt(childCount), arrayOfObj(skill)));
+				} // Need to handle added skills ... at least firing
+					// notification of changes to the tree, and on level-up as
+					// well.
+			}
 		}
 	}
 	/**

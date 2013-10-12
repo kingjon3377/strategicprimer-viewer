@@ -36,6 +36,7 @@ public class FileChooser {
 	 * @param file the filename to return.
 	 */
 	public FileChooser(final String file) {
+		filename = "";
 		setFilename(file);
 	}
 	/**
@@ -43,7 +44,7 @@ public class FileChooser {
 	 * is asked for.
 	 */
 	public FileChooser() {
-		this(null);
+		this("");
 	}
 	/**
 	 * If no valid filename was passed in, show a dialog for the user to select

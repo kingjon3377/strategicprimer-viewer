@@ -12,6 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IMap;
 import model.map.MapView;
 import model.map.SPMap;
@@ -54,9 +56,9 @@ public class IOHandler implements ActionListener {
 	/**
 	 * Handle the "load" menu item.
 	 *
-	 * @param source the source of the event
+	 * @param source the source of the event. May be null, since JFileChooser doesn't seem to care
 	 */
-	private void handleLoadMenu(final Component source) {
+	private void handleLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
 			// ESCA-JAVA0166:
@@ -78,17 +80,19 @@ public class IOHandler implements ActionListener {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent event) {
-		final Component source = event.getSource() instanceof Component ? (Component) event
-				.getSource() : null; // NOPMD
-		if ("Load".equals(event.getActionCommand())) {
-			handleLoadMenu(source);
-		} else if ("Save".equals(event.getActionCommand())) {
-			saveMap(source);
-		} else if ("Save As".equals(event.getActionCommand())) {
-			saveMapAs(model.getMap(), source);
-		} else if ("New".equals(event.getActionCommand())) {
-			startNewViewerWindow();
+	public void actionPerformed(@Nullable final ActionEvent event) {
+		if (event != null) { // it wouldn't be @Nullable except that the JDK isn't annotated
+			final Component source = event.getSource() instanceof Component ? (Component) event
+					.getSource() : null; // NOPMD
+			if ("Load".equals(event.getActionCommand())) {
+				handleLoadMenu(source);
+			} else if ("Save".equals(event.getActionCommand())) {
+				saveMap(source);
+			} else if ("Save As".equals(event.getActionCommand())) {
+				saveMapAs(model.getMap(), source);
+			} else if ("New".equals(event.getActionCommand())) {
+				startNewViewerWindow();
+			}
 		}
 	}
 	/**
@@ -122,10 +126,10 @@ public class IOHandler implements ActionListener {
 	 *
 	 * @param except an Exception
 	 * @param filename the file we were trying to process
-	 * @param source the component to use as the parent of the error dialog
+	 * @param source the component to use as the parent of the error dialog. May be null.
 	 */
 	protected static void handleError(final Exception except,
-			final String filename, final Component source) {
+			final String filename, @Nullable final Component source) {
 		// ESCA-JAVA0177:
 		String msg;
 		if (except instanceof XMLStreamException) {
@@ -144,9 +148,9 @@ public class IOHandler implements ActionListener {
 	}
 	/**
 	 * Save a map to the filename it was loaded from.
-	 * @param source the source of the event that triggered this
+	 * @param source the source of the event that triggered this. May be null if it wasn't a Component.
 	 */
-	private void saveMap(final Component source) {
+	private void saveMap(@Nullable final Component source) {
 		try {
 			new MapReaderAdapter().write(model.getMapFilename(), model.getMap());
 		} catch (final IOException e) {
@@ -160,9 +164,9 @@ public class IOHandler implements ActionListener {
 	 * Save a map.
 	 *
 	 * @param map the map to save.
-	 * @param source the source of the event
+	 * @param source the source of the event. May be null if the source wasn't a component.
 	 */
-	private void saveMapAs(final IMap map, final Component source) {
+	private void saveMapAs(final IMap map, @Nullable final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
 			try {
 				new MapReaderAdapter().write(chooser.getSelectedFile()

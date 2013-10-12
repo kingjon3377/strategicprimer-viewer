@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * Basically a FileInputStream, but the file could be on disk or in the classpath.
  * @author Jonathan Lovelace
@@ -50,7 +52,7 @@ public class ResourceInputStream extends InputStream {
 	 * @throws IOException when thrown by wrapped stream
 	 */
 	@Override
-	public int read(final byte[] buf) throws IOException {
+	public int read(@Nullable final byte[] buf) throws IOException {
 		return wrapped.read(buf);
 	}
 
@@ -63,7 +65,7 @@ public class ResourceInputStream extends InputStream {
 	 * @see InputStream#read(byte[], int, int)
 	 */
 	@Override
-	public int read(final byte[] buf, final int off, final int len) throws IOException {
+	public int read(@Nullable final byte[] buf, final int off, final int len) throws IOException {
 		return wrapped.read(buf, off, len);
 	}
 	/**

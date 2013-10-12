@@ -6,6 +6,7 @@ import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.towns.Village;
 import model.report.AbstractReportNode;
+import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
@@ -78,7 +79,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		if (others.getChildCount() != 0) {
 			retval.add(others);
 		}
-		return retval.getChildCount() == 0 ? null : retval;
+		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
 	}
 	/**
 	 * Produce the (very brief) report for a particular village. We're probably

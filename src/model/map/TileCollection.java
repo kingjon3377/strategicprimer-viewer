@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.PrefixingPrintWriter;
 
 /**
@@ -70,7 +72,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * @return whether it is an identical TileCollection.
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return obj == this
 				|| (obj instanceof TileCollection && withoutEmptyTiles(((TileCollection) obj).tiles)
 						.equals(withoutEmptyTiles(tiles)));

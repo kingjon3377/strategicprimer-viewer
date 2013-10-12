@@ -5,6 +5,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JComponent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A listener to help {@link MapSizeListener} adjust the number of displayed
  * tiles when the window is maximized or restored.
@@ -32,7 +34,7 @@ public class MapWindowSizeListener extends WindowAdapter {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void windowDeiconified(final WindowEvent evt) {
+	public void windowDeiconified(@Nullable final WindowEvent evt) {
 		final int addend = add ? 1 : -1;
 //		add = !add;
 		add ^= true;
@@ -44,7 +46,7 @@ public class MapWindowSizeListener extends WindowAdapter {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void windowStateChanged(final WindowEvent evt) {
+	public void windowStateChanged(@Nullable final WindowEvent evt) {
 		final int addend = add ? 1 : -1;
 //		add = !add;
 		add ^= true;

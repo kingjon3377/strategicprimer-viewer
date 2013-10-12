@@ -3,6 +3,8 @@ package model.map.fixtures.mobile;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
@@ -116,7 +118,7 @@ public class Unit implements MobileFixture, HasImage,
 	 * @return whether it's an identical Unit.
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Unit
 						&& ((Unit) obj).owner.getPlayerId() == owner

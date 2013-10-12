@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A Set implementation that's just an ArrayList with Set semantics.
  * @author Jonathan Lovelace
@@ -41,7 +43,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 * @return whether we contain it
 	 */
 	@Override
-	public boolean contains(final Object obj) {
+	public boolean contains(@Nullable final Object obj) {
 		return impl.contains(obj);
 	}
 	/**
@@ -85,7 +87,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 * @return the result of removing it from the set
 	 */
 	@Override
-	public boolean remove(final Object obj) {
+	public boolean remove(@Nullable final Object obj) {
 		return impl.remove(obj);
 	}
 	/**
@@ -93,7 +95,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 * @return whether the set contains all its elements
 	 */
 	@Override
-	public boolean containsAll(final Collection<?> coll) {
+	public boolean containsAll(@Nullable final Collection<?> coll) {
 		return impl.containsAll(coll);
 	}
 	/**
@@ -117,7 +119,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 * @return the result of removing everything not in it
 	 */
 	@Override
-	public boolean retainAll(final Collection<?> coll) {
+	public boolean retainAll(@Nullable final Collection<?> coll) {
 		return impl.retainAll(coll);
 	}
 	/**
@@ -125,7 +127,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 * @return the result of removing everything in it
 	 */
 	@Override
-	public boolean removeAll(final Collection<?> coll) {
+	public boolean removeAll(@Nullable final Collection<?> coll) {
 		return impl.removeAll(coll);
 	}
 	/**
@@ -149,7 +151,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof Set && ((Set) obj).containsAll(this)
 				&& containsAll((Set) obj));
 	}

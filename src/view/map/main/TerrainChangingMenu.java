@@ -8,8 +8,9 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import util.PropertyChangeSource;
+import org.eclipse.jdt.annotation.Nullable;
 
+import util.PropertyChangeSource;
 import model.map.Tile;
 import model.map.TileType;
 
@@ -68,7 +69,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * @param event the menu-item-selected event we're handling.
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent event) {
+	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			tile.setTerrain(TileType.valueOf(event.getActionCommand()));
 			firePropertyChange("tile", null, tile);
@@ -81,12 +82,14 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * @param evt the property-change event to handle
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("tile".equals(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Tile) {
-			tile = (Tile) evt.getNewValue();
-		} else if ("version".equals(evt.getPropertyName())) {
-			updateForVersion(((Integer) evt.getNewValue()).intValue());
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null) {
+			if ("tile".equals(evt.getPropertyName())
+					&& evt.getNewValue() instanceof Tile) {
+				tile = (Tile) evt.getNewValue();
+			} else if ("version".equals(evt.getPropertyName())) {
+				updateForVersion(((Integer) evt.getNewValue()).intValue());
+			}
 		}
 	}
 }

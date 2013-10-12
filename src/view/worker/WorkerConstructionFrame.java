@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
@@ -107,8 +109,10 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 	 * @param evt the action to handle.
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
 			if (name.getText().trim().isEmpty()
 					|| race.getText().trim().isEmpty()
 					|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText().trim(),

@@ -6,6 +6,8 @@ import java.beans.PropertyChangeSupport;
 
 import javax.swing.DefaultListModel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import util.PropertyChangeSource;
@@ -45,8 +47,10 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("member".equalsIgnoreCase(evt.getPropertyName())) {
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("member".equalsIgnoreCase(evt.getPropertyName())) {
 			handleMemberChange(evt.getNewValue());
 		} else if (("add".equalsIgnoreCase(evt.getPropertyName()) || "add_job".equalsIgnoreCase(evt.getPropertyName()))
 				&& worker != null && !NULL_WORKER.equals(worker)) {

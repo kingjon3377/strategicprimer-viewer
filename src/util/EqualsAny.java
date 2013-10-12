@@ -1,5 +1,7 @@
 package util;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A class to hold a utility method for comparing a value with a number of other
  * values.
@@ -40,17 +42,21 @@ public final class EqualsAny {
 	 *
 	 * @param <TYPE> the type of objects we'll be comparing
 	 * @param against the value to compare the others to
-	 * @param values the values to compare to it
+	 * @param values the values to compare to it. May be null, in which case we return false.
 	 *
 	 * @return true if any of theme equal it, false otherwise.
 	 */
 	public static <TYPE> boolean equalsAny(final TYPE against,
-			final Iterable<TYPE> values) {
-		for (final TYPE value : values) {
-			if (against.equals(value)) {
-				return true; // NOPMD
+			@Nullable final Iterable<TYPE> values) {
+		if (values == null) {
+			return false;
+		} else {
+			for (final TYPE value : values) {
+				if (against.equals(value)) {
+					return true; // NOPMD
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 }

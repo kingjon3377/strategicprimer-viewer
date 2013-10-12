@@ -17,6 +17,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
+import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
@@ -75,7 +76,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				retval.add(produceRIR(fixtures, tiles, currentPlayer, (Fortress) pair.second(), pair.first()));
 			}
 		}
-		return retval.getChildCount() == 0 ? null : retval;
+		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
 	}
 	/**
 	 * @param tile a tile

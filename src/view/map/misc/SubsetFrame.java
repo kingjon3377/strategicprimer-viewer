@@ -16,6 +16,10 @@ import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.SPMap;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Warning;
 import view.util.StreamingLabel;
 import controller.map.formatexceptions.MapVersionException;
@@ -50,11 +54,12 @@ public class SubsetFrame extends JFrame {
 		 * @param str the string to print
 		 */
 		@Override
-		public void print(final String str) {
+		public void print(@Nullable final String str) {
+			@NonNull final String local = str == null ? "null" : str;
 			if (!middle) {
 				super.print("<p style=\"color:white\">");
 			}
-			super.print(str.replaceAll("\n", "</p><p style=\"color:white\">"));
+			super.print(local.replaceAll("\n", "</p><p style=\"color:white\">"));
 			middle = true;
 		}
 
@@ -63,11 +68,12 @@ public class SubsetFrame extends JFrame {
 		 * @param line the end of the line
 		 */
 		@Override
-		public void println(final String line) {
+		public void println(@Nullable final String line) {
+			@NonNull final String local = line == null ? "null" : line;
 			if (!middle) {
 				super.print("<p style=\"color:white\">");
 			}
-			super.print(line.replaceAll("\n", "</p><p style=\"color:white\">"));
+			super.print(local.replaceAll("\n", "</p><p style=\"color:white\">"));
 			super.println("</p>");
 			middle = false;
 		}

@@ -5,6 +5,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.JobTreeModel;
 import util.PropertyChangeSource;
@@ -39,19 +41,21 @@ public class JobsTree extends JTree implements PropertyChangeSource, TreeSelecti
 	 * @param evt the selection event to handle
 	 */
 	@Override
-	public void valueChanged(final TreeSelectionEvent evt) {
-		final TreePath selPath = evt.getNewLeadSelectionPath();
-		final Object component;
-		if (selPath == null) {
-			LOGGER.warning("Selection path was null.");
-			component = null;
-		} else {
-			component = selPath.getLastPathComponent();
-		}
-		if (component instanceof Skill) {
-			firePropertyChange("skill", null, component);
-		} else {
-			firePropertyChange("skill", "", null);
+	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
+		if (evt != null) {
+			final TreePath selPath = evt.getNewLeadSelectionPath();
+			final Object component;
+			if (selPath == null) {
+				LOGGER.warning("Selection path was null.");
+				component = null;
+			} else {
+				component = selPath.getLastPathComponent();
+			}
+			if (component instanceof Skill) {
+				firePropertyChange("skill", null, component);
+			} else {
+				firePropertyChange("skill", "", null);
+			}
 		}
 	}
 }

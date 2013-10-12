@@ -1,5 +1,7 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IEvent;
@@ -105,7 +107,7 @@ public final class MineralVein implements IEvent,
 	 * @return whether it's an identical event
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof MineralVein
 						&& ((MineralVein) obj).mineral.equals(mineral)

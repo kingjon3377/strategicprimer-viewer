@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
 import controller.map.misc.IOHandler;
@@ -45,8 +47,8 @@ public class WorkerMenu extends JMenuBar {
 					 * @param evt the event to handle
 					 */
 					@Override
-					public void actionPerformed(final ActionEvent evt) {
-						if ("Close".equals(evt.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
+						if (evt != null && "Close".equals(evt.getActionCommand())) {
 							parent.setVisible(false);
 							parent.dispose();
 						}
@@ -62,8 +64,8 @@ public class WorkerMenu extends JMenuBar {
 					 * @param event the event to handle
 					 */
 					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Quit".equals(event.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
+						if (event != null && "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
 						}
 					}

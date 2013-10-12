@@ -5,6 +5,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A proxy for property-change listening. It will pass on any property change
  * events it gets to its own listeners.
@@ -45,8 +47,10 @@ public final class PropertyProxy implements PropertyChangeSource,
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		pcs.firePropertyChange(evt);
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null) {
+			pcs.firePropertyChange(evt);
+		}
 	}
 
 	/**

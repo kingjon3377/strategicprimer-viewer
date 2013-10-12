@@ -1,5 +1,7 @@
 package model.map.fixtures.towns;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IEvent;
 import model.map.IFixture;
@@ -112,7 +114,7 @@ public abstract class AbstractTown implements
 	 * @return whether it's an identical event
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof AbstractTown
 						&& ((AbstractTown) obj).kind().equals(kind())

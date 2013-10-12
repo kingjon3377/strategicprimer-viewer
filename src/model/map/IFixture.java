@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * A supertype for both TileFixture and any UnitMembers (etc.) that shouldn't be
  * TileFixtures, so we don't have to special-case them for things like
@@ -21,5 +23,5 @@ public interface IFixture extends Serializable {
 	 * @param fix a fixture
 	 * @return whether it's equal, ignoring ID (and DC for events), to this one
 	 */
-	boolean equalsIgnoringID(IFixture fix);
+	boolean equalsIgnoringID(@NonNull IFixture fix);
 }

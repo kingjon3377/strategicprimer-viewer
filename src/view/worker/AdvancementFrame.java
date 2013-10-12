@@ -23,6 +23,9 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.PropertyChangeAdapter;
 import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
@@ -128,8 +131,8 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 	 * @param evt the property-change event to handle
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if (!equals(evt.getSource())) {
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && !equals(evt.getSource())) {
 			firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
 					evt.getNewValue());
 		}
@@ -182,29 +185,35 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		/**
 		 * The current worker.
 		 */
-		private UnitMember worker = null;
+		@Nullable private UnitMember worker = null;
 		/**
 		 * The current skill.
 		 */
-		private Skill skill = null;
+		@Nullable private Skill skill = null;
 
 		/**
 		 * @param evt the property-change event to handle
 		 */
 		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			if ("member".equals(evt.getPropertyName())
+		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+			if (evt == null) {
+				return;
+			} else if ("member".equals(evt.getPropertyName())
 					&& (evt.getNewValue() instanceof UnitMember || evt
 							.getNewValue() == null)) {
 				worker = (UnitMember) evt.getNewValue();
 			} else if ("skill".equals(evt.getPropertyName())
 					&& (evt.getNewValue() instanceof Skill || evt.getNewValue() == null)) {
 				skill = (Skill) evt.getNewValue();
-			} else if ("level".equals(evt.getPropertyName())) {
+			} else if ("level".equals(evt.getPropertyName()) && worker != null
+					&& skill != null) {
+				final UnitMember wkr = worker;
+				final Skill skl = skill;
+				assert skl != null;
 				final StringBuilder builder = new StringBuilder();
-				builder.append(getName(worker));
+				builder.append(getName(wkr));
 				builder.append(" gained a level in ");
-				builder.append(getName(skill));
+				builder.append(getName(skl));
 				SystemOut.SYS_OUT.println(builder.toString());
 			}
 		}
@@ -241,7 +250,7 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		/**
 		 * The current unit. May be null, if nothing is selected.
 		 */
-		private Unit selUnit;
+		@Nullable private Unit selUnit;
 		/**
 		 * The ID factory to pass to the worker-creation window.
 		 */
@@ -262,19 +271,23 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		 * @param evt the event to handle
 		 */
 		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			if ("selUnit".equalsIgnoreCase(evt.getPropertyName())
-					&& (evt.getNewValue() == null || evt.getNewValue() instanceof Unit)) {
-				selUnit = (Unit) evt.getNewValue();
-			} else if ("worker".equalsIgnoreCase(evt.getPropertyName())
-					&& evt.getNewValue() instanceof Worker) {
-				if (selUnit == null) {
-					lgr.warning("New worker created when no unit selected");
-					ErrorShower
-							.showErrorDialog(null,
-									"The new worker was not added to a unit because no unit was selected.");
-				} else {
-					tmodel.addUnitMember(selUnit, (UnitMember) evt.getNewValue());
+		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+			if (evt != null) {
+				if ("selUnit".equalsIgnoreCase(evt.getPropertyName())
+						&& (evt.getNewValue() == null || evt.getNewValue() instanceof Unit)) {
+					selUnit = (Unit) evt.getNewValue();
+				} else if ("worker".equalsIgnoreCase(evt.getPropertyName())
+						&& evt.getNewValue() instanceof Worker) {
+					final Unit locSelUnit = selUnit;
+					if (locSelUnit == null) {
+						lgr.warning("New worker created when no unit selected");
+						ErrorShower
+								.showErrorDialog(null,
+										"The new worker was not added to a unit because no unit was selected.");
+					} else {
+						tmodel.addUnitMember(locSelUnit,
+								(UnitMember) evt.getNewValue());
+					}
 				}
 			}
 		}
@@ -283,8 +296,8 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		 * @param evt the event to handle.
 		 */
 		@Override
-		public void actionPerformed(final ActionEvent evt) {
-			if (NEW_WORKER_ACTION.equalsIgnoreCase(evt.getActionCommand())) {
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			if (evt != null && NEW_WORKER_ACTION.equalsIgnoreCase(evt.getActionCommand())) {
 				final WorkerConstructionFrame frame = new WorkerConstructionFrame(
 						idf);
 				frame.addPropertyChangeListener(this);

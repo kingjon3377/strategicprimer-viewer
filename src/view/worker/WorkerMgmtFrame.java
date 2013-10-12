@@ -28,6 +28,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -133,8 +135,8 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param evt the event to handle
 		 */
 		@Override
-		public void actionPerformed(final ActionEvent evt) {
-			if (action.equals(evt.getActionCommand())) {
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			if (evt != null && action.equals(evt.getActionCommand())) {
 				frame.setVisible(true);
 			}
 		}
@@ -168,8 +170,10 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param evt the event to handle
 		 */
 		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			if ("player".equalsIgnoreCase(evt.getPropertyName())
+		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+			if (evt == null) {
+				return;
+			} else if ("player".equalsIgnoreCase(evt.getPropertyName())
 					&& evt.getNewValue() instanceof Player) {
 				reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
 						model.getMap(), (Player) evt.getNewValue()));
@@ -215,7 +219,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param evt the event to handle.
 		 */
 		@Override
-		public void actionPerformed(final ActionEvent evt) {
+		public void actionPerformed(@Nullable final ActionEvent evt) {
 			if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
 				try (final FileWriter writer = new FileWriter(chooser
 						.getSelectedFile())) {

@@ -3,6 +3,8 @@ package view.map.main;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
 
@@ -107,8 +109,10 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void mouseWheelMoved(final MouseWheelEvent evt) {
-		if (evt.isControlDown() || evt.isMetaDown()) {
+	public void mouseWheelMoved(@Nullable final MouseWheelEvent evt) {
+		if (evt == null) {
+			return;
+		} else if (evt.isControlDown() || evt.isMetaDown()) {
 			final int count = evt.getWheelRotation();
 			if (count < 0) {
 				for (int i = 0; i > count; i--) {

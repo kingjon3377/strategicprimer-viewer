@@ -4,6 +4,8 @@ import java.util.Collections;
 
 import javax.swing.tree.MutableTreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A node that sorts itself after every addition.
  * @author Jonathan Lovelace
@@ -23,7 +25,7 @@ public class SortedSectionListReportNode extends SectionListReportNode {
 	 * @param node the node to add
 	 */
 	@Override
-	public void add(final MutableTreeNode node) {
+	public void add(@Nullable final MutableTreeNode node) {
 		super.add(node);
 		Collections.sort(children);
 	}

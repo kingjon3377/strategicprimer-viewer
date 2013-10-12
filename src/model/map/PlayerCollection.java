@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A collection of players. Using a simple List doesn't work when -1 is the
  * default index if one isn't given in the XML.
@@ -49,7 +51,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @return whether it is another identical PlayerCollection or not
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof PlayerCollection && ((PlayerCollection) obj).players
 						.equals(players));

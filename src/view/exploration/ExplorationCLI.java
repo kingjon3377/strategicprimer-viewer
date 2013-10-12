@@ -76,17 +76,21 @@ public class ExplorationCLI {
 	 * @param point the location of the tile in question
 	 */
 	private void swearVillages(final Point point) {
-		for (Pair<IMap, String> mapPair : model.getAllMaps()) {
-			final IMap map = mapPair.first();
-			for (final TileFixture fix : map.getTile(point)) {
-				if (fix instanceof Village) {
-					((Village) fix).setOwner(model.getSelectedUnit().getOwner());
+		final Unit visitor = model.getSelectedUnit();
+		if (visitor != null) {
+			for (Pair<IMap, String> mapPair : model.getAllMaps()) {
+				final IMap map = mapPair.first();
+				for (final TileFixture fix : map.getTile(point)) {
+					if (fix instanceof Village) {
+						((Village) fix).setOwner(visitor.getOwner());
+					}
 				}
 			}
 		}
 	}
+
 	/**
-	 * Have the player move the selected unit.
+	 * Have the player move the selected unit. Throws an exception if no unit is selected.
 	 *
 	 * @return the cost of the specified movement, 1 if not possible (in which
 	 *         case we update subordinate maps with that tile's tile type but no
@@ -94,6 +98,10 @@ public class ExplorationCLI {
 	 * @throws IOException on I/O error
 	 */
 	public int move() throws IOException {
+		final Unit mover = model.getSelectedUnit();
+		if (mover == null) {
+			throw new IllegalStateException("No unit selected");
+		}
 		final List<TileFixture> allFixtures = new ArrayList<>();
 		final List<TileFixture> constants = new ArrayList<>();
 		final int directionNum = helper.inputNumber("Direction to move: ");
@@ -114,9 +122,9 @@ public class ExplorationCLI {
 		}
 		final Point dPoint = model.getDestination(point, direction);
 		for (TileFixture fix : model.getMap().getTile(dPoint)) {
-			if (SimpleMovement.shouldAlwaysNotice(model.getSelectedUnit(), fix)) {
+			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
-			} else if (SimpleMovement.mightNotice(model.getSelectedUnit(), fix)) {
+			} else if (SimpleMovement.mightNotice(mover, fix)) {
 				allFixtures.add(fix);
 			}
 		}
@@ -151,18 +159,24 @@ public class ExplorationCLI {
 	 * @throws IOException on I/O error.
 	 */
 	public void moveUntilDone() throws IOException {
-		SystemOut.SYS_OUT.println("Details of the unit:");
-		SystemOut.SYS_OUT.println(model.getSelectedUnit().verbose());
-		final int totalMP = helper.inputNumber("MP the unit has: ");
-		int movement = totalMP;
-		final String prompt = new StringBuilder(90)
-				.append("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ")
-				.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.").toString();
-		while (movement > 0) {
-			SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
-					.printC(totalMP).println(" remaining.");
-			SystemOut.SYS_OUT.println(prompt);
-			movement -= move();
+		final Unit selUnit = model.getSelectedUnit();
+		if (selUnit == null) {
+			SystemOut.SYS_OUT.println("No unit is selected");
+		} else {
+			SystemOut.SYS_OUT.println("Details of the unit:");
+			SystemOut.SYS_OUT.println(selUnit.verbose());
+			final int totalMP = helper.inputNumber("MP the unit has: ");
+			int movement = totalMP;
+			final String prompt = new StringBuilder(90)
+					.append("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ")
+					.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.")
+					.toString();
+			while (movement > 0) {
+				SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
+						.printC(totalMP).println(" remaining.");
+				SystemOut.SYS_OUT.println(prompt);
+				movement -= move();
+			}
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package model.map.fixtures;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
@@ -76,7 +78,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof Ground && kind.equals(((Ground) obj).kind)
 				&& exposed == ((Ground) obj).exposed);
 	}

@@ -6,6 +6,8 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 
@@ -78,8 +80,8 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	 * @return whether it's the one we support
 	 */
 	@Override
-	public boolean isDataFlavorSupported(final DataFlavor dflavor) {
-		return dflavor.equals(FLAVOR);
+	public boolean isDataFlavorSupported(@Nullable final DataFlavor dflavor) {
+		return FLAVOR.equals(dflavor);
 	}
 	/**
 	 * This now returns the source component's listened property for text
@@ -91,9 +93,9 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
-	public Object getTransferData(final DataFlavor dflavor)
+	public Object getTransferData(@Nullable final DataFlavor dflavor)
 			throws UnsupportedFlavorException, IOException {
-		if (dflavor.equals(FLAVOR)) {
+		if (FLAVOR.equals(dflavor)) {
 			return data; // NOPMD
 		} else {
 			throw new UnsupportedFlavorException(dflavor);
@@ -112,7 +114,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof UnitMemberTransferable
 				&& data.equals(((UnitMemberTransferable) obj).data);
 	}

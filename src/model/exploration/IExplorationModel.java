@@ -2,6 +2,8 @@ package model.exploration;
 
 import java.util.List;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
@@ -97,7 +99,7 @@ public interface IExplorationModel extends IMultiMapModel {
 	/**
 	 * @return the currently selected unit---may be null!
 	 */
-	Unit getSelectedUnit();
+	@Nullable Unit getSelectedUnit();
 	/**
 	 * @return its location. This will *not* be null.
 	 */

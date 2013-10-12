@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.Serializable;
 
+import com.sun.istack.internal.NotNull;
+
 /**
  * An interface for the map and any wrappers around it.
  *
@@ -13,31 +15,31 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap>, Serializable 
 	/**
 	 * @return The map's dimensions and version.
 	 */
-	MapDimensions getDimensions();
+	@NotNull MapDimensions getDimensions();
 
 	/**
 	 * Add a player to the game.
 	 *
 	 * @param player the player to add
 	 */
-	void addPlayer(final Player player);
+	void addPlayer(@NotNull final Player player);
 
 	/**
 	 * @param point a point
 	 * @return the tile at those coordinates
 	 */
-	Tile getTile(final Point point);
+	@NotNull Tile getTile(@NotNull final Point point);
 
 	/**
 	 *
 	 * @return the players in the map
 	 */
-	PlayerCollection getPlayers();
+	@NotNull PlayerCollection getPlayers();
 
 	/**
 	 * We need this for subset calculations if nothing else.
 	 *
 	 * @return the collection of tiles.
 	 */
-	TileCollection getTiles();
+	@NotNull TileCollection getTiles();
 }

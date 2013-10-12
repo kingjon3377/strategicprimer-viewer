@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.PrintWriter;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * An interface to let us check converted player maps against the main map.
  *
@@ -16,5 +18,5 @@ public interface Subsettable<T> {
 	 *         that aren't also in this.
 	 * @param out the stream to write details to
 	 */
-	boolean isSubset(T obj, PrintWriter out);
+	boolean isSubset(@NonNull T obj, @NonNull PrintWriter out);
 }

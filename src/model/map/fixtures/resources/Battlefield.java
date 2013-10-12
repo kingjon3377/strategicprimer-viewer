@@ -1,5 +1,7 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IEvent;
 import model.map.IFixture;
@@ -63,7 +65,7 @@ public final class Battlefield implements IEvent,
 	 * @return whether it's an identical BattlefieldEvent.
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Battlefield && ((TileFixture) obj)
 						.getID() == id);

@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.map.drivers.AdvancementStart;
 import controller.map.drivers.ISPDriver;
 import controller.map.drivers.ISPDriver.DriverFailedException;
@@ -89,7 +91,7 @@ public class AppChooserFrame extends JFrame {
 		 * @param evt the event to handle
 		 */
 		@Override
-		public void actionPerformed(final ActionEvent evt) {
+		public void actionPerformed(@Nullable final ActionEvent evt) {
 			try {
 				app.newInstance().startDriver(params);
 			} catch (InstantiationException except) {

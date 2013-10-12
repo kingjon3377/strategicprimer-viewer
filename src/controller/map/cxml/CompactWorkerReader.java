@@ -11,6 +11,9 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
@@ -186,7 +189,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private static void writeStats(final Writer out, final WorkerStats stats, final int indent) throws IOException {
+	private static void writeStats(final Writer out, @Nullable final WorkerStats stats, final int indent) throws IOException {
 		if (stats != null) {
 			out.append(indent(indent));
 			out.append("<stats hp=\"");

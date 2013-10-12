@@ -8,6 +8,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.SkillListModel;
 import util.PropertyChangeSource;
@@ -31,8 +33,8 @@ public class SkillList extends JList<Skill> implements PropertyChangeSource,
 			 * @param evt the event to handle
 			 */
 			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if ("finished".equalsIgnoreCase(evt.getPropertyName())) {
+			public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+				if (evt != null && "finished".equalsIgnoreCase(evt.getPropertyName())) {
 					if (Integer.valueOf(0).equals(evt.getNewValue())) {
 						setSelectedIndex(0);
 					} else if (evt.getNewValue() instanceof Skill) {
@@ -49,7 +51,7 @@ public class SkillList extends JList<Skill> implements PropertyChangeSource,
 	 * @param evt an event indicating the selection changed.
 	 */
 	@Override
-	public void valueChanged(final ListSelectionEvent evt) {
+	public void valueChanged(@Nullable final ListSelectionEvent evt) {
 		firePropertyChange("skill", null, getSelectedValue());
 	}
 }

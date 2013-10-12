@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -109,7 +111,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * @return whether it is an identical tile
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| ((obj instanceof Tile)
 						&& getTerrain().equals(((Tile) obj).getTerrain()) && contents

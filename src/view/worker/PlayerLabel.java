@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JLabel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 /**
  * A label to show the current player.
@@ -48,8 +50,8 @@ public class PlayerLabel extends JLabel implements PropertyChangeListener {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("player".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Player) {
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && "player".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Player) {
 			setText(htmlize(before + ' '
 					+ ((Player) evt.getNewValue()).getName())
 					+ after);

@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.viewer.IViewerModel;
 
 /**
@@ -30,8 +32,10 @@ public final class ZoomListener implements ActionListener, Serializable {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if ("zoom in".equalsIgnoreCase(evt.getActionCommand())) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("zoom in".equalsIgnoreCase(evt.getActionCommand())) {
 			model.zoomIn();
 		} else if ("zoom out".equalsIgnoreCase(evt.getActionCommand())) {
 			model.zoomOut();

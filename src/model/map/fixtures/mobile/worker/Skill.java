@@ -2,6 +2,8 @@ package model.map.fixtures.mobile.worker;
 
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasName;
 
 /**
@@ -62,7 +64,7 @@ public class Skill implements HasName, Serializable {
 	 * @return whether it's the same as this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Skill && name.equals(((Skill) obj).name)
 						&& level == ((Skill) obj).level && hours == ((Skill) obj).hours);

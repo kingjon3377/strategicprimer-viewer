@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 import util.PropertyChangeSource;
@@ -86,8 +88,10 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if ("OK".equals(evt.getActionCommand())) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("OK".equals(evt.getActionCommand())) {
 			if (nameField.getText().trim().isEmpty()) {
 				nameField.requestFocusInWindow();
 			} else if (kindField.getText().trim().isEmpty()) {
@@ -111,8 +115,9 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("player".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Player) {
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && "player".equalsIgnoreCase(evt.getPropertyName())
+				&& evt.getNewValue() instanceof Player) {
 			owner = (Player) evt.getNewValue();
 		}
 	}

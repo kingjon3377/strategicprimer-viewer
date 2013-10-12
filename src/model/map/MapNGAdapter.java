@@ -4,8 +4,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.EnumSet;
 
-import view.util.NullStream;
+import org.eclipse.jdt.annotation.Nullable;
 
+import view.util.NullStream;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
@@ -80,13 +81,13 @@ public class MapNGAdapter implements IMapNG {
 			retval = false;
 			out.print("Extra rivers at ");
 			out.println(point);
-		} else if (!getForest(point).equals(obj.getForest(point))) { // NOPMD
+		} else if (!safeEquals(getForest(point), obj.getForest(point))) { // NOPMD
 			// return false;
 			retval = false;
 			out.print("Primary forests differ at ");
 			out.print(point);
 			out.println(", may be representation error");
-		} else if (!getGround(point).equals(obj.getGround(point))) { // NOPMD
+		} else if (!safeEquals(getGround(point), obj.getGround(point))) { // NOPMD
 			// return false;
 			retval = false;
 			out.print("Primary Ground differs at ");
@@ -105,6 +106,20 @@ public class MapNGAdapter implements IMapNG {
 			}
 		}
 		return retval;
+	}
+
+	/**
+	 * Since getForest and getGround can both return null, we can't just use
+	 * equals() for them.
+	 *
+	 * @param one one object
+	 * @param two another
+	 * @param <T> the type of the two objects
+	 * @return true if both are null or if they are equal according to one's
+	 *         equals(), false otherwise.
+	 */
+	private static <T> boolean safeEquals(@Nullable final T one, @Nullable final T two) {
+		return one == null ? two == null : one.equals(two);
 	}
 	/**
 	 * @param ours Our rivers
@@ -191,10 +206,10 @@ public class MapNGAdapter implements IMapNG {
 	 * "extra" forest Fixtures in the "et cetera" collection.
 	 *
 	 * @param location a location
-	 * @return the forest (if any) at that location
+	 * @return the forest (if any) at that location; null if there is none
 	 */
 	@Override
-	public Forest getForest(final Point location) {
+	@Nullable public Forest getForest(final Point location) {
 		Forest retval = null;
 		for (TileFixture fix : state.getTile(location)) {
 			if (fix instanceof Forest) {
@@ -241,7 +256,7 @@ public class MapNGAdapter implements IMapNG {
 	 * @return the Ground at that location
 	 */
 	@Override
-	public Ground getGround(final Point location) {
+	@Nullable public Ground getGround(final Point location) {
 		Ground retval = null;
 		for (TileFixture fix : state.getTile(location)) {
 			if (fix instanceof Ground) {
@@ -266,7 +281,7 @@ public class MapNGAdapter implements IMapNG {
 	 * @return whether it's the same as us---we're a subset of it and it's a subset of us
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof IMapNG && isSubset((IMapNG) obj, DEVNULL) && ((IMapNG) obj)
 						.isSubset(this, DEVNULL));

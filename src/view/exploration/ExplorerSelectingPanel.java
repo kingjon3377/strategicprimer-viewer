@@ -11,6 +11,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.Document;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.PlayerListModel;
@@ -101,7 +103,7 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @param evt event
 	 */
 	@Override
-	public void valueChanged(final ListSelectionEvent evt) {
+	public void valueChanged(@Nullable final ListSelectionEvent evt) {
 		firePropertyChange("player", null, playerList.getSelectedValue());
 	}
 	/**
@@ -109,8 +111,8 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @param event the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent event) {
-		if (BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
+	public void actionPerformed(@Nullable final ActionEvent event) {
+		if (event != null && BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
 				&& !unitList.isSelectionEmpty()) {
 			model.selectUnit(unitList.getSelectedValue());
 			firePropertyChange("switch", null, Boolean.TRUE);

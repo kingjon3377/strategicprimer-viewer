@@ -13,6 +13,8 @@ import javax.swing.tree.TreePath;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A TreeModel implementation for a player's units and workers.
  * @author Jonathan Lovelace
@@ -53,9 +55,9 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * @return the specified child
 	 */
 	@Override
-	public Object getChild(final Object parent, final int index) {
+	public Object getChild(@Nullable final Object parent, final int index) {
 		if (index < 0) {
-			return null; // NOPMD
+			throw new ArrayIndexOutOfBoundsException(index);
 		} else if (parent instanceof Player && parent.equals(root)
 				&& index < model.getUnits(root).size()) {
 			return model.getUnits(root).get(index); // NOPMD
@@ -66,16 +68,16 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 					// ESCA-JAVA0282:
 					iter.next();
 				} else {
-					return null; // NOPMD
+					throw new ArrayIndexOutOfBoundsException(index);
 				}
 			}
 			if (iter.hasNext()) {
 				return iter.next(); // NOPMD
 			} else {
-				return null; // NOPMD
+				throw new ArrayIndexOutOfBoundsException(index);
 			}
 		} else {
-			return null;
+			throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
 		}
 	}
 	/**
@@ -83,7 +85,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * @return how many children it has
 	 */
 	@Override
-	public int getChildCount(final Object parent) {
+	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof Player) {
 			return model.getUnits((Player) parent).size(); // NOPMD
 		} else if (parent instanceof Unit) {
@@ -104,7 +106,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * @return whether it's a leaf node
 	 */
 	@Override
-	public boolean isLeaf(final Object node) {
+	public boolean isLeaf(@Nullable final Object node) {
 		return !(node instanceof Player) && !(node instanceof Unit);
 	}
 	/**
@@ -115,7 +117,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
 	 */
 	@Override
-	public void valueForPathChanged(final TreePath path, final Object newValue) {
+	public void valueForPathChanged(@Nullable final TreePath path, @Nullable final Object newValue) {
 		LOGGER.severe("valueForPathChanged needs to be implemented");
 	}
 	/**
@@ -126,7 +128,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public int getIndexOfChild(final Object parent, final Object child) {
+	public int getIndexOfChild(@Nullable final Object parent, @Nullable final Object child) {
 		if (parent instanceof Player && parent.equals(root)) {
 			return model.getUnits(root).contains(child) ? model.getUnits(root)//NOPMD
 					.indexOf(child) : -1;
@@ -147,14 +149,14 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param list something to listen for tree model changes
 	 */
 	@Override
-	public void addTreeModelListener(final TreeModelListener list) {
+	public void addTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.add(list);
 	}
 	/**
 	 * @param list something that doesn't want to listen for tree model changes anymore
 	 */
 	@Override
-	public void removeTreeModelListener(final TreeModelListener list) {
+	public void removeTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.remove(list);
 	}
 	/**
@@ -224,8 +226,10 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param evt the even to handle.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("player".equalsIgnoreCase(evt.getPropertyName())
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("player".equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Player) {
 			root = (Player) evt.getNewValue();
 			for (final TreeModelListener listener : listeners) {

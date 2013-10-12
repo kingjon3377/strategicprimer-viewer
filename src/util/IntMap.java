@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A simplified Map using Integers as keys and delaying removal of items
  * remove()d until a subsequent method is called.
@@ -42,7 +44,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * @return whether the map contains it
 	 */
 	@Override
-	public boolean containsKey(final Object key) {
+	public boolean containsKey(@Nullable final Object key) {
 		return backing.containsKey(key);
 	}
 	/**
@@ -50,7 +52,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * @return whether the map contains it
 	 */
 	@Override
-	public boolean containsValue(final Object value) {
+	public boolean containsValue(@Nullable final Object value) {
 		return backing.containsValue(value);
 	}
 	/**
@@ -58,7 +60,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * @return the corresponding value in the map, if it exists
 	 */
 	@Override
-	public V get(final Object key) {
+	public V get(@Nullable final Object key) {
 		return backing.get(key);
 	}
 	/**
@@ -76,7 +78,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * @return false, as it isn't actually removed yet.
 	 */
 	@Override
-	public V remove(final Object key) {
+	public V remove(@Nullable final Object key) {
 		if (key instanceof Integer) {
 			toRemove.add((Integer) key);
 		}

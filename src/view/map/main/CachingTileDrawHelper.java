@@ -15,6 +15,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
@@ -37,6 +38,12 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	public CachingTileDrawHelper() {
 		super();
+		// Just to forestall the null-analysis checker's objection that they may
+		// not have been initialized, we initialize the shapes to, essentially,
+		// a dummy value.
+		event = new Line2D.Double();
+		fort = event;
+		unit = event;
 		checkCache(1, 1);
 	}
 

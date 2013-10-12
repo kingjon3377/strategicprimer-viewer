@@ -10,6 +10,8 @@ import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -68,28 +70,28 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		 * @param event the event to handle
 		 */
 		@Override
-		public void mouseClicked(final MouseEvent event) {
+		public void mouseClicked(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 		/**
 		 * @param event the event to handle
 		 */
 		@Override
-		public void mousePressed(final MouseEvent event) {
+		public void mousePressed(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 		/**
 		 * @param event the event to handle
 		 */
 		@Override
-		public void mouseReleased(final MouseEvent event) {
+		public void mouseReleased(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 		/**
-		 * @param event the event to handle
+		 * @param event the event to handle. Marked @Nullable so we only have to handle the null-event case once.
 		 */
-		private void handleMouseEvent(final MouseEvent event) {
-			if (event.isPopupTrigger() && event.getClickCount() == 1) {
+		private void handleMouseEvent(@Nullable final MouseEvent event) {
+			if (event != null && event.isPopupTrigger() && event.getClickCount() == 1) {
 				final Object obj = ((IWorkerTreeModel) getModel())
 						.getModelObject(getClosestPathForLocation(event.getX(),
 								event.getY()).getLastPathComponent());
@@ -105,8 +107,8 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 	 * @return a tooltip if over a worker, null otherwise
 	 */
 	@Override
-	public String getToolTipText(final MouseEvent evt) {
-	    if (getRowForLocation(evt.getX(), evt.getY()) == -1) {
+	@Nullable public String getToolTipText(@Nullable final MouseEvent evt) {
+	    if (evt == null || getRowForLocation(evt.getX(), evt.getY()) == -1) {
 			return null; // NOPMD
 		}
 	    return getStatsToolTip(getPathForLocation(evt.getX(), evt.getY()).getLastPathComponent());
@@ -115,24 +117,28 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 	 * @param node a node in the tree
 	 * @return a tooltip if it's a worker or a worker node, null otherwise
 	 */
-	private String getStatsToolTip(final Object node) {
+	@Nullable private String getStatsToolTip(final Object node) {
 		final Object localNode = ((IWorkerTreeModel) getModel()).getModelObject(node);
-		if (localNode instanceof Worker && ((Worker) localNode).getStats() != null) {
+		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
-			return new StringBuilder(92)// NOPMD
-					.append("<html><p>Str ")
-					.append(getModifierString(stats.getStrength()))
-					.append(", Dex ")
-					.append(getModifierString(stats.getDexterity()))
-					.append(", Con ")
-					.append(getModifierString(stats.getConstitution()))
-					.append(", Int ")
-					.append(getModifierString(stats.getIntelligence()))
-					.append(", Wis ")
-					.append(getModifierString(stats.getWisdom()))
-					.append(", Cha ")
-					.append(getModifierString(stats.getCharisma()))
-					.append("</p></html>").toString();
+			if (stats != null) {
+				return new StringBuilder(92)// NOPMD
+						.append("<html><p>Str ")
+						.append(getModifierString(stats.getStrength()))
+						.append(", Dex ")
+						.append(getModifierString(stats.getDexterity()))
+						.append(", Con ")
+						.append(getModifierString(stats.getConstitution()))
+						.append(", Int ")
+						.append(getModifierString(stats.getIntelligence()))
+						.append(", Wis ")
+						.append(getModifierString(stats.getWisdom()))
+						.append(", Cha ")
+						.append(getModifierString(stats.getCharisma()))
+						.append("</p></html>").toString();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
@@ -151,9 +157,11 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		 * @param evt the event to handle
 		 */
 		@Override
-		public void valueChanged(final TreeSelectionEvent evt) {
-			handleSelection(((IWorkerTreeModel) getModel()).getModelObject(evt
-					.getNewLeadSelectionPath().getLastPathComponent()));
+		public void valueChanged(@Nullable final TreeSelectionEvent evt) {
+			if (evt != null) {
+				handleSelection(((IWorkerTreeModel) getModel()).getModelObject(evt
+						.getNewLeadSelectionPath().getLastPathComponent()));
+			}
 		}
 		/**
 		 * Handle a selection.

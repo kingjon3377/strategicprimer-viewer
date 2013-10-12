@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.map.HasImage;
+import model.map.IFixture;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.TerrainFixture;
@@ -339,6 +340,31 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private static class FilteredIterator implements Iterator<TileFixture> {
 		/**
+		 * A TileFixture implementation to use instead of null.
+		 */
+		private static final TileFixture NULL_FIXT = new TileFixture() {
+			@Override
+			public int compareTo(final TileFixture o) {
+				throw new IllegalStateException("Leak of an all-but-null object");
+			}
+			@Override
+			public int getID() {
+				throw new IllegalStateException("Leak of an all-but-null object");
+			}
+			@Override
+			public boolean equalsIgnoringID(final IFixture fix) {
+				return fix == this;
+			}
+			@Override
+			public String plural() {
+				return "";
+			}
+			@Override
+			public int getZValue() {
+				throw new IllegalStateException("Leak of an all-but-null object");
+			}
+		};
+		/**
 		 * Constructor.
 		 * @param iter the iterator to wrap
 		 * @param zofilt the filter to use
@@ -348,6 +374,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			zof = zofilt;
 			hasCached = false;
 			hasNext();
+			cached = NULL_FIXT;
 		}
 		/**
 		 * The wrapped iterator.
@@ -374,8 +401,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return true;
 			} else {
 				while (wrapped.hasNext()) {
-					cached = wrapped.next();
-					if (zof == null || zof.shouldDisplay(cached)) {
+					final TileFixture tempCached = wrapped.next();
+					if (zof.shouldDisplay(cached) && tempCached != null) {
+						cached = tempCached;
 						hasCached = true;
 						return true;
 					}

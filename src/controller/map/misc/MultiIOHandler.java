@@ -11,6 +11,9 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.misc.IMultiMapModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Pair;
 import util.Warning;
 import view.util.ErrorShower;
@@ -45,22 +48,24 @@ public class MultiIOHandler extends IOHandler {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent event) {
-		final Component source = event.getSource() instanceof Component ? (Component) event
-				.getSource() : null; // NOPMD
-		if ("Load secondary".equalsIgnoreCase(event.getActionCommand())) {
-			handleSecondaryLoadMenu(source);
-		} else if ("Save All".equalsIgnoreCase(event.getActionCommand())) {
-			saveAll(source);
-		} else {
-			super.actionPerformed(event);
+	public void actionPerformed(@Nullable final ActionEvent event) {
+		if (event != null) {
+			final Component source = event.getSource() instanceof Component ? (Component) event
+					.getSource() : null; // NOPMD
+			if ("Load secondary".equalsIgnoreCase(event.getActionCommand())) {
+				handleSecondaryLoadMenu(source);
+			} else if ("Save All".equalsIgnoreCase(event.getActionCommand())) {
+				saveAll(source);
+			} else {
+				super.actionPerformed(event);
+			}
 		}
 	}
 	/**
 	 * Save all maps to the filenames they were loaded from.
-	 * @param source the source of the event that triggered this
+	 * @param source the source of the event that triggered this. May be null if it was not a component.
 	 */
-	private void saveAll(final Component source) {
+	private void saveAll(@Nullable final Component source) {
 		final MapReaderAdapter adapter = new MapReaderAdapter();
 		for (final Pair<IMap, String> pair : model.getAllMaps()) {
 			try {
@@ -75,9 +80,9 @@ public class MultiIOHandler extends IOHandler {
 	}
 	/**
 	 * Handle the 'load secondary map' menu item.
-	 * @param source the component to attach the dialog box to
+	 * @param source the component to attach the dialog box to. May be null.
 	 */
-	private void handleSecondaryLoadMenu(final Component source) {
+	private void handleSecondaryLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
 			try {

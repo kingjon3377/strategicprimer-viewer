@@ -2,6 +2,8 @@ package controller.map.misc;
 
 import java.util.Iterator;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * @author Jonathan Lovelace A wrapper around Iterator implementing Comparable,
  *         so we can put it in a Pair.
@@ -71,7 +73,7 @@ public class ComparableIterator<T> implements Iterator<T>,
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof ComparableIterator
 				&& ((ComparableIterator) obj).wrapped.equals(wrapped));
 	}

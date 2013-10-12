@@ -4,6 +4,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A class to change one property into another. It was initially written to
  * allow one class to distinguish between events from two AddRemovePanels.
@@ -56,11 +58,14 @@ public class PropertyChangeAdapter implements PropertyChangeListener,
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if (from.equals(evt.getPropertyName())) {
-			pcs.firePropertyChange(toName, evt.getOldValue(), evt.getNewValue());
-		} else {
-			pcs.firePropertyChange(evt);
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null) {
+			if (from.equals(evt.getPropertyName())) {
+				pcs.firePropertyChange(toName, evt.getOldValue(),
+						evt.getNewValue());
+			} else {
+				pcs.firePropertyChange(evt);
+			}
 		}
 	}
 

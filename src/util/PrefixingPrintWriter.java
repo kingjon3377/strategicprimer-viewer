@@ -3,6 +3,8 @@ package util;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A PrintWriter that prefixes every line printed via printLine() with a specified string.
  * @author Jonathan Lovelace
@@ -30,7 +32,7 @@ public class PrefixingPrintWriter extends PrintWriter {
 	 * @param str the line
 	 */
 	@Override
-	public void println(final String str) {
+	public void println(@Nullable final String str) {
 		super.print(pref);
 		super.println(str);
 	}

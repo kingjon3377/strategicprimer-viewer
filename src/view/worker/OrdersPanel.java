@@ -7,6 +7,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.mobile.Unit;
 import view.util.ApplyButtonHandler;
 import view.util.Applyable;
@@ -38,7 +40,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelecti
 	/**
 	 * The current selection.
 	 */
-	private Object sel;
+	@Nullable private Object sel;
 	/**
 	 * If a unit is selected, change its orders to what the user wrote.
 	 */
@@ -65,12 +67,14 @@ public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelecti
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void valueChanged(final TreeSelectionEvent evt) {
-		sel = evt.getNewLeadSelectionPath().getLastPathComponent();
-		if (sel instanceof DefaultMutableTreeNode) {
-			sel = ((DefaultMutableTreeNode) sel).getUserObject();
+	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
+		if (evt != null) {
+			sel = evt.getNewLeadSelectionPath().getLastPathComponent();
+			if (sel instanceof DefaultMutableTreeNode) {
+				sel = ((DefaultMutableTreeNode) sel).getUserObject();
+			}
+			revert();
 		}
-		revert();
 	}
 
 }

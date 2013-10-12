@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 import model.map.TileFixture;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A class to transfer a TileFixture.
  *
@@ -54,8 +56,8 @@ public class FixtureTransferable implements Transferable, Serializable {
 	 * @return whether it's the one we support
 	 */
 	@Override
-	public boolean isDataFlavorSupported(final DataFlavor dflavor) {
-		return dflavor.equals(FLAVOR);
+	public boolean isDataFlavorSupported(@Nullable final DataFlavor dflavor) {
+		return FLAVOR.equals(dflavor);
 	}
 
 	/**
@@ -68,9 +70,9 @@ public class FixtureTransferable implements Transferable, Serializable {
 	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
-	public Object getTransferData(final DataFlavor dflavor)
+	public Object getTransferData(@Nullable final DataFlavor dflavor)
 			throws UnsupportedFlavorException, IOException {
-		if (dflavor.equals(FLAVOR)) {
+		if (FLAVOR.equals(dflavor)) {
 			return data; // NOPMD
 		} else {
 			throw new UnsupportedFlavorException(dflavor);
@@ -91,7 +93,7 @@ public class FixtureTransferable implements Transferable, Serializable {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof FixtureTransferable
 				&& data.equals(((FixtureTransferable) obj).data));
 	}

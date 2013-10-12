@@ -25,6 +25,7 @@ import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.report.AbstractReportNode;
+import model.report.EmptyReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
@@ -176,7 +177,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					pointCSL(entry.getValue())));
 		}
 		return maybeAdd(retval, caches, groves, meadows, mines, minerals,
-				stone, shrubsNode) ? retval : null;
+				stone, shrubsNode) ? retval : EmptyReportNode.NULL_NODE;
 	}
 	/**
 	 * @param parent a parent node

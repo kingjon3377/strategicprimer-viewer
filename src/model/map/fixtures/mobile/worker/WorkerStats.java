@@ -2,6 +2,8 @@ package model.map.fixtures.mobile.worker;
 
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A class representing a worker's core statistical attributes.
  *
@@ -171,7 +173,7 @@ public class WorkerStats implements Serializable {
 	 * @return whether it's a WorkerStats equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return obj == this
 				|| (obj instanceof WorkerStats
 						&& hp == ((WorkerStats) obj).hp

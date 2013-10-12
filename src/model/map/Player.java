@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.Serializable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A representation of a player in the game.
  *
@@ -58,7 +60,7 @@ public class Player implements Comparable<Player>, HasName, Serializable {
 	 * @return whether it's an identical Player
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Player
 						&& playerID == ((Player) obj).getPlayerId() && playerName

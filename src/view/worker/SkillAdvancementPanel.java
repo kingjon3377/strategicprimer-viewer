@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.mobile.worker.Skill;
 import util.PropertyChangeSource;
 import util.SingletonRandom;
@@ -30,13 +32,13 @@ public class SkillAdvancementPanel extends BoxPanel implements
 	/**
 	 * The skill we're dealing with. May be null if no skill is selected.
 	 */
-	private Skill skill = null;
+	@Nullable private Skill skill = null;
 	/**
 	 * @param evt event indicating a property change.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("skill".equalsIgnoreCase(evt.getPropertyName())
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && "skill".equalsIgnoreCase(evt.getPropertyName())
 				&& (evt.getNewValue() == null || evt.getNewValue() instanceof Skill)) {
 			skill = (Skill) evt.getNewValue();
 			hours.requestFocusInWindow();
@@ -80,16 +82,21 @@ public class SkillAdvancementPanel extends BoxPanel implements
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
-			final int level = skill.getLevel();
-			skill.addHours(Integer.parseInt(hours.getText()), SingletonRandom.RANDOM.nextInt(100));
-			final int newLevel = skill.getLevel();
-			if (newLevel != level) {
-				firePropertyChange("level", level, newLevel);
+	public void actionPerformed(@Nullable final ActionEvent evt) {
+		if (evt != null) {
+			if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
+				final Skill skl = skill;
+				final int level = skl.getLevel();
+				skl.addHours(Integer.parseInt(hours.getText()),
+						SingletonRandom.RANDOM.nextInt(100));
+				final int newLevel = skl.getLevel();
+				if (newLevel != level) {
+					firePropertyChange("level", level, newLevel);
+				}
 			}
+			// Clear if OK and no skill selected, on Cancel, and after
+			// successfully adding skill
+			hours.setText("");
 		}
-		// Clear if OK and no skill selected, on Cancel, and after successfully adding skill
-		hours.setText("");
 	}
 }

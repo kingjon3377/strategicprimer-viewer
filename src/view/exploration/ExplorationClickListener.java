@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.IMap;
@@ -54,7 +56,7 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

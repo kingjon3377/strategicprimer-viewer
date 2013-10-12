@@ -9,6 +9,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
@@ -47,7 +49,7 @@ public class FixtureEditMenu extends JPopupMenu {
 		 * @param event the button press being handled
 		 */
 		@Override
-		public void actionPerformed(final ActionEvent event) {
+		public void actionPerformed(@Nullable final ActionEvent event) {
 			final String result = (String) JOptionPane.showInputDialog(
 					outer, "Fixture's new name:",
 					"Rename Fixture",
@@ -75,7 +77,7 @@ public class FixtureEditMenu extends JPopupMenu {
 			addMenuItem(new JMenuItem("Change kind", KeyEvent.VK_K),
 					new ActionListener() {
 						@Override
-						public void actionPerformed(final ActionEvent event) {
+						public void actionPerformed(@Nullable final ActionEvent event) {
 							final String result = (String) JOptionPane.showInputDialog(
 									outer, "Fixture's new kind:",
 									"Change Fixture Kind",
@@ -92,7 +94,7 @@ public class FixtureEditMenu extends JPopupMenu {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
 					new ActionListener() {
 						@Override
-						public void actionPerformed(final ActionEvent event) {
+						public void actionPerformed(@Nullable final ActionEvent event) {
 							final Player result = (Player) JOptionPane
 									.showInputDialog(outer,
 											"Fixture's new owner:",

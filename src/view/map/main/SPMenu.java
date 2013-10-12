@@ -11,6 +11,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.viewer.IViewerModel;
@@ -52,8 +54,9 @@ public class SPMenu extends JMenuBar {
 				MenuItemCreator.createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates", new ActionListener() {
 					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Go to tile".equals(event.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
+						if (event != null
+								&& "Go to tile".equals(event.getActionCommand())) {
 							new SelectTileDialog(parent, model)
 									.setVisible(true);
 						}
@@ -64,8 +67,10 @@ public class SPMenu extends JMenuBar {
 				KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
 				"Find a fixture by name, kind, or ID#", new ActionListener() {
 					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Find a fixture".equals(event.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
+						if (event != null
+								&& "Find a fixture".equals(event
+										.getActionCommand())) {
 							finder.setVisible(true);
 						}
 					}
@@ -75,8 +80,9 @@ public class SPMenu extends JMenuBar {
 				"Find the next fixture matching the pattern",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Find next".equals(event.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
+						if (event != null
+								&& "Find next".equals(event.getActionCommand())) {
 							finder.search();
 						}
 					}
@@ -96,8 +102,10 @@ public class SPMenu extends JMenuBar {
 				"Mark a player as the current player in the map", pch));
 		pch.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if ("player".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Player) {
+			public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+				if (evt != null
+						&& "player".equalsIgnoreCase(evt.getPropertyName())
+						&& evt.getNewValue() instanceof Player) {
 					final PlayerCollection pc = model.getMap().getPlayers();
 					final Player current = (Player) evt.getNewValue();
 					for (final Player player : pc) {
@@ -146,8 +154,9 @@ public class SPMenu extends JMenuBar {
 					 * @param evt the event to handle
 					 */
 					@Override
-					public void actionPerformed(final ActionEvent evt) {
-						if ("Close".equals(evt.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
+						if (evt != null
+								&& "Close".equals(evt.getActionCommand())) {
 							parent.setVisible(false);
 							parent.dispose();
 						}
@@ -162,8 +171,9 @@ public class SPMenu extends JMenuBar {
 					 * @param event the event to handle
 					 */
 					@Override
-					public void actionPerformed(final ActionEvent event) {
-						if ("Quit".equals(event.getActionCommand())) {
+					public void actionPerformed(@Nullable final ActionEvent event) {
+						if (event != null
+								&& "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
 						}
 					}

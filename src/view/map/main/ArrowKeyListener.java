@@ -11,6 +11,8 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A class to handle setting up listeners for the arrow keys.
  *
@@ -82,7 +84,7 @@ public class ArrowKeyListener {
 		 * @param event the event to handle
 		 */
 		@Override
-		public void actionPerformed(final ActionEvent event) {
+		public void actionPerformed(@Nullable final ActionEvent event) {
 			for (int i = 0; i < count; i++) {
 				move();
 			}

@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -43,8 +45,8 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("tile".equalsIgnoreCase(evt.getPropertyName())
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && "tile".equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Tile) {
 			tile = (Tile) evt.getNewValue();
 			this.clear();
@@ -95,7 +97,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @return whether we're equal to it
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof FixtureListModel && ((FixtureListModel) obj).tile
 						.equals(tile));

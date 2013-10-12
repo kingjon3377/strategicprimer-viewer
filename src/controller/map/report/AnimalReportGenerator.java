@@ -12,6 +12,7 @@ import model.map.Point;
 import model.map.TileCollection;
 import model.map.fixtures.mobile.Animal;
 import model.report.AbstractReportNode;
+import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
@@ -109,7 +110,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			}
 		}
 		if (sightings.isEmpty()) {
-			return null; // NOPMD
+			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			final AbstractReportNode retval = new SectionListReportNode(4, "Animal sightings or encounters");
 			for (Entry<String, List<Point>> entry : sightings.entrySet()) {

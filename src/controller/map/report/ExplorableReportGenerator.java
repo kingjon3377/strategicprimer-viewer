@@ -8,6 +8,7 @@ import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.report.AbstractReportNode;
+import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
@@ -99,7 +100,7 @@ public class ExplorableReportGenerator extends
 		if (anyBattles) {
 			retval.add(new SimpleReportNode(battleBuilder.toString().replace(": , ", ": ")));
 		}
-		return anyCaves || anyBattles ? retval : null;
+		return anyCaves || anyBattles ? retval : EmptyReportNode.NULL_NODE;
 	}
 	/**
 	 * Produces a more verbose sub-report on a cave or battlefield.

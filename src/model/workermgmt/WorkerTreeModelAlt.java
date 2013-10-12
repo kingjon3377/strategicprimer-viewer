@@ -10,6 +10,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -168,8 +170,10 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param evt the even to handle.
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("player".equalsIgnoreCase(evt.getPropertyName())
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("player".equalsIgnoreCase(evt.getPropertyName())
 				&& evt.getNewValue() instanceof Player) {
 			setRoot(new PlayerNode((Player) evt.getNewValue(), model));
 		} else if ("unit".equalsIgnoreCase(evt.getPropertyName())

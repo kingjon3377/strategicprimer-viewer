@@ -47,7 +47,7 @@ public final class TestExplorationRunner {
 	/**
 	 * The object we're testing.
 	 */
-	private ExplorationRunner runner;
+	private ExplorationRunner runner = new ExplorationRunner();
 
 	/**
 	 * Set up for the tests.

@@ -6,6 +6,8 @@ import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -46,7 +48,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * @param event an event representing the current mouse position
 	 * @return a tool-tip message for the tile the mouse is currently over
 	 */
-	public String getToolTipText(final MouseEvent event) {
+	@Nullable public String getToolTipText(final MouseEvent event) {
 		final java.awt.Point eventPoint = event.getPoint();
 		final MapDimensions mapDim = model.getMapDimensions();
 		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
@@ -120,20 +122,22 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void mouseClicked(final MouseEvent event) {
-		event.getComponent().requestFocusInWindow();
-		final java.awt.Point eventPoint = event.getPoint();
-		final VisibleDimensions dimensions = model.getDimensions();
-		final MapDimensions mapDim = model.getMapDimensions();
-		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
-				mapDim.getVersion());
-		final Point point = PointFactory.point(eventPoint.y / tileSize
-				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
-				+ dimensions.getMinimumCol());
-		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
-			model.setSelection(point);
-			if (event.isPopupTrigger()) {
-				menu.show(event.getComponent(), event.getX(), event.getY());
+	public void mouseClicked(@Nullable final MouseEvent event) {
+		if (event != null) {
+			event.getComponent().requestFocusInWindow();
+			final java.awt.Point eventPoint = event.getPoint();
+			final VisibleDimensions dimensions = model.getDimensions();
+			final MapDimensions mapDim = model.getMapDimensions();
+			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
+					mapDim.getVersion());
+			final Point point = PointFactory.point(eventPoint.y / tileSize
+					+ dimensions.getMinimumRow(), eventPoint.x / tileSize
+					+ dimensions.getMinimumCol());
+			if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
+				model.setSelection(point);
+				if (event.isPopupTrigger()) {
+					menu.show(event.getComponent(), event.getX(), event.getY());
+				}
 			}
 		}
 	}
@@ -144,8 +148,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void mousePressed(final MouseEvent event) {
-		if (event.isPopupTrigger()) {
+	public void mousePressed(@Nullable final MouseEvent event) {
+		if (event != null && event.isPopupTrigger()) {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
@@ -156,8 +160,8 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void mouseReleased(final MouseEvent event) {
-		if (event.isPopupTrigger()) {
+	public void mouseReleased(@Nullable final MouseEvent event) {
+		if (event != null && event.isPopupTrigger()) {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}

@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.report.AbstractReportNode;
+import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
@@ -183,7 +184,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		optionallyAdd(phoenixes, "Phoenix(es) at ", retval);
 		optionallyAdd(simurghs, "Simurgh(s) at ", retval);
 		optionallyAdd(griffins, "Griffin(s) at ", retval);
-		return retval.getChildCount() == 0 ? null : retval;
+		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
 	}
 	/**
 	 * @param maps a list of maps
@@ -247,7 +248,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 				|| item instanceof Minotaur || item instanceof Ogre
 				|| item instanceof Centaur || item instanceof Phoenix
 				|| item instanceof Simurgh || item instanceof Griffin ? new SimpleReportNode(
-				atPoint(loc), "A(n) ", item.toString()) : null;
+				atPoint(loc), "A(n) ", item.toString()) : EmptyReportNode.NULL_NODE;
 	}
 	/**
 	 * Prints (to the builder) nothing if the map is empty, or for each entry in

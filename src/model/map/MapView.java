@@ -2,6 +2,8 @@ package model.map;
 
 import java.io.PrintWriter;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
  * current turn, the current player, and eventually changesets.
@@ -125,7 +127,7 @@ public class MapView implements IMap {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof MapView && map.equals(((MapView) obj).map)
 				&& turn == ((MapView) obj).turn);
 	}

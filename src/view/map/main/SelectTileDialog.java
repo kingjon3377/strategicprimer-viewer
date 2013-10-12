@@ -9,6 +9,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
@@ -91,13 +93,15 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent event) {
-		if ("OK".equals(event.getActionCommand())) {
-			handleOK(row.getText(), column.getText());
-		} else if ("Cancel".equals(event.getActionCommand())) {
-			setVisible(false);
-			row.setText("-1");
-			column.setText("-1");
+	public void actionPerformed(@Nullable final ActionEvent event) {
+		if (event != null) {
+			if ("OK".equals(event.getActionCommand())) {
+				handleOK(row.getText(), column.getText());
+			} else if ("Cancel".equals(event.getActionCommand())) {
+				setVisible(false);
+				row.setText("-1");
+				column.setText("-1");
+			}
 		}
 	}
 

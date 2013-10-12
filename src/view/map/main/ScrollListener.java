@@ -11,6 +11,8 @@ import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.MapDimensions;
 import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
@@ -49,7 +51,7 @@ public class ScrollListener implements AdjustmentListener,
 			 * @return whether to let it proceed
 			 */
 			@Override
-			public boolean verify(final JComponent input) {
+			public boolean verify(@Nullable final JComponent input) {
 				return input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(), mapDim.cols
 								- map.getDimensions().getWidth());
@@ -67,7 +69,7 @@ public class ScrollListener implements AdjustmentListener,
 			 * @return whether to let it proceed
 			 */
 			@Override
-			public boolean verify(final JComponent input) {
+			public boolean verify(@Nullable final JComponent input) {
 				return input instanceof JScrollBar && isInRange(0,
 						((JScrollBar) input).getValue(), mapDim.rows
 								- map.getDimensions().getHeight());
@@ -127,8 +129,10 @@ public class ScrollListener implements AdjustmentListener,
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("dimensions".equals(evt.getPropertyName())
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt == null) {
+			return;
+		} else if ("dimensions".equals(evt.getPropertyName())
 				&& evt.getNewValue() instanceof VisibleDimensions
 				&& !((VisibleDimensions) evt.getNewValue())
 						.isSameSize(dimensions)) {
@@ -191,8 +195,8 @@ public class ScrollListener implements AdjustmentListener,
 	 * @see java.awt.event.AdjustmentListener#adjustmentValueChanged(java.awt.event.AdjustmentEvent)
 	 */
 	@Override
-	public void adjustmentValueChanged(final AdjustmentEvent evt) {
-		if (hbar == evt.getSource() || vbar == evt.getSource()) {
+	public void adjustmentValueChanged(@Nullable final AdjustmentEvent evt) {
+		if (evt != null && (hbar == evt.getSource() || vbar == evt.getSource())) {
 			model.setDimensions(new VisibleDimensions(vbar.getValue(), vbar
 					.getValue() + dimensions.getHeight(), hbar.getValue(), hbar
 					.getValue() + dimensions.getWidth()));

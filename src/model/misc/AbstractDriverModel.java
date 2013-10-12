@@ -5,6 +5,9 @@ import java.beans.PropertyChangeSupport;
 
 import model.map.MapDimensions;
 import model.map.MapView;
+import model.map.SPMap;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A superclass for driver-models, to handle the common details.
  * @author Jonathan Lovelace
@@ -40,17 +43,17 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	}
 
 	/**
-	 * The main map.
-	 */
-	private MapView map;
-	/**
 	 * The dimensions of the map.
 	 */
-	private MapDimensions mapDim;
+	private MapDimensions mapDim = new MapDimensions(-1, -1, -1);
+	/**
+	 * The main map.
+	 */
+	private MapView map = new MapView(new SPMap(mapDim), -1, -1);
 	/**
 	 * The name from which the map was loaded.
 	 */
-	private String filename;
+	private String filename = "";
 	/**
 	 * @param newMap the new map
 	 * @param name the filename from which the map was loaded
@@ -90,7 +93,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @param oldValue the old value
 	 * @param newValue the new value
 	 */
-	protected void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
+	protected void firePropertyChange(final String propertyName, @Nullable final Object oldValue, final Object newValue) {
 		pcs.firePropertyChange(propertyName, oldValue, newValue);
 	}
 	/**

@@ -18,6 +18,8 @@ import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.UnitMemberTransferable;
 import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A replacement transfer handler to make drag-and-drop work properly.
  *
@@ -52,7 +54,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	 * @return the actions we support
 	 */
 	@Override
-	public int getSourceActions(final JComponent component) {
+	public int getSourceActions(@Nullable final JComponent component) {
 		return TransferHandler.MOVE;
 	}
 	/**
@@ -60,7 +62,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	 * @return a Transferable representing the selected node, or null if none selected
 	 */
 	@Override
-	protected Transferable createTransferable(final JComponent component) {
+	@Nullable protected Transferable createTransferable(@Nullable final JComponent component) {
 		final TreePath path = smodel.getSelectionPath();
 		final Object selection = model.getModelObject(path.getLastPathComponent());
 		final Object parent = model.getModelObject(path.getPathComponent(path.getPathCount() - 2));
@@ -76,8 +78,9 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	 * @return whether the drop is possible
 	 */
 	@Override
-	public boolean canImport(final TransferSupport support) {
-		if (support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
+	public boolean canImport(@Nullable final TransferSupport support) {
+		if (support != null
+				&& support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
 				return false; // NOPMD
@@ -94,8 +97,8 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	 * @return whether the transfer succeeded
 	 */
 	@Override
-	public boolean importData(final TransferSupport support) {
-		if (canImport(support)) {
+	public boolean importData(@Nullable final TransferSupport support) {
+		if (support != null && canImport(support)) {
 			final Transferable trans = support.getTransferable();
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {

@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
@@ -283,7 +285,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param idNum an ID number
 	 * @return the fixture with that ID, or null if not found
 	 */
-	private static IFixture find(final IMap map, final int idNum) {
+	@Nullable private static IFixture find(final IMap map, final int idNum) {
 		final TileCollection tiles = map.getTiles();
 		for (final Point point : tiles) {
 			final Tile tile = tiles.getTile(point);
@@ -299,7 +301,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param idNum an ID number
 	 * @return the fixture with that ID, or null if not found
 	 */
-	private static IFixture find(final FixtureIterable<?> iter, final int idNum) {
+	@Nullable private static IFixture find(final FixtureIterable<?> iter, final int idNum) {
 		for (final IFixture fix : iter) {
 			if (fix.getID() == idNum) {
 				return fix; // NOPMD

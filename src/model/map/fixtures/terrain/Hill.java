@@ -1,5 +1,7 @@
 package model.map.fixtures.terrain;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
@@ -54,7 +56,7 @@ public class Hill implements TerrainFixture, HasImage {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || (obj instanceof Hill && id == ((TileFixture) obj).getID());
 	}
 

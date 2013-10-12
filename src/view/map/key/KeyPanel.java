@@ -7,6 +7,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.TileType;
 import util.PropertyChangeSource;
 
@@ -53,8 +55,8 @@ public class KeyPanel extends JPanel implements PropertyChangeListener {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void propertyChange(final PropertyChangeEvent evt) {
-		if ("version".equals(evt.getPropertyName())) {
+	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
+		if (evt != null && "version".equals(evt.getPropertyName())) {
 			updateForVersion(((Integer) evt.getNewValue()).intValue());
 		}
 	}

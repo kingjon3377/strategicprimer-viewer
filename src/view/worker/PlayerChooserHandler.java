@@ -8,6 +8,8 @@ import java.beans.PropertyChangeSupport;
 
 import javax.swing.JOptionPane;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 import model.misc.IDriverModel;
 import util.PropertyChangeSource;
@@ -70,8 +72,8 @@ public class PlayerChooserHandler implements ActionListener,
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent evt) {
-		if (MENU_ITEM.equals(evt.getActionCommand())) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
+		if (evt != null && MENU_ITEM.equals(evt.getActionCommand())) {
 			final Player retval = (Player) JOptionPane.showInputDialog(parent,
 					"Player to view:", "Choose New Player",
 					JOptionPane.PLAIN_MESSAGE, null, model.getMap()
