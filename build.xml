@@ -83,6 +83,7 @@
     <javadoc sourcepath="${source_dir}" defaultexcludes="yes" destdir="${javadoc_dir}" author="true">
       <tag name="todo" scope="all" description="To do:"/>
       <tag name="fixme" scope="all" description="FIXME:" />
+      <classpath refid="viewer.classpath" />
     </javadoc>
   </target>
   
