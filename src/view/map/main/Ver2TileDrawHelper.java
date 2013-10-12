@@ -402,7 +402,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			} else {
 				while (wrapped.hasNext()) {
 					final TileFixture tempCached = wrapped.next();
-					if (zof.shouldDisplay(cached) && tempCached != null) {
+					if (tempCached != null && tempCached != NULL_FIXT
+							&& zof.shouldDisplay(cached)) {
 						cached = tempCached;
 						hasCached = true;
 						return true;

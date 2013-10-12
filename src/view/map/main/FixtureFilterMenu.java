@@ -8,6 +8,8 @@ import javax.swing.JMenu;
 
 import model.map.TileFixture;
 import model.viewer.ZOrderFilter;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A menu to let the player turn of display of kinds of fixtures.
  * @author Jonathan Lovelace
@@ -21,13 +23,16 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		super("Display ...");
 	}
 	/**
-	 * @param fix a kind of fixture
+	 * @param fix a kind of fixture We mark it Nullable because nulls got passed in anyway.
 	 * @return whether the view should display that kind of fixture
 	 */
 	@Override
-	public boolean shouldDisplay(final TileFixture fix) {
+	public boolean shouldDisplay(@Nullable final TileFixture fix) {
 		// ESCA-JAVA0177:
 		final JCheckBoxMenuItem item;
+		if (fix == null) {
+			return false;
+		}
 		if (mapping.containsKey(fix.getClass())) {
 			item = mapping.get(fix.getClass());
 		} else {
