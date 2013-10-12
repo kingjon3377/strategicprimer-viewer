@@ -87,7 +87,11 @@ public final class PointFactory {
 			if (!COORD_CACHE.get(boxedX).containsKey(boxedY)) {
 				COORD_CACHE.get(boxedX).put(boxedY, new Coordinate(xCoord, yCoord));
 			}
-			return COORD_CACHE.get(boxedX).get(boxedY); // NOPMD
+			final Coordinate retval = COORD_CACHE.get(boxedX).get(boxedY);
+			if (retval == null) {
+				throw new IllegalStateException("Cache produced null result");
+			}
+			return retval; // NOPMD
 		} else {
 			return new Coordinate(xCoord, yCoord);
 		}

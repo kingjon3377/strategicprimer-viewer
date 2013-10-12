@@ -16,10 +16,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
+import model.map.TileFixture;
+
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.TileFixture;
 import util.EqualsAny;
+import util.TypesafeLogger;
 
 /**
  * The details of inter-FixtureList drag-and-drop, extracted to reduce the
@@ -32,7 +34,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(FixtureListDropListener.class.getName());
+	private static final Logger LOGGER = TypesafeLogger.getLogger(FixtureListDropListener.class);
 	/**
 	 * The List's model.
 	 */
@@ -150,7 +152,10 @@ public class FixtureListDropListener implements DropTargetListener {
 								CurriedFixtureTransferable.FLAVOR)) {
 					try {
 						dtde.acceptDrop(dtde.getDropAction());
-						handleDrop(dtde.getTransferable());
+						final Transferable trans = dtde.getTransferable();
+						if (trans != null) {
+							handleDrop(trans);
+						}
 					} catch (UnsupportedFlavorException except) {
 						LOGGER.log(
 								Level.SEVERE,
@@ -176,15 +181,23 @@ public class FixtureListDropListener implements DropTargetListener {
 	 */
 	private void handleDrop(final Transferable trans)
 			throws UnsupportedFlavorException, IOException {
-		if (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
-				trans.getTransferDataFlavors())) {
-			model.addFixture((TileFixture) trans
-					.getTransferData(FixtureTransferable.FLAVOR));
-		} else if (EqualsAny.equalsAny(CurriedFixtureTransferable.FLAVOR,
-				trans.getTransferDataFlavors())) {
+		final DataFlavor[] dflav = trans.getTransferDataFlavors();
+		if (dflav == null) {
+			throw new UnsupportedFlavorException(new DataFlavor(DataFlavor.class, "null"));
+		}
+		if (EqualsAny.equalsAny(FixtureTransferable.FLAVOR, dflav)) {
+			final TileFixture transferData = (TileFixture) trans
+					.getTransferData(FixtureTransferable.FLAVOR);
+			if (transferData != null) {
+				model.addFixture(transferData);
+			}
+		} else if (EqualsAny
+				.equalsAny(CurriedFixtureTransferable.FLAVOR, dflav)) {
 			for (Transferable item : (List<Transferable>) trans
 					.getTransferData(CurriedFixtureTransferable.FLAVOR)) {
-				handleDrop(item);
+				if (item != null) {
+					handleDrop(item);
+				}
 			}
 		} else {
 			throw new UnsupportedFlavorException(trans.getTransferDataFlavors()[0]);

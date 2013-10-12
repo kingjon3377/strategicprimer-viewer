@@ -80,6 +80,8 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		final Component retval = lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		if (retval instanceof JLabel) {
 			((JLabel) retval).setText(plurals.get(value));
+		} else if (retval == null) {
+			throw new IllegalStateException("Default produced null");
 		}
 		return retval;
 	}

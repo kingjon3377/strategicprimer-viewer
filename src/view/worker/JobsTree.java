@@ -1,17 +1,20 @@
 package view.worker;
 
+import java.util.logging.Logger;
+
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.Nullable;
+import javax.swing.tree.TreeSelectionModel;
 
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.JobTreeModel;
-import util.PropertyChangeSource;
 
-import com.sun.istack.internal.logging.Logger;
+import org.eclipse.jdt.annotation.Nullable;
+
+import util.PropertyChangeSource;
+import util.TypesafeLogger;
 /**
  * A tree representing a worker's Jobs and Skills.
  * @author Jonathan Lovelace
@@ -23,8 +26,12 @@ public class JobsTree extends JTree implements PropertyChangeSource, TreeSelecti
 	 */
 	public JobsTree(final PropertyChangeSource... sources) {
 		super();
-		setModel(new JobTreeModel(getSelectionModel()));
-		final JobTreeModel model = (JobTreeModel) getModel();
+		final TreeSelectionModel tsm = getSelectionModel();
+		if (tsm == null) {
+			throw new IllegalStateException("Selection model is null somehow");
+		}
+		final JobTreeModel model = new JobTreeModel(tsm);
+		setModel(model);
 		for (final PropertyChangeSource source : sources) {
 			source.addPropertyChangeListener(model);
 		}
@@ -35,7 +42,7 @@ public class JobsTree extends JTree implements PropertyChangeSource, TreeSelecti
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(JobsTree.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(JobsTree.class);
 	/**
 	 * Fire the 'skill' property with the current selection if it's a Skill, or null if not.
 	 * @param evt the selection event to handle
@@ -45,7 +52,7 @@ public class JobsTree extends JTree implements PropertyChangeSource, TreeSelecti
 		if (evt != null) {
 			final TreePath selPath = evt.getNewLeadSelectionPath();
 			// ESCA-JAVA0177:
-			final Object component;
+			final Object component; // NOPMD
 			if (selPath == null) {
 				LOGGER.warning("Selection path was null.");
 				component = null;

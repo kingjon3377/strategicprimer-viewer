@@ -62,7 +62,9 @@ public class ZeroToOneConverter {
 			} else if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
-				builder.append(printEndElement(event.asEndElement()));
+				final EndElement end = event.asEndElement();
+				assert end != null;
+				builder.append(printEndElement(end));
 			} else if (event.isStartDocument()) {
 				builder.append("<?xml version=\"1.0\"?>\n");
 			} else if (event.isEndDocument()) {

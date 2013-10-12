@@ -50,6 +50,9 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			final boolean hasFocus) {
 		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
 				value, selected, expanded, leaf, row, hasFocus);
+		if (component == null) {
+			throw new IllegalStateException("Default produced null component somehow");
+		}
 		final Object internal = value instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) value)
 				.getUserObject() : value;
 		if (internal instanceof HasImage) {

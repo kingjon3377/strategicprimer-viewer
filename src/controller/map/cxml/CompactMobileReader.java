@@ -186,6 +186,9 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 		// ESCA-JAVA0177:
 		final MobileFixture retval; // NOPMD
 		final MobileType type = MAP.get(element.getName().getLocalPart());
+		if (type == null) {
+			throw new IllegalStateException("Tag turned into a null type.");
+		}
 		switch (type) {
 		case UnitType:
 			return CompactUnitReader.READER.read(element, stream, players, // NOPMD
