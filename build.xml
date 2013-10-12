@@ -20,6 +20,8 @@
   <path id="viewer.classpath">
     <pathelement location="${bin_dir}" />
     <path refid="junit.classpath" />
+    <!-- See comment in paths.properties -->
+    <pathelement location="${nullness.jar.path}" />
   </path>
 
 
