@@ -72,7 +72,7 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		// ESCA-JAVA0177:
 		Icon retval;
 		String image = obj.getImage();
-		if (image == null || image.isEmpty()) {
+		if (image.isEmpty()) {
 			image = obj.getDefaultImage();
 		}
 		try {

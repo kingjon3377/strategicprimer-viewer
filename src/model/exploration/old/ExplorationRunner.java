@@ -136,10 +136,6 @@ public class ExplorationRunner { // NOPMD
 	public String recursiveConsultTable(final String table, final Point point, final Tile tile)
 			throws MissingTableException {
 		String result = consultTable(table, point, tile);
-		if (result == null) {
-			throw new MissingTableException("Table " + table
-					+ " generated null result");
-		}
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
 			if (split.length < 3) {

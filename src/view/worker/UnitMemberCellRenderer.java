@@ -97,7 +97,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		// ESCA-JAVA0177:
 		Icon retval;
 		String image = obj.getImage();
-		if (image == null || image.isEmpty()) {
+		if (image.isEmpty()) {
 			image = obj.getDefaultImage();
 		}
 		// FIXME: If getImage() references a file that's not there, try the

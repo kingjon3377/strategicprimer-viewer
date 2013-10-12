@@ -65,8 +65,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	 * @param newValue the "new value" from the PropertyChangeEvent
 	 */
 	private void handleMemberChange(final Object newValue) {
-		// Worker shouldn't be null, now we have NULL_WORKER, but it's probably best to check for now.
-		if (worker == null || !worker.equals(newValue)) {
+		if (!worker.equals(newValue)) {
 			clear();
 			if (newValue instanceof Worker) {
 				worker = (Worker) newValue;
@@ -75,9 +74,6 @@ public class JobsListModel extends DefaultListModel<Job> implements
 				}
 				pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
 			}
-		} else if (newValue == null) {
-			worker = NULL_WORKER;
-			clear();
 		}
 	}
 	/**

@@ -71,7 +71,7 @@ public class FileChooser {
 				});
 			}
 		}
-		if (filename == null || filename.isEmpty()) {
+		if (filename.isEmpty()) {
 			throw new ChoiceInterruptedException();
 		} else {
 			return filename;
@@ -96,7 +96,7 @@ public class FileChooser {
 	 * @param file the filename to return
 	 */
 	public final void setFilename(final String file) {
-		if (file == null || file.isEmpty()) {
+		if (file.isEmpty()) {
 			filename = "";
 			shouldReturn = false;
 		} else {

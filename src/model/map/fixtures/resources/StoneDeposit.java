@@ -168,11 +168,7 @@ public final class StoneDeposit implements IEvent,
 	@Override
 	public void setKind(final String kind) {
 		final StoneKind skind = StoneKind.parseStoneKind(kind);
-		if (skind == null) {
-			throw new IllegalArgumentException("Not a known kind of stone");
-		} else {
-			stone = skind;
-		}
+		stone = skind;
 	}
 	/**
 	 * The name of an image to use for this particular fixture.

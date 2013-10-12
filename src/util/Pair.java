@@ -50,9 +50,6 @@ public class Pair<FIRST, SECOND> {
 	 * @param secondItem The second item in the pair.
 	 */
 	protected Pair(final FIRST firstItem, final SECOND secondItem) {
-		if (firstItem == null || secondItem == null) {
-			throw new IllegalArgumentException("Pair refuses null arguments");
-		}
 		first = firstItem;
 		second = secondItem;
 	}

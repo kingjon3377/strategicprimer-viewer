@@ -226,8 +226,6 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		private static String getName(final Object named) {
 			if (named instanceof HasName) {
 				return ((HasName) named).getName(); // NOPMD
-			} else if (named == null) {
-				return "null"; // NOPMD
 			} else {
 				return named.toString();
 			}

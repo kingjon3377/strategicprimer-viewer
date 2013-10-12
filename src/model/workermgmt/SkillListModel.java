@@ -72,19 +72,13 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	 * @param newValue the new value
 	 */
 	private void handleNewJob(final Job newValue) {
-		if (newValue == null) {
-			job = NULL_JOB;
+		if (!job.equals(newValue)) {
 			clear();
-		} else {
-			// With NULL_JOB, job should never be null ... but it's probably best to check.
-			if (job == null || !job.equals(newValue)) {
-				clear();
-				job = newValue;
-				for (Skill skill : job) {
-					addElement(skill);
-				}
-				pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
+			job = newValue;
+			for (Skill skill : job) {
+				addElement(skill);
 			}
+			pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
 		}
 	}
 	/**

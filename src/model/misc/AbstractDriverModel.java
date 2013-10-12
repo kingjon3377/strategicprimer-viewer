@@ -60,13 +60,8 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 */
 	@Override
 	public void setMap(final MapView newMap, final String name) {
-		if (mapDim == null) {
-			pcs.firePropertyChange("version", -1, newMap.getDimensions()
-					.getVersion());
-		} else {
-			pcs.firePropertyChange("version", mapDim.version,
-					newMap.getDimensions().version);
-		}
+		pcs.firePropertyChange("version", mapDim.version,
+				newMap.getDimensions().version);
 		map = newMap;
 		mapDim = newMap.getDimensions();
 		filename = name;

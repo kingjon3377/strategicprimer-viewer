@@ -224,8 +224,7 @@ public abstract class AbstractCompactReader {
 	 */
 	protected static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
-		return image == null || image.isEmpty()
-				|| image.equals(obj.getDefaultImage()) ? "" : " image=\""
-				+ image + "\"";
+		return image.isEmpty() || image.equals(obj.getDefaultImage()) ? ""
+				: " image=\"" + image + "\"";
 	}
 }

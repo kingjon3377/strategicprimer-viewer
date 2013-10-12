@@ -17,11 +17,7 @@ public class PrefixingPrintWriter extends PrintWriter {
 	 */
 	public PrefixingPrintWriter(final Writer outs, final String prefix) {
 		super(outs);
-		if (prefix == null) {
-			pref = "";
-		} else {
-			pref = prefix;
-		}
+		pref = prefix;
 	}
 	/**
 	 * What the caller wanted each printLine prefixed with.
