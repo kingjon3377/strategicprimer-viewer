@@ -14,3 +14,4 @@ bin/images/*.png
 .*.swp
 .*.swo
 .sawja_prefs
+org.eclipse.jdt.annotation*.jar
