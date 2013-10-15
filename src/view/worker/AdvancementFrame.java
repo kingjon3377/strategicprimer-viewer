@@ -1,8 +1,6 @@
 package view.worker;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
@@ -13,28 +11,13 @@ import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
-import model.listeners.CompletionListener;
-import model.listeners.LevelGainListener;
-import model.listeners.NewWorkerListener;
-import model.listeners.UnitMemberListener;
-import model.map.HasName;
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.mobile.Worker;
-import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.TypesafeLogger;
 import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
-import view.util.ErrorShower;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
-import view.util.SystemOut;
-import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 
@@ -74,7 +57,7 @@ public class AdvancementFrame extends JFrame {
 		pch.addPlayerChangeListener(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, pch);
-		final NewWorkerListenerImpl nwl = new NewWorkerListenerImpl(
+		final WorkerCreationListener nwl = new WorkerCreationListener(
 				(IWorkerTreeModel) tree.getModel(),
 				IDFactoryFiller.createFactory(source.getMap()), LOGGER);
 		tree.addCompletionListener(nwl);
@@ -149,147 +132,5 @@ public class AdvancementFrame extends JFrame {
 			final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 			return new Dimension(wid, height);
 		}
-	}
-
-	/**
-	 * A listener to print a line when a worker gains a level.
-	 */
-	private static final class LevelListener implements LevelGainListener, UnitMemberListener, CompletionListener {
-		/**
-		 * Constructor.
-		 */
-		LevelListener() {
-			// Needed to give access ...
-		}
-
-		/**
-		 * The current worker.
-		 */
-		@Nullable private UnitMember worker = null;
-		/**
-		 * The current skill.
-		 */
-		@Nullable private Skill skill = null;
-		/**
-		 * @param result maybe the newly selected skill
-		 */
-		@Override
-		public void stopWaitingOn(final Object result) {
-			if ("null_skill".equals(result)) {
-				skill = null;
-			} else if (result instanceof Skill) {
-				skill = (Skill) result;
-			}
-		}
-		/**
-		 * Handle level gain notification.
-		 */
-		@Override
-		public void level() {
-			if (worker != null && skill != null) {
-				final UnitMember wkr = worker;
-				final Skill skl = skill;
-				assert skl != null;
-				final StringBuilder builder = new StringBuilder();
-				builder.append(getName(wkr));
-				builder.append(" gained a level in ");
-				builder.append(getName(skl));
-				SystemOut.SYS_OUT.println(builder.toString());
-			}
-		}
-		/**
-		 * @param old the previously selected member
-		 * @param selected the newly selected unit member
-		 */
-		@Override
-		public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
-			worker = selected;
-		}
-		/**
-		 * @param named something that may have a name
-		 * @return its name if it has one, "null" if null, or its toString
-		 *         otherwise.
-		 */
-		private static String getName(final Object named) {
-			if (named instanceof HasName) {
-				return ((HasName) named).getName(); // NOPMD
-			} else {
-				return named.toString();
-			}
-		}
-	}
-	/**
-	 * A listener to keep track of the currently selected unit and listen for
-	 * new-worker notifications, then pass this information on to the tree
-	 * model.
-	 */
-	private static class NewWorkerListenerImpl implements ActionListener,
-			CompletionListener, NewWorkerListener {
-		/**
-		 * The tree model.
-		 */
-		private final IWorkerTreeModel tmodel;
-		/**
-		 * The logger to use for logging.
-		 */
-		private final Logger lgr; // NOPMD
-		/**
-		 * The current unit. May be null, if nothing is selected.
-		 */
-		@Nullable private Unit selUnit;
-		/**
-		 * The ID factory to pass to the worker-creation window.
-		 */
-		private final IDFactory idf;
-		/**
-		 * Constructor.
-		 * @param treeModel the tree model
-		 * @param idFac the ID factory to pass to the worker-creation window.
-		 * @param logger the logger to use for logging
-		 */
-		NewWorkerListenerImpl(final IWorkerTreeModel treeModel, final IDFactory idFac, final Logger logger) {
-			tmodel = treeModel;
-			idf = idFac;
-			lgr = logger;
-		}
-		/**
-		 * @param result the new value to stop waiting on (the newly selected unit, or the newly created worker)
-		 */
-		@Override
-		public void stopWaitingOn(final Object result) {
-			if ("null_unit".equals(result)) {
-				selUnit = null;
-			} else if (result instanceof Unit) {
-				selUnit = (Unit) result;
-			}
-		}
-		/**
-		 * Handle button press.
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			if (evt != null && NEW_WORKER_ACTION.equalsIgnoreCase(evt.getActionCommand())) {
-				final WorkerConstructionFrame frame = new WorkerConstructionFrame(
-						idf);
-				frame.addNewWorkerListener(this);
-				frame.setVisible(true);
-			}
-		}
-		/**
-		 * Handle a new user-created worker.
-		 * @param worker the worker to handle
-		 */
-		@Override
-		public void addNewWorker(final Worker worker) {
-			final Unit locSelUnit = selUnit;
-			if (locSelUnit == null) {
-				lgr.warning("New worker created when no unit selected");
-				ErrorShower.showErrorDialog(null, "The new worker was not added to a unit because no unit was selected.");
-			} else {
-				tmodel.addUnitMember(locSelUnit, worker);
-			}
-		}
-
 	}
 }
