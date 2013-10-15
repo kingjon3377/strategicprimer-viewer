@@ -49,7 +49,7 @@ public final class EqualsAny {
 	public static <TYPE> boolean equalsAny(final TYPE against,
 			@Nullable final Iterable<TYPE> values) {
 		if (values == null) {
-			return false;
+			return false; // NOPMD
 		} else {
 			for (final TYPE value : values) {
 				if (against.equals(value)) {
