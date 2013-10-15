@@ -43,7 +43,9 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	 * @param oldTile the previously selected tile
 	 * @param newTile the newly selected tile. If null, we won't fire tile notifications at all.
 	 */
-	public void fireChanges(@Nullable final Point oldPoint, @Nullable final Point newPoint, @Nullable final Tile oldTile, @Nullable final Tile newTile) {
+	public void fireChanges(@Nullable final Point oldPoint,
+			@Nullable final Point newPoint, @Nullable final Tile oldTile,
+			@Nullable final Tile newTile) {
 		for (final SelectionChangeListener list : listeners) {
 			if (newPoint != null) {
 				list.selectedPointChanged(oldPoint, newPoint);

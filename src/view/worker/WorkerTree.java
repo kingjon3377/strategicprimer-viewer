@@ -205,6 +205,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 					list.memberSelected(null, (UnitMember) sel);
 				}
 			}
+			// ESCA-JAVA0177:
 			final Object result;
 			if (sel == null) {
 				result = "null_unit";
