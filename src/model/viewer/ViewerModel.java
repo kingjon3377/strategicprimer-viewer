@@ -203,7 +203,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	/**
 	 * The list of graphical-parameter listeners.
 	 */
-	private final List<GraphicalParamsListener> gpListeners = new ArrayList<>();
+	private final transient List<GraphicalParamsListener> gpListeners = new ArrayList<>();
 	/**
 	 * @param list a listener to add
 	 */

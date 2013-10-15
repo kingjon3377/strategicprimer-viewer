@@ -209,6 +209,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 */
 	@Override
 	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+		// Everything is handled in selectedPointChanged().
 	}
 	/**
 	 * The list of completion listeners listening to us.

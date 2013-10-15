@@ -132,7 +132,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 		final Object localNode = ((IWorkerTreeModel) getModel()).getModelObject(node);
 		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
-			if (stats != null) {
+			if (stats == null) {
+				return null;
+			} else {
 				return new StringBuilder(92)// NOPMD
 						.append("<html><p>Str ")
 						.append(getModifierString(stats.getStrength()))
@@ -147,8 +149,6 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 						.append(", Cha ")
 						.append(getModifierString(stats.getCharisma()))
 						.append("</p></html>").toString();
-			} else {
-				return null;
 			}
 		} else {
 			return null;

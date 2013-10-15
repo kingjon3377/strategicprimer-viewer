@@ -1,13 +1,9 @@
 package model.exploration;
 
-import java.beans.PropertyChangeEvent;
-
 import javax.swing.DefaultListModel;
 
 import model.listeners.MapChangeListener;
 import model.map.Player;
-
-import org.eclipse.jdt.annotation.Nullable;
 /**
  * A list model for players in the exploration GUI.
  * @author Jonathan Lovelace

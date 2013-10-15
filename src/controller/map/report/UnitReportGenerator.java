@@ -95,7 +95,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				retval.add(produceWorkerRIR((Worker) member, currentPlayer.equals(unit.getOwner())));
 			} else {
 				// TODO: what about others?
-				retval.add(new SimpleReportNode(member.toString()));
+				retval.add(new SimpleReportNode(member.toString())); // NOPMD
 			}
 			fixtures.remove(Integer.valueOf(member.getID()));
 		}

@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTree;
 import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
@@ -28,6 +27,7 @@ import model.workermgmt.IWorkerTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
 import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
@@ -52,7 +52,7 @@ public class AdvancementFrame extends JFrame {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AdvancementFrame.class.getName());
+	private static final Logger LOGGER = TypesafeLogger.getLogger(AdvancementFrame.class);
 	/**
 	 * Dividers start at half-way.
 	 */
