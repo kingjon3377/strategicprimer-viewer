@@ -4,23 +4,26 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.listeners.AddRemoveListener;
+
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.PropertyChangeSource;
-
 /**
- * A panel to be the GUI to add or remove items from a list. We'll fire the
- * "add" property with a String value to add if adding is completed, and the
- * "remove" property if removal is selected.
+ * A panel to be the GUI to add or remove items from a list.
+ *
+ * FIXME: Add a notion of *what* is being added or removed, so we don't have to
+ * work around that limitation anymore.
  *
  * @author Jonathan Lovelace
  *
  */
-public class AddRemovePanel extends JPanel implements ActionListener, PropertyChangeSource {
+public class AddRemovePanel extends JPanel implements ActionListener {
 	/**
 	 * The layout.
 	 */
@@ -30,11 +33,17 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 	 */
 	private final JTextField field = new JTextField(10);
 	/**
+	 * What we're adding or removing.
+	 */
+	private final String category;
+	/**
 	 * Constructor.
 	 * @param removalPossible whether we should put in a "remove" button.
+	 * @param what what we're adding or removing
 	 */
-	public AddRemovePanel(final boolean removalPossible) {
+	public AddRemovePanel(final boolean removalPossible, final String what) {
 		layout = new CardLayout();
+		category = what;
 		setLayout(layout);
 		setPanelSizes(this);
 		final BoxPanel first = new BoxPanel(true);
@@ -79,14 +88,35 @@ public class AddRemovePanel extends JPanel implements ActionListener, PropertyCh
 			layout.next(this);
 			field.requestFocusInWindow();
 		} else if ("-".equals(evt.getActionCommand())) {
-			firePropertyChange("remove", null, null);
+			for (final AddRemoveListener list : arListeners) {
+				list.remove(category);
+			}
 		} else if ("OK".equals(evt.getActionCommand())) {
-			firePropertyChange("add", null, field.getText());
+			final String text = field.getText();
+			for (final AddRemoveListener list : arListeners) {
+				list.add(category, text == null ? "null" : text);
+			}
 			layout.first(this);
 			field.setText("");
 		} else if ("Cancel".equals(evt.getActionCommand())) {
 			layout.first(this);
 			field.setText("");
 		}
+	}
+	/**
+	 * A list of listeners to notify of addition or removal.
+	 */
+	private final List<AddRemoveListener> arListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	public void addAddRemoveListener(final AddRemoveListener list) {
+		arListeners.add(list);
+	}
+	/**
+	 * @param list a list to remove
+	 */
+	public void removeAddRemoveListener(final AddRemoveListener list) {
+		arListeners.remove(list);
 	}
 }

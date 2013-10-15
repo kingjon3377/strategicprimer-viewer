@@ -1,48 +1,44 @@
 package model.exploration;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.PlayerChangeListener;
+import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A unit list model for the exploration GUI.
  * @author Jonathan Lovelace
  *
  */
 public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
-		PropertyChangeListener {
+		PlayerChangeListener {
 	/**
 	 * Constructor.
 	 * @param emodel the exploration model, so we can select the unit the user selects
 	 * @param source what to listen to for property-change events.
 	 */
 	public ExplorationUnitListModel(final IExplorationModel emodel,
-			final PropertyChangeSource source) {
+			final PlayerChangeSource source) {
 		model = emodel;
-		source.addPropertyChangeListener(this);
+		source.addPlayerChangeListener(this);
 	}
 	/**
-	 * Handle a property change.
-	 * @param evt the event to handle.
+	 * Called when the current player has changed.
+	 * @param old the previous current player
+	 * @param newPlayer the new current player
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && "player".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Player
-				&& !player.equals(evt.getNewValue())) {
-			player = (Player) evt.getNewValue();
-			clear();
-			final List<Unit> units = model.getUnits(player);
-			for (Unit unit : units) {
-				addElement(unit);
-			}
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		player = newPlayer;
+		clear();
+		final List<Unit> units = model.getUnits(player);
+		for (Unit unit : units) {
+			addElement(unit);
 		}
 	}
 	/**

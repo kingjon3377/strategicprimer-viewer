@@ -1,50 +1,53 @@
 package view.worker;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
+import model.listeners.UnitMemberSelectionSource;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.JobsListModel;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import view.util.AddRemovePanel;
 /**
  * A visual list of a worker's Jobs. We also handle listening for selection changes.
  * @author Jonathan Lovelace
  *
  */
-public class JobsList extends JList<Job> implements PropertyChangeSource,
-		ListSelectionListener {
+public class JobsList extends JList<Job> implements ListSelectionListener,
+		CompletionSource {
 	/**
 	 * Constructor.
 	 * @param listener something to listen to us
-	 * @param sources what our model should listen to
+	 * @param umSources sources to listen to for changes in which unit member is selected
+	 * @param arps panels to listen to for new jobs from the user
 	 */
-	public JobsList(final PropertyChangeListener listener,
-			final PropertyChangeSource... sources) {
-		final JobsListModel lmodel = new JobsListModel(sources);
+	public JobsList(final CompletionListener listener,
+			final UnitMemberSelectionSource[] umSources, final AddRemovePanel[] arps) {
+		final JobsListModel lmodel = new JobsListModel(umSources, arps);
 		setModel(lmodel);
-		lmodel.addPropertyChangeListener(new PropertyChangeListener() {
+		lmodel.addCompletionListener(new CompletionListener() {
 			/**
-			 * @param evt the event to handle
+			 * @param result what we were waiting on, or a signal value
 			 */
 			@Override
-			public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-				if (evt != null && "finished".equalsIgnoreCase(evt.getPropertyName())) {
-					if (Integer.valueOf(0).equals(evt.getNewValue())) {
-						setSelectedIndex(0);
-					} else if (evt.getNewValue() instanceof Job) {
-						setSelectedValue(evt.getNewValue(), true);
-					}
+			public void stopWaitingOn(final Object result) {
+				if (Integer.valueOf(0).equals(result)) {
+					setSelectedIndex(0);
+				} else if (result instanceof Job) {
+					setSelectedValue(result, true);
 				}
 			}
 		});
-		addPropertyChangeListener(listener);
+		addCompletionListener(listener);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
@@ -53,6 +56,28 @@ public class JobsList extends JList<Job> implements PropertyChangeSource,
 	 */
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
-		firePropertyChange("job", null, getSelectedValue());
+		@Nullable final Object temp = getSelectedValue();
+		final Object result = temp == null ? "null_job" : temp;
+		for (final CompletionListener list : cListeners) {
+			list.stopWaitingOn(result);
+		}
+	}
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public final void addCompletionListener(final CompletionListener list) {
+		cListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public final void removeCompletionListener(final CompletionListener list) {
+		cListeners.remove(list);
 	}
 }

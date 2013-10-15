@@ -1,22 +1,28 @@
 package model.workermgmt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.AddRemoveListener;
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
+import model.listeners.UnitMemberListener;
+import model.listeners.UnitMemberSelectionSource;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import view.util.AddRemovePanel;
 /**
  * A list model for a list of a worker's jobs.
  * @author Jonathan Lovelace
  */
 public class JobsListModel extends DefaultListModel<Job> implements
-		PropertyChangeListener, PropertyChangeSource {
+		UnitMemberListener, CompletionSource, AddRemoveListener {
 	/**
 	 * A non-null "null" worker. Adjusted to prevent modification.
 	 */
@@ -32,66 +38,78 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	private Worker worker = NULL_WORKER;
 	/**
 	 * Constructor.
-	 * @param sources property-change sources to listen to.
+	 * @param umSources sources to listen to for changes in which unit member is selected
+	 * @param arps panels to listen to for new jobs from the user
 	 */
-	public JobsListModel(final PropertyChangeSource... sources) {
-		if (sources.length == 0) {
-			throw new IllegalStateException("No sources given");
+	public JobsListModel(final UnitMemberSelectionSource[] umSources, final AddRemovePanel[] arps) {
+		for (final UnitMemberSelectionSource source : umSources) {
+			source.addUnitMemberListener(this);
 		}
-		for (final PropertyChangeSource source : sources) {
-			source.addPropertyChangeListener(this);
+		for (final AddRemovePanel panel : arps) {
+			panel.addAddRemoveListener(this);
 		}
 	}
 	/**
-	 * Handle a property change.
-	 * @param evt the event to handle.
+	 * @param category what kind of thing is being added; if not a Job we ignore it
+	 * @param addendum a description of what to add
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("member".equalsIgnoreCase(evt.getPropertyName())) {
-			handleMemberChange(evt.getNewValue());
-		} else if (("add".equalsIgnoreCase(evt.getPropertyName()) || "add_job".equalsIgnoreCase(evt.getPropertyName()))
-				&& worker != null && !NULL_WORKER.equals(worker)) {
-			final Job job = new Job(evt.getNewValue().toString(), 0);
+	public void add(final String category, final String addendum) {
+		if ("job".equals(category) && !NULL_WORKER.equals(worker)) {
+			final Job job = new Job(addendum, 0);
 			worker.addJob(job);
 			addElement(job);
-			pcs.firePropertyChange("finished", null, job);
-		}
-	}
-	/**
-	 * Handle a "worker" property-change.
-	 * @param newValue the "new value" from the PropertyChangeEvent
-	 */
-	private void handleMemberChange(final Object newValue) {
-		if (!worker.equals(newValue)) {
-			clear();
-			if (newValue instanceof Worker) {
-				worker = (Worker) newValue;
-				for (Job job : worker) {
-					addElement(job);
-				}
-				pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(job);
 			}
 		}
 	}
 	/**
-	 * Our delegate for property-change handling.
-	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	/**
-	 * @param list a listener to listen to us
+	 * @param old the previously selected member
+	 * @param selected the newly selected unit member
 	 */
 	@Override
-	public void addPropertyChangeListener(final PropertyChangeListener list) {
-		pcs.addPropertyChangeListener(list);
+	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+		if (!worker.equals(selected)) {
+			clear();
+			if (selected instanceof Worker) {
+				worker = (Worker) selected;
+				for (Job job : worker) {
+					addElement(job);
+				}
+				final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0);
+				assert retval != null;
+				for (final CompletionListener list : cListeners) {
+					list.stopWaitingOn(retval);
+				}
+			} else {
+				worker = NULL_WORKER;
+			}
+		}
 	}
 	/**
-	 * @param list a listener to stop listenng to us
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
 	 */
 	@Override
-	public void removePropertyChangeListener(final PropertyChangeListener list) {
-		pcs.removePropertyChangeListener(list);
+	public void addCompletionListener(final CompletionListener list) {
+		cListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeCompletionListener(final CompletionListener list) {
+		cListeners.remove(list);
+	}
+	/**
+	 * @param category ignored
+	 */
+	@Override
+	public void remove(final String category) {
+		// Not implemented.
 	}
 }

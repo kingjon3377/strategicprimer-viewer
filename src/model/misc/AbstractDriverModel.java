@@ -1,13 +1,13 @@
 package model.misc;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
+import model.listeners.MapChangeListener;
+import model.listeners.VersionChangeListener;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.SPMap;
-
-import org.eclipse.jdt.annotation.Nullable;
 /**
  * A superclass for driver-models, to handle the common details.
  * @author Jonathan Lovelace
@@ -16,32 +16,9 @@ import org.eclipse.jdt.annotation.Nullable;
 //ESCA-JAVA0011:
 public abstract class AbstractDriverModel implements IDriverModel {
 	/**
-	 * A helper object to handle property-change listeners for us.
+	 * The list of map-change listeners.
 	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	/**
-	 *
-	 */
-	/**
-	 * Add a property-change listener.
-	 *
-	 * @param list the listener to add
-	 */
-	@Override
-	public void addPropertyChangeListener(final PropertyChangeListener list) {
-		pcs.addPropertyChangeListener(list);
-	}
-
-	/**
-	 * Remove a property-change listener.
-	 *
-	 * @param list the listener to remove.
-	 */
-	@Override
-	public void removePropertyChangeListener(final PropertyChangeListener list) {
-		pcs.removePropertyChangeListener(list);
-	}
-
+	private final List<MapChangeListener> mcListeners = new ArrayList<>();
 	/**
 	 * The dimensions of the map.
 	 */
@@ -60,12 +37,15 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 */
 	@Override
 	public void setMap(final MapView newMap, final String name) {
-		pcs.firePropertyChange("version", mapDim.version,
-				newMap.getDimensions().version);
+		for (final VersionChangeListener list : vcListeners) {
+			list.changeVersion(mapDim.version, newMap.getDimensions().version);
+		}
 		map = newMap;
 		mapDim = newMap.getDimensions();
 		filename = name;
-		pcs.firePropertyChange("map", map, newMap);
+		for (final MapChangeListener list : mcListeners) {
+			list.mapChanged();
+		}
 	}
 	/**
 	 *
@@ -83,19 +63,49 @@ public abstract class AbstractDriverModel implements IDriverModel {
 		return mapDim;
 	}
 	/**
-	 * Report a property change to listeners.
-	 * @param propertyName the  name of the property
-	 * @param oldValue the old value
-	 * @param newValue the new value
-	 */
-	protected void firePropertyChange(final String propertyName, @Nullable final Object oldValue, final Object newValue) {
-		pcs.firePropertyChange(propertyName, oldValue, newValue);
-	}
-	/**
 	 * @return the filename from which the map was loaded or to which it should be saved
 	 */
 	@Override
 	public String getMapFilename() {
 		return filename;
+	}
+	/**
+	 * Add a MapChangeListener.
+	 *
+	 * @param list the listener to add
+	 */
+	@Override
+	public void addMapChangeListener(final MapChangeListener list) {
+		mcListeners.add(list);
+	}
+
+	/**
+	 * Remove a MapChangeListener.
+	 *
+	 * @param list the listener to remove
+	 */
+	@Override
+	public void removeMapChangeListener(final MapChangeListener list) {
+		mcListeners.remove(list);
+	}
+	/**
+	 * The list of version change listeners.
+	 */
+	private final List<VersionChangeListener> vcListeners = new ArrayList<>();
+	/**
+	 * Add a version change listener.
+	 * @param list the listener to add
+	 */
+	@Override
+	public void addVersionChangeListener(final VersionChangeListener list) {
+		vcListeners.add(list);
+	}
+	/**
+	 * Removve a version-change listener.
+	 * @param list the listener to remove
+	 */
+	@Override
+	public void removeVersionChangeListener(final VersionChangeListener list) {
+		vcListeners.remove(list);
 	}
 }

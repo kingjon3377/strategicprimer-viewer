@@ -2,15 +2,12 @@ package view.map.key;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.VersionChangeListener;
+import model.listeners.VersionChangeSource;
 import model.map.TileType;
-import util.PropertyChangeSource;
 
 /**
  * Provides a visual "key" to the various terrain types.
@@ -18,22 +15,22 @@ import util.PropertyChangeSource;
  * @author Jonathan Lovelace
  *
  */
-public class KeyPanel extends JPanel implements PropertyChangeListener {
+public class KeyPanel extends JPanel implements VersionChangeListener {
 	/**
 	 * Constructor.
 	 *
 	 * @param version the map version
 	 * @param sources things to listen to for property change events
 	 */
-	public KeyPanel(final int version, final PropertyChangeSource... sources) {
+	public KeyPanel(final int version, final Iterable<? extends VersionChangeSource> sources) {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
 		setMinimumSize(new Dimension(new KeyElement(version,
 				TileType.NotVisible).getMinimumSize().width * 4,
 				getMinimumSize().height));
 		setPreferredSize(getMinimumSize());
-		for (final PropertyChangeSource source : sources) {
-			source.addPropertyChangeListener(this);
+		for (final VersionChangeSource source : sources) {
+			source.addVersionChangeListener(this);
 		}
 	}
 
@@ -48,16 +45,12 @@ public class KeyPanel extends JPanel implements PropertyChangeListener {
 			add(new KeyElement(version, type)); // NOPMD
 		}
 	}
-
 	/**
-	 * Listen for property changes---specifically, the map version.
-	 *
-	 * @param evt the event to handle
+	 * @param old the previous map version
+	 * @param newVersion the new map version
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && "version".equals(evt.getPropertyName())) {
-			updateForVersion(((Integer) evt.getNewValue()).intValue());
-		}
+	public void changeVersion(final int old, final int newVersion) {
+		updateForVersion(newVersion);
 	}
 }

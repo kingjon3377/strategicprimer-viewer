@@ -1,17 +1,18 @@
 package view.map.details;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.SelectionChangeListener;
+import model.listeners.SelectionChangeSource;
+import model.listeners.VersionChangeSource;
 import model.map.PlayerCollection;
 import model.map.Point;
-import util.PropertyChangeSource;
+import model.map.Tile;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.map.key.KeyPanel;
 import view.util.BorderedPanel;
 
@@ -27,33 +28,35 @@ public class DetailPanelNG extends JSplitPane {
 	 * A label giving the header for the list of fixtures and saying what the
 	 * current tile's coordinates are.
 	 */
-	private static class HeaderLabel extends JLabel implements PropertyChangeListener {
+	private static class HeaderLabel extends JLabel implements SelectionChangeListener {
 		/**
 		 * Constructor.
 		 * @param sources things to listen to for property changes
 		 */
-		HeaderLabel(final PropertyChangeSource... sources) {
+		HeaderLabel(final Iterable<? extends SelectionChangeSource> sources) {
 			super(
 					"<html><body><p>Contents of the tile at (-1, -1):</p></body></html>");
-			for (final PropertyChangeSource source : sources) {
-				source.addPropertyChangeListener(this);
+			for (final SelectionChangeSource source : sources) {
+				source.addSelectionChangeListener(this);
 			}
 		}
 		/**
-		 * Handle a property change.
-		 *
-		 * @param evt the event to handle.
+		 * @param old the formerly selected location
+		 * @param newPoint the newly selected location
 		 */
 		@Override
-		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-			if (evt != null && "point".equalsIgnoreCase(evt.getPropertyName())
-					&& evt.getNewValue() instanceof Point) {
-				setText("<html><body><p>Contents of the tile at "
-						+ ((Point) evt.getNewValue()).toString()
-						+ ":</p></body></html>");
-			}
+		public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+			setText("<html><body><p>Contents of the tile at "
+					+ newPoint.toString() + ":</p></body></html>");
 		}
-
+		/**
+		 * @param old the formerly selected tile
+		 * @param newTile the newly selected tile
+		 */
+		@Override
+		public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+			// Ignored; we only care about the *location*.
+		}
 	}
 	/**
 	 * The panel containing the list.
@@ -64,7 +67,7 @@ public class DetailPanelNG extends JSplitPane {
 		 * @param players the players in the map
 		 * @param sources PropertyChangeSources to pass to both members of the panel.
 		 */
-		ListPanel(final PlayerCollection players, final PropertyChangeSource... sources) {
+		ListPanel(final PlayerCollection players, final Iterable<? extends SelectionChangeSource> sources) {
 			// We can't use the multi-arg super() because the center component references "this".
 			setNorth(new HeaderLabel(sources));
 			setCenter(new JScrollPane(new FixtureList(this, players, sources)));
@@ -79,12 +82,13 @@ public class DetailPanelNG extends JSplitPane {
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
-		 * @param players the players in the map
-	 * @param sources Sources of PropertyChangeEvents we want to listen to.
+	 * @param players the players in the map
+	 * @param sSources Sources of selection-change notifications we want to listen to
+	 * @param vSources Sources of PropertyChangeEvents we want to listen to.
 	 */
 	public DetailPanelNG(final int version, final PlayerCollection players,
-			final PropertyChangeSource... sources) {
-		super(HORIZONTAL_SPLIT, true, new ListPanel(players, sources), new KeyPanel(version, sources));
+			final Iterable<? extends SelectionChangeSource> sSources, final Iterable<? extends VersionChangeSource> vSources) {
+		super(HORIZONTAL_SPLIT, true, new ListPanel(players, sSources), new KeyPanel(version, vSources));
 		setResizeWeight(DIVIDER_LOCATION);
 		setDividerLocation(DIVIDER_LOCATION);
 	}

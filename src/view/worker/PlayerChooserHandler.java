@@ -3,16 +3,18 @@ package view.worker;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.PlayerChangeListener;
+import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.misc.IDriverModel;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Listens for the 'Change current player' menu item and lets the player choose
@@ -22,7 +24,7 @@ import util.PropertyChangeSource;
  *
  */
 public class PlayerChooserHandler implements ActionListener,
-		PropertyChangeSource {
+		PlayerChangeSource {
 	/**
 	 * The frame to attach the dialog to.
 	 */
@@ -50,22 +52,22 @@ public class PlayerChooserHandler implements ActionListener,
 	 */
 	public static final String MENU_ITEM = "Change current player";
 	/**
-	 * A support object to handle the details of our listeners.
+	 * The list of listeners.
 	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private final List<PlayerChangeListener> listeners = new ArrayList<>();
 	/**
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addPropertyChangeListener(final PropertyChangeListener list) {
-		pcs.addPropertyChangeListener(list);
+	public void addPlayerChangeListener(final PlayerChangeListener list) {
+		listeners.add(list);
 	}
 	/**
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removePropertyChangeListener(final PropertyChangeListener list) {
-		pcs.removePropertyChangeListener(list);
+	public void removePlayerChangeListener(final PlayerChangeListener list) {
+		listeners.remove(list);
 	}
 	/**
 	 * Handle menu item.
@@ -79,10 +81,20 @@ public class PlayerChooserHandler implements ActionListener,
 					JOptionPane.PLAIN_MESSAGE, null, model.getMap()
 							.getPlayers().asArray(), player);
 			if (retval != null) {
-				pcs.firePropertyChange("player", player, retval);
+				for (final PlayerChangeListener list : listeners) {
+					list.playerChanged(player, retval);
+				}
 				player = retval;
 			}
 		}
 	}
-
+	/**
+	 * Should only be called once per object lifetime. Notify all listeners, as
+	 * if the current player had changed from null to its current value.
+	 */
+	public void notifyListeners() {
+		for (final PlayerChangeListener list : listeners) {
+			list.playerChanged(null, player);
+		}
+	}
 }

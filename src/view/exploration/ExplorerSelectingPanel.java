@@ -2,6 +2,8 @@ package view.exploration;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -11,14 +13,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.Document;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.PlayerListModel;
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
+import model.listeners.PlayerChangeListener;
+import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -28,7 +34,7 @@ import view.util.SplitWithWeights;
  *
  */
 public class ExplorerSelectingPanel extends BorderedPanel implements
-		ListSelectionListener, PropertyChangeSource, ActionListener {
+		ListSelectionListener, PlayerChangeSource, ActionListener, CompletionSource {
 	/**
 	 * The proportion between the two sides.
 	 */
@@ -104,7 +110,12 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
-		firePropertyChange("player", null, playerList.getSelectedValue());
+		final Player newPlayer = playerList.getSelectedValue();
+		if (newPlayer != null) {
+			for (final PlayerChangeListener list : listeners) {
+				list.playerChanged(null, newPlayer);
+			}
+		}
 	}
 	/**
 	 * Handle a press of the 'start exploring' button.
@@ -115,11 +126,49 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 		if (event != null && BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
 				&& !unitList.isSelectionEmpty()) {
 			model.selectUnit(unitList.getSelectedValue());
-			firePropertyChange("switch", null, Boolean.TRUE);
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(Boolean.TRUE);
+			}
 		}
 	}
 	/**
 	 * The list of units.
 	 */
 	private final JList<Unit> unitList;
+	/**
+	 * The list of player-change listeners.
+	 */
+	private final List<PlayerChangeListener> listeners = new ArrayList<>();
+	/**
+	 * @param list the listener to add
+	 */
+	@Override
+	public void addPlayerChangeListener(final PlayerChangeListener list) {
+		listeners.add(list);
+	}
+	/**
+	 * @param list the listener to remove
+	 */
+	@Override
+	public void removePlayerChangeListener(final PlayerChangeListener list) {
+		listeners.remove(list);
+	}
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addCompletionListener(final CompletionListener list) {
+		cListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeCompletionListener(final CompletionListener list) {
+		cListeners.remove(list);
+	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import model.listeners.MovementCostSource;
+import model.listeners.SelectionChangeSource;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
@@ -15,7 +17,7 @@ import model.misc.IMultiMapModel;
  * @author Jonathan Lovelace
  *
  */
-public interface IExplorationModel extends IMultiMapModel {
+public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource, MovementCostSource {
 	/**
 	 * An enumeration of directions.
 	 */

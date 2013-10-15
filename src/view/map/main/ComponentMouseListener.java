@@ -2,12 +2,10 @@ package view.map.main;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.SelectionChangeListener;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -18,6 +16,9 @@ import model.viewer.FixtureComparator;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ArraySet;
 import util.IteratorWrapper;
 
@@ -38,11 +39,11 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * @param list a listener to send encounter events to
 	 */
 	public ComponentMouseListener(final IViewerModel mapModel,
-			final PropertyChangeListener list) {
+			final SelectionChangeListener list) {
 		super();
 		model = mapModel;
 		menu = new TerrainChangingMenu(model.getMapDimensions().version,
-				model.getMap().getTile(model.getSelectedPoint()), list, model);
+				model.getMap().getTile(model.getSelectedPoint()), list, model, model);
 	}
 	/**
 	 * @param event an event representing the current mouse position

@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.JComponent;
@@ -14,11 +16,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.NewWorkerListener;
+import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IsNumeric;
 import util.Pair;
 import util.SingletonRandom;
@@ -31,7 +36,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerConstructionFrame extends JFrame implements ActionListener {
+public class WorkerConstructionFrame extends JFrame implements ActionListener, NewWorkerSource {
 	/**
 	 * Constructor.
 	 * @param idFac the ID factory to use to generate IDs.
@@ -125,7 +130,9 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 						parseInt(maxHP), parseInt(str), parseInt(dex),
 						parseInt(con), parseInt(intel), parseInt(wis),
 						parseInt(cha)));
-				firePropertyChange("worker", null, retval);
+				for (final NewWorkerListener list : nwListeners) {
+					list.addNewWorker(retval);
+				}
 				setVisible(false);
 				dispose();
 			}
@@ -229,4 +236,22 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener {
 	 * The text box representing the worker's charisma.
 	 */
 	private final JTextField cha = new JTextField();
+	/**
+	 * The list of listeners to notify on worker creation.
+	 */
+	private final List<NewWorkerListener> nwListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addNewWorkerListener(final NewWorkerListener list) {
+		nwListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeNewWorkerListener(final NewWorkerListener list) {
+		nwListeners.remove(list);
+	}
 }

@@ -1,6 +1,5 @@
 package model.workermgmt;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -222,27 +221,32 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 		return new int[] { num };
 	}
 	/**
-	 * Handle a property change.
-	 * @param evt the even to handle.
+	 * Handle the user's request to add a unit.
+	 * @param unit the unit to add.
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("player".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Player) {
-			root = (Player) evt.getNewValue();
-			for (final TreeModelListener listener : listeners) {
-				listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
-			}
-		} else if ("unit".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Unit) {
-			addUnit((Unit) evt.getNewValue());
-		} else if ("map".equalsIgnoreCase(evt.getPropertyName())) {
-			root = model.getMap().getPlayers().getCurrentPlayer();
-			for (final TreeModelListener listener : listeners) {
-				listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
-			}
+	public void addNewUnit(final Unit unit) {
+		addUnit(unit);
+	}
+	/**
+	 * Handle notification that a new map was loaded.
+	 */
+	@Override
+	public void mapChanged() {
+		root = model.getMap().getPlayers().getCurrentPlayer();
+		for (final TreeModelListener listener : listeners) {
+			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
+		}
+	}
+	/**
+	 * @param old the old current player
+	 * @param newPlayer the new current player
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		root = newPlayer;
+		for (final TreeModelListener listener : listeners) {
+			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
 		}
 	}
 	/**

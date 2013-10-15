@@ -2,10 +2,13 @@ package model.viewer;
 
 import static org.junit.Assert.assertEquals;
 
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.listeners.GraphicalParamsListener;
+import model.listeners.MapChangeListener;
+import model.listeners.SelectionChangeListener;
+import model.listeners.VersionChangeListener;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Point;
@@ -77,20 +80,6 @@ public class PointIteratorTest {
 			return dimensions;
 		}
 		/**
-		 * @param list ignored
-		 */
-		@Override
-		public void addPropertyChangeListener(final PropertyChangeListener list) {
-			throw new IllegalStateException(MOCK_FAILURE_MSG);
-		}
-		/**
-		 * @param list ignored
-		 */
-		@Override
-		public void removePropertyChangeListener(final PropertyChangeListener list) {
-			throw new IllegalStateException(MOCK_FAILURE_MSG);
-		}
-		/**
 		 * @param point ignored
 		 */
 		@Override
@@ -160,6 +149,62 @@ public class PointIteratorTest {
 		@Override
 		public Point getSelectedPoint() {
 			return selection;
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void addMapChangeListener(final MapChangeListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void removeMapChangeListener(final MapChangeListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void addSelectionChangeListener(final SelectionChangeListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void removeSelectionChangeListener(final SelectionChangeListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void addVersionChangeListener(final VersionChangeListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void removeVersionChangeListener(final VersionChangeListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void addGraphicalParamsListener(final GraphicalParamsListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
+		}
+		/**
+		 * @param list ignored
+		 */
+		@Override
+		public void removeGraphicalParamsListener(final GraphicalParamsListener list) {
+			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
 	}
 	/**

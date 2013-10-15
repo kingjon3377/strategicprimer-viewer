@@ -1,19 +1,17 @@
 package view.worker;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.JLabel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.PlayerChangeListener;
 import model.map.Player;
+
+import org.eclipse.jdt.annotation.Nullable;
 /**
  * A label to show the current player.
  * @author Jonathan Lovelace
  *
  */
-public class PlayerLabel extends JLabel implements PropertyChangeListener {
+public class PlayerLabel extends JLabel implements PlayerChangeListener {
 	/**
 	 * Text to give before the current player's name.
 	 */
@@ -47,14 +45,11 @@ public class PlayerLabel extends JLabel implements PropertyChangeListener {
 		after = postfix;
 	}
 	/**
-	 * @param evt the event to handle
+	 * @param old the old current player
+	 * @param newPlayer the new current player
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && "player".equalsIgnoreCase(evt.getPropertyName()) && evt.getNewValue() instanceof Player) {
-			setText(htmlize(before + ' '
-					+ ((Player) evt.getNewValue()).getName())
-					+ after);
-		}
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		setText(htmlize(before + newPlayer.getName() + after));
 	}
 }

@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,14 +26,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.MapChangeListener;
+import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -69,11 +70,11 @@ public class WorkerMgmtFrame extends JFrame {
 				IDFactoryFiller.createFactory(model.getMap()));
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final JTree tree = new WorkerTree(model.getMap().getPlayers()
-				.getCurrentPlayer(), model, newUnitFrame, pch, model);
+				.getCurrentPlayer(), model, pch, newUnitFrame);
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");
-		pch.addPropertyChangeListener(plabel);
-		model.addPropertyChangeListener(newUnitFrame);
+		pch.addPlayerChangeListener(plabel);
+		pch.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel();
 		tree.addTreeSelectionListener(ordersPanel);
 		final Component outer = this;
@@ -84,7 +85,9 @@ public class WorkerMgmtFrame extends JFrame {
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
-		pch.addPropertyChangeListener(new ReportUpdater(model, reportModel));
+		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
+		pch.addPlayerChangeListener(reportUpdater);
+		model.addMapChangeListener(reportUpdater);
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
 				HALF_WAY,
@@ -146,7 +149,8 @@ public class WorkerMgmtFrame extends JFrame {
 	 * @author Jonathan Lovelace
 	 *
 	 */
-	private static final class ReportUpdater implements PropertyChangeListener {
+	private static final class ReportUpdater implements PlayerChangeListener,
+			MapChangeListener {
 		/**
 		 * The driver model, to get the map from.
 		 */
@@ -164,24 +168,24 @@ public class WorkerMgmtFrame extends JFrame {
 			model = wmodel;
 			reportModel = tmodel;
 		}
-
 		/**
-		 * Handle fired properties.
-		 * @param evt the event to handle
+		 * Handle notification that a new map was loaded.
 		 */
 		@Override
-		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-			if (evt == null) {
-				return;
-			} else if ("player".equalsIgnoreCase(evt.getPropertyName())
-					&& evt.getNewValue() instanceof Player) {
-				reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
-						model.getMap(), (Player) evt.getNewValue()));
-			} else if ("map".equalsIgnoreCase(evt.getPropertyName())) {
-				reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
-						model.getMap(), model.getMap().getPlayers()
-								.getCurrentPlayer()));
-			}
+		public void mapChanged() {
+			reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
+					model.getMap(), model.getMap().getPlayers()
+							.getCurrentPlayer()));
+		}
+		/**
+		 * Handle change in current player.
+		 * @param old the previous current player
+		 * @param newPlayer the new current player
+		 */
+		@Override
+		public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+			reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
+					model.getMap(), newPlayer));
 		}
 	}
 	/**

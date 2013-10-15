@@ -1,17 +1,17 @@
 package model.viewer;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.SelectionChangeListener;
+import model.listeners.SelectionChangeSource;
+import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A model for a FixtureList.
@@ -22,7 +22,7 @@ import util.PropertyChangeSource;
  *
  */
 public class FixtureListModel extends DefaultListModel<TileFixture> implements
-		PropertyChangeListener {
+		SelectionChangeListener {
 	/**
 	 * The current tile.
 	 */
@@ -32,30 +32,33 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 *
 	 * @param sources sources to listen to
 	 */
-	public FixtureListModel(final PropertyChangeSource... sources) {
+	public FixtureListModel(final Iterable<? extends SelectionChangeSource> sources) {
 		super();
-		for (final PropertyChangeSource source : sources) {
-			source.addPropertyChangeListener(this);
+		for (final SelectionChangeSource source : sources) {
+			source.addSelectionChangeListener(this);
 		}
 	}
-
 	/**
-	 * Handle a property change.
-	 *
-	 * @param evt the event to handle
+	 * @param old the formerly selected location
+	 * @param newPoint the newly selected location
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && "tile".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Tile) {
-			tile = (Tile) evt.getNewValue();
-			this.clear();
-			if (!TileType.NotVisible.equals(tile.getTerrain())) {
-				addElement(new TileTypeFixture(tile.getTerrain()));
-			}
-			for (TileFixture fix : (Tile) evt.getNewValue()) {
-				this.addElement(fix);
-			}
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		// Do nothing; we only care about the tile, not its location.
+	}
+	/**
+	 * @param old the formerly selected tile
+	 * @param newTile the newly selected tile
+	 */
+	@Override
+	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+		tile = newTile;
+		this.clear();
+		if (!TileType.NotVisible.equals(tile.getTerrain())) {
+			addElement(new TileTypeFixture(tile.getTerrain()));
+		}
+		for (final TileFixture fix : tile) {
+			addElement(fix);
 		}
 	}
 	/**

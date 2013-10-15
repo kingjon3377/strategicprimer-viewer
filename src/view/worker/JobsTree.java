@@ -1,5 +1,7 @@
 package view.worker;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JTree;
@@ -8,23 +10,24 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import model.map.fixtures.mobile.worker.Skill;
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
 import model.workermgmt.JobTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.PropertyChangeSource;
 import util.TypesafeLogger;
+import view.util.AddRemovePanel;
 /**
  * A tree representing a worker's Jobs and Skills.
  * @author Jonathan Lovelace
  */
-public class JobsTree extends JTree implements PropertyChangeSource, TreeSelectionListener {
+public class JobsTree extends JTree implements TreeSelectionListener, CompletionSource {
 	/**
 	 * Constructor.
 	 * @param sources things for the model to listen to for property changes.
 	 */
-	public JobsTree(final PropertyChangeSource... sources) {
+	public JobsTree(final AddRemovePanel[] sources, final CompletionSource src) {
 		super();
 		final TreeSelectionModel tsm = getSelectionModel();
 		if (tsm == null) {
@@ -32,8 +35,8 @@ public class JobsTree extends JTree implements PropertyChangeSource, TreeSelecti
 		}
 		final JobTreeModel model = new JobTreeModel(tsm);
 		setModel(model);
-		for (final PropertyChangeSource source : sources) {
-			source.addPropertyChangeListener(model);
+		for (final AddRemovePanel source : sources) {
+			source.addAddRemoveListener(model);
 		}
 		setRootVisible(false);
 		setShowsRootHandles(true);
@@ -59,11 +62,28 @@ public class JobsTree extends JTree implements PropertyChangeSource, TreeSelecti
 			} else {
 				component = selPath.getLastPathComponent();
 			}
-			if (component instanceof Skill) {
-				firePropertyChange("skill", null, component);
-			} else {
-				firePropertyChange("skill", "", null);
+			final Object retval = component == null ? "null_skill" : component;
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(retval);
 			}
 		}
+	}
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addCompletionListener(final CompletionListener list) {
+		cListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeCompletionListener(final CompletionListener list) {
+		cListeners.remove(list);
 	}
 }

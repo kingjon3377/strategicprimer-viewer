@@ -4,18 +4,21 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.NewUnitListener;
+import model.listeners.NewUnitSource;
+import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.util.ListenedButton;
 import controller.map.misc.IDFactory;
 
@@ -27,7 +30,8 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class NewUnitDialog extends JFrame implements ActionListener, PropertyChangeSource, PropertyChangeListener {
+public class NewUnitDialog extends JFrame implements ActionListener,
+		NewUnitSource, PlayerChangeListener {
 	/**
 	 * Maximum and preferred height for the dialog.
 	 */
@@ -97,9 +101,11 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 			} else if (kindField.getText().trim().isEmpty()) {
 				kindField.requestFocusInWindow();
 			} else {
-				firePropertyChange("unit", null,
-						new Unit(owner, kindField.getText().trim(), nameField
-								.getText().trim(), idf.createID()));
+				final Unit unit = new Unit(owner, kindField.getText().trim(),
+						nameField.getText().trim(), idf.createID());
+				for (final NewUnitListener list : nuListeners) {
+					list.addNewUnit(unit);
+				}
 				nameField.setText("");
 				kindField.setText("");
 				setVisible(false);
@@ -111,14 +117,30 @@ public class NewUnitDialog extends JFrame implements ActionListener, PropertyCha
 		}
 	}
 	/**
-	 * We listen for the "player" property, to change the owner of subsequent units.
-	 * @param evt the event to handle.
+	 * To change the owner of subsequent units.
+	 * @param old the previous current player
+	 * @param newPlayer the new current player
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && "player".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Player) {
-			owner = (Player) evt.getNewValue();
-		}
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		owner = newPlayer;
+	}
+	/**
+	 * The list of new-unit listeners listening to us.
+	 */
+	private final List<NewUnitListener> nuListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addNewUnitListener(final NewUnitListener list) {
+		nuListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeNewUnitListener(final NewUnitListener list) {
+		nuListeners.remove(list);
 	}
 }

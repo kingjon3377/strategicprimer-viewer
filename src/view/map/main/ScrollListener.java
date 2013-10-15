@@ -4,18 +4,21 @@ import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.GraphicalParamsListener;
+import model.listeners.MapChangeListener;
+import model.listeners.SelectionChangeListener;
 import model.map.MapDimensions;
+import model.map.Point;
+import model.map.Tile;
 import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to change the visible area of the map based on the user's use of the
@@ -25,7 +28,7 @@ import model.viewer.VisibleDimensions;
  *
  */
 public class ScrollListener implements AdjustmentListener,
-		PropertyChangeListener {
+		MapChangeListener, SelectionChangeListener, GraphicalParamsListener {
 	/**
 	 * Constructor.
 	 *
@@ -96,7 +99,8 @@ public class ScrollListener implements AdjustmentListener,
 	 * constructor so we don't get "dead store" warnings.
 	 */
 	public void setUpListeners() {
-		model.addPropertyChangeListener(this);
+		model.addMapChangeListener(this);
+		model.addGraphicalParamsListener(this);
 		hbar.addAdjustmentListener(this);
 		vbar.addAdjustmentListener(this);
 	}
@@ -121,61 +125,68 @@ public class ScrollListener implements AdjustmentListener,
 	 * The vertical scroll-bar we deal with.
 	 */
 	private final JScrollBar vbar;
-
 	/**
-	 *
-	 * @param evt the event to handle
-	 *
-	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 * @param oldDim the old visible dimensions
+	 * @param newDim the new visible dimensions
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("dimensions".equals(evt.getPropertyName())
-				&& evt.getNewValue() instanceof VisibleDimensions
-				&& !((VisibleDimensions) evt.getNewValue())
-						.isSameSize(dimensions)) {
-			dimensions = model.getDimensions();
-			hbar.getModel().setRangeProperties(
-					Math.max(model.getSelectedPoint().col, 0),
-					1, 0,
-					mapDimensions.cols - model.getDimensions().getWidth(),
-					false);
-			vbar.getModel().setRangeProperties(
-					Math.max(model.getSelectedPoint().row, 0),
-					1, 0,
-					mapDimensions.rows - model.getDimensions().getHeight(),
-					false);
-		} else if ("tile".equals(evt.getPropertyName())) {
-			if (!isInRange(model.getDimensions().getMinimumCol(), model
-					.getSelectedPoint().col, model
-					.getDimensions().getMaximumCol())) {
-				hbar.getModel()
-						.setValue(
-								Math.max(model.getSelectedPoint()
-										.col, 0));
-			}
-			if (!isInRange(model.getDimensions().getMinimumRow(), model
-					.getSelectedPoint().row, model
-					.getDimensions().getMaximumRow())) {
-				vbar.getModel()
-						.setValue(
-								Math.max(model.getSelectedPoint()
-										.row, 0));
-			}
-		} else if ("map".equals(evt.getPropertyName())) {
-			mapDimensions = model.getMapDimensions();
-			hbar.getModel().setRangeProperties(0, 1, 0,
-					mapDimensions.cols - model.getDimensions().getWidth(),
-					false);
-			vbar.getModel().setRangeProperties(0, 1, 0,
-					mapDimensions.rows - model.getDimensions().getHeight(),
-					false);
-			dimensions = model.getDimensions();
+	public void dimensionsChanged(final VisibleDimensions oldDim,
+			final VisibleDimensions newDim) {
+		dimensions = newDim;
+		hbar.getModel().setRangeProperties(
+				Math.max(model.getSelectedPoint().col, 0), 1, 0,
+				mapDimensions.cols - newDim.getWidth(), false);
+		vbar.getModel().setRangeProperties(
+				Math.max(model.getSelectedPoint().row, 0), 1, 0,
+				mapDimensions.rows - newDim.getHeight(), false);
+	}
+	/**
+	 * @param oldSize the old zoom level
+	 * @param newSize the new zoom level
+	 */
+	@Override
+	public void tsizeChanged(final int oldSize, final int newSize) {
+		// We don't do anything with this.
+	}
+	/**
+	 * The property-change based version this replaces went to the model for the
+	 * selected point rather than looking at the reported new value; since it's
+	 * typesafe here, and probably faster, this switched to using the new value
+	 * it was passed.
+	 *
+	 * @param old th previously selected point
+	 * @param newPoint the newly selected point
+	 */
+	@Override
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		final VisibleDimensions vdim = model.getDimensions();
+		if (!isInRange(vdim.getMinimumCol(), newPoint.col, vdim.getMaximumCol())) {
+			hbar.getModel().setValue(Math.max(newPoint.col, 0));
+		}
+		if (!isInRange(vdim.getMaximumRow(), newPoint.row, vdim.getMaximumRow())) {
+			vbar.getModel().setValue(Math.max(newPoint.row, 0));
 		}
 	}
-
+	/**
+	 * @param old the previously selected tile
+	 * @param newTile the newly selected tile
+	 */
+	@Override
+	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+		// We only care about the point.
+	}
+	/**
+	 * Handle notification that a new map was loaded.
+	 */
+	@Override
+	public void mapChanged() {
+		mapDimensions = model.getMapDimensions();
+		hbar.getModel().setRangeProperties(0, 1, 0,
+				mapDimensions.cols - model.getDimensions().getWidth(), false);
+		vbar.getModel().setRangeProperties(0, 1, 0,
+				mapDimensions.rows - model.getDimensions().getHeight(), false);
+		dimensions = model.getDimensions();
+	}
 	/**
 	 * @param min the start of a range
 	 * @param value a value

@@ -19,15 +19,15 @@ import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.SelectionChangeSource;
 import model.map.PlayerCollection;
 import model.map.TileFixture;
 import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
 import model.viewer.FixtureListModel;
 import model.viewer.FixtureTransferable;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A visual list-based representation of the contents of a tile.
@@ -43,7 +43,8 @@ public class FixtureList extends JList<TileFixture> implements
 	 * @param parent a parent of this list
 	 * @param players the players in the map
 	 */
-	public FixtureList(final JComponent parent, final PlayerCollection players, final PropertyChangeSource... sources) {
+	public FixtureList(final JComponent parent, final PlayerCollection players,
+			final Iterable<? extends SelectionChangeSource> sources) {
 		super(new FixtureListModel(sources));
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

@@ -1,7 +1,5 @@
 package model.workermgmt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +11,8 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import model.listeners.AddRemoveListener;
+import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
@@ -24,7 +24,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class JobTreeModel implements TreeModel, PropertyChangeListener {
+public class JobTreeModel implements TreeModel, UnitMemberListener,
+		AddRemoveListener {
 	/**
 	 * Constructor.
 	 * @param selModel the tree's selection model.
@@ -173,50 +174,43 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 	 */
 	private final List<TreeModelListener> listeners = new ArrayList<>();
 	/**
-	 * Handle a property change.
-	 * @param evt the even to handle.
+	 * @param category what kind of thing is being added; if not a Job we ignore it
+	 * @param addendum a description of what to add
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("member".equalsIgnoreCase(evt.getPropertyName())) {
-			if (evt.getNewValue() instanceof Worker) {
-				root = (Worker) evt.getNewValue();
-				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(
-						root)));
-			} else if (evt.getNewValue() instanceof UnitMember
-					|| evt.getNewValue() == null) {
-				root = null;
-				fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(
-						root)));
-			}
-		} else {
-			final Worker currRoot = root;
-			if ("add_job".equalsIgnoreCase(evt.getPropertyName())
-					&& currRoot != null) {
-				final Job job = new Job(evt.getNewValue().toString(), 0);
-				final int childCount = getChildCount(currRoot);
-				currRoot.addJob(job);
+	public void add(final String category, final String addendum) {
+		final Worker currRoot = root;
+		if ("job".equals(category) && currRoot != null) {
+			final Job job = new Job(addendum, 0);
+			final int childCount = getChildCount(currRoot);
+			currRoot.addJob(job);
+			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
+					currRoot), arrayOfInt(childCount), arrayOfObj(job)));
+		} else if ("skill".equals(category)) {
+			final TreePath selPath = tsm.getSelectionPath();
+			if (selPath != null && selPath.getLastPathComponent() instanceof Job) {
+				final Job job = (Job) selPath.getLastPathComponent();
+				final Skill skill = new Skill(addendum, 0, 0);
+				final int childCount = getChildCount(job);
+				job.addSkill(skill);
 				fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-						currRoot), arrayOfInt(childCount), arrayOfObj(job)));
-			} else if ("add_skill".equalsIgnoreCase(evt.getPropertyName())) {
-				final TreePath selPath = tsm.getSelectionPath();
-				if (selPath != null
-						&& selPath.getLastPathComponent() instanceof Job) {
-					final Job job = (Job) selPath.getLastPathComponent();
-					final Skill skill = new Skill(evt.getNewValue().toString(),
-							0, 0);
-					final int childCount = getChildCount(job);
-					job.addSkill(skill);
-					fireTreeNodesInserted(new TreeModelEvent(this,
-							new TreePath(new Object[] { root, job }),
-							arrayOfInt(childCount), arrayOfObj(skill)));
-				} // Need to handle added skills ... at least firing
-					// notification of changes to the tree, and on level-up as
-					// well.
+						new Object[] { root, job }), arrayOfInt(childCount),
+						arrayOfObj(skill)));
 			}
 		}
+	}
+	/**
+	 * @param old the previously selected member
+	 * @param selected the newly selected unit member
+	 */
+	@Override
+	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+		if (selected instanceof Worker) {
+			root = (Worker) selected;
+		} else {
+			root = null;
+		}
+		fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
 	}
 	/**
 	 * @param integer an int
@@ -249,5 +243,12 @@ public class JobTreeModel implements TreeModel, PropertyChangeListener {
 		for (final TreeModelListener listener : listeners) {
 			listener.treeStructureChanged(event);
 		}
+	}
+	/**
+	 * @param category ignored
+	 */
+	@Override
+	public void remove(final String category) {
+		// Not implemented
 	}
 }

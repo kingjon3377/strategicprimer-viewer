@@ -1,6 +1,7 @@
 package view.map.main;
 
 import java.awt.Dimension;
+import java.util.Collections;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -55,7 +56,8 @@ public final class ViewerFrame extends JFrame {
 		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				true, new MapScrollPanel(map, (MapComponent) mapPanel),
 				new DetailPanelNG(map.getMapDimensions().version, map.getMap()
-						.getPlayers(), map));
+						.getPlayers(), Collections.singletonList(map),
+						Collections.singletonList(map)));
 		split.setDividerLocation(MAP_PROPORTION);
 		split.setResizeWeight(MAP_PROPORTION);
 		setContentPane(split);

@@ -1,23 +1,24 @@
 package model.workermgmt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.AddRemoveListener;
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A list model for a list of the skills associated with a Job.
  * @author Jonathan Lovelace
  */
 public class SkillListModel extends DefaultListModel<Skill> implements
-		PropertyChangeListener, PropertyChangeSource {
+		CompletionSource, AddRemoveListener, CompletionListener {
 	/**
 	 * A non-null "null" Job. Adjusted here to prevent modification.
 	 */
@@ -35,68 +36,83 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	 * Constructor.
 	 * @param sources property-change sources to listen to.
 	 */
-	public SkillListModel(final PropertyChangeSource... sources) {
+	public SkillListModel(final CompletionSource... sources) {
 		if (sources.length == 0) {
 			throw new IllegalStateException("No sources given");
 		}
-		for (final PropertyChangeSource source : sources) {
-			source.addPropertyChangeListener(this);
+		for (final CompletionSource source : sources) {
+			source.addCompletionListener(this);
 		}
 	}
 	/**
-	 * Handle a property change.
-	 * @param evt the event to handle.
+	 * @param result the object we were waiting on
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("job".equalsIgnoreCase(evt.getPropertyName())) {
-			if (evt.getNewValue() == null || evt.getNewValue() instanceof Job) {
-				handleNewJob((Job) evt.getNewValue());
-			}
-		} else if (("add".equalsIgnoreCase(evt.getPropertyName()) || "add_skill"
-				.equalsIgnoreCase(evt.getPropertyName()))
-				&& job != null
-				&& !NULL_JOB.equals(job)) {
-			final Skill skill = new Skill(evt.getNewValue().toString(), 0, 0);
+	public void stopWaitingOn(final Object result) {
+		if ("null_job".equals(result)) {
+			handleNewJob(null);
+		} else if (result instanceof Job) {
+			handleNewJob((Job) result);
+		} else if ("level".equals(result)) {
+			fireContentsChanged(this, 0, getSize());
+		}
+	}
+	/**
+	 * @param category what kind of thing is being added; if not a Skill we ignore it
+	 * @param addendum a description of what to add
+	 */
+	@Override
+	public void add(final String category, final String addendum) {
+		if ("skill".equals(category) && !NULL_JOB.equals(job)) {
+			final Skill skill = new Skill(addendum, 0, 0);
 			job.addSkill(skill);
 			addElement(skill);
-			pcs.firePropertyChange("finished", null, skill);
-		} else if ("level".equalsIgnoreCase(evt.getPropertyName())) {
-			fireContentsChanged(evt.getSource(), 0, getSize());
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(skill);
+			}
 		}
+	}
+	/**
+	 * @param category ignored
+	 */
+	@Override
+	public void remove(final String category) {
+		// Not implemented
 	}
 	/**
 	 * Handle the "job" property changing.
 	 * @param newValue the new value
 	 */
-	private void handleNewJob(final Job newValue) {
+	private void handleNewJob(@Nullable final Job newValue) {
 		if (!job.equals(newValue)) {
 			clear();
-			job = newValue;
+			job = newValue == null ? NULL_JOB : newValue;
 			for (Skill skill : job) {
 				addElement(skill);
 			}
-			pcs.firePropertyChange("finished", null, isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0));
+			final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0);
+			assert retval != null;
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(retval);
+			}
 		}
 	}
 	/**
-	 * Our delegate for property-change handling.
+	 * The list of completion listeners listening to us.
 	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private final List<CompletionListener> cListeners = new ArrayList<>();
 	/**
-	 * @param list a listener to listen to us
+	 * @param list a listener to add
 	 */
 	@Override
-	public void addPropertyChangeListener(final PropertyChangeListener list) {
-		pcs.addPropertyChangeListener(list);
+	public void addCompletionListener(final CompletionListener list) {
+		cListeners.add(list);
 	}
 	/**
-	 * @param list a listener to stop listenng to us
+	 * @param list a listener to remove
 	 */
 	@Override
-	public void removePropertyChangeListener(final PropertyChangeListener list) {
-		pcs.removePropertyChangeListener(list);
+	public void removeCompletionListener(final CompletionListener list) {
+		cListeners.remove(list);
 	}
 }

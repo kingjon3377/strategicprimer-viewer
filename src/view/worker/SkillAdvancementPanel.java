@@ -4,17 +4,21 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
+import model.listeners.LevelGainListener;
+import model.listeners.LevelGainSource;
+import model.map.fixtures.mobile.worker.Skill;
+
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.fixtures.mobile.worker.Skill;
-import util.PropertyChangeSource;
 import util.SingletonRandom;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -24,7 +28,7 @@ import view.util.ListenedButton;
  *
  */
 public class SkillAdvancementPanel extends BoxPanel implements
-		PropertyChangeListener, ActionListener {
+		ActionListener, CompletionListener, LevelGainSource {
 	/**
 	 * The maximum height of the panel.
 	 */
@@ -34,13 +38,14 @@ public class SkillAdvancementPanel extends BoxPanel implements
 	 */
 	@Nullable private Skill skill = null;
 	/**
-	 * @param evt event indicating a property change.
+	 * @param result the newly selected skill, or a placeholder indicating no selection
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && "skill".equalsIgnoreCase(evt.getPropertyName())
-				&& (evt.getNewValue() == null || evt.getNewValue() instanceof Skill)) {
-			skill = (Skill) evt.getNewValue();
+	public void stopWaitingOn(final Object result) {
+		if ("null_skill".equals(result)) {
+			skill = null;
+		} else if (result instanceof Skill) {
+			skill = (Skill) result;
 			hours.requestFocusInWindow();
 		}
 	}
@@ -50,13 +55,13 @@ public class SkillAdvancementPanel extends BoxPanel implements
 	private final JTextField hours = new JTextField(3);
 	/**
 	 * Constructor.
-	 * @param listener something to listen to our PropertyChangeEvents.
+	 * @param listener something to listen to our level-gain notifications
 	 * @param sources the things we should listen to
 	 */
-	public SkillAdvancementPanel(final PropertyChangeListener listener,
-			final PropertyChangeSource... sources) {
+	public SkillAdvancementPanel(final LevelGainListener listener,
+			final CompletionSource... sources) {
 		super(false);
-		addPropertyChangeListener(listener);
+		addLevelGainListener(listener);
 		final JPanel one = new JPanel();
 		one.setLayout(new FlowLayout());
 		one.add(new JLabel("Add "));
@@ -70,8 +75,8 @@ public class SkillAdvancementPanel extends BoxPanel implements
 		hours.addActionListener(this);
 		two.add(new ListenedButton("Cancel", this));
 		add(two);
-		for (PropertyChangeSource source : sources) {
-			source.addPropertyChangeListener(this);
+		for (CompletionSource source : sources) {
+			source.addCompletionListener(this);
 		}
 		setMinimumSize(new Dimension(200, 40));
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
@@ -91,12 +96,32 @@ public class SkillAdvancementPanel extends BoxPanel implements
 						SingletonRandom.RANDOM.nextInt(100));
 				final int newLevel = skl.getLevel();
 				if (newLevel != level) {
-					firePropertyChange("level", level, newLevel);
+					for (final LevelGainListener list : listeners) {
+						list.level();
+					}
 				}
 			}
 			// Clear if OK and no skill selected, on Cancel, and after
 			// successfully adding skill
 			hours.setText("");
 		}
+	}
+	/**
+	 * The list of listeners.
+	 */
+	private final List<LevelGainListener> listeners = new ArrayList<>();
+	/**
+	 * @param list the listener to add
+	 */
+	@Override
+	public void addLevelGainListener(final LevelGainListener list) {
+		listeners.add(list);
+	}
+	/**
+	 * @param list the listener to remove
+	 */
+	@Override
+	public void removeLevelGainListener(final LevelGainListener list) {
+		listeners.remove(list);
 	}
 }

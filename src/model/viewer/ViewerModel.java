@@ -1,5 +1,11 @@
 package model.viewer;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import model.listeners.GraphicalParamsListener;
+import model.listeners.SelectionChangeListener;
+import model.listeners.SelectionChangeSupport;
 import model.map.MapView;
 import model.map.Point;
 import model.map.PointFactory;
@@ -59,8 +65,8 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void setSelection(final Point point) {
 		final Point oldSel = selPoint;
 		selPoint = point;
-		firePropertyChange("point", oldSel, selPoint);
-		firePropertyChange("tile", getMap().getTile(oldSel), getMap().getTile(selPoint));
+		scs.fireChanges(oldSel, selPoint, getMap().getTile(oldSel), getMap()
+				.getTile(selPoint));
 	}
 	/**
 	 * @param point a tile's location
@@ -78,8 +84,8 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void clearSelection() {
 		final Point oldSel = selPoint;
 		selPoint = PointFactory.point(-1, -1);
-		firePropertyChange("point", oldSel, selPoint);
-		firePropertyChange("tile", getMap().getTile(oldSel), getMap().getTile(selPoint));
+		scs.fireChanges(oldSel, selPoint, getMap().getTile(oldSel), getMap()
+				.getTile(selPoint));
 	}
 
 	/**
@@ -92,7 +98,9 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	 */
 	@Override
 	public void setDimensions(final VisibleDimensions dim) {
-		firePropertyChange("dimensions", dimensions, dim);
+		for (final GraphicalParamsListener list : gpListeners) {
+			list.dimensionsChanged(dimensions, dim);
+		}
 		dimensions = dim;
 	}
 
@@ -139,8 +147,9 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void zoomIn() {
 		if (zoomLevel < MAX_ZOOM_LEVEL) {
 			zoomLevel++;
-			firePropertyChange("tsize", Integer.valueOf(zoomLevel - 1),
-					Integer.valueOf(zoomLevel));
+			for (final GraphicalParamsListener list : gpListeners) {
+				list.tsizeChanged(zoomLevel - 1, zoomLevel);
+			}
 		}
 	}
 	/**
@@ -150,8 +159,9 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void zoomOut() {
 		if (zoomLevel > 1) {
 			zoomLevel--;
-			firePropertyChange("tsize", Integer.valueOf(zoomLevel + 1),
-					Integer.valueOf(zoomLevel));
+			for (final GraphicalParamsListener list : gpListeners) {
+				list.tsizeChanged(zoomLevel + 1, zoomLevel);
+			}
 		}
 	}
 	/**
@@ -161,8 +171,9 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void resetZoom() {
 		final int old = zoomLevel;
 		zoomLevel = DEF_ZOOM_LEVEL;
-		firePropertyChange("tsize", Integer.valueOf(old),
-				Integer.valueOf(zoomLevel));
+		for (final GraphicalParamsListener list : gpListeners) {
+			list.tsizeChanged(old, zoomLevel);
+		}
 	}
 	/**
 	 * @return the location of the currently selected tile
@@ -170,5 +181,41 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	@Override
 	public Point getSelectedPoint() {
 		return selPoint;
+	}
+	/**
+	 * The object to handle notifying selection-change listeners.
+	 */
+	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+	/**
+	 * @param list a selection-change listener to add
+	 */
+	@Override
+	public void addSelectionChangeListener(final SelectionChangeListener list) {
+		scs.addSelectionChangeListener(list);
+	}
+	/**
+	 * @param list a selection-change listener to remove
+	 */
+	@Override
+	public void removeSelectionChangeListener(final SelectionChangeListener list) {
+		scs.removeSelectionChangeListener(list);
+	}
+	/**
+	 * The list of graphical-parameter listeners.
+	 */
+	private final List<GraphicalParamsListener> gpListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addGraphicalParamsListener(final GraphicalParamsListener list) {
+		gpListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeGraphicalParamsListener(final GraphicalParamsListener list) {
+		gpListeners.remove(list);
 	}
 }

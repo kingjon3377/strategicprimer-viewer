@@ -3,16 +3,12 @@ package view.exploration;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.ExplorationModel;
-import util.PropertyChangeSource;
+import model.listeners.CompletionListener;
 import controller.map.misc.MultiIOHandler;
 
 /**
@@ -20,7 +16,7 @@ import controller.map.misc.MultiIOHandler;
  *
  * @author Jonathan Lovelace
  */
-public class ExplorationFrame extends JFrame implements PropertyChangeSource {
+public class ExplorationFrame extends JFrame {
 	/**
 	 * The exploration model.
 	 */
@@ -43,22 +39,18 @@ public class ExplorationFrame extends JFrame implements PropertyChangeSource {
 		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
 		final ExplorationPanel explorationPanel = new ExplorationPanel(emodel,
 				esp.getMPDocument());
-		esp.addPropertyChangeListener(new PropertyChangeListener() {
+		esp.addCompletionListener(new CompletionListener() {
 			@Override
-			public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-				if (evt != null && "switch".equalsIgnoreCase(evt.getPropertyName())) {
-					explorationPanel.validate();
-					layout.next(outer);
-				}
+			public void stopWaitingOn(final Object result) {
+				explorationPanel.validate();
+				layout.next(outer);
 			}
 		});
-		explorationPanel.addPropertyChangeListener(new PropertyChangeListener() {
+		explorationPanel.addCompletionListener(new CompletionListener() {
 			@Override
-			public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-				if (evt != null && "switch".equalsIgnoreCase(evt.getPropertyName())) {
-					esp.validate();
-					layout.first(outer);
-				}
+			public void stopWaitingOn(final Object result) {
+				esp.validate();
+				layout.first(outer);
 			}
 		});
 		add(esp);

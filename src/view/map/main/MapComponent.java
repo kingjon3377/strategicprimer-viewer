@@ -1,7 +1,5 @@
 package view.map.main;
 
-import static util.EqualsAny.equalsAny;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -9,13 +7,14 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 
+import model.listeners.GraphicalParamsListener;
+import model.listeners.MapChangeListener;
+import model.listeners.SelectionChangeListener;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -25,7 +24,6 @@ import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import model.viewer.ZOrderFilter;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -36,7 +34,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public final class MapComponent extends JComponent implements MapGUI,
-		PropertyChangeListener {
+		MapChangeListener, SelectionChangeListener, GraphicalParamsListener {
 	/**
 	 * The map model encapsulating the map this represents, the secondary map,
 	 * and the selected tile.
@@ -69,7 +67,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 				model.getMapDimensions().version, this, zof);
 		cml = new ComponentMouseListener(model, this);
 		addMouseListener(cml);
-		model.addPropertyChangeListener(this);
+		model.addGraphicalParamsListener(this);
+		model.addMapChangeListener(this);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
 				model);
 		addMouseWheelListener(dsl);
@@ -213,38 +212,58 @@ public final class MapComponent extends JComponent implements MapGUI,
 	public IViewerModel getMapModel() {
 		return model;
 	}
-
 	/**
-	 * Handle events.
-	 *
-	 * @param evt the event to handle.
+	 * @param oldDim the old visible dimensions
+	 * @param newDim the new visible dimensions
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && evt.getPropertyName() != null) {
-			@NonNull final String propName = evt.getPropertyName();
-			firePropertyChange(propName, evt.getOldValue(),
-					evt.getNewValue());
-			if (equalsAny(propName, "tile", "point")
-					&& !isSelectionVisible()) {
-				fixVisibility();
-			} else if ("map".equals(evt.getPropertyName())) {
-				helper = TileDrawHelperFactory.INSTANCE.factory(
-						model.getMapDimensions().version, this, zof);
-			} else if ("tsize".equals(evt.getPropertyName())) {
-				final ComponentEvent resizeEvt = new ComponentEvent(this,
-						ComponentEvent.COMPONENT_RESIZED);
-				for (final ComponentListener list : getComponentListeners()) {
-					list.componentResized(resizeEvt);
-				}
-			}
-			if (equalsAny(propName, "map", "point", "tile",
-					"dimensions", "tsize")) {
-				repaint();
-			}
-		}
+	public void dimensionsChanged(final VisibleDimensions oldDim,
+			final VisibleDimensions newDim) {
+		repaint();
 	}
-
+	/**
+	 * @param oldSize the old zoom level
+	 * @param newSize the new zoom level
+	 */
+	@Override
+	public void tsizeChanged(final int oldSize, final int newSize) {
+		final ComponentEvent evt = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
+		for (final ComponentListener list : getComponentListeners()) {
+			list.componentResized(evt);
+		}
+		repaint();
+	}
+	/**
+	 * @param old ignored
+	 * @param newPoint ignored
+	 */
+	@Override
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		if (!isSelectionVisible()) {
+			fixVisibility();
+		}
+		repaint();
+	}
+	/**
+	 * @param old ignored
+	 * @param newTile ignored
+	 */
+	@Override
+	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+		if (!isSelectionVisible()) {
+			fixVisibility();
+		}
+		repaint();
+	}
+	/**
+	 * Handle notification that a new map was loaded.
+	 */
+	@Override
+	public void mapChanged() {
+		helper = TileDrawHelperFactory.INSTANCE.factory(
+				model.getMapDimensions().version, this, zof);
+		repaint();
+	}
 	/**
 	 * @return whether the selected tile is either not in the map or visible in
 	 *         the current bounds.

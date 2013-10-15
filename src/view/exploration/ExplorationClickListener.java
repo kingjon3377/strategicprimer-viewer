@@ -2,24 +2,27 @@ package view.exploration;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
+import model.listeners.MovementCostListener;
+import model.listeners.MovementCostSource;
+import model.listeners.SelectionChangeListener;
+import model.listeners.SelectionChangeSource;
 import model.map.IMap;
+import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Pair;
-import util.PropertyChangeSource;
 import view.map.details.FixtureList;
 
 /**
@@ -27,7 +30,8 @@ import view.map.details.FixtureList;
  * @author Jonathan Lovelace
  *
  */
-public final class ExplorationClickListener implements ActionListener, PropertyChangeSource {
+public final class ExplorationClickListener implements ActionListener,
+		MovementCostSource, SelectionChangeSource {
 	/**
 	 * The exploration model.
 	 */
@@ -81,14 +85,19 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 				final Tile tile = map.getTile(model
 						.getSelectedUnitLocation());
 				for (final TileFixture fix : fixtures) {
-					tile.addFixture(fix);
+					if (fix != null) {
+						tile.addFixture(fix);
+					}
 				}
 			}
 		} catch (TraversalImpossibleException except) {
-			pcs.firePropertyChange("point", null,
-					model.getSelectedUnitLocation());
-			pcs.firePropertyChange("cost",
-					Integer.valueOf(0), Integer.valueOf(1));
+			final Point sel = model.getSelectedUnitLocation();
+			for (final SelectionChangeListener listener : scListeners) {
+				listener.selectedPointChanged(null, sel);
+			}
+			for (final MovementCostListener listener : mcListeners) {
+				listener.deduct(1);
+			}
 		}
 	}
 
@@ -113,21 +122,39 @@ public final class ExplorationClickListener implements ActionListener, PropertyC
 		return retval;
 	}
 	/**
-	 * A helper to handle notifying listeners of property changes.
+	 * The list of selection-change listeners.
 	 */
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
 	/**
-	 * @param listener a new listener to listen to us
+	 * @param listener the listener to add
 	 */
 	@Override
-	public void addPropertyChangeListener(final PropertyChangeListener listener) {
-		pcs.addPropertyChangeListener(listener);
+	public void addSelectionChangeListener(final SelectionChangeListener listener) {
+		scListeners.add(listener);
 	}
 	/**
-	 * @param listener a former listener that wants to stop listening
+	 * @param listener the listener to remove
 	 */
 	@Override
-	public void removePropertyChangeListener(final PropertyChangeListener listener) {
-		pcs.removePropertyChangeListener(listener);
+	public void removeSelectionChangeListener(final SelectionChangeListener listener) {
+		scListeners.remove(listener);
+	}
+	/**
+	 * The list of movement-cost listeners.
+	 */
+	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+	/**
+	 * @param listener the listener to add
+	 */
+	@Override
+	public void addMovementCostListener(final MovementCostListener listener) {
+		mcListeners.add(listener);
+	}
+	/**
+	 * @param listener the listener to remove
+	 */
+	@Override
+	public void removeMovementCostListener(final MovementCostListener listener) {
+		mcListeners.remove(listener);
 	}
 }

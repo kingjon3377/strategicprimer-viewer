@@ -3,10 +3,11 @@ package view.exploration;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,17 +16,22 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
+import model.listeners.MovementCostListener;
+import model.listeners.SelectionChangeListener;
+import model.listeners.SelectionChangeSupport;
 import model.map.IMap;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IsNumeric;
 import util.Pair;
-import util.PropertyChangeSupportSource;
 import view.map.details.FixtureList;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
@@ -34,7 +40,8 @@ import view.util.ListenedButton;
  * A panel to let the user explore using a unit.
  * @author Jonathan Lovelace
  */
-public class ExplorationPanel extends BorderedPanel implements ActionListener, PropertyChangeListener {
+public class ExplorationPanel extends BorderedPanel implements ActionListener,
+		SelectionChangeListener, CompletionSource, MovementCostListener {
 	/**
 	 * The exploration model.
 	 */
@@ -60,7 +67,8 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 		headerPanel.add(mpField);
 		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
 				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
-		emodel.addPropertyChangeListener(this);
+		emodel.addMovementCostListener(this);
+		emodel.addSelectionChangeListener(this);
 	}
 	/**
 	 * Set up the GUI for the surrounding tiles.
@@ -92,7 +100,9 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt != null && BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
-			firePropertyChange("switch", false, true);
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(Boolean.TRUE);
+			}
 		}
 	}
 	/**
@@ -108,12 +118,12 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 	/**
 	 * The collection of proxies for main-map tile-fixture-lists.
 	 */
-	private final EnumMap<Direction, PropertyChangeSupportSource> mains = new EnumMap<>(
+	private final EnumMap<Direction, SelectionChangeSupport> mains = new EnumMap<>(
 			Direction.class);
 	/**
 	 * The collection of proxies for secondary-map tile-fixture lists.
 	 */
-	private final EnumMap<Direction, PropertyChangeSupportSource> seconds = new EnumMap<>(
+	private final EnumMap<Direction, SelectionChangeSupport> seconds = new EnumMap<>(
 			Direction.class);
 	/**
 	 * The collection of dual-tile-buttons.
@@ -131,67 +141,91 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener, P
 	 *        GUI represents.
 	 */
 	private void addTileGUI(final JPanel panel, final Direction direction) {
-		final PropertyChangeSupportSource mainPCS = new PropertyChangeSupportSource(
-				this);
+		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList = new FixtureList(panel, model.getMap()
-				.getPlayers(), mainPCS);
+				.getPlayers(), Collections.singletonList(mainPCS));
 		panel.add(new JScrollPane(mainList));
 		final DualTileButton dtb = new DualTileButton();
 		// panel.add(new JScrollPane(dtb));
 		panel.add(dtb);
 		final ExplorationClickListener ecl = new ExplorationClickListener(model, direction, mainList);
 		dtb.addActionListener(ecl);
-		ecl.addPropertyChangeListener(this);
+		ecl.addSelectionChangeListener(this);
+		ecl.addMovementCostListener(this);
 		mainList.getModel().addListDataListener(new ExplorationListListener(model, mainList));
-		final PropertyChangeSupportSource secPCS = new PropertyChangeSupportSource(
-				this);
+		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		panel.add(new JScrollPane(new FixtureList(panel, model
 				.getSubordinateMaps().iterator().next().first().getPlayers(),
-				secPCS)));
+				Collections.singletonList(secPCS))));
 		mains.put(direction, mainPCS);
 		buttons.put(direction, dtb);
 		seconds.put(direction, secPCS);
 	}
 	/**
-	 * Handle change in selected location.
-	 *
-	 * @param evt the event to handle
+	 * Account for a movement cost.
+	 * @param cost how much the movement cost
 	 */
 	@Override
-	public final void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("point".equalsIgnoreCase(evt.getPropertyName())) {
-			final Point selPoint = model.getSelectedUnitLocation();
-			for (final Direction dir : Direction.values()) {
-				final Point point = model.getDestination(selPoint, dir);
-				final Tile tileOne = model.getMap().getTile(point);
-				final Iterator<Pair<IMap, String>> subs = model
-						.getSubordinateMaps().iterator();
-				// ESCA-JAVA0177:
-				final Tile tileTwo; // NOPMD
-				if (subs.hasNext()) {
-					tileTwo = subs.next().first().getTile(point);
-				} else {
-					tileTwo = new Tile(TileType.NotVisible); // NOPMD
-				}
-				mains.get(dir).firePropertyChange("tile", null, tileOne);
-				seconds.get(dir).firePropertyChange("tile", null, tileTwo);
-				buttons.get(dir).setTiles(tileOne, tileTwo);
-				buttons.get(dir).repaint();
-			}
-			locLabel.setText("<html><body>Currently exploring "
-					+ model.getSelectedUnitLocation()
-					+ "; click a tile to explore it. "
-					+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
-		} else if ("cost".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Integer) {
-			final int cost = ((Integer) evt.getNewValue()).intValue();
-			if (IsNumeric.isNumeric(mpField.getText().trim())) {
-				int mpoints = Integer.parseInt(mpField.getText().trim());
-				mpoints -= cost;
-				mpField.setText(Integer.toString(mpoints));
-			}
+	public void deduct(final int cost) {
+		final String mpText = mpField.getText().trim();
+		if (IsNumeric.isNumeric(mpText)) {
+			int mpoints = Integer.parseInt(mpText);
+			mpoints -= cost;
+			mpField.setText(Integer.toString(mpoints));
 		}
+	}
+	/**
+	 * @param old the previously selected location
+	 * @param newPoint the newly selected location
+	 */
+	@Override
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		final Point selPoint = model.getSelectedUnitLocation();
+		for (final Direction dir : Direction.values()) {
+			final Point point = model.getDestination(selPoint, dir);
+			final Tile tileOne = model.getMap().getTile(point);
+			final Iterator<Pair<IMap, String>> subs = model
+					.getSubordinateMaps().iterator();
+			// ESCA-JAVA0177:
+			final Tile tileTwo; // NOPMD
+			if (subs.hasNext()) {
+				tileTwo = subs.next().first().getTile(point);
+			} else {
+				tileTwo = new Tile(TileType.NotVisible); // NOPMD
+			}
+			mains.get(dir).fireChanges(null, null, null, tileOne);
+			seconds.get(dir).fireChanges(null, null, null, tileTwo);
+			buttons.get(dir).setTiles(tileOne, tileTwo);
+			buttons.get(dir).repaint();
+		}
+		locLabel.setText("<html><body>Currently exploring "
+				+ model.getSelectedUnitLocation()
+				+ "; click a tile to explore it. "
+				+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
+	}
+	/**
+	 * @param old the previously selected tile
+	 * @param newTile the newly selected tile
+	 */
+	@Override
+	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	}
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addCompletionListener(final CompletionListener list) {
+		cListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeCompletionListener(final CompletionListener list) {
+		cListeners.remove(list);
 	}
 }

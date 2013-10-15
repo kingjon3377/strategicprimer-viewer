@@ -2,9 +2,10 @@ package model.misc;
 
 import java.io.Serializable;
 
+import model.listeners.MapChangeSource;
+import model.listeners.VersionChangeSource;
 import model.map.MapDimensions;
 import model.map.MapView;
-import util.PropertyChangeSource;
 
 /**
  * An interface for driver-model objects that hold a mutable map. Interfaces
@@ -13,7 +14,8 @@ import util.PropertyChangeSource;
  * @author Jonathan Lovelace
  *
  */
-public interface IDriverModel extends PropertyChangeSource, Serializable {
+public interface IDriverModel extends Serializable,
+		MapChangeSource, VersionChangeSource {
 	/**
 	 * @param newMap the new map
 	 * @param name the filename from which it was loaded

@@ -1,5 +1,7 @@
 package model.viewer;
 
+import model.listeners.GraphicalParamsSource;
+import model.listeners.SelectionChangeSource;
 import model.map.Point;
 import model.map.Tile;
 import model.misc.IDriverModel;
@@ -12,7 +14,7 @@ import model.misc.IDriverModel;
  * @author Jonathan Lovelace
  *
  */
-public interface IViewerModel extends IDriverModel {
+public interface IViewerModel extends IDriverModel, SelectionChangeSource, GraphicalParamsSource {
 	/**
 	 * @return the location of the currently selected tile.
 	 */

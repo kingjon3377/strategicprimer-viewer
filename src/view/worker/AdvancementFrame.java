@@ -3,8 +3,6 @@ package view.worker;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
@@ -16,6 +14,10 @@ import javax.swing.JTree;
 import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
+import model.listeners.CompletionListener;
+import model.listeners.LevelGainListener;
+import model.listeners.NewWorkerListener;
+import model.listeners.UnitMemberListener;
 import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -26,8 +28,6 @@ import model.workermgmt.IWorkerTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.PropertyChangeAdapter;
-import util.PropertyChangeSource;
 import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
@@ -44,8 +44,7 @@ import controller.map.misc.IOHandler;
  * @author Jonathan Lovelace
  *
  */
-public class AdvancementFrame extends JFrame implements PropertyChangeListener,
-		PropertyChangeSource {
+public class AdvancementFrame extends JFrame {
 	/**
 	 * The text of the relevant button. Can't be private without causing warnings, since it's used in an inner class.
 	 */
@@ -66,26 +65,24 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Strategic Primer worker advancement");
-		source.addPropertyChangeListener(this);
 		setMinimumSize(new Dimension(640, 480));
 
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
 
 		final PlayerLabel plabel = new PlayerLabel("", source.getMap()
 				.getPlayers().getCurrentPlayer(), "'s Units:");
-		pch.addPropertyChangeListener(plabel);
+		pch.addPlayerChangeListener(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
-				.getCurrentPlayer(), source, this, pch, source);
-		final NewWorkerListener nwl = new NewWorkerListener(
+				.getCurrentPlayer(), source, pch);
+		final NewWorkerListenerImpl nwl = new NewWorkerListenerImpl(
 				(IWorkerTreeModel) tree.getModel(),
 				IDFactoryFiller.createFactory(source.getMap()), LOGGER);
-		tree.addPropertyChangeListener(nwl);
-		final AddRemovePanel jarp = new AddRemovePanel(false);
-		final AddRemovePanel sarp = new AddRemovePanel(false);
-		final JTree jobsTree = new JobsTree(this, new PropertyChangeAdapter(
-				jarp, "add", "add_job"), new PropertyChangeAdapter(sarp, "add",
-				"add_skill"), tree);
-		jobsTree.addPropertyChangeListener(this);
+		tree.addCompletionListener(nwl);
+		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
+		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
+		final JobsTree jobsTree = new JobsTree(new AddRemovePanel[] {jarp, sarp}, tree);
+		final LevelListener llist = new LevelListener();
+		jobsTree.addCompletionListener(llist);
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
 				HALF_WAY,
@@ -110,32 +107,14 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 												null,
 												htmlize("Add a Skill to the selected Job:"),
 												sarp, null, null), null, null),
-								null, new SkillAdvancementPanel(this, this),
+								null, new SkillAdvancementPanel(llist, jobsTree),
 								null, null))));
 
-		addPropertyChangeListener(this);
-		firePropertyChange("map", null, null);
-		firePropertyChange("player", null, source.getMap().getPlayers().getCurrentPlayer());
-		removePropertyChangeListener(this);
-
-		addPropertyChangeListener(new LevelListener());
+		pch.notifyListeners();
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
-	}
-
-	/**
-	 * Handle a property change.
-	 *
-	 * @param evt the property-change event to handle
-	 */
-	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt != null && !equals(evt.getSource())) {
-			firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
-					evt.getNewValue());
-		}
 	}
 
 	/**
@@ -175,7 +154,7 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 	/**
 	 * A listener to print a line when a worker gains a level.
 	 */
-	private static final class LevelListener implements PropertyChangeListener {
+	private static final class LevelListener implements LevelGainListener, UnitMemberListener, CompletionListener {
 		/**
 		 * Constructor.
 		 */
@@ -191,23 +170,23 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		 * The current skill.
 		 */
 		@Nullable private Skill skill = null;
-
 		/**
-		 * @param evt the property-change event to handle
+		 * @param result maybe the newly selected skill
 		 */
 		@Override
-		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-			if (evt == null) {
-				return;
-			} else if ("member".equals(evt.getPropertyName())
-					&& (evt.getNewValue() instanceof UnitMember || evt
-							.getNewValue() == null)) {
-				worker = (UnitMember) evt.getNewValue();
-			} else if ("skill".equals(evt.getPropertyName())
-					&& (evt.getNewValue() instanceof Skill || evt.getNewValue() == null)) {
-				skill = (Skill) evt.getNewValue();
-			} else if ("level".equals(evt.getPropertyName()) && worker != null
-					&& skill != null) {
+		public void stopWaitingOn(final Object result) {
+			if ("null_skill".equals(result)) {
+				skill = null;
+			} else if (result instanceof Skill) {
+				skill = (Skill) result;
+			}
+		}
+		/**
+		 * Handle level gain notification.
+		 */
+		@Override
+		public void level() {
+			if (worker != null && skill != null) {
 				final UnitMember wkr = worker;
 				final Skill skl = skill;
 				assert skl != null;
@@ -218,7 +197,14 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 				SystemOut.SYS_OUT.println(builder.toString());
 			}
 		}
-
+		/**
+		 * @param old the previously selected member
+		 * @param selected the newly selected unit member
+		 */
+		@Override
+		public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+			worker = selected;
+		}
 		/**
 		 * @param named something that may have a name
 		 * @return its name if it has one, "null" if null, or its toString
@@ -237,7 +223,8 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 	 * new-worker notifications, then pass this information on to the tree
 	 * model.
 	 */
-	private static class NewWorkerListener implements PropertyChangeListener, ActionListener {
+	private static class NewWorkerListenerImpl implements ActionListener,
+			CompletionListener, NewWorkerListener {
 		/**
 		 * The tree model.
 		 */
@@ -260,34 +247,20 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 		 * @param idFac the ID factory to pass to the worker-creation window.
 		 * @param logger the logger to use for logging
 		 */
-		NewWorkerListener(final IWorkerTreeModel treeModel, final IDFactory idFac, final Logger logger) {
+		NewWorkerListenerImpl(final IWorkerTreeModel treeModel, final IDFactory idFac, final Logger logger) {
 			tmodel = treeModel;
 			idf = idFac;
 			lgr = logger;
 		}
 		/**
-		 * Handle a property change event.
-		 * @param evt the event to handle
+		 * @param result the new value to stop waiting on (the newly selected unit, or the newly created worker)
 		 */
 		@Override
-		public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-			if (evt != null) {
-				if ("selUnit".equalsIgnoreCase(evt.getPropertyName())
-						&& (evt.getNewValue() == null || evt.getNewValue() instanceof Unit)) {
-					selUnit = (Unit) evt.getNewValue();
-				} else if ("worker".equalsIgnoreCase(evt.getPropertyName())
-						&& evt.getNewValue() instanceof Worker) {
-					final Unit locSelUnit = selUnit;
-					if (locSelUnit == null) {
-						lgr.warning("New worker created when no unit selected");
-						ErrorShower
-								.showErrorDialog(null,
-										"The new worker was not added to a unit because no unit was selected.");
-					} else {
-						tmodel.addUnitMember(locSelUnit,
-								(UnitMember) evt.getNewValue());
-					}
-				}
+		public void stopWaitingOn(final Object result) {
+			if ("null_unit".equals(result)) {
+				selUnit = null;
+			} else if (result instanceof Unit) {
+				selUnit = (Unit) result;
 			}
 		}
 		/**
@@ -299,8 +272,22 @@ public class AdvancementFrame extends JFrame implements PropertyChangeListener,
 			if (evt != null && NEW_WORKER_ACTION.equalsIgnoreCase(evt.getActionCommand())) {
 				final WorkerConstructionFrame frame = new WorkerConstructionFrame(
 						idf);
-				frame.addPropertyChangeListener(this);
+				frame.addNewWorkerListener(this);
 				frame.setVisible(true);
+			}
+		}
+		/**
+		 * Handle a new user-created worker.
+		 * @param worker the worker to handle
+		 */
+		@Override
+		public void addNewWorker(final Worker worker) {
+			final Unit locSelUnit = selUnit;
+			if (locSelUnit == null) {
+				lgr.warning("New worker created when no unit selected");
+				ErrorShower.showErrorDialog(null, "The new worker was not added to a unit because no unit was selected.");
+			} else {
+				tmodel.addUnitMember(locSelUnit, worker);
 			}
 		}
 

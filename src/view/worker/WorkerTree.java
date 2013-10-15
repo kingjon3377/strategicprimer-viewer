@@ -4,14 +4,20 @@ import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
+import model.listeners.NewUnitSource;
+import model.listeners.PlayerChangeSource;
+import model.listeners.UnitMemberListener;
+import model.listeners.UnitMemberSelectionSource;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -22,26 +28,31 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
-import util.PropertyChangeSource;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.map.details.FixtureEditMenu;
 /**
  * A tree of a player's units.
  * @author Jonathan Lovelace
  *
  */
-public class WorkerTree extends JTree implements PropertyChangeSource {
+public class WorkerTree extends JTree implements UnitMemberSelectionSource, CompletionSource {
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
 	 * @param sources things for the model to listen to for property changes
+	 * @param pcs what to listen to for current-player changes
 	 */
 	public WorkerTree(final Player player, final IWorkerModel model,
-			final PropertyChangeSource... sources) {
+			final PlayerChangeSource pcs, final NewUnitSource... sources) {
 		super(new WorkerTreeModelAlt(player, model));
 		final WorkerTreeModelAlt tmodel = (WorkerTreeModelAlt) getModel();
-		for (final PropertyChangeSource source : sources) {
-			source.addPropertyChangeListener(tmodel);
+		assert tmodel != null;
+		for (final NewUnitSource source : sources) {
+			source.addNewUnitListener(tmodel);
 		}
+		pcs.addPlayerChangeListener(tmodel);
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
@@ -143,12 +154,32 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 			return null;
 		}
 	}
+
+	/**
+	 * The list of listeners to notify of newly selected unit member.
+	 * Package-private so the inner class can access it.
+	 */
+	final List<UnitMemberListener> umListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addUnitMemberListener(final UnitMemberListener list) {
+		umListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeUnitMemberListener(final UnitMemberListener list) {
+		umListeners.remove(list);
+	}
 	/**
 	 * A selection listener.
 	 */
 	private class WorkerTreeSelectionListener implements TreeSelectionListener {
 		/**
-		 * Constuctor.
+		 * Constructor.
 		 */
 		WorkerTreeSelectionListener() {
 			// Needed to change visibility.
@@ -170,11 +201,39 @@ public class WorkerTree extends JTree implements PropertyChangeSource {
 		@SuppressWarnings("synthetic-access") // TODO: fix this properly
 		private void handleSelection(@Nullable final Object sel) {
 			if (sel instanceof UnitMember || sel == null) {
-				firePropertyChange("member", null, sel);
+				for (final UnitMemberListener list : umListeners) {
+					list.memberSelected(null, (UnitMember) sel);
+				}
 			}
-			if (sel instanceof Unit || sel == null) {
-				firePropertyChange("selUnit", null, sel);
+			final Object result;
+			if (sel == null) {
+				result = "null_unit";
+			} else if (sel instanceof Unit) {
+				result = sel;
+			} else {
+				return;
+			}
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(result);
 			}
 		}
+	}
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addCompletionListener(final CompletionListener list) {
+		cListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeCompletionListener(final CompletionListener list) {
+		cListeners.remove(list);
 	}
 }

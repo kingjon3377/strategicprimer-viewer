@@ -1,6 +1,5 @@
 package model.workermgmt;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -10,11 +9,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 /**
  * An alternative implementation of the worker tree model.
@@ -166,22 +166,27 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 						.getChildCount() - 1 }, new Object[] { node });
 	}
 	/**
-	 * Handle a property change.
-	 * @param evt the even to handle.
+	 * Handle the user's desire to add a new unit.
+	 * @param unit the unit to add
 	 */
 	@Override
-	public void propertyChange(@Nullable final PropertyChangeEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("player".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Player) {
-			setRoot(new PlayerNode((Player) evt.getNewValue(), model));
-		} else if ("unit".equalsIgnoreCase(evt.getPropertyName())
-				&& evt.getNewValue() instanceof Unit) {
-			addUnit((Unit) evt.getNewValue());
-		} else if ("map".equalsIgnoreCase(evt.getPropertyName())) {
-			setRoot(new PlayerNode(model.getMap().getPlayers().getCurrentPlayer(), model));
-		}
+	public void addNewUnit(final Unit unit) {
+		addUnit(unit);
+	}
+	/**
+	 * Handle notification that a new map was loaded.
+	 */
+	@Override
+	public void mapChanged() {
+		setRoot(new PlayerNode(model.getMap().getPlayers().getCurrentPlayer(), model));
+	}
+	/**
+	 * @param old the old current player
+	 * @param newPlayer the new current player
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		setRoot(new PlayerNode(newPlayer, model));
 	}
 	/**
 	 * @param obj an object

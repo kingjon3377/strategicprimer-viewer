@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import model.listeners.MovementCostListener;
+import model.listeners.SelectionChangeListener;
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -69,8 +71,10 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final List<Unit> retval = new ArrayList<>();
 		final TileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
-			final Tile tile = tiles.getTile(point);
-			retval.addAll(getUnits(tile, player));
+			if (point != null) {
+				final Tile tile = tiles.getTile(point);
+				retval.addAll(getUnits(tile, player));
+			}
 		}
 		return retval;
 	}
@@ -131,15 +135,26 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				mapTiles.getTile(dest).addFixture(unit);
 			}
 			selUnitLoc = dest;
-			firePropertyChange("point", point, dest);
-			firePropertyChange("cost", Integer.valueOf(0), Integer.valueOf(retval));
+			for (final SelectionChangeListener list : scListeners) {
+				list.selectedPointChanged(point, dest);
+			}
+			fireMovementCost(retval);
 			return retval;
 		} else {
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
 				ensureTerrain(pair.first().getTiles(), dest, destTile.getTerrain());
 			}
-			firePropertyChange("cost", Integer.valueOf(0), Integer.valueOf(1));
+			fireMovementCost(1);
 			throw new TraversalImpossibleException();
+		}
+	}
+	/**
+	 * Tell listeners of a movement cost.
+	 * @param cost how much the move cost
+	 */
+	private void fireMovementCost(final int cost) {
+		for (final MovementCostListener list : mcListeners) {
+			list.deduct(cost);
 		}
 	}
 	/**
@@ -264,8 +279,9 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final Point oldLoc = selUnitLoc;
 		selUnit = unit;
 		selUnitLoc = find(unit);
-		firePropertyChange("selected-unit", old, unit);
-		firePropertyChange("point", oldLoc, selUnitLoc);
+		for (final SelectionChangeListener list : scListeners) {
+			list.selectedPointChanged(oldLoc, selUnitLoc);
+		}
 	}
 	/**
 	 * @return the location of the currently selected unit.
@@ -273,5 +289,41 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	@Override
 	public Point getSelectedUnitLocation() {
 		return selUnitLoc;
+	}
+	/**
+	 * The list of selection-change-listeners to notify when the unit moves.
+	 */
+	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addSelectionChangeListener(final SelectionChangeListener list) {
+		scListeners.add(list);
+	}
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removeSelectionChangeListener(final SelectionChangeListener list) {
+		scListeners.remove(list);
+	}
+	/**
+	 * The list of movement-cost listeners.
+	 */
+	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+	/**
+	 * @param listener the listener to add
+	 */
+	@Override
+	public void addMovementCostListener(final MovementCostListener listener) {
+		mcListeners.add(listener);
+	}
+	/**
+	 * @param listener the listener to remove
+	 */
+	@Override
+	public void removeMovementCostListener(final MovementCostListener listener) {
+		mcListeners.remove(listener);
 	}
 }
