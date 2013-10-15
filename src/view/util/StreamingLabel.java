@@ -23,11 +23,11 @@ public class StreamingLabel extends JLabel {
 	/**
 	 * The source for the string.
 	 */
-	private final transient StringWriter string = new StringWriter();
+	private final StringWriter string = new StringWriter();
 	/**
 	 * The writer that can be printed to.
 	 */
-	private final transient PrintWriter writer = new PrintWriter(string) {
+	private final PrintWriter writer = new PrintWriter(string) {
 		/**
 		 * Print a string and update the label.
 		 * @param str the string to print

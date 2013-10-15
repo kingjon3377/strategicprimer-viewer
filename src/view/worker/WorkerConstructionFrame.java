@@ -163,7 +163,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 	/**
 	 * The ID factory to use to generate IDs.
 	 */
-	private final transient IDFactory idf;
+	private final IDFactory idf;
 	/**
 	 * Add a label and a field to a panel.
 	 * @param panel the panel to hold them

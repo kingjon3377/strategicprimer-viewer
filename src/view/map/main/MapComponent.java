@@ -43,15 +43,15 @@ public final class MapComponent extends JComponent implements MapGUI,
 	/**
 	 * The drawing helper, which does the actual drawing of the tiles.
 	 */
-	private transient TileDrawHelper helper;
+	private TileDrawHelper helper;
 	/**
 	 * The mouse listener that handles showing the terrain-changing popup menu.
 	 */
-	private final transient ComponentMouseListener cml;
+	private final ComponentMouseListener cml;
 	/**
 	 * The fixture filter (probably a menu).
 	 */
-	private final transient ZOrderFilter zof;
+	private final ZOrderFilter zof;
 	/**
 	 * Constructor.
 	 *

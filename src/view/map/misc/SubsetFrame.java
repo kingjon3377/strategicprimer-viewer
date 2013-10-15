@@ -87,7 +87,7 @@ public class SubsetFrame extends JFrame {
 	/**
 	 * The map reader we'll use.
 	 */
-	private final transient MapReaderAdapter reader = new MapReaderAdapter();
+	private final MapReaderAdapter reader = new MapReaderAdapter();
 	/**
 	 * The label that's the bulk of the GUI.
 	 */

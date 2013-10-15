@@ -292,7 +292,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	/**
 	 * The list of selection-change-listeners to notify when the unit moves.
 	 */
-	private final transient List<SelectionChangeListener> scListeners = new ArrayList<>();
+	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
 	/**
 	 * @param list a listener to add
 	 */
@@ -310,7 +310,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	/**
 	 * The list of movement-cost listeners.
 	 */
-	private final transient List<MovementCostListener> mcListeners = new ArrayList<>();
+	private final List<MovementCostListener> mcListeners = new ArrayList<>();
 	/**
 	 * @param listener the listener to add
 	 */

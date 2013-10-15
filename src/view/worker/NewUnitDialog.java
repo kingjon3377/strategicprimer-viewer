@@ -79,7 +79,7 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	/**
 	 * The factory to use to generate ID numbers.
 	 */
-	private final transient IDFactory idf;
+	private final IDFactory idf;
 	/**
 	 * The field to let the user give the name of the unit.
 	 */
