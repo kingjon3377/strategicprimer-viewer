@@ -33,10 +33,6 @@ public class AdvancementFrame extends JFrame {
 	 */
 	static final String NEW_WORKER_ACTION = "Add worker to selected unit ..."; // NOPMD
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(AdvancementFrame.class);
-	/**
 	 * Dividers start at half-way.
 	 */
 	private static final double HALF_WAY = .5;

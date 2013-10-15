@@ -12,6 +12,7 @@ import model.workermgmt.IWorkerTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
 import view.util.ErrorShower;
 import controller.map.misc.IDFactory;
 
@@ -29,7 +30,7 @@ public class WorkerCreationListener implements ActionListener,
 	/**
 	 * The logger to use for logging.
 	 */
-	private final Logger lgr; // NOPMD
+	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerCreationListener.class);
 	/**
 	 * The current unit. May be null, if nothing is selected.
 	 */
@@ -42,12 +43,10 @@ public class WorkerCreationListener implements ActionListener,
 	 * Constructor.
 	 * @param treeModel the tree model
 	 * @param idFac the ID factory to pass to the worker-creation window.
-	 * @param logger the logger to use for logging
 	 */
-	public WorkerCreationListener(final IWorkerTreeModel treeModel, final IDFactory idFac, final Logger logger) {
+	public WorkerCreationListener(final IWorkerTreeModel treeModel, final IDFactory idFac) {
 		tmodel = treeModel;
 		idf = idFac;
-		lgr = logger;
 	}
 	/**
 	 * @param result the new value to stop waiting on (the newly selected unit, or the newly created worker)
@@ -81,7 +80,7 @@ public class WorkerCreationListener implements ActionListener,
 	public void addNewWorker(final Worker worker) {
 		final Unit locSelUnit = selUnit;
 		if (locSelUnit == null) {
-			lgr.warning("New worker created when no unit selected");
+			LOGGER.warning("New worker created when no unit selected");
 			ErrorShower.showErrorDialog(null, "The new worker was not added to a unit because no unit was selected.");
 		} else {
 			tmodel.addUnitMember(locSelUnit, worker);
