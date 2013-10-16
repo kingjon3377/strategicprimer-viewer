@@ -5,7 +5,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -15,6 +14,7 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -47,7 +47,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 		try {
 			new DuplicateFixtureRemover().startDriver(args);
 		} catch (final DriverFailedException except) {
-			Logger.getLogger(DuplicateFixtureRemover.class.getName()).log(
+			TypesafeLogger.getLogger(DuplicateFixtureRemover.class).log(
 					Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}

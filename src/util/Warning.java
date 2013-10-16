@@ -66,14 +66,11 @@ public class Warning {
 		case Die:
 			throw new FatalWarningException(warning); // NOPMD
 		case Warn:
+			final Logger logger = TypesafeLogger.getLogger(warning.getStackTrace()[0].getClass());
 			if (warning instanceof SPFormatException) {
-				Logger.getLogger(
-						warning.getStackTrace()[0].getClass().getName())
-						.warning("Warning: " + warning.getMessage());
+				logger.warning("Warning: " + warning.getMessage());
 			} else {
-				Logger.getLogger(
-						warning.getStackTrace()[0].getClass().getName()).log(
-						Level.WARNING, "Warning: ", warning);
+				logger.log(Level.WARNING, "Warning: ", warning);
 			}
 			break;
 		case Ignore:

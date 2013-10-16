@@ -22,6 +22,7 @@ import model.viewer.ZOrderFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
@@ -384,8 +385,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(DrawHelperComparator.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(DrawHelperComparator.class);
 
 	/**
 	 * A driver method to compare the two helpers, and the two map-GUI

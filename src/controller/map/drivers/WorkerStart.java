@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
+import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
@@ -125,8 +126,8 @@ public class WorkerStart implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ViewerFrame.class);
 	/**
 	 * Error message fragment when file not found.
 	 */

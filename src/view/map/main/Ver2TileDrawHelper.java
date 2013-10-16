@@ -29,6 +29,7 @@ import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
 import util.ImageLoader;
 import util.IteratorWrapper;
+import util.TypesafeLogger;
 import view.util.Coordinate;
 
 /**
@@ -49,8 +50,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(Ver2TileDrawHelper.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(Ver2TileDrawHelper.class);
 	/**
 	 * A fallback image.
 	 */

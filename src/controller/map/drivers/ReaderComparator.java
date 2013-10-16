@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.cxml.CompactXMLReader;
@@ -42,8 +43,8 @@ public class ReaderComparator implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(ReaderComparator.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ReaderComparator.class);
 	/**
 	 * The first reader.
 	 */

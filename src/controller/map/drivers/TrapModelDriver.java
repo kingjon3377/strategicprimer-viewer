@@ -19,6 +19,7 @@ import model.map.PointFactory;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -43,8 +44,8 @@ public class TrapModelDriver implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(TrapModelDriver.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(TrapModelDriver.class);
 
 	/**
 	 * The possible commands.

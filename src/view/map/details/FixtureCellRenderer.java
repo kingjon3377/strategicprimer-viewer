@@ -22,6 +22,7 @@ import javax.swing.text.View;
 import model.map.HasImage;
 import model.map.TileFixture;
 import util.ImageLoader;
+import util.TypesafeLogger;
 
 /**
  * A cell renderer for tile-details GUIs.
@@ -93,8 +94,8 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(FixtureCellRenderer.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(FixtureCellRenderer.class);
 	/**
 	 * the default fixture icon.
 	 */

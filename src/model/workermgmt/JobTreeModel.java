@@ -20,6 +20,8 @@ import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
+
 /**
  * A model for a tree of a worker's Jobs and Skills.
  *
@@ -137,8 +139,8 @@ public class JobTreeModel implements TreeModel, UnitMemberListener,
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerTreeModel.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(WorkerTreeModel.class);
 
 	/**
 	 *

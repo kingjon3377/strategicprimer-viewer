@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
 import controller.map.drivers.AdvancementStart;
 import controller.map.drivers.ISPDriver;
 import controller.map.drivers.ISPDriver.DriverFailedException;
@@ -132,7 +133,7 @@ public class AppChooserFrame extends JFrame {
 		/**
 		 * Logger.
 		 */
-		private static final Logger LOGGER = Logger
-				.getLogger(AppChooserFrame.class.getName());
+		private static final Logger LOGGER = TypesafeLogger
+				.getLogger(AppChooserFrame.class);
 	}
 }

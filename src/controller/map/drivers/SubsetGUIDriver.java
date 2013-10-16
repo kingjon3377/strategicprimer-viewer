@@ -2,11 +2,11 @@ package controller.map.drivers;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
+import util.TypesafeLogger;
 import view.map.misc.SubsetFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
@@ -37,7 +37,7 @@ public class SubsetGUIDriver implements ISPDriver {
 		try {
 			new SubsetGUIDriver().startDriver(args);
 		} catch (final DriverFailedException except) {
-			Logger.getLogger(SubsetDriver.class.getName()).log(Level.SEVERE,
+			TypesafeLogger.getLogger(SubsetDriver.class).log(Level.SEVERE,
 					except.getMessage(), except.getCause());
 		}
 	}

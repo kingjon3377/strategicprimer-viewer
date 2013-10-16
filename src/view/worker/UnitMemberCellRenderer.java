@@ -25,6 +25,7 @@ import model.map.fixtures.mobile.worker.Job;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ImageLoader;
+import util.TypesafeLogger;
 
 /**
  * A cell renderer for the worker management tree.
@@ -132,8 +133,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(UnitMemberCellRenderer.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(UnitMemberCellRenderer.class);
 	/**
 	 * the default fixture icon.
 	 */

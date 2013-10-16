@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 
 import util.EqualsAny;
 import util.Pair;
+import util.TypesafeLogger;
 import view.util.AppChooserFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
@@ -174,8 +175,8 @@ public class AppStarter implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AppStarter.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(AppStarter.class);
 
 	/**
 	 * Entry point: start the driver.

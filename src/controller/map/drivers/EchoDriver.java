@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import util.TypesafeLogger;
 import util.Warning;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
@@ -34,8 +35,8 @@ public final class EchoDriver implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(EchoDriver.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(EchoDriver.class);
 
 	/**
 	 * Main.

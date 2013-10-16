@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
 import model.map.MapView;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.converter.ResolutionDecreaseConverter;
@@ -35,8 +36,8 @@ public final class ConverterDriver implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ConverterDriver.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ConverterDriver.class);
 	/**
 	 * The map reader we'll use.
 	 */

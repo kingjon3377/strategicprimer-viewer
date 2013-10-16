@@ -15,6 +15,8 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
+
 /**
  * A TreeModel implementation for a player's units and workers.
  *
@@ -25,8 +27,8 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerTreeModel.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(WorkerTreeModel.class);
 
 	/**
 	 * Constructor.

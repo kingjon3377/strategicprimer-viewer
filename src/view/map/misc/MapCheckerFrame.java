@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
 import controller.map.formatexceptions.MapVersionException;
@@ -28,8 +29,8 @@ public class MapCheckerFrame extends JFrame {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(MapCheckerFrame.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(MapCheckerFrame.class);
 	/**
 	 * The map reader we'll use.
 	 */

@@ -15,6 +15,7 @@ import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.Pair;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.ErrorShower;
 import controller.map.formatexceptions.SPFormatException;
@@ -30,8 +31,8 @@ public class MultiIOHandler extends IOHandler {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(MultiIOHandler.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(MultiIOHandler.class);
 
 	/**
 	 * Constructor.

@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.MapView;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
+import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
@@ -49,8 +50,8 @@ public final class ViewerStart implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ViewerFrame.class);
 	/**
 	 * Error message fragment when file not found.
 	 */

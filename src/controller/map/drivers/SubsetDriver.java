@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -57,7 +57,7 @@ public final class SubsetDriver implements ISPDriver {
 		try {
 			new SubsetDriver().startDriver(args);
 		} catch (final DriverFailedException except) {
-			Logger.getLogger(SubsetDriver.class.getName()).log(Level.SEVERE,
+			TypesafeLogger.getLogger(SubsetDriver.class).log(Level.SEVERE,
 					except.getMessage(), except.getCause());
 		}
 	}

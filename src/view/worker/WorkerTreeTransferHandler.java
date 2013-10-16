@@ -20,6 +20,8 @@ import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
+
 /**
  * A replacement transfer handler to make drag-and-drop work properly.
  *
@@ -34,8 +36,8 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(WorkerTreeTransferHandler.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(WorkerTreeTransferHandler.class);
 
 	/**
 	 * Constructor.

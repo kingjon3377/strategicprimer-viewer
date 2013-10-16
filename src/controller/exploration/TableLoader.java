@@ -23,6 +23,7 @@ import model.map.TileType;
 import util.ComparablePair;
 import util.Pair;
 import util.ResourceInputStream;
+import util.TypesafeLogger;
 
 /**
  * A class to load encounter tables from file.
@@ -33,8 +34,8 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(TableLoader.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(TableLoader.class);
 	/**
 	 * An error-message string. Pulled out because it's so long.
 	 */
@@ -134,8 +135,7 @@ public final class TableLoader { // NOPMD
 				line = reader.readLine();
 			}
 		} catch (final IOException except) {
-			Logger.getLogger(TableLoader.class.getName()).log(Level.SEVERE,
-					IO_ERR_STRING, except);
+			LOGGER.log(Level.SEVERE, IO_ERR_STRING, except);
 		}
 		return new QuadrantTable(rows, items);
 	}
@@ -154,8 +154,7 @@ public final class TableLoader { // NOPMD
 		while (line != null) {
 			final String[] array = line.split(" ", SPLIT_ONCE);
 			if (array.length < SPLIT_ONCE) {
-				Logger.getLogger(TableLoader.class.getName()).severe(
-						"Line with no blanks, continuing ...");
+				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
 				list.add(ComparablePair.of(Integer.valueOf(array[0]), array[1]));
 			}
@@ -178,8 +177,7 @@ public final class TableLoader { // NOPMD
 		while (line != null) {
 			final String[] array = line.split(" ", SPLIT_ONCE);
 			if (array.length < SPLIT_ONCE) {
-				Logger.getLogger(TableLoader.class.getName()).severe(
-						"Line with no blanks, continuing ...");
+				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
 				list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
 			}

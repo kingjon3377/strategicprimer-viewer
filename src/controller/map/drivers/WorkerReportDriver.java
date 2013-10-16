@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.ViewerFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -32,8 +33,8 @@ public class WorkerReportDriver implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ViewerFrame.class);
 
 	/**
 	 * Run the driver.

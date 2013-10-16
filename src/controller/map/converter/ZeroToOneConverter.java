@@ -19,6 +19,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import util.IteratorWrapper;
+import util.TypesafeLogger;
 
 /**
  * A class to convert a version-0 map to a version-1 map. As no reader currently
@@ -36,8 +37,8 @@ public class ZeroToOneConverter {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(ZeroToOneConverter.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ZeroToOneConverter.class);
 
 	/**
 	 * @param stream a stream representing a SP map, format version 0

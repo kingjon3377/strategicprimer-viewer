@@ -20,6 +20,7 @@ import model.viewer.ViewerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
@@ -47,8 +48,8 @@ public class IOHandler implements ActionListener {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(IOHandler.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(IOHandler.class);
 	/**
 	 * File chooser.
 	 */

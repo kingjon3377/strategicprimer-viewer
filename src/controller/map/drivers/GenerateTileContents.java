@@ -16,6 +16,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
 import util.SingletonRandom;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.exploration.TableLoader;
@@ -112,8 +113,8 @@ public final class GenerateTileContents {
 	 * @param args the map to work from, the row, and the column
 	 */
 	public static void main(final String[] args) {
-		final Logger logger = Logger.getLogger(GenerateTileContents.class
-				.getName());
+		final Logger logger = TypesafeLogger
+				.getLogger(GenerateTileContents.class);
 		if (args.length < 3) {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {

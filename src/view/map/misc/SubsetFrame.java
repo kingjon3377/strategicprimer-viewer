@@ -20,6 +20,7 @@ import model.map.SPMap;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
 import controller.map.formatexceptions.MapVersionException;
@@ -92,8 +93,8 @@ public class SubsetFrame extends JFrame {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(MapCheckerFrame.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(MapCheckerFrame.class);
 	/**
 	 * The map reader we'll use.
 	 */

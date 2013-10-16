@@ -21,6 +21,7 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -45,8 +46,8 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(QueryCLI.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(QueryCLI.class);
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */

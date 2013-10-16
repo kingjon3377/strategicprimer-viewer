@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import util.TypesafeLogger;
 import util.Warning;
 import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -32,8 +33,8 @@ public final class MapChecker implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(MapChecker.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(MapChecker.class);
 	/**
 	 * The map reader we'll use.
 	 */

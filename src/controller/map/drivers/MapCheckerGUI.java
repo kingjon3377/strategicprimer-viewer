@@ -3,6 +3,7 @@ package controller.map.drivers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import util.TypesafeLogger;
 import view.map.misc.MapCheckerFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 
@@ -25,8 +26,8 @@ public class MapCheckerGUI implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(MapCheckerGUI.class
-			.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(MapCheckerGUI.class);
 
 	/**
 	 * @param args the list of filenames to check

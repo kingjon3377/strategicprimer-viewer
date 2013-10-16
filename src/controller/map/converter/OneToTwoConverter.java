@@ -37,6 +37,7 @@ import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
 import util.Pair;
+import util.TypesafeLogger;
 import controller.exploration.TableLoader;
 import controller.map.misc.IDFactory;
 
@@ -69,8 +70,8 @@ public class OneToTwoConverter { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger
-			.getLogger(OneToTwoConverter.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(OneToTwoConverter.class);
 	/**
 	 * The number of subtiles per tile on each axis.
 	 */
