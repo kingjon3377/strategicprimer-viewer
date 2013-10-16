@@ -180,6 +180,9 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 			final Coordinate coordinates, final Coordinate dimensions) {
 		final Graphics context = pen.create(coordinates.x, coordinates.y,
 				dimensions.x, dimensions.y);
+		if (context == null) {
+			throw new IllegalStateException("pen.create() created null Graphics");
+		}
 		try {
 			drawTile(context, tile, dimensions.x, dimensions.y);
 		} finally {

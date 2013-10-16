@@ -97,8 +97,14 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.getTiles()) {
-				helper.drawTile(image.createGraphics(), spmap.getTile(point),
-						tsize, tsize);
+				if (point == null) {
+					continue;
+				}
+				final Graphics pen = image.createGraphics();
+				if (pen == null) {
+					throw new IllegalStateException("image.createGraphics() created null Graphics");
+				}
+				helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
 			}
 		}
 	}
@@ -138,7 +144,14 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.getTiles()) {
-				helper.drawTile(image.createGraphics(), spmap.getTile(point),
+				if (point == null) {
+					continue;
+				}
+				final Graphics pen = image.createGraphics();
+				if (pen == null) {
+					throw new IllegalStateException("image.createGraphics() created null Graphics");
+				}
+				helper.drawTile(pen, spmap.getTile(point),
 						PointFactory.coordinate(point.row * tsize, point.col
 								* tsize), dimensions);
 			}
@@ -162,6 +175,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
+			if (pen == null) {
+				throw new IllegalStateException("image.createGraphics() created null Graphics");
+			}
 			thirdBody(helper, pen, spmap, tsize);
 		}
 		final long end = System.nanoTime();
@@ -200,6 +216,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
+			if (pen == null) {
+				throw new IllegalStateException("image.createGraphics() created null Graphics");
+			}
 			fourthBody(helper, pen, spmap, tsize);
 		}
 		final long end = System.nanoTime();
@@ -258,6 +277,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
+			if (pen == null) {
+				throw new IllegalStateException("image.createGraphics() created null Graphics");
+			}
 			fifthOneBody(spmap, helper, pen, tsize);
 		}
 		final long end = System.nanoTime();
@@ -302,6 +324,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
+			if (pen == null) {
+				throw new IllegalStateException("image.createGraphics() created null Graphics");
+			}
 			fifthTwoBody(helper, pen, spmap, tsize);
 		}
 		final long end = System.nanoTime();
