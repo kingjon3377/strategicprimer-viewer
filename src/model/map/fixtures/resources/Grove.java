@@ -1,11 +1,11 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.

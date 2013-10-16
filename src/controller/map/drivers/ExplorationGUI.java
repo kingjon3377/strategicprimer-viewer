@@ -42,7 +42,7 @@ public class ExplorationGUI implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new ExplorationGUI().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			System.err.print(except.getMessage());
 			System.err.println(':');
 			System.err.println(except.getCause().getLocalizedMessage());
@@ -96,11 +96,11 @@ public class ExplorationGUI implements ISPDriver {
 			SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
 					model, new MultiIOHandler(model, new FilteredFileChooser(
 							".", new MapFileFilter())))));
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading maps", except);
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in map file", except);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file",
 					except);
 		}

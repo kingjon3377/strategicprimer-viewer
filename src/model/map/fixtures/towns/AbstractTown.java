@@ -1,12 +1,12 @@
 package model.map.fixtures.towns;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An abstract superclass for towns etc.

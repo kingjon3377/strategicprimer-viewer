@@ -57,7 +57,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	public Iterable<Pair<IMap, String>> getAllMaps() {
 		final List<Pair<IMap, String>> retval = new ArrayList<>();
 		retval.add(Pair.of((IMap) getMap(), getMapFilename()));
-		for (Pair<IMap, String> pair : getSubordinateMaps()) {
+		for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 			retval.add(pair);
 		}
 		return retval;

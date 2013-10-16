@@ -101,7 +101,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 			retval.addChild(ReaderAdapter.ADAPTER.write(stats));
 		}
 		retval.addImageAttribute(obj);
-		for (Job job : obj) {
+		for (final Job job : obj) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(job));
 		}
 		return retval;

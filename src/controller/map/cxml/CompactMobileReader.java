@@ -141,7 +141,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (MobileType mt : MobileType.values()) {
+		for (final MobileType mt : MobileType.values()) {
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);
 		}

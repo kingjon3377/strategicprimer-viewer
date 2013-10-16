@@ -62,7 +62,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		final Iterable<TreeNode> iter = new IteratorWrapper<>(
 				new EnumerationWrapper<TreeNode>(oldNode.children()));
 		int index = -1;
-		for (TreeNode node : iter) {
+		for (final TreeNode node : iter) {
 			if (node instanceof UnitMemberNode
 					&& ((UnitMemberNode) node).getUserObject().equals(member)) {
 				index = oldNode.getIndex(node);

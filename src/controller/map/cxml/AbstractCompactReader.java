@@ -6,7 +6,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.HasImage;
-
 import util.EqualsAny;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
@@ -50,7 +49,7 @@ public abstract class AbstractCompactReader {
 			sbuild.append(" on line ");
 			sbuild.append(line);
 			sbuild.append(", expected one of the following: ");
-			for (String tag : tags) {
+			for (final String tag : tags) {
 				sbuild.append(tag);
 				sbuild.append(", ");
 			}

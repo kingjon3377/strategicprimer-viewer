@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import model.map.HasName;
+
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.HasName;
 import util.ArraySet;
 
 /**

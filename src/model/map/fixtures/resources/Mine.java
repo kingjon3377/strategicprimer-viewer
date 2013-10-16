@@ -1,12 +1,12 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.towns.TownStatus;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A mine---a source of mineral resources.

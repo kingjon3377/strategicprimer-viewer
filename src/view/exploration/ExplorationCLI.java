@@ -88,7 +88,7 @@ public class ExplorationCLI {
 	private void swearVillages(final Point point) {
 		final Unit visitor = model.getSelectedUnit();
 		if (visitor != null) {
-			for (Pair<IMap, String> mapPair : model.getAllMaps()) {
+			for (final Pair<IMap, String> mapPair : model.getAllMaps()) {
 				final IMap map = mapPair.first();
 				for (final TileFixture fix : map.getTile(point)) {
 					if (fix instanceof Village) {
@@ -126,14 +126,14 @@ public class ExplorationCLI {
 		int cost; // NOPMD
 		try {
 			cost = model.move(direction);
-		} catch (TraversalImpossibleException except) {
+		} catch (final TraversalImpossibleException except) {
 			SystemOut.SYS_OUT.printC(
 					"That direction is impassable; we've made sure ").println(
 					"all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
 		final Point dPoint = model.getDestination(point, direction);
-		for (TileFixture fix : model.getMap().getTile(dPoint)) {
+		for (final TileFixture fix : model.getMap().getTile(dPoint)) {
 			if (fix == null) {
 				continue;
 			} else if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
@@ -161,10 +161,10 @@ public class ExplorationCLI {
 			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
 		}
-		for (TileFixture fix : constants) {
+		for (final TileFixture fix : constants) {
 			if (fix != null) {
 				SystemOut.SYS_OUT.println(fix);
-				for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
+				for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
 					final IMap map = pair.first();
 					map.getTile(dPoint).addFixture(fix);
 				}

@@ -9,14 +9,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.PlayerCollection;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A pop-up menu to let the user edit a fixture.

@@ -46,7 +46,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new DuplicateFixtureRemover().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			Logger.getLogger(DuplicateFixtureRemover.class.getName()).log(
 					Level.SEVERE, except.getMessage(), except.getCause());
 		}
@@ -61,7 +61,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param out the stream to report IDs of removed fixtures on.
 	 */
 	public static void filter(final IMap map, final PrintStream out) {
-		for (Point point : map.getTiles()) {
+		for (final Point point : map.getTiles()) {
 			filter(map.getTile(point), out);
 		}
 	}
@@ -77,9 +77,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	public static void filter(final Tile tile, final PrintStream out) {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
-		for (TileFixture fix : tile) {
+		for (final TileFixture fix : tile) {
 			boolean already = false;
-			for (TileFixture keptFixture : fixtures) {
+			for (final TileFixture keptFixture : fixtures) {
 				if ((fix instanceof Unit && ((Unit) fix).getKind().contains(
 						"TODO"))
 						|| fix instanceof CacheFixture) {
@@ -98,7 +98,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 				fixtures.add(fix);
 			}
 		}
-		for (TileFixture fix : toRemove) {
+		for (final TileFixture fix : toRemove) {
 			tile.removeFixture(fix);
 		}
 	}
@@ -123,17 +123,17 @@ public class DuplicateFixtureRemover implements ISPDriver {
 				final IMap map = reader.readMap(filename, Warning.INSTANCE);
 				filter(map, SystemOut.SYS_OUT);
 				reader.write(filename, map);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				System.err.print("I/O error reading from or writing to ");
 				System.err.println(filename);
 				System.err.println(except.getLocalizedMessage());
 				continue;
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				System.err.print("XML parsing error reading ");
 				System.err.println(filename);
 				System.err.println(except.getLocalizedMessage());
 				continue;
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				System.err.print("SP format error in ");
 				System.err.println(filename);
 				System.err.println(except.getLocalizedMessage());

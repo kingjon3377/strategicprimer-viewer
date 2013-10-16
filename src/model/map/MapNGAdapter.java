@@ -4,12 +4,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.EnumSet;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import view.util.NullStream;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import view.util.NullStream;
 
 /**
  * An implementation of IMapNG that is, under the hood, just a MapView.
@@ -43,7 +44,7 @@ public class MapNGAdapter implements IMapNG {
 	public boolean isSubset(final IMapNG obj, final PrintWriter out) {
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
-			for (Player player : obj.players()) {
+			for (final Player player : obj.players()) {
 				if (!state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
@@ -51,7 +52,7 @@ public class MapNGAdapter implements IMapNG {
 					out.println(player);
 				}
 			}
-			for (Point point : obj.locations()) {
+			for (final Point point : obj.locations()) {
 				if (!isTileSubset(obj, out, point)) {
 					retval = false;
 				}
@@ -99,7 +100,7 @@ public class MapNGAdapter implements IMapNG {
 			out.print(point);
 			out.println(", may be representation error");
 		} else {
-			for (TileFixture fix : obj.getOtherFixtures(point)) {
+			for (final TileFixture fix : obj.getOtherFixtures(point)) {
 				if (!state.getTile(point).getContents().contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
@@ -137,10 +138,10 @@ public class MapNGAdapter implements IMapNG {
 	private static boolean areRiversSubset(final Iterable<River> ours,
 			final Iterable<River> theirs) {
 		final EnumSet<River> theirRivers = EnumSet.noneOf(River.class);
-		for (River river : theirs) {
+		for (final River river : theirs) {
 			theirRivers.add(river);
 		}
-		for (River river : ours) {
+		for (final River river : ours) {
 			theirRivers.remove(river);
 		}
 		return !theirRivers.isEmpty();
@@ -194,7 +195,7 @@ public class MapNGAdapter implements IMapNG {
 				&& TileType.Mountain.equals(getBaseTerrain(location))) {
 			return true; // NOPMD
 		}
-		for (TileFixture fix : state.getTile(location)) {
+		for (final TileFixture fix : state.getTile(location)) {
 			if (fix instanceof Mountain) {
 				return true; // NOPMD
 			}
@@ -223,7 +224,7 @@ public class MapNGAdapter implements IMapNG {
 	@Nullable
 	public Forest getForest(final Point location) {
 		Forest retval = null;
-		for (TileFixture fix : state.getTile(location)) {
+		for (final TileFixture fix : state.getTile(location)) {
 			if (fix instanceof Forest) {
 				if (retval == null || retval.isRows()) {
 					retval = (Forest) fix;
@@ -275,7 +276,7 @@ public class MapNGAdapter implements IMapNG {
 	@Nullable
 	public Ground getGround(final Point location) {
 		Ground retval = null;
-		for (TileFixture fix : state.getTile(location)) {
+		for (final TileFixture fix : state.getTile(location)) {
 			if (fix instanceof Ground) {
 				if (retval == null || retval.isExposed()) {
 					retval = (Ground) fix;

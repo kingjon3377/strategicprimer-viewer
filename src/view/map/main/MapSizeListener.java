@@ -3,12 +3,12 @@ package view.map.main;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.MapDimensions;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A listener to adjust the number of displayed tiles based on the area to

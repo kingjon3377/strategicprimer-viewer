@@ -12,14 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
 import model.viewer.TileTypeFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ArraySet;
 
 /**
@@ -79,7 +80,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 			if (fix instanceof RiverFixture) {
 				if (hasRiver()) {
 					final RiverFixture rivers = getRivers();
-					for (River river : (RiverFixture) fix) {
+					for (final River river : (RiverFixture) fix) {
 						rivers.addRiver(river);
 					}
 					return true; // NOPMD
@@ -141,7 +142,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 		// This can get big; fortunately it's rarely called. Assume each item on
 		// the tile is half a K.
 		final String terrain = getTerrain().toString();
-		int len = terrain.length() + 12 + (contents.size() * 512);
+		final int len = terrain.length() + 12 + (contents.size() * 512);
 		final StringBuilder sbuilder = new StringBuilder(len).append(terrain);
 		sbuilder.append(". Contents:");
 		for (final TileFixture fix : contents) {
@@ -260,7 +261,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 				}
 			}
 		}
-		for (TileFixture fix : temp) {
+		for (final TileFixture fix : temp) {
 			retval = false;
 			out.print("Extra fixture:\t");
 			out.println(fix.toString());

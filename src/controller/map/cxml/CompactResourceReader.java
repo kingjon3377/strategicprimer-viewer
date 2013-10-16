@@ -142,7 +142,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 	private static final Set<String> SUPP_TAGS;
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (HarvestableType mt : HarvestableType.values()) {
+		for (final HarvestableType mt : HarvestableType.values()) {
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);
 		}

@@ -3,8 +3,6 @@ package model.map.fixtures.mobile;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasKind;
@@ -14,6 +12,9 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ArraySet;
 
 /**

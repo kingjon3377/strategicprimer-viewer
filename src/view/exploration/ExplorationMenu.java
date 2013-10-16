@@ -9,13 +9,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.IExplorationModel;
 import model.map.IMap;
 import model.map.MapView;
 import model.map.SPMap;
 import model.viewer.ViewerModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Pair;
 import view.map.main.ViewerFrame;
 import view.util.DriverQuit;

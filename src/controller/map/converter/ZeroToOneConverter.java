@@ -267,7 +267,7 @@ public class ZeroToOneConverter {
 				continue;
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error dealing with file " + arg,
 						except);
 			}

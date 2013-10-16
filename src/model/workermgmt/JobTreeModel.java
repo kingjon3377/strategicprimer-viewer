@@ -168,7 +168,7 @@ public class JobTreeModel implements TreeModel, UnitMemberListener,
 		if (parent instanceof Worker || parent instanceof Job) {
 			int index = 0;
 			assert parent != null;
-			for (Object item : (Iterable<?>) parent) {
+			for (final Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
 					return index;
 				}

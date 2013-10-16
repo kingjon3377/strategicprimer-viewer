@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
@@ -16,6 +14,8 @@ import model.map.Player;
 import model.map.Subsettable;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but

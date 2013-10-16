@@ -96,7 +96,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 		if (!job.equals(newValue)) {
 			clear();
 			job = newValue == null ? NULL_JOB : newValue;
-			for (Skill skill : job) {
+			for (final Skill skill : job) {
 				addElement(skill);
 			}
 			final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer

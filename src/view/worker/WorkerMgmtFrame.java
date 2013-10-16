@@ -255,7 +255,7 @@ public class WorkerMgmtFrame extends JFrame {
 				try (final FileWriter writer = new FileWriter(
 						chooser.getSelectedFile())) {
 					writer.append(exp.createStrategy());
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					LOGGER.log(Level.SEVERE, "I/O error exporting strategy",
 							except);
 				}
@@ -310,7 +310,7 @@ public class WorkerMgmtFrame extends JFrame {
 				builder.append("* ");
 				builder.append(entry.getKey());
 				builder.append(":\n");
-				for (Unit unit : entry.getValue()) {
+				for (final Unit unit : entry.getValue()) {
 					builder.append("  - ");
 					builder.append(unit.getName());
 					builder.append(unitMembers(unit));

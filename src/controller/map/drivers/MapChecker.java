@@ -45,7 +45,7 @@ public final class MapChecker implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new MapChecker().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}

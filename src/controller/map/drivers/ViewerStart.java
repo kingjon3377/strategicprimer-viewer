@@ -70,7 +70,7 @@ public final class ViewerStart implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new ViewerStart().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 			ErrorShower.showErrorDialog(null, except.getMessage());
 		}
@@ -90,7 +90,7 @@ public final class ViewerStart implements ISPDriver {
 			try {
 				final String filename = new FileChooser("").getFilename();
 				startDriver(filename);
-			} catch (ChoiceInterruptedException except) {
+			} catch (final ChoiceInterruptedException except) {
 				SystemOut.SYS_OUT
 						.println("Choice was interrupted or user declined to choose, aborting ...");
 				return;

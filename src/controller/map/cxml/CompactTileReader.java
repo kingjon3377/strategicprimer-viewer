@@ -114,7 +114,7 @@ public final class CompactTileReader extends AbstractCompactReader implements
 			final PlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
-		for (AbstractCompactReader item : readers) {
+		for (final AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
 				return ((CompactReader<? extends TileFixture>) item).read(
 						element, stream, players, warner, idFactory);
@@ -243,7 +243,7 @@ public final class CompactTileReader extends AbstractCompactReader implements
 	 */
 	public static void writeRivers(final Writer out,
 			final Iterable<River> iter, final int indent) throws IOException {
-		for (River river : iter) {
+		for (final River river : iter) {
 			writeRiver(out, river, indent);
 		}
 	}

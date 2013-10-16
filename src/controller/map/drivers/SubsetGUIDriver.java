@@ -36,7 +36,7 @@ public class SubsetGUIDriver implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new SubsetGUIDriver().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			Logger.getLogger(SubsetDriver.class.getName()).log(Level.SEVERE,
 					except.getMessage(), except.getCause());
 		}
@@ -58,13 +58,13 @@ public class SubsetGUIDriver implements ISPDriver {
 		SwingUtilities.invokeLater(new WindowThread(frame));
 		try {
 			frame.loadMain(args[0]);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
 					+ args[0], except);
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
 					+ args[0], except);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
 					+ args[0], except);
 		}

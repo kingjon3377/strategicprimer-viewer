@@ -51,7 +51,7 @@ public final class ConverterDriver implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new ConverterDriver().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}

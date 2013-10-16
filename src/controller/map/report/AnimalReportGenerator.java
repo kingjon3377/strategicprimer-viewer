@@ -68,7 +68,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final StringBuilder builder = new StringBuilder(16384).append(
 					"<h4>Animal sightings or encounters</h4>\n").append(
 					OPEN_LIST);
-			for (Entry<String, List<Point>> entry : sightings.entrySet()) {
+			for (final Entry<String, List<Point>> entry : sightings.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
 						.append(": at ").append(pointCSL(entry.getValue()))
 						.append(CLOSE_LIST_ITEM);
@@ -119,7 +119,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		} else {
 			final AbstractReportNode retval = new SectionListReportNode(4,
 					"Animal sightings or encounters");
-			for (Entry<String, List<Point>> entry : sightings.entrySet()) {
+			for (final Entry<String, List<Point>> entry : sightings.entrySet()) {
 				retval.add(new SimpleReportNode(entry.getKey(), ": at ",
 						pointCSL(entry.getValue())));
 			}

@@ -118,7 +118,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	@Override
 	public boolean addAll(final Collection<? extends T> coll) {
 		boolean retval = false;
-		for (T obj : coll) {
+		for (final T obj : coll) {
 			if (add(obj)) {
 				retval = true;
 			}

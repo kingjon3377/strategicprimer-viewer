@@ -83,7 +83,7 @@ public class ViewReader implements INodeHandler<MapView> {
 	private static StartElement getFirstStartElement(
 			final Iterable<XMLEvent> stream, final int line)
 			throws SPFormatException {
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				return event.asStartElement();
 			}

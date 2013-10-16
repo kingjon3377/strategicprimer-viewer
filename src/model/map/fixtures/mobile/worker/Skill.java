@@ -2,9 +2,9 @@ package model.map.fixtures.mobile.worker;
 
 import java.io.Serializable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasName;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A skill a worker has experience or training in.

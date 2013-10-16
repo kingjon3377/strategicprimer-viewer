@@ -1,9 +1,9 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A possible replacement for IMap, aiming to completely hide the implementation

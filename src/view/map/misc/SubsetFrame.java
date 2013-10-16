@@ -172,7 +172,7 @@ public class SubsetFrame extends JFrame {
 					+ "; see following error message for details", ERROR_COLOR);
 			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			throw except;
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			printParagraph(
 					"ERROR: SP map format error at line " + except.getLine()
 							+ " in file " + arg
@@ -180,7 +180,7 @@ public class SubsetFrame extends JFrame {
 					ERROR_COLOR);
 			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			throw except;
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			printParagraph("ERROR: I/O error reading file " + arg, ERROR_COLOR);
 			throw except;
 		}

@@ -1,12 +1,12 @@
 package model.map.fixtures.terrain;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A forest on a tile.

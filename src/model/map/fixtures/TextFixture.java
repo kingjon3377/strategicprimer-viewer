@@ -1,10 +1,10 @@
 package model.map.fixtures;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can

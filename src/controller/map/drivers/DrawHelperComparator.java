@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.Point;
@@ -21,6 +19,9 @@ import model.map.TileFixture;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
 import model.viewer.ZOrderFilter;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Warning;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
@@ -395,7 +396,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	public static void main(final String[] args) { // NOPMD
 		try {
 			new DrawHelperComparator().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
@@ -540,7 +541,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final MapReaderAdapter adapter = new MapReaderAdapter();
 		final int reps = 50; // NOPMD
 		final Warning warner = new Warning(Warning.Action.Ignore);
-		for (String filename : args) {
+		for (final String filename : args) {
 			// ESCA-JAVA0177:
 			final IMap map; // NOPMD
 			try {

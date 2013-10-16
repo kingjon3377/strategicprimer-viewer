@@ -65,7 +65,7 @@ public class ReaderComparator implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new ReaderComparator().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
@@ -113,10 +113,10 @@ public class ReaderComparator implements ISPDriver {
 		final String contents; // NOPMD
 		try {
 			contents = readIntoBuffer(arg);
-		} catch (FileNotFoundException except) {
+		} catch (final FileNotFoundException except) {
 			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			return; // NOPMD
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading file " + arg, except);
 			return;
 		}

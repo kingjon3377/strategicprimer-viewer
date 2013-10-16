@@ -6,10 +6,10 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to transfer a UnitMember.

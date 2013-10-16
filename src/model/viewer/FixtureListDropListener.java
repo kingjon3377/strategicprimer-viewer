@@ -168,13 +168,13 @@ public class FixtureListDropListener implements DropTargetListener {
 						if (trans != null) {
 							handleDrop(trans);
 						}
-					} catch (UnsupportedFlavorException except) {
+					} catch (final UnsupportedFlavorException except) {
 						LOGGER.log(
 								Level.SEVERE,
 								"Unsupported flavor when it said it was supported",
 								except);
 						continue;
-					} catch (IOException except) {
+					} catch (final IOException except) {
 						LOGGER.log(Level.SEVERE, "I/O error getting the data",
 								except);
 						continue;
@@ -209,7 +209,7 @@ public class FixtureListDropListener implements DropTargetListener {
 			}
 		} else if (EqualsAny
 				.equalsAny(CurriedFixtureTransferable.FLAVOR, dflav)) {
-			for (Transferable item : (List<Transferable>) trans
+			for (final Transferable item : (List<Transferable>) trans
 					.getTransferData(CurriedFixtureTransferable.FLAVOR)) {
 				if (item != null) {
 					handleDrop(item);

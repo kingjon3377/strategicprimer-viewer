@@ -60,7 +60,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	private static List<Unit> getUnits(final Iterable<? super Unit> iter,
 			final Player player) {
 		final List<Unit> retval = new ArrayList<>();
-		for (Object obj : iter) {
+		for (final Object obj : iter) {
 			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
 				retval.add((Unit) obj);
 			} else if (obj instanceof Fortress) {

@@ -193,7 +193,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		if (obj.iterator().hasNext() || obj.getStats() != null) {
 			out.append(">\n");
 			writeStats(out, obj.getStats(), indent + 1);
-			for (Job job : obj) {
+			for (final Job job : obj) {
 				writeJob(out, job, indent + 1);
 			}
 			out.append(indent(indent));
@@ -254,7 +254,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		out.append('"');
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
-			for (Skill skill : obj) {
+			for (final Skill skill : obj) {
 				writeSkill(out, skill, indent + 1);
 			}
 			out.append(indent(indent));

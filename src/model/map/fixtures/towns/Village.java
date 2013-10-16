@@ -1,11 +1,11 @@
 package model.map.fixtures.towns;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A village on the map.

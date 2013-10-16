@@ -157,7 +157,7 @@ public final class QueryCLI implements ISPDriver {
 		final List<TileFixture> fixtures = CLIHelper.toList(tile);
 		final List<Ground> ground = new ArrayList<>();
 		final List<Forest> forests = new ArrayList<>();
-		for (TileFixture fix : fixtures) {
+		for (final TileFixture fix : fixtures) {
 			if (fix instanceof Ground) {
 				ground.add((Ground) fix);
 			} else if (fix instanceof Forest) {
@@ -166,13 +166,13 @@ public final class QueryCLI implements ISPDriver {
 		}
 		if (!ground.isEmpty()) {
 			ostream.println("Kind(s) of ground (rock) on the tile:");
-			for (Ground fix : ground) {
+			for (final Ground fix : ground) {
 				ostream.println(fix);
 			}
 		}
 		if (!forests.isEmpty()) {
 			ostream.println("Kind(s) of forests on the tile:");
-			for (Forest fix : forests) {
+			for (final Forest fix : forests) {
 				ostream.println(fix);
 			}
 		}
@@ -203,7 +203,7 @@ public final class QueryCLI implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new QueryCLI().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}

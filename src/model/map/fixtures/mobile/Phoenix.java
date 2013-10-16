@@ -1,11 +1,11 @@
 package model.map.fixtures.mobile;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A phoenix. TODO: should probably be a unit, or something.

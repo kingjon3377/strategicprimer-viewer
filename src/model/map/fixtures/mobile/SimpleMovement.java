@@ -81,7 +81,7 @@ public final class SimpleMovement {
 				TileType.TemperateForest)) {
 			return true; // NOPMD
 		} else {
-			for (TileFixture fix : tile) {
+			for (final TileFixture fix : tile) {
 				if (fix instanceof Forest) {
 					return true; // NOPMD
 				}
@@ -99,7 +99,7 @@ public final class SimpleMovement {
 		if (TileType.Mountain.equals(tile.getTerrain())) {
 			return true; // NOPMD
 		} else {
-			for (TileFixture fix : tile) {
+			for (final TileFixture fix : tile) {
 				if (fix instanceof Mountain || fix instanceof Hill) {
 					return true; // NOPMD
 				}

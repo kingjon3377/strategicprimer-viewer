@@ -43,7 +43,7 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 		player = newPlayer;
 		clear();
 		final List<Unit> units = model.getUnits(player);
-		for (Unit unit : units) {
+		for (final Unit unit : units) {
 			addElement(unit);
 		}
 	}

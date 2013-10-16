@@ -108,7 +108,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 			final PlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
-		for (AbstractCompactReader item : readers) {
+		for (final AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
 				final Object retval = ((CompactReader<?>) item).read(element,
 						stream, players, warner, idFactory);

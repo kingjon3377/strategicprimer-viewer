@@ -104,7 +104,7 @@ public class HarvestableComparator implements Comparator<HarvestableFixture>,
 	 *         if they all are.
 	 */
 	private static int repeatedCompare(final IntPair... pairs) {
-		for (IntPair pair : pairs) {
+		for (final IntPair pair : pairs) {
 			if (pair.first == pair.second) {
 				continue;
 			} else {

@@ -93,7 +93,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @param list the list of items to remove
 	 */
 	public void remove(final List<TileFixture> list) {
-		for (TileFixture fix : list) {
+		for (final TileFixture fix : list) {
 			if (fix instanceof TileTypeFixture) {
 				tile.setTerrain(TileType.NotVisible);
 				removeElement(fix);

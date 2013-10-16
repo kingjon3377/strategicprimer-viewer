@@ -56,7 +56,7 @@ public final class SubsetDriver implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new SubsetDriver().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			Logger.getLogger(SubsetDriver.class.getName()).log(Level.SEVERE,
 					except.getMessage(), except.getCause());
 		}
@@ -80,13 +80,13 @@ public final class SubsetDriver implements ISPDriver {
 		try {
 			mainMap = reader.readMap(args[0], new Warning(// NOPMD
 					Warning.Action.Ignore));
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
 					+ args[0], except);
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
 					+ args[0], except);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
 					+ args[0], except);
 		}
@@ -135,13 +135,13 @@ public final class SubsetDriver implements ISPDriver {
 		final IMap map; // NOPMD
 		try {
 			map = reader.readMap(filename, new Warning(Warning.Action.Ignore));
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
 		}

@@ -138,7 +138,7 @@ public final class CompactMapReader extends AbstractCompactReader implements
 	private static StartElement getFirstStartElement(
 			final IteratorWrapper<XMLEvent> stream, final int line)
 			throws SPFormatException {
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				return event.asStartElement();
 			}
@@ -215,7 +215,7 @@ public final class CompactMapReader extends AbstractCompactReader implements
 					.getPlayerId()));
 		}
 		out.append("\">\n");
-		for (Player player : obj.getPlayers()) {
+		for (final Player player : obj.getPlayers()) {
 			CompactPlayerReader.READER.write(out, player, indent + 1);
 		}
 		for (int i = 0; i < dim.rows; i++) {

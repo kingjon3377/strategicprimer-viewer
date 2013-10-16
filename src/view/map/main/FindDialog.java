@@ -140,7 +140,7 @@ public class FindDialog extends JDialog implements ActionListener {
 		}
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				map, true, !backwards.isSelected(), !vertically.isSelected()));
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			if (point == null) {
 				continue;
 			}
@@ -183,7 +183,7 @@ public class FindDialog extends JDialog implements ActionListener {
 						.getOwner().getPlayerId() == idNum)))) {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable<?>) {
-			for (IFixture member : (FixtureIterable<?>) fix) {
+			for (final IFixture member : (FixtureIterable<?>) fix) {
 				if (matches(pattern, idNum, member)) {
 					return true; // NOPMD
 				}

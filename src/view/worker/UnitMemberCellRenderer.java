@@ -17,12 +17,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ImageLoader;
 
 /**
@@ -76,7 +77,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			if (worker.iterator().hasNext()) {
 				builder.append(" (");
 				boolean notFirst = false;
-				for (Job job : worker) {
+				for (final Job job : worker) {
 					if (notFirst) {
 						builder.append(", ");
 					} else {

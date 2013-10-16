@@ -83,7 +83,7 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		hours.addActionListener(this);
 		two.add(new ListenedButton("Cancel", this));
 		add(two);
-		for (CompletionSource source : sources) {
+		for (final CompletionSource source : sources) {
 			source.addCompletionListener(this);
 		}
 		setMinimumSize(new Dimension(200, 40));

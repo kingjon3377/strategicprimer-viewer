@@ -2,8 +2,6 @@ package model.exploration;
 
 import java.util.List;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeSource;
 import model.map.Player;
@@ -12,6 +10,8 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.misc.IMultiMapModel;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A model for exploration drivers.

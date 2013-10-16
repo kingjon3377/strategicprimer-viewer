@@ -98,7 +98,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 */
 	public void coalesce() {
 		synchronized (toRemove) {
-			for (Integer num : toRemove) {
+			for (final Integer num : toRemove) {
 				backing.remove(num);
 			}
 			toRemove.clear();

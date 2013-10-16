@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.TileFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to transfer a list of TileFixtures.
@@ -36,7 +36,7 @@ public class CurriedFixtureTransferable implements Transferable {
 	 */
 	public CurriedFixtureTransferable(final List<TileFixture> list) {
 		final List<Transferable> payloadTemp = new ArrayList<>();
-		for (TileFixture fix : list) {
+		for (final TileFixture fix : list) {
 			payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
 		}
 		payload = Collections.unmodifiableList(payloadTemp);

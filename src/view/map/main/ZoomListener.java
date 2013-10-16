@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.viewer.IViewerModel;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to listen for zoom menu events.

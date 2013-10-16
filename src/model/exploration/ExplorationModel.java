@@ -3,8 +3,6 @@ package model.exploration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.IMap;
@@ -22,6 +20,9 @@ import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractMultiMapModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Pair;
 
 /**
@@ -53,14 +54,14 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	@Override
 	public List<Player> getPlayerChoices() {
 		final List<Player> retval = new ArrayList<>();
-		for (Player player : getMap().getPlayers()) {
+		for (final Player player : getMap().getPlayers()) {
 			retval.add(player);
 		}
 		final List<Player> temp = new ArrayList<>();
-		for (Pair<IMap, String> pair : getSubordinateMaps()) {
+		for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 			final IMap map = pair.first();
 			temp.clear();
-			for (Player player : map.getPlayers()) {
+			for (final Player player : map.getPlayers()) {
 				temp.add(player);
 			}
 			retval.retainAll(temp);
@@ -94,7 +95,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	private static List<Unit> getUnits(final Iterable<? super Unit> iter,
 			final Player player) {
 		final List<Unit> retval = new ArrayList<>();
-		for (Object obj : iter) {
+		for (final Object obj : iter) {
 			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
 				retval.add((Unit) obj);
 			} else if (obj instanceof Fortress) {
@@ -135,7 +136,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 					.getMovementCost(destTile);
 			getMap().getTile(point).removeFixture(unit);
 			destTile.addFixture(unit);
-			for (Pair<IMap, String> pair : getSubordinateMaps()) {
+			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 				final TileCollection mapTiles = pair.first().getTiles();
 				final Tile stile = mapTiles.getTile(point);
 				if (!tileHasFixture(stile, unit)) {
@@ -152,7 +153,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			fireMovementCost(retval);
 			return retval;
 		} else {
-			for (Pair<IMap, String> pair : getSubordinateMaps()) {
+			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 				ensureTerrain(pair.first().getTiles(), dest,
 						destTile.getTerrain());
 			}
@@ -273,8 +274,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	@Override
 	public Point find(final TileFixture fix) {
 		final IMap source = getMap();
-		for (Point point : source.getTiles()) {
-			for (TileFixture item : source.getTile(point)) {
+		for (final Point point : source.getTiles()) {
+			for (final TileFixture item : source.getTile(point)) {
 				if (fix.equals(item)) {
 					return point; // NOPMD
 				}

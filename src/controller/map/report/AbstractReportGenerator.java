@@ -56,7 +56,7 @@ public abstract class AbstractReportGenerator<T> {
 				}
 				final StringBuilder builder = new StringBuilder(len)
 						.append(header).append("\n").append(OPEN_LIST);
-				for (String item : this) {
+				for (final String item : this) {
 					builder.append(OPEN_LIST_ITEM).append(item)
 							.append(CLOSE_LIST_ITEM);
 				}

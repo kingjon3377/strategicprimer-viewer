@@ -43,7 +43,7 @@ public class WorkerReportDriver implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new WorkerReportDriver().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
@@ -67,24 +67,24 @@ public class WorkerReportDriver implements ISPDriver {
 				// report =
 				// ReportGenerator.createReportIR(reader.readMap(filename,
 				// warner)).produce();
-			} catch (MapVersionException except) {
+			} catch (final MapVersionException except) {
 				throw new DriverFailedException(filename
 						+ " contained a map format version we can't handle",
 						except);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(
 						"I/O error reading " + filename, except);
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException("Error parsing XML in "
 						+ filename, except);
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				throw new DriverFailedException(filename
 						+ " didn't contain a valid SP map", except);
 			}
 			try (final FileWriter writer = new FileWriter(filename
 					+ ".report.html")) {
 				writer.write(report);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException("I/O error writing report",
 						except);
 			}

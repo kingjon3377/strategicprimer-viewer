@@ -7,8 +7,6 @@ import java.util.Random;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
@@ -26,6 +24,9 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
@@ -96,11 +97,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final IExplorationModel model; // NOPMD
 		try {
 			model = readMaps(args);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading maps", except);
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in map file", except);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP format error in map file",
 					except);
 		}
@@ -111,13 +112,13 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			} else {
 				createWorkers(model, IDFactoryFiller.createFactory(model));
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user",
 					except);
 		}
 		try {
 			writeMaps(model);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error writing to a map file",
 					except);
 		}
@@ -132,7 +133,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static void writeMaps(final IExplorationModel model)
 			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (Pair<IMap, String> pair : model.getAllMaps()) {
+		for (final Pair<IMap, String> pair : model.getAllMaps()) {
 			reader.write(pair.second(), pair.first());
 		}
 	}

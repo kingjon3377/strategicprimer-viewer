@@ -116,7 +116,7 @@ public class ExplorationRunner { // NOPMD
 	public EncounterTable getTable(final String name)
 			throws MissingTableException {
 		if (tables.containsKey(name)) {
-			EncounterTable retval = tables.get(name);
+			final EncounterTable retval = tables.get(name);
 			if (retval == null) {
 				throw new MissingTableException(name);
 			} else {

@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import controller.map.misc.TownComparator;
-import util.IntMap;
-import util.Pair;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
@@ -21,6 +18,9 @@ import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
+import util.IntMap;
+import util.Pair;
+import controller.map.misc.TownComparator;
 
 /**
  * A report generator for towns.

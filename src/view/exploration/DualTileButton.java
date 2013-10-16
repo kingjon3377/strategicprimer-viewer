@@ -5,12 +5,13 @@ import java.awt.Polygon;
 
 import javax.swing.JButton;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.viewer.ZOrderFilter;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.map.main.TileDrawHelper;
 import view.map.main.TileDrawHelperFactory;
 

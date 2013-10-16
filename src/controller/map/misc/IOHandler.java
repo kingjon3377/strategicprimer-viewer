@@ -12,13 +12,14 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IMap;
 import model.map.MapView;
 import model.map.SPMap;
 import model.misc.IDriverModel;
 import model.viewer.ViewerModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Warning;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;

@@ -94,7 +94,7 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 	private static final Set<String> SUPP_TAGS;
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (TerrainFixtureType mt : TerrainFixtureType.values()) {
+		for (final TerrainFixtureType mt : TerrainFixtureType.values()) {
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);
 		}

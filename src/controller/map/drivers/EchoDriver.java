@@ -46,7 +46,7 @@ public final class EchoDriver implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new EchoDriver().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}

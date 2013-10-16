@@ -7,9 +7,10 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import model.map.fixtures.mobile.Unit;
+
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.fixtures.mobile.Unit;
 import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.BorderedPanel;

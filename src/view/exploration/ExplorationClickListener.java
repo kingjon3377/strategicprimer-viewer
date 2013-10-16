@@ -92,7 +92,7 @@ public final class ExplorationClickListener implements ActionListener,
 					}
 				}
 			}
-		} catch (TraversalImpossibleException except) {
+		} catch (final TraversalImpossibleException except) {
 			final Point sel = model.getSelectedUnitLocation();
 			for (final SelectionChangeListener listener : scListeners) {
 				listener.selectedPointChanged(null, sel);
@@ -115,7 +115,7 @@ public final class ExplorationClickListener implements ActionListener,
 		final int[] selections = list.getSelectedIndices();
 		final ListModel<TileFixture> model = list.getModel();
 		final List<TileFixture> retval = new ArrayList<>();
-		for (int sel : selections) {
+		for (final int sel : selections) {
 			if (sel < model.getSize()) {
 				retval.add(model.getElementAt(sel));
 			} else {

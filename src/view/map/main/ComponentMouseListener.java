@@ -106,13 +106,13 @@ public final class ComponentMouseListener extends MouseAdapter {
 		if (iterat.hasNext()) {
 			fixes.add(iterat.next());
 		}
-		for (TileFixture fix : iter) {
+		for (final TileFixture fix : iter) {
 			if (fix instanceof TerrainFixture) {
 				fixes.add(fix);
 			}
 		}
 		final StringBuilder sbuild = new StringBuilder();
-		for (TileFixture fix : fixes) {
+		for (final TileFixture fix : fixes) {
 			sbuild.append(fix.toString());
 			sbuild.append("<br />");
 		}

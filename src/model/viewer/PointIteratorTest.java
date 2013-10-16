@@ -261,7 +261,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(2, 1));
 		expected.add(PointFactory.point(2, 2));
 		final List<Point> actual = new ArrayList<>();
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			actual.add(point);
 		}
 		assertEquals(EXPECTATION, expected, actual);
@@ -288,7 +288,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(1, 1));
 		final List<Point> actual = new ArrayList<>();
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			actual.add(point);
 		}
 		assertEquals(EXPECTATION, expected, actual);
@@ -316,7 +316,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 2));
 		final List<Point> actual = new ArrayList<>();
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			actual.add(point);
 		}
 		assertEquals(EXPECTATION, expected, actual);
@@ -343,7 +343,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 2));
 		final List<Point> actual = new ArrayList<>();
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			actual.add(point);
 		}
 		assertEquals(EXPECTATION, expected, actual);
@@ -370,7 +370,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(0, 1));
 		expected.add(PointFactory.point(0, 0));
 		final List<Point> actual = new ArrayList<>();
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			actual.add(point);
 		}
 		assertEquals(EXPECTATION, expected, actual);
@@ -397,7 +397,7 @@ public class PointIteratorTest {
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(0, 0));
 		final List<Point> actual = new ArrayList<>();
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			actual.add(point);
 		}
 		assertEquals(EXPECTATION, expected, actual);

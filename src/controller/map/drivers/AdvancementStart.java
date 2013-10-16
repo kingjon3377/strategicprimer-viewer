@@ -51,7 +51,7 @@ public final class AdvancementStart implements ISPDriver {
 	public static void main(final String[] args) {
 		try {
 			new AdvancementStart().startDriver(args);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 			ErrorShower.showErrorDialog(null, except.getMessage());
 		}
@@ -90,7 +90,7 @@ public final class AdvancementStart implements ISPDriver {
 		try {
 			filename = new FileChooser(args.length == 0 ? "" : args[0])
 					.getFilename();
-		} catch (ChoiceInterruptedException except) {
+		} catch (final ChoiceInterruptedException except) {
 			SystemOut.SYS_OUT
 					.println("Choice was interrupted or user declined to choose, aborting ...");
 			return;

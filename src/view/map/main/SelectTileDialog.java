@@ -9,11 +9,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IsNumeric;
 import view.util.BoxPanel;
 import view.util.ListenedButton;

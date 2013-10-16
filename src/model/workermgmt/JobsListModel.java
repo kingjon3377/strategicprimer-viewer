@@ -84,7 +84,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 			clear();
 			if (selected instanceof Worker) {
 				worker = (Worker) selected;
-				for (Job job : worker) {
+				for (final Job job : worker) {
 					addElement(job);
 				}
 				final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer

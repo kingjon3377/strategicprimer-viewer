@@ -69,7 +69,7 @@ public class TestWorkerModel {
 				"string");
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				model, false, true, true));
-		for (Point point : iter) {
+		for (final Point point : iter) {
 			map.getTile(point).addFixture(fixtures.remove(0));
 		}
 		final List<Unit> listOneA = model.getUnits(players.get(0));
@@ -97,7 +97,7 @@ public class TestWorkerModel {
 	@SafeVarargs
 	private static <T> void addItem(final T item,
 			final List<? super T>... lists) {
-		for (List<? super T> list : lists) {
+		for (final List<? super T> list : lists) {
 			list.add(item);
 		}
 	}

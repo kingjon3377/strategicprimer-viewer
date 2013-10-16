@@ -130,11 +130,11 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 							.getTransferData(UnitMemberTransferable.FLAVOR);
 					model.moveMember(pair.member, pair.unit, (Unit) tempTarget);
 					return true; // NOPMD
-				} catch (UnsupportedFlavorException except) {
+				} catch (final UnsupportedFlavorException except) {
 					LOGGER.log(Level.SEVERE,
 							"Impossible unsupported data flavor", except);
 					return false; // NOPMD
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					LOGGER.log(
 							Level.SEVERE,
 							"I/O error in transfer after we checked ... shouldn't happen",

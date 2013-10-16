@@ -107,13 +107,13 @@ public class AppChooserFrame extends JFrame {
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			try {
 				app.newInstance().startDriver(params);
-			} catch (InstantiationException except) {
+			} catch (final InstantiationException except) {
 				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 				ErrorShower.showErrorDialog(outer, except.getMessage());
-			} catch (IllegalAccessException except) {
+			} catch (final IllegalAccessException except) {
 				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 				ErrorShower.showErrorDialog(outer, except.getMessage());
-			} catch (DriverFailedException except) {
+			} catch (final DriverFailedException except) {
 				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 				ErrorShower.showErrorDialog(outer, except.getMessage());
 			}
