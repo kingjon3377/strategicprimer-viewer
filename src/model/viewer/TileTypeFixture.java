@@ -122,8 +122,10 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
-	 * The name of an image to use for this particular fixture. FIXME: Maybe
-	 * don't allow this? It doesn't really make sense for a TileTypeFixture.
+	 * The name of an image to use for this particular fixture.
+	 *
+	 * FIXME: Maybe don't allow this? It doesn't really make sense for a
+	 * TileTypeFixture.
 	 */
 	private String image = "";
 
