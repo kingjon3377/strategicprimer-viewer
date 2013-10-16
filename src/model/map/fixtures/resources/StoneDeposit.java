@@ -73,7 +73,9 @@ public final class StoneDeposit implements IEvent, HasImage,
 				.append("There is an exposed ");
 		build.append(stoneStr);
 		build.append(" deposit here.");
-		return build.toString();
+		final String retval = build.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -119,6 +121,7 @@ public final class StoneDeposit implements IEvent, HasImage,
 	 */
 	@Override
 	public int getZValue() {
+		// ESCA-JAVA0076:
 		return 40;
 	}
 

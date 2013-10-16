@@ -124,11 +124,17 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
+			if (status == null) {
+				continue;
+			}
 			for (final TownSize size : TownSize.values()) {
+				if (size == null) {
+					continue;
+				}
 				assertSerialization(
 						"First FortificationEvent serialization test, reflection, status "
-								+ status + ", size " + size, new Fortification(
-								status, size, 10, "one", 1, owner), // NOPMD
+								+ status + ", size " + size, new Fortification(// NOPMD
+								status, size, 10, "one", 1, owner),
 						Fortification.class);
 				assertSerialization(
 						"Second FortificationEvent serialization test, reflection, status "

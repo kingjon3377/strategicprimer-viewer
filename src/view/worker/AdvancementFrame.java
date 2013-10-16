@@ -127,10 +127,9 @@ public class AdvancementFrame extends JFrame {
 			final JComponent component, final int width) {
 		final View view = (View) component
 				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
-		final Dimension defaultDim = component.getPreferredSize();
+		final Dimension defDim = component.getPreferredSize();
 		if (view == null) {
-			return defaultDim == null ? new Dimension(width, width)
-					: defaultDim; // NOPMD
+			return defDim == null ? new Dimension(width, width) : defDim; // NOPMD
 		} else {
 			view.setSize(width, 0);
 			final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));

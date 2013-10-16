@@ -145,8 +145,7 @@ public final class CompactReaderAdapter {
 	@SuppressWarnings("unchecked")
 	public static void write(final Writer out, final Object obj,
 			final int indent) throws IOException {
-		@SuppressWarnings("rawtypes")
-		// NOPMD
+		@SuppressWarnings("rawtypes") // NOPMD
 		final CompactReader reader; // NOPMD
 		if (obj instanceof IMap) {
 			reader = CompactMapReader.READER;

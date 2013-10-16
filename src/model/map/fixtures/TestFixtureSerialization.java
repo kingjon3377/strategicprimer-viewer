@@ -313,7 +313,7 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void testSimpleSerialization() throws XMLStreamException,
+	public void testSimpleSerialization() throws XMLStreamException, // NOPMD
 			SPFormatException, IOException {
 		assertSerialization("Test of Djinn serialization", new Djinn(1),
 				Djinn.class);

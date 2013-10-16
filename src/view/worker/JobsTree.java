@@ -30,6 +30,7 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	 * Constructor.
 	 *
 	 * @param sources things for the model to listen to for property changes.
+	 * @param src ignored for now, TODO: figure out what should be done with it.
 	 */
 	public JobsTree(final AddRemovePanel[] sources, final CompletionSource src) {
 		super();

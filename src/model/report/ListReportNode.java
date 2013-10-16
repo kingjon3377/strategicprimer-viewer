@@ -33,7 +33,9 @@ public class ListReportNode extends AbstractReportNode {
 			}
 		}
 		builder.append("</ul>\n");
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -66,6 +68,7 @@ public class ListReportNode extends AbstractReportNode {
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof AbstractReportNode) {
+				// ESCA-JAVA0076:
 				retval += ((AbstractReportNode) child).size() + 10;
 			}
 		}

@@ -4,6 +4,7 @@ import model.listeners.CompletionListener;
 import model.listeners.LevelGainListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
+import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 
@@ -19,15 +20,44 @@ import view.util.SystemOut;
 public final class LevelListener implements LevelGainListener,
 		UnitMemberListener, CompletionListener {
 	/**
+	 * A type-safe null Skill.
+	 */
+	private static final Skill NULL_SKILL = new Skill("null", -1, -1) {
+		@Override
+		public boolean equals(@Nullable final Object obj) {
+			return this == obj;
+		}
+		@Override
+		public int hashCode() {
+			return -1;
+		}
+		// ESCA-JAVA0025:
+		@Override
+		public void addHours(final int hrs, final int condition) {
+			// Do nothing
+		}
+	};
+	/**
+	 * A type-safe null UnitMember.
+	 */
+	private static final UnitMember NULL_UM = new UnitMember() {
+		@Override
+		public int getID() {
+			return -1;
+		}
+		@Override
+		public boolean equalsIgnoringID(final IFixture fix) {
+			return this == fix;
+		}
+	};
+	/**
 	 * The current worker.
 	 */
-	@Nullable
-	private UnitMember worker = null;
+	private UnitMember worker = NULL_UM;
 	/**
 	 * The current skill.
 	 */
-	@Nullable
-	private Skill skill = null;
+	private Skill skill = NULL_SKILL;
 
 	/**
 	 * @param result maybe the newly selected skill
@@ -35,7 +65,7 @@ public final class LevelListener implements LevelGainListener,
 	@Override
 	public void stopWaitingOn(final Object result) {
 		if ("null_skill".equals(result)) {
-			skill = null;
+			skill = NULL_SKILL;
 		} else if (result instanceof Skill) {
 			skill = (Skill) result;
 		}
@@ -46,7 +76,7 @@ public final class LevelListener implements LevelGainListener,
 	 */
 	@Override
 	public void level() {
-		if (worker != null && skill != null) {
+		if (!NULL_UM.equals(worker) && !NULL_SKILL.equals(skill)) {
 			final UnitMember wkr = worker;
 			final Skill skl = skill;
 			assert skl != null;
@@ -65,7 +95,7 @@ public final class LevelListener implements LevelGainListener,
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
 			@Nullable final UnitMember selected) {
-		worker = selected;
+		worker = selected == null ? NULL_UM : selected;
 	}
 
 	/**

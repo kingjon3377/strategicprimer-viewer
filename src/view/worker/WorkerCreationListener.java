@@ -6,6 +6,9 @@ import java.util.logging.Logger;
 
 import model.listeners.CompletionListener;
 import model.listeners.NewWorkerListener;
+import model.map.IFixture;
+import model.map.Player;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.workermgmt.IWorkerTreeModel;
@@ -25,6 +28,44 @@ import controller.map.misc.IDFactory;
 public class WorkerCreationListener implements ActionListener,
 		CompletionListener, NewWorkerListener {
 	/**
+	 * The string "null".
+	 */
+	private static final String NULL_STR = "null";
+	/**
+	 * A typesafe equvalent of null, for when no unit is selected.
+	 */
+	private static final Unit NULL_UNIT = new Unit(new Player(-1,  NULL_STR), NULL_STR, NULL_STR, -1) {
+		// ESCA-JAVA0025:
+		@Override
+		public void addMember(final UnitMember member) {
+			// Do nothing
+		}
+		@Override
+		public boolean equals(@Nullable final Object obj) {
+			return this == obj;
+		}
+		@Override
+		public int hashCode() {
+			return -1;
+		}
+		@Override
+		public String toString() {
+			return NULL_STR;
+		}
+		@Override
+		public String verbose() {
+			return NULL_STR;
+		}
+		@Override
+		public boolean equalsIgnoringID(final IFixture fix) {
+			return this == fix;
+		}
+		@Override
+		public String plural() {
+			return NULL_STR;
+		}
+	};
+	/**
 	 * The tree model.
 	 */
 	private final IWorkerTreeModel tmodel;
@@ -36,7 +77,6 @@ public class WorkerCreationListener implements ActionListener,
 	/**
 	 * The current unit. May be null, if nothing is selected.
 	 */
-	@Nullable
 	private Unit selUnit;
 	/**
 	 * The ID factory to pass to the worker-creation window.
@@ -53,6 +93,7 @@ public class WorkerCreationListener implements ActionListener,
 			final IDFactory idFac) {
 		tmodel = treeModel;
 		idf = idFac;
+		selUnit = NULL_UNIT;
 	}
 
 	/**
@@ -62,7 +103,7 @@ public class WorkerCreationListener implements ActionListener,
 	@Override
 	public void stopWaitingOn(final Object result) {
 		if ("null_unit".equals(result)) {
-			selUnit = null;
+			selUnit = NULL_UNIT;
 		} else if (result instanceof Unit) {
 			selUnit = (Unit) result;
 		}
@@ -92,14 +133,13 @@ public class WorkerCreationListener implements ActionListener,
 	 */
 	@Override
 	public void addNewWorker(final Worker worker) {
-		final Unit locSelUnit = selUnit;
-		if (locSelUnit == null) {
+		if (NULL_UNIT.equals(selUnit)) {
 			LOGGER.warning("New worker created when no unit selected");
 			ErrorShower
 					.showErrorDialog(null,
 							"The new worker was not added to a unit because no unit was selected.");
 		} else {
-			tmodel.addUnitMember(locSelUnit, worker);
+			tmodel.addUnitMember(selUnit, worker);
 		}
 	}
 

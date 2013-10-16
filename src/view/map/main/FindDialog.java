@@ -45,6 +45,10 @@ import view.util.SystemOut;
  */
 public class FindDialog extends JDialog implements ActionListener {
 	/**
+	 * The proportion between the bulk of the dialog and the filter list.
+	 */
+	private static final double FILTER_PROPORTION = .6;
+	/**
 	 * The text field holding the search string.
 	 */
 	private final JTextField search = new JTextField("", 20);
@@ -100,8 +104,9 @@ public class FindDialog extends JDialog implements ActionListener {
 		contentPane.add(buttonPanel);
 		ffl = new FixtureFilterList();
 		SwingUtilities.invokeLater(new FilterPopulator(ffl, model));
-		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, .6,
-				.6, contentPane, new BorderedPanel(new JScrollPane(ffl,
+		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT,
+				FILTER_PROPORTION, FILTER_PROPORTION, contentPane,
+				new BorderedPanel(new JScrollPane(ffl,
 						ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 						ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
 						new JLabel("Find only ..."), null, null, null)));
