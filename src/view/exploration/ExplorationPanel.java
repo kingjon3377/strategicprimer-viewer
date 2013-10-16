@@ -158,7 +158,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	private void addTileGUI(final JPanel panel, final Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList = new FixtureList(panel, model.getMap()
-				.getPlayers(), Collections.singletonList(mainPCS));
+				.getPlayers(), mainPCS);
 		panel.add(new JScrollPane(mainList));
 		final DualTileButton dtb = new DualTileButton();
 		// panel.add(new JScrollPane(dtb));
@@ -173,7 +173,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		panel.add(new JScrollPane(new FixtureList(panel, model
 				.getSubordinateMaps().iterator().next().first().getPlayers(),
-				Collections.singletonList(secPCS))));
+				secPCS)));
 		mains.put(direction, mainPCS);
 		buttons.put(direction, dtb);
 		seconds.put(direction, secPCS);

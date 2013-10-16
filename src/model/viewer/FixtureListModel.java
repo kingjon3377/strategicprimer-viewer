@@ -34,7 +34,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @param sources sources to listen to
 	 */
 	public FixtureListModel(
-			final Iterable<? extends SelectionChangeSource> sources) {
+			final SelectionChangeSource... sources) {
 		super();
 		for (final SelectionChangeSource source : sources) {
 			source.addSelectionChangeListener(this);

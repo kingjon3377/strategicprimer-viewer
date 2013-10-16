@@ -44,7 +44,7 @@ public class FixtureList extends JList<TileFixture> implements
 	 * @param players the players in the map
 	 */
 	public FixtureList(final JComponent parent, final PlayerCollection players,
-			final Iterable<? extends SelectionChangeSource> sources) {
+			final SelectionChangeSource... sources) {
 		super(new FixtureListModel(sources));
 		final FixtureListModel flm = (FixtureListModel) getModel();
 		assert flm != null;

@@ -35,7 +35,7 @@ public class DetailPanelNG extends JSplitPane {
 		 *
 		 * @param sources things to listen to for property changes
 		 */
-		HeaderLabel(final Iterable<? extends SelectionChangeSource> sources) {
+		HeaderLabel(final SelectionChangeSource... sources) {
 			super(
 					"<html><body><p>Contents of the tile at (-1, -1):</p></body></html>");
 			for (final SelectionChangeSource source : sources) {
@@ -77,7 +77,7 @@ public class DetailPanelNG extends JSplitPane {
 		 *        panel.
 		 */
 		ListPanel(final PlayerCollection players,
-				final Iterable<? extends SelectionChangeSource> sources) {
+				final SelectionChangeSource... sources) {
 			// We can't use the multi-arg super() because the center component
 			// references "this".
 			setNorth(new HeaderLabel(sources));
@@ -101,8 +101,8 @@ public class DetailPanelNG extends JSplitPane {
 	 * @param vSources Sources of PropertyChangeEvents we want to listen to.
 	 */
 	public DetailPanelNG(final int version, final PlayerCollection players,
-			final Iterable<? extends SelectionChangeSource> sSources,
-			final Iterable<? extends VersionChangeSource> vSources) {
+			final SelectionChangeSource[] sSources,
+			final VersionChangeSource[] vSources) {
 		super(HORIZONTAL_SPLIT, true, new ListPanel(players, sSources),
 				new KeyPanel(version, vSources));
 		setResizeWeight(DIVIDER_LOCATION);

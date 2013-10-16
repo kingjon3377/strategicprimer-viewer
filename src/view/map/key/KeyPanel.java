@@ -23,7 +23,7 @@ public class KeyPanel extends JPanel implements VersionChangeListener {
 	 * @param sources things to listen to for property change events
 	 */
 	public KeyPanel(final int version,
-			final Iterable<? extends VersionChangeSource> sources) {
+			final VersionChangeSource... sources) {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
 		setMinimumSize(new Dimension(new KeyElement(version,
