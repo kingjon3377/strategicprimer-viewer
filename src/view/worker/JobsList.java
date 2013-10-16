@@ -42,15 +42,12 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 		final JobsListModel lmodel = new JobsListModel(umSources, arps);
 		setModel(lmodel);
 		lmodel.addCompletionListener(new CompletionListener() {
-			/**
-			 * @param result what we were waiting on, or a signal value
-			 */
 			@Override
-			public void stopWaitingOn(final Object result) {
-				if (Integer.valueOf(0).equals(result)) {
+			public void stopWaitingOn(final boolean end) {
+				if (!end) {
 					setSelectedIndex(0);
-				} else if (result instanceof Job) {
-					setSelectedValue(result, true);
+				} else {
+					setSelectedIndex(lmodel.size() - 1);
 				}
 			}
 		});

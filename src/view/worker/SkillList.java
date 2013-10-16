@@ -9,7 +9,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.listeners.CompletionListener;
-import model.listeners.CompletionSource;
+import model.listeners.JobSelectionSource;
+import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
 import model.map.fixtures.mobile.worker.Skill;
@@ -30,22 +31,20 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	 * Constructor.
 	 *
 	 * @param listener something that should listen to us
-	 * @param sources what our model should listen to
+	 * @param jsSources what our model should listen to for the currently selected Job
+	 * @param lgSources what our model should listen to for skill leveling notifications
 	 */
 	public SkillList(final SkillSelectionListener listener,
-			final CompletionSource... sources) {
-		final SkillListModel lmodel = new SkillListModel(sources);
+			final JobSelectionSource[] jsSources, final LevelGainSource[] lgSources) {
+		final SkillListModel lmodel = new SkillListModel(jsSources, lgSources);
 		setModel(lmodel);
 		lmodel.addCompletionListener(new CompletionListener() {
-			/**
-			 * @param result what we were waiting on, or a signal value
-			 */
 			@Override
-			public void stopWaitingOn(final Object result) {
-				if (Integer.valueOf(0).equals(result)) {
+			public void stopWaitingOn(final boolean end) {
+				if (end) {
+					setSelectedIndex(lmodel.size() - 1);
+				} else {
 					setSelectedIndex(0);
-				} else if (result instanceof Skill) {
-					setSelectedValue(result, true);
 				}
 			}
 		});

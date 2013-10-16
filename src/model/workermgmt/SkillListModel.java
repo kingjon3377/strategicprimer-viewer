@@ -8,6 +8,10 @@ import javax.swing.DefaultListModel;
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
+import model.listeners.JobSelectionListener;
+import model.listeners.JobSelectionSource;
+import model.listeners.LevelGainListener;
+import model.listeners.LevelGainSource;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 
@@ -19,7 +23,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public class SkillListModel extends DefaultListModel<Skill> implements
-		CompletionSource, AddRemoveListener, CompletionListener {
+		CompletionSource, AddRemoveListener, JobSelectionListener,
+		LevelGainListener {
 	/**
 	 * A non-null "null" Job. Adjusted here to prevent modification.
 	 */
@@ -37,31 +42,31 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	/**
 	 * Constructor.
 	 *
-	 * @param sources property-change sources to listen to.
+	 * @param jsSources objects to listn to for the currently selected Job
+	 * @param lgSources objects to listen to to refresh on skill leveling
 	 */
-	public SkillListModel(final CompletionSource... sources) {
-		if (sources.length == 0) {
-			throw new IllegalStateException("No sources given");
+	public SkillListModel(final JobSelectionSource[] jsSources, final LevelGainSource[] lgSources) {
+		for (final JobSelectionSource source : jsSources) {
+			source.addJobSelectionListener(this);
 		}
-		for (final CompletionSource source : sources) {
-			source.addCompletionListener(this);
+		for (final LevelGainSource source : lgSources) {
+			source.addLevelGainListener(this);
 		}
 	}
-
 	/**
-	 * @param result the object we were waiting on
+	 * Handle level-up notification.
 	 */
 	@Override
-	public void stopWaitingOn(final Object result) {
-		if ("null_job".equals(result)) {
-			handleNewJob(null);
-		} else if (result instanceof Job) {
-			handleNewJob((Job) result);
-		} else if ("level".equals(result)) {
-			fireContentsChanged(this, 0, getSize());
-		}
+	public void level() {
+		fireContentsChanged(this, 0, getSize());
 	}
-
+	/**
+	 * @param nJob the newly selected Job.
+	 */
+	@Override
+	public void selectJob(@Nullable final Job nJob) {
+		handleNewJob(nJob);
+	}
 	/**
 	 * @param category what kind of thing is being added; if not a Skill we
 	 *        ignore it
@@ -74,7 +79,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			job.addSkill(skill);
 			addElement(skill);
 			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(skill);
+				list.stopWaitingOn(true);
 			}
 		}
 	}
@@ -99,11 +104,8 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			for (final Skill skill : job) {
 				addElement(skill);
 			}
-			final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer
-					.valueOf(0);
-			assert retval != null;
 			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(retval);
+				list.stopWaitingOn(true);
 			}
 		}
 	}

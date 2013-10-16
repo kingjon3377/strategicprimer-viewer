@@ -16,7 +16,7 @@ public interface CompletionListener extends EventListener {
 	/**
 	 * Stop waiting for the thing being listened to, because it's finished.
 	 *
-	 * @param result what was being waited on, or a signal value
+	 * @param end whether a list should be scrolled to the end or (if false) reset to the beginning
 	 */
-	void stopWaitingOn(final Object result);
+	void stopWaitingOn(final boolean end);
 }

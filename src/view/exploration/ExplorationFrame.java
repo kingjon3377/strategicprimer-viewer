@@ -43,14 +43,14 @@ public class ExplorationFrame extends JFrame {
 				esp.getMPDocument());
 		esp.addCompletionListener(new CompletionListener() {
 			@Override
-			public void stopWaitingOn(final Object result) {
+			public void stopWaitingOn(final boolean end) {
 				explorationPanel.validate();
 				layout.next(outer);
 			}
 		});
 		explorationPanel.addCompletionListener(new CompletionListener() {
 			@Override
-			public void stopWaitingOn(final Object result) {
+			public void stopWaitingOn(final boolean end) {
 				esp.validate();
 				layout.first(outer);
 			}

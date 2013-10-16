@@ -68,7 +68,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 			worker.addJob(job);
 			addElement(job);
 			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(job);
+				list.stopWaitingOn(true);
 			}
 		}
 	}
@@ -91,7 +91,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 						.valueOf(0);
 				assert retval != null;
 				for (final CompletionListener list : cListeners) {
-					list.stopWaitingOn(retval);
+					list.stopWaitingOn(false);
 				}
 			} else {
 				worker = NULL_WORKER;
