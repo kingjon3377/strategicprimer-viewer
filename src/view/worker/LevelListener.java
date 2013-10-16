@@ -13,6 +13,7 @@ import view.util.SystemOut;
 
 /**
  * A listener to print a line when a worker gains a level.
+ * @author Jonathan Lovelace
  */
 public final class LevelListener implements LevelGainListener, UnitMemberListener, CompletionListener {
 	/**

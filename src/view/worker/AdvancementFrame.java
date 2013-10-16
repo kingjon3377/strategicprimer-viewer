@@ -1,7 +1,6 @@
 package view.worker;
 
 import java.awt.Dimension;
-import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -13,7 +12,9 @@ import javax.swing.text.View;
 
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
-import util.TypesafeLogger;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
@@ -53,9 +54,10 @@ public class AdvancementFrame extends JFrame {
 		pch.addPlayerChangeListener(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, pch);
-		final WorkerCreationListener nwl = new WorkerCreationListener(
-				(IWorkerTreeModel) tree.getModel(),
-				IDFactoryFiller.createFactory(source.getMap()), LOGGER);
+		@Nullable final IWorkerTreeModel wtmodel = (IWorkerTreeModel) tree.getModel();
+		assert wtmodel != null;
+		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
+				IDFactoryFiller.createFactory(source.getMap()));
 		tree.addCompletionListener(nwl);
 		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
 		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
