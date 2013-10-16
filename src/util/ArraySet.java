@@ -56,7 +56,9 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 */
 	@Override
 	public Iterator<T> iterator() {
-		return impl.iterator();
+		final Iterator<T> retval = impl.iterator();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -64,7 +66,9 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 */
 	@Override
 	public Object[] toArray() {
-		return impl.toArray();
+		final Object[] retval = impl.toArray();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -74,7 +78,9 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 */
 	@Override
 	public <TYPE> TYPE[] toArray(final TYPE[] array) {
-		return impl.toArray(array);
+		final TYPE[] retval = impl.toArray(array);
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -119,7 +125,9 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public boolean addAll(final Collection<? extends T> coll) {
 		boolean retval = false;
 		for (final T obj : coll) {
-			if (add(obj)) {
+			if (obj == null) {
+				continue;
+			} else if (add(obj)) {
 				retval = true;
 			}
 		}
@@ -153,6 +161,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	}
 
 	/**
+	 * FIXME: Implement properly; the spec specifies what the hash code for any set is.
 	 * @return a hash-value for the set.
 	 */
 	@Override
