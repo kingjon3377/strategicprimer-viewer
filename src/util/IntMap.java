@@ -65,6 +65,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * @return the corresponding value in the map, if it exists
 	 */
 	@Override
+	@Nullable
 	public V get(@Nullable final Object key) {
 		return backing.get(key);
 	}
@@ -75,6 +76,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * @return the result of putting the value into the map at the key
 	 */
 	@Override
+	@Nullable
 	public V put(final Integer key, final V value) {
 		return backing.put(key, value);
 	}
@@ -86,6 +88,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * @return false, as it isn't actually removed yet.
 	 */
 	@Override
+	@Nullable
 	public V remove(@Nullable final Object key) {
 		if (key instanceof Integer) {
 			toRemove.add((Integer) key);
