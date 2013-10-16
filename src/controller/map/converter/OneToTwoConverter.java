@@ -93,7 +93,9 @@ public class OneToTwoConverter { // NOPMD
 		final SPMap retval = new SPMap(new MapDimensions(
 				oldDim.rows * RES_JUMP, oldDim.cols * RES_JUMP, 2));
 		for (final Player player : old.getPlayers()) {
-			retval.addPlayer(player);
+			if (player != null) {
+				retval.addPlayer(player);
+			}
 		}
 		final List<Pair<Point, Tile>> converted = new LinkedList<>();
 		final Player independent = retval.getPlayers().getIndependent();
@@ -434,6 +436,9 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMap map) {
 		for (final Point npoint : getNeighbors(point)) {
+			if (npoint == null) {
+				continue;
+			}
 			final Tile neighbor = map.getTile(npoint);
 			for (final TileFixture fix : neighbor) {
 				if (fix instanceof Village || fix instanceof ITownFixture) {
@@ -451,6 +456,9 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isAdjacentToWater(final Point point, final IMap map) {
 		for (final Point npoint : getNeighbors(point)) {
+			if (npoint == null) {
+				continue;
+			}
 			final Tile neighbor = map.getTile(npoint);
 			if (!neighbor.hasRiver()
 					|| TileType.Ocean.equals(neighbor.getTerrain())) {

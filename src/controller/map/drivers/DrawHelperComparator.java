@@ -210,7 +210,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	private static void thirdBody(final TileDrawHelper helper,
 			final Graphics pen, final IMap spmap, final int tsize) {
 		for (final Point point : spmap.getTiles()) {
-			helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
+			if (point != null) {
+				helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
+			}
 		}
 	}
 
@@ -255,11 +257,13 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen, final IMap spmap, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.getTiles()) {
-			helper.drawTile(
-					pen,
-					spmap.getTile(point),
-					PointFactory.coordinate(point.row * tsize, point.col
-							* tsize), dimensions);
+			if (point != null) {
+				helper.drawTile(
+						pen,
+						spmap.getTile(point),
+						PointFactory.coordinate(point.row * tsize, point.col
+								* tsize), dimensions);
+			}
 		}
 	}
 

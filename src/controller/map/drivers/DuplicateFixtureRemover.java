@@ -62,7 +62,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 */
 	public static void filter(final IMap map, final PrintStream out) {
 		for (final Point point : map.getTiles()) {
-			filter(map.getTile(point), out);
+			if (point != null) {
+				filter(map.getTile(point), out);
+			}
 		}
 	}
 

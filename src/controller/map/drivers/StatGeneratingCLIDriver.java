@@ -335,6 +335,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static IFixture find(final IMap map, final int idNum) {
 		final TileCollection tiles = map.getTiles();
 		for (final Point point : tiles) {
+			if (point == null) {
+				continue;
+			}
 			final Tile tile = tiles.getTile(point);
 			final IFixture result = find(tile, idNum);
 			if (result != null) {

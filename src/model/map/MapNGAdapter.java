@@ -45,7 +45,7 @@ public class MapNGAdapter implements IMapNG {
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (final Player player : obj.players()) {
-				if (!state.getPlayers().contains(player)) {
+				if (player != null && !state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
 					out.print("Extra player ");
@@ -53,7 +53,7 @@ public class MapNGAdapter implements IMapNG {
 				}
 			}
 			for (final Point point : obj.locations()) {
-				if (!isTileSubset(obj, out, point)) {
+				if (point != null && !isTileSubset(obj, out, point)) {
 					retval = false;
 				}
 			}

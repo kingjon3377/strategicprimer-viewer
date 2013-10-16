@@ -66,7 +66,9 @@ public final class PointFactory {
 			if (!POINT_CACHE.get(boxedRow).containsKey(boxedCol)) {
 				POINT_CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
 			}
-			return POINT_CACHE.get(boxedRow).get(boxedCol); // NOPMD
+			final Point retval = POINT_CACHE.get(boxedRow).get(boxedCol);
+			assert retval != null;
+			return retval; // NOPMD
 		} else {
 			return new Point(row, col);
 		}

@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class SkillReader implements INodeHandler<Skill> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("skill");
+		return assertNonNullList(Collections.singletonList("skill"));
 	}
 
 	/**
@@ -56,7 +59,7 @@ public class SkillReader implements INodeHandler<Skill> {
 		XMLHelper.requireNonEmptyParameter(element, "name", true, warner);
 		XMLHelper.requireNonEmptyParameter(element, "level", true, warner);
 		XMLHelper.requireNonEmptyParameter(element, "hours", true, warner);
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		XMLHelper.spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Skill retval = new Skill(XMLHelper.getAttribute(element, "name"),
 				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
 				Integer.parseInt(XMLHelper.getAttribute(element, "hours")));

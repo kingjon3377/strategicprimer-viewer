@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -49,7 +51,7 @@ public class GroveReader implements INodeHandler<Grove> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final boolean cultivated = isCultivated(element, warner);
 		final Grove fix = new Grove(
 				"orchard".equalsIgnoreCase(element.getName().getLocalPart()),
@@ -94,7 +96,7 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Arrays.asList("grove", "orchard");
+		return assertNonNullList(Arrays.asList("grove", "orchard"));
 	}
 
 	/**

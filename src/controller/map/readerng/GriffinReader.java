@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -41,7 +43,7 @@ public class GriffinReader implements INodeHandler<Griffin> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Griffin fix = new Griffin(getOrGenerateID(element, warner,
 				idFactory));
 		XMLHelper.addImage(element, fix);
@@ -53,7 +55,7 @@ public class GriffinReader implements INodeHandler<Griffin> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("griffin");
+		return assertNonNullList(Collections.singletonList("griffin"));
 	}
 
 	/**

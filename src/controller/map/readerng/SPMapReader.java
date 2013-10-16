@@ -1,5 +1,6 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static java.lang.Integer.parseInt;
 
@@ -121,7 +122,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("map");
+		return assertNonNullList(Collections.singletonList("map"));
 	}
 
 	/**
@@ -156,7 +157,9 @@ public class SPMapReader implements INodeHandler<SPMap> {
 							.getPlayerId()));
 		}
 		for (final Player player : obj.getPlayers()) {
-			retval.addChild(ReaderAdapter.ADAPTER.write(player));
+			if (player != null) {
+				retval.addChild(ReaderAdapter.ADAPTER.write(player));
+			}
 		}
 		final MapDimensions dim = obj.getDimensions();
 		for (int i = 0; i < dim.rows; i++) {

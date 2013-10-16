@@ -1,5 +1,8 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("stats");
+		return assertNonNullList(Collections.singletonList("stats"));
 	}
 
 	/**
@@ -62,7 +65,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 				.getAttribute(element, "int")), Integer.parseInt(XMLHelper
 				.getAttribute(element, "wis")), Integer.parseInt(XMLHelper
 				.getAttribute(element, "cha")));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		XMLHelper.spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		return retval;
 	}
 

@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -42,7 +44,7 @@ public class GiantReader implements INodeHandler<Giant> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Giant fix = new Giant(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
@@ -54,7 +56,7 @@ public class GiantReader implements INodeHandler<Giant> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("giant");
+		return assertNonNullList(Collections.singletonList("giant"));
 	}
 
 	/**

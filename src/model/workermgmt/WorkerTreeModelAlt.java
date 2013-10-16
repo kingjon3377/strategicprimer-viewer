@@ -54,6 +54,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			final Unit newOwner) {
 		final PlayerNode pnode = (PlayerNode) root;
 		final Player player = (Player) pnode.getUserObject();
+		assert player != null;
 		final List<Unit> units = model.getUnits(player);
 		final UnitNode oldNode = (UnitNode) pnode
 				.getChildAt(units.indexOf(old));

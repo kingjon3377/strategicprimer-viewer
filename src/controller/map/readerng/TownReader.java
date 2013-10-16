@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
@@ -46,7 +48,7 @@ public class TownReader implements INodeHandler<Town> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Town fix = new Town(TownStatus.parseTownStatus(getAttribute(
 				element, "status")), TownSize.parseTownSize(XMLHelper
 				.getAttribute(element, "size")), Integer.parseInt(getAttribute(
@@ -62,7 +64,7 @@ public class TownReader implements INodeHandler<Town> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("town");
+		return assertNonNullList(Collections.singletonList("town"));
 	}
 
 	/**

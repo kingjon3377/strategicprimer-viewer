@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -41,7 +43,7 @@ public class PlayerReader implements INodeHandler<Player> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Player player = new Player(Integer.parseInt(getAttribute(element,
 				"number")), getAttribute(element, "code_name"));
 		return player;
@@ -52,7 +54,7 @@ public class PlayerReader implements INodeHandler<Player> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("player");
+		return assertNonNullList(Collections.singletonList("player"));
 	}
 
 	/**

@@ -275,6 +275,9 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public Point find(final TileFixture fix) {
 		final IMap source = getMap();
 		for (final Point point : source.getTiles()) {
+			if (point == null) {
+				continue;
+			}
 			for (final TileFixture item : source.getTile(point)) {
 				if (fix.equals(item)) {
 					return point; // NOPMD

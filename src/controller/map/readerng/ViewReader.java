@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
@@ -42,7 +44,7 @@ public class ViewReader implements INodeHandler<MapView> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList(TAG);
+		return assertNonNullList(Collections.singletonList(TAG));
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class ViewReader implements INodeHandler<MapView> {
 				idFactory), Integer.parseInt(getAttribute(element,
 				"current_player")), Integer.parseInt(getAttribute(element,
 				"current_turn")));
-		XMLHelper.spinUntilEnd(element.getName(), stream);
+		XMLHelper.spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		return view;
 	}
 

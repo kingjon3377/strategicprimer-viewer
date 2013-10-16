@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.hasAttribute;
@@ -50,7 +52,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		if (!hasAttribute(element, STATUS_ATTR)) {
 			warner.warn(new MissingPropertyException(element.getName()
@@ -71,7 +73,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Arrays.asList("meadow", "field");
+		return assertNonNullList(Arrays.asList("meadow", "field"));
 	}
 
 	/**

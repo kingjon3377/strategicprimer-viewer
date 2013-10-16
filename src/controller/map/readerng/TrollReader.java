@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -41,7 +43,7 @@ public class TrollReader implements INodeHandler<Troll> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Troll fix = new Troll(getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
@@ -52,7 +54,7 @@ public class TrollReader implements INodeHandler<Troll> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("troll");
+		return assertNonNullList(Collections.singletonList("troll"));
 	}
 
 	/**

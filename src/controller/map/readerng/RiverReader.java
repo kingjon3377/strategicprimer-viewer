@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -41,7 +43,7 @@ public class RiverReader implements INodeHandler<River> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final River fix = "lake".equalsIgnoreCase(element.getName()
 				.getLocalPart()) ? River.Lake : River.getRiver(getAttribute(
 				element, "direction"));
@@ -53,7 +55,7 @@ public class RiverReader implements INodeHandler<River> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Arrays.asList("river", "lake");
+		return assertNonNullList(Arrays.asList("river", "lake"));
 	}
 
 	/**

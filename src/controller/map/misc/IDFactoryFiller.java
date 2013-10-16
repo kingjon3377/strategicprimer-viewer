@@ -30,7 +30,9 @@ public final class IDFactoryFiller {
 		final IDFactory retval = new IDFactory();
 		final TileCollection tiles = map.getTiles();
 		for (final Point point : tiles) {
-			recursiveRegister(retval, tiles.getTile(point));
+			if (point != null) {
+				recursiveRegister(retval, tiles.getTile(point));
+			}
 		}
 		return retval;
 	}
@@ -45,7 +47,9 @@ public final class IDFactoryFiller {
 		for (final Pair<IMap, String> pair : model.getAllMaps()) {
 			final TileCollection tiles = pair.first().getTiles();
 			for (final Point point : tiles) {
-				recursiveRegister(retval, tiles.getTile(point));
+				if (point != null) {
+					recursiveRegister(retval, tiles.getTile(point));
+				}
 			}
 		}
 		return retval;

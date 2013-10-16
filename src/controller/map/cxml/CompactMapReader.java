@@ -216,7 +216,9 @@ public final class CompactMapReader extends AbstractCompactReader implements
 		}
 		out.append("\">\n");
 		for (final Player player : obj.getPlayers()) {
-			CompactPlayerReader.READER.write(out, player, indent + 1);
+			if (player != null) {
+				CompactPlayerReader.READER.write(out, player, indent + 1);
+			}
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;

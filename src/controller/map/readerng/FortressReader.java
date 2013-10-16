@@ -1,5 +1,6 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
@@ -74,7 +75,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("fortress");
+		return assertNonNullList(Collections.singletonList("fortress"));
 	}
 
 	/**

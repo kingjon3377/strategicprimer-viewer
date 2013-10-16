@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -41,7 +43,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Oasis fix = new Oasis(getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
@@ -52,7 +54,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("oasis");
+		return assertNonNullList(Collections.singletonList("oasis"));
 	}
 
 	/**

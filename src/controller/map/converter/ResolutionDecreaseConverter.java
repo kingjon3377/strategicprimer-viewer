@@ -39,7 +39,9 @@ public class ResolutionDecreaseConverter {
 		final int newCols = old.getDimensions().cols / 2;
 		final SPMap newMap = new SPMap(new MapDimensions(newRows, newCols, 2));
 		for (final Player player : old.getPlayers()) {
-			newMap.addPlayer(player);
+			if (player != null) {
+				newMap.addPlayer(player);
+			}
 		}
 		final MapView retval = new MapView(newMap, newMap.getPlayers()
 				.getCurrentPlayer().getPlayerId(), 0);

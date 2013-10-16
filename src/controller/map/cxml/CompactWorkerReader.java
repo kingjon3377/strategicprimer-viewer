@@ -194,7 +194,9 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			out.append(">\n");
 			writeStats(out, obj.getStats(), indent + 1);
 			for (final Job job : obj) {
-				writeJob(out, job, indent + 1);
+				if (job != null) {
+					writeJob(out, job, indent + 1);
+				}
 			}
 			out.append(indent(indent));
 			out.append("</worker>\n");

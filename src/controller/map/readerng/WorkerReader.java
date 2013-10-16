@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("worker");
+		return assertNonNullList(Collections.singletonList("worker"));
 	}
 
 	/**
@@ -102,7 +104,9 @@ public class WorkerReader implements INodeHandler<Worker> {
 		}
 		retval.addImageAttribute(obj);
 		for (final Job job : obj) {
-			retval.addChild(ReaderAdapter.ADAPTER.write(job));
+			if (job != null) {
+				retval.addChild(ReaderAdapter.ADAPTER.write(job));
+			}
 		}
 		return retval;
 	}

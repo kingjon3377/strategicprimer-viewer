@@ -8,6 +8,9 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileCollection;
 import model.report.AbstractReportNode;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IntMap;
 import util.Pair;
 
@@ -60,7 +63,8 @@ public abstract class AbstractReportGenerator<T> {
 					builder.append(OPEN_LIST_ITEM).append(item)
 							.append(CLOSE_LIST_ITEM);
 				}
-				return builder.append(CLOSE_LIST).toString();
+				final String retval = builder.append(CLOSE_LIST).toString();
+				return retval == null ? "" : retval;
 			}
 		}
 	}
@@ -160,8 +164,8 @@ public abstract class AbstractReportGenerator<T> {
 	 * @param points a list of points
 	 * @return a comma-separated string representing them.
 	 */
-	protected static String pointCSL(final List<Point> points) {
-		if (points.isEmpty()) {
+	protected static String pointCSL(@Nullable final List<Point> points) {
+		if (points == null || points.isEmpty()) {
 			return ""; // NOPMD
 		} else if (points.size() == 1) {
 			return points.get(0).toString(); // NOPMD
@@ -177,7 +181,8 @@ public abstract class AbstractReportGenerator<T> {
 				}
 				builder.append(points.get(i));
 			}
-			return builder.toString();
+			final String retval = builder.toString();
+			return retval == null ? "" : retval;
 		}
 	}
 
@@ -202,6 +207,7 @@ public abstract class AbstractReportGenerator<T> {
 		for (final String string : strings) {
 			buf.append(string);
 		}
-		return buf.toString();
+		final String retval = buf.toString();
+		return retval == null ? "" : retval;
 	}
 }

@@ -126,7 +126,9 @@ public final class TileCollection implements Iterable<Point>,
 	public boolean isSubset(final TileCollection obj, final PrintWriter out) {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
-			if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
+			if (point == null) {
+				continue;
+			} else if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
 				final StringWriter str = new StringWriter(); // NOPMD
 				try (final PrefixingPrintWriter writer = new PrefixingPrintWriter(
 						str, point.toString() + ":\t")) {

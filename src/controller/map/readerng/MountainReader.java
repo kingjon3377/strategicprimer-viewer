@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
@@ -39,7 +41,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Mountain fix = new Mountain();
 		XMLHelper.addImage(element, fix);
 		return fix;
@@ -50,7 +52,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("mountain");
+		return assertNonNullList(Collections.singletonList("mountain"));
 	}
 
 	/**

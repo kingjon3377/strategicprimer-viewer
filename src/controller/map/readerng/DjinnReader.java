@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -41,7 +43,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final Djinn fix = new Djinn(getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
@@ -52,7 +54,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("djinn");
+		return assertNonNullList(Collections.singletonList("djinn"));
 	}
 
 	/** @return te class we know how to write */

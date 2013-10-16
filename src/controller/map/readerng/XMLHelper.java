@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
@@ -8,6 +10,9 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import model.map.Player;
 import model.map.PlayerCollection;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -239,5 +244,26 @@ public final class XMLHelper {
 		if (hasAttribute(element, "image")) {
 			obj.setImage(getAttribute(element, "image"));
 		}
+	}
+	/**
+	 * Do not pass in anything that might actually be null in real conditions;
+	 * that will cause an assertion failure and thus a crash.
+	 *
+	 * @param <T> what's in the list
+	 * @param list a list
+	 * @return it, without any hint that it might be null.
+	 */
+	public static <T> List<T> assertNonNullList(@Nullable final List<T> list) {
+		assert list != null;
+		return list;
+	}
+	/**
+	 * Do not pass in anything that might actually be null; that will cause an assertion failure and thus a crash.
+	 * @param qname a qualified name
+	 * @return it, without any hint that it might be null
+	 */
+	public static QName assertNonNullQName(@Nullable final QName qname) {
+		assert qname != null;
+		return qname;
 	}
 }

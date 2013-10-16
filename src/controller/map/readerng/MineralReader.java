@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
+import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
@@ -43,7 +45,7 @@ public class MineralReader implements INodeHandler<MineralVein> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final MineralVein fix = new MineralVein(
 				getAttributeWithDeprecatedForm(element, "kind", "mineral",
 						warner),
@@ -59,7 +61,7 @@ public class MineralReader implements INodeHandler<MineralVein> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("mineral");
+		return assertNonNullList(Collections.singletonList("mineral"));
 	}
 
 	/**

@@ -45,8 +45,10 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 		final List<Unit> retval = new ArrayList<>();
 		final TileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
-			final Tile tile = tiles.getTile(point);
-			retval.addAll(getUnits(tile, player));
+			if (point != null) {
+				final Tile tile = tiles.getTile(point);
+				retval.addAll(getUnits(tile, player));
+			}
 		}
 		return retval;
 	}
@@ -77,6 +79,9 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	public void addUnit(final Unit unit) {
 		final TileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
+			if (point == null) {
+				continue;
+			}
 			final Tile tile = tiles.getTile(point);
 			for (final TileFixture fix : tile) {
 				if (fix instanceof Fortress

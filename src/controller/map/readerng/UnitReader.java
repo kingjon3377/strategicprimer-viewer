@@ -1,5 +1,6 @@
 package controller.map.readerng;
 
+import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
@@ -123,7 +124,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("unit");
+		return assertNonNullList(Collections.singletonList("unit"));
 	}
 
 	/**
