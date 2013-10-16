@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 /**
  * An interface for objects that want to be notified when the currently selected
  * skill gains a level.
@@ -7,7 +9,7 @@ package model.listeners;
  * @author Jonathan Lovelace
  *
  */
-public interface LevelGainListener {
+public interface LevelGainListener extends EventListener {
 	/**
 	 * Indicate a level gain.
 	 */

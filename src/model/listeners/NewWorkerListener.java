@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 import model.map.fixtures.mobile.Worker;
 
 /**
@@ -7,7 +9,7 @@ import model.map.fixtures.mobile.Worker;
  *
  * @author Jonathan Lovelace
  */
-public interface NewWorkerListener {
+public interface NewWorkerListener extends EventListener {
 	/**
 	 * Add the new unit.
 	 *

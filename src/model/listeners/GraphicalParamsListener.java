@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 import model.viewer.VisibleDimensions;
 
 /**
@@ -9,7 +11,7 @@ import model.viewer.VisibleDimensions;
  * @author Jonathan Lovelace
  *
  */
-public interface GraphicalParamsListener {
+public interface GraphicalParamsListener extends EventListener {
 	/**
 	 * @param oldDim the previous dimensions
 	 * @param newDim the new dimensions

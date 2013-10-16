@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 import model.map.Player;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -11,7 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public interface PlayerChangeListener {
+public interface PlayerChangeListener extends EventListener {
 	/**
 	 * Called when the current player changes.
 	 *

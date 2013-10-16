@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 import model.map.fixtures.mobile.Unit;
 
 /**
@@ -7,7 +9,7 @@ import model.map.fixtures.mobile.Unit;
  *
  * @author Jonathan Lovelace
  */
-public interface NewUnitListener {
+public interface NewUnitListener extends EventListener {
 	/**
 	 * Add the new unit.
 	 *

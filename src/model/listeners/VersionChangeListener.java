@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 /**
  * An interface for objects that want to know when the current map version
  * changes.
@@ -7,7 +9,7 @@ package model.listeners;
  * @author Jonathan Lovelace
  *
  */
-public interface VersionChangeListener {
+public interface VersionChangeListener extends EventListener {
 	/**
 	 * @param old the previous version
 	 * @param newVersion the new version

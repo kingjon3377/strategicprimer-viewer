@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 import model.map.fixtures.UnitMember;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -11,7 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public interface UnitMemberListener {
+public interface UnitMemberListener extends EventListener {
 	/**
 	 * @param old the previous selection
 	 * @param selected the new selection. Because sometimes there's no

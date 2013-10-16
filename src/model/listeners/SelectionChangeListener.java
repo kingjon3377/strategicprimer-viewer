@@ -1,5 +1,7 @@
 package model.listeners;
 
+import java.util.EventListener;
+
 import model.map.Point;
 import model.map.Tile;
 
@@ -11,7 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public interface SelectionChangeListener {
+public interface SelectionChangeListener extends EventListener {
 	/**
 	 * The selected tile's location changed.
 	 *
