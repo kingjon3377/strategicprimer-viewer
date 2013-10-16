@@ -203,9 +203,8 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 		final TreeModelEvent removedChEvent = new TreeModelEvent(this,
 				new TreePath(new Object[] { root, old }));
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesRemoved(removedEvent); // FIXME: Somehow removed
-														// nodes are still
-														// visible!
+			listener.treeNodesRemoved(removedEvent);
+			// FIXME: Somehow removed nodes are still visible!
 			listener.treeStructureChanged(removedChEvent);
 		}
 		newOwner.addMember(member);
