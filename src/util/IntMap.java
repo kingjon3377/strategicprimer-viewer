@@ -136,7 +136,9 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 */
 	@Override
 	public Collection<V> values() {
-		return backing.values();
+		final Collection<V> retval = backing.values();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

@@ -53,11 +53,14 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 */
 	@Override
 	public boolean shouldDisplay(final TileFixture fix) {
-		if (plurals.containsKey(fix.getClass())) {
-			return lsm.isSelectedIndex(model.indexOf(fix.getClass()));
+		final Class<? extends TileFixture> cls = fix.getClass();
+		if (cls == null) {
+			return false;
+		} else if (plurals.containsKey(cls)) {
+			return lsm.isSelectedIndex(model.indexOf(cls));
 		} else {
-			model.add(fix.getClass());
-			plurals.put(fix.getClass(), fix.plural());
+			model.add(cls);
+			plurals.put(cls, fix.plural());
 			final int size = model.getSize();
 			lsm.addSelectionInterval(size - 1, size - 1);
 			return true;

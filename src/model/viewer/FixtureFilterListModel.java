@@ -34,7 +34,9 @@ public class FixtureFilterListModel extends
 	 */
 	@Override
 	public Class<? extends TileFixture> getElementAt(final int index) {
-		return backing.get(index);
+		final Class<? extends TileFixture> retval = backing.get(index);
+		assert retval != null;
+		return retval;
 	}
 
 	/**

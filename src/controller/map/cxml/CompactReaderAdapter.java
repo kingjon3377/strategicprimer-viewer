@@ -3,6 +3,7 @@ package controller.map.cxml;
 import java.io.IOException;
 import java.io.Writer;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -68,7 +69,9 @@ public final class CompactReaderAdapter {
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
 			final T river = (T) CompactTileReader.parseRiver(element, warner);
-			AbstractCompactReader.spinUntilEnd(element.getName(), stream);
+			final QName name = element.getName();
+			assert name != null;
+			AbstractCompactReader.spinUntilEnd(name, stream);
 			return river; // NOPMD
 		} else {
 			reader = getReader(type);
@@ -169,7 +172,9 @@ public final class CompactReaderAdapter {
 			// Skip it.
 			return;
 		} else if (obj instanceof IFixture) {
-			reader = getFixtureReader(((IFixture) obj).getClass());
+			final Class<? extends IFixture> cls = ((IFixture) obj).getClass();
+			assert cls != null;
+			reader = getFixtureReader(cls);
 		} else {
 			throw new IllegalStateException("Don't know how to write this type");
 		}
