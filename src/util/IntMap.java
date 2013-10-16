@@ -131,7 +131,9 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 */
 	@Override
 	public Set<Integer> keySet() {
-		return backing.keySet();
+		final Set<Integer> retval = backing.keySet();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -149,6 +151,8 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 */
 	@Override
 	public Set<java.util.Map.Entry<Integer, V>> entrySet() {
-		return backing.entrySet();
+		final Set<Map.Entry<Integer, V>> retval = backing.entrySet();
+		assert retval != null;
+		return retval;
 	}
 }
