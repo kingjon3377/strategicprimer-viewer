@@ -18,6 +18,8 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 import util.TypesafeLogger;
 
@@ -132,7 +134,7 @@ public class ZeroToOneConverter {
 	 * @param iter an iterator
 	 * @return a wrapper
 	 */
-	private static Iterable<Attribute> iFactory(final Iterator<Attribute> iter) {
+	private static Iterable<Attribute> iFactory(@Nullable final Iterator<Attribute> iter) {
 		return new IteratorWrapper<>(iter);
 	}
 
