@@ -222,11 +222,14 @@ public final class ReportGenerator {
 	private static IntMap<Pair<Point, IFixture>> getFixtures(final IMap map) {
 		final IntMap<Pair<Point, IFixture>> retval = new IntMap<>();
 		for (final Point point : map.getTiles()) {
-			final Tile tile = map.getTile(point);
-			for (final IFixture fix : getFixtures(tile)) {
-				if (fix.getID() >= 0) {
-					retval.put(Integer.valueOf(fix.getID()),
-							Pair.of(point, fix));
+			if (point != null) {
+				final Tile tile = map.getTile(point);
+				for (final IFixture fix : getFixtures(tile)) {
+					if (fix.getID() >= 0) {
+						final Integer num = Integer.valueOf(fix.getID());
+						assert num != null;
+						retval.put(num, Pair.of(point, fix));
+					}
 				}
 			}
 		}

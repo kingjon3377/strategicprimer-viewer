@@ -121,7 +121,9 @@ public class ZeroToOneConverter {
 		builder.append('>');
 		while (!events.isEmpty()) {
 			builder.append('\n');
-			builder.append(getEventXML(events.pop()));
+			final Integer event = events.pop();
+			assert event != null;
+			builder.append(getEventXML(event));
 		}
 		return builder.toString();
 	}
