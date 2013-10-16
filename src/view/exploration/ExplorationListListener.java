@@ -14,7 +14,6 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.Pair;
 import view.map.details.FixtureList;
 
 /**
@@ -70,7 +69,52 @@ public final class ExplorationListListener implements ListDataListener {
 	public void contentsChanged(@Nullable final ListDataEvent evt) {
 		randomizeSelection();
 	}
-
+	/**
+	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an int into Integer.
+	 * @param <T> the type in question.
+	 */
+	private static class IntPair<T> {
+		/**
+		 * Factory method.
+		 * @param number the number in the pair
+		 * @param object the object in the pair
+		 * @param <I> the type of object
+		 * @return the pair
+		 */
+		static <I> IntPair<I> of(final int number, final I object) {
+			return new IntPair<>(number, object);
+		}
+		/**
+		 * Constructor. Use the factory method rather than this constructor.
+		 * @param num the number in the pair
+		 * @param obj the object in the pair
+		 */
+		IntPair(final int num, final T obj) {
+			number = num;
+			object = obj;
+		}
+		/**
+		 * The number in the pair.
+		 */
+		private final int number;
+		/**
+		 * The object in the pair.
+		 */
+		private final T object;
+		/**
+		 * @return the number in the pair
+		 */
+		public int first() {
+			return number;
+		}
+		/**
+		 * @return the object in the pair
+		 */
+		@SuppressWarnings("unused")
+		public T second() {
+			return object;
+		}
+	}
 	/**
 	 * Select a suitable but randomized selection of fixtures. Do nothing if
 	 * there is no selected unit.
@@ -79,14 +123,16 @@ public final class ExplorationListListener implements ListDataListener {
 		final Unit selUnit = model.getSelectedUnit();
 		if (selUnit != null) {
 			list.clearSelection();
-			final List<Pair<Integer, TileFixture>> constants = new ArrayList<>();
-			final List<Pair<Integer, TileFixture>> possibles = new ArrayList<>();
+			final List<IntPair<TileFixture>> constants = new ArrayList<>();
+			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
 			for (int i = 0; i < list.getModel().getSize(); i++) {
 				final TileFixture fix = list.getModel().getElementAt(i);
-				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
-					constants.add(Pair.of(Integer.valueOf(i), fix));
+				if (fix == null) {
+					continue;
+				} else if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
+					constants.add(IntPair.of(i, fix));
 				} else if (SimpleMovement.mightNotice(selUnit, fix)) {
-					possibles.add(Pair.of(Integer.valueOf(i), fix));
+					possibles.add(IntPair.of(i, fix));
 				}
 			}
 			Collections.shuffle(possibles);
@@ -95,7 +141,7 @@ public final class ExplorationListListener implements ListDataListener {
 			}
 			final int[] indices = new int[constants.size()];
 			for (int i = 0; i < constants.size(); i++) {
-				indices[i] = constants.get(i).first().intValue();
+				indices[i] = constants.get(i).first();
 			}
 			list.setSelectedIndices(indices);
 		}
