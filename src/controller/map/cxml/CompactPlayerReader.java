@@ -15,20 +15,24 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for tiles, including rivers.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactPlayerReader extends AbstractCompactReader implements CompactReader<Player> {
+public final class CompactPlayerReader extends AbstractCompactReader implements
+		CompactReader<Player> {
 	/**
 	 * Singleton.
 	 */
 	private CompactPlayerReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactPlayerReader READER = new CompactPlayerReader();
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -41,8 +45,9 @@ public final class CompactPlayerReader extends AbstractCompactReader implements 
 	 */
 	@Override
 	public Player read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "player");
 		requireNonEmptyParameter(element, "number", true, warner);
 		requireNonEmptyParameter(element, "code_name", true, warner);
@@ -50,6 +55,7 @@ public final class CompactPlayerReader extends AbstractCompactReader implements 
 		return new Player(Integer.parseInt(getParameter(element, "number")),
 				getParameter(element, "code_name"));
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether it's one we can read
@@ -58,15 +64,18 @@ public final class CompactPlayerReader extends AbstractCompactReader implements 
 	public boolean isSupportedTag(final String tag) {
 		return "player".equalsIgnoreCase(tag);
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Player obj, final int indent) throws IOException {
+	public void write(final Writer out, final Player obj, final int indent)
+			throws IOException {
 		out.append(indent(indent));
 		out.append("<player number=\"");
 		out.append(Integer.toString(obj.getPlayerId()));

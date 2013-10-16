@@ -14,8 +14,10 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A TreeModel implementation for a player's units and workers.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -23,16 +25,21 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerTreeModel.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(WorkerTreeModel.class
+			.getName());
+
 	/**
 	 * Constructor.
-	 * @param player the player whose units and workers will be shown in the tree
+	 *
+	 * @param player the player whose units and workers will be shown in the
+	 *        tree
 	 * @param wmodel the driver model
 	 */
 	public WorkerTreeModel(final Player player, final IWorkerModel wmodel) {
 		root = player;
 		model = wmodel;
 	}
+
 	/**
 	 * The player to whom the units and workers belong, the root of the tree.
 	 */
@@ -41,6 +48,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	 * The driver model.
 	 */
 	private final IWorkerModel model;
+
 	/**
 	 * @return the root of the tree, the player.
 	 */
@@ -48,6 +56,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public Object getRoot() {
 		return root;
 	}
+
 	/**
 	 * @param parent an object in the tree
 	 * @param index the index of the child we want
@@ -79,6 +88,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
 		}
 	}
+
 	/**
 	 * @param parent an object in the tree
 	 * @return how many children it has
@@ -97,9 +107,11 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			}
 			return count;
 		} else {
-			throw new IllegalArgumentException("Not a possible member of the tree");
+			throw new IllegalArgumentException(
+					"Not a possible member of the tree");
 		}
 	}
+
 	/**
 	 * @param node a node in the tree
 	 * @return whether it's a leaf node
@@ -108,28 +120,34 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public boolean isLeaf(@Nullable final Object node) {
 		return !(node instanceof Player) && !(node instanceof Unit);
 	}
+
 	/**
 	 *
 	 * @param path a path indicating a node
 	 * @param newValue the new value for that place
 	 *
-	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
+	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath,
+	 *      java.lang.Object)
 	 */
 	@Override
-	public void valueForPathChanged(@Nullable final TreePath path, @Nullable final Object newValue) {
+	public void valueForPathChanged(@Nullable final TreePath path,
+			@Nullable final Object newValue) {
 		LOGGER.severe("valueForPathChanged needs to be implemented");
 	}
+
 	/**
 	 * @param parent an object presumably in the tree
 	 * @param child something that's presumably one of its children
 	 * @return which child it is, or -1 if preconditions broken
 	 *
-	 * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
+	 * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
+	 *      java.lang.Object)
 	 */
 	@Override
-	public int getIndexOfChild(@Nullable final Object parent, @Nullable final Object child) {
+	public int getIndexOfChild(@Nullable final Object parent,
+			@Nullable final Object child) {
 		if (parent instanceof Player && parent.equals(root)) {
-			return model.getUnits(root).contains(child) ? model.getUnits(root)//NOPMD
+			return model.getUnits(root).contains(child) ? model.getUnits(root)// NOPMD
 					.indexOf(child) : -1;
 		} else if (parent instanceof Unit) {
 			int index = 0;
@@ -144,6 +162,7 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			return -1;
 		}
 	}
+
 	/**
 	 * @param list something to listen for tree model changes
 	 */
@@ -151,83 +170,102 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public void addTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.add(list);
 	}
+
 	/**
-	 * @param list something that doesn't want to listen for tree model changes anymore
+	 * @param list something that doesn't want to listen for tree model changes
+	 *        anymore
 	 */
 	@Override
 	public void removeTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.remove(list);
 	}
+
 	/**
 	 * The listeners registered to listen for model changes.
 	 */
 	private final List<TreeModelListener> listeners = new ArrayList<>();
+
 	/**
 	 * Move a member between units.
+	 *
 	 * @param member a unit member
 	 * @param old the prior owner
 	 * @param newOwner the new owner
 	 */
 	@Override
-	public void moveMember(final UnitMember member, final Unit old, final Unit newOwner) {
+	public void moveMember(final UnitMember member, final Unit old,
+			final Unit newOwner) {
 		final int oldIndex = getIndexOfChild(old, member);
 		old.removeMember(member);
 		final TreeModelEvent removedEvent = new TreeModelEvent(this,
-				new TreePath(new Object[] { root, old }), new int[] { oldIndex },
-				new Object[] { member });
-		final TreeModelEvent removedChEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, old }));
+				new TreePath(new Object[] { root, old }),
+				new int[] { oldIndex }, new Object[] { member });
+		final TreeModelEvent removedChEvent = new TreeModelEvent(this,
+				new TreePath(new Object[] { root, old }));
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesRemoved(removedEvent); // FIXME: Somehow removed nodes are still visible!
+			listener.treeNodesRemoved(removedEvent); // FIXME: Somehow removed
+														// nodes are still
+														// visible!
 			listener.treeStructureChanged(removedChEvent);
 		}
 		newOwner.addMember(member);
-//		final int newIndex = getIndexOfChild(member, newOwner);
-//		final TreeModelEvent insertedEvent = new TreeModelEvent(this,
-//				new TreePath(new Object[] { root, newOwner }),
-//				new int[] { newIndex }, new Object[] { member });
-		final TreeModelEvent insertedChEvent = new TreeModelEvent(this, new TreePath(new Object[] { root, newOwner }));
+		// final int newIndex = getIndexOfChild(member, newOwner);
+		// final TreeModelEvent insertedEvent = new TreeModelEvent(this,
+		// new TreePath(new Object[] { root, newOwner }),
+		// new int[] { newIndex }, new Object[] { member });
+		final TreeModelEvent insertedChEvent = new TreeModelEvent(this,
+				new TreePath(new Object[] { root, newOwner }));
 		for (final TreeModelListener listener : listeners) {
-//			listener.treeNodesInserted(insertedEvent);
+			// listener.treeNodesInserted(insertedEvent);
 			listener.treeStructureChanged(insertedChEvent);
 		}
 	}
+
 	/**
 	 * Add a unit.
+	 *
 	 * @param unit the unit to add
 	 */
 	@Override
 	public void addUnit(final Unit unit) {
 		model.addUnit(unit);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(//NOPMD
+			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(// NOPMD
 					root), singletonInt(model.getUnits(root).size()),
 					singletonObj(unit)));
 		}
 	}
+
 	/**
 	 * Create a singleton array.
+	 *
 	 * @param obj the object it should contain
 	 * @return the array
 	 */
 	private static Object[] singletonObj(final Object obj) {
 		return new Object[] { obj };
 	}
+
 	/**
 	 * Create a singleton array.
+	 *
 	 * @param num the integer it should contain
 	 * @return the array
 	 */
 	private static int[] singletonInt(final int num) {
 		return new int[] { num };
 	}
+
 	/**
 	 * Handle the user's request to add a unit.
+	 *
 	 * @param unit the unit to add.
 	 */
 	@Override
 	public void addNewUnit(final Unit unit) {
 		addUnit(unit);
 	}
+
 	/**
 	 * Handle notification that a new map was loaded.
 	 */
@@ -235,9 +273,11 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public void mapChanged() {
 		root = model.getMap().getPlayers().getCurrentPlayer();
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
+			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(
+					root)));
 		}
 	}
+
 	/**
 	 * @param old the old current player
 	 * @param newPlayer the new current player
@@ -246,9 +286,11 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		root = newPlayer;
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(root)));
+			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(
+					root)));
 		}
 	}
+
 	/**
 	 * @param obj an object
 	 * @return it
@@ -257,8 +299,10 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public Object getModelObject(final Object obj) {
 		return obj;
 	}
+
 	/**
 	 * Add a member to a unit.
+	 *
 	 * @param unit the unit to contain the member
 	 * @param member the member to add to it
 	 */

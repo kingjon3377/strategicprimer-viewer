@@ -73,11 +73,12 @@ public class OgreReader implements INodeHandler<Ogre> {
 	 */
 	@Override
 	public <S extends Ogre> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("ogre", Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"ogre", Pair.of("id", Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

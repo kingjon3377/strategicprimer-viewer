@@ -19,16 +19,19 @@ import model.map.fixtures.towns.TownStatus;
  *
  * @author Jonathan Lovelace
  */
-public final class TownComparator implements Comparator<AbstractTown>, Serializable {
+public final class TownComparator implements Comparator<AbstractTown>,
+		Serializable {
 	/**
 	 * A comparator for town-sizes.
 	 */
-	static final class TownSizeComparator implements Comparator<TownSize>, Serializable {
+	static final class TownSizeComparator implements Comparator<TownSize>,
+			Serializable {
 		/**
 		 * Version UID for serialization.
 		 */
 		// ESCA-JAVA0096:
 		private static final long serialVersionUID = 1L;
+
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -51,15 +54,19 @@ public final class TownComparator implements Comparator<AbstractTown>, Serializa
 			}
 		}
 	}
+
 	/**
-	 * A comparator for town-statuses, to put active towns before abandoned ones before ruined ones before burned-out ones.
+	 * A comparator for town-statuses, to put active towns before abandoned ones
+	 * before ruined ones before burned-out ones.
 	 */
-	static final class TownStatusComparator implements Comparator<TownStatus>, Serializable {
+	static final class TownStatusComparator implements Comparator<TownStatus>,
+			Serializable {
 		/**
 		 * Version UID for serialization.
 		 */
 		// ESCA-JAVA0096:
 		private static final long serialVersionUID = 1L;
+
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -86,15 +93,19 @@ public final class TownComparator implements Comparator<AbstractTown>, Serializa
 			}
 		}
 	}
+
 	/**
-	 * A comparator for town-kinds, to put cities before towns before fortifications.
+	 * A comparator for town-kinds, to put cities before towns before
+	 * fortifications.
 	 */
-	static final class TownKindComparator implements Comparator<TownKind>, Serializable {
+	static final class TownKindComparator implements Comparator<TownKind>,
+			Serializable {
 		/**
 		 * Version UID for serialization.
 		 */
 		// ESCA-JAVA0096:
 		private static final long serialVersionUID = 1L;
+
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -117,6 +128,7 @@ public final class TownComparator implements Comparator<AbstractTown>, Serializa
 			}
 		}
 	}
+
 	/**
 	 * Version UID for serialization.
 	 */
@@ -133,16 +145,17 @@ public final class TownComparator implements Comparator<AbstractTown>, Serializa
 	 * Comparator for TownSizes.
 	 */
 	private static final TownSizeComparator SIZE_COMP = new TownSizeComparator();
+
 	/**
-	 * This is hackishly implemented; fortunately, in each case I can rely
-	 * on there being only three (or four, for status) possibilities and the
-	 * two towns' values for them not being the same.
+	 * This is hackishly implemented; fortunately, in each case I can rely on
+	 * there being only three (or four, for status) possibilities and the two
+	 * towns' values for them not being the same.
 	 *
 	 * @param one the first town
 	 * @param two the second
-	 * @return a negative integer if the first is "less" than the second,
-	 *         zero if they're the same, and a positive integer if the first
-	 *         is "greater" than the second.
+	 * @return a negative integer if the first is "less" than the second, zero
+	 *         if they're the same, and a positive integer if the first is
+	 *         "greater" than the second.
 	 */
 	@Override
 	public int compare(final AbstractTown one, final AbstractTown two) {

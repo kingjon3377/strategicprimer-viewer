@@ -13,12 +13,12 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class Cave implements IEvent,
-		HasImage, HarvestableFixture {
+public final class Cave implements IEvent, HasImage, HarvestableFixture {
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -134,10 +134,12 @@ public final class Cave implements IEvent,
 	public String getDefaultImage() {
 		return "cave.png";
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -145,6 +147,7 @@ public final class Cave implements IEvent,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -152,6 +155,7 @@ public final class Cave implements IEvent,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all caves as a class
 	 */

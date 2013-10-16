@@ -17,14 +17,17 @@ import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.PlayerCollection;
+
 /**
  * A pop-up menu to let the user edit a fixture.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class FixtureEditMenu extends JPopupMenu {
 	/**
 	 * The listener for the name-changing menu item.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class NameChangeListener implements ActionListener {
@@ -36,8 +39,10 @@ public class FixtureEditMenu extends JPopupMenu {
 		 * The fixture being edited.
 		 */
 		private final IFixture fixture;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param parent the parent component
 		 * @param fix the fixture being edited.
 		 */
@@ -45,14 +50,14 @@ public class FixtureEditMenu extends JPopupMenu {
 			outer = parent;
 			fixture = fix;
 		}
+
 		/**
 		 * @param event the button press being handled
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent event) {
-			final String result = (String) JOptionPane.showInputDialog(
-					outer, "Fixture's new name:",
-					"Rename Fixture",
+			final String result = (String) JOptionPane.showInputDialog(outer,
+					"Fixture's new name:", "Rename Fixture",
 					JOptionPane.PLAIN_MESSAGE, null, null,
 					((HasName) fixture).getName());
 			if (result != null) {
@@ -60,12 +65,15 @@ public class FixtureEditMenu extends JPopupMenu {
 			}
 		}
 	}
+
 	/**
 	 * Constructor.
+	 *
 	 * @param fixture the fixture the user clicked on
 	 * @param players the players in the map
 	 */
-	public FixtureEditMenu(final IFixture fixture, final PlayerCollection players) {
+	public FixtureEditMenu(final IFixture fixture,
+			final PlayerCollection players) {
 		boolean mutable = false;
 		final FixtureEditMenu outer = this;
 		if (fixture instanceof HasName) {
@@ -77,7 +85,8 @@ public class FixtureEditMenu extends JPopupMenu {
 			addMenuItem(new JMenuItem("Change kind", KeyEvent.VK_K),
 					new ActionListener() {
 						@Override
-						public void actionPerformed(@Nullable final ActionEvent event) {
+						public void actionPerformed(
+								@Nullable final ActionEvent event) {
 							final String result = (String) JOptionPane.showInputDialog(
 									outer, "Fixture's new kind:",
 									"Change Fixture Kind",
@@ -94,7 +103,8 @@ public class FixtureEditMenu extends JPopupMenu {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
 					new ActionListener() {
 						@Override
-						public void actionPerformed(@Nullable final ActionEvent event) {
+						public void actionPerformed(
+								@Nullable final ActionEvent event) {
 							final Player result = (Player) JOptionPane
 									.showInputDialog(outer,
 											"Fixture's new owner:",
@@ -113,8 +123,10 @@ public class FixtureEditMenu extends JPopupMenu {
 			add(new JLabel("Fixture is not mutable"));
 		}
 	}
+
 	/**
 	 * Add a menu item, and attach a suitable listener to it.
+	 *
 	 * @param item the menu item
 	 * @param listener the listener to listen to it
 	 */

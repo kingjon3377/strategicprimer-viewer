@@ -42,6 +42,7 @@ public final class SimpleMovement {
 			super("Traversal is impossible.");
 		}
 	}
+
 	/**
 	 * @param tile a tile
 	 * @return whether it's passable by land movement.
@@ -49,6 +50,7 @@ public final class SimpleMovement {
 	public static boolean isLandMovementPossible(final Tile tile) {
 		return !TileType.Ocean.equals(tile.getTerrain());
 	}
+
 	/**
 	 * @param tile a tile
 	 * @return the movement cost to traverse it.
@@ -68,6 +70,7 @@ public final class SimpleMovement {
 			throw new IllegalArgumentException("Unknown tile type");
 		}
 	}
+
 	/**
 	 * @param tile a tile
 	 * @return whether it is or contains a forest
@@ -86,6 +89,7 @@ public final class SimpleMovement {
 			return false;
 		}
 	}
+
 	/**
 	 * @param tile a tile
 	 * @return whether it is mountainous or hilly
@@ -103,6 +107,7 @@ public final class SimpleMovement {
 			return false;
 		}
 	}
+
 	/**
 	 * FIXME: *Some* explorers *would* notice even unexposed ground.
 	 *
@@ -121,7 +126,8 @@ public final class SimpleMovement {
 	 * @param fix a fixture
 	 * @return whether the unit should always notice it.
 	 */
-	public static boolean shouldAlwaysNotice(final Unit unit, final TileFixture fix) {
+	public static boolean shouldAlwaysNotice(final Unit unit,
+			final TileFixture fix) {
 		return fix instanceof Mountain
 				|| fix instanceof RiverFixture
 				|| fix instanceof Hill

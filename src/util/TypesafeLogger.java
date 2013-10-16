@@ -16,12 +16,14 @@ public final class TypesafeLogger {
 	private TypesafeLogger() {
 		// Do not instantiate.
 	}
+
 	/**
 	 * @param type the class that will be calling the logger
 	 * @return the logger produced by {@link Logger#getLogger(String)}.
 	 */
 	public static Logger getLogger(final Class<?> type) {
-		final java.util.logging.Logger retval = java.util.logging.Logger.getLogger(type.getName());
+		final java.util.logging.Logger retval = java.util.logging.Logger
+				.getLogger(type.getName());
 		if (retval == null) {
 			throw new IllegalStateException("Logger was null");
 		} else {

@@ -25,8 +25,10 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.MapReaderAdapter;
+
 /**
  * A driver to run a player's trapping activity.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -43,6 +45,7 @@ public class TrapModelDriver implements ISPDriver {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(TrapModelDriver.class
 			.getName());
+
 	/**
 	 * The possible commands.
 	 */
@@ -71,13 +74,16 @@ public class TrapModelDriver implements ISPDriver {
 		 * The "name" of the command.
 		 */
 		private final String name;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param cName the "name" of the command
 		 */
 		private TrapperCommand(final String cName) {
 			name = cName;
 		}
+
 		/**
 		 * @return the "name" of the command
 		 */
@@ -85,6 +91,7 @@ public class TrapModelDriver implements ISPDriver {
 		public String getName() {
 			return name;
 		}
+
 		/**
 		 * @param tname ignored
 		 */
@@ -93,6 +100,7 @@ public class TrapModelDriver implements ISPDriver {
 			throw new IllegalStateException("Can't rename");
 		}
 	}
+
 	/**
 	 * List of commands.
 	 */
@@ -106,6 +114,7 @@ public class TrapModelDriver implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */
@@ -113,32 +122,39 @@ public class TrapModelDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
 	private final CLIHelper helper = new CLIHelper();
+
 	/**
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
 	private void repl(final IMap map, final PrintStream ostream) {
 		try {
-			final boolean fishing = helper.inputBoolean("Is this a fisherman trapping fish rather than a trapper? ");
+			final boolean fishing = helper
+					.inputBoolean("Is this a fisherman trapping fish rather than a trapper? ");
 			final String name = fishing ? "fisherman" : "trapper";
-			int minutes = helper.inputNumber("How many hours will the " + name + " work? ") * MINS_PER_HOUR;
-			final int row = helper.inputNumber("Row of the tile where the " + name + " is working: ");
+			int minutes = helper.inputNumber("How many hours will the " + name
+					+ " work? ")
+					* MINS_PER_HOUR;
+			final int row = helper.inputNumber("Row of the tile where the "
+					+ name + " is working: ");
 			final int col = helper.inputNumber("Column of that tile: ");
 			final List<TileFixture> fixtures = getChoices(map, row, col);
 			int input = -1;
 			while (minutes > 0 && input < TrapperCommand.values().length) {
 				if (input >= 0) {
-					minutes -= handleCommand(fixtures, ostream, TrapperCommand.values()[input], fishing);
+					minutes -= handleCommand(fixtures, ostream,
+							TrapperCommand.values()[input], fishing);
 					ostream.print(inHours(minutes));
 					ostream.println(" remaining");
 				}
-				input = helper.chooseFromList(COMMANDS,
-						"What should the " + name + " do next?",
-						"Oops! No commands", "Next action: ", false);
+				input = helper.chooseFromList(COMMANDS, "What should the "
+						+ name + " do next?", "Oops! No commands",
+						"Next action: ", false);
 				if (TrapperCommand.values()[input] == TrapperCommand.Quit) {
 					break;
 				}
@@ -147,10 +163,12 @@ public class TrapModelDriver implements ISPDriver {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
 		}
 	}
+
 	/**
 	 * The number of minutes in an hour.
 	 */
 	private static final int MINS_PER_HOUR = 60;
+
 	/**
 	 * @param minutes a number of minutes
 	 * @return a String representation, including the number of hours
@@ -161,13 +179,16 @@ public class TrapModelDriver implements ISPDriver {
 						+ Integer.toString(minutes % MINS_PER_HOUR)
 						+ " minutes";
 	}
+
 	/**
 	 * @param map the map
 	 * @param row a row coordinate
 	 * @param col a column coordinate
-	 * @return the list of all fixtures in the map in that tile or an adjacent tile
+	 * @return the list of all fixtures in the map in that tile or an adjacent
+	 *         tile
 	 */
-	private  static List<TileFixture> getChoices(final IMap map, final int row, final int col) {
+	private static List<TileFixture> getChoices(final IMap map, final int row,
+			final int col) {
 		final List<TileFixture> retval = new ArrayList<>();
 		final MapDimensions dims = map.getDimensions();
 		for (int i = row - 1; i < row + 2; i++) {
@@ -182,17 +203,21 @@ public class TrapModelDriver implements ISPDriver {
 		}
 		return retval;
 	}
+
 	/**
 	 * Handle a command.
+	 *
 	 * @param fixtures the fixtures to choose from
 	 * @param ostream the output stream to write to
 	 * @param command the command to handle
-	 * @param fishing whether we're dealing with *fish* traps .. which take different amounts of time
+	 * @param fishing whether we're dealing with *fish* traps .. which take
+	 *        different amounts of time
 	 * @return how many minutes it took to execute the command
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private int handleCommand(final List<TileFixture> fixtures, final PrintStream ostream,
-			final TrapperCommand command, final boolean fishing) throws IOException {
+	private int handleCommand(final List<TileFixture> fixtures,
+			final PrintStream ostream, final TrapperCommand command,
+			final boolean fishing) throws IOException {
 		switch (command) {
 		case Check:
 			Collections.shuffle(fixtures);
@@ -202,7 +227,8 @@ public class TrapModelDriver implements ISPDriver {
 				ostream.print("Found either ");
 				ostream.print(fixtures.get(0).toString());
 				ostream.println(" or evidence of it escaping.");
-				retval = helper.inputNumber("How long to check and deal with animal? ");
+				retval = helper
+						.inputNumber("How long to check and deal with animal? ");
 			} else {
 				ostream.println("Nothing in the trap");
 				retval = fishing ? 5 : 10;
@@ -220,8 +246,10 @@ public class TrapModelDriver implements ISPDriver {
 			throw new IllegalArgumentException("Unhandled case");
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */
@@ -232,18 +260,21 @@ public class TrapModelDriver implements ISPDriver {
 					new IllegalArgumentException("Need one argument"));
 		}
 		try {
-			repl(new MapReaderAdapter().readMap(args[0],
-					new Warning(Warning.Action.Warn)), SystemOut.SYS_OUT);
+			repl(new MapReaderAdapter().readMap(args[0], new Warning(
+					Warning.Action.Warn)), SystemOut.SYS_OUT);
 		} catch (final XMLStreamException e) {
-			throw new DriverFailedException("XML parsing error in " + args[0], e);
+			throw new DriverFailedException("XML parsing error in " + args[0],
+					e);
 		} catch (final FileNotFoundException e) {
 			throw new DriverFailedException("File " + args[0] + " not found", e);
 		} catch (final IOException e) {
 			throw new DriverFailedException("I/O error reading " + args[0], e);
 		} catch (final SPFormatException e) {
-			throw new DriverFailedException("Map " + args[0] + " contains invalid data", e);
+			throw new DriverFailedException("Map " + args[0]
+					+ " contains invalid data", e);
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

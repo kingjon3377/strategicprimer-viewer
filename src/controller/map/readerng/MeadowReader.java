@@ -92,14 +92,16 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(obj.isField() ? "field"
-				: "meadow", Pair.of("kind", obj.getKind()), Pair.of(
-				"cultivated", Boolean.toString(obj.isCultivated())), Pair.of(
-				STATUS_ATTR, obj.getStatus().toString()), Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				obj.isField() ? "field" : "meadow", Pair.of("kind",
+						obj.getKind()), Pair.of("cultivated",
+						Boolean.toString(obj.isCultivated())), Pair.of(
+						STATUS_ATTR, obj.getStatus().toString()), Pair.of("id",
+						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

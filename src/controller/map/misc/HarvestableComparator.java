@@ -14,6 +14,7 @@ import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import util.IntPair;
+
 /**
  * A comparator for Harvestables. Needed for the report generator.
  *
@@ -22,18 +23,21 @@ import util.IntPair;
  * @author Jonathan Lovelace
  *
  */
-public class HarvestableComparator implements Comparator<HarvestableFixture>, Serializable { // NOPMD
+public class HarvestableComparator implements Comparator<HarvestableFixture>,
+		Serializable { // NOPMD
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @param one the first
 	 * @param two the second
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compare(final HarvestableFixture one, final HarvestableFixture two) { // NOPMD
+	public int compare(final HarvestableFixture one,
+			final HarvestableFixture two) { // NOPMD
 		if (one.getClass().equals(two.getClass())) {
 			if (one instanceof Battlefield || one instanceof Cave) {
 				return one.getID() - two.getID(); // NOPMD
@@ -80,8 +84,9 @@ public class HarvestableComparator implements Comparator<HarvestableFixture>, Se
 				return repeatedCompare(IntPair.of(((Shrub) one).getKind()// NOPMD
 						.hashCode(), ((Shrub) two).getKind().hashCode()),
 						idPair(one, two));
-			} else if (one instanceof StoneDeposit && two instanceof StoneDeposit) {
-				return repeatedCompare(IntPair.of(((StoneDeposit) one).stone()//NOPMD
+			} else if (one instanceof StoneDeposit
+					&& two instanceof StoneDeposit) {
+				return repeatedCompare(IntPair.of(((StoneDeposit) one).stone()// NOPMD
 						.ordinal(), ((StoneDeposit) two).stone().ordinal()),
 						idPair(one, two));
 			} else {
@@ -92,26 +97,30 @@ public class HarvestableComparator implements Comparator<HarvestableFixture>, Se
 			return one.getClass().hashCode() - two.getClass().hashCode();
 		}
 	}
+
 	/**
 	 * @param pairs a series of pairs of integers.
-	 * @return the result of subtracting the first pair that aren't equal, or 0 if they all are.
+	 * @return the result of subtracting the first pair that aren't equal, or 0
+	 *         if they all are.
 	 */
 	private static int repeatedCompare(final IntPair... pairs) {
 		for (IntPair pair : pairs) {
 			if (pair.first == pair.second) {
 				continue;
 			} else {
-				return pair.first - pair.second; //NOPMD
+				return pair.first - pair.second; // NOPMD
 			}
 		}
 		return 0;
 	}
+
 	/**
 	 * @param one a fixture
 	 * @param two another
 	 * @return a pair of their IDs
 	 */
-	private static IntPair idPair(final HarvestableFixture one, final HarvestableFixture two) {
+	private static IntPair idPair(final HarvestableFixture one,
+			final HarvestableFixture two) {
 		return IntPair.of(one.getID(), two.getID());
 	}
 }

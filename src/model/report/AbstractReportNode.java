@@ -4,14 +4,18 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
 import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A superclass for report-nodes.
+ *
  * @author Jonathan Lovelace
  *
  */
-public abstract class AbstractReportNode extends DefaultMutableTreeNode implements Comparable<AbstractReportNode> {
+public abstract class AbstractReportNode extends DefaultMutableTreeNode
+		implements Comparable<AbstractReportNode> {
 	/**
 	 * Constructor.
+	 *
 	 * @param txt the (header) text.
 	 */
 	protected AbstractReportNode(final String txt) {
@@ -19,29 +23,36 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 		text = txt;
 		setText(txt);
 	}
+
 	/**
 	 * @return the HTML representation of the node.
 	 */
 	public abstract String produce();
+
 	/**
 	 * @param builder a string builder
 	 * @return that builder, with an HTML representation of the node added.
 	 */
 	public abstract StringBuilder produce(final StringBuilder builder);
+
 	/**
-	 * @return an approximation of how large the HTML produced by this node will be.
+	 * @return an approximation of how large the HTML produced by this node will
+	 *         be.
 	 */
 	public abstract int size();
+
 	/**
 	 * The (usually header) text. May be empty, but not null.
 	 */
 	private String text;
+
 	/**
 	 * @return the text of the node, usually the header.
 	 */
 	public final String getText() {
 		return text;
 	}
+
 	/**
 	 * @param txt the new text for the node
 	 */
@@ -49,6 +60,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 		text = txt;
 		setUserObject(text);
 	}
+
 	/**
 	 * @param obj an object to compare to.
 	 * @return the result of the comparison
@@ -57,6 +69,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	public int compareTo(final AbstractReportNode obj) {
 		return produce().compareTo(obj.produce());
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -66,11 +79,13 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 		return this == obj
 				|| (obj instanceof AbstractReportNode && equalsImpl((AbstractReportNode) obj));
 	}
+
 	/**
 	 * @param obj a node
 	 * @return whether it's equal to this one.
 	 */
 	protected abstract boolean equalsImpl(final AbstractReportNode obj);
+
 	/**
 	 * @return a hash code for the object
 	 */
@@ -78,10 +93,12 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	public int hashCode() {
 		return hashCodeImpl();
 	}
+
 	/**
 	 * @return a hash code for the object
 	 */
 	protected abstract int hashCodeImpl();
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -89,8 +106,10 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode implemen
 	public String toString() {
 		return getText();
 	}
+
 	/**
 	 * Add a node. Do nothing if null, rather than crashing.
+	 *
 	 * @param node the node to add
 	 */
 	@Override

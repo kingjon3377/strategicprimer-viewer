@@ -1,5 +1,7 @@
 /**
  * We want as much null-safety as we can get in Java.
  */
-@NonNullByDefault package view.map.main;
+@NonNullByDefault
+package view.map.main;
+
 import org.eclipse.jdt.annotation.NonNullByDefault; // NOPMD

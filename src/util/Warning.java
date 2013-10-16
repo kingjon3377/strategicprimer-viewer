@@ -83,6 +83,7 @@ public class Warning {
 					"Default case of an enum-switch that isn't missing any cases");
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

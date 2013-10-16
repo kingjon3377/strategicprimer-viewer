@@ -34,6 +34,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -51,20 +52,24 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * The units, fortresses, and events on the tile.
 	 */
 	private final Set<TileFixture> contents;
+
 	/**
-	 * This is immediately needed for the MapNGAdapter to be even remotely efficient.
+	 * This is immediately needed for the MapNGAdapter to be even remotely
+	 * efficient.
+	 *
 	 * @return a read-only view of the contents of the tile.
 	 */
 	public Set<TileFixture> getContents() {
 		return Collections.unmodifiableSet(contents);
 	}
+
 	/**
 	 * @param fix something new on the tile
 	 * @return true iff it was not already in the set.
 	 */
 	public boolean addFixture(final TileFixture fix) {
-		if ((fix instanceof TextFixture) && ((TextFixture) fix).getText()
-				.isEmpty()) {
+		if ((fix instanceof TextFixture)
+				&& ((TextFixture) fix).getText().isEmpty()) {
 			return false; // NOPMD
 		} else if (fix instanceof TileTypeFixture) {
 			final TileType old = getTerrain();
@@ -133,7 +138,8 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 */
 	@Override
 	public String toString() {
-		// This can get big; fortunately it's rarely called. Assume each item on the tile is half a K.
+		// This can get big; fortunately it's rarely called. Assume each item on
+		// the tile is half a K.
 		final String terrain = getTerrain().toString();
 		int len = terrain.length() + 12 + (contents.size() * 512);
 		final StringBuilder sbuilder = new StringBuilder(len).append(terrain);
@@ -175,7 +181,8 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * @return whether this tile is "empty".
 	 */
 	public boolean isEmpty() {
-		return TileType.NotVisible.equals(getTerrain()) && !iterator().hasNext();
+		return TileType.NotVisible.equals(getTerrain())
+				&& !iterator().hasNext();
 	}
 
 	/**
@@ -220,8 +227,10 @@ public final class Tile implements FixtureIterable<TileFixture>,
 			return false;
 		}
 	}
+
 	/**
 	 * Implementation of isSubset() assuming that the terrain types match.
+	 *
 	 * @param obj another Tile
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't

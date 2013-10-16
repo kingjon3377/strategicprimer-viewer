@@ -19,6 +19,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @return what kind of trees
 	 */
@@ -89,8 +90,8 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Forest && trees.equals(((Forest) obj).trees)
-				&& rows == ((Forest) obj).rows);
+		return this == obj
+				|| (obj instanceof Forest && trees.equals(((Forest) obj).trees) && rows == ((Forest) obj).rows);
 	}
 
 	/**
@@ -129,6 +130,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+
 	/**
 	 * @param kind the new kind
 	 */
@@ -136,10 +138,12 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public final void setKind(final String kind) {
 		trees = kind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -147,6 +151,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -154,6 +159,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all forests as a class
 	 */

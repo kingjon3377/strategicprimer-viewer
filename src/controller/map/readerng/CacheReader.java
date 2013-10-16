@@ -76,9 +76,10 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 	@Override
 	public <S extends CacheFixture> SPIntermediateRepresentation write(
 			final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("cache", Pair.of("kind",
-						obj.getKind()), Pair.of("contents", obj.getContents()),
-						Pair.of("id", Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"cache", Pair.of("kind", obj.getKind()), Pair.of("contents",
+						obj.getContents()), Pair.of("id",
+						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

@@ -6,36 +6,41 @@ import java.io.Writer;
 
 import model.map.IMap;
 import controller.map.iointerfaces.SPWriter;
+
 /**
  * CompactXML's Writer implementation.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class CompactXMLWriter implements SPWriter {
 	/**
 	 * Write a map to file.
+	 *
 	 * @param filename The file to write to
 	 * @param map the map to write
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final String filename, final IMap map)
-			throws IOException {
+	public void write(final String filename, final IMap map) throws IOException {
 		writeObject(filename, map);
 	}
+
 	/**
 	 * Write a map to a stream.
+	 *
 	 * @param out the stream to write to
 	 * @param map the map to write
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final IMap map)
-			throws IOException {
+	public void write(final Writer out, final IMap map) throws IOException {
 		writeObject(out, map);
 	}
+
 	/**
 	 * Write an object to file.
+	 *
 	 * @param filename the file to write to
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
@@ -47,6 +52,7 @@ public class CompactXMLWriter implements SPWriter {
 			writeObject(writer, obj);
 		}
 	}
+
 	/**
 	 * Write an object to a stream.
 	 *

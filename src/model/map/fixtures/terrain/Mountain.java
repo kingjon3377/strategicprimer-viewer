@@ -19,6 +19,7 @@ public class Mountain implements TerrainFixture, HasImage {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @return a String representation of the forest.
 	 */
@@ -88,10 +89,12 @@ public class Mountain implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -99,6 +102,7 @@ public class Mountain implements TerrainFixture, HasImage {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -106,6 +110,7 @@ public class Mountain implements TerrainFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all mountains as a class
 	 */

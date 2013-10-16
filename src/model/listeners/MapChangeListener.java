@@ -2,6 +2,7 @@ package model.listeners;
 
 /**
  * An interface for things that want to be called when a new map is loaded.
+ *
  * @author Jonathan Lovelace
  *
  */

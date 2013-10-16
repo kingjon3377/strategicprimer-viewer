@@ -53,6 +53,7 @@ public final class IDFactory {
 		retval.usedIDs.or(usedIDs);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

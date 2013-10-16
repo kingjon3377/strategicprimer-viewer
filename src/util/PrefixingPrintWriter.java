@@ -6,7 +6,9 @@ import java.io.Writer;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A PrintWriter that prefixes every line printed via printLine() with a specified string.
+ * A PrintWriter that prefixes every line printed via printLine() with a
+ * specified string.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -19,12 +21,15 @@ public class PrefixingPrintWriter extends PrintWriter {
 		super(outs);
 		pref = prefix;
 	}
+
 	/**
 	 * What the caller wanted each printLine prefixed with.
 	 */
 	private final String pref;
+
 	/**
 	 * Write a line, prefixed with the specified prefix.
+	 *
 	 * @param str the line
 	 */
 	@Override

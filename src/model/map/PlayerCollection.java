@@ -109,6 +109,7 @@ public class PlayerCollection implements Iterable<Player>,
 		}
 		return true;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether we contain it
@@ -116,8 +117,10 @@ public class PlayerCollection implements Iterable<Player>,
 	public boolean contains(final Player obj) {
 		return players.containsValue(obj);
 	}
+
 	/**
 	 * Add a player to the collection.
+	 *
 	 * @param player the player to add
 	 * @return whether the collection was changed by the operation.
 	 */
@@ -129,8 +132,10 @@ public class PlayerCollection implements Iterable<Player>,
 		players.put(Integer.valueOf(player.getPlayerId()), player);
 		return retval;
 	}
+
 	/**
 	 * Remove an object from the collection.
+	 *
 	 * @param obj an object
 	 * @return true if it was removed as a result of this call
 	 */
@@ -147,16 +152,19 @@ public class PlayerCollection implements Iterable<Player>,
 			return false;
 		}
 	}
+
 	/**
 	 * The player for "independent" fixtures.
 	 */
 	private Player independent = new Player(-1, "Independent");
+
 	/**
 	 * @return a player for "independent" fixtures.
 	 */
 	public Player getIndependent() {
 		return independent;
 	}
+
 	/**
 	 * @return an array of the players
 	 */

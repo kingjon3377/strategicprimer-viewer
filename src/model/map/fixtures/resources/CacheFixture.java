@@ -13,8 +13,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class CacheFixture implements
-		HarvestableFixture, HasImage, HasKind {
+public class CacheFixture implements HarvestableFixture, HasImage, HasKind {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -95,10 +94,11 @@ public class CacheFixture implements
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof CacheFixture
-				&& kind.equals(((CacheFixture) obj).kind)
-				&& contents.equals(((CacheFixture) obj).contents)
-				&& id == ((TileFixture) obj).getID());
+		return this == obj
+				|| (obj instanceof CacheFixture
+						&& kind.equals(((CacheFixture) obj).kind)
+						&& contents.equals(((CacheFixture) obj).contents) && id == ((TileFixture) obj)
+						.getID());
 	}
 
 	/**
@@ -142,6 +142,7 @@ public class CacheFixture implements
 				&& kind.equals(((CacheFixture) fix).kind)
 				&& contents.equals(((CacheFixture) fix).contents);
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -149,10 +150,12 @@ public class CacheFixture implements
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -160,6 +163,7 @@ public class CacheFixture implements
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -167,6 +171,7 @@ public class CacheFixture implements
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all caches as a class
 	 */

@@ -21,8 +21,10 @@ public class BorderedPanel extends JPanel {
 	public BorderedPanel() {
 		super(new BorderLayout());
 	}
+
 	/**
 	 * Constructor.
+	 *
 	 * @param north the north component. Ignored if null.
 	 * @param south the south component. Ignored if null.
 	 * @param east the east component. Ignored if null.
@@ -49,6 +51,7 @@ public class BorderedPanel extends JPanel {
 			setWest(west);
 		}
 	}
+
 	/**
 	 * @param component a component to place to the north
 	 * @return this
@@ -57,6 +60,7 @@ public class BorderedPanel extends JPanel {
 		add(component, BorderLayout.NORTH);
 		return this;
 	}
+
 	/**
 	 * @param component a component to place to the south
 	 * @return this
@@ -65,6 +69,7 @@ public class BorderedPanel extends JPanel {
 		add(component, BorderLayout.SOUTH);
 		return this;
 	}
+
 	/**
 	 * @param component a component to place to the east
 	 * @return this
@@ -73,6 +78,7 @@ public class BorderedPanel extends JPanel {
 		add(component, BorderLayout.EAST);
 		return this;
 	}
+
 	/**
 	 * @param component a component to place to the west
 	 * @return this
@@ -81,6 +87,7 @@ public class BorderedPanel extends JPanel {
 		add(component, BorderLayout.WEST);
 		return this;
 	}
+
 	/**
 	 * @param component a component to place in the center
 	 * @return this
@@ -89,6 +96,7 @@ public class BorderedPanel extends JPanel {
 		add(component, BorderLayout.CENTER);
 		return this;
 	}
+
 	/**
 	 * @param component a component to place at line-start.
 	 * @return this
@@ -97,6 +105,7 @@ public class BorderedPanel extends JPanel {
 		add(component, BorderLayout.LINE_START);
 		return this;
 	}
+
 	/**
 	 * @param component a component to place at line-end.
 	 * @return this

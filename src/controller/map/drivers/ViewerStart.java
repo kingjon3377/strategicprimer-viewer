@@ -75,8 +75,10 @@ public final class ViewerStart implements ISPDriver {
 			ErrorShower.showErrorDialog(null, except.getMessage());
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args Command-line arguments.
 	 * @throws DriverFailedException if the driver failed to run.
 	 *
@@ -89,36 +91,44 @@ public final class ViewerStart implements ISPDriver {
 				final String filename = new FileChooser("").getFilename();
 				startDriver(filename);
 			} catch (ChoiceInterruptedException except) {
-				SystemOut.SYS_OUT.println("Choice was interrupted or user declined to choose, aborting ...");
+				SystemOut.SYS_OUT
+						.println("Choice was interrupted or user declined to choose, aborting ...");
 				return;
 			}
 		} else {
 			final MapReaderAdapter reader = new MapReaderAdapter();
 			final Warning warner = new Warning(Warning.Action.Warn);
-			final FilteredFileChooser chooser = new FilteredFileChooser(".", new MapFileFilter());
+			final FilteredFileChooser chooser = new FilteredFileChooser(".",
+					new MapFileFilter());
 			for (final String filename : args) {
 				try {
 					startFrame(reader.readMap(filename, warner), filename,
 							chooser);
 				} catch (final XMLStreamException e) {
-					throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename, e);
+					throw new DriverFailedException(XML_ERROR_STRING + ' '
+							+ filename, e);
 				} catch (final FileNotFoundException e) {
-					throw new DriverFailedException("File " + filename + NOT_FOUND_ERROR, e);
+					throw new DriverFailedException("File " + filename
+							+ NOT_FOUND_ERROR, e);
 				} catch (final IOException e) {
-					throw new DriverFailedException("I/O error reading " + filename, e);
+					throw new DriverFailedException("I/O error reading "
+							+ filename, e);
 				} catch (final SPFormatException e) {
 					throw new DriverFailedException(INV_DATA_ERROR, e);
 				}
 			}
 		}
 	}
+
 	/**
 	 * Start a viewer frame based on the given map.
+	 *
 	 * @param map the map object
 	 * @param filename the file it was loaded from
 	 * @param chooser the file-chooser to pass to the frame
 	 */
-	private static void startFrame(final MapView map, final String filename, final JFileChooser chooser) {
+	private static void startFrame(final MapView map, final String filename,
+			final JFileChooser chooser) {
 		final IViewerModel model = new ViewerModel(map, filename);
 		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
 				new IOHandler(model, chooser))));
@@ -131,6 +141,7 @@ public final class ViewerStart implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -138,6 +149,7 @@ public final class ViewerStart implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

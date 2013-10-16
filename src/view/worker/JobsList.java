@@ -17,8 +17,11 @@ import model.workermgmt.JobsListModel;
 import org.eclipse.jdt.annotation.Nullable;
 
 import view.util.AddRemovePanel;
+
 /**
- * A visual list of a worker's Jobs. We also handle listening for selection changes.
+ * A visual list of a worker's Jobs. We also handle listening for selection
+ * changes.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -26,12 +29,15 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 		CompletionSource {
 	/**
 	 * Constructor.
+	 *
 	 * @param listener something to listen to us
-	 * @param umSources sources to listen to for changes in which unit member is selected
+	 * @param umSources sources to listen to for changes in which unit member is
+	 *        selected
 	 * @param arps panels to listen to for new jobs from the user
 	 */
 	public JobsList(final CompletionListener listener,
-			final UnitMemberSelectionSource[] umSources, final AddRemovePanel[] arps) {
+			final UnitMemberSelectionSource[] umSources,
+			final AddRemovePanel[] arps) {
 		final JobsListModel lmodel = new JobsListModel(umSources, arps);
 		setModel(lmodel);
 		lmodel.addCompletionListener(new CompletionListener() {
@@ -51,21 +57,25 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
+
 	/**
 	 * @param evt an event indicating the selection changed.
 	 */
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
-		@Nullable final Object temp = getSelectedValue();
+		@Nullable
+		final Object temp = getSelectedValue();
 		final Object result = temp == null ? "null_job" : temp;
 		for (final CompletionListener list : cListeners) {
 			list.stopWaitingOn(result);
 		}
 	}
+
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<CompletionListener> cListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -73,6 +83,7 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	public final void addCompletionListener(final CompletionListener list) {
 		cListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

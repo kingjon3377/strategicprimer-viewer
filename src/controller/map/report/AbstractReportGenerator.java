@@ -12,7 +12,9 @@ import util.IntMap;
 import util.Pair;
 
 /**
- * An interface for classes that generate reports for particular kinds of SP objects.
+ * An interface for classes that generate reports for particular kinds of SP
+ * objects.
+ *
  * @author Jonathan Lovelace
  * @param <T> the type of thing the class knows how to generate a report on
  */
@@ -29,15 +31,19 @@ public abstract class AbstractReportGenerator<T> {
 		 * The header: what to print before opening the list.
 		 */
 		private final String header;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param head what to print before opening the list
 		 */
 		HtmlList(final String head) {
 			header = head;
 		}
+
 		/**
-		 * @return a HTML representation of the list if there's anything in it, or the empty string otherwise.
+		 * @return a HTML representation of the list if there's anything in it,
+		 *         or the empty string otherwise.
 		 */
 		@Override
 		public String toString() {
@@ -51,41 +57,56 @@ public abstract class AbstractReportGenerator<T> {
 				final StringBuilder builder = new StringBuilder(len)
 						.append(header).append("\n").append(OPEN_LIST);
 				for (String item : this) {
-					builder.append(OPEN_LIST_ITEM).append(item).append(CLOSE_LIST_ITEM);
+					builder.append(OPEN_LIST_ITEM).append(item)
+							.append(CLOSE_LIST_ITEM);
 				}
 				return builder.append(CLOSE_LIST).toString();
 			}
 		}
 	}
+
 	/**
 	 * The HTML tag for the end of a bulleted list. Plus a newline.
 	 */
 	protected static final String CLOSE_LIST = "</ul>\n";
 	/**
-	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep the HTML human-readable.
+	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep
+	 * the HTML human-readable.
 	 */
 	protected static final String OPEN_LIST = "<ul>\n";
 	/**
-	 * The HTML tag for the end of a list item ... plus a newline, to keep the HTML mostly human-readable.
+	 * The HTML tag for the end of a list item ... plus a newline, to keep the
+	 * HTML mostly human-readable.
 	 */
 	protected static final String CLOSE_LIST_ITEM = "</li>\n";
 	/**
 	 * The HTML tag for the start of a list item.
 	 */
 	protected static final String OPEN_LIST_ITEM = "<li>";
+
 	/**
-	 * All fixtures that this report references should be removed from the set before returning.
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * All fixtures that this report references should be removed from the set
+	 * before returning.
+	 *
+	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
+	 *        report generator)
+	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
-	public abstract String produce(final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles, Player currentPlayer);
+	public abstract String produce(
+			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
+			Player currentPlayer);
+
 	/**
-	 * Produce a report on a single item.
-	 * All fixtures that this report references should be removed from the set before returning.
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * Produce a report on a single item. All fixtures that this report
+	 * references should be removed from the set before returning.
+	 *
+	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
+	 *        report generator)
+	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param item the particular item we are to be reporting on.
 	 * @param loc the location of that item, if it's a fixture.
@@ -94,10 +115,15 @@ public abstract class AbstractReportGenerator<T> {
 	public abstract String produce(
 			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
 			Player currentPlayer, final T item, final Point loc);
+
 	/**
-	 * All fixtures that this report references should be removed from the set before returning.
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * All fixtures that this report references should be removed from the set
+	 * before returning.
+	 *
+	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
+	 *        report generator)
+	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
@@ -106,10 +132,13 @@ public abstract class AbstractReportGenerator<T> {
 			Player currentPlayer);
 
 	/**
-	 * Produce a report on a single item.
-	 * All fixtures that this report references should be removed from the set before returning.
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain type for some reports.)
+	 * Produce a report on a single item. All fixtures that this report
+	 * references should be removed from the set before returning.
+	 *
+	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
+	 *        report generator)
+	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param item the particular item we are to be reporting on.
 	 * @param loc the location of that item, if it's a fixture.
@@ -118,6 +147,7 @@ public abstract class AbstractReportGenerator<T> {
 	public abstract AbstractReportNode produceRIR(
 			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
 			Player currentPlayer, final T item, final Point loc);
+
 	/**
 	 * @param point a point
 	 * @return the string "At " followed by the point's location
@@ -125,6 +155,7 @@ public abstract class AbstractReportGenerator<T> {
 	protected static String atPoint(final Point point) {
 		return "At " + point.toString() + ": ";
 	}
+
 	/**
 	 * @param points a list of points
 	 * @return a comma-separated string representing them.
@@ -149,6 +180,7 @@ public abstract class AbstractReportGenerator<T> {
 			return builder.toString();
 		}
 	}
+
 	/**
 	 * @param player a player
 	 * @return the player's name, or "you" if the player is the current player
@@ -156,6 +188,7 @@ public abstract class AbstractReportGenerator<T> {
 	protected static String playerNameOrYou(final Player player) {
 		return player.isCurrent() ? "you" : player.toString();
 	}
+
 	/**
 	 * @param strings a series of strings
 	 * @return them concatenated

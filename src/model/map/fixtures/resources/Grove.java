@@ -13,8 +13,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Grove implements HarvestableFixture,
-		HasImage, HasKind {
+public class Grove implements HarvestableFixture, HasImage, HasKind {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -57,11 +56,13 @@ public class Grove implements HarvestableFixture,
 	}
 
 	/**
-	 * @return if this is a cultivated grove or orchard, false if it's a wild one
+	 * @return if this is a cultivated grove or orchard, false if it's a wild
+	 *         one
 	 */
 	public boolean isCultivated() {
 		return cultivated;
 	}
+
 	/**
 	 * @return what kind of trees are in the grove
 	 */
@@ -101,10 +102,11 @@ public class Grove implements HarvestableFixture,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Grove && kind.equals(((Grove) obj).kind)
-				&& orchard == ((Grove) obj).orchard
-				&& cultivated == ((Grove) obj).cultivated
-				&& id == ((TileFixture) obj).getID());
+		return this == obj
+				|| (obj instanceof Grove && kind.equals(((Grove) obj).kind)
+						&& orchard == ((Grove) obj).orchard
+						&& cultivated == ((Grove) obj).cultivated && id == ((TileFixture) obj)
+						.getID());
 	}
 
 	/**
@@ -148,6 +150,7 @@ public class Grove implements HarvestableFixture,
 				&& orchard == ((Grove) fix).orchard
 				&& cultivated == ((Grove) fix).cultivated;
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -155,10 +158,12 @@ public class Grove implements HarvestableFixture,
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -166,6 +171,7 @@ public class Grove implements HarvestableFixture,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -173,6 +179,7 @@ public class Grove implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all groves and orchards as a class.
 	 */

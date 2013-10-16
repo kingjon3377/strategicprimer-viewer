@@ -36,16 +36,19 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for tiles, including rivers.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactMobileReader extends AbstractCompactReader implements CompactReader<MobileFixture> {
+public final class CompactMobileReader extends AbstractCompactReader implements
+		CompactReader<MobileFixture> {
 	/**
 	 * Singleton.
 	 */
 	private CompactMobileReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Enumeration of the types we know how to handle.
 	 */
@@ -95,7 +98,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 		 */
 		SimurghType("simurgh"),
 		/**
-		 *Sphinx.
+		 * Sphinx.
 		 */
 		SphinxType("sphinx"),
 		/**
@@ -111,24 +114,29 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 		 * The tag.
 		 */
 		public final String tag;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param tagString The tag.
 		 */
 		MobileType(final String tagString) {
 			tag = tagString;
 		}
 	}
+
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
-	private static final Map<String, MobileType> MAP = new HashMap<>(MobileType.values().length);
+	private static final Map<String, MobileType> MAP = new HashMap<>(
+			MobileType.values().length);
 	/**
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
 	/**
-	 * Map from types to tags. FIXME: This is brittle and doesn't work well with extensible classes.
+	 * Map from types to tags. FIXME: This is brittle and doesn't work well with
+	 * extensible classes.
 	 */
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 	static {
@@ -154,6 +162,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 		TAG_MAP.put(Troll.class, "troll");
 		TAG_MAP.put(Unit.class, "unit");
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether we support it
@@ -162,10 +171,12 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactMobileReader READER = new CompactMobileReader();
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -178,8 +189,9 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 	 */
 	@Override
 	public MobileFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
@@ -198,23 +210,24 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 					getOrGenerateID(element, warner, idFactory));
 			break;
 		case CentaurType:
-			retval = new Centaur(getKind(element),
-					getOrGenerateID(element, warner, idFactory));
+			retval = new Centaur(getKind(element), getOrGenerateID(element,
+					warner, idFactory));
 			break;
 		case DragonType:
-			retval = new Dragon(getKind(element),
-					getOrGenerateID(element, warner, idFactory));
+			retval = new Dragon(getKind(element), getOrGenerateID(element,
+					warner, idFactory));
 			break;
 		case FairyType:
-			retval = new Fairy(getKind(element),
-					getOrGenerateID(element, warner, idFactory));
+			retval = new Fairy(getKind(element), getOrGenerateID(element,
+					warner, idFactory));
 			break;
 		case GiantType:
-			retval = new Giant(getKind(element),
-					getOrGenerateID(element, warner, idFactory));
+			retval = new Giant(getKind(element), getOrGenerateID(element,
+					warner, idFactory));
 			break;
 		default:
-			retval = readSimple(type, getOrGenerateID(element, warner, idFactory));
+			retval = readSimple(type,
+					getOrGenerateID(element, warner, idFactory));
 			break;
 		}
 		spinUntilEnd(element.getName(), stream);
@@ -223,38 +236,46 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 		}
 		return retval;
 	}
+
 	/**
 	 * @param element the current tag
 	 * @return the value of its 'kind' parameter
-	 * @throws SPFormatException on SP format error---if the parameter is missing, e.g.
+	 * @throws SPFormatException on SP format error---if the parameter is
+	 *         missing, e.g.
 	 */
-	private static String getKind(final StartElement element) throws SPFormatException {
+	private static String getKind(final StartElement element)
+			throws SPFormatException {
 		return getParameter(element, "kind");
 	}
+
 	/**
 	 * Create an animal.
+	 *
 	 * @param element the tag we're reading
 	 * @param idNum the ID number to give it
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
-	private static Animal createAnimal(final StartElement element, final int idNum)
-			throws SPFormatException {
+	private static Animal createAnimal(final StartElement element,
+			final int idNum) throws SPFormatException {
 		return new Animal(
 				getKind(element),
 				hasParameter(element, "traces"),
 				Boolean.parseBoolean(getParameter(element, "talking", "false")),
 				getParameter(element, "status", "wild"), idNum);
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final MobileFixture obj, final int indent) throws IOException {
+	public void write(final Writer out, final MobileFixture obj,
+			final int indent) throws IOException {
 		if (obj instanceof Unit) {
 			CompactUnitReader.READER.write(out, (Unit) obj, indent);
 		} else if (obj instanceof Animal) {
@@ -292,8 +313,11 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 			out.append(" />\n");
 		}
 	}
+
 	/**
-	 * This is part of the switch statement in read() split off to reduce calculated complexity.
+	 * This is part of the switch statement in read() split off to reduce
+	 * calculated complexity.
+	 *
 	 * @param type the type being read
 	 * @param id the ID # to give it.
 	 * @return the thing being read.
@@ -331,4 +355,3 @@ public final class CompactMobileReader extends AbstractCompactReader implements 
 		return retval;
 	}
 }
-

@@ -2,9 +2,9 @@ package controller.map.formatexceptions;
 
 /**
  * A custom exception for XML format errors.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class SPFormatException extends Exception {
 	/**
@@ -13,7 +13,7 @@ public class SPFormatException extends Exception {
 	private final int line;
 
 	/**
-	 * 
+	 *
 	 * @return the line of the XML file containing the mistake
 	 */
 	public int getLine() {
@@ -22,7 +22,7 @@ public class SPFormatException extends Exception {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param message a message describing what's wrong with the XML.
 	 * @param errorLine the line containing the error.
 	 */

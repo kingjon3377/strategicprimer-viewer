@@ -50,8 +50,10 @@ public final class EchoDriver implements ISPDriver {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error
 	 */
@@ -70,8 +72,8 @@ public final class EchoDriver implements ISPDriver {
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error reading file " + args[0],
-					except);
+			throw new DriverFailedException(
+					"I/O error reading file " + args[0], except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {
@@ -80,9 +82,11 @@ public final class EchoDriver implements ISPDriver {
 		try {
 			new MapReaderAdapter().write(args[1], map);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error writing " + args[1], except);
+			throw new DriverFailedException("I/O error writing " + args[1],
+					except);
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -90,6 +94,7 @@ public final class EchoDriver implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -97,6 +102,7 @@ public final class EchoDriver implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

@@ -45,10 +45,12 @@ public class Village implements ITownFixture, HasImage {
 		owner = player;
 		race = vRace;
 	}
+
 	/**
 	 * The "owner" of the village---the player it's pledged to serve.
 	 */
 	private Player owner;
+
 	/**
 	 * @return a String representation of the village
 	 */
@@ -133,6 +135,7 @@ public class Village implements ITownFixture, HasImage {
 				&& owner.equals(((Village) fix).owner)
 				&& race.equals(((Village) fix).race);
 	}
+
 	/**
 	 * @return the name of the village
 	 */
@@ -140,6 +143,7 @@ public class Village implements ITownFixture, HasImage {
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @return the status of the village
 	 */
@@ -147,21 +151,26 @@ public class Village implements ITownFixture, HasImage {
 	public TownStatus status() {
 		return status;
 	}
+
 	/**
 	 * All villages are small.
+	 *
 	 * @return the size of the village.
 	 */
 	@Override
 	public TownSize size() {
 		return TownSize.Small;
 	}
+
 	/**
-	 * @return the "owner" of the village---the player it's pledged to serve and support
+	 * @return the "owner" of the village---the player it's pledged to serve and
+	 *         support
 	 */
 	@Override
 	public final Player getOwner() {
 		return owner;
 	}
+
 	/**
 	 * @param player the town's new owner
 	 */
@@ -169,6 +178,7 @@ public class Village implements ITownFixture, HasImage {
 	public final void setOwner(final Player player) {
 		owner = player;
 	}
+
 	/**
 	 * @param nomen the town's new name
 	 */
@@ -176,10 +186,12 @@ public class Village implements ITownFixture, HasImage {
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -187,6 +199,7 @@ public class Village implements ITownFixture, HasImage {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -194,22 +207,26 @@ public class Village implements ITownFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * The dominant race of the village.
 	 */
 	private String race;
+
 	/**
 	 * @return the dominant race of the village.
 	 */
 	public String getRace() {
 		return race;
 	}
+
 	/**
 	 * @param vRace the new dominant race of the village.
 	 */
 	public void setRace(final String vRace) {
 		race = vRace;
 	}
+
 	/**
 	 * @return a phrase describing all villages as a class.
 	 */

@@ -39,6 +39,7 @@ public class AppStarter implements ISPDriver {
 	 * A map from options to the drivers they represent.
 	 */
 	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE = new HashMap<>();
+
 	/**
 	 * @param driver a driver to add twice.
 	 */
@@ -69,6 +70,7 @@ public class AppStarter implements ISPDriver {
 		CACHE.put(oneUsage.getShortOption(), pair);
 		CACHE.put(oneUsage.getLongOption(), pair);
 	}
+
 	static {
 		addChoice(new QueryCLI(), new ViewerStart());
 		// FIXME: Write a CLI to _automate_ advancement
@@ -87,8 +89,10 @@ public class AppStarter implements ISPDriver {
 		// FIXME: Write a stat-generating/stat-entering GUI.
 		addChoice(new StatGeneratingCLIDriver());
 	}
+
 	/**
 	 * Start the driver, and then start the specified other driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on fatal error.
 	 */
@@ -122,15 +126,19 @@ public class AppStarter implements ISPDriver {
 			startChosenDriver(driver, others);
 		}
 	}
+
 	/**
 	 * Start the app-chooser window.
+	 *
 	 * @param gui whether to show the GUI chooser (or a CLI list)
 	 * @param others the parameters to pass to the chosen driver
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
-	private static void startChooser(final boolean gui, final List<String> others) throws DriverFailedException {
+	private static void startChooser(final boolean gui,
+			final List<String> others) throws DriverFailedException {
 		if (gui) {
-			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(others)));
+			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
+					others)));
 		} else {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			for (final Pair<ISPDriver, ISPDriver> pair : CACHE.values()) {
@@ -144,13 +152,16 @@ public class AppStarter implements ISPDriver {
 						"No applications available", "App to start: ", true)),
 						others);
 			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O error prompting user for app to start", except);
+				LOGGER.log(Level.SEVERE,
+						"I/O error prompting user for app to start", except);
 				return;
 			}
 		}
 	}
+
 	/**
 	 * Start a driver.
+	 *
 	 * @param driver the driver to start
 	 * @param params non-option parameters
 	 * @throws DriverFailedException on fatal error
@@ -159,21 +170,27 @@ public class AppStarter implements ISPDriver {
 			final List<String> params) throws DriverFailedException {
 		driver.startDriver(params.toArray(new String[params.size()]));
 	}
+
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AppStarter.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(AppStarter.class
+			.getName());
+
 	/**
 	 * Entry point: start the driver.
+	 *
 	 * @param args command-line arguments
 	 */
 	public static void main(final String[] args) {
 		try {
 			new AppStarter().startDriver(args);
 		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(), except.getCause());
+			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(),
+					except.getCause());
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -181,6 +198,7 @@ public class AppStarter implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -188,6 +206,7 @@ public class AppStarter implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

@@ -49,16 +49,18 @@ public final class MapChecker implements ISPDriver {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if not enough arguments
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
-//			SystemOut.SYS_OUT
-//					.println("Usage: MapChecker filename [filename ...]");
+			// SystemOut.SYS_OUT
+			// .println("Usage: MapChecker filename [filename ...]");
 			throw new DriverFailedException("Need at least one argument",
 					new IllegalArgumentException("Need at least one argument"));
 		}
@@ -69,6 +71,7 @@ public final class MapChecker implements ISPDriver {
 
 	/**
 	 * Check a map.
+	 *
 	 * @param filename the name of the file to check
 	 */
 	private void check(final String filename) {
@@ -89,12 +92,11 @@ public final class MapChecker implements ISPDriver {
 			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, e);
 			retval = false;
 		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE,
-					"XML stream error reading " + filename, e);
+			LOGGER.log(Level.SEVERE, "XML stream error reading " + filename, e);
 			retval = false;
 		} catch (final SPFormatException e) {
-			LOGGER.log(Level.SEVERE, "SP map format error reading "
-					+ filename, e);
+			LOGGER.log(Level.SEVERE, "SP map format error reading " + filename,
+					e);
 			retval = false;
 		}
 		if (retval) {
@@ -102,6 +104,7 @@ public final class MapChecker implements ISPDriver {
 			SystemOut.SYS_OUT.println(filename);
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -109,6 +112,7 @@ public final class MapChecker implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -116,6 +120,7 @@ public final class MapChecker implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

@@ -4,8 +4,10 @@ import javax.swing.DefaultListModel;
 
 import model.listeners.MapChangeListener;
 import model.map.Player;
+
 /**
  * A list model for players in the exploration GUI.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -15,6 +17,7 @@ public class PlayerListModel extends DefaultListModel<Player> implements
 	 * The exploration model.
 	 */
 	private final IExplorationModel model;
+
 	/**
 	 * @param emodel the exploration model
 	 */
@@ -25,6 +28,7 @@ public class PlayerListModel extends DefaultListModel<Player> implements
 			addElement(player);
 		}
 	}
+
 	/**
 	 * Handle notification that a new map was loaded.
 	 */

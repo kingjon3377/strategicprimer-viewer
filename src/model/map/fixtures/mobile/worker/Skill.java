@@ -8,6 +8,7 @@ import model.map.HasName;
 
 /**
  * A skill a worker has experience or training in.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -16,11 +17,14 @@ public class Skill implements HasName, Serializable {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param skillName the name of the skill
 	 * @param skillLevel how many levels the worker has in the skill
-	 * @param time how many hours of training or experience the worker has gained since last gaining a level.
+	 * @param time how many hours of training or experience the worker has
+	 *        gained since last gaining a level.
 	 */
 	public Skill(final String skillName, final int skillLevel, final int time) {
 		super();
@@ -28,6 +32,7 @@ public class Skill implements HasName, Serializable {
 		level = skillLevel;
 		hours = time;
 	}
+
 	/**
 	 * The name of the skill.
 	 */
@@ -40,6 +45,7 @@ public class Skill implements HasName, Serializable {
 	 * How many hours the worker has gained since leveling up last.
 	 */
 	private int hours;
+
 	/**
 	 * @return the name of the skill
 	 */
@@ -47,18 +53,21 @@ public class Skill implements HasName, Serializable {
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @return how many levels the worker has in the skill
 	 */
 	public int getLevel() {
 		return level;
 	}
+
 	/**
 	 * @return how many hours the worker has accumulated since leveling up last
 	 */
 	public int getHours() {
 		return hours;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's the same as this one
@@ -69,6 +78,7 @@ public class Skill implements HasName, Serializable {
 				|| (obj instanceof Skill && name.equals(((Skill) obj).name)
 						&& level == ((Skill) obj).level && hours == ((Skill) obj).hours);
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -76,10 +86,13 @@ public class Skill implements HasName, Serializable {
 	public int hashCode() {
 		return name.hashCode();
 	}
+
 	/**
 	 * Add hours of training or experience.
+	 *
 	 * @param hrs the number of hours to add
-	 * @param condition If less than or equal to the number of hours after the addition, level up and zero the hours instead.
+	 * @param condition If less than or equal to the number of hours after the
+	 *        addition, level up and zero the hours instead.
 	 */
 	public void addHours(final int hrs, final int condition) {
 		hours += hrs;
@@ -88,6 +101,7 @@ public class Skill implements HasName, Serializable {
 			hours = 0;
 		}
 	}
+
 	/**
 	 * @return a string representation of the skill
 	 */
@@ -95,6 +109,7 @@ public class Skill implements HasName, Serializable {
 	public String toString() {
 		return name + " (" + Integer.toString(level) + ')';
 	}
+
 	/**
 	 * @param nomen the skill's new name
 	 */

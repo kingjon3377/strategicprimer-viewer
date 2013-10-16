@@ -47,12 +47,12 @@ public class TownReader implements INodeHandler<Town> {
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(element.getName(), stream);
-		final Town fix = new Town(
-				TownStatus.parseTownStatus(getAttribute(element, "status")),
-				TownSize.parseTownSize(XMLHelper.getAttribute(element, "size")),
-				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
-						element, "name", ""), getOrGenerateID(element, warner,
-						idFactory), getPlayerOrIndependent(element, warner, players));
+		final Town fix = new Town(TownStatus.parseTownStatus(getAttribute(
+				element, "status")), TownSize.parseTownSize(XMLHelper
+				.getAttribute(element, "size")), Integer.parseInt(getAttribute(
+				element, "dc")), getAttribute(element, "name", ""),
+				getOrGenerateID(element, warner, idFactory),
+				getPlayerOrIndependent(element, warner, players));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -82,7 +82,8 @@ public class TownReader implements INodeHandler<Town> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
-		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
+		retval.addAttribute("owner",
+				Integer.toString(obj.getOwner().getPlayerId()));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
@@ -94,6 +95,7 @@ public class TownReader implements INodeHandler<Town> {
 	public Class<Town> writes() {
 		return Town.class;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

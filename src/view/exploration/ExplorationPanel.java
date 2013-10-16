@@ -36,8 +36,10 @@ import view.map.details.FixtureList;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
+
 /**
  * A panel to let the user explore using a unit.
+ *
  * @author Jonathan Lovelace
  */
 public class ExplorationPanel extends BorderedPanel implements ActionListener,
@@ -50,8 +52,10 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 * The text for the 'back' button.
 	 */
 	private static final String BACK_TEXT = "Select a different explorer";
+
 	/**
 	 * Constructor.
+	 *
 	 * @param emodel the exploration model.
 	 * @param mpDoc the model underlying the remaining-MP text boxes.
 	 */
@@ -63,15 +67,18 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpField = new JTextField(mpDoc, null, 5);
-		// TODO: store the reference to the document, not the text field, in the class body.
+		// TODO: store the reference to the document, not the text field, in the
+		// class body.
 		headerPanel.add(mpField);
 		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
 				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
 		emodel.addMovementCostListener(this);
 		emodel.addSelectionChangeListener(this);
 	}
+
 	/**
 	 * Set up the GUI for the surrounding tiles.
+	 *
 	 * @param panel the panel to add them all to.
 	 * @return it
 	 */
@@ -81,13 +88,16 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 				Direction.East, Direction.Southwest, Direction.South,
 				Direction.Southeast);
 	}
+
 	/**
 	 * Set up the GUI for multiple tiles.
+	 *
 	 * @param panel the panel to add them all to.
 	 * @param directions the directions to create GUIs for
 	 * @return the panel
 	 */
-	private JPanel setupTilesGUIImpl(final JPanel panel, final Direction... directions) {
+	private JPanel setupTilesGUIImpl(final JPanel panel,
+			final Direction... directions) {
 		for (final Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, direction);
@@ -95,8 +105,10 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		}
 		return panel;
 	}
+
 	/**
 	 * Handle a button press.
+	 *
 	 * @param evt the event to handle.
 	 */
 	@Override
@@ -107,6 +119,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 			}
 		}
 	}
+
 	/**
 	 * The label showing the current location of the explorer.
 	 */
@@ -150,11 +163,13 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		final DualTileButton dtb = new DualTileButton();
 		// panel.add(new JScrollPane(dtb));
 		panel.add(dtb);
-		final ExplorationClickListener ecl = new ExplorationClickListener(model, direction, mainList);
+		final ExplorationClickListener ecl = new ExplorationClickListener(
+				model, direction, mainList);
 		dtb.addActionListener(ecl);
 		ecl.addSelectionChangeListener(this);
 		ecl.addMovementCostListener(this);
-		mainList.getModel().addListDataListener(new ExplorationListListener(model, mainList));
+		mainList.getModel().addListDataListener(
+				new ExplorationListListener(model, mainList));
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		panel.add(new JScrollPane(new FixtureList(panel, model
 				.getSubordinateMaps().iterator().next().first().getPlayers(),
@@ -163,8 +178,10 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		buttons.put(direction, dtb);
 		seconds.put(direction, secPCS);
 	}
+
 	/**
 	 * Account for a movement cost.
+	 *
 	 * @param cost how much the movement cost
 	 */
 	@Override
@@ -176,12 +193,14 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 			mpField.setText(Integer.toString(mpoints));
 		}
 	}
+
 	/**
 	 * @param old the previously selected location
 	 * @param newPoint the newly selected location
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old,
+			final Point newPoint) {
 		final Point selPoint = model.getSelectedUnitLocation();
 		for (final Direction dir : Direction.values()) {
 			if (dir == null) {
@@ -208,6 +227,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 				+ "; click a tile to explore it. "
 				+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
 	}
+
 	/**
 	 * @param old the previously selected tile
 	 * @param newTile the newly selected tile
@@ -216,10 +236,12 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
 		// Everything is handled in selectedPointChanged().
 	}
+
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<CompletionListener> cListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -227,6 +249,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	public void addCompletionListener(final CompletionListener list) {
 		cListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

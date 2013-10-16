@@ -22,25 +22,31 @@ import view.util.DriverQuit;
 import view.util.MenuItemCreator;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MultiIOHandler;
+
 /**
  * Menus for the exploration GUI.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class ExplorationMenu extends JMenuBar {
 	/**
 	 * Constructor.
+	 *
 	 * @param handler the I/O handler to handle I/O related items
 	 * @param model the exploration model
-	 * @param parent the window this is to be attached to, which should close on "Close".
+	 * @param parent the window this is to be attached to, which should close on
+	 *        "Close".
 	 */
-	public ExplorationMenu(final MultiIOHandler handler, final IExplorationModel model, final JFrame parent) {
+	public ExplorationMenu(final MultiIOHandler handler,
+			final IExplorationModel model, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
 				MenuItemCreator.createHotkey(KeyEvent.VK_O),
 				"Load the main map from file", handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Load secondary", KeyEvent.VK_E,
+		fileMenu.add(MenuItemCreator.createMenuItem("Load secondary",
+				KeyEvent.VK_E,
 				MenuItemCreator.createShiftHotkey(KeyEvent.VK_O),
 				"Load an additional secondary map from file", handler));
 		fileMenu.add(MenuItemCreator.createMenuItem("Save", KeyEvent.VK_S,
@@ -58,9 +64,11 @@ public class ExplorationMenu extends JMenuBar {
 				"Open the main map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
 						SwingUtilities.invokeLater(new ViewerOpener(model
-								.getMap(), model.getMapFilename(), -1, -1, handler));
+								.getMap(), model.getMapFilename(), -1, -1,
+								handler));
 					}
 				}));
 		fileMenu.add(MenuItemCreator.createMenuItem(
@@ -70,7 +78,8 @@ public class ExplorationMenu extends JMenuBar {
 				"Open the first secondary map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
 						final Pair<IMap, String> mapPair = model
 								.getSubordinateMaps().iterator().next();
 						SwingUtilities.invokeLater(new ViewerOpener(mapPair
@@ -90,7 +99,8 @@ public class ExplorationMenu extends JMenuBar {
 					 */
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
-						if (evt != null && "Close".equals(evt.getActionCommand())) {
+						if (evt != null
+								&& "Close".equals(evt.getActionCommand())) {
 							parent.setVisible(false);
 							parent.dispose();
 						}
@@ -106,27 +116,33 @@ public class ExplorationMenu extends JMenuBar {
 					 * @param event the event to handle
 					 */
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
-						if (event != null && "Quit".equals(event.getActionCommand())) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
+						if (event != null
+								&& "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
 						}
 					}
-		}));
+				}));
 		add(fileMenu);
 	}
+
 	/**
 	 * A class to open a ViewerFrame.
 	 */
 	private static class ViewerOpener implements Runnable {
 		/**
 		 * Constructor.
+		 *
 		 * @param map the map (view) to open
 		 * @param file the filename it was loaded from
-		 * @param player the current player's number---ignored if map is a MapView.
+		 * @param player the current player's number---ignored if map is a
+		 *        MapView.
 		 * @param turn the current turn---ignored if map is a MapView.
 		 * @param ioHandler the I/O handler to let the menu handle 'open', etc.
 		 */
-		ViewerOpener(final IMap map, final String file, final int player, final int turn, final IOHandler ioHandler) {
+		ViewerOpener(final IMap map, final String file, final int player,
+				final int turn, final IOHandler ioHandler) {
 			if (map instanceof MapView) {
 				view = (MapView) map;
 			} else {
@@ -135,6 +151,7 @@ public class ExplorationMenu extends JMenuBar {
 			filename = file;
 			ioHelper = ioHandler;
 		}
+
 		/**
 		 * The map view to open.
 		 */
@@ -147,12 +164,14 @@ public class ExplorationMenu extends JMenuBar {
 		 * The I/O handler to let the menu handle 'open', etc.
 		 */
 		private final IOHandler ioHelper;
+
 		/**
 		 * Run the thread.
 		 */
 		@Override
 		public void run() {
-			new ViewerFrame(new ViewerModel(view, filename), ioHelper).setVisible(true);
+			new ViewerFrame(new ViewerModel(view, filename), ioHelper)
+					.setVisible(true);
 		}
 	}
 }

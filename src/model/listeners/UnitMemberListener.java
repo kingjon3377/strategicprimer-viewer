@@ -14,7 +14,9 @@ import org.eclipse.jdt.annotation.Nullable;
 public interface UnitMemberListener {
 	/**
 	 * @param old the previous selection
-	 * @param selected the new selection. Because sometimes there's no selection, may be null.
+	 * @param selected the new selection. Because sometimes there's no
+	 *        selection, may be null.
 	 */
-	void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected);
+	void memberSelected(@Nullable final UnitMember old,
+			@Nullable final UnitMember selected);
 }

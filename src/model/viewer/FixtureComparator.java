@@ -35,6 +35,7 @@ public class FixtureComparator implements Comparator<TileFixture>, Serializable 
 	public int compare(final TileFixture one, final TileFixture two) {
 		return two.getZValue() - one.getZValue();
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -10,6 +10,7 @@ import view.util.FilteredFileChooser;
 
 /**
  * A class to hide the details of choosing a file from the caller.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -39,6 +40,7 @@ public class FileChooser {
 		filename = "";
 		setFilename(file);
 	}
+
 	/**
 	 * No-arg constructor. We'll show a dialog unconditionally when the filename
 	 * is asked for.
@@ -46,11 +48,14 @@ public class FileChooser {
 	public FileChooser() {
 		this("");
 	}
+
 	/**
 	 * If no valid filename was passed in, show a dialog for the user to select
 	 * one; return the filename passed in or the filename the user selected.
+	 *
 	 * @return the file the caller or the user chose
-	 * @throws ChoiceInterruptedException when the choice is interrupted or the user declines to choose a file.
+	 * @throws ChoiceInterruptedException when the choice is interrupted or the
+	 *         user declines to choose a file.
 	 */
 	public String getFilename() throws ChoiceInterruptedException {
 		final FilteredFileChooser fileChooser = chooser;
@@ -77,12 +82,16 @@ public class FileChooser {
 			return filename;
 		}
 	}
+
 	/**
-	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or otherwise failing.
+	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or
+	 * otherwise failing.
+	 *
 	 * @param runnable the runnable to run.
 	 * @throws ChoiceInterruptedException on error
 	 */
-	private static void invoke(final Runnable runnable) throws ChoiceInterruptedException {
+	private static void invoke(final Runnable runnable)
+			throws ChoiceInterruptedException {
 		try {
 			SwingUtilities.invokeAndWait(runnable);
 		} catch (InvocationTargetException except) {
@@ -91,8 +100,10 @@ public class FileChooser {
 			throw new ChoiceInterruptedException(except);
 		}
 	}
+
 	/**
 	 * (Re-)set the filename to return.
+	 *
 	 * @param file the filename to return
 	 */
 	public final void setFilename(final String file) {
@@ -104,8 +115,10 @@ public class FileChooser {
 			shouldReturn = true;
 		}
 	}
+
 	/**
-	 * An exception to throw when no selection was made or selection was interrupted by an exception.
+	 * An exception to throw when no selection was made or selection was
+	 * interrupted by an exception.
 	 */
 	public static class ChoiceInterruptedException extends Exception {
 		/**
@@ -114,6 +127,7 @@ public class FileChooser {
 		public ChoiceInterruptedException(final Throwable cause) {
 			super("Choice of a file was interrupted by an exception:", cause);
 		}
+
 		/**
 		 * No-arg constructor.
 		 */

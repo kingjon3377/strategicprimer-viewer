@@ -1,6 +1,9 @@
 package model.listeners;
+
 /**
- * An interface for objects that want to know when the current map version changes.
+ * An interface for objects that want to know when the current map version
+ * changes.
+ *
  * @author Jonathan Lovelace
  *
  */

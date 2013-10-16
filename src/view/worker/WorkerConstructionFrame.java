@@ -31,14 +31,18 @@ import view.util.BorderedPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
 import controller.map.misc.IDFactory;
+
 /**
  * A window to let the user add a new worker.
+ *
  * @author Jonathan Lovelace
  *
  */
-public class WorkerConstructionFrame extends JFrame implements ActionListener, NewWorkerSource {
+public class WorkerConstructionFrame extends JFrame implements ActionListener,
+		NewWorkerSource {
 	/**
 	 * Constructor.
+	 *
 	 * @param idFac the ID factory to use to generate IDs.
 	 */
 	public WorkerConstructionFrame(final IDFactory idFac) {
@@ -70,6 +74,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 		setMinimumSize(new Dimension(320, 240));
 		pack();
 	}
+
 	/**
 	 * @return an explanation of what's wrong with the user's input.
 	 */
@@ -109,8 +114,10 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * Handle button presses.
+	 *
 	 * @param evt the action to handle.
 	 */
 	@Override
@@ -120,12 +127,15 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 		} else if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
 			if (name.getText().trim().isEmpty()
 					|| race.getText().trim().isEmpty()
-					|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText().trim(),
-							str.getText().trim(), dex.getText().trim(), con.getText().trim(),
-							intel.getText().trim(), wis.getText().trim(), cha.getText().trim())) {
+					|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
+							.trim(), str.getText().trim(),
+							dex.getText().trim(), con.getText().trim(), intel
+									.getText().trim(), wis.getText().trim(),
+							cha.getText().trim())) {
 				ErrorShower.showErrorDialog(this, getErrorExpl());
 			} else {
-				final Worker retval = new Worker(name.getText().trim(), race.getText().trim(), idf.createID());
+				final Worker retval = new Worker(name.getText().trim(), race
+						.getText().trim(), idf.createID());
 				retval.setStats(new WorkerStats(parseInt(hpBox),
 						parseInt(maxHP), parseInt(str), parseInt(dex),
 						parseInt(con), parseInt(intel), parseInt(wis),
@@ -141,6 +151,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 			dispose();
 		}
 	}
+
 	/**
 	 * @param box a text field
 	 * @return the integer value of its text
@@ -148,6 +159,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 	private static int parseInt(final JTextField box) {
 		return Integer.parseInt(box.getText().trim());
 	}
+
 	/**
 	 * @param strings a collection of strings
 	 * @return true if any of them is nonnumeric
@@ -160,20 +172,25 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 		}
 		return false;
 	}
+
 	/**
 	 * The ID factory to use to generate IDs.
 	 */
 	private final IDFactory idf;
+
 	/**
 	 * Add a label and a field to a panel.
+	 *
 	 * @param panel the panel to hold them
 	 * @param text the text to put on the label
 	 * @param field the text field, or similar, to add
 	 */
-	private static void addLabeledField(final JPanel panel, final String text, final JComponent field) {
+	private static void addLabeledField(final JPanel panel, final String text,
+			final JComponent field) {
 		panel.add(new JLabel(text));
 		panel.add(field);
 	}
+
 	/**
 	 * Randomly generate stats.
 	 */
@@ -187,15 +204,20 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 		createStat(wis);
 		createStat(cha);
 	}
+
 	/**
-	 * Fill a stat's text box with an appropriate randomly-generated one. Doesn't take race into account.
+	 * Fill a stat's text box with an appropriate randomly-generated one.
+	 * Doesn't take race into account.
+	 *
 	 * @param stat the field to fill
 	 */
 	private static void createStat(final JTextField stat) {
 		final Random rng = SingletonRandom.RANDOM;
-		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6) + rng.nextInt(6) + 3;
+		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6)
+				+ rng.nextInt(6) + 3;
 		stat.setText(Integer.toString(threeDeeSix));
 	}
+
 	/**
 	 * The 'name' field.
 	 */
@@ -240,6 +262,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 	 * The list of listeners to notify on worker creation.
 	 */
 	private final List<NewWorkerListener> nwListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -247,6 +270,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, N
 	public void addNewWorkerListener(final NewWorkerListener list) {
 		nwListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

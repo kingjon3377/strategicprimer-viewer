@@ -12,8 +12,10 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractDriverModel;
+
 /**
  * A model to underlie the advancement GUI, etc.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -22,14 +24,18 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param map the map we're wrapping.
-	 * @param filename the name of the file the map was loaded from or should be saved to
+	 * @param filename the name of the file the map was loaded from or should be
+	 *        saved to
 	 */
 	public WorkerModel(final MapView map, final String filename) {
 		setMap(map, filename);
 	}
+
 	/**
 	 * @param player a player in the map
 	 * @return a list of that player's units
@@ -44,12 +50,15 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param iter a sequence of members of that type
 	 * @param player a player
-	 * @return a list of the members of the sequence that are units owned by the player
+	 * @return a list of the members of the sequence that are units owned by the
+	 *         player
 	 */
-	private static List<Unit> getUnits(final Iterable<? super Unit> iter, final Player player) {
+	private static List<Unit> getUnits(final Iterable<? super Unit> iter,
+			final Player player) {
 		final List<Unit> retval = new ArrayList<>();
 		for (Object obj : iter) {
 			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
@@ -60,6 +69,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param unit the unit to add
 	 */

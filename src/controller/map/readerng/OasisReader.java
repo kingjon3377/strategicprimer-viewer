@@ -42,8 +42,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Oasis fix = new Oasis(
-				getOrGenerateID(element, warner, idFactory));
+		final Oasis fix = new Oasis(getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -74,11 +73,12 @@ public class OasisReader implements INodeHandler<Oasis> {
 	 */
 	@Override
 	public <S extends Oasis> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("oasis", Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"oasis", Pair.of("id", Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

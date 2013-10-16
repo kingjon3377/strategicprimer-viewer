@@ -18,6 +18,7 @@ public class ComplexReportNode extends AbstractReportNode {
 	public ComplexReportNode(final String text) {
 		super(text);
 	}
+
 	/**
 	 * @return an HTML representation of the node.
 	 */
@@ -25,6 +26,7 @@ public class ComplexReportNode extends AbstractReportNode {
 	public String produce() {
 		return produce(new StringBuilder(size())).toString();
 	}
+
 	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
@@ -40,8 +42,10 @@ public class ComplexReportNode extends AbstractReportNode {
 		}
 		return builder;
 	}
+
 	/**
-	 * @return approximately how long the HTML representation of this node will be.
+	 * @return approximately how long the HTML representation of this node will
+	 *         be.
 	 */
 	@Override
 	public int size() {
@@ -54,19 +58,23 @@ public class ComplexReportNode extends AbstractReportNode {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param obj a node
 	 * @return whether it equals this one
 	 */
 	@Override
 	protected boolean equalsImpl(final AbstractReportNode obj) {
-		return obj instanceof ComplexReportNode && getText().equals(obj.getText()) && children().equals(obj.children());
+		return obj instanceof ComplexReportNode
+				&& getText().equals(obj.getText())
+				&& children().equals(obj.children());
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	protected int hashCodeImpl() {
-		return getText().hashCode() /*| children().hashCode()*/;
+		return getText().hashCode() /* | children().hashCode() */;
 	}
 }

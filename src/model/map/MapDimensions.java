@@ -6,6 +6,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -14,8 +15,10 @@ public class MapDimensions implements Serializable {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param numRows the number of rows
 	 * @param numCols the number of columns
 	 * @param ver the map version number
@@ -25,36 +28,43 @@ public class MapDimensions implements Serializable {
 		cols = numCols;
 		version = ver;
 	}
+
 	/**
 	 * The number of rows in the map.
 	 */
 	public final int rows;
+
 	/**
 	 * @return The number of rows in the map.
 	 */
 	public final int getRows() {
 		return rows;
 	}
+
 	/**
 	 * The number of columns in the map.
 	 */
 	public final int cols;
+
 	/**
 	 * @return The number of columns in the map.
 	 */
 	public final int getColumns() {
 		return cols;
 	}
+
 	/**
 	 * The map version.
 	 */
 	public final int version;
+
 	/**
 	 * @return The map version.
 	 */
 	public final int getVersion() {
 		return version;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it equals this
@@ -66,6 +76,7 @@ public class MapDimensions implements Serializable {
 						&& ((MapDimensions) obj).rows == rows
 						&& ((MapDimensions) obj).cols == cols && ((MapDimensions) obj).version == version);
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */

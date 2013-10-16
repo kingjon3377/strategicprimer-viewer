@@ -18,13 +18,17 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.TypesafeLogger;
 import view.util.AddRemovePanel;
+
 /**
  * A tree representing a worker's Jobs and Skills.
+ *
  * @author Jonathan Lovelace
  */
-public class JobsTree extends JTree implements TreeSelectionListener, CompletionSource {
+public class JobsTree extends JTree implements TreeSelectionListener,
+		CompletionSource {
 	/**
 	 * Constructor.
+	 *
 	 * @param sources things for the model to listen to for property changes.
 	 */
 	public JobsTree(final AddRemovePanel[] sources, final CompletionSource src) {
@@ -42,12 +46,17 @@ public class JobsTree extends JTree implements TreeSelectionListener, Completion
 		setShowsRootHandles(true);
 		getSelectionModel().addTreeSelectionListener(this);
 	}
+
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(JobsTree.class);
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(JobsTree.class);
+
 	/**
-	 * Fire the 'skill' property with the current selection if it's a Skill, or null if not.
+	 * Fire the 'skill' property with the current selection if it's a Skill, or
+	 * null if not.
+	 *
 	 * @param evt the selection event to handle
 	 */
 	@Override
@@ -68,10 +77,12 @@ public class JobsTree extends JTree implements TreeSelectionListener, Completion
 			}
 		}
 	}
+
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<CompletionListener> cListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -79,6 +90,7 @@ public class JobsTree extends JTree implements TreeSelectionListener, Completion
 	public void addCompletionListener(final CompletionListener list) {
 		cListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

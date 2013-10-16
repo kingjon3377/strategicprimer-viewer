@@ -26,6 +26,7 @@ public enum TileType {
 	/**
 	 * Mountain. Starting in version 2, this is represented as a plain, steppe,
 	 * or desert plus a mountain on the tile.
+	 *
 	 * @deprecated Format version 1 only
 	 */
 	@Deprecated
@@ -33,6 +34,7 @@ public enum TileType {
 	/**
 	 * Boreal forest. Starting in version 2, this is represented as a steppe
 	 * plus a forest.
+	 *
 	 * @deprecated Format version 1 only
 	 */
 	@Deprecated
@@ -40,6 +42,7 @@ public enum TileType {
 	/**
 	 * Temperate forest. Starting in version 2, this is represented as a plain
 	 * plus a forest.
+	 *
 	 * @deprecated Format version 1 only
 	 */
 	@Deprecated
@@ -82,6 +85,7 @@ public enum TileType {
 
 	/**
 	 * TODO: Write test code using this.
+	 *
 	 * @param ver a map version
 	 * @return a list of all tile-types that version supports.
 	 */

@@ -8,6 +8,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * A class representing a worker's core statistical attributes.
  *
  * TODO: Should this really be mutable?
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -16,9 +17,11 @@ public class WorkerStats implements Serializable {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	// ESCA-JAVA0138:
 	/**
 	 * Constructor.
+	 *
 	 * @param hitPoints the worker's health
 	 * @param maxHitPoints the worker's max health
 	 * @param strength the worker's strength
@@ -40,6 +43,7 @@ public class WorkerStats implements Serializable {
 		wis = wisdom;
 		cha = charisma;
 	}
+
 	/**
 	 * The worker's health.
 	 */
@@ -72,102 +76,119 @@ public class WorkerStats implements Serializable {
 	 * The worker's charisma.
 	 */
 	private int cha;
+
 	/**
 	 * @return the worker's health
 	 */
 	public int getHitPoints() {
 		return hp;
 	}
+
 	/**
 	 * @param hitPoints the worker's health
 	 */
 	public void setHitPoints(final int hitPoints) {
 		hp = hitPoints;
 	}
+
 	/**
 	 * @return the worker's max health
 	 */
 	public int getMaxHitPoints() {
 		return maxHP;
 	}
+
 	/**
 	 * @param maxHitPoints the worker's max health
 	 */
 	public void setMaxHitPoints(final int maxHitPoints) {
 		maxHP = maxHitPoints;
 	}
+
 	/**
 	 * @return the worker's strength
 	 */
 	public int getStrength() {
 		return str;
 	}
+
 	/**
 	 * @param strength the worker's strength
 	 */
 	public void setStrength(final int strength) {
 		str = strength;
 	}
+
 	/**
 	 * @return the worker's dexterity
 	 */
 	public int getDexterity() {
 		return dex;
 	}
+
 	/**
 	 * @param dexterity the worker's dexterity
 	 */
 	public void setDexterity(final int dexterity) {
 		dex = dexterity;
 	}
+
 	/**
 	 * @return the worker's constitution
 	 */
 	public int getConstitution() {
 		return con;
 	}
+
 	/**
 	 * @param constitution the worker's constitution
 	 */
 	public void setConstitution(final int constitution) {
 		con = constitution;
 	}
+
 	/**
 	 * @return the worker's intelligence
 	 */
 	public int getIntelligence() {
 		return intel;
 	}
+
 	/**
 	 * @param intelligence the worker's intelligence
 	 */
 	public void setIntelligence(final int intelligence) {
 		intel = intelligence;
 	}
+
 	/**
 	 * @return the worker's wisdom
 	 */
 	public int getWisdom() {
 		return wis;
 	}
+
 	/**
 	 * @param wisdom the worker's wisdom
 	 */
 	public void setWisdom(final int wisdom) {
 		wis = wisdom;
 	}
+
 	/**
 	 * @return the worker's charisma
 	 */
 	public int getCharisma() {
 		return cha;
 	}
+
 	/**
 	 * @param charisma the worker's charisma
 	 */
 	public void setCharisma(final int charisma) {
 		cha = charisma;
 	}
+
 	/**
 	 * @param obj another object
 	 * @return whether it's a WorkerStats equal to this one
@@ -175,8 +196,7 @@ public class WorkerStats implements Serializable {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this
-				|| (obj instanceof WorkerStats
-						&& hp == ((WorkerStats) obj).hp
+				|| (obj instanceof WorkerStats && hp == ((WorkerStats) obj).hp
 						&& maxHP == ((WorkerStats) obj).maxHP
 						&& str == ((WorkerStats) obj).str
 						&& dex == ((WorkerStats) obj).dex
@@ -184,6 +204,7 @@ public class WorkerStats implements Serializable {
 						&& intel == ((WorkerStats) obj).intel
 						&& wis == ((WorkerStats) obj).wis && cha == ((WorkerStats) obj).cha);
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -191,12 +212,14 @@ public class WorkerStats implements Serializable {
 	public int hashCode() {
 		return str + dex << 3 + con << 6 + intel << 9 + wis << 12 + cha << 15 + hp << 18 + maxHP << 22;
 	}
+
 	/**
 	 * @param stat a stat
 	 * @return a String representing the modifier it conveys.
 	 */
 	public static String getModifierString(final int stat) {
 		final int modifier = (stat - 10) / 2;
-		return modifier >= 0 ? '+' + Integer.toString(modifier) : Integer.toString(modifier);
+		return modifier >= 0 ? '+' + Integer.toString(modifier) : Integer
+				.toString(modifier);
 	}
 }

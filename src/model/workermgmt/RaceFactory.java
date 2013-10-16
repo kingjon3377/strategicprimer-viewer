@@ -8,6 +8,7 @@ import util.SingletonRandom;
 
 /**
  * A class to select a race at "random".
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -18,6 +19,7 @@ public final class RaceFactory {
 	private RaceFactory() {
 		// Static class.
 	}
+
 	/**
 	 * A list of races.
 	 */
@@ -33,6 +35,7 @@ public final class RaceFactory {
 			RACES.add("human");
 		}
 	}
+
 	/**
 	 * @param random a Random instance to use
 	 * @return a race selected using that instance.
@@ -40,6 +43,7 @@ public final class RaceFactory {
 	public static String getRace(final Random random) {
 		return RACES.get(random.nextInt(RACES.size()));
 	}
+
 	/**
 	 * @return a race selected at random.
 	 */

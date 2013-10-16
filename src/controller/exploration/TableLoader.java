@@ -82,7 +82,8 @@ public final class TableLoader { // NOPMD
 	 * @return the table constructed from the file
 	 * @throws IOException on I/O error or badly formed table.
 	 */
-	static EncounterTable loadTable(final BufferedReader reader) throws IOException { // NOPMD
+	static EncounterTable loadTable(final BufferedReader reader)
+			throws IOException { // NOPMD
 		final String line = reader.readLine();
 		if (line == null) {
 			throw new IOException(
@@ -236,8 +237,8 @@ public final class TableLoader { // NOPMD
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
 					+ filename, e);
-			return new QuadrantTable(defaultRows, new LinkedList<>(
-					defaultItems));
+			return new QuadrantTable(defaultRows,
+					new LinkedList<>(defaultItems));
 		}
 	}
 
@@ -296,8 +297,7 @@ public final class TableLoader { // NOPMD
 					continue;
 				}
 				try {
-					runner.loadTable(table,
-							loadTable(path + '/' + table));
+					runner.loadTable(table, loadTable(path + '/' + table));
 				} catch (final FileNotFoundException e) {
 					LOGGER.log(Level.SEVERE, "File " + table + " not found", e);
 				} catch (final IOException e) {

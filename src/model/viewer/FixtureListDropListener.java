@@ -34,24 +34,31 @@ public class FixtureListDropListener implements DropTargetListener {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(FixtureListDropListener.class);
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(FixtureListDropListener.class);
 	/**
 	 * The List's model.
 	 */
 	private final FixtureListModel model;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param listModel the List's model
 	 * @param parent a parent of the list.
 	 */
-	public FixtureListDropListener(final JComponent parent, final FixtureListModel listModel) {
+	public FixtureListDropListener(final JComponent parent,
+			final FixtureListModel listModel) {
 		model = listModel;
 		parentComponent = parent;
 	}
+
 	/**
-	 * A parent component. If it's an ancestor of the drop, it's an intra-component drop.
+	 * A parent component. If it's an ancestor of the drop, it's an
+	 * intra-component drop.
 	 */
 	private final JComponent parentComponent;
+
 	/**
 	 * A possible drag entering the component?
 	 *
@@ -81,8 +88,10 @@ public class FixtureListDropListener implements DropTargetListener {
 	 *         component. I/O etc. problems return true.
 	 */
 	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
-		return dtde.getSource() instanceof Component && parentComponent.isAncestorOf((Component) dtde.getSource());
+		return dtde.getSource() instanceof Component
+				&& parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
+
 	/**
 	 * Continued dragging over the component.
 	 *
@@ -103,6 +112,7 @@ public class FixtureListDropListener implements DropTargetListener {
 			}
 		}
 	}
+
 	/**
 	 * Handle change to the type of drag---which we don't care about.
 	 *
@@ -123,6 +133,7 @@ public class FixtureListDropListener implements DropTargetListener {
 			}
 		}
 	}
+
 	/**
 	 * The drag is exiting the component.
 	 *
@@ -132,6 +143,7 @@ public class FixtureListDropListener implements DropTargetListener {
 	public void dragExit(@Nullable final DropTargetEvent dte) {
 		// ignored
 	}
+
 	/**
 	 * Handle drop.
 	 *
@@ -173,17 +185,21 @@ public class FixtureListDropListener implements DropTargetListener {
 			dtde.rejectDrop();
 		}
 	}
+
 	/**
 	 * Handle a drop.
+	 *
 	 * @param trans the transferable containing the dragged data.
 	 * @throws IOException on I/O error getting the data
-	 * @throws UnsupportedFlavorException if the data flavor isn't actually supported
+	 * @throws UnsupportedFlavorException if the data flavor isn't actually
+	 *         supported
 	 */
 	private void handleDrop(final Transferable trans)
 			throws UnsupportedFlavorException, IOException {
 		final DataFlavor[] dflav = trans.getTransferDataFlavors();
 		if (dflav == null) {
-			throw new UnsupportedFlavorException(new DataFlavor(DataFlavor.class, "null"));
+			throw new UnsupportedFlavorException(new DataFlavor(
+					DataFlavor.class, "null"));
 		}
 		if (EqualsAny.equalsAny(FixtureTransferable.FLAVOR, dflav)) {
 			final TileFixture transferData = (TileFixture) trans
@@ -200,9 +216,11 @@ public class FixtureListDropListener implements DropTargetListener {
 				}
 			}
 		} else {
-			throw new UnsupportedFlavorException(trans.getTransferDataFlavors()[0]);
+			throw new UnsupportedFlavorException(
+					trans.getTransferDataFlavors()[0]);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

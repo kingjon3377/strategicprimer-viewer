@@ -10,8 +10,10 @@ import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A unit list model for the exploration GUI.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -19,7 +21,9 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 		PlayerChangeListener {
 	/**
 	 * Constructor.
-	 * @param emodel the exploration model, so we can select the unit the user selects
+	 *
+	 * @param emodel the exploration model, so we can select the unit the user
+	 *        selects
 	 * @param source what to listen to for property-change events.
 	 */
 	public ExplorationUnitListModel(final IExplorationModel emodel,
@@ -27,8 +31,10 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 		model = emodel;
 		source.addPlayerChangeListener(this);
 	}
+
 	/**
 	 * Called when the current player has changed.
+	 *
 	 * @param old the previous current player
 	 * @param newPlayer the new current player
 	 */
@@ -41,6 +47,7 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 			addElement(unit);
 		}
 	}
+
 	/**
 	 * The current player.
 	 */

@@ -43,9 +43,8 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Battlefield fix = new Battlefield(
-				Integer.parseInt(getAttribute(element, "dc")), getOrGenerateID(
-						element, warner, idFactory));
+		final Battlefield fix = new Battlefield(Integer.parseInt(getAttribute(
+				element, "dc")), getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -72,9 +71,9 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Battlefield obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("battlefield", Pair.of("dc",
-				Integer.toString(obj.getDC())), Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"battlefield", Pair.of("dc", Integer.toString(obj.getDC())),
+				Pair.of("id", Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

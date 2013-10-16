@@ -46,7 +46,8 @@ public class ResolutionDecreaseConverter {
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
-				retval.getMap().addTile(point,
+				retval.getMap().addTile(
+						point,
 						convertTile(old.getTile(PointFactory.point(row * 2,
 								col * 2)), old.getTile(PointFactory.point(
 								row * 2, col * 2 + 1)), old
@@ -127,17 +128,20 @@ public class ResolutionDecreaseConverter {
 			return new RiverFixture();
 		}
 	}
+
 	/**
 	 * @param fix a RiverFixture
 	 * @param rivers a series of rivers to add to it
 	 */
-	private static void addRivers(final RiverFixture fix, final RiverFixture... rivers) {
+	private static void addRivers(final RiverFixture fix,
+			final RiverFixture... rivers) {
 		for (final RiverFixture riverFix : rivers) {
 			for (final River river : riverFix) {
 				fix.addRiver(river);
 			}
 		}
 	}
+
 	/**
 	 * @param fix a RiverFixture
 	 * @param rivers a series of rivers to remove from it
@@ -159,8 +163,7 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static TileType consensus(final TileType one, final TileType two,
 			final TileType three, final TileType four) {
-		final EnumCounter<TileType> counter = new EnumCounter<>(
-				TileType.class);
+		final EnumCounter<TileType> counter = new EnumCounter<>(TileType.class);
 		counter.countMany(one, two, three, four);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);
 		for (final TileType type : TileType.values()) {
@@ -186,6 +189,7 @@ public class ResolutionDecreaseConverter {
 			return list.get(0);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -42,8 +42,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Djinn fix = new Djinn(
-				getOrGenerateID(element, warner, idFactory));
+		final Djinn fix = new Djinn(getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -72,8 +71,8 @@ public class DjinnReader implements INodeHandler<Djinn> {
 	 */
 	@Override
 	public <S extends Djinn> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("djinn", Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"djinn", Pair.of("id", Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

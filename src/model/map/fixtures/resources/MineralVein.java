@@ -14,12 +14,13 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class MineralVein implements IEvent,
-		HasImage, HarvestableFixture, HasKind {
+public final class MineralVein implements IEvent, HasImage, HarvestableFixture,
+		HasKind {
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -188,9 +189,9 @@ public final class MineralVein implements IEvent,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| (fix instanceof MineralVein
-						&& equalsContents((MineralVein) fix));
+				|| (fix instanceof MineralVein && equalsContents((MineralVein) fix));
 	}
+
 	/**
 	 * @param fix another MineralEvent
 	 * @return whether its contents equal ours
@@ -198,6 +199,7 @@ public final class MineralVein implements IEvent,
 	private boolean equalsContents(final MineralVein fix) {
 		return fix.mineral.equals(mineral) && fix.exposed == exposed;
 	}
+
 	/**
 	 * @param kind the new kind
 	 */
@@ -205,10 +207,12 @@ public final class MineralVein implements IEvent,
 	public void setKind(final String kind) {
 		mineral = kind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -216,6 +220,7 @@ public final class MineralVein implements IEvent,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -223,6 +228,7 @@ public final class MineralVein implements IEvent,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all mineral veins as a class
 	 */

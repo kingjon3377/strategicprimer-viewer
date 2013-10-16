@@ -23,33 +23,40 @@ public class MapWindowSizeListener extends WindowAdapter {
 	 * Whether we should add or subtract 1 to force recalculation this time.
 	 */
 	private boolean add = false;
+
 	/**
-	 * @param comp The component to remind of its having been resized on these events.
+	 * @param comp The component to remind of its having been resized on these
+	 *        events.
 	 */
 	public MapWindowSizeListener(final JComponent comp) {
 		component = comp;
 	}
+
 	/**
 	 * Invoked when a window is de-iconified.
+	 *
 	 * @param evt the event to handle
 	 */
 	@Override
 	public void windowDeiconified(@Nullable final WindowEvent evt) {
 		final int addend = add ? 1 : -1;
-//		add = !add;
+		// add = !add;
 		add ^= true;
-		component.setSize(component.getWidth() + addend, component.getHeight() + addend);
+		component.setSize(component.getWidth() + addend, component.getHeight()
+				+ addend);
 	}
 
 	/**
 	 * Invoked when a window state is changed.
+	 *
 	 * @param evt the event to handle
 	 */
 	@Override
 	public void windowStateChanged(@Nullable final WindowEvent evt) {
 		final int addend = add ? 1 : -1;
-//		add = !add;
+		// add = !add;
 		add ^= true;
-		component.setSize(component.getWidth() + addend, component.getHeight() + addend);
+		component.setSize(component.getWidth() + addend, component.getHeight()
+				+ addend);
 	}
 }

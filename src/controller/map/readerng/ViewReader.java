@@ -66,15 +66,14 @@ public class ViewReader implements INodeHandler<MapView> {
 		final StartElement event = getFirstStartElement(stream, element
 				.getLocation().getLineNumber());
 		requireMapTag(event, element);
-		view = new MapView(MAP_READER.parse(event, stream,
-									players, warner, idFactory),
-							Integer.parseInt(getAttribute(element,
-									"current_player")),
-							Integer.parseInt(getAttribute(element,
-									"current_turn")));
+		view = new MapView(MAP_READER.parse(event, stream, players, warner,
+				idFactory), Integer.parseInt(getAttribute(element,
+				"current_player")), Integer.parseInt(getAttribute(element,
+				"current_turn")));
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return view;
 	}
+
 	/**
 	 * @param stream a stream of XMLEvents
 	 * @param line the line the parent tag is on
@@ -134,6 +133,7 @@ public class ViewReader implements INodeHandler<MapView> {
 							.getLocation().getLineNumber());
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -23,7 +23,8 @@ public final class ErrorShower {
 	/**
 	 * Show an error dialog.
 	 *
-	 * @param parent the parent component for the dialog. May be null, since JOptionPane doesn't seem to care.
+	 * @param parent the parent component for the dialog. May be null, since
+	 *        JOptionPane doesn't seem to care.
 	 * @param message the error message.
 	 */
 	public static void showErrorDialog(@Nullable final Component parent,

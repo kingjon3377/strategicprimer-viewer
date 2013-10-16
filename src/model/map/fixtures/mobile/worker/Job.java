@@ -12,6 +12,7 @@ import util.ArraySet;
 
 /**
  * A Job a worker can work at.
+ *
  * @author Jonathan Lovelace
  */
 public class Job implements Iterable<Skill>, HasName, Serializable {
@@ -19,11 +20,14 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param jobName the name of the Job
 	 * @param levels how many levels the worker has in the Job.
-	 * @param skills the worker's level in the various skills associated with the job.
+	 * @param skills the worker's level in the various skills associated with
+	 *        the job.
 	 */
 	public Job(final String jobName, final int levels, final Skill... skills) {
 		super();
@@ -31,6 +35,7 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));
 	}
+
 	/**
 	 * The name of the job.
 	 */
@@ -43,14 +48,17 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 	 * The worker's level in various skills associated with the job.
 	 */
 	private final Set<Skill> skillSet = new ArraySet<>();
+
 	/**
 	 * Add a skill.
+	 *
 	 * @param skill the skill to add
 	 * @return the result of the operation
 	 */
 	public boolean addSkill(final Skill skill) {
 		return skillSet.add(skill);
 	}
+
 	/**
 	 * @return the name of the job
 	 */
@@ -58,19 +66,23 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @return the worker's level in the job
 	 */
 	public int getLevel() {
 		return level;
 	}
+
 	/**
-	 * @return an iterator over the worker's level in the various skills associated with the job
+	 * @return an iterator over the worker's level in the various skills
+	 *         associated with the job
 	 */
 	@Override
 	public Iterator<Skill> iterator() {
 		return skillSet.iterator();
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's the same as this
@@ -82,6 +94,7 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 						&& level == ((Job) obj).level && skillSet
 							.equals(((Job) obj).skillSet));
 	}
+
 	/**
 	 * @return a hash value for the Job.
 	 */
@@ -89,6 +102,7 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 	public int hashCode() {
 		return name.hashCode();
 	}
+
 	/**
 	 * @return a String representation of the Job
 	 */
@@ -96,6 +110,7 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 	public String toString() {
 		return name + " (" + Integer.toString(level) + ')';
 	}
+
 	/**
 	 * @param nomen the job's new name
 	 */

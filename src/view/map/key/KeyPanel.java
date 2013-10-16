@@ -22,7 +22,8 @@ public class KeyPanel extends JPanel implements VersionChangeListener {
 	 * @param version the map version
 	 * @param sources things to listen to for property change events
 	 */
-	public KeyPanel(final int version, final Iterable<? extends VersionChangeSource> sources) {
+	public KeyPanel(final int version,
+			final Iterable<? extends VersionChangeSource> sources) {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
 		setMinimumSize(new Dimension(new KeyElement(version,
@@ -45,6 +46,7 @@ public class KeyPanel extends JPanel implements VersionChangeListener {
 			add(new KeyElement(version, type)); // NOPMD
 		}
 	}
+
 	/**
 	 * @param old the previous map version
 	 * @param newVersion the new map version

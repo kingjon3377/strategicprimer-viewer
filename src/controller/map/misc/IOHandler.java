@@ -56,7 +56,8 @@ public class IOHandler implements ActionListener {
 	/**
 	 * Handle the "load" menu item.
 	 *
-	 * @param source the source of the event. May be null, since JFileChooser doesn't seem to care
+	 * @param source the source of the event. May be null, since JFileChooser
+	 *        doesn't seem to care
 	 */
 	private void handleLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
@@ -81,7 +82,8 @@ public class IOHandler implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
-		if (event != null) { // it wouldn't be @Nullable except that the JDK isn't annotated
+		if (event != null) { // it wouldn't be @Nullable except that the JDK
+								// isn't annotated
 			final Component source = event.getSource() instanceof Component ? (Component) event
 					.getSource() : null; // NOPMD
 			if ("Load".equals(event.getActionCommand())) {
@@ -95,8 +97,10 @@ public class IOHandler implements ActionListener {
 			}
 		}
 	}
+
 	/**
-	 * Start a new viewer window with a blank map of the same size as the model's current map.
+	 * Start a new viewer window with a blank map of the same size as the
+	 * model's current map.
 	 */
 	private void startNewViewerWindow() {
 		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(
@@ -104,6 +108,7 @@ public class IOHandler implements ActionListener {
 						new SPMap(model.getMapDimensions()), 0, model.getMap()
 								.getCurrentTurn()), ""), this)));
 	}
+
 	/**
 	 * The map model, which needs to be told about newly loaded maps and holds
 	 * maps to be saved.
@@ -126,7 +131,8 @@ public class IOHandler implements ActionListener {
 	 *
 	 * @param except an Exception
 	 * @param filename the file we were trying to process
-	 * @param source the component to use as the parent of the error dialog. May be null.
+	 * @param source the component to use as the parent of the error dialog. May
+	 *        be null.
 	 */
 	protected static void handleError(final Exception except,
 			final String filename, @Nullable final Component source) {
@@ -146,25 +152,30 @@ public class IOHandler implements ActionListener {
 		LOGGER.log(Level.SEVERE, msg, except);
 		ErrorShower.showErrorDialog(source, msg);
 	}
+
 	/**
 	 * Save a map to the filename it was loaded from.
-	 * @param source the source of the event that triggered this. May be null if it wasn't a Component.
+	 *
+	 * @param source the source of the event that triggered this. May be null if
+	 *        it wasn't a Component.
 	 */
 	private void saveMap(@Nullable final Component source) {
 		try {
-			new MapReaderAdapter().write(model.getMapFilename(), model.getMap());
+			new MapReaderAdapter()
+					.write(model.getMapFilename(), model.getMap());
 		} catch (final IOException e) {
-			ErrorShower.showErrorDialog(source,
-					"I/O error writing to file "
-							+ model.getMapFilename());
+			ErrorShower.showErrorDialog(source, "I/O error writing to file "
+					+ model.getMapFilename());
 			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 		}
 	}
+
 	/**
 	 * Save a map.
 	 *
 	 * @param map the map to save.
-	 * @param source the source of the event. May be null if the source wasn't a component.
+	 * @param source the source of the event. May be null if the source wasn't a
+	 *        component.
 	 */
 	private void saveMapAs(final IMap map, @Nullable final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {

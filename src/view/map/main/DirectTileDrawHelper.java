@@ -107,7 +107,8 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int width,
 			final int height) {
-		drawTile(pen, tile, PointFactory.coordinate(0, 0), PointFactory.coordinate(width, height));
+		drawTile(pen, tile, PointFactory.coordinate(0, 0),
+				PointFactory.coordinate(width, height));
 	}
 
 	/**

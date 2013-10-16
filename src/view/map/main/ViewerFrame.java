@@ -30,6 +30,7 @@ public final class ViewerFrame extends JFrame {
 	 * The default proportion between map and detail panels.
 	 */
 	private static final double MAP_PROPORTION = 0.9;
+
 	/**
 	 * Initialize size to the specified dimensions. Not that this actually works
 	 * ...
@@ -47,7 +48,8 @@ public final class ViewerFrame extends JFrame {
 	 * Constructor.
 	 *
 	 * @param map The map model.
-	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
+	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu
+	 *        items.
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Strategic Primer Map Viewer");
@@ -64,7 +66,8 @@ public final class ViewerFrame extends JFrame {
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		((MapComponent) mapPanel).requestFocusInWindow();
-		final MapWindowSizeListener mwsl = new MapWindowSizeListener((MapComponent) mapPanel);
+		final MapWindowSizeListener mwsl = new MapWindowSizeListener(
+				(MapComponent) mapPanel);
 		addWindowListener(mwsl);
 		addWindowStateListener(mwsl);
 

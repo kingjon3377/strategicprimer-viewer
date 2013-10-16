@@ -46,10 +46,10 @@ public class MineralReader implements INodeHandler<MineralVein> {
 		spinUntilEnd(element.getName(), stream);
 		final MineralVein fix = new MineralVein(
 				getAttributeWithDeprecatedForm(element, "kind", "mineral",
-						warner), Boolean.parseBoolean(XMLHelper.getAttribute(
-						element, "exposed")), Integer.parseInt(getAttribute(
-						element, "dc")), getOrGenerateID(element, warner,
-						idFactory));
+						warner),
+				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")),
+				Integer.parseInt(getAttribute(element, "dc")), getOrGenerateID(
+						element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -78,14 +78,15 @@ public class MineralReader implements INodeHandler<MineralVein> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final MineralVein obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("mineral", Pair.of("kind",
-				obj.getKind()), Pair.of("exposed",
-				Boolean.toString(obj.isExposed())), Pair.of("dc",
-				Integer.toString(obj.getDC())), Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"mineral", Pair.of("kind", obj.getKind()), Pair.of("exposed",
+						Boolean.toString(obj.isExposed())), Pair.of("dc",
+						Integer.toString(obj.getDC())), Pair.of("id",
+						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

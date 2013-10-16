@@ -13,6 +13,7 @@ import model.map.fixtures.mobile.Unit;
 
 /**
  * A class to transfer a UnitMember.
+ *
  * @author Jonathan Lovelace
  */
 public class UnitMemberTransferable implements Transferable, Serializable {
@@ -25,8 +26,10 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 		 * Version UID for serialization.
 		 */
 		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param theMember the first element
 		 * @param theUnit the second element
 		 */
@@ -34,6 +37,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 			member = theMember;
 			unit = theUnit;
 		}
+
 		/**
 		 * The unit member.
 		 */
@@ -43,10 +47,12 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 		 */
 		public final Unit unit;
 	}
+
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -56,6 +62,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	public UnitMemberTransferable(final UnitMember theData, final Unit theParent) {
 		data = new UnitMemberPair(theData, theParent);
 	}
+
 	/**
 	 * The object we're transfering.
 	 */
@@ -63,8 +70,9 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	/**
 	 * a DataFlavor representing its class.
 	 */
-	public static final DataFlavor FLAVOR = new DataFlavor(UnitMemberPair.class,
-			"Worker");
+	public static final DataFlavor FLAVOR = new DataFlavor(
+			UnitMemberPair.class, "Worker");
+
 	/**
 	 *
 	 * @return the supported DataFlavors.
@@ -73,6 +81,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[] { FLAVOR };
 	}
+
 	/**
 	 *
 	 * @param dflavor a DataFlavor
@@ -83,6 +92,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	public boolean isDataFlavorSupported(@Nullable final DataFlavor dflavor) {
 		return FLAVOR.equals(dflavor);
 	}
+
 	/**
 	 * This now returns the source component's listened property for text
 	 * flavors, as part of a hack to disallow intra-component drops.
@@ -101,6 +111,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 			throw new UnsupportedFlavorException(dflavor);
 		}
 	}
+
 	/**
 	 *
 	 * @return a String representation of this object
@@ -109,6 +120,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 	public String toString() {
 		return "UnitMemberTransferable";
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -118,6 +130,7 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 		return this == obj || obj instanceof UnitMemberTransferable
 				&& data.equals(((UnitMemberTransferable) obj).data);
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */

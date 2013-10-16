@@ -81,8 +81,7 @@ public class JobReader implements INodeHandler<Job> {
 		}
 		return new Job(XMLHelper.getAttribute(element, "name"),
 				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
-				skills.toArray(new Skill[skills
-						.size()]));
+				skills.toArray(new Skill[skills.size()]));
 	}
 
 	/**

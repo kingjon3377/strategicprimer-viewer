@@ -6,8 +6,10 @@ import java.util.NoSuchElementException;
 import model.map.Point;
 import model.map.PointFactory;
 import model.misc.IDriverModel;
+
 /**
  * An view of locations on the map in order, starting at a given point.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -48,6 +50,7 @@ public class PointIterator implements Iterator<Point> {
 	 * Whether we've started iterating.
 	 */
 	private boolean started = false;
+
 	/**
 	 * @param val a value
 	 * @param wrap another
@@ -60,6 +63,7 @@ public class PointIterator implements Iterator<Point> {
 			return val;
 		}
 	}
+
 	/**
 	 * Constructor.
 	 *
@@ -78,8 +82,10 @@ public class PointIterator implements Iterator<Point> {
 		maxRow = model.getMapDimensions().getRows() - 1;
 		maxCol = model.getMapDimensions().getColumns() - 1;
 		if (startFromSel && model instanceof IViewerModel) {
-			startRow = wrap(((IViewerModel) model).getSelectedPoint().row, maxRow);
-			startCol = wrap(((IViewerModel) model).getSelectedPoint().col, maxCol);
+			startRow = wrap(((IViewerModel) model).getSelectedPoint().row,
+					maxRow);
+			startCol = wrap(((IViewerModel) model).getSelectedPoint().col,
+					maxCol);
 		} else if (forwards) {
 			startRow = maxRow;
 			startCol = maxCol;
@@ -90,6 +96,7 @@ public class PointIterator implements Iterator<Point> {
 		row = startRow;
 		col = startCol;
 	}
+
 	/**
 	 * @return false if we've reached where we started.
 	 */
@@ -101,6 +108,7 @@ public class PointIterator implements Iterator<Point> {
 			return true; // NOPMD
 		}
 	}
+
 	/**
 	 * @return the next point in the map.
 	 */
@@ -125,6 +133,7 @@ public class PointIterator implements Iterator<Point> {
 			throw new NoSuchElementException("We've reached the end");
 		}
 	}
+
 	/**
 	 * @return the next point, searching horizontally.
 	 */
@@ -141,6 +150,7 @@ public class PointIterator implements Iterator<Point> {
 		}
 		return PointFactory.point(row, col);
 	}
+
 	/**
 	 * @return the previous point, searching horizontally.
 	 */
@@ -157,6 +167,7 @@ public class PointIterator implements Iterator<Point> {
 		}
 		return PointFactory.point(row, col);
 	}
+
 	/**
 	 * @return the next point, searching vertically.
 	 */
@@ -173,6 +184,7 @@ public class PointIterator implements Iterator<Point> {
 		}
 		return PointFactory.point(row, col);
 	}
+
 	/**
 	 * @return the previous point, searching vertically.
 	 */
@@ -189,11 +201,13 @@ public class PointIterator implements Iterator<Point> {
 		}
 		return PointFactory.point(row, col);
 	}
+
 	/**
 	 * Not implemented.
 	 */
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException("Can't remove a Point from a map.");
+		throw new UnsupportedOperationException(
+				"Can't remove a Point from a map.");
 	}
 }

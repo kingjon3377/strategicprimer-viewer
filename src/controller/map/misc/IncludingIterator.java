@@ -95,6 +95,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	/**
 	 * A NoSuchElementException that takes a custom cause, unlike its
 	 * superclass.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	// ESCA-JAVA0051:
@@ -174,6 +175,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		}
 		return stack.peekFirst().first();
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -181,6 +183,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	public String toString() {
 		return "IncludingIterator";
 	}
+
 	/**
 	 * @param startElement a tag
 	 * @param attribute the attribute we want

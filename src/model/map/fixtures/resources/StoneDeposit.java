@@ -14,12 +14,13 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public final class StoneDeposit implements IEvent,
-		HasImage, HarvestableFixture, HasKind {
+public final class StoneDeposit implements IEvent, HasImage,
+		HarvestableFixture, HasKind {
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -154,6 +155,7 @@ public final class StoneDeposit implements IEvent,
 				|| (fix instanceof StoneDeposit && ((StoneDeposit) fix).stone
 						.equals(stone));
 	}
+
 	/**
 	 * @return a string representation of the kind of stone in the deposit
 	 */
@@ -161,8 +163,10 @@ public final class StoneDeposit implements IEvent,
 	public String getKind() {
 		return stone.toString();
 	}
+
 	/**
 	 * TODO: Allow arbitrary-text.
+	 *
 	 * @param kind the new kind
 	 */
 	@Override
@@ -170,10 +174,12 @@ public final class StoneDeposit implements IEvent,
 		final StoneKind skind = StoneKind.parseStoneKind(kind);
 		stone = skind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -181,6 +187,7 @@ public final class StoneDeposit implements IEvent,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -188,6 +195,7 @@ public final class StoneDeposit implements IEvent,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all stone deposits as a class
 	 */

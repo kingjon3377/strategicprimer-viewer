@@ -23,8 +23,8 @@ public interface ISPReader {
 	 */
 	List<String> FUTURE = Collections.unmodifiableList(Arrays
 			.asList(new String[] { "future", "explorer", "building",
-					"resource", "changeset", "change", "move",
-					"work", "discover", "submap" }));
+					"resource", "changeset", "change", "move", "work",
+					"discover", "submap" }));
 
 	/**
 	 * @param <T> A supertype of the object the XML represents

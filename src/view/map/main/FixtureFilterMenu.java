@@ -10,8 +10,10 @@ import model.map.TileFixture;
 import model.viewer.ZOrderFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A menu to let the player turn of display of kinds of fixtures.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -22,8 +24,10 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	public FixtureFilterMenu() {
 		super("Display ...");
 	}
+
 	/**
-	 * @param fix a kind of fixture We mark it Nullable because nulls got passed in anyway.
+	 * @param fix a kind of fixture We mark it Nullable because nulls got passed
+	 *        in anyway.
 	 * @return whether the view should display that kind of fixture
 	 */
 	@Override
@@ -42,6 +46,7 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		}
 		return item.isSelected();
 	}
+
 	/**
 	 * Map from fixture classes to menu-items representing them.
 	 */

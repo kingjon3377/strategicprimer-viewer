@@ -14,8 +14,10 @@ import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+
 /**
  * A reader for Workers.
+ *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
  */
@@ -28,6 +30,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 	public Class<Worker> writes() {
 		return Worker.class;
 	}
+
 	/**
 	 * @return the list of tags this knows how to read.
 	 */
@@ -35,8 +38,10 @@ public class WorkerReader implements INodeHandler<Worker> {
 	public List<String> understands() {
 		return Collections.singletonList("worker");
 	}
+
 	/**
 	 * Parse a worker from XML.
+	 *
 	 * @param element the current tag
 	 * @param stream the stream to read more tags from
 	 * @param players ignored
@@ -46,14 +51,14 @@ public class WorkerReader implements INodeHandler<Worker> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Worker parse(final StartElement element, final Iterable<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner, final IDFactory idFactory)
+	public Worker parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final Worker retval = new Worker(
 				XMLHelper.getAttribute(element, "name"),
 				XMLHelper.getAttribute(element, "race", "human"),
-				XMLHelper.getOrGenerateID(element,
-						warner, idFactory));
+				XMLHelper.getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -77,13 +82,15 @@ public class WorkerReader implements INodeHandler<Worker> {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param obj a worker
 	 * @return the SPIR representing it.
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Worker obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("worker");
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"worker");
 		retval.addAttribute("name", obj.getName());
 		if (!"human".equals(obj.getRace())) {
 			retval.addAttribute("race", obj.getRace());

@@ -13,19 +13,24 @@ import org.eclipse.jdt.annotation.Nullable;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
 import controller.map.misc.IOHandler;
+
 /**
  * A set of menus for the worker GUI.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class WorkerMenu extends JMenuBar {
 	/**
 	 * Constructor.
+	 *
 	 * @param handler the I/O handler to handle I/O related items
-	 * @param parent the window this is to be attached to, which should close on "Close".
+	 * @param parent the window this is to be attached to, which should close on
+	 *        "Close".
 	 * @param pch a handler to listen to the 'change player' menu item.
 	 */
-	public WorkerMenu(final IOHandler handler, final JFrame parent, final PlayerChooserHandler pch) {
+	public WorkerMenu(final IOHandler handler, final JFrame parent,
+			final PlayerChooserHandler pch) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
@@ -48,7 +53,8 @@ public class WorkerMenu extends JMenuBar {
 					 */
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
-						if (evt != null && "Close".equals(evt.getActionCommand())) {
+						if (evt != null
+								&& "Close".equals(evt.getActionCommand())) {
 							parent.setVisible(false);
 							parent.dispose();
 						}
@@ -64,12 +70,14 @@ public class WorkerMenu extends JMenuBar {
 					 * @param event the event to handle
 					 */
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
-						if (event != null && "Quit".equals(event.getActionCommand())) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
+						if (event != null
+								&& "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
 						}
 					}
-		}));
+				}));
 		add(fileMenu);
 		final JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);

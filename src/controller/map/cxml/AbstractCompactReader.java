@@ -18,6 +18,7 @@ import controller.map.misc.IncludingIterator;
 
 /**
  * A superclass to provide helper methods.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -28,17 +29,23 @@ public abstract class AbstractCompactReader {
 	protected AbstractCompactReader() {
 		// Nothing to do
 	}
+
 	/**
 	 * Require that an element be one of the specified tags.
+	 *
 	 * @param element the element to check
 	 * @param tags the tags we accept here
 	 */
-	protected static void requireTag(final StartElement element, final String... tags) {
+	protected static void requireTag(final StartElement element,
+			final String... tags) {
 		if (!(EqualsAny.equalsAny(element.getName().getLocalPart(), tags))) {
 			final String elemStr = element.getName().getLocalPart();
-			final String line = Integer.toString(element.getLocation().getLineNumber());
-			final int len = 60 + elemStr.length() + line.length() + tags.length * 10; // Overestimate just in case
-			final StringBuilder sbuild = new StringBuilder(len).append("Unexpected tag ");
+			final String line = Integer.toString(element.getLocation()
+					.getLineNumber());
+			final int len = 60 + elemStr.length() + line.length() + tags.length
+					* 10; // Overestimate just in case
+			final StringBuilder sbuild = new StringBuilder(len)
+					.append("Unexpected tag ");
 			sbuild.append(elemStr);
 			sbuild.append(" on line ");
 			sbuild.append(line);
@@ -50,29 +57,34 @@ public abstract class AbstractCompactReader {
 			throw new IllegalArgumentException(sbuild.toString());
 		}
 	}
+
 	/**
 	 * Get a parameter from the XML.
+	 *
 	 * @param element the current tag
 	 * @param param the parameter to get
 	 * @return the value for that parameter
 	 * @throws SPFormatException if the tag doesn't have that parameter.
 	 */
-	protected static String getParameter(final StartElement element, final String param)
-			throws SPFormatException {
+	protected static String getParameter(final StartElement element,
+			final String param) throws SPFormatException {
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		if (attr == null) {
-			throw new MissingPropertyException(element.getName()
-					.getLocalPart(), param, element.getLocation()
-					.getLineNumber());
+			throw new MissingPropertyException(
+					element.getName().getLocalPart(), param, element
+							.getLocation().getLineNumber());
 		} else {
 			return attr.getValue();
 		}
 	}
+
 	/**
 	 * Get a parameter from the XML.
+	 *
 	 * @param element the current tag
 	 * @param param the parameter to get
-	 * @param defaultValue the value to return if the tag doesn't have that parameter
+	 * @param defaultValue the value to return if the tag doesn't have that
+	 *        parameter
 	 * @return the value for that parameter
 	 */
 	protected static String getParameter(final StartElement element,
@@ -80,11 +92,14 @@ public abstract class AbstractCompactReader {
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		return attr == null ? defaultValue : attr.getValue();
 	}
+
 	/**
 	 * Require a non-empty parameter.
+	 *
 	 * @param element the current tag
 	 * @param param the parameter to require
-	 * @param mandatory whether this is a requirement, or merely a recommendation.
+	 * @param mandatory whether this is a requirement, or merely a
+	 *        recommendation.
 	 * @param warner the Warning instance to use for the warning.
 	 * @throws SPFormatException if mandatory and missing
 	 */
@@ -153,14 +168,17 @@ public abstract class AbstractCompactReader {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param element the current tag
 	 * @param param the parameter we want
 	 * @return whether the tag has that parameter
 	 */
-	protected static boolean hasParameter(final StartElement element, final String param) {
+	protected static boolean hasParameter(final StartElement element,
+			final String param) {
 		return !(element.getAttributeByName(new QName(param)) == null);
 	}
+
 	/**
 	 * @param stream a source of XMLEvents
 	 * @return the file currently being read from if it's an
@@ -170,6 +188,7 @@ public abstract class AbstractCompactReader {
 		return stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
 				.iterator()).getFile() : "";
 	}
+
 	/**
 	 * @param element the current tag
 	 * @param preferred the preferred name of the parameter
@@ -190,9 +209,9 @@ public abstract class AbstractCompactReader {
 		final Attribute deprProp = element.getAttributeByName(new QName(
 				deprecated));
 		if (prefProp == null && deprProp == null) {
-			throw new MissingPropertyException(element.getName()
-					.getLocalPart(), preferred, element.getLocation()
-					.getLineNumber());
+			throw new MissingPropertyException(
+					element.getName().getLocalPart(), preferred, element
+							.getLocation().getLineNumber());
 		} else if (prefProp == null) {
 			warner.warn(new DeprecatedPropertyException(element.getName()
 					.getLocalPart(), deprecated, preferred, element
@@ -202,11 +221,13 @@ public abstract class AbstractCompactReader {
 			return prefProp.getValue();
 		}
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
 	public abstract boolean isSupportedTag(final String tag);
+
 	/**
 	 * @param tabs a nonnegative integer
 	 * @return that many tabs
@@ -218,6 +239,7 @@ public abstract class AbstractCompactReader {
 		}
 		return buf.toString();
 	}
+
 	/**
 	 * @param obj an object being written out that might have a custom image
 	 * @return the XML for the image if it does, or the empty string if not

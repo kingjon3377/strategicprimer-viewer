@@ -132,7 +132,8 @@ public class SPIntermediateRepresentation {
 	 *        where we reset it to 0 again)
 	 * @throws IOException on I/O error while writing
 	 */
-	public void write(final Writer writer, final int indentationLevel) throws IOException {
+	public void write(final Writer writer, final int indentationLevel)
+			throws IOException {
 		for (int i = 0; i < indentationLevel; i++) {
 			writeIfTagNotEmpty(writer, "\t");
 		}
@@ -190,10 +191,11 @@ public class SPIntermediateRepresentation {
 	 * @param indentationLevel how many tabs to indent if inclusion is disabled
 	 * @throws IOException on I/O error while writing
 	 */
-	private void writeInclude(final Writer writer, final int indentationLevel) throws IOException {
-			for (final SPIntermediateRepresentation child : children) {
-				child.write(writer, indentationLevel);
-			}
+	private void writeInclude(final Writer writer, final int indentationLevel)
+			throws IOException {
+		for (final SPIntermediateRepresentation child : children) {
+			child.write(writer, indentationLevel);
+		}
 	}
 
 	/**
@@ -218,6 +220,7 @@ public class SPIntermediateRepresentation {
 			writer.write(string);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -225,14 +228,17 @@ public class SPIntermediateRepresentation {
 	public String toString() {
 		return "SPIntermediateRepresentation";
 	}
+
 	/**
 	 * If the object's image attribute is the default, null, or empty, do
 	 * nothing; if not, add the image attribute to this representation.
+	 *
 	 * @param obj the object to consider.
 	 */
 	public void addImageAttribute(final HasImage obj) {
 		final String image = obj.getImage();
-		if (image != null && !image.isEmpty() && !image.equals(obj.getDefaultImage())) {
+		if (image != null && !image.isEmpty()
+				&& !image.equals(obj.getDefaultImage())) {
 			addAttribute("image", image);
 		}
 	}

@@ -2,7 +2,6 @@ package model.map.fixtures.towns;
 
 import model.map.Player;
 
-
 /**
  * An abandoned, ruined, or burned-out fortification.
  *
@@ -16,6 +15,7 @@ public final class Fortification extends AbstractTown {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -68,6 +68,7 @@ public final class Fortification extends AbstractTown {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @return a string describing all fortifications as a class
 	 */

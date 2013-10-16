@@ -82,6 +82,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 			scs.fireChanges(null, null, null, tile);
 		}
 	}
+
 	/**
 	 * @param old the previously selected version
 	 * @param newVersion the newly selected version
@@ -90,32 +91,40 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	public void changeVersion(final int old, final int newVersion) {
 		updateForVersion(newVersion);
 	}
+
 	/**
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addSelectionChangeListener(final SelectionChangeListener list) {
+	public final void addSelectionChangeListener(
+			final SelectionChangeListener list) {
 		scs.addSelectionChangeListener(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeSelectionChangeListener(final SelectionChangeListener list) {
+	public final void removeSelectionChangeListener(
+			final SelectionChangeListener list) {
 		scs.removeSelectionChangeListener(list);
 	}
+
 	/**
 	 * The helper to handle selection-change listeners for us.
 	 */
 	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+
 	/**
 	 * @param old ignored
 	 * @param newPoint ignored
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old,
+			final Point newPoint) {
 		// We only care about the tile itself
 	}
+
 	/**
 	 * @param old the previously selected tile
 	 * @param newTile the newly selected tile

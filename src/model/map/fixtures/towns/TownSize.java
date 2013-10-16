@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Sizes of towns, fortifications, and cities.
- * 
+ *
  * @author Jonathan Lovelace
  */
 public enum TownSize {
@@ -32,7 +32,7 @@ public enum TownSize {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param str a string representing the size.
 	 */
 	private TownSize(final String str) {
@@ -47,7 +47,7 @@ public enum TownSize {
 
 	/**
 	 * @param string a string representing a TownSize
-	 * 
+	 *
 	 * @return the TownSize it represents
 	 */
 	public static TownSize parseTownSize(final String string) {
@@ -55,7 +55,7 @@ public enum TownSize {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a string representation of the size
 	 */
 	@Override

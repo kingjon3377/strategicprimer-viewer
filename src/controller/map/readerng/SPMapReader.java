@@ -104,8 +104,8 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				final int row = parseInt(getAttribute(elem, "row"));
 				final int col = parseInt(getAttribute(elem, "column"));
 				final Point loc = PointFactory.point(row, col);
-				map.addTile(loc, TILE_READER.parse(elem, stream, map.getPlayers(),
-						warner, idFactory));
+				map.addTile(loc, TILE_READER.parse(elem, stream,
+						map.getPlayers(), warner, idFactory));
 			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 				warner.warn(new UnsupportedTagException(type, elem // NOPMD
 						.getLocation().getLineNumber()));
@@ -144,9 +144,11 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public <S extends SPMap> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"map");
-		retval.addAttribute("version", Integer.toString(obj.getDimensions().version));
+		retval.addAttribute("version",
+				Integer.toString(obj.getDimensions().version));
 		retval.addAttribute("rows", Integer.toString(obj.getDimensions().rows));
-		retval.addAttribute("columns", Integer.toString(obj.getDimensions().cols));
+		retval.addAttribute("columns",
+				Integer.toString(obj.getDimensions().cols));
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
 			retval.addAttribute(
 					"current_player",
@@ -180,6 +182,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	 * The reader to use to parse tiles.
 	 */
 	private static final TileReader TILE_READER = new TileReader();
+
 	/**
 	 * @return a String representation of the object
 	 */

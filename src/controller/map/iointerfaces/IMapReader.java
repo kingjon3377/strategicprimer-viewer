@@ -14,14 +14,14 @@ import util.Warning;
 
 /**
  * An interface for map readers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public interface IMapReader {
 	/**
 	 * Read the map view contained in a file.
-	 * 
+	 *
 	 * @param file the name of the file to read
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map view it contains
@@ -36,7 +36,7 @@ public interface IMapReader {
 
 	/**
 	 * Read the map contained in a reader.
-	 * 
+	 *
 	 * @param file the name of the file the stream represents
 	 * @param istream the reader to read from
 	 * @param warner the Warning instance to use for warnings.

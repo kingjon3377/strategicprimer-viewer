@@ -76,6 +76,7 @@ public class RiverReader implements INodeHandler<River> {
 				: new SPIntermediateRepresentation("river", Pair.of(
 						"direction", obj.getDescription()));
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

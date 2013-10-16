@@ -36,10 +36,12 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for resource-bearing TileFixtures.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactResourceReader extends AbstractCompactReader implements CompactReader<HarvestableFixture> {
+public final class CompactResourceReader extends AbstractCompactReader
+		implements CompactReader<HarvestableFixture> {
 	/**
 	 * The parameter giving the status of a fixture.
 	 */
@@ -49,19 +51,23 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 */
 	private static final String KIND_PARAM = "kind";
 	/**
-	 * The parameter saying whether a grove or field or orchard or meadow is cultivated.
+	 * The parameter saying whether a grove or field or orchard or meadow is
+	 * cultivated.
 	 */
 	private static final String CULTIVATED_PARAM = "cultivated";
+
 	/**
 	 * Singleton.
 	 */
 	private CompactResourceReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactResourceReader READER = new CompactResourceReader();
+
 	/**
 	 * Enumeration of the types we know how to handle.
 	 */
@@ -114,18 +120,22 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		 * The tag.
 		 */
 		public final String tag;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param tagString The tag.
 		 */
 		HarvestableType(final String tagString) {
 			tag = tagString;
 		}
 	}
+
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
-	private static final Map<String, HarvestableType> MAP = new HashMap<>(HarvestableType.values().length);
+	private static final Map<String, HarvestableType> MAP = new HashMap<>(
+			HarvestableType.values().length);
 	/**
 	 * List of supported tags.
 	 */
@@ -138,6 +148,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		}
 		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether we support it
@@ -146,6 +157,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
+
 	/**
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
@@ -157,16 +169,17 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	 */
 	@Override
 	public HarvestableFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "battlefield", "cache", "cave", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		// ESCA-JAVA0177:
 		final HarvestableFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case BattlefieldType:
-			retval = new Battlefield(getDC(element), getOrGenerateID(
-					element, warner, idFactory));
+			retval = new Battlefield(getDC(element), getOrGenerateID(element,
+					warner, idFactory));
 			break;
 		case CacheType:
 			retval = new CacheFixture(getParameter(element, KIND_PARAM),
@@ -174,51 +187,48 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 							warner, idFactory));
 			break;
 		case CaveType:
-			retval = new Cave(getDC(element), getOrGenerateID(element, warner, idFactory));
+			retval = new Cave(getDC(element), getOrGenerateID(element, warner,
+					idFactory));
 			break;
 		case FieldType:
 			retval = createMeadow(element, true,
-					getOrGenerateID(element, warner, idFactory),
-					warner);
+					getOrGenerateID(element, warner, idFactory), warner);
 			break;
 		case GroveType:
 			retval = createGrove(element, false,
-					getOrGenerateID(element, warner, idFactory),
-					warner);
+					getOrGenerateID(element, warner, idFactory), warner);
 			break;
 		case MeadowType:
 			retval = createMeadow(element, false,
-					getOrGenerateID(element, warner, idFactory),
-					warner);
+					getOrGenerateID(element, warner, idFactory), warner);
 			break;
 		case MineType:
-			retval = new Mine(
-					getParameterWithDeprecatedForm(element, KIND_PARAM, "product",
-							warner),
-					TownStatus.parseTownStatus(getParameter(element, STATUS_PARAM)),
-					getOrGenerateID(element, warner, idFactory));
+			retval = new Mine(getParameterWithDeprecatedForm(element,
+					KIND_PARAM, "product", warner),
+					TownStatus.parseTownStatus(getParameter(element,
+							STATUS_PARAM)), getOrGenerateID(element, warner,
+							idFactory));
 			break;
 		case MineralType:
-			retval = new MineralVein(getParameterWithDeprecatedForm(
-					element, KIND_PARAM, "mineral", warner),
+			retval = new MineralVein(getParameterWithDeprecatedForm(element,
+					KIND_PARAM, "mineral", warner),
 					Boolean.parseBoolean(getParameter(element, "exposed")),
 					getDC(element), getOrGenerateID(element, warner, idFactory));
 			break;
 		case OrchardType:
 			retval = createGrove(element, true,
-					getOrGenerateID(element, warner, idFactory),
-					warner);
+					getOrGenerateID(element, warner, idFactory), warner);
 			break;
 		case ShrubType:
 			retval = new Shrub(getParameterWithDeprecatedForm(element,
-					KIND_PARAM, "shrub", warner), getOrGenerateID(element, warner,
-					idFactory));
+					KIND_PARAM, "shrub", warner), getOrGenerateID(element,
+					warner, idFactory));
 			break;
 		case StoneType:
 			retval = new StoneDeposit(
 					StoneKind.parseStoneKind(getParameterWithDeprecatedForm(
-							element, KIND_PARAM, "stone", warner)), getDC(element),
-					getOrGenerateID(element, warner, idFactory));
+							element, KIND_PARAM, "stone", warner)),
+					getDC(element), getOrGenerateID(element, warner, idFactory));
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
@@ -229,16 +239,21 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		}
 		return retval;
 	}
+
 	/**
 	 * @param element a tag
 	 * @return the value of its 'dc' property.
 	 * @throws SPFormatException on SP format problem
 	 */
-	private static int getDC(final StartElement element) throws SPFormatException {
+	private static int getDC(final StartElement element)
+			throws SPFormatException {
 		return Integer.parseInt(getParameter(element, "dc"));
 	}
+
 	/**
-	 * Create a Meadow, to reduce code duplication between 'field' and 'meadow' cases.
+	 * Create a Meadow, to reduce code duplication between 'field' and 'meadow'
+	 * cases.
+	 *
 	 * @param element the tag we're parsing
 	 * @param field whether this is a field (meadow otherwise)
 	 * @param idNum the ID number parsed or generated
@@ -255,12 +270,15 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 					.getLineNumber()));
 		}
 		return new Meadow(getParameter(element, KIND_PARAM), field,
-				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)), idNum,
-				FieldStatus.parse(getParameter(element, STATUS_PARAM, FieldStatus
-						.random(idNum).toString())));
+				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)),
+				idNum, FieldStatus.parse(getParameter(element, STATUS_PARAM,
+						FieldStatus.random(idNum).toString())));
 	}
+
 	/**
-	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard' cases.
+	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard'
+	 * cases.
+	 *
 	 * @param element the tag we're parsing
 	 * @param orchard whether this is an orchard, a grove otherwise
 	 * @param idNum the ID number parsed or generated
@@ -271,21 +289,23 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	private static Grove createGrove(final StartElement element,
 			final boolean orchard, final int idNum, final Warning warner)
 			throws SPFormatException {
-		return new Grove(
-				orchard,
-				isCultivated(element, warner),
-				getParameterWithDeprecatedForm(element, KIND_PARAM, "tree", warner),
-				idNum);
+		return new Grove(orchard, isCultivated(element, warner),
+				getParameterWithDeprecatedForm(element, KIND_PARAM, "tree",
+						warner), idNum);
 	}
+
 	/**
 	 * @param element a tag representing a grove or orchard
 	 * @param warner the Warning instance to use
 	 * @return whether the grove or orchard is cultivated
-	 * @throws SPFormatException on SP format problems: use of 'wild' if warnings are fatal, or if both properties are missing.
+	 * @throws SPFormatException on SP format problems: use of 'wild' if
+	 *         warnings are fatal, or if both properties are missing.
 	 */
-	private static boolean isCultivated(final StartElement element, final Warning warner) throws SPFormatException {
+	private static boolean isCultivated(final StartElement element,
+			final Warning warner) throws SPFormatException {
 		if (hasParameter(element, CULTIVATED_PARAM)) {
-			return Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
+			return Boolean
+					.parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
 			if (hasParameter(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(element.getName()
@@ -294,20 +314,23 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 				return !Boolean.parseBoolean(getParameter(element, "wild"));
 			} else {
 				throw new MissingPropertyException(element.getName()
-						.getLocalPart(), CULTIVATED_PARAM, element.getLocation()
-						.getLineNumber());
+						.getLocalPart(), CULTIVATED_PARAM, element
+						.getLocation().getLineNumber());
 			}
 		}
 	}
+
 	/**
 	 * Write an object to a stream. TODO: Some way of simplifying this?
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final HarvestableFixture obj, final int indent) throws IOException {
+	public void write(final Writer out, final HarvestableFixture obj,
+			final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof CacheFixture) {
 			out.append("<cache kind=\"");
@@ -361,6 +384,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		}
 		out.append(" />\n");
 	}
+
 	/**
 	 * @param meadow a meadow or field
 	 * @return the proper tag for it
@@ -368,6 +392,7 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	private static String getMeadowTag(final Meadow meadow) {
 		return meadow.isField() ? "field" : "meadow";
 	}
+
 	/**
 	 * @param grove a grove or orchard
 	 * @return the proper tag for it
@@ -375,13 +400,16 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 	private static String getGroveTag(final Grove grove) {
 		return grove.isOrchard() ? "orchard" : "grove";
 	}
+
 	/**
 	 * Serialize a very simple Event.
+	 *
 	 * @param out the stream to write (most of) it to
 	 * @param event a simple (DC- and ID-only) IEvent
 	 * @throws IOException on I/O error
 	 */
-	private static void writeSimpleEvent(final Writer out, final IEvent event) throws IOException {
+	private static void writeSimpleEvent(final Writer out, final IEvent event)
+			throws IOException {
 		if (event instanceof Battlefield) {
 			out.append("<battlefield ");
 		} else if (event instanceof Cave) {
@@ -393,4 +421,3 @@ public final class CompactResourceReader extends AbstractCompactReader implement
 		out.append(Integer.toString(event.getDC()));
 	}
 }
-

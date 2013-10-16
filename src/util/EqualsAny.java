@@ -42,7 +42,8 @@ public final class EqualsAny {
 	 *
 	 * @param <TYPE> the type of objects we'll be comparing
 	 * @param against the value to compare the others to
-	 * @param values the values to compare to it. May be null, in which case we return false.
+	 * @param values the values to compare to it. May be null, in which case we
+	 *        return false.
 	 *
 	 * @return true if any of theme equal it, false otherwise.
 	 */

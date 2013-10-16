@@ -14,8 +14,8 @@ import model.map.MapView;
  * @author Jonathan Lovelace
  *
  */
-public interface IDriverModel extends Serializable,
-		MapChangeSource, VersionChangeSource {
+public interface IDriverModel extends Serializable, MapChangeSource,
+		VersionChangeSource {
 	/**
 	 * @param newMap the new map
 	 * @param name the filename from which it was loaded
@@ -32,6 +32,7 @@ public interface IDriverModel extends Serializable,
 	 * @return the dimensions and version of the map
 	 */
 	MapDimensions getMapDimensions();
+
 	/**
 	 * @return the filename from which the map was loaded
 	 */

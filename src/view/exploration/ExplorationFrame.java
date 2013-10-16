@@ -26,9 +26,11 @@ public class ExplorationFrame extends JFrame {
 	 * Constructor.
 	 *
 	 * @param emodel the exploration model
-	 * @param ioHandler the I/O handler to let the menu handle the 'save all', etc.
+	 * @param ioHandler the I/O handler to let the menu handle the 'save all',
+	 *        etc.
 	 */
-	public ExplorationFrame(final ExplorationModel emodel, final MultiIOHandler ioHandler) {
+	public ExplorationFrame(final ExplorationModel emodel,
+			final MultiIOHandler ioHandler) {
 		super("Strategic Primer Exploration");
 		model = emodel;
 		setMinimumSize(new Dimension(768, 480));

@@ -14,6 +14,7 @@ import javax.swing.JSplitPane;
 public class SplitWithWeights extends JSplitPane {
 	/**
 	 * Constructor.
+	 *
 	 * @param orient the orientation of the panel.
 	 * @param divLoc the divider location
 	 * @param resWeight the resize weight

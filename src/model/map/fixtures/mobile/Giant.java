@@ -14,8 +14,7 @@ import model.map.fixtures.UnitMember;
  * @author Jonathan Lovelace
  *
  */
-public class Giant implements MobileFixture, HasImage,
-		HasKind, UnitMember {
+public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -75,8 +74,9 @@ public class Giant implements MobileFixture, HasImage,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Giant && ((Giant) obj).kind.equals(kind)
-				&& id == ((TileFixture) obj).getID());
+		return this == obj
+				|| (obj instanceof Giant && ((Giant) obj).kind.equals(kind) && id == ((TileFixture) obj)
+						.getID());
 	}
 
 	/**
@@ -117,6 +117,7 @@ public class Giant implements MobileFixture, HasImage,
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -124,10 +125,12 @@ public class Giant implements MobileFixture, HasImage,
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -135,6 +138,7 @@ public class Giant implements MobileFixture, HasImage,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -142,6 +146,7 @@ public class Giant implements MobileFixture, HasImage,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all giants as a class
 	 */

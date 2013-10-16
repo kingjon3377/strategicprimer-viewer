@@ -25,6 +25,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	 * The list of items to remove when we're told to remove them.
 	 */
 	private final List<Integer> toRemove = new ArrayList<>();
+
 	/**
 	 * @return the size of the map
 	 */
@@ -32,6 +33,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public int size() {
 		return backing.size();
 	}
+
 	/**
 	 * @return whether the map is empty
 	 */
@@ -39,6 +41,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public boolean isEmpty() {
 		return backing.isEmpty();
 	}
+
 	/**
 	 * @param key a key
 	 * @return whether the map contains it
@@ -47,6 +50,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public boolean containsKey(@Nullable final Object key) {
 		return backing.containsKey(key);
 	}
+
 	/**
 	 * @param value a value
 	 * @return whether the map contains it
@@ -55,6 +59,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public boolean containsValue(@Nullable final Object value) {
 		return backing.containsValue(value);
 	}
+
 	/**
 	 * @param key a key
 	 * @return the corresponding value in the map, if it exists
@@ -63,6 +68,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public V get(@Nullable final Object key) {
 		return backing.get(key);
 	}
+
 	/**
 	 * @param key a key
 	 * @param value a value
@@ -72,8 +78,10 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public V put(final Integer key, final V value) {
 		return backing.put(key, value);
 	}
+
 	/**
 	 * *Schedules* the item to be removed; doesn't remove it yet!
+	 *
 	 * @param key a key
 	 * @return false, as it isn't actually removed yet.
 	 */
@@ -84,6 +92,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 		}
 		return get(key);
 	}
+
 	/**
 	 * Apply all scheduled removals.
 	 */
@@ -95,14 +104,17 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 			toRemove.clear();
 		}
 	}
+
 	/**
 	 * Put all members of another map into the map.
+	 *
 	 * @param map the map to insert
 	 */
 	@Override
 	public void putAll(final Map<? extends Integer, ? extends V> map) {
 		backing.putAll(map);
 	}
+
 	/**
 	 * Schedules all keys for removal.
 	 */
@@ -110,6 +122,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public void clear() {
 		toRemove.addAll(keySet());
 	}
+
 	/**
 	 * @return the key set
 	 */
@@ -117,6 +130,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public Set<Integer> keySet() {
 		return backing.keySet();
 	}
+
 	/**
 	 * @return the collection of values
 	 */
@@ -124,6 +138,7 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 	public Collection<V> values() {
 		return backing.values();
 	}
+
 	/**
 	 * @return the set of entries in the map
 	 */

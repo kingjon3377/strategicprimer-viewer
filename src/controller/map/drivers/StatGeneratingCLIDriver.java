@@ -47,14 +47,19 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-t",
-			"--stats", ParamCount.Many, "Enter worker stats or generate new workers.",
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(
+			false,
+			"-t",
+			"--stats",
+			ParamCount.Many,
+			"Enter worker stats or generate new workers.",
 			"Enter stats for existing workers or generate new workers randomly.",
 			StatGeneratingCLIDriver.class);
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
 	private final CLIHelper helper = new CLIHelper();
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -62,6 +67,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -69,6 +75,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */
@@ -76,8 +83,10 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * Start the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if the driver failed
 	 */
@@ -92,7 +101,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		} catch (XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in map file", except);
 		} catch (SPFormatException except) {
-			throw new DriverFailedException("SP format error in map file", except);
+			throw new DriverFailedException("SP format error in map file",
+					except);
 		}
 		try {
 			if (helper
@@ -102,27 +112,34 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				createWorkers(model, IDFactoryFiller.createFactory(model));
 			}
 		} catch (IOException except) {
-			throw new DriverFailedException("I/O error interacting with user", except);
+			throw new DriverFailedException("I/O error interacting with user",
+					except);
 		}
 		try {
 			writeMaps(model);
 		} catch (IOException except) {
-			throw new DriverFailedException("I/O error writing to a map file", except);
+			throw new DriverFailedException("I/O error writing to a map file",
+					except);
 		}
 	}
+
 	/**
 	 * Write maps to disk.
+	 *
 	 * @param model the model containing all the maps
 	 * @throws IOException on I/O error
 	 */
-	private static void writeMaps(final IExplorationModel model) throws IOException {
+	private static void writeMaps(final IExplorationModel model)
+			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (Pair<IMap, String> pair : model.getAllMaps()) {
 			reader.write(pair.second(), pair.first());
 		}
 	}
+
 	/**
 	 * Read maps.
+	 *
 	 * @param filenames the files to read from
 	 * @return an exploration-model containing all of them
 	 * @throws SPFormatException on SP format problems
@@ -133,21 +150,25 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final MapView master = reader.readMap(filenames[0], Warning.INSTANCE);
-		final ExplorationModel model = new ExplorationModel(master, filenames[0]);
+		final ExplorationModel model = new ExplorationModel(master,
+				filenames[0]);
 		for (final String filename : filenames) {
 			if (filename.equals(filenames[0])) {
 				continue;
 			}
 			final IMap map = reader.readMap(filename, Warning.INSTANCE);
 			if (!map.getDimensions().equals(master.getDimensions())) {
-				throw new IllegalArgumentException("Size mismatch between " + filenames[0] + " and " + filename);
+				throw new IllegalArgumentException("Size mismatch between "
+						+ filenames[0] + " and " + filename);
 			}
 			model.addSubordinateMap(map, filename);
 		}
 		return model;
 	}
+
 	/**
 	 * Let the user enter stats for workers already in the maps.
+	 *
 	 * @param model the driver model.
 	 * @throws IOException on I/O error interacting with user
 	 */
@@ -165,19 +186,25 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
-	 * Let the user enter stats for workers already in the maps that belong to one particular player.
+	 * Let the user enter stats for workers already in the maps that belong to
+	 * one particular player.
+	 *
 	 * @param model the driver model
 	 * @param player the player owning the worker
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void enterStats(final IExplorationModel model, final Player player) throws IOException {
+	private void enterStats(final IExplorationModel model, final Player player)
+			throws IOException {
 		final List<Unit> units = removeStattedUnits(model.getUnits(player));
 		while (true) {
-			final int unitNum = helper.chooseFromList(units,
-					"Which unit contains the worker in question?",
-					"There are no units owned by that player that are not already fully statted",
-					"Unit selection: ", false);
+			final int unitNum = helper
+					.chooseFromList(
+							units,
+							"Which unit contains the worker in question?",
+							"There are no units owned by that player that are not already fully statted",
+							"Unit selection: ", false);
 			if (unitNum < 0 || unitNum >= units.size() || units.isEmpty()) {
 				break;
 			} else {
@@ -189,27 +216,33 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * @param model the exploration model
 	 * @param idNum an ID number
-	 * @return true if the number designates a unit containing an unstatted worker, and false otherwise.
+	 * @return true if the number designates a unit containing an unstatted
+	 *         worker, and false otherwise.
 	 */
-	private static boolean hasUnstattedWorker(final IExplorationModel model, final int idNum) {
+	private static boolean hasUnstattedWorker(final IExplorationModel model,
+			final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
 		return fix instanceof Unit && hasUnstattedWorker((Unit) fix);
 	}
+
 	/**
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
 	private static boolean hasUnstattedWorker(final Unit unit) {
 		for (final UnitMember member : unit) {
-			if (member instanceof Worker && ((Worker) member).getStats() == null) {
+			if (member instanceof Worker
+					&& ((Worker) member).getStats() == null) {
 				return true; // NOPMD
 			}
 		}
 		return false;
 	}
+
 	/**
 	 * @param units a list of units
 	 * @return a list of the units in the list that have workers without stats
@@ -223,16 +256,21 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		}
 		return retval;
 	}
+
 	/**
-	 * Let the user enter stats for workers already in the maps that are part of one particular unit.
+	 * Let the user enter stats for workers already in the maps that are part of
+	 * one particular unit.
+	 *
 	 * @param model the driver model
 	 * @param unit the unit containing the worker
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void enterStats(final IExplorationModel model, final Unit unit) throws IOException {
+	private void enterStats(final IExplorationModel model, final Unit unit)
+			throws IOException {
 		final List<Worker> workers = new ArrayList<>();
 		for (final UnitMember member : unit) {
-			if (member instanceof Worker && ((Worker) member).getStats() == null) {
+			if (member instanceof Worker
+					&& ((Worker) member).getStats() == null) {
 				workers.add((Worker) member);
 			}
 		}
@@ -241,7 +279,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					"Which worker do you want to enter stats for?",
 					"There are no workers without stats in that unit",
 					"Worker to modify: ", false);
-			if (workerNum < 0 || workerNum >= workers.size() || workers.isEmpty()) {
+			if (workerNum < 0 || workerNum >= workers.size()
+					|| workers.isEmpty()) {
 				break;
 			} else {
 				enterStats(model, workers.get(workerNum).getID());
@@ -249,13 +288,16 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Let the user enter stats for a worker.
+	 *
 	 * @param model the driver model
 	 * @param idNum the worker's ID.
 	 * @throws IOException on I/O error interacting with user.
 	 */
-	private void enterStats(final IExplorationModel model, final int idNum) throws IOException {
+	private void enterStats(final IExplorationModel model, final int idNum)
+			throws IOException {
 		final WorkerStats stats = enterStats();
 		for (final Pair<IMap, String> pair : model.getAllMaps()) {
 			final IMap map = pair.first();
@@ -265,8 +307,10 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Let the user enter stats for a worker.
+	 *
 	 * @return the stats the user entered
 	 * @throws IOException on I/O error interacting with the user.
 	 */
@@ -280,12 +324,14 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final int cha = helper.inputNumber("Cha: ");
 		return new WorkerStats(maxHP, maxHP, str, dex, con, intel, wis, cha);
 	}
+
 	/**
 	 * @param map a map
 	 * @param idNum an ID number
 	 * @return the fixture with that ID, or null if not found
 	 */
-	@Nullable private static IFixture find(final IMap map, final int idNum) {
+	@Nullable
+	private static IFixture find(final IMap map, final int idNum) {
 		final TileCollection tiles = map.getTiles();
 		for (final Point point : tiles) {
 			final Tile tile = tiles.getTile(point);
@@ -296,12 +342,14 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		}
 		return null;
 	}
+
 	/**
 	 * @param iter something containing fixtures
 	 * @param idNum an ID number
 	 * @return the fixture with that ID, or null if not found
 	 */
-	@Nullable private static IFixture find(final FixtureIterable<?> iter, final int idNum) {
+	@Nullable
+	private static IFixture find(final FixtureIterable<?> iter, final int idNum) {
 		for (final IFixture fix : iter) {
 			if (fix.getID() == idNum) {
 				return fix; // NOPMD
@@ -314,13 +362,16 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		}
 		return null;
 	}
+
 	/**
 	 * Allow the user to create randomly-generated workers.
+	 *
 	 * @param model the driver model
 	 * @param idf the ID factory
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void createWorkers(final IExplorationModel model, final IDFactory idf) throws IOException {
+	private void createWorkers(final IExplorationModel model,
+			final IDFactory idf) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		while (true) {
 			final int playerNum = helper.chooseFromList(players,
@@ -334,8 +385,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
-	 * Allow the user to create randomly-generated workers belonging to a particular player.
+	 * Allow the user to create randomly-generated workers belonging to a
+	 * particular player.
+	 *
 	 * @param model the driver model
 	 * @param idf the ID factory
 	 * @param player the player to own the workers
@@ -360,8 +414,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						helper.inputNumber("Column to put new unit: "));
 				final Unit unit = new Unit(player, // NOPMD
 						helper.inputString("Kind of unit: "),
-						helper.inputString("Unit name: "),
-						idf.createID());
+						helper.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMap, String> pair : model.getAllMaps()) {
 					final IMap map = pair.first();
 					final Tile tile = map.getTile(point);
@@ -373,11 +426,14 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				}
 				createWorkers(model, idf, unit);
 			}
-			again = helper.inputBoolean("Add more workers to another new or existing unit? ");
+			again = helper
+					.inputBoolean("Add more workers to another new or existing unit? ");
 		}
 	}
+
 	/**
 	 * Let the user create randomly-generated workers in a unit.
+	 *
 	 * @param model the driver model
 	 * @param idf the ID factory.
 	 * @param unit the unit to contain them.
@@ -404,8 +460,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * there are five 1-in-20 chances of starting with a level in some Job, and
 	 * the user will be prompted for what Job for each.
 	 *
-	 * TODO: extra HP for Job levels.
-	 * TODO: racial adjustments to stats.
+	 * TODO: extra HP for Job levels. TODO: racial adjustments to stats.
 	 *
 	 * @param idf the ID factory
 	 * @throws IOException on I/O error interacting with the user
@@ -419,12 +474,14 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		for (int i = 0; i < 3; i++) {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
-				retval.addJob(new Job(//NOPMD
+				retval.addJob(new Job(
+						// NOPMD
 						helper.inputString("Worker has a level in a Job, which Job? "),
 						1));
 			}
 		}
-		final boolean pregenStats = helper.inputBoolean("Enter pregenerated stats? ");
+		final boolean pregenStats = helper
+				.inputBoolean("Enter pregenerated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats());
 		} else {
@@ -433,6 +490,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		}
 		return retval;
 	}
+
 	/**
 	 * @return the result of simulating a 3d6 roll.
 	 */

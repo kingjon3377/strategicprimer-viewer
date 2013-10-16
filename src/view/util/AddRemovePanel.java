@@ -36,8 +36,10 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 	 * What we're adding or removing.
 	 */
 	private final String category;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param removalPossible whether we should put in a "remove" button.
 	 * @param what what we're adding or removing
 	 */
@@ -64,12 +66,15 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 		setPanelSizes(second);
 		add(second);
 	}
+
 	/**
 	 * The maximum height of the widget.
 	 */
 	private static final int MAX_HEIGHT = 50;
+
 	/**
 	 * Set the sizes we want on a panel.
+	 *
 	 * @param panel the panel in question
 	 */
 	private static void setPanelSizes(final JPanel panel) {
@@ -77,6 +82,7 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 		panel.setPreferredSize(new Dimension(80, MAX_HEIGHT));
 		panel.setMaximumSize(new Dimension(90, MAX_HEIGHT));
 	}
+
 	/**
 	 * @param evt the event to handle
 	 */
@@ -103,16 +109,19 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 			field.setText("");
 		}
 	}
+
 	/**
 	 * A list of listeners to notify of addition or removal.
 	 */
 	private final List<AddRemoveListener> arListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
 	public void addAddRemoveListener(final AddRemoveListener list) {
 		arListeners.add(list);
 	}
+
 	/**
 	 * @param list a list to remove
 	 */

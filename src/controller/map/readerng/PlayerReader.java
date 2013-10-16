@@ -77,6 +77,7 @@ public class PlayerReader implements INodeHandler<Player> {
 				Integer.toString(obj.getPlayerId())), Pair.of("code_name",
 				obj.getName()));
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

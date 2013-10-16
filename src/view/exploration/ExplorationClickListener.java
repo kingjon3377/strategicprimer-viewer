@@ -27,6 +27,7 @@ import view.map.details.FixtureList;
 
 /**
  * The listener for clicks on tile buttons indicating movement.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -44,8 +45,10 @@ public final class ExplorationClickListener implements ActionListener,
 	 * The list of fixtures on this tile in the main map.
 	 */
 	private final FixtureList list;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param emodel the exploration model
 	 * @param direct what direction this button is from the center.
 	 * @param mainList the list of fixtures on this tile in the main map.
@@ -56,6 +59,7 @@ public final class ExplorationClickListener implements ActionListener,
 		direction = direct;
 		list = mainList;
 	}
+
 	/**
 	 * @param evt the event to handle.
 	 */
@@ -79,11 +83,9 @@ public final class ExplorationClickListener implements ActionListener,
 		try {
 			final List<TileFixture> fixtures = getSelectedValuesList(list);
 			model.move(direction);
-			for (final Pair<IMap, String> pair : model
-					.getSubordinateMaps()) {
+			for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
 				final IMap map = pair.first();
-				final Tile tile = map.getTile(model
-						.getSelectedUnitLocation());
+				final Tile tile = map.getTile(model.getSelectedUnitLocation());
 				for (final TileFixture fix : fixtures) {
 					if (fix != null) {
 						tile.addFixture(fix);
@@ -102,13 +104,14 @@ public final class ExplorationClickListener implements ActionListener,
 	}
 
 	/**
-	 * A reimplementation of {@link javax.swing.JList#getSelectedValuesList()} that's
-	 * guaranteed not to throw an ArrayIndexOutOfBoundsException.
+	 * A reimplementation of {@link javax.swing.JList#getSelectedValuesList()}
+	 * that's guaranteed not to throw an ArrayIndexOutOfBoundsException.
 	 *
 	 * @param list the list to operate on
 	 * @return a list of its selected members
 	 */
-	private static List<TileFixture> getSelectedValuesList(final FixtureList list) {
+	private static List<TileFixture> getSelectedValuesList(
+			final FixtureList list) {
 		final int[] selections = list.getSelectedIndices();
 		final ListModel<TileFixture> model = list.getModel();
 		final List<TileFixture> retval = new ArrayList<>();
@@ -121,28 +124,35 @@ public final class ExplorationClickListener implements ActionListener,
 		}
 		return retval;
 	}
+
 	/**
 	 * The list of selection-change listeners.
 	 */
 	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+
 	/**
 	 * @param listener the listener to add
 	 */
 	@Override
-	public void addSelectionChangeListener(final SelectionChangeListener listener) {
+	public void addSelectionChangeListener(
+			final SelectionChangeListener listener) {
 		scListeners.add(listener);
 	}
+
 	/**
 	 * @param listener the listener to remove
 	 */
 	@Override
-	public void removeSelectionChangeListener(final SelectionChangeListener listener) {
+	public void removeSelectionChangeListener(
+			final SelectionChangeListener listener) {
 		scListeners.remove(listener);
 	}
+
 	/**
 	 * The list of movement-cost listeners.
 	 */
 	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+
 	/**
 	 * @param listener the listener to add
 	 */
@@ -150,6 +160,7 @@ public final class ExplorationClickListener implements ActionListener,
 	public void addMovementCostListener(final MovementCostListener listener) {
 		mcListeners.add(listener);
 	}
+
 	/**
 	 * @param listener the listener to remove
 	 */

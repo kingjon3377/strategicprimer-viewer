@@ -29,6 +29,7 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	public DirectionSelectionChanger(final IViewerModel mapModel) {
 		model = mapModel;
 	}
+
 	/**
 	 * Move the cursor up.
 	 */
@@ -79,13 +80,16 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 	public String toString() {
 		return "DirectionSelectionChangerImpl";
 	}
+
 	/**
 	 * Scroll.
+	 *
 	 * @param horiz whether to scroll horizontally.
 	 * @param forward whether to scroll forward (down or right)
 	 * @param count how many times to scroll
 	 */
-	private void scroll(final boolean horiz, final boolean forward, final int count) {
+	private void scroll(final boolean horiz, final boolean forward,
+			final int count) {
 		if (horiz && forward) {
 			for (int i = 0; i < count; i++) {
 				right();
@@ -104,8 +108,10 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 			}
 		}
 	}
+
 	/**
 	 * Scroll when the user scrolls the mouse wheel.
+	 *
 	 * @param evt the event to handle
 	 */
 	@Override

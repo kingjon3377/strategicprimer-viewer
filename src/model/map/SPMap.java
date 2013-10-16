@@ -24,8 +24,10 @@ public class SPMap implements IMap {
 	 * The map's version and dimensions.
 	 */
 	private final MapDimensions dimensions;
+
 	/**
 	 * Constructor taking the size and version as an encapsulated object.
+	 *
 	 * @param dim the dimensions
 	 */
 	public SPMap(final MapDimensions dim) {
@@ -34,6 +36,7 @@ public class SPMap implements IMap {
 		players = new PlayerCollection();
 		dimensions = dim;
 	}
+
 	/**
 	 * The tiles on the map.
 	 */
@@ -89,7 +92,8 @@ public class SPMap implements IMap {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof SPMap && getDimensions().equals(((IMap) obj).getDimensions())
+				|| (obj instanceof SPMap
+						&& getDimensions().equals(((IMap) obj).getDimensions())
 						&& players.equals(((IMap) obj).getPlayers()) && tiles
 							.equals(((SPMap) obj).tiles));
 	}
@@ -110,8 +114,10 @@ public class SPMap implements IMap {
 	 */
 	@Override
 	public String toString() {
-		// This will be big; assume at least half a meg. Fortunately it is rarely called.
-		final StringBuilder sbuild = new StringBuilder(524288).append("SP Map with ");
+		// This will be big; assume at least half a meg. Fortunately it is
+		// rarely called.
+		final StringBuilder sbuild = new StringBuilder(524288)
+				.append("SP Map with ");
 		sbuild.append(dimensions.rows);
 		sbuild.append(" rows and ");
 		sbuild.append(dimensions.cols);
@@ -168,6 +174,7 @@ public class SPMap implements IMap {
 	public TileCollection getTiles() {
 		return tiles;
 	}
+
 	/**
 	 * @return The map's dimensions and version.
 	 */

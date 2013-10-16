@@ -1,7 +1,9 @@
 package model.listeners;
 
 /**
- * An interface for things that can fire notifications of the current player changing.
+ * An interface for things that can fire notifications of the current player
+ * changing.
+ *
  * @author Jonathan Lovelace
  *
  */

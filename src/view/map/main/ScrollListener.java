@@ -27,8 +27,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class ScrollListener implements AdjustmentListener,
-		MapChangeListener, SelectionChangeListener, GraphicalParamsListener {
+public class ScrollListener implements AdjustmentListener, MapChangeListener,
+		SelectionChangeListener, GraphicalParamsListener {
 	/**
 	 * Constructor.
 	 *
@@ -55,9 +55,9 @@ public class ScrollListener implements AdjustmentListener,
 			 */
 			@Override
 			public boolean verify(@Nullable final JComponent input) {
-				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), mapDim.cols
-								- map.getDimensions().getWidth());
+				return input instanceof JScrollBar
+						&& isInRange(0, ((JScrollBar) input).getValue(),
+								mapDim.cols - map.getDimensions().getWidth());
 			}
 		});
 		vbar = vertBar;
@@ -73,9 +73,9 @@ public class ScrollListener implements AdjustmentListener,
 			 */
 			@Override
 			public boolean verify(@Nullable final JComponent input) {
-				return input instanceof JScrollBar && isInRange(0,
-						((JScrollBar) input).getValue(), mapDim.rows
-								- map.getDimensions().getHeight());
+				return input instanceof JScrollBar
+						&& isInRange(0, ((JScrollBar) input).getValue(),
+								mapDim.rows - map.getDimensions().getHeight());
 			}
 		});
 	}
@@ -89,7 +89,8 @@ public class ScrollListener implements AdjustmentListener,
 	 * @param component the component to attach the scrollbars to.
 	 */
 	public ScrollListener(final IViewerModel map, final JComponent component) {
-		this(map, new JScrollBar(Adjustable.HORIZONTAL), new JScrollBar(Adjustable.VERTICAL));
+		this(map, new JScrollBar(Adjustable.HORIZONTAL), new JScrollBar(
+				Adjustable.VERTICAL));
 		component.add(hbar, BorderLayout.SOUTH);
 		component.add(vbar, BorderLayout.EAST);
 	}
@@ -125,6 +126,7 @@ public class ScrollListener implements AdjustmentListener,
 	 * The vertical scroll-bar we deal with.
 	 */
 	private final JScrollBar vbar;
+
 	/**
 	 * @param oldDim the old visible dimensions
 	 * @param newDim the new visible dimensions
@@ -140,6 +142,7 @@ public class ScrollListener implements AdjustmentListener,
 				Math.max(model.getSelectedPoint().row, 0), 1, 0,
 				mapDimensions.rows - newDim.getHeight(), false);
 	}
+
 	/**
 	 * @param oldSize the old zoom level
 	 * @param newSize the new zoom level
@@ -148,6 +151,7 @@ public class ScrollListener implements AdjustmentListener,
 	public void tsizeChanged(final int oldSize, final int newSize) {
 		// We don't do anything with this.
 	}
+
 	/**
 	 * The property-change based version this replaces went to the model for the
 	 * selected point rather than looking at the reported new value; since it's
@@ -158,7 +162,8 @@ public class ScrollListener implements AdjustmentListener,
 	 * @param newPoint the newly selected point
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old,
+			final Point newPoint) {
 		final VisibleDimensions vdim = model.getDimensions();
 		if (!isInRange(vdim.getMinimumCol(), newPoint.col, vdim.getMaximumCol())) {
 			hbar.getModel().setValue(Math.max(newPoint.col, 0));
@@ -167,6 +172,7 @@ public class ScrollListener implements AdjustmentListener,
 			vbar.getModel().setValue(Math.max(newPoint.row, 0));
 		}
 	}
+
 	/**
 	 * @param old the previously selected tile
 	 * @param newTile the newly selected tile
@@ -175,6 +181,7 @@ public class ScrollListener implements AdjustmentListener,
 	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
 		// We only care about the point.
 	}
+
 	/**
 	 * Handle notification that a new map was loaded.
 	 */
@@ -187,6 +194,7 @@ public class ScrollListener implements AdjustmentListener,
 				mapDimensions.rows - model.getDimensions().getHeight(), false);
 		dimensions = model.getDimensions();
 	}
+
 	/**
 	 * @param min the start of a range
 	 * @param value a value
@@ -213,6 +221,7 @@ public class ScrollListener implements AdjustmentListener,
 					.getValue() + dimensions.getWidth()));
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

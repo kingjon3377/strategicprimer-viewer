@@ -23,7 +23,10 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A replacement transfer handler to make drag-and-drop work properly.
  *
- * Based on the tutorial found at http://www.javaprogrammingforums.com/java-swing-tutorials/3141-drag-drop-jtrees.html
+ * Based on the tutorial found at
+ * http://www.javaprogrammingforums.com/java-swing
+ * -tutorials/3141-drag-drop-jtrees.html
+ *
  * @author helloworld922
  * @author Jonathan Lovelace
  */
@@ -31,16 +34,21 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerTreeTransferHandler.class.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(WorkerTreeTransferHandler.class.getName());
+
 	/**
 	 * Constructor.
+	 *
 	 * @param selmodel the tree's selection model
 	 * @param tmodel the tree's data model
 	 */
-	WorkerTreeTransferHandler(final TreeSelectionModel selmodel, final IWorkerTreeModel tmodel) {
+	WorkerTreeTransferHandler(final TreeSelectionModel selmodel,
+			final IWorkerTreeModel tmodel) {
 		smodel = selmodel;
 		model = tmodel;
 	}
+
 	/**
 	 * The tree's selection model.
 	 */
@@ -49,6 +57,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	 * The tree's data model.
 	 */
 	private final IWorkerTreeModel model;
+
 	/**
 	 * @param component ignored
 	 * @return the actions we support
@@ -57,15 +66,21 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	public int getSourceActions(@Nullable final JComponent component) {
 		return TransferHandler.MOVE;
 	}
+
 	/**
 	 * @param component the component being dragged from? In any case, ignored.
-	 * @return a Transferable representing the selected node, or null if none selected
+	 * @return a Transferable representing the selected node, or null if none
+	 *         selected
 	 */
 	@Override
-	@Nullable protected Transferable createTransferable(@Nullable final JComponent component) {
+	@Nullable
+	protected Transferable createTransferable(
+			@Nullable final JComponent component) {
 		final TreePath path = smodel.getSelectionPath();
-		final Object selection = model.getModelObject(path.getLastPathComponent());
-		final Object parent = model.getModelObject(path.getPathComponent(path.getPathCount() - 2));
+		final Object selection = model.getModelObject(path
+				.getLastPathComponent());
+		final Object parent = model.getModelObject(path.getPathComponent(path
+				.getPathCount() - 2));
 		if (selection instanceof UnitMember && parent instanceof Unit) {
 			return new UnitMemberTransferable((UnitMember) selection, // NOPMD
 					(Unit) parent);
@@ -73,6 +88,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 			return null;
 		}
 	}
+
 	/**
 	 * @param support the object containing the detail of the transfer
 	 * @return whether the drop is possible
@@ -92,6 +108,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 			return false;
 		}
 	}
+
 	/**
 	 * @param support the object containing the details of the transfer
 	 * @return whether the transfer succeeded
@@ -105,7 +122,8 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 				return false; // NOPMD
 			}
 			final TreePath path = ((JTree.DropLocation) dloc).getPath();
-			final Object tempTarget = model.getModelObject(path.getLastPathComponent());
+			final Object tempTarget = model.getModelObject(path
+					.getLastPathComponent());
 			if (tempTarget instanceof Unit) {
 				try {
 					final UnitMemberTransferable.UnitMemberPair pair = (UnitMemberPair) trans
@@ -113,10 +131,14 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 					model.moveMember(pair.member, pair.unit, (Unit) tempTarget);
 					return true; // NOPMD
 				} catch (UnsupportedFlavorException except) {
-					LOGGER.log(Level.SEVERE, "Impossible unsupported data flavor", except);
+					LOGGER.log(Level.SEVERE,
+							"Impossible unsupported data flavor", except);
 					return false; // NOPMD
 				} catch (IOException except) {
-					LOGGER.log(Level.SEVERE, "I/O error in transfer after we checked ... shouldn't happen", except);
+					LOGGER.log(
+							Level.SEVERE,
+							"I/O error in transfer after we checked ... shouldn't happen",
+							except);
 					return false; // NOPMD
 				}
 			} else {

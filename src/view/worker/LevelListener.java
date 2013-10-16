@@ -13,17 +13,22 @@ import view.util.SystemOut;
 
 /**
  * A listener to print a line when a worker gains a level.
+ *
  * @author Jonathan Lovelace
  */
-public final class LevelListener implements LevelGainListener, UnitMemberListener, CompletionListener {
+public final class LevelListener implements LevelGainListener,
+		UnitMemberListener, CompletionListener {
 	/**
 	 * The current worker.
 	 */
-	@Nullable private UnitMember worker = null;
+	@Nullable
+	private UnitMember worker = null;
 	/**
 	 * The current skill.
 	 */
-	@Nullable private Skill skill = null;
+	@Nullable
+	private Skill skill = null;
+
 	/**
 	 * @param result maybe the newly selected skill
 	 */
@@ -35,6 +40,7 @@ public final class LevelListener implements LevelGainListener, UnitMemberListene
 			skill = (Skill) result;
 		}
 	}
+
 	/**
 	 * Handle level gain notification.
 	 */
@@ -51,14 +57,17 @@ public final class LevelListener implements LevelGainListener, UnitMemberListene
 			SystemOut.SYS_OUT.println(builder.toString());
 		}
 	}
+
 	/**
 	 * @param old the previously selected member
 	 * @param selected the newly selected unit member
 	 */
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old,
+			@Nullable final UnitMember selected) {
 		worker = selected;
 	}
+
 	/**
 	 * @param named something that may have a name
 	 * @return its name if it has one, "null" if null, or its toString

@@ -5,14 +5,14 @@ import java.awt.GridBagConstraints;
 /**
  * A helper class so we can specify arguments inline rather than having to build
  * each object manually.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class ConstraintHelper extends GridBagConstraints {
 	/**
 	 * Constructor taking just position.
-	 * 
+	 *
 	 * @param col the column
 	 * @param row the row
 	 */
@@ -24,7 +24,7 @@ public class ConstraintHelper extends GridBagConstraints {
 
 	/**
 	 * Constructor taking position and extent.
-	 * 
+	 *
 	 * @param col the column
 	 * @param row the row
 	 * @param width how many columns
@@ -38,7 +38,7 @@ public class ConstraintHelper extends GridBagConstraints {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

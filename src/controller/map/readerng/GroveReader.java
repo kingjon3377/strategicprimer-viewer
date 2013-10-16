@@ -31,6 +31,7 @@ public class GroveReader implements INodeHandler<Grove> {
 	 * The name of the 'cultivated' property.
 	 */
 	private static final String CULTIVATED_ATTR = "cultivated";
+
 	/**
 	 * Parse a grove.
 	 *
@@ -78,7 +79,8 @@ public class GroveReader implements INodeHandler<Grove> {
 				warner.warn(new DeprecatedPropertyException(element.getName()
 						.getLocalPart(), "wild", CULTIVATED_ATTR, element
 						.getLocation().getLineNumber()));
-				return !Boolean.parseBoolean(XMLHelper.getAttribute(element, "wild")); // NOPMD
+				return !Boolean.parseBoolean(XMLHelper.getAttribute(element,
+						"wild")); // NOPMD
 			} else {
 				throw new MissingPropertyException(element.getName()
 						.getLocalPart(), CULTIVATED_ATTR, element.getLocation()
@@ -113,13 +115,15 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(obj.isOrchard() ? "orchard"
-				: "grove", Pair.of(CULTIVATED_ATTR, Boolean.toString(obj.isCultivated())),
-				Pair.of("kind", obj.getKind()), Pair.of("id",
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				obj.isOrchard() ? "orchard" : "grove", Pair.of(CULTIVATED_ATTR,
+						Boolean.toString(obj.isCultivated())), Pair.of("kind",
+						obj.getKind()), Pair.of("id",
 						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

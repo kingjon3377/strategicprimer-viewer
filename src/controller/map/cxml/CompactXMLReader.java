@@ -19,8 +19,10 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.FileOpener;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
+
 /**
  * Fourth-generation SP XML reader.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -37,8 +39,8 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 */
 	@Override
 	public <T> T readXML(final String file, final Reader istream,
-			final Class<T> type, final Warning warner) throws XMLStreamException,
-			SPFormatException {
+			final Class<T> type, final Warning warner)
+			throws XMLStreamException, SPFormatException {
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, XMLInputFactory.newInstance()
 						.createXMLEventReader(istream)));
@@ -65,8 +67,8 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public MapView readMap(final String file, final Warning warner) throws IOException,
-			XMLStreamException, SPFormatException {
+	public MapView readMap(final String file, final Warning warner)
+			throws IOException, XMLStreamException, SPFormatException {
 		try (final Reader istream = FileOpener.createReader(file)) {
 			return readMap(file, istream, warner);
 		}
@@ -81,11 +83,12 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public MapView readMap(final String file, final Reader istream, final Warning warner)
-			throws XMLStreamException, SPFormatException {
+	public MapView readMap(final String file, final Reader istream,
+			final Warning warner) throws XMLStreamException, SPFormatException {
 		final IMap retval = readXML(file, istream, MapView.class, warner);
-		return retval instanceof SPMap ? new MapView((SPMap) retval, retval.getPlayers()
-				.getCurrentPlayer().getPlayerId(), 0) : (MapView) retval;
+		return retval instanceof SPMap ? new MapView((SPMap) retval, retval
+				.getPlayers().getCurrentPlayer().getPlayerId(), 0)
+				: (MapView) retval;
 	}
 
 }

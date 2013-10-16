@@ -40,12 +40,15 @@ public final class CompactReaderAdapter {
 	private CompactReaderAdapter() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactReaderAdapter ADAPTER = new CompactReaderAdapter();
+
 	/**
 	 * Parse an object from XML.
+	 *
 	 * @param <T> the type the caller expects
 	 * @param type the type the caller expects
 	 * @param element the element we're immediately dealing with
@@ -56,8 +59,8 @@ public final class CompactReaderAdapter {
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static <T> T parse(final Class<T> type,
-			final StartElement element, final IteratorWrapper<XMLEvent> stream,
+	public static <T> T parse(final Class<T> type, final StartElement element,
+			final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		// ESCA-JAVA0177:
@@ -72,8 +75,10 @@ public final class CompactReaderAdapter {
 		}
 		return reader.read(element, stream, players, warner, idFactory);
 	}
+
 	/**
 	 * Get a reader for the specified type.
+	 *
 	 * @param <T> the type
 	 * @param type the type
 	 * @return a reader for the type
@@ -93,18 +98,19 @@ public final class CompactReaderAdapter {
 		} else if (Worker.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactWorkerReader.READER;
 		} else {
-			throw new IllegalStateException("Unhandled type "
-					+ type.getName());
+			throw new IllegalStateException("Unhandled type " + type.getName());
 		}
 		return reader;
 	}
+
 	/**
 	 * @param <T> the type
 	 * @param type the type
 	 * @return a reader for that type
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T extends IFixture> CompactReader<T> getFixtureReader(final Class<T> type) {
+	private static <T extends IFixture> CompactReader<T> getFixtureReader(
+			final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
 		if (TerrainFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTerrainReader.READER;
@@ -123,13 +129,14 @@ public final class CompactReaderAdapter {
 		} else if (Worker.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactWorkerReader.READER;
 		} else {
-			throw new IllegalStateException("Unhandled type "
-					+ type.getName());
+			throw new IllegalStateException("Unhandled type " + type.getName());
 		}
 		return reader;
 	}
+
 	/**
 	 * Write an object to XML.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent the current indentation level.
@@ -138,34 +145,35 @@ public final class CompactReaderAdapter {
 	@SuppressWarnings("unchecked")
 	public static void write(final Writer out, final Object obj,
 			final int indent) throws IOException {
-			@SuppressWarnings("rawtypes") // NOPMD
-			final CompactReader reader; // NOPMD
-			if (obj instanceof IMap) {
-				reader = CompactMapReader.READER;
-			} else if (obj instanceof Tile) {
-				reader = CompactTileReader.READER;
-			} else if (obj instanceof River) {
-				CompactTileReader.writeRiver(out, (River) obj, indent);
-				return; // NOPMD
-			} else if (obj instanceof RiverFixture) {
-				CompactTileReader.writeRivers(out, (RiverFixture) obj, indent);
-				return; // NOPMD
-			} else if (obj instanceof Job) {
-				CompactWorkerReader.writeJob(out, (Job) obj, indent);
-				return; // NOPMD
-			} else if (obj instanceof Skill) {
-				CompactWorkerReader.writeSkill(out, (Skill) obj, indent);
-				return; // NOPMD
-			} else if (obj instanceof Player) {
-				reader = CompactPlayerReader.READER;
-			} else if (obj instanceof TileTypeFixture) {
-				// Skip it.
-				return;
-			} else if (obj instanceof IFixture) {
-				reader = getFixtureReader(((IFixture) obj).getClass());
-			} else {
-				throw new IllegalStateException("Don't know how to write this type");
-			}
-			reader.write(out, obj, indent);
+		@SuppressWarnings("rawtypes")
+		// NOPMD
+		final CompactReader reader; // NOPMD
+		if (obj instanceof IMap) {
+			reader = CompactMapReader.READER;
+		} else if (obj instanceof Tile) {
+			reader = CompactTileReader.READER;
+		} else if (obj instanceof River) {
+			CompactTileReader.writeRiver(out, (River) obj, indent);
+			return; // NOPMD
+		} else if (obj instanceof RiverFixture) {
+			CompactTileReader.writeRivers(out, (RiverFixture) obj, indent);
+			return; // NOPMD
+		} else if (obj instanceof Job) {
+			CompactWorkerReader.writeJob(out, (Job) obj, indent);
+			return; // NOPMD
+		} else if (obj instanceof Skill) {
+			CompactWorkerReader.writeSkill(out, (Skill) obj, indent);
+			return; // NOPMD
+		} else if (obj instanceof Player) {
+			reader = CompactPlayerReader.READER;
+		} else if (obj instanceof TileTypeFixture) {
+			// Skip it.
+			return;
+		} else if (obj instanceof IFixture) {
+			reader = getFixtureReader(((IFixture) obj).getClass());
+		} else {
+			throw new IllegalStateException("Don't know how to write this type");
+		}
+		reader.write(out, obj, indent);
 	}
 }

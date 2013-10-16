@@ -12,8 +12,7 @@ import model.map.TileFixture;
  *
  * @author Jonathan Lovelace
  */
-public final class Battlefield implements IEvent,
-		HasImage, HarvestableFixture {
+public final class Battlefield implements IEvent, HasImage, HarvestableFixture {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -67,8 +66,7 @@ public final class Battlefield implements IEvent,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof Battlefield && ((TileFixture) obj)
-						.getID() == id);
+				|| (obj instanceof Battlefield && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -131,10 +129,12 @@ public final class Battlefield implements IEvent,
 	public String getDefaultImage() {
 		return "battlefield.png";
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -142,6 +142,7 @@ public final class Battlefield implements IEvent,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -149,6 +150,7 @@ public final class Battlefield implements IEvent,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all battlefields as a class
 	 */

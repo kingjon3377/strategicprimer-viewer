@@ -9,7 +9,9 @@ import model.misc.IMultiMapModel;
 import util.Pair;
 
 /**
- * A class to create an IDFactory with all IDs in a map, or in a collection of fixtures, already registered as used.
+ * A class to create an IDFactory with all IDs in a map, or in a collection of
+ * fixtures, already registered as used.
+ *
  * @author Jonathan Lovelace
  */
 public final class IDFactoryFiller {
@@ -19,6 +21,7 @@ public final class IDFactoryFiller {
 	private IDFactoryFiller() {
 		// Only static methods.
 	}
+
 	/**
 	 * @param map a map
 	 * @return an ID factory that won't generate an ID the map already uses
@@ -31,9 +34,11 @@ public final class IDFactoryFiller {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param model a collection of maps
-	 * @return an ID factory that won't generate an ID any of the maps already uses.
+	 * @return an ID factory that won't generate an ID any of the maps already
+	 *         uses.
 	 */
 	public static IDFactory createFactory(final IMultiMapModel model) {
 		final IDFactory retval = new IDFactory();
@@ -45,20 +50,25 @@ public final class IDFactoryFiller {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param iter a collection of fixtures
-	 * @return an ID factory that won't generate an ID already used in the collection
+	 * @return an ID factory that won't generate an ID already used in the
+	 *         collection
 	 */
 	public static IDFactory createFactory(final FixtureIterable<?> iter) {
 		final IDFactory retval = new IDFactory();
 		recursiveRegister(retval, iter);
 		return retval;
 	}
+
 	/**
 	 * @param idf an IDFactory instance
-	 * @param iter a collection of fixtures, all of which (recursively) should have their IDs marked as used.
+	 * @param iter a collection of fixtures, all of which (recursively) should
+	 *        have their IDs marked as used.
 	 */
-	private static void recursiveRegister(final IDFactory idf, final FixtureIterable<?> iter) {
+	private static void recursiveRegister(final IDFactory idf,
+			final FixtureIterable<?> iter) {
 		for (final IFixture fix : iter) {
 			idf.register(fix.getID());
 			if (fix instanceof FixtureIterable<?>) {

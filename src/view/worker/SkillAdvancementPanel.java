@@ -22,13 +22,15 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.SingletonRandom;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
+
 /**
  * A panel to let a user add hours to a skill.
+ *
  * @author Jonathan Lovelace
  *
  */
-public class SkillAdvancementPanel extends BoxPanel implements
-		ActionListener, CompletionListener, LevelGainSource {
+public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
+		CompletionListener, LevelGainSource {
 	/**
 	 * The maximum height of the panel.
 	 */
@@ -36,9 +38,12 @@ public class SkillAdvancementPanel extends BoxPanel implements
 	/**
 	 * The skill we're dealing with. May be null if no skill is selected.
 	 */
-	@Nullable private Skill skill = null;
+	@Nullable
+	private Skill skill = null;
+
 	/**
-	 * @param result the newly selected skill, or a placeholder indicating no selection
+	 * @param result the newly selected skill, or a placeholder indicating no
+	 *        selection
 	 */
 	@Override
 	public void stopWaitingOn(final Object result) {
@@ -49,12 +54,15 @@ public class SkillAdvancementPanel extends BoxPanel implements
 			hours.requestFocusInWindow();
 		}
 	}
+
 	/**
 	 * Text box.
 	 */
 	private final JTextField hours = new JTextField(3);
+
 	/**
 	 * Constructor.
+	 *
 	 * @param listener something to listen to our level-gain notifications
 	 * @param sources the things we should listen to
 	 */
@@ -82,8 +90,10 @@ public class SkillAdvancementPanel extends BoxPanel implements
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
+
 	/**
 	 * Handle a button press.
+	 *
 	 * @param evt the event to handle
 	 */
 	@Override
@@ -106,10 +116,12 @@ public class SkillAdvancementPanel extends BoxPanel implements
 			hours.setText("");
 		}
 	}
+
 	/**
 	 * The list of listeners.
 	 */
 	private final List<LevelGainListener> listeners = new ArrayList<>();
+
 	/**
 	 * @param list the listener to add
 	 */
@@ -117,6 +129,7 @@ public class SkillAdvancementPanel extends BoxPanel implements
 	public void addLevelGainListener(final LevelGainListener list) {
 		listeners.add(list);
 	}
+
 	/**
 	 * @param list the listener to remove
 	 */

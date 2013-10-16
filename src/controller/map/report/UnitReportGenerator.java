@@ -19,15 +19,19 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
 import util.Pair;
+
 /**
  * A report generator for units.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.
-	 * @param fixtures the set of fixtures, so we can remove the unit and its members from it.
+	 *
+	 * @param fixtures the set of fixtures, so we can remove the unit and its
+	 *        members from it.
 	 * @param tiles ignored
 	 * @param unit a unit
 	 * @param loc the unit's location
@@ -36,7 +40,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer, final Unit unit, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer,
+			final Unit unit, final Point loc) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Unit of type ");
 		builder.append(unit.getKind());
@@ -70,9 +75,12 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		return builder.toString();
 	}
+
 	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.
-	 * @param fixtures the set of fixtures, so we can remove the unit and its members from it.
+	 *
+	 * @param fixtures the set of fixtures, so we can remove the unit and its
+	 *        members from it.
 	 * @param tiles ignored
 	 * @param unit a unit
 	 * @param loc the unit's location
@@ -81,18 +89,20 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer, final Unit unit, final Point loc) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer,
+			final Unit unit, final Point loc) {
 		final String simple = concat("Unit of type ", unit.getKind(),
 				", named ", unit.getName(),
 				unit.getOwner().isIndependent() ? ", independent"
 						: ", owned by " + playerNameOrYou(unit.getOwner()));
 		final AbstractReportNode retval = unit.iterator().hasNext() ? new ListReportNode(
-				concat(simple, ". Members of the unit:")) : new SimpleReportNode(
-				simple);
+				concat(simple, ". Members of the unit:"))
+				: new SimpleReportNode(simple);
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker) {
-				retval.add(produceWorkerRIR((Worker) member, currentPlayer.equals(unit.getOwner())));
+				retval.add(produceWorkerRIR((Worker) member,
+						currentPlayer.equals(unit.getOwner())));
 			} else {
 				// TODO: what about others?
 				retval.add(new SimpleReportNode(member.toString())); // NOPMD
@@ -102,13 +112,15 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		return retval;
 	}
+
 	/**
 	 * @param worker a Worker.
 	 * @param details whether we should give details of the worker's stats and
 	 *        experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static String workerReport(final Worker worker, final boolean details) {
+	private static String workerReport(final Worker worker,
+			final boolean details) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(worker.getName());
 		builder.append(", a ");
@@ -157,6 +169,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * @param job a Job
 	 * @return a String describing its skills.
@@ -180,24 +193,34 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * @param worker a Worker.
 	 * @param details whether we should give details of the worker's stats and
 	 *        experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static AbstractReportNode produceWorkerRIR(final Worker worker, final boolean details) {
-		final AbstractReportNode retval = new ComplexReportNode(worker.getName() + ", a " + worker.getRace() + ". ");
+	private static AbstractReportNode produceWorkerRIR(final Worker worker,
+			final boolean details) {
+		final AbstractReportNode retval = new ComplexReportNode(
+				worker.getName() + ", a " + worker.getRace() + ". ");
 		final WorkerStats stats = worker.getStats();
 		if (stats != null && details) {
-			final AbstractReportNode statsNode = new ListReportNode("He or she has the following stats:");
-			statsNode.add(new StatReportNode(stats.getHitPoints(), stats.getMaxHitPoints()));
-			statsNode.add(new StatReportNode("Strength: ", stats.getStrength()));
-			statsNode.add(new StatReportNode("Dexterity: ", stats.getDexterity()));
-			statsNode.add(new StatReportNode("Constitution: ", stats.getConstitution()));
-			statsNode.add(new StatReportNode("Intelligence: ", stats.getIntelligence()));
+			final AbstractReportNode statsNode = new ListReportNode(
+					"He or she has the following stats:");
+			statsNode.add(new StatReportNode(stats.getHitPoints(), stats
+					.getMaxHitPoints()));
+			statsNode
+					.add(new StatReportNode("Strength: ", stats.getStrength()));
+			statsNode.add(new StatReportNode("Dexterity: ", stats
+					.getDexterity()));
+			statsNode.add(new StatReportNode("Constitution: ", stats
+					.getConstitution()));
+			statsNode.add(new StatReportNode("Intelligence: ", stats
+					.getIntelligence()));
 			statsNode.add(new StatReportNode("Wisdom: ", stats.getWisdom()));
-			statsNode.add(new StatReportNode("Charisma: ", stats.getCharisma()));
+			statsNode
+					.add(new StatReportNode("Charisma: ", stats.getCharisma()));
 			retval.add(statsNode);
 		}
 		if (worker.iterator().hasNext() && details) {
@@ -211,33 +234,41 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		return retval;
 	}
+
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with units
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles, final Player currentPlayer) {
+	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
-		final StringBuilder builder = new StringBuilder(8192).append("<h4>Units in the map</h4>\n");
+		final StringBuilder builder = new StringBuilder(8192)
+				.append("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units reported above are not described again.)</p>\n");
 		builder.append(OPEN_LIST);
 		boolean anyUnits = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
 				anyUnits = true;
-				builder.append(OPEN_LIST_ITEM).append(atPoint(pair.first()))
-						.append(produce(fixtures, tiles, currentPlayer, (Unit) pair.second(), pair.first()))
+				builder.append(OPEN_LIST_ITEM)
+						.append(atPoint(pair.first()))
+						.append(produce(fixtures, tiles, currentPlayer,
+								(Unit) pair.second(), pair.first()))
 						.append(CLOSE_LIST_ITEM);
 			}
 		}
 		builder.append(CLOSE_LIST);
 		return anyUnits ? builder.toString() : "";
 	}
+
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -245,20 +276,22 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Units in the map",
 				"(Any units reported above are not described again.)");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
-				final AbstractReportNode unit = produceRIR(fixtures, tiles, currentPlayer, (Unit) pair.second(), pair.first());
+				final AbstractReportNode unit = produceRIR(fixtures, tiles,
+						currentPlayer, (Unit) pair.second(), pair.first());
 				unit.setText(concat(atPoint(pair.first()), unit.getText()));
 				retval.add(unit);
 			}
 		}
 		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
 	}
+
 	/**
 	 * A {@link SimpleReportNode} with a constructor designed for worker stats.
 	 */
@@ -268,8 +301,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		 * @param max the worker's max HP
 		 */
 		StatReportNode(final int hitPoints, final int max) {
-			super("Hit points: ", Integer.toString(hitPoints), " / ", Integer.toString(max));
+			super("Hit points: ", Integer.toString(hitPoints), " / ", Integer
+					.toString(max));
 		}
+
 		/**
 		 * @param stat which stat
 		 * @param value its value

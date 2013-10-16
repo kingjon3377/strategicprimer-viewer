@@ -1,6 +1,9 @@
 package model.listeners;
+
 /**
- * An interface for things that can fire notifications of a new map being loaded.
+ * An interface for things that can fire notifications of a new map being
+ * loaded.
+ *
  * @author Jonathan Lovelace
  *
  */

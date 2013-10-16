@@ -1,6 +1,8 @@
 package util;
+
 /**
  * A pair of Comparables.
+ *
  * @see Pair
  * @author Jonathan Lovelace
  *
@@ -32,6 +34,7 @@ public class ComparablePair<FIRST extends Comparable<FIRST>, SECOND extends Comp
 		final int cmp = first().compareTo(other.first());
 		return (cmp == 0) ? second().compareTo(other.second()) : cmp;
 	}
+
 	/**
 	 * Create a pair without having to specify the types.
 	 *

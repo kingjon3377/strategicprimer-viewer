@@ -79,6 +79,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 * Add four readers to the cache. CodePro objects to initializers over 40
 	 * lines, but we can't do a var-args method because the parameterization
 	 * would give us unsolvable compiler warnings.
+	 *
 	 * @param one the first reader
 	 * @param two the second reader
 	 * @param three the third reader
@@ -155,8 +156,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S> SPIntermediateRepresentation write(
-			final S obj) {
+	public <S> SPIntermediateRepresentation write(final S obj) {
 		if (WRITE_CACHE.containsKey(obj.getClass())) {
 			return ((INodeHandler<S>) WRITE_CACHE.get(obj.getClass()))
 					.write(obj);
@@ -180,6 +180,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 * A singleton. Provided for performance; this is, after all, stateless.
 	 */
 	public static final ReaderAdapter ADAPTER = new ReaderAdapter();
+
 	/**
 	 * @return a String representation of the object
 	 */

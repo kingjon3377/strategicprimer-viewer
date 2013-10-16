@@ -3,9 +3,9 @@ package controller.map.formatexceptions;
 /**
  * An exception for cases where a parameter is required (or, if this is merely
  * logged, recommended) but missing.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class MissingPropertyException extends SPFormatException {
 

@@ -10,6 +10,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A helper class to proxy selection-changing calls.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -18,6 +19,7 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	 * The list of listeners to notify.
 	 */
 	private final List<SelectionChangeListener> listeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -25,6 +27,7 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	public void addSelectionChangeListener(final SelectionChangeListener list) {
 		listeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */
@@ -39,9 +42,11 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	 * infinite recursion.
 	 *
 	 * @param oldPoint the previously selected location
-	 * @param newPoint the newly selected location. If null, we won't fire point notifications at all
+	 * @param newPoint the newly selected location. If null, we won't fire point
+	 *        notifications at all
 	 * @param oldTile the previously selected tile
-	 * @param newTile the newly selected tile. If null, we won't fire tile notifications at all.
+	 * @param newTile the newly selected tile. If null, we won't fire tile
+	 *        notifications at all.
 	 */
 	public void fireChanges(@Nullable final Point oldPoint,
 			@Nullable final Point newPoint, @Nullable final Tile oldTile,

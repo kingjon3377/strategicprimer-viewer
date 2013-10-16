@@ -42,7 +42,8 @@ public class ReaderComparator implements ISPDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ReaderComparator.class.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(ReaderComparator.class.getName());
 	/**
 	 * The first reader.
 	 */
@@ -50,11 +51,12 @@ public class ReaderComparator implements ISPDriver {
 	/**
 	 * The second reader.
 	 */
-	private final IMapReader two =  new CompactXMLReader();
+	private final IMapReader two = new CompactXMLReader();
 	/**
 	 * The stream to print results to.
 	 */
 	private final PrintStream out = SystemOut.SYS_OUT;
+
 	/**
 	 * Driver method.
 	 *
@@ -133,8 +135,10 @@ public class ReaderComparator implements ISPDriver {
 			out.println(arg);
 		}
 	}
+
 	/**
 	 * Print a description of a method's elapsed time.
+	 *
 	 * @param desc a description of the method ("old" or "new")
 	 * @param time how many time-units it took
 	 */
@@ -149,9 +153,11 @@ public class ReaderComparator implements ISPDriver {
 	 * @param filename the name of a file
 	 * @return a string containing its contents, so reading from it won't be
 	 *         confounded by disk I/O.
-	 * @throws IOException if file not found, or on other I/O error reading from file
+	 * @throws IOException if file not found, or on other I/O error reading from
+	 *         file
 	 */
-	private static String readIntoBuffer(final String filename) throws IOException {
+	private static String readIntoBuffer(final String filename)
+			throws IOException {
 		final File file = new File(filename);
 		try (final FileReader reader = new FileReader(file)) {
 			final CharBuffer buffer = CharBuffer.allocate((int) file.length());
@@ -160,6 +166,7 @@ public class ReaderComparator implements ISPDriver {
 			return buffer.toString();
 		}
 	}
+
 	/**
 	 *
 	 * @return a String representation of this object
@@ -168,8 +175,10 @@ public class ReaderComparator implements ISPDriver {
 	public String toString() {
 		return "ReaderComparator";
 	}
+
 	/**
 	 * Run the driver, comparing the readers' performance.
+	 *
 	 * @param args The files to test on
 	 * @throws DriverFailedException Probably never?
 	 */
@@ -177,6 +186,7 @@ public class ReaderComparator implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		compareReaders(args);
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -184,6 +194,7 @@ public class ReaderComparator implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -191,6 +202,7 @@ public class ReaderComparator implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

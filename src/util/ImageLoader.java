@@ -34,19 +34,20 @@ public final class ImageLoader {
 	 * The cache.
 	 */
 	private final Map<String, Image> cache = new HashMap<>();
+
 	/**
 	 * Constructor.
 	 */
 	private ImageLoader() {
 		final TileUIHelper colors = new TileUIHelper();
 		for (TileType type : TileType.values()) {
-			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, //NOPMD
+			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, // NOPMD
 					BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = buf.createGraphics();
 			pen.setColor(colors.get(2, type));
 			pen.fillRect(0, 0, buf.getWidth(), buf.getHeight());
 			pen.dispose();
-			iconCache.put(type.toXML() + ".png", new ImageIcon(buf)); //NOPMD
+			iconCache.put(type.toXML() + ".png", new ImageIcon(buf)); // NOPMD
 		}
 	}
 
@@ -102,6 +103,7 @@ public final class ImageLoader {
 		}
 		return iconCache.get(file);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

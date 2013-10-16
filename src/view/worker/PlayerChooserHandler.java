@@ -23,8 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerChooserHandler implements ActionListener,
-		PlayerChangeSource {
+public class PlayerChooserHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * The frame to attach the dialog to.
 	 */
@@ -37,8 +36,10 @@ public class PlayerChooserHandler implements ActionListener,
 	 * The current player.
 	 */
 	private Player player;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param outer the component to attach the dialog to
 	 * @param dmodel the driver model
 	 */
@@ -47,6 +48,7 @@ public class PlayerChooserHandler implements ActionListener,
 		model = dmodel;
 		player = dmodel.getMap().getPlayers().getCurrentPlayer();
 	}
+
 	/**
 	 * The menu item we listen for.
 	 */
@@ -55,6 +57,7 @@ public class PlayerChooserHandler implements ActionListener,
 	 * The list of listeners.
 	 */
 	private final List<PlayerChangeListener> listeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -62,6 +65,7 @@ public class PlayerChooserHandler implements ActionListener,
 	public void addPlayerChangeListener(final PlayerChangeListener list) {
 		listeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */
@@ -69,8 +73,10 @@ public class PlayerChooserHandler implements ActionListener,
 	public void removePlayerChangeListener(final PlayerChangeListener list) {
 		listeners.remove(list);
 	}
+
 	/**
 	 * Handle menu item.
+	 *
 	 * @param evt the event to handle.
 	 */
 	@Override
@@ -88,6 +94,7 @@ public class PlayerChooserHandler implements ActionListener,
 			}
 		}
 	}
+
 	/**
 	 * Should only be called once per object lifetime. Notify all listeners, as
 	 * if the current player had changed from null to its current value.

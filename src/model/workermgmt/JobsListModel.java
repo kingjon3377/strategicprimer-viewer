@@ -17,8 +17,10 @@ import model.map.fixtures.mobile.worker.Job;
 import org.eclipse.jdt.annotation.Nullable;
 
 import view.util.AddRemovePanel;
+
 /**
  * A list model for a list of a worker's jobs.
+ *
  * @author Jonathan Lovelace
  */
 public class JobsListModel extends DefaultListModel<Job> implements
@@ -36,12 +38,16 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	 * The current worker.
 	 */
 	private Worker worker = NULL_WORKER;
+
 	/**
 	 * Constructor.
-	 * @param umSources sources to listen to for changes in which unit member is selected
+	 *
+	 * @param umSources sources to listen to for changes in which unit member is
+	 *        selected
 	 * @param arps panels to listen to for new jobs from the user
 	 */
-	public JobsListModel(final UnitMemberSelectionSource[] umSources, final AddRemovePanel[] arps) {
+	public JobsListModel(final UnitMemberSelectionSource[] umSources,
+			final AddRemovePanel[] arps) {
 		for (final UnitMemberSelectionSource source : umSources) {
 			source.addUnitMemberListener(this);
 		}
@@ -49,8 +55,10 @@ public class JobsListModel extends DefaultListModel<Job> implements
 			panel.addAddRemoveListener(this);
 		}
 	}
+
 	/**
-	 * @param category what kind of thing is being added; if not a Job we ignore it
+	 * @param category what kind of thing is being added; if not a Job we ignore
+	 *        it
 	 * @param addendum a description of what to add
 	 */
 	@Override
@@ -64,12 +72,14 @@ public class JobsListModel extends DefaultListModel<Job> implements
 			}
 		}
 	}
+
 	/**
 	 * @param old the previously selected member
 	 * @param selected the newly selected unit member
 	 */
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old,
+			@Nullable final UnitMember selected) {
 		if (!worker.equals(selected)) {
 			clear();
 			if (selected instanceof Worker) {
@@ -77,7 +87,8 @@ public class JobsListModel extends DefaultListModel<Job> implements
 				for (Job job : worker) {
 					addElement(job);
 				}
-				final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0);
+				final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer
+						.valueOf(0);
 				assert retval != null;
 				for (final CompletionListener list : cListeners) {
 					list.stopWaitingOn(retval);
@@ -87,10 +98,12 @@ public class JobsListModel extends DefaultListModel<Job> implements
 			}
 		}
 	}
+
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<CompletionListener> cListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -98,6 +111,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	public void addCompletionListener(final CompletionListener list) {
 		cListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */
@@ -105,6 +119,7 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	public void removeCompletionListener(final CompletionListener list) {
 		cListeners.remove(list);
 	}
+
 	/**
 	 * @param category ignored
 	 */

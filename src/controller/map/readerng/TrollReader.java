@@ -42,8 +42,7 @@ public class TrollReader implements INodeHandler<Troll> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Troll fix = new Troll(
-				getOrGenerateID(element, warner, idFactory));
+		final Troll fix = new Troll(getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -66,8 +65,8 @@ public class TrollReader implements INodeHandler<Troll> {
 	 */
 	@Override
 	public <S extends Troll> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("troll", Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"troll", Pair.of("id", Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
@@ -79,6 +78,7 @@ public class TrollReader implements INodeHandler<Troll> {
 	public Class<Troll> writes() {
 		return Troll.class;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

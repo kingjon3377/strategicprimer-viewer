@@ -25,14 +25,18 @@ import view.util.StreamingLabel;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
+
 /**
  * A window to show the result of running subset tests.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class SubsetFrame extends JFrame {
 	/**
-	 * A writer to put each line into an HTML paragraph, coloring them appropriately.
+	 * A writer to put each line into an HTML paragraph, coloring them
+	 * appropriately.
+	 *
 	 * @author Jonathan Lovelace
 	 *
 	 */
@@ -41,8 +45,10 @@ public class SubsetFrame extends JFrame {
 		 * Whether we're in the middle of a line.
 		 */
 		private boolean middle = false;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param writer the writer we wrap
 		 */
 		HTMLWriter(final Writer writer) {
@@ -51,11 +57,13 @@ public class SubsetFrame extends JFrame {
 
 		/**
 		 * Start or continue a line.
+		 *
 		 * @param str the string to print
 		 */
 		@Override
 		public void print(@Nullable final String str) {
-			@NonNull final String local = str == null ? "null" : str;
+			@NonNull
+			final String local = str == null ? "null" : str;
 			if (!middle) {
 				super.print("<p style=\"color:white\">");
 			}
@@ -65,11 +73,13 @@ public class SubsetFrame extends JFrame {
 
 		/**
 		 * Finish a line.
+		 *
 		 * @param line the end of the line
 		 */
 		@Override
 		public void println(@Nullable final String line) {
-			@NonNull final String local = line == null ? "null" : line;
+			@NonNull
+			final String local = line == null ? "null" : line;
 			if (!middle) {
 				super.print("<p style=\"color:white\">");
 			}
@@ -92,6 +102,7 @@ public class SubsetFrame extends JFrame {
 	 * The label that's the bulk of the GUI.
 	 */
 	private final StreamingLabel label = new StreamingLabel();
+
 	/**
 	 * Constructor.
 	 */
@@ -100,6 +111,7 @@ public class SubsetFrame extends JFrame {
 		setContentPane(new JScrollPane(label));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
+
 	/**
 	 * Enclose a string in HTML paragraph indicators, optionally with a color.
 	 * And repaint the label so it shows up. This is "package-private" because,
@@ -110,7 +122,8 @@ public class SubsetFrame extends JFrame {
 	 * @param string the string to enclose
 	 * @param color the color to make it, or the empty string if none.
 	 */
-	void printParagraph(final String string, final String color) { // NOPMD: See above
+	void printParagraph(final String string, final String color) { // NOPMD: See
+																	// above
 		final PrintWriter writer = label.getWriter();
 		if (color.isEmpty()) {
 			writer.print("<p style=\"color:white\">");
@@ -121,7 +134,7 @@ public class SubsetFrame extends JFrame {
 		}
 		writer.print(string);
 		writer.println("</p>");
-//		label.updateText();
+		// label.updateText();
 		label.repaint();
 	}
 
@@ -132,34 +145,38 @@ public class SubsetFrame extends JFrame {
 	/**
 	 * The main map.
 	 */
-	private IMap mainMap = new MapView(new SPMap(new MapDimensions(0, 0, 2)), 0, 0);
+	private IMap mainMap = new MapView(new SPMap(new MapDimensions(0, 0, 2)),
+			0, 0);
+
 	/**
 	 * Load a new map as the main map, which the others should be subsets of.
+	 *
 	 * @param arg the filename to load it from
 	 * @throws SPFormatException on bad SP map format in the file
 	 * @throws XMLStreamException on malformed XML
 	 * @throws IOException on other I/O error
 	 */
-	public void loadMain(final String arg) throws SPFormatException, XMLStreamException, IOException {
+	public void loadMain(final String arg) throws SPFormatException,
+			XMLStreamException, IOException {
 		try {
 			mainMap = reader.readMap(arg, new Warning(Warning.Action.Ignore));
 		} catch (final FileNotFoundException except) {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
 		} catch (final MapVersionException except) {
-			printParagraph("ERROR: Map version of main map " + arg + " not acceptable to reader",
-					ERROR_COLOR);
+			printParagraph("ERROR: Map version of main map " + arg
+					+ " not acceptable to reader", ERROR_COLOR);
 			throw except;
 		} catch (final XMLStreamException except) {
-			printParagraph(
-					"ERROR: Malformed XML in file " + arg + "; see following error message for details",
-					ERROR_COLOR);
+			printParagraph("ERROR: Malformed XML in file " + arg
+					+ "; see following error message for details", ERROR_COLOR);
 			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			throw except;
 		} catch (SPFormatException except) {
 			printParagraph(
 					"ERROR: SP map format error at line " + except.getLine()
-							+ " in file " + arg + "; see following error message for details",
+							+ " in file " + arg
+							+ "; see following error message for details",
 					ERROR_COLOR);
 			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
 			throw except;
@@ -202,8 +219,7 @@ public class SubsetFrame extends JFrame {
 			printParagraph("FAIL: I/O error reading file", ERROR_COLOR);
 			return; // NOPMD
 		} catch (final XMLStreamException except) {
-			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg,
-					except);
+			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg, except);
 			printParagraph(
 					"FAIL: Malformed XML in the file; see following error message for details",
 					ERROR_COLOR);

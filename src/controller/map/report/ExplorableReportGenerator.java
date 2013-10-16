@@ -13,15 +13,18 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
 import util.Pair;
+
 /**
  * A report generator for caves and battlefields.
+ *
  * @author Jonathan Lovelace
  */
 public class ExplorableReportGenerator extends
 		AbstractReportGenerator<HarvestableFixture> {
 	/**
-	 * Produce the sub-report on non-town things that can be explored.
-	 * All fixtures referred to in this report are removed from the collection.
+	 * Produce the sub-report on non-town things that can be explored. All
+	 * fixtures referred to in this report are removed from the collection.
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -55,17 +58,21 @@ public class ExplorableReportGenerator extends
 			}
 		}
 		if (anyCaves) {
-			builder.append(caveBuilder.append(CLOSE_LIST_ITEM).toString().replace(": , ", ": "));
+			builder.append(caveBuilder.append(CLOSE_LIST_ITEM).toString()
+					.replace(": , ", ": "));
 		}
 		if (anyBattles) {
-			builder.append(battleBuilder.append(CLOSE_LIST_ITEM).toString().replace(": , ", ": "));
+			builder.append(battleBuilder.append(CLOSE_LIST_ITEM).toString()
+					.replace(": , ", ": "));
 		}
 		builder.append(CLOSE_LIST);
 		return anyCaves || anyBattles ? builder.toString() : "";
 	}
+
 	/**
-	 * Produce the sub-report on non-town things that can be explored.
-	 * All fixtures referred to in this report are removed from the collection.
+	 * Produce the sub-report on non-town things that can be explored. All
+	 * fixtures referred to in this report are removed from the collection.
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -73,12 +80,14 @@ public class ExplorableReportGenerator extends
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4, "Caves and Battlefields");
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer) {
+		final AbstractReportNode retval = new SectionListReportNode(4,
+				"Caves and Battlefields");
 		boolean anyCaves = false;
 		boolean anyBattles = false;
-		// We doubt either of these will be over half a K, but we'll give each a whole K just in case.
+		// We doubt either of these will be over half a K, but we'll give each a
+		// whole K just in case.
 		final StringBuilder caveBuilder = new StringBuilder(1024)
 				.append("Caves beneath the following tiles: ");
 		final StringBuilder battleBuilder = new StringBuilder(1024)
@@ -95,25 +104,31 @@ public class ExplorableReportGenerator extends
 			}
 		}
 		if (anyCaves) {
-			retval.add(new SimpleReportNode(caveBuilder.toString().replace(": , ", ": ")));
+			retval.add(new SimpleReportNode(caveBuilder.toString().replace(
+					": , ", ": ")));
 		}
 		if (anyBattles) {
-			retval.add(new SimpleReportNode(battleBuilder.toString().replace(": , ", ": ")));
+			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
+					": , ", ": ")));
 		}
 		return anyCaves || anyBattles ? retval : EmptyReportNode.NULL_NODE;
 	}
+
 	/**
 	 * Produces a more verbose sub-report on a cave or battlefield.
+	 *
 	 * @param fixtures the set of fixtures.
 	 * @param tiles ignored
 	 * @param item the item to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report (more verbose than the bulk produce() above reports) on the item
+	 * @return a sub-report (more verbose than the bulk produce() above reports)
+	 *         on the item
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer, final HarvestableFixture item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer,
+			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Caves beneath ", loc.toString()); // NOPMD
@@ -125,25 +140,29 @@ public class ExplorableReportGenerator extends
 					currentPlayer, item, loc);
 		}
 	}
+
 	/**
 	 * Produces a more verbose sub-report on a cave or battlefield.
+	 *
 	 * @param fixtures the set of fixtures.
 	 * @param tiles ignored
 	 * @param item the item to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report (more verbose than the bulk produce() above reports) on the item
+	 * @return a sub-report (more verbose than the bulk produce() above reports)
+	 *         on the item
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer, final HarvestableFixture item, final Point loc) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer,
+			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode("Caves beneath ", loc.toString()); // NOPMD
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode("Signs of a long-ago battle on ", //NOPMD
+			return new SimpleReportNode("Signs of a long-ago battle on ", // NOPMD
 					loc.toString());
 		} else {
 			return new HarvestableReportGenerator().produceRIR(fixtures, tiles,

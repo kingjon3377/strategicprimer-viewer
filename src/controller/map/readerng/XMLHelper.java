@@ -89,9 +89,9 @@ public final class XMLHelper {
 		final Attribute deprAttr = element.getAttributeByName(new QName(
 				deprecated));
 		if (prefAttr == null && deprAttr == null) {
-			throw new MissingPropertyException(element.getName()
-					.getLocalPart(), preferred, element.getLocation()
-					.getLineNumber());
+			throw new MissingPropertyException(
+					element.getName().getLocalPart(), preferred, element
+							.getLocation().getLineNumber());
 		} else if (prefAttr == null) {
 			warner.warn(new DeprecatedPropertyException(element.getName()
 					.getLocalPart(), deprecated, preferred, element
@@ -163,6 +163,7 @@ public final class XMLHelper {
 	 * If the specified tag has an "owner" property, return the player it
 	 * indicates; otherwise warn about its absence and return the "independent"
 	 * player from the player collection.
+	 *
 	 * @param element the tag we're working with
 	 * @param warner the Warning instance to send the warning on
 	 * @param players the collection of players to refer to
@@ -175,7 +176,8 @@ public final class XMLHelper {
 		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
 		if (hasAttribute(element, "owner")) {
-			retval = players.getPlayer(Integer.parseInt(getAttribute(element, "owner")));
+			retval = players.getPlayer(Integer.parseInt(getAttribute(element,
+					"owner")));
 		} else {
 			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), "owner", element.getLocation()
@@ -184,6 +186,7 @@ public final class XMLHelper {
 		}
 		return retval;
 	}
+
 	/**
 	 * If the specified tag has an ID as a property, return it; otherwise warn
 	 * about its absence and generate one.
@@ -222,13 +225,17 @@ public final class XMLHelper {
 		return stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
 				.iterator()).getFile() : "";
 	}
+
 	/**
-	 * If there is an image attribute on the element, add that to the object being constructed. If not, do nothing.
+	 * If there is an image attribute on the element, add that to the object
+	 * being constructed. If not, do nothing.
+	 *
 	 * @param element the XML element being read
 	 * @param obj the object being constructed.
 	 * @throws SPFormatException on SP format error
 	 */
-	public static void addImage(final StartElement element, final HasImage obj) throws SPFormatException {
+	public static void addImage(final StartElement element, final HasImage obj)
+			throws SPFormatException {
 		if (hasAttribute(element, "image")) {
 			obj.setImage(getAttribute(element, "image"));
 		}

@@ -74,8 +74,9 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Dragon && ((Dragon) obj).kind.equals(kind)
-				&& ((TileFixture) obj).getID() == id);
+		return this == obj
+				|| (obj instanceof Dragon && ((Dragon) obj).kind.equals(kind) && ((TileFixture) obj)
+						.getID() == id);
 	}
 
 	/**
@@ -116,6 +117,7 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Dragon && ((Dragon) fix).kind.equals(kind);
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -123,10 +125,12 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -134,6 +138,7 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -141,6 +146,7 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all dragons as a class
 	 */

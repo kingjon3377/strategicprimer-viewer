@@ -24,25 +24,30 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasImage {
+public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
+		HasImage {
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param wName the worker's name
 	 * @param workerRace the worker's race
 	 * @param idNum the ID number of the worker
 	 * @param jobs the Jobs the worker is trained in
 	 */
-	public Worker(final String wName, final String workerRace, final int idNum, final Job... jobs) {
+	public Worker(final String wName, final String workerRace, final int idNum,
+			final Job... jobs) {
 		super();
 		name = wName;
 		id = idNum;
 		race = workerRace;
 		jobSet.addAll(Arrays.asList(jobs));
 	}
+
 	/**
 	 * The worker's race (elf, dwarf, human, etc.).
 	 */
@@ -51,14 +56,17 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	 * The set of jobs the worker is trained or experienced in.
 	 */
 	private final Set<Job> jobSet = new ArraySet<>();
+
 	/**
 	 * Add a job.
+	 *
 	 * @param job the job to add.
 	 * @return the result of the operation
 	 */
 	public boolean addJob(final Job job) {
 		return jobSet.add(job);
 	}
+
 	/**
 	 * @return An iterator over the worker's jobs.
 	 */
@@ -66,10 +74,12 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public Iterator<Job> iterator() {
 		return jobSet.iterator();
 	}
+
 	/**
 	 * The ID number of the worker.
 	 */
 	private final int id; // NOPMD
+
 	/**
 	 * @return the ID number of the worker.
 	 */
@@ -77,16 +87,19 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @return the worker's race (elf, human, or whatever)
 	 */
 	public String getRace() {
 		return race;
 	}
+
 	/**
 	 * The worker's name.
 	 */
 	private String name;
+
 	/**
 	 * @return the worker's name
 	 */
@@ -94,6 +107,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's the same as this
@@ -105,9 +119,10 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 						&& ((Worker) obj).id == id && ((Worker) obj).jobSet
 							.equals(jobSet))
 				&& ((Worker) obj).race.equals(race)
-				&& (stats != null ? stats
-						.equals(((Worker) obj).stats) : ((Worker) obj).stats == null);
+				&& (stats != null ? stats.equals(((Worker) obj).stats)
+						: ((Worker) obj).stats == null);
 	}
+
 	/**
 	 * @return a hash code for the object
 	 */
@@ -115,6 +130,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public int hashCode() {
 		return id;
 	}
+
 	/**
 	 * @return a String representation of the Worker.
 	 */
@@ -122,6 +138,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public String toString() {
 		return name + ", a " + race;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it equals this one except its ID.
@@ -132,9 +149,10 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 				|| (fix instanceof Worker && ((Worker) fix).name.equals(name) && ((Worker) fix).jobSet
 						.equals(jobSet))
 				&& ((Worker) fix).race.equals(race)
-				&& (stats != null ? stats
-						.equals(((Worker) fix).stats) : ((Worker) fix).stats == null);
+				&& (stats != null ? stats.equals(((Worker) fix).stats)
+						: ((Worker) fix).stats == null);
 	}
+
 	/**
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
 	 */
@@ -142,6 +160,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public String getKind() {
 		return getRace();
 	}
+
 	/**
 	 * @param nomen the worker's new name
 	 */
@@ -149,6 +168,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
+
 	/**
 	 * @param kind the worker's new race
 	 */
@@ -156,34 +176,44 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public void setKind(final String kind) {
 		race = kind;
 	}
+
 	/**
 	 * The worker's stats.
 	 */
-	@Nullable private WorkerStats stats;
+	@Nullable
+	private WorkerStats stats;
+
 	/**
 	 * @return the worker's stats
 	 */
-	@Nullable public WorkerStats getStats() {
+	@Nullable
+	public WorkerStats getStats() {
 		return stats;
 	}
+
 	/**
 	 * @param wstats the worker's new stats
 	 */
 	public void setStats(final WorkerStats wstats) {
 		stats = wstats;
 	}
+
 	/**
-	 * This is just for icons in lists and such, not for the map, since this isn't a TileFixture.
+	 * This is just for icons in lists and such, not for the map, since this
+	 * isn't a TileFixture.
+	 *
 	 * @return the filename of the image representing a worker.
 	 */
 	@Override
 	public String getDefaultImage() {
 		return "worker.png";
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -191,6 +221,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind, HasI
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */

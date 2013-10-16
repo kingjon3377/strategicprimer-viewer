@@ -74,14 +74,17 @@ public final class TileCollection implements Iterable<Point>,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this
-				|| (obj instanceof TileCollection && withoutEmptyTiles(((TileCollection) obj).tiles)
-						.equals(withoutEmptyTiles(tiles)));
+				|| (obj instanceof TileCollection && withoutEmptyTiles(
+						((TileCollection) obj).tiles).equals(
+						withoutEmptyTiles(tiles)));
 	}
+
 	/**
 	 * @param mapping a point-tile mapping
 	 * @return an equivalent one without any empty tiles.
 	 */
-	private static Map<Point, Tile> withoutEmptyTiles(final Map<Point, Tile> mapping) {
+	private static Map<Point, Tile> withoutEmptyTiles(
+			final Map<Point, Tile> mapping) {
 		final Map<Point, Tile> retval = new HashMap<>();
 		for (final Entry<Point, Tile> entry : mapping.entrySet()) {
 			final Tile tile = entry.getValue();
@@ -91,6 +94,7 @@ public final class TileCollection implements Iterable<Point>,
 		}
 		return retval;
 	}
+
 	/**
 	 *
 	 * @return a hash value for the object
@@ -111,8 +115,8 @@ public final class TileCollection implements Iterable<Point>,
 
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(Tile, PrintWriter)} has the side effect of printing what
-	 * makes it *not* a subset; we want that done for *all* relevant tiles.
+	 * {@link Tile#isSubset(Tile, PrintWriter)} has the side effect of printing
+	 * what makes it *not* a subset; we want that done for *all* relevant tiles.
 	 *
 	 * @param obj another TileCollection
 	 * @return whether it's a strict subset of this one
@@ -139,6 +143,7 @@ public final class TileCollection implements Iterable<Point>,
 		}
 		return retval;
 	}
+
 	/**
 	 * @param point a point
 	 * @return whether there's a non-empty tile at that point

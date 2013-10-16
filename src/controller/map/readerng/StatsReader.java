@@ -12,8 +12,10 @@ import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+
 /**
  * A reader for workers' stats.
+ *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
  */
@@ -26,6 +28,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	public Class<WorkerStats> writes() {
 		return WorkerStats.class;
 	}
+
 	/**
 	 * @return the list of tags this knows how to read.
 	 */
@@ -33,8 +36,10 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	public List<String> understands() {
 		return Collections.singletonList("stats");
 	}
+
 	/**
 	 * Parse stats from XML.
+	 *
 	 * @param element the current tag
 	 * @param stream the stream to read more tags from
 	 * @param players ignored
@@ -44,8 +49,9 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public WorkerStats parse(final StartElement element, final Iterable<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner, final IDFactory idFactory)
+	public WorkerStats parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final WorkerStats retval = new WorkerStats(Integer.parseInt(XMLHelper
 				.getAttribute(element, "hp")), Integer.parseInt(XMLHelper
@@ -59,6 +65,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 		XMLHelper.spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
+
 	/**
 	 * @param obj a stats object
 	 * @return the SPIR representing it

@@ -17,14 +17,17 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
 import util.Pair;
+
 /**
  * A report generator for sightings of animals.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	/**
 	 * Produce the sub-report on sightings of animals.
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -73,8 +76,10 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			return builder.append(CLOSE_LIST).toString(); // NOPMD
 		}
 	}
+
 	/**
 	 * Produce the sub-report on sightings of animals.
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -82,8 +87,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> sightings = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
@@ -112,7 +117,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		if (sightings.isEmpty()) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
-			final AbstractReportNode retval = new SectionListReportNode(4, "Animal sightings or encounters");
+			final AbstractReportNode retval = new SectionListReportNode(4,
+					"Animal sightings or encounters");
 			for (Entry<String, List<Point>> entry : sightings.entrySet()) {
 				retval.add(new SimpleReportNode(entry.getKey(), ": at ",
 						pointCSL(entry.getValue())));
@@ -120,6 +126,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			return retval; // NOPMD
 		}
 	}
+
 	/**
 	 * @param fixtures the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
@@ -130,10 +137,12 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer, final Animal item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer,
+			final Animal item, final Point loc) {
 		return concat(atPoint(loc), item.isTraces() ? "tracks or traces of "
 				: (item.isTalking() ? "talking " : ""), item.getKind());
 	}
+
 	/**
 	 * @param fixtures the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
@@ -144,8 +153,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer, final Animal item, final Point loc) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer,
+			final Animal item, final Point loc) {
 		return new SimpleReportNode(atPoint(loc),
 				item.isTraces() ? "tracks or traces of "
 						: (item.isTalking() ? "talking " : ""), item.getKind()

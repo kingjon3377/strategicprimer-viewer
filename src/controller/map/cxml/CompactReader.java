@@ -14,6 +14,7 @@ import controller.map.misc.IDFactory;
 
 /**
  * An interface for XML readers that can read multiple related types.
+ *
  * @param <T> the common supertype of all types this can return
  * @author Jonathan Lovelace
  *
@@ -29,9 +30,12 @@ public interface CompactReader<T> {
 	 * @throws SPFormatException on SP format errors
 	 */
 	T read(StartElement element, IteratorWrapper<XMLEvent> stream,
-			PlayerCollection players, Warning warner, IDFactory idFactory) throws SPFormatException;
+			PlayerCollection players, Warning warner, IDFactory idFactory)
+			throws SPFormatException;
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent the current indentation level.

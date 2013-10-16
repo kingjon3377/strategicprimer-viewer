@@ -4,14 +4,17 @@ import javax.swing.JComponent;
 
 import model.viewer.IViewerModel;
 import view.util.BorderedPanel;
+
 /**
  * A panel to contain the map GUI and add scrollbars to it.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class MapScrollPanel extends BorderedPanel {
 	/**
 	 * Constructor.
+	 *
 	 * @param map the viewer model
 	 * @param component the map component
 	 */

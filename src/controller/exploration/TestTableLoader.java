@@ -19,7 +19,7 @@ import org.junit.Test;
 /**
  * @author Jonathan Lovelace
  */
-//ESCA-JAVA0137:
+// ESCA-JAVA0137:
 public final class TestTableLoader {
 	/**
 	 * "one".
@@ -29,10 +29,12 @@ public final class TestTableLoader {
 	 * The string "static-method", used in an annotation on each method.
 	 */
 	private static final String ST_MET = "static-method";
+
 	/**
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadQuadrantTable(java.io.BufferedReader)}
 	 * . .
+	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)
@@ -46,8 +48,8 @@ public final class TestTableLoader {
 					result.generateEvent(point, new Tile(TileType.Tundra)));
 			// TODO: somehow check that it got properly loaded, beyond this
 		}
-		try (final BufferedReader readerTwo = new BufferedReader(new StringReader(
-				"quadrant"))) {
+		try (final BufferedReader readerTwo = new BufferedReader(
+				new StringReader("quadrant"))) {
 			TableLoader.loadTable(readerTwo);
 			fail("Didn't object to quadrant table without number of rows");
 		} catch (final IOException except) {
@@ -61,6 +63,7 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadRandomTable(java.io.BufferedReader)}
 	 * .
+	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)
@@ -80,6 +83,7 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadTerrainTable(java.io.BufferedReader)}
 	 * .
+	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)
@@ -103,12 +107,14 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadConstantTable(java.io.BufferedReader)}
 	 * .
+	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadConstantTable() throws IOException {
-		try (BufferedReader one = new BufferedReader(new StringReader("constant\none"))) {
+		try (BufferedReader one = new BufferedReader(new StringReader(
+				"constant\none"))) {
 			final EncounterTable result = TableLoader.loadTable(one);
 			final Point point = PointFactory.point(10, 5);
 			assertEquals("loading constant table: first test", ONE_STRING,
@@ -120,6 +126,7 @@ public final class TestTableLoader {
 	 * Test the bad-input logic in
 	 * {@link controller.exploration.TableLoader#loadTable(java.io.BufferedReader)}
 	 * .
+	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)

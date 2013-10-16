@@ -48,16 +48,15 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void testCaveSerialization() throws XMLStreamException, SPFormatException,
-			IOException {
+	public void testCaveSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
 		// ESCA-JAVA0076:
 		assertSerialization("First CaveEvent serialization test, reflection",
 				new Cave(10, 0), Cave.class);
-		assertSerialization(
-				"Second CaveEvent serialization test, reflection",
+		assertSerialization("Second CaveEvent serialization test, reflection",
 				new Cave(30, 1), Cave.class);
-		assertUnwantedChild("<cave dc=\"10\"><troll /></cave>",
-				Cave.class, false);
+		assertUnwantedChild("<cave dc=\"10\"><troll /></cave>", Cave.class,
+				false);
 		assertMissingProperty("<cave />", Cave.class, "dc", false);
 		assertMissingProperty("<cave dc=\"10\" />", Cave.class, "id", true);
 		assertImageSerialization("Cave image property is preserved", new Cave(
@@ -81,23 +80,25 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				assertSerialization(
 						"First CityEvent serialization test, reflection, status "
 								+ status + ", size " + size, new City(// NOPMD
-								status, size, 10, "oneCity", 0, owner), City.class);
+								status, size, 10, "oneCity", 0, owner),
+						City.class);
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"Second CityEvent serialization test, reflection, status "
 								+ status + ", size " + size, new City(// NOPMD
-								status, size, 40, "twoCity", 1, owner), City.class);
+								status, size, 40, "twoCity", 1, owner),
+						City.class);
 			}
 		}
-		final City three = new City(TownStatus.Active,
-				TownSize.Small, 30, "", 3, owner);
+		final City three = new City(TownStatus.Active, TownSize.Small, 30, "",
+				3, owner);
 		assertSerialization(
 				"Serialization of CityEvent without a name, reflection", three,
 				City.class, new Warning(Warning.Action.Ignore));
-		assertMissingProperty(createSerializedForm(three, true),
-				City.class, NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three, false),
-				City.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, true), City.class,
+				NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, false), City.class,
+				NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				City.class, "id", true);
@@ -126,8 +127,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			for (final TownSize size : TownSize.values()) {
 				assertSerialization(
 						"First FortificationEvent serialization test, reflection, status "
-								+ status + ", size " + size,
-						new Fortification(status, size, 10, "one", 1, owner), // NOPMD
+								+ status + ", size " + size, new Fortification(
+								status, size, 10, "one", 1, owner), // NOPMD
 						Fortification.class);
 				assertSerialization(
 						"Second FortificationEvent serialization test, reflection, status "
@@ -136,12 +137,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						Fortification.class);
 			}
 		}
-		final Fortification three = new Fortification(
-				TownStatus.Active, TownSize.Small, 30, "", 3, owner);
+		final Fortification three = new Fortification(TownStatus.Active,
+				TownSize.Small, 30, "", 3, owner);
 		assertSerialization(
 				"Serialization of FortificationEvent without a name, reflection",
-				three, Fortification.class, new Warning(
-						Warning.Action.Ignore));
+				three, Fortification.class, new Warning(Warning.Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true),
 				Fortification.class, NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false),
@@ -151,13 +151,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				Fortification.class, "id", true);
 		assertUnwantedChild(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
-						+ "<troll /></fortification>",
-				Fortification.class, false);
+						+ "<troll /></fortification>", Fortification.class,
+				false);
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
 				Fortification.class, "owner", true);
-		assertImageSerialization("Fortification image property is preserved", three,
-				Fortification.class);
+		assertImageSerialization("Fortification image property is preserved",
+				three, Fortification.class);
 	}
 
 	/**
@@ -268,21 +268,21 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 								status, size, 40, "two", 2, owner), Town.class);
 			}
 		}
-		final Town three = new Town(TownStatus.Active,
-				TownSize.Small, 30, "", 3, owner);
+		final Town three = new Town(TownStatus.Active, TownSize.Small, 30, "",
+				3, owner);
 		assertSerialization(
 				"Serialization of TownEvent without a name, reflection", three,
 				Town.class, new Warning(Warning.Action.Ignore));
-		assertMissingProperty(createSerializedForm(three, true),
-				Town.class, NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three, false),
-				Town.class, NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, true), Town.class,
+				NAME_PROPERTY, true);
+		assertMissingProperty(createSerializedForm(three, false), Town.class,
+				NAME_PROPERTY, true);
 		assertMissingProperty("<town status=\"active\" size=\"small\"/>",
 				Town.class, "dc", false);
 		assertMissingProperty("<town dc=\"0\" status=\"active\" />",
 				Town.class, "size", false);
-		assertMissingProperty("<town dc=\"0\" size=\"small\" />",
-				Town.class, STATUS_PROPERTY, false);
+		assertMissingProperty("<town dc=\"0\" size=\"small\" />", Town.class,
+				STATUS_PROPERTY, false);
 		assertMissingProperty(
 				"<town dc=\"0\" size=\"small\" status=\"active\" name=\"name\" />",
 				Town.class, "id", true);
@@ -295,6 +295,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertImageSerialization("Town image property is preserved", three,
 				Town.class);
 	}
+
 	/**
 	 * First test of serialization of BattlefieldEvents.
 	 *
@@ -303,19 +304,19 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void testBattlefieldSerialization() throws XMLStreamException, SPFormatException, IOException {
+	public void testBattlefieldSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
 		assertSerialization("First BattlefieldEvent serialization test",
 				new Battlefield(10, 0), Battlefield.class);
 		assertSerialization("Second BattlefieldEvent serialization test",
 				new Battlefield(30, 1), Battlefield.class);
 		assertUnwantedChild("<battlefield dc=\"10\"><troll /></battlefield>",
 				Battlefield.class, false);
-		assertMissingProperty("<battlefield />", Battlefield.class, "dc",
-				false);
-		assertMissingProperty("<battlefield dc=\"10\" />",
-				Battlefield.class, "id", true);
-		assertImageSerialization("Battlefield image property is preserved", new Battlefield(20, 2),
-				Battlefield.class);
+		assertMissingProperty("<battlefield />", Battlefield.class, "dc", false);
+		assertMissingProperty("<battlefield dc=\"10\" />", Battlefield.class,
+				"id", true);
+		assertImageSerialization("Battlefield image property is preserved",
+				new Battlefield(20, 2), Battlefield.class);
 	}
 
 	/**

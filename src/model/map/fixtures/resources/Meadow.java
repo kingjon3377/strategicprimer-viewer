@@ -14,8 +14,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Meadow implements HarvestableFixture,
-		HasImage, HasKind {
+public class Meadow implements HarvestableFixture, HasImage, HasKind {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -130,10 +129,11 @@ public class Meadow implements HarvestableFixture,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Meadow && kind.equals(((Meadow) obj).kind)
-				&& field == ((Meadow) obj).field
-				&& cultivated == ((Meadow) obj).cultivated
-				&& id == ((TileFixture) obj).getID());
+		return this == obj
+				|| (obj instanceof Meadow && kind.equals(((Meadow) obj).kind)
+						&& field == ((Meadow) obj).field
+						&& cultivated == ((Meadow) obj).cultivated && id == ((TileFixture) obj)
+						.getID());
 	}
 
 	/**
@@ -175,8 +175,10 @@ public class Meadow implements HarvestableFixture,
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Meadow && kind.equals(((Meadow) fix).kind)
 				&& field == ((Meadow) fix).field
-				&& cultivated == ((Meadow) fix).cultivated && status == ((Meadow) fix).status;
+				&& cultivated == ((Meadow) fix).cultivated
+				&& status == ((Meadow) fix).status;
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -184,10 +186,12 @@ public class Meadow implements HarvestableFixture,
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -195,6 +199,7 @@ public class Meadow implements HarvestableFixture,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -202,6 +207,7 @@ public class Meadow implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all meadows as a class
 	 */

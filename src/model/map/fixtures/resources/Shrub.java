@@ -13,8 +13,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Shrub implements HarvestableFixture,
-		HasImage, HasKind {
+public class Shrub implements HarvestableFixture, HasImage, HasKind {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -74,9 +73,10 @@ public class Shrub implements HarvestableFixture,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Shrub
-				&& description.equals(((Shrub) obj).description)
-				&& id == ((TileFixture) obj).getID());
+		return this == obj
+				|| (obj instanceof Shrub
+						&& description.equals(((Shrub) obj).description) && id == ((TileFixture) obj)
+						.getID());
 	}
 
 	/**
@@ -119,6 +119,7 @@ public class Shrub implements HarvestableFixture,
 		return fix instanceof Shrub
 				&& description.equals(((Shrub) fix).description);
 	}
+
 	/**
 	 * @param kind the new kind
 	 */
@@ -126,10 +127,12 @@ public class Shrub implements HarvestableFixture,
 	public final void setKind(final String kind) {
 		description = kind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -137,6 +140,7 @@ public class Shrub implements HarvestableFixture,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -144,6 +148,7 @@ public class Shrub implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all shrubs as a class
 	 */

@@ -73,8 +73,9 @@ public class DragonReader implements INodeHandler<Dragon> {
 	 */
 	@Override
 	public <S extends Dragon> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("dragon", Pair.of("kind",
-				obj.getKind()), Pair.of("id", Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"dragon", Pair.of("kind", obj.getKind()), Pair.of("id",
+						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

@@ -1,6 +1,8 @@
 package util;
+
 /**
  * A pair of ints.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -13,8 +15,10 @@ public class IntPair {
 	 * The second.
 	 */
 	public final int second;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param one the first int
 	 * @param two the second int.
 	 */
@@ -22,6 +26,7 @@ public class IntPair {
 		first = one;
 		second = two;
 	}
+
 	/**
 	 * @param one a first int
 	 * @param two a second int

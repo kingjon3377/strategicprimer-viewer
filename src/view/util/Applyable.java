@@ -3,9 +3,9 @@ package view.util;
 /**
  * An interface that, together with the ApplyButtonHandler class, simplifies
  * form management.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public interface Applyable {
 	/**

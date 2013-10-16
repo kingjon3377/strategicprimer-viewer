@@ -15,20 +15,24 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for tiles, including rivers.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactGroundReader extends AbstractCompactReader implements CompactReader<Ground> {
+public final class CompactGroundReader extends AbstractCompactReader implements
+		CompactReader<Ground> {
 	/**
 	 * Singleton.
 	 */
 	private CompactGroundReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactGroundReader READER = new CompactGroundReader();
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -41,16 +45,20 @@ public final class CompactGroundReader extends AbstractCompactReader implements 
 	 */
 	@Override
 	public Ground read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "ground");
-		final String kind = getParameterWithDeprecatedForm(element, "kind", "ground", warner);
+		final String kind = getParameterWithDeprecatedForm(element, "kind",
+				"ground", warner);
 		requireNonEmptyParameter(element, "exposed", true, warner);
 		spinUntilEnd(element.getName(), stream);
-		final Ground retval = new Ground(kind, Boolean.parseBoolean(getParameter(element, "exposed")));
+		final Ground retval = new Ground(kind,
+				Boolean.parseBoolean(getParameter(element, "exposed")));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether it's one we support
@@ -59,15 +67,18 @@ public final class CompactGroundReader extends AbstractCompactReader implements 
 	public boolean isSupportedTag(final String tag) {
 		return "ground".equalsIgnoreCase(tag);
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Ground obj, final int indent) throws IOException {
+	public void write(final Writer out, final Ground obj, final int indent)
+			throws IOException {
 		for (int i = 0; i < indent; i++) {
 			out.append('\t');
 		}

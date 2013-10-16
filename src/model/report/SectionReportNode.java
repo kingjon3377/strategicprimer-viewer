@@ -4,12 +4,14 @@ import javax.swing.tree.TreeNode;
 
 /**
  * A node representing a section, with a header.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class SectionReportNode extends AbstractReportNode {
 	/**
 	 * Constructor.
+	 *
 	 * @param lvl the header level
 	 * @param header the header text
 	 */
@@ -17,6 +19,7 @@ public class SectionReportNode extends AbstractReportNode {
 		super(header);
 		setLevel(lvl);
 	}
+
 	/**
 	 * @return the HTML representation of the node
 	 */
@@ -24,6 +27,7 @@ public class SectionReportNode extends AbstractReportNode {
 	public String produce() {
 		return produce(new StringBuilder(size())).toString();
 	}
+
 	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
@@ -40,8 +44,10 @@ public class SectionReportNode extends AbstractReportNode {
 		}
 		return builder;
 	}
+
 	/**
-	 * @return approximately how long the HTML representation of this node will be.
+	 * @return approximately how long the HTML representation of this node will
+	 *         be.
 	 */
 	@Override
 	public int size() {
@@ -54,22 +60,26 @@ public class SectionReportNode extends AbstractReportNode {
 		}
 		return retval;
 	}
+
 	/**
 	 * The header level.
 	 */
 	private int level;
+
 	/**
 	 * @param lvl the new header level
 	 */
 	public final void setLevel(final int lvl) {
 		level = lvl;
 	}
+
 	/**
 	 * @return the header level
 	 */
 	public final int getHeaderLevel() {
 		return level;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's the same as this
@@ -80,11 +90,12 @@ public class SectionReportNode extends AbstractReportNode {
 				&& getText().equals(obj.getText())
 				&& children().equals(obj.children());
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	protected int hashCodeImpl() {
-		return level + getText().hashCode() /*| children.hashCode()*/;
+		return level + getText().hashCode() /* | children.hashCode() */;
 	}
 }

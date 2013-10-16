@@ -26,8 +26,8 @@ import model.map.fixtures.mobile.Unit;
  * @author Jonathan Lovelace
  *
  */
-public class Fortress implements HasImage,
-		Subsettable<Fortress>, ITownFixture, FixtureIterable<Unit> {
+public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
+		FixtureIterable<Unit> {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -131,8 +131,8 @@ public class Fortress implements HasImage,
 	public String toString() {
 		final String ownerStr = owner.toString();
 		// Assume each unit is at least half a K.
-		final int len = 40 + name.length()
-				+ ownerStr.length() + units.size() * 512;
+		final int len = 40 + name.length() + ownerStr.length() + units.size()
+				* 512;
 		final StringBuilder sbuild = new StringBuilder(len).append("Fortress ");
 		sbuild.append(name);
 		sbuild.append(", owned by player ");
@@ -246,14 +246,17 @@ public class Fortress implements HasImage,
 	public TownStatus status() {
 		return TownStatus.Active;
 	}
+
 	/**
 	 * TODO: Add support for different sizes (but leave 'small' the default).
+	 *
 	 * @return the size of the fortress.
 	 */
 	@Override
 	public TownSize size() {
 		return TownSize.Small;
 	}
+
 	/**
 	 * @param player the fort's new owner
 	 */
@@ -261,6 +264,7 @@ public class Fortress implements HasImage,
 	public final void setOwner(final Player player) {
 		owner = player;
 	}
+
 	/**
 	 * @param nomen the fort's new name
 	 */
@@ -268,10 +272,12 @@ public class Fortress implements HasImage,
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -279,6 +285,7 @@ public class Fortress implements HasImage,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -286,6 +293,7 @@ public class Fortress implements HasImage,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all fortresses as a class
 	 */

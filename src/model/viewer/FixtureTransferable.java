@@ -21,6 +21,7 @@ public class FixtureTransferable implements Transferable, Serializable {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -94,8 +95,9 @@ public class FixtureTransferable implements Transferable, Serializable {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof FixtureTransferable
-				&& data.equals(((FixtureTransferable) obj).data));
+		return this == obj
+				|| (obj instanceof FixtureTransferable && data
+						.equals(((FixtureTransferable) obj).data));
 	}
 
 	/**

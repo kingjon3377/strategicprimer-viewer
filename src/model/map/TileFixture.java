@@ -1,6 +1,5 @@
 package model.map;
 
-
 /**
  * Something that can go on a tile.
  *
@@ -15,6 +14,7 @@ public interface TileFixture extends IFixture, Comparable<TileFixture> {
 	 *         tile.
 	 */
 	int getZValue();
+
 	/**
 	 * @return a String describing all members of a kind of fixture.
 	 */

@@ -36,8 +36,10 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	 * Maximum and preferred height for the dialog.
 	 */
 	private static final int PREF_HEIGHT = 90;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param player the player to own the units
 	 * @param idFactory a factory to generate ID numbers
 	 */
@@ -62,8 +64,10 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 		setMaximumSize(new Dimension(300, PREF_HEIGHT));
 		pack();
 	}
+
 	/**
 	 * Set up a field so that pressing Enter there will press the OK button.
+	 *
 	 * @param field the field to set up
 	 * @return the field
 	 */
@@ -72,6 +76,7 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 		field.addActionListener(this);
 		return field;
 	}
+
 	/**
 	 * The player to own created units.
 	 */
@@ -88,6 +93,7 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	 * The field to let the user give the kind of unit.
 	 */
 	private final JTextField kindField = new JTextField(10);
+
 	/**
 	 * @param evt the event to handle
 	 */
@@ -116,8 +122,10 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 			setVisible(false);
 		}
 	}
+
 	/**
 	 * To change the owner of subsequent units.
+	 *
 	 * @param old the previous current player
 	 * @param newPlayer the new current player
 	 */
@@ -125,10 +133,12 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		owner = newPlayer;
 	}
+
 	/**
 	 * The list of new-unit listeners listening to us.
 	 */
 	private final List<NewUnitListener> nuListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -136,6 +146,7 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	public void addNewUnitListener(final NewUnitListener list) {
 		nuListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

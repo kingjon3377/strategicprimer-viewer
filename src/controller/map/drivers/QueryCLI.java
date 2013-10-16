@@ -51,6 +51,7 @@ public final class QueryCLI implements ISPDriver {
 	 * Helper to get numbers from the user, etc.
 	 */
 	private final CLIHelper helper = new CLIHelper();
+
 	/**
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
@@ -85,20 +86,22 @@ public final class QueryCLI implements ISPDriver {
 			break;
 		case 'h':
 		case 'i':
-			hunt(CLIHelper.toList(selectTile(map)), ostream,
-					HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			hunt(CLIHelper.toList(selectTile(map)), ostream, HUNTER_HOURS
+					* HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(CLIHelper.toList(selectTile(map)), ostream,
-					HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			gather(CLIHelper.toList(selectTile(map)), ostream, HUNTER_HOURS
+					* HOURLY_ENCOUNTERS);
 			break;
 		default:
 			ostream.println("Unknown command.");
 			break;
 		}
 	}
+
 	/**
 	 * Run hunting, fishing, or trapping.
+	 *
 	 * @param fixtures a list of the fixtures on the tile
 	 * @param ostream the stream to write to
 	 * @param encounters how many encounters to show
@@ -117,8 +120,10 @@ public final class QueryCLI implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Run food-gathering.
+	 *
 	 * @param fixtures a list of the fixtures on the tile
 	 * @param ostream the stream to write to
 	 * @param encounters how many encounters to show
@@ -128,7 +133,8 @@ public final class QueryCLI implements ISPDriver {
 		for (int i = 0; i < encounters; i++) {
 			Collections.shuffle(fixtures);
 			final TileFixture fix = fixtures.get(0);
-			if (fix instanceof Grove || fix instanceof Meadow || fix instanceof Shrub) {
+			if (fix instanceof Grove || fix instanceof Meadow
+					|| fix instanceof Shrub) {
 				ostream.println(fix);
 			} else {
 				ostream.print("nothing ... (");
@@ -137,6 +143,7 @@ public final class QueryCLI implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Give the data the player automatically knows about a user-specified tile
 	 * if he has a fortress on it.
@@ -176,10 +183,8 @@ public final class QueryCLI implements ISPDriver {
 	 * @return The tile the user specifies.
 	 * @throws IOException on I/O error
 	 */
-	private Tile selectTile(final IMap map)
-			throws IOException {
-		return map.getTile(PointFactory.point(
-				helper.inputNumber("Row: "),
+	private Tile selectTile(final IMap map) throws IOException {
+		return map.getTile(PointFactory.point(helper.inputNumber("Row: "),
 				helper.inputNumber("Column: ")));
 	}
 
@@ -211,8 +216,10 @@ public final class QueryCLI implements ISPDriver {
 	public String toString() {
 		return "ExplorationCLI";
 	}
+
 	/**
 	 * Prints a usage message.
+	 *
 	 * @param ostream the stream to write it to.
 	 */
 	public static void usage(final PrintStream ostream) {
@@ -227,8 +234,10 @@ public final class QueryCLI implements ISPDriver {
 		ostream.println(" encounters with fields, meadows, groves, orchards, or shrubs.");
 		ostream.println("Quit: Exit the program.");
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */
@@ -242,15 +251,18 @@ public final class QueryCLI implements ISPDriver {
 			repl(new MapReaderAdapter().readMap(args[0], new Warning(
 					Warning.Action.Warn)), SystemOut.SYS_OUT);
 		} catch (final XMLStreamException e) {
-			throw new DriverFailedException("XML parsing error in " + args[0], e);
+			throw new DriverFailedException("XML parsing error in " + args[0],
+					e);
 		} catch (final FileNotFoundException e) {
 			throw new DriverFailedException("File " + args[0] + " not found", e);
 		} catch (final IOException e) {
 			throw new DriverFailedException("I/O error reading " + args[0], e);
 		} catch (final SPFormatException e) {
-			throw new DriverFailedException("Map " + args[0] + " contains invalid data", e);
+			throw new DriverFailedException("Map " + args[0]
+					+ " contains invalid data", e);
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -258,6 +270,7 @@ public final class QueryCLI implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -265,6 +278,7 @@ public final class QueryCLI implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

@@ -21,11 +21,13 @@ import model.misc.AbstractDriverModel;
  * @author Jonathan Lovelace
  *
  */
-public final class ViewerModel extends AbstractDriverModel implements IViewerModel {
+public final class ViewerModel extends AbstractDriverModel implements
+		IViewerModel {
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -44,6 +46,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	 * The currently selected point in the main map.
 	 */
 	private Point selPoint;
+
 	/**
 	 * @param newMap the new map
 	 * @param name the filename the map was loaded from or should be saved to
@@ -52,10 +55,11 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void setMap(final MapView newMap, final String name) {
 		super.setMap(newMap, name);
 		clearSelection();
-		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1, 0,
-				newMap.getDimensions().cols - 1));
+		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1,
+				0, newMap.getDimensions().cols - 1));
 		resetZoom();
 	}
+
 	/**
 	 * Set the new selected tiles, given coordinates.
 	 *
@@ -68,6 +72,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 		scs.fireChanges(oldSel, selPoint, getMap().getTile(oldSel), getMap()
 				.getTile(selPoint));
 	}
+
 	/**
 	 * @param point a tile's location
 	 *
@@ -121,6 +126,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public String toString() {
 		return "MapModel";
 	}
+
 	/**
 	 * The current zoom level.
 	 */
@@ -133,6 +139,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	 * The maximum zoom level, to make sure that the tile size never overflows.
 	 */
 	private static final int MAX_ZOOM_LEVEL = Integer.MAX_VALUE / 4;
+
 	/**
 	 * @return the current zoom level.
 	 */
@@ -140,6 +147,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public int getZoomLevel() {
 		return zoomLevel;
 	}
+
 	/**
 	 * Zoom in, increasing the zoom level.
 	 */
@@ -152,6 +160,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 			}
 		}
 	}
+
 	/**
 	 * Zoom out, decreasing the zoom level.
 	 */
@@ -164,6 +173,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 			}
 		}
 	}
+
 	/**
 	 * Reset the zoom level to the default.
 	 */
@@ -175,6 +185,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 			list.tsizeChanged(old, zoomLevel);
 		}
 	}
+
 	/**
 	 * @return the location of the currently selected tile
 	 */
@@ -182,10 +193,12 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public Point getSelectedPoint() {
 		return selPoint;
 	}
+
 	/**
 	 * The object to handle notifying selection-change listeners.
 	 */
 	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+
 	/**
 	 * @param list a selection-change listener to add
 	 */
@@ -193,6 +206,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void addSelectionChangeListener(final SelectionChangeListener list) {
 		scs.addSelectionChangeListener(list);
 	}
+
 	/**
 	 * @param list a selection-change listener to remove
 	 */
@@ -200,10 +214,12 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void removeSelectionChangeListener(final SelectionChangeListener list) {
 		scs.removeSelectionChangeListener(list);
 	}
+
 	/**
 	 * The list of graphical-parameter listeners.
 	 */
 	private final List<GraphicalParamsListener> gpListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -211,6 +227,7 @@ public final class ViewerModel extends AbstractDriverModel implements IViewerMod
 	public void addGraphicalParamsListener(final GraphicalParamsListener list) {
 		gpListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

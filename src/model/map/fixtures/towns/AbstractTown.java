@@ -14,8 +14,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  */
 // ESCA-JAVA0011:
-public abstract class AbstractTown implements
-		IEvent, HasImage, ITownFixture {
+public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	/**
 	 * Constructor.
 	 *
@@ -34,6 +33,7 @@ public abstract class AbstractTown implements
 		name = tName;
 		owner = player;
 	}
+
 	/**
 	 * The owner of this town, fortress, or city.
 	 */
@@ -134,14 +134,17 @@ public abstract class AbstractTown implements
 		return this == fix
 				|| (fix instanceof AbstractTown && equalsContents((AbstractTown) fix));
 	}
+
 	/**
 	 * @param fix a town-event
 	 * @return whether it's equal to this one ignoring ID.
 	 */
 	private boolean equalsContents(final AbstractTown fix) {
 		return fix.kind().equals(kind) && fix.size().equals(size)
-				&& fix.getName().equals(name) && fix.status().equals(status) && fix.owner.equals(owner);
+				&& fix.getName().equals(name) && fix.status().equals(status)
+				&& fix.owner.equals(owner);
 	}
+
 	/**
 	 *
 	 * @return a hash value for the object
@@ -201,6 +204,7 @@ public abstract class AbstractTown implements
 	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
+
 	/**
 	 * @return the player that owns the town
 	 */
@@ -208,6 +212,7 @@ public abstract class AbstractTown implements
 	public final Player getOwner() {
 		return owner;
 	}
+
 	/**
 	 * @param player the town's new owner
 	 */
@@ -215,6 +220,7 @@ public abstract class AbstractTown implements
 	public final void setOwner(final Player player) {
 		owner = player;
 	}
+
 	/**
 	 * @param nomen the town's new name
 	 */
@@ -222,10 +228,12 @@ public abstract class AbstractTown implements
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -233,6 +241,7 @@ public abstract class AbstractTown implements
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */

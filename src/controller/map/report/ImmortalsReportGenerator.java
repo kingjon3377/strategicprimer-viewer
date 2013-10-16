@@ -31,14 +31,18 @@ import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.IntMap;
 import util.Pair;
+
 /**
  * A report generator for "immortals"---dragons, fairies, centaurs, and such.
+ *
  * @author Jonathan Lovelace
  *
  */
-public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixture> {
+public class ImmortalsReportGenerator extends
+		AbstractReportGenerator<MobileFixture> {
 	/**
 	 * Produce the sub-report dealing with "immortals".
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -92,10 +96,11 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 			}
 			fixtures.remove(idNum);
 		}
-		final int len = 36 + 512 * (dragons.size() + fairies.size() + trolls.size()
-				+ djinni.size() + sphinxes.size() + giants.size()
-				+ minotaurs.size() + ogres.size() + centaurs.size()
-				+ phoenixes.size() + simurghs.size() + griffins.size());
+		final int len = 36 + 512 * (dragons.size() + fairies.size()
+				+ trolls.size() + djinni.size() + sphinxes.size()
+				+ giants.size() + minotaurs.size() + ogres.size()
+				+ centaurs.size() + phoenixes.size() + simurghs.size() + griffins
+				.size());
 		final StringBuilder builder = new StringBuilder(len).append(
 				"<h4>Immortals</h4>\n").append(OPEN_LIST);
 		optionallyPrint(dragons, "(s) at ", builder);
@@ -115,8 +120,10 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 						phoenixes, simurghs, griffins) ? "" : builder.append(
 				CLOSE_LIST).toString();
 	}
+
 	/**
 	 * Produce the sub-report dealing with "immortals".
+	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -124,9 +131,10 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4, "Immortals");
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer) {
+		final AbstractReportNode retval = new SectionListReportNode(4,
+				"Immortals");
 		final Map<String, List<Point>> dragons = new HashMap<>();
 		final Map<String, List<Point>> fairies = new HashMap<>();
 		final List<Point> trolls = new ArrayList<>();
@@ -186,6 +194,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		optionallyAdd(griffins, "Griffin(s) at ", retval);
 		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
 	}
+
 	/**
 	 * @param maps a list of maps
 	 * @return true if all are empty, false if even one is not.
@@ -198,6 +207,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		}
 		return true;
 	}
+
 	/**
 	 * @param collections a list of collections
 	 * @return true if all are empty, false if even one is not.
@@ -210,18 +220,20 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		}
 		return true;
 	}
+
 	/**
 	 * @param fixtures The set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the current player
 	 * @param item a fixture
 	 * @param loc its location
-	 * @return a sub-sub-report on just that fixture, or the empty string if it's not one we handle here.
+	 * @return a sub-sub-report on just that fixture, or the empty string if
+	 *         it's not one we handle here.
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer, final MobileFixture item,
-			final Point loc) {
+			final TileCollection tiles, final Player currentPlayer,
+			final MobileFixture item, final Point loc) {
 		return item instanceof Dragon || item instanceof Fairy
 				|| item instanceof Troll || item instanceof Djinn
 				|| item instanceof Sphinx || item instanceof Giant
@@ -230,35 +242,42 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 				|| item instanceof Simurgh || item instanceof Griffin ? concat(
 				atPoint(loc), "A(n) ", item.toString()) : "";
 	}
+
 	/**
 	 * @param fixtures The set of fixtures
 	 * @param tiles ignored
 	 * @param currentPlayer the current player
 	 * @param item a fixture
 	 * @param loc its location
-	 * @return a sub-sub-report on just that fixture, or null if it's not one we handle here.
+	 * @return a sub-sub-report on just that fixture, or null if it's not one we
+	 *         handle here.
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer, final MobileFixture item, final Point loc) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer,
+			final MobileFixture item, final Point loc) {
 		return item instanceof Dragon || item instanceof Fairy
 				|| item instanceof Troll || item instanceof Djinn
 				|| item instanceof Sphinx || item instanceof Giant
 				|| item instanceof Minotaur || item instanceof Ogre
 				|| item instanceof Centaur || item instanceof Phoenix
 				|| item instanceof Simurgh || item instanceof Griffin ? new SimpleReportNode(
-				atPoint(loc), "A(n) ", item.toString()) : EmptyReportNode.NULL_NODE;
+				atPoint(loc), "A(n) ", item.toString())
+				: EmptyReportNode.NULL_NODE;
 	}
+
 	/**
 	 * Prints (to the builder) nothing if the map is empty, or for each entry in
 	 * the entry set a list item beginning with the key, followed by the infix,
 	 * followed by a comma-separated list of the points.
+	 *
 	 * @param mapping the mapping from kinds (or whatever) to lists of points
 	 * @param infix what to print in the middle of each item
 	 * @param builder the builder to print to
 	 */
-	private static void optionallyPrint(final Map<String, List<Point>> mapping, final String infix, final StringBuilder builder) {
+	private static void optionallyPrint(final Map<String, List<Point>> mapping,
+			final String infix, final StringBuilder builder) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix)
 					.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
@@ -269,6 +288,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	 * Add to the parent node nothing if the map is empty, or for each entry in
 	 * the entry set a simple node containing the key plus the infix plus a
 	 * comma-separated list of the points.
+	 *
 	 * @param parent the parent node
 	 * @param mapping the mapping from kinds (or whatever) to lists of points
 	 * @param infix what to print in the middle of each item
@@ -280,6 +300,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 					pointCSL(entry.getValue())));
 		}
 	}
+
 	/**
 	 * Prints (to the builder) nothing if the list is empty, or the prefix
 	 * followed by a comma-separated list of the points, all enclosed in a list
@@ -289,9 +310,11 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	 * @param prefix what to prepend to it if non-empty
 	 * @param builder the builder to print to
 	 */
-	private static void optionallyPrint(final List<Point> points, final String prefix, final StringBuilder builder) {
+	private static void optionallyPrint(final List<Point> points,
+			final String prefix, final StringBuilder builder) {
 		if (!points.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append(prefix).append(pointCSL(points)).append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append(prefix)
+					.append(pointCSL(points)).append(CLOSE_LIST_ITEM);
 		}
 	}
 
@@ -299,6 +322,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	 * Add to the parent node nothing if the list is empty, or a simple node of
 	 * the prefix followed by a comma-separated list of all the points if it is
 	 * not.
+	 *
 	 * @param parent the parent to add the item to.
 	 * @param points a list of points
 	 * @param prefix what to prepend to it if non-empty
@@ -309,6 +333,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 			parent.add(new SimpleReportNode(prefix, pointCSL(points)));
 		}
 	}
+
 	/**
 	 * If there's an entry in the map for the thing's kind already, add the
 	 * point to its list; if not, create such an entry and add the point to it.
@@ -317,7 +342,8 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	 * @param item the item under consideration
 	 * @param point its location in the map
 	 */
-	private static void separateByKind(final Map<String, List<Point>> mapping, final HasKind item, final Point point) {
+	private static void separateByKind(final Map<String, List<Point>> mapping,
+			final HasKind item, final Point point) {
 		// ESCA-JAVA0177:
 		final List<Point> points; // NOPMD
 		// For the three classes we deal with here, we don't want just the kind,

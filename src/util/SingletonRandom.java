@@ -4,9 +4,9 @@ import java.util.Random;
 
 /**
  * A wrapper class for a single Random for the whole application.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class SingletonRandom {
 	/**

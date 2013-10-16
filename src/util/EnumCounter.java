@@ -57,6 +57,7 @@ public class EnumCounter<T extends Enum<T>> {
 			return 0;
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

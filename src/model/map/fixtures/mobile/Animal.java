@@ -52,6 +52,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * TODO: Should this be an enumerated type?
 	 */
 	private final String status;
+
 	/**
 	 * Constructor.
 	 *
@@ -93,6 +94,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	public String getKind() {
 		return kind;
 	}
+
 	/**
 	 * @return the domestication status of the animal
 	 */
@@ -135,11 +137,12 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Animal && ((Animal) obj).kind.equals(kind)
-				&& ((Animal) obj).traces == traces
-				&& ((Animal) obj).talking == talking
-				&& ((Animal) obj).status.equals(status)
-				&& ((TileFixture) obj).getID() == id);
+		return this == obj
+				|| (obj instanceof Animal && ((Animal) obj).kind.equals(kind)
+						&& ((Animal) obj).traces == traces
+						&& ((Animal) obj).talking == talking
+						&& ((Animal) obj).status.equals(status) && ((TileFixture) obj)
+						.getID() == id);
 	}
 
 	/**
@@ -171,6 +174,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 				&& ((Animal) fix).status.equals(status)
 				&& ((Animal) fix).talking == talking;
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -178,10 +182,12 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -189,6 +195,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -196,6 +203,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all animals as a class
 	 */

@@ -51,9 +51,10 @@ public class VillageReader implements INodeHandler<Village> {
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village fix = new Village(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
-				getAttribute(element, "name", ""), idNum, getPlayerOrIndependent(
-						element, warner, players), getAttribute(element,
-						"race", RaceFactory.getRace(new Random(idNum))));
+				getAttribute(element, "name", ""), idNum,
+				getPlayerOrIndependent(element, warner, players),
+				getAttribute(element, "race",
+						RaceFactory.getRace(new Random(idNum))));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -83,7 +84,8 @@ public class VillageReader implements INodeHandler<Village> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addAttribute("id", Long.toString(obj.getID()));
-		retval.addAttribute("owner", Integer.toString(obj.getOwner().getPlayerId()));
+		retval.addAttribute("owner",
+				Integer.toString(obj.getOwner().getPlayerId()));
 		retval.addAttribute("race", obj.getRace());
 		retval.addImageAttribute(obj);
 		return retval;
@@ -96,6 +98,7 @@ public class VillageReader implements INodeHandler<Village> {
 	public Class<Village> writes() {
 		return Village.class;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

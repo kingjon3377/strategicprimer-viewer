@@ -21,8 +21,10 @@ import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
+
 /**
  * A report generator for towns.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -66,6 +68,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		builder.append(CLOSE_LIST);
 		return sorted.isEmpty() ? "" : builder.toString();
 	}
+
 	/**
 	 * Produce the part of the report dealing with towns. Note that while this
 	 * class specifies {@link ITownFixture}, this method ignores
@@ -82,8 +85,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Cities, towns, and/or fortifications you know about:");
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
@@ -102,9 +105,11 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		}
 		return sorted.isEmpty() ? EmptyReportNode.NULL_NODE : retval;
 	}
+
 	/**
 	 * Produce a report for a town. Handling of fortresses and villages is
-	 * delegated to their dedicated report-generating classes. We remove the town from the set of fixtures.
+	 * delegated to their dedicated report-generating classes. We remove the
+	 * town from the set of fixtures.
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
@@ -115,11 +120,14 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer, final ITownFixture item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer,
+			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produce(fixtures, tiles, currentPlayer, (Village) item, loc); // NOPMD
+			return new VillageReportGenerator().produce(fixtures, tiles,
+					currentPlayer, (Village) item, loc); // NOPMD
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produce(fixtures, tiles, currentPlayer, (Fortress) item, loc); // NOPMD
+			return new FortressReportGenerator().produce(fixtures, tiles,
+					currentPlayer, (Fortress) item, loc); // NOPMD
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), item.getName(), item.getOwner()
@@ -132,9 +140,11 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
 		}
 	}
+
 	/**
 	 * Produce a report for a town. Handling of fortresses and villages is
-	 * delegated to their dedicated report-generating classes. We remove the town from the set of fixtures.
+	 * delegated to their dedicated report-generating classes. We remove the
+	 * town from the set of fixtures.
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
@@ -145,12 +155,15 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer, final ITownFixture item, final Point loc) {
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer,
+			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produceRIR(fixtures, tiles, currentPlayer, (Village) item, loc); // NOPMD
+			return new VillageReportGenerator().produceRIR(fixtures, tiles,
+					currentPlayer, (Village) item, loc); // NOPMD
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produceRIR(fixtures, tiles, currentPlayer, (Fortress) item, loc); // NOPMD
+			return new FortressReportGenerator().produceRIR(fixtures, tiles,
+					currentPlayer, (Fortress) item, loc); // NOPMD
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(atPoint(loc), item.getName(), item

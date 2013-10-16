@@ -11,6 +11,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Set implementation that's just an ArrayList with Set semantics.
+ *
  * @author Jonathan Lovelace
  *
  * @param <T> the type of thing stored in the set
@@ -24,6 +25,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	 * The backing array.
 	 */
 	private final List<T> impl = new ArrayList<>();
+
 	/**
 	 * @return the size of the set
 	 */
@@ -31,6 +33,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public int size() {
 		return impl.size();
 	}
+
 	/**
 	 * @return whether the set is empty
 	 */
@@ -38,6 +41,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public boolean isEmpty() {
 		return impl.isEmpty();
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether we contain it
@@ -46,6 +50,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public boolean contains(@Nullable final Object obj) {
 		return impl.contains(obj);
 	}
+
 	/**
 	 * @return an iterator over the set
 	 */
@@ -53,6 +58,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public Iterator<T> iterator() {
 		return impl.iterator();
 	}
+
 	/**
 	 * @return an array view of the set
 	 */
@@ -60,6 +66,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public Object[] toArray() {
 		return impl.toArray();
 	}
+
 	/**
 	 * @param <TYPE> the type
 	 * @param array an array of that type
@@ -69,6 +76,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public <TYPE> TYPE[] toArray(final TYPE[] array) {
 		return impl.toArray(array);
 	}
+
 	/**
 	 * @param elem an element
 	 * @return the result of adding it to the set.
@@ -82,6 +90,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 			return true;
 		}
 	}
+
 	/**
 	 * @param obj an object
 	 * @return the result of removing it from the set
@@ -90,6 +99,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public boolean remove(@Nullable final Object obj) {
 		return impl.remove(obj);
 	}
+
 	/**
 	 * @param coll a collection
 	 * @return whether the set contains all its elements
@@ -98,6 +108,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public boolean containsAll(@Nullable final Collection<?> coll) {
 		return impl.containsAll(coll);
 	}
+
 	/**
 	 * @param coll a collection
 	 * @return the result of addin gall of them
@@ -114,6 +125,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 		}
 		return retval;
 	}
+
 	/**
 	 * @param coll a collection
 	 * @return the result of removing everything not in it
@@ -122,6 +134,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public boolean retainAll(@Nullable final Collection<?> coll) {
 		return impl.retainAll(coll);
 	}
+
 	/**
 	 * @param coll a collection
 	 * @return the result of removing everything in it
@@ -130,6 +143,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public boolean removeAll(@Nullable final Collection<?> coll) {
 		return impl.removeAll(coll);
 	}
+
 	/**
 	 * Empty the set.
 	 */
@@ -137,6 +151,7 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public void clear() {
 		impl.clear();
 	}
+
 	/**
 	 * @return a hash-value for the set.
 	 */
@@ -144,17 +159,21 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	public int hashCode() {
 		return impl.hashCode();
 	}
+
 	/**
-	 * Another object is equal to this one if it is a set that contains the same elements.
+	 * Another object is equal to this one if it is a set that contains the same
+	 * elements.
+	 *
 	 * @param obj another object
 	 * @return whether it's equal to this
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Set && ((Set) obj).containsAll(this)
-				&& containsAll((Set) obj));
+		return this == obj
+				|| (obj instanceof Set && ((Set) obj).containsAll(this) && containsAll((Set) obj));
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

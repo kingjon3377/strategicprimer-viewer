@@ -36,8 +36,10 @@ import view.util.BoxPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 import view.util.SystemOut;
+
 /**
  * A dialog to let the user find fixtures by ID, name, or "kind".
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -62,11 +64,13 @@ public class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * The checkbox for searching vertically.
 	 */
-	private final JCheckBox vertically = new JCheckBox("Search vertically then horizontally");
+	private final JCheckBox vertically = new JCheckBox(
+			"Search vertically then horizontally");
 	/**
 	 * The filter, to let the user filter which fixtures are displayed.
 	 */
 	private FixtureFilterList ffl;
+
 	/**
 	 * Constructor.
 	 *
@@ -104,6 +108,7 @@ public class FindDialog extends JDialog implements ActionListener {
 		map = model;
 		pack();
 	}
+
 	/**
 	 *
 	 * @param event the event to handle
@@ -121,7 +126,8 @@ public class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * Search for the current pattern. If the pattern is found (as the ID of a
 	 * fixture, or the name of a hasName, or the kind of a hasKind), select the
-	 * tile containing the thing found. If the pattern is the empty string, don't search.
+	 * tile containing the thing found. If the pattern is the empty string,
+	 * don't search.
 	 */
 	public void search() {
 		final String pattern = search.getText();
@@ -149,9 +155,11 @@ public class FindDialog extends JDialog implements ActionListener {
 			}
 		}
 	}
+
 	/**
 	 * @param pattern a pattern
-	 * @param idNum either MIN_INT, or (if pattern is numeric) its numeric equivalent
+	 * @param idNum either MIN_INT, or (if pattern is numeric) its numeric
+	 *        equivalent
 	 * @param fix a fixture. May be null, in which case we return false.
 	 * @return whether the fixture matches the pattern or has id as its ID.
 	 */
@@ -191,6 +199,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	private static final class FilterPopulator implements Runnable {
 		/**
 		 * Constructor.
+		 *
 		 * @param ffm the filter to populate
 		 * @param model the map to populate it from
 		 */
@@ -198,6 +207,7 @@ public class FindDialog extends JDialog implements ActionListener {
 			filter = ffm;
 			map = model.getMap();
 		}
+
 		/**
 		 * The filter to populate.
 		 */
@@ -206,6 +216,7 @@ public class FindDialog extends JDialog implements ActionListener {
 		 * The map to populate it from.
 		 */
 		private final IMap map;
+
 		/**
 		 * Run.
 		 */
@@ -217,8 +228,10 @@ public class FindDialog extends JDialog implements ActionListener {
 				}
 			}
 		}
+
 		/**
 		 * Populate the filter.
+		 *
 		 * @param iter an iterable of fixtures.
 		 */
 		private void populate(final FixtureIterable<? extends IFixture> iter) {

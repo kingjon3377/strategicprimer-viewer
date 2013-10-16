@@ -33,13 +33,16 @@ public class LegacyTable implements EncounterTable {
 	 * The list of events we can return.
 	 */
 	private final List<String> data;
+
 	/**
 	 * Add the text from an Event to the list.
+	 *
 	 * @param event the event to get the text from
 	 */
 	private void addData(final IEvent event) {
 		data.add(event.toString());
 	}
+
 	/**
 	 * Constructor.
 	 */

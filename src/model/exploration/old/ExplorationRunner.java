@@ -26,7 +26,8 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String defaultResults(final Point point, final Tile tile) throws MissingTableException {
+	public String defaultResults(final Point point, final Tile tile)
+			throws MissingTableException {
 		final StringBuilder sb = new StringBuilder(80)
 				.append("The primary rock type here is ");
 		sb.append(getPrimaryRock(point, tile));
@@ -62,7 +63,8 @@ public class ExplorationRunner { // NOPMD
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
 	 */
-	public String getPrimaryRock(final Point point, final Tile tile) throws MissingTableException {
+	public String getPrimaryRock(final Point point, final Tile tile)
+			throws MissingTableException {
 		return getTable("major_rock").generateEvent(point, tile);
 	}
 
@@ -74,7 +76,8 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String getPrimaryTree(final Point point, final Tile tile) throws MissingTableException {
+	public String getPrimaryTree(final Point point, final Tile tile)
+			throws MissingTableException {
 		if (TileType.BorealForest.equals(tile.getTerrain())) {
 			return getTable("boreal_major_tree").generateEvent(point, tile); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
@@ -97,8 +100,8 @@ public class ExplorationRunner { // NOPMD
 	 * @return the result of the consultation
 	 * @throws MissingTableException if the table is missing
 	 */
-	public String consultTable(final String table, final Point point, final Tile tile)
-			throws MissingTableException {
+	public String consultTable(final String table, final Point point,
+			final Tile tile) throws MissingTableException {
 		return getTable(table).generateEvent(point, tile);
 	}
 
@@ -138,15 +141,17 @@ public class ExplorationRunner { // NOPMD
 	 * @return the result of the consultation
 	 * @throws MissingTableException on missing table
 	 */
-	public String recursiveConsultTable(final String table, final Point point, final Tile tile)
-			throws MissingTableException {
+	public String recursiveConsultTable(final String table, final Point point,
+			final Tile tile) throws MissingTableException {
 		String result = consultTable(table, point, tile);
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
 			if (split.length < 3) {
-				result = split[0] + recursiveConsultTable(split[1], point, tile);
+				result = split[0]
+						+ recursiveConsultTable(split[1], point, tile);
 			} else {
-				result = split[0] + recursiveConsultTable(split[1], point, tile)
+				result = split[0]
+						+ recursiveConsultTable(split[1], point, tile)
 						+ split[2];
 			}
 		}
@@ -192,7 +197,8 @@ public class ExplorationRunner { // NOPMD
 							return true; // NOPMD
 						}
 					}
-				} catch (final MissingTableException e) { // $codepro.audit.disable logExceptions
+				} catch (final MissingTableException e) { // $codepro.audit.disable
+															// logExceptions
 					return true; // NOPMD
 				}
 				return false; // NOPMD

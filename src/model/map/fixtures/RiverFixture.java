@@ -19,12 +19,13 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class RiverFixture implements TileFixture,
-		Iterable<River>, Subsettable<RiverFixture> {
+public class RiverFixture implements TileFixture, Iterable<River>,
+		Subsettable<RiverFixture> {
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -94,6 +95,7 @@ public class RiverFixture implements TileFixture,
 	public int hashCode() {
 		return 0;
 	}
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -161,6 +163,7 @@ public class RiverFixture implements TileFixture,
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+
 	/**
 	 * @return a string describing all river fixtures as a class
 	 */

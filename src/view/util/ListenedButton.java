@@ -6,12 +6,14 @@ import javax.swing.JButton;
 
 /**
  * A button that takes its listeners as constructor parameters.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class ListenedButton extends JButton {
 	/**
 	 * Constructor.
+	 *
 	 * @param text the text to put on the button
 	 * @param listeners listeners to add to the button
 	 */

@@ -16,6 +16,7 @@ public class MapView implements IMap {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
 	 *
@@ -128,8 +129,8 @@ public class MapView implements IMap {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof MapView && map.equals(((MapView) obj).map)
-				&& turn == ((MapView) obj).turn);
+		return this == obj
+				|| (obj instanceof MapView && map.equals(((MapView) obj).map) && turn == ((MapView) obj).turn);
 	}
 
 	/**
@@ -162,8 +163,10 @@ public class MapView implements IMap {
 	 */
 	@Override
 	public String toString() {
-		// This will be big ... assume at least half a meg. Fortunately this is rarely called.
-		final StringBuilder builder = new StringBuilder(524288).append("Map view at turn ");
+		// This will be big ... assume at least half a meg. Fortunately this is
+		// rarely called.
+		final StringBuilder builder = new StringBuilder(524288)
+				.append("Map view at turn ");
 		builder.append(turn);
 		builder.append(":\nCurrent player:");
 		builder.append(map.getPlayers().getCurrentPlayer());
@@ -171,6 +174,7 @@ public class MapView implements IMap {
 		builder.append(map);
 		return builder.toString();
 	}
+
 	/**
 	 * @return The map's dimensions and version.
 	 */

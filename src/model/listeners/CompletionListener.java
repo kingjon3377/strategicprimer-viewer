@@ -9,6 +9,7 @@ package model.listeners;
 public interface CompletionListener {
 	/**
 	 * Stop waiting for the thing being listened to, because it's finished.
+	 *
 	 * @param result what was being waited on, or a signal value
 	 */
 	void stopWaitingOn(final Object result);

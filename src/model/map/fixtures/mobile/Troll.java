@@ -18,6 +18,7 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -58,7 +59,8 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Troll && ((TileFixture) obj).getID() == id);
+		return this == obj
+				|| (obj instanceof Troll && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -99,10 +101,12 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Troll;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -110,6 +114,7 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -117,6 +122,7 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all trolls as a class
 	 */

@@ -76,12 +76,13 @@ public class GroundReader implements INodeHandler<Ground> {
 	 */
 	@Override
 	public <S extends Ground> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("ground", Pair.of("kind",
-				obj.getKind()), Pair.of("exposed",
-				Boolean.toString(obj.isExposed())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"ground", Pair.of("kind", obj.getKind()), Pair.of("exposed",
+						Boolean.toString(obj.isExposed())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

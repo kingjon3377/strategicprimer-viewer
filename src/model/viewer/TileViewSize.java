@@ -19,8 +19,10 @@ public class TileViewSize implements Serializable {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Scale the specified zoom level for the specified map version.
+	 *
 	 * @param zoom the zoom level
 	 * @param ver the map version
 	 * @return the size of a tile in that version at that zoom level.
@@ -34,6 +36,7 @@ public class TileViewSize implements Serializable {
 			throw new IllegalArgumentException("Unknown version");
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

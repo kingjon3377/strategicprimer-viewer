@@ -52,6 +52,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * The fixture filter (probably a menu).
 	 */
 	private final ZOrderFilter zof;
+
 	/**
 	 * Constructor.
 	 *
@@ -75,11 +76,13 @@ public final class MapComponent extends JComponent implements MapGUI,
 		requestFocusInWindow();
 		final ActionMap actionMap = getActionMap();
 		if (actionMap == null) {
-			throw new IllegalStateException("Action map was null ... bailing out!");
+			throw new IllegalStateException(
+					"Action map was null ... bailing out!");
 		}
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		if (inputMap == null) {
-			throw new IllegalStateException("Input map was null ... bailing out!");
+			throw new IllegalStateException(
+					"Input map was null ... bailing out!");
 		}
 		ArrowKeyListener.setUpListeners(dsl, inputMap, actionMap);
 		addComponentListener(new MapSizeListener(model));
@@ -91,14 +94,17 @@ public final class MapComponent extends JComponent implements MapGUI,
 			}
 		});
 	}
+
 	/**
 	 * @param event an event indicating where the mouse is
 	 * @return an appropriate tool-tip
 	 */
 	@Override
-	@Nullable public String getToolTipText(@Nullable final MouseEvent event) {
+	@Nullable
+	public String getToolTipText(@Nullable final MouseEvent event) {
 		return event == null ? null : cml.getToolTipText(event);
 	}
+
 	/**
 	 * Paint.
 	 *
@@ -153,7 +159,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int maxCol = getMapModel().getDimensions().getMaximumCol(); // NOPMD
 		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
-				final Point location = PointFactory.point(i + minRow, j + minCol);
+				final Point location = PointFactory.point(i + minRow, j
+						+ minCol);
 				paintTile(pen, model.getTile(location), i, j, getMapModel()
 						.getSelectedPoint().equals(location));
 			}
@@ -187,7 +194,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 			final int col, final boolean selected) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
-		helper.drawTile(pen, tile, PointFactory.coordinate(col * tsize, row * tsize),
+		helper.drawTile(pen, tile,
+				PointFactory.coordinate(col * tsize, row * tsize),
 				PointFactory.coordinate(tsize, tsize));
 		if (selected) {
 			final Graphics context = pen.create();
@@ -200,6 +208,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 			}
 		}
 	}
+
 	/**
 	 *
 	 * @return the map model
@@ -208,6 +217,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	public IViewerModel getMapModel() {
 		return model;
 	}
+
 	/**
 	 * @param oldDim the old visible dimensions
 	 * @param newDim the new visible dimensions
@@ -217,29 +227,34 @@ public final class MapComponent extends JComponent implements MapGUI,
 			final VisibleDimensions newDim) {
 		repaint();
 	}
+
 	/**
 	 * @param oldSize the old zoom level
 	 * @param newSize the new zoom level
 	 */
 	@Override
 	public void tsizeChanged(final int oldSize, final int newSize) {
-		final ComponentEvent evt = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
+		final ComponentEvent evt = new ComponentEvent(this,
+				ComponentEvent.COMPONENT_RESIZED);
 		for (final ComponentListener list : getComponentListeners()) {
 			list.componentResized(evt);
 		}
 		repaint();
 	}
+
 	/**
 	 * @param old ignored
 	 * @param newPoint ignored
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old,
+			final Point newPoint) {
 		if (!isSelectionVisible()) {
 			fixVisibility();
 		}
 		repaint();
 	}
+
 	/**
 	 * @param old ignored
 	 * @param newTile ignored
@@ -251,6 +266,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		}
 		repaint();
 	}
+
 	/**
 	 * Handle notification that a new map was loaded.
 	 */
@@ -260,6 +276,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 				model.getMapDimensions().version, this, zof);
 		repaint();
 	}
+
 	/**
 	 * @return whether the selected tile is either not in the map or visible in
 	 *         the current bounds.
@@ -274,7 +291,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final MapDimensions mapDim = getMapModel().getMapDimensions();
 		return (selRow <= 0 || selRow >= minRow)
 				&& (selRow >= mapDim.rows || selRow <= maxRow)
-				&& (selCol <= 0 || selCol >= minCol) && (selCol >= mapDim.cols || selCol <= maxCol);
+				&& (selCol <= 0 || selCol >= minCol)
+				&& (selCol >= mapDim.cols || selCol <= maxCol);
 	}
 
 	/**

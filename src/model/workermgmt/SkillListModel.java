@@ -15,6 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A list model for a list of the skills associated with a Job.
+ *
  * @author Jonathan Lovelace
  */
 public class SkillListModel extends DefaultListModel<Skill> implements
@@ -32,8 +33,10 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	 * The current Job.
 	 */
 	private Job job = NULL_JOB;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param sources property-change sources to listen to.
 	 */
 	public SkillListModel(final CompletionSource... sources) {
@@ -44,6 +47,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			source.addCompletionListener(this);
 		}
 	}
+
 	/**
 	 * @param result the object we were waiting on
 	 */
@@ -57,8 +61,10 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			fireContentsChanged(this, 0, getSize());
 		}
 	}
+
 	/**
-	 * @param category what kind of thing is being added; if not a Skill we ignore it
+	 * @param category what kind of thing is being added; if not a Skill we
+	 *        ignore it
 	 * @param addendum a description of what to add
 	 */
 	@Override
@@ -72,6 +78,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			}
 		}
 	}
+
 	/**
 	 * @param category ignored
 	 */
@@ -79,8 +86,10 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	public void remove(final String category) {
 		// Not implemented
 	}
+
 	/**
 	 * Handle the "job" property changing.
+	 *
 	 * @param newValue the new value
 	 */
 	private void handleNewJob(@Nullable final Job newValue) {
@@ -90,17 +99,20 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 			for (Skill skill : job) {
 				addElement(skill);
 			}
-			final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer.valueOf(0);
+			final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer
+					.valueOf(0);
 			assert retval != null;
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(retval);
 			}
 		}
 	}
+
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<CompletionListener> cListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -108,6 +120,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	public void addCompletionListener(final CompletionListener list) {
 		cListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

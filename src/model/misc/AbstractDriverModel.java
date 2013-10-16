@@ -8,12 +8,14 @@ import model.listeners.VersionChangeListener;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.SPMap;
+
 /**
  * A superclass for driver-models, to handle the common details.
+ *
  * @author Jonathan Lovelace
  *
  */
-//ESCA-JAVA0011:
+// ESCA-JAVA0011:
 public abstract class AbstractDriverModel implements IDriverModel {
 	/**
 	 * The list of map-change listeners.
@@ -31,6 +33,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * The name from which the map was loaded.
 	 */
 	private String filename = "";
+
 	/**
 	 * @param newMap the new map
 	 * @param name the filename from which the map was loaded
@@ -47,6 +50,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 			list.mapChanged();
 		}
 	}
+
 	/**
 	 *
 	 * @return the main map
@@ -55,6 +59,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	public MapView getMap() {
 		return map;
 	}
+
 	/**
 	 * @return the dimensions and version of the map
 	 */
@@ -62,13 +67,16 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	public MapDimensions getMapDimensions() {
 		return mapDim;
 	}
+
 	/**
-	 * @return the filename from which the map was loaded or to which it should be saved
+	 * @return the filename from which the map was loaded or to which it should
+	 *         be saved
 	 */
 	@Override
 	public String getMapFilename() {
 		return filename;
 	}
+
 	/**
 	 * Add a MapChangeListener.
 	 *
@@ -88,20 +96,25 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	public void removeMapChangeListener(final MapChangeListener list) {
 		mcListeners.remove(list);
 	}
+
 	/**
 	 * The list of version change listeners.
 	 */
 	private final List<VersionChangeListener> vcListeners = new ArrayList<>();
+
 	/**
 	 * Add a version change listener.
+	 *
 	 * @param list the listener to add
 	 */
 	@Override
 	public void addVersionChangeListener(final VersionChangeListener list) {
 		vcListeners.add(list);
 	}
+
 	/**
 	 * Removve a version-change listener.
+	 *
 	 * @param list the listener to remove
 	 */
 	@Override

@@ -16,18 +16,21 @@ public final class PointFactory {
 	 * Whether to use the cache.
 	 */
 	private static boolean useCache = true;
+
 	/**
 	 * Clear the cache.
 	 */
 	public static void clearCache() {
 		POINT_CACHE.clear();
 	}
+
 	/**
 	 * @param shouldUseCache whether to use the cache from now on
 	 */
 	public static void shouldUseCache(final boolean shouldUseCache) {
 		useCache = shouldUseCache;
 	}
+
 	/**
 	 * Do not instantiate.
 	 */
@@ -57,7 +60,8 @@ public final class PointFactory {
 			final Integer boxedRow = Integer.valueOf(row);
 			final Integer boxedCol = Integer.valueOf(col);
 			if (!POINT_CACHE.containsKey(boxedRow)) {
-				POINT_CACHE.put(boxedRow, new ConcurrentHashMap<Integer, Point>());
+				POINT_CACHE.put(boxedRow,
+						new ConcurrentHashMap<Integer, Point>());
 			}
 			if (!POINT_CACHE.get(boxedRow).containsKey(boxedCol)) {
 				POINT_CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
@@ -67,10 +71,12 @@ public final class PointFactory {
 			return new Point(row, col);
 		}
 	}
+
 	/**
 	 * Coordinate cache.
 	 */
 	private static final Map<Integer, Map<Integer, Coordinate>> COORD_CACHE = new ConcurrentHashMap<>();
+
 	/**
 	 * @param xCoord an X coordinate or extent
 	 * @param yCoord a Y coordinate or extent
@@ -82,10 +88,12 @@ public final class PointFactory {
 			final Integer boxedX = Integer.valueOf(xCoord);
 			final Integer boxedY = Integer.valueOf(yCoord);
 			if (!COORD_CACHE.containsKey(boxedX)) {
-				COORD_CACHE.put(boxedX, new ConcurrentHashMap<Integer, Coordinate>());
+				COORD_CACHE.put(boxedX,
+						new ConcurrentHashMap<Integer, Coordinate>());
 			}
 			if (!COORD_CACHE.get(boxedX).containsKey(boxedY)) {
-				COORD_CACHE.get(boxedX).put(boxedY, new Coordinate(xCoord, yCoord));
+				COORD_CACHE.get(boxedX).put(boxedY,
+						new Coordinate(xCoord, yCoord));
 			}
 			final Coordinate retval = COORD_CACHE.get(boxedX).get(boxedY);
 			if (retval == null) {

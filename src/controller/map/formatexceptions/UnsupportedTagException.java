@@ -2,9 +2,9 @@ package controller.map.formatexceptions;
 
 /**
  * A custom exception for not-yet-supported tags.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class UnsupportedTagException extends SPFormatException {
 	/**

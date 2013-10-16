@@ -49,14 +49,15 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 			final JList<? extends TileFixture> list, final TileFixture value,
 			final int index, final boolean isSelected,
 			final boolean cellHasFocus) {
-		final Component component = LIST_DEFAULT.getListCellRendererComponent(list,
-				value, index, isSelected, cellHasFocus);
-			((JLabel) component).setText("<html><p>" + value.toString() + "</p></html>");
-			if (value instanceof HasImage) {
-				((JLabel) component).setIcon(getIcon((HasImage) value));
-			} else {
-				((JLabel) component).setIcon(defaultFixtIcon);
-			}
+		final Component component = LIST_DEFAULT.getListCellRendererComponent(
+				list, value, index, isSelected, cellHasFocus);
+		((JLabel) component).setText("<html><p>" + value.toString()
+				+ "</p></html>");
+		if (value instanceof HasImage) {
+			((JLabel) component).setIcon(getIcon((HasImage) value));
+		} else {
+			((JLabel) component).setIcon(defaultFixtIcon);
+		}
 		component.setMaximumSize(new Dimension(
 				component.getMaximumSize().width,
 				component.getMaximumSize().height * 2));
@@ -77,7 +78,8 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		}
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
-		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
+		} catch (final FileNotFoundException e) { // $codepro.audit.disable
+													// logExceptions
 			LOGGER.log(Level.SEVERE, "image file images/" + image
 					+ " not found");
 			retval = defaultFixtIcon;
@@ -110,32 +112,36 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
 				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
-			final Color saveColor = pen.getColor();
-			pen.setColor(Color.RED);
-			pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
-					(int) Math.round(imageSize * margin) + 1,
-					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
-					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
-					(int) Math.round(imageSize * (margin / 2.0)),
-					(int) Math.round(imageSize * (margin / 2.0)));
-			pen.setColor(saveColor);
-			pen.fillRoundRect(
-					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
-					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
-					(int) Math.round(imageSize * margin * 2.0),
-					(int) Math.round(imageSize * margin * 2.0),
-					(int) Math.round(imageSize * margin / 2.0),
-					(int) Math.round(imageSize * margin / 2.0));
+		final Color saveColor = pen.getColor();
+		pen.setColor(Color.RED);
+		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
+				(int) Math.round(imageSize * margin) + 1,
+				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+				(int) Math.round(imageSize * (margin / 2.0)),
+				(int) Math.round(imageSize * (margin / 2.0)));
+		pen.setColor(saveColor);
+		pen.fillRoundRect(
+				((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+				((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+				(int) Math.round(imageSize * margin * 2.0),
+				(int) Math.round(imageSize * margin * 2.0),
+				(int) Math.round(imageSize * margin / 2.0),
+				(int) Math.round(imageSize * margin / 2.0));
 		return new ImageIcon(temp);
 
 	}
+
 	/**
-	 * Set a component's height given a fixed width.
-	 * Adapted from http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
+	 * Set a component's height given a fixed width. Adapted from
+	 * http://blog.nobel
+	 * -joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
+	 *
 	 * @param component the component we're laying out
 	 * @param width the width we're working within
 	 */
-	private static void setComponentPreferredSize(final JComponent component, final int width) {
+	private static void setComponentPreferredSize(final JComponent component,
+			final int width) {
 		final View view = (View) component
 				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
 		view.setSize(width, 0);
@@ -143,6 +149,7 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 		component.setPreferredSize(new Dimension(wid, height));
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

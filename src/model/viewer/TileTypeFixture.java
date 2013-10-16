@@ -19,61 +19,74 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param terrain The TileType this wraps.
 	 */
 	public TileTypeFixture(final TileType terrain) {
 		ttype = terrain;
 	}
+
 	/**
 	 * The TileType this wraps.
 	 */
 	private final TileType ttype;
+
 	/**
 	 * @param obj another TileFixture
 	 * @return the result of a comparison
-	 * @deprecated This class should only ever be in a FixtureListModel, so this method should never be called.
+	 * @deprecated This class should only ever be in a FixtureListModel, so this
+	 *             method should never be called.
 	 */
 	@Deprecated
 	@Override
 	public int compareTo(final TileFixture obj) {
 		return obj.getZValue() - getZValue();
 	}
+
 	/**
 	 * @return a Z-value
-	 * @deprecated This class should only ever be in a FixtureListModel, so this method should never be called.
+	 * @deprecated This class should only ever be in a FixtureListModel, so this
+	 *             method should never be called.
 	 */
 	@Deprecated
 	@Override
 	public int getZValue() {
 		return Integer.MIN_VALUE;
 	}
+
 	/**
 	 * @return an "ID".
-	 * @deprecated This class should only ever be in a FixtureListModel, so this method should never be called.
+	 * @deprecated This class should only ever be in a FixtureListModel, so this
+	 *             method should never be called.
 	 */
 	@Deprecated
 	@Override
 	public int getID() {
 		return -1;
 	}
+
 	/**
 	 * @param fix another fixture
 	 * @return whether it equals this one
-	 * @deprecated This class should only ever be in a FixtureListModel, so this method should never be called.
+	 * @deprecated This class should only ever be in a FixtureListModel, so this
+	 *             method should never be called.
 	 */
 	@Override
 	@Deprecated
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+
 	/**
 	 * @return the TileType this wraps.
 	 */
 	public TileType getTileType() {
 		return ttype;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's the same as this one
@@ -83,6 +96,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 		return this == obj
 				|| (obj instanceof TileTypeFixture && ((TileTypeFixture) obj).ttype == ttype);
 	}
+
 	/**
 	 * @return a hash code for the object
 	 */
@@ -90,6 +104,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public int hashCode() {
 		return ttype.hashCode();
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -97,6 +112,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public String toString() {
 		return "Terrain: " + ttype.toString();
 	}
+
 	/**
 	 * @return a "filename" for an image to represent the object.
 	 */
@@ -104,11 +120,13 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public String getDefaultImage() {
 		return ttype.toXML() + ".png";
 	}
+
 	/**
-	 * The name of an image to use for this particular fixture.
-	 * FIXME: Maybe don't allow this? It doesn't really make sense for a TileTypeFixture.
+	 * The name of an image to use for this particular fixture. FIXME: Maybe
+	 * don't allow this? It doesn't really make sense for a TileTypeFixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -116,6 +134,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -123,6 +142,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a String indicating that this method shouldn't be called
 	 */

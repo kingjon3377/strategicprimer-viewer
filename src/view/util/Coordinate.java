@@ -17,6 +17,7 @@ public class Coordinate {
 		x = xCoord;
 		y = yCoord;
 	}
+
 	/**
 	 * The X coordinate or width.
 	 */
@@ -25,6 +26,7 @@ public class Coordinate {
 	 * The Y coordinate or height.
 	 */
 	public final int y; // NOPMD
+
 	/**
 	 * @return a String representation of the object
 	 */

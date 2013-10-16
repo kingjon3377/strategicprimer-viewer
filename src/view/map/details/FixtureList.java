@@ -54,7 +54,8 @@ public class FixtureList extends JList<TileFixture> implements
 				(FixtureListModel) getModel())));
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "delete");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+				"delete");
 		getActionMap().put("delete", new AbstractAction() {
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent event) {
@@ -63,8 +64,10 @@ public class FixtureList extends JList<TileFixture> implements
 		});
 		addMouseListener(new FixtureMouseListener(players));
 	}
+
 	/**
 	 * Start a drag when appropriate.
+	 *
 	 * @param dge the event to handle
 	 */
 	@Override
@@ -88,9 +91,11 @@ public class FixtureList extends JList<TileFixture> implements
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof JList
-						&& getModel().equals(((JList) obj).getModel()));
+		return this == obj
+				|| (obj instanceof JList && getModel().equals(
+						((JList) obj).getModel()));
 	}
+
 	/**
 	 * @return a hash-code for the object
 	 */
@@ -98,6 +103,7 @@ public class FixtureList extends JList<TileFixture> implements
 	public int hashCode() {
 		return getModel().hashCode();
 	}
+
 	/**
 	 * A listener to set up pop-up menus.
 	 */
@@ -106,13 +112,16 @@ public class FixtureList extends JList<TileFixture> implements
 		 * The collection of players in the map.
 		 */
 		private final PlayerCollection players;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param playerColl the collection of players in the map
 		 */
 		FixtureMouseListener(final PlayerCollection playerColl) {
 			players = playerColl;
 		}
+
 		/**
 		 * @param event the event to handle
 		 */
@@ -120,6 +129,7 @@ public class FixtureList extends JList<TileFixture> implements
 		public void mouseClicked(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
+
 		/**
 		 * @param event the event to handle
 		 */
@@ -127,6 +137,7 @@ public class FixtureList extends JList<TileFixture> implements
 		public void mousePressed(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
+
 		/**
 		 * @param event the event to handle
 		 */
@@ -134,11 +145,14 @@ public class FixtureList extends JList<TileFixture> implements
 		public void mouseReleased(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
+
 		/**
-		 * @param event the event to handle. Marked as @Nullable so we only have to handle the null-event case once.
+		 * @param event the event to handle. Marked as @Nullable so we only have
+		 *        to handle the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
-			if (event != null && event.isPopupTrigger() && event.getClickCount() == 1) {
+			if (event != null && event.isPopupTrigger()
+					&& event.getClickCount() == 1) {
 				new FixtureEditMenu(getModel().getElementAt(
 						locationToIndex(event.getPoint())), players).show(
 						event.getComponent(), event.getX(), event.getY());

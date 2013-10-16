@@ -14,12 +14,12 @@ import model.map.fixtures.towns.TownStatus;
  * @author Jonathan Lovelace
  *
  */
-public class Mine implements HarvestableFixture,
-		HasImage, HasKind {
+public class Mine implements HarvestableFixture, HasImage, HasKind {
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -88,9 +88,10 @@ public class Mine implements HarvestableFixture,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Mine && kind.equals(((Mine) obj).kind)
-				&& status.equals(((Mine) obj).status)
-				&& id == ((TileFixture) obj).getID());
+		return this == obj
+				|| (obj instanceof Mine && kind.equals(((Mine) obj).kind)
+						&& status.equals(((Mine) obj).status) && id == ((TileFixture) obj)
+						.getID());
 	}
 
 	/**
@@ -133,6 +134,7 @@ public class Mine implements HarvestableFixture,
 		return fix instanceof Mine && kind.equals(((Mine) fix).kind)
 				&& status.equals(((Mine) fix).status);
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -140,10 +142,12 @@ public class Mine implements HarvestableFixture,
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -151,6 +155,7 @@ public class Mine implements HarvestableFixture,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -158,6 +163,7 @@ public class Mine implements HarvestableFixture,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all mines as a class
 	 */

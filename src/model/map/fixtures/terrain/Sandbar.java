@@ -18,6 +18,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @param idNum the ID number.
 	 */
@@ -56,7 +57,8 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Sandbar && id == ((TileFixture) obj).getID());
+		return this == obj
+				|| (obj instanceof Sandbar && id == ((TileFixture) obj).getID());
 	}
 
 	/**
@@ -98,10 +100,12 @@ public class Sandbar implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Sandbar;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -109,6 +113,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -116,6 +121,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all sandbars as a class
 	 */

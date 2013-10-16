@@ -115,12 +115,15 @@ public class Player implements Comparable<Player>, HasName, Serializable {
 	public final boolean isCurrent() {
 		return current;
 	}
+
 	/**
-	 * @return whether this is the (or an) "independent" player---the "owner" of unowned fixtures.
+	 * @return whether this is the (or an) "independent" player---the "owner" of
+	 *         unowned fixtures.
 	 */
 	public final boolean isIndependent() {
 		return "independent".equalsIgnoreCase(getName());
 	}
+
 	/**
 	 * @param name the player's new name
 	 */

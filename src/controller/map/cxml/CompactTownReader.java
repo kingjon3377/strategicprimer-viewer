@@ -31,10 +31,12 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for tiles, including rivers.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTownReader extends AbstractCompactReader implements CompactReader<ITownFixture> {
+public final class CompactTownReader extends AbstractCompactReader implements
+		CompactReader<ITownFixture> {
 	/**
 	 * The "owner" parameter.
 	 */
@@ -43,24 +45,29 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * The 'name' parameter.
 	 */
 	private static final String NAME_PARAM = "name";
+
 	/**
 	 * Singleton.
 	 */
 	private CompactTownReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactTownReader READER = new CompactTownReader();
+
 	/**
 	 * @param tag a tag
 	 * @return whether we support it
 	 */
 	@Override
 	public boolean isSupportedTag(final String tag) {
-		return EqualsAny.equalsAny(tag, "village", "fortress", "town", "city", "fortification");
+		return EqualsAny.equalsAny(tag, "village", "fortress", "town", "city",
+				"fortification");
 	}
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -73,9 +80,11 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 */
 	@Override
 	public ITownFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
-		requireTag(element, "village", "fortress", "town", "city", "fortification");
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
+		requireTag(element, "village", "fortress", "town", "city",
+				"fortification");
 		// ESCA-JAVA0177:
 		final ITownFixture retval; // NOPMD
 		if ("village".equals(element.getName().getLocalPart())) {
@@ -87,8 +96,10 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse a village.
+	 *
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players in the map
@@ -98,7 +109,8 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static Village parseVillage(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(element.getName(), stream);
@@ -106,13 +118,16 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		final Village retval = new Village(
 				TownStatus.parseTownStatus(getParameter(element, "status")),
 				getParameter(element, NAME_PARAM, ""), idNum,
-				getOwnerOrIndependent(element, warner, players), getParameter(
-						element, "race", RaceFactory.getRace(new Random(idNum))));
+				getOwnerOrIndependent(element, warner, players),
+				getParameter(element, "race",
+						RaceFactory.getRace(new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
+
 	/**
 	 * Parse a town, city, or fortification.
+	 *
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players in the map
@@ -122,12 +137,15 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static AbstractTown parseTown(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final String name = getParameter(element, NAME_PARAM, "");
-		final TownStatus status = TownStatus.parseTownStatus(getParameter(element, "status"));
-		final TownSize size = TownSize.parseTownSize(getParameter(element, "size"));
+		final TownStatus status = TownStatus.parseTownStatus(getParameter(
+				element, "status"));
+		final TownSize size = TownSize.parseTownSize(getParameter(element,
+				"size"));
 		final int dc = Integer.parseInt(getParameter(element, "dc")); // NOPMD
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		final Player owner = getOwnerOrIndependent(element, warner, players); // NOPMD
@@ -160,7 +178,8 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
 		if (hasParameter(element, OWNER_PARAM)) {
-			retval = players.getPlayer(Integer.parseInt(getParameter(element, OWNER_PARAM)));
+			retval = players.getPlayer(Integer.parseInt(getParameter(element,
+					OWNER_PARAM)));
 		} else {
 			warner.warn(new MissingPropertyException(element.getName()
 					.getLocalPart(), OWNER_PARAM, element.getLocation()
@@ -169,8 +188,10 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse a fortress.
+	 *
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -180,7 +201,8 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static Fortress parseFortress(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players, final Warning warner,
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
@@ -188,11 +210,14 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 				warner, players), getParameter(element, NAME_PARAM, ""),
 				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && "unit".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+			if (event.isStartElement()
+					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
+							.getLocalPart())) {
 				retval.addUnit(CompactUnitReader.READER.read(
 						event.asStartElement(), stream, players, warner,
 						idFactory));
-			} else if (event.isEndElement() && element.getName().equals(event.asEndElement().getName())) {
+			} else if (event.isEndElement()
+					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			} else if (event.isStartElement()) {
 				throw new UnwantedChildException(element.getName()
@@ -203,15 +228,18 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final ITownFixture obj, final int indent) throws IOException {
+	public void write(final Writer out, final ITownFixture obj, final int indent)
+			throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof AbstractTown) {
 			writeAbstractTown(out, (AbstractTown) obj);
@@ -251,13 +279,14 @@ public final class CompactTownReader extends AbstractCompactReader implements Co
 			throw new IllegalStateException("Unexpected TownFixture type");
 		}
 	}
+
 	/**
 	 * @param out the stream to write to
 	 * @param obj the AbstractTownEvent to write
 	 * @throws IOException on I/O error
 	 */
-	private static void writeAbstractTown(final Writer out, final AbstractTown obj)
-			throws IOException {
+	private static void writeAbstractTown(final Writer out,
+			final AbstractTown obj) throws IOException {
 		if (obj instanceof Fortification) {
 			out.append("<fortification ");
 		} else if (obj instanceof Town) {

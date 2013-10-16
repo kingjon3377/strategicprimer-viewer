@@ -23,8 +23,10 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractMultiMapModel;
 import util.Pair;
+
 /**
  * A model for exploration drivers.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -32,16 +34,19 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		IExplorationModel {
 	/**
 	 * Constructor.
+	 *
 	 * @param map the starting main map
 	 * @param filename the name it was loaded from
 	 */
 	public ExplorationModel(final MapView map, final String filename) {
 		setMap(map, filename);
 	}
+
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @return all the players shared by all the maps
 	 */
@@ -62,6 +67,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		}
 		return retval;
 	}
+
 	/**
 	 * @param player a player
 	 * @return all that player's units in the main map
@@ -78,12 +84,15 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		}
 		return retval;
 	}
+
 	/**
 	 * @param iter a sequence of members of that type
 	 * @param player a player
-	 * @return a list of the members of the sequence that are units owned by the player
+	 * @return a list of the members of the sequence that are units owned by the
+	 *         player
 	 */
-	private static List<Unit> getUnits(final Iterable<? super Unit> iter, final Player player) {
+	private static List<Unit> getUnits(final Iterable<? super Unit> iter,
+			final Player player) {
 		final List<Unit> retval = new ArrayList<>();
 		for (Object obj : iter) {
 			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
@@ -114,14 +123,16 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			throws TraversalImpossibleException {
 		final Unit unit = selUnit;
 		if (unit == null) {
-			throw new IllegalStateException("move() called when no unit selected");
+			throw new IllegalStateException(
+					"move() called when no unit selected");
 		}
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
 		// ESCA-JAVA0177:
 		final Tile destTile = getMap().getTile(dest);
 		if (SimpleMovement.isLandMovementPossible(destTile)) {
-			final int retval = dest.equals(point) ? 1 : SimpleMovement.getMovementCost(destTile);
+			final int retval = dest.equals(point) ? 1 : SimpleMovement
+					.getMovementCost(destTile);
 			getMap().getTile(point).removeFixture(unit);
 			destTile.addFixture(unit);
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
@@ -142,14 +153,17 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			return retval;
 		} else {
 			for (Pair<IMap, String> pair : getSubordinateMaps()) {
-				ensureTerrain(pair.first().getTiles(), dest, destTile.getTerrain());
+				ensureTerrain(pair.first().getTiles(), dest,
+						destTile.getTerrain());
 			}
 			fireMovementCost(1);
 			throw new TraversalImpossibleException();
 		}
 	}
+
 	/**
 	 * Tell listeners of a movement cost.
+	 *
 	 * @param cost how much the move cost
 	 */
 	private void fireMovementCost(final int cost) {
@@ -157,17 +171,22 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			list.deduct(cost);
 		}
 	}
+
 	/**
-	 * Ensure that a given collection of tiles has at least terrain information for the specified location.
+	 * Ensure that a given collection of tiles has at least terrain information
+	 * for the specified location.
+	 *
 	 * @param tiles the collection we're operating on
 	 * @param point the location to look at
 	 * @param terrain the terrain type it should be
 	 */
-	private static void ensureTerrain(final TileCollection tiles, final Point point, final TileType terrain) {
+	private static void ensureTerrain(final TileCollection tiles,
+			final Point point, final TileType terrain) {
 		if (!tiles.hasTile(point)) {
 			tiles.addTile(point, new Tile(terrain));
 		}
 	}
+
 	/**
 	 * @param tile a tile
 	 * @param fix a fixture
@@ -181,6 +200,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		}
 		return false;
 	}
+
 	/**
 	 * @param point a point
 	 * @param direction a direction
@@ -220,8 +240,10 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			throw new IllegalStateException("Unhandled case");
 		}
 	}
+
 	/**
 	 * A "plus one" method with a configurable, low "overflow".
+	 *
 	 * @param num the number to increment
 	 * @param max the maximum number we want to return
 	 * @return either num + 1, if max or lower, or 0.
@@ -229,8 +251,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public static int increment(final int num, final int max) {
 		return num >= max - 1 ? 0 : num + 1;
 	}
+
 	/**
-	 * A "minus one" method that "underflows" after 0 to a configurable, low value.
+	 * A "minus one" method that "underflows" after 0 to a configurable, low
+	 * value.
+	 *
 	 * @param num the number to decrement.
 	 * @param max the number to "underflow" to.
 	 * @return either num - 1, if 1 or higher, or max.
@@ -238,10 +263,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public static int decrement(final int num, final int max) {
 		return num == 0 ? max : num - 1;
 	}
+
 	/**
 	 * @param fix a fixture
-	 * @return the first location found (search order is not defined) containing a
-	 *         fixture "equal to" the specified one. (Using it on mountains,
+	 * @return the first location found (search order is not defined) containing
+	 *         a fixture "equal to" the specified one. (Using it on mountains,
 	 *         e.g., will *not* do what you want ...)
 	 */
 	@Override
@@ -256,21 +282,26 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		}
 		return PointFactory.point(-1, -1);
 	}
+
 	/**
 	 * The currently selected unit.
 	 */
-	@Nullable private Unit selUnit = null;
+	@Nullable
+	private Unit selUnit = null;
 	/**
 	 * Its location.
 	 */
 	private Point selUnitLoc = PointFactory.point(-1, -1);
+
 	/**
 	 * @return the currently selected unit
 	 */
 	@Override
-	@Nullable public Unit getSelectedUnit() {
+	@Nullable
+	public Unit getSelectedUnit() {
 		return selUnit;
 	}
+
 	/**
 	 * @param unit the new selected unit
 	 */
@@ -282,6 +313,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			list.selectedPointChanged(oldLoc, selUnitLoc);
 		}
 	}
+
 	/**
 	 * @return the location of the currently selected unit.
 	 */
@@ -289,10 +321,12 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public Point getSelectedUnitLocation() {
 		return selUnitLoc;
 	}
+
 	/**
 	 * The list of selection-change-listeners to notify when the unit moves.
 	 */
 	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -300,6 +334,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public void addSelectionChangeListener(final SelectionChangeListener list) {
 		scListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */
@@ -307,10 +342,12 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public void removeSelectionChangeListener(final SelectionChangeListener list) {
 		scListeners.remove(list);
 	}
+
 	/**
 	 * The list of movement-cost listeners.
 	 */
 	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+
 	/**
 	 * @param listener the listener to add
 	 */
@@ -318,6 +355,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public void addMovementCostListener(final MovementCostListener listener) {
 		mcListeners.add(listener);
 	}
+
 	/**
 	 * @param listener the listener to remove
 	 */

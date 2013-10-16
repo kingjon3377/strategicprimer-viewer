@@ -27,16 +27,20 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for maps.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactMapReader extends AbstractCompactReader implements CompactReader<IMap> {
+public final class CompactMapReader extends AbstractCompactReader implements
+		CompactReader<IMap> {
 	/**
 	 * The 'map' tag.
 	 */
 	private static final String MAP_TAG = "map";
+
 	/**
 	 * Read a map from XML.
+	 *
 	 * @param element the element we're parsing
 	 * @param stream the source to read more elements from
 	 * @param players The collection to put players in
@@ -47,8 +51,9 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 */
 	@Override
 	public IMap read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, MAP_TAG, "view");
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			final StartElement mapElement = getFirstStartElement(stream,
@@ -58,21 +63,25 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 						.getLocalPart(), mapElement.getName().getLocalPart(),
 						mapElement.getLocation().getLineNumber());
 			}
-			final MapView retval = new MapView((SPMap) read(mapElement, stream, players,
-					warner, idFactory), Integer.parseInt(getParameter(element,
-					"current_player")), Integer.parseInt(getParameter(element,
-					"current_turn")));
+			final MapView retval = new MapView((SPMap) read(mapElement, stream,
+					players, warner, idFactory), Integer.parseInt(getParameter(
+					element, "current_player")), Integer.parseInt(getParameter(
+					element, "current_turn")));
 			spinUntilEnd(element.getName(), stream);
-			return retval; // NOPMD: TODO: Perhaps split this into parseMap and parseView?
+			return retval; // NOPMD: TODO: Perhaps split this into parseMap and
+							// parseView?
 		} else {
-			final SPMap retval = new SPMap(new MapDimensions(Integer.parseInt(getParameter(
-					element, "rows")), Integer.parseInt(getParameter(element,
-					"columns")), Integer.parseInt(getParameter(
-							element, "version", "1"))));
+			final SPMap retval = new SPMap(new MapDimensions(
+					Integer.parseInt(getParameter(element, "rows")),
+					Integer.parseInt(getParameter(element, "columns")),
+					Integer.parseInt(getParameter(element, "version", "1"))));
 			for (final XMLEvent event : stream) {
 				if (event.isStartElement()) {
-					parseChild(stream, warner, retval, event.asStartElement(), idFactory);
-				} else if (event.isEndElement() && element.getName().equals(event.asEndElement().getName())) {
+					parseChild(stream, warner, retval, event.asStartElement(),
+							idFactory);
+				} else if (event.isEndElement()
+						&& element.getName().equals(
+								event.asEndElement().getName())) {
 					break;
 				}
 			}
@@ -85,8 +94,10 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			return retval;
 		}
 	}
+
 	/**
 	 * Parse a child element of a map tag.
+	 *
 	 * @param stream the stream to read more elements from
 	 * @param warner the Warning instance to use for warnings
 	 * @param map the map to add tiles and players to
@@ -94,8 +105,9 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @throws SPFormatException on SP format problem
 	 */
-	private static void parseChild(final IteratorWrapper<XMLEvent> stream, final Warning warner,
-			final SPMap map, final StartElement elem, final IDFactory idFactory) throws SPFormatException {
+	private static void parseChild(final IteratorWrapper<XMLEvent> stream,
+			final Warning warner, final SPMap map, final StartElement elem,
+			final IDFactory idFactory) throws SPFormatException {
 		final String tag = elem.getName().getLocalPart();
 		if ("player".equalsIgnoreCase(tag)) {
 			map.addPlayer(CompactPlayerReader.READER.read(elem, stream,
@@ -104,13 +116,19 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			final int row = Integer.parseInt(getParameter(elem, "row"));
 			final int col = Integer.parseInt(getParameter(elem, "column"));
 			final Point loc = PointFactory.point(row, col);
-			map.addTile(loc, CompactTileReader.READER.read(elem, stream, map.getPlayers(), warner, idFactory));
+			map.addTile(
+					loc,
+					CompactTileReader.READER.read(elem, stream,
+							map.getPlayers(), warner, idFactory));
 		} else if (EqualsAny.equalsAny(tag, ISPReader.FUTURE)) {
-			warner.warn(new UnsupportedTagException(tag, elem.getLocation().getLineNumber()));
+			warner.warn(new UnsupportedTagException(tag, elem.getLocation()
+					.getLineNumber()));
 		} else if (!"row".equalsIgnoreCase(tag)) {
-			throw new UnwantedChildException(MAP_TAG, tag, elem.getLocation().getLineNumber());
+			throw new UnwantedChildException(MAP_TAG, tag, elem.getLocation()
+					.getLineNumber());
 		}
 	}
+
 	/**
 	 * @param stream a stream of XMLEvents
 	 * @param line the line the parent tag is on
@@ -127,16 +145,19 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 		}
 		throw new MissingChildException(MAP_TAG, line);
 	}
+
 	/**
 	 * Singleton.
 	 */
 	private CompactMapReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton instance.
 	 */
 	public static final CompactMapReader READER = new CompactMapReader();
+
 	/**
 	 * @param tag a tag
 	 * @return whether it's one we support
@@ -145,19 +166,23 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 	public boolean isSupportedTag(final String tag) {
 		return MAP_TAG.equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final IMap obj, final int indent) throws IOException {
+	public void write(final Writer out, final IMap obj, final int indent)
+			throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof MapView) {
 			out.append("<view current_player=\"");
-			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer().getPlayerId()));
+			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
+					.getPlayerId()));
 			out.append("\" current_turn=\"");
 			out.append(Integer.toString(((MapView) obj).getCurrentTurn()));
 			out.append("\">\n");
@@ -168,13 +193,15 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 			writeMap(out, (SPMap) obj, indent);
 		}
 	}
+
 	/**
 	 * @param out the stream to write to
 	 * @param obj the map to write
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private static void writeMap(final Writer out, final SPMap obj, final int indent) throws IOException {
+	private static void writeMap(final Writer out, final SPMap obj,
+			final int indent) throws IOException {
 		final MapDimensions dim = obj.getDimensions();
 		out.append("<map version=\"");
 		out.append(Integer.toString(dim.version));
@@ -184,7 +211,8 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 		out.append(Integer.toString(dim.cols));
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
 			out.append("\" current_player=\"");
-			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer().getPlayerId()));
+			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
+					.getPlayerId()));
 		}
 		out.append("\">\n");
 		for (Player player : obj.getPlayers()) {
@@ -202,7 +230,8 @@ public final class CompactMapReader extends AbstractCompactReader implements Com
 					rowEmpty = false;
 				}
 				final Point point = PointFactory.point(i, j);
-				CompactTileReader.writeTile(out, point, obj.getTile(point), indent + 2);
+				CompactTileReader.writeTile(out, point, obj.getTile(point),
+						indent + 2);
 			}
 			if (!rowEmpty) {
 				out.append(indent(indent + 1));

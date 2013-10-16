@@ -18,28 +18,35 @@ import util.Pair;
 import view.map.details.FixtureList;
 
 /**
- * A list-data-listener to select a random but suitable set of fixtures to be 'discovered' if the tile is explored.
+ * A list-data-listener to select a random but suitable set of fixtures to be
+ * 'discovered' if the tile is explored.
+ *
  * @author Jonathan Lovelace
  *
  */
 public final class ExplorationListListener implements ListDataListener {
 	/**
-	 * The exploration model, which tells us the currently selected unit and tile.
+	 * The exploration model, which tells us the currently selected unit and
+	 * tile.
 	 */
 	private final IExplorationModel model;
 	/**
 	 * The list this is attached to.
 	 */
 	private final FixtureList list;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param mainList the list this is attached to
 	 * @param emodel the exploration model
 	 */
-	ExplorationListListener(final IExplorationModel emodel, final FixtureList mainList) {
+	ExplorationListListener(final IExplorationModel emodel,
+			final FixtureList mainList) {
 		model = emodel;
 		list = mainList;
 	}
+
 	/**
 	 * @param evt an event indicating items were removed from the list
 	 */
@@ -47,6 +54,7 @@ public final class ExplorationListListener implements ListDataListener {
 	public void intervalRemoved(@Nullable final ListDataEvent evt) {
 		randomizeSelection();
 	}
+
 	/**
 	 * @param evt an event indicating items were added to the list
 	 */
@@ -54,6 +62,7 @@ public final class ExplorationListListener implements ListDataListener {
 	public void intervalAdded(@Nullable final ListDataEvent evt) {
 		randomizeSelection();
 	}
+
 	/**
 	 * @param evt an event indicating items were changed in the list
 	 */
@@ -61,8 +70,10 @@ public final class ExplorationListListener implements ListDataListener {
 	public void contentsChanged(@Nullable final ListDataEvent evt) {
 		randomizeSelection();
 	}
+
 	/**
-	 * Select a suitable but randomized selection of fixtures. Do nothing if there is no selected unit.
+	 * Select a suitable but randomized selection of fixtures. Do nothing if
+	 * there is no selected unit.
 	 */
 	private void randomizeSelection() {
 		final Unit selUnit = model.getSelectedUnit();

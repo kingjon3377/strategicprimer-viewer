@@ -2,9 +2,9 @@ package view.util;
 
 /**
  * A class to hold numeric constants useful for drawing.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public final class DrawingNumericConstants {
 	/**

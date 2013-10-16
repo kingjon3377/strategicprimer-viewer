@@ -24,6 +24,7 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for Workers.
+ *
  * @author Jonathan Lovelace
  */
 public final class CompactWorkerReader extends AbstractCompactReader implements
@@ -34,10 +35,12 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	private CompactWorkerReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactWorkerReader READER = new CompactWorkerReader();
+
 	/**
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
@@ -48,23 +51,29 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public Worker read(final StartElement element, final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Worker read(final StartElement element,
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
-				getParameter(element, "race", "human"), getOrGenerateID(element, warner, idFactory));
+				getParameter(element, "race", "human"), getOrGenerateID(
+						element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if ("job".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
-					retval.addJob(parseJob(event.asStartElement(), stream, warner));
-				} else if ("stats".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+				if ("job".equalsIgnoreCase(event.asStartElement().getName()
+						.getLocalPart())) {
+					retval.addJob(parseJob(event.asStartElement(), stream,
+							warner));
+				} else if ("stats".equalsIgnoreCase(event.asStartElement()
+						.getName().getLocalPart())) {
 					retval.setStats(parseStats(event.asStartElement(), stream));
 				} else {
-					throw new UnwantedChildException(element.getName().getLocalPart(), event
-							.asStartElement().getName().getLocalPart(), event
-							.getLocation().getLineNumber());
+					throw new UnwantedChildException(element.getName()
+							.getLocalPart(), event.asStartElement().getName()
+							.getLocalPart(), event.getLocation()
+							.getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
@@ -73,8 +82,10 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse the worker's stats.
+	 *
 	 * @param element the element to parse
 	 * @param stream the stream to read further elements from
 	 * @return the parsed stats
@@ -95,8 +106,10 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
+
 	/**
 	 * Parse a Job.
+	 *
 	 * @param element the element to parse
 	 * @param stream the stream to read further elements from
 	 * @param warner the Warning instance to use for warnings
@@ -115,13 +128,15 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if ("skill".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+				if ("skill".equalsIgnoreCase(event.asStartElement().getName()
+						.getLocalPart())) {
 					retval.addSkill(parseSkill(event.asStartElement(), warner));
 					spinUntilEnd(event.asStartElement().getName(), stream);
 				} else {
-					throw new UnwantedChildException(element.getName().getLocalPart(), event
-							.asStartElement().getName().getLocalPart(), event
-							.getLocation().getLineNumber());
+					throw new UnwantedChildException(element.getName()
+							.getLocalPart(), event.asStartElement().getName()
+							.getLocalPart(), event.getLocation()
+							.getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
@@ -130,15 +145,17 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		}
 		return retval;
 	}
+
 	/**
 	 * Parse a Skill.
+	 *
 	 * @param element the element to parse
 	 * @param warner the Warning instance to use
 	 * @return the parsed skill
 	 * @throws SPFormatException on SP format problem
 	 */
-	public static Skill parseSkill(final StartElement element, final Warning warner)
-			throws SPFormatException {
+	public static Skill parseSkill(final StartElement element,
+			final Warning warner) throws SPFormatException {
 		requireTag(element, "skill");
 		final Skill retval = new Skill(getParameter(element, "name"),
 				Integer.parseInt(getParameter(element, "level")),
@@ -150,15 +167,18 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		}
 		return retval;
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Worker obj, final int indent) throws IOException {
+	public void write(final Writer out, final Worker obj, final int indent)
+			throws IOException {
 		out.append(indent(indent));
 		out.append("<worker name=\"");
 		out.append(obj.getName());
@@ -182,14 +202,18 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			out.append(" />\n");
 		}
 	}
+
 	/**
 	 * Write the worker's stats.
+	 *
 	 * @param out the writer to write to
 	 * @param stats the object to write
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private static void writeStats(final Writer out, @Nullable final WorkerStats stats, final int indent) throws IOException {
+	private static void writeStats(final Writer out,
+			@Nullable final WorkerStats stats, final int indent)
+			throws IOException {
 		if (stats != null) {
 			out.append(indent(indent));
 			out.append("<stats hp=\"");
@@ -211,14 +235,17 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			out.append("\" />\n");
 		}
 	}
+
 	/**
 	 * Write a Job to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeJob(final Writer out, final Job obj, final int indent) throws IOException {
+	public static void writeJob(final Writer out, final Job obj,
+			final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<job name=\"");
 		out.append(obj.getName());
@@ -239,12 +266,14 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 
 	/**
 	 * Write a Skill to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeSkill(final Writer out, final Skill obj, final int indent) throws IOException {
+	public static void writeSkill(final Writer out, final Skill obj,
+			final int indent) throws IOException {
 		out.append(indent(indent));
 		out.append("<skill name=\"");
 		out.append(obj.getName());
@@ -254,6 +283,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		out.append(Integer.toString(obj.getHours()));
 		out.append("\" />\n");
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether we support it

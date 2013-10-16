@@ -27,24 +27,30 @@ public class MenuItemCreator {
 	 *
 	 * @return the configured menu item.
 	 */
-	public static JMenuItem createMenuItem(final String item, final int mnemonic,
-			@Nullable final KeyStroke accel, final String desc, final ActionListener list) {
+	public static JMenuItem createMenuItem(final String item,
+			final int mnemonic, @Nullable final KeyStroke accel,
+			final String desc, final ActionListener list) {
 		final JMenuItem mitem = new JMenuItem(item, mnemonic);
 		mitem.setAccelerator(accel);
 		mitem.getAccessibleContext().setAccessibleDescription(desc);
 		mitem.addActionListener(list);
 		return mitem;
 	}
+
 	/**
 	 * Create a hotkey.
+	 *
 	 * @param key the base key
 	 * @return the hotkey
 	 */
 	public static KeyStroke createHotkey(final int key) {
-		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
+				.getMenuShortcutKeyMask());
 	}
+
 	/**
 	 * Create a hotkey with the additional Shift modifier.
+	 *
 	 * @param key the base key
 	 * @return the hotkey
 	 */
@@ -52,6 +58,7 @@ public class MenuItemCreator {
 		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask() | InputEvent.SHIFT_DOWN_MASK);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

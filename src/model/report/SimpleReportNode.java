@@ -1,16 +1,20 @@
 package model.report;
+
 /**
  * A simple node representing plain text. Any children are ignored!
+ *
  * @author Jonathan Lovelace
  *
  */
 public class SimpleReportNode extends AbstractReportNode {
 	/**
-	 * @param texts a number of strings to concatenate and make the text of the node.
+	 * @param texts a number of strings to concatenate and make the text of the
+	 *        node.
 	 */
 	public SimpleReportNode(final String... texts) {
 		super(concat(texts));
 	}
+
 	/**
 	 * @param strings a number of strings
 	 * @return them all concatenated together
@@ -26,6 +30,7 @@ public class SimpleReportNode extends AbstractReportNode {
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * @return the HTML representation of the node, its text.
 	 */
@@ -33,6 +38,7 @@ public class SimpleReportNode extends AbstractReportNode {
 	public String produce() {
 		return getText();
 	}
+
 	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
@@ -41,6 +47,7 @@ public class SimpleReportNode extends AbstractReportNode {
 	public StringBuilder produce(final StringBuilder builder) {
 		return builder.append(getText());
 	}
+
 	/**
 	 * @return the size of the HTML representation of the node.
 	 */
@@ -48,14 +55,17 @@ public class SimpleReportNode extends AbstractReportNode {
 	public int size() {
 		return getText().length();
 	}
+
 	/**
 	 * @param obj a node
 	 * @return whether it equals this one
 	 */
 	@Override
 	protected boolean equalsImpl(final AbstractReportNode obj) {
-		return obj instanceof SimpleReportNode && getText().equals(obj.getText());
+		return obj instanceof SimpleReportNode
+				&& getText().equals(obj.getText());
 	}
+
 	/**
 	 * @return a hash code for the object
 	 */

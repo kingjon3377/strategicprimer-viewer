@@ -35,17 +35,22 @@ public class ExplorationCLI {
 	 * The helper to handle user I/O.
 	 */
 	private final CLIHelper helper;
+
 	/**
 	 * @param emodel the exploration model to use
 	 * @param mhelper the helper to handle user I/O
 	 */
-	public ExplorationCLI(final IExplorationModel emodel, final CLIHelper mhelper) {
+	public ExplorationCLI(final IExplorationModel emodel,
+			final CLIHelper mhelper) {
 		model = emodel;
 		helper = mhelper;
 	}
+
 	/**
 	 * Have the user choose a player.
-	 * @return the chosen player, or a player with a negative number if no choice made.
+	 *
+	 * @return the chosen player, or a player with a negative number if no
+	 *         choice made.
 	 * @throws IOException on I/O error
 	 */
 	public Player choosePlayer() throws IOException {
@@ -56,10 +61,13 @@ public class ExplorationCLI {
 				"Please make a selection: ", true);
 		return playerNum < 0 ? new Player(-1, "abort") : players.get(playerNum);
 	}
+
 	/**
 	 * Have the player choose a unit.
+	 *
 	 * @param player the player to whom the unit must belong
-	 * @return the chosen unit, or a unit with a negative ID number if none selected.
+	 * @return the chosen unit, or a unit with a negative ID number if none
+	 *         selected.
 	 * @throws IOException on I/O error
 	 */
 	public Unit chooseUnit(final Player player) throws IOException {
@@ -67,12 +75,14 @@ public class ExplorationCLI {
 		final int unitNum = helper.chooseFromList(units, "Player's units:",
 				"That player has no units in the master map.",
 				"Please make a selection: ", true);
-		return unitNum < 0 ? new Unit(new Player(-1, "abort"), "", "", -1) : units.get(unitNum);
+		return unitNum < 0 ? new Unit(new Player(-1, "abort"), "", "", -1)
+				: units.get(unitNum);
 	}
 
 	/**
 	 * Change the owner of all the villages on the specified tile in all the
 	 * maps to the owner of the currently selected unit.
+	 *
 	 * @param point the location of the tile in question
 	 */
 	private void swearVillages(final Point point) {
@@ -90,7 +100,8 @@ public class ExplorationCLI {
 	}
 
 	/**
-	 * Have the player move the selected unit. Throws an exception if no unit is selected.
+	 * Have the player move the selected unit. Throws an exception if no unit is
+	 * selected.
 	 *
 	 * @return the cost of the specified movement, 1 if not possible (in which
 	 *         case we update subordinate maps with that tile's tile type but no
@@ -131,7 +142,9 @@ public class ExplorationCLI {
 				allFixtures.add(fix);
 			}
 		}
-		if (Direction.Nowhere.equals(direction) && helper.inputBoolean("Should any village here swear to the player?  ")) {
+		if (Direction.Nowhere.equals(direction)
+				&& helper
+						.inputBoolean("Should any village here swear to the player?  ")) {
 			swearVillages(dPoint);
 			cost += 5;
 		}
@@ -159,8 +172,11 @@ public class ExplorationCLI {
 		}
 		return cost;
 	}
+
 	/**
-	 * Ask the user for directions the unit should move until it runs out of MP or the user decides to quit.
+	 * Ask the user for directions the unit should move until it runs out of MP
+	 * or the user decides to quit.
+	 *
 	 * @throws IOException on I/O error.
 	 */
 	public void moveUntilDone() throws IOException {

@@ -11,8 +11,10 @@ import java.util.List;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
+
 /**
  * A class to transfer a list of TileFixtures.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -26,8 +28,10 @@ public class CurriedFixtureTransferable implements Transferable {
 	 * Our payload.
 	 */
 	private final List<Transferable> payload;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param list a list of TileFixtures to be transferred
 	 */
 	public CurriedFixtureTransferable(final List<TileFixture> list) {
@@ -37,6 +41,7 @@ public class CurriedFixtureTransferable implements Transferable {
 		}
 		payload = Collections.unmodifiableList(payloadTemp);
 	}
+
 	/**
 	 * @return the supported DataFlavors
 	 */
@@ -75,13 +80,16 @@ public class CurriedFixtureTransferable implements Transferable {
 			throw new UnsupportedFlavorException(dFlavor);
 		}
 	}
+
 	/**
 	 * A typesafe replacement for getTransferData.
+	 *
 	 * @return our payload
 	 */
 	public List<Transferable> getPayload() {
 		return payload;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

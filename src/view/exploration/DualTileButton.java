@@ -16,6 +16,7 @@ import view.map.main.TileDrawHelperFactory;
 
 /**
  * A button that represents a tile in two maps.
+ *
  * @author Jonathan Lovelace
  */
 public class DualTileButton extends JButton {
@@ -27,6 +28,7 @@ public class DualTileButton extends JButton {
 	 * The secondary-map tile to paint.
 	 */
 	private Tile two = new Tile(TileType.NotVisible);
+
 	/**
 	 * @param first the main-map tile to draw
 	 * @param second the secondary-map tile to draw
@@ -35,12 +37,15 @@ public class DualTileButton extends JButton {
 		one = first;
 		two = second;
 	}
+
 	/**
 	 * How much margin to give.
 	 */
 	private static final int MARGIN = 2;
+
 	/**
-	 * A ZOrderFilter implementation that does  nothing, to avoid passing null to the factory.
+	 * A ZOrderFilter implementation that does nothing, to avoid passing null to
+	 * the factory.
 	 */
 	private static final class NullZOrderFilter implements ZOrderFilter {
 		/**
@@ -49,6 +54,7 @@ public class DualTileButton extends JButton {
 		NullZOrderFilter() {
 			// Do nothing
 		}
+
 		/**
 		 * @param fix ignored
 		 * @return true
@@ -58,12 +64,15 @@ public class DualTileButton extends JButton {
 			return true;
 		}
 	}
+
 	/**
 	 * The ZOrderFilter instance to pass to the factory rather than null.
 	 */
 	private static final ZOrderFilter NULL_ZOF = new NullZOrderFilter();
+
 	/**
 	 * Paint the component.
+	 *
 	 * @param pen the Graphics object to draw with.
 	 */
 	@Override
@@ -72,7 +81,8 @@ public class DualTileButton extends JButton {
 			throw new IllegalArgumentException("Graphics cannot be null");
 		}
 		super.paintComponent(pen);
-		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2, this, NULL_ZOF);
+		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2,
+				this, NULL_ZOF);
 		pen.setClip(new Polygon(
 				new int[] { getWidth() - MARGIN, MARGIN, MARGIN }, new int[] {
 						MARGIN, getHeight() - MARGIN, MARGIN }, 3));

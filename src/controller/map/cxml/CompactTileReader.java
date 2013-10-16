@@ -25,20 +25,24 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for tiles, including rivers.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTileReader extends AbstractCompactReader implements CompactReader<Tile> {
+public final class CompactTileReader extends AbstractCompactReader implements
+		CompactReader<Tile> {
 	/**
 	 * Singleton.
 	 */
 	private CompactTileReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactTileReader READER = new CompactTileReader();
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -51,19 +55,21 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 */
 	@Override
 	public Tile read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		final Tile retval = new Tile(
 				TileType.getTileType(getParameterWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if (isRiver(event.asStartElement().getName())) {
-					retval.addFixture(new RiverFixture(parseRiver(//NOPMD
+					retval.addFixture(new RiverFixture(parseRiver(// NOPMD
 							event.asStartElement(), warner)));
 					spinUntilEnd(event.asStartElement().getName(), stream);
 				} else {
-					retval.addFixture(parseFixture(event.asStartElement(), stream, players, idFactory, warner));
+					retval.addFixture(parseFixture(event.asStartElement(),
+							stream, players, idFactory, warner));
 				}
 			} else if (event.isCharacters()) {
 				final String text = event.asCharacters().getData().trim();
@@ -71,25 +77,29 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 					warner.warn(new UnwantedChildException("tile", // NOPMD
 							"arbitrary text", event.getLocation()
 									.getLineNumber()));
-					retval.addFixture(new TextFixture(event.asCharacters()//NOPMD
+					retval.addFixture(new TextFixture(event.asCharacters()// NOPMD
 							.getData().trim(), -1));
 				}
-			} else if (event.isEndElement() && element.getName().equals(event.asEndElement().getName())) {
+			} else if (event.isEndElement()
+					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
 		return retval;
 	}
+
 	/**
 	 * List of readers we'll try subtags on.
 	 */
 	private final List<AbstractCompactReader> readers = Arrays
 			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
 					CompactResourceReader.READER, CompactTerrainReader.READER,
-					CompactTextReader.READER, CompactTownReader.READER, CompactGroundReader.READER });
+					CompactTextReader.READER, CompactTownReader.READER,
+					CompactGroundReader.READER });
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
+	 *
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -100,8 +110,9 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	 */
 	@SuppressWarnings("unchecked")
 	private TileFixture parseFixture(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final IDFactory idFactory, final Warning warner) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final IDFactory idFactory,
+			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
 		for (AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
@@ -109,8 +120,10 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 						element, stream, players, warner, idFactory);
 			}
 		}
-		throw new UnwantedChildException("tile", name, element.getLocation().getLineNumber());
+		throw new UnwantedChildException("tile", name, element.getLocation()
+				.getLineNumber());
 	}
+
 	/**
 	 * @param name the name associated with an element
 	 * @return whether it represents a river.
@@ -119,8 +132,11 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 		return "river".equalsIgnoreCase(name.getLocalPart())
 				|| "lake".equalsIgnoreCase(name.getLocalPart());
 	}
+
 	/**
-	 * Parse a river from XML. The caller is now responsible for getting past the closing tag.
+	 * Parse a river from XML. The caller is now responsible for getting past
+	 * the closing tag.
+	 *
 	 * @param element the element to parse
 	 * @param warner the Warning instance to use as needed
 	 * @return the parsed river
@@ -136,6 +152,7 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 			return River.getRiver(getParameter(element, "direction"));
 		}
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether it's one we can read
@@ -144,19 +161,25 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 	public boolean isSupportedTag(final String tag) {
 		return "tile".equalsIgnoreCase(tag);
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Tile obj, final int indent) throws IOException {
-		throw new IllegalStateException("Don't call this; call writeTile() instead");
+	public void write(final Writer out, final Tile obj, final int indent)
+			throws IOException {
+		throw new IllegalStateException(
+				"Don't call this; call writeTile() instead");
 	}
+
 	/**
 	 * Write a tile to a stream.
+	 *
 	 * @param out the stream to write to
 	 * @param obj the tile to write
 	 * @param point the location of the tile
@@ -186,8 +209,10 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 			out.append("</tile>\n");
 		}
 	}
+
 	/**
 	 * Write a river.
+	 *
 	 * @param out the stream we're writing to
 	 * @param obj the river to write
 	 * @param indent the indentation level
@@ -207,8 +232,10 @@ public final class CompactTileReader extends AbstractCompactReader implements Co
 		}
 		out.append('\n');
 	}
+
 	/**
 	 * Write a series of rivers.
+	 *
 	 * @param out the stream to write to
 	 * @param iter a series of rivers to write
 	 * @param indent the indentation level

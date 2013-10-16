@@ -71,10 +71,12 @@ public class MountainReader implements INodeHandler<Mountain> {
 	 */
 	@Override
 	public <S extends Mountain> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("mountain");
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"mountain");
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

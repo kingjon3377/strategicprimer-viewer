@@ -4,6 +4,7 @@ import model.map.IFixture;
 
 /**
  * A (marker) interface for things that can be part of a unit.
+ *
  * @author Jonathan Lovelace
  *
  */

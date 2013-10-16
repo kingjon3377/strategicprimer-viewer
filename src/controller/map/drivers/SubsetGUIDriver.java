@@ -37,12 +37,14 @@ public class SubsetGUIDriver implements ISPDriver {
 		try {
 			new SubsetGUIDriver().startDriver(args);
 		} catch (DriverFailedException except) {
-			Logger.getLogger(SubsetDriver.class.getName()).log(
-					Level.SEVERE, except.getMessage(), except.getCause());
+			Logger.getLogger(SubsetDriver.class.getName()).log(Level.SEVERE,
+					except.getMessage(), except.getCause());
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */
@@ -57,11 +59,14 @@ public class SubsetGUIDriver implements ISPDriver {
 		try {
 			frame.loadMain(args[0]);
 		} catch (IOException except) {
-			throw new DriverFailedException("I/O error loading main map " + args[0], except);
+			throw new DriverFailedException("I/O error loading main map "
+					+ args[0], except);
 		} catch (XMLStreamException except) {
-			throw new DriverFailedException("XML error reading main map " + args[0], except);
+			throw new DriverFailedException("XML error reading main map "
+					+ args[0], except);
 		} catch (SPFormatException except) {
-			throw new DriverFailedException("Invalid SP XML in main map " + args[0], except);
+			throw new DriverFailedException("Invalid SP XML in main map "
+					+ args[0], except);
 		}
 		for (final String arg : args) {
 			if (arg.equals(args[0])) {
@@ -70,6 +75,7 @@ public class SubsetGUIDriver implements ISPDriver {
 			frame.test(arg);
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -77,6 +83,7 @@ public class SubsetGUIDriver implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -84,6 +91,7 @@ public class SubsetGUIDriver implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

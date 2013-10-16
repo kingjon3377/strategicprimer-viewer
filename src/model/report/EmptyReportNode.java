@@ -1,6 +1,8 @@
 package model.report;
+
 /**
  * A node to replace usages of null.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -9,12 +11,14 @@ public final class EmptyReportNode extends AbstractReportNode {
 	 * Let's make this singleton, to reduce object allocations further.
 	 */
 	public static final EmptyReportNode NULL_NODE = new EmptyReportNode();
+
 	/**
 	 * Constructor.
 	 */
 	private EmptyReportNode() {
 		super("");
 	}
+
 	/**
 	 * @return the empty string
 	 */
@@ -22,6 +26,7 @@ public final class EmptyReportNode extends AbstractReportNode {
 	public String produce() {
 		return "";
 	}
+
 	/**
 	 * @param builder the string-builder used to build the report
 	 * @return it, unmodified
@@ -30,6 +35,7 @@ public final class EmptyReportNode extends AbstractReportNode {
 	public StringBuilder produce(final StringBuilder builder) {
 		return builder;
 	}
+
 	/**
 	 * @return the number of characters we'll add to the report, namely zero.
 	 */
@@ -37,6 +43,7 @@ public final class EmptyReportNode extends AbstractReportNode {
 	public int size() {
 		return 0;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it equals this; all EmptyReportNodes are equal.
@@ -45,6 +52,7 @@ public final class EmptyReportNode extends AbstractReportNode {
 	protected boolean equalsImpl(final AbstractReportNode obj) {
 		return this == obj || obj instanceof EmptyReportNode;
 	}
+
 	/**
 	 * @return a constant hash code
 	 */

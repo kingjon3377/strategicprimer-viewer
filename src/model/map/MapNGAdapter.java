@@ -10,6 +10,7 @@ import view.util.NullStream;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
+
 /**
  * An implementation of IMapNG that is, under the hood, just a MapView.
  *
@@ -23,13 +24,16 @@ public class MapNGAdapter implements IMapNG {
 	 * The old-interface map we use for our state.
 	 */
 	private final MapView state;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param wrapped the map to adapt to the new interface
 	 */
 	public MapNGAdapter(final MapView wrapped) {
 		state = wrapped;
 	}
+
 	/**
 	 * @param obj another map
 	 * @param out the stream to write to
@@ -58,6 +62,7 @@ public class MapNGAdapter implements IMapNG {
 			return false;
 		}
 	}
+
 	/**
 	 * @param obj the map that might be a subset of us
 	 * @param out the stream to write detailed results to
@@ -95,7 +100,8 @@ public class MapNGAdapter implements IMapNG {
 			out.println(", may be representation error");
 		} else {
 			for (TileFixture fix : obj.getOtherFixtures(point)) {
-				if (!state.getTile(point).getContents().contains(fix) && !Tile.shouldSkip(fix)) {
+				if (!state.getTile(point).getContents().contains(fix)
+						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
 					out.print("Extra fixture ");
@@ -118,9 +124,11 @@ public class MapNGAdapter implements IMapNG {
 	 * @return true if both are null or if they are equal according to one's
 	 *         equals(), false otherwise.
 	 */
-	private static <T> boolean safeEquals(@Nullable final T one, @Nullable final T two) {
+	private static <T> boolean safeEquals(@Nullable final T one,
+			@Nullable final T two) {
 		return one == null ? two == null : one.equals(two);
 	}
+
 	/**
 	 * @param ours Our rivers
 	 * @param theirs Another map's rivers for the same location
@@ -139,7 +147,8 @@ public class MapNGAdapter implements IMapNG {
 	}
 
 	/**
-	 * Compare to another map. This method is needed so the class can be put in a Pair.
+	 * Compare to another map. This method is needed so the class can be put in
+	 * a Pair.
 	 *
 	 * @param other the other map
 	 * @return the result of the comparison
@@ -173,6 +182,7 @@ public class MapNGAdapter implements IMapNG {
 	public TileType getBaseTerrain(final Point location) {
 		return state.getTile(location).getTerrain();
 	}
+
 	/**
 	 * @param location a location
 	 * @return whether that location is mountainous
@@ -180,7 +190,8 @@ public class MapNGAdapter implements IMapNG {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isMountainous(final Point location) {
-		if (dimensions().version < 2 && TileType.Mountain.equals(getBaseTerrain(location))) {
+		if (dimensions().version < 2
+				&& TileType.Mountain.equals(getBaseTerrain(location))) {
 			return true; // NOPMD
 		}
 		for (TileFixture fix : state.getTile(location)) {
@@ -209,7 +220,8 @@ public class MapNGAdapter implements IMapNG {
 	 * @return the forest (if any) at that location; null if there is none
 	 */
 	@Override
-	@Nullable public Forest getForest(final Point location) {
+	@Nullable
+	public Forest getForest(final Point location) {
 		Forest retval = null;
 		for (TileFixture fix : state.getTile(location)) {
 			if (fix instanceof Forest) {
@@ -224,9 +236,12 @@ public class MapNGAdapter implements IMapNG {
 	}
 
 	/**
-	 * We actually include the main Ground and Forest too; there's no easy way around that ...
+	 * We actually include the main Ground and Forest too; there's no easy way
+	 * around that ...
+	 *
 	 * @param location a location
-	 * @return a view of any fixtures on the map that aren't covered in the other querying methods.
+	 * @return a view of any fixtures on the map that aren't covered in the
+	 *         other querying methods.
 	 */
 	@Override
 	public Iterable<TileFixture> getOtherFixtures(final Point location) {
@@ -252,11 +267,13 @@ public class MapNGAdapter implements IMapNG {
 	/**
 	 * Implementations should aim to have only the "main" Ground here, and any
 	 * exposed or otherwise "extra" Fixtures in the "et cetera" collection.
+	 *
 	 * @param location a location
 	 * @return the Ground at that location
 	 */
 	@Override
-	@Nullable public Ground getGround(final Point location) {
+	@Nullable
+	public Ground getGround(final Point location) {
 		Ground retval = null;
 		for (TileFixture fix : state.getTile(location)) {
 			if (fix instanceof Ground) {
@@ -269,6 +286,7 @@ public class MapNGAdapter implements IMapNG {
 		}
 		return retval;
 	}
+
 	/**
 	 * A bit-bucket output stream.
 	 */
@@ -276,9 +294,12 @@ public class MapNGAdapter implements IMapNG {
 			new OutputStreamWriter(new NullStream()));
 
 	/**
-	 * FIXME: Subset calculation is slow; instead, check each method specified by the interface.
+	 * FIXME: Subset calculation is slow; instead, check each method specified
+	 * by the interface.
+	 *
 	 * @param obj an object
-	 * @return whether it's the same as us---we're a subset of it and it's a subset of us
+	 * @return whether it's the same as us---we're a subset of it and it's a
+	 *         subset of us
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
@@ -286,6 +307,7 @@ public class MapNGAdapter implements IMapNG {
 				|| (obj instanceof IMapNG && isSubset((IMapNG) obj, DEVNULL) && ((IMapNG) obj)
 						.isSubset(this, DEVNULL));
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -293,6 +315,7 @@ public class MapNGAdapter implements IMapNG {
 	public int hashCode() {
 		return state.hashCode();
 	}
+
 	/**
 	 * @return the map's dimensions and version
 	 */

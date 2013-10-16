@@ -45,9 +45,8 @@ public class MineReader implements INodeHandler<Mine> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Mine fix = new Mine(
-				getAttributeWithDeprecatedForm(element, "kind", "product",
-						warner),
+		final Mine fix = new Mine(getAttributeWithDeprecatedForm(element,
+				"kind", "product", warner),
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
 				getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
@@ -80,12 +79,14 @@ public class MineReader implements INodeHandler<Mine> {
 	 */
 	@Override
 	public <S extends Mine> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("mine", Pair.of("kind",
-				obj.getKind()), Pair.of("status", obj.getStatus().toString()),
-				Pair.of("id", Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"mine", Pair.of("kind", obj.getKind()), Pair.of("status", obj
+						.getStatus().toString()), Pair.of("id",
+						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -19,6 +19,7 @@ public final class TileDrawHelperFactory {
 	private TileDrawHelperFactory() {
 		verTwoHelpers = new HashMap<>();
 	}
+
 	/**
 	 * An instance of this class, for callers who don't want to create their
 	 * own.
@@ -39,7 +40,8 @@ public final class TileDrawHelperFactory {
 	 * @param zof a filter to tell a ver-two helper which tiles to draw
 	 * @return a draw helper for the specified map version
 	 */
-	public TileDrawHelper factory(final int version, final ImageObserver iobs, final ZOrderFilter zof) {
+	public TileDrawHelper factory(final int version, final ImageObserver iobs,
+			final ZOrderFilter zof) {
 		if (version == 1) {
 			return verOneHelper; // NOPMD
 		} else if (version == 2) {
@@ -51,6 +53,7 @@ public final class TileDrawHelperFactory {
 			throw new IllegalArgumentException("Unsupported map version");
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

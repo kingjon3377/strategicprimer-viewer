@@ -15,7 +15,8 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap>, Serializable 
 	/**
 	 * @return The map's dimensions and version.
 	 */
-	@NotNull MapDimensions getDimensions();
+	@NotNull
+	MapDimensions getDimensions();
 
 	/**
 	 * Add a player to the game.
@@ -28,18 +29,21 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap>, Serializable 
 	 * @param point a point
 	 * @return the tile at those coordinates
 	 */
-	@NotNull Tile getTile(@NotNull final Point point);
+	@NotNull
+	Tile getTile(@NotNull final Point point);
 
 	/**
 	 *
 	 * @return the players in the map
 	 */
-	@NotNull PlayerCollection getPlayers();
+	@NotNull
+	PlayerCollection getPlayers();
 
 	/**
 	 * We need this for subset calculations if nothing else.
 	 *
 	 * @return the collection of tiles.
 	 */
-	@NotNull TileCollection getTiles();
+	@NotNull
+	TileCollection getTiles();
 }

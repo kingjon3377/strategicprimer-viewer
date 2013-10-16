@@ -14,22 +14,27 @@ import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
+
 /**
  * A panel for the user to enter a unit's orders.
+ *
  * @author Jonathan Lovelace
  *
  */
-public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelectionListener {
+public class OrdersPanel extends BorderedPanel implements Applyable,
+		TreeSelectionListener {
 	/**
 	 * The text area in which the user writes the orders.
 	 */
 	private final JTextArea area = new JTextArea();
+
 	/**
 	 * Constructor.
 	 */
 	public OrdersPanel() {
 		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
-		// Can't use the multi-arg constructor, because of the references to 'this' below.
+		// Can't use the multi-arg constructor, because of the references to
+		// 'this' below.
 		setNorth(new JLabel("Orders for current selection, if a unit:"))
 				.setCenter(new JScrollPane(area)).setSouth(
 						new BorderedPanel().setLineStart(
@@ -37,10 +42,13 @@ public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelecti
 								.setLineEnd(
 										new ListenedButton("Revert", handler)));
 	}
+
 	/**
 	 * The current selection.
 	 */
-	@Nullable private Object sel;
+	@Nullable
+	private Object sel;
+
 	/**
 	 * If a unit is selected, change its orders to what the user wrote.
 	 */
@@ -63,6 +71,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable, TreeSelecti
 			area.setText("");
 		}
 	}
+
 	/**
 	 * @param evt the event to handle
 	 */

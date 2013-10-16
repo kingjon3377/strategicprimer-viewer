@@ -2,9 +2,9 @@ package controller.map.formatexceptions;
 
 /**
  * A custom exception for cases where a tag has a property it doesn't support.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public class UnsupportedPropertyException extends SPFormatException {
 	/**

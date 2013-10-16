@@ -42,6 +42,7 @@ public class FileOpener {
 		}
 		return istream;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -34,6 +34,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 	 * The map model we refer to.
 	 */
 	private final IViewerModel model;
+
 	/**
 	 * @param mapModel the map model we'll refer to
 	 * @param list a listener to send encounter events to
@@ -42,14 +43,16 @@ public final class ComponentMouseListener extends MouseAdapter {
 			final SelectionChangeListener list) {
 		super();
 		model = mapModel;
-		menu = new TerrainChangingMenu(model.getMapDimensions().version,
-				model.getMap().getTile(model.getSelectedPoint()), list, model, model);
+		menu = new TerrainChangingMenu(model.getMapDimensions().version, model
+				.getMap().getTile(model.getSelectedPoint()), list, model, model);
 	}
+
 	/**
 	 * @param event an event representing the current mouse position
 	 * @return a tool-tip message for the tile the mouse is currently over
 	 */
-	@Nullable public String getToolTipText(final MouseEvent event) {
+	@Nullable
+	public String getToolTipText(final MouseEvent event) {
 		final java.awt.Point eventPoint = event.getPoint();
 		final MapDimensions mapDim = model.getMapDimensions();
 		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
@@ -67,6 +70,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 			return null;
 		}
 	}
+
 	/**
 	 * @param strings strings
 	 * @return them concatenated together
@@ -82,6 +86,7 @@ public final class ComponentMouseListener extends MouseAdapter {
 		}
 		return build.toString();
 	}
+
 	/**
 	 * Comparator to find which fixture is on top of a tile.
 	 */
@@ -89,9 +94,9 @@ public final class ComponentMouseListener extends MouseAdapter {
 
 	/**
 	 * @param tile a tile
-	 * @return a HTML-ized String (including final newline entity) representing the
-	 *         TerrainFixtures on it, and the fixture the user can see as its
-	 *         top fixture.
+	 * @return a HTML-ized String (including final newline entity) representing
+	 *         the TerrainFixtures on it, and the fixture the user can see as
+	 *         its top fixture.
 	 */
 	private String getTerrainFixturesAndTop(final Tile tile) {
 		final Set<TileFixture> fixes = new ArraySet<>();
@@ -113,10 +118,12 @@ public final class ComponentMouseListener extends MouseAdapter {
 		}
 		return sbuild.toString();
 	}
+
 	/**
 	 * The terrain-changing menu.
 	 */
 	private final TerrainChangingMenu menu;
+
 	/**
 	 * Handle mouse clicks.
 	 *

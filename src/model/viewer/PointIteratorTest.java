@@ -18,8 +18,10 @@ import model.map.Tile;
 import org.junit.Test;
 
 import util.IteratorWrapper;
+
 /**
  * A test of the PointIterator.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -28,6 +30,7 @@ public class PointIteratorTest {
 	 * The expectation for each test.
 	 */
 	private static final String EXPECTATION = "Iterator produced points in expected order";
+
 	/**
 	 * An IViewerModel implementation for use in testing.
 	 */
@@ -40,8 +43,10 @@ public class PointIteratorTest {
 		 * The error message to throw when an unexpected method is called.
 		 */
 		private static final String MOCK_FAILURE_MSG = "Tests should never call this";
+
 		/**
 		 * Constructor.
+		 *
 		 * @param dimen the dimensions to return when asked.
 		 * @param select the "selected tile" location, to return when asked.
 		 */
@@ -49,10 +54,12 @@ public class PointIteratorTest {
 			dimensions = dimen;
 			selection = select;
 		}
+
 		/**
 		 * The "selected tile" location passed in at creation.
 		 */
 		private final Point selection;
+
 		/**
 		 * @param newMap ignored
 		 * @param name ignored
@@ -61,6 +68,7 @@ public class PointIteratorTest {
 		public void setMap(final MapView newMap, final String name) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @return nothing
 		 */
@@ -68,10 +76,12 @@ public class PointIteratorTest {
 		public MapView getMap() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * The dimensions we were told to return.
 		 */
 		private final MapDimensions dimensions;
+
 		/**
 		 * @return the dimensions given at creation
 		 */
@@ -79,6 +89,7 @@ public class PointIteratorTest {
 		public MapDimensions getMapDimensions() {
 			return dimensions;
 		}
+
 		/**
 		 * @param point ignored
 		 */
@@ -86,6 +97,7 @@ public class PointIteratorTest {
 		public void setSelection(final Point point) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param point ignored
 		 * @return nothing
@@ -94,6 +106,7 @@ public class PointIteratorTest {
 		public Tile getTile(final Point point) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param dim ignored
 		 */
@@ -101,6 +114,7 @@ public class PointIteratorTest {
 		public void setDimensions(final VisibleDimensions dim) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @return nothing
 		 */
@@ -108,6 +122,7 @@ public class PointIteratorTest {
 		public VisibleDimensions getDimensions() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @return nothing
 		 */
@@ -115,6 +130,7 @@ public class PointIteratorTest {
 		public String getMapFilename() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @return nothing
 		 */
@@ -122,6 +138,7 @@ public class PointIteratorTest {
 		public int getZoomLevel() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * Should never be called.
 		 */
@@ -129,6 +146,7 @@ public class PointIteratorTest {
 		public void zoomIn() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * Should never be called.
 		 */
@@ -136,6 +154,7 @@ public class PointIteratorTest {
 		public void zoomOut() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * Should never be called.
 		 */
@@ -143,6 +162,7 @@ public class PointIteratorTest {
 		public void resetZoom() {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @return the selected point
 		 */
@@ -150,6 +170,7 @@ public class PointIteratorTest {
 		public Point getSelectedPoint() {
 			return selection;
 		}
+
 		/**
 		 * @param list ignored
 		 */
@@ -157,6 +178,7 @@ public class PointIteratorTest {
 		public void addMapChangeListener(final MapChangeListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param list ignored
 		 */
@@ -164,20 +186,25 @@ public class PointIteratorTest {
 		public void removeMapChangeListener(final MapChangeListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param list ignored
 		 */
 		@Override
-		public void addSelectionChangeListener(final SelectionChangeListener list) {
+		public void addSelectionChangeListener(
+				final SelectionChangeListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param list ignored
 		 */
 		@Override
-		public void removeSelectionChangeListener(final SelectionChangeListener list) {
+		public void removeSelectionChangeListener(
+				final SelectionChangeListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param list ignored
 		 */
@@ -185,6 +212,7 @@ public class PointIteratorTest {
 		public void addVersionChangeListener(final VersionChangeListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param list ignored
 		 */
@@ -192,21 +220,26 @@ public class PointIteratorTest {
 		public void removeVersionChangeListener(final VersionChangeListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param list ignored
 		 */
 		@Override
-		public void addGraphicalParamsListener(final GraphicalParamsListener list) {
+		public void addGraphicalParamsListener(
+				final GraphicalParamsListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
+
 		/**
 		 * @param list ignored
 		 */
 		@Override
-		public void removeGraphicalParamsListener(final GraphicalParamsListener list) {
+		public void removeGraphicalParamsListener(
+				final GraphicalParamsListener list) {
 			throw new IllegalStateException(MOCK_FAILURE_MSG);
 		}
 	}
+
 	/**
 	 * Test without startFromSel, horizontally, forwards.
 	 */
@@ -233,6 +266,7 @@ public class PointIteratorTest {
 		}
 		assertEquals(EXPECTATION, expected, actual);
 	}
+
 	/**
 	 * Test with startFromSel, horizontally, forwards.
 	 */
@@ -259,8 +293,10 @@ public class PointIteratorTest {
 		}
 		assertEquals(EXPECTATION, expected, actual);
 	}
+
 	/**
-	 * Test working from the "selection" that the viewer starts with. And vertically, to exercise that part too.
+	 * Test working from the "selection" that the viewer starts with. And
+	 * vertically, to exercise that part too.
 	 */
 	@SuppressWarnings("static-method")
 	@Test
@@ -285,6 +321,7 @@ public class PointIteratorTest {
 		}
 		assertEquals(EXPECTATION, expected, actual);
 	}
+
 	/**
 	 * Test searching vertically, forwards.
 	 */
@@ -311,6 +348,7 @@ public class PointIteratorTest {
 		}
 		assertEquals(EXPECTATION, expected, actual);
 	}
+
 	/**
 	 * Test searching backwards, horizontally.
 	 */
@@ -337,6 +375,7 @@ public class PointIteratorTest {
 		}
 		assertEquals(EXPECTATION, expected, actual);
 	}
+
 	/**
 	 * Test searching vertically, backwards.
 	 */

@@ -19,6 +19,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -91,9 +92,9 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof TextFixture
-				&& text.equals(((TextFixture) obj).text)
-				&& turn == ((TextFixture) obj).turn);
+		return this == obj
+				|| (obj instanceof TextFixture
+						&& text.equals(((TextFixture) obj).text) && turn == ((TextFixture) obj).turn);
 	}
 
 	/**
@@ -133,10 +134,12 @@ public class TextFixture implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -144,6 +147,7 @@ public class TextFixture implements TileFixture, HasImage {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -151,6 +155,7 @@ public class TextFixture implements TileFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all text fixtures as a class
 	 */

@@ -22,8 +22,8 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public class Unit implements MobileFixture, HasImage,
-		HasKind, FixtureIterable<UnitMember>, HasName, HasOwner {
+public class Unit implements MobileFixture, HasImage, HasKind,
+		FixtureIterable<UnitMember>, HasName, HasOwner {
 	/**
 	 * Version UID for serialization.
 	 */
@@ -45,6 +45,7 @@ public class Unit implements MobileFixture, HasImage,
 	 * The members of the unit.
 	 */
 	private final Set<UnitMember> members = new ArraySet<>();
+
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
 	 *
@@ -91,20 +92,25 @@ public class Unit implements MobileFixture, HasImage,
 	public final String getName() {
 		return name;
 	}
+
 	/**
 	 * Add a member.
+	 *
 	 * @param member the member to add
 	 */
 	public void addMember(final UnitMember member) {
 		members.add(member);
 	}
+
 	/**
 	 * Remove a member from the unit.
+	 *
 	 * @param member the member to remove
 	 */
 	public void removeMember(final UnitMember member) {
 		members.remove(member);
 	}
+
 	/**
 	 * @return an iterator over the unit's members
 	 */
@@ -112,6 +118,7 @@ public class Unit implements MobileFixture, HasImage,
 	public Iterator<UnitMember> iterator() {
 		return members.iterator();
 	}
+
 	/**
 	 * @param obj an object
 	 *
@@ -140,6 +147,7 @@ public class Unit implements MobileFixture, HasImage,
 
 	/**
 	 * TODO: Use a StringBuilder, specifying the size.
+	 *
 	 * @return a String representation of the Unit.
 	 */
 	@Override
@@ -148,16 +156,20 @@ public class Unit implements MobileFixture, HasImage,
 				+ ", named " + name : "Unit of type " + kind
 				+ ", belonging to " + owner + ", named " + name;
 	}
+
 	/**
 	 * TODO: Use a StringBuilder, specifying the size.
+	 *
 	 * @param player the container's player
-	 * @return a briefer String representation of the Unit, only naming the owner if different
+	 * @return a briefer String representation of the Unit, only naming the
+	 *         owner if different
 	 */
 	public String toStringInner(final Player player) {
 		return owner.equals(player) ? name + " (" + kind + ')' : (owner
 				.isIndependent() ? name + ", an independent " + kind : name
 				+ " (" + kind + "), belonging to " + owner);
 	}
+
 	/**
 	 * @return a verbose description of the Unit.
 	 */
@@ -173,6 +185,7 @@ public class Unit implements MobileFixture, HasImage,
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * @param fix A TileFixture to compare to
 	 *
@@ -233,6 +246,7 @@ public class Unit implements MobileFixture, HasImage,
 						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
 							.equals(name)));
 	}
+
 	/**
 	 * @param player the town's new owner
 	 */
@@ -240,6 +254,7 @@ public class Unit implements MobileFixture, HasImage,
 	public final void setOwner(final Player player) {
 		owner = player;
 	}
+
 	/**
 	 * @param nomen the unit's new name
 	 */
@@ -247,6 +262,7 @@ public class Unit implements MobileFixture, HasImage,
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -254,27 +270,32 @@ public class Unit implements MobileFixture, HasImage,
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The unit's orders. This is serialized to and from XML, but does not
 	 * affect equality or hashing, and is not printed in toString.
 	 */
 	private String orders;
+
 	/**
 	 * @param newOrders the unit's new orders
 	 */
 	public void setOrders(final String newOrders) {
 		orders = newOrders;
 	}
+
 	/**
 	 * @return the unit's orders
 	 */
 	public String getOrders() {
 		return orders;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -282,6 +303,7 @@ public class Unit implements MobileFixture, HasImage,
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -289,6 +311,7 @@ public class Unit implements MobileFixture, HasImage,
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a phrase describing all units as a class
 	 */

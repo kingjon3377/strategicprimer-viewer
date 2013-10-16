@@ -43,8 +43,10 @@ import view.util.SplitWithWeights;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
+
 /**
  * A window to let the player manage units.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -57,10 +59,14 @@ public class WorkerMgmtFrame extends JFrame {
 	 * A constant for when a split panel should be divided not quite evenly.
 	 */
 	private static final double TWO_THIRDS = 2.0 / 3.0;
+
 	/**
-	 * At this point (proof-of-concept) we default to the first player of the choices.
+	 * At this point (proof-of-concept) we default to the first player of the
+	 * choices.
+	 *
 	 * @param model the driver model.
-	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
+	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu
+	 *        items.
 	 */
 	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Strategic Primer worker management");
@@ -84,17 +90,19 @@ public class WorkerMgmtFrame extends JFrame {
 						.getMap().getPlayers().getCurrentPlayer()));
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
-		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
-		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
+		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel
+				.getRoot()).getPath()));
+		final ReportUpdater reportUpdater = new ReportUpdater(model,
+				reportModel);
 		pch.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
 				HALF_WAY,
 				HALF_WAY,
-				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
-						new BorderedPanel(new JScrollPane(tree), plabel, null,
-								null, null),
+				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, TWO_THIRDS,
+						TWO_THIRDS, new BorderedPanel(new JScrollPane(tree),
+								plabel, null, null, null),
 						new BorderedPanel(ordersPanel, new ListenedButton(
 								"Add New Unit", new WindowShower(newUnitFrame,
 										"Add New Unit")), new ListenedButton(
@@ -111,8 +119,10 @@ public class WorkerMgmtFrame extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
+
 	/**
 	 * A listener to show a window on button press.
+	 *
 	 * @author Jonathan Lovelace
 	 *
 	 */
@@ -125,6 +135,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * The button to listen for.
 		 */
 		private final String action;
+
 		/**
 		 * @param window the window to show
 		 * @param buttonText the button to listen for.
@@ -133,8 +144,10 @@ public class WorkerMgmtFrame extends JFrame {
 			frame = window;
 			action = buttonText;
 		}
+
 		/**
 		 * Handle button press.
+		 *
 		 * @param evt the event to handle
 		 */
 		@Override
@@ -144,8 +157,10 @@ public class WorkerMgmtFrame extends JFrame {
 			}
 		}
 	}
+
 	/**
 	 * A class to update the report when a new map is loaded.
+	 *
 	 * @author Jonathan Lovelace
 	 *
 	 */
@@ -159,8 +174,10 @@ public class WorkerMgmtFrame extends JFrame {
 		 * The pane that we update.
 		 */
 		private final DefaultTreeModel reportModel;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param wmodel The driver model to get the map from
 		 * @param tmodel the tree model we update
 		 */
@@ -168,6 +185,7 @@ public class WorkerMgmtFrame extends JFrame {
 			model = wmodel;
 			reportModel = tmodel;
 		}
+
 		/**
 		 * Handle notification that a new map was loaded.
 		 */
@@ -177,19 +195,24 @@ public class WorkerMgmtFrame extends JFrame {
 					model.getMap(), model.getMap().getPlayers()
 							.getCurrentPlayer()));
 		}
+
 		/**
 		 * Handle change in current player.
+		 *
 		 * @param old the previous current player
 		 * @param newPlayer the new current player
 		 */
 		@Override
-		public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		public void playerChanged(@Nullable final Player old,
+				final Player newPlayer) {
 			reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
 					model.getMap(), newPlayer));
 		}
 	}
+
 	/**
 	 * Handle the strategy-export button.
+	 *
 	 * @author Jonathan Lovelace
 	 *
 	 */
@@ -201,7 +224,8 @@ public class WorkerMgmtFrame extends JFrame {
 		/**
 		 * The logger. FIXME: Should be private static final on the outer class.
 		 */
-		private static final Logger LOGGER = Logger.getLogger(WorkerMgmtFrame.class.getName());
+		private static final Logger LOGGER = Logger
+				.getLogger(WorkerMgmtFrame.class.getName());
 		/**
 		 * The file chooser.
 		 */
@@ -210,6 +234,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * The strategy-exporter.
 		 */
 		private final StrategyExporter exp;
+
 		/**
 		 * @param outer the surrounding frame.
 		 * @param smodel the driver model.
@@ -218,49 +243,58 @@ public class WorkerMgmtFrame extends JFrame {
 			parent = outer;
 			exp = new StrategyExporter(smodel);
 		}
+
 		/**
 		 * Handle button press.
+		 *
 		 * @param evt the event to handle.
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-				try (final FileWriter writer = new FileWriter(chooser
-						.getSelectedFile())) {
+				try (final FileWriter writer = new FileWriter(
+						chooser.getSelectedFile())) {
 					writer.append(exp.createStrategy());
 				} catch (IOException except) {
-					LOGGER.log(Level.SEVERE, "I/O error exporting strategy", except);
+					LOGGER.log(Level.SEVERE, "I/O error exporting strategy",
+							except);
 				}
 			}
 		}
 	}
+
 	/**
 	 * A class to export a "proto-strategy" to file.
 	 */
 	public static class StrategyExporter {
 		/**
 		 * Constructor.
+		 *
 		 * @param wmodel the driver model to draw from
 		 */
 		public StrategyExporter(final IWorkerModel wmodel) {
 			model = wmodel;
 		}
+
 		/**
 		 * The worker model.
 		 */
 		private final IWorkerModel model;
+
 		/**
 		 * @return the proto-strategy as a String
 		 */
 		public String createStrategy() {
 			final StringBuilder builder = new StringBuilder();
 			builder.append('[');
-			builder.append(model.getMap().getPlayers().getCurrentPlayer().getName());
+			builder.append(model.getMap().getPlayers().getCurrentPlayer()
+					.getName());
 			builder.append("\nTurn ");
 			builder.append(model.getMap().getCurrentTurn());
 			builder.append("]\n\nInventions: TODO: any?\n\n");
 			final Map<String, List<Unit>> unitsByKind = new HashMap<>();
-			for (final Unit unit : model.getUnits(model.getMap().getPlayers().getCurrentPlayer())) {
+			for (final Unit unit : model.getUnits(model.getMap().getPlayers()
+					.getCurrentPlayer())) {
 				// ESCA-JAVA0177:
 				final List<Unit> list; // NOPMD
 				if (unitsByKind.containsKey(unit.getKind())) {
@@ -288,6 +322,7 @@ public class WorkerMgmtFrame extends JFrame {
 			}
 			return builder.toString();
 		}
+
 		/**
 		 * @param unit a unit
 		 * @return a String representing its members
@@ -295,7 +330,8 @@ public class WorkerMgmtFrame extends JFrame {
 		private static String unitMembers(final Unit unit) {
 			if (unit.iterator().hasNext()) {
 				// Assume at least two K.
-				final StringBuilder builder = new StringBuilder(2048).append(" [");
+				final StringBuilder builder = new StringBuilder(2048)
+						.append(" [");
 				final Iterator<UnitMember> iter = unit.iterator();
 				while (iter.hasNext()) {
 					final UnitMember member = iter.next();
@@ -310,6 +346,7 @@ public class WorkerMgmtFrame extends JFrame {
 				return "";
 			}
 		}
+
 		/**
 		 * @param member a unit member
 		 * @return a suitable string for it

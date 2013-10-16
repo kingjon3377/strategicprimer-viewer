@@ -70,7 +70,9 @@ public class TileReader implements INodeHandler<Tile> {
 	}
 
 	/**
-	 * Parse a river from XML. Method extracted to avoid a "instantiation inside loops" warning.
+	 * Parse a river from XML. Method extracted to avoid a
+	 * "instantiation inside loops" warning.
+	 *
 	 * @param stream the stream of XML events
 	 * @param players the collection of players
 	 * @param warner the Warning instance
@@ -83,9 +85,8 @@ public class TileReader implements INodeHandler<Tile> {
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory, final XMLEvent event)
 			throws SPFormatException {
-		return new RiverFixture(READER.parse(
-				event.asStartElement(), stream, players, warner,
-				idFactory));
+		return new RiverFixture(READER.parse(event.asStartElement(), stream,
+				players, warner, idFactory));
 	}
 
 	// ESCA-JAVA0138:
@@ -157,24 +158,26 @@ public class TileReader implements INodeHandler<Tile> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Tile obj) {
-		throw new IllegalStateException("Never call this; call writeTile() instead");
+		throw new IllegalStateException(
+				"Never call this; call writeTile() instead");
 	}
+
 	/**
 	 * Create an intermediate representation to write to a writer.
+	 *
 	 * @param obj the Tile to write
 	 * @param point its location
 	 * @return an intermediate representation
 	 */
-	public static SPIntermediateRepresentation writeTile(final Point point, final Tile obj) {
+	public static SPIntermediateRepresentation writeTile(final Point point,
+			final Tile obj) {
 		if (obj.isEmpty()) {
 			return new SPIntermediateRepresentation(""); // NOPMD
 		} else {
 			final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 					"tile");
-			retval.addAttribute("row",
-					Integer.toString(point.row));
-			retval.addAttribute("column",
-					Integer.toString(point.col));
+			retval.addAttribute("row", Integer.toString(point.row));
+			retval.addAttribute("column", Integer.toString(point.col));
 			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
 				retval.addAttribute("kind", obj.getTerrain().toXML());
 			}
@@ -186,8 +189,11 @@ public class TileReader implements INodeHandler<Tile> {
 			return retval;
 		}
 	}
+
 	/**
-	 * "Write" a TileFixture by creating its SPIR and attaching it to the proper parent.
+	 * "Write" a TileFixture by creating its SPIR and attaching it to the proper
+	 * parent.
+	 *
 	 * @param fix the current fixture
 	 * @param parent the SPIR node representing the Tile, for rivers
 	 */
@@ -214,6 +220,7 @@ public class TileReader implements INodeHandler<Tile> {
 	 * A reader to use to parse and write Rivers.
 	 */
 	private static final RiverReader READER = new RiverReader();
+
 	/**
 	 * @return a String representation of the object
 	 */

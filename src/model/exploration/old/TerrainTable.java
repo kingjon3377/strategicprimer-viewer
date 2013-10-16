@@ -22,8 +22,7 @@ public class TerrainTable implements EncounterTable {
 	/**
 	 * Mapping from terrain type to "events".
 	 */
-	private final Map<TileType, String> mapping = new EnumMap<>(
-			TileType.class);
+	private final Map<TileType, String> mapping = new EnumMap<>(TileType.class);
 
 	/**
 	 * Constructor.

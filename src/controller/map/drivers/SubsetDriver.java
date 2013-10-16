@@ -48,6 +48,7 @@ public final class SubsetDriver implements ISPDriver {
 		 */
 		Fail;
 	}
+
 	/**
 	 * @param args the files to check
 	 */
@@ -56,13 +57,14 @@ public final class SubsetDriver implements ISPDriver {
 		try {
 			new SubsetDriver().startDriver(args);
 		} catch (DriverFailedException except) {
-			Logger.getLogger(SubsetDriver.class.getName()).log(
-					Level.SEVERE, except.getMessage(), except.getCause());
+			Logger.getLogger(SubsetDriver.class.getName()).log(Level.SEVERE,
+					except.getMessage(), except.getCause());
 		}
 	}
 
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */
@@ -79,11 +81,14 @@ public final class SubsetDriver implements ISPDriver {
 			mainMap = reader.readMap(args[0], new Warning(// NOPMD
 					Warning.Action.Ignore));
 		} catch (IOException except) {
-			throw new DriverFailedException("I/O error loading main map " + args[0], except);
+			throw new DriverFailedException("I/O error loading main map "
+					+ args[0], except);
 		} catch (XMLStreamException except) {
-			throw new DriverFailedException("XML error reading main map " + args[0], except);
+			throw new DriverFailedException("XML error reading main map "
+					+ args[0], except);
 		} catch (SPFormatException except) {
-			throw new DriverFailedException("Invalid SP XML in main map " + args[0], except);
+			throw new DriverFailedException("Invalid SP XML in main map "
+					+ args[0], except);
 		}
 		SystemOut.SYS_OUT
 				.print("OK if strict subset, WARN if needs manual checking,");
@@ -97,8 +102,10 @@ public final class SubsetDriver implements ISPDriver {
 			printReturn(doSubsetTest(arg, reader, mainMap));
 		}
 	}
+
 	/**
 	 * Print a Returns value to stdout.
+	 *
 	 * @param value the value to print.
 	 */
 	private static void printReturn(final Returns value) {
@@ -116,6 +123,7 @@ public final class SubsetDriver implements ISPDriver {
 			throw new IllegalStateException("Can't get here");
 		}
 	}
+
 	/**
 	 * @param filename a filename
 	 * @param reader the map reader to use
@@ -147,6 +155,7 @@ public final class SubsetDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -154,6 +163,7 @@ public final class SubsetDriver implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -161,6 +171,7 @@ public final class SubsetDriver implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

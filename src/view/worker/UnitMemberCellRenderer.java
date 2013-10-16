@@ -24,8 +24,10 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import util.ImageLoader;
+
 /**
  * A cell renderer for the worker management tree.
+ *
  * @author Jonathan Lovelace
  */
 public class UnitMemberCellRenderer implements TreeCellRenderer {
@@ -33,6 +35,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * Default renderer, for cases we don't know how to handle.
 	 */
 	private static final DefaultTreeCellRenderer DEFAULT = new DefaultTreeCellRenderer();
+
 	/**
 	 * @param tree the tree being rendered
 	 * @param value the object in the tree that's being rendered
@@ -43,15 +46,18 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @param hasFocus whether the tree has the focus
 	 * @return a component representing the cell
 	 */
-	// ESCA-JAVA0138: We have to have this many params to override the superclass method.
+	// ESCA-JAVA0138: We have to have this many params to override the
+	// superclass method.
 	@Override
-	public Component getTreeCellRendererComponent(@Nullable final JTree tree, @Nullable final Object value,
-			final boolean selected, final boolean expanded, final boolean leaf, final int row,
+	public Component getTreeCellRendererComponent(@Nullable final JTree tree,
+			@Nullable final Object value, final boolean selected,
+			final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
 		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
 				value, selected, expanded, leaf, row, hasFocus);
 		if (component == null) {
-			throw new IllegalStateException("Default produced null component somehow");
+			throw new IllegalStateException(
+					"Default produced null component somehow");
 		}
 		final Object internal = value instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) value)
 				.getUserObject() : value;
@@ -61,7 +67,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		if (internal instanceof Worker) {
 			final Worker worker = (Worker) internal;
 			// Assume at least a K in size.
-			final StringBuilder builder = new StringBuilder(1024).append("<html><p>");
+			final StringBuilder builder = new StringBuilder(1024)
+					.append("<html><p>");
 			builder.append(worker.getName());
 			if (!"human".equals(worker.getRace())) {
 				builder.append(", a ").append(worker.getRace());
@@ -75,7 +82,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					} else {
 						notFirst = true;
 					}
-					builder.append(job.getName()).append(' ').append(job.getLevel());
+					builder.append(job.getName()).append(' ')
+							.append(job.getLevel());
 				}
 				builder.append(')');
 			}
@@ -92,6 +100,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		return component;
 	}
+
 	/**
 	 * @param obj a HasImage object
 	 * @return an icon representing it
@@ -107,7 +116,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		// default image for that kind of fixture.
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
-		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
+		} catch (final FileNotFoundException e) { // $codepro.audit.disable
+													// logExceptions
 			LOGGER.log(Level.SEVERE, "image file images/" + image
 					+ " not found");
 			retval = defaultFixtIcon;
@@ -117,6 +127,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		return retval;
 	}
+
 	/**
 	 * Logger.
 	 */
@@ -139,22 +150,22 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
 				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
-			final Color saveColor = pen.getColor();
-			pen.setColor(Color.RED);
-			pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
-					(int) Math.round(imageSize * margin) + 1,
-					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
-					(int) Math.round(imageSize * (1.0 - margin * 2.0)),
-					(int) Math.round(imageSize * (margin / 2.0)),
-					(int) Math.round(imageSize * (margin / 2.0)));
-			pen.setColor(saveColor);
-			pen.fillRoundRect(
-					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
-					((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
-					(int) Math.round(imageSize * margin * 2.0),
-					(int) Math.round(imageSize * margin * 2.0),
-					(int) Math.round(imageSize * margin / 2.0),
-					(int) Math.round(imageSize * margin / 2.0));
+		final Color saveColor = pen.getColor();
+		pen.setColor(Color.RED);
+		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
+				(int) Math.round(imageSize * margin) + 1,
+				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+				(int) Math.round(imageSize * (margin / 2.0)),
+				(int) Math.round(imageSize * (margin / 2.0)));
+		pen.setColor(saveColor);
+		pen.fillRoundRect(
+				((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+				((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+				(int) Math.round(imageSize * margin * 2.0),
+				(int) Math.round(imageSize * margin * 2.0),
+				(int) Math.round(imageSize * margin / 2.0),
+				(int) Math.round(imageSize * margin / 2.0));
 		return new ImageIcon(temp);
 
 	}

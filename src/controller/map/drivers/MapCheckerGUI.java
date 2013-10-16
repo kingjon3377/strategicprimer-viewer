@@ -7,7 +7,9 @@ import view.map.misc.MapCheckerFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 
 /**
- * A driver to check every map file in a list for errors and report the results in a window.
+ * A driver to check every map file in a list for errors and report the results
+ * in a window.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -25,6 +27,7 @@ public class MapCheckerGUI implements ISPDriver {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(MapCheckerGUI.class
 			.getName());
+
 	/**
 	 * @param args the list of filenames to check
 	 */
@@ -35,8 +38,10 @@ public class MapCheckerGUI implements ISPDriver {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if not enough arguments
 	 */
@@ -56,6 +61,7 @@ public class MapCheckerGUI implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -63,6 +69,7 @@ public class MapCheckerGUI implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

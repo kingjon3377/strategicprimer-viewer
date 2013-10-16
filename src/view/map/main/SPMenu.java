@@ -41,20 +41,24 @@ public class SPMenu extends JMenuBar {
 		add(createFileMenu(handler, parent));
 		add(createMapMenu(parent, model));
 	}
+
 	/**
 	 * Create the "map" menu, including go-to-tile, find, and zooming function.
+	 *
 	 * @param parent the menu-bar's parent window
 	 * @param model the map model
 	 * @return the menu created
 	 */
-	private static JMenu createMapMenu(final JFrame parent, final IViewerModel model) {
+	private static JMenu createMapMenu(final JFrame parent,
+			final IViewerModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		retval.add(MenuItemCreator.createMenuItem("Go to tile", KeyEvent.VK_T,
 				MenuItemCreator.createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates", new ActionListener() {
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
 						if (event != null
 								&& "Go to tile".equals(event.getActionCommand())) {
 							new SelectTileDialog(parent, model)
@@ -63,11 +67,13 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		final FindDialog finder = new FindDialog(parent, model);
-		retval.add(MenuItemCreator.createMenuItem("Find a fixture", KeyEvent.VK_SLASH,
+		retval.add(MenuItemCreator.createMenuItem("Find a fixture",
+				KeyEvent.VK_SLASH,
 				KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
 				"Find a fixture by name, kind, or ID#", new ActionListener() {
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
 						if (event != null
 								&& "Find a fixture".equals(event
 										.getActionCommand())) {
@@ -80,7 +86,8 @@ public class SPMenu extends JMenuBar {
 				"Find the next fixture matching the pattern",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
 						if (event != null
 								&& "Find next".equals(event.getActionCommand())) {
 							finder.search();
@@ -102,7 +109,8 @@ public class SPMenu extends JMenuBar {
 				"Mark a player as the current player in the map", pch));
 		pch.addPlayerChangeListener(new PlayerChangeListener() {
 			@Override
-			public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+			public void playerChanged(@Nullable final Player old,
+					final Player newPlayer) {
 				final PlayerCollection pColl = model.getMap().getPlayers();
 				for (final Player player : pColl) {
 					if (player.equals(newPlayer)) {
@@ -120,10 +128,12 @@ public class SPMenu extends JMenuBar {
 	 * Create the map menu.
 	 *
 	 * @param handler the class to handle I/O related menu items
-	 * @param parent the menu-bar's parent window---the window to close on "Close".
+	 * @param parent the menu-bar's parent window---the window to close on
+	 *        "Close".
 	 * @return the map menu.
 	 */
-	private static JMenu createFileMenu(final IOHandler handler, final JFrame parent) {
+	private static JMenu createFileMenu(final IOHandler handler,
+			final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
@@ -158,23 +168,25 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
-				MenuItemCreator.createHotkey(KeyEvent.VK_Q),
-				"Quit the viewer", new ActionListener() {
+				MenuItemCreator.createHotkey(KeyEvent.VK_Q), "Quit the viewer",
+				new ActionListener() {
 					/**
 					 * Handle the menu "button" press.
 					 *
 					 * @param event the event to handle
 					 */
 					@Override
-					public void actionPerformed(@Nullable final ActionEvent event) {
+					public void actionPerformed(
+							@Nullable final ActionEvent event) {
 						if (event != null
 								&& "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
 						}
 					}
-		}));
+				}));
 		return fileMenu;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

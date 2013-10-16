@@ -40,7 +40,6 @@ public class DuplicateFixtureRemover implements ISPDriver {
 					+ "and on the same tile---from a map.",
 			DuplicateFixtureRemover.class);
 
-
 	/**
 	 * @param args the list of maps to run the filter on
 	 */
@@ -52,10 +51,12 @@ public class DuplicateFixtureRemover implements ISPDriver {
 					Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
+
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills,
 	 * forests of the same kind, oases, etc.---we use
 	 * TileFixture#equalsIgnoringID(TileFixture)) from every tile in a map.
+	 *
 	 * @param map the map to filter
 	 * @param out the stream to report IDs of removed fixtures on.
 	 */
@@ -64,6 +65,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			filter(map.getTile(point), out);
 		}
 	}
+
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills,
 	 * forests of the same kind, oases, etc.---we use
@@ -100,16 +102,20 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			tile.removeFixture(fix);
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args Command-line arguments
 	 * @throws DriverFailedException on error
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			SystemOut.SYS_OUT.println("Usage: DuplicateFixtureRemover map [map ...]");
-			throw new DriverFailedException("Not enough arguments", new IllegalArgumentException("Need at least one argument"));
+			SystemOut.SYS_OUT
+					.println("Usage: DuplicateFixtureRemover map [map ...]");
+			throw new DriverFailedException("Not enough arguments",
+					new IllegalArgumentException("Need at least one argument"));
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (final String filename : args) {
@@ -135,6 +141,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -142,6 +149,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -149,6 +157,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

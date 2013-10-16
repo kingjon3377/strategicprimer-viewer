@@ -42,9 +42,8 @@ public class CaveReader implements INodeHandler<Cave> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(element.getName(), stream);
-		final Cave fix = new Cave(Integer.parseInt(XMLHelper
-				.getAttribute(element, "dc")), getOrGenerateID(element, warner,
-				idFactory));
+		final Cave fix = new Cave(Integer.parseInt(XMLHelper.getAttribute(
+				element, "dc")), getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -71,12 +70,13 @@ public class CaveReader implements INodeHandler<Cave> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Cave obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("cave", Pair.of("dc",
-				Integer.toString(obj.getDC())), Pair.of("id",
-				Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"cave", Pair.of("dc", Integer.toString(obj.getDC())), Pair.of(
+						"id", Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

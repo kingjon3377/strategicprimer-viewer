@@ -27,25 +27,30 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * The current tile.
 	 */
 	private Tile tile = new Tile(TileType.NotVisible);
+
 	/**
 	 * Constructor.
 	 *
 	 * @param sources sources to listen to
 	 */
-	public FixtureListModel(final Iterable<? extends SelectionChangeSource> sources) {
+	public FixtureListModel(
+			final Iterable<? extends SelectionChangeSource> sources) {
 		super();
 		for (final SelectionChangeSource source : sources) {
 			source.addSelectionChangeListener(this);
 		}
 	}
+
 	/**
 	 * @param old the formerly selected location
 	 * @param newPoint the newly selected location
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old,
+			final Point newPoint) {
 		// Do nothing; we only care about the tile, not its location.
 	}
+
 	/**
 	 * @param old the formerly selected tile
 	 * @param newTile the newly selected tile
@@ -61,13 +66,16 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 			addElement(fix);
 		}
 	}
+
 	/**
 	 * Add a tile fixture to the current tile.
+	 *
 	 * @param fix the fixture to add.
 	 */
 	public void addFixture(final TileFixture fix) {
 		if (fix instanceof TileTypeFixture) {
-			if (!tile.getTerrain().equals(((TileTypeFixture) fix).getTileType())) {
+			if (!tile.getTerrain()
+					.equals(((TileTypeFixture) fix).getTileType())) {
 				tile.setTerrain(((TileTypeFixture) fix).getTileType());
 			}
 			addElement(fix);
@@ -78,8 +86,10 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 			addElement(fix);
 		}
 	}
+
 	/**
 	 * Remove the specified items from the tile and the list.
+	 *
 	 * @param list the list of items to remove
 	 */
 	public void remove(final List<TileFixture> list) {
@@ -92,6 +102,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 			}
 		}
 	}
+
 	/**
 	 * A FixtureListModel is equal only to another FixtureListModel listening
 	 * for the same property and representing the same tile.
@@ -105,6 +116,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 				|| (obj instanceof FixtureListModel && ((FixtureListModel) obj).tile
 						.equals(tile));
 	}
+
 	/**
 	 * @return a hash code for the object
 	 */

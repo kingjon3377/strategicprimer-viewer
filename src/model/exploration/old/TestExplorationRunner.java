@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author Jonathan Lovelace
  *
  */
-//ESCA-JAVA0137:
+// ESCA-JAVA0137:
 public final class TestExplorationRunner {
 	/**
 	 * Extracted constant, to fix a warning because it occurred three or more
@@ -90,12 +90,13 @@ public final class TestExplorationRunner {
 		runner.loadTable("temperate_major_tree", new ConstantTable(
 				"temperate_major_test"));
 		final Point point = PointFactory.point(0, 0);
-		assertEquals(
-				"primary tree test for boreal forest",
+		assertEquals("primary tree test for boreal forest",
 				runner.getPrimaryTree(point, new Tile(TileType.BorealForest)),
 				"boreal_major_test");
-		assertEquals("primary tree test for temperate forest",
-				runner.getPrimaryTree(point, new Tile(TileType.TemperateForest)), "temperate_major_test");
+		assertEquals(
+				"primary tree test for temperate forest",
+				runner.getPrimaryTree(point, new Tile(TileType.TemperateForest)),
+				"temperate_major_test");
 	}
 
 	/**
@@ -124,10 +125,10 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		final Point point = PointFactory.point(0, 0);
-		assertEquals("first table", runner.consultTable(TEST_TABLE_ONE,
-				point, new Tile(TileType.Tundra)), "test_one");
-		assertEquals("second table", runner.consultTable(TEST_TABLE_TWO,
-				point, new Tile(TileType.Tundra)), "test_two");
+		assertEquals("first table", runner.consultTable(TEST_TABLE_ONE, point,
+				new Tile(TileType.Tundra)), "test_one");
+		assertEquals("second table", runner.consultTable(TEST_TABLE_TWO, point,
+				new Tile(TileType.Tundra)), "test_two");
 		assertEquals("third table", runner.consultTable(TEST_TABLE_THREE,
 				point, new Tile(TileType.Tundra)), TEST_THREE);
 	}
@@ -158,8 +159,7 @@ public final class TestExplorationRunner {
 				TEST_TABLE_TWO, point, new Tile(TileType.Tundra)),
 				"( test_three )");
 		assertEquals("no recursion", runner.recursiveConsultTable(
-				TEST_TABLE_THREE, point, new Tile(TileType.Tundra)),
-				TEST_THREE);
+				TEST_TABLE_THREE, point, new Tile(TileType.Tundra)), TEST_THREE);
 		assertEquals("one-sided split", runner.recursiveConsultTable(
 				"test_table_four", point, new Tile(TileType.Plains)),
 				"_ ( ( test_three ) )");
@@ -185,7 +185,8 @@ public final class TestExplorationRunner {
 				"defaultResults in boreal forest",
 				"The primary rock type here is test_rock.\nThe main kind of tree is boreal_tree.\n",
 				runner.defaultResults(point, new Tile(TileType.BorealForest)));
-		assertEquals("defaultResults in temperate forest",
+		assertEquals(
+				"defaultResults in temperate forest",
 				"The primary rock type here is test_rock.\n"
 						+ "The main kind of tree is temperate_tree.\n",
 				runner.defaultResults(point, new Tile(TileType.TemperateForest)));

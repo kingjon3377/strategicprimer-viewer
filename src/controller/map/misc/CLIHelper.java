@@ -27,21 +27,26 @@ public class CLIHelper implements ICLIHelper {
 	 * The input stream we'll read from.
 	 */
 	private final BufferedReader istream;
+
 	/**
 	 * No-arg constructor.
 	 */
 	public CLIHelper() {
 		this(System.in);
 	}
+
 	/**
 	 * Constructor.
+	 *
 	 * @param in the stream to read from.
 	 */
 	public CLIHelper(final InputStream in) { // NOPMD
 		istream = new BufferedReader(new InputStreamReader(in));
 	}
+
 	/**
 	 * Print a list of things by name and number.
+	 *
 	 * @param out the stream to write to
 	 * @param list the list to print.
 	 */
@@ -56,6 +61,7 @@ public class CLIHelper implements ICLIHelper {
 
 	/**
 	 * Have the user choose an item from a list.
+	 *
 	 * @param <T> The type of things in the list
 	 * @param items the list of items
 	 * @param desc the description to give before printing the list
@@ -68,7 +74,8 @@ public class CLIHelper implements ICLIHelper {
 	@Override
 	public <T extends HasName> int chooseFromList(
 			final List<? extends T> items, final String desc,
-			final String none, final String prompt, final boolean auto) throws IOException {
+			final String none, final String prompt, final boolean auto)
+			throws IOException {
 		if (items.isEmpty()) {
 			SystemOut.SYS_OUT.println(none);
 			return -1; // NOPMD
@@ -105,7 +112,9 @@ public class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Read input from stdin repeatedly until a nonnegative integer is entered, and return it.
+	 * Read input from stdin repeatedly until a nonnegative integer is entered,
+	 * and return it.
+	 *
 	 * @param prompt The prompt to prompt the user with
 	 * @return the number entered
 	 * @throws IOException on I/O error
@@ -122,8 +131,11 @@ public class CLIHelper implements ICLIHelper {
 		}
 		return retval;
 	}
+
 	/**
-	 * Read input from stdin. (The input is trimmed of leading and trailing whitespace.)
+	 * Read input from stdin. (The input is trimmed of leading and trailing
+	 * whitespace.)
+	 *
 	 * @param prompt The prompt to prompt the user with
 	 * @return the string entered.
 	 * @throws IOException on I/O error
@@ -134,8 +146,10 @@ public class CLIHelper implements ICLIHelper {
 		final String retval = istream.readLine();
 		return retval == null ? "" : retval.trim();
 	}
+
 	/**
 	 * Ask the user a yes-or-no question.
+	 *
 	 * @param prompt the string to prompt the user with
 	 * @return true if yes, false if no
 	 * @throws IOException on I/O error

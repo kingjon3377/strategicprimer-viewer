@@ -36,13 +36,17 @@ public class IteratorWrapper<T> implements Iterable<T> {
 				public boolean hasNext() {
 					return false;
 				}
+
 				@Override
 				public T next() {
-					throw new NoSuchElementException("Iterator substituted for null is empty");
+					throw new NoSuchElementException(
+							"Iterator substituted for null is empty");
 				}
+
 				@Override
 				public void remove() {
-					throw new UnsupportedOperationException("Iterator substituted for null doesn't support remove()");
+					throw new UnsupportedOperationException(
+							"Iterator substituted for null doesn't support remove()");
 				}
 			};
 		} else {
@@ -57,18 +61,21 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	 * @param iterator the iterator to get elements from.
 	 * @param comparator the comparator to use for sorting elements.
 	 */
-	public IteratorWrapper(final Iterator<T> iterator, final Comparator<T> comparator) {
+	public IteratorWrapper(final Iterator<T> iterator,
+			final Comparator<T> comparator) {
 		final PriorityQueue<T> queue = new PriorityQueue<>(1, comparator);
 		while (iterator.hasNext()) {
 			queue.add(iterator.next());
 		}
 		final Iterator<T> qIterator = queue.iterator();
 		if (qIterator == null) {
-			throw new IllegalStateException("Somehow the PriorityQueue's iterator was null");
+			throw new IllegalStateException(
+					"Somehow the PriorityQueue's iterator was null");
 		} else {
 			iter = qIterator;
 		}
 	}
+
 	/**
 	 *
 	 * @return the iterator

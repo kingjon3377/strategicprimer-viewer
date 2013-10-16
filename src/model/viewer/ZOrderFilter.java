@@ -3,7 +3,9 @@ package model.viewer;
 import model.map.TileFixture;
 
 /**
- * An interface for a filter to tell whether a given fixture should be displayed.
+ * An interface for a filter to tell whether a given fixture should be
+ * displayed.
+ *
  * @author Jonathan Lovelace
  *
  */

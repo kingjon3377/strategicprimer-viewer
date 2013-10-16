@@ -45,8 +45,7 @@ public class MapSizeListener extends ComponentAdapter {
 			synchronized (model) {
 				final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
 						model.getMapDimensions().getVersion());
-				final int visibleCols = event.getComponent().getWidth()
-						/ tsize;
+				final int visibleCols = event.getComponent().getWidth() / tsize;
 				final int visibleRows = event.getComponent().getHeight()
 						/ tsize;
 				int minCol = model.getDimensions().getMinimumCol();
@@ -92,6 +91,7 @@ public class MapSizeListener extends ComponentAdapter {
 	public void componentShown(@Nullable final ComponentEvent event) {
 		componentResized(event);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

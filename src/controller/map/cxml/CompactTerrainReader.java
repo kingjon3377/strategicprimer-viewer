@@ -26,20 +26,24 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for TerrainFixtures.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTerrainReader extends AbstractCompactReader implements CompactReader<TerrainFixture> {
+public final class CompactTerrainReader extends AbstractCompactReader implements
+		CompactReader<TerrainFixture> {
 	/**
 	 * Singleton.
 	 */
 	private CompactTerrainReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactTerrainReader READER = new CompactTerrainReader();
+
 	/**
 	 * Enumeration of the types we know how to handle.
 	 */
@@ -68,14 +72,17 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 		 * The tag.
 		 */
 		public final String tag;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param tagString The tag.
 		 */
 		TerrainFixtureType(final String tagString) {
 			tag = tagString;
 		}
 	}
+
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
@@ -93,6 +100,7 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 		}
 		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether we support it
@@ -101,6 +109,7 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -113,15 +122,16 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 	 */
 	@Override
 	public TerrainFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
 		// ESCA-JAVA0177:
 		final TerrainFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case ForestType:
-			retval = new Forest(getParameter(element, "kind"),
-					hasParameter(element, "rows"));
+			retval = new Forest(getParameter(element, "kind"), hasParameter(
+					element, "rows"));
 			break;
 		case HillType:
 			retval = new Hill(getOrGenerateID(element, warner, idFactory));
@@ -144,18 +154,22 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 		}
 		return retval;
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TerrainFixture obj, final int indent) throws IOException {
+	public void write(final Writer out, final TerrainFixture obj,
+			final int indent) throws IOException {
 		out.append(indent(indent));
 		if (obj instanceof Mountain) {
-			out.append("<mountain").append(imageXML((Mountain) obj)).append(" />\n");
+			out.append("<mountain").append(imageXML((Mountain) obj))
+					.append(" />\n");
 			return; // NOPMD Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
 			out.append("<forest kind=\"");

@@ -16,20 +16,24 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for tiles, including rivers.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTextReader extends AbstractCompactReader implements CompactReader<TextFixture> {
+public final class CompactTextReader extends AbstractCompactReader implements
+		CompactReader<TextFixture> {
 	/**
 	 * Singleton.
 	 */
 	private CompactTextReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactTextReader READER = new CompactTextReader();
+
 	/**
 	 * @param tag a tag
 	 * @return whether we support it
@@ -38,6 +42,7 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 	public boolean isSupportedTag(final String tag) {
 		return "text".equalsIgnoreCase(tag);
 	}
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -50,8 +55,9 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 	 */
 	@Override
 	public TextFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we
 		// need. But cases above 2K will be vanishingly rare in practice.
@@ -73,15 +79,18 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TextFixture obj, final int indent) throws IOException {
+	public void write(final Writer out, final TextFixture obj, final int indent)
+			throws IOException {
 		out.append(indent(indent));
 		if (obj.getTurn() == -1) {
 			out.append("<text");
@@ -96,5 +105,3 @@ public final class CompactTextReader extends AbstractCompactReader implements Co
 		out.append("</text>\n");
 	}
 }
-
-

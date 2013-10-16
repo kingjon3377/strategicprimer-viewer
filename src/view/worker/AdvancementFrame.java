@@ -30,13 +30,15 @@ import controller.map.misc.IOHandler;
  */
 public class AdvancementFrame extends JFrame {
 	/**
-	 * The text of the relevant button. Can't be private without causing warnings, since it's used in an inner class.
+	 * The text of the relevant button. Can't be private without causing
+	 * warnings, since it's used in an inner class.
 	 */
 	static final String NEW_WORKER_ACTION = "Add worker to selected unit ..."; // NOPMD
 	/**
 	 * Dividers start at half-way.
 	 */
 	private static final double HALF_WAY = .5;
+
 	/**
 	 * Constructor.
 	 *
@@ -54,14 +56,16 @@ public class AdvancementFrame extends JFrame {
 		pch.addPlayerChangeListener(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
 				.getCurrentPlayer(), source, pch);
-		@Nullable final IWorkerTreeModel wtmodel = (IWorkerTreeModel) tree.getModel();
+		@Nullable
+		final IWorkerTreeModel wtmodel = (IWorkerTreeModel) tree.getModel();
 		assert wtmodel != null;
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 				IDFactoryFiller.createFactory(source.getMap()));
 		tree.addCompletionListener(nwl);
 		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
 		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
-		final JobsTree jobsTree = new JobsTree(new AddRemovePanel[] {jarp, sarp}, tree);
+		final JobsTree jobsTree = new JobsTree(new AddRemovePanel[] { jarp,
+				sarp }, tree);
 		final LevelListener llist = new LevelListener();
 		jobsTree.addCompletionListener(llist);
 		setContentPane(new SplitWithWeights(
@@ -88,7 +92,8 @@ public class AdvancementFrame extends JFrame {
 												null,
 												htmlize("Add a Skill to the selected Job:"),
 												sarp, null, null), null, null),
-								null, new SkillAdvancementPanel(llist, jobsTree),
+								null,
+								new SkillAdvancementPanel(llist, jobsTree),
 								null, null))));
 
 		pch.notifyListeners();
@@ -102,7 +107,8 @@ public class AdvancementFrame extends JFrame {
 	 * Turn a string into left-aligned HTML.
 	 *
 	 * @param string a string
-	 * @return a label, with its text that string wrapped in HTML code that should make it left-aligned.
+	 * @return a label, with its text that string wrapped in HTML code that
+	 *         should make it left-aligned.
 	 */
 	private static JLabel htmlize(final String string) {
 		return new JLabel("<html><p align=\"left\">" + string + "</p></html>");
@@ -123,11 +129,13 @@ public class AdvancementFrame extends JFrame {
 				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
 		final Dimension defaultDim = component.getPreferredSize();
 		if (view == null) {
-			return defaultDim == null ? new Dimension(width, width) : defaultDim; // NOPMD
+			return defaultDim == null ? new Dimension(width, width)
+					: defaultDim; // NOPMD
 		} else {
 			view.setSize(width, 0);
 			final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
-			final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
+			final int height = (int) Math.ceil(view
+					.getPreferredSpan(View.Y_AXIS));
 			return new Dimension(wid, height);
 		}
 	}

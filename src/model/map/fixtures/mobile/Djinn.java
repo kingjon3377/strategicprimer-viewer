@@ -18,6 +18,7 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @param idNum the ID number.
 	 */
@@ -56,7 +57,8 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Djinn && ((TileFixture) obj).getID() == id);
+		return this == obj
+				|| (obj instanceof Djinn && ((TileFixture) obj).getID() == id);
 	}
 
 	/**
@@ -97,10 +99,12 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Djinn;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -108,6 +112,7 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -115,6 +120,7 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all djinni as a class
 	 */

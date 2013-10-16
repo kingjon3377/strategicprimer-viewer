@@ -95,6 +95,7 @@ public class IteratorStack<T> implements Iterator<T> {
 		}
 		removeEmptyIterators();
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

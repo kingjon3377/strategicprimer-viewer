@@ -114,6 +114,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 * The reader to use to parse units.
 	 */
 	private static final UnitReader UNIT_READER = new UnitReader();
+
 	/**
 	 * @return a String representation of the object
 	 */

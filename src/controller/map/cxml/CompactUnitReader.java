@@ -20,24 +20,29 @@ import controller.map.misc.IDFactory;
 
 /**
  * A reader for tiles, including rivers.
+ *
  * @author Jonathan Lovelace
  *
  */
-public final class CompactUnitReader extends AbstractCompactReader implements CompactReader<Unit> {
+public final class CompactUnitReader extends AbstractCompactReader implements
+		CompactReader<Unit> {
 	/**
 	 * The tag used for a unit.
 	 */
 	private static final String UNIT_TAG = "unit";
+
 	/**
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
 		// Singleton.
 	}
+
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactUnitReader READER = new CompactUnitReader();
+
 	/**
 	 *
 	 * @param element the XML element to parse
@@ -50,8 +55,9 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	 */
 	@Override
 	public Unit read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final Warning warner, final IDFactory idFactory) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, UNIT_TAG);
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
@@ -64,7 +70,8 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				retval.addMember(parseChild(event.asStartElement(), stream, players, idFactory, warner));
+				retval.addMember(parseChild(event.asStartElement(), stream,
+						players, idFactory, warner));
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
@@ -75,16 +82,19 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		retval.setOrders(orders.toString().trim());
 		return retval;
 	}
+
 	/**
 	 * List of readers we'll try subtags on.
 	 */
 	private final List<AbstractCompactReader> readers = Arrays
 			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
 					CompactResourceReader.READER, CompactTerrainReader.READER,
-					CompactTextReader.READER, CompactTownReader.READER, CompactWorkerReader.READER });
+					CompactTextReader.READER, CompactTownReader.READER,
+					CompactWorkerReader.READER });
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
+	 *
 	 * @param element the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
@@ -94,24 +104,27 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	 * @throws SPFormatException on SP format problem
 	 */
 	private UnitMember parseChild(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final PlayerCollection players,
-			final IDFactory idFactory, final Warning warner) throws SPFormatException {
+			final IteratorWrapper<XMLEvent> stream,
+			final PlayerCollection players, final IDFactory idFactory,
+			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
 		for (AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
-				final Object retval = ((CompactReader<?>) item).read(
-						element, stream, players, warner, idFactory);
+				final Object retval = ((CompactReader<?>) item).read(element,
+						stream, players, warner, idFactory);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
-					throw new UnwantedChildException(UNIT_TAG, element.getName()
-							.getLocalPart(), element.getLocation()
+					throw new UnwantedChildException(UNIT_TAG, element
+							.getName().getLocalPart(), element.getLocation()
 							.getLineNumber());
 				}
 			}
 		}
-		throw new UnwantedChildException(UNIT_TAG, name, element.getLocation().getLineNumber());
+		throw new UnwantedChildException(UNIT_TAG, name, element.getLocation()
+				.getLineNumber());
 	}
+
 	/**
 	 * Parse the kind of unit, from the "kind" or "type" parameter---default the
 	 * empty string.
@@ -138,6 +151,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 		}
 		return retval;
 	}
+
 	/**
 	 * @param string a string which should be numeric or empty
 	 * @return it, or "-1" if it's empty.
@@ -145,6 +159,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	private static String ensureNumeric(final String string) {
 		return string.isEmpty() ? "-1" : string;
 	}
+
 	/**
 	 * @param tag a tag
 	 * @return whether it's one we can read
@@ -153,15 +168,18 @@ public final class CompactUnitReader extends AbstractCompactReader implements Co
 	public boolean isSupportedTag(final String tag) {
 		return UNIT_TAG.equalsIgnoreCase(tag);
 	}
+
 	/**
 	 * Write an object to a stream.
+	 *
 	 * @param out The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Unit obj, final int indent) throws IOException {
+	public void write(final Writer out, final Unit obj, final int indent)
+			throws IOException {
 		out.append(indent(indent));
 		out.append("<unit owner=\"");
 		out.append(Integer.toString(obj.getOwner().getPlayerId()));

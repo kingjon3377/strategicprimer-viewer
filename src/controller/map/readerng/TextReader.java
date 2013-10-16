@@ -99,6 +99,7 @@ public class TextReader implements INodeHandler<TextFixture> {
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -73,8 +73,9 @@ public class FairyReader implements INodeHandler<Fairy> {
 	 */
 	@Override
 	public <S extends Fairy> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("fairy", Pair.of("kind",
-				obj.getKind()), Pair.of("id", Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"fairy", Pair.of("kind", obj.getKind()), Pair.of("id",
+						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

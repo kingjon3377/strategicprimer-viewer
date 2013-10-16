@@ -73,8 +73,9 @@ public class CentaurReader implements INodeHandler<Centaur> {
 	 */
 	@Override
 	public <S extends Centaur> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("centaur", Pair.of("kind",
-				obj.getKind()), Pair.of("id", Long.toString(obj.getID())));
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"centaur", Pair.of("kind", obj.getKind()), Pair.of("id",
+						Long.toString(obj.getID())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

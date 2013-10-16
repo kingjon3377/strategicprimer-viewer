@@ -30,8 +30,10 @@ public final class SystemOut extends PrintStream {
 	public String toString() {
 		return "SystemOut";
 	}
+
 	/**
 	 * Chainable print().
+	 *
 	 * @param string the string to print
 	 * @return this
 	 */
@@ -39,8 +41,10 @@ public final class SystemOut extends PrintStream {
 		print(string);
 		return this;
 	}
+
 	/**
 	 * Chainable print().
+	 *
 	 * @param integer the number to print
 	 * @return this
 	 */

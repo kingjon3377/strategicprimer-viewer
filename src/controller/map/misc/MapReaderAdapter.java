@@ -64,6 +64,7 @@ public class MapReaderAdapter {
 	public void write(final String filename, final IMap map) throws IOException {
 		writer.write(filename, map);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

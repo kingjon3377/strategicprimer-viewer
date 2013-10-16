@@ -55,8 +55,10 @@ public final class ConverterDriver implements ISPDriver {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args command-line argument
 	 * @throws DriverFailedException on fatal error
 	 */
@@ -100,6 +102,7 @@ public final class ConverterDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -107,6 +110,7 @@ public final class ConverterDriver implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
@@ -114,6 +118,7 @@ public final class ConverterDriver implements ISPDriver {
 	public String getName() {
 		return USAGE_OBJ.getShortDescription();
 	}
+
 	/**
 	 * @param nomen ignored
 	 */

@@ -7,8 +7,10 @@ import java.io.StringWriter;
 import javax.swing.JLabel;
 
 import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A label that can be written to using a PrintWriter.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -20,6 +22,7 @@ public class StreamingLabel extends JLabel {
 		setBackground(Color.black);
 		setOpaque(true);
 	}
+
 	/**
 	 * The source for the string.
 	 */
@@ -30,6 +33,7 @@ public class StreamingLabel extends JLabel {
 	private final PrintWriter writer = new PrintWriter(string) {
 		/**
 		 * Print a string and update the label.
+		 *
 		 * @param str the string to print
 		 */
 		@Override
@@ -37,8 +41,10 @@ public class StreamingLabel extends JLabel {
 			super.print(str);
 			updateText();
 		}
+
 		/**
 		 * Print a line and update the label.
+		 *
 		 * @param str the string to print
 		 */
 		@Override
@@ -47,12 +53,14 @@ public class StreamingLabel extends JLabel {
 			updateText();
 		}
 	};
+
 	/**
 	 * @return the writer to "print" to.
 	 */
 	public PrintWriter getWriter() {
 		return writer;
 	}
+
 	/**
 	 * Update the label's text.
 	 */

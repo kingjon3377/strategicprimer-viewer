@@ -13,8 +13,10 @@ import javax.swing.ListSelectionModel;
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.ZOrderFilter;
+
 /**
  * A list to let the user select which fixtures ought to be searched.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -32,6 +34,7 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 * The data model.
 	 */
 	private final FixtureFilterListModel model;
+
 	/**
 	 * Constructor.
 	 */
@@ -43,6 +46,7 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		lsm.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setCellRenderer(this);
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it should be searched
@@ -59,10 +63,12 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 			return true;
 		}
 	}
+
 	/**
 	 * The renderer that does most of the work.
 	 */
 	private final ListCellRenderer<Object> lcr = new DefaultListCellRenderer();
+
 	/**
 	 *
 	 * @param list this
@@ -75,9 +81,10 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	@Override
 	public Component getListCellRendererComponent(
 			final JList<? extends Class<? extends TileFixture>> list,
-			final Class<? extends TileFixture> value, final int index, final boolean isSelected,
-			final boolean cellHasFocus) {
-		final Component retval = lcr.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			final Class<? extends TileFixture> value, final int index,
+			final boolean isSelected, final boolean cellHasFocus) {
+		final Component retval = lcr.getListCellRendererComponent(list, value,
+				index, isSelected, cellHasFocus);
 		if (retval instanceof JLabel) {
 			((JLabel) retval).setText(plurals.get(value));
 		} else if (retval == null) {

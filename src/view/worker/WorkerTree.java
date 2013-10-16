@@ -32,12 +32,15 @@ import model.workermgmt.WorkerTreeModelAlt;
 import org.eclipse.jdt.annotation.Nullable;
 
 import view.map.details.FixtureEditMenu;
+
 /**
  * A tree of a player's units.
+ *
  * @author Jonathan Lovelace
  *
  */
-public class WorkerTree extends JTree implements UnitMemberSelectionSource, CompletionSource {
+public class WorkerTree extends JTree implements UnitMemberSelectionSource,
+		CompletionSource {
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
@@ -56,12 +59,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
-		setTransferHandler(new WorkerTreeTransferHandler(getSelectionModel(), (IWorkerTreeModel) getModel()));
+		setTransferHandler(new WorkerTreeTransferHandler(getSelectionModel(),
+				(IWorkerTreeModel) getModel()));
 		setCellRenderer(new UnitMemberCellRenderer());
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 		ToolTipManager.sharedInstance().registerComponent(this);
 		addTreeSelectionListener(new WorkerTreeSelectionListener());
 	}
+
 	/**
 	 * A listener to set up pop-up menus.
 	 */
@@ -70,13 +75,16 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 		 * The collection of players in the map.
 		 */
 		private final PlayerCollection players;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param playerColl the collection of players in the map
 		 */
 		TreeMouseListener(final PlayerCollection playerColl) {
 			players = playerColl;
 		}
+
 		/**
 		 * @param event the event to handle
 		 */
@@ -84,6 +92,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 		public void mouseClicked(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
+
 		/**
 		 * @param event the event to handle
 		 */
@@ -91,6 +100,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 		public void mousePressed(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
+
 		/**
 		 * @param event the event to handle
 		 */
@@ -98,11 +108,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 		public void mouseReleased(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
 		}
+
 		/**
-		 * @param event the event to handle. Marked @Nullable so we only have to handle the null-event case once.
+		 * @param event the event to handle. Marked @Nullable so we only have to
+		 *        handle the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
-			if (event != null && event.isPopupTrigger() && event.getClickCount() == 1) {
+			if (event != null && event.isPopupTrigger()
+					&& event.getClickCount() == 1) {
 				final Object obj = ((IWorkerTreeModel) getModel())
 						.getModelObject(getClosestPathForLocation(event.getX(),
 								event.getY()).getLastPathComponent());
@@ -113,29 +126,36 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 			}
 		}
 	}
+
 	/**
 	 * @param evt an event indicating the mouse cursor
 	 * @return a tooltip if over a worker, null otherwise
 	 */
 	@Override
-	@Nullable public String getToolTipText(@Nullable final MouseEvent evt) {
-	    if (evt == null || getRowForLocation(evt.getX(), evt.getY()) == -1) {
+	@Nullable
+	public String getToolTipText(@Nullable final MouseEvent evt) {
+		if (evt == null || getRowForLocation(evt.getX(), evt.getY()) == -1) {
 			return null; // NOPMD
 		}
-	    return getStatsToolTip(getPathForLocation(evt.getX(), evt.getY()).getLastPathComponent());
-	  }
+		return getStatsToolTip(getPathForLocation(evt.getX(), evt.getY())
+				.getLastPathComponent());
+	}
+
 	/**
 	 * @param node a node in the tree
 	 * @return a tooltip if it's a worker or a worker node, null otherwise
 	 */
-	@Nullable private String getStatsToolTip(final Object node) {
-		final Object localNode = ((IWorkerTreeModel) getModel()).getModelObject(node);
+	@Nullable
+	private String getStatsToolTip(final Object node) {
+		final Object localNode = ((IWorkerTreeModel) getModel())
+				.getModelObject(node);
 		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
 			if (stats == null) {
 				return null;
 			} else {
-				return new StringBuilder(92)// NOPMD
+				return new StringBuilder(92)
+						// NOPMD
 						.append("<html><p>Str ")
 						.append(getModifierString(stats.getStrength()))
 						.append(", Dex ")
@@ -160,6 +180,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 	 * Package-private so the inner class can access it.
 	 */
 	final List<UnitMemberListener> umListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -167,6 +188,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 	public void addUnitMemberListener(final UnitMemberListener list) {
 		umListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */
@@ -174,6 +196,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 	public void removeUnitMemberListener(final UnitMemberListener list) {
 		umListeners.remove(list);
 	}
+
 	/**
 	 * A selection listener.
 	 */
@@ -184,21 +207,26 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 		WorkerTreeSelectionListener() {
 			// Needed to change visibility.
 		}
+
 		/**
 		 * @param evt the event to handle
 		 */
 		@Override
 		public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 			if (evt != null) {
-				handleSelection(((IWorkerTreeModel) getModel()).getModelObject(evt
-						.getNewLeadSelectionPath().getLastPathComponent()));
+				handleSelection(((IWorkerTreeModel) getModel())
+						.getModelObject(evt.getNewLeadSelectionPath()
+								.getLastPathComponent()));
 			}
 		}
+
 		/**
 		 * Handle a selection.
+		 *
 		 * @param sel the new selection. Might be null.
 		 */
-		@SuppressWarnings("synthetic-access") // TODO: fix this properly
+		@SuppressWarnings("synthetic-access")
+		// TODO: fix this properly
 		private void handleSelection(@Nullable final Object sel) {
 			if (sel instanceof UnitMember || sel == null) {
 				for (final UnitMemberListener list : umListeners) {
@@ -219,10 +247,12 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 			}
 		}
 	}
+
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<CompletionListener> cListeners = new ArrayList<>();
+
 	/**
 	 * @param list a listener to add
 	 */
@@ -230,6 +260,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Comp
 	public void addCompletionListener(final CompletionListener list) {
 		cListeners.add(list);
 	}
+
 	/**
 	 * @param list a listener to remove
 	 */

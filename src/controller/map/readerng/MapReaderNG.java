@@ -87,7 +87,8 @@ public class MapReaderNG implements IMapReader, ISPReader {
 						// NOPMD
 						event.asStartElement(), eventReader,
 						new PlayerCollection(), warner, new IDFactory()); // NOPMD
-				// This is a hack to make it compile under the new twoparameter system ...
+				// This is a hack to make it compile under the new twoparameter
+				// system ...
 				return checkType(retval, type);
 			}
 		}

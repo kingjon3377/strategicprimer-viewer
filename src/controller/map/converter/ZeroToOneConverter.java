@@ -150,8 +150,10 @@ public class ZeroToOneConverter {
 	private static String printEndElement(final EndElement element) {
 		return printEndElement(element.getName().getLocalPart());
 	}
+
 	/**
 	 * Print an end element.
+	 *
 	 * @param elemStr the local part of the element
 	 * @return its XML representation.
 	 */
@@ -159,6 +161,7 @@ public class ZeroToOneConverter {
 		return new StringBuilder(elemStr.length() + 5).append("</")
 				.append(elemStr).append('>').toString();
 	}
+
 	/**
 	 * Print a start element.
 	 *
@@ -178,7 +181,8 @@ public class ZeroToOneConverter {
 		builder.append('>');
 		final String retval = builder.toString();
 		if (retval == null) {
-			throw new IllegalStateException("Somehow StringBuilder produced null rather than a string");
+			throw new IllegalStateException(
+					"Somehow StringBuilder produced null rather than a string");
 		}
 		return retval;
 	}
@@ -246,6 +250,7 @@ public class ZeroToOneConverter {
 		addXML("<stone kind=\"marble\" dc=\"0\" />", 250, 251, 252);
 		addXML("<cave dc=\"0\" />", 253, 254, 255);
 	}
+
 	/**
 	 * Driver.
 	 *
@@ -263,10 +268,12 @@ public class ZeroToOneConverter {
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);
 			} catch (IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O error dealing with file " + arg, except);
+				LOGGER.log(Level.SEVERE, "I/O error dealing with file " + arg,
+						except);
 			}
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

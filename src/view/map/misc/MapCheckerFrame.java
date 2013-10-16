@@ -60,7 +60,8 @@ public class MapCheckerFrame extends JFrame {
 	 * @param string the string to enclose
 	 * @param color the color to make it, or the empty string if none.
 	 */
-	void printParagraph(final String string, final String color) { // NOPMD: See above
+	void printParagraph(final String string, final String color) { // NOPMD: See
+																	// above
 		final PrintWriter writer = label.getWriter();
 		if (color.isEmpty()) {
 			writer.print("<p style=\"color:white\">");
@@ -71,7 +72,7 @@ public class MapCheckerFrame extends JFrame {
 		}
 		writer.print(string);
 		writer.println("</p>");
-//		label.updateText();
+		// label.updateText();
 		label.repaint();
 	}
 
@@ -92,7 +93,7 @@ public class MapCheckerFrame extends JFrame {
 			reader.readMap(filename, new Warning() {
 				@Override
 				public void warn(final Exception warning) {
-//					super.warn(warning);
+					// super.warn(warning);
 					if (warning instanceof SPFormatException) {
 						printParagraph(
 								"SP format warning: "

@@ -62,7 +62,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param iobs the class to notify when images finish drawing.
 	 * @param zofilt the class to query about whether to display a fixture
 	 */
-	public Ver2TileDrawHelper(final ImageObserver iobs, final ZOrderFilter zofilt) {
+	public Ver2TileDrawHelper(final ImageObserver iobs,
+			final ZOrderFilter zofilt) {
 		super();
 		observer = iobs;
 		zof = zofilt;
@@ -126,7 +127,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile, final int width,
 			final int height) {
-		drawTile(pen, tile, PointFactory.coordinate(0, 0), PointFactory.coordinate(width, height));
+		drawTile(pen, tile, PointFactory.coordinate(0, 0),
+				PointFactory.coordinate(width, height));
 	}
 
 	/**
@@ -147,8 +149,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture on that tile.
 	 */
 	private TileFixture getTopFixture(final Tile tile) {
-		return new IteratorWrapper<>(new FilteredIterator(tile.iterator(), zof),
-				fixComp).iterator().next();
+		return new IteratorWrapper<>(
+				new FilteredIterator(tile.iterator(), zof), fixComp).iterator()
+				.next();
 	}
 
 	/**
@@ -236,7 +239,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImage(final String filename) {
 		try {
 			return loader.loadImage(filename); // NOPMD
-		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
+		} catch (final FileNotFoundException e) { // $codepro.audit.disable
+													// logExceptions
 			if (!missingFiles.contains(filename)) {
 				// LOGGER.log(Level.SEVERE, filename + " not found", e);
 				LOGGER.log(Level.SEVERE, "images/" + filename + " not found");
@@ -328,6 +332,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 		return set;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -335,6 +340,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	public String toString() {
 		return "Ver2TileDrawHelper";
 	}
+
 	/**
 	 * A filtered iterator. Only returns items that should be displayed.
 	 */
@@ -345,37 +351,48 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		private static final TileFixture NULL_FIXT = new TileFixture() {
 			@Override
 			public int compareTo(final TileFixture o) {
-				throw new IllegalStateException("Leak of an all-but-null object");
+				throw new IllegalStateException(
+						"Leak of an all-but-null object");
 			}
+
 			@Override
 			public int getID() {
-				throw new IllegalStateException("Leak of an all-but-null object");
+				throw new IllegalStateException(
+						"Leak of an all-but-null object");
 			}
+
 			@Override
 			public boolean equalsIgnoringID(final IFixture fix) {
 				return fix == this;
 			}
+
 			@Override
 			public String plural() {
 				return "";
 			}
+
 			@Override
 			public int getZValue() {
-				throw new IllegalStateException("Leak of an all-but-null object");
+				throw new IllegalStateException(
+						"Leak of an all-but-null object");
 			}
 		};
+
 		/**
 		 * Constructor.
+		 *
 		 * @param iter the iterator to wrap
 		 * @param zofilt the filter to use
 		 */
-		FilteredIterator(final Iterator<TileFixture> iter, final ZOrderFilter zofilt) {
+		FilteredIterator(final Iterator<TileFixture> iter,
+				final ZOrderFilter zofilt) {
 			wrapped = iter;
 			zof = zofilt;
 			hasCached = false;
 			hasNext();
 			cached = NULL_FIXT;
 		}
+
 		/**
 		 * The wrapped iterator.
 		 */
@@ -392,6 +409,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		 * Whether we have a cached next item.
 		 */
 		private boolean hasCached;
+
 		/**
 		 * @return whether there is a next item in the iterator
 		 */
@@ -412,6 +430,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return false;
 			}
 		}
+
 		/**
 		 * @return the next element
 		 */
@@ -424,8 +443,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				throw new NoSuchElementException("No next element");
 			}
 		}
+
 		/**
-	 	 * Implemented only if wrapped iterator does.
+		 * Implemented only if wrapped iterator does.
 		 */
 		@Override
 		public void remove() {

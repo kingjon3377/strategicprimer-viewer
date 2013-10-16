@@ -12,6 +12,7 @@ import javax.swing.tree.TreeNode;
 public class SectionListReportNode extends AbstractReportNode {
 	/**
 	 * Constructor.
+	 *
 	 * @param lvl the header level
 	 * @param header the header text
 	 */
@@ -26,15 +27,19 @@ public class SectionListReportNode extends AbstractReportNode {
 	 * @param header the header text
 	 * @param subtext the sub-header text
 	 */
-	public SectionListReportNode(final int lvl, final String header, final String subtext) {
+	public SectionListReportNode(final int lvl, final String header,
+			final String subtext) {
 		super(header);
 		setLevel(lvl);
 		subheader = subtext;
 	}
+
 	/**
-	 * An optional sub-header. Since this only comes up once at present, we only expose it in the constructor.
+	 * An optional sub-header. Since this only comes up once at present, we only
+	 * expose it in the constructor.
 	 */
 	private final String subheader;
+
 	/**
 	 * @return the HTML representation of the node
 	 */
@@ -42,6 +47,7 @@ public class SectionListReportNode extends AbstractReportNode {
 	public String produce() {
 		return produce(new StringBuilder(size())).toString();
 	}
+
 	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
@@ -67,8 +73,10 @@ public class SectionListReportNode extends AbstractReportNode {
 		}
 		return builder;
 	}
+
 	/**
-	 * @return approximately how long the HTML representation of this node will be.
+	 * @return approximately how long the HTML representation of this node will
+	 *         be.
 	 */
 	@Override
 	public int size() {
@@ -81,37 +89,43 @@ public class SectionListReportNode extends AbstractReportNode {
 		}
 		return retval;
 	}
+
 	/**
 	 * The header level.
 	 */
 	private int level;
+
 	/**
 	 * @param lvl the new header level
 	 */
 	public final void setLevel(final int lvl) {
 		level = lvl;
 	}
+
 	/**
 	 * @return the header level
 	 */
 	public final int getHeaderLevel() {
 		return level;
 	}
+
 	/**
 	 * @param obj a node
 	 * @return whether it equals this one
 	 */
 	@Override
 	protected boolean equalsImpl(final AbstractReportNode obj) {
-		return obj instanceof SectionListReportNode && ((SectionListReportNode) obj).getHeaderLevel() == level
+		return obj instanceof SectionListReportNode
+				&& ((SectionListReportNode) obj).getHeaderLevel() == level
 				&& getText().equals(obj.getText())
 				&& children().equals(obj.children());
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	protected int hashCodeImpl() {
-		return level + getText().hashCode() /*| children().hashCode()*/;
+		return level + getText().hashCode() /* | children().hashCode() */;
 	}
 }

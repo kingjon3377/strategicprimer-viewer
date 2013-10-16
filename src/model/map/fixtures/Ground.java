@@ -18,6 +18,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor.
 	 *
@@ -79,8 +80,8 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Ground && kind.equals(((Ground) obj).kind)
-				&& exposed == ((Ground) obj).exposed);
+		return this == obj
+				|| (obj instanceof Ground && kind.equals(((Ground) obj).kind) && exposed == ((Ground) obj).exposed);
 	}
 
 	/**
@@ -127,6 +128,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
+
 	/**
 	 * @param nKind the new kind
 	 */
@@ -134,10 +136,12 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -145,6 +149,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
@@ -152,6 +157,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all Ground as a class
 	 */

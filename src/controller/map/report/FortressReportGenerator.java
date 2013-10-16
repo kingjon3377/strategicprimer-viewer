@@ -35,6 +35,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * Instance we use.
 	 */
 	private final UnitReportGenerator urg = new UnitReportGenerator();
+
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
@@ -53,11 +54,13 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
 				anyforts = true;
-				builder.append(produce(fixtures, tiles, currentPlayer, (Fortress) pair.second(), pair.first()));
+				builder.append(produce(fixtures, tiles, currentPlayer,
+						(Fortress) pair.second(), pair.first()));
 			}
 		}
 		return anyforts ? builder.toString() : "";
 	}
+
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
@@ -68,16 +71,19 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, final TileCollection tiles,
-			final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionReportNode(4, "Fortresses in the map:");
+			final IntMap<Pair<Point, IFixture>> fixtures,
+			final TileCollection tiles, final Player currentPlayer) {
+		final AbstractReportNode retval = new SectionReportNode(4,
+				"Fortresses in the map:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
-				retval.add(produceRIR(fixtures, tiles, currentPlayer, (Fortress) pair.second(), pair.first()));
+				retval.add(produceRIR(fixtures, tiles, currentPlayer,
+						(Fortress) pair.second(), pair.first()));
 			}
 		}
 		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
 	}
+
 	/**
 	 * @param tile a tile
 	 * @param fixtures the set of fixtures, so we can schedule the removal the
@@ -111,6 +117,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * @param rivers a collection of rivers
 	 * @return an equivalent string.
@@ -137,11 +144,13 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		}
 		return builder.toString();
 	}
+
 	/**
 	 * @param parent the node to add nodes describing rivers to
 	 * @param rivers the collection of rivers
 	 */
-	private static void riversToNode(final AbstractReportNode parent, final Set<River> rivers) {
+	private static void riversToNode(final AbstractReportNode parent,
+			final Set<River> rivers) {
 		if (rivers.contains(River.Lake)) {
 			parent.add(new SimpleReportNode("There is a nearby lake."));
 			rivers.remove(River.Lake);
@@ -162,8 +171,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			parent.add(new SimpleReportNode(builder.toString()));
 		}
 	}
+
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
+	 *
 	 * @param item the fortress to report on
 	 * @param loc its location
 	 * @param fixtures the set of fixtures
@@ -173,7 +184,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 */
 	@Override
 	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer, final Fortress item, final Point loc) {
+			final TileCollection tiles, final Player currentPlayer,
+			final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384)
 				.append("<h5>Fortress ").append(item.getName())
@@ -184,14 +196,16 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final Tile tile = tiles.getTile(loc);
 		builder.append(getTerrain(tile, fixtures)).append(CLOSE_LIST_ITEM);
 		if (tile.hasRiver()) {
-			builder.append(riversToString(EnumSet.copyOf(tile.getRivers().getRivers())));
+			builder.append(riversToString(EnumSet.copyOf(tile.getRivers()
+					.getRivers())));
 		}
 		if (item.iterator().hasNext()) {
-			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n").append(OPEN_LIST);
+			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
+					.append(OPEN_LIST);
 			for (final Unit unit : item) {
 				builder.append(OPEN_LIST_ITEM)
-						.append(urg.produce(fixtures, tiles, currentPlayer, unit, loc))
-						.append(CLOSE_LIST_ITEM);
+						.append(urg.produce(fixtures, tiles, currentPlayer,
+								unit, loc)).append(CLOSE_LIST_ITEM);
 			}
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 		}
@@ -199,8 +213,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return builder.toString();
 	}
+
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
+	 *
 	 * @param item the fortress to report on
 	 * @param loc its location
 	 * @param fixtures the set of fixtures
@@ -223,9 +239,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			riversToNode(retval, EnumSet.copyOf(tile.getRivers().getRivers()));
 		}
 		if (item.iterator().hasNext()) {
-			final AbstractReportNode units = new ListReportNode("Units on the tile:");
+			final AbstractReportNode units = new ListReportNode(
+					"Units on the tile:");
 			for (final Unit unit : item) {
-				units.add(urg.produceRIR(fixtures, tiles, currentPlayer, unit, loc));
+				units.add(urg.produceRIR(fixtures, tiles, currentPlayer, unit,
+						loc));
 			}
 			retval.add(units);
 		}

@@ -7,30 +7,28 @@ import model.map.IMap;
 
 /**
  * An interface for map (and other SP XML) writers.
- * 
+ *
  * @author Jonathan Lovelace
- * 
+ *
  */
 public interface SPWriter {
 
 	/**
 	 * Write a map.
-	 * 
+	 *
 	 * @param filename the file to write to
 	 * @param map the map to write.
 	 * @throws IOException on error opening the file
 	 */
-	void write(final String filename, final IMap map)
-			throws IOException;
+	void write(final String filename, final IMap map) throws IOException;
 
 	/**
 	 * Write a map.
-	 * 
+	 *
 	 * @param out the writer to write to
 	 * @param map the map to write
 	 * @throws IOException on error in writing
 	 */
-	void write(final Writer out, final IMap map)
-			throws IOException;
+	void write(final Writer out, final IMap map) throws IOException;
 
 }

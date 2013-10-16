@@ -33,8 +33,7 @@ public class TileUIHelper {
 	// ESCA-JAVA0076:
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
-		colors = new HashMap<>(
-				SPMap.MAX_VERSION + 1);
+		colors = new HashMap<>(SPMap.MAX_VERSION + 1);
 		final Map<TileType, Color> one = new EnumMap<>(TileType.class);
 		one.put(TileType.BorealForest, new Color(72, 218, 164));
 		one.put(TileType.Desert, new Color(249, 233, 28));
