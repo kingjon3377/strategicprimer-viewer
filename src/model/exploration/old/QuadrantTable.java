@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import model.map.Point;
+import model.map.PointFactory;
 import model.map.Tile;
-import util.Pair;
 
 /**
  * A class for things where results are by quadrant rather than randomly.
@@ -28,7 +28,7 @@ public class QuadrantTable implements EncounterTable {
 	/**
 	 * The collection of results.
 	 */
-	private final Map<Pair<Integer, Integer>, String> quadrants;
+	private final Map<Point, String> quadrants;
 
 	/**
 	 * Constructor.
@@ -52,9 +52,7 @@ public class QuadrantTable implements EncounterTable {
 			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
 				// System.out.println("Adding " + items.get(0) + " at (" + row +
 				// ", " + col +").");
-				quadrants.put(
-						Pair.of(Integer.valueOf(row), Integer.valueOf(col)),
-						items.remove(0));
+				quadrants.put(PointFactory.point(row, col), items.remove(0));
 			}
 		}
 	}
@@ -65,13 +63,11 @@ public class QuadrantTable implements EncounterTable {
 	 *
 	 * @return the result from the quadrant containing that tile.
 	 */
-	@SuppressWarnings("boxing")
 	public String getQuadrantValue(final int row, final int col) {
-		Pair<Integer, Integer> bestKey = Pair.of(Integer.valueOf(-1),
-				Integer.valueOf(-1));
-		for (final Pair<Integer, Integer> iter : quadrants.keySet()) {
-			if (iter.first() <= row && iter.first() > bestKey.first()
-					&& iter.second() <= col && iter.second() > bestKey.second()) {
+		Point bestKey = PointFactory.point(-1, -1);
+		for (final Point iter : quadrants.keySet()) {
+			if (iter.row <= row && iter.row > bestKey.row
+					&& iter.col <= col && iter.col > bestKey.col) {
 				bestKey = iter;
 			}
 		}
