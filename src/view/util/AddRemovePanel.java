@@ -17,9 +17,6 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A panel to be the GUI to add or remove items from a list.
  *
- * FIXME: Add a notion of *what* is being added or removed, so we don't have to
- * work around that limitation anymore.
- *
  * @author Jonathan Lovelace
  *
  */
