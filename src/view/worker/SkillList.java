@@ -10,6 +10,8 @@ import javax.swing.event.ListSelectionListener;
 
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
+import model.listeners.SkillSelectionListener;
+import model.listeners.SkillSelectionSource;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.SkillListModel;
 
@@ -23,14 +25,14 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class SkillList extends JList<Skill> implements ListSelectionListener,
-		CompletionSource {
+		SkillSelectionSource {
 	/**
 	 * Constructor.
 	 *
 	 * @param listener something that should listen to us
 	 * @param sources what our model should listen to
 	 */
-	public SkillList(final CompletionListener listener,
+	public SkillList(final SkillSelectionListener listener,
 			final CompletionSource... sources) {
 		final SkillListModel lmodel = new SkillListModel(sources);
 		setModel(lmodel);
@@ -47,7 +49,7 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 				}
 			}
 		});
-		addCompletionListener(listener);
+		addSkillSelectionListener(listener);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
@@ -58,31 +60,30 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
 		@Nullable
-		final Object temp = getSelectedValue();
-		final Object result = temp == null ? "null_skill" : temp;
-		for (final CompletionListener list : cListeners) {
-			list.stopWaitingOn(result);
+		final Skill temp = getSelectedValue();
+		for (final SkillSelectionListener list : ssListeners) {
+			list.selectSkill(temp);
 		}
 	}
 
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addCompletionListener(final CompletionListener list) {
-		cListeners.add(list);
+	public final void addSkillSelectionListener(final SkillSelectionListener list) {
+		ssListeners.add(list);
 	}
 
 	/**
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeCompletionListener(final CompletionListener list) {
-		cListeners.remove(list);
+	public final void removeSkillSelectionListener(final SkillSelectionListener list) {
+		ssListeners.remove(list);
 	}
 }

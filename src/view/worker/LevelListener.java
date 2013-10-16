@@ -1,7 +1,7 @@
 package view.worker;
 
-import model.listeners.CompletionListener;
 import model.listeners.LevelGainListener;
+import model.listeners.SkillSelectionListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
 import model.map.IFixture;
@@ -18,7 +18,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  */
 public final class LevelListener implements LevelGainListener,
-		UnitMemberListener, CompletionListener {
+		UnitMemberListener, SkillSelectionListener {
 	/**
 	 * A type-safe null Skill.
 	 */
@@ -58,19 +58,14 @@ public final class LevelListener implements LevelGainListener,
 	 * The current skill.
 	 */
 	private Skill skill = NULL_SKILL;
-
 	/**
-	 * @param result maybe the newly selected skill
+	 *
+	 * @param nSkill the newly selected skill
 	 */
 	@Override
-	public void stopWaitingOn(final Object result) {
-		if ("null_skill".equals(result)) {
-			skill = NULL_SKILL;
-		} else if (result instanceof Skill) {
-			skill = (Skill) result;
-		}
+	public void selectSkill(@Nullable final Skill nSkill) {
+		skill = nSkill == null ? NULL_SKILL : skill;
 	}
-
 	/**
 	 * Handle level gain notification.
 	 */

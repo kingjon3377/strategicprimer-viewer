@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
-import model.listeners.CompletionListener;
 import model.listeners.NewWorkerListener;
+import model.listeners.UnitSelectionListener;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
@@ -26,7 +26,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  */
 public class WorkerCreationListener implements ActionListener,
-		CompletionListener, NewWorkerListener {
+		UnitSelectionListener, NewWorkerListener {
 	/**
 	 * The string "null".
 	 */
@@ -97,18 +97,12 @@ public class WorkerCreationListener implements ActionListener,
 	}
 
 	/**
-	 * @param result the new value to stop waiting on (the newly selected unit,
-	 *        or the newly created worker)
+	 * @param unit the newly selected unit.
 	 */
 	@Override
-	public void stopWaitingOn(final Object result) {
-		if ("null_unit".equals(result)) {
-			selUnit = NULL_UNIT;
-		} else if (result instanceof Unit) {
-			selUnit = (Unit) result;
-		}
+	public void selectUnit(@Nullable final Unit unit) {
+		selUnit = unit == null ? NULL_UNIT : unit;
 	}
-
 	/**
 	 * Handle button press.
 	 *
@@ -142,5 +136,4 @@ public class WorkerCreationListener implements ActionListener,
 			tmodel.addUnitMember(selUnit, worker);
 		}
 	}
-
 }

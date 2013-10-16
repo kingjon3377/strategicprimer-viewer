@@ -61,13 +61,13 @@ public class AdvancementFrame extends JFrame {
 		assert wtmodel != null;
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 				IDFactoryFiller.createFactory(source.getMap()));
-		tree.addCompletionListener(nwl);
+		tree.addUnitSelectionListener(nwl);
 		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
 		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
 		final JobsTree jobsTree = new JobsTree(new AddRemovePanel[] { jarp,
 				sarp }, tree);
 		final LevelListener llist = new LevelListener();
-		jobsTree.addCompletionListener(llist);
+		jobsTree.addSkillSelectionListener(llist);
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
 				HALF_WAY,

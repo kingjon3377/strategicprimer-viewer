@@ -13,11 +13,12 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
 import model.listeners.CompletionListener;
-import model.listeners.CompletionSource;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeSource;
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
+import model.listeners.UnitSelectionListener;
+import model.listeners.UnitSelectionSource;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -40,7 +41,7 @@ import view.map.details.FixtureEditMenu;
  *
  */
 public class WorkerTree extends JTree implements UnitMemberSelectionSource,
-		CompletionSource {
+		UnitSelectionSource {
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
@@ -233,17 +234,10 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 					list.memberSelected(null, (UnitMember) sel);
 				}
 			}
-			// ESCA-JAVA0177:
-			final Object result;
-			if (sel == null) {
-				result = "null_unit";
-			} else if (sel instanceof Unit) {
-				result = sel;
-			} else {
-				return;
-			}
-			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(result);
+			if (sel instanceof Unit || sel == null) {
+				for (final UnitSelectionListener list : usListeners) {
+					list.selectUnit((Unit) sel);
+				}
 			}
 		}
 	}
@@ -251,21 +245,21 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final List<UnitSelectionListener> usListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addCompletionListener(final CompletionListener list) {
-		cListeners.add(list);
+	public void addUnitSelectionListener(final UnitSelectionListener list) {
+		usListeners.add(list);
 	}
 
 	/**
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removeCompletionListener(final CompletionListener list) {
-		cListeners.remove(list);
+	public void removeUnitSelectionListener(final UnitSelectionListener list) {
+		usListeners.remove(list);
 	}
 }

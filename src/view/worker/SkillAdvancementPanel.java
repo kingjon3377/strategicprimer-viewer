@@ -11,10 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.listeners.CompletionListener;
-import model.listeners.CompletionSource;
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
+import model.listeners.SkillSelectionListener;
+import model.listeners.SkillSelectionSource;
 import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -30,7 +30,7 @@ import view.util.ListenedButton;
  *
  */
 public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
-		CompletionListener, LevelGainSource {
+		SkillSelectionListener, LevelGainSource {
 	/**
 	 * The maximum height of the panel.
 	 */
@@ -42,19 +42,15 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 	private Skill skill = null;
 
 	/**
-	 * @param result the newly selected skill, or a placeholder indicating no
-	 *        selection
+	 * @param nSkill the newly selected skill.
 	 */
 	@Override
-	public void stopWaitingOn(final Object result) {
-		if ("null_skill".equals(result)) {
-			skill = null;
-		} else if (result instanceof Skill) {
-			skill = (Skill) result;
+	public void selectSkill(@Nullable final Skill nSkill) {
+		skill = nSkill;
+		if (skill != null) {
 			hours.requestFocusInWindow();
 		}
 	}
-
 	/**
 	 * Text box.
 	 */
@@ -67,7 +63,7 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 	 * @param sources the things we should listen to
 	 */
 	public SkillAdvancementPanel(final LevelGainListener listener,
-			final CompletionSource... sources) {
+			final SkillSelectionSource... sources) {
 		super(false);
 		addLevelGainListener(listener);
 		final JPanel one = new JPanel();
@@ -83,8 +79,8 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		hours.addActionListener(this);
 		two.add(new ListenedButton("Cancel", this));
 		add(two);
-		for (final CompletionSource source : sources) {
-			source.addCompletionListener(this);
+		for (final SkillSelectionSource source : sources) {
+			source.addSkillSelectionListener(this);
 		}
 		setMinimumSize(new Dimension(200, 40));
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));

@@ -10,8 +10,10 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import model.listeners.CompletionListener;
-import model.listeners.CompletionSource;
+import model.listeners.SkillSelectionListener;
+import model.listeners.SkillSelectionSource;
+import model.listeners.UnitSelectionSource;
+import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.JobTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -25,14 +27,14 @@ import view.util.AddRemovePanel;
  * @author Jonathan Lovelace
  */
 public class JobsTree extends JTree implements TreeSelectionListener,
-		CompletionSource {
+		SkillSelectionSource {
 	/**
 	 * Constructor.
 	 *
 	 * @param sources things for the model to listen to for property changes.
 	 * @param src ignored for now, TODO: figure out what should be done with it.
 	 */
-	public JobsTree(final AddRemovePanel[] sources, final CompletionSource src) {
+	public JobsTree(final AddRemovePanel[] sources, final UnitSelectionSource src) {
 		super();
 		final TreeSelectionModel tsm = getSelectionModel();
 		if (tsm == null) {
@@ -72,9 +74,9 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 			} else {
 				component = selPath.getLastPathComponent();
 			}
-			final Object retval = component == null ? "null_skill" : component;
-			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(retval);
+			final Skill retval = component instanceof Skill ? (Skill) component : null;
+			for (final SkillSelectionListener list : ssListeners) {
+				list.selectSkill(retval);
 			}
 		}
 	}
@@ -82,21 +84,21 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addCompletionListener(final CompletionListener list) {
-		cListeners.add(list);
+	public void addSkillSelectionListener(final SkillSelectionListener list) {
+		ssListeners.add(list);
 	}
 
 	/**
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removeCompletionListener(final CompletionListener list) {
-		cListeners.remove(list);
+	public void removeSkillSelectionListener(final SkillSelectionListener list) {
+		ssListeners.remove(list);
 	}
 }

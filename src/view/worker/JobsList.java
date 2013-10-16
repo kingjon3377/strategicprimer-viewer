@@ -9,7 +9,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.listeners.CompletionListener;
-import model.listeners.CompletionSource;
+import model.listeners.JobSelectionListener;
+import model.listeners.JobSelectionSource;
 import model.listeners.UnitMemberSelectionSource;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.JobsListModel;
@@ -26,7 +27,7 @@ import view.util.AddRemovePanel;
  *
  */
 public class JobsList extends JList<Job> implements ListSelectionListener,
-		CompletionSource {
+		JobSelectionSource {
 	/**
 	 * Constructor.
 	 *
@@ -35,7 +36,7 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	 *        selected
 	 * @param arps panels to listen to for new jobs from the user
 	 */
-	public JobsList(final CompletionListener listener,
+	public JobsList(final JobSelectionListener listener,
 			final UnitMemberSelectionSource[] umSources,
 			final AddRemovePanel[] arps) {
 		final JobsListModel lmodel = new JobsListModel(umSources, arps);
@@ -53,7 +54,7 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 				}
 			}
 		});
-		addCompletionListener(listener);
+		addJobSelectionListener(listener);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
@@ -64,31 +65,30 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
 		@Nullable
-		final Object temp = getSelectedValue();
-		final Object result = temp == null ? "null_job" : temp;
-		for (final CompletionListener list : cListeners) {
-			list.stopWaitingOn(result);
+		final Job temp = getSelectedValue();
+		for (final JobSelectionListener list : jsListeners) {
+			list.selectJob(temp);
 		}
 	}
 
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final List<JobSelectionListener> jsListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addCompletionListener(final CompletionListener list) {
-		cListeners.add(list);
+	public final void addJobSelectionListener(final JobSelectionListener list) {
+		jsListeners.add(list);
 	}
 
 	/**
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeCompletionListener(final CompletionListener list) {
-		cListeners.remove(list);
+	public final void removeJobSelectionListener(final JobSelectionListener list) {
+		jsListeners.remove(list);
 	}
 }
