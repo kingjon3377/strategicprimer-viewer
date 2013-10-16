@@ -14,8 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -28,6 +26,9 @@ import model.map.TileFixture;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
 import model.viewer.ZOrderFilter;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IsNumeric;
 import util.IteratorWrapper;
 import view.util.BorderedPanel;
@@ -134,6 +135,9 @@ public class FindDialog extends JDialog implements ActionListener {
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				map, true, !backwards.isSelected(), !vertically.isSelected()));
 		for (Point point : iter) {
+			if (point == null) {
+				continue;
+			}
 			final Tile tile = map.getMap().getTile(point);
 			for (final TileFixture fix : tile) {
 				if (matches(pattern, idNum, fix)) {
@@ -148,12 +152,14 @@ public class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * @param pattern a pattern
 	 * @param idNum either MIN_INT, or (if pattern is numeric) its numeric equivalent
-	 * @param fix a fixture
+	 * @param fix a fixture. May be null, in which case we return false.
 	 * @return whether the fixture matches the pattern or has id as its ID.
 	 */
 	private boolean matches(final String pattern, final int idNum,
-			final IFixture fix) {
-		if (!pattern.isEmpty()
+			@Nullable final IFixture fix) {
+		if (fix == null) {
+			return false; // NOPMD
+		} else if (!pattern.isEmpty()
 				&& (!(fix instanceof TileFixture) || ffl
 						.shouldDisplay((TileFixture) fix))
 				&& (fix.getID() == idNum
@@ -206,7 +212,9 @@ public class FindDialog extends JDialog implements ActionListener {
 		@Override
 		public void run() {
 			for (final Point point : map.getTiles()) {
-				populate(map.getTiles().getTile(point));
+				if (point != null) {
+					populate(map.getTiles().getTile(point));
+				}
 			}
 		}
 		/**

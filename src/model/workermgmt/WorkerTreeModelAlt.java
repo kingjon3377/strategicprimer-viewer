@@ -119,8 +119,21 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		/**
 		 * @param enumer the object we're wrapping.
 		 */
-		public EnumerationWrapper(final Enumeration<T> enumer) {
-			wrapped = enumer;
+		public EnumerationWrapper(@Nullable final Enumeration<T> enumer) {
+			if (enumer == null) {
+				wrapped = new Enumeration<T>() {
+					@Override
+					public boolean hasMoreElements() {
+						return false;
+					}
+					@Override
+					public T nextElement() {
+						throw new NoSuchElementException("Empty enumeration, replacing a null argument, has no elements");
+					}
+				};
+			} else {
+				wrapped = enumer;
+			}
 		}
 		/**
 		 * The object we're wrapping.

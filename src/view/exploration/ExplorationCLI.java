@@ -109,6 +109,7 @@ public class ExplorationCLI {
 			return Integer.MAX_VALUE; // NOPMD
 		}
 		final Direction direction = Direction.values()[directionNum];
+		assert direction != null;
 		final Point point = model.getSelectedUnitLocation();
 		// ESCA-JAVA0177:
 		int cost; // NOPMD
@@ -122,7 +123,9 @@ public class ExplorationCLI {
 		}
 		final Point dPoint = model.getDestination(point, direction);
 		for (TileFixture fix : model.getMap().getTile(dPoint)) {
-			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
+			if (fix == null) {
+				continue;
+			} else if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
 			} else if (SimpleMovement.mightNotice(mover, fix)) {
 				allFixtures.add(fix);
@@ -146,10 +149,12 @@ public class ExplorationCLI {
 			constants.add(allFixtures.get(0));
 		}
 		for (TileFixture fix : constants) {
-			SystemOut.SYS_OUT.println(fix);
-			for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
-				final IMap map = pair.first();
-				map.getTile(dPoint).addFixture(fix);
+			if (fix != null) {
+				SystemOut.SYS_OUT.println(fix);
+				for (Pair<IMap, String> pair : model.getSubordinateMaps()) {
+					final IMap map = pair.first();
+					map.getTile(dPoint).addFixture(fix);
+				}
 			}
 		}
 		return cost;

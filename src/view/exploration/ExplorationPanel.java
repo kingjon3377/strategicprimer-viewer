@@ -89,7 +89,9 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 */
 	private JPanel setupTilesGUIImpl(final JPanel panel, final Direction... directions) {
 		for (final Direction direction : directions) {
-			addTileGUI(panel, direction);
+			if (direction != null) {
+				addTileGUI(panel, direction);
+			}
 		}
 		return panel;
 	}
@@ -182,6 +184,9 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		final Point selPoint = model.getSelectedUnitLocation();
 		for (final Direction dir : Direction.values()) {
+			if (dir == null) {
+				continue;
+			}
 			final Point point = model.getDestination(selPoint, dir);
 			final Tile tileOne = model.getMap().getTile(point);
 			final Iterator<Pair<IMap, String>> subs = model
