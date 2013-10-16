@@ -161,12 +161,20 @@ public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
 	}
 
 	/**
-	 * FIXME: Implement properly; the spec specifies what the hash code for any set is.
+	 * TODO: Keep a running-total value for this, modified in add() and
+	 * remove(), rather than calculating it every time hashCode is called.
+	 *
 	 * @return a hash-value for the set.
 	 */
 	@Override
 	public int hashCode() {
-		return impl.hashCode();
+		int retval = 0;
+		for (final T item : this) {
+			if (item != null) {
+				retval += item.hashCode();
+			}
+		}
+		return retval;
 	}
 
 	/**
