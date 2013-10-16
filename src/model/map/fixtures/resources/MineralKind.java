@@ -62,7 +62,13 @@ public enum MineralKind {
 	 * @return the MineralKind it represents
 	 */
 	public static MineralKind parseMineralKind(final String string) {
-		return M_MAP.get(string);
+		if (M_MAP.containsKey(string)) {
+			final MineralKind retval = M_MAP.get(string);
+			assert retval != null;
+			return retval;
+		} else {
+			throw new IllegalArgumentException("Not a kind of mineral we recognize");
+		}
 	}
 
 	/**

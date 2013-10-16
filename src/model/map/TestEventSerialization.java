@@ -239,13 +239,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				createSerializedForm(three, false).replace(KIND_PROPERTY,
 						oldKindProperty), StoneDeposit.class, oldKindProperty);
 		assertUnwantedChild(
-				"<stone kind=\"stone\" dc=\"10\"><troll /></stone>",
+				"<stone kind=\"marble\" dc=\"10\"><troll /></stone>",
 				StoneDeposit.class, false);
-		assertMissingProperty("<stone kind=\"stone\" />", StoneDeposit.class,
+		assertMissingProperty("<stone kind=\"marble\" />", StoneDeposit.class,
 				"dc", false);
 		assertMissingProperty("<stone dc=\"10\" />", StoneDeposit.class,
 				KIND_PROPERTY, false);
-		assertMissingProperty("<stone kind=\"kind\" dc=\"0\" />",
+		assertMissingProperty("<stone kind=\"marble\" dc=\"0\" />",
 				StoneDeposit.class, "id", true);
 		assertImageSerialization("Stone image property is preserved", three,
 				StoneDeposit.class);

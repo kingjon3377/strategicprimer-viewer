@@ -9,6 +9,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.River;
@@ -63,12 +65,14 @@ public final class CompactTileReader extends AbstractCompactReader implements
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if (isRiver(event.asStartElement().getName())) {
+				if (isRiver(assertNotNullQName(event.asStartElement().getName()))) {
 					retval.addFixture(new RiverFixture(parseRiver(// NOPMD
-							event.asStartElement(), warner)));
-					spinUntilEnd(event.asStartElement().getName(), stream);
+							assertNotNullStartElement(event.asStartElement()),
+							warner)));
+					spinUntilEnd(assertNotNullQName(event.asStartElement().getName()), stream);
 				} else {
-					retval.addFixture(parseFixture(event.asStartElement(),
+					retval.addFixture(parseFixture(
+							assertNotNullStartElement(event.asStartElement()),
 							stream, players, idFactory, warner));
 				}
 			} else if (event.isCharacters()) {
@@ -158,7 +162,7 @@ public final class CompactTileReader extends AbstractCompactReader implements
 	 * @return whether it's one we can read
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
+	public boolean isSupportedTag(@Nullable final String tag) {
 		return "tile".equalsIgnoreCase(tag);
 	}
 

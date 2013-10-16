@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IEvent;
 import model.map.PlayerCollection;
@@ -154,7 +156,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
+	public boolean isSupportedTag(@Nullable final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
 
@@ -233,7 +235,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNotNullQName(element.getName()), stream);
 		if (retval instanceof HasImage) {
 			((HasImage) retval).setImage(getParameter(element, "image", ""));
 		}

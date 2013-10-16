@@ -82,7 +82,9 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		while (retval.isStartElement()
 				&& "include".equals(retval.asStartElement().getName()
 						.getLocalPart())) {
-			handleInclude(retval);
+			final StartElement selem = retval.asStartElement();
+			assert selem != null;
+			handleInclude(selem);
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
 				throw new NoSuchElementException();
@@ -130,9 +132,9 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 *
 	 * @param tag the tag.
 	 */
-	private void handleInclude(final XMLEvent tag) {
+	private void handleInclude(final StartElement tag) {
 		try {
-			final String file = getAttribute(tag.asStartElement(), "file");
+			final String file = getAttribute(tag, "file");
 			stack.addFirst(Pair.of(
 					file,
 					new ComparableIterator<XMLEvent>(XMLInputFactory

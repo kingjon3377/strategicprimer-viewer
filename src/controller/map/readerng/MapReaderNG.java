@@ -84,7 +84,6 @@ public class MapReaderNG implements IMapReader, ISPReader {
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final Object retval = ReaderAdapter.ADAPTER.parse(
-						// NOPMD
 						event.asStartElement(), eventReader,
 						new PlayerCollection(), warner, new IDFactory()); // NOPMD
 				// This is a hack to make it compile under the new twoparameter

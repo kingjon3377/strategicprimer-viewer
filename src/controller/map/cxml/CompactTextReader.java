@@ -6,6 +6,8 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.IteratorWrapper;
@@ -39,7 +41,7 @@ public final class CompactTextReader extends AbstractCompactReader implements
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
+	public boolean isSupportedTag(@Nullable final String tag) {
 		return "text".equalsIgnoreCase(tag);
 	}
 

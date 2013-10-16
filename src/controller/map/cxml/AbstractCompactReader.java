@@ -6,6 +6,9 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.HasImage;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.EqualsAny;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
@@ -222,10 +225,10 @@ public abstract class AbstractCompactReader {
 	}
 
 	/**
-	 * @param tag a tag
-	 * @return whether we support it
+	 * @param tag a tag. May be null, to simplify callers.
+	 * @return whether we support it. Should return false if null.
 	 */
-	public abstract boolean isSupportedTag(final String tag);
+	public abstract boolean isSupportedTag(@Nullable final String tag);
 
 	/**
 	 * @param tabs a nonnegative integer
@@ -247,5 +250,23 @@ public abstract class AbstractCompactReader {
 		final String image = obj.getImage();
 		return image.isEmpty() || image.equals(obj.getDefaultImage()) ? ""
 				: " image=\"" + image + "\"";
+	}
+	/**
+	 * Do not call this on anything that actually might be null; that will cause an assertion failure and thus a crash.
+	 * @param qname a QName that should never be null but Eclipse thinks might be
+	 * @return it, after asserting it is not null
+	 */
+	protected static QName assertNotNullQName(@Nullable final QName qname) {
+		assert qname != null;
+		return qname;
+	}
+	/**
+	 * @param element a StartElement, known from the guarantees of the documentation of
+	 *        the API to not be null, but which Eclipse is convinced might be
+	 * @return it, after asserting it is not null
+	 */
+	protected static StartElement assertNotNullStartElement(@Nullable final StartElement element) {
+		assert element != null;
+		return element;
 	}
 }

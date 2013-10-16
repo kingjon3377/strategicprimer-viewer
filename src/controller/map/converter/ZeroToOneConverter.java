@@ -50,16 +50,18 @@ public class ZeroToOneConverter {
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if ("tile".equalsIgnoreCase(event.asStartElement().getName()
+				final StartElement selement = event.asStartElement();
+				assert selement != null;
+				if ("tile".equalsIgnoreCase(selement.getName()
 						.getLocalPart())) {
-					builder.append(convertTile(event.asStartElement(),
-							iFactory(event.asStartElement().getAttributes())));
-				} else if ("map".equalsIgnoreCase(event.asStartElement()
+					builder.append(convertTile(selement,
+							iFactory(selement.getAttributes())));
+				} else if ("map".equalsIgnoreCase(selement
 						.getName().getLocalPart())) {
-					builder.append(convertMap(event.asStartElement(),
-							iFactory(event.asStartElement().getAttributes())));
+					builder.append(convertMap(selement,
+							iFactory(selement.getAttributes())));
 				} else {
-					builder.append(printStartElement(event.asStartElement()));
+					builder.append(printStartElement(selement));
 				}
 
 			} else if (event.isCharacters()) {

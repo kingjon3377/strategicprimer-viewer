@@ -99,7 +99,9 @@ public class JobReader implements INodeHandler<Job> {
 		retval.addAttribute("name", obj.getName());
 		retval.addAttribute("level", Integer.toString(obj.getLevel()));
 		for (final Skill skill : obj) {
-			retval.addChild(ReaderAdapter.ADAPTER.write(skill));
+			if (skill != null) {
+				retval.addChild(ReaderAdapter.ADAPTER.write(skill));
+			}
 		}
 		return retval;
 	}

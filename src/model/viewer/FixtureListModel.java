@@ -90,15 +90,19 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	/**
 	 * Remove the specified items from the tile and the list.
 	 *
-	 * @param list the list of items to remove
+	 * @param list the list of items to remove. If null, none are removed.
 	 */
-	public void remove(final List<TileFixture> list) {
-		for (final TileFixture fix : list) {
-			if (fix instanceof TileTypeFixture) {
-				tile.setTerrain(TileType.NotVisible);
-				removeElement(fix);
-			} else if (tile.removeFixture(fix)) {
-				removeElement(fix);
+	public void remove(@Nullable final List<TileFixture> list) {
+		if (list != null) {
+			for (final TileFixture fix : list) {
+				if (fix == null) {
+					continue;
+				} else if (fix instanceof TileTypeFixture) {
+					tile.setTerrain(TileType.NotVisible);
+					removeElement(fix);
+				} else if (tile.removeFixture(fix)) {
+					removeElement(fix);
+				}
 			}
 		}
 	}

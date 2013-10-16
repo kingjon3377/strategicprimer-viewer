@@ -6,6 +6,8 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -59,15 +61,16 @@ public final class CompactMapReader extends AbstractCompactReader implements
 			final StartElement mapElement = getFirstStartElement(stream,
 					element.getLocation().getLineNumber());
 			if (!MAP_TAG.equalsIgnoreCase(mapElement.getName().getLocalPart())) {
-				throw new UnwantedChildException(element.getName()
-						.getLocalPart(), mapElement.getName().getLocalPart(),
-						mapElement.getLocation().getLineNumber());
+				throw new UnwantedChildException(assertNotNullQName(
+						element.getName()).getLocalPart(), assertNotNullQName(
+						mapElement.getName()).getLocalPart(), mapElement
+						.getLocation().getLineNumber());
 			}
 			final MapView retval = new MapView((SPMap) read(mapElement, stream,
 					players, warner, idFactory), Integer.parseInt(getParameter(
 					element, "current_player")), Integer.parseInt(getParameter(
 					element, "current_turn")));
-			spinUntilEnd(element.getName(), stream);
+			spinUntilEnd(assertNotNullQName(element.getName()), stream);
 			return retval; // NOPMD: TODO: Perhaps split this into parseMap and
 							// parseView?
 		} else {
@@ -77,7 +80,8 @@ public final class CompactMapReader extends AbstractCompactReader implements
 					Integer.parseInt(getParameter(element, "version", "1"))));
 			for (final XMLEvent event : stream) {
 				if (event.isStartElement()) {
-					parseChild(stream, warner, retval, event.asStartElement(),
+					parseChild(stream, warner, retval,
+							assertNotNullStartElement(event.asStartElement()),
 							idFactory);
 				} else if (event.isEndElement()
 						&& element.getName().equals(
@@ -109,7 +113,9 @@ public final class CompactMapReader extends AbstractCompactReader implements
 			final Warning warner, final SPMap map, final StartElement elem,
 			final IDFactory idFactory) throws SPFormatException {
 		final String tag = elem.getName().getLocalPart();
-		if ("player".equalsIgnoreCase(tag)) {
+		if (tag == null) {
+			throw new IllegalStateException("Null tag");
+		} else if ("player".equalsIgnoreCase(tag)) {
 			map.addPlayer(CompactPlayerReader.READER.read(elem, stream,
 					map.getPlayers(), warner, idFactory));
 		} else if ("tile".equalsIgnoreCase(tag)) {
@@ -140,7 +146,7 @@ public final class CompactMapReader extends AbstractCompactReader implements
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				return event.asStartElement();
+				return assertNotNullStartElement(event.asStartElement());
 			}
 		}
 		throw new MissingChildException(MAP_TAG, line);
@@ -163,7 +169,7 @@ public final class CompactMapReader extends AbstractCompactReader implements
 	 * @return whether it's one we support
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
+	public boolean isSupportedTag(@Nullable final String tag) {
 		return MAP_TAG.equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
 	}
 

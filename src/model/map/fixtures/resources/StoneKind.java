@@ -32,7 +32,13 @@ public enum StoneKind {
 	 * @return the StoneKind it represents
 	 */
 	public static StoneKind parseStoneKind(final String string) {
-		return SK_MAP.get(string);
+		if (SK_MAP.containsKey(string)) {
+			final StoneKind retval = SK_MAP.get(string);
+			assert retval != null;
+			return retval;
+		} else {
+			throw new IllegalArgumentException("Unrecognized kind of stone");
+		}
 	}
 
 	static {

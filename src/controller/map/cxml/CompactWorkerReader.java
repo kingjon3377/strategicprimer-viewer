@@ -64,11 +64,11 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			if (event.isStartElement()) {
 				if ("job".equalsIgnoreCase(event.asStartElement().getName()
 						.getLocalPart())) {
-					retval.addJob(parseJob(event.asStartElement(), stream,
+					retval.addJob(parseJob(assertNotNullStartElement(event.asStartElement()), stream,
 							warner));
 				} else if ("stats".equalsIgnoreCase(event.asStartElement()
 						.getName().getLocalPart())) {
-					retval.setStats(parseStats(event.asStartElement(), stream));
+					retval.setStats(parseStats(assertNotNullStartElement(event.asStartElement()), stream));
 				} else {
 					throw new UnwantedChildException(element.getName()
 							.getLocalPart(), event.asStartElement().getName()
@@ -103,7 +103,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 				Integer.parseInt(getParameter(element, "int")),
 				Integer.parseInt(getParameter(element, "wis")),
 				Integer.parseInt(getParameter(element, "cha")));
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNotNullQName(element.getName()), stream);
 		return retval;
 	}
 
@@ -130,8 +130,8 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 			if (event.isStartElement()) {
 				if ("skill".equalsIgnoreCase(event.asStartElement().getName()
 						.getLocalPart())) {
-					retval.addSkill(parseSkill(event.asStartElement(), warner));
-					spinUntilEnd(event.asStartElement().getName(), stream);
+					retval.addSkill(parseSkill(assertNotNullStartElement(event.asStartElement()), warner));
+					spinUntilEnd(assertNotNullQName(event.asStartElement().getName()), stream);
 				} else {
 					throw new UnwantedChildException(element.getName()
 							.getLocalPart(), event.asStartElement().getName()
@@ -257,7 +257,9 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		if (obj.iterator().hasNext()) {
 			out.append(">\n");
 			for (final Skill skill : obj) {
-				writeSkill(out, skill, indent + 1);
+				if (skill != null) {
+					writeSkill(out, skill, indent + 1);
+				}
 			}
 			out.append(indent(indent));
 			out.append("</job>\n");
@@ -291,7 +293,7 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
+	public boolean isSupportedTag(@Nullable final String tag) {
 		return "worker".equals(tag);
 	}
 

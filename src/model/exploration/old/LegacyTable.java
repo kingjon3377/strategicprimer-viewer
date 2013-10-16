@@ -64,7 +64,9 @@ public class LegacyTable implements EncounterTable {
 		}
 		data.add("Nothing interesting here ...");
 		for (final StoneKind stone : StoneKind.values()) {
-			addData(new StoneDeposit(stone, 0, 0)); // NOPMD
+			if (stone != null) {
+				addData(new StoneDeposit(stone, 0, 0)); // NOPMD
+			}
 		}
 	}
 

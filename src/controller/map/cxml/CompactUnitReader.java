@@ -8,6 +8,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -70,7 +72,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				retval.addMember(parseChild(event.asStartElement(), stream,
+				retval.addMember(parseChild(assertNotNullStartElement(event.asStartElement()), stream,
 						players, idFactory, warner));
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
@@ -165,7 +167,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 	 * @return whether it's one we can read
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
+	public boolean isSupportedTag(@Nullable final String tag) {
 		return UNIT_TAG.equalsIgnoreCase(tag);
 	}
 

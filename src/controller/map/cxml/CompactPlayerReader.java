@@ -6,6 +6,8 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Player;
 import model.map.PlayerCollection;
 import util.IteratorWrapper;
@@ -51,7 +53,7 @@ public final class CompactPlayerReader extends AbstractCompactReader implements
 		requireTag(element, "player");
 		requireNonEmptyParameter(element, "number", true, warner);
 		requireNonEmptyParameter(element, "code_name", true, warner);
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNotNullQName(element.getName()), stream);
 		return new Player(Integer.parseInt(getParameter(element, "number")),
 				getParameter(element, "code_name"));
 	}
@@ -61,7 +63,7 @@ public final class CompactPlayerReader extends AbstractCompactReader implements
 	 * @return whether it's one we can read
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
+	public boolean isSupportedTag(@Nullable final String tag) {
 		return "player".equalsIgnoreCase(tag);
 	}
 

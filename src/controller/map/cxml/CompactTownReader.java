@@ -7,6 +7,8 @@ import java.util.Random;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IEvent;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -63,8 +65,8 @@ public final class CompactTownReader extends AbstractCompactReader implements
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(final String tag) {
-		return EqualsAny.equalsAny(tag, "village", "fortress", "town", "city",
+	public boolean isSupportedTag(@Nullable final String tag) {
+		return tag == null ? false : EqualsAny.equalsAny(tag, "village", "fortress", "town", "city",
 				"fortification");
 	}
 
@@ -113,7 +115,7 @@ public final class CompactTownReader extends AbstractCompactReader implements
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNotNullQName(element.getName()), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village retval = new Village(
 				TownStatus.parseTownStatus(getParameter(element, "status")),
@@ -157,7 +159,7 @@ public final class CompactTownReader extends AbstractCompactReader implements
 		} else {
 			retval = new Fortification(status, size, dc, name, id, owner);
 		}
-		spinUntilEnd(element.getName(), stream);
+		spinUntilEnd(assertNotNullQName(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -214,7 +216,7 @@ public final class CompactTownReader extends AbstractCompactReader implements
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
 				retval.addUnit(CompactUnitReader.READER.read(
-						event.asStartElement(), stream, players, warner,
+						assertNotNullStartElement(event.asStartElement()), stream, players, warner,
 						idFactory));
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

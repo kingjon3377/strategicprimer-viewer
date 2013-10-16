@@ -5,6 +5,7 @@ import java.io.Reader;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
@@ -48,8 +49,10 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
+				final StartElement evt = event.asStartElement();
+				assert evt != null;
 				final T retval = CompactReaderAdapter.parse(type,
-						event.asStartElement(), eventReader, players, warner,
+						evt, eventReader, players, warner,
 						idFactory);
 				return retval;
 			}
