@@ -37,6 +37,7 @@ import model.workermgmt.IWorkerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.TypesafeLogger;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -224,8 +225,8 @@ public class WorkerMgmtFrame extends JFrame {
 		/**
 		 * The logger. FIXME: Should be private static final on the outer class.
 		 */
-		private static final Logger LOGGER = Logger
-				.getLogger(WorkerMgmtFrame.class.getName());
+		private static final Logger LOGGER = TypesafeLogger
+				.getLogger(WorkerMgmtFrame.class);
 		/**
 		 * The file chooser.
 		 */
