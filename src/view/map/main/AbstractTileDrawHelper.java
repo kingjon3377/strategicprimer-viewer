@@ -10,6 +10,8 @@ import model.map.TileType;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.
  *
@@ -17,12 +19,22 @@ import model.map.fixtures.towns.Fortress;
  *
  */
 public abstract class AbstractTileDrawHelper implements TileDrawHelper {
-
+	/**
+	 * Because the JDK is not annotated with Eclipse's nullness annotations,
+	 * Eclipse thinks that static constants in the JDK might be null, leading to
+	 * several warnings in this class.
+	 * @param color a color
+	 * @return it without Eclipse having the idea anymore that it might be null
+	 */
+	protected static Color assertNonNull(@Nullable final Color color) {
+		assert color != null;
+		return color;
+	}
 	/**
 	 * The color of the icon used to show that a tile has an event or associated
 	 * text.
 	 */
-	protected static final Color EVENT_COLOR = Color.pink;
+	protected static final Color EVENT_COLOR = assertNonNull(Color.pink);
 	/**
 	 * The color of the icon used to show that a tile has a forest.
 	 */

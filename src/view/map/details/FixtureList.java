@@ -46,12 +46,14 @@ public class FixtureList extends JList<TileFixture> implements
 	public FixtureList(final JComponent parent, final PlayerCollection players,
 			final Iterable<? extends SelectionChangeSource> sources) {
 		super(new FixtureListModel(sources));
+		final FixtureListModel flm = (FixtureListModel) getModel();
+		assert flm != null;
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY, this);
 		setDropTarget(new DropTarget(this, new FixtureListDropListener(parent,
-				(FixtureListModel) getModel())));
+				flm)));
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
