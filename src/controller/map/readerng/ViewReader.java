@@ -87,7 +87,9 @@ public class ViewReader implements INodeHandler<MapView> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				return event.asStartElement();
+				final StartElement selem = event.asStartElement();
+				assert selem != null;
+				return selem;
 			}
 		}
 		throw new MissingChildException("map", line);

@@ -62,16 +62,16 @@ public class UnitReader implements INodeHandler<Unit> {
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final Object result = ReaderAdapter.ADAPTER.parse(
-						event.asStartElement(), stream, players, warner,
-						idFactory);
+				final StartElement selem = event.asStartElement();
+				assert selem != null;
+				final Object result = ReaderAdapter.ADAPTER.parse(selem,
+						stream, players, warner, idFactory);
 				if (result instanceof UnitMember) {
 					fix.addMember((UnitMember) result);
 				} else {
 					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), event.asStartElement().getName()
-							.getLocalPart(), event.getLocation()
-							.getLineNumber());
+							.getLocalPart(), selem.getName().getLocalPart(),
+							event.getLocation().getLineNumber());
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());

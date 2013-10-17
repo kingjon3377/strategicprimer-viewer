@@ -64,18 +64,18 @@ public class WorkerReader implements INodeHandler<Worker> {
 		XMLHelper.addImage(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final Object result = ReaderAdapter.ADAPTER.parse(
-						event.asStartElement(), stream, players, warner,
-						idFactory);
+				final StartElement selem = event.asStartElement();
+				assert selem != null;
+				final Object result = ReaderAdapter.ADAPTER.parse(selem,
+						stream, players, warner, idFactory);
 				if (result instanceof Job) {
 					retval.addJob((Job) result);
 				} else if (result instanceof WorkerStats) {
 					retval.setStats((WorkerStats) result);
 				} else {
 					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), event.asStartElement().getName()
-							.getLocalPart(), event.getLocation()
-							.getLineNumber());
+							.getLocalPart(), selem.getName().getLocalPart(),
+							event.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

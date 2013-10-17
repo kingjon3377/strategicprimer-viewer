@@ -51,11 +51,12 @@ public class TileReader implements INodeHandler<Tile> {
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if (isRiver(event.asStartElement().getName().getLocalPart())) {
+				final StartElement selem = event.asStartElement();
+				if (isRiver(selem.getName().getLocalPart())) {
 					tile.addFixture(parseRiver(stream, players, warner,
-							idFactory, event));
+							idFactory, selem));
 				} else {
-					perhapsAddFixture(stream, players, warner, tile, event,
+					perhapsAddFixture(stream, players, warner, tile, selem,
 							element.getName().getLocalPart(), idFactory);
 				}
 			} else if (event.isCharacters()) {
@@ -84,10 +85,10 @@ public class TileReader implements INodeHandler<Tile> {
 	 */
 	private static RiverFixture parseRiver(final Iterable<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
-			final IDFactory idFactory, final XMLEvent event)
+			final IDFactory idFactory, final StartElement event)
 			throws SPFormatException {
-		return new RiverFixture(READER.parse(event.asStartElement(), stream,
-				players, warner, idFactory));
+		return new RiverFixture(READER.parse(event, stream, players, warner,
+				idFactory));
 	}
 
 	// ESCA-JAVA0138:
@@ -108,14 +109,11 @@ public class TileReader implements INodeHandler<Tile> {
 	 */
 	private static void perhapsAddFixture(final Iterable<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
-			final Tile tile, final XMLEvent event, final String tag,
+			final Tile tile, final StartElement event, final String tag,
 			final IDFactory idFactory) throws SPFormatException {
 		try {
-			tile.addFixture(checkedCast(
-					ReaderAdapter.ADAPTER.parse(
-							// NOPMD
-							event.asStartElement(), stream, players, warner,
-							idFactory), TileFixture.class));
+			tile.addFixture(checkedCast(ReaderAdapter.ADAPTER.parse(event,
+					stream, players, warner, idFactory), TileFixture.class));
 		} catch (final UnwantedChildException except) {
 			// ESCA-JAVA0049:
 			if ("unknown".equals(except.getTag())) {

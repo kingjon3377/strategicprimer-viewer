@@ -65,16 +65,16 @@ public class JobReader implements INodeHandler<Job> {
 		final List<Skill> skills = new ArrayList<>();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final Object result = ReaderAdapter.ADAPTER.parse(
-						event.asStartElement(), stream, players, warner,
-						idFactory);
+				final StartElement selem = event.asStartElement();
+				assert selem != null;
+				final Object result = ReaderAdapter.ADAPTER.parse(selem,
+						stream, players, warner, idFactory);
 				if (result instanceof Skill) {
 					skills.add((Skill) result);
 				} else {
 					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), event.asStartElement().getName()
-							.getLocalPart(), event.getLocation()
-							.getLineNumber());
+							.getLocalPart(), selem.getName().getLocalPart(),
+							event.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

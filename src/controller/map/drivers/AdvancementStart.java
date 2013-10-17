@@ -53,8 +53,10 @@ public final class AdvancementStart implements ISPDriver {
 		try {
 			new AdvancementStart().startDriver(args);
 		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-			ErrorShower.showErrorDialog(null, except.getMessage());
+			final String msg = except.getMessage();
+			final String message = msg == null ? "" : msg;
+			LOGGER.log(Level.SEVERE, message, except.getCause());
+			ErrorShower.showErrorDialog(null, message);
 		}
 	}
 

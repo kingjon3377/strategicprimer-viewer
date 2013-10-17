@@ -5,6 +5,7 @@ import java.io.Reader;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.MapView;
@@ -83,9 +84,11 @@ public class MapReaderNG implements IMapReader, ISPReader {
 						.createXMLEventReader(istream)));
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final Object retval = ReaderAdapter.ADAPTER.parse(
-						event.asStartElement(), eventReader,
-						new PlayerCollection(), warner, new IDFactory()); // NOPMD
+				final StartElement selem = event.asStartElement();
+				assert selem != null;
+				final Object retval = ReaderAdapter.ADAPTER.parse(selem,
+						eventReader, new PlayerCollection(), warner, // NOPMD
+						new IDFactory()); // NOPMD
 				// This is a hack to make it compile under the new twoparameter
 				// system ...
 				return checkType(retval, type);

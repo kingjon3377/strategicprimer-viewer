@@ -40,15 +40,16 @@ public abstract class AbstractCompactReader {
 	 */
 	protected static void requireTag(final StartElement element,
 			final String... tags) {
-		if (!(EqualsAny.equalsAny(element.getName().getLocalPart(), tags))) {
-			final String elemStr = element.getName().getLocalPart();
+		final String localName = element.getName().getLocalPart();
+		// FIXME: This gives a pass to nul tags. Not that one should be possible ...
+		if (localName != null && !(EqualsAny.equalsAny(localName, tags))) {
 			final String line = Integer.toString(element.getLocation()
 					.getLineNumber());
-			final int len = 60 + elemStr.length() + line.length() + tags.length
+			final int len = 60 + localName.length() + line.length() + tags.length
 					* 10; // Overestimate just in case
 			final StringBuilder sbuild = new StringBuilder(len)
 					.append("Unexpected tag ");
-			sbuild.append(elemStr);
+			sbuild.append(localName);
 			sbuild.append(" on line ");
 			sbuild.append(line);
 			sbuild.append(", expected one of the following: ");

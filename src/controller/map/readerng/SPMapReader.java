@@ -63,6 +63,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement elem = event.asStartElement();
+				assert elem != null;
 				parseChild(stream, warner, map, elem, idFactory);
 			} else if (event.isEndElement()
 					&& TAG.equalsIgnoreCase(event.asEndElement().getName()
