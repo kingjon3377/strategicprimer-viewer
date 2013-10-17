@@ -525,7 +525,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		} else {
 			CompactXMLWriter.writeObject(writer, obj);
 		}
-		return writer.toString();
+		final String retval = writer.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

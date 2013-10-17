@@ -146,7 +146,9 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 				sbuild.append(';');
 			}
 		}
-		return sbuild.toString();
+		final String retval = sbuild.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

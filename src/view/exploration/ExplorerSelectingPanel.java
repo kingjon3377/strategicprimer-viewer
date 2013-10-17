@@ -94,7 +94,9 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 		for (final String para : paras) {
 			builder.append("<p>").append(para).append("</p>");
 		}
-		return builder.append("</body></html>").toString();
+		final String retval = builder.append("</body></html>").toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

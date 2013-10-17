@@ -13,7 +13,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Ogre;
-import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -76,7 +75,8 @@ public class OgreReader implements INodeHandler<Ogre> {
 	@Override
 	public <S extends Ogre> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"ogre", Pair.of("id", Long.toString(obj.getID())));
+				"ogre");
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

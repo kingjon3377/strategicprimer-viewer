@@ -41,7 +41,9 @@ public final class RaceFactory {
 	 * @return a race selected using that instance.
 	 */
 	public static String getRace(final Random random) {
-		return RACES.get(random.nextInt(RACES.size()));
+		final String retval = RACES.get(random.nextInt(RACES.size()));
+		assert retval != null;
+		return retval;
 	}
 
 	/**

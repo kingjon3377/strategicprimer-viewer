@@ -101,8 +101,8 @@ public class ImmortalsReportGenerator extends
 				+ giants.size() + minotaurs.size() + ogres.size()
 				+ centaurs.size() + phoenixes.size() + simurghs.size() + griffins
 				.size());
-		final StringBuilder builder = new StringBuilder(len).append(
-				"<h4>Immortals</h4>\n").append(OPEN_LIST);
+		final StringBuilder builder = new StringBuilder(len);
+		builder.append("<h4>Immortals</h4>\n").append(OPEN_LIST);
 		optionallyPrint(dragons, "(s) at ", builder);
 		optionallyPrint(fairies, " at ", builder);
 		optionallyPrint(trolls, "Troll(s) at ", builder);
@@ -115,10 +115,11 @@ public class ImmortalsReportGenerator extends
 		optionallyPrint(phoenixes, "Phoenix(es) at ", builder);
 		optionallyPrint(simurghs, "Simurgh(s) at ", builder);
 		optionallyPrint(griffins, "Griffin(s) at ", builder);
+		final String retval = builder.append(CLOSE_LIST).toString();
+		assert retval != null;
 		return allEmpty(dragons, fairies, giants, centaurs)
 				&& allEmpty(trolls, djinni, sphinxes, minotaurs, ogres,
-						phoenixes, simurghs, griffins) ? "" : builder.append(
-				CLOSE_LIST).toString();
+						phoenixes, simurghs, griffins) ? "" : retval;
 	}
 
 	/**

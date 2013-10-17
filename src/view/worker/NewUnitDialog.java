@@ -102,13 +102,15 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 		if (evt == null) {
 			return;
 		} else if ("OK".equals(evt.getActionCommand())) {
-			if (nameField.getText().trim().isEmpty()) {
+			final String name = nameField.getText().trim();
+			final String kind = kindField.getText().trim();
+			if (name.isEmpty()) {
 				nameField.requestFocusInWindow();
-			} else if (kindField.getText().trim().isEmpty()) {
+			} else if (kind.isEmpty()) {
 				kindField.requestFocusInWindow();
 			} else {
-				final Unit unit = new Unit(owner, kindField.getText().trim(),
-						nameField.getText().trim(), idf.createID());
+				final Unit unit = new Unit(owner, kind,
+						name, idf.createID());
 				for (final NewUnitListener list : nuListeners) {
 					list.addNewUnit(unit);
 				}

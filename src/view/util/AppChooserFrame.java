@@ -108,15 +108,13 @@ public class AppChooserFrame extends JFrame {
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			try {
 				app.newInstance().startDriver(params);
-			} catch (final InstantiationException except) {
-				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-				ErrorShower.showErrorDialog(outer, except.getMessage());
-			} catch (final IllegalAccessException except) {
-				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-				ErrorShower.showErrorDialog(outer, except.getMessage());
-			} catch (final DriverFailedException except) {
-				LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-				ErrorShower.showErrorDialog(outer, except.getMessage());
+			} catch (InstantiationException | IllegalAccessException
+					| DriverFailedException except) {
+				final String msg = except.getMessage();
+				final String message = msg == null ? "Exception with null message"
+						: msg;
+				LOGGER.log(Level.SEVERE, message, except.getCause());
+				ErrorShower.showErrorDialog(outer, message);
 			}
 			SwingUtilities.invokeLater(this);
 		}

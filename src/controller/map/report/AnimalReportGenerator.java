@@ -73,7 +73,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 						.append(": at ").append(pointCSL(entry.getValue()))
 						.append(CLOSE_LIST_ITEM);
 			}
-			return builder.append(CLOSE_LIST).toString(); // NOPMD
+			final String retval = builder.append(CLOSE_LIST).toString();
+			assert retval != null;
+			return retval; // NOPMD
 		}
 	}
 

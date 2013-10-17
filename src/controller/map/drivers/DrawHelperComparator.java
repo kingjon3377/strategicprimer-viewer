@@ -547,6 +547,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final int reps = 50; // NOPMD
 		final Warning warner = new Warning(Warning.Action.Ignore);
 		for (final String filename : args) {
+			if (filename == null) {
+				continue;
+			}
 			// ESCA-JAVA0177:
 			final IMap map; // NOPMD
 			try {

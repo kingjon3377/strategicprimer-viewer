@@ -73,7 +73,9 @@ public final class ReportGenerator {
 				player));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -126,7 +128,9 @@ public final class ReportGenerator {
 				player));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

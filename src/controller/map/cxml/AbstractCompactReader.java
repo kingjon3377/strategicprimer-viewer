@@ -26,6 +26,10 @@ import controller.map.misc.IncludingIterator;
  */
 public abstract class AbstractCompactReader {
 	/**
+	 * The string to use instead of the tag in exceptions when the tag is null.
+	 */
+	private static final String NULL_TAG = "a null tag";
+	/**
 	 * Do not instantiate directly.
 	 */
 	protected AbstractCompactReader() {
@@ -72,12 +76,20 @@ public abstract class AbstractCompactReader {
 	protected static String getParameter(final StartElement element,
 			final String param) throws SPFormatException {
 		final Attribute attr = element.getAttributeByName(new QName(param));
+		final String local = element.getName().getLocalPart();
 		if (attr == null) {
 			throw new MissingPropertyException(
-					element.getName().getLocalPart(), param, element
+					local == null ? NULL_TAG : local, param, element
 							.getLocation().getLineNumber());
 		} else {
-			return attr.getValue();
+			final String value = attr.getValue();
+			if (value == null) {
+				throw new MissingPropertyException(
+						local == null ? NULL_TAG : local, param,
+						element.getLocation().getLineNumber());
+			} else {
+				return value;
+			}
 		}
 	}
 
@@ -93,7 +105,12 @@ public abstract class AbstractCompactReader {
 	protected static String getParameter(final StartElement element,
 			final String param, final String defaultValue) {
 		final Attribute attr = element.getAttributeByName(new QName(param));
-		return attr == null ? defaultValue : attr.getValue();
+		if (attr == null) {
+			return defaultValue; // NOPMD
+		} else {
+			final String value = attr.getValue();
+			return value == null ? defaultValue : value;
+		}
 	}
 
 	/**
@@ -110,8 +127,9 @@ public abstract class AbstractCompactReader {
 			final String param, final boolean mandatory, final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
+			final String local = element.getName().getLocalPart();
 			final SPFormatException except = new MissingPropertyException(
-					element.getName().getLocalPart(), param, element
+					local == null ? NULL_TAG : local, param, element
 							.getLocation().getLineNumber());
 			if (mandatory) {
 				throw except;
@@ -133,9 +151,11 @@ public abstract class AbstractCompactReader {
 			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(tag.getLocalPart(), event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
+				final String outerName = tag.getLocalPart();
+				final String innerName = event.asStartElement().getName().getLocalPart();
+				throw new UnwantedChildException(outerName == null ? NULL_TAG
+						: outerName, innerName == null ? NULL_TAG : innerName,
+						event.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& tag.equals(event.asEndElement().getName())) {
 				break;
@@ -164,9 +184,9 @@ public abstract class AbstractCompactReader {
 			retval = idFactory.register(Integer.parseInt(getParameter(element,
 					"id")));
 		} else {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
+			final String tag = element.getName().getLocalPart();
+			warner.warn(new MissingPropertyException(tag == null ? NULL_TAG
+					: tag, "id", element.getLocation().getLineNumber()));
 			retval = idFactory.createID();
 		}
 		return retval;
@@ -211,17 +231,37 @@ public abstract class AbstractCompactReader {
 				preferred));
 		final Attribute deprProp = element.getAttributeByName(new QName(
 				deprecated));
+		final String local = element.getName().getLocalPart();
+		final MissingPropertyException exception = new MissingPropertyException(
+				local == null ? NULL_TAG : local, preferred,
+				element.getLocation().getLineNumber());
 		if (prefProp == null && deprProp == null) {
-			throw new MissingPropertyException(
-					element.getName().getLocalPart(), preferred, element
-							.getLocation().getLineNumber());
+			throw exception;
 		} else if (prefProp == null) {
-			warner.warn(new DeprecatedPropertyException(element.getName()
-					.getLocalPart(), deprecated, preferred, element
-					.getLocation().getLineNumber()));
-			return deprProp.getValue(); // NOPMD
+			warner.warn(new DeprecatedPropertyException(
+					local == null ? NULL_TAG : local, deprecated,
+					preferred, element.getLocation().getLineNumber()));
+			final String value = deprProp.getValue();
+			if (value == null) {
+				throw exception;
+			}
+			return value; // NOPMD
 		} else {
-			return prefProp.getValue();
+			final String prefValue = prefProp.getValue();
+			if (prefValue == null) {
+				if (deprProp == null) {
+					throw exception;
+				} else {
+					final String deprValue = deprProp.getValue();
+					if (deprValue == null) {
+						throw exception;
+					} else {
+						return deprValue; // NOPMD
+					}
+				}
+			} else {
+				return prefValue;
+			}
 		}
 	}
 
@@ -240,7 +280,9 @@ public abstract class AbstractCompactReader {
 		for (int i = 0; i < tabs; i++) {
 			buf.append('\t');
 		}
-		return buf.toString();
+		final String retval = buf.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

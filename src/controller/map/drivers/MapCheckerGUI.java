@@ -51,7 +51,9 @@ public class MapCheckerGUI implements ISPDriver {
 		final MapCheckerFrame window = new MapCheckerFrame();
 		window.setVisible(true);
 		for (final String filename : args) {
-			window.check(filename);
+			if (filename != null) {
+				window.check(filename);
+			}
 		}
 	}
 

@@ -62,14 +62,18 @@ public class FileChooser {
 		if (!shouldReturn) {
 			if (SwingUtilities.isEventDispatchThread()) {
 				if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					setFilename(fileChooser.getSelectedFile().getPath());
+					final String selFile = fileChooser.getSelectedFile().getPath();
+					assert selFile != null;
+					setFilename(selFile);
 				}
 			} else {
 				invoke(new Runnable() {
 					@Override
 					public void run() {
 						if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-							setFilename(fileChooser.getSelectedFile().getPath());
+							final String selFile = fileChooser.getSelectedFile().getPath();
+							assert selFile != null;
+							setFilename(selFile);
 						}
 					}
 

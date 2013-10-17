@@ -119,7 +119,9 @@ public final class GenerateTileContents {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
 			try {
-				getInstance(args[0]).generateTileContents(
+				final String filename = args[0];
+				assert filename != null;
+				getInstance(filename).generateTileContents(
 						PointFactory.point(Integer.parseInt(args[1]),
 								Integer.parseInt(args[2])));
 			} catch (final NumberFormatException e) {

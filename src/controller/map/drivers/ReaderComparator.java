@@ -78,6 +78,9 @@ public class ReaderComparator implements ISPDriver {
 	 */
 	public void compareReaders(final String[] args) {
 		for (final String arg : args) {
+			if (arg == null) {
+				continue;
+			}
 			try {
 				compareReaders(arg);
 			} catch (final XMLStreamException e) {
@@ -164,7 +167,9 @@ public class ReaderComparator implements ISPDriver {
 			final CharBuffer buffer = CharBuffer.allocate((int) file.length());
 			reader.read(buffer);
 			buffer.position(0);
-			return buffer.toString();
+			final String retval = buffer.toString();
+			assert retval != null;
+			return retval;
 		}
 	}
 

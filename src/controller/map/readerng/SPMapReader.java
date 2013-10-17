@@ -96,7 +96,9 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final Warning warner, final SPMap map, final StartElement elem,
 			final IDFactory idFactory) throws SPFormatException {
 		final String type = elem.getName().getLocalPart();
-		if ("player".equalsIgnoreCase(type)) {
+		if (type == null) {
+			return;
+		} else if ("player".equalsIgnoreCase(type)) {
 			map.addPlayer(PLAYER_READER.parse(elem, stream, map.getPlayers(),
 					warner, idFactory));
 		} else if (!"row".equalsIgnoreCase(type)) {

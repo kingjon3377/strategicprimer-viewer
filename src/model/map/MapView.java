@@ -172,7 +172,9 @@ public class MapView implements IMap {
 		builder.append(map.getPlayers().getCurrentPlayer());
 		builder.append("\nMap:\n");
 		builder.append(map);
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

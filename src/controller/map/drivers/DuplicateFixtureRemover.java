@@ -121,6 +121,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (final String filename : args) {
+			if (filename == null) {
+				continue;
+			}
 			try {
 				final IMap map = reader.readMap(filename, Warning.INSTANCE);
 				filter(map, SystemOut.SYS_OUT);

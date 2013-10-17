@@ -102,7 +102,8 @@ public final class LevelListener implements LevelGainListener,
 		if (named instanceof HasName) {
 			return ((HasName) named).getName(); // NOPMD
 		} else {
-			return named.toString();
+			final String retval = named.toString();
+			return retval == null ? "" : retval;
 		}
 	}
 }

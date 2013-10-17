@@ -38,7 +38,9 @@ public class ExplorationRunner { // NOPMD
 			sb.append(getPrimaryTree(point, tile));
 			sb.append(".\n");
 		}
-		return sb.toString();
+		final String retval = sb.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -145,13 +147,17 @@ public class ExplorationRunner { // NOPMD
 			final Tile tile) throws MissingTableException {
 		String result = consultTable(table, point, tile);
 		if (result.contains("#")) {
+			// TODO: Use a string builder here rather than concatenation
 			final String[] split = result.split("#", 3);
+			final String before = split[0];
+			final String middle = split[1];
+			assert before != null && middle != null;
 			if (split.length < 3) {
-				result = split[0]
-						+ recursiveConsultTable(split[1], point, tile);
+				result = before
+						+ recursiveConsultTable(middle, point, tile);
 			} else {
-				result = split[0]
-						+ recursiveConsultTable(split[1], point, tile)
+				result = before
+						+ recursiveConsultTable(middle, point, tile)
 						+ split[2];
 			}
 		}
@@ -220,7 +226,7 @@ public class ExplorationRunner { // NOPMD
 										// booleanMethodNamingConvention
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			if (recursiveCheck(table, state)) {
+			if (table != null && recursiveCheck(table, state)) {
 				return true; // NOPMD;
 			}
 		}
@@ -235,7 +241,9 @@ public class ExplorationRunner { // NOPMD
 	public void verboseRecursiveCheck(final PrintStream ostream) {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			verboseRecursiveCheck(table, ostream, state);
+			if (table != null) {
+				verboseRecursiveCheck(table, ostream, state);
+			}
 		}
 	}
 

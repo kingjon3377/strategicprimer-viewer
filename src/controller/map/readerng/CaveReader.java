@@ -72,9 +72,11 @@ public class CaveReader implements INodeHandler<Cave> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Cave obj) {
+		final String dc = Integer.toString(obj.getDC()); // NOPMD
+		assert dc != null;
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"cave", Pair.of("dc", Integer.toString(obj.getDC())), Pair.of(
-						"id", Long.toString(obj.getID())));
+				"cave", Pair.of("dc", dc));
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

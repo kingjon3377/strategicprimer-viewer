@@ -73,9 +73,11 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Battlefield obj) {
+		final String dc = Integer.toString(obj.getDC()); // NOPMD
+		assert dc != null;
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"battlefield", Pair.of("dc", Integer.toString(obj.getDC())),
-				Pair.of("id", Long.toString(obj.getID())));
+				"battlefield", Pair.of("dc", dc));
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

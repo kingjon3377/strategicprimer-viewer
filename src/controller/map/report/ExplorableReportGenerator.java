@@ -66,7 +66,9 @@ public class ExplorableReportGenerator extends
 					.replace(": , ", ": "));
 		}
 		builder.append(CLOSE_LIST);
-		return anyCaves || anyBattles ? builder.toString() : "";
+		final String retval = anyCaves || anyBattles ? builder.toString() : "";
+		assert retval != null;
+		return retval;
 	}
 
 	/**

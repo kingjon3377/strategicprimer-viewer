@@ -125,7 +125,9 @@ public class CLIHelper implements ICLIHelper {
 		while (retval < 0) {
 			SystemOut.SYS_OUT.print(prompt);
 			final String input = istream.readLine();
-			if (IsNumeric.isNumeric(input)) {
+			if (input == null) {
+				throw new IOException("Null line of input");
+			} else if (IsNumeric.isNumeric(input)) {
 				retval = Integer.parseInt(input);
 			}
 		}
@@ -143,8 +145,14 @@ public class CLIHelper implements ICLIHelper {
 	@Override
 	public String inputString(final String prompt) throws IOException {
 		SystemOut.SYS_OUT.print(prompt);
-		final String retval = istream.readLine();
-		return retval == null ? "" : retval.trim();
+		final String line = istream.readLine();
+		if (line == null) {
+			return ""; // NOPMD
+		} else {
+			final String retval = line.trim();
+			assert retval != null;
+			return retval;
+		}
 	}
 
 	/**
@@ -157,12 +165,11 @@ public class CLIHelper implements ICLIHelper {
 	@Override
 	public boolean inputBoolean(final String prompt) throws IOException {
 		while (true) {
-			final String input = inputString(prompt);
-			if (EqualsAny.equalsAny(input.toLowerCase(Locale.US), "yes",
-					"true", "y", "t")) {
+			final String input = inputString(prompt).toLowerCase(Locale.US);
+			assert input != null;
+			if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
 				return true; // NOPMD
-			} else if (EqualsAny.equalsAny(input.toLowerCase(Locale.US), "no",
-					"false", "n", "f")) {
+			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
 				return false;
 			} else {
 				SystemOut.SYS_OUT

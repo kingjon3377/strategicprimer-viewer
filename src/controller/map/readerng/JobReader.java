@@ -97,7 +97,9 @@ public class JobReader implements INodeHandler<Job> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"job");
 		retval.addAttribute("name", obj.getName());
-		retval.addAttribute("level", Integer.toString(obj.getLevel()));
+		final String level = Integer.toString(obj.getLevel());
+		assert level != null;
+		retval.addAttribute("level", level);
 		for (final Skill skill : obj) {
 			if (skill != null) {
 				retval.addChild(ReaderAdapter.ADAPTER.write(skill));

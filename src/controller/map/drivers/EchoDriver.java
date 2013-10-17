@@ -67,23 +67,27 @@ public final class EchoDriver implements ISPDriver {
 		}
 		// ESCA-JAVA0177:
 		final IMap map; // NOPMD
+		final String infile = args[0];
+		final String outfile = args[1];
+		assert infile != null;
+		assert outfile != null;
 		try {
-			map = new MapReaderAdapter().readMap(args[0], new Warning(// NOPMD
+			map = new MapReaderAdapter().readMap(infile, new Warning(// NOPMD
 					Warning.Action.Ignore));
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
 			throw new DriverFailedException(
-					"I/O error reading file " + args[0], except);
+					"I/O error reading file " + infile, except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error", except);
 		}
 		try {
-			new MapReaderAdapter().write(args[1], map);
+			new MapReaderAdapter().write(outfile, map);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error writing " + args[1],
+			throw new DriverFailedException("I/O error writing " + outfile,
 					except);
 		}
 	}

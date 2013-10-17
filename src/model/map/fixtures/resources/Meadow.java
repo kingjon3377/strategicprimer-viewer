@@ -110,7 +110,9 @@ public class Meadow implements HarvestableFixture, HasImage, HasKind {
 			builder.append(kind);
 			builder.append(" meadow");
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

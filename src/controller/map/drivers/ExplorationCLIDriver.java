@@ -62,11 +62,13 @@ public class ExplorationCLIDriver implements ISPDriver {
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final MapView master = reader.readMap(filenames[0], Warning.INSTANCE);
+		final String firstFile = filenames[0];
+		assert firstFile != null;
+		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
-				filenames[0]);
+				firstFile);
 		for (final String filename : filenames) {
-			if (filename.equals(filenames[0])) {
+			if (filename == null || filename.equals(filenames[0])) {
 				continue;
 			}
 			final IMap map = reader.readMap(filename, Warning.INSTANCE);

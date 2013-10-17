@@ -98,6 +98,7 @@ public class MultiIOHandler extends IOHandler {
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
+			assert filename != null;
 			try {
 				model.addSubordinateMap(readMap(filename, Warning.INSTANCE),
 						filename);

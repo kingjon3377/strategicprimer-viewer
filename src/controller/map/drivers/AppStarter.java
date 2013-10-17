@@ -112,7 +112,9 @@ public class AppStarter implements ISPDriver {
 		boolean gui = true;
 		Pair<ISPDriver, ISPDriver> drivers = null;
 		for (final String option : options) {
-			if (EqualsAny.equalsAny(option, "-g", "--gui")) {
+			if (option == null) {
+				continue;
+			} else if (EqualsAny.equalsAny(option, "-g", "--gui")) {
 				gui = true;
 			} else if (EqualsAny.equalsAny(option, "-c", "--cli")) {
 				gui = false;

@@ -89,7 +89,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 		if (!"wild".equals(obj.getStatus())) {
 			retval.addAttribute("status", obj.getStatus());
 		}
-		retval.addAttribute("id", Long.toString(obj.getID()));
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

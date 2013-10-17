@@ -80,11 +80,13 @@ public class MineralReader implements INodeHandler<MineralVein> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final MineralVein obj) {
+		final String exp = Boolean.toString(obj.isExposed());
+		final String dc = Integer.toString(obj.getDC()); // NOPMD
+		assert exp != null && dc != null;
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"mineral", Pair.of("kind", obj.getKind()), Pair.of("exposed",
-						Boolean.toString(obj.isExposed())), Pair.of("dc",
-						Integer.toString(obj.getDC())), Pair.of("id",
-						Long.toString(obj.getID())));
+						exp), Pair.of("dc", dc));
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

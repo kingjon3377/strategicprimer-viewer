@@ -72,6 +72,9 @@ public final class ConverterDriver implements ISPDriver {
 					new IllegalArgumentException("Not enough arguments"));
 		}
 		for (final String filename : args) {
+			if (filename == null) {
+				continue;
+			}
 			SystemOut.SYS_OUT.print("Reading ");
 			SystemOut.SYS_OUT.print(filename);
 			SystemOut.SYS_OUT.print(" ... ");

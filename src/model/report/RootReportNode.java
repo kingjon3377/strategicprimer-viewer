@@ -23,7 +23,9 @@ public class RootReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public String produce() {
-		return produce(new StringBuilder(size())).toString();
+		final String retval = produce(new StringBuilder(size())).toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

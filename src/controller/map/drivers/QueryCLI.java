@@ -248,18 +248,20 @@ public final class QueryCLI implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					new IllegalArgumentException("Need one argument"));
 		}
+		final String filename = args[0];
+		assert filename != null;
 		try {
-			repl(new MapReaderAdapter().readMap(args[0], new Warning(
+			repl(new MapReaderAdapter().readMap(filename, new Warning(
 					Warning.Action.Warn)), SystemOut.SYS_OUT);
 		} catch (final XMLStreamException e) {
-			throw new DriverFailedException("XML parsing error in " + args[0],
+			throw new DriverFailedException("XML parsing error in " + filename,
 					e);
 		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + args[0] + " not found", e);
+			throw new DriverFailedException("File " + filename + " not found", e);
 		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading " + args[0], e);
+			throw new DriverFailedException("I/O error reading " + filename, e);
 		} catch (final SPFormatException e) {
-			throw new DriverFailedException("Map " + args[0]
+			throw new DriverFailedException("Map " + filename
 					+ " contains invalid data", e);
 		}
 	}

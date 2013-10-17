@@ -187,7 +187,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	@Override
 	public void deduct(final int cost) {
 		final String mpText = mpField.getText().trim();
-		if (IsNumeric.isNumeric(mpText)) {
+		if (mpText != null && IsNumeric.isNumeric(mpText)) {
 			int mpoints = Integer.parseInt(mpText);
 			mpoints -= cost;
 			mpField.setText(Integer.toString(mpoints));

@@ -87,13 +87,16 @@ public class CityReader implements INodeHandler<City> {
 				"city");
 		retval.addAttribute("status", obj.status().toString());
 		retval.addAttribute("size", obj.size().toString());
-		retval.addAttribute("dc", Integer.toString(obj.getDC()));
+		final String dc = Integer.toString(obj.getDC()); // NOPMD
+		assert dc != null;
+		retval.addAttribute("dc", dc);
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}
-		retval.addAttribute("id", Long.toString(obj.getID()));
-		retval.addAttribute("owner",
-				Integer.toString(obj.getOwner().getPlayerId()));
+		retval.addIdAttribute(obj.getID());
+		final String player = Integer.toString(obj.getOwner().getPlayerId());
+		assert player != null;
+		retval.addAttribute("owner", player);
 		retval.addImageAttribute(obj);
 		return retval;
 	}

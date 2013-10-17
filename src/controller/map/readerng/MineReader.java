@@ -83,8 +83,8 @@ public class MineReader implements INodeHandler<Mine> {
 	public <S extends Mine> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"mine", Pair.of("kind", obj.getKind()), Pair.of("status", obj
-						.getStatus().toString()), Pair.of("id",
-						Long.toString(obj.getID())));
+						.getStatus().toString()));
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

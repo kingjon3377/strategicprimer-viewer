@@ -127,7 +127,8 @@ public class MapCheckerFrame extends JFrame {
 			printParagraph(
 					"ERROR: Malformed XML in the file; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
+			final String message = except.getLocalizedMessage();
+			printParagraph(message == null ? "(message was null)" : message, ERROR_COLOR);
 			retval = false;
 		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE, "SP map format eror reading " + filename,
@@ -136,7 +137,8 @@ public class MapCheckerFrame extends JFrame {
 					"ERROR: SP map format error at line " + except.getLine()
 							+ "; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
+			final String message = except.getLocalizedMessage();
+			printParagraph(message == null ? "(message was null)" : message, ERROR_COLOR);
 			retval = false;
 		}
 		if (retval) {

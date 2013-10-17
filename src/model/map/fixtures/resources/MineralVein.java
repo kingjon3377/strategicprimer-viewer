@@ -99,7 +99,9 @@ public final class MineralVein implements IEvent, HasImage, HarvestableFixture,
 		} else {
 			build.append(", but it's not exposed.");
 		}
-		return build.toString();
+		final String retval = build.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

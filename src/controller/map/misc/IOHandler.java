@@ -64,6 +64,7 @@ public class IOHandler implements ActionListener {
 	private void handleLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final String filename = chooser.getSelectedFile().getPath();
+			assert filename != null;
 			// ESCA-JAVA0166:
 			try {
 				model.setMap(readMap(filename, Warning.INSTANCE), filename);
@@ -181,13 +182,15 @@ public class IOHandler implements ActionListener {
 	 */
 	private void saveMapAs(final IMap map, @Nullable final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
+			final String filename = chooser.getSelectedFile()
+					.getPath();
+			assert filename != null;
 			try {
-				new MapReaderAdapter().write(chooser.getSelectedFile()
-						.getPath(), map);
+				new MapReaderAdapter().write(filename, map);
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file "
-								+ chooser.getSelectedFile().getPath());
+								+ filename);
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
 		}

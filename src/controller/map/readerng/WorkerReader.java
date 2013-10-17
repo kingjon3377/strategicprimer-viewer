@@ -73,9 +73,13 @@ public class WorkerReader implements INodeHandler<Worker> {
 				} else if (result instanceof WorkerStats) {
 					retval.setStats((WorkerStats) result);
 				} else {
-					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), selem.getName().getLocalPart(),
-							event.getLocation().getLineNumber());
+					final String outerName = element.getName()
+							.getLocalPart();
+					final String innerName = selem.getName().getLocalPart();
+					throw new UnwantedChildException(
+							outerName == null ? "a null tag" : outerName,
+							innerName == null ? "a null tag" : innerName, event
+									.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

@@ -75,8 +75,10 @@ public class PlayerReader implements INodeHandler<Player> {
 	 */
 	@Override
 	public <S extends Player> SPIntermediateRepresentation write(final S obj) {
+		final String number = Integer.toString(obj.getPlayerId());
+		assert number != null;
 		return new SPIntermediateRepresentation("player", Pair.of("number",
-				Integer.toString(obj.getPlayerId())), Pair.of("code_name",
+				number), Pair.of("code_name",
 				obj.getName()));
 	}
 

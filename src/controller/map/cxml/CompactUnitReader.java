@@ -81,7 +81,9 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 				break;
 			}
 		}
-		retval.setOrders(orders.toString().trim());
+		final String ordersText = orders.toString().trim();
+		assert ordersText != null;
+		retval.setOrders(ordersText);
 		return retval;
 	}
 

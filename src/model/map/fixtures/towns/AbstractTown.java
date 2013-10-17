@@ -105,7 +105,9 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 			builder.append(',');
 		}
 		builder.append(" here.");
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

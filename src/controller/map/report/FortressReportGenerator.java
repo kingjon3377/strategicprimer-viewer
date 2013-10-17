@@ -58,7 +58,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 						(Fortress) pair.second(), pair.first()));
 			}
 		}
-		return anyforts ? builder.toString() : "";
+		final String retval = builder.toString();
+		assert retval != null;
+		return anyforts ? retval : "";
 	}
 
 	/**
@@ -115,7 +117,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 			}
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -142,7 +146,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			}
 			builder.append(CLOSE_LIST_ITEM);
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -211,7 +217,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		}
 		builder.append(CLOSE_LIST);
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

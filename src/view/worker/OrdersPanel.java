@@ -56,7 +56,10 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	@Override
 	public void apply() {
 		if (sel instanceof Unit) {
-			((Unit) sel).setOrders(area.getText().trim());
+			final Unit selection = (Unit) sel;
+			final String text = area.getText().trim();
+			assert text != null;
+			selection.setOrders(text);
 		}
 	}
 

@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.HasImage;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.EqualsAny;
 import util.Pair;
 
@@ -108,7 +111,8 @@ public class SPIntermediateRepresentation {
 		if (attrs.contains(name)) {
 			final int index = attrs.indexOf(name);
 			attrs.remove(index);
-			return vals.remove(index); // NOPMD
+			final String retval = vals.remove(index);
+			return retval == null ? "" : retval; // NOPMD
 		} else {
 			return "";
 		}
@@ -211,12 +215,12 @@ public class SPIntermediateRepresentation {
 	 * Write only if the tag isn't the empty string.
 	 *
 	 * @param writer the Writer to write to
-	 * @param string the string to write
+	 * @param string the string to write. May be null, in which case nothing is written.
 	 * @throws IOException if I/O error in writing
 	 */
-	private void writeIfTagNotEmpty(final Writer writer, final String string)
+	private void writeIfTagNotEmpty(final Writer writer, @Nullable final String string)
 			throws IOException {
-		if (!tag.isEmpty()) {
+		if (!tag.isEmpty() && string != null) {
 			writer.write(string);
 		}
 	}
@@ -237,9 +241,18 @@ public class SPIntermediateRepresentation {
 	 */
 	public void addImageAttribute(final HasImage obj) {
 		final String image = obj.getImage();
-		if (image != null && !image.isEmpty()
-				&& !image.equals(obj.getDefaultImage())) {
+		if (!image.isEmpty() && !image.equals(obj.getDefaultImage())) {
 			addAttribute("image", image);
 		}
+	}
+	/**
+	 * Add an ID attribute. This is so we only have to assert that
+	 * Integer.toString doesn't return null in one place.
+	 * @param id the ID to add
+	 */
+	public void addIdAttribute(final int id) {
+		final String str = Integer.toString(id);
+		assert str != null;
+		addAttribute("id", str);
 	}
 }

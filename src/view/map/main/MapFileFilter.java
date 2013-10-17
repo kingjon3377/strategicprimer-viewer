@@ -44,8 +44,9 @@ public final class MapFileFilter extends FileFilter {
 		}
 		final int dotPos = name.lastIndexOf('.');
 
-		return (dotPos > 0 && dotPos < name.length() - 1) ? name.substring(
-				dotPos + 1).toLowerCase() : "";
+		final String retval = name.substring(dotPos + 1).toLowerCase();
+		assert retval != null;
+		return (dotPos > 0 && dotPos < name.length() - 1) ? retval : "";
 	}
 
 	/**

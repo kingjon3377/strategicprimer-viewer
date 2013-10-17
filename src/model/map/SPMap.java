@@ -135,7 +135,9 @@ public class SPMap implements IMap {
 			sbuild.append("): ");
 			sbuild.append(tiles.getTile(point));
 		}
-		return sbuild.toString();
+		final String retval = sbuild.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

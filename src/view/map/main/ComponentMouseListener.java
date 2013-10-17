@@ -84,7 +84,9 @@ public final class ComponentMouseListener extends MouseAdapter {
 		for (final String string : strings) {
 			build.append(string);
 		}
-		return build.toString();
+		final String retval = build.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -116,7 +118,9 @@ public final class ComponentMouseListener extends MouseAdapter {
 			sbuild.append(fix.toString());
 			sbuild.append("<br />");
 		}
-		return sbuild.toString();
+		final String retval = sbuild.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

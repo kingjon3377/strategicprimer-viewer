@@ -66,7 +66,9 @@ public final class MapChecker implements ISPDriver {
 					new IllegalArgumentException("Need at least one argument"));
 		}
 		for (final String filename : args) {
-			check(filename);
+			if (filename != null) {
+				check(filename);
+			}
 		}
 	}
 

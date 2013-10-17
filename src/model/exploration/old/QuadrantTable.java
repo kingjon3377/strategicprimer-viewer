@@ -71,7 +71,8 @@ public class QuadrantTable implements EncounterTable {
 				bestKey = iter;
 			}
 		}
-		return quadrants.get(bestKey);
+		final String retval = quadrants.get(bestKey);
+		return retval == null ? "" : retval;
 	}
 
 	/**
