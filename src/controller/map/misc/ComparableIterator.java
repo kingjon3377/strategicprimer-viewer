@@ -47,6 +47,7 @@ public class ComparableIterator<T> implements Iterator<T>,
 	 * @return the next element
 	 */
 	@Override
+	@Nullable
 	public T next() {
 		return wrapped.next();
 	}

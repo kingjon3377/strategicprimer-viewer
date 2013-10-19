@@ -13,6 +13,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Pair;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -72,6 +74,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 *
 	 * @return the next item in the topmost iterator.
 	 */
+	@Nullable
 	@Override
 	public XMLEvent next() {
 		removeEmptyIterators();
@@ -79,7 +82,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			throw new NoSuchElementException();
 		}
 		XMLEvent retval = stack.peekFirst().second().next();
-		while (retval.isStartElement()
+		while (retval != null && retval.isStartElement()
 				&& "include".equals(retval.asStartElement().getName()
 						.getLocalPart())) {
 			final StartElement selem = retval.asStartElement();
