@@ -80,6 +80,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
 		for (final TileFixture fix : tile) {
+			if (fix == null) {
+				continue;
+			}
 			boolean already = false;
 			for (final TileFixture keptFixture : fixtures) {
 				if ((fix instanceof Unit && ((Unit) fix).getKind().contains(
@@ -101,7 +104,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 		}
 		for (final TileFixture fix : toRemove) {
-			tile.removeFixture(fix);
+			if (fix != null) {
+				tile.removeFixture(fix);
+			}
 		}
 	}
 

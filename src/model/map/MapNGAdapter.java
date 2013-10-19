@@ -101,7 +101,7 @@ public class MapNGAdapter implements IMapNG {
 			out.println(", may be representation error");
 		} else {
 			for (final TileFixture fix : obj.getOtherFixtures(point)) {
-				if (!state.getTile(point).getContents().contains(fix)
+				if (fix != null && !state.getTile(point).getContents().contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;

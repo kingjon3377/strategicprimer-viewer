@@ -99,7 +99,12 @@ public class FileChooser {
 		try {
 			SwingUtilities.invokeAndWait(runnable);
 		} catch (final InvocationTargetException except) {
-			throw new ChoiceInterruptedException(except.getCause()); // NOPMD
+			final Throwable cause = except.getCause();
+			if (cause == null) {
+				throw new ChoiceInterruptedException(except);
+			} else {
+				throw new ChoiceInterruptedException(cause); // NOPMD
+			}
 		} catch (final InterruptedException except) {
 			throw new ChoiceInterruptedException(except);
 		}

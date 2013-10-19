@@ -113,7 +113,7 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static void addAllFixtures(final Tile source, final Tile dest) {
 		for (final TileFixture fix : source) {
-			if (!(fix instanceof RiverFixture)) {
+			if (fix != null && !(fix instanceof RiverFixture)) {
 				dest.addFixture(fix);
 			}
 		}
@@ -169,6 +169,7 @@ public class ResolutionDecreaseConverter {
 		counter.countMany(one, two, three, four);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);
 		for (final TileType type : TileType.values()) {
+			assert type != null;
 			switch (counter.getCount(type)) {
 			case 0:
 				// skip

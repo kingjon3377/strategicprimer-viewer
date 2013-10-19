@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A stack of iterators. Useful for when we have several collections of things
  * we need to do the same thing to. The order in which the iterators are
@@ -68,6 +70,7 @@ public class IteratorStack<T> implements Iterator<T> {
 	/**
 	 * @return the next item in one of the iterators
 	 */
+	@Nullable
 	@Override
 	public T next() {
 		removeEmptyIterators();

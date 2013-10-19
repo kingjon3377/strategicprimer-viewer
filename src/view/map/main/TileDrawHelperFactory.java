@@ -48,7 +48,9 @@ public final class TileDrawHelperFactory {
 			if (!verTwoHelpers.containsKey(iobs)) {
 				verTwoHelpers.put(iobs, new Ver2TileDrawHelper(iobs, zof));
 			}
-			return verTwoHelpers.get(iobs);
+			final TileDrawHelper tdh = verTwoHelpers.get(iobs);
+			assert tdh != null;
+			return tdh;
 		} else {
 			throw new IllegalArgumentException("Unsupported map version");
 		}

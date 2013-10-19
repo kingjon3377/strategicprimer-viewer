@@ -42,7 +42,9 @@ public class EnumCounter<T extends Enum<T>> {
 	@SafeVarargs
 	public final void countMany(final T... values) {
 		for (final T value : values) {
-			count(value);
+			if (value != null) {
+				count(value);
+			}
 		}
 	}
 

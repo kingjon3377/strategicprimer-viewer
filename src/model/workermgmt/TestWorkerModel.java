@@ -70,8 +70,9 @@ public class TestWorkerModel {
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				model, false, true, true));
 		for (final Point point : iter) {
-			assert point != null;
-			map.getTile(point).addFixture(fixtures.remove(0));
+			final TileFixture fix = fixtures.remove(0);
+			assert point != null && fix != null;
+			map.getTile(point).addFixture(fix);
 		}
 		final List<Unit> listOneA = model.getUnits(players.get(0));
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));

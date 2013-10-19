@@ -77,12 +77,11 @@ public final class CompactTileReader extends AbstractCompactReader implements
 				}
 			} else if (event.isCharacters()) {
 				final String text = event.asCharacters().getData().trim();
-				if (!text.isEmpty()) {
+				if (text != null && !text.isEmpty()) {
 					warner.warn(new UnwantedChildException("tile", // NOPMD
 							"arbitrary text", event.getLocation()
 									.getLineNumber()));
-					retval.addFixture(new TextFixture(event.asCharacters()// NOPMD
-							.getData().trim(), -1));
+					retval.addFixture(new TextFixture(text, -1)); // NOPMD
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
@@ -118,6 +117,7 @@ public final class CompactTileReader extends AbstractCompactReader implements
 			final PlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
+		assert name != null;
 		for (final AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
 				return ((CompactReader<? extends TileFixture>) item).read(
@@ -206,7 +206,9 @@ public final class CompactTileReader extends AbstractCompactReader implements
 			if (obj.iterator().hasNext()) {
 				out.append('\n');
 				for (final TileFixture fix : obj) {
-					CompactReaderAdapter.write(out, fix, indent + 1);
+					if (fix != null) {
+						CompactReaderAdapter.write(out, fix, indent + 1);
+					}
 				}
 				out.append(indent(indent));
 			}

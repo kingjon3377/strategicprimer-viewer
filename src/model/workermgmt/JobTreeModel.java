@@ -82,7 +82,7 @@ public class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * @param <T> the type of thing we want to get
 	 * @param iterable an iterable
 	 * @param index the index of the item we want to return
-	 * @return that item, or null if there aren't enough items
+	 * @return that item
 	 */
 	private static <T> T getFromIter(final Iterable<T> iterable, final int index) {
 		final Iterator<T> iter = iterable.iterator();
@@ -96,7 +96,11 @@ public class JobTreeModel implements TreeModel, UnitMemberListener,
 			}
 		}
 		if (iter.hasNext()) {
-			return iter.next(); // NOPMD
+			final T retval = iter.next();
+			if (retval == null) {
+				throw new IllegalStateException("Iterable contained null");
+			}
+			return retval; // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
 					"Parent does not have that many children");

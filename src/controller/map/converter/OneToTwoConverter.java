@@ -292,7 +292,9 @@ public class OneToTwoConverter { // NOPMD
 				}
 			}
 			for (final TileFixture fixture : forests) {
-				tile.removeFixture(fixture);
+				if (fixture != null) {
+					tile.removeFixture(fixture);
+				}
 			}
 		}
 	}

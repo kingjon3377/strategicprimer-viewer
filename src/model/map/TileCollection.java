@@ -55,7 +55,9 @@ public final class TileCollection implements Iterable<Point>,
 		if (!tiles.containsKey(point)) {
 			tiles.put(point, new Tile(TileType.NotVisible));
 		}
-		return tiles.get(point);
+		final Tile retval = tiles.get(point);
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -63,7 +65,9 @@ public final class TileCollection implements Iterable<Point>,
 	 */
 	@Override
 	public Iterator<Point> iterator() {
-		return tiles.keySet().iterator();
+		final Iterator<Point> iter = tiles.keySet().iterator();
+		assert iter != null;
+		return iter;
 	}
 
 	/**
