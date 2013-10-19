@@ -60,13 +60,17 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 				.append(OPEN_LIST);
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
+				final Point loc = townLocs.get(town);
+				assert loc != null;
 				builder.append(OPEN_LIST_ITEM)
 						.append(produce(fixtures, tiles, currentPlayer, town,
-								townLocs.get(town))).append(CLOSE_LIST_ITEM);
+								loc)).append(CLOSE_LIST_ITEM);
 			}
 		}
 		builder.append(CLOSE_LIST);
-		return sorted.isEmpty() ? "" : builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return sorted.isEmpty() ? "" : retval;
 	}
 
 	/**
@@ -99,8 +103,10 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		Collections.sort(sorted, new TownComparator());
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
+				final Point loc = townLocs.get(town);
+				assert loc != null;
 				retval.add(produceRIR(fixtures, tiles, currentPlayer, town,
-						townLocs.get(town)));
+						loc));
 			}
 		}
 		return sorted.isEmpty() ? EmptyReportNode.NULL_NODE : retval;

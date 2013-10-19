@@ -66,7 +66,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	private static Tile addRivers(final Tile tile, final River... rivers) {
 		for (final River river : rivers) {
-			tile.addRiver(river);
+			if (river != null) {
+				tile.addRiver(river);
+			}
 		}
 		return tile;
 	}
@@ -94,6 +96,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testRiverSerializationOne() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final River river : River.values()) {
+			assert river != null;
 			assertSerialization("First River serialization test, reflection",
 					river, River.class);
 		}
@@ -195,16 +198,18 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final SPMap five = encapsulateTile(PointFactory.point(4, 4), new Tile(
 				TileType.Plains));
 		final String oldKindProperty = "type"; // NOPMD
+		final String testDataOne = createSerializedForm(five, true).replace("kind",
+				oldKindProperty);
+		assert testDataOne != null;
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five,
-				createSerializedForm(five, true).replace("kind",
-						oldKindProperty), SPMap.class, oldKindProperty);
+				five, testDataOne, SPMap.class, oldKindProperty);
+		final String testDataTwo = createSerializedForm(five, false).replace("kind",
+				oldKindProperty);
+		assert testDataTwo != null;
 		assertDeprecatedDeserialization(
 				"Test Tile deserialization of deprecated tile-type idiom",
-				five,
-				createSerializedForm(five, false).replace("kind",
-						oldKindProperty), SPMap.class, oldKindProperty);
+				five, testDataTwo, SPMap.class, oldKindProperty);
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
 		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />", Tile.class,
@@ -326,24 +331,25 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				MapView.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				MapView.class, false);
-		assertUnwantedChild(
-				new StringBuilder(150)
-						.append("<view current_player=\"0\" current_turn=\"0\">")
-						.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
-						.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
-						.append("</view>").toString(), MapView.class, false);
+		final String viewOne = new StringBuilder(150)
+				.append("<view current_player=\"0\" current_turn=\"0\">")
+				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
+				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
+				.append("</view>").toString();
+		assert viewOne != null;
+		assertUnwantedChild(viewOne, MapView.class, false);
 		assertUnwantedChild(
 				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
 				MapView.class, false);
-		assertMapDeserialization(
-				"Proper deserialization of map into view",
-				one,
-				new StringBuilder(200)
-						.append("<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">")
-						.append("<player number=\"1\" code_name=\"playerOne\" />")
-						.append("<row index=\"0\">")
-						.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")
-						.append("</row>").append("</map>").toString());
+		final String viewTwo = new StringBuilder(200)
+				.append("<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">")
+				.append("<player number=\"1\" code_name=\"playerOne\" />")
+				.append("<row index=\"0\">")
+				.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")
+				.append("</row>").append("</map>").toString();
+		assert viewTwo != null;
+		assertMapDeserialization("Proper deserialization of map into view",
+				one, viewTwo);
 	}
 
 	/**

@@ -30,7 +30,9 @@ public class TableDebugger {
 		final ExplorationRunner runner = new ExplorationRunner();
 		TableLoader.loadAllTables("tables", runner);
 		try {
-			new TableDebugger(runner).debugTables(System.out);
+			final PrintStream out = System.out;
+			assert out != null;
+			new TableDebugger(runner).debugTables(out);
 		} catch (final MissingTableException e) { // $codepro.audit.disable
 													// logExceptions
 			SystemOut.SYS_OUT.println("Missing table");
@@ -103,8 +105,10 @@ public class TableDebugger {
 		for (final String value : table.allEvents()) {
 			if (value.contains("#")) {
 				final String[] parsed = value.split("#", 3);
+				final String callee = parsed[1];
+				assert callee != null;
 				debugTable(before + parsed[0], parsed[2] + after,
-						runner.getTable(parsed[1]), parsed[1], out, set);
+						runner.getTable(callee), callee, out, set);
 			} else {
 				out.print(before);
 				out.print(value);

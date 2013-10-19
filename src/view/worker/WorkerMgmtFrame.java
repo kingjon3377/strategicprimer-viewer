@@ -321,7 +321,9 @@ public class WorkerMgmtFrame extends JFrame {
 					builder.append("\n\n");
 				}
 			}
-			return builder.toString();
+			final String retval = builder.toString();
+			assert retval != null;
+			return retval;
 		}
 
 		/**
@@ -336,13 +338,18 @@ public class WorkerMgmtFrame extends JFrame {
 				final Iterator<UnitMember> iter = unit.iterator();
 				while (iter.hasNext()) {
 					final UnitMember member = iter.next();
+					if (member == null) {
+						continue;
+					}
 					builder.append(memberString(member));
 					if (iter.hasNext()) {
 						builder.append(", ");
 					}
 				}
 				builder.append(']');
-				return builder.toString(); // NOPMD
+				final String retval = builder.toString();
+				assert retval != null;
+				return retval; // NOPMD
 			} else {
 				return "";
 			}
@@ -372,9 +379,13 @@ public class WorkerMgmtFrame extends JFrame {
 					}
 					builder.append(')');
 				}
-				return builder.toString(); // NOPMD
+				final String retval = builder.toString();
+				assert retval != null;
+				return retval; // NOPMD
 			} else {
-				return member.toString();
+				final String retval = member.toString();
+				assert retval != null;
+				return retval;
 			}
 		}
 	}

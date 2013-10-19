@@ -28,7 +28,9 @@ public class SimpleReportNode extends AbstractReportNode {
 		for (final String string : strings) {
 			builder.append(string);
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -45,7 +47,9 @@ public class SimpleReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		return builder.append(getText());
+		final StringBuilder retval = builder.append(getText());
+		assert retval != null;
+		return retval;
 	}
 
 	/**

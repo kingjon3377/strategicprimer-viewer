@@ -81,7 +81,9 @@ public final class Tile implements FixtureIterable<TileFixture>,
 				if (hasRiver()) {
 					final RiverFixture rivers = getRivers();
 					for (final River river : (RiverFixture) fix) {
-						rivers.addRiver(river);
+						if (rivers != null) {
+							rivers.addRiver(river);
+						}
 					}
 					return true; // NOPMD
 				} else if (((RiverFixture) fix).getRivers().isEmpty()) {
@@ -149,7 +151,9 @@ public final class Tile implements FixtureIterable<TileFixture>,
 			sbuilder.append("\n\t\t");
 			sbuilder.append(fix);
 		}
-		return sbuilder.toString();
+		final String retval = sbuilder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -244,7 +248,9 @@ public final class Tile implements FixtureIterable<TileFixture>,
 		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
 		boolean retval = true;
 		for (final TileFixture fix : tempList) {
-			if (shouldSkip(fix)) {
+			if (fix == null) {
+				continue;
+			} else if (shouldSkip(fix)) {
 				temp.remove(fix);
 			} else if (fix instanceof Subsettable
 					&& mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {

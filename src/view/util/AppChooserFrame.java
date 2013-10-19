@@ -55,6 +55,7 @@ public class AppChooserFrame extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		final List<String> parameters = Collections.unmodifiableList(params);
+		assert parameters != null;
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", parameters,
@@ -95,7 +96,11 @@ public class AppChooserFrame extends JFrame {
 		AppChoiceListener(final Class<? extends ISPDriver> frame,
 				final List<String> parameters, final AppChooserFrame acf) {
 			app = frame;
-			params = parameters.toArray(new String[parameters.size()]);
+			final String[] array = parameters.toArray(new String[parameters.size()]);
+			if (array == null) {
+				throw new IllegalStateException("Array created for parameters is null");
+			}
+			params = array;
 			outer = acf;
 		}
 

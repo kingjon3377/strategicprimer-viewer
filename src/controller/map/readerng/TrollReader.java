@@ -13,7 +13,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Troll;
-import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -68,7 +67,8 @@ public class TrollReader implements INodeHandler<Troll> {
 	@Override
 	public <S extends Troll> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"troll", Pair.of("id", Long.toString(obj.getID())));
+				"troll");
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

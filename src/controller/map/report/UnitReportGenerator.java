@@ -73,7 +73,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			builder.append(CLOSE_LIST);
 		}
 		fixtures.remove(Integer.valueOf(unit.getID()));
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -167,7 +169,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 			builder.append(CLOSE_LIST);
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -191,7 +195,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 			builder.append(')');
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -263,7 +269,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 		}
 		builder.append(CLOSE_LIST);
-		return anyUnits ? builder.toString() : "";
+		final String retval = builder.toString();
+		assert retval != null;
+		return anyUnits ? retval : "";
 	}
 
 	/**

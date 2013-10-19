@@ -184,7 +184,9 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 			builder.append('\n');
 			builder.append(member.toString());
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

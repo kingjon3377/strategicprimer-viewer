@@ -150,10 +150,11 @@ public class AppStarter implements ISPDriver {
 				}
 			}
 			try {
-				startChosenDriver(drivers.get(new CLIHelper().chooseFromList(
+				final ISPDriver driver = drivers.get(new CLIHelper().chooseFromList(
 						drivers, "CLI apps available:",
-						"No applications available", "App to start: ", true)),
-						others);
+						"No applications available", "App to start: ", true));
+				assert driver != null;
+				startChosenDriver(driver, others);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE,
 						"I/O error prompting user for app to start", except);
@@ -171,7 +172,9 @@ public class AppStarter implements ISPDriver {
 	 */
 	private static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
-		driver.startDriver(params.toArray(new String[params.size()]));
+		final String[] array = params.toArray(new String[params.size()]);
+		assert array != null;
+		driver.startDriver(array);
 	}
 
 	/**

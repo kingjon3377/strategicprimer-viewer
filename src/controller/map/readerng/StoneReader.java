@@ -79,10 +79,12 @@ public class StoneReader implements INodeHandler<StoneDeposit> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final StoneDeposit obj) {
+		final String dc = Integer.toString(obj.getDC()); // NOPMD
+		assert dc != null;
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"stone", Pair.of("kind", obj.stone().toString()), Pair.of("dc",
-						Integer.toString(obj.getDC())), Pair.of("id",
-						Long.toString(obj.getID())));
+						dc));
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

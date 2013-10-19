@@ -72,8 +72,10 @@ public final class ViewerStart implements ISPDriver {
 		try {
 			new ViewerStart().startDriver(args);
 		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-			ErrorShower.showErrorDialog(null, except.getMessage());
+			final String message = except.getMessage();
+			assert message != null;
+			LOGGER.log(Level.SEVERE, message, except.getCause());
+			ErrorShower.showErrorDialog(null, message);
 		}
 	}
 
@@ -102,6 +104,9 @@ public final class ViewerStart implements ISPDriver {
 			final FilteredFileChooser chooser = new FilteredFileChooser(".",
 					new MapFileFilter());
 			for (final String filename : args) {
+				if (filename == null) {
+					continue;
+				}
 				try {
 					startFrame(reader.readMap(filename, warner), filename,
 							chooser);

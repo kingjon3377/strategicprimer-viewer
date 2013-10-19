@@ -77,24 +77,26 @@ public final class SubsetDriver implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		IMap mainMap;
+		final String mainFile = args[0];
+		assert mainFile != null;
 		try {
-			mainMap = reader.readMap(args[0], new Warning(// NOPMD
+			mainMap = reader.readMap(mainFile, new Warning(// NOPMD
 					Warning.Action.Ignore));
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
-					+ args[0], except);
+					+ mainFile, except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
-					+ args[0], except);
+					+ mainFile, except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
-					+ args[0], except);
+					+ mainFile, except);
 		}
 		SystemOut.SYS_OUT
 				.print("OK if strict subset, WARN if needs manual checking,");
 		SystemOut.SYS_OUT.println("FAIL if error in reading");
 		for (final String arg : args) {
-			if (arg.equals(args[0])) {
+			if (arg.equals(mainFile)) {
 				continue;
 			}
 			SystemOut.SYS_OUT.print(arg);

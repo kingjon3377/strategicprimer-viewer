@@ -60,6 +60,9 @@ public class WorkerReportDriver implements ISPDriver {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final Warning warner = new Warning(Warning.Action.Ignore);
 		for (final String filename : args) {
+			if (filename == null) {
+				continue;
+			}
 			// ESCA-JAVA0177:
 			final String report; // NOPMD
 			try {

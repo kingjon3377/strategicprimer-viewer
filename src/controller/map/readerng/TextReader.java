@@ -94,9 +94,13 @@ public class TextReader implements INodeHandler<TextFixture> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"text");
 		if (obj.getTurn() != -1) {
-			retval.addAttribute("turn", Integer.toString(obj.getTurn()));
+			final String turn = Integer.toString(obj.getTurn());
+			assert turn != null;
+			retval.addAttribute("turn", turn);
 		}
-		retval.addAttribute("text-contents", obj.getText().trim());
+		final String text = obj.getText().trim();
+		assert text != null;
+		retval.addAttribute("text-contents", text);
 		retval.addImageAttribute(obj);
 		return retval;
 	}

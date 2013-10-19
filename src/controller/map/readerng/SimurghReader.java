@@ -13,7 +13,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Simurgh;
-import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -77,7 +76,8 @@ public class SimurghReader implements INodeHandler<Simurgh> {
 	@Override
 	public <S extends Simurgh> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"simurgh", Pair.of("id", Long.toString(obj.getID())));
+				"simurgh");
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

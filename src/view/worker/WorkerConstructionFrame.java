@@ -78,6 +78,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 	/**
 	 * @return an explanation of what's wrong with the user's input.
 	 */
+	@SuppressWarnings("null") // TODO: fix properly
 	private String getErrorExpl() {
 		final StringBuilder builder = new StringBuilder();
 		if (name.getText().trim().isEmpty()) {
@@ -107,12 +108,15 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 	private static String numericExpl(final Pair<String, String>... numbers) {
 		final StringBuilder builder = new StringBuilder();
 		for (final Pair<String, String> number : numbers) {
-			if (!IsNumeric.isNumeric(number.first().trim())) {
+			final String num = number.first().trim();
+			if (num == null || !IsNumeric.isNumeric(num)) {
 				builder.append(number.second());
 				builder.append(" must be a number.\n");
 			}
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -125,8 +129,12 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 		if (evt == null) {
 			return;
 		} else if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
-			if (name.getText().trim().isEmpty()
-					|| race.getText().trim().isEmpty()
+			final String nameText = name.getText().trim();
+			final String raceText = race.getText().trim();
+			if (nameText == null
+					|| raceText == null
+					|| nameText.isEmpty()
+					|| raceText.isEmpty()
 					|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
 							.trim(), str.getText().trim(),
 							dex.getText().trim(), con.getText().trim(), intel
@@ -134,8 +142,8 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 							cha.getText().trim())) {
 				ErrorShower.showErrorDialog(this, getErrorExpl());
 			} else {
-				final Worker retval = new Worker(name.getText().trim(), race
-						.getText().trim(), idf.createID());
+				final Worker retval = new Worker(nameText, raceText,
+						idf.createID());
 				retval.setStats(new WorkerStats(parseInt(hpBox),
 						parseInt(maxHP), parseInt(str), parseInt(dex),
 						parseInt(con), parseInt(intel), parseInt(wis),
@@ -166,7 +174,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 	 */
 	private static boolean anyNonNumeric(final String... strings) {
 		for (final String string : strings) {
-			if (!isNumeric(string)) {
+			if (string == null || !isNumeric(string)) {
 				return true; // NOPMD
 			}
 		}

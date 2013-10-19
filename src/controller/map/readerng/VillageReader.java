@@ -85,9 +85,10 @@ public class VillageReader implements INodeHandler<Village> {
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}
-		retval.addAttribute("id", Long.toString(obj.getID()));
-		retval.addAttribute("owner",
-				Integer.toString(obj.getOwner().getPlayerId()));
+		retval.addIdAttribute(obj.getID());
+		final String owner = Integer.toString(obj.getOwner().getPlayerId());
+		assert owner != null;
+		retval.addAttribute("owner", owner);
 		retval.addAttribute("race", obj.getRace());
 		retval.addImageAttribute(obj);
 		return retval;

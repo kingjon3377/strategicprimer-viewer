@@ -114,8 +114,8 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				warner.warn(new UnsupportedTagException(type, elem // NOPMD
 						.getLocation().getLineNumber()));
 			} else {
-				throw new UnwantedChildException(TAG, elem.getName()
-						.getLocalPart(), elem.getLocation().getLineNumber());
+				throw new UnwantedChildException(TAG, type, elem.getLocation()
+						.getLineNumber());
 			}
 		}
 	}
@@ -148,16 +148,20 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public <S extends SPMap> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"map");
-		retval.addAttribute("version",
-				Integer.toString(obj.getDimensions().version));
-		retval.addAttribute("rows", Integer.toString(obj.getDimensions().rows));
-		retval.addAttribute("columns",
-				Integer.toString(obj.getDimensions().cols));
+		final String version = Integer.toString(obj.getDimensions().version);
+		assert version != null;
+		retval.addAttribute("version", version);
+		final String rows = Integer.toString(obj.getDimensions().rows);
+		assert rows != null;
+		retval.addAttribute("rows", rows);
+		final String cols = Integer.toString(obj.getDimensions().cols);
+		assert cols != null;
+		retval.addAttribute("columns", cols);
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
-			retval.addAttribute(
-					"current_player",
-					Integer.toString(obj.getPlayers().getCurrentPlayer()
-							.getPlayerId()));
+			final String currPlayer = Integer.toString(obj.getPlayers().getCurrentPlayer()
+					.getPlayerId());
+			assert currPlayer != null;
+			retval.addAttribute("current_player", currPlayer);
 		}
 		for (final Player player : obj.getPlayers()) {
 			if (player != null) {
@@ -166,8 +170,10 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		}
 		final MapDimensions dim = obj.getDimensions();
 		for (int i = 0; i < dim.rows; i++) {
+			final String idx = Integer.toString(i);
+			assert idx != null;
 			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(// NOPMD
-					"row", Pair.of("index", Integer.toString(i)));
+					"row", Pair.of("index", idx));
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final Tile tile = obj.getTile(point);

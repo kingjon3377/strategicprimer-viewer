@@ -48,12 +48,15 @@ public final class XMLHelper {
 			final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
-		if (attr == null) {
-			throw new MissingPropertyException(startElement.getName()
-					.getLocalPart(), attribute, startElement.getLocation()
-					.getLineNumber());
+		if (attr == null || attr.getValue() == null) {
+			final String local = startElement.getName().getLocalPart();
+			assert local != null;
+			throw new MissingPropertyException(local, attribute, startElement
+					.getLocation().getLineNumber());
 		}
-		return attr.getValue();
+		final String retval = attr.getValue();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -70,7 +73,13 @@ public final class XMLHelper {
 	public static String getAttribute(final StartElement elem,
 			final String attr, final String defaultValue) {
 		final Attribute value = elem.getAttributeByName(new QName(attr));
-		return (value == null) ? defaultValue : value.getValue();
+		if (value == null) {
+			return defaultValue; // NOPMD
+		} else {
+			final String retval = value.getValue();
+			assert retval != null;
+			return retval;
+		}
 	}
 
 	/**
@@ -93,17 +102,21 @@ public final class XMLHelper {
 				preferred));
 		final Attribute deprAttr = element.getAttributeByName(new QName(
 				deprecated));
+		final String local = element.getName().getLocalPart();
+		assert local != null;
 		if (prefAttr == null && deprAttr == null) {
-			throw new MissingPropertyException(
-					element.getName().getLocalPart(), preferred, element
-							.getLocation().getLineNumber());
+			throw new MissingPropertyException(local, preferred, element
+					.getLocation().getLineNumber());
 		} else if (prefAttr == null) {
-			warner.warn(new DeprecatedPropertyException(element.getName()
-					.getLocalPart(), deprecated, preferred, element
-					.getLocation().getLineNumber()));
-			return deprAttr.getValue(); // NOPMD
+			warner.warn(new DeprecatedPropertyException(local, deprecated,
+					preferred, element.getLocation().getLineNumber()));
+			final String value = deprAttr.getValue();
+			assert value != null;
+			return value; // NOPMD
 		} else {
-			return prefAttr.getValue();
+			final String value = prefAttr.getValue();
+			assert value != null;
+			return value;
 		}
 	}
 

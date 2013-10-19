@@ -219,7 +219,8 @@ public class WorkerStats implements Serializable {
 	 */
 	public static String getModifierString(final int stat) {
 		final int modifier = (stat - 10) / 2;
-		return modifier >= 0 ? '+' + Integer.toString(modifier) : Integer
-				.toString(modifier);
+		final String modStr = Integer.toString(modifier);
+		assert modStr != null;
+		return modifier >= 0 ? '+' + modStr : modStr;
 	}
 }

@@ -71,6 +71,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		final String[] files = new String[] { "trees.png", "mountain.png" };
 		createRiverFiles();
 		for (final String file : files) {
+			if (file == null) {
+				continue;
+			}
 			try {
 				loader.loadImage(file);
 			} catch (final FileNotFoundException e) {
@@ -224,7 +227,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return retval;
 			}
 		} else if (fix instanceof RiverFixture) {
-			return getImage(riverFiles.get(((RiverFixture) fix).getRivers())); // NOPMD
+			final String filename = riverFiles.get(((RiverFixture) fix).getRivers());
+			assert filename != null;
+			return getImage(filename); // NOPMD
 		} else {
 			LOGGER.warning("Using the fallback image for an unanticipated kind of Fixture.");
 			return fallbackImage;
@@ -328,6 +333,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private static Set<River> createRiverSet(final River... rivers) {
 		final Set<River> set = EnumSet.noneOf(River.class);
+		assert set != null;
 		for (final River river : rivers) {
 			set.add(river);
 		}

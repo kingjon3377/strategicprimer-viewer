@@ -115,7 +115,9 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 			sbuild.append(river.toString());
 			sbuild.append(' ');
 		}
-		return sbuild.toString();
+		final String retval = sbuild.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

@@ -82,8 +82,12 @@ public class SkillReader implements INodeHandler<Skill> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"skill");
 		retval.addAttribute("name", obj.getName());
-		retval.addAttribute("level", Integer.toString(obj.getLevel()));
-		retval.addAttribute("hours", Integer.toString(obj.getHours()));
+		final String level = Integer.toString(obj.getLevel());
+		assert level != null;
+		retval.addAttribute("level", level);
+		final String hours = Integer.toString(obj.getHours());
+		assert hours != null;
+		retval.addAttribute("hours", hours);
 		return retval;
 	}
 

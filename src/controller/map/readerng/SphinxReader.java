@@ -13,7 +13,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Sphinx;
-import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -77,7 +76,8 @@ public class SphinxReader implements INodeHandler<Sphinx> {
 	@Override
 	public <S extends Sphinx> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"sphinx", Pair.of("id", Long.toString(obj.getID())));
+				"sphinx");
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

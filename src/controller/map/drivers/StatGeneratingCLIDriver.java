@@ -150,17 +150,19 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final MapView master = reader.readMap(filenames[0], Warning.INSTANCE);
+		final String firstFile = filenames[0];
+		assert firstFile != null;
+		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
-				filenames[0]);
+				firstFile);
 		for (final String filename : filenames) {
-			if (filename.equals(filenames[0])) {
+			if (filename == null || filename.equals(firstFile)) {
 				continue;
 			}
 			final IMap map = reader.readMap(filename, Warning.INSTANCE);
 			if (!map.getDimensions().equals(master.getDimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
-						+ filenames[0] + " and " + filename);
+						+ firstFile + " and " + filename);
 			}
 			model.addSubordinateMap(map, filename);
 		}
@@ -210,6 +212,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				break;
 			} else {
 				final Unit unit = units.get(unitNum);
+				if (unit == null) {
+					continue;
+				}
 				enterStats(model, unit);
 				if (!hasUnstattedWorker(model, unit.getID())) {
 					units.remove(unit);
@@ -251,7 +256,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static List<Unit> removeStattedUnits(final List<Unit> units) {
 		final List<Unit> retval = new ArrayList<>();
 		for (final Unit unit : units) {
-			if (hasUnstattedWorker(unit)) {
+			if (unit != null && hasUnstattedWorker(unit)) {
 				retval.add(unit);
 			}
 		}
@@ -410,7 +415,10 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						"There are no units owned by that player",
 						"Unit selection: ", false);
 				if (unitNum >= 0 && unitNum < units.size()) {
-					createWorkers(model, idf, units.get(unitNum));
+					final Unit unit = units.get(unitNum);
+					if (unit != null) {
+						createWorkers(model, idf, unit);
+					}
 				}
 			} else {
 				final Point point = PointFactory.point(

@@ -56,20 +56,22 @@ public class SubsetGUIDriver implements ISPDriver {
 		}
 		final SubsetFrame frame = new SubsetFrame();
 		SwingUtilities.invokeLater(new WindowThread(frame));
+		final String first = args[0];
+		assert first != null;
 		try {
-			frame.loadMain(args[0]);
+			frame.loadMain(first);
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
-					+ args[0], except);
+					+ first, except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
-					+ args[0], except);
+					+ first, except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
-					+ args[0], except);
+					+ first, except);
 		}
 		for (final String arg : args) {
-			if (arg.equals(args[0])) {
+			if (arg.equals(first)) {
 				continue;
 			}
 			frame.test(arg);

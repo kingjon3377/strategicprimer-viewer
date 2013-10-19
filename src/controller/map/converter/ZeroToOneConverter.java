@@ -78,7 +78,9 @@ public class ZeroToOneConverter {
 				LOGGER.warning("Unhandled element type " + event.getEventType());
 			}
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -101,7 +103,9 @@ public class ZeroToOneConverter {
 			}
 		}
 		builder.append('>');
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -129,7 +133,9 @@ public class ZeroToOneConverter {
 			assert event != null;
 			builder.append(getEventXML(event));
 		}
-		return builder.toString();
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -145,7 +151,13 @@ public class ZeroToOneConverter {
 	 * @return the XML representing it, or "" if none.
 	 */
 	private static String getEventXML(final Integer num) {
-		return EQUIVS.containsKey(num) ? EQUIVS.get(num) : "";
+		if (EQUIVS.containsKey(num)) {
+			final String retval = EQUIVS.get(num);
+			assert retval != null;
+			return retval;
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -155,7 +167,9 @@ public class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printEndElement(final EndElement element) {
-		return printEndElement(element.getName().getLocalPart());
+		final String local = element.getName().getLocalPart();
+		assert local != null;
+		return printEndElement(local);
 	}
 
 	/**
@@ -165,8 +179,10 @@ public class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printEndElement(final String elemStr) {
-		return new StringBuilder(elemStr.length() + 5).append("</")
+		final String retval = new StringBuilder(elemStr.length() + 5).append("</")
 				.append(elemStr).append('>').toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -199,9 +215,11 @@ public class ZeroToOneConverter {
 	 * @return its XML representation
 	 */
 	private static String printAttribute(final Attribute attr) {
-		return new StringBuilder().append(' ')
+		final String retval = new StringBuilder().append(' ')
 				.append(attr.getName().getLocalPart()).append("=\"")
 				.append(attr.getValue()).append('"').toString();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

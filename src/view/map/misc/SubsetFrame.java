@@ -171,7 +171,9 @@ public class SubsetFrame extends JFrame {
 		} catch (final XMLStreamException except) {
 			printParagraph("ERROR: Malformed XML in file " + arg
 					+ "; see following error message for details", ERROR_COLOR);
-			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
+			final String message = except.getLocalizedMessage();
+			assert message != null;
+			printParagraph(message, ERROR_COLOR);
 			throw except;
 		} catch (final SPFormatException except) {
 			printParagraph(
@@ -179,7 +181,9 @@ public class SubsetFrame extends JFrame {
 							+ " in file " + arg
 							+ "; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
+			final String message = except.getLocalizedMessage();
+			assert message != null;
+			printParagraph(message, ERROR_COLOR);
 			throw except;
 		} catch (final IOException except) {
 			printParagraph("ERROR: I/O error reading file " + arg, ERROR_COLOR);
@@ -224,7 +228,9 @@ public class SubsetFrame extends JFrame {
 			printParagraph(
 					"FAIL: Malformed XML in the file; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
+			final String message = except.getLocalizedMessage();
+			assert message != null;
+			printParagraph(message, ERROR_COLOR);
 			return; // NOPMD
 		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE, "SP map format eror reading " + arg,
@@ -233,7 +239,9 @@ public class SubsetFrame extends JFrame {
 					"FAIL: SP map format error at line " + except.getLine()
 							+ "; see following error message for details",
 					ERROR_COLOR);
-			printParagraph(except.getLocalizedMessage(), ERROR_COLOR);
+			final String message = except.getLocalizedMessage();
+			assert message != null;
+			printParagraph(message, ERROR_COLOR);
 			return;
 		}
 		try (final PrintWriter out = new HTMLWriter(label.getWriter())) {

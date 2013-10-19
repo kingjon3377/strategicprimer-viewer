@@ -101,7 +101,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 		if (!"human".equals(obj.getRace())) {
 			retval.addAttribute("race", obj.getRace());
 		}
-		retval.addAttribute("id", Integer.toString(obj.getID()));
+		retval.addIdAttribute(obj.getID());
 		final WorkerStats stats = obj.getStats();
 		if (stats != null) {
 			retval.addChild(ReaderAdapter.ADAPTER.write(stats));

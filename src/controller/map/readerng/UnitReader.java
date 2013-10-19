@@ -69,9 +69,11 @@ public class UnitReader implements INodeHandler<Unit> {
 				if (result instanceof UnitMember) {
 					fix.addMember((UnitMember) result);
 				} else {
-					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), selem.getName().getLocalPart(),
-							event.getLocation().getLineNumber());
+					final String olocal = element.getName().getLocalPart();
+					final String slocal = selem.getName().getLocalPart();
+					assert olocal != null && slocal != null;
+					throw new UnwantedChildException(olocal, slocal, event
+							.getLocation().getLineNumber());
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
@@ -80,7 +82,9 @@ public class UnitReader implements INodeHandler<Unit> {
 				break;
 			}
 		}
-		fix.setOrders(orders.toString().trim());
+		final String ordersText = orders.toString().trim();
+		assert ordersText != null;
+		fix.setOrders(ordersText);
 		return fix;
 	}
 
@@ -139,17 +143,20 @@ public class UnitReader implements INodeHandler<Unit> {
 	public <S extends Unit> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"unit");
-		retval.addAttribute("owner",
-				Integer.toString(obj.getOwner().getPlayerId()));
+		final String owner = Integer.toString(obj.getOwner().getPlayerId());
+		assert owner != null;
+		retval.addAttribute("owner", owner);
 		if (!obj.getKind().isEmpty()) {
 			retval.addAttribute("kind", obj.getKind());
 		}
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}
-		retval.addAttribute("id", Long.toString(obj.getID()));
+		retval.addIdAttribute(obj.getID());
 		for (final UnitMember member : obj) {
-			retval.addChild(ReaderAdapter.ADAPTER.write(member));
+			if (member != null) {
+				retval.addChild(ReaderAdapter.ADAPTER.write(member));
+			}
 		}
 		if (!obj.getOrders().trim().isEmpty()) {
 			retval.addAttribute("text-contents", obj.getOrders().trim() + '\n');

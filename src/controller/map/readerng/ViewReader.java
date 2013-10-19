@@ -107,12 +107,13 @@ public class ViewReader implements INodeHandler<MapView> {
 	public <S extends MapView> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				TAG);
-		retval.addAttribute(
-				"current_player",
-				Integer.toString(obj.getPlayers().getCurrentPlayer()
-						.getPlayerId()));
-		retval.addAttribute("current_turn",
-				Integer.toString(obj.getCurrentTurn()));
+		final String player = Integer.toString(obj.getPlayers().getCurrentPlayer()
+				.getPlayerId());
+		assert player != null;
+		retval.addAttribute("current_player", player);
+		final String turn = Integer.toString(obj.getCurrentTurn());
+		assert turn != null;
+		retval.addAttribute("current_turn", turn);
 		retval.addChild(ReaderAdapter.ADAPTER.write(obj.getMap()));
 		return retval;
 	}

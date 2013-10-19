@@ -156,7 +156,10 @@ public final class TableLoader { // NOPMD
 			if (array.length < SPLIT_ONCE) {
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
-				list.add(ComparablePair.of(Integer.valueOf(array[0]), array[1]));
+				final String value = array[1];
+				final Integer lineNum = Integer.valueOf(array[0]);
+				assert lineNum != null && value != null;
+				list.add(ComparablePair.of(lineNum, value));
 			}
 			line = reader.readLine();
 		}
@@ -179,7 +182,10 @@ public final class TableLoader { // NOPMD
 			if (array.length < SPLIT_ONCE) {
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
-				list.add(Pair.of(TileType.getTileType(array[0]), array[1]));
+				final String first = array[0];
+				final String second = array[1];
+				assert first != null && second != null;
+				list.add(Pair.of(TileType.getTileType(first), second));
 			}
 			line = reader.readLine();
 		}
@@ -195,7 +201,11 @@ public final class TableLoader { // NOPMD
 	 */
 	public static ConstantTable loadConstantTable(final BufferedReader reader)
 			throws IOException {
-		return new ConstantTable(reader.readLine());
+		final String line = reader.readLine();
+		if (line == null) {
+			throw new IOException("read a null line");
+		}
+		return new ConstantTable(line);
 	}
 
 	/**
@@ -253,8 +263,10 @@ public final class TableLoader { // NOPMD
 	 */
 	public void loadDefaultTables(final ExplorationRunner runner) {
 		for (final String table : defaultTableList) {
-			runner.loadTable(table,
-					tryLoading("tables/" + table, 2, createList(table, 4)));
+			if (table != null) {
+				runner.loadTable(table,
+						tryLoading("tables/" + table, 2, createList(table, 4)));
+			}
 		}
 	}
 

@@ -78,8 +78,11 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
-			tile.setTerrain(TileType.valueOf(event.getActionCommand()));
-			scs.fireChanges(null, null, null, tile);
+			final String command = event.getActionCommand();
+			if (command != null) {
+				tile.setTerrain(TileType.valueOf(command));
+				scs.fireChanges(null, null, null, tile);
+			}
 		}
 	}
 

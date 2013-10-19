@@ -81,7 +81,19 @@ public class TileUIHelper {
 	 * @return the tile's color, if any, under that map version
 	 */
 	public Color get(final int version, final TileType type) {
-		return colors.get(Integer.valueOf(version)).get(type);
+		final Integer ver = Integer.valueOf(version);
+		if (colors.containsKey(ver)) {
+			final Map<TileType, Color> colorMap = colors.get(ver);
+			if (colorMap.containsKey(type)) {
+				final Color retval = colorMap.get(type);
+				assert retval != null;
+				return retval;
+			} else {
+				throw new IllegalArgumentException("Not a terrain type we know how to handle in that version");
+			}
+		} else {
+			throw new IllegalArgumentException("Not a version we know how to handle");
+		}
 	}
 
 	/**
@@ -105,7 +117,13 @@ public class TileUIHelper {
 	 * @return a String representation of that terrain type
 	 */
 	public String getDescription(final TileType type) { // NOPMD
-		return descriptions.get(type);
+		if (descriptions.containsKey(type)) {
+			final String retval = descriptions.get(type);
+			assert retval != null;
+			return retval;
+		} else {
+			throw new IllegalArgumentException("Not a type we know how to handle");
+		}
 	}
 
 	/**
@@ -120,6 +138,13 @@ public class TileUIHelper {
 	 * @return the color it should turn the tile
 	 */
 	public Color getFeatureColor(final TileFixture fix) {
-		return featureColors.get(fix.getClass());
+		final Class<? extends TileFixture> cls = fix.getClass();
+		if (featureColors.containsKey(cls)) {
+			final Color retval = featureColors.get(cls);
+			assert retval != null;
+			return retval;
+		} else {
+			throw new IllegalArgumentException("Not a kind of fixture we know how to handle");
+		}
 	}
 }

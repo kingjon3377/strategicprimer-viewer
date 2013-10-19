@@ -79,8 +79,8 @@ public class ShrubReader implements INodeHandler<Shrub> {
 	@Override
 	public <S extends Shrub> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"shrub", Pair.of("kind", obj.getKind()), Pair.of("id",
-						Long.toString(obj.getID())));
+				"shrub", Pair.of("kind", obj.getKind()));
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

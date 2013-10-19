@@ -73,8 +73,10 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	 * @param obj a stats object
 	 * @return the SPIR representing it
 	 */
+	@SuppressWarnings("null")
 	@Override
 	public SPIntermediateRepresentation write(final WorkerStats obj) {
+		// FIXME: Add an "addIntegerProperty" method to SPIR, and use it here.
 		return new SPIntermediateRepresentation("stats", Pair.of("hp",
 				Integer.toString(obj.getHitPoints())), Pair.of("max",
 				Integer.toString(obj.getMaxHitPoints())), Pair.of("str",

@@ -97,7 +97,10 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			if ("OK".equals(event.getActionCommand())) {
-				handleOK(row.getText(), column.getText());
+				final String colText = column.getText();
+				final String rowText = row.getText();
+				assert rowText != null && colText != null;
+				handleOK(rowText, colText);
 			} else if ("Cancel".equals(event.getActionCommand())) {
 				setVisible(false);
 				row.setText("-1");

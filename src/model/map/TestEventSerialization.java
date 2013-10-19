@@ -75,7 +75,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
+			if (status == null) {
+				continue;
+			}
 			for (final TownSize size : TownSize.values()) {
+				if (size == null) {
+					continue;
+				}
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"First CityEvent serialization test, reflection, status "
@@ -184,16 +190,18 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Second MineralEvent serialization test, reflection", two,
 				MineralVein.class);
 		final String oldKindProperty = "mineral"; // NOPMD
+		final String testDataOne = createSerializedForm(two, true).replace(KIND_PROPERTY,
+				oldKindProperty);
+		assert testDataOne != null;
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated Mineral idiom",
-				two,
-				createSerializedForm(two, true).replace(KIND_PROPERTY,
-						oldKindProperty), MineralVein.class, oldKindProperty);
+				"Deserialization of deprecated Mineral idiom", two,
+				testDataOne, MineralVein.class, oldKindProperty);
+		final String testDataTwo = createSerializedForm(two, false).replace(KIND_PROPERTY,
+				oldKindProperty);
+		assert testDataTwo != null;
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated Mineral idiom",
-				two,
-				createSerializedForm(two, false).replace(KIND_PROPERTY,
-						oldKindProperty), MineralVein.class, oldKindProperty);
+				"Deserialization of deprecated Mineral idiom", two,
+				testDataTwo, MineralVein.class, oldKindProperty);
 		assertUnwantedChild(
 				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
 				MineralVein.class, false);
@@ -221,6 +229,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	public void testStoneSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final StoneKind kind : StoneKind.values()) {
+			if (kind == null) {
+				continue;
+			}
 			assertSerialization("First StoneEvent test, reflection, kind: "
 					+ kind, new StoneDeposit(kind, 8, 1), StoneDeposit.class); // NOPMD
 			assertSerialization("Second StoneEvent test, reflection, kind: "
@@ -228,16 +239,18 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		}
 		final StoneDeposit three = new StoneDeposit(StoneKind.Marble, 10, 3);
 		final String oldKindProperty = "stone"; // NOPMD
+		final String testDataOne = createSerializedForm(three, true).replace(KIND_PROPERTY,
+				oldKindProperty);
+		assert testDataOne != null;
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom",
-				three,
-				createSerializedForm(three, true).replace(KIND_PROPERTY,
-						oldKindProperty), StoneDeposit.class, oldKindProperty);
+				"Deserialization of deprecated stone idiom", three,
+				testDataOne, StoneDeposit.class, oldKindProperty);
+		final String testDataTwo = createSerializedForm(three, false).replace(KIND_PROPERTY,
+				oldKindProperty);
+		assert testDataTwo != null;
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom",
-				three,
-				createSerializedForm(three, false).replace(KIND_PROPERTY,
-						oldKindProperty), StoneDeposit.class, oldKindProperty);
+				"Deserialization of deprecated stone idiom", three,
+				testDataTwo, StoneDeposit.class, oldKindProperty);
 		assertUnwantedChild(
 				"<stone kind=\"marble\" dc=\"10\"><troll /></stone>",
 				StoneDeposit.class, false);
@@ -263,7 +276,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
+			if (status == null) {
+				continue;
+			}
 			for (final TownSize size : TownSize.values()) {
+				if (size == null) {
+					continue;
+				}
 				assertSerialization(
 						"First TownEvent serialization test, reflection, status "
 								+ status + " and size " + size, new Town(// NOPMD

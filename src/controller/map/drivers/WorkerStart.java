@@ -77,8 +77,9 @@ public class WorkerStart implements ISPDriver {
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD
 		try {
-			filename = new FileChooser(args.length == 0 ? "" : args[0])
-					.getFilename();
+			final String file = args.length == 0 ? "" : args[0];
+			assert file != null;
+			filename = new FileChooser(file).getFilename();
 		} catch (final ChoiceInterruptedException except) {
 			SystemOut.SYS_OUT
 					.println("Choice was interrupted or user declined to choose, aborting ...");
@@ -114,8 +115,10 @@ public class WorkerStart implements ISPDriver {
 		try {
 			new WorkerStart().startDriver(args);
 		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-			ErrorShower.showErrorDialog(null, except.getMessage());
+			final String message = except.getMessage();
+			assert message != null;
+			LOGGER.log(Level.SEVERE, message, except.getCause());
+			ErrorShower.showErrorDialog(null, message);
 		}
 	}
 

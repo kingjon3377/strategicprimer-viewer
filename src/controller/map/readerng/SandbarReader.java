@@ -13,7 +13,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
 import model.map.fixtures.terrain.Sandbar;
-import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -77,7 +76,8 @@ public class SandbarReader implements INodeHandler<Sandbar> {
 	@Override
 	public <S extends Sandbar> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"sandbar", Pair.of("id", Long.toString(obj.getID())));
+				"sandbar");
+		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

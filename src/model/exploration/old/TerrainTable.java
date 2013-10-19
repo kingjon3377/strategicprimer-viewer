@@ -42,7 +42,14 @@ public class TerrainTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final Tile tile) {
-		return mapping.get(tile.getTerrain());
+		final TileType type = tile.getTerrain();
+		if (mapping.containsKey(type)) {
+			final String retval = mapping.get(type);
+			assert retval != null;
+			return retval;
+		} else {
+			throw new IllegalArgumentException("Table does not account for that terrain type");
+		}
 	}
 
 	/**
