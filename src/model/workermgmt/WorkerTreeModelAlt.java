@@ -94,8 +94,10 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			super(player, true);
 			int index = 0;
 			for (final Unit unit : model.getUnits(player)) {
-				insert(new UnitNode(unit), index); // NOPMD
-				index++;
+				if (unit != null) {
+					insert(new UnitNode(unit), index); // NOPMD
+					index++;
+				}
 			}
 		}
 	}
@@ -113,8 +115,10 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			super(unit, true);
 			int index = 0;
 			for (final UnitMember member : unit) {
-				insert(new UnitMemberNode(member), index); // NOPMD
-				index++;
+				if (member != null) {
+					insert(new UnitMemberNode(member), index); // NOPMD
+					index++;
+				}
 			}
 		}
 	}
@@ -249,8 +253,13 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public Object getModelObject(final Object obj) {
-		return obj instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) obj)
-				.getUserObject() : obj;
+		if (obj instanceof DefaultMutableTreeNode) {
+			Object retval = ((DefaultMutableTreeNode) obj).getUserObject();
+			assert retval != null;
+			return retval;
+		} else {
+			return obj;
+		}
 	}
 
 	/**

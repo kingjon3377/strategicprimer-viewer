@@ -185,7 +185,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			if (playerNum < 0 || playerNum >= players.size()) {
 				break;
 			} else {
-				enterStats(model, players.get(playerNum));
+				final Player player = players.get(playerNum);
+				assert player != null;
+				enterStats(model, player);
 			}
 		}
 	}
@@ -390,7 +392,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			if (playerNum < 0 || playerNum >= players.size()) {
 				break;
 			} else {
-				createWorkers(model, idf, players.get(playerNum));
+				final Player player = players.get(playerNum);
+				assert player != null;
+				createWorkers(model, idf, player);
 			}
 		}
 	}

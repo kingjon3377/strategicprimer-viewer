@@ -11,6 +11,7 @@ import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreeSelectionModel;
 
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeSource;
@@ -59,8 +60,10 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
-		setTransferHandler(new WorkerTreeTransferHandler(getSelectionModel(),
-				(IWorkerTreeModel) getModel()));
+		final TreeSelectionModel smodel = getSelectionModel();
+		assert smodel != null;
+		setTransferHandler(new WorkerTreeTransferHandler(smodel,
+				tmodel));
 		setCellRenderer(new UnitMemberCellRenderer());
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 		ToolTipManager.sharedInstance().registerComponent(this);
@@ -116,9 +119,13 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
 					&& event.getClickCount() == 1) {
+				final Object path = getClosestPathForLocation(event.getX(),
+								event.getY()).getLastPathComponent();
+				if (path ==  null) {
+					return;
+				}
 				final Object obj = ((IWorkerTreeModel) getModel())
-						.getModelObject(getClosestPathForLocation(event.getX(),
-								event.getY()).getLastPathComponent());
+						.getModelObject(path);
 				if (obj instanceof IFixture) {
 					new FixtureEditMenu((IFixture) obj, players).show(
 							event.getComponent(), event.getX(), event.getY());
@@ -137,8 +144,12 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		if (evt == null || getRowForLocation(evt.getX(), evt.getY()) == -1) {
 			return null; // NOPMD
 		}
-		return getStatsToolTip(getPathForLocation(evt.getX(), evt.getY())
-				.getLastPathComponent());
+		final Object path = getPathForLocation(evt.getX(), evt.getY())
+				.getLastPathComponent();
+		if (path == null) {
+			return null; // NOPMD
+		}
+		return getStatsToolTip(path);
 	}
 
 	/**
@@ -214,9 +225,12 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		@Override
 		public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 			if (evt != null) {
-				handleSelection(((IWorkerTreeModel) getModel())
-						.getModelObject(evt.getNewLeadSelectionPath()
-								.getLastPathComponent()));
+				final Object path = evt.getNewLeadSelectionPath()
+						.getLastPathComponent();
+				if (path != null) {
+					handleSelection(((IWorkerTreeModel) getModel())
+							.getModelObject(path));
+				}
 			}
 		}
 

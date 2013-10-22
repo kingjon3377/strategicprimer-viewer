@@ -59,7 +59,13 @@ public class ExplorationCLI {
 				"The players shared by all the maps:",
 				"No players shared by all the maps.",
 				"Please make a selection: ", true);
-		return playerNum < 0 ? new Player(-1, "abort") : players.get(playerNum);
+		if (playerNum < 0 || playerNum >= players.size()) {
+			return new Player(-1, "abort");
+		} else {
+			final Player player = players.get(playerNum);
+			assert player != null;
+			return player;
+		}
 	}
 
 	/**
@@ -75,8 +81,13 @@ public class ExplorationCLI {
 		final int unitNum = helper.chooseFromList(units, "Player's units:",
 				"That player has no units in the master map.",
 				"Please make a selection: ", true);
-		return unitNum < 0 ? new Unit(new Player(-1, "abort"), "", "", -1)
-				: units.get(unitNum);
+		if (unitNum < 0 || unitNum >= units.size()) {
+			return new Unit(new Player(-1, "abort"), "", "", -1);
+		} else {
+			final Unit unit = units.get(unitNum);
+			assert unit != null;
+			return unit;
+		}
 	}
 
 	/**

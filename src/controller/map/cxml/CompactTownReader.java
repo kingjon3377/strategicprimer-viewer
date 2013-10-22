@@ -183,9 +183,10 @@ public final class CompactTownReader extends AbstractCompactReader implements
 			retval = players.getPlayer(Integer.parseInt(getParameter(element,
 					OWNER_PARAM)));
 		} else {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), OWNER_PARAM, element.getLocation()
-					.getLineNumber()));
+			final String local = element.getName().getLocalPart();
+			assert local != null;
+			warner.warn(new MissingPropertyException(local, OWNER_PARAM,
+					element.getLocation().getLineNumber()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -222,9 +223,13 @@ public final class CompactTownReader extends AbstractCompactReader implements
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			} else if (event.isStartElement()) {
-				throw new UnwantedChildException(element.getName()
-						.getLocalPart(), event.asStartElement().getName()
-						.getLocalPart(), event.getLocation().getLineNumber());
+				final String olocal = element.getName()
+						.getLocalPart();
+				final String ilocal = event.asStartElement().getName()
+						.getLocalPart();
+				assert olocal != null && ilocal != null;
+				throw new UnwantedChildException(olocal, ilocal, event
+						.getLocation().getLineNumber());
 			}
 		}
 		retval.setImage(getParameter(element, "image", ""));
@@ -272,7 +277,9 @@ public final class CompactTownReader extends AbstractCompactReader implements
 			if (((Fortress) obj).iterator().hasNext()) {
 				out.append('\n');
 				for (final Unit unit : (Fortress) obj) {
-					CompactUnitReader.READER.write(out, unit, indent + 1);
+					if (unit != null) {
+						CompactUnitReader.READER.write(out, unit, indent + 1);
+					}
 				}
 				out.append(indent(indent));
 			}

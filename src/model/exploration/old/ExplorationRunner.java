@@ -198,9 +198,11 @@ public class ExplorationRunner { // NOPMD
 			if (tables.keySet().contains(table)) {
 				try {
 					for (final String value : getTable(table).allEvents()) {
-						if (value.contains("#")
-								&& recursiveCheck(value.split("#", 3)[1], state)) {
-							return true; // NOPMD
+						if (value.contains("#")) {
+							final String splitVal = value.split("#", 3)[1];
+							if (splitVal != null && recursiveCheck(splitVal, state)) {
+								return true; // NOPMD
+							}
 						}
 					}
 				} catch (final MissingTableException e) { // $codepro.audit.disable
@@ -263,8 +265,11 @@ public class ExplorationRunner { // NOPMD
 				try {
 					for (final String value : getTable(table).allEvents()) {
 						if (value.contains("#")) {
-							verboseRecursiveCheck(value.split("#", 3)[1],
-									ostream, state);
+							final String splitVal = value.split("#", 3)[1];
+							if (splitVal != null) {
+								verboseRecursiveCheck(splitVal,
+										ostream, state);
+							}
 						}
 					}
 				} catch (final MissingTableException e) {

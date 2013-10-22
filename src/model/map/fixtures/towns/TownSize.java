@@ -51,7 +51,13 @@ public enum TownSize {
 	 * @return the TownSize it represents
 	 */
 	public static TownSize parseTownSize(final String string) {
-		return TSZ_MAP.get(string);
+		if (TSZ_MAP.containsKey(string)) {
+			final TownSize size = TSZ_MAP.get(string);
+			assert size != null;
+			return size;
+		} else {
+			throw new IllegalArgumentException("Unknown town size");
+		}
 	}
 
 	/**

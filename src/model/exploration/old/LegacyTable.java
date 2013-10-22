@@ -53,14 +53,19 @@ public class LegacyTable implements EncounterTable {
 		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
-				addData(new City(status, size, 0, "", 0, independent)); // NOPMD
-				addData(new Fortification(status, size, 0, "", 0, independent)); // NOPMD
-				addData(new Town(status, size, 0, "", 0, independent)); // NOPMD
+				if (status != null && size != null) {
+					addData(new City(status, size, 0, "", 0, independent)); // NOPMD
+					addData(new Fortification(status, size, 0, "", 0,
+							independent)); // NOPMD
+					addData(new Town(status, size, 0, "", 0, independent)); // NOPMD
+				}
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
-			addData(new MineralVein(mineral.toString(), true, 0, 0)); // NOPMD
-			addData(new MineralVein(mineral.toString(), false, 0, 0)); // NOPMD
+			if (mineral != null) {
+				addData(new MineralVein(mineral.toString(), true, 0, 0)); // NOPMD
+				addData(new MineralVein(mineral.toString(), false, 0, 0)); // NOPMD
+			}
 		}
 		data.add("Nothing interesting here ...");
 		for (final StoneKind stone : StoneKind.values()) {

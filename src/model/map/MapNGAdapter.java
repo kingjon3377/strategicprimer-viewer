@@ -209,8 +209,13 @@ public class MapNGAdapter implements IMapNG {
 	 */
 	@Override
 	public Iterable<River> getRivers(final Point location) {
-		return state.getTile(location).hasRiver() ? state.getTile(location)
-				.getRivers() : EnumSet.noneOf(River.class);
+		if (state.getTile(location).hasRiver()) {
+			return state.getTile(location).getRivers(); // NOPMD
+		} else {
+			final EnumSet<River> none = EnumSet.noneOf(River.class);
+			assert none != null;
+			return none;
+		}
 	}
 
 	/**

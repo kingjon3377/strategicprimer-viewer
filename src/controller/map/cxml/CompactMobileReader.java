@@ -148,7 +148,9 @@ public final class CompactMobileReader extends AbstractCompactReader implements
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);
 		}
-		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
+		final Set<String> tempOne = Collections.unmodifiableSet(suppTagsTemp);
+		assert tempOne != null;
+		SUPP_TAGS = tempOne;
 		TAG_MAP = new HashMap<>();
 		TAG_MAP.put(Animal.class, "animal");
 		TAG_MAP.put(Centaur.class, "centaur");

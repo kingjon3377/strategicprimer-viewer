@@ -79,10 +79,15 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	protected Transferable createTransferable(
 			@Nullable final JComponent component) {
 		final TreePath path = smodel.getSelectionPath();
-		final Object selection = model.getModelObject(path
-				.getLastPathComponent());
-		final Object parent = model.getModelObject(path.getPathComponent(path
-				.getPathCount() - 2));
+		final Object last = path
+				.getLastPathComponent();
+		final Object parentPath = path.getPathComponent(path
+				.getPathCount() - 2);
+		if (last == null || parentPath == null) {
+			return null; // NOPMD
+		}
+		final Object selection = model.getModelObject(last);
+		final Object parent = model.getModelObject(parentPath);
 		if (selection instanceof UnitMember && parent instanceof Unit) {
 			return new UnitMemberTransferable((UnitMember) selection, // NOPMD
 					(Unit) parent);
@@ -104,8 +109,12 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 				return false; // NOPMD
 			}
 			final TreePath path = ((JTree.DropLocation) dloc).getPath();
-			return path != null // NOPMD
-					&& (model.getModelObject(path.getLastPathComponent()) instanceof Unit);
+			if (path == null) {
+				return false; // NOPMD
+			} else {
+				final Object pathLast = path.getLastPathComponent();
+				return pathLast != null && model.getModelObject(pathLast) instanceof Unit; // NOPMD
+			}
 		} else {
 			return false;
 		}
@@ -124,8 +133,11 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 				return false; // NOPMD
 			}
 			final TreePath path = ((JTree.DropLocation) dloc).getPath();
-			final Object tempTarget = model.getModelObject(path
-					.getLastPathComponent());
+			final Object pathLast = path.getLastPathComponent();
+			if (pathLast == null) {
+				return false; // NOPMD
+			}
+			final Object tempTarget = model.getModelObject(pathLast);
 			if (tempTarget instanceof Unit) {
 				try {
 					final UnitMemberTransferable.UnitMemberPair pair = (UnitMemberPair) trans

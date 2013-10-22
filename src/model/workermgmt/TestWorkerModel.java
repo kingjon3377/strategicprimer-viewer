@@ -40,28 +40,27 @@ public class TestWorkerModel {
 	@Test
 	public void testGetUnits() {
 		final SPMap map = new SPMap(new MapDimensions(3, 3, 2));
-		final List<Player> players = new ArrayList<>();
-		players.add(new Player(0, "player1"));
-		players.add(new Player(1, "player2"));
-		players.add(new Player(2, "player3"));
+		final Player playerOne = new Player(0, "player1");
+		final Player playerTwo = new Player(1, "player2");
+		final Player playerThree = new Player(2, "player3");
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<Unit> listOne = new ArrayList<>();
 		final List<Unit> listTwo = new ArrayList<>();
 		final List<Unit> listThree = new ArrayList<>();
 		fixtures.add(new Mountain());
 		fixtures.add(new Animal("animal", false, false, "wild", 1));
-		addItem(new Unit(players.get(0), "one", "unitOne", 2), fixtures,
+		addItem(new Unit(playerOne, "one", "unitOne", 2), fixtures,
 				listOne);
-		addItem(new Unit(players.get(1), "two", "unitTwo", 3), fixtures,
+		addItem(new Unit(playerTwo, "two", "unitTwo", 3), fixtures,
 				listTwo);
 		final Fortress fort = new Fortress(new Player(3, "player4"), "fort", 4);
-		final Unit unit = new Unit(players.get(2), "three", "unitThree", 5);
+		final Unit unit = new Unit(playerThree, "three", "unitThree", 5);
 		fort.addUnit(unit);
 		listThree.add(unit);
 		fixtures.add(fort);
 		fixtures.add(new Forest("forest", false));
 		fixtures.add(new Hill(7));
-		addItem(new Unit(players.get(0), "four", "unitFour", 6), fixtures,
+		addItem(new Unit(playerOne, "four", "unitFour", 6), fixtures,
 				listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
@@ -74,15 +73,15 @@ public class TestWorkerModel {
 			assert point != null && fix != null;
 			map.getTile(point).addFixture(fix);
 		}
-		final List<Unit> listOneA = model.getUnits(players.get(0));
+		final List<Unit> listOneA = model.getUnits(playerOne);
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
 		assertTrue("And didn't miss any for player 1",
 				listOne.containsAll(listOneA));
-		final List<Unit> listTwoA = model.getUnits(players.get(1));
+		final List<Unit> listTwoA = model.getUnits(playerTwo);
 		assertTrue("Got all units for player 2", listTwoA.containsAll(listTwo));
 		assertTrue("And didn't miss any for player 2",
 				listTwo.containsAll(listTwoA));
-		final List<Unit> listThreeA = model.getUnits(players.get(2));
+		final List<Unit> listThreeA = model.getUnits(playerThree);
 		assertTrue("Got all units for player 3",
 				listThreeA.containsAll(listThree));
 		assertTrue("And didn't miss any for player 3",

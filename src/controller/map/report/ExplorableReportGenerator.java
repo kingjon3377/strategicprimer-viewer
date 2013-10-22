@@ -24,7 +24,7 @@ public class ExplorableReportGenerator extends
 	/**
 	 * A common string in this class.
 	 */
-	private static final String COLON_SPACE_COMMA_SPACE = ": , ";
+	private static final String COLON_COMMA = ": , ";
 
 	/**
 	 * Produce the sub-report on non-town things that can be explored. All
@@ -64,11 +64,11 @@ public class ExplorableReportGenerator extends
 		}
 		if (anyCaves) {
 			builder.append(caveBuilder.append(CLOSE_LIST_ITEM).toString()
-					.replace(COLON_SPACE_COMMA_SPACE, ": "));
+					.replace(COLON_COMMA, ": "));
 		}
 		if (anyBattles) {
 			builder.append(battleBuilder.append(CLOSE_LIST_ITEM).toString()
-					.replace(COLON_SPACE_COMMA_SPACE, ": "));
+					.replace(COLON_COMMA, ": "));
 		}
 		builder.append(CLOSE_LIST);
 		final String retval = anyCaves || anyBattles ? builder.toString() : "";
@@ -112,11 +112,11 @@ public class ExplorableReportGenerator extends
 		}
 		if (anyCaves) {
 			retval.add(new SimpleReportNode(caveBuilder.toString().replace(
-					COLON_SPACE_COMMA_SPACE, ": ")));
+					COLON_COMMA, ": ")));
 		}
 		if (anyBattles) {
 			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
-					COLON_SPACE_COMMA_SPACE, ": ")));
+					COLON_COMMA, ": ")));
 		}
 		return anyCaves || anyBattles ? retval : EmptyReportNode.NULL_NODE;
 	}

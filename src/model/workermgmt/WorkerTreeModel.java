@@ -70,7 +70,9 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else if (parent instanceof Player && parent.equals(root)
 				&& index < model.getUnits(root).size()) {
-			return model.getUnits(root).get(index); // NOPMD
+			final Unit unit = model.getUnits(root).get(index);
+			assert unit != null;
+			return unit; // NOPMD
 		} else if (parent instanceof Unit) {
 			final Iterator<UnitMember> iter = ((Unit) parent).iterator();
 			for (int i = 0; i < index; i++) {
@@ -82,7 +84,9 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 				}
 			}
 			if (iter.hasNext()) {
-				return iter.next(); // NOPMD
+				final UnitMember next = iter.next();
+				assert next != null;
+				return next; // NOPMD
 			} else {
 				throw new ArrayIndexOutOfBoundsException(index);
 			}

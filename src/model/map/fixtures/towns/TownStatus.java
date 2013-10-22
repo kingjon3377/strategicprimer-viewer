@@ -55,7 +55,13 @@ public enum TownStatus {
 	 * @return the TownStatus it represents
 	 */
 	public static TownStatus parseTownStatus(final String string) {
-		return TST_MAP.get(string);
+		if (TST_MAP.containsKey(string)) {
+			final TownStatus status = TST_MAP.get(string);
+			assert status != null;
+			return status;
+		} else {
+			throw new IllegalArgumentException("No such town status");
+		}
 	}
 
 	/**

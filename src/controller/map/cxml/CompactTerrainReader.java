@@ -100,7 +100,9 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 			MAP.put(mt.tag, mt);
 			suppTagsTemp.add(mt.tag);
 		}
-		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
+		final Set<String> temp = Collections.unmodifiableSet(suppTagsTemp);
+		assert temp != null;
+		SUPP_TAGS = temp;
 	}
 
 	/**
