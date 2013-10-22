@@ -147,14 +147,18 @@ public final class SubsetDriver implements ISPDriver {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
 		}
-		try (final PrintWriter out = new PrintWriter(new OutputStreamWriter(
-				SystemOut.SYS_OUT))) {
+		try (final OutputStreamWriter osw = new OutputStreamWriter(
+				SystemOut.SYS_OUT);
+				final PrintWriter out = new PrintWriter(osw)) {
 			if (mainMap.isSubset(map, out)) {
 				return Returns.OK; // NOPMD
 			} else {
 				out.flush();
 				return Returns.Warn;
 			}
+		} catch (IOException except) {
+			Warning.INSTANCE.warn(except);
+			return Returns.Fail;
 		}
 	}
 
