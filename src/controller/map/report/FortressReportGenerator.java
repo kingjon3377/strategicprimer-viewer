@@ -202,16 +202,20 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final Tile tile = tiles.getTile(loc);
 		builder.append(getTerrain(tile, fixtures)).append(CLOSE_LIST_ITEM);
 		if (tile.hasRiver()) {
-			builder.append(riversToString(EnumSet.copyOf(tile.getRivers()
-					.getRivers())));
+			final EnumSet<River> copy = EnumSet.copyOf(tile.getRivers()
+					.getRivers());
+			assert copy != null;
+			builder.append(riversToString(copy));
 		}
 		if (item.iterator().hasNext()) {
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
 					.append(OPEN_LIST);
 			for (final Unit unit : item) {
-				builder.append(OPEN_LIST_ITEM)
-						.append(urg.produce(fixtures, tiles, currentPlayer,
-								unit, loc)).append(CLOSE_LIST_ITEM);
+				if (unit != null) {
+					builder.append(OPEN_LIST_ITEM)
+							.append(urg.produce(fixtures, tiles, currentPlayer,
+									unit, loc)).append(CLOSE_LIST_ITEM);
+				}
 			}
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 		}
@@ -244,14 +248,18 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final Tile tile = tiles.getTile(loc);
 		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));
 		if (tile.hasRiver()) {
-			riversToNode(retval, EnumSet.copyOf(tile.getRivers().getRivers()));
+			final EnumSet<River> copy = EnumSet.copyOf(tile.getRivers().getRivers());
+			assert copy != null;
+			riversToNode(retval, copy);
 		}
 		if (item.iterator().hasNext()) {
 			final AbstractReportNode units = new ListReportNode(
 					"Units on the tile:");
 			for (final Unit unit : item) {
-				units.add(urg.produceRIR(fixtures, tiles, currentPlayer, unit,
-						loc));
+				if (unit != null) {
+					units.add(urg.produceRIR(fixtures, tiles, currentPlayer, unit,
+							loc));
+				}
 			}
 			retval.add(units);
 		}

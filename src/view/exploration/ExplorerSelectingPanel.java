@@ -108,7 +108,9 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @return the model underlying the field containing the running MP total.
 	 */
 	public Document getMPDocument() {
-		return mpField.getDocument();
+		final Document retval = mpField.getDocument();
+		assert retval != null;
+		return retval;
 	}
 
 	/**

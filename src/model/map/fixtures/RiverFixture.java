@@ -33,6 +33,9 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 	 */
 	public RiverFixture(final River... initial) {
 		super();
+		final Set<River> none = EnumSet.noneOf(River.class);
+		assert none != null;
+		rivers = none;
 		for (final River river : initial) {
 			rivers.add(river);
 		}
@@ -41,7 +44,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 	/**
 	 * The Set we're using to hold the Rivers.
 	 */
-	private final Set<River> rivers = EnumSet.noneOf(River.class);
+	private final Set<River> rivers;
 
 	/**
 	 * Add a river.
@@ -65,7 +68,9 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 	 * @return the river directions
 	 */
 	public Set<River> getRivers() {
-		return EnumSet.copyOf(rivers);
+		final EnumSet<River> copy = EnumSet.copyOf(rivers);
+		assert copy != null;
+		return copy;
 	}
 
 	/**
@@ -73,7 +78,9 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 	 */
 	@Override
 	public Iterator<River> iterator() {
-		return rivers.iterator();
+		final Iterator<River> retval = rivers.iterator();
+		assert retval != null;
+		return retval;
 	}
 
 	/**
