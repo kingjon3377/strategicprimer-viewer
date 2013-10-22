@@ -115,7 +115,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt != null && BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
 			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(Boolean.TRUE);
+				list.stopWaitingOn(true);
 			}
 		}
 	}

@@ -145,7 +145,7 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 				&& !unitList.isSelectionEmpty()) {
 			model.selectUnit(unitList.getSelectedValue());
 			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(Boolean.TRUE);
+				list.stopWaitingOn(true);
 			}
 		}
 	}
