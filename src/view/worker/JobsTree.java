@@ -12,7 +12,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
-import model.listeners.UnitSelectionSource;
+import model.listeners.UnitMemberSelectionSource;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.JobTreeModel;
 
@@ -34,7 +34,7 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	 * @param sources things for the model to listen to for property changes.
 	 * @param src ignored for now, TODO: figure out what should be done with it.
 	 */
-	public JobsTree(final AddRemovePanel[] sources, final UnitSelectionSource src) {
+	public JobsTree(final AddRemovePanel[] sources, final UnitMemberSelectionSource src) {
 		super();
 		final TreeSelectionModel tsm = getSelectionModel();
 		if (tsm == null) {
@@ -45,6 +45,7 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 		for (final AddRemovePanel source : sources) {
 			source.addAddRemoveListener(model);
 		}
+		src.addUnitMemberListener(model);
 		setRootVisible(false);
 		setShowsRootHandles(true);
 		getSelectionModel().addTreeSelectionListener(this);
