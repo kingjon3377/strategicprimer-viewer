@@ -52,7 +52,13 @@ public enum TownKind {
 	 * @return the EventKind it represents
 	 */
 	public static TownKind parseKind(final String string) {
-		return EK_MAP.get(string);
+		if (EK_MAP.containsKey(string)) {
+			final TownKind retval = EK_MAP.get(string);
+			assert retval != null;
+			return retval;
+		} else {
+			throw new IllegalArgumentException("Unknown town kind");
+		}
 	}
 
 	/**

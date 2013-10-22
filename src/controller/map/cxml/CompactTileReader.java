@@ -37,7 +37,13 @@ public final class CompactTileReader extends AbstractCompactReader implements
 	 * Singleton.
 	 */
 	private CompactTileReader() {
-		// Singleton.
+		final List<AbstractCompactReader> temp = Arrays
+				.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
+						CompactResourceReader.READER, CompactTerrainReader.READER,
+						CompactTextReader.READER, CompactTownReader.READER,
+						CompactGroundReader.READER });
+			assert temp != null;
+			readers = temp;
 	}
 
 	/**
@@ -94,11 +100,7 @@ public final class CompactTileReader extends AbstractCompactReader implements
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<AbstractCompactReader> readers = Arrays
-			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
-					CompactResourceReader.READER, CompactTerrainReader.READER,
-					CompactTextReader.READER, CompactTownReader.READER,
-					CompactGroundReader.READER });
+	private final List<AbstractCompactReader> readers;
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
@@ -250,7 +252,9 @@ public final class CompactTileReader extends AbstractCompactReader implements
 	public static void writeRivers(final Writer out,
 			final Iterable<River> iter, final int indent) throws IOException {
 		for (final River river : iter) {
-			writeRiver(out, river, indent);
+			if (river != null) {
+				writeRiver(out, river, indent);
+			}
 		}
 	}
 }

@@ -80,7 +80,9 @@ public final class ImageLoader {
 				cache.put(file, ImageIO.read(res));
 			}
 		}
-		return cache.get(file);
+		final Image retval = cache.get(file);
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -102,7 +104,9 @@ public final class ImageLoader {
 			iconCache.put(file, new ImageIcon(loadImage(file)
 					.getScaledInstance(ICON_SIZE, -1, Image.SCALE_DEFAULT)));
 		}
-		return iconCache.get(file);
+		final Icon retval = iconCache.get(file);
+		assert retval != null;
+		return retval;
 	}
 
 	/**

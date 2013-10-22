@@ -31,6 +31,7 @@ public class CLIHelper implements ICLIHelper {
 	/**
 	 * No-arg constructor.
 	 */
+	@SuppressWarnings("null") // System.in cannot be null
 	public CLIHelper() {
 		this(System.in);
 	}

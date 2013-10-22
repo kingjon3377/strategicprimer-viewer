@@ -140,10 +140,11 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
+		final Unit selectedValue = unitList.getSelectedValue();
 		if (event != null
 				&& BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
-				&& !unitList.isSelectionEmpty()) {
-			model.selectUnit(unitList.getSelectedValue());
+				&& !unitList.isSelectionEmpty() && selectedValue != null) {
+			model.selectUnit(selectedValue);
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);
 			}

@@ -41,7 +41,9 @@ public class CurriedFixtureTransferable implements Transferable {
 				payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
 			}
 		}
-		payload = Collections.unmodifiableList(payloadTemp);
+		final List<Transferable> temp = Collections.unmodifiableList(payloadTemp);
+		assert temp != null;
+		payload = temp;
 	}
 
 	/**

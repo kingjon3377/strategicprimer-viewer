@@ -81,7 +81,9 @@ public class Job implements Iterable<Skill>, HasName, Serializable {
 	 */
 	@Override
 	public Iterator<Skill> iterator() {
-		return skillSet.iterator();
+		final Iterator<Skill> iter = skillSet.iterator();
+		assert iter != null;
+		return iter;
 	}
 
 	/**

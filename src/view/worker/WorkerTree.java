@@ -12,7 +12,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import model.listeners.CompletionListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeSource;
 import model.listeners.UnitMemberListener;

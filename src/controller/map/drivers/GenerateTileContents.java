@@ -35,8 +35,13 @@ public final class GenerateTileContents {
 	 * A mapping from filenames containing maps to instances handling those
 	 * maps.
 	 */
-	private static final Map<String, GenerateTileContents> INSTANCES = Collections
+	private static final Map<String, GenerateTileContents> INSTANCES;
+	static {
+		final Map<String, GenerateTileContents> temp = Collections
 			.synchronizedMap(new HashMap<String, GenerateTileContents>());
+		assert temp != null;
+		INSTANCES = temp;
+	}
 	/**
 	 * The map reader to use.
 	 */
@@ -60,7 +65,9 @@ public final class GenerateTileContents {
 					new GenerateTileContents(READER.readMap(filename,
 							Warning.INSTANCE)));
 		}
-		return INSTANCES.get(filename);
+		final GenerateTileContents retval = INSTANCES.get(filename);
+		assert retval != null;
+		return retval;
 	}
 
 	/**

@@ -139,7 +139,9 @@ public class ResolutionDecreaseConverter {
 			final RiverFixture... rivers) {
 		for (final RiverFixture riverFix : rivers) {
 			for (final River river : riverFix) {
-				fix.addRiver(river);
+				if (river != null) {
+					fix.addRiver(river);
+				}
 			}
 		}
 	}
@@ -151,7 +153,9 @@ public class ResolutionDecreaseConverter {
 	private static void removeRivers(final RiverFixture fix,
 			final River... rivers) {
 		for (final River river : rivers) {
-			fix.removeRiver(river);
+			if (river != null) {
+				fix.removeRiver(river);
+			}
 		}
 	}
 
@@ -184,13 +188,17 @@ public class ResolutionDecreaseConverter {
 				return type; // NOPMD
 			}
 		}
+		// ESCA-JAVA0177:
+		final TileType retval;
 		if (twos.size() == 1) {
-			return twos.iterator().next(); // NOPMD
+			retval = twos.iterator().next(); // NOPMD
 		} else {
 			final List<TileType> list = Arrays.asList(one, two, three, four);
 			Collections.shuffle(list);
-			return list.get(0);
+			retval = list.get(0);
 		}
+		assert retval != null;
+		return retval;
 	}
 
 	/**

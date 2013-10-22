@@ -21,6 +21,7 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and we'll
 	 * warn if they're used.
 	 */
+	@SuppressWarnings("null") // We know this isn't null, but there's no way to assert that in an interface
 	List<String> FUTURE = Collections.unmodifiableList(Arrays
 			.asList(new String[] { "future", "explorer", "building",
 					"resource", "changeset", "change", "move", "work",

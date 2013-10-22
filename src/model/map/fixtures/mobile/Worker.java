@@ -73,7 +73,9 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	 */
 	@Override
 	public Iterator<Job> iterator() {
-		return jobSet.iterator();
+		final Iterator<Job> iter = jobSet.iterator();
+		assert iter != null;
+		return iter;
 	}
 
 	/**

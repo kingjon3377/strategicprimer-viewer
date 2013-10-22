@@ -57,7 +57,13 @@ public enum FieldStatus {
 	 * @return the FieldStatus it represents
 	 */
 	public static FieldStatus parse(final String string) {
-		return FST_MAP.get(string);
+		if (FST_MAP.containsKey(string)) {
+			final FieldStatus fst = FST_MAP.get(string);
+			assert fst != null;
+			return fst;
+		} else {
+			throw new IllegalArgumentException("Not a FieldStatus we recognize");
+		}
 	}
 
 	/**
@@ -73,6 +79,8 @@ public enum FieldStatus {
 	 * @return a random status
 	 */
 	public static FieldStatus random(final int seed) {
-		return values()[new Random(seed).nextInt(values().length)];
+		final FieldStatus retval = values()[new Random(seed).nextInt(values().length)];
+		assert retval != null;
+		return retval;
 	}
 }

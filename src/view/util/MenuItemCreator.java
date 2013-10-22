@@ -44,8 +44,10 @@ public class MenuItemCreator {
 	 * @return the hotkey
 	 */
 	public static KeyStroke createHotkey(final int key) {
-		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
+		final KeyStroke retval = KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask());
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -55,8 +57,10 @@ public class MenuItemCreator {
 	 * @return the hotkey
 	 */
 	public static KeyStroke createShiftHotkey(final int key) {
-		return KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
+		final KeyStroke retval = KeyStroke.getKeyStroke(key, Toolkit.getDefaultToolkit()
 				.getMenuShortcutKeyMask() | InputEvent.SHIFT_DOWN_MASK);
+		assert retval != null;
+		return retval;
 	}
 
 	/**

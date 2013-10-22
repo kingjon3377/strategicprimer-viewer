@@ -2,6 +2,7 @@ package util;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A class to convert a map's Entry set to an iterable of Pairs.
@@ -30,7 +31,9 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 
 	@Override
 	public Iterator<Pair<I, K>> iterator() {
-		return new IteratorImpl(theMap.entrySet().iterator());
+		final Iterator<Entry<I, K>> iter = theMap.entrySet().iterator();
+		assert iter != null;
+		return new IteratorImpl(iter);
 	}
 
 	/**
@@ -66,7 +69,10 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 		@Override
 		public Pair<I, K> next() {
 			final Map.Entry<I, K> entry = wrapped.next();
-			return Pair.of(entry.getKey(), entry.getValue());
+			final I key = entry.getKey();
+			final K value = entry.getValue();
+			assert key != null && value != null;
+			return Pair.of(key, value);
 		}
 
 		/**

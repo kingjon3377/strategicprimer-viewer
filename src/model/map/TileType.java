@@ -102,7 +102,9 @@ public enum TileType {
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}
-		return Collections.unmodifiableSet(VALS_BY_VER.get(boxedVer));
+		final Set<TileType> retval = Collections.unmodifiableSet(VALS_BY_VER.get(boxedVer));
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -151,7 +153,9 @@ public enum TileType {
 	 */
 	public static TileType getTileType(final String string) {
 		if (TILE_TYPE_MAP.containsKey(string)) {
-			return TILE_TYPE_MAP.get(string);
+			final TileType retval = TILE_TYPE_MAP.get(string);
+			assert retval != null;
+			return retval;
 		} // else
 		throw new IllegalArgumentException("Unrecognized terrain type string "
 				+ string);

@@ -61,7 +61,9 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * @return a read-only view of the contents of the tile.
 	 */
 	public Set<TileFixture> getContents() {
-		return Collections.unmodifiableSet(contents);
+		final Set<TileFixture> retval = Collections.unmodifiableSet(contents);
+		assert retval != null;
+		return retval;
 	}
 
 	/**
@@ -81,7 +83,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 				if (hasRiver()) {
 					final RiverFixture rivers = getRivers();
 					for (final River river : (RiverFixture) fix) {
-						if (rivers != null) {
+						if (river != null) {
 							rivers.addRiver(river);
 						}
 					}
@@ -110,7 +112,9 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 */
 	@Override
 	public Iterator<TileFixture> iterator() {
-		return contents.iterator();
+		final Iterator<TileFixture> iter = contents.iterator();
+		assert iter != null;
+		return iter;
 	}
 
 	/**

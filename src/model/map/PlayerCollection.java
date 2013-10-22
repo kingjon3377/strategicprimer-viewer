@@ -33,8 +33,14 @@ public class PlayerCollection implements Iterable<Player>,
 	 *         don't have it.
 	 */
 	public Player getPlayer(final int player) {
-		return players.containsKey(Integer.valueOf(player)) ? players
-				.get(Integer.valueOf(player)) : new Player(player, "");
+		final Integer pValue = Integer.valueOf(player);
+		if (players.containsKey(pValue)) {
+			final Player retval = players.get(pValue);
+			assert retval != null;
+			return retval;
+		} else {
+			return new Player(player, "");
+		}
 	}
 
 	/**
@@ -42,7 +48,9 @@ public class PlayerCollection implements Iterable<Player>,
 	 */
 	@Override
 	public Iterator<Player> iterator() {
-		return players.values().iterator();
+		final Iterator<Player> iter = players.values().iterator();
+		assert iter != null;
+		return iter;
 	}
 
 	/**
@@ -169,6 +177,8 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @return an array of the players
 	 */
 	public Player[] asArray() {
-		return players.values().toArray(new Player[players.size()]);
+		final Player[] array = players.values().toArray(new Player[players.size()]);
+		assert array != null;
+		return array;
 	}
 }

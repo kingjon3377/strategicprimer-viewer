@@ -37,7 +37,12 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
-		// Singleton.
+		final List<AbstractCompactReader> temp = Arrays.asList(new AbstractCompactReader[] {
+				CompactMobileReader.READER, CompactResourceReader.READER,
+				CompactTerrainReader.READER, CompactTextReader.READER,
+				CompactTownReader.READER, CompactWorkerReader.READER });
+		assert temp != null;
+		readers = temp;
 	}
 
 	/**
@@ -90,11 +95,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<AbstractCompactReader> readers = Arrays
-			.asList(new AbstractCompactReader[] { CompactMobileReader.READER,
-					CompactResourceReader.READER, CompactTerrainReader.READER,
-					CompactTextReader.READER, CompactTownReader.READER,
-					CompactWorkerReader.READER });
+	private final List<AbstractCompactReader> readers;
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
@@ -112,6 +113,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 			final PlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
+		assert name != null;
 		for (final AbstractCompactReader item : readers) {
 			if (item.isSupportedTag(name)) {
 				final Object retval = ((CompactReader<?>) item).read(element,
@@ -119,9 +121,8 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
-					throw new UnwantedChildException(UNIT_TAG, element
-							.getName().getLocalPart(), element.getLocation()
-							.getLineNumber());
+					throw new UnwantedChildException(UNIT_TAG, name, element
+							.getLocation().getLineNumber());
 				}
 			}
 		}
@@ -149,9 +150,11 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 			return ""; // NOPMD
 		}
 		if (retval.isEmpty()) {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), "kind", element.getLocation()
-					.getLineNumber()));
+			final String local = element.getName()
+					.getLocalPart();
+			assert local != null;
+			warner.warn(new MissingPropertyException(local, "kind", element
+					.getLocation().getLineNumber()));
 		}
 		return retval;
 	}
@@ -202,7 +205,9 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			out.append(">").append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
-				CompactReaderAdapter.write(out, member, indent + 1);
+				if (member != null) {
+					CompactReaderAdapter.write(out, member, indent + 1);
+				}
 			}
 			out.append(indent(indent));
 			out.append("</unit>\n");

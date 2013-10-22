@@ -42,7 +42,9 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		super();
 		model = new FixtureFilterListModel();
 		setModel(model);
-		lsm = getSelectionModel();
+		final ListSelectionModel temp = getSelectionModel();
+		assert temp != null;
+		lsm = temp;
 		lsm.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setCellRenderer(this);
 	}

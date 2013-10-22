@@ -172,8 +172,10 @@ public class OneToTwoConverter { // NOPMD
 			int iterations = 0;
 			while (iterations < MAX_ITERATIONS && !fixtures.isEmpty()) {
 				if (isSubtileSuitable(initial.get(0).second())) {
-					changeFor(initial.get(0).second(), fixtures.get(0));
-					initial.get(0).second().addFixture(fixtures.remove(0));
+					final TileFixture fix = fixtures.remove(0);
+					assert fix != null;
+					changeFor(initial.get(0).second(), fix);
+					initial.get(0).second().addFixture(fix);
 				}
 				initial.add(initial.remove(0));
 				iterations++;
@@ -183,7 +185,9 @@ public class OneToTwoConverter { // NOPMD
 						+ point.row + ", " + point.col + "); forcing ...");
 				while (!fixtures.isEmpty()) {
 					final Tile subtile = initial.get(0).second();
-					subtile.addFixture(fixtures.remove(0));
+					final TileFixture fix = fixtures.remove(0);
+					assert fix != null;
+					subtile.addFixture(fix);
 					subtile.addFixture(new TextFixture(
 							// NOPMD
 							"FIXME: A fixture here was force-added after MAX_ITER",
@@ -209,7 +213,9 @@ public class OneToTwoConverter { // NOPMD
 		if (tile.hasRiver()) {
 			final RiverFixture rivers = tile.getRivers();
 			for (final River river : rivers) {
-				addRiver(river, initial);
+				if (river != null) {
+					addRiver(river, initial);
+				}
 			}
 			fixtures.remove(rivers);
 		}
@@ -421,7 +427,7 @@ public class OneToTwoConverter { // NOPMD
 	private static Iterable<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		return Arrays.asList(PointFactory.point(row - 1, col - 1),
+		final Iterable<Point> retval = Arrays.asList(PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),
 				PointFactory.point(row, col - 1),
@@ -429,6 +435,8 @@ public class OneToTwoConverter { // NOPMD
 				PointFactory.point(row + 1, col - 1),
 				PointFactory.point(row + 1, col),
 				PointFactory.point(row + 1, col + 1));
+		assert retval != null;
+		return retval;
 	}
 
 	/**

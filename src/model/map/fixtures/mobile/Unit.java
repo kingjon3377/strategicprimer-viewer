@@ -117,7 +117,9 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	@Override
 	public Iterator<UnitMember> iterator() {
-		return members.iterator();
+		final Iterator<UnitMember> iter = members.iterator();
+		assert iter != null;
+		return iter;
 	}
 
 	/**

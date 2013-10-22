@@ -67,7 +67,9 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 */
 	@Override
 	public final Iterator<Unit> iterator() {
-		return units.iterator();
+		final Iterator<Unit> iter = units.iterator();
+		assert iter != null;
+		return iter;
 	}
 
 	/**
