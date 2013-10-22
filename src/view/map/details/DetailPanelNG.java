@@ -103,8 +103,13 @@ public class DetailPanelNG extends JSplitPane {
 	public DetailPanelNG(final int version, final PlayerCollection players,
 			final SelectionChangeSource[] sSources,
 			final VersionChangeSource[] vSources) {
-		super(HORIZONTAL_SPLIT, true, new ListPanel(players, sSources),
-				new KeyPanel(version, vSources));
+		super(HORIZONTAL_SPLIT, true);
+		setLeftComponent(new ListPanel(players, sSources));
+		final KeyPanel keyPanel = new KeyPanel(version);
+		for (final VersionChangeSource source : vSources) {
+			source.addVersionChangeListener(keyPanel);
+		}
+		setRightComponent(keyPanel);
 		setResizeWeight(DIVIDER_LOCATION);
 		setDividerLocation(DIVIDER_LOCATION);
 	}

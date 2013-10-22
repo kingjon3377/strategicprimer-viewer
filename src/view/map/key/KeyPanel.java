@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 
 import model.listeners.VersionChangeListener;
-import model.listeners.VersionChangeSource;
 import model.map.TileType;
 
 /**
@@ -20,19 +19,14 @@ public class KeyPanel extends JPanel implements VersionChangeListener {
 	 * Constructor.
 	 *
 	 * @param version the map version
-	 * @param sources things to listen to for property change events
 	 */
-	public KeyPanel(final int version,
-			final VersionChangeSource... sources) {
+	public KeyPanel(final int version) {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
 		setMinimumSize(new Dimension(new KeyElement(version,
 				TileType.NotVisible).getMinimumSize().width * 4,
 				getMinimumSize().height));
 		setPreferredSize(getMinimumSize());
-		for (final VersionChangeSource source : sources) {
-			source.addVersionChangeListener(this);
-		}
 	}
 
 	/**
