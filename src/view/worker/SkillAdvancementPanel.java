@@ -122,7 +122,7 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 	 * @param list the listener to add
 	 */
 	@Override
-	public void addLevelGainListener(final LevelGainListener list) {
+	public final void addLevelGainListener(final LevelGainListener list) {
 		listeners.add(list);
 	}
 

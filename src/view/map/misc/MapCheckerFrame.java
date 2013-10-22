@@ -63,16 +63,18 @@ public class MapCheckerFrame extends JFrame {
 	 */
 	void printParagraph(final String string, final String color) { // NOPMD: See
 																	// above
-		final PrintWriter writer = label.getWriter();
-		if (color.isEmpty()) {
-			writer.print("<p style=\"color:white\">");
-		} else {
-			writer.print("<p style=\"color:");
-			writer.print(color);
-			writer.print("\">");
+		try (final PrintWriter writer = label.getWriter()) {
+			// This is safe because StringWriter.close() does nothing.
+			if (color.isEmpty()) {
+				writer.print("<p style=\"color:white\">");
+			} else {
+				writer.print("<p style=\"color:");
+				writer.print(color);
+				writer.print("\">");
+			}
+			writer.print(string);
+			writer.println("</p>");
 		}
-		writer.print(string);
-		writer.println("</p>");
 		// label.updateText();
 		label.repaint();
 	}
@@ -81,7 +83,25 @@ public class MapCheckerFrame extends JFrame {
 	 * The color to use for errors.
 	 */
 	private static final String ERROR_COLOR = "red";
-
+	/**
+	 * The warning instance to use to print warnings to the frame.
+	 */
+	private final Warning warner = new Warning() {
+		@Override
+		public void warn(final Exception warning) {
+			// super.warn(warning);
+			if (warning instanceof SPFormatException) {
+				printParagraph(
+						"SP format warning: "
+								+ warning.getLocalizedMessage(),
+						"yellow");
+			} else {
+				printParagraph(
+						"Warning: " + warning.getLocalizedMessage(),
+						"yellow");
+			}
+		}
+	};
 	/**
 	 * Check a map.
 	 *
@@ -89,60 +109,50 @@ public class MapCheckerFrame extends JFrame {
 	 */
 	public void check(final String filename) {
 		printParagraph("Starting " + filename, "");
-		boolean retval = true;
 		try {
-			reader.readMap(filename, new Warning() {
-				@Override
-				public void warn(final Exception warning) {
-					// super.warn(warning);
-					if (warning instanceof SPFormatException) {
-						printParagraph(
-								"SP format warning: "
-										+ warning.getLocalizedMessage(),
-								"yellow");
-					} else {
-						printParagraph(
-								"Warning: " + warning.getLocalizedMessage(),
-								"yellow");
-					}
-				}
-			});
-		} catch (final MapVersionException except) {
+			reader.readMap(filename, warner);
+		} catch (IOException | XMLStreamException | SPFormatException except) {
+			printError(except, filename);
+			return;
+		}
+		printParagraph("No errors in " + filename, "green");
+	}
+	/**
+	 * Tell the user about, and log, an exception.
+	 * @param except the exception in question
+	 * @param filename what file was being read
+	 */
+	private void printError(final Exception except, final String filename) {
+		if (except instanceof MapVersionException) {
 			LOGGER.log(Level.SEVERE, "Map version in " + filename
 					+ " not acceptable to reader", except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
-			retval = false;
-		} catch (final FileNotFoundException except) {
+		} else if (except instanceof FileNotFoundException) {
 			printParagraph("ERROR: File not found", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, filename + " not found", except);
-			retval = false;
-		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
+		} else if (except instanceof IOException) {
 			printParagraph("ERROR: I/O error reading file", ERROR_COLOR);
-			retval = false;
-		} catch (final XMLStreamException except) {
-			LOGGER.log(Level.SEVERE, "Malformed XML in file " + filename,
-					except);
+			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
+		} else if (except instanceof XMLStreamException) {
 			printParagraph(
 					"ERROR: Malformed XML in the file; see following error message for details",
 					ERROR_COLOR);
 			final String message = except.getLocalizedMessage();
 			printParagraph(message == null ? "(message was null)" : message, ERROR_COLOR);
-			retval = false;
-		} catch (final SPFormatException except) {
-			LOGGER.log(Level.SEVERE, "SP map format eror reading " + filename,
+			LOGGER.log(Level.SEVERE, "Malformed XML in file " + filename,
 					except);
+		} else if (except instanceof SPFormatException) {
 			printParagraph(
-					"ERROR: SP map format error at line " + except.getLine()
+					"ERROR: SP map format error at line " + ((SPFormatException) except).getLine()
 							+ "; see following error message for details",
 					ERROR_COLOR);
 			final String message = except.getLocalizedMessage();
 			printParagraph(message == null ? "(message was null)" : message, ERROR_COLOR);
-			retval = false;
-		}
-		if (retval) {
-			printParagraph("No errors in " + filename, "green");
+			LOGGER.log(Level.SEVERE, "SP map format eror reading " + filename,
+					except);
+		} else {
+			throw new IllegalStateException("Unhandled exception class");
 		}
 	}
 }

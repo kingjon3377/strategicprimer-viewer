@@ -40,18 +40,12 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 	 */
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
-		player = newPlayer;
 		clear();
-		final List<Unit> units = model.getUnits(player);
+		final List<Unit> units = model.getUnits(newPlayer);
 		for (final Unit unit : units) {
 			addElement(unit);
 		}
 	}
-
-	/**
-	 * The current player.
-	 */
-	private Player player = new Player(-1, "none");
 	/**
 	 * The exploration model to work from.
 	 */

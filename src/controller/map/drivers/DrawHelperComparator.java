@@ -42,6 +42,11 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
+	 * The error message to use when a null Graphics is passed in.
+	 */
+	private static final String NULL_GRAPHICS_ERR = "image.createGraphics() created null Graphics";
+
+	/**
 	 * An object indicating how to use and invoke this driver. We say that this
 	 * is graphical, even though it's not, so we can share an option with the
 	 * ReaderComparator.
@@ -109,7 +114,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 				final Graphics pen = image.createGraphics();
 				if (pen == null) {
 					throw new IllegalStateException(
-							"image.createGraphics() created null Graphics");
+							NULL_GRAPHICS_ERR);
 				}
 				helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
 			}
@@ -160,7 +165,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 				final Graphics pen = image.createGraphics();
 				if (pen == null) {
 					throw new IllegalStateException(
-							"image.createGraphics() created null Graphics");
+							NULL_GRAPHICS_ERR);
 				}
 				helper.drawTile(
 						pen,
@@ -191,7 +196,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen = image.createGraphics();
 			if (pen == null) {
 				throw new IllegalStateException(
-						"image.createGraphics() created null Graphics");
+						NULL_GRAPHICS_ERR);
 			}
 			thirdBody(helper, pen, spmap, tsize);
 		}
@@ -237,7 +242,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen = image.createGraphics();
 			if (pen == null) {
 				throw new IllegalStateException(
-						"image.createGraphics() created null Graphics");
+						NULL_GRAPHICS_ERR);
 			}
 			fourthBody(helper, pen, spmap, tsize);
 		}
@@ -305,7 +310,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen = image.createGraphics();
 			if (pen == null) {
 				throw new IllegalStateException(
-						"image.createGraphics() created null Graphics");
+						NULL_GRAPHICS_ERR);
 			}
 			fifthOneBody(spmap, helper, pen, tsize);
 		}
@@ -355,7 +360,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen = image.createGraphics();
 			if (pen == null) {
 				throw new IllegalStateException(
-						"image.createGraphics() created null Graphics");
+						NULL_GRAPHICS_ERR);
 			}
 			fifthTwoBody(helper, pen, spmap, tsize);
 		}

@@ -22,6 +22,11 @@ import util.Pair;
 public class ExplorableReportGenerator extends
 		AbstractReportGenerator<HarvestableFixture> {
 	/**
+	 * A common string in this class.
+	 */
+	private static final String COLON_SPACE_COMMA_SPACE = ": , ";
+
+	/**
 	 * Produce the sub-report on non-town things that can be explored. All
 	 * fixtures referred to in this report are removed from the collection.
 	 *
@@ -59,11 +64,11 @@ public class ExplorableReportGenerator extends
 		}
 		if (anyCaves) {
 			builder.append(caveBuilder.append(CLOSE_LIST_ITEM).toString()
-					.replace(": , ", ": "));
+					.replace(COLON_SPACE_COMMA_SPACE, ": "));
 		}
 		if (anyBattles) {
 			builder.append(battleBuilder.append(CLOSE_LIST_ITEM).toString()
-					.replace(": , ", ": "));
+					.replace(COLON_SPACE_COMMA_SPACE, ": "));
 		}
 		builder.append(CLOSE_LIST);
 		final String retval = anyCaves || anyBattles ? builder.toString() : "";
@@ -107,11 +112,11 @@ public class ExplorableReportGenerator extends
 		}
 		if (anyCaves) {
 			retval.add(new SimpleReportNode(caveBuilder.toString().replace(
-					": , ", ": ")));
+					COLON_SPACE_COMMA_SPACE, ": ")));
 		}
 		if (anyBattles) {
 			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
-					": , ", ": ")));
+					COLON_SPACE_COMMA_SPACE, ": ")));
 		}
 		return anyCaves || anyBattles ? retval : EmptyReportNode.NULL_NODE;
 	}

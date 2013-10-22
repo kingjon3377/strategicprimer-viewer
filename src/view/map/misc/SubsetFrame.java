@@ -125,16 +125,18 @@ public class SubsetFrame extends JFrame {
 	 */
 	void printParagraph(final String string, final String color) { // NOPMD: See
 																	// above
-		final PrintWriter writer = label.getWriter();
-		if (color.isEmpty()) {
-			writer.print("<p style=\"color:white\">");
-		} else {
-			writer.print("<p style=\"color:");
-			writer.print(color);
-			writer.print("\">");
+		try (final PrintWriter writer = label.getWriter()) {
+			// Because StringWriter's close() does nothing, this is safe.
+			if (color.isEmpty()) {
+				writer.print("<p style=\"color:white\">");
+			} else {
+				writer.print("<p style=\"color:");
+				writer.print(color);
+				writer.print("\">");
+			}
+			writer.print(string);
+			writer.println("</p>");
 		}
-		writer.print(string);
-		writer.println("</p>");
 		// label.updateText();
 		label.repaint();
 	}
