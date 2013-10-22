@@ -52,4 +52,12 @@ public final class SystemOut extends PrintStream {
 		print(integer);
 		return this;
 	}
+	/**
+	 * Do  nothing.
+	 */
+	// ESCA-JAVA0025:
+	@Override
+	public void close() {
+		// Do nothing.
+	}
 }
