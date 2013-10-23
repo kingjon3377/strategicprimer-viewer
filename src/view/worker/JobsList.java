@@ -39,8 +39,11 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	public JobsList(final JobSelectionListener listener,
 			final UnitMemberSelectionSource[] umSources,
 			final AddRemovePanel[] arps) {
-		final JobsListModel lmodel = new JobsListModel(umSources, arps);
+		final JobsListModel lmodel = new JobsListModel(umSources);
 		setModel(lmodel);
+		for (final AddRemovePanel arp : arps) {
+			arp.addAddRemoveListener(lmodel);
+		}
 		lmodel.addCompletionListener(new CompletionListener() {
 			@Override
 			public void stopWaitingOn(final boolean end) {

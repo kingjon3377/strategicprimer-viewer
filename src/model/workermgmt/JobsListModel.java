@@ -16,8 +16,6 @@ import model.map.fixtures.mobile.worker.Job;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import view.util.AddRemovePanel;
-
 /**
  * A list model for a list of a worker's jobs.
  *
@@ -44,15 +42,10 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	 *
 	 * @param umSources sources to listen to for changes in which unit member is
 	 *        selected
-	 * @param arps panels to listen to for new jobs from the user
 	 */
-	public JobsListModel(final UnitMemberSelectionSource[] umSources,
-			final AddRemovePanel[] arps) {
+	public JobsListModel(final UnitMemberSelectionSource[] umSources) {
 		for (final UnitMemberSelectionSource source : umSources) {
 			source.addUnitMemberListener(this);
-		}
-		for (final AddRemovePanel panel : arps) {
-			panel.addAddRemoveListener(this);
 		}
 	}
 
