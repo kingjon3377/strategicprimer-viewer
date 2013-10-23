@@ -36,7 +36,10 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	 */
 	public SkillList(final SkillSelectionListener listener,
 			final JobSelectionSource[] jsSources, final LevelGainSource[] lgSources) {
-		final SkillListModel lmodel = new SkillListModel(jsSources, lgSources);
+		final SkillListModel lmodel = new SkillListModel(lgSources);
+		for (final JobSelectionSource source : jsSources) {
+			source.addJobSelectionListener(lmodel);
+		}
 		setModel(lmodel);
 		lmodel.addCompletionListener(new CompletionListener() {
 			@Override

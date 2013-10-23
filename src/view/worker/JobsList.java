@@ -30,12 +30,10 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	/**
 	 * Constructor.
 	 *
-	 * @param listener something to listen to us
 	 * @param umSources sources to listen to for changes in which unit member is
 	 *        selected
 	 */
-	public JobsList(final JobSelectionListener listener,
-			final UnitMemberSelectionSource[] umSources) {
+	public JobsList(final UnitMemberSelectionSource[] umSources) {
 		lmodel = new JobsListModel(umSources);
 		setModel(lmodel);
 		final JobsListModel listModel = lmodel;
@@ -49,7 +47,6 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 				}
 			}
 		});
-		addJobSelectionListener(listener);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}

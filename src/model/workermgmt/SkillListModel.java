@@ -9,7 +9,6 @@ import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
 import model.listeners.JobSelectionListener;
-import model.listeners.JobSelectionSource;
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.map.fixtures.mobile.worker.Job;
@@ -42,13 +41,9 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	/**
 	 * Constructor.
 	 *
-	 * @param jsSources objects to listn to for the currently selected Job
 	 * @param lgSources objects to listen to to refresh on skill leveling
 	 */
-	public SkillListModel(final JobSelectionSource[] jsSources, final LevelGainSource[] lgSources) {
-		for (final JobSelectionSource source : jsSources) {
-			source.addJobSelectionListener(this);
-		}
+	public SkillListModel(final LevelGainSource[] lgSources) {
 		for (final LevelGainSource source : lgSources) {
 			source.addLevelGainListener(this);
 		}
