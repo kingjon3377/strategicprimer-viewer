@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 
 import model.listeners.SelectionChangeListener;
-import model.listeners.SelectionChangeSource;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
@@ -27,19 +26,6 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * The current tile.
 	 */
 	private Tile tile = new Tile(TileType.NotVisible);
-
-	/**
-	 * Constructor.
-	 *
-	 * @param sources sources to listen to
-	 */
-	public FixtureListModel(
-			final SelectionChangeSource... sources) {
-		super();
-		for (final SelectionChangeSource source : sources) {
-			source.addSelectionChangeListener(this);
-		}
-	}
 
 	/**
 	 * @param old the formerly selected location

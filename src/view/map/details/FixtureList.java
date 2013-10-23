@@ -19,8 +19,10 @@ import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
-import model.listeners.SelectionChangeSource;
+import model.listeners.SelectionChangeListener;
 import model.map.PlayerCollection;
+import model.map.Point;
+import model.map.Tile;
 import model.map.TileFixture;
 import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
@@ -35,19 +37,22 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public class FixtureList extends JList<TileFixture> implements
-		DragGestureListener {
+		DragGestureListener, SelectionChangeListener {
+	/**
+	 * The list model.
+	 */
+	private final FixtureListModel flm;
+
 	/**
 	 * Constructor.
 	 *
-	 * @param sources objects the model should listen to
 	 * @param parent a parent of this list
 	 * @param players the players in the map
 	 */
-	public FixtureList(final JComponent parent, final PlayerCollection players,
-			final SelectionChangeSource... sources) {
-		super(new FixtureListModel(sources));
-		final FixtureListModel flm = (FixtureListModel) getModel();
-		assert flm != null;
+	public FixtureList(final JComponent parent, final PlayerCollection players) {
+		super();
+		flm = new FixtureListModel();
+		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
@@ -168,5 +173,21 @@ public class FixtureList extends JList<TileFixture> implements
 				}
 			}
 		}
+	}
+	/**
+	 * @param old passed to the list model
+	 * @param newPoint passed to the list model
+	 */
+	@Override
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		flm.selectedPointChanged(old, newPoint);
+	}
+	/**
+	 * @param old passed to the list model
+	 * @param newTile passed to the list model
+	 */
+	@Override
+	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+		flm.selectedTileChanged(old, newTile);
 	}
 }

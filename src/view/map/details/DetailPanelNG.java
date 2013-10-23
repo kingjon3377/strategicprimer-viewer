@@ -76,11 +76,13 @@ public class DetailPanelNG extends JSplitPane {
 			// We can't use the multi-arg super() because the center component
 			// references "this".
 			final HeaderLabel header = new HeaderLabel();
+			final FixtureList fixList = new FixtureList(this, players);
 			for (final SelectionChangeSource source : sources) {
 				source.addSelectionChangeListener(header);
+				source.addSelectionChangeListener(fixList);
 			}
 			setNorth(header);
-			setCenter(new JScrollPane(new FixtureList(this, players, sources)));
+			setCenter(new JScrollPane(fixList));
 		}
 	}
 
