@@ -38,9 +38,6 @@ public class DetailPanelNG extends JSplitPane {
 		HeaderLabel(final SelectionChangeSource... sources) {
 			super(
 					"<html><body><p>Contents of the tile at (-1, -1):</p></body></html>");
-			for (final SelectionChangeSource source : sources) {
-				source.addSelectionChangeListener(this);
-			}
 		}
 
 		/**
@@ -80,7 +77,11 @@ public class DetailPanelNG extends JSplitPane {
 				final SelectionChangeSource... sources) {
 			// We can't use the multi-arg super() because the center component
 			// references "this".
-			setNorth(new HeaderLabel(sources));
+			final HeaderLabel header = new HeaderLabel(sources);
+			for (final SelectionChangeSource source : sources) {
+				source.addSelectionChangeListener(header);
+			}
+			setNorth(header);
 			setCenter(new JScrollPane(new FixtureList(this, players, sources)));
 		}
 	}
