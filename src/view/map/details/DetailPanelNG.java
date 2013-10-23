@@ -51,7 +51,8 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener, 
 		super(HORIZONTAL_SPLIT, true);
 
 		fixList = new FixtureList(this, players);
-		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(fixList), header, null, null, null);
+		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(
+				fixList), header, null, null, null);
 
 		keyPanel = new KeyPanel(version);
 		setLeftComponent(listPanel);
