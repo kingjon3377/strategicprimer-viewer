@@ -61,32 +61,6 @@ public class DetailPanelNG extends JSplitPane {
 	}
 
 	/**
-	 * The panel containing the list.
-	 */
-	private static final class ListPanel extends BorderedPanel {
-		/**
-		 * Constructor.
-		 *
-		 * @param players the players in the map
-		 * @param sources PropertyChangeSources to pass to both members of the
-		 *        panel.
-		 */
-		ListPanel(final PlayerCollection players,
-				final SelectionChangeSource... sources) {
-			// We can't use the multi-arg super() because the center component
-			// references "this".
-			final HeaderLabel header = new HeaderLabel();
-			final FixtureList fixList = new FixtureList(this, players);
-			for (final SelectionChangeSource source : sources) {
-				source.addSelectionChangeListener(header);
-				source.addSelectionChangeListener(fixList);
-			}
-			setNorth(header);
-			setCenter(new JScrollPane(fixList));
-		}
-	}
-
-	/**
 	 * The "weight" to give the divider. We want the 'key' to get very little of
 	 * any extra space, but to get some.
 	 */
@@ -105,11 +79,20 @@ public class DetailPanelNG extends JSplitPane {
 			final SelectionChangeSource[] sSources,
 			final VersionChangeSource[] vSources) {
 		super(HORIZONTAL_SPLIT, true);
-		setLeftComponent(new ListPanel(players, sSources));
+
+		final HeaderLabel header = new HeaderLabel();
+		final FixtureList fixList = new FixtureList(this, players);
+		for (final SelectionChangeSource source : sSources) {
+			source.addSelectionChangeListener(header);
+			source.addSelectionChangeListener(fixList);
+		}
+		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(fixList), header, null, null, null);
+
 		final KeyPanel keyPanel = new KeyPanel(version);
 		for (final VersionChangeSource source : vSources) {
 			source.addVersionChangeListener(keyPanel);
 		}
+		setLeftComponent(listPanel);
 		setRightComponent(keyPanel);
 		setResizeWeight(DIVIDER_LOCATION);
 		setDividerLocation(DIVIDER_LOCATION);
