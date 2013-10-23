@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
@@ -138,11 +139,16 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	private void handleInclude(final StartElement tag) {
 		try {
 			final String file = getAttribute(tag, "file");
-			stack.addFirst(Pair.of(
-					file,
-					new ComparableIterator<XMLEvent>(XMLInputFactory
-							.newInstance().createXMLEventReader(
-									FileOpener.createReader(file)))));
+			final XMLEventReader reader = XMLInputFactory.newInstance()
+					.createXMLEventReader(FileOpener.createReader(file));
+			if (reader == null) {
+				throw new IllegalStateException(
+						"Given a null XMLEventReader for " + file);
+			}
+			@SuppressWarnings("unchecked") // XMLEventReader is declared as non-generic Iterator.
+			final ComparableIterator<XMLEvent> iter = new ComparableIterator<>(
+					reader);
+			stack.addFirst(Pair.of(file, iter));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
 					"File referenced by <include> not found", e);

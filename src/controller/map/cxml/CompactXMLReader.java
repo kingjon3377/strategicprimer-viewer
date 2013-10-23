@@ -3,6 +3,7 @@ package controller.map.cxml;
 import java.io.IOException;
 import java.io.Reader;
 
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -42,9 +43,14 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	public <T> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
+		final XMLEventReader reader = XMLInputFactory.newInstance()
+				.createXMLEventReader(istream);
+		if (reader == null) {
+			throw new IllegalStateException("Given a null XMLEvventReader");
+		}
+		@SuppressWarnings("unchecked") // The interface isn't genericized ...
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
-				new IncludingIterator(file, XMLInputFactory.newInstance()
-						.createXMLEventReader(istream)));
+				new IncludingIterator(file, reader));
 		final PlayerCollection players = new PlayerCollection();
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {

@@ -66,9 +66,11 @@ public final class CompactTextReader extends AbstractCompactReader implements
 		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException("text", event.asStartElement()
-						.getName().getLocalPart(), event.getLocation()
-						.getLineNumber());
+				final String local = event.asStartElement().getName()
+						.getLocalPart();
+				assert local != null;
+				throw new UnwantedChildException("text", local, event
+						.getLocation().getLineNumber());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
@@ -76,7 +78,9 @@ public final class CompactTextReader extends AbstractCompactReader implements
 				break;
 			}
 		}
-		final TextFixture fix = new TextFixture(sbuild.toString().trim(),
+		final String text = sbuild.toString().trim();
+		assert text != null;
+		final TextFixture fix = new TextFixture(text,
 				Integer.parseInt(getParameter(element, "turn", "-1")));
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;

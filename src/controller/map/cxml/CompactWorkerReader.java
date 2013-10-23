@@ -62,18 +62,19 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if ("job".equalsIgnoreCase(event.asStartElement().getName()
-						.getLocalPart())) {
+				final String iLocal = event.asStartElement().getName()
+						.getLocalPart();
+				assert iLocal != null;
+				if ("job".equalsIgnoreCase(iLocal)) {
 					retval.addJob(parseJob(assertNotNullStartElement(event.asStartElement()), stream,
 							warner));
-				} else if ("stats".equalsIgnoreCase(event.asStartElement()
-						.getName().getLocalPart())) {
+				} else if ("stats".equalsIgnoreCase(iLocal)) {
 					retval.setStats(parseStats(assertNotNullStartElement(event.asStartElement()), stream));
 				} else {
-					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), event.asStartElement().getName()
-							.getLocalPart(), event.getLocation()
-							.getLineNumber());
+					final String oLocal = element.getName().getLocalPart();
+					assert oLocal != null;
+					throw new UnwantedChildException(oLocal, iLocal, event
+							.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
@@ -128,14 +129,17 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if ("skill".equalsIgnoreCase(event.asStartElement().getName()
-						.getLocalPart())) {
+				final String iLocal = event.asStartElement().getName()
+						.getLocalPart();
+				assert iLocal != null;
+				if ("skill".equalsIgnoreCase(iLocal)) {
 					retval.addSkill(parseSkill(assertNotNullStartElement(event.asStartElement()), warner));
 					spinUntilEnd(assertNotNullQName(event.asStartElement().getName()), stream);
 				} else {
-					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), event.asStartElement().getName()
-							.getLocalPart(), event.getLocation()
+					final String oLocal = element.getName()
+							.getLocalPart();
+					assert oLocal != null;
+					throw new UnwantedChildException(oLocal, iLocal, event.getLocation()
 							.getLineNumber());
 				}
 			} else if (event.isEndElement()

@@ -142,9 +142,12 @@ public final class XMLHelper {
 			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(tag.getLocalPart(), event
-						.asStartElement().getName().getLocalPart(), event
-						.getLocation().getLineNumber());
+				final String iLocal = event.asStartElement().getName()
+						.getLocalPart();
+				final String oLocal = tag.getLocalPart();
+				assert iLocal != null && oLocal != null;
+				throw new UnwantedChildException(oLocal, iLocal,
+						event.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& tag.equals(event.asEndElement().getName())) {
 				break;
@@ -166,9 +169,10 @@ public final class XMLHelper {
 			final String parameter, final boolean mandatory,
 			final Warning warner) throws SPFormatException {
 		if (getAttribute(element, parameter, "").isEmpty()) {
+			final String local = element.getName().getLocalPart();
+			assert local != null;
 			final SPFormatException except = new MissingPropertyException(
-					element.getName().getLocalPart(), parameter, element
-							.getLocation().getLineNumber());
+					local, parameter, element.getLocation().getLineNumber());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -197,9 +201,10 @@ public final class XMLHelper {
 			retval = players.getPlayer(Integer.parseInt(getAttribute(element,
 					"owner")));
 		} else {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), "owner", element.getLocation()
-					.getLineNumber()));
+			final String local = element.getName().getLocalPart();
+			assert local != null;
+			warner.warn(new MissingPropertyException(local, "owner", element
+					.getLocation().getLineNumber()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -226,9 +231,10 @@ public final class XMLHelper {
 			retval = idFactory.register(Integer.parseInt(getAttribute(element,
 					"id")));
 		} else {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), "id", element.getLocation()
-					.getLineNumber()));
+			final String local = element.getName().getLocalPart();
+			assert local != null;
+			warner.warn(new MissingPropertyException(local, "id", element
+					.getLocation().getLineNumber()));
 			retval = idFactory.createID();
 		}
 		return retval;

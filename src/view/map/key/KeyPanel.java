@@ -37,7 +37,9 @@ public class KeyPanel extends JPanel implements VersionChangeListener {
 	private void updateForVersion(final int version) {
 		removeAll();
 		for (final TileType type : TileType.valuesForVersion(version)) {
-			add(new KeyElement(version, type)); // NOPMD
+			if (type != null) {
+				add(new KeyElement(version, type)); // NOPMD
+			}
 		}
 	}
 

@@ -108,9 +108,11 @@ public class UnitReader implements INodeHandler<Unit> {
 			return ""; // NOPMD
 		}
 		if (retval.isEmpty()) {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), KIND_PROPERTY, element.getLocation()
-					.getLineNumber()));
+			final String local = element.getName()
+					.getLocalPart();
+			assert local != null;
+			warner.warn(new MissingPropertyException(local, KIND_PROPERTY,
+					element.getLocation().getLineNumber()));
 		}
 		return retval;
 	}

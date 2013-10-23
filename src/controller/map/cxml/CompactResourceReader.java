@@ -269,9 +269,10 @@ public final class CompactResourceReader extends AbstractCompactReader
 			final boolean field, final int idNum, final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PARAM)) {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), STATUS_PARAM, element.getLocation()
-					.getLineNumber()));
+			final String local = element.getName().getLocalPart();
+			assert local != null;
+			warner.warn(new MissingPropertyException(local, STATUS_PARAM,
+					element.getLocation().getLineNumber()));
 		}
 		return new Meadow(getParameter(element, KIND_PARAM), field,
 				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)),
@@ -311,15 +312,15 @@ public final class CompactResourceReader extends AbstractCompactReader
 			return Boolean
 					.parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
+			final String local = element.getName().getLocalPart();
+			assert local != null;
 			if (hasParameter(element, "wild")) {
-				warner.warn(new DeprecatedPropertyException(element.getName()
-						.getLocalPart(), "wild", CULTIVATED_PARAM, element
-						.getLocation().getLineNumber()));
+				warner.warn(new DeprecatedPropertyException(local, "wild",
+						CULTIVATED_PARAM, element.getLocation().getLineNumber()));
 				return !Boolean.parseBoolean(getParameter(element, "wild"));
 			} else {
-				throw new MissingPropertyException(element.getName()
-						.getLocalPart(), CULTIVATED_PARAM, element
-						.getLocation().getLineNumber());
+				throw new MissingPropertyException(local, CULTIVATED_PARAM,
+						element.getLocation().getLineNumber());
 			}
 		}
 	}

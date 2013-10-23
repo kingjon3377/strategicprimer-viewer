@@ -133,9 +133,11 @@ public class ViewReader implements INodeHandler<MapView> {
 	private static void requireMapTag(final StartElement element,
 			final StartElement context) throws SPFormatException {
 		if (!"map".equalsIgnoreCase(element.getName().getLocalPart())) {
-			throw new UnwantedChildException(context.getName().getLocalPart(),
-					element.asStartElement().getName().getLocalPart(), element
-							.getLocation().getLineNumber());
+			final String oLocal = context.getName().getLocalPart();
+			final String iLocal = element.asStartElement().getName().getLocalPart();
+			assert oLocal != null && iLocal != null;
+			throw new UnwantedChildException(oLocal, iLocal, element
+					.getLocation().getLineNumber());
 		}
 	}
 

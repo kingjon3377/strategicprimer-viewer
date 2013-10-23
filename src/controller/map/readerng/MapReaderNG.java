@@ -3,6 +3,7 @@ package controller.map.readerng;
 import java.io.IOException;
 import java.io.Reader;
 
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -79,9 +80,14 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	public <T> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
+		final XMLEventReader reader = XMLInputFactory.newInstance()
+						.createXMLEventReader(istream);
+		if (reader == null) {
+			throw new IllegalStateException("Given a null XMLEvventReader");
+		}
+		@SuppressWarnings("unchecked") // XMLEventReader is declared as non-generic Iterator
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
-				new IncludingIterator(file, XMLInputFactory.newInstance()
-						.createXMLEventReader(istream)));
+				new IncludingIterator(file, reader));
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final StartElement selem = event.asStartElement();

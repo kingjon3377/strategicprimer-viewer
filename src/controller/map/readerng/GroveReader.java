@@ -77,16 +77,16 @@ public class GroveReader implements INodeHandler<Grove> {
 			return Boolean.parseBoolean(XMLHelper.getAttribute(element, // NOPMD
 					CULTIVATED_ATTR));
 		} else {
+			final String local = element.getName().getLocalPart();
+			assert local != null;
 			if (XMLHelper.hasAttribute(element, "wild")) {
-				warner.warn(new DeprecatedPropertyException(element.getName()
-						.getLocalPart(), "wild", CULTIVATED_ATTR, element
-						.getLocation().getLineNumber()));
+				warner.warn(new DeprecatedPropertyException(local, "wild",
+						CULTIVATED_ATTR, element.getLocation().getLineNumber()));
 				return !Boolean.parseBoolean(XMLHelper.getAttribute(element,
 						"wild")); // NOPMD
 			} else {
-				throw new MissingPropertyException(element.getName()
-						.getLocalPart(), CULTIVATED_ATTR, element.getLocation()
-						.getLineNumber());
+				throw new MissingPropertyException(local, CULTIVATED_ATTR,
+						element.getLocation().getLineNumber());
 			}
 		}
 	}

@@ -54,13 +54,14 @@ public class MeadowReader implements INodeHandler<Meadow> {
 			throws SPFormatException {
 		spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
+		final String local = element.getName().getLocalPart();
+		assert local != null;
 		if (!hasAttribute(element, STATUS_ATTR)) {
-			warner.warn(new MissingPropertyException(element.getName()
-					.getLocalPart(), STATUS_ATTR, element.getLocation()
-					.getLineNumber()));
+			warner.warn(new MissingPropertyException(local, STATUS_ATTR,
+					element.getLocation().getLineNumber()));
 		}
 		final Meadow fix = new Meadow(getAttribute(element, "kind"),
-				"field".equalsIgnoreCase(element.getName().getLocalPart()),
+				"field".equalsIgnoreCase(local),
 				Boolean.parseBoolean(getAttribute(element, "cultivated")), id,
 				FieldStatus.parse(getAttribute(element, STATUS_ATTR,
 						FieldStatus.random(id).toString())));

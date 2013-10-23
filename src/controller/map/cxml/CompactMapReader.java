@@ -61,9 +61,12 @@ public final class CompactMapReader extends AbstractCompactReader implements
 			final StartElement mapElement = getFirstStartElement(stream,
 					element.getLocation().getLineNumber());
 			if (!MAP_TAG.equalsIgnoreCase(mapElement.getName().getLocalPart())) {
-				throw new UnwantedChildException(assertNotNullQName(
-						element.getName()).getLocalPart(), assertNotNullQName(
-						mapElement.getName()).getLocalPart(), mapElement
+				final String iLocal = assertNotNullQName(element.getName())
+						.getLocalPart();
+				final String oLocal = assertNotNullQName(mapElement.getName())
+						.getLocalPart();
+				assert oLocal != null && iLocal != null;
+				throw new UnwantedChildException(iLocal, oLocal, mapElement
 						.getLocation().getLineNumber());
 			}
 			final MapView retval = new MapView((SPMap) read(mapElement, stream,

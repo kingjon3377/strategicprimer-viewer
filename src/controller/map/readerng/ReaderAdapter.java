@@ -43,12 +43,15 @@ public class ReaderAdapter implements INodeHandler<Object> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (READ_CACHE.containsKey(element.getName().getLocalPart())) {
-			return READ_CACHE.get(element.getName().getLocalPart()).parse(
-					element, stream, players, warner, idFactory);
+		final String iLocal = element.getName()
+						.getLocalPart();
+		assert iLocal != null;
+		if (READ_CACHE.containsKey(iLocal)) {
+			return READ_CACHE.get(iLocal).parse(element, stream, players,
+					warner, idFactory);
 		} else {
-			throw new UnwantedChildException("unknown", element.getName()
-					.getLocalPart(), element.getLocation().getLineNumber());
+			throw new UnwantedChildException("unknown", iLocal, element
+					.getLocation().getLineNumber());
 		}
 	}
 

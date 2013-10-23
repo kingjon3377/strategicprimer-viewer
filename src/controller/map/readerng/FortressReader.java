@@ -64,8 +64,10 @@ public class FortressReader implements INodeHandler<Fortress> {
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			} else if (event.isStartElement()) {
-				throw new UnwantedChildException("fortress", event
-						.asStartElement().getName().getLocalPart(), event
+				final String local = event.asStartElement().getName()
+						.getLocalPart();
+				assert local != null;
+				throw new UnwantedChildException("fortress", local, event
 						.getLocation().getLineNumber());
 			}
 		}

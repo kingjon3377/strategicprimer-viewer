@@ -76,8 +76,13 @@ public class FixtureList extends JList<TileFixture> implements
 	public void dragGestureRecognized(@Nullable final DragGestureEvent dge) {
 		if (dge != null) {
 			final List<TileFixture> selection = getSelectedValuesList();
+			if (selection.isEmpty()) {
+				return;
+			}
+			final TileFixture firstElement = selection.get(0);
+			assert firstElement != null;
 			final Transferable trans = selection.size() == 1 ? new FixtureTransferable(
-					selection.get(0)) : new CurriedFixtureTransferable(
+					firstElement) : new CurriedFixtureTransferable(
 					selection);
 			dge.startDrag(null, trans);
 		}
@@ -155,9 +160,12 @@ public class FixtureList extends JList<TileFixture> implements
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
 					&& event.getClickCount() == 1) {
-				new FixtureEditMenu(getModel().getElementAt(
-						locationToIndex(event.getPoint())), players).show(
-						event.getComponent(), event.getX(), event.getY());
+				final TileFixture selectedElement = getModel().getElementAt(
+								locationToIndex(event.getPoint()));
+				if (selectedElement != null) {
+					new FixtureEditMenu(selectedElement, players).show(
+							event.getComponent(), event.getX(), event.getY());
+				}
 			}
 		}
 	}

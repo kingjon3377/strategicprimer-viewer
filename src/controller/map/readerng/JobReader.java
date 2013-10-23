@@ -72,18 +72,22 @@ public class JobReader implements INodeHandler<Job> {
 				if (result instanceof Skill) {
 					skills.add((Skill) result);
 				} else {
-					throw new UnwantedChildException(element.getName()
-							.getLocalPart(), selem.getName().getLocalPart(),
-							event.getLocation().getLineNumber());
+					final String oLocal = element.getName().getLocalPart();
+					final String iLocal = selem.getName().getLocalPart();
+					assert iLocal != null && oLocal != null;
+					throw new UnwantedChildException(oLocal, iLocal, event
+							.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
+		final Skill[] skillArray = skills.toArray(new Skill[skills.size()]);
+		assert skillArray != null;
 		return new Job(XMLHelper.getAttribute(element, "name"),
 				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
-				skills.toArray(new Skill[skills.size()]));
+				skillArray);
 	}
 
 	/**
