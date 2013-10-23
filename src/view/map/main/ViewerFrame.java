@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
-import model.listeners.SelectionChangeSource;
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
 import controller.map.misc.IOHandler;
@@ -55,9 +54,10 @@ public final class ViewerFrame extends JFrame {
 		super("Strategic Primer Map Viewer");
 		final FixtureFilterMenu ffmenu = new FixtureFilterMenu();
 		final MapGUI mapPanel = new MapComponent(map, ffmenu);
-		final DetailPanelNG detailPanel = new DetailPanelNG(map.getMapDimensions().version, map.getMap()
-				.getPlayers(), new SelectionChangeSource[] { map });
+		final DetailPanelNG detailPanel = new DetailPanelNG(
+				map.getMapDimensions().version, map.getMap().getPlayers());
 		map.addVersionChangeListener(detailPanel);
+		map.addSelectionChangeListener(detailPanel);
 		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				true, new MapScrollPanel(map, (MapComponent) mapPanel),
 				detailPanel);

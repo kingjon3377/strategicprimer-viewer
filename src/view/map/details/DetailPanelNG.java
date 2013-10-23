@@ -5,7 +5,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import model.listeners.SelectionChangeListener;
-import model.listeners.SelectionChangeSource;
 import model.listeners.VersionChangeListener;
 import model.map.PlayerCollection;
 import model.map.Point;
@@ -23,43 +22,7 @@ import view.util.BorderedPanel;
  * @author Jonathan Lovelace
  *
  */
-public class DetailPanelNG extends JSplitPane implements VersionChangeListener {
-	/**
-	 * A label giving the header for the list of fixtures and saying what the
-	 * current tile's coordinates are.
-	 */
-	private static class HeaderLabel extends JLabel implements
-			SelectionChangeListener {
-		/**
-		 * Constructor.
-		 */
-		HeaderLabel() {
-			super(
-					"<html><body><p>Contents of the tile at (-1, -1):</p></body></html>");
-		}
-
-		/**
-		 * @param old the formerly selected location
-		 * @param newPoint the newly selected location
-		 */
-		@Override
-		public void selectedPointChanged(@Nullable final Point old,
-				final Point newPoint) {
-			setText("<html><body><p>Contents of the tile at "
-					+ newPoint.toString() + ":</p></body></html>");
-		}
-
-		/**
-		 * @param old the formerly selected tile
-		 * @param newTile the newly selected tile
-		 */
-		@Override
-		public void selectedTileChanged(@Nullable final Tile old,
-				final Tile newTile) {
-			// Ignored; we only care about the *location*.
-		}
-	}
-
+public class DetailPanelNG extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
 	/**
 	 * The "weight" to give the divider. We want the 'key' to get very little of
 	 * any extra space, but to get some.
@@ -69,25 +32,25 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener {
 	 * The 'key' panel, showing what each tile color represents.
 	 */
 	private final KeyPanel keyPanel;
-
+	/**
+	 * The list of fixtures on the current tile.
+	 */
+	private final FixtureList fixList;
+	/**
+	 * The 'header' label above the list.
+	 */
+	private final JLabel header = new JLabel(
+			"<html><body><p>Contents of the tile at (-1, -1):</p></body></html>");
 	/**
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
 	 * @param players the players in the map
-	 * @param sSources Sources of selection-change notifications we want to
-	 *        listen to
 	 */
-	public DetailPanelNG(final int version, final PlayerCollection players,
-			final SelectionChangeSource[] sSources) {
+	public DetailPanelNG(final int version, final PlayerCollection players) {
 		super(HORIZONTAL_SPLIT, true);
 
-		final HeaderLabel header = new HeaderLabel();
-		final FixtureList fixList = new FixtureList(this, players);
-		for (final SelectionChangeSource source : sSources) {
-			source.addSelectionChangeListener(header);
-			source.addSelectionChangeListener(fixList);
-		}
+		fixList = new FixtureList(this, players);
 		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(fixList), header, null, null, null);
 
 		keyPanel = new KeyPanel(version);
@@ -103,5 +66,23 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener {
 	@Override
 	public void changeVersion(final int old, final int newVersion) {
 		keyPanel.changeVersion(old, newVersion);
+	}
+	/**
+	 * @param old passed to fixture list
+	 * @param newPoint passed to fixture list and shown on the header
+	 */
+	@Override
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+		fixList.selectedPointChanged(old, newPoint);
+		header.setText("<html><body><p>Contents of the tile at "
+				+ newPoint.toString() + ":</p></body></html>");
+	}
+	/**
+	 * @param old passed to fixture list
+	 * @param newTile passed to fixture list
+	 */
+	@Override
+	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+		fixList.selectedTileChanged(old, newTile);
 	}
 }
