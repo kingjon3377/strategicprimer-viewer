@@ -38,13 +38,14 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 			final UnitMemberSelectionSource[] umSources) {
 		lmodel = new JobsListModel(umSources);
 		setModel(lmodel);
+		final JobsListModel listModel = lmodel;
 		lmodel.addCompletionListener(new CompletionListener() {
 			@Override
 			public void stopWaitingOn(final boolean end) {
 				if (!end) {
 					setSelectedIndex(0);
 				} else {
-					setSelectedIndex(lmodel.size() - 1);
+					setSelectedIndex(listModel.size() - 1);
 				}
 			}
 		});
@@ -69,6 +70,9 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<JobSelectionListener> jsListeners = new ArrayList<>();
+	/**
+	 * The list model.
+	 */
 	private final JobsListModel lmodel;
 
 	/**
