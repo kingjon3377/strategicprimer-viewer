@@ -6,7 +6,7 @@ import javax.swing.JSplitPane;
 
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
-import model.listeners.VersionChangeSource;
+import model.listeners.VersionChangeListener;
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.Tile;
@@ -23,7 +23,7 @@ import view.util.BorderedPanel;
  * @author Jonathan Lovelace
  *
  */
-public class DetailPanelNG extends JSplitPane {
+public class DetailPanelNG extends JSplitPane implements VersionChangeListener {
 	/**
 	 * A label giving the header for the list of fixtures and saying what the
 	 * current tile's coordinates are.
@@ -65,6 +65,10 @@ public class DetailPanelNG extends JSplitPane {
 	 * any extra space, but to get some.
 	 */
 	private static final double DIVIDER_LOCATION = 0.9;
+	/**
+	 * The 'key' panel, showing what each tile color represents.
+	 */
+	private final KeyPanel keyPanel;
 
 	/**
 	 * Constructor.
@@ -73,11 +77,9 @@ public class DetailPanelNG extends JSplitPane {
 	 * @param players the players in the map
 	 * @param sSources Sources of selection-change notifications we want to
 	 *        listen to
-	 * @param vSources Sources of PropertyChangeEvents we want to listen to.
 	 */
 	public DetailPanelNG(final int version, final PlayerCollection players,
-			final SelectionChangeSource[] sSources,
-			final VersionChangeSource[] vSources) {
+			final SelectionChangeSource[] sSources) {
 		super(HORIZONTAL_SPLIT, true);
 
 		final HeaderLabel header = new HeaderLabel();
@@ -88,13 +90,18 @@ public class DetailPanelNG extends JSplitPane {
 		}
 		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(fixList), header, null, null, null);
 
-		final KeyPanel keyPanel = new KeyPanel(version);
-		for (final VersionChangeSource source : vSources) {
-			source.addVersionChangeListener(keyPanel);
-		}
+		keyPanel = new KeyPanel(version);
 		setLeftComponent(listPanel);
 		setRightComponent(keyPanel);
 		setResizeWeight(DIVIDER_LOCATION);
 		setDividerLocation(DIVIDER_LOCATION);
+	}
+	/**
+	 * @param old passed to key panel
+	 * @param newVersion passed to key panel
+	 */
+	@Override
+	public void changeVersion(final int old, final int newVersion) {
+		keyPanel.changeVersion(old, newVersion);
 	}
 }
