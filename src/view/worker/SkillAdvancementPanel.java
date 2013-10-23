@@ -59,13 +59,10 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 	/**
 	 * Constructor.
 	 *
-	 * @param listener something to listen to our level-gain notifications
 	 * @param sources the things we should listen to
 	 */
-	public SkillAdvancementPanel(final LevelGainListener listener,
-			final SkillSelectionSource... sources) {
+	public SkillAdvancementPanel(final SkillSelectionSource... sources) {
 		super(false);
-		addLevelGainListener(listener);
 		final JPanel one = new JPanel();
 		one.setLayout(new FlowLayout());
 		one.add(new JLabel("Add "));

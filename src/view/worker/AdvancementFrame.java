@@ -69,6 +69,8 @@ public class AdvancementFrame extends JFrame {
 		sarp.addAddRemoveListener(jobsTree);
 		final LevelListener llist = new LevelListener();
 		jobsTree.addSkillSelectionListener(llist);
+		final SkillAdvancementPanel sapanel = new SkillAdvancementPanel(jobsTree);
+		sapanel.addLevelGainListener(llist);
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,
 				HALF_WAY,
@@ -93,9 +95,7 @@ public class AdvancementFrame extends JFrame {
 												null,
 												htmlize("Add a Skill to the selected Job:"),
 												sarp, null, null), null, null),
-								null,
-								new SkillAdvancementPanel(llist, jobsTree),
-								null, null))));
+								null, sapanel, null, null))));
 
 		pch.notifyListeners();
 

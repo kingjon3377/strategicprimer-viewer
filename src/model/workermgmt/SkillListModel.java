@@ -10,7 +10,6 @@ import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
 import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
-import model.listeners.LevelGainSource;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 
@@ -38,16 +37,6 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	 */
 	private Job job = NULL_JOB;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param lgSources objects to listen to to refresh on skill leveling
-	 */
-	public SkillListModel(final LevelGainSource[] lgSources) {
-		for (final LevelGainSource source : lgSources) {
-			source.addLevelGainListener(this);
-		}
-	}
 	/**
 	 * Handle level-up notification.
 	 */
