@@ -24,6 +24,10 @@ import org.eclipse.jdt.annotation.Nullable;
  * A class to change the visible area of the map based on the user's use of the
  * scrollbars.
  *
+ * TODO: Merge much of this functionality into MapScrollPanel? Or at least make
+ * it accept the necessary events (from the model if not its scroll-bars) and
+ * pass them to this object.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -101,7 +105,6 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 	 */
 	public void setUpListeners() {
 		model.addMapChangeListener(this);
-		model.addGraphicalParamsListener(this);
 		hbar.addAdjustmentListener(this);
 		vbar.addAdjustmentListener(this);
 	}

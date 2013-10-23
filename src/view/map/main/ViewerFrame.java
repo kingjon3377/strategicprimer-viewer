@@ -53,22 +53,22 @@ public final class ViewerFrame extends JFrame {
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Strategic Primer Map Viewer");
 		final FixtureFilterMenu ffmenu = new FixtureFilterMenu();
-		final MapGUI mapPanel = new MapComponent(map, ffmenu);
+		final MapComponent mapPanel = new MapComponent(map, ffmenu);
+		map.addGraphicalParamsListener(mapPanel);
 		final DetailPanelNG detailPanel = new DetailPanelNG(
 				map.getMapDimensions().version, map.getMap().getPlayers());
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
 		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				true, new MapScrollPanel(map, (MapComponent) mapPanel),
-				detailPanel);
+				true, new MapScrollPanel(map, mapPanel), detailPanel);
 		split.setDividerLocation(MAP_PROPORTION);
 		split.setResizeWeight(MAP_PROPORTION);
 		setContentPane(split);
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
-		((MapComponent) mapPanel).requestFocusInWindow();
+		mapPanel.requestFocusInWindow();
 		final MapWindowSizeListener mwsl = new MapWindowSizeListener(
-				(MapComponent) mapPanel);
+				mapPanel);
 		addWindowListener(mwsl);
 		addWindowStateListener(mwsl);
 
