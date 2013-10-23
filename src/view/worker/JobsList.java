@@ -8,6 +8,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
 import model.listeners.JobSelectionSource;
@@ -17,8 +18,6 @@ import model.workermgmt.JobsListModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import view.util.AddRemovePanel;
-
 /**
  * A visual list of a worker's Jobs. We also handle listening for selection
  * changes.
@@ -27,23 +26,18 @@ import view.util.AddRemovePanel;
  *
  */
 public class JobsList extends JList<Job> implements ListSelectionListener,
-		JobSelectionSource {
+		JobSelectionSource, AddRemoveListener {
 	/**
 	 * Constructor.
 	 *
 	 * @param listener something to listen to us
 	 * @param umSources sources to listen to for changes in which unit member is
 	 *        selected
-	 * @param arps panels to listen to for new jobs from the user
 	 */
 	public JobsList(final JobSelectionListener listener,
-			final UnitMemberSelectionSource[] umSources,
-			final AddRemovePanel[] arps) {
-		final JobsListModel lmodel = new JobsListModel(umSources);
+			final UnitMemberSelectionSource[] umSources) {
+		lmodel = new JobsListModel(umSources);
 		setModel(lmodel);
-		for (final AddRemovePanel arp : arps) {
-			arp.addAddRemoveListener(lmodel);
-		}
 		lmodel.addCompletionListener(new CompletionListener() {
 			@Override
 			public void stopWaitingOn(final boolean end) {
@@ -75,6 +69,7 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<JobSelectionListener> jsListeners = new ArrayList<>();
+	private final JobsListModel lmodel;
 
 	/**
 	 * @param list a listener to add
@@ -90,5 +85,20 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	@Override
 	public final void removeJobSelectionListener(final JobSelectionListener list) {
 		jsListeners.remove(list);
+	}
+	/**
+	 * @param category passed to list model
+	 * @param addendum passed to list model
+	 */
+	@Override
+	public void add(final String category, final String addendum) {
+		lmodel.add(category, addendum);
+	}
+	/**
+	 * @param category passed to list model
+	 */
+	@Override
+	public void remove(final String category) {
+		lmodel.remove(category);
 	}
 }

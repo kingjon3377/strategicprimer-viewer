@@ -10,6 +10,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import model.listeners.AddRemoveListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
 import model.listeners.UnitMemberSelectionSource;
@@ -19,7 +20,6 @@ import model.workermgmt.JobTreeModel;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.TypesafeLogger;
-import view.util.AddRemovePanel;
 
 /**
  * A tree representing a worker's Jobs and Skills.
@@ -27,24 +27,20 @@ import view.util.AddRemovePanel;
  * @author Jonathan Lovelace
  */
 public class JobsTree extends JTree implements TreeSelectionListener,
-		SkillSelectionSource {
+		SkillSelectionSource, AddRemoveListener {
 	/**
 	 * Constructor.
 	 *
-	 * @param sources things for the model to listen to for property changes.
 	 * @param src ignored for now, TODO: figure out what should be done with it.
 	 */
-	public JobsTree(final AddRemovePanel[] sources, final UnitMemberSelectionSource src) {
+	public JobsTree(final UnitMemberSelectionSource src) {
 		super();
 		final TreeSelectionModel tsm = getSelectionModel();
 		if (tsm == null) {
 			throw new IllegalStateException("Selection model is null somehow");
 		}
-		final JobTreeModel model = new JobTreeModel(tsm);
+		model = new JobTreeModel(tsm);
 		setModel(model);
-		for (final AddRemovePanel source : sources) {
-			source.addAddRemoveListener(model);
-		}
 		src.addUnitMemberListener(model);
 		setRootVisible(false);
 		setShowsRootHandles(true);
@@ -86,6 +82,10 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
+	/**
+	 * The tree model.
+	 */
+	private final JobTreeModel model;
 
 	/**
 	 * @param list a listener to add
@@ -101,5 +101,20 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	@Override
 	public void removeSkillSelectionListener(final SkillSelectionListener list) {
 		ssListeners.remove(list);
+	}
+	/**
+	 * @param category passed to tree model
+	 * @param addendum passed to tree model
+	 */
+	@Override
+	public void add(final String category, final String addendum) {
+		model.add(category, addendum);
+	}
+	/**
+	 * @param category passed to tree model
+	 */
+	@Override
+	public void remove(final String category) {
+		model.remove(category);
 	}
 }

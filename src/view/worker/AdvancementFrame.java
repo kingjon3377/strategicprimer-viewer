@@ -64,8 +64,9 @@ public class AdvancementFrame extends JFrame {
 		tree.addUnitSelectionListener(nwl);
 		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
 		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
-		final JobsTree jobsTree = new JobsTree(new AddRemovePanel[] { jarp,
-				sarp }, tree);
+		final JobsTree jobsTree = new JobsTree(tree);
+		jarp.addAddRemoveListener(jobsTree);
+		sarp.addAddRemoveListener(jobsTree);
 		final LevelListener llist = new LevelListener();
 		jobsTree.addSkillSelectionListener(llist);
 		setContentPane(new SplitWithWeights(
