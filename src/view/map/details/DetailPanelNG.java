@@ -32,10 +32,8 @@ public class DetailPanelNG extends JSplitPane {
 			SelectionChangeListener {
 		/**
 		 * Constructor.
-		 *
-		 * @param sources things to listen to for property changes
 		 */
-		HeaderLabel(final SelectionChangeSource... sources) {
+		HeaderLabel() {
 			super(
 					"<html><body><p>Contents of the tile at (-1, -1):</p></body></html>");
 		}
@@ -77,7 +75,7 @@ public class DetailPanelNG extends JSplitPane {
 				final SelectionChangeSource... sources) {
 			// We can't use the multi-arg super() because the center component
 			// references "this".
-			final HeaderLabel header = new HeaderLabel(sources);
+			final HeaderLabel header = new HeaderLabel();
 			for (final SelectionChangeSource source : sources) {
 				source.addSelectionChangeListener(header);
 			}
