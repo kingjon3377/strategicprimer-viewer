@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import model.listeners.SelectionChangeListener;
+import model.listeners.SelectionChangeSource;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -29,7 +30,8 @@ import util.IteratorWrapper;
  * @author Jonathan Lovelace
  *
  */
-public final class ComponentMouseListener extends MouseAdapter {
+public final class ComponentMouseListener extends MouseAdapter implements
+		SelectionChangeSource {
 	/**
 	 * The map model we refer to.
 	 */
@@ -37,15 +39,12 @@ public final class ComponentMouseListener extends MouseAdapter {
 
 	/**
 	 * @param mapModel the map model we'll refer to
-	 * @param list a listener to send encounter events to
 	 */
-	public ComponentMouseListener(final IViewerModel mapModel,
-			final SelectionChangeListener list) {
+	public ComponentMouseListener(final IViewerModel mapModel) {
 		super();
 		model = mapModel;
 		menu = new TerrainChangingMenu(model.getMapDimensions().version, model
 				.getMap().getTile(model.getSelectedPoint()));
-		menu.addSelectionChangeListener(list);
 		model.addSelectionChangeListener(menu);
 		model.addVersionChangeListener(menu);
 	}
@@ -188,5 +187,19 @@ public final class ComponentMouseListener extends MouseAdapter {
 	@Override
 	public String toString() {
 		return "ComponentMouseListener";
+	}
+	/**
+	 * @param list Something to listen for changes to the tile type of the selected tile
+	 */
+	@Override
+	public void addSelectionChangeListener(final SelectionChangeListener list) {
+		menu.addSelectionChangeListener(list);
+	}
+	/**
+	 * @param list something that no longer wants to listen for changes to the tile type of the selected tile
+	 */
+	@Override
+	public void removeSelectionChangeListener(final SelectionChangeListener list) {
+		menu.removeSelectionChangeListener(list);
 	}
 }
