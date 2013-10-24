@@ -70,7 +70,8 @@ public class AdvancementFrame extends JFrame {
 		sarp.addAddRemoveListener(jobsTree);
 		final LevelListener llist = new LevelListener();
 		jobsTree.addSkillSelectionListener(llist);
-		final SkillAdvancementPanel sapanel = new SkillAdvancementPanel(jobsTree);
+		final SkillAdvancementPanel sapanel = new SkillAdvancementPanel();
+		jobsTree.addSkillSelectionListener(sapanel);
 		sapanel.addLevelGainListener(llist);
 		setContentPane(new SplitWithWeights(
 				JSplitPane.HORIZONTAL_SPLIT,

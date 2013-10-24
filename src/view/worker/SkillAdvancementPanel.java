@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
-import model.listeners.SkillSelectionSource;
 import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -58,10 +57,8 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 
 	/**
 	 * Constructor.
-	 *
-	 * @param sources the things we should listen to
 	 */
-	public SkillAdvancementPanel(final SkillSelectionSource... sources) {
+	public SkillAdvancementPanel() {
 		super(false);
 		final JPanel one = new JPanel();
 		one.setLayout(new FlowLayout());
@@ -76,9 +73,6 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		hours.addActionListener(this);
 		two.add(new ListenedButton("Cancel", this));
 		add(two);
-		for (final SkillSelectionSource source : sources) {
-			source.addSkillSelectionListener(this);
-		}
 		setMinimumSize(new Dimension(200, 40));
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));

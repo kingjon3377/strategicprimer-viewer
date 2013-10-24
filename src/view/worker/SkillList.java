@@ -30,12 +30,11 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	/**
 	 * Constructor.
 	 *
-	 * @param listener something that should listen to us
 	 * @param jsSources what our model should listen to for the currently selected Job
 	 * @param lgSources what our model should listen to for skill leveling notifications
 	 */
-	public SkillList(final SkillSelectionListener listener,
-			final JobSelectionSource[] jsSources, final LevelGainSource[] lgSources) {
+	public SkillList(final JobSelectionSource[] jsSources,
+			final LevelGainSource[] lgSources) {
 		final SkillListModel lmodel = new SkillListModel();
 		for (final JobSelectionSource source : jsSources) {
 			source.addJobSelectionListener(lmodel);
@@ -54,7 +53,6 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 				}
 			}
 		});
-		addSkillSelectionListener(listener);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
