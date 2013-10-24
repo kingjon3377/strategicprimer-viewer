@@ -24,7 +24,7 @@ public final class ZoomListener implements ActionListener, Serializable {
 	 *
 	 * @param vmodel the viewer model, which now handles the zoom level
 	 */
-	ZoomListener(final IViewerModel vmodel) {
+	public ZoomListener(final IViewerModel vmodel) {
 		model = vmodel;
 	}
 

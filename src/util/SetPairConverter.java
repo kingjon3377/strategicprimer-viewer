@@ -33,7 +33,7 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 	public Iterator<Pair<I, K>> iterator() {
 		final Iterator<Entry<I, K>> iter = theMap.entrySet().iterator();
 		assert iter != null;
-		return new IteratorImpl(iter);
+		return new IteratorImpl<>(iter);
 	}
 
 	/**

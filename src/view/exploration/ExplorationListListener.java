@@ -40,7 +40,7 @@ public final class ExplorationListListener implements ListDataListener {
 	 * @param mainList the list this is attached to
 	 * @param emodel the exploration model
 	 */
-	ExplorationListListener(final IExplorationModel emodel,
+	public ExplorationListListener(final IExplorationModel emodel,
 			final FixtureList mainList) {
 		model = emodel;
 		list = mainList;

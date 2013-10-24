@@ -123,8 +123,7 @@ public class SubsetFrame extends JFrame {
 	 * @param string the string to enclose
 	 * @param color the color to make it, or the empty string if none.
 	 */
-	void printParagraph(final String string, final String color) { // NOPMD: See
-																	// above
+	protected void printParagraph(final String string, final String color) {
 		try (final PrintWriter writer = label.getWriter()) {
 			// Because StringWriter's close() does nothing, this is safe.
 			if (color.isEmpty()) {

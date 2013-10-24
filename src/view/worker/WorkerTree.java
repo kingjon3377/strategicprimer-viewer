@@ -77,7 +77,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		 *
 		 * @param playerColl the collection of players in the map
 		 */
-		TreeMouseListener(final PlayerCollection playerColl) {
+		protected TreeMouseListener(final PlayerCollection playerColl) {
 			players = playerColl;
 		}
 
@@ -187,7 +187,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		/**
 		 * Constructor.
 		 */
-		WorkerTreeSelectionListener() {
+		protected WorkerTreeSelectionListener() {
 			// Needed to change visibility.
 		}
 

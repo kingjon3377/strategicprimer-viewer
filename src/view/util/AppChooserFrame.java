@@ -94,7 +94,7 @@ public class AppChooserFrame extends JFrame {
 		 * @param acf the app-chooser frame, so we can close it when something
 		 *        is selected.
 		 */
-		AppChoiceListener(final Class<? extends ISPDriver> frame,
+		protected AppChoiceListener(final Class<? extends ISPDriver> frame,
 				final List<String> parameters, final AppChooserFrame acf) {
 			app = frame;
 			final String[] array = parameters.toArray(new String[parameters.size()]);

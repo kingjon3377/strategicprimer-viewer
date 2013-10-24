@@ -143,7 +143,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param window the window to show
 		 * @param buttonText the button to listen for.
 		 */
-		WindowShower(final JFrame window, final String buttonText) {
+		protected WindowShower(final JFrame window, final String buttonText) {
 			frame = window;
 			action = buttonText;
 		}
@@ -184,7 +184,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param wmodel The driver model to get the map from
 		 * @param tmodel the tree model we update
 		 */
-		ReportUpdater(final IWorkerModel wmodel, final DefaultTreeModel tmodel) {
+		protected ReportUpdater(final IWorkerModel wmodel, final DefaultTreeModel tmodel) {
 			model = wmodel;
 			reportModel = tmodel;
 		}
@@ -242,7 +242,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param outer the surrounding frame.
 		 * @param smodel the driver model.
 		 */
-		ExportButtonHandler(final Component outer, final IWorkerModel smodel) {
+		protected ExportButtonHandler(final Component outer, final IWorkerModel smodel) {
 			parent = outer;
 			exp = new StrategyExporter(smodel);
 		}

@@ -45,7 +45,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	 * @param selmodel the tree's selection model
 	 * @param tmodel the tree's data model
 	 */
-	WorkerTreeTransferHandler(final TreeSelectionModel selmodel,
+	protected WorkerTreeTransferHandler(final TreeSelectionModel selmodel,
 			final IWorkerTreeModel tmodel) {
 		smodel = selmodel;
 		model = tmodel;
