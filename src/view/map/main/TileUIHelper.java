@@ -89,7 +89,7 @@ public class TileUIHelper {
 				assert retval != null;
 				return retval;
 			} else {
-				throw new IllegalArgumentException("Not a terrain type we know how to handle in that version");
+				throw new IllegalArgumentException(type + "is not a terrain type we know how to handle in version " + version);
 			}
 		} else {
 			throw new IllegalArgumentException("Not a version we know how to handle");
