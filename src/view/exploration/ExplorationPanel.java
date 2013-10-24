@@ -71,7 +71,6 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		headerPanel.add(mpField);
 		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
 				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
-		emodel.addMovementCostListener(this);
 		emodel.addSelectionChangeListener(this);
 	}
 
