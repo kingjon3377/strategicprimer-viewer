@@ -27,23 +27,14 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class SkillList extends JList<Skill> implements ListSelectionListener,
-		SkillSelectionSource, LevelGainListener, JobSelectionListener {
+		SkillSelectionSource, LevelGainListener, JobSelectionListener, CompletionListener {
 	/**
 	 * Constructor.
 	 */
 	public SkillList() {
 		lmodel = new SkillListModel();
 		setModel(lmodel);
-		lmodel.addCompletionListener(new CompletionListener() {
-			@Override
-			public void stopWaitingOn(final boolean end) {
-				if (end) {
-					setSelectedIndex(lmodel.size() - 1);
-				} else {
-					setSelectedIndex(0);
-				}
-			}
-		});
+		lmodel.addCompletionListener(this);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
@@ -99,5 +90,17 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	@Override
 	public void selectJob(@Nullable final Job job) {
 		lmodel.selectJob(job);
+	}
+	/**
+	 * Handle the model's notification that it's finished setting up.
+	 * @param end whether to skip to the end
+	 */
+	@Override
+	public void stopWaitingOn(final boolean end) {
+		if (end) {
+			setSelectedIndex(lmodel.size() - 1);
+		} else {
+			setSelectedIndex(0);
+		}
 	}
 }
