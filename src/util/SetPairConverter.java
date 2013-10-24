@@ -48,7 +48,7 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 		 *
 		 * @param iter the iterator we're a wrapper around.
 		 */
-		IteratorImpl(final Iterator<Map.Entry<I, K>> iter) {
+		protected IteratorImpl(final Iterator<Map.Entry<I, K>> iter) {
 			wrapped = iter;
 		}
 

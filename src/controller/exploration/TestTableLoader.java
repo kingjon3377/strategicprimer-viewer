@@ -1,4 +1,3 @@
-// $codepro.audit.disable numericLiterals
 package controller.exploration;
 
 import static org.junit.Assert.assertEquals;

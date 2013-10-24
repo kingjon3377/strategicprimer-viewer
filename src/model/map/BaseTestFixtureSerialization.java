@@ -580,8 +580,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				reader.readXML(FAKE_FILENAME, new StringReader(xml),
 						desideratum, new Warning(Warning.Action.Ignore));
 				fail("We were expecting a MissingChildException");
-			} catch (final MissingChildException except) { // $codepro.audit.disable
-															// logExceptions
+			} catch (final MissingChildException except) { // $codepro.audit.disable logExceptions
 				assertTrue("Got the expected MissingChildException", true);
 			}
 		}

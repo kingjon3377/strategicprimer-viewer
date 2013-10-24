@@ -253,8 +253,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImage(final String filename) {
 		try {
 			return loader.loadImage(filename); // NOPMD
-		} catch (final FileNotFoundException e) { // $codepro.audit.disable
-													// logExceptions
+		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
 			if (!missingFiles.contains(filename)) {
 				// LOGGER.log(Level.SEVERE, filename + " not found", e);
 				LOGGER.log(Level.SEVERE, "images/" + filename + " not found");
@@ -400,7 +399,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		 * @param iter the iterator to wrap
 		 * @param zofilt the filter to use
 		 */
-		FilteredIterator(final Iterator<TileFixture> iter,
+		protected FilteredIterator(final Iterator<TileFixture> iter,
 				final ZOrderFilter zofilt) {
 			wrapped = iter;
 			zof = zofilt;

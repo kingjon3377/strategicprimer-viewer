@@ -51,7 +51,7 @@ public class PointIteratorTest {
 		 * @param dimen the dimensions to return when asked.
 		 * @param select the "selected tile" location, to return when asked.
 		 */
-		MockViewerModel(final MapDimensions dimen, final Point select) {
+		protected MockViewerModel(final MapDimensions dimen, final Point select) {
 			dimensions = dimen;
 			selection = select;
 		}

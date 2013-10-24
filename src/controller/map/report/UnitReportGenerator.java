@@ -309,7 +309,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		 * @param hitPoints the worker's HP
 		 * @param max the worker's max HP
 		 */
-		StatReportNode(final int hitPoints, final int max) { // $codepro.audit.disable
+		protected StatReportNode(final int hitPoints, final int max) {
 			super("Hit points: ", Integer.toString(hitPoints), " / ", Integer
 					.toString(max));
 		}
@@ -318,7 +318,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		 * @param stat which stat
 		 * @param value its value
 		 */
-		StatReportNode(final String stat, final int value) { // $codepro.audit.disable
+		protected StatReportNode(final String stat, final int value) {
 			super(stat, getModifierString(value));
 		}
 	}

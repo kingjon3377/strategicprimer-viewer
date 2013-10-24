@@ -132,7 +132,7 @@ public class FixtureList extends JList<TileFixture> implements
 		 *
 		 * @param playerColl the collection of players in the map
 		 */
-		FixtureMouseListener(final PlayerCollection playerColl) {
+		protected FixtureMouseListener(final PlayerCollection playerColl) {
 			players = playerColl;
 		}
 

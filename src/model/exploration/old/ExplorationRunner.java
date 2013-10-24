@@ -173,8 +173,7 @@ public class ExplorationRunner { // NOPMD
 	 * @return whether that table, or any table it calls, calls a table that
 	 *         doesn't exist.
 	 */
-	public boolean recursiveCheck(final String table) { // $codepro.audit.disable
-														// booleanMethodNamingConvention
+	public boolean recursiveCheck(final String table) { // $codepro.audit.disable booleanMethodNamingConvention
 		return recursiveCheck(table, new HashSet<String>());
 	}
 
@@ -205,8 +204,7 @@ public class ExplorationRunner { // NOPMD
 							}
 						}
 					}
-				} catch (final MissingTableException e) { // $codepro.audit.disable
-															// logExceptions
+				} catch (final MissingTableException e) { // $codepro.audit.disable logExceptions
 					return true; // NOPMD
 				}
 				return false; // NOPMD
@@ -224,8 +222,7 @@ public class ExplorationRunner { // NOPMD
 	 * @return whether any table contains recursive calls to a nonexistent
 	 *         table.
 	 */
-	public boolean recursiveCheck() { // $codepro.audit.disable
-										// booleanMethodNamingConvention
+	public boolean recursiveCheck() { // $codepro.audit.disable booleanMethodNamingConvention
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			if (table != null && recursiveCheck(table, state)) {

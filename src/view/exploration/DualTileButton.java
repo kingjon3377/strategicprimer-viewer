@@ -53,7 +53,7 @@ public class DualTileButton extends JButton {
 		/**
 		 * Constructor. Only explicit to fix a synthetic-access warning.
 		 */
-		NullZOrderFilter() {
+		protected NullZOrderFilter() {
 			// Do nothing
 		}
 

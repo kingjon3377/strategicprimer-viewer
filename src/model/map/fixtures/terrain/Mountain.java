@@ -49,7 +49,7 @@ public class Mountain implements TerrainFixture, HasImage {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	public boolean equals(@Nullable final Object obj) { // $codepro.audit.disable
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Mountain;
 	}
 

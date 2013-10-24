@@ -143,7 +143,7 @@ public class ExplorationMenu extends JMenuBar {
 		 * @param turn the current turn---ignored if map is a MapView.
 		 * @param ioHandler the I/O handler to let the menu handle 'open', etc.
 		 */
-		ViewerOpener(final IMap map, final String file, final int player,
+		protected ViewerOpener(final IMap map, final String file, final int player,
 				final int turn, final IOHandler ioHandler) {
 			if (map instanceof MapView) {
 				view = (MapView) map;

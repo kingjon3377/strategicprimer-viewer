@@ -1,4 +1,3 @@
-// $codepro.audit.disable numericLiterals
 package view.map.main;
 
 import java.awt.Color;

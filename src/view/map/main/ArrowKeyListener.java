@@ -1,4 +1,3 @@
-// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.avoidInnerClasses
 package view.map.main;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
@@ -84,7 +83,7 @@ public class ArrowKeyListener {
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
-		AbstractDirListener(final DirectionSelectionChanger selListener,
+		protected AbstractDirListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
 			dsc = selListener;
 			count = countNum;
@@ -113,7 +112,7 @@ public class ArrowKeyListener {
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
-		UpListener(final DirectionSelectionChanger selListener,
+		protected UpListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
 			super(selListener, countNum);
 		}
@@ -137,7 +136,7 @@ public class ArrowKeyListener {
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
-		DownListener(final DirectionSelectionChanger selListener,
+		protected DownListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
 			super(selListener, countNum);
 		}
@@ -161,7 +160,7 @@ public class ArrowKeyListener {
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
-		LeftListener(final DirectionSelectionChanger selListener,
+		protected LeftListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
 			super(selListener, countNum);
 		}
@@ -185,7 +184,7 @@ public class ArrowKeyListener {
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
-		RightListener(final DirectionSelectionChanger selListener,
+		protected RightListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
 			super(selListener, countNum);
 		}

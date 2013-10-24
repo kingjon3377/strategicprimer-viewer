@@ -121,12 +121,11 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		// default image for that kind of fixture.
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
-		} catch (final FileNotFoundException e) { // $codepro.audit.disable
-													// logExceptions
+		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
 			LOGGER.log(Level.SEVERE, "image file images/" + image
 					+ " not found");
 			retval = defaultFixtIcon;
-		} catch (final IOException e) { // $codepro.audit.disable logExceptions
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image");
 			retval = defaultFixtIcon;
 		}

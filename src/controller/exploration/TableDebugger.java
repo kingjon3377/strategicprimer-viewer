@@ -33,8 +33,7 @@ public class TableDebugger {
 			final PrintStream out = System.out;
 			assert out != null;
 			new TableDebugger(runner).debugTables(out);
-		} catch (final MissingTableException e) { // $codepro.audit.disable
-													// logExceptions
+		} catch (final MissingTableException e) {
 			SystemOut.SYS_OUT.println("Missing table");
 			System.exit(1);
 		}

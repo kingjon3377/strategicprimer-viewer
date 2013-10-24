@@ -46,7 +46,7 @@ public class FixtureEditMenu extends JPopupMenu {
 		 * @param parent the parent component
 		 * @param fix the fixture being edited.
 		 */
-		NameChangeListener(final FixtureEditMenu parent, final IFixture fix) {
+		protected NameChangeListener(final FixtureEditMenu parent, final IFixture fix) {
 			outer = parent;
 			fixture = fix;
 		}

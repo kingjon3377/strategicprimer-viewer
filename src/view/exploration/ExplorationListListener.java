@@ -82,7 +82,7 @@ public final class ExplorationListListener implements ListDataListener {
 		 * @param <I> the type of object
 		 * @return the pair
 		 */
-		static <I> IntPair<I> of(final int number, final I object) {
+		protected static <I> IntPair<I> of(final int number, final I object) {
 			return new IntPair<>(number, object);
 		}
 		/**
@@ -90,7 +90,7 @@ public final class ExplorationListListener implements ListDataListener {
 		 * @param num the number in the pair
 		 * @param obj the object in the pair
 		 */
-		IntPair(final int num, final T obj) {
+		protected IntPair(final int num, final T obj) {
 			number = num;
 			object = obj;
 		}

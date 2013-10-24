@@ -52,7 +52,7 @@ public class SubsetFrame extends JFrame {
 		 *
 		 * @param writer the writer we wrap
 		 */
-		HTMLWriter(final Writer writer) {
+		protected HTMLWriter(final Writer writer) {
 			super(writer);
 		}
 
