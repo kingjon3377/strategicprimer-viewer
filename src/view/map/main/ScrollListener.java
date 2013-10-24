@@ -84,6 +84,8 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 								mapDim.rows - map.getDimensions().getHeight());
 			}
 		});
+		hbar.addAdjustmentListener(this);
+		vbar.addAdjustmentListener(this);
 	}
 
 	/**
@@ -99,15 +101,6 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 				Adjustable.VERTICAL));
 		component.add(hbar, BorderLayout.SOUTH);
 		component.add(vbar, BorderLayout.EAST);
-	}
-
-	/**
-	 * Set up listeners. This is now done in a method rather than the
-	 * constructor so we don't get "dead store" warnings.
-	 */
-	public void setUpListeners() {
-		hbar.addAdjustmentListener(this);
-		vbar.addAdjustmentListener(this);
 	}
 
 	/**
