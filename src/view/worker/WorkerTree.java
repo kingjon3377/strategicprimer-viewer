@@ -13,7 +13,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeSelectionModel;
 
-import model.listeners.NewUnitSource;
+import model.listeners.NewUnitListener;
 import model.listeners.PlayerChangeSource;
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
@@ -41,21 +41,16 @@ import view.map.details.FixtureEditMenu;
  *
  */
 public class WorkerTree extends JTree implements UnitMemberSelectionSource,
-		UnitSelectionSource {
+		UnitSelectionSource, NewUnitListener {
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
-	 * @param sources things for the model to listen to for property changes
 	 * @param pcs what to listen to for current-player changes
 	 */
 	public WorkerTree(final Player player, final IWorkerModel model,
-			final PlayerChangeSource pcs, final NewUnitSource... sources) {
-		super(new WorkerTreeModelAlt(player, model));
-		final WorkerTreeModelAlt tmodel = (WorkerTreeModelAlt) getModel();
-		assert tmodel != null;
-		for (final NewUnitSource source : sources) {
-			source.addNewUnitListener(tmodel);
-		}
+			final PlayerChangeSource pcs) {
+		tmodel = new WorkerTreeModelAlt(player, model);
+		setModel(tmodel);
 		pcs.addPlayerChangeListener(tmodel);
 		setRootVisible(false);
 		setDragEnabled(true);
@@ -259,6 +254,10 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<UnitSelectionListener> usListeners = new ArrayList<>();
+	/**
+	 * The tree model.
+	 */
+	private final WorkerTreeModelAlt tmodel;
 
 	/**
 	 * @param list a listener to add
@@ -274,5 +273,12 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	@Override
 	public void removeUnitSelectionListener(final UnitSelectionListener list) {
 		usListeners.remove(list);
+	}
+	/**
+	 * @param unit passed to the tree model
+	 */
+	@Override
+	public void addNewUnit(final Unit unit) {
+		tmodel.addNewUnit(unit);
 	}
 }
