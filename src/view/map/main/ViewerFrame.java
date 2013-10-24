@@ -56,6 +56,7 @@ public final class ViewerFrame extends JFrame {
 		final MapComponent mapPanel = new MapComponent(map, ffmenu);
 		map.addGraphicalParamsListener(mapPanel);
 		map.addMapChangeListener(mapPanel);
+		map.addSelectionChangeListener(mapPanel);
 		final DetailPanelNG detailPanel = new DetailPanelNG(
 				map.getMapDimensions().version, map.getMap().getPlayers());
 		map.addVersionChangeListener(detailPanel);
