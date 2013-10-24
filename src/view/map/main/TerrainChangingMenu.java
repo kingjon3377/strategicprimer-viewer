@@ -10,7 +10,6 @@ import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
 import model.listeners.VersionChangeListener;
-import model.listeners.VersionChangeSource;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
@@ -29,14 +28,11 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 *
 	 * @param version the map version
 	 * @param initialTile the initial tile
-	 * @param vsource a VersionChangeSource we should listen to
 	 */
-	public TerrainChangingMenu(final int version, final Tile initialTile,
-			final VersionChangeSource vsource) {
+	public TerrainChangingMenu(final int version, final Tile initialTile) {
 		super();
 		tile = initialTile;
 		updateForVersion(version);
-		vsource.addVersionChangeListener(this);
 	}
 
 	/**
