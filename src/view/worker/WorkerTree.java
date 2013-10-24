@@ -59,7 +59,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		setCellRenderer(new UnitMemberCellRenderer());
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 		ToolTipManager.sharedInstance().registerComponent(this);
-		addTreeSelectionListener(new WorkerTreeSelectionListener());
+		addTreeSelectionListener(tsl);
 	}
 
 	/**
@@ -179,31 +179,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	}
 
 	/**
-	 * The list of listeners to notify of newly selected unit member.
-	 * Package-private so the inner class can access it.
-	 */
-	final List<UnitMemberListener> umListeners = new ArrayList<>();
-
-	/**
-	 * @param list a listener to add
-	 */
-	@Override
-	public void addUnitMemberListener(final UnitMemberListener list) {
-		umListeners.add(list);
-	}
-
-	/**
-	 * @param list a listener to remove
-	 */
-	@Override
-	public void removeUnitMemberListener(final UnitMemberListener list) {
-		umListeners.remove(list);
-	}
-
-	/**
 	 * A selection listener.
 	 */
-	private class WorkerTreeSelectionListener implements TreeSelectionListener {
+	private class WorkerTreeSelectionListener implements TreeSelectionListener, UnitMemberSelectionSource, UnitSelectionSource {
 		/**
 		 * Constructor.
 		 */
@@ -231,8 +209,6 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		 *
 		 * @param sel the new selection. Might be null.
 		 */
-		@SuppressWarnings("synthetic-access")
-		// TODO: fix this properly
 		private void handleSelection(@Nullable final Object sel) {
 			if (sel instanceof UnitMember || sel == null) {
 				for (final UnitMemberListener list : umListeners) {
@@ -245,32 +221,57 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				}
 			}
 		}
+		/**
+		 * @param list a listener to add
+		 */
+		@Override
+		public void addUnitSelectionListener(final UnitSelectionListener list) {
+			usListeners.add(list);
+		}
+
+		/**
+		 * @param list a listener to remove
+		 */
+		@Override
+		public void removeUnitSelectionListener(final UnitSelectionListener list) {
+			usListeners.remove(list);
+		}
+		/**
+		 * The list of unit-selection listeners listening to us.
+		 */
+		private final List<UnitSelectionListener> usListeners = new ArrayList<>();
+		/**
+		 * The list of listeners to notify of newly selected unit member.
+		 */
+		private final List<UnitMemberListener> umListeners = new ArrayList<>();
+
+		/**
+		 * @param list a listener to add
+		 */
+		@Override
+		public void addUnitMemberListener(final UnitMemberListener list) {
+			umListeners.add(list);
+		}
+
+		/**
+		 * @param list a listener to remove
+		 */
+		@Override
+		public void removeUnitMemberListener(final UnitMemberListener list) {
+			umListeners.remove(list);
+		}
+
 	}
 
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final List<UnitSelectionListener> usListeners = new ArrayList<>();
 	/**
 	 * The tree model.
 	 */
 	private final WorkerTreeModelAlt tmodel;
-
 	/**
-	 * @param list a listener to add
+	 * The listener to tell other listeners when a new worker has been selected.
 	 */
-	@Override
-	public void addUnitSelectionListener(final UnitSelectionListener list) {
-		usListeners.add(list);
-	}
+	private final WorkerTreeSelectionListener tsl = new WorkerTreeSelectionListener();
 
-	/**
-	 * @param list a listener to remove
-	 */
-	@Override
-	public void removeUnitSelectionListener(final UnitSelectionListener list) {
-		usListeners.remove(list);
-	}
 	/**
 	 * @param unit passed to the tree model
 	 */
@@ -285,5 +286,33 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		tmodel.playerChanged(old, newPlayer);
+	}
+	/**
+	 * @param list the listener to add
+	 */
+	@Override
+	public void addUnitSelectionListener(final UnitSelectionListener list) {
+		tsl.addUnitSelectionListener(list);
+	}
+	/**
+	 * @param list the listener to remove
+	 */
+	@Override
+	public void removeUnitSelectionListener(final UnitSelectionListener list) {
+		tsl.removeUnitSelectionListener(list);
+	}
+	/**
+	 * @param list the listener to add
+	 */
+	@Override
+	public void addUnitMemberListener(final UnitMemberListener list) {
+		tsl.addUnitMemberListener(list);
+	}
+	/**
+	 * @param list the listener to remove
+	 */
+	@Override
+	public void removeUnitMemberListener(final UnitMemberListener list) {
+		tsl.removeUnitMemberListener(list);
 	}
 }
