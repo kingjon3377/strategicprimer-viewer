@@ -25,14 +25,7 @@ public final class TownComparator implements Comparator<AbstractTown>,
 	 * A comparator for town-sizes.
 	 * @author Jonathan Lovelace
 	 */
-	private static final class TownSizeComparator implements Comparator<TownSize>,
-			Serializable {
-		/**
-		 * Version UID for serialization.
-		 */
-		// ESCA-JAVA0096:
-		private static final long serialVersionUID = 1L;
-
+	private static final Comparator<TownSize> SIZE_COMP = new Comparator<TownSize>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -54,21 +47,14 @@ public final class TownComparator implements Comparator<AbstractTown>,
 				return 1;
 			}
 		}
-	}
+	};
 
 	/**
 	 * A comparator for town-statuses, to put active towns before abandoned ones
 	 * before ruined ones before burned-out ones.
 	 * @author Jonathan Lovelace
 	 */
-	private static final class TownStatusComparator implements Comparator<TownStatus>,
-			Serializable {
-		/**
-		 * Version UID for serialization.
-		 */
-		// ESCA-JAVA0096:
-		private static final long serialVersionUID = 1L;
-
+	private static final Comparator<TownStatus> STAT_COMP = new Comparator<TownStatus>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -94,21 +80,14 @@ public final class TownComparator implements Comparator<AbstractTown>,
 				return 1;
 			}
 		}
-	}
+	};
 
 	/**
 	 * A comparator for town-kinds, to put cities before towns before
 	 * fortifications.
 	 * @author Jonathan Lovelace
 	 */
-	private static final class TownKindComparator implements Comparator<TownKind>,
-			Serializable {
-		/**
-		 * Version UID for serialization.
-		 */
-		// ESCA-JAVA0096:
-		private static final long serialVersionUID = 1L;
-
+	private static final Comparator<TownKind> KIND_COMP = new Comparator<TownKind>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -130,24 +109,12 @@ public final class TownComparator implements Comparator<AbstractTown>,
 				return 1;
 			}
 		}
-	}
+	};
 
 	/**
 	 * Version UID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
-	/**
-	 * Comparator for TownStatuses.
-	 */
-	private static final TownStatusComparator STAT_COMP = new TownStatusComparator();
-	/**
-	 * Comparator for TownKinds.
-	 */
-	private static final TownKindComparator KIND_COMP = new TownKindComparator();
-	/**
-	 * Comparator for TownSizes.
-	 */
-	private static final TownSizeComparator SIZE_COMP = new TownSizeComparator();
 
 	/**
 	 * This is hackishly implemented; fortunately, in each case I can rely on
