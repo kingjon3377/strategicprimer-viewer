@@ -1,9 +1,7 @@
 package controller.map.report;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +29,6 @@ import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
 import util.IntMap;
 import util.Pair;
-import controller.map.misc.HarvestableComparator;
 
 /**
  * A report generator for harvestable fixtures (other than caves and
@@ -353,36 +350,5 @@ public class HarvestableReportGenerator extends // NOPMD
 	private static String ternary(final boolean bool, final String first,
 			final String second) {
 		return bool ? first : second;
-	}
-
-	/**
-	 * A comparator for Pairs of Points and HarvestableFixtures, comparing only
-	 * using the second item.
-	 * @author Jonathan Lovelace
-	 */
-	private static class PairComparator implements
-			Comparator<Pair<Point, HarvestableFixture>>, Serializable {
-		/**
-		 * Version UID for serialization.
-		 */
-		private static final long serialVersionUID = 1L;
-		/**
-		 * The comparator that does the bulk of the logic.
-		 */
-		private static final HarvestableComparator HARV_COMP = new HarvestableComparator();
-
-		/**
-		 * Compare the two items.
-		 *
-		 * @param one one
-		 * @param two another
-		 * @return the result of the comparison
-		 */
-		@Override
-		public int compare(final Pair<Point, HarvestableFixture> one,
-				final Pair<Point, HarvestableFixture> two) {
-			return HARV_COMP.compare(one.second(), two.second());
-		}
-
 	}
 }
