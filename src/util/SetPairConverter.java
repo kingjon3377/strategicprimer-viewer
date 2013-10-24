@@ -38,9 +38,11 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 
 	/**
 	 * The class that does most of the work.
+	 * @param <I> the first parameter of the map
+	 * @param <K> the second parameter of the map
 	 * @author Jonathan Lovelace
 	 */
-	private class IteratorImpl implements Iterator<Pair<I, K>> {
+	private static class IteratorImpl<I, K> implements Iterator<Pair<I, K>> {
 		/**
 		 * Constructor.
 		 *
