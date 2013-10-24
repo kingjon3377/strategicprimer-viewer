@@ -62,7 +62,9 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 		emodel.addMapChangeListener(plmodel);
 		playerList = new JList<>(plmodel);
 		playerList.addListSelectionListener(this);
-		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
+		final ExplorationUnitListModel unitListModel = new ExplorationUnitListModel(emodel);
+		addPlayerChangeListener(unitListModel);
+		unitList = new JList<>(unitListModel);
 		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,
 				PROPORTION, new BorderedPanel(playerList,
 						label("Players in all maps:"), null, null, null),
@@ -166,7 +168,7 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @param list the listener to add
 	 */
 	@Override
-	public void addPlayerChangeListener(final PlayerChangeListener list) {
+	public final void addPlayerChangeListener(final PlayerChangeListener list) {
 		listeners.add(list);
 	}
 

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 
 import model.listeners.PlayerChangeListener;
-import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
 
@@ -24,12 +23,9 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 	 *
 	 * @param emodel the exploration model, so we can select the unit the user
 	 *        selects
-	 * @param source what to listen to for property-change events.
 	 */
-	public ExplorationUnitListModel(final IExplorationModel emodel,
-			final PlayerChangeSource source) {
+	public ExplorationUnitListModel(final IExplorationModel emodel) {
 		model = emodel;
-		source.addPlayerChangeListener(this);
 	}
 
 	/**

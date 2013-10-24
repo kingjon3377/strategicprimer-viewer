@@ -14,7 +14,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeSelectionModel;
 
 import model.listeners.NewUnitListener;
-import model.listeners.PlayerChangeSource;
+import model.listeners.PlayerChangeListener;
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
@@ -41,17 +41,14 @@ import view.map.details.FixtureEditMenu;
  *
  */
 public class WorkerTree extends JTree implements UnitMemberSelectionSource,
-		UnitSelectionSource, NewUnitListener {
+		UnitSelectionSource, NewUnitListener, PlayerChangeListener {
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
-	 * @param pcs what to listen to for current-player changes
 	 */
-	public WorkerTree(final Player player, final IWorkerModel model,
-			final PlayerChangeSource pcs) {
+	public WorkerTree(final Player player, final IWorkerModel model) {
 		tmodel = new WorkerTreeModelAlt(player, model);
 		setModel(tmodel);
-		pcs.addPlayerChangeListener(tmodel);
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
@@ -280,5 +277,13 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	@Override
 	public void addNewUnit(final Unit unit) {
 		tmodel.addNewUnit(unit);
+	}
+	/**
+	 * @param old passed to tree model
+	 * @param newPlayer passed to tree model
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		tmodel.playerChanged(old, newPlayer);
 	}
 }

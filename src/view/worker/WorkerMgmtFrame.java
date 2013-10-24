@@ -77,7 +77,8 @@ public class WorkerMgmtFrame extends JFrame {
 				IDFactoryFiller.createFactory(model.getMap()));
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final WorkerTree tree = new WorkerTree(model.getMap().getPlayers()
-				.getCurrentPlayer(), model, pch);
+				.getCurrentPlayer(), model);
+		pch.addPlayerChangeListener(tree);
 		newUnitFrame.addNewUnitListener(tree);
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");

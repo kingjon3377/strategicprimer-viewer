@@ -55,7 +55,8 @@ public class AdvancementFrame extends JFrame {
 				.getPlayers().getCurrentPlayer(), "'s Units:");
 		pch.addPlayerChangeListener(plabel);
 		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
-				.getCurrentPlayer(), source, pch);
+				.getCurrentPlayer(), source);
+		pch.addPlayerChangeListener(tree);
 		@Nullable
 		final IWorkerTreeModel wtmodel = (IWorkerTreeModel) tree.getModel();
 		assert wtmodel != null;
