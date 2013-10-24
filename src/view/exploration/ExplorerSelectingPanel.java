@@ -58,7 +58,9 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	public ExplorerSelectingPanel(final ExplorationModel emodel) {
 		model = emodel;
-		playerList = new JList<>(new PlayerListModel(emodel));
+		final PlayerListModel plmodel = new PlayerListModel(emodel);
+		emodel.addMapChangeListener(plmodel);
+		playerList = new JList<>(plmodel);
 		playerList.addListSelectionListener(this);
 		unitList = new JList<>(new ExplorationUnitListModel(emodel, this));
 		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,

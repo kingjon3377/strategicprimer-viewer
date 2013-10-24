@@ -26,7 +26,9 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * TODO: Merge much of this functionality into MapScrollPanel? Or at least make
  * it accept the necessary events (from the model if not its scroll-bars) and
- * pass them to this object.
+ * pass them to this object. Keep track of VisibleDimensions and selected point
+ * directly, rather than querying the model, so we can drop the reference to the
+ * model.
  *
  * @author Jonathan Lovelace
  *
@@ -44,12 +46,12 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 			final JScrollBar vertBar) {
 		model = map;
 		dimensions = map.getDimensions();
-		final MapDimensions mapDim = model.getMapDimensions();
+		final MapDimensions mapDim = map.getMapDimensions();
 		mapDimensions = mapDim;
 		hbar = horizBar;
 		hbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedPoint().col, 0), 1, 0,
-				mapDim.cols - model.getDimensions().getWidth(), false);
+				Math.max(map.getSelectedPoint().col, 0), 1, 0,
+				mapDim.cols - map.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -66,8 +68,8 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 		});
 		vbar = vertBar;
 		vbar.getModel().setRangeProperties(
-				Math.max(model.getSelectedPoint().row, 0), 1, 0,
-				mapDim.rows - model.getDimensions().getHeight(), false);
+				Math.max(map.getSelectedPoint().row, 0), 1, 0,
+				mapDim.rows - map.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
 			/**
 			 * Verify input
@@ -104,7 +106,6 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 	 * constructor so we don't get "dead store" warnings.
 	 */
 	public void setUpListeners() {
-		model.addMapChangeListener(this);
 		hbar.addAdjustmentListener(this);
 		vbar.addAdjustmentListener(this);
 	}

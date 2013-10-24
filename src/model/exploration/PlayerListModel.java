@@ -22,7 +22,6 @@ public class PlayerListModel extends DefaultListModel<Player> implements
 	 * @param emodel the exploration model
 	 */
 	public PlayerListModel(final ExplorationModel emodel) {
-		emodel.addMapChangeListener(this);
 		model = emodel;
 		for (final Player player : model.getPlayerChoices()) {
 			addElement(player);

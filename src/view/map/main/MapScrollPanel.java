@@ -22,6 +22,7 @@ public class MapScrollPanel extends BorderedPanel {
 		super(component, null, null, null, null);
 		final ScrollListener scrollListener = new ScrollListener(map, this);
 		map.addGraphicalParamsListener(scrollListener);
+		map.addMapChangeListener(scrollListener);
 		scrollListener.setUpListeners();
 	}
 }

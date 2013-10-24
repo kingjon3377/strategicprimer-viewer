@@ -68,7 +68,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 				model.getMapDimensions().version, this, zof);
 		cml = new ComponentMouseListener(model, this);
 		addMouseListener(cml);
-		model.addMapChangeListener(this);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
 				model);
 		addMouseWheelListener(dsl);

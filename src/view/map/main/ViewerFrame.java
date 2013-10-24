@@ -55,6 +55,7 @@ public final class ViewerFrame extends JFrame {
 		final FixtureFilterMenu ffmenu = new FixtureFilterMenu();
 		final MapComponent mapPanel = new MapComponent(map, ffmenu);
 		map.addGraphicalParamsListener(mapPanel);
+		map.addMapChangeListener(mapPanel);
 		final DetailPanelNG detailPanel = new DetailPanelNG(
 				map.getMapDimensions().version, map.getMap().getPlayers());
 		map.addVersionChangeListener(detailPanel);
