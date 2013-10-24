@@ -66,8 +66,8 @@ public final class CompactTownReader extends AbstractCompactReader implements
 	 */
 	@Override
 	public boolean isSupportedTag(@Nullable final String tag) {
-		return tag == null ? false : EqualsAny.equalsAny(tag, "village", "fortress", "town", "city",
-				"fortification");
+		return EqualsAny.equalsAny(tag == null ? "" : tag, "village",
+				"fortress", "town", "city", "fortification");
 	}
 
 	/**
