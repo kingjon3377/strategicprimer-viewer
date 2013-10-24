@@ -45,7 +45,11 @@ public final class ImageLoader {
 			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, // NOPMD
 					BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = buf.createGraphics();
-			pen.setColor(colors.get(2, type));
+			try {
+				pen.setColor(colors.get(2, type));
+			} catch (IllegalArgumentException except) {
+				continue;
+			}
 			pen.fillRect(0, 0, buf.getWidth(), buf.getHeight());
 			pen.dispose();
 			iconCache.put(type.toXML() + ".png", new ImageIcon(buf)); // NOPMD
