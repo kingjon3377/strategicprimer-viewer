@@ -33,6 +33,7 @@ public final class SimpleMovement {
 	 * An exception thrown to signal traversal is impossible.
 	 *
 	 * FIXME: Ocean isn't impassable to everything, of course.
+	 * @author Jonathan Lovelace
 	 */
 	public static final class TraversalImpossibleException extends Exception {
 		/**

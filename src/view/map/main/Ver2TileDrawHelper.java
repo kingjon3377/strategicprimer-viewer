@@ -358,6 +358,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * A filtered iterator. Only returns items that should be displayed.
+	 * @author Jonathan Lovelace
 	 */
 	private static class FilteredIterator implements Iterator<TileFixture> {
 		/**

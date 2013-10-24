@@ -103,7 +103,7 @@ public final class CompactTextReader extends AbstractCompactReader implements
 		} else {
 			out.append("<text turn=\"");
 			out.append(Integer.toString(obj.getTurn()));
-			out.append("\"");
+			out.append('"');
 		}
 		out.append(imageXML(obj));
 		out.append('>');

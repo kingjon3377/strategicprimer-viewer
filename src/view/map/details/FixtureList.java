@@ -48,6 +48,7 @@ public class FixtureList extends JList<TileFixture> implements
 	 *
 	 * @param parent a parent of this list
 	 * @param players the players in the map
+	 * @author Jonathan Lovelace
 	 */
 	public FixtureList(final JComponent parent, final PlayerCollection players) {
 		super();
@@ -118,6 +119,7 @@ public class FixtureList extends JList<TileFixture> implements
 
 	/**
 	 * A listener to set up pop-up menus.
+	 * @author Jonathan Lovelace
 	 */
 	private class FixtureMouseListener extends MouseAdapter {
 		/**

@@ -128,6 +128,7 @@ public class FileChooser {
 	/**
 	 * An exception to throw when no selection was made or selection was
 	 * interrupted by an exception.
+	 * @author Jonathan Lovelace
 	 */
 	public static class ChoiceInterruptedException extends Exception {
 		/**

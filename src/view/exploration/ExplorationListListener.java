@@ -72,6 +72,7 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an int into Integer.
 	 * @param <T> the type in question.
+	 * @author Jonathan Lovelace
 	 */
 	private static class IntPair<T> {
 		/**

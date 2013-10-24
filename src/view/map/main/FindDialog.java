@@ -200,6 +200,7 @@ public class FindDialog extends JDialog implements ActionListener {
 
 	/**
 	 * A class to make sure the filter knows about all kinds of fixtures.
+	 * @author Jonathan Lovelace
 	 */
 	private static final class FilterPopulator implements Runnable {
 		/**

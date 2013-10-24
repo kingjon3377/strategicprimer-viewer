@@ -47,6 +47,7 @@ public class DualTileButton extends JButton {
 	/**
 	 * A ZOrderFilter implementation that does nothing, to avoid passing null to
 	 * the factory.
+	 * @author Jonathan Lovelace
 	 */
 	private static final class NullZOrderFilter implements ZOrderFilter {
 		/**

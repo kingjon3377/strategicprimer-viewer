@@ -122,7 +122,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements
 		 *
 		 * @param tagString The tag.
 		 */
-		MobileType(final String tagString) {
+		private MobileType(final String tagString) {
 			tag = tagString;
 		}
 	}
@@ -299,7 +299,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements
 			}
 			out.append("\" id=\"");
 			out.append(Integer.toString(obj.getID()));
-			out.append("\"").append(imageXML((Animal) obj)).append(" />\n");
+			out.append('"').append(imageXML((Animal) obj)).append(" />\n");
 		} else {
 			out.append(indent(indent));
 			out.append('<');
@@ -311,7 +311,7 @@ public final class CompactMobileReader extends AbstractCompactReader implements
 			}
 			out.append(" id=\"");
 			out.append(Integer.toString(obj.getID()));
-			out.append("\"");
+			out.append('"');
 			if (obj instanceof HasImage) {
 				out.append(imageXML((HasImage) obj));
 			}

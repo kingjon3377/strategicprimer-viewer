@@ -80,7 +80,7 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 		 *
 		 * @param tagString The tag.
 		 */
-		TerrainFixtureType(final String tagString) {
+		private TerrainFixtureType(final String tagString) {
 			tag = tagString;
 		}
 	}
@@ -181,7 +181,7 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 			if (((Forest) obj).isRows()) {
 				out.append("\" rows=\"true");
 			}
-			out.append("\"").append(imageXML((Forest) obj)).append(" />\n");
+			out.append('"').append(imageXML((Forest) obj)).append(" />\n");
 			return; // NOPMD Neither do Forests.
 		} else if (obj instanceof Hill) {
 			out.append("<hill");

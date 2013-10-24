@@ -68,7 +68,7 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 	 * @return the river directions
 	 */
 	public Set<River> getRivers() {
-		final EnumSet<River> copy = EnumSet.copyOf(rivers);
+		final Set<River> copy = EnumSet.copyOf(rivers);
 		assert copy != null;
 		return copy;
 	}

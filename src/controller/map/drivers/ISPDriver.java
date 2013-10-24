@@ -24,8 +24,9 @@ public interface ISPDriver extends HasName {
 	 * An exception to throw when the driver fails ... such as if the map is
 	 * improperly formatted, etc. This means we don't have to declare a long
 	 * list of possible exceptional circumstances.
+	 * @author Jonathan Lovelace
 	 */
-	class DriverFailedException extends Exception {
+	class DriverFailedException extends Exception { // $codepro.audit.disable
 		/**
 		 * Constructor.
 		 *
@@ -57,7 +58,7 @@ public interface ISPDriver extends HasName {
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	class DriverUsage {
+	class DriverUsage { // $codepro.audit.disable
 		/**
 		 * Possible numbers of (non-option?) parameters a driver might want.
 		 */

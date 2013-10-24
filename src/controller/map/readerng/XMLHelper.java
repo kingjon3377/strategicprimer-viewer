@@ -276,8 +276,11 @@ public final class XMLHelper {
 		assert list != null;
 		return list;
 	}
+
 	/**
-	 * Do not pass in anything that might actually be null; that will cause an assertion failure and thus a crash.
+	 * Do not pass in anything that might actually be null; that will cause an
+	 * assertion failure and thus a crash.
+	 *
 	 * @param qname a qualified name
 	 * @return it, without any hint that it might be null
 	 */

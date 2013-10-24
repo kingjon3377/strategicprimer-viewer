@@ -133,8 +133,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM)
-					.append("There is a river on the tile, flowing through the following borders: ");
+			builder.append(OPEN_LIST_ITEM);
+			builder.append("There is a river on the tile, flowing through the following borders: ");
 			boolean first = true;
 			for (final River river : rivers) {
 				if (first) {
@@ -202,7 +202,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final Tile tile = tiles.getTile(loc);
 		builder.append(getTerrain(tile, fixtures)).append(CLOSE_LIST_ITEM);
 		if (tile.hasRiver()) {
-			final EnumSet<River> copy = EnumSet.copyOf(tile.getRivers()
+			final Set<River> copy = EnumSet.copyOf(tile.getRivers()
 					.getRivers());
 			assert copy != null;
 			builder.append(riversToString(copy));
@@ -248,7 +248,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final Tile tile = tiles.getTile(loc);
 		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));
 		if (tile.hasRiver()) {
-			final EnumSet<River> copy = EnumSet.copyOf(tile.getRivers().getRivers());
+			final Set<River> copy = EnumSet.copyOf(tile.getRivers().getRivers());
 			assert copy != null;
 			riversToNode(retval, copy);
 		}

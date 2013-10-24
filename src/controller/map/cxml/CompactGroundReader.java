@@ -88,6 +88,6 @@ public final class CompactGroundReader extends AbstractCompactReader implements
 		out.append(obj.getKind());
 		out.append("\" exposed=\"");
 		out.append(Boolean.toString(obj.isExposed()));
-		out.append("\"").append(imageXML(obj)).append(" />\n");
+		out.append('"').append(imageXML(obj)).append(" />\n");
 	}
 }

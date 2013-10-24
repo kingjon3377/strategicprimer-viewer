@@ -70,6 +70,7 @@ public class AppChooserFrame extends JFrame {
 
 	/**
 	 * A class to start the selected app.
+	 * @author Jonathan Lovelace
 	 */
 	private static class AppChoiceListener implements ActionListener, Runnable {
 		/**

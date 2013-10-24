@@ -33,6 +33,7 @@ public class PointIteratorTest {
 
 	/**
 	 * An IViewerModel implementation for use in testing.
+	 * @author Jonathan Lovelace
 	 */
 	private static final class MockViewerModel implements IViewerModel {
 		/**

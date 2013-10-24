@@ -82,6 +82,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 
 	/**
 	 * A node representing the player.
+	 * @author Jonathan Lovelace
 	 */
 	public static class PlayerNode extends DefaultMutableTreeNode {
 		/**
@@ -104,6 +105,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 
 	/**
 	 * A node representing a unit.
+	 * @author Jonathan Lovelace
 	 */
 	public static class UnitNode extends DefaultMutableTreeNode {
 		/**
@@ -125,6 +127,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 
 	/**
 	 * A node representing a unit member.
+	 * @author Jonathan Lovelace
 	 */
 	public static class UnitMemberNode extends DefaultMutableTreeNode {
 		/**
@@ -141,6 +144,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A wrapper around an Enumeration to make it fit the Iterable interface.
 	 *
 	 * @param <T> the type parameter
+	 * @author Jonathan Lovelace
 	 */
 	public static class EnumerationWrapper<T> implements Iterator<T> {
 		/**

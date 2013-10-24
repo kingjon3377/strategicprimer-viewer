@@ -128,7 +128,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 		 *
 		 * @param tagString The tag.
 		 */
-		HarvestableType(final String tagString) {
+		private HarvestableType(final String tagString) {
 			tag = tagString;
 		}
 	}
@@ -383,7 +383,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 		}
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
-		out.append("\"");
+		out.append('"');
 		if (obj instanceof HasImage) {
 			out.append(imageXML((HasImage) obj));
 		}

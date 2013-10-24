@@ -19,6 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class UnitMemberTransferable implements Transferable, Serializable {
 	/**
 	 * A pair of a unit member and its containing unit.
+	 * @author Jonathan Lovelace
 	 */
 	public static class UnitMemberPair implements Serializable {
 		// ESCA-JAVA0096:

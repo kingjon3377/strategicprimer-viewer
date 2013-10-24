@@ -302,13 +302,14 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 
 	/**
 	 * A {@link SimpleReportNode} with a constructor designed for worker stats.
+	 * @author Jonathan Lovelace
 	 */
 	private static class StatReportNode extends SimpleReportNode {
 		/**
 		 * @param hitPoints the worker's HP
 		 * @param max the worker's max HP
 		 */
-		StatReportNode(final int hitPoints, final int max) {
+		StatReportNode(final int hitPoints, final int max) { // $codepro.audit.disable
 			super("Hit points: ", Integer.toString(hitPoints), " / ", Integer
 					.toString(max));
 		}

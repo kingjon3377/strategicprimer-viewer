@@ -66,10 +66,13 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 						.getLocalPart();
 				assert iLocal != null;
 				if ("job".equalsIgnoreCase(iLocal)) {
-					retval.addJob(parseJob(assertNotNullStartElement(event.asStartElement()), stream,
-							warner));
+					retval.addJob(parseJob(
+							assertNotNullStartElement(event.asStartElement()),
+							stream, warner));
 				} else if ("stats".equalsIgnoreCase(iLocal)) {
-					retval.setStats(parseStats(assertNotNullStartElement(event.asStartElement()), stream));
+					retval.setStats(parseStats(
+							assertNotNullStartElement(event.asStartElement()),
+							stream));
 				} else {
 					final String oLocal = element.getName().getLocalPart();
 					assert oLocal != null;
@@ -133,8 +136,11 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 						.getLocalPart();
 				assert iLocal != null;
 				if ("skill".equalsIgnoreCase(iLocal)) {
-					retval.addSkill(parseSkill(assertNotNullStartElement(event.asStartElement()), warner));
-					spinUntilEnd(assertNotNullQName(event.asStartElement().getName()), stream);
+					retval.addSkill(parseSkill(
+							assertNotNullStartElement(event.asStartElement()),
+							warner));
+					spinUntilEnd(assertNotNullQName(event.asStartElement()
+							.getName()), stream);
 				} else {
 					final String oLocal = element.getName()
 							.getLocalPart();

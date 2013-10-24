@@ -38,6 +38,7 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 
 	/**
 	 * The class that does most of the work.
+	 * @author Jonathan Lovelace
 	 */
 	private class IteratorImpl implements Iterator<Pair<I, K>> {
 		/**

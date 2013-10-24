@@ -3,6 +3,7 @@ package model.map;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.EnumSet;
+import java.util.Set;
 
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
@@ -137,7 +138,7 @@ public class MapNGAdapter implements IMapNG {
 	 */
 	private static boolean areRiversSubset(final Iterable<River> ours,
 			final Iterable<River> theirs) {
-		final EnumSet<River> theirRivers = EnumSet.noneOf(River.class);
+		final Set<River> theirRivers = EnumSet.noneOf(River.class);
 		for (final River river : theirs) {
 			theirRivers.add(river);
 		}
@@ -212,7 +213,7 @@ public class MapNGAdapter implements IMapNG {
 		if (state.getTile(location).hasRiver()) {
 			return state.getTile(location).getRivers(); // NOPMD
 		} else {
-			final EnumSet<River> none = EnumSet.noneOf(River.class);
+			final Set<River> none = EnumSet.noneOf(River.class);
 			assert none != null;
 			return none;
 		}

@@ -268,6 +268,7 @@ public class WorkerMgmtFrame extends JFrame {
 
 	/**
 	 * A class to export a "proto-strategy" to file.
+	 * @author Jonathan Lovelace
 	 */
 	public static class StrategyExporter {
 		/**

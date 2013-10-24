@@ -77,8 +77,9 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				retval.addMember(parseChild(assertNotNullStartElement(event.asStartElement()), stream,
-						players, idFactory, warner));
+				retval.addMember(parseChild(
+						assertNotNullStartElement(event.asStartElement()),
+						stream, players, idFactory, warner));
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
@@ -203,7 +204,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 		out.append('"');
 		out.append(imageXML(obj));
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
-			out.append(">").append(obj.getOrders().trim()).append('\n');
+			out.append('>').append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
 				if (member != null) {
 					CompactReaderAdapter.write(out, member, indent + 1);

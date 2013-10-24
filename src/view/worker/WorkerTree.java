@@ -64,6 +64,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 
 	/**
 	 * A listener to set up pop-up menus.
+	 * @author Jonathan Lovelace
 	 */
 	private class TreeMouseListener extends MouseAdapter {
 		/**
@@ -180,6 +181,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 
 	/**
 	 * A selection listener.
+	 * @author Jonathan Lovelace
 	 */
 	private class WorkerTreeSelectionListener implements TreeSelectionListener, UnitMemberSelectionSource, UnitSelectionSource {
 		/**

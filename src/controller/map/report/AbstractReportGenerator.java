@@ -24,6 +24,7 @@ import util.Pair;
 public abstract class AbstractReportGenerator<T> {
 	/**
 	 * A list that produces HTML in its toString().
+	 * @author Jonathan Lovelace
 	 */
 	protected static class HtmlList extends ArrayList<String> {
 		/**
@@ -40,7 +41,7 @@ public abstract class AbstractReportGenerator<T> {
 		 *
 		 * @param head what to print before opening the list
 		 */
-		HtmlList(final String head) {
+		protected HtmlList(final String head) {
 			header = head;
 		}
 
@@ -58,7 +59,7 @@ public abstract class AbstractReportGenerator<T> {
 					len += item.length() + 12;
 				}
 				final StringBuilder builder = new StringBuilder(len)
-						.append(header).append("\n").append(OPEN_LIST);
+						.append(header).append('\n').append(OPEN_LIST);
 				for (final String item : this) {
 					builder.append(OPEN_LIST_ITEM).append(item)
 							.append(CLOSE_LIST_ITEM);

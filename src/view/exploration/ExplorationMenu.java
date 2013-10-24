@@ -130,6 +130,7 @@ public class ExplorationMenu extends JMenuBar {
 
 	/**
 	 * A class to open a ViewerFrame.
+	 * @author Jonathan Lovelace
 	 */
 	private static class ViewerOpener implements Runnable {
 		/**

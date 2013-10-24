@@ -358,8 +358,9 @@ public class HarvestableReportGenerator extends // NOPMD
 	/**
 	 * A comparator for Pairs of Points and HarvestableFixtures, comparing only
 	 * using the second item.
+	 * @author Jonathan Lovelace
 	 */
-	static class PairComparator implements
+	private static class PairComparator implements
 			Comparator<Pair<Point, HarvestableFixture>>, Serializable {
 		/**
 		 * Version UID for serialization.
