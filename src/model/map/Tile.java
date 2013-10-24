@@ -78,24 +78,22 @@ public final class Tile implements FixtureIterable<TileFixture>,
 			final TileType old = getTerrain();
 			setTerrain(((TileTypeFixture) fix).getTileType());
 			return !getTerrain().equals(old); // NOPMD
-		} else {
-			if (fix instanceof RiverFixture) {
-				if (hasRiver()) {
-					final RiverFixture rivers = getRivers();
-					for (final River river : (RiverFixture) fix) {
-						if (river != null) {
-							rivers.addRiver(river);
-						}
+		} else if (fix instanceof RiverFixture) {
+			if (hasRiver()) {
+				final RiverFixture rivers = getRivers();
+				for (final River river : (RiverFixture) fix) {
+					if (river != null) {
+						rivers.addRiver(river);
 					}
-					return true; // NOPMD
-				} else if (((RiverFixture) fix).getRivers().isEmpty()) {
-					return false; // NOPMD
-				} else {
-					return contents.add(fix); // NOPMD
 				}
+				return true; // NOPMD
+			} else if (((RiverFixture) fix).getRivers().isEmpty()) {
+				return false; // NOPMD
 			} else {
 				return contents.add(fix); // NOPMD
 			}
+		} else {
+			return contents.add(fix); // NOPMD
 		}
 	}
 

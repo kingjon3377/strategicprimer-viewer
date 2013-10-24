@@ -156,34 +156,31 @@ public class FixtureListDropListener implements DropTargetListener {
 		} else if (isIntraComponentXfr(dtde)) {
 			dtde.rejectDrop();
 			return; // NOPMD
-		} else {
-			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-				if (flavor != null
-						&& EqualsAny.equalsAny(flavor,
-								FixtureTransferable.FLAVOR,
-								CurriedFixtureTransferable.FLAVOR)) {
-					try {
-						dtde.acceptDrop(dtde.getDropAction());
-						final Transferable trans = dtde.getTransferable();
-						if (trans != null) {
-							handleDrop(trans);
-						}
-					} catch (final UnsupportedFlavorException except) {
-						LOGGER.log(
-								Level.SEVERE,
-								"Unsupported flavor when it said it was supported",
-								except);
-						continue;
-					} catch (final IOException except) {
-						LOGGER.log(Level.SEVERE, "I/O error getting the data",
-								except);
-						continue;
+		} // else
+		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
+			if (flavor != null
+					&& EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
+							CurriedFixtureTransferable.FLAVOR)) {
+				try {
+					dtde.acceptDrop(dtde.getDropAction());
+					final Transferable trans = dtde.getTransferable();
+					if (trans != null) {
+						handleDrop(trans);
 					}
-					return; // NOPMD
+				} catch (final UnsupportedFlavorException except) {
+					LOGGER.log(Level.SEVERE,
+							"Unsupported flavor when it said it was supported",
+							except);
+					continue;
+				} catch (final IOException except) {
+					LOGGER.log(Level.SEVERE, "I/O error getting the data",
+							except);
+					continue;
 				}
+				return; // NOPMD
 			}
-			dtde.rejectDrop();
 		}
+		dtde.rejectDrop();
 	}
 
 	/**
