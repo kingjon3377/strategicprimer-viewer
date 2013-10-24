@@ -12,7 +12,8 @@ import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
 import model.listeners.JobSelectionSource;
-import model.listeners.UnitMemberSelectionSource;
+import model.listeners.UnitMemberListener;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.JobsListModel;
 
@@ -26,18 +27,12 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class JobsList extends JList<Job> implements ListSelectionListener,
-		JobSelectionSource, AddRemoveListener {
+		JobSelectionSource, AddRemoveListener, UnitMemberListener {
 	/**
 	 * Constructor.
-	 *
-	 * @param umSources sources to listen to for changes in which unit member is
-	 *        selected
 	 */
-	public JobsList(final UnitMemberSelectionSource[] umSources) {
+	public JobsList() {
 		lmodel = new JobsListModel();
-		for (final UnitMemberSelectionSource source : umSources) {
-			source.addUnitMemberListener(lmodel);
-		}
 		setModel(lmodel);
 		final JobsListModel listModel = lmodel;
 		lmodel.addCompletionListener(new CompletionListener() {
@@ -104,5 +99,13 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	@Override
 	public void remove(final String category) {
 		lmodel.remove(category);
+	}
+	/**
+	 * @param old passed to list model
+	 * @param selected passed to list model
+	 */
+	@Override
+	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+		lmodel.memberSelected(old, selected);
 	}
 }

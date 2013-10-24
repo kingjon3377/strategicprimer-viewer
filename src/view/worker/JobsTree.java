@@ -13,7 +13,8 @@ import javax.swing.tree.TreeSelectionModel;
 import model.listeners.AddRemoveListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
-import model.listeners.UnitMemberSelectionSource;
+import model.listeners.UnitMemberListener;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.JobTreeModel;
 
@@ -27,13 +28,11 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  */
 public class JobsTree extends JTree implements TreeSelectionListener,
-		SkillSelectionSource, AddRemoveListener {
+		SkillSelectionSource, AddRemoveListener, UnitMemberListener {
 	/**
 	 * Constructor.
-	 *
-	 * @param src ignored for now, TODO: figure out what should be done with it.
 	 */
-	public JobsTree(final UnitMemberSelectionSource src) {
+	public JobsTree() {
 		super();
 		final TreeSelectionModel tsm = getSelectionModel();
 		if (tsm == null) {
@@ -41,7 +40,6 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 		}
 		model = new JobTreeModel(tsm);
 		setModel(model);
-		src.addUnitMemberListener(model);
 		setRootVisible(false);
 		setShowsRootHandles(true);
 		getSelectionModel().addTreeSelectionListener(this);
@@ -116,5 +114,13 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	@Override
 	public void remove(final String category) {
 		model.remove(category);
+	}
+	/**
+	 * @param old passed to tree model
+	 * @param selected passed to tree model
+	 */
+	@Override
+	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+		model.memberSelected(old, selected);
 	}
 }
