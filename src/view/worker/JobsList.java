@@ -27,24 +27,14 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class JobsList extends JList<Job> implements ListSelectionListener,
-		JobSelectionSource, AddRemoveListener, UnitMemberListener {
+		JobSelectionSource, AddRemoveListener, UnitMemberListener, CompletionListener {
 	/**
 	 * Constructor.
 	 */
 	public JobsList() {
 		lmodel = new JobsListModel();
 		setModel(lmodel);
-		final JobsListModel listModel = lmodel;
-		lmodel.addCompletionListener(new CompletionListener() {
-			@Override
-			public void stopWaitingOn(final boolean end) {
-				if (!end) {
-					setSelectedIndex(0);
-				} else {
-					setSelectedIndex(listModel.size() - 1);
-				}
-			}
-		});
+		lmodel.addCompletionListener(this);
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
@@ -107,5 +97,16 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	@Override
 	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
 		lmodel.memberSelected(old, selected);
+	}
+	/**
+	 * @param end whether to slip to the end
+	 */
+	@Override
+	public void stopWaitingOn(final boolean end) {
+		if (!end) {
+			setSelectedIndex(0);
+		} else {
+			setSelectedIndex(lmodel.size() - 1);
+		}
 	}
 }
