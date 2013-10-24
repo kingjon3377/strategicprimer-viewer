@@ -28,21 +28,15 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * Constructor.
 	 *
 	 * @param version the map version
-	 * @param list a PropertyChangeListener to listen to us
 	 * @param initialTile the initial tile
 	 * @param vsource a VersionChangeSource we should listen to
-	 * @param ssource a SelectionChangeSource we should listen to
 	 */
 	public TerrainChangingMenu(final int version, final Tile initialTile,
-			final SelectionChangeListener list,
-			final VersionChangeSource vsource,
-			final SelectionChangeSource ssource) {
+			final VersionChangeSource vsource) {
 		super();
 		tile = initialTile;
-		addSelectionChangeListener(list);
 		updateForVersion(version);
 		vsource.addVersionChangeListener(this);
-		ssource.addSelectionChangeListener(this);
 	}
 
 	/**

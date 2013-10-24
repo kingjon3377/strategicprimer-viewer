@@ -42,6 +42,7 @@ public class ExplorationFrame extends JFrame {
 		final ExplorationPanel explorationPanel = new ExplorationPanel(emodel,
 				esp.getMPDocument());
 		emodel.addMovementCostListener(explorationPanel);
+		emodel.addSelectionChangeListener(explorationPanel);
 		esp.addCompletionListener(new CompletionListener() {
 			@Override
 			public void stopWaitingOn(final boolean end) {
