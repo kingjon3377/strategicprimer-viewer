@@ -318,7 +318,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		 * @param stat which stat
 		 * @param value its value
 		 */
-		StatReportNode(final String stat, final int value) {
+		StatReportNode(final String stat, final int value) { // $codepro.audit.disable
 			super(stat, getModifierString(value));
 		}
 	}

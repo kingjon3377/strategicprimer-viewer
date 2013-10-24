@@ -25,7 +25,7 @@ public final class TownComparator implements Comparator<AbstractTown>,
 	 * A comparator for town-sizes.
 	 * @author Jonathan Lovelace
 	 */
-	static final class TownSizeComparator implements Comparator<TownSize>,
+	private static final class TownSizeComparator implements Comparator<TownSize>,
 			Serializable {
 		/**
 		 * Version UID for serialization.
@@ -61,7 +61,7 @@ public final class TownComparator implements Comparator<AbstractTown>,
 	 * before ruined ones before burned-out ones.
 	 * @author Jonathan Lovelace
 	 */
-	static final class TownStatusComparator implements Comparator<TownStatus>,
+	private static final class TownStatusComparator implements Comparator<TownStatus>,
 			Serializable {
 		/**
 		 * Version UID for serialization.
@@ -101,7 +101,7 @@ public final class TownComparator implements Comparator<AbstractTown>,
 	 * fortifications.
 	 * @author Jonathan Lovelace
 	 */
-	static final class TownKindComparator implements Comparator<TownKind>,
+	private static final class TownKindComparator implements Comparator<TownKind>,
 			Serializable {
 		/**
 		 * Version UID for serialization.
