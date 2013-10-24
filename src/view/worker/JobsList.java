@@ -34,7 +34,10 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	 *        selected
 	 */
 	public JobsList(final UnitMemberSelectionSource[] umSources) {
-		lmodel = new JobsListModel(umSources);
+		lmodel = new JobsListModel();
+		for (final UnitMemberSelectionSource source : umSources) {
+			source.addUnitMemberListener(lmodel);
+		}
 		setModel(lmodel);
 		final JobsListModel listModel = lmodel;
 		lmodel.addCompletionListener(new CompletionListener() {

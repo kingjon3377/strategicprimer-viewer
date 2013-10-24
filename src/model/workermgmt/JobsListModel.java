@@ -9,7 +9,6 @@ import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
 import model.listeners.UnitMemberListener;
-import model.listeners.UnitMemberSelectionSource;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
@@ -36,18 +35,6 @@ public class JobsListModel extends DefaultListModel<Job> implements
 	 * The current worker.
 	 */
 	private Worker worker = NULL_WORKER;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param umSources sources to listen to for changes in which unit member is
-	 *        selected
-	 */
-	public JobsListModel(final UnitMemberSelectionSource[] umSources) {
-		for (final UnitMemberSelectionSource source : umSources) {
-			source.addUnitMemberListener(this);
-		}
-	}
 
 	/**
 	 * @param category what kind of thing is being added; if not a Job we ignore
