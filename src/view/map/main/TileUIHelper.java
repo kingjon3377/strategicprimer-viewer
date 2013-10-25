@@ -72,7 +72,15 @@ public class TileUIHelper {
 		featureColors.put(Sandbar.class, new Color(249, 233, 28));
 		featureColors.put(Hill.class, new Color(141, 182, 0));
 	}
-
+	/**
+	 * @param version a map version
+	 * @param type a tile type
+	 * @return whether that map version supports that tile type
+	 */
+	public boolean supportsType(final int version, final TileType type) {
+		final Integer ver = Integer.valueOf(version);
+		return colors.containsKey(ver) && colors.get(ver).containsKey(type);
+	}
 	/**
 	 * @param version what version the map is
 	 * @param type a tile type
