@@ -126,7 +126,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					+ " not found");
 			retval = defaultFixtIcon;
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading image");
+			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
 			retval = defaultFixtIcon;
 		}
 		return retval;

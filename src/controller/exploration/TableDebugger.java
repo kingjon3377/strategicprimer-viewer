@@ -3,11 +3,13 @@ package controller.exploration;
 import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.exploration.old.EncounterTable;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
-import view.util.SystemOut;
+import util.TypesafeLogger;
 
 import com.sun.istack.internal.NotNull;
 
@@ -18,7 +20,10 @@ import com.sun.istack.internal.NotNull;
  *
  */
 public class TableDebugger {
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(TableDebugger.class);
 	/**
 	 * A utility driver method that loads all files in tables/ under the current
 	 * directory, then checks to see whether any references a nonexistent table,
@@ -34,7 +39,7 @@ public class TableDebugger {
 			assert out != null;
 			new TableDebugger(runner).debugTables(out);
 		} catch (final MissingTableException e) {
-			SystemOut.SYS_OUT.println("Missing table");
+			LOGGER.log(Level.SEVERE, "Missing table", e);
 			System.exit(1);
 		}
 	}

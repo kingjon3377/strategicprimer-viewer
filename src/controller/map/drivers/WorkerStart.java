@@ -16,7 +16,6 @@ import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
-import view.util.SystemOut;
 import view.worker.WorkerMgmtFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
@@ -81,8 +80,10 @@ public class WorkerStart implements ISPDriver {
 			assert file != null;
 			filename = new FileChooser(file).getFilename();
 		} catch (final ChoiceInterruptedException except) {
-			SystemOut.SYS_OUT
-					.println("Choice was interrupted or user declined to choose, aborting ...");
+			LOGGER.log(
+					Level.INFO,
+					"Choice was interrupted or user declined to choose; aborting.",
+					except);
 			return;
 		}
 		try {

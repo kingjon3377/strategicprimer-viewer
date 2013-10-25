@@ -27,6 +27,9 @@ import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ImageLoader;
 import util.IteratorWrapper;
 import util.TypesafeLogger;
@@ -39,6 +42,27 @@ import view.util.Coordinate;
  *
  */
 public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
+	/**
+	 * @return a hash value forthe object
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return fixComp.hashCode();
+	}
+
+	/**
+	 * @param obj an object
+	 * @return whether it's the same as this
+	 */
+	@Override
+	public boolean equals(@Nullable final Object obj) {
+		return this == obj
+				|| (obj instanceof Ver2TileDrawHelper && fixComp
+						.equals(((Ver2TileDrawHelper) obj).fixComp));
+	}
+
 	/**
 	 * The observer to be notified when images finish drawing.
 	 */
@@ -361,9 +385,36 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private static class FilteredIterator implements Iterator<TileFixture> {
 		/**
+		 * @return a hash value for the object
+		 */
+		@Override
+		public int hashCode() {
+			return wrapped.hashCode() | zof.hashCode();
+		}
+
+		/**
+		 * @param obj an object
+		 * @return whether it's the same as this
+		 */
+		@Override
+		public boolean equals(@Nullable final Object obj) {
+			return this == obj || obj instanceof FilteredIterator
+					&& wrapped.equals(((FilteredIterator) obj).wrapped)
+					&& zof.equals(((FilteredIterator) obj).zof);
+		}
+
+		/**
 		 * A TileFixture implementation to use instead of null.
 		 */
 		private static final TileFixture NULL_FIXT = new TileFixture() {
+			@Override
+			public int hashCode() {
+				return -1;
+			}
+			@Override
+			public boolean equals(@Nullable final Object obj) {
+				return this == obj;
+			}
 			@Override
 			public int compareTo(final TileFixture o) {
 				throw new IllegalStateException(

@@ -18,7 +18,6 @@ import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
-import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.FileChooser;
@@ -94,8 +93,10 @@ public final class ViewerStart implements ISPDriver {
 				final String filename = new FileChooser("").getFilename();
 				startDriver(filename);
 			} catch (final ChoiceInterruptedException except) {
-				SystemOut.SYS_OUT
-						.println("Choice was interrupted or user declined to choose, aborting ...");
+				LOGGER.log(
+						Level.INFO,
+						"Choice was interrupted or user declined to choose); aborting.",
+						except);
 				return;
 			}
 		} else {
