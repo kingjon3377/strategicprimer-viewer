@@ -16,11 +16,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Mine implements HarvestableFixture, HasImage, HasKind {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param mineral what mineral this produces

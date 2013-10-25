@@ -37,10 +37,6 @@ public class PointIteratorTest {
 	 */
 	private static final class MockViewerModel implements IViewerModel {
 		/**
-		 * Version UID for serialization.
-		 */
-		private static final long serialVersionUID = 1L;
-		/**
 		 * The error message to throw when an unexpected method is called.
 		 */
 		private static final String MOCK_FAILURE_MSG = "Tests should never call this";

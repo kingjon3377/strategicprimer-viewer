@@ -1,6 +1,5 @@
 package controller.map.misc;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import model.map.fixtures.towns.AbstractTown;
@@ -19,8 +18,7 @@ import model.map.fixtures.towns.TownStatus;
  *
  * @author Jonathan Lovelace
  */
-public final class TownComparator implements Comparator<AbstractTown>,
-		Serializable {
+public final class TownComparator implements Comparator<AbstractTown> {
 	/**
 	 * A comparator for town-sizes.
 	 */
@@ -107,12 +105,6 @@ public final class TownComparator implements Comparator<AbstractTown>,
 			}
 		}
 	};
-
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * This is hackishly implemented; fortunately, in each case I can rely on
 	 * there being only three (or four, for status) possibilities and the two

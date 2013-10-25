@@ -22,11 +22,6 @@ import org.eclipse.jdt.annotation.Nullable;
 public class RiverFixture implements TileFixture, Iterable<River>,
 		Subsettable<RiverFixture> {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param initial the initial state of the fixture

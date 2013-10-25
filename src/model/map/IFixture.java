@@ -1,6 +1,5 @@
 package model.map;
 
-import java.io.Serializable;
 
 /**
  * A supertype for both TileFixture and any UnitMembers (etc.) that shouldn't be
@@ -10,7 +9,7 @@ import java.io.Serializable;
  * @author Jonathan Lovelace
  *
  */
-public interface IFixture extends Serializable {
+public interface IFixture {
 	/**
 	 * @return an ID (UID for most fixtures, though perhaps not for things like
 	 *         mountains and hills) for the fixture.

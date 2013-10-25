@@ -29,10 +29,6 @@ import org.eclipse.jdt.annotation.Nullable;
 public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 		FixtureIterable<Unit> {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * The player that owns the fortress.
 	 */
 	private Player owner;

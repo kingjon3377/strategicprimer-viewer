@@ -1,7 +1,6 @@
 package model.map;
 
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,11 +22,7 @@ import util.PrefixingPrintWriter;
  *
  */
 public final class TileCollection implements Iterable<Point>,
-		Subsettable<TileCollection>, Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
+		Subsettable<TileCollection> {
 	/**
 	 * The Map this is a wrapper around.
 	 */

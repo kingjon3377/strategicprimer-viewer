@@ -1,7 +1,6 @@
 package model.map;
 
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,11 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class PlayerCollection implements Iterable<Player>,
-		Subsettable<PlayerCollection>, Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
+		Subsettable<PlayerCollection> {
 	/**
 	 * The collection this class wraps.
 	 */

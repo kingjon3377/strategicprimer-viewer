@@ -15,11 +15,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Oasis implements TerrainFixture, HasImage {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * @param idNum the ID number.
 	 */
 	public Oasis(final int idNum) {

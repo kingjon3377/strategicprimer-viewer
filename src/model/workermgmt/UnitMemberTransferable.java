@@ -4,7 +4,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.io.Serializable;
 
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -16,18 +15,12 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class UnitMemberTransferable implements Transferable, Serializable {
+public class UnitMemberTransferable implements Transferable {
 	/**
 	 * A pair of a unit member and its containing unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static class UnitMemberPair implements Serializable {
-		// ESCA-JAVA0096:
-		/**
-		 * Version UID for serialization.
-		 */
-		private static final long serialVersionUID = 1L;
-
+	public static class UnitMemberPair {
 		/**
 		 * Constructor.
 		 *
@@ -48,11 +41,6 @@ public class UnitMemberTransferable implements Transferable, Serializable {
 		 */
 		public final Unit unit;
 	}
-
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor.

@@ -10,11 +10,6 @@ import model.map.Player;
  */
 public final class Town extends AbstractTown {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param tStatus The status of the town

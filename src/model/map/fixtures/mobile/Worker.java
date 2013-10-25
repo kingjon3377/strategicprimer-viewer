@@ -28,11 +28,6 @@ import util.ArraySet;
 public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 		HasImage {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param wName the worker's name

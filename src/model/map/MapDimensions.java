@@ -1,7 +1,5 @@
 package model.map;
 
-import java.io.Serializable;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -10,12 +8,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class MapDimensions implements Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class MapDimensions {
 	/**
 	 * Constructor.
 	 *

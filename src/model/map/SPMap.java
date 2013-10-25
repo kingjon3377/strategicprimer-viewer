@@ -13,10 +13,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class SPMap implements IMap {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * Map max version.
 	 */
 	public static final int MAX_VERSION = 1;

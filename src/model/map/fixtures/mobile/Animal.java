@@ -18,10 +18,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD

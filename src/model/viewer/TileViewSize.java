@@ -1,6 +1,5 @@
 package model.viewer;
 
-import java.io.Serializable;
 
 /**
  * A class to encapsulate how big the GUI representation of a tile should be.
@@ -14,12 +13,7 @@ import java.io.Serializable;
  * @author Jonathan Lovelace
  *
  */
-public class TileViewSize implements Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class TileViewSize {
 	/**
 	 * Scale the specified zoom level for the specified map version.
 	 *

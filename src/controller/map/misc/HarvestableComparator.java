@@ -1,6 +1,5 @@
 package controller.map.misc;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import model.map.fixtures.resources.Battlefield;
@@ -23,13 +22,7 @@ import util.IntPair;
  * @author Jonathan Lovelace
  *
  */
-public class HarvestableComparator implements Comparator<HarvestableFixture>,
-		Serializable { // NOPMD
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class HarvestableComparator implements Comparator<HarvestableFixture> { // NOPMD
 	/**
 	 * @param one the first
 	 * @param two the second

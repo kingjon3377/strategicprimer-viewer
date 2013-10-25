@@ -1,7 +1,5 @@
 package model.map;
 
-import java.io.Serializable;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -10,11 +8,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author jsl7
  *
  */
-public class Player implements Comparable<Player>, HasName, Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
+public class Player implements Comparable<Player>, HasName {
 	/**
 	 * The player's number.
 	 */

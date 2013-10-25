@@ -1,6 +1,5 @@
 package util;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -16,12 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> the type of thing stored in the set
  */
-public class ArraySet<T> implements Set<T>, Serializable { // NOPMD
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
+public class ArraySet<T> implements Set<T> { /**
 	 * The backing array.
 	 */
 	private final List<T> impl = new ArrayList<>();

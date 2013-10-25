@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
@@ -16,12 +15,7 @@ import util.ArraySet;
  *
  * @author Jonathan Lovelace
  */
-public class Job implements Iterable<Skill>, HasName, Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class Job implements Iterable<Skill>, HasName {
 	/**
 	 * Constructor.
 	 *

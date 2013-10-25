@@ -16,11 +16,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Forest implements TerrainFixture, HasImage, HasKind {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * @return what kind of trees
 	 */
 	@Override

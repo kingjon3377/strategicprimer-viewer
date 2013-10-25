@@ -1,6 +1,5 @@
 package model.viewer;
 
-import java.io.Serializable;
 
 /**
  * The minimum and maximum rows and columns drawn.
@@ -10,11 +9,7 @@ import java.io.Serializable;
  * @author kingjon
  *
  */
-public class VisibleDimensions implements Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
+public class VisibleDimensions {
 	/**
 	 * The lowest row we draw.
 	 */

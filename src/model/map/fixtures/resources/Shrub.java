@@ -15,10 +15,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Shrub implements HarvestableFixture, HasImage, HasKind {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * A description of what kind of shrub this is.
 	 */
 	private String description;

@@ -1,7 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import java.io.Serializable;
-
 import model.map.HasName;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -12,12 +10,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class Skill implements HasName, Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class Skill implements HasName {
 	/**
 	 * Constructor.
 	 *

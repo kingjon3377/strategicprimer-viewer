@@ -26,10 +26,6 @@ import util.ArraySet;
 public class Unit implements MobileFixture, HasImage, HasKind,
 		FixtureIterable<UnitMember>, HasName, HasOwner {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * The player that owns the unit.
 	 */
 	private Player owner;

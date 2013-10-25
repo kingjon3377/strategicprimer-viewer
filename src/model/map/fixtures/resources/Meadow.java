@@ -16,10 +16,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Meadow implements HarvestableFixture, HasImage, HasKind {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * Which season the field is in.
 	 */
 	private final FieldStatus status;

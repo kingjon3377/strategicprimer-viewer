@@ -44,11 +44,6 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	}
 
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * @return all the players shared by all the maps
 	 */
 	@Override

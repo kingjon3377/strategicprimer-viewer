@@ -15,10 +15,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Village implements ITownFixture, HasImage {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * The status of the village.
 	 */
 	private final TownStatus status;

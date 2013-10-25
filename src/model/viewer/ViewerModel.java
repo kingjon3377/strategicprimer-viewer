@@ -24,11 +24,6 @@ import model.misc.AbstractDriverModel;
 public final class ViewerModel extends AbstractDriverModel implements
 		IViewerModel {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param firstMap the initial map

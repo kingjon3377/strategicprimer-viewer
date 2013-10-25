@@ -2,7 +2,6 @@ package view.map.main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 
 import model.viewer.IViewerModel;
 
@@ -13,12 +12,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class ZoomListener implements ActionListener, Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
+public final class ZoomListener implements ActionListener {
 	/**
 	 * Constructor.
 	 *

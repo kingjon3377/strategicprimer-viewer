@@ -14,10 +14,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class Battlefield implements IEvent, HasImage, HarvestableFixture {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * A (U)ID.
 	 */
 	private final int id; // NOPMD

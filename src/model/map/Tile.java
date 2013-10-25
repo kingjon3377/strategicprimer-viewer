@@ -2,7 +2,6 @@
 package model.map;
 
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,12 +29,7 @@ import util.ArraySet;
  *
  */
 public final class Tile implements FixtureIterable<TileFixture>,
-		Subsettable<Tile>, Serializable {
-	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
+		Subsettable<Tile> {
 	/**
 	 * Constructor.
 	 *

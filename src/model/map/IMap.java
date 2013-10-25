@@ -1,7 +1,5 @@
 package model.map;
 
-import java.io.Serializable;
-
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -11,7 +9,7 @@ import com.sun.istack.internal.NotNull;
  *
  */
 // ESCA-JAVA0237:
-public interface IMap extends Subsettable<IMap>, Comparable<IMap>, Serializable {
+public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	/**
 	 * @return The map's dimensions and version.
 	 */

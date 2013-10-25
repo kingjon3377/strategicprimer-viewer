@@ -16,10 +16,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * What kind of fairy (great, lesser, snow ...).
 	 */
 	private String kind;

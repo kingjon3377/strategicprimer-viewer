@@ -15,11 +15,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	/**
-	 * Version UID for serialization.
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * @param idNum the ID number.
 	 */
 	public Simurgh(final int idNum) {
