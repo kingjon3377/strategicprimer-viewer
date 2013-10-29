@@ -321,4 +321,11 @@ public final class CompactTownReader extends AbstractCompactReader implements
 		out.append(Integer.toString(obj.getOwner().getPlayerId()));
 		out.append('"').append(imageXML(obj)).append(" />\n");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactTownReader";
+	}
 }

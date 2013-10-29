@@ -252,4 +252,11 @@ public final class CompactMapReader extends AbstractCompactReader implements
 		out.append(indent(indent));
 		out.append("</map>\n");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactMapReader";
+	}
 }

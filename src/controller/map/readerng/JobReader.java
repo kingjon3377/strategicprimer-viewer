@@ -112,4 +112,11 @@ public class JobReader implements INodeHandler<Job> {
 		return retval;
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "JobReader";
+	}
 }

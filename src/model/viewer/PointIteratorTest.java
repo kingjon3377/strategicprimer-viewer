@@ -37,6 +37,13 @@ public class PointIteratorTest {
 	 */
 	private static final class MockViewerModel implements IViewerModel {
 		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "MockViewerModel";
+		}
+		/**
 		 * The error message to throw when an unexpected method is called.
 		 */
 		private static final String MOCK_FAILURE_MSG = "Tests should never call this";
@@ -398,5 +405,12 @@ public class PointIteratorTest {
 			actual.add(point);
 		}
 		assertEquals(EXPECTATION, expected, actual);
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "PointIteratorTest";
 	}
 }

@@ -205,4 +205,11 @@ public class TestSubsets {
 		assertFalse("Corresponding but non-matching tile breaks subset",
 				one.isSubset(two, BIT_BUCKET));
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TestSubsets";
+	}
 }

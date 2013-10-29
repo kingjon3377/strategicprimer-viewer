@@ -216,4 +216,31 @@ public class WorkerStats {
 		assert modStr != null;
 		return modifier >= 0 ? '+' + modStr : modStr;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder(70);
+		builder.append("HP: ");
+		builder.append(hp);
+		builder.append(" / ");
+		builder.append(maxHP);
+		builder.append("\nStr: ");
+		builder.append(str);
+		builder.append("\nDex: ");
+		builder.append(dex);
+		builder.append("\nCon: ");
+		builder.append(con);
+		builder.append("\nInt: ");
+		builder.append(intel);
+		builder.append("\nWis: ");
+		builder.append(wis);
+		builder.append("\nCha: ");
+		builder.append(cha);
+		builder.append('\n');
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
 }

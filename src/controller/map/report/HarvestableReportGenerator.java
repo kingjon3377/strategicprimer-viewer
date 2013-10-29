@@ -351,4 +351,11 @@ public class HarvestableReportGenerator extends // NOPMD
 			final String second) {
 		return bool ? first : second;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "HarvestableReportGenerator";
+	}
 }

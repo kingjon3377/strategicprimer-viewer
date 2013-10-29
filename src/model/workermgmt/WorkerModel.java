@@ -88,4 +88,11 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 			}
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerModel";
+	}
 }

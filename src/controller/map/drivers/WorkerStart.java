@@ -140,4 +140,11 @@ public class WorkerStart implements ISPDriver {
 	 * Error message when the map contains invalid data.
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerStart";
+	}
 }

@@ -115,4 +115,11 @@ public class WorkerReader implements INodeHandler<Worker> {
 		return retval;
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerReader";
+	}
 }

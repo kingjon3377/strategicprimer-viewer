@@ -155,4 +155,13 @@ public class IntMap<V> implements Map<Integer, V> { // NOPMD
 		assert retval != null;
 		return retval;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final String retval = backing.toString();
+		assert retval != null;
+		return retval;
+	}
 }

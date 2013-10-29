@@ -35,4 +35,20 @@ public class IntPair {
 	public static IntPair of(final int one, final int two) { // NOPMD
 		return new IntPair(one, two);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder(15);
+		builder.append('(');
+		builder.append(first);
+		builder.append(", ");
+		builder.append(second);
+		builder.append(')');
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
+
 }

@@ -320,4 +320,12 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 					unit, member) }, new Object[] { member }));
 		}
 	}
+	/**
+	 * TODO: specify which player.
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerTreeModel";
+	}
 }

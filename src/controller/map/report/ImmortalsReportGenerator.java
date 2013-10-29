@@ -357,4 +357,11 @@ public class ImmortalsReportGenerator extends
 		}
 		points.add(point);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ImmortalsReportGenerator";
+	}
 }

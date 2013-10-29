@@ -85,4 +85,11 @@ public final class CompactPlayerReader extends AbstractCompactReader implements
 		out.append(obj.getName());
 		out.append("\" />\n");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactPlayerReader";
+	}
 }

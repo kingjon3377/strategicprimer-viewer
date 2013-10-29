@@ -91,4 +91,11 @@ public class SkillReader implements INodeHandler<Skill> {
 		return retval;
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SkillReader";
+	}
 }

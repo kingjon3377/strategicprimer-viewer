@@ -307,4 +307,11 @@ public final class CompactWorkerReader extends AbstractCompactReader implements
 		return "worker".equals(tag);
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactWorkerReader";
+	}
 }

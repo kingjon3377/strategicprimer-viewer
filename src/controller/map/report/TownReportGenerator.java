@@ -183,4 +183,11 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		}
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TownReportGenerator";
+	}
 }

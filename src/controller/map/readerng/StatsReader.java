@@ -88,4 +88,11 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 				Integer.toString(obj.getCharisma())));
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "StatsReader";
+	}
 }

@@ -102,4 +102,11 @@ public class TestWorkerModel {
 			list.add(item);
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TestWorkerModel";
+	}
 }

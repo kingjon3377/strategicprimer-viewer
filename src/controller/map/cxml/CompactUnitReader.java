@@ -216,4 +216,11 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 			out.append(" />\n");
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactUnitReader";
+	}
 }

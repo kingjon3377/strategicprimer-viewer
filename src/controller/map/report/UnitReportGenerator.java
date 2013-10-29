@@ -322,4 +322,11 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			super(stat, getModifierString(value));
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "UnitReportGenerator";
+	}
 }

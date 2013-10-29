@@ -199,4 +199,11 @@ public final class CompactTerrainReader extends AbstractCompactReader implements
 		out.append(Integer.toString(obj.getID()));
 		out.append("\" />\n");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactTerrainReader";
+	}
 }

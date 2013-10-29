@@ -64,4 +64,11 @@ public class CompactXMLWriter implements SPWriter {
 			throws IOException {
 		CompactReaderAdapter.write(out, obj, 0);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactXMLWriter";
+	}
 }

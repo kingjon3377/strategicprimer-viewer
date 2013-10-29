@@ -362,4 +362,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ExplorationModel";
+	}
 }

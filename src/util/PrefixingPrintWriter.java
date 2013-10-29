@@ -37,4 +37,17 @@ public class PrefixingPrintWriter extends PrintWriter {
 		super.print(pref);
 		super.println(str);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder(40);
+		builder.append("PrefixingPrintWriter with prefix '");
+		builder.append(pref);
+		builder.append('\'');
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
 }

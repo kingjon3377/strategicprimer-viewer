@@ -145,4 +145,11 @@ public class FileChooser {
 			super("No file was selected");
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "FileChooser";
+	}
 }

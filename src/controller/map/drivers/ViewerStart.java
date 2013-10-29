@@ -79,7 +79,7 @@ public final class ViewerStart implements ISPDriver {
 	}
 
 	/**
-	 * Run the driver.
+	 * Run the driver. TODO: Somehow unify similar code between this and other similar drivers.
 	 *
 	 * @param args Command-line arguments.
 	 * @throws DriverFailedException if the driver failed to run.
@@ -163,5 +163,12 @@ public final class ViewerStart implements ISPDriver {
 	@Override
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ViewerStart";
 	}
 }

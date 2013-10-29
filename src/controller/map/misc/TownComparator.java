@@ -133,4 +133,11 @@ public final class TownComparator implements Comparator<AbstractTown> {
 		}
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TownComparator";
+	}
 }

@@ -116,4 +116,11 @@ public class HarvestableComparator implements Comparator<HarvestableFixture> { /
 			final HarvestableFixture two) {
 		return IntPair.of(one.getID(), two.getID());
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "HarvestableComparator";
+	}
 }

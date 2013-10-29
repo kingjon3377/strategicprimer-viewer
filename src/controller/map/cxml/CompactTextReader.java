@@ -110,4 +110,11 @@ public final class CompactTextReader extends AbstractCompactReader implements
 		out.append(obj.getText().trim());
 		out.append("</text>\n");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactTextReader";
+	}
 }

@@ -100,4 +100,11 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 				: (MapView) retval;
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactXMLReader";
+	}
 }

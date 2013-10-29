@@ -50,6 +50,32 @@ public class PointIterator implements Iterator<Point> {
 	 * Whether we've started iterating.
 	 */
 	private boolean started = false;
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder(150);
+		builder.append("PointIterator: Started at (");
+		builder.append(startRow);
+		builder.append(", ");
+		builder.append(startCol);
+		builder.append("), currently at (");
+		builder.append(row);
+		builder.append(", ");
+		builder.append(col);
+		builder.append("), searching ");
+		builder.append(horiz ? "horizontally " : "vertically ");
+		builder.append(forwards ? "forwards " : "backwards ");
+		builder.append("and no farther than (");
+		builder.append(maxRow);
+		builder.append(", ");
+		builder.append(maxCol);
+		builder.append(").");
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
 
 	/**
 	 * @param val a value

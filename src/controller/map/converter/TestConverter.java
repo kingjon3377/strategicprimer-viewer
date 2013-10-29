@@ -86,4 +86,11 @@ public class TestConverter {
 		}
 		return false;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TestConverter test case";
+	}
 }

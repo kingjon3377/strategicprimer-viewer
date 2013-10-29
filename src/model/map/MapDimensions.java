@@ -77,4 +77,20 @@ public class MapDimensions {
 	public int hashCode() {
 		return rows + cols << 2;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder(60);
+		builder.append("Map dimensions: ");
+		builder.append(rows);
+		builder.append(" rows x ");
+		builder.append(cols);
+		builder.append(" cols; map version ");
+		builder.append(version);
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
 }

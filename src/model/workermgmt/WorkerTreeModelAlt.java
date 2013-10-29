@@ -204,7 +204,13 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			throw new UnsupportedOperationException(
 					"Not supported by Enumeration");
 		}
-
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "EnumerationWrapper";
+		}
 	}
 
 	/**
@@ -293,5 +299,13 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		fireTreeNodesInserted(this, new Object[] { root, unode },
 				new int[] { unode.getChildCount() - 1 },
 				new Object[] { newNode });
+	}
+	/**
+	 * TODO: Specify which player.
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerTreeModelAlt";
 	}
 }

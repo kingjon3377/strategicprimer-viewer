@@ -266,4 +266,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return retval;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "FortressReportGenerator";
+	}
 }

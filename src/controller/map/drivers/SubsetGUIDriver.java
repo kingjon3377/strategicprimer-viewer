@@ -16,6 +16,9 @@ import controller.map.misc.WindowThread;
  * A driver to check whether player maps are subsets of the main map and display
  * the results graphically.
  *
+ *
+ * TODO: Unify with SubsetDriver somehow.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -100,5 +103,12 @@ public class SubsetGUIDriver implements ISPDriver {
 	@Override
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SubsetGUIDriver";
 	}
 }

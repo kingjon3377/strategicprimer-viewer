@@ -293,4 +293,11 @@ public class TrapModelDriver implements ISPDriver {
 		return USAGE_OBJ;
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TrapModelDriver";
+	}
 }

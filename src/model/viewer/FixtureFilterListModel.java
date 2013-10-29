@@ -54,4 +54,17 @@ public class FixtureFilterListModel extends
 		backing.add(item);
 		fireIntervalAdded(item.getClass(), getSize() - 1, getSize() - 1);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final String listString = backing.toString();
+		final StringBuilder builder = new StringBuilder(25 + listString.length());
+		builder.append("FixtureFilterListModel: ");
+		builder.append(listString);
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
 }

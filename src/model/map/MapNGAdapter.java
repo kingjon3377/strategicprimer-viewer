@@ -18,6 +18,8 @@ import view.util.NullStream;
  *
  * TODO: Write tests.
  *
+ * TODO: Write proper toString based on the interface.
+ *
  * @author Jonathan Lovelace
  *
  */

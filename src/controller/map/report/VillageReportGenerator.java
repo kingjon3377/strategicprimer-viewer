@@ -134,4 +134,11 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 						: ", sworn to " + playerNameOrYou(item.getOwner()));
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "VillageReportGenerator";
+	}
 }

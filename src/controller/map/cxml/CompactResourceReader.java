@@ -425,4 +425,11 @@ public final class CompactResourceReader extends AbstractCompactReader
 		out.append("dc=\"");
 		out.append(Integer.toString(event.getDC()));
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactResourceReader";
+	}
 }

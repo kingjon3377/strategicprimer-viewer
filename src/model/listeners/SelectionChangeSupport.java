@@ -61,4 +61,11 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 		}
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SelectionChangeSupport";
+	}
 }

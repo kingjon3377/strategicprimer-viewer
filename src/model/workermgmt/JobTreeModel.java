@@ -297,4 +297,17 @@ public class JobTreeModel implements TreeModel, UnitMemberListener,
 	public void remove(final String category) {
 		// Not implemented
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final String workerString = String.valueOf(root);
+		final StringBuilder builder = new StringBuilder(30 + workerString.length());
+		builder.append("JobTreeModel showing worker ");
+		builder.append(workerString);
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
 }

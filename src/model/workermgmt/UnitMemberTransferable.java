@@ -40,6 +40,24 @@ public class UnitMemberTransferable implements Transferable {
 		 * The unit containing it.
 		 */
 		public final Unit unit;
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			final String memberStr = member.toString();
+			final String unitStr = unit.toString();
+			final StringBuilder builder = new StringBuilder(22 + memberStr.length() + unitStr.length());
+			builder.append("UnitMemberPair: (");
+			builder.append(memberStr);
+			builder.append(", ");
+			builder.append(unitStr);
+			builder.append(')');
+			final String retval = builder.toString();
+			assert retval != null;
+			return retval;
+		}
+
 	}
 
 	/**

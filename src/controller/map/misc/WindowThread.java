@@ -29,4 +29,11 @@ public class WindowThread implements Runnable {
 	public void run() {
 		window.setVisible(true);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WindowThread";
+	}
 }

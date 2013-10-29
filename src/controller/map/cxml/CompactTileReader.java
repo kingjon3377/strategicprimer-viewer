@@ -257,4 +257,11 @@ public final class CompactTileReader extends AbstractCompactReader implements
 			}
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactTileReader";
+	}
 }

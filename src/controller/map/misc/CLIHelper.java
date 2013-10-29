@@ -178,4 +178,11 @@ public class CLIHelper implements ICLIHelper {
 			}
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CLIHelper";
+	}
 }

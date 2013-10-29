@@ -514,4 +514,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final Random random = SingletonRandom.RANDOM;
 		return random.nextInt(6) + random.nextInt(6) + random.nextInt(6) + 3;
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "StatGeneratingCLIDriver";
+	}
 }

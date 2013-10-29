@@ -90,4 +90,11 @@ public final class CompactGroundReader extends AbstractCompactReader implements
 		out.append(Boolean.toString(obj.isExposed()));
 		out.append('"').append(imageXML(obj)).append(" />\n");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "CompactGroundReader";
+	}
 }
