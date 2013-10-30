@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -130,17 +131,17 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	/**
 	 * The collection of proxies for main-map tile-fixture-lists.
 	 */
-	private final EnumMap<Direction, SelectionChangeSupport> mains = new EnumMap<>(
+	private final Map<Direction, SelectionChangeSupport> mains = new EnumMap<>(
 			Direction.class);
 	/**
 	 * The collection of proxies for secondary-map tile-fixture lists.
 	 */
-	private final EnumMap<Direction, SelectionChangeSupport> seconds = new EnumMap<>(
+	private final Map<Direction, SelectionChangeSupport> seconds = new EnumMap<>(
 			Direction.class);
 	/**
 	 * The collection of dual-tile-buttons.
 	 */
-	private final EnumMap<Direction, DualTileButton> buttons = new EnumMap<>(
+	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(
 			Direction.class);
 
 	/**
