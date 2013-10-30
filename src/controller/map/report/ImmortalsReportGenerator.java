@@ -29,7 +29,7 @@ import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -49,7 +49,8 @@ public class ImmortalsReportGenerator extends
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> dragons = new HashMap<>();
 		final Map<String, List<Point>> fairies = new HashMap<>();
@@ -132,7 +133,7 @@ public class ImmortalsReportGenerator extends
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Immortals");
@@ -232,7 +233,8 @@ public class ImmortalsReportGenerator extends
 	 *         it's not one we handle here.
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
 		return item instanceof Dragon || item instanceof Fairy
@@ -255,7 +257,7 @@ public class ImmortalsReportGenerator extends
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
 		return item instanceof Dragon || item instanceof Fairy

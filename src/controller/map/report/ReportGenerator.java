@@ -15,6 +15,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
 import model.report.RootReportNode;
+import util.DelayedRemovalMap;
 import util.IntMap;
 import util.Pair;
 
@@ -45,7 +46,7 @@ public final class ReportGenerator {
 				.append("<html>\n");
 		builder.append("<head><title>Strategic Primer map summary report</title></head>\n");
 		builder.append("<body>");
-		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final TileCollection tiles = map.getTiles();
 		final Player player = map.getPlayers().getCurrentPlayer();
 		builder.append(new FortressReportGenerator().produce(fixtures, tiles,
@@ -94,7 +95,7 @@ public final class ReportGenerator {
 				.append("<html>\n");
 		builder.append("<head><title>Strategic Primer map summary abbreviated report</title></head>\n");
 		builder.append("<body>");
-		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final TileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
@@ -140,7 +141,7 @@ public final class ReportGenerator {
 	public static AbstractReportNode createReportIR(final IMap map) {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary report");
-		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final TileCollection tiles = map.getTiles();
 		final Player player = map.getPlayers().getCurrentPlayer();
 		retval.add(new FortressReportGenerator().produceRIR(fixtures, tiles,
@@ -182,7 +183,7 @@ public final class ReportGenerator {
 			final Player player) {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary abbreviated report");
-		final IntMap<Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final TileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
@@ -223,8 +224,9 @@ public final class ReportGenerator {
 	 * @return the fixtures in it, a mapping from their ID to a Pair of the
 	 *         fixture's location and the fixture itself.
 	 */
-	private static IntMap<Pair<Point, IFixture>> getFixtures(final IMap map) {
-		final IntMap<Pair<Point, IFixture>> retval = new IntMap<>();
+	private static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(
+			final IMap map) {
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		for (final Point point : map.getTiles()) {
 			if (point != null) {
 				final Tile tile = map.getTile(point);

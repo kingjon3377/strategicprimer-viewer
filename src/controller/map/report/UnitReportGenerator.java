@@ -17,7 +17,7 @@ import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -39,7 +39,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on the unit
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
 		final StringBuilder builder = new StringBuilder();
@@ -91,7 +91,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
 		final String simple = concat("Unit of type ", unit.getKind(),
@@ -250,7 +250,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return the part of the report dealing with units
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder = new StringBuilder(8192)
@@ -284,7 +284,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Units in the map",

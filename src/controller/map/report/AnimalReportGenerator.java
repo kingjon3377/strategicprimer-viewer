@@ -15,7 +15,7 @@ import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -34,7 +34,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 * @return the report
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> sightings = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -89,7 +89,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> sightings = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -138,7 +138,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 * @return a sub-report on the animal
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Animal item, final Point loc) {
 		return concat(atPoint(loc), item.isTraces() ? "tracks or traces of "
@@ -155,7 +156,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Animal item, final Point loc) {
 		return new SimpleReportNode(atPoint(loc),

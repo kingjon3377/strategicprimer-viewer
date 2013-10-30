@@ -10,7 +10,7 @@ import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -30,7 +30,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @param tiles ignored
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final HtmlList others = new HtmlList(
 				"<h4>Villages you know about:</h4>");
@@ -65,7 +65,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
 		final AbstractReportNode others = new SectionListReportNode(5,
@@ -102,7 +102,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @return the report on the village (its location and name, nothing more)
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
@@ -124,7 +124,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));

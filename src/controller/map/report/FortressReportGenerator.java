@@ -22,7 +22,7 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -45,7 +45,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384)
@@ -54,8 +55,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
 				anyforts = true;
-				builder.append(produce(fixtures, tiles, currentPlayer,
-						(Fortress) pair.second(), pair.first()));
+				builder.append(produce(
+						fixtures,
+						tiles, currentPlayer, (Fortress) pair.second(),
+						pair.first()));
 			}
 		}
 		final String retval = builder.toString();
@@ -73,7 +76,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionReportNode(4,
 				"Fortresses in the map:");
@@ -93,7 +96,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @return a String describing the terrain on it
 	 */
 	private static String getTerrain(final Tile tile,
-			final IntMap<Pair<Point, IFixture>> fixtures) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
 		final StringBuilder builder = new StringBuilder(130).append(
 				"Surrounding terrain: ").append(
 				tile.getTerrain().toXML().replace('_', ' '));
@@ -189,7 +192,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
@@ -202,8 +206,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final Tile tile = tiles.getTile(loc);
 		builder.append(getTerrain(tile, fixtures)).append(CLOSE_LIST_ITEM);
 		if (tile.hasRiver()) {
-			final Set<River> copy = EnumSet.copyOf(tile.getRivers()
-					.getRivers());
+			final Set<River> copy = EnumSet
+					.copyOf(tile.getRivers().getRivers());
 			assert copy != null;
 			builder.append(riversToString(copy));
 		}
@@ -238,7 +242,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final Fortress item, final Point loc) {
 		final AbstractReportNode retval = new SectionListReportNode(5, concat(
@@ -248,7 +252,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final Tile tile = tiles.getTile(loc);
 		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));
 		if (tile.hasRiver()) {
-			final Set<River> copy = EnumSet.copyOf(tile.getRivers().getRivers());
+			final Set<River> copy = EnumSet
+					.copyOf(tile.getRivers().getRivers());
 			assert copy != null;
 			riversToNode(retval, copy);
 		}
@@ -257,8 +262,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 					"Units on the tile:");
 			for (final Unit unit : item) {
 				if (unit != null) {
-					units.add(urg.produceRIR(fixtures, tiles, currentPlayer, unit,
-							loc));
+					units.add(urg.produceRIR(fixtures, tiles, currentPlayer,
+							unit, loc));
 				}
 			}
 			retval.add(units);
@@ -266,6 +271,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

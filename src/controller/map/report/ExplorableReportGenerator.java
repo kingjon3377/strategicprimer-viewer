@@ -11,7 +11,7 @@ import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -36,7 +36,8 @@ public class ExplorableReportGenerator extends
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		// At only two (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
@@ -87,7 +88,7 @@ public class ExplorableReportGenerator extends
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Caves and Battlefields");
@@ -133,7 +134,8 @@ public class ExplorableReportGenerator extends
 	 *         on the item
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
@@ -161,7 +163,7 @@ public class ExplorableReportGenerator extends
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {

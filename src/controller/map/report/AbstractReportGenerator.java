@@ -11,7 +11,7 @@ import model.report.AbstractReportNode;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -101,8 +101,8 @@ public abstract class AbstractReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	public abstract String produce(
-			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
-			Player currentPlayer);
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			TileCollection tiles, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report
@@ -118,8 +118,9 @@ public abstract class AbstractReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	public abstract String produce(
-			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
-			Player currentPlayer, final T item, final Point loc);
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			TileCollection tiles, Player currentPlayer, final T item,
+			final Point loc);
 
 	/**
 	 * All fixtures that this report references should be removed from the set
@@ -133,8 +134,8 @@ public abstract class AbstractReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	public abstract AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
-			Player currentPlayer);
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			TileCollection tiles, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report
@@ -150,8 +151,9 @@ public abstract class AbstractReportGenerator<T> {
 	 * @return the (sub-)report, or null if nothing to report.
 	 */
 	public abstract AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures, TileCollection tiles,
-			Player currentPlayer, final T item, final Point loc);
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			TileCollection tiles, Player currentPlayer, final T item,
+			final Point loc);
 
 	/**
 	 * @param point a point

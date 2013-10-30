@@ -27,7 +27,7 @@ import model.report.EmptyReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 
 /**
@@ -52,7 +52,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures, // NOPMD
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, // NOPMD
 			final TileCollection tiles, final Player currentPlayer) {
 		final HtmlList caches = new HtmlList(
 				"<h5>Caches collected by your explorers and workers:</h5>");
@@ -137,7 +137,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionReportNode(4,
 				"Resource Sources");
@@ -232,7 +232,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return a sub-report dealing with the fixture
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
@@ -295,7 +295,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {

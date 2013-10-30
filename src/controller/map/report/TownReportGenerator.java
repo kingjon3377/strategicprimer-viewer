@@ -18,7 +18,7 @@ import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import util.IntMap;
+import util.DelayedRemovalMap;
 import util.Pair;
 import controller.map.misc.TownComparator;
 
@@ -44,7 +44,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 *         is helpful.
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -89,7 +89,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Cities, towns, and/or fortifications you know about:");
@@ -125,7 +125,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public String produce(final IntMap<Pair<Point, IFixture>> fixtures,
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
@@ -161,7 +161,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final IntMap<Pair<Point, IFixture>> fixtures,
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {

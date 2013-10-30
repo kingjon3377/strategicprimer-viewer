@@ -23,7 +23,7 @@ import view.util.NullStream;
  * @author Jonathan Lovelace
  *
  */
-public class MapNGAdapter implements IMapNG { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
+public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	/**
 	 * The old-interface map we use for our state.
 	 */
