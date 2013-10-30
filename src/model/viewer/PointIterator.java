@@ -108,10 +108,9 @@ public class PointIterator implements Iterator<Point> {
 		maxRow = model.getMapDimensions().getRows() - 1;
 		maxCol = model.getMapDimensions().getColumns() - 1;
 		if (startFromSel && model instanceof IViewerModel) {
-			startRow = wrap(((IViewerModel) model).getSelectedPoint().row,
-					maxRow);
-			startCol = wrap(((IViewerModel) model).getSelectedPoint().col,
-					maxCol);
+			final Point selPoint = ((IViewerModel) model).getSelectedPoint();
+			startRow = wrap(selPoint.row, maxRow);
+			startCol = wrap(selPoint.col, maxCol);
 		} else if (forwards) {
 			startRow = maxRow;
 			startCol = maxCol;
