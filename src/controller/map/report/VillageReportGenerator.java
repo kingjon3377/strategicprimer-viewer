@@ -40,7 +40,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
 				// ESCA-JAVA0177:
-				final HtmlList appropriateList; // NOPMD
+				final HtmlList appropriateList; // NOPMD // $codepro.audit.disable declareAsInterface
 				if (village.getOwner().isCurrent()) {
 					appropriateList = own;
 				} else {
