@@ -48,12 +48,13 @@ public class HarvestableReportGenerator extends // NOPMD
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param tiles ignored
-	 * @param currentPlayer the player for whom the report is being produced
+	 * @param player the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, // NOPMD
-			final TileCollection tiles, final Player currentPlayer) {
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, // NOPMD
+			final TileCollection tiles, final Player player) {
 		final HtmlList caches = new HtmlList(
 				"<h5>Caches collected by your explorers and workers:</h5>");
 		final HtmlList groves = new HtmlList("<h5>Groves and orchards</h5>");
@@ -64,44 +65,37 @@ public class HarvestableReportGenerator extends // NOPMD
 		final HtmlList stone = new HtmlList("<h5>Exposed stone deposits</h5>");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof HarvestableFixture) {
-				final HarvestableFixture harvestable = (HarvestableFixture) pair
+				final HarvestableFixture item = (HarvestableFixture) pair
 						.second();
 				final Point point = pair.first();
-				if (harvestable instanceof CacheFixture) {
-					caches.add(produce(fixtures, tiles, currentPlayer,
-							harvestable, point));
-				} else if (harvestable instanceof Grove) {
-					groves.add(produce(fixtures, tiles, currentPlayer,
-							harvestable, point));
-				} else if (harvestable instanceof Meadow) {
-					meadows.add(produce(fixtures, tiles, currentPlayer,
-							harvestable, point));
-				} else if (harvestable instanceof Mine) {
-					mines.add(produce(fixtures, tiles, currentPlayer,
-							harvestable, point));
-				} else if (harvestable instanceof MineralVein) {
+				if (item instanceof CacheFixture) {
+					caches.add(produce(fixtures, tiles, player, item, point));
+				} else if (item instanceof Grove) {
+					groves.add(produce(fixtures, tiles, player, item, point));
+				} else if (item instanceof Meadow) {
+					meadows.add(produce(fixtures, tiles, player, item, point));
+				} else if (item instanceof Mine) {
+					mines.add(produce(fixtures, tiles, player, item, point));
+				} else if (item instanceof MineralVein) {
 					// TODO: Handle these like shrubs.
-					minerals.add(produce(fixtures, tiles, currentPlayer,
-							harvestable, point));
-				} else if (harvestable instanceof Shrub) {
+					minerals.add(produce(fixtures, tiles, player, item, point));
+				} else if (item instanceof Shrub) {
 					// ESCA-JAVA0177:
 					final List<Point> shrubPoints; // NOPMD
-					if (shrubs.containsKey(((Shrub) harvestable).getKind())) {
-						shrubPoints = shrubs.get(((Shrub) harvestable)
-								.getKind());
+					if (shrubs.containsKey(((Shrub) item).getKind())) {
+						shrubPoints = shrubs.get(((Shrub) item).getKind());
 					} else {
 						shrubPoints = new ArrayList<>(); // NOPMD
-						shrubs.put(((Shrub) harvestable).getKind(), shrubPoints);
+						shrubs.put(((Shrub) item).getKind(), shrubPoints);
 					}
 					shrubPoints.add(point);
-					fixtures.remove(Integer.valueOf(harvestable.getID()));
-				} else if (harvestable instanceof StoneDeposit) {
+					fixtures.remove(Integer.valueOf(item.getID()));
+				} else if (item instanceof StoneDeposit) {
 					// TODO: Handle these like shrubs.
-					stone.add(produce(fixtures, tiles, currentPlayer,
-							harvestable, point));
+					stone.add(produce(fixtures, tiles, player, item, point));
 				}
 			}
-		}
+	}
 		final HtmlList shrubsText = new HtmlList(
 				"<h5>Shrubs, small trees, and such</h5>");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
