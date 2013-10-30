@@ -47,17 +47,16 @@ public class LegacyTable implements EncounterTable {
 	 * Constructor.
 	 */
 	public LegacyTable() {
-		final Player independent = new Player(-1, "Independent");
+		final Player player = new Player(-1, "Independent");
 		data = new ArrayList<>();
 		addData(new Battlefield(0, -1));
 		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
 				if (status != null && size != null) {
-					addData(new City(status, size, 0, "", 0, independent)); // NOPMD
-					addData(new Fortification(status, size, 0, "", 0,
-							independent)); // NOPMD
-					addData(new Town(status, size, 0, "", 0, independent)); // NOPMD
+					addData(new City(status, size, 0, "", 0, player)); // NOPMD
+					addData(new Fortification(status, size, 0, "", 0, player)); // NOPMD
+					addData(new Town(status, size, 0, "", 0, player)); // NOPMD
 				}
 			}
 		}
