@@ -178,61 +178,53 @@ public final class CompactResourceReader extends AbstractCompactReader
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "battlefield", "cache", "cave", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
+		final int idNum = getOrGenerateID(element, warner, idFactory);
 		// ESCA-JAVA0177:
 		final HarvestableFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case BattlefieldType:
-			retval = new Battlefield(getDC(element), getOrGenerateID(element,
-					warner, idFactory));
+			retval = new Battlefield(getDC(element), idNum);
 			break;
 		case CacheType:
 			retval = new CacheFixture(getParameter(element, KIND_PARAM),
-					getParameter(element, "contents"), getOrGenerateID(element,
-							warner, idFactory));
+					getParameter(element, "contents"), idNum);
 			break;
 		case CaveType:
-			retval = new Cave(getDC(element), getOrGenerateID(element, warner,
-					idFactory));
+			retval = new Cave(getDC(element), idNum);
 			break;
 		case FieldType:
-			retval = createMeadow(element, true,
-					getOrGenerateID(element, warner, idFactory), warner);
+			retval = createMeadow(element, true, idNum, warner);
 			break;
 		case GroveType:
-			retval = createGrove(element, false,
-					getOrGenerateID(element, warner, idFactory), warner);
+			retval = createGrove(element, false, idNum, warner);
 			break;
 		case MeadowType:
-			retval = createMeadow(element, false,
-					getOrGenerateID(element, warner, idFactory), warner);
+			retval = createMeadow(element, false, idNum, warner);
 			break;
 		case MineType:
 			retval = new Mine(getParameterWithDeprecatedForm(element,
 					KIND_PARAM, "product", warner),
 					TownStatus.parseTownStatus(getParameter(element,
-							STATUS_PARAM)), getOrGenerateID(element, warner,
-							idFactory));
+							STATUS_PARAM)), idNum);
 			break;
 		case MineralType:
 			retval = new MineralVein(getParameterWithDeprecatedForm(element,
 					KIND_PARAM, "mineral", warner),
 					Boolean.parseBoolean(getParameter(element, "exposed")),
-					getDC(element), getOrGenerateID(element, warner, idFactory));
+					getDC(element), idNum);
 			break;
 		case OrchardType:
-			retval = createGrove(element, true,
-					getOrGenerateID(element, warner, idFactory), warner);
+			retval = createGrove(element, true, idNum, warner);
 			break;
 		case ShrubType:
 			retval = new Shrub(getParameterWithDeprecatedForm(element,
-					KIND_PARAM, "shrub", warner), getOrGenerateID(element,
-					warner, idFactory));
+					KIND_PARAM, "shrub", warner), idNum);
 			break;
 		case StoneType:
 			retval = new StoneDeposit(
 					StoneKind.parseStoneKind(getParameterWithDeprecatedForm(
 							element, KIND_PARAM, "stone", warner)),
-					getDC(element), getOrGenerateID(element, warner, idFactory));
+					getDC(element), idNum);
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
