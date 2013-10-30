@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -359,16 +358,17 @@ public class WorkerMgmtFrame extends JFrame {
 				// Assume at least two K.
 				final StringBuilder builder = new StringBuilder(2048)
 						.append(" [");
-				final Iterator<UnitMember> iter = unit.iterator();
-				while (iter.hasNext()) {
-					final UnitMember member = iter.next();
+				boolean first = true;
+				for (final UnitMember member : unit) {
 					if (member == null) {
 						continue;
 					}
-					builder.append(memberString(member));
-					if (iter.hasNext()) {
+					if (first) {
+						first = false;
+					} else {
 						builder.append(", ");
 					}
+					builder.append(memberString(member));
 				}
 				builder.append(']');
 				final String retval = builder.toString();
@@ -391,15 +391,16 @@ public class WorkerMgmtFrame extends JFrame {
 						.append(worker.getName());
 				if (worker.iterator().hasNext()) {
 					builder.append(" (");
-					final Iterator<Job> iter = worker.iterator();
-					while (iter.hasNext()) {
-						final Job job = iter.next();
+					boolean first = true;
+					for (final Job job : worker) {
+						if (first) {
+							first = false;
+						} else {
+							builder.append(", ");
+						}
 						builder.append(job.getName());
 						builder.append(' ');
 						builder.append(job.getLevel());
-						if (iter.hasNext()) {
-							builder.append(", ");
-						}
 					}
 					builder.append(')');
 				}
