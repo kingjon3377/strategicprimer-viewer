@@ -517,5 +517,12 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		public void remove() {
 			wrapped.remove();
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "FilteredIterator";
+		}
 	}
 }

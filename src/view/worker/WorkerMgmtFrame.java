@@ -159,6 +159,13 @@ public class WorkerMgmtFrame extends JFrame {
 				frame.setVisible(true);
 			}
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "WindowShower";
+		}
 	}
 
 	/**
@@ -210,6 +217,13 @@ public class WorkerMgmtFrame extends JFrame {
 				final Player newPlayer) {
 			reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
 					model.getMap(), newPlayer));
+		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "ReportUpdater";
 		}
 	}
 
@@ -263,6 +277,13 @@ public class WorkerMgmtFrame extends JFrame {
 							except);
 				}
 			}
+		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "ExportButtonHandler";
 		}
 	}
 
@@ -390,6 +411,13 @@ public class WorkerMgmtFrame extends JFrame {
 				assert retval != null;
 				return retval;
 			}
+		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "StrategyExporter";
 		}
 	}
 }

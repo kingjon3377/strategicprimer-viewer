@@ -173,4 +173,11 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		return new ImageIcon(temp);
 
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "UnitMemberCellRenderer";
+	}
 }

@@ -51,6 +51,13 @@ public class DualTileButton extends JButton {
 	 */
 	private static final class NullZOrderFilter implements ZOrderFilter {
 		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "NullZOrderFilter";
+		}
+		/**
 		 * Constructor. Only explicit to fix a synthetic-access warning.
 		 */
 		protected NullZOrderFilter() {

@@ -106,4 +106,11 @@ public final class LevelListener implements LevelGainListener,
 			return retval == null ? "" : retval;
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "LevelListener";
+	}
 }

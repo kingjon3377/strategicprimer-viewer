@@ -40,4 +40,11 @@ public final class ZoomListener implements ActionListener {
 			model.zoomOut();
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ZoomListener";
+	}
 }

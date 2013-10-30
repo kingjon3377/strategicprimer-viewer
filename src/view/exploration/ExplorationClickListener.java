@@ -168,4 +168,11 @@ public final class ExplorationClickListener implements ActionListener,
 	public void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ExplorationClickListener";
+	}
 }

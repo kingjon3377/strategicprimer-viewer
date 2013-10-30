@@ -107,4 +107,11 @@ public class ResourceInputStream extends InputStream {
 	public void close() throws IOException {
 		wrapped.close();
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ResourceInputStream";
+	}
 }

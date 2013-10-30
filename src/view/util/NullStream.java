@@ -20,5 +20,11 @@ public class NullStream extends OutputStream {
 	public void write(final int byt) throws IOException {
 		// Do nothing.
 	}
-
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "NullStream";
+	}
 }

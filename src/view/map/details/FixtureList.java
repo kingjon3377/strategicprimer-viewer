@@ -175,6 +175,13 @@ public class FixtureList extends JList<TileFixture> implements
 				}
 			}
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "FixtureMouseListener";
+		}
 	}
 	/**
 	 * @param old passed to the list model

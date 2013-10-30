@@ -136,4 +136,11 @@ public class WorkerCreationListener implements ActionListener,
 			tmodel.addUnitMember(selUnit, worker);
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerCreationListener";
+	}
 }

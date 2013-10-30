@@ -44,6 +44,13 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 	 */
 	private static class IteratorImpl<I, K> implements Iterator<Pair<I, K>> {
 		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "SetPairConverter#IteratorImpl";
+		}
+		/**
 		 * Constructor.
 		 *
 		 * @param iter the iterator we're a wrapper around.
@@ -86,5 +93,12 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 			wrapped.remove();
 		}
 
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SetPairConverter";
 	}
 }

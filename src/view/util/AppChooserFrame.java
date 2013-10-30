@@ -139,5 +139,12 @@ public class AppChooserFrame extends JFrame {
 		 */
 		private static final Logger LOGGER = TypesafeLogger
 				.getLogger(AppChooserFrame.class);
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "AppChoiceListener";
+		}
 	}
 }

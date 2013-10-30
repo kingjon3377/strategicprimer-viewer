@@ -72,6 +72,8 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an int into Integer.
 	 * @param <T> the type in question.
+	 *
+	 * TODO: If we start using Guava, use of this class should be replaced by Multiset, or something?
 	 * @author Jonathan Lovelace
 	 */
 	private static class IntPair<T> {
@@ -115,6 +117,22 @@ public final class ExplorationListListener implements ListDataListener {
 		public T second() {
 			return object;
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			final String objStr = object.toString();
+			final StringBuilder builder = new StringBuilder(16 + objStr);
+			builder.append('(');
+			builder.append(number);
+			builder.append(", ");
+			builder.append(objStr);
+			builder.append(')');
+			final String retval = builder.toString();
+			assert retval != null;
+			return retval;
+		}
 	}
 	/**
 	 * Select a suitable but randomized selection of fixtures. Do nothing if
@@ -146,5 +164,12 @@ public final class ExplorationListListener implements ListDataListener {
 			}
 			list.setSelectedIndices(indices);
 		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ExplorationListListener";
 	}
 }

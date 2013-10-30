@@ -103,4 +103,11 @@ public class PlayerChooserHandler implements ActionListener, PlayerChangeSource 
 			list.playerChanged(null, player);
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "PlayerChooserHandler";
+	}
 }

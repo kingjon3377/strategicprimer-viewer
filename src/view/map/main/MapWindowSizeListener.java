@@ -59,4 +59,11 @@ public class MapWindowSizeListener extends WindowAdapter {
 		component.setSize(component.getWidth() + addend, component.getHeight()
 				+ addend);
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "MapWindowSizeListener";
+	}
 }

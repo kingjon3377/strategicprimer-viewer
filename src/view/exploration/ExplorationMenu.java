@@ -175,5 +175,12 @@ public class ExplorationMenu extends JMenuBar {
 			new ViewerFrame(new ViewerModel(view, filename), ioHelper)
 					.setVisible(true);
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "ViewerOpener";
+		}
 	}
 }

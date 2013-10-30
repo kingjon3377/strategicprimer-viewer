@@ -88,6 +88,13 @@ public class SubsetFrame extends JFrame {
 			super.println("</p>");
 			middle = false;
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "HTMLWriter";
+		}
 	}
 
 	/**

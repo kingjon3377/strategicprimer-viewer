@@ -125,6 +125,13 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				}
 			}
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "TreeMouseListener";
+		}
 	}
 
 	/**
@@ -263,6 +270,13 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 			umListeners.remove(list);
 		}
 
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "WorkerTreeSelectionListener";
+		}
 	}
 
 	/**

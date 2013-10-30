@@ -162,4 +162,11 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 			return false;
 		}
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "WorkerTreeTransferHandler";
+	}
 }

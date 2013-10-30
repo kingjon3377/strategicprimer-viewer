@@ -250,5 +250,12 @@ public class FindDialog extends JDialog implements ActionListener {
 				}
 			}
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "FilterPopulator";
+		}
 	}
 }
