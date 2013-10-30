@@ -97,11 +97,9 @@ public class ImmortalsReportGenerator extends
 			}
 			fixtures.remove(idNum);
 		}
-		final int len = 36 + 512 * (dragons.size() + fairies.size()
-				+ trolls.size() + djinni.size() + sphinxes.size()
-				+ giants.size() + minotaurs.size() + ogres.size()
-				+ centaurs.size() + phoenixes.size() + simurghs.size() + griffins
-				.size());
+		final int len = 36 + 512 * (mapSize(dragons, fairies, giants, centaurs) + collSize(
+				trolls, djinni, sphinxes, minotaurs, ogres, phoenixes,
+				simurghs, griffins));
 		final StringBuilder builder = new StringBuilder(len);
 		builder.append("<h4>Immortals</h4>\n").append(OPEN_LIST);
 		optionallyPrint(dragons, "(s) at ", builder);
@@ -123,6 +121,28 @@ public class ImmortalsReportGenerator extends
 						phoenixes, simurghs, griffins) ? "" : retval;
 	}
 
+	/**
+	 * @param collections a list of collections
+	 * @return their total size
+	 */
+	private static int collSize(final Collection<?>... collections) {
+		int total = 0;
+		for (final Collection<?> coll : collections) {
+			total += coll.size();
+		}
+		return total;
+	}
+	/**
+	 * @param maps a list of maps
+	 * @return their total size
+	 */
+	private static int mapSize(final Map<?, ?>... maps) {
+		int total = 0;
+		for (final Map<?, ?> map : maps) {
+			total += map.size();
+		}
+		return total;
+	}
 	/**
 	 * Produce the sub-report dealing with "immortals".
 	 *
