@@ -36,13 +36,11 @@ public class IteratorWrapper<T> implements Iterable<T> {
 				public boolean hasNext() {
 					return false;
 				}
-
 				@Override
 				public T next() {
 					throw new NoSuchElementException(
 							"Iterator substituted for null is empty");
 				}
-
 				@Override
 				public void remove() {
 					throw new UnsupportedOperationException(
