@@ -61,15 +61,15 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
 	 * Label to put before every direct-helper test result.
 	 */
-	private static final String DIRECT_NAME = "Direct:  ";
+	private static final String DIRECT = "Direct:  ";
 	/**
 	 * Label to put before every caching-helper test result.
 	 */
-	private static final String CACHING_NAME = "Caching:";
+	private static final String CACHING = "Caching:";
 	/**
 	 * Label to put before every version-2 helper test result.
 	 */
-	private static final String VER_TWO_NAME = "Ver. 2: ";
+	private static final String VER_TWO = "Ver. 2: ";
 
 	/**
 	 * The first test: all in one place.
@@ -413,7 +413,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 
 	/**
 	 * Run all the tests on the specified file.
-	 * 
+	 *
 	 * @param map the map to use for the tests.
 	 * @param repetitions how many times to repeat each test (more takes longer,
 	 *        but gives more precise result)
@@ -439,57 +439,56 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 					}
 				});
 		SystemOut.SYS_OUT.println("1. All in one place:");
-		long oneTotal = printStats(CACHING_NAME,
-				first(helperOne, map, reps, tsize), reps);
-		long twoTotal = printStats(DIRECT_NAME,
-				first(helperTwo, map, reps, tsize), reps);
-		long threeTotal = printStats(VER_TWO_NAME,
+		long oneTotal = printStats(CACHING, first(helperOne, map, reps, tsize),
+				reps);
+		long twoTotal = printStats(DIRECT, first(helperTwo, map, reps, tsize),
+				reps);
+		long threeTotal = printStats(VER_TWO,
 				first(helperThree, map, reps, tsize), reps);
 		SystemOut.SYS_OUT.println("2. Translating:");
-		oneTotal += printStats(CACHING_NAME,
-				second(helperOne, map, reps, tsize), reps);
-		twoTotal += printStats(DIRECT_NAME,
-				second(helperTwo, map, reps, tsize), reps);
-		threeTotal += printStats(VER_TWO_NAME,
+		oneTotal += printStats(CACHING, second(helperOne, map, reps, tsize),
+				reps);
+		twoTotal += printStats(DIRECT, second(helperTwo, map, reps, tsize),
+				reps);
+		threeTotal += printStats(VER_TWO,
 				second(helperThree, map, reps, tsize), reps);
 		SystemOut.SYS_OUT.println("3. In-place, reusing Graphics:");
-		oneTotal += printStats(CACHING_NAME,
-				third(helperOne, map, reps, tsize), reps);
-		twoTotal += printStats(DIRECT_NAME, third(helperTwo, map, reps, tsize),
+		oneTotal += printStats(CACHING, third(helperOne, map, reps, tsize),
 				reps);
-		threeTotal += printStats(VER_TWO_NAME,
-				third(helperThree, map, reps, tsize), reps);
+		twoTotal += printStats(DIRECT, third(helperTwo, map, reps, tsize), reps);
+		threeTotal += printStats(VER_TWO, third(helperThree, map, reps, tsize),
+				reps);
 		SystemOut.SYS_OUT.println("4. Translating, reusing Graphics:");
-		oneTotal += printStats(CACHING_NAME,
-				fourth(helperOne, map, reps, tsize), reps);
-		twoTotal += printStats(DIRECT_NAME,
-				fourth(helperTwo, map, reps, tsize), reps);
-		threeTotal += printStats(VER_TWO_NAME,
+		oneTotal += printStats(CACHING, fourth(helperOne, map, reps, tsize),
+				reps);
+		twoTotal += printStats(DIRECT, fourth(helperTwo, map, reps, tsize),
+				reps);
+		threeTotal += printStats(VER_TWO,
 				fourth(helperThree, map, reps, tsize), reps);
 		SystemOut.SYS_OUT.println("5. Ordered iteration vs filtering:");
 		SystemOut.SYS_OUT.print("Iteration, ");
-		oneTotal += printStats(CACHING_NAME,
-				fifthOne(helperOne, map, reps, tsize), reps);
+		oneTotal += printStats(CACHING, fifthOne(helperOne, map, reps, tsize),
+				reps);
 		SystemOut.SYS_OUT.print("Iteration, ");
-		twoTotal += printStats(DIRECT_NAME,
-				fifthOne(helperTwo, map, reps, tsize), reps);
+		twoTotal += printStats(DIRECT, fifthOne(helperTwo, map, reps, tsize),
+				reps);
 		SystemOut.SYS_OUT.print("Iteration, ");
-		threeTotal += printStats(VER_TWO_NAME,
+		threeTotal += printStats(VER_TWO,
 				fifthOne(helperThree, map, reps, tsize), reps);
 		SystemOut.SYS_OUT.print("Filtering, ");
-		oneTotal += printStats(CACHING_NAME,
-				fifthTwo(helperOne, map, reps, tsize), reps);
+		oneTotal += printStats(CACHING, fifthTwo(helperOne, map, reps, tsize),
+				reps);
 		SystemOut.SYS_OUT.print("Filtering, ");
-		twoTotal += printStats(DIRECT_NAME,
-				fifthTwo(helperTwo, map, reps, tsize), reps);
+		twoTotal += printStats(DIRECT, fifthTwo(helperTwo, map, reps, tsize),
+				reps);
 		SystemOut.SYS_OUT.print("Filtering, ");
-		threeTotal += printStats(VER_TWO_NAME,
+		threeTotal += printStats(VER_TWO,
 				fifthTwo(helperThree, map, reps, tsize), reps);
 		SystemOut.SYS_OUT.println("--------------------------------------");
 		SystemOut.SYS_OUT.print("Total:");
-		printStats(CACHING_NAME, oneTotal, reps);
-		printStats(DIRECT_NAME, twoTotal, reps);
-		printStats(VER_TWO_NAME, threeTotal, reps);
+		printStats(CACHING, oneTotal, reps);
+		printStats(DIRECT, twoTotal, reps);
+		printStats(VER_TWO, threeTotal, reps);
 		SystemOut.SYS_OUT.println();
 	}
 
