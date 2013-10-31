@@ -68,7 +68,6 @@ public class ImmortalsReportGenerator extends
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
-			final Integer idNum = Integer.valueOf(immortal.getID());
 			if (immortal instanceof Dragon) {
 				separateByKind(dragons, (Dragon) immortal, point);
 			} else if (immortal instanceof Fairy) {
@@ -93,10 +92,7 @@ public class ImmortalsReportGenerator extends
 				simurghs.add(point);
 			} else if (immortal instanceof Griffin) {
 				griffins.add(point);
-			} else {
-				continue;
 			}
-			fixtures.remove(idNum);
 		}
 		final int totalSize = collSize(dragons.keySet(),
 				fairies.keySet(), giants.keySet(), centaurs.keySet(), trolls,
@@ -162,7 +158,6 @@ public class ImmortalsReportGenerator extends
 
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point point = pair.first();
-			final Integer idNum = Integer.valueOf(pair.second().getID());
 			if (pair.second() instanceof Dragon) {
 				separateByKind(dragons, (Dragon) pair.second(), point);
 			} else if (pair.second() instanceof Fairy) {
@@ -187,10 +182,7 @@ public class ImmortalsReportGenerator extends
 				simurghs.add(point);
 			} else if (pair.second() instanceof Griffin) {
 				griffins.add(point);
-			} else {
-				continue;
 			}
-			fixtures.remove(idNum);
 		}
 		optionallyAddRIR(dragons, "(s) at ", retval);
 		optionallyAddRIR(fairies, " at ", retval);
@@ -221,13 +213,17 @@ public class ImmortalsReportGenerator extends
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
-		return item instanceof Dragon || item instanceof Fairy
+		if (item instanceof Dragon || item instanceof Fairy
 				|| item instanceof Troll || item instanceof Djinn
 				|| item instanceof Sphinx || item instanceof Giant
 				|| item instanceof Minotaur || item instanceof Ogre
 				|| item instanceof Centaur || item instanceof Phoenix
-				|| item instanceof Simurgh || item instanceof Griffin ? concat(
-				atPoint(loc), "A(n) ", item.toString()) : "";
+				|| item instanceof Simurgh || item instanceof Griffin) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return concat(atPoint(loc), "A(n) ", item.toString());
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -244,14 +240,17 @@ public class ImmortalsReportGenerator extends
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
-		return item instanceof Dragon || item instanceof Fairy
+		if (item instanceof Dragon || item instanceof Fairy
 				|| item instanceof Troll || item instanceof Djinn
 				|| item instanceof Sphinx || item instanceof Giant
 				|| item instanceof Minotaur || item instanceof Ogre
 				|| item instanceof Centaur || item instanceof Phoenix
-				|| item instanceof Simurgh || item instanceof Griffin ? new SimpleReportNode(
-				atPoint(loc), "A(n) ", item.toString())
-				: EmptyReportNode.NULL_NODE;
+				|| item instanceof Simurgh || item instanceof Griffin) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode(atPoint(loc), "A(n) ", item.toString());
+		} else {
+			return EmptyReportNode.NULL_NODE;
+		}
 	}
 
 	/**
