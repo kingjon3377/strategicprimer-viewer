@@ -172,7 +172,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public HarvestableFixture read(final StartElement element,
+	public HarvestableFixture read(final StartElement element, // $codepro.audit.disable cyclomaticComplexity
 			final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
