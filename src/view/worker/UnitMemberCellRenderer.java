@@ -78,20 +78,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			if (!"human".equals(worker.getRace())) {
 				builder.append(", a ").append(worker.getRace());
 			}
-			if (worker.iterator().hasNext()) {
-				builder.append(" (");
-				boolean notFirst = false;
-				for (final Job job : worker) {
-					if (notFirst) {
-						builder.append(", ");
-					} else {
-						notFirst = true;
-					}
-					builder.append(job.getName()).append(' ')
-							.append(job.getLevel());
-				}
-				builder.append(')');
-			}
+			builder.append(jobCSL(worker));
 			builder.append("</p></html>");
 			((JLabel) component).setText(builder.toString());
 		} else if (internal instanceof Unit) {
@@ -105,7 +92,31 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		return component;
 	}
-
+	/**
+	 * @param iter something containing Jobs
+	 * @return a comma-separated list of them, in parentheses, prepended by a space, if there are any.
+	 */
+	private static String jobCSL(final Iterable<Job> iter) {
+		if (iter.iterator().hasNext()) {
+			final StringBuilder builder = new StringBuilder(100);
+			builder.append(" (");
+			boolean first = true;
+			for (final Job job : iter) {
+				if (first) {
+					first = false;
+				} else {
+					builder.append(", ");
+				}
+				builder.append(job.getName()).append(' ').append(job.getLevel());
+			}
+			builder.append(')');
+			final String retval = builder.toString();
+			assert retval != null;
+			return retval;
+		} else {
+			return "";
+		}
+	}
 	/**
 	 * @param obj a HasImage object
 	 * @return an icon representing it
