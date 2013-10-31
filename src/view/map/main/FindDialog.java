@@ -173,17 +173,9 @@ public class FindDialog extends JDialog implements ActionListener {
 		if (!pattern.isEmpty()
 				&& (!(fix instanceof TileFixture) || ffl
 						.shouldDisplay((TileFixture) fix))
-				&& (fix.getID() == idNum
-						|| (fix instanceof HasName && ((HasName) fix).getName()
-								.contains(pattern))
-						|| (fix instanceof HasKind && ((HasKind) fix).getKind()
-								.contains(pattern)) || (fix instanceof HasOwner && (((HasOwner) fix)
-						.getOwner().getName().contains(pattern)
-						|| "me".equalsIgnoreCase(pattern.trim())
-						&& ((HasOwner) fix).getOwner().isCurrent()
-						|| "none".equalsIgnoreCase(pattern.trim())
-						&& ((HasOwner) fix).getOwner().isIndependent() || ((HasOwner) fix)
-						.getOwner().getPlayerId() == idNum)))) {
+				&& (fix.getID() == idNum || matchesName(pattern, fix)
+						|| matchesKind(pattern, fix) || matchesOwner(pattern,
+							idNum, fix))) {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable<?>) {
 			for (final IFixture member : (FixtureIterable<?>) fix) {
@@ -194,6 +186,43 @@ public class FindDialog extends JDialog implements ActionListener {
 			return false; // NOPMD
 		}
 		return false;
+	}
+
+	/**
+	 * @param pattern a pattern
+	 * @param idNum the ID number that is the pattern if the pattern is numeric
+	 * @param fix a fixture
+	 * @return whether the fixture has an owner that matches the pattern.
+	 */
+	private static boolean matchesOwner(final String pattern, final int idNum,
+			final IFixture fix) {
+		return fix instanceof HasOwner
+				&& (((HasOwner) fix).getOwner().getName().contains(pattern)
+						|| "me".equalsIgnoreCase(pattern.trim())
+						&& ((HasOwner) fix).getOwner().isCurrent()
+						|| "none".equalsIgnoreCase(pattern.trim())
+						&& ((HasOwner) fix).getOwner().isIndependent() || ((HasOwner) fix)
+						.getOwner().getPlayerId() == idNum);
+	}
+
+	/**
+	 * @param pattern a pattern
+	 * @param fix a fixture
+	 * @return whether the fixture has a 'kind' that matches the pattern
+	 */
+	private static boolean matchesKind(final String pattern, final IFixture fix) {
+		return fix instanceof HasKind && ((HasKind) fix).getKind()
+				.contains(pattern);
+	}
+
+	/**
+	 * @param pattern a patter
+	 * @param fix a fixture
+	 * @return whether the fixture has a name that matches the pattern
+	 */
+	private static boolean matchesName(final String pattern, final IFixture fix) {
+		return fix instanceof HasName
+				&& ((HasName) fix).getName().contains(pattern);
 	}
 
 	/**
