@@ -52,7 +52,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public String produce(// $codepro.audit.disable cyclomaticComplexity: TODO: Use Guava Multimaps
+	public String produce(// $codepro.audit.disable cyclomaticComplexity TODO: Use Guava Multimaps
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, // NOPMD
 			final TileCollection tiles, final Player player) {
 		final HtmlList caches = new HtmlList(
