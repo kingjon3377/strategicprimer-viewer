@@ -177,17 +177,14 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture on that tile.
 	 */
 	private TileFixture getTopFixture(final Tile tile) {
-		TileFixture retval = null;
-		final Iterator<TileFixture> iter = new IteratorWrapper<>(
-				new FilteredIterator(tile.iterator(), zof), fixComp).iterator();
-		while (retval == null) {
-			if (iter.hasNext()) {
-				retval = iter.next();
-			} else {
-				throw new IllegalArgumentException("Tile has no non-null fixtures");
+		final Iterable<TileFixture> iter = new IteratorWrapper<>(
+				new FilteredIterator(tile.iterator(), zof), fixComp);
+		for (final TileFixture item : iter) {
+			if (item != null) {
+				return item;
 			}
 		}
-		return retval;
+		throw new IllegalArgumentException("Tile has no non-null fixtures");
 	}
 
 	/**
