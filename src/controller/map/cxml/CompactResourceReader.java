@@ -10,9 +10,6 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.HasImage;
 import model.map.IEvent;
 import model.map.PlayerCollection;
 import model.map.fixtures.resources.Battlefield;
@@ -28,6 +25,9 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.Warning;
@@ -230,9 +230,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
 		spinUntilEnd(assertNotNullQName(element.getName()), stream);
-		if (retval instanceof HasImage) {
-			((HasImage) retval).setImage(getParameter(element, "image", ""));
-		}
+		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 
@@ -376,9 +374,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 		out.append("\" id=\"");
 		out.append(Integer.toString(obj.getID()));
 		out.append('"');
-		if (obj instanceof HasImage) {
-			out.append(imageXML((HasImage) obj));
-		}
+		out.append(imageXML(obj));
 		out.append(" />\n");
 	}
 

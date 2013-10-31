@@ -1,6 +1,5 @@
 package model.map.fixtures.resources;
 
-import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -13,7 +12,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class Shrub implements HarvestableFixture, HasImage, HasKind {
+public class Shrub implements HarvestableFixture, HasKind {
 	/**
 	 * A description of what kind of shrub this is.
 	 */

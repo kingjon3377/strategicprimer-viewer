@@ -1,6 +1,5 @@
 package model.map.fixtures.resources;
 
-import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
@@ -14,8 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public final class StoneDeposit implements IEvent, HasImage,
-		HarvestableFixture, HasKind {
+public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	/**
 	 * Constructor.
 	 *

@@ -1,6 +1,5 @@
 package model.map.fixtures.resources;
 
-import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -13,7 +12,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class Grove implements HarvestableFixture, HasImage, HasKind {
+public class Grove implements HarvestableFixture, HasKind {
 	/**
 	 * Whether this is a fruit orchard.
 	 */

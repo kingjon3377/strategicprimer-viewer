@@ -1,5 +1,6 @@
 package model.map.fixtures.resources;
 
+import model.map.HasImage;
 import model.map.TileFixture;
 
 /**
@@ -8,6 +9,6 @@ import model.map.TileFixture;
  *
  * @author Jonathan Lovelace
  */
-public interface HarvestableFixture extends TileFixture {
+public interface HarvestableFixture extends TileFixture, HasImage {
 	// Marker interface
 }
