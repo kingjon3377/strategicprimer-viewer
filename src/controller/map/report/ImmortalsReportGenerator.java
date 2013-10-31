@@ -217,7 +217,7 @@ public class ImmortalsReportGenerator extends
 	 *         it's not one we handle here.
 	 */
 	@Override
-	public String produce(
+	public String produce(// $codepro.audit.disable cyclomaticComplexity TODO: Create Immortal marker interface
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
@@ -240,7 +240,7 @@ public class ImmortalsReportGenerator extends
 	 *         handle here.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity TODO: Create Immortal marker interface
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
