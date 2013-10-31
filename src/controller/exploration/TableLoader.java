@@ -90,20 +90,16 @@ public final class TableLoader { // NOPMD
 			throw new IOException(
 					"File doesn't start by specifying which kind of table.");
 		} else {
-			switch (line.charAt(0)) { // NOPMD
-			case 'Q':
+			final char cmd = Character.toLowerCase(line.charAt(0));
+			switch (cmd) { // NOPMD
 			case 'q':
 				return loadQuadrantTable(reader); // NOPMD
-			case 'R':
 			case 'r':
 				return loadRandomTable(reader); // NOPMD
-			case 'C':
 			case 'c':
 				return loadConstantTable(reader); // NOPMD
-			case 'L':
 			case 'l':
 				return loadLegacyTable(); // NOPMD
-			case 'T':
 			case 't':
 				return loadTerrainTable(reader);
 			default:
