@@ -52,7 +52,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public String produce(
+	public String produce(// $codepro.audit.disable cyclomaticComplexity: TODO: Use Guava Multimaps
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, // NOPMD
 			final TileCollection tiles, final Player player) {
 		final HtmlList caches = new HtmlList(
@@ -80,7 +80,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					// TODO: Handle these like shrubs.
 					minerals.add(produce(fixtures, tiles, player, item, point));
 				} else if (item instanceof Shrub) {
-					// ESCA-JAVA0177:
+					// ESCA-JAVA0177: TODO: Use a Guava Multimap
 					final List<Point> shrubPoints; // NOPMD
 					if (shrubs.containsKey(((Shrub) item).getKind())) {
 						shrubPoints = shrubs.get(((Shrub) item).getKind());
