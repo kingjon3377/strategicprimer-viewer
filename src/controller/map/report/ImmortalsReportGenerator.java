@@ -105,18 +105,18 @@ public class ImmortalsReportGenerator extends
 		final int len = 36 + 512 * totalSize;
 		final StringBuilder builder = new StringBuilder(len);
 		builder.append("<h4>Immortals</h4>\n").append(OPEN_LIST);
-		optionallyPrint(dragons, "(s) at ", builder);
-		optionallyPrint(fairies, " at ", builder);
-		optionallyPrint(trolls, "Troll(s) at ", builder);
-		optionallyPrint(djinni, "Djinn(i) at ", builder);
-		optionallyPrint(sphinxes, "Sphinx(es) at ", builder);
-		optionallyPrint(giants, "(s) at ", builder);
-		optionallyPrint(minotaurs, "Minotaur(s) at ", builder);
-		optionallyPrint(ogres, "Ogre(s) at ", builder);
-		optionallyPrint(centaurs, "(s) at ", builder);
-		optionallyPrint(phoenixes, "Phoenix(es) at ", builder);
-		optionallyPrint(simurghs, "Simurgh(s) at ", builder);
-		optionallyPrint(griffins, "Griffin(s) at ", builder);
+		optionallyPrintMap(dragons, "(s) at ", builder);
+		optionallyPrintMap(fairies, " at ", builder);
+		optionallyPrintList(trolls, "Troll(s) at ", builder);
+		optionallyPrintList(djinni, "Djinn(i) at ", builder);
+		optionallyPrintList(sphinxes, "Sphinx(es) at ", builder);
+		optionallyPrintMap(giants, "(s) at ", builder);
+		optionallyPrintList(minotaurs, "Minotaur(s) at ", builder);
+		optionallyPrintList(ogres, "Ogre(s) at ", builder);
+		optionallyPrintMap(centaurs, "(s) at ", builder);
+		optionallyPrintList(phoenixes, "Phoenix(es) at ", builder);
+		optionallyPrintList(simurghs, "Simurgh(s) at ", builder);
+		optionallyPrintList(griffins, "Griffin(s) at ", builder);
 		final String retval = builder.append(CLOSE_LIST).toString();
 		assert retval != null;
 		return totalSize == 0 ? "" : retval;
@@ -192,15 +192,15 @@ public class ImmortalsReportGenerator extends
 			}
 			fixtures.remove(idNum);
 		}
-		optionallyAdd(dragons, "(s) at ", retval);
-		optionallyAdd(fairies, " at ", retval);
+		optionallyAddRIR(dragons, "(s) at ", retval);
+		optionallyAddRIR(fairies, " at ", retval);
 		optionallyAdd(trolls, "Troll(s) at ", retval);
 		optionallyAdd(djinni, "Djinn(i) at ", retval);
 		optionallyAdd(sphinxes, "Sphinx(es) at ", retval);
-		optionallyAdd(giants, "(s) at ", retval);
+		optionallyAddRIR(giants, "(s) at ", retval);
 		optionallyAdd(minotaurs, "Minotaur(s) at ", retval);
 		optionallyAdd(ogres, "Ogre(s) at ", retval);
-		optionallyAdd(centaurs, "(s) at ", retval);
+		optionallyAddRIR(centaurs, "(s) at ", retval);
 		optionallyAdd(phoenixes, "Phoenix(es) at ", retval);
 		optionallyAdd(simurghs, "Simurgh(s) at ", retval);
 		optionallyAdd(griffins, "Griffin(s) at ", retval);
@@ -263,7 +263,7 @@ public class ImmortalsReportGenerator extends
 	 * @param infix what to print in the middle of each item
 	 * @param builder the builder to print to
 	 */
-	private static void optionallyPrint(final Map<String, List<Point>> mapping,
+	private static void optionallyPrintMap(final Map<String, List<Point>> mapping,
 			final String infix, final StringBuilder builder) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix)
@@ -280,7 +280,7 @@ public class ImmortalsReportGenerator extends
 	 * @param mapping the mapping from kinds (or whatever) to lists of points
 	 * @param infix what to print in the middle of each item
 	 */
-	private static void optionallyAdd(final Map<String, List<Point>> mapping,
+	private static void optionallyAddRIR(final Map<String, List<Point>> mapping,
 			final String infix, final AbstractReportNode parent) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			parent.add(new SimpleReportNode(entry.getKey(), infix,
@@ -297,7 +297,7 @@ public class ImmortalsReportGenerator extends
 	 * @param prefix what to prepend to it if non-empty
 	 * @param builder the builder to print to
 	 */
-	private static void optionallyPrint(final List<Point> points,
+	private static void optionallyPrintList(final List<Point> points,
 			final String prefix, final StringBuilder builder) {
 		if (!points.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM).append(prefix)
