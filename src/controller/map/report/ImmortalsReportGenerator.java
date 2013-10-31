@@ -67,30 +67,31 @@ public class ImmortalsReportGenerator extends
 
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point point = pair.first();
-			final Integer idNum = Integer.valueOf(pair.second().getID());
-			if (pair.second() instanceof Dragon) {
-				separateByKind(dragons, (Dragon) pair.second(), point);
-			} else if (pair.second() instanceof Fairy) {
-				separateByKind(fairies, (Fairy) pair.second(), point);
-			} else if (pair.second() instanceof Troll) {
+			final IFixture immortal = pair.second();
+			final Integer idNum = Integer.valueOf(immortal.getID());
+			if (immortal instanceof Dragon) {
+				separateByKind(dragons, (Dragon) immortal, point);
+			} else if (immortal instanceof Fairy) {
+				separateByKind(fairies, (Fairy) immortal, point);
+			} else if (immortal instanceof Troll) {
 				trolls.add(point);
-			} else if (pair.second() instanceof Djinn) {
+			} else if (immortal instanceof Djinn) {
 				djinni.add(point);
-			} else if (pair.second() instanceof Sphinx) {
+			} else if (immortal instanceof Sphinx) {
 				sphinxes.add(point);
-			} else if (pair.second() instanceof Giant) {
-				separateByKind(giants, (Giant) pair.second(), point);
-			} else if (pair.second() instanceof Minotaur) {
+			} else if (immortal instanceof Giant) {
+				separateByKind(giants, (Giant) immortal, point);
+			} else if (immortal instanceof Minotaur) {
 				minotaurs.add(point);
-			} else if (pair.second() instanceof Ogre) {
+			} else if (immortal instanceof Ogre) {
 				ogres.add(point);
-			} else if (pair.second() instanceof Centaur) {
-				separateByKind(centaurs, (Centaur) pair.second(), point);
-			} else if (pair.second() instanceof Phoenix) {
+			} else if (immortal instanceof Centaur) {
+				separateByKind(centaurs, (Centaur) immortal, point);
+			} else if (immortal instanceof Phoenix) {
 				phoenixes.add(point);
-			} else if (pair.second() instanceof Simurgh) {
+			} else if (immortal instanceof Simurgh) {
 				simurghs.add(point);
-			} else if (pair.second() instanceof Griffin) {
+			} else if (immortal instanceof Griffin) {
 				griffins.add(point);
 			} else {
 				continue;
