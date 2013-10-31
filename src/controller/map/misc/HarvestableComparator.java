@@ -3,9 +3,7 @@ package controller.map.misc;
 import java.util.Comparator;
 
 import model.map.HasKind;
-import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.resources.Meadow;
@@ -33,9 +31,7 @@ public class HarvestableComparator implements Comparator<HarvestableFixture> { /
 	public int compare(final HarvestableFixture one,
 			final HarvestableFixture two) { // NOPMD
 		if (one.getClass().equals(two.getClass())) {
-			if (one instanceof Battlefield || one instanceof Cave) {
-				return one.getID() - two.getID(); // NOPMD
-			} else if (one instanceof CacheFixture
+			if (one instanceof CacheFixture
 					&& two instanceof CacheFixture) {
 				// FindBugs objected if we didn't do both instanceofs
 				final CacheFixture oneT = (CacheFixture) one;
@@ -79,8 +75,7 @@ public class HarvestableComparator implements Comparator<HarvestableFixture> { /
 						enumPair(((StoneDeposit) one).stone(),
 								((StoneDeposit) two).stone()), idPair(one, two));
 			} else {
-				throw new IllegalStateException(
-						"Unhandled Harvestable implementation or impossible condition");
+				return one.getID() - two.getID();
 			}
 		} else {
 			return one.getClass().hashCode() - two.getClass().hashCode();
