@@ -30,53 +30,50 @@ public class HarvestableComparator implements Comparator<HarvestableFixture> { /
 	@Override
 	public int compare(final HarvestableFixture one,
 			final HarvestableFixture two) { // NOPMD
-		if (one.getClass().equals(two.getClass())) {
-			if (one instanceof CacheFixture
-					&& two instanceof CacheFixture) {
-				// FindBugs objected if we didn't do both instanceofs
-				final CacheFixture oneT = (CacheFixture) one;
-				final CacheFixture twoT = (CacheFixture) two;
-				return repeatedCompare(kindPair(oneT, twoT),
-						hashPair(oneT.getContents(), twoT.getContents()),
-						idPair(one, two));
-			} else if (one instanceof Grove && two instanceof Grove) {
-				final Grove oneT = (Grove) one;
-				final Grove twoT = (Grove) two;
-				return repeatedCompare(kindPair(oneT, twoT),
-						boolPair(oneT.isOrchard(), twoT.isOrchard()),
-						boolPair(oneT.isCultivated(), twoT.isCultivated()),
-						idPair(one, two));
-			} else if (one instanceof Meadow && two instanceof Meadow) {
-				final Meadow oneT = (Meadow) one;
-				final Meadow twoT = (Meadow) two;
-				return repeatedCompare(kindPair(oneT, twoT),
-						boolPair(oneT.isField(), twoT.isField()),
-						boolPair(oneT.isCultivated(), twoT.isCultivated()),
-						enumPair(oneT.getStatus(), twoT.getStatus()),
-						idPair(one, two));
-			} else if (one instanceof Mine && two instanceof Mine) {
-				final Mine oneT = (Mine) one;
-				final Mine twoT = (Mine) two;
-				return repeatedCompare(kindPair(oneT, twoT),
-						enumPair(oneT.getStatus(), twoT.getStatus()),
-						idPair(one, two));
-			} else if (one instanceof MineralVein && two instanceof MineralVein) {
-				final MineralVein oneT = (MineralVein) one;
-				final MineralVein twoT = (MineralVein) two;
-				return repeatedCompare(kindPair(oneT, twoT),
-						boolPair(oneT.isExposed(), twoT.isExposed()),
-						idPair(one, two));
-			} else if (one instanceof Shrub && two instanceof Shrub) {
-				return repeatedCompare(kindPair((Shrub) one, (Shrub) two),
-						idPair(one, two));
-			} else if (one instanceof StoneDeposit
-					&& two instanceof StoneDeposit) {
-				return repeatedCompare(
-						enumPair(((StoneDeposit) one).stone(),
-								((StoneDeposit) two).stone()), idPair(one, two));
-			} else {
-				return one.getID() - two.getID();
-			}
+
+		if (one instanceof CacheFixture && two instanceof CacheFixture) {
+			// FindBugs objected if we didn't do both instanceofs
+			final CacheFixture oneT = (CacheFixture) one;
+			final CacheFixture twoT = (CacheFixture) two;
+			return repeatedCompare(kindPair(oneT, twoT),
+					hashPair(oneT.getContents(), twoT.getContents()),
+					idPair(one, two));
+		} else if (one instanceof Grove && two instanceof Grove) {
+			final Grove oneT = (Grove) one;
+			final Grove twoT = (Grove) two;
+			return repeatedCompare(kindPair(oneT, twoT),
+					boolPair(oneT.isOrchard(), twoT.isOrchard()),
+					boolPair(oneT.isCultivated(), twoT.isCultivated()),
+					idPair(one, two));
+		} else if (one instanceof Meadow && two instanceof Meadow) {
+			final Meadow oneT = (Meadow) one;
+			final Meadow twoT = (Meadow) two;
+			return repeatedCompare(kindPair(oneT, twoT),
+					boolPair(oneT.isField(), twoT.isField()),
+					boolPair(oneT.isCultivated(), twoT.isCultivated()),
+					enumPair(oneT.getStatus(), twoT.getStatus()),
+					idPair(one, two));
+		} else if (one instanceof Mine && two instanceof Mine) {
+			final Mine oneT = (Mine) one;
+			final Mine twoT = (Mine) two;
+			return repeatedCompare(kindPair(oneT, twoT),
+					enumPair(oneT.getStatus(), twoT.getStatus()),
+					idPair(one, two));
+		} else if (one instanceof MineralVein && two instanceof MineralVein) {
+			final MineralVein oneT = (MineralVein) one;
+			final MineralVein twoT = (MineralVein) two;
+			return repeatedCompare(kindPair(oneT, twoT),
+					boolPair(oneT.isExposed(), twoT.isExposed()),
+					idPair(one, two));
+		} else if (one instanceof Shrub && two instanceof Shrub) {
+			return repeatedCompare(kindPair((Shrub) one, (Shrub) two),
+					idPair(one, two));
+		} else if (one instanceof StoneDeposit && two instanceof StoneDeposit) {
+			return repeatedCompare(
+					enumPair(((StoneDeposit) one).stone(),
+							((StoneDeposit) two).stone()), idPair(one, two));
+		} else if (one.getClass().equals(two.getClass())) {
+			return one.getID() - two.getID();
 		} else {
 			return one.getClass().hashCode() - two.getClass().hashCode();
 		}
