@@ -130,7 +130,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity TODO: Use Guava Multimaps
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player player) {
 		final AbstractReportNode retval = new SectionReportNode(4,
