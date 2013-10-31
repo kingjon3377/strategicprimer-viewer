@@ -64,38 +64,36 @@ public class HarvestableReportGenerator extends // NOPMD
 		final Map<String, List<Point>> shrubs = new HashMap<>();
 		final HtmlList stone = new HtmlList("<h5>Exposed stone deposits</h5>");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
-			if (pair.second() instanceof HarvestableFixture) {
-				final HarvestableFixture item = (HarvestableFixture) pair
-						.second();
-				final Point point = pair.first();
-				if (item instanceof CacheFixture) {
-					caches.add(produce(fixtures, tiles, player, item, point));
-				} else if (item instanceof Grove) {
-					groves.add(produce(fixtures, tiles, player, item, point));
-				} else if (item instanceof Meadow) {
-					meadows.add(produce(fixtures, tiles, player, item, point));
-				} else if (item instanceof Mine) {
-					mines.add(produce(fixtures, tiles, player, item, point));
-				} else if (item instanceof MineralVein) {
-					// TODO: Handle these like shrubs.
-					minerals.add(produce(fixtures, tiles, player, item, point));
-				} else if (item instanceof Shrub) {
-					// ESCA-JAVA0177: TODO: Use a Guava Multimap
-					final List<Point> shrubPoints; // NOPMD
-					if (shrubs.containsKey(((Shrub) item).getKind())) {
-						shrubPoints = shrubs.get(((Shrub) item).getKind());
-					} else {
-						shrubPoints = new ArrayList<>(); // NOPMD
-						shrubs.put(((Shrub) item).getKind(), shrubPoints);
-					}
-					shrubPoints.add(point);
-					fixtures.remove(Integer.valueOf(item.getID()));
-				} else if (item instanceof StoneDeposit) {
-					// TODO: Handle these like shrubs.
-					stone.add(produce(fixtures, tiles, player, item, point));
+			final IFixture item = pair.second();
+			final Point point = pair.first();
+			if (item instanceof CacheFixture) {
+				caches.add(produce(fixtures, tiles, player,
+						(CacheFixture) item, point));
+			} else if (item instanceof Grove) {
+				groves.add(produce(fixtures, tiles, player, (Grove) item, point));
+			} else if (item instanceof Meadow) {
+				meadows.add(produce(fixtures, tiles, player, (Meadow) item,
+						point));
+			} else if (item instanceof Mine) {
+				mines.add(produce(fixtures, tiles, player, (Mine) item, point));
+			} else if (item instanceof MineralVein) { // TODO: Handle these like shrubs.
+				minerals.add(produce(fixtures, tiles, player,
+						(MineralVein) item, point));
+			} else if (item instanceof Shrub) { // ESCA-JAVA0177: TODO: Use a Guava Multimap
+				final List<Point> shrubPoints; // NOPMD
+				if (shrubs.containsKey(((Shrub) item).getKind())) {
+					shrubPoints = shrubs.get(((Shrub) item).getKind());
+				} else {
+					shrubPoints = new ArrayList<>(); // NOPMD
+					shrubs.put(((Shrub) item).getKind(), shrubPoints);
 				}
+				shrubPoints.add(point);
+				fixtures.remove(Integer.valueOf(item.getID()));
+			} else if (item instanceof StoneDeposit) { // TODO: Handle these like shrubs.
+				stone.add(produce(fixtures, tiles, player, (StoneDeposit) item,
+						point));
 			}
-	}
+		}
 		final HtmlList shrubsText = new HtmlList(
 				"<h5>Shrubs, small trees, and such</h5>");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
