@@ -49,7 +49,7 @@ public class ImmortalsReportGenerator extends
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public String produce(
+	public String produce(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> dragons = new HashMap<>();
@@ -142,7 +142,7 @@ public class ImmortalsReportGenerator extends
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final TileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
