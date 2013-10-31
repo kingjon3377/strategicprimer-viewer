@@ -183,7 +183,6 @@ public class FindDialog extends JDialog implements ActionListener {
 					return true; // NOPMD
 				}
 			}
-			return false; // NOPMD
 		}
 		return false;
 	}
