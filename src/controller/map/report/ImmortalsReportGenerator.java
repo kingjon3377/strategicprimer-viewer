@@ -98,9 +98,11 @@ public class ImmortalsReportGenerator extends
 			}
 			fixtures.remove(idNum);
 		}
-		final int len = 36 + 512 * (mapSize(dragons, fairies, giants, centaurs) + collSize(
-				trolls, djinni, sphinxes, minotaurs, ogres, phoenixes,
-				simurghs, griffins));
+		final int totalSize = collSize(dragons.keySet(),
+				fairies.keySet(), giants.keySet(), centaurs.keySet(), trolls,
+				djinni, sphinxes, minotaurs, ogres, phoenixes, simurghs,
+				griffins);
+		final int len = 36 + 512 * totalSize;
 		final StringBuilder builder = new StringBuilder(len);
 		builder.append("<h4>Immortals</h4>\n").append(OPEN_LIST);
 		optionallyPrint(dragons, "(s) at ", builder);
@@ -117,9 +119,7 @@ public class ImmortalsReportGenerator extends
 		optionallyPrint(griffins, "Griffin(s) at ", builder);
 		final String retval = builder.append(CLOSE_LIST).toString();
 		assert retval != null;
-		return allEmpty(dragons, fairies, giants, centaurs)
-				&& allEmpty(trolls, djinni, sphinxes, minotaurs, ogres,
-						phoenixes, simurghs, griffins) ? "" : retval;
+		return totalSize == 0 ? "" : retval;
 	}
 
 	/**
@@ -130,17 +130,6 @@ public class ImmortalsReportGenerator extends
 		int total = 0;
 		for (final Collection<?> coll : collections) {
 			total += coll.size();
-		}
-		return total;
-	}
-	/**
-	 * @param maps a list of maps
-	 * @return their total size
-	 */
-	private static int mapSize(final Map<?, ?>... maps) {
-		int total = 0;
-		for (final Map<?, ?> map : maps) {
-			total += map.size();
 		}
 		return total;
 	}
@@ -216,32 +205,6 @@ public class ImmortalsReportGenerator extends
 		optionallyAdd(simurghs, "Simurgh(s) at ", retval);
 		optionallyAdd(griffins, "Griffin(s) at ", retval);
 		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
-	}
-
-	/**
-	 * @param maps a list of maps
-	 * @return true if all are empty, false if even one is not.
-	 */
-	private static boolean allEmpty(final Map<?, ?>... maps) {
-		for (final Map<?, ?> map : maps) {
-			if (!map.isEmpty()) {
-				return false; // NOPMD
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * @param collections a list of collections
-	 * @return true if all are empty, false if even one is not.
-	 */
-	private static boolean allEmpty(final Collection<?>... collections) {
-		for (final Collection<?> coll : collections) {
-			if (!coll.isEmpty()) {
-				return false; // NOPMD
-			}
-		}
-		return true;
 	}
 
 	/**
