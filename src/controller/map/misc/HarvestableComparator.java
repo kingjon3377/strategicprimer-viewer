@@ -28,7 +28,7 @@ public class HarvestableComparator implements Comparator<HarvestableFixture> { /
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compare(final HarvestableFixture one,
+	public int compare(final HarvestableFixture one, // $codepro.audit.disable cyclomaticComplexity
 			final HarvestableFixture two) { // NOPMD
 
 		if (one instanceof CacheFixture && two instanceof CacheFixture) {
