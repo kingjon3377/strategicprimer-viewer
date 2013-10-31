@@ -38,7 +38,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerConstructionFrame extends JFrame implements ActionListener,
+public class WorkerConstructionFrame extends JFrame implements ActionListener, // $codepro.audit.disable largeNumberOfFields
 		NewWorkerSource {
 	/**
 	 * Constructor.
