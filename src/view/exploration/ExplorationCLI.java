@@ -145,9 +145,7 @@ public class ExplorationCLI {
 		}
 		final Point dPoint = model.getDestination(point, direction);
 		for (final TileFixture fix : model.getMap().getTile(dPoint)) {
-			if (fix == null) {
-				continue;
-			} else if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
+			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
 			} else if (SimpleMovement.mightNotice(mover, fix)) {
 				allFixtures.add(fix);
