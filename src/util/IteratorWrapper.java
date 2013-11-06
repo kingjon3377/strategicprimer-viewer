@@ -20,6 +20,44 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class IteratorWrapper<T> implements Iterable<T> {
 	/**
+	 * The iterator to use when a null value was passed in.
+	 * @param <T> the type parameter
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private static final class NullIterator<T> implements Iterator<T> {
+		/**
+		 * Constructor. Needed to let the outer class construct an instance.
+		 */
+		protected NullIterator() {
+			// Do nothing.
+		}
+		/**
+		 * @return false
+		 */
+		@Override
+		public boolean hasNext() {
+			return false;
+		}
+		/**
+		 * @return nothing
+		 */
+		@Override
+		public T next() {
+			throw new NoSuchElementException(
+					"Iterator substituted for null is empty");
+		}
+		/**
+		 * Always throws.
+		 */
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException(
+					"Iterator substituted for null doesn't support remove()");
+		}
+	}
+
+	/**
 	 * The iterator we're wrapping.
 	 */
 	private final Iterator<T> iter;
@@ -31,22 +69,7 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	 */
 	public IteratorWrapper(@Nullable final Iterator<T> iterator) {
 		if (iterator == null) {
-			iter = new Iterator<T>() {
-				@Override
-				public boolean hasNext() {
-					return false;
-				}
-				@Override
-				public T next() {
-					throw new NoSuchElementException(
-							"Iterator substituted for null is empty");
-				}
-				@Override
-				public void remove() {
-					throw new UnsupportedOperationException(
-							"Iterator substituted for null doesn't support remove()");
-				}
-			};
+			iter = new NullIterator<>();
 		} else {
 			iter = iterator;
 		}
