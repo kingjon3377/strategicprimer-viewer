@@ -84,7 +84,20 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		retval.addTile(point, tile);
 		return retval;
 	}
-
+	/**
+	 * Encapsulate the given string in a 'tile' tag.
+	 * @param str a string
+	 * @return it, encapsulated.
+	 */
+	private static String encapsulateTileString(final String str) {
+		final StringBuilder builder = new StringBuilder(str.length() + 55);
+		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
+		builder.append(str);
+		builder.append("</tile>");
+		final String retval = builder.toString();
+		assert retval != null;
+		return retval;
+	}
 	/**
 	 * Test River serialization.
 	 *
@@ -100,12 +113,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			assertSerialization("First River serialization test, reflection",
 					river, River.class);
 		}
-		assertUnwantedChild(
-				"<tile row=\"1\" column=\"1\" kind=\"plains\"><lake><troll /></lake></tile>",
+		assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"),
 				Tile.class, false);
-		assertMissingProperty(
-				"<tile row=\"1\" column=\"1\" kind=\"plains\"><river /></tile>",
-				Tile.class, "direction", false);
+		assertMissingProperty(encapsulateTileString("<river />"), Tile.class,
+				"direction", false);
 		final Point point = PointFactory.point(0, 0);
 		assertSerialization(
 				"Second River serialization test, reflection",
