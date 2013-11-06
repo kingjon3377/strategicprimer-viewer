@@ -1,5 +1,10 @@
 package view.exploration;
 
+import static javax.swing.SwingUtilities.invokeLater;
+import static view.util.MenuItemCreator.createHotkey;
+import static view.util.MenuItemCreator.createMenuItem;
+import static view.util.MenuItemCreator.createShiftHotkey;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -7,7 +12,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.SwingUtilities;
 
 import model.exploration.IExplorationModel;
 import model.map.IMap;
@@ -20,7 +24,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import view.map.main.ViewerFrame;
 import view.util.DriverQuit;
-import view.util.MenuItemCreator;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MultiIOHandler;
 
@@ -43,39 +46,37 @@ public class ExplorationMenu extends JMenuBar {
 			final IExplorationModel model, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
-				MenuItemCreator.createHotkey(KeyEvent.VK_O),
-				"Load the main map from file", handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Load secondary",
-				KeyEvent.VK_E,
-				MenuItemCreator.createShiftHotkey(KeyEvent.VK_O),
+		fileMenu.add(createMenuItem("Load", KeyEvent.VK_L,
+				createHotkey(KeyEvent.VK_O), "Load the main map from file",
+				handler));
+		fileMenu.add(createMenuItem("Load secondary", KeyEvent.VK_E,
+				createShiftHotkey(KeyEvent.VK_O),
 				"Load an additional secondary map from file", handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Save", KeyEvent.VK_S,
-				MenuItemCreator.createHotkey(KeyEvent.VK_S),
+		fileMenu.add(createMenuItem("Save", KeyEvent.VK_S,
+				createHotkey(KeyEvent.VK_S),
 				"Save the main map to the file it was loaded from", handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Save As", KeyEvent.VK_A,
-				MenuItemCreator.createShiftHotkey(KeyEvent.VK_S),
-				"Save the main map to file", handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Save All", KeyEvent.VK_V,
-				MenuItemCreator.createHotkey(KeyEvent.VK_L),
-				"Save all maps to their files", handler));
+		fileMenu.add(createMenuItem("Save As", KeyEvent.VK_A,
+				createShiftHotkey(KeyEvent.VK_S), "Save the main map to file",
+				handler));
+		fileMenu.add(createMenuItem("Save All", KeyEvent.VK_V,
+				createHotkey(KeyEvent.VK_L), "Save all maps to their files",
+				handler));
 		fileMenu.addSeparator();
-		fileMenu.add(MenuItemCreator.createMenuItem("Open in map viewer",
-				KeyEvent.VK_M, MenuItemCreator.createHotkey(KeyEvent.VK_M),
+		fileMenu.add(createMenuItem("Open in map viewer", KeyEvent.VK_M,
+				createHotkey(KeyEvent.VK_M),
 				"Open the main map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
 					public void actionPerformed(
 							@Nullable final ActionEvent event) {
-						SwingUtilities.invokeLater(new ViewerOpener(model
-								.getMap(), model.getMapFilename(), -1, -1,
-								handler));
+						invokeLater(new ViewerOpener(model.getMap(), model
+								.getMapFilename(), -1, -1, handler));
 					}
 				}));
-		fileMenu.add(MenuItemCreator.createMenuItem(
+		fileMenu.add(createMenuItem(
 				"Open secondary map in map viewer",
 				KeyEvent.VK_E,
-				MenuItemCreator.createHotkey(KeyEvent.VK_E),
+				createHotkey(KeyEvent.VK_E),
 				"Open the first secondary map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
@@ -83,16 +84,16 @@ public class ExplorationMenu extends JMenuBar {
 							@Nullable final ActionEvent event) {
 						final Pair<IMap, String> mapPair = model
 								.getSubordinateMaps().iterator().next();
-						SwingUtilities.invokeLater(new ViewerOpener(mapPair
-								.first(), mapPair.second(), model.getMap()
-								.getPlayers().getCurrentPlayer().getPlayerId(),
-								model.getMap().getCurrentTurn(), handler));
+						invokeLater(new ViewerOpener(mapPair.first(), mapPair
+								.second(), model.getMap().getPlayers()
+								.getCurrentPlayer().getPlayerId(), model
+								.getMap().getCurrentTurn(), handler));
 					}
 				}));
 		fileMenu.addSeparator();
-		fileMenu.add(MenuItemCreator.createMenuItem("Close", KeyEvent.VK_W,
-				MenuItemCreator.createHotkey(KeyEvent.VK_W),
-				"Close this window", new ActionListener() {
+		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W,
+				createHotkey(KeyEvent.VK_W), "Close this window",
+				new ActionListener() {
 					/**
 					 * Close the window when pressed.
 					 *
@@ -108,9 +109,9 @@ public class ExplorationMenu extends JMenuBar {
 					}
 				}));
 		fileMenu.addSeparator();
-		fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
-				MenuItemCreator.createHotkey(KeyEvent.VK_Q),
-				"Quit the application", new ActionListener() {
+		fileMenu.add(createMenuItem("Quit", KeyEvent.VK_Q,
+				createHotkey(KeyEvent.VK_Q), "Quit the application",
+				new ActionListener() {
 					/**
 					 * Handle the menu "button" press.
 					 *
