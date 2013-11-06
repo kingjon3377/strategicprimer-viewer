@@ -58,13 +58,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * A factory to add rivers to a tile in-line.
-	 *
-	 * @param tile the tile to use
-	 * @param rivers the rivers to add
-	 * @return the tile, set up.
+	 * A factory to encapsulate rivers in a tile.
+	 * @param rivers the rivers to put on a tile
+	 * @return a tile containing them.
 	 */
-	private static Tile addRivers(final Tile tile, final River... rivers) {
+	private static Tile encapsulateRivers(final River... rivers) {
+		final Tile tile = new Tile(TileType.Plains);
 		for (final River river : rivers) {
 			if (river != null) {
 				tile.addRiver(river);
@@ -72,7 +71,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		}
 		return tile;
 	}
-
 	/**
 	 * @param tile a tile
 	 * @param point its location
@@ -90,7 +88,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @return it, encapsulated.
 	 */
 	private static String encapsulateTileString(final String str) {
-		final StringBuilder builder = new StringBuilder(str.length() + 55);
+		final StringBuilder builder = new StringBuilder(55 + str.length());
 		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
 		builder.append(str);
 		builder.append("</tile>");
@@ -110,28 +108,21 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		for (final River river : River.values()) {
 			assert river != null;
-			assertSerialization("First River serialization test, reflection",
-					river, River.class);
+			assertSerialization("River alone", river, River.class);
 		}
 		assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"),
 				Tile.class, false);
 		assertMissingProperty(encapsulateTileString("<river />"), Tile.class,
 				"direction", false);
 		final Point point = PointFactory.point(0, 0);
-		assertSerialization(
-				"Second River serialization test, reflection",
-				encapsulateTile(point,
-						addRivers(new Tile(TileType.Plains), River.East)),
+		assertSerialization("River in tile",
+				encapsulateTile(point, encapsulateRivers(River.East)),
 				SPMap.class);
-		assertSerialization(
-				"Third River serialization test, reflection",
-				encapsulateTile(point,
-						addRivers(new Tile(TileType.Plains), River.Lake)),
+		assertSerialization("Lake in tile",
+				encapsulateTile(point, encapsulateRivers(River.Lake)),
 				SPMap.class);
-		assertSerialization(
-				"Fourth River serialization test, reflection",
-				encapsulateTile(point,
-						addRivers(new Tile(TileType.Plains), River.North)),
+		assertSerialization("Another river in tile",
+				encapsulateTile(point, encapsulateRivers(River.North)),
 				SPMap.class);
 		final Set<River> setOne = EnumSet.noneOf(River.class);
 		final Set<River> setTwo = EnumSet.noneOf(River.class);
@@ -158,21 +149,19 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		tone.addFixture(fixOne);
 		final Tile ttwo = new Tile(TileType.Plains);
 		ttwo.addFixture(fixTwo);
-		assertEquals("Tile.equals(), RiverFixtures constructed separately",
-				tone, ttwo);
-		assertEquals("Make sure equals() works properly for rivers",
-				addRivers(new Tile(TileType.Plains), River.North, River.South),
-				addRivers(new Tile(TileType.Plains), River.North, River.South));
-		assertEquals(
-				"Make sure equals() works properly if rivers added in different order",
-				addRivers(new Tile(TileType.Plains), River.North, River.South),
-				addRivers(new Tile(TileType.Plains), River.South, River.North));
+		assertEquals("Tile.equals(), RiverFixtures built separately", tone,
+				ttwo);
+		assertEquals("Tile equality with rivers",
+				encapsulateRivers(River.North, River.South),
+				encapsulateRivers(River.North, River.South));
+		assertEquals("Tile equality with different order of rivers",
+				encapsulateRivers(River.North, River.South),
+				encapsulateRivers(River.South, River.North));
 		assertSerialization(
-				"Fifth River serialization test, reflection",
-				encapsulateTile(
-						point,
-						addRivers(new Tile(TileType.Plains), River.North,
-								River.South)), SPMap.class);
+				"Two rivers",
+				encapsulateTile(point,
+						encapsulateRivers(River.North, River.South)),
+				SPMap.class);
 	}
 
 	/**
