@@ -43,7 +43,7 @@ public class LegacyTable implements EncounterTable {
 		data.add(event.toString());
 	}
 
-	/**
+	/** // $codepro.audit.disable sourceLength
 	 * Constructor.
 	 */
 	public LegacyTable() {
