@@ -37,30 +37,29 @@ public class ExplorationMenu extends JMenuBar {
 	/**
 	 * Constructor.
 	 *
-	 * @param handler the I/O handler to handle I/O related items
+	 * @param ioh the I/O handler to handle I/O related items
 	 * @param model the exploration model
 	 * @param parent the window this is to be attached to, which should close on
 	 *        "Close".
 	 */
-	public ExplorationMenu(final MultiIOHandler handler,
+	public ExplorationMenu(final MultiIOHandler ioh,
 			final IExplorationModel model, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(createMenuItem("Load", KeyEvent.VK_L,
-				createHotkey(KeyEvent.VK_O), "Load the main map from file",
-				handler));
+				createHotkey(KeyEvent.VK_O), "Load the main map from file", ioh));
 		fileMenu.add(createMenuItem("Load secondary", KeyEvent.VK_E,
 				createShiftHotkey(KeyEvent.VK_O),
-				"Load an additional secondary map from file", handler));
+				"Load an additional secondary map from file", ioh));
 		fileMenu.add(createMenuItem("Save", KeyEvent.VK_S,
 				createHotkey(KeyEvent.VK_S),
-				"Save the main map to the file it was loaded from", handler));
+				"Save the main map to the file it was loaded from", ioh));
 		fileMenu.add(createMenuItem("Save As", KeyEvent.VK_A,
 				createShiftHotkey(KeyEvent.VK_S), "Save the main map to file",
-				handler));
+				ioh));
 		fileMenu.add(createMenuItem("Save All", KeyEvent.VK_V,
 				createHotkey(KeyEvent.VK_L), "Save all maps to their files",
-				handler));
+				ioh));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("Open in map viewer", KeyEvent.VK_M,
 				createHotkey(KeyEvent.VK_M),
@@ -70,7 +69,7 @@ public class ExplorationMenu extends JMenuBar {
 					public void actionPerformed(
 							@Nullable final ActionEvent event) {
 						invokeLater(new ViewerOpener(model.getMap(), model
-								.getMapFilename(), -1, -1, handler));
+								.getMapFilename(), -1, -1, ioh));
 					}
 				}));
 		fileMenu.add(createMenuItem(
@@ -87,7 +86,7 @@ public class ExplorationMenu extends JMenuBar {
 						invokeLater(new ViewerOpener(mapPair.first(), mapPair
 								.second(), model.getMap().getPlayers()
 								.getCurrentPlayer().getPlayerId(), model
-								.getMap().getCurrentTurn(), handler));
+								.getMap().getCurrentTurn(), ioh));
 					}
 				}));
 		fileMenu.addSeparator();
