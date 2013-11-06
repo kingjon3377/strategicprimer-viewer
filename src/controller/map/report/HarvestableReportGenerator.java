@@ -100,13 +100,7 @@ public class HarvestableReportGenerator extends // NOPMD
 			shrubsText.add(concat(entry.getKey(), ": at ",
 					pointCSL(entry.getValue())));
 		}
-		Collections.sort(caches);
-		Collections.sort(groves);
-		Collections.sort(meadows);
-		Collections.sort(mines);
-		Collections.sort(minerals);
-		Collections.sort(stone);
-		Collections.sort(shrubsText);
+		sortAll(caches, groves, meadows, mines, minerals, stone, shrubsText);
 		final String retval = concat("<h4>Resource Sources</h4>\n",
 				caches.toString(), groves.toString(), meadows.toString(),
 				mines.toString(), minerals.toString(), stone.toString(),
@@ -115,7 +109,15 @@ public class HarvestableReportGenerator extends // NOPMD
 				&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
 				&& shrubs.isEmpty() ? "" : retval;
 	}
-
+	/**
+	 * @param collections a series of lists to be sorted
+	 */
+	@SafeVarargs
+	private static void sortAll(final List<String>... collections) {
+		for (final List<String> collection : collections) {
+			Collections.sort(collection);
+		}
+	}
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures
 	 * referred to in this report are to be removed from the collection. Caves
