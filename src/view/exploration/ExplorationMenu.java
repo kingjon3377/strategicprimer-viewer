@@ -95,11 +95,8 @@ public class ExplorationMenu extends JMenuBar {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
-						if (evt != null
-								&& "Close".equals(evt.getActionCommand())) {
-							parent.setVisible(false);
-							parent.dispose();
-						}
+						parent.setVisible(false);
+						parent.dispose();
 					}
 				}));
 		fileMenu.addSeparator();
@@ -109,10 +106,7 @@ public class ExplorationMenu extends JMenuBar {
 					@Override
 					public void actionPerformed(
 							@Nullable final ActionEvent event) {
-						if (event != null
-								&& "Quit".equals(event.getActionCommand())) {
-							DriverQuit.quit(0);
-						}
+						DriverQuit.quit(0);
 					}
 				}));
 		add(fileMenu);
