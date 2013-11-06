@@ -40,7 +40,7 @@ import util.Pair;
  */
 public class ImmortalsReportGenerator extends
 		AbstractReportGenerator<MobileFixture> {
-	/**
+	/** // $codepro.audit.disable sourceLength
 	 * Produce the sub-report dealing with "immortals".
 	 *
 	 * @param fixtures the set of fixtures
