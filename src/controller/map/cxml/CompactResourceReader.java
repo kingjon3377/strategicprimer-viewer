@@ -47,11 +47,11 @@ public final class CompactResourceReader extends AbstractCompactReader
 	/**
 	 * The parameter giving the status of a fixture.
 	 */
-	private static final String STATUS_PARAM = "status";
+	private static final String STATUS_PAR = "status";
 	/**
 	 * The parameter saying what kind of thing is in a HarvestableFixture.
 	 */
-	private static final String KIND_PARAM = "kind";
+	private static final String KIND_PAR = "kind";
 	/**
 	 * The parameter saying whether a grove or field or orchard or meadow is
 	 * cultivated.
@@ -163,7 +163,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 	}
 
 	/**
-	 * @param element the XML element to parse
+	 * @param elem the XML element to parse
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
@@ -172,65 +172,63 @@ public final class CompactResourceReader extends AbstractCompactReader
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public HarvestableFixture read(final StartElement element, // $codepro.audit.disable cyclomaticComplexity
+	public HarvestableFixture read(final StartElement elem, // $codepro.audit.disable cyclomaticComplexity
 			final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		requireTag(element, "battlefield", "cache", "cave", "grove", "orchard",
+		requireTag(elem, "battlefield", "cache", "cave", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
-		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final int idNum = getOrGenerateID(elem, warner, idFactory);
 		// ESCA-JAVA0177:
 		final HarvestableFixture retval; // NOPMD
-		switch (MAP.get(element.getName().getLocalPart())) {
+		switch (MAP.get(elem.getName().getLocalPart())) {
 		case BattlefieldType:
-			retval = new Battlefield(getDC(element), idNum);
+			retval = new Battlefield(getDC(elem), idNum);
 			break;
 		case CacheType:
-			retval = new CacheFixture(getParameter(element, KIND_PARAM),
-					getParameter(element, "contents"), idNum);
+			retval = new CacheFixture(getParameter(elem, KIND_PAR),
+					getParameter(elem, "contents"), idNum);
 			break;
 		case CaveType:
-			retval = new Cave(getDC(element), idNum);
+			retval = new Cave(getDC(elem), idNum);
 			break;
 		case FieldType:
-			retval = createMeadow(element, true, idNum, warner);
+			retval = createMeadow(elem, true, idNum, warner);
 			break;
 		case GroveType:
-			retval = createGrove(element, false, idNum, warner);
+			retval = createGrove(elem, false, idNum, warner);
 			break;
 		case MeadowType:
-			retval = createMeadow(element, false, idNum, warner);
+			retval = createMeadow(elem, false, idNum, warner);
 			break;
 		case MineType:
-			retval = new Mine(getParamWithDeprecatedForm(element,
-					KIND_PARAM, "product", warner),
-					TownStatus.parseTownStatus(getParameter(element,
-							STATUS_PARAM)), idNum);
+			retval = new Mine(getParamWithDeprecatedForm(elem, KIND_PAR,
+					"product", warner),
+					TownStatus.parseTownStatus(getParameter(elem, STATUS_PAR)),
+					idNum);
 			break;
 		case MineralType:
-			retval = new MineralVein(getParamWithDeprecatedForm(element,
-					KIND_PARAM, "mineral", warner),
-					Boolean.parseBoolean(getParameter(element, "exposed")),
-					getDC(element), idNum);
+			retval = new MineralVein(getParamWithDeprecatedForm(elem, KIND_PAR,
+					"mineral", warner), Boolean.parseBoolean(getParameter(elem,
+					"exposed")), getDC(elem), idNum);
 			break;
 		case OrchardType:
-			retval = createGrove(element, true, idNum, warner);
+			retval = createGrove(elem, true, idNum, warner);
 			break;
 		case ShrubType:
-			retval = new Shrub(getParamWithDeprecatedForm(element,
-					KIND_PARAM, "shrub", warner), idNum);
+			retval = new Shrub(getParamWithDeprecatedForm(elem, KIND_PAR,
+					"shrub", warner), idNum);
 			break;
 		case StoneType:
 			retval = new StoneDeposit(
-					StoneKind.parseStoneKind(getParamWithDeprecatedForm(
-							element, KIND_PARAM, "stone", warner)),
-					getDC(element), idNum);
+					StoneKind.parseStoneKind(getParamWithDeprecatedForm(elem,
+							KIND_PAR, "stone", warner)), getDC(elem), idNum);
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
-		spinUntilEnd(assertNotNullQName(element.getName()), stream);
-		retval.setImage(getParameter(element, "image", ""));
+		spinUntilEnd(assertNotNullQName(elem.getName()), stream);
+		retval.setImage(getParameter(elem, "image", ""));
 		return retval;
 	}
 
@@ -258,15 +256,15 @@ public final class CompactResourceReader extends AbstractCompactReader
 	private static Meadow createMeadow(final StartElement element,
 			final boolean field, final int idNum, final Warning warner)
 			throws SPFormatException {
-		if (!hasParameter(element, STATUS_PARAM)) {
+		if (!hasParameter(element, STATUS_PAR)) {
 			final String local = element.getName().getLocalPart();
 			assert local != null;
-			warner.warn(new MissingPropertyException(local, STATUS_PARAM,
+			warner.warn(new MissingPropertyException(local, STATUS_PAR,
 					element.getLocation().getLineNumber()));
 		}
-		return new Meadow(getParameter(element, KIND_PARAM), field,
+		return new Meadow(getParameter(element, KIND_PAR), field,
 				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)),
-				idNum, FieldStatus.parse(getParameter(element, STATUS_PARAM,
+				idNum, FieldStatus.parse(getParameter(element, STATUS_PAR,
 						FieldStatus.random(idNum).toString())));
 	}
 
@@ -285,7 +283,7 @@ public final class CompactResourceReader extends AbstractCompactReader
 			final boolean orchard, final int idNum, final Warning warner)
 			throws SPFormatException {
 		return new Grove(orchard, isCultivated(element, warner),
-				getParamWithDeprecatedForm(element, KIND_PARAM, "tree", warner),
+				getParamWithDeprecatedForm(element, KIND_PAR, "tree", warner),
 				idNum);
 	}
 
