@@ -144,8 +144,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 			final Warning warner) throws SPFormatException {
 		String retval = "";
 		try {
-			retval = getParameterWithDeprecatedForm(element, // NOPMD
-					"kind", "type", warner);
+			retval = getParamWithDeprecatedForm(element, "kind", "type", warner);
 		} catch (final MissingPropertyException except) {
 			warner.warn(except);
 			return ""; // NOPMD

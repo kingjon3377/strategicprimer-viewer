@@ -51,7 +51,7 @@ public final class CompactGroundReader extends AbstractCompactReader implements
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "ground");
-		final String kind = getParameterWithDeprecatedForm(element, "kind",
+		final String kind = getParamWithDeprecatedForm(element, "kind",
 				"ground", warner);
 		requireNonEmptyParameter(element, "exposed", true, warner);
 		spinUntilEnd(assertNotNullQName(element.getName()), stream);

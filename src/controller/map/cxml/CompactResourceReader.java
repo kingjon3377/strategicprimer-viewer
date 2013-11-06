@@ -202,13 +202,13 @@ public final class CompactResourceReader extends AbstractCompactReader
 			retval = createMeadow(element, false, idNum, warner);
 			break;
 		case MineType:
-			retval = new Mine(getParameterWithDeprecatedForm(element,
+			retval = new Mine(getParamWithDeprecatedForm(element,
 					KIND_PARAM, "product", warner),
 					TownStatus.parseTownStatus(getParameter(element,
 							STATUS_PARAM)), idNum);
 			break;
 		case MineralType:
-			retval = new MineralVein(getParameterWithDeprecatedForm(element,
+			retval = new MineralVein(getParamWithDeprecatedForm(element,
 					KIND_PARAM, "mineral", warner),
 					Boolean.parseBoolean(getParameter(element, "exposed")),
 					getDC(element), idNum);
@@ -217,12 +217,12 @@ public final class CompactResourceReader extends AbstractCompactReader
 			retval = createGrove(element, true, idNum, warner);
 			break;
 		case ShrubType:
-			retval = new Shrub(getParameterWithDeprecatedForm(element,
+			retval = new Shrub(getParamWithDeprecatedForm(element,
 					KIND_PARAM, "shrub", warner), idNum);
 			break;
 		case StoneType:
 			retval = new StoneDeposit(
-					StoneKind.parseStoneKind(getParameterWithDeprecatedForm(
+					StoneKind.parseStoneKind(getParamWithDeprecatedForm(
 							element, KIND_PARAM, "stone", warner)),
 					getDC(element), idNum);
 			break;
@@ -285,8 +285,8 @@ public final class CompactResourceReader extends AbstractCompactReader
 			final boolean orchard, final int idNum, final Warning warner)
 			throws SPFormatException {
 		return new Grove(orchard, isCultivated(element, warner),
-				getParameterWithDeprecatedForm(element, KIND_PARAM, "tree",
-						warner), idNum);
+				getParamWithDeprecatedForm(element, KIND_PARAM, "tree", warner),
+				idNum);
 	}
 
 	/**

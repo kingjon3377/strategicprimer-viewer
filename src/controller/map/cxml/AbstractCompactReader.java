@@ -223,10 +223,9 @@ public abstract class AbstractCompactReader {
 	 *
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
-	public static String getParameterWithDeprecatedForm(
-			final StartElement element, final String preferred,
-			final String deprecated, final Warning warner)
-			throws SPFormatException {
+	public static String getParamWithDeprecatedForm(final StartElement element,
+			final String preferred, final String deprecated,
+			final Warning warner) throws SPFormatException {
 		final Attribute prefProp = element.getAttributeByName(new QName(
 				preferred));
 		final Attribute deprProp = element.getAttributeByName(new QName(

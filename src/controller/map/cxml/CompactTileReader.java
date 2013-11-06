@@ -67,7 +67,7 @@ public final class CompactTileReader extends AbstractCompactReader implements
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		final Tile retval = new Tile(
-				TileType.getTileType(getParameterWithDeprecatedForm(element,
+				TileType.getTileType(getParamWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
