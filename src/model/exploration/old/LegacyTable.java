@@ -32,7 +32,7 @@ public class LegacyTable implements EncounterTable {
 	/**
 	 * The list of events we can return.
 	 */
-	private final List<String> data;
+	private final List<String> data = new ArrayList<>();
 
 	/**
 	 * Add the text from an Event to the list.
@@ -48,7 +48,6 @@ public class LegacyTable implements EncounterTable {
 	 */
 	public LegacyTable() {
 		final Player player = new Player(-1, "Independent");
-		data = new ArrayList<>();
 		addData(new Battlefield(0, -1));
 		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
