@@ -28,6 +28,10 @@ import controller.map.misc.CLIHelper;
  */
 public class ExplorationCLI {
 	/**
+	 * The prompt to use when the user tells the unit to go nowhere.
+	 */
+	private static final String FEALTY_PROMPT = "Should any village here swear to the player?  ";
+	/**
 	 * The exploration model we use.
 	 */
 	private final IExplorationModel model;
@@ -152,8 +156,7 @@ public class ExplorationCLI {
 			}
 		}
 		if (Direction.Nowhere.equals(direction)
-				&& helper
-						.inputBoolean("Should any village here swear to the player?  ")) {
+				&& helper.inputBoolean(FEALTY_PROMPT)) {
 			swearVillages(dPoint);
 			cost += 5;
 		}
