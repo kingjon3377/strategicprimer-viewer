@@ -93,11 +93,6 @@ public class ExplorationMenu extends JMenuBar {
 		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W,
 				createHotkey(KeyEvent.VK_W), "Close this window",
 				new ActionListener() {
-					/**
-					 * Close the window when pressed.
-					 *
-					 * @param evt the event to handle
-					 */
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
 						if (evt != null
@@ -111,11 +106,6 @@ public class ExplorationMenu extends JMenuBar {
 		fileMenu.add(createMenuItem("Quit", KeyEvent.VK_Q,
 				createHotkey(KeyEvent.VK_Q), "Quit the application",
 				new ActionListener() {
-					/**
-					 * Handle the menu "button" press.
-					 *
-					 * @param event the event to handle
-					 */
 					@Override
 					public void actionPerformed(
 							@Nullable final ActionEvent event) {
