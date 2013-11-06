@@ -66,8 +66,7 @@ public class ExplorationMenu extends JMenuBar {
 				"Open the main map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
 						invokeLater(new ViewerOpener(model.getMap(), model
 								.getMapFilename(), -1, -1, ioh));
 					}
@@ -79,8 +78,7 @@ public class ExplorationMenu extends JMenuBar {
 				"Open the first secondary map in the map viewer for a broader view",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
 						final Pair<IMap, String> mapPair = model
 								.getSubordinateMaps().iterator().next();
 						invokeLater(new ViewerOpener(mapPair.first(), mapPair
@@ -104,8 +102,7 @@ public class ExplorationMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_Q), "Quit the application",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
 						DriverQuit.quit(0);
 					}
 				}));
