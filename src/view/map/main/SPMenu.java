@@ -59,11 +59,7 @@ public class SPMenu extends JMenuBar {
 					@Override
 					public void actionPerformed(
 							@Nullable final ActionEvent event) {
-						if (event != null
-								&& "Go to tile".equals(event.getActionCommand())) {
-							new SelectTileDialog(parent, model)
-									.setVisible(true);
-						}
+						new SelectTileDialog(parent, model).setVisible(true);
 					}
 				}));
 		final FindDialog finder = new FindDialog(parent, model);
@@ -74,11 +70,7 @@ public class SPMenu extends JMenuBar {
 					@Override
 					public void actionPerformed(
 							@Nullable final ActionEvent event) {
-						if (event != null
-								&& "Find a fixture".equals(event
-										.getActionCommand())) {
-							finder.setVisible(true);
-						}
+						finder.setVisible(true);
 					}
 				}));
 		retval.add(MenuItemCreator.createMenuItem("Find next", KeyEvent.VK_N,
@@ -88,10 +80,7 @@ public class SPMenu extends JMenuBar {
 					@Override
 					public void actionPerformed(
 							@Nullable final ActionEvent event) {
-						if (event != null
-								&& "Find next".equals(event.getActionCommand())) {
-							finder.search();
-						}
+						finder.search();
 					}
 				}));
 		retval.addSeparator();
