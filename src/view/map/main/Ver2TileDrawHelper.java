@@ -103,26 +103,31 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			if (file != null) {
 				try {
 					loader.loadImage(file);
-				} catch (final FileNotFoundException e) {
-					LOGGER.log(Level.INFO, "Image " + file + " not found", e);
-				} catch (final IOException e) {
-					LOGGER.log(Level.SEVERE, "I/O error while loading image "
-							+ file, e);
+				} catch (IOException e) {
+					logLoadingError(e, file, false);
 				}
 			}
 		}
 		try {
 			fallbackImage = loader.loadImage(FALLBACK_FILE);
-		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "Image " + FALLBACK_FILE + " not found", e);
-			fallbackImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error while loading image "
-					+ FALLBACK_FILE, e);
+		} catch (IOException e) {
+			logLoadingError(e, FALLBACK_FILE, true);
 			fallbackImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		}
 	}
-
+	/**
+	 * Log, but otherwise ignore, a file-not-found or other I/O error from loading an image.
+	 * @param except the exception we're handling
+	 * @param filename the file that we were trying to load from
+	 * @param fallback true if this is the fallback image (meaning it's a big problem if it's missing), false otherwise
+	 */
+	private static void logLoadingError(final IOException except, final String filename, final boolean fallback) {
+		if (except instanceof FileNotFoundException) {
+			LOGGER.log(fallback ? Level.SEVERE :  Level.INFO, "Image " + filename + " not found", except);
+		} else {
+			LOGGER.log(Level.SEVERE, "I/O eror while loading image " + filename, except);
+		}
+	}
 	/**
 	 * Draw a tile at the specified coordinates. Because this is at present only
 	 * called in a loop that's the last thing before the context is disposed, we
