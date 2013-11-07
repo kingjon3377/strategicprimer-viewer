@@ -41,7 +41,7 @@ public class FixtureList extends JList<TileFixture> implements
 	/**
 	 * The list model.
 	 */
-	private final FixtureListModel flm;
+	private final FixtureListModel flm = new FixtureListModel();
 
 	/**
 	 * Constructor.
@@ -51,8 +51,6 @@ public class FixtureList extends JList<TileFixture> implements
 	 * @author Jonathan Lovelace
 	 */
 	public FixtureList(final JComponent parent, final PlayerCollection players) {
-		super();
-		flm = new FixtureListModel();
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
