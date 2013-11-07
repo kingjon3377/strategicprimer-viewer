@@ -1,6 +1,7 @@
 package view.map.main;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -68,8 +69,7 @@ public final class ViewerFrame extends JFrame {
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();
-		final MapWindowSizeListener mwsl = new MapWindowSizeListener(
-				mapPanel);
+		final WindowAdapter mwsl = new MapWindowSizeListener(mapPanel);
 		addWindowListener(mwsl);
 		addWindowStateListener(mwsl);
 
