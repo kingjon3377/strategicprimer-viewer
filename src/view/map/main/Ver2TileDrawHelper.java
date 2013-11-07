@@ -43,7 +43,7 @@ import view.util.Coordinate;
  */
 public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
-	 * The filename of the fallback image
+	 * The filename of the fallback image.
 	 */
 	private static final String FALLBACK_FILE = "event_fallback.png";
 
