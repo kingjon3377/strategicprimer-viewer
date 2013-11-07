@@ -95,16 +95,15 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		final String[] files = new String[] { "trees.png", "mountain.png" };
 		createRiverFiles();
 		for (final String file : files) {
-			if (file == null) {
-				continue;
-			}
-			try {
-				loader.loadImage(file);
-			} catch (final FileNotFoundException e) {
-				LOGGER.log(Level.INFO, "Image " + file + " not found", e);
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error while loading image "
-						+ file, e);
+			if (file != null) {
+				try {
+					loader.loadImage(file);
+				} catch (final FileNotFoundException e) {
+					LOGGER.log(Level.INFO, "Image " + file + " not found", e);
+				} catch (final IOException e) {
+					LOGGER.log(Level.SEVERE, "I/O error while loading image "
+							+ file, e);
+				}
 			}
 		}
 		try {
