@@ -13,6 +13,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.text.View;
 import javax.swing.tree.TreePath;
 
+import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 
@@ -54,11 +55,10 @@ public class AdvancementFrame extends JFrame {
 
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
 
-		final PlayerLabel plabel = new PlayerLabel("", source.getMap()
-				.getPlayers().getCurrentPlayer(), "'s Units:");
+		final Player player = source.getMap().getPlayers().getCurrentPlayer();
+		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
 		pch.addPlayerChangeListener(plabel);
-		final WorkerTree tree = new WorkerTree(source.getMap().getPlayers()
-				.getCurrentPlayer(), source);
+		final WorkerTree tree = new WorkerTree(player, source);
 		pch.addPlayerChangeListener(tree);
 		@Nullable
 		final IWorkerTreeModel wtmodel = (IWorkerTreeModel) tree.getModel();
