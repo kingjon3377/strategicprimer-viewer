@@ -8,6 +8,7 @@ import javax.swing.WindowConstants;
 
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
+import view.util.SplitWithWeights;
 import controller.map.misc.IOHandler;
 
 /**
@@ -61,11 +62,9 @@ public final class ViewerFrame extends JFrame {
 				map.getMapDimensions().version, map.getMap().getPlayers());
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
-		final JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				true, new MapScrollPanel(map, mapPanel), detailPanel);
-		split.setDividerLocation(MAP_PROPORTION);
-		split.setResizeWeight(MAP_PROPORTION);
-		setContentPane(split);
+		setContentPane(new SplitWithWeights(JSplitPane.VERTICAL_SPLIT,
+				MAP_PROPORTION, MAP_PROPORTION, new MapScrollPanel(map,
+						mapPanel), detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();
