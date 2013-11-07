@@ -60,7 +60,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param zofilt the filter telling which fixtures to draw
 	 */
 	public MapComponent(final IViewerModel theMap, final ZOrderFilter zofilt) {
-		super();
 		setDoubleBuffered(true);
 		model = theMap;
 		zof = zofilt;
@@ -75,13 +74,11 @@ public final class MapComponent extends JComponent implements MapGUI,
 		requestFocusInWindow();
 		final ActionMap actionMap = getActionMap();
 		if (actionMap == null) {
-			throw new IllegalStateException(
-					"Action map was null ... bailing out!");
+			throw new IllegalStateException("Action map was null");
 		}
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		if (inputMap == null) {
-			throw new IllegalStateException(
-					"Input map was null ... bailing out!");
+			throw new IllegalStateException("Input map was null");
 		}
 		ArrowKeyListener.setUpListeners(dsl, inputMap, actionMap);
 		addComponentListener(new MapSizeListener(model));
