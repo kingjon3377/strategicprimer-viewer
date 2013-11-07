@@ -39,7 +39,7 @@ public class AdvancementFrame extends JFrame {
 	 * The text of the relevant button. Can't be private without causing
 	 * warnings, since it's used in an inner class.
 	 */
-	protected static final String NEW_WORKER_ACTION = "Add worker to selected unit ..."; // NOPMD
+	protected static final String NEW_WORKER = "Add worker to selected unit ..."; // NOPMD
 	/**
 	 * Dividers start at half-way.
 	 */
@@ -108,7 +108,7 @@ public class AdvancementFrame extends JFrame {
 				HALF_WAY,
 				HALF_WAY,
 				new BorderedPanel(new JScrollPane(tree), plabel,
-						new ListenedButton(NEW_WORKER_ACTION, nwl), null, null),
+						new ListenedButton(NEW_WORKER, nwl), null, null),
 				new SplitWithWeights(
 						VERTICAL_SPLIT,
 						HALF_WAY,
