@@ -2,14 +2,18 @@ package view.map.key;
 
 import static model.viewer.ViewerModel.DEF_ZOOM_LEVEL;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import model.map.TileType;
 import model.viewer.TileViewSize;
-import model.viewer.ViewerModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import view.map.main.TileUIHelper;
 import view.util.BoxPanel;
 
@@ -48,11 +52,10 @@ public final class KeyElement extends BoxPanel {
 		addRigidArea(HORIZ_BUF);
 		final BoxPanel panel = new BoxPanel(false);
 		panel.addRigidArea(4);
-		final JComponent tile = new KeyElementComponent(TUIH.get(version, type));
-		tile.setMinimumSize(MIN_SIZE);
-		tile.setPreferredSize(PREF_SIZE);
 		final int tsize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
-		tile.setMaximumSize(new Dimension(tsize, tsize));
+		final JComponent tile = new KeyElementComponent(
+				TUIH.get(version, type), MIN_SIZE, PREF_SIZE, new Dimension(
+						tsize, tsize));
 		panel.add(tile);
 		panel.addRigidArea(4);
 		final JLabel label = new JLabel(TUIH.getDescription(type));
@@ -65,5 +68,51 @@ public final class KeyElement extends BoxPanel {
 				label.getMinimumSize().width) + HORIZ_BUF * 2,
 				tile.getMinimumSize().height + label.getMinimumSize().height
 						+ 12));
+	}
+	/**
+	 * The main component of a KeyElement.
+	 *
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private final class KeyElementComponent extends JComponent {
+		/**
+		 * The color of this Component.
+		 */
+		private final Color color;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param col the color to make the component.
+		 * @param min the component's minimum size
+		 * @param pref the component's preferred size
+		 * @param max the component's maximum size
+		 */
+		protected KeyElementComponent(final Color col, final Dimension min,
+				final Dimension pref, final Dimension max) {
+			super();
+			color = col;
+			setMinimumSize(min);
+			setPreferredSize(pref);
+			setMaximumSize(max);
+		}
+
+		/**
+		 * @param pen the graphics context
+		 */
+		@Override
+		public void paint(@Nullable final Graphics pen) {
+			if (pen == null) {
+				throw new IllegalArgumentException("Graphics cannot be null");
+			}
+			final Graphics context = pen.create();
+			try {
+				context.setColor(color);
+				context.fillRect(0, 0, getWidth(), getHeight());
+			} finally {
+				context.dispose();
+			}
+		}
 	}
 }
