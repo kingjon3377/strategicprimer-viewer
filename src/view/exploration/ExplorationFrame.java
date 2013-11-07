@@ -26,6 +26,7 @@ public class ExplorationFrame extends JFrame {
 	protected final ExplorationModel model;
 	/**
 	 * A listener to swap the panels when 'completion' is signalled.
+	 * @author Jonathan Lovelace
 	 */
 	private static class SwapCompletionListener implements CompletionListener {
 		/**
