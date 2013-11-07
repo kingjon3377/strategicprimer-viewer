@@ -169,7 +169,7 @@ public class ZeroToOneConverter {
 	private static String printEndElement(final EndElement element) {
 		final String local = element.getName().getLocalPart();
 		assert local != null;
-		return printEndElement(local);
+		return printEndElementImpl(local);
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class ZeroToOneConverter {
 	 * @param elemStr the local part of the element
 	 * @return its XML representation.
 	 */
-	private static String printEndElement(final String elemStr) {
+	private static String printEndElementImpl(final String elemStr) {
 		final String retval = new StringBuilder(elemStr.length() + 5).append("</")
 				.append(elemStr).append('>').toString();
 		assert retval != null;

@@ -67,7 +67,7 @@ public final class TableLoader { // NOPMD
 			throws FileNotFoundException, IOException { // NOPMD
 		try (final BufferedReader reader = new BufferedReader(
 				new InputStreamReader(new ResourceInputStream(filename)))) {
-			return loadTable(reader);
+			return loadTableFromStream(reader);
 		} catch (final IllegalArgumentException except) {
 			if ("unknown table type".equals(except.getMessage())) {
 				throw new IllegalArgumentException("File " + filename
@@ -83,7 +83,7 @@ public final class TableLoader { // NOPMD
 	 * @return the table constructed from the file
 	 * @throws IOException on I/O error or badly formed table.
 	 */
-	static EncounterTable loadTable(final BufferedReader reader)
+	static EncounterTable loadTableFromStream(final BufferedReader reader)
 			throws IOException { // NOPMD
 		final String line = reader.readLine();
 		if (line == null) {
