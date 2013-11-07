@@ -1,12 +1,14 @@
 package view.worker;
 
+import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
+import static javax.swing.JSplitPane.VERTICAL_SPLIT;
+
 import java.awt.Dimension;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -102,13 +104,13 @@ public class AdvancementFrame extends JFrame {
 		jobsTree.addSkillSelectionListener(sapanel);
 		sapanel.addLevelGainListener(llist);
 		setContentPane(new SplitWithWeights(
-				JSplitPane.HORIZONTAL_SPLIT,
+				HORIZONTAL_SPLIT,
 				HALF_WAY,
 				HALF_WAY,
 				new BorderedPanel(new JScrollPane(tree), plabel,
 						new ListenedButton(NEW_WORKER_ACTION, nwl), null, null),
 				new SplitWithWeights(
-						JSplitPane.VERTICAL_SPLIT,
+						VERTICAL_SPLIT,
 						HALF_WAY,
 						.3,
 						new BorderedPanel(new JScrollPane(jobsTree),
