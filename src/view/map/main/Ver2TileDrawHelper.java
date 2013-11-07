@@ -43,6 +43,11 @@ import view.util.Coordinate;
  */
 public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
+	 * The filename of the fallback image
+	 */
+	private static final String FALLBACK_FILE = "event_fallback.png";
+
+	/**
 	 * @return a hash value forthe object
 	 *
 	 * @see java.lang.Object#hashCode()
@@ -107,13 +112,13 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			}
 		}
 		try {
-			fallbackImage = loader.loadImage("event_fallback.png");
+			fallbackImage = loader.loadImage(FALLBACK_FILE);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "Image event_fallback.png not found", e);
+			LOGGER.log(Level.SEVERE, "Image " + FALLBACK_FILE + " not found", e);
 			fallbackImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE,
-					"I/O error while loading image event_fallback.png", e);
+			LOGGER.log(Level.SEVERE, "I/O error while loading image "
+					+ FALLBACK_FILE, e);
 			fallbackImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		}
 	}
