@@ -64,10 +64,9 @@ public final class KeyElement extends BoxPanel {
 		add(panel);
 		addRigidArea(HORIZ_BUF);
 		addGlue();
-		setMinimumSize(new Dimension(Math.max(tile.getMinimumSize().width,
-				label.getMinimumSize().width) + HORIZ_BUF * 2,
-				tile.getMinimumSize().height + label.getMinimumSize().height
-						+ 12));
+		final Dimension lsize = label.getMinimumSize();
+		setMinimumSize(new Dimension(Math.max(MIN_SIZE.width, lsize.width)
+				+ HORIZ_BUF * 2, MIN_SIZE.height + lsize.height + 12));
 	}
 	/**
 	 * The main component of a KeyElement.
