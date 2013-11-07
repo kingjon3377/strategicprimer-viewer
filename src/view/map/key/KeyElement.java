@@ -1,5 +1,7 @@
 package view.map.key;
 
+import static model.viewer.ViewerModel.DEF_ZOOM_LEVEL;
+
 import java.awt.Dimension;
 
 import javax.swing.JComponent;
@@ -20,11 +22,11 @@ public final class KeyElement extends BoxPanel {
 	/**
 	 * UI helper for the terrain type descriptions and colors.
 	 */
-	private static final TileUIHelper TUI_HELPER = new TileUIHelper();
+	private static final TileUIHelper TUIH = new TileUIHelper();
 	/**
 	 * Minimum buffer space between elements.
 	 */
-	private static final int HORIZ_BUFFER = 7;
+	private static final int HORIZ_BUF = 7;
 	/**
 	 * Minimum size of a colored area.
 	 */
@@ -43,26 +45,24 @@ public final class KeyElement extends BoxPanel {
 	public KeyElement(final int version, final TileType type) {
 		super(true);
 		addGlue();
-		addRigidArea(HORIZ_BUFFER);
+		addRigidArea(HORIZ_BUF);
 		final BoxPanel panel = new BoxPanel(false);
 		panel.addRigidArea(4);
-		final JComponent tile = new KeyElementComponent(TUI_HELPER.get(version,
-				type));
+		final JComponent tile = new KeyElementComponent(TUIH.get(version, type));
 		tile.setMinimumSize(MIN_SIZE);
 		tile.setPreferredSize(PREF_SIZE);
-		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
-				version);
+		final int tsize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
 		tile.setMaximumSize(new Dimension(tsize, tsize));
 		panel.add(tile);
 		panel.addRigidArea(4);
-		final JLabel label = new JLabel(TUI_HELPER.getDescription(type));
+		final JLabel label = new JLabel(TUIH.getDescription(type));
 		panel.add(label);
 		panel.addRigidArea(4);
 		add(panel);
-		addRigidArea(HORIZ_BUFFER);
+		addRigidArea(HORIZ_BUF);
 		addGlue();
 		setMinimumSize(new Dimension(Math.max(tile.getMinimumSize().width,
-				label.getMinimumSize().width) + HORIZ_BUFFER * 2,
+				label.getMinimumSize().width) + HORIZ_BUF * 2,
 				tile.getMinimumSize().height + label.getMinimumSize().height
 						+ 12));
 	}
