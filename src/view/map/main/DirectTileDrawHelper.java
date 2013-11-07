@@ -31,21 +31,19 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 *
 	 * @param pen the graphics context.
 	 * @param tile the tile to draw
-	 * @param coordinates the coordinates of the tile's upper-left corner
+	 * @param position the coordinates of the tile's upper-left corner
 	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
 	// ESCA-JAVA0138:
 	@Override
 	public void drawTile(final Graphics pen, final Tile tile,
-			final Coordinate coordinates, final Coordinate dimensions) {
+			final Coordinate position, final Coordinate dimensions) {
 		final Graphics context = pen.create();
 		try {
 			context.setColor(getTileColor(1, tile.getTerrain()));
-			context.fillRect(coordinates.x, coordinates.y, dimensions.x,
-					dimensions.y);
+			context.fillRect(position.x, position.y, dimensions.x, dimensions.y);
 			context.setColor(Color.black);
-			context.drawRect(coordinates.x, coordinates.y, dimensions.x,
-					dimensions.y);
+			context.drawRect(position.x, position.y, dimensions.x, dimensions.y);
 			if (TileType.NotVisible.equals(tile.getTerrain())) {
 				return;
 			}
@@ -53,45 +51,40 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			if (tile.hasRiver()) {
 				for (final River river : tile.getRivers()) {
 					if (river != null) {
-						drawRiver(context, river, coordinates.x, coordinates.y,
+						drawRiver(context, river, position.x, position.y,
 								dimensions.x, dimensions.y);
 					}
 				}
 			}
 			if (hasAnyForts(tile)) {
 				context.setColor(FORT_COLOR);
-				context.fillRect(
-						(int) Math.round(dimensions.x * TWO_THIRDS) - 1
-								+ coordinates.x,
+				context.fillRect((int) Math.round(dimensions.x * TWO_THIRDS)
+						- 1 + position.x,
 						(int) Math.round(dimensions.y * TWO_THIRDS) - 1
-								+ coordinates.y,
+								+ position.y,
 						(int) Math.round(dimensions.x / THREE),
 						(int) Math.round(dimensions.y / THREE));
 			}
 			if (hasAnyUnits(tile)) {
 				context.setColor(UNIT_COLOR);
 				context.fillOval(((int) Math.round(dimensions.x / FOUR))
-						+ coordinates.x,
-						((int) Math.round(dimensions.y / FOUR))
-								+ coordinates.y,
-						(int) Math.round(dimensions.x / FOUR),
+						+ position.x, ((int) Math.round(dimensions.y / FOUR))
+						+ position.y, (int) Math.round(dimensions.x / FOUR),
 						(int) Math.round(dimensions.y / FOUR));
 			} else if (hasEvent(tile)) {
 				context.setColor(EVENT_COLOR);
 				context.fillPolygon(
 						new int[] {
-								(int) Math.round(dimensions.x
-										* THREE_QUARTERS)
-										+ coordinates.x,
+								(int) Math.round(dimensions.x * THREE_QUARTERS)
+										+ position.x,
 								(int) Math.round(dimensions.x / TWO)
-										+ coordinates.x,
-								dimensions.x + coordinates.x },
+										+ position.x, dimensions.x + position.x },
 						new int[] {
-								coordinates.y,
+								position.y,
 								(int) Math.round(dimensions.y / TWO)
-										+ coordinates.y,
+										+ position.y,
 								(int) Math.round(dimensions.y / TWO)
-										+ coordinates.y }, MISC_EVENT_SIDES);
+										+ position.y }, MISC_EVENT_SIDES);
 			}
 		} finally {
 			context.dispose();
