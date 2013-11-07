@@ -57,8 +57,7 @@ public class SPMenu extends JMenuBar {
 				MenuItemCreator.createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates", new ActionListener() {
 					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
 						new SelectTileDialog(parent, model).setVisible(true);
 					}
 				}));
@@ -68,8 +67,7 @@ public class SPMenu extends JMenuBar {
 				KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
 				"Find a fixture by name, kind, or ID#", new ActionListener() {
 					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
 						finder.setVisible(true);
 					}
 				}));
@@ -78,8 +76,7 @@ public class SPMenu extends JMenuBar {
 				"Find the next fixture matching the pattern",
 				new ActionListener() {
 					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
+					public void actionPerformed(@Nullable final ActionEvent evt) {
 						finder.search();
 					}
 				}));
