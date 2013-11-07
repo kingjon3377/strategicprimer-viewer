@@ -53,10 +53,8 @@ public final class KeyElement extends BoxPanel {
 		final BoxPanel panel = new BoxPanel(false);
 		panel.addRigidArea(4);
 		final int tsize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
-		final JComponent tile = new KeyElementComponent(
-				TUIH.get(version, type), MIN_SIZE, PREF_SIZE, new Dimension(
-						tsize, tsize));
-		panel.add(tile);
+		panel.add(new KeyElementComponent(TUIH.get(version, type), MIN_SIZE,
+				PREF_SIZE, new Dimension(tsize, tsize)));
 		panel.addRigidArea(4);
 		final JLabel label = new JLabel(TUIH.getDescription(type));
 		panel.add(label);
