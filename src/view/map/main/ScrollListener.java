@@ -49,16 +49,10 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 		final MapDimensions mapDim = map.getMapDimensions();
 		mapDimensions = mapDim;
 		hbar = horizBar;
-		hbar.getModel().setRangeProperties(
-				Math.max(map.getSelectedPoint().col, 0), 1, 0,
+		final Point selPoint = map.getSelectedPoint();
+		hbar.getModel().setRangeProperties(Math.max(selPoint.col, 0), 1, 0,
 				mapDim.cols - map.getDimensions().getWidth(), false);
 		hbar.setInputVerifier(new InputVerifier() {
-			/**
-			 * Verify input
-			 *
-			 * @param input the input event to verify
-			 * @return whether to let it proceed
-			 */
 			@Override
 			public boolean verify(@Nullable final JComponent input) {
 				return input instanceof JScrollBar
@@ -67,16 +61,9 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 			}
 		});
 		vbar = vertBar;
-		vbar.getModel().setRangeProperties(
-				Math.max(map.getSelectedPoint().row, 0), 1, 0,
+		vbar.getModel().setRangeProperties(Math.max(selPoint.row, 0), 1, 0,
 				mapDim.rows - map.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new InputVerifier() {
-			/**
-			 * Verify input
-			 *
-			 * @param input the input event to verify
-			 * @return whether to let it proceed
-			 */
 			@Override
 			public boolean verify(@Nullable final JComponent input) {
 				return input instanceof JScrollBar
