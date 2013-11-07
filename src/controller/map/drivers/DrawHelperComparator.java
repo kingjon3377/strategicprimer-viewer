@@ -116,7 +116,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 					throw new IllegalStateException(
 							NULL_GRAPHICS_ERR);
 				}
-				helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
+				helper.drawTileTranslated(pen, spmap.getTile(point), tsize, tsize);
 			}
 		}
 	}
@@ -216,7 +216,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen, final IMap spmap, final int tsize) {
 		for (final Point point : spmap.getTiles()) {
 			if (point != null) {
-				helper.drawTile(pen, spmap.getTile(point), tsize, tsize);
+				helper.drawTileTranslated(pen, spmap.getTile(point), tsize, tsize);
 			}
 		}
 	}

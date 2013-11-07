@@ -116,7 +116,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int width,
+	public void drawTileTranslated(final Graphics pen, final Tile tile, final int width,
 			final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
@@ -185,7 +185,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					"pen.create() created null Graphics");
 		}
 		try {
-			drawTile(context, tile, dimensions.x, dimensions.y);
+			drawTileTranslated(context, tile, dimensions.x, dimensions.y);
 		} finally {
 			context.dispose();
 		}

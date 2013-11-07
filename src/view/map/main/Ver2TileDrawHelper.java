@@ -162,7 +162,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile, final int width,
+	public void drawTileTranslated(final Graphics pen, final Tile tile, final int width,
 			final int height) {
 		drawTile(pen, tile, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));

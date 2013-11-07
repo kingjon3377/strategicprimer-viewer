@@ -123,7 +123,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public abstract void drawTile(final Graphics pen, final Tile tile,
+	public abstract void drawTileTranslated(final Graphics pen, final Tile tile,
 			final int width, final int height);
 
 	/**

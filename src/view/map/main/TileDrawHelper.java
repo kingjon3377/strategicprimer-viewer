@@ -23,7 +23,7 @@ public interface TileDrawHelper {
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
-	void drawTile(final Graphics pen, final Tile tile, final int width,
+	void drawTileTranslated(final Graphics pen, final Tile tile, final int width,
 			final int height);
 
 	/**

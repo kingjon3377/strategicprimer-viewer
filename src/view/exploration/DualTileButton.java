@@ -95,10 +95,10 @@ public class DualTileButton extends JButton {
 		pen.setClip(new Polygon(
 				new int[] { getWidth() - MARGIN, MARGIN, MARGIN }, new int[] {
 						MARGIN, getHeight() - MARGIN, MARGIN }, 3));
-		helper.drawTile(pen, one, getWidth(), getHeight());
+		helper.drawTileTranslated(pen, one, getWidth(), getHeight());
 		pen.setClip(new Polygon(new int[] { getWidth() - MARGIN,
 				getWidth() - MARGIN, MARGIN }, new int[] { MARGIN,
 				getHeight() - MARGIN, getHeight() - MARGIN }, 3));
-		helper.drawTile(pen, two, getWidth(), getHeight());
+		helper.drawTileTranslated(pen, two, getWidth(), getHeight());
 	}
 }
