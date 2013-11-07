@@ -103,29 +103,18 @@ public class AdvancementFrame extends JFrame {
 		final SkillAdvancementPanel sapanel = new SkillAdvancementPanel();
 		jobsTree.addSkillSelectionListener(sapanel);
 		sapanel.addLevelGainListener(llist);
-		setContentPane(new SplitWithWeights(
-				HORIZONTAL_SPLIT,
-				HALF_WAY,
-				HALF_WAY,
-				new BorderedPanel(new JScrollPane(tree), plabel,
+		final JLabel newJobText = htmlize("Add a job to the Worker:");
+		final JLabel newSkillText = htmlize("Add a Skill to the selected Job:");
+		setContentPane(new SplitWithWeights(HORIZONTAL_SPLIT, HALF_WAY,
+				HALF_WAY, new BorderedPanel(new JScrollPane(tree), plabel,
 						new ListenedButton(NEW_WORKER, nwl), null, null),
-				new SplitWithWeights(
-						VERTICAL_SPLIT,
-						HALF_WAY,
-						.3,
+				new SplitWithWeights(VERTICAL_SPLIT, HALF_WAY, .3,
 						new BorderedPanel(new JScrollPane(jobsTree),
 								htmlize("Worker's Jobs and Skills:"), null,
-								null, null),
-						new BorderedPanel(
-								new BorderedPanel(
-										null,
-										new BorderedPanel(
-												null,
-												htmlize("Add a job to the Worker:"),
-												jarp, null, null),
-										new BorderedPanel(
-												null,
-												htmlize("Add a Skill to the selected Job:"),
+								null, null), new BorderedPanel(
+								new BorderedPanel(null, new BorderedPanel(null,
+										newJobText, jarp, null, null),
+										new BorderedPanel(null, newSkillText,
 												sarp, null, null), null, null),
 								null, sapanel, null, null))));
 
