@@ -2,7 +2,6 @@ package view.worker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -19,8 +18,6 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.JobTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import util.TypesafeLogger;
 
 /**
  * A tree representing a worker's Jobs and Skills.
@@ -46,12 +43,6 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	}
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(JobsTree.class);
-
-	/**
 	 * Fire the 'skill' property with the current selection if it's a Skill, or
 	 * null if not.
 	 *
@@ -64,7 +55,6 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 			// ESCA-JAVA0177:
 			final Object component; // NOPMD
 			if (selPath == null) {
-				LOGGER.warning("Selection path was null.");
 				component = null;
 			} else {
 				component = selPath.getLastPathComponent();
