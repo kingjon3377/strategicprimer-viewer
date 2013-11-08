@@ -11,6 +11,7 @@ import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import model.listeners.NewUnitListener;
@@ -204,11 +205,15 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		@Override
 		public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 			if (evt != null) {
-				final Object path = evt.getNewLeadSelectionPath()
+				final TreePath path = evt.getNewLeadSelectionPath();
+				if (path == null) {
+					return;
+				}
+				final Object pathLast = path
 						.getLastPathComponent();
-				if (path != null) {
+				if (pathLast != null) {
 					handleSelection(((IWorkerTreeModel) getModel())
-							.getModelObject(path));
+							.getModelObject(pathLast));
 				}
 			}
 		}
