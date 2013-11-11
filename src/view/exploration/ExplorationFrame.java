@@ -76,6 +76,13 @@ public class ExplorationFrame extends JFrame {
 				first = true;
 			}
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "SwapCompletionListener";
+		}
 	}
 	/**
 	 * Constructor.

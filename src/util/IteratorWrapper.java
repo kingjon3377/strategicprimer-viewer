@@ -55,6 +55,13 @@ public class IteratorWrapper<T> implements Iterable<T> {
 			throw new UnsupportedOperationException(
 					"Iterator substituted for null doesn't support remove()");
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "NullIterator";
+		}
 	}
 
 	/**
