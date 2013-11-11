@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.logging.Level;
@@ -55,11 +54,6 @@ public class ReaderComparator implements ISPDriver {
 	 * The second reader.
 	 */
 	private final IMapReader two = new CompactXMLReader();
-	/**
-	 * The stream to print results to.
-	 */
-	private final PrintStream out = SYS_OUT;
-
 	/**
 	 * Driver method.
 	 *
@@ -113,8 +107,8 @@ public class ReaderComparator implements ISPDriver {
 	public void compareReaders(final String arg) throws XMLStreamException,
 			SPFormatException {
 		final Warning warner = new Warning(Action.Ignore);
-		out.print(arg);
-		out.println(':');
+		SYS_OUT.print(arg);
+		SYS_OUT.println(':');
 		// ESCA-JAVA0177:
 		final String contents; // NOPMD
 		try {
@@ -135,10 +129,10 @@ public class ReaderComparator implements ISPDriver {
 		final long endTwo = System.nanoTime();
 		printElapsed("New", endTwo - startTwo);
 		if (map1.equals(map2)) {
-			out.println("Readers produce identical results.");
+			SYS_OUT.println("Readers produce identical results.");
 		} else {
-			out.print("Readers differ on ");
-			out.println(arg);
+			SYS_OUT.print("Readers differ on ");
+			SYS_OUT.println(arg);
 		}
 	}
 
@@ -148,11 +142,11 @@ public class ReaderComparator implements ISPDriver {
 	 * @param desc a description of the method ("old" or "new")
 	 * @param time how many time-units it took
 	 */
-	private void printElapsed(final String desc, final long time) {
-		out.print(desc);
-		out.print(" method took ");
-		out.print(time);
-		out.println(" time-units.");
+	private static void printElapsed(final String desc, final long time) {
+		SYS_OUT.print(desc);
+		SYS_OUT.print(" method took ");
+		SYS_OUT.print(time);
+		SYS_OUT.println(" time-units.");
 	}
 
 	/**
