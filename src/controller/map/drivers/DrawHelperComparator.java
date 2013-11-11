@@ -542,17 +542,17 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			PointFactory.clearCache();
 			if (random.nextBoolean()) {
 				PointFactory.shouldUseCache(true);
-				System.out.println("Using cache:");
+				SYS_OUT.println("Using cache:");
 				runAllTests(map, reps);
 				PointFactory.shouldUseCache(false);
-				System.out.println("Not using cache:");
+				SYS_OUT.println("Not using cache:");
 				runAllTests(map, reps);
 			} else {
 				PointFactory.shouldUseCache(false);
-				System.out.println("Not using cache:");
+				SYS_OUT.println("Not using cache:");
 				runAllTests(map, reps);
 				PointFactory.shouldUseCache(true);
-				System.out.println("Using cache:");
+				SYS_OUT.println("Using cache:");
 				runAllTests(map, reps);
 			}
 		}
