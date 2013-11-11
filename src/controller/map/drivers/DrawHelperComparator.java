@@ -31,7 +31,6 @@ import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
 import view.map.main.Ver2TileDrawHelper;
 import view.util.Coordinate;
-import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
