@@ -51,7 +51,8 @@ public class ExplorationFrame extends JFrame {
 		 * @param parentComp the component it's laying out
 		 * @param components things to tell to validate their layout before swapping
 		 */
-		protected SwapCompletionListener(final CardLayout clayout, final Container parentComp, final Component... components) {
+		protected SwapCompletionListener(final CardLayout clayout,
+				final Container parentComp, final Component... components) {
 			layout = clayout;
 			parent = parentComp;
 			for (final Component component : components) {
@@ -106,7 +107,8 @@ public class ExplorationFrame extends JFrame {
 				esp.getMPDocument());
 		emodel.addMovementCostListener(explorationPanel);
 		emodel.addSelectionChangeListener(explorationPanel);
-		final SwapCompletionListener swapper = new SwapCompletionListener(layout, outer, explorationPanel, esp);
+		final SwapCompletionListener swapper = new SwapCompletionListener(
+				layout, outer, explorationPanel, esp);
 		esp.addCompletionListener(swapper);
 		explorationPanel.addCompletionListener(swapper);
 		add(esp);
