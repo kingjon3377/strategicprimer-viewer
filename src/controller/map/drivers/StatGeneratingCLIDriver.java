@@ -208,7 +208,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					.chooseFromList(
 							units,
 							"Which unit contains the worker in question?",
-							"There are no units owned by that player that are not already fully statted",
+							"No units owned by that player that are not already fully statted",
 							"Unit selection: ", false);
 			if (unitNum < 0 || unitNum >= units.size() || units.isEmpty()) {
 				break;
