@@ -191,8 +191,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		@Nullable
 		@Override
 		public T next() throws NoSuchElementException { // NOPMD: throws clause
-														// is required by
-														// superclass
+														// required by superclass
 			return wrapped.nextElement();
 		}
 
