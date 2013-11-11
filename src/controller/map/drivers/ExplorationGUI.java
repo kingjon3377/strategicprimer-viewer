@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.IOException;
 
 import javax.swing.SwingUtilities;
@@ -12,7 +14,6 @@ import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
-import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -89,8 +90,7 @@ public class ExplorationGUI implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			SystemOut.SYS_OUT
-					.println("Usage: ExplorationCLI master-map [player-map ...]");
+			SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
 			System.exit(1);
 		}
 		try {

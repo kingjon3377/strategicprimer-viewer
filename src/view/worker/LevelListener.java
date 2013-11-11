@@ -1,5 +1,6 @@
 package view.worker;
 
+import static view.util.SystemOut.SYS_OUT;
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.UnitMemberListener;
@@ -9,8 +10,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import view.util.SystemOut;
 
 /**
  * A listener to print a line when a worker gains a level.
@@ -79,7 +78,7 @@ public final class LevelListener implements LevelGainListener,
 			builder.append(getName(wkr));
 			builder.append(" gained a level in ");
 			builder.append(getName(skl));
-			SystemOut.SYS_OUT.println(builder.toString());
+			SYS_OUT.println(builder.toString());
 		}
 	}
 

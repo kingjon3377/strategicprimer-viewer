@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -10,7 +12,6 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -71,8 +72,7 @@ public final class SubsetDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 2) {
-			SystemOut.SYS_OUT
-					.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
+			SYS_OUT.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
 			return;
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
@@ -92,15 +92,14 @@ public final class SubsetDriver implements ISPDriver {
 			throw new DriverFailedException("Invalid SP XML in main map "
 					+ mainFile, except);
 		}
-		SystemOut.SYS_OUT
-				.print("OK if strict subset, WARN if needs manual checking,");
-		SystemOut.SYS_OUT.println("FAIL if error in reading");
+		SYS_OUT.print("OK if strict subset, WARN if needs manual checking,");
+		SYS_OUT.println("FAIL if error in reading");
 		for (final String arg : args) {
 			if (arg.equals(mainFile)) {
 				continue;
 			}
-			SystemOut.SYS_OUT.print(arg);
-			SystemOut.SYS_OUT.print("\t...\t\t");
+			SYS_OUT.print(arg);
+			SYS_OUT.print("\t...\t\t");
 			printReturn(doSubsetTest(arg, reader, mainMap));
 		}
 	}
@@ -113,13 +112,13 @@ public final class SubsetDriver implements ISPDriver {
 	private static void printReturn(final Returns value) {
 		switch (value) {
 		case Fail:
-			SystemOut.SYS_OUT.println("FAIL");
+			SYS_OUT.println("FAIL");
 			break;
 		case OK:
-			SystemOut.SYS_OUT.println("OK");
+			SYS_OUT.println("OK");
 			break;
 		case Warn:
-			SystemOut.SYS_OUT.println("WARN");
+			SYS_OUT.println("WARN");
 			break;
 		default:
 			throw new IllegalStateException("Can't get here");
@@ -147,8 +146,7 @@ public final class SubsetDriver implements ISPDriver {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
 		}
-		try (final OutputStreamWriter osw = new OutputStreamWriter(
-				SystemOut.SYS_OUT);
+		try (final OutputStreamWriter osw = new OutputStreamWriter(SYS_OUT);
 				final PrintWriter out = new PrintWriter(osw)) {
 			if (mainMap.isSubset(map, out)) {
 				return Returns.OK; // NOPMD

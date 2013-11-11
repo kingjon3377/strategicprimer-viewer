@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -9,7 +11,6 @@ import javax.xml.stream.XMLStreamException;
 
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -60,7 +61,7 @@ public final class MapChecker implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
-			// SystemOut.SYS_OUT
+			// SYS_OUT
 			// .println("Usage: MapChecker filename [filename ...]");
 			throw new DriverFailedException("Need at least one argument",
 					new IllegalArgumentException("Need at least one argument"));
@@ -78,12 +79,11 @@ public final class MapChecker implements ISPDriver {
 	 * @param filename the name of the file to check
 	 */
 	private void check(final String filename) {
-		SystemOut.SYS_OUT.print("Starting ");
-		SystemOut.SYS_OUT.println(filename);
+		SYS_OUT.print("Starting ");
+		SYS_OUT.println(filename);
 		boolean retval = true;
 		try {
-			reader.readMap(filename, Warning.INSTANCE); // new
-														// Warning(Warning.Action.Warn)
+			reader.readMap(filename, Warning.INSTANCE);
 		} catch (final MapVersionException e) {
 			LOGGER.log(Level.SEVERE, "Map version in " + filename
 					+ " not acceptable to reader", e);
@@ -103,8 +103,8 @@ public final class MapChecker implements ISPDriver {
 			retval = false;
 		}
 		if (retval) {
-			SystemOut.SYS_OUT.print("No errors in ");
-			SystemOut.SYS_OUT.println(filename);
+			SYS_OUT.print("No errors in ");
+			SYS_OUT.println(filename);
 		}
 	}
 

@@ -1,5 +1,7 @@
 package view.map.main;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -35,7 +37,6 @@ import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
-import view.util.SystemOut;
 
 /**
  * A dialog to let the user find fixtures by ID, name, or "kind".
@@ -152,8 +153,8 @@ public class FindDialog extends JDialog implements ActionListener {
 			final Tile tile = map.getMap().getTile(point);
 			for (final TileFixture fix : tile) {
 				if (fix != null && matches(pattern, idNum, fix)) {
-					SystemOut.SYS_OUT.print("Found in point");
-					SystemOut.SYS_OUT.println(point);
+					SYS_OUT.print("Found in point");
+					SYS_OUT.println(point);
 					map.setSelection(point);
 					return;
 				}

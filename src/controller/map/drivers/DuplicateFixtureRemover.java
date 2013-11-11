@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -119,8 +120,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			SystemOut.SYS_OUT
-					.println("Usage: DuplicateFixtureRemover map [map ...]");
+			SYS_OUT.println("Usage: DuplicateFixtureRemover map [map ...]");
 			throw new DriverFailedException("Not enough arguments",
 					new IllegalArgumentException("Need at least one argument"));
 		}
@@ -131,7 +131,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 			try {
 				final IMap map = reader.readMap(filename, Warning.INSTANCE);
-				filter(map, SystemOut.SYS_OUT);
+				filter(map, SYS_OUT);
 				reader.write(filename, map);
 			} catch (final IOException except) {
 				System.err.print("I/O error reading from or writing to ");

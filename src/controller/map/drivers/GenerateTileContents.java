@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +20,6 @@ import model.map.Tile;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -161,8 +162,8 @@ public final class GenerateTileContents {
 	 */
 	private static void println(final String text) {
 		for (final String string : text.split("\n")) {
-			SystemOut.SYS_OUT.print("\t\t\t");
-			SystemOut.SYS_OUT.println(string);
+			SYS_OUT.print("\t\t\t");
+			SYS_OUT.println(string);
 		}
 	}
 

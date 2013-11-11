@@ -14,7 +14,6 @@ import java.util.Locale;
 import model.map.HasName;
 import util.EqualsAny;
 import util.IsNumeric;
-import view.util.SystemOut;
 
 /**
  * A helper class to let help CLIs interact with the user.
@@ -80,16 +79,16 @@ public class CLIHelper implements ICLIHelper {
 			final String none, final String prompt, final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
-			SystemOut.SYS_OUT.println(none);
+			SYS_OUT.println(none);
 			return -1; // NOPMD
 		}
-		SystemOut.SYS_OUT.println(desc);
+		SYS_OUT.println(desc);
 		if (auto && items.size() == 1) {
-			SystemOut.SYS_OUT.print("Automatically choosing only item, ");
-			SystemOut.SYS_OUT.println(items.get(0));
+			SYS_OUT.print("Automatically choosing only item, ");
+			SYS_OUT.println(items.get(0));
 			return 0; // NOPMD
 		} else {
-			printList(SystemOut.SYS_OUT, items);
+			printList(SYS_OUT, items);
 			return inputNumber(prompt);
 		}
 	}
@@ -126,7 +125,7 @@ public class CLIHelper implements ICLIHelper {
 	public int inputNumber(final String prompt) throws IOException {
 		int retval = -1;
 		while (retval < 0) {
-			SystemOut.SYS_OUT.print(prompt);
+			SYS_OUT.print(prompt);
 			final String input = istream.readLine();
 			if (input == null) {
 				throw new IOException("Null line of input");
@@ -147,7 +146,7 @@ public class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public String inputString(final String prompt) throws IOException {
-		SystemOut.SYS_OUT.print(prompt);
+		SYS_OUT.print(prompt);
 		final String line = istream.readLine();
 		if (line == null) {
 			return ""; // NOPMD

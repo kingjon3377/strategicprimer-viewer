@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -23,7 +25,6 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
@@ -252,7 +253,7 @@ public final class QueryCLI implements ISPDriver {
 		assert filename != null;
 		try {
 			repl(new MapReaderAdapter().readMap(filename, new Warning(
-					Warning.Action.Warn)), SystemOut.SYS_OUT);
+					Warning.Action.Warn)), SYS_OUT);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException("XML parsing error in " + filename,
 					e);

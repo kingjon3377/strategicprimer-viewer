@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,7 +17,6 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
@@ -56,7 +57,7 @@ public class ReaderComparator implements ISPDriver {
 	/**
 	 * The stream to print results to.
 	 */
-	private final PrintStream out = SystemOut.SYS_OUT;
+	private final PrintStream out = SYS_OUT;
 
 	/**
 	 * Driver method.

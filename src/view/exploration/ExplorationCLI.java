@@ -1,5 +1,7 @@
 package view.exploration;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +18,6 @@ import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Village;
 import util.Pair;
-import view.util.SystemOut;
 import controller.map.misc.CLIHelper;
 
 /**
@@ -142,9 +143,8 @@ public class ExplorationCLI {
 		try {
 			cost = model.move(direction);
 		} catch (final TraversalImpossibleException except) { // $codepro.audit.disable logExceptions
-			SystemOut.SYS_OUT.printC(
-					"That direction is impassable; we've made sure ").println(
-					"all maps show that at a cost of 1 MP");
+			SYS_OUT.printC("That direction is impassable; we've made sure ")
+					.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
 		final Point dPoint = model.getDestination(point, direction);
@@ -160,22 +160,20 @@ public class ExplorationCLI {
 			swearVillages(dPoint);
 			cost += 5;
 		}
-		SystemOut.SYS_OUT.printC("The explorer comes to ")
-				.printC(dPoint.toString()).printC(", a tile with terrain ")
+		SYS_OUT.printC("The explorer comes to ").printC(dPoint.toString())
+				.printC(", a tile with terrain ")
 				.println(model.getMap().getTile(dPoint).getTerrain());
 		if (allFixtures.isEmpty()) {
-			SystemOut.SYS_OUT
-					.println("The following fixtures were automatically noticed:");
+			SYS_OUT.println("The following fixtures were automatically noticed:");
 		} else {
-			SystemOut.SYS_OUT.printC(
-					"The following fixtures were noticed, all but the ")
+			SYS_OUT.printC("The following fixtures were noticed, all but the ")
 					.println("last automtically:");
 			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
 		}
 		for (final TileFixture fix : constants) {
 			if (fix != null) {
-				SystemOut.SYS_OUT.println(fix);
+				SYS_OUT.println(fix);
 				for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
 					final IMap map = pair.first();
 					map.getTile(dPoint).addFixture(fix);
@@ -194,10 +192,10 @@ public class ExplorationCLI {
 	public void moveUntilDone() throws IOException {
 		final Unit selUnit = model.getSelectedUnit();
 		if (selUnit == null) {
-			SystemOut.SYS_OUT.println("No unit is selected");
+			SYS_OUT.println("No unit is selected");
 		} else {
-			SystemOut.SYS_OUT.println("Details of the unit:");
-			SystemOut.SYS_OUT.println(selUnit.verbose());
+			SYS_OUT.println("Details of the unit:");
+			SYS_OUT.println(selUnit.verbose());
 			final int totalMP = helper.inputNumber("MP the unit has: ");
 			int movement = totalMP;
 			final String prompt = new StringBuilder(90)
@@ -205,9 +203,9 @@ public class ExplorationCLI {
 					.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.")
 					.toString();
 			while (movement > 0) {
-				SystemOut.SYS_OUT.printC(movement).printC(" MP of ")
+				SYS_OUT.printC(movement).printC(" MP of ")
 						.printC(totalMP).println(" remaining.");
-				SystemOut.SYS_OUT.println(prompt);
+				SYS_OUT.println(prompt);
 				movement -= move();
 			}
 		}
