@@ -174,7 +174,9 @@ public class CLIHelper implements ICLIHelper {
 				return false;
 			} else {
 				SystemOut.SYS_OUT
-						.println("Please enter 'yes', 'no', 'true', or 'false', or the first character of any of those.");
+						.println("Please enter 'yes', 'no', 'true', or 'false',");
+				SystemOut.SYS_OUT
+						.println("or the first character of any of those.");
 			}
 		}
 	}
