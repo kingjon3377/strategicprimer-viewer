@@ -92,8 +92,8 @@ public final class ReportGenerator {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
 		final StringBuilder builder = new StringBuilder(10485760)
-				.append("<html>\n");
-		builder.append("<head><title>Strategic Primer map summary abbreviated report</title></head>\n");
+				.append("<html>\n<head>");
+		builder.append("<title>Strategic Primer map summary abridged report</title></head>\n");
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final TileCollection tiles = map.getTiles();
