@@ -221,19 +221,19 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Prints a usage message.
 	 *
-	 * @param ostream the stream to write it to.
+	 * @param out the stream to write it to.
 	 */
-	public static void usage(final PrintStream ostream) {
-		ostream.println("The following commands are supported:");
-		ostream.println("Fortress: Prints what a player automatically knows about his fortress's tile.");
+	public static void usage(final PrintStream out) {
+		out.println("The following commands are supported:");
+		out.println("Fortress: Print what a player automatically knows about his fortress's tile.");
 		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;
-		ostream.print("Hunt/fIsh: Generates up to ");
-		ostream.print(encounters);
-		ostream.println(" encounters with animals.");
-		ostream.print("Gather: Generates up to ");
-		ostream.print(encounters);
-		ostream.println(" encounters with fields, meadows, groves, orchards, or shrubs.");
-		ostream.println("Quit: Exit the program.");
+		out.print("Hunt/fIsh: Generates up to ");
+		out.print(encounters);
+		out.println(" encounters with animals.");
+		out.print("Gather: Generates up to ");
+		out.print(encounters);
+		out.println(" encounters with fields, meadows, groves, orchards, or shrubs.");
+		out.println("Quit: Exit the program.");
 	}
 
 	/**
