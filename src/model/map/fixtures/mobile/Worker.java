@@ -144,13 +144,17 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| (fix instanceof Worker && ((Worker) fix).name.equals(name) && ((Worker) fix).jobSet
-						.equals(jobSet))
-				&& ((Worker) fix).race.equals(race)
-				&& (stats != null ? stats.equals(((Worker) fix).stats)
-						: ((Worker) fix).stats == null);
+				|| (fix instanceof Worker && equalsIgIDImpl((Worker) fix));
 	}
-
+	/**
+	 * @param fix a worker
+	 * @return whether it equals this one except for ID.
+	 */
+	private boolean equalsIgIDImpl(final Worker fix) {
+		return (fix.name.equals(name) && fix.jobSet.equals(jobSet))
+				&& fix.race.equals(race)
+				&& (stats != null ? stats.equals(fix.stats) : fix.stats == null);
+		}
 	/**
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
 	 */
