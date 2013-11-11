@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -80,8 +81,7 @@ public final class SubsetDriver implements ISPDriver {
 		final String mainFile = args[0];
 		assert mainFile != null;
 		try {
-			mainMap = reader.readMap(mainFile, new Warning(// NOPMD
-					Warning.Action.Ignore));
+			mainMap = reader.readMap(mainFile, new Warning(Action.Ignore));
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
 					+ mainFile, except);
@@ -135,7 +135,7 @@ public final class SubsetDriver implements ISPDriver {
 			final MapReaderAdapter reader, final IMap mainMap) {
 		final IMap map; // NOPMD
 		try {
-			map = reader.readMap(filename, new Warning(Warning.Action.Ignore));
+			map = reader.readMap(filename, new Warning(Action.Ignore));
 		} catch (final IOException except) {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD

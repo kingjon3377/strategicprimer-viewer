@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -73,7 +74,7 @@ public final class EchoDriver implements ISPDriver {
 		assert outfile != null;
 		try {
 			map = new MapReaderAdapter().readMap(infile, new Warning(// NOPMD
-					Warning.Action.Ignore));
+					Action.Ignore));
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {

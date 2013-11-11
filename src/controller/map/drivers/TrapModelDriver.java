@@ -23,6 +23,7 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
@@ -272,7 +273,7 @@ public class TrapModelDriver implements ISPDriver {
 		assert filename != null;
 		try {
 			repl(new MapReaderAdapter().readMap(filename, new Warning(
-					Warning.Action.Warn)), SYS_OUT);
+					Action.Warn)), SYS_OUT);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException("XML parsing error in " + filename,
 					e);

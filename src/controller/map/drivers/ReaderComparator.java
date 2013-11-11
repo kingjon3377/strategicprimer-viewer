@@ -17,6 +17,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
@@ -111,7 +112,7 @@ public class ReaderComparator implements ISPDriver {
 	 */
 	public void compareReaders(final String arg) throws XMLStreamException,
 			SPFormatException {
-		final Warning warner = new Warning(Warning.Action.Ignore);
+		final Warning warner = new Warning(Action.Ignore);
 		out.print(arg);
 		out.println(':');
 		// ESCA-JAVA0177:

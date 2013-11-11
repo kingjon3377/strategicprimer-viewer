@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import view.map.main.ViewerFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
@@ -58,7 +59,7 @@ public class WorkerReportDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final Warning warner = new Warning(Warning.Action.Ignore);
+		final Warning warner = new Warning(Action.Ignore);
 		for (final String filename : args) {
 			if (filename == null) {
 				continue;

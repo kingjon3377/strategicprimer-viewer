@@ -1,6 +1,7 @@
 package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
+import static util.Warning.Action;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -517,7 +518,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final Random random = new Random();
 		final MapReaderAdapter adapter = new MapReaderAdapter();
 		final int reps = 50; // NOPMD
-		final Warning warner = new Warning(Warning.Action.Ignore);
+		final Warning warner = new Warning(Action.Ignore);
 		for (final String filename : args) {
 			if (filename == null) {
 				continue;

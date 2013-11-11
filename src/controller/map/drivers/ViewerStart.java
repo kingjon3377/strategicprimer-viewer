@@ -14,6 +14,7 @@ import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
@@ -101,7 +102,7 @@ public final class ViewerStart implements ISPDriver {
 			}
 		} else {
 			final MapReaderAdapter reader = new MapReaderAdapter();
-			final Warning warner = new Warning(Warning.Action.Warn);
+			final Warning warner = new Warning(Action.Warn);
 			final FilteredFileChooser chooser = new FilteredFileChooser(".",
 					new MapFileFilter());
 			for (final String filename : args) {

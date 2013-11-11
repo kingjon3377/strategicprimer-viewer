@@ -12,6 +12,7 @@ import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.ErrorShower;
@@ -89,7 +90,7 @@ public class WorkerStart implements ISPDriver {
 		try {
 			final IWorkerModel model = new WorkerModel(
 					new MapReaderAdapter().readMap(filename, new Warning(
-							Warning.Action.Warn)), filename);
+							Action.Warn)), filename);
 			SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
 					model, new IOHandler(model, new FilteredFileChooser(".",
 							new MapFileFilter())))));

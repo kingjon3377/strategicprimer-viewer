@@ -22,6 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import view.util.StreamingLabel;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -168,7 +169,7 @@ public class SubsetFrame extends JFrame {
 	public void loadMain(final String arg) throws SPFormatException,
 			XMLStreamException, IOException {
 		try {
-			mainMap = reader.readMap(arg, new Warning(Warning.Action.Ignore));
+			mainMap = reader.readMap(arg, new Warning(Action.Ignore));
 		} catch (final FileNotFoundException except) {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
@@ -216,7 +217,7 @@ public class SubsetFrame extends JFrame {
 		// ESCA-JAVA0177:
 		final IMap map; // NOPMD
 		try {
-			map = reader.readMap(arg, new Warning(Warning.Action.Ignore));
+			map = reader.readMap(arg, new Warning(Action.Ignore));
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE, "Map version in " + arg
 					+ " not acceptable to reader", except);

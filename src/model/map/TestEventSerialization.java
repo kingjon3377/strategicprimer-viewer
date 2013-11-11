@@ -18,6 +18,7 @@ import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
 
 import util.Warning;
+import util.Warning.Action;
 import controller.map.formatexceptions.SPFormatException;
 
 /**
@@ -100,7 +101,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				3, owner);
 		assertSerialization(
 				"Serialization of CityEvent without a name, reflection", three,
-				City.class, new Warning(Warning.Action.Ignore));
+				City.class, new Warning(Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true), City.class,
 				NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false), City.class,
@@ -153,7 +154,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				TownSize.Small, 30, "", 3, owner);
 		assertSerialization(
 				"Serialization of FortificationEvent without a name, reflection",
-				three, Fortification.class, new Warning(Warning.Action.Ignore));
+				three, Fortification.class, new Warning(Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true),
 				Fortification.class, NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false),
@@ -297,7 +298,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				3, owner);
 		assertSerialization(
 				"Serialization of TownEvent without a name, reflection", three,
-				Town.class, new Warning(Warning.Action.Ignore));
+				Town.class, new Warning(Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true), Town.class,
 				NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false), Town.class,

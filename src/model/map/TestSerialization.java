@@ -1,7 +1,7 @@
 package model.map;
 
-import static org.junit.Assert.assertEquals;
 import static model.map.PointFactory.point;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -20,7 +20,7 @@ import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
 
-import util.Warning;
+import util.Warning.Action;
 import controller.map.formatexceptions.SPFormatException;
 
 /**
@@ -282,11 +282,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquivalentForms("Two maps, one with row tags, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>",
-				SPMap.class, Warning.Action.Die);
+				SPMap.class, Action.Die);
 		assertEquivalentForms("Two maps, one with future tag, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
-				SPMap.class, Warning.Action.Ignore);
+				SPMap.class, Action.Ignore);
 		assertUnsupportedTag(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
 				SPMap.class, "future", true);

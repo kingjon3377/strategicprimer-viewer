@@ -20,7 +20,7 @@ public class Warning {
 	/**
 	 * An enumeration of possible states.
 	 */
-	public enum Action {
+	public static enum Action {
 		/**
 		 * Don't do anything with a warning.
 		 */
