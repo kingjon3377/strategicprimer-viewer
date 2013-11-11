@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -11,7 +13,6 @@ import model.map.IMap;
 import model.map.MapView;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.SystemOut;
 import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
@@ -66,8 +67,7 @@ public final class ConverterDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
-			SystemOut.SYS_OUT
-					.println("Usage: ConverterDriver filename [filename ...]");
+			SYS_OUT.println("Usage: ConverterDriver filename [filename ...]");
 			throw new DriverFailedException("Need files to convert",
 					new IllegalArgumentException("Not enough arguments"));
 		}
@@ -75,16 +75,16 @@ public final class ConverterDriver implements ISPDriver {
 			if (filename == null) {
 				continue;
 			}
-			SystemOut.SYS_OUT.print("Reading ");
-			SystemOut.SYS_OUT.print(filename);
-			SystemOut.SYS_OUT.print(" ... ");
+			SYS_OUT.print("Reading ");
+			SYS_OUT.print(filename);
+			SYS_OUT.print(" ... ");
 			try {
 				final IMap old = READER.readMap(filename, Warning.INSTANCE);
-				SystemOut.SYS_OUT.println(" ... Converting ... ");
+				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
 				final MapView map = ResolutionDecreaseConverter.convert(old);
-				SystemOut.SYS_OUT.print("About to write ");
-				SystemOut.SYS_OUT.println(newFilename);
+				SYS_OUT.print("About to write ");
+				SYS_OUT.println(newFilename);
 				new MapReaderAdapter().write(newFilename, map); // NOPMD
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename

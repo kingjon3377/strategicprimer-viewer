@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -438,44 +440,44 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 						return true;
 					}
 				});
-		SystemOut.SYS_OUT.println("1. All in one place:");
+		SYS_OUT.println("1. All in one place:");
 		long oneTotal = printStats(CACHING, first(hOne, map, reps, tsize), reps);
 		long twoTotal = printStats(DIRECT, first(hTwo, map, reps, tsize), reps);
 		long threeTot = printStats(VER_TWO, first(hThree, map, reps, tsize),
 				reps);
-		SystemOut.SYS_OUT.println("2. Translating:");
+		SYS_OUT.println("2. Translating:");
 		oneTotal += printStats(CACHING, second(hOne, map, reps, tsize), reps);
 		twoTotal += printStats(DIRECT, second(hTwo, map, reps, tsize), reps);
 		threeTot += printStats(VER_TWO, second(hThree, map, reps, tsize), reps);
-		SystemOut.SYS_OUT.println("3. In-place, reusing Graphics:");
+		SYS_OUT.println("3. In-place, reusing Graphics:");
 		oneTotal += printStats(CACHING, third(hOne, map, reps, tsize), reps);
 		twoTotal += printStats(DIRECT, third(hTwo, map, reps, tsize), reps);
 		threeTot += printStats(VER_TWO, third(hThree, map, reps, tsize), reps);
-		SystemOut.SYS_OUT.println("4. Translating, reusing Graphics:");
+		SYS_OUT.println("4. Translating, reusing Graphics:");
 		oneTotal += printStats(CACHING, fourth(hOne, map, reps, tsize), reps);
 		twoTotal += printStats(DIRECT, fourth(hTwo, map, reps, tsize), reps);
 		threeTot += printStats(VER_TWO, fourth(hThree, map, reps, tsize), reps);
-		SystemOut.SYS_OUT.println("5. Ordered iteration vs filtering:");
-		SystemOut.SYS_OUT.print("Iteration, ");
+		SYS_OUT.println("5. Ordered iteration vs filtering:");
+		SYS_OUT.print("Iteration, ");
 		oneTotal += printStats(CACHING, fifthOne(hOne, map, reps, tsize), reps);
-		SystemOut.SYS_OUT.print("Iteration, ");
+		SYS_OUT.print("Iteration, ");
 		twoTotal += printStats(DIRECT, fifthOne(hTwo, map, reps, tsize), reps);
-		SystemOut.SYS_OUT.print("Iteration, ");
+		SYS_OUT.print("Iteration, ");
 		threeTot += printStats(VER_TWO, fifthOne(hThree, map, reps, tsize),
 				reps);
-		SystemOut.SYS_OUT.print("Filtering, ");
+		SYS_OUT.print("Filtering, ");
 		oneTotal += printStats(CACHING, fifthTwo(hOne, map, reps, tsize), reps);
-		SystemOut.SYS_OUT.print("Filtering, ");
+		SYS_OUT.print("Filtering, ");
 		twoTotal += printStats(DIRECT, fifthTwo(hTwo, map, reps, tsize), reps);
-		SystemOut.SYS_OUT.print("Filtering, ");
+		SYS_OUT.print("Filtering, ");
 		threeTot += printStats(VER_TWO, fifthTwo(hThree, map, reps, tsize),
 				reps);
-		SystemOut.SYS_OUT.println("--------------------------------------");
-		SystemOut.SYS_OUT.print("Total:");
+		SYS_OUT.println("--------------------------------------");
+		SYS_OUT.print("Total:");
 		printStats(CACHING, oneTotal, reps);
 		printStats(DIRECT, twoTotal, reps);
 		printStats(VER_TWO, threeTot, reps);
-		SystemOut.SYS_OUT.println();
+		SYS_OUT.println();
 	}
 
 	/**
@@ -487,12 +489,12 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @return that total
 	 */
 	public static long printStats(final String prefix, final long total, final int reps) {
-		SystemOut.SYS_OUT.print(prefix);
-		SystemOut.SYS_OUT.print('\t');
-		SystemOut.SYS_OUT.print(total);
-		SystemOut.SYS_OUT.print(", average of\t");
-		SystemOut.SYS_OUT.print(Long.toString(total / reps));
-		SystemOut.SYS_OUT.println(" ns.");
+		SYS_OUT.print(prefix);
+		SYS_OUT.print('\t');
+		SYS_OUT.print(total);
+		SYS_OUT.print(", average of\t");
+		SYS_OUT.print(Long.toString(total / reps));
+		SYS_OUT.println(" ns.");
 		return total;
 	}
 
@@ -535,8 +537,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 				LOGGER.log(Level.SEVERE, "Map format error reading map", e);
 				continue;
 			}
-			SystemOut.SYS_OUT.print("Testing using ");
-			SystemOut.SYS_OUT.println(filename);
+			SYS_OUT.print("Testing using ");
+			SYS_OUT.println(filename);
 			PointFactory.clearCache();
 			if (random.nextBoolean()) {
 				PointFactory.shouldUseCache(true);

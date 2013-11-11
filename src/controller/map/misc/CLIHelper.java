@@ -1,5 +1,7 @@
 package controller.map.misc;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -173,10 +175,8 @@ public class CLIHelper implements ICLIHelper {
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
 				return false;
 			} else {
-				SystemOut.SYS_OUT
-						.println("Please enter 'yes', 'no', 'true', or 'false',");
-				SystemOut.SYS_OUT
-						.println("or the first character of any of those.");
+				SYS_OUT.println("Please enter 'yes', 'no', 'true', or 'false',");
+				SYS_OUT.println("or the first character of any of those.");
 			}
 		}
 	}
