@@ -86,11 +86,8 @@ public class ExplorationFrame extends JFrame {
 		}
 	}
 	/**
-	 * Constructor.
-	 *
 	 * @param emodel the exploration model
-	 * @param ioHandler the I/O handler to let the menu handle the 'save all',
-	 *        etc.
+	 * @param ioHandler Passed to menu constructor
 	 */
 	public ExplorationFrame(final ExplorationModel emodel,
 			final MultiIOHandler ioHandler) {
