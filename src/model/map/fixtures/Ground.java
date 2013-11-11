@@ -82,7 +82,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 * @param obj another Ground
 	 * @return whether it's equal to this one
 	 */
-	public boolean equalsImpl(final Ground obj) {
+	private boolean equalsImpl(final Ground obj) {
 		return kind.equals(obj.kind) && exposed == obj.exposed;
 	}
 
