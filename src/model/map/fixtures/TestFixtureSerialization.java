@@ -336,7 +336,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException on I/O error creating serialized form
 	 */
 	@Test
-	public void testSimpleImageSerialization() throws XMLStreamException, SPFormatException, IOException {
+	public void testSimpleImageSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
 		assertImageSerialization("Djinn image property is preserved",
 				new Djinn(3), Djinn.class);
 		assertImageSerialization("Griffin image property is preserved",
