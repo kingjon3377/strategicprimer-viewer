@@ -118,17 +118,13 @@ public class ExplorationCLI {
 	/**
 	 * Have the player move the selected unit. Throws an exception if no unit is
 	 * selected.
-	 *
+	 * @param mover the selected unit
 	 * @return the cost of the specified movement, 1 if not possible (in which
 	 *         case we update subordinate maps with that tile's tile type but no
 	 *         fixtures), or MAX_INT if "exit".
 	 * @throws IOException on I/O error
 	 */
-	public int move() throws IOException {
-		final Unit mover = model.getSelectedUnit();
-		if (mover == null) {
-			throw new IllegalStateException("No unit selected");
-		}
+	public int move(final Unit mover) throws IOException {
 		final List<TileFixture> allFixtures = new ArrayList<>();
 		final List<TileFixture> constants = new ArrayList<>();
 		final int directionNum = helper.inputNumber("Direction to move: ");
@@ -206,7 +202,7 @@ public class ExplorationCLI {
 				SYS_OUT.printC(movement).printC(" MP of ")
 						.printC(totalMP).println(" remaining.");
 				SYS_OUT.println(prompt);
-				movement -= move();
+				movement -= move(selUnit);
 			}
 		}
 	}
