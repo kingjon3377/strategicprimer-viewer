@@ -64,8 +64,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			throw new IllegalStateException(
 					"Default produced null component somehow");
 		}
-		final Object internal = value instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) value)
-				.getUserObject() : value;
+		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
 		}
@@ -91,6 +90,16 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					.append(name).append("</p></html>").toString());
 		}
 		return component;
+	}
+
+	/**
+	 * @param value a node of the tree
+	 * @return it, unless it's a DefaultMutableTreeNode, in which case return
+	 *         the associated user object
+	 */
+	@Nullable private static Object getNodeValue(final Object value) {
+		return value instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) value)
+				.getUserObject() : value;
 	}
 
 	/**
