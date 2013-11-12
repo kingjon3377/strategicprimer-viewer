@@ -167,7 +167,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						+ "<troll /></fortification>", Fortification.class,
 				false);
 		assertMissingProperty(
-				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
+				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\"/>",
 				Fortification.class, "owner", true);
 		assertImageSerialization("Fortification image property is preserved",
 				three, Fortification.class);
