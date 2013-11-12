@@ -3,17 +3,12 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
-import model.report.AbstractReportNode;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.DelayedRemovalMap;
-import util.Pair;
-
+// ESCA-JAVA0011: Abstract methods are now moved to interface.
 /**
  * An interface for classes that generate reports for particular kinds of SP
  * objects.
@@ -21,7 +16,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  * @param <T> the type of thing the class knows how to generate a report on
  */
-public abstract class AbstractReportGenerator<T> {
+public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> {
 	/**
 	 * A list that produces HTML in its toString().
 	 * @author Jonathan Lovelace
@@ -88,72 +83,6 @@ public abstract class AbstractReportGenerator<T> {
 	 * The HTML tag for the start of a list item.
 	 */
 	protected static final String OPEN_LIST_ITEM = "<li>";
-
-	/**
-	 * All fixtures that this report references should be removed from the set
-	 * before returning.
-	 *
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
-	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
-	 *        type for some reports.)
-	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the (sub-)report, or the empty string if nothing to report.
-	 */
-	public abstract String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer);
-
-	/**
-	 * Produce a report on a single item. All fixtures that this report
-	 * references should be removed from the set before returning.
-	 *
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
-	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
-	 *        type for some reports.)
-	 * @param currentPlayer the player for whom the report is being produced
-	 * @param item the particular item we are to be reporting on.
-	 * @param loc the location of that item, if it's a fixture.
-	 * @return the (sub-)report, or the empty string if nothing to report.
-	 */
-	public abstract String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer, final T item,
-			final Point loc);
-
-	/**
-	 * All fixtures that this report references should be removed from the set
-	 * before returning.
-	 *
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
-	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
-	 *        type for some reports.)
-	 * @param currentPlayer the player for whom the report is being produced
-	 * @return the (sub-)report, or the empty string if nothing to report.
-	 */
-	public abstract AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer);
-
-	/**
-	 * Produce a report on a single item. All fixtures that this report
-	 * references should be removed from the set before returning.
-	 *
-	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
-	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
-	 *        type for some reports.)
-	 * @param currentPlayer the player for whom the report is being produced
-	 * @param item the particular item we are to be reporting on.
-	 * @param loc the location of that item, if it's a fixture.
-	 * @return the (sub-)report, or null if nothing to report.
-	 */
-	public abstract AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer, final T item,
-			final Point loc);
 
 	/**
 	 * @param point a point
