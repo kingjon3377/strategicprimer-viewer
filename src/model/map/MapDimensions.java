@@ -65,11 +65,15 @@ public class MapDimensions {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this
-				|| (obj instanceof MapDimensions
-						&& ((MapDimensions) obj).rows == rows
-						&& ((MapDimensions) obj).cols == cols && ((MapDimensions) obj).version == version);
+				|| (obj instanceof MapDimensions && equalsImpl((MapDimensions) obj));
 	}
-
+	/**
+	 * @param obj a map-dimensions object
+	 * @return whether it equals this
+	 */
+	private boolean equalsImpl(final MapDimensions obj) {
+		return obj.rows == rows && obj.cols == cols && obj.version == version;
+	}
 	/**
 	 * @return a hash value for the object
 	 */

@@ -92,12 +92,16 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof CacheFixture
-						&& kind.equals(((CacheFixture) obj).kind)
-						&& contents.equals(((CacheFixture) obj).contents) && id == ((TileFixture) obj)
-						.getID());
+				|| (obj instanceof CacheFixture && equalsImpl((CacheFixture) obj));
 	}
-
+	/**
+	 * @param obj a cache-fixture
+	 * @return whether it's equal to this one
+	 */
+	private boolean equalsImpl(final CacheFixture obj) {
+		return kind.equals(obj.kind) && contents.equals(obj.contents)
+				&& id == obj.getID();
+	}
 	/**
 	 * @return a hash value for the object
 	 */

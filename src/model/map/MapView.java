@@ -125,9 +125,15 @@ public class MapView implements IMap {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof MapView && map.equals(((MapView) obj).map) && turn == ((MapView) obj).turn);
+				|| (obj instanceof MapView && equalsImpl((MapView) obj));
 	}
-
+	/**
+	 * @param obj another map-view
+	 * @return whether it's equal to this one
+	 */
+	private boolean equalsImpl(final MapView obj) {
+		return map.equals(obj.map) && turn == obj.turn;
+	}
 	/**
 	 * @return a hash code for the object
 	 */

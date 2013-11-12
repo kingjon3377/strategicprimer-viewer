@@ -68,12 +68,15 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Shrub
-						&& description.equals(((Shrub) obj).description) && id == ((TileFixture) obj)
-						.getID());
+		return this == obj || (obj instanceof Shrub && equalsImpl((Shrub) obj));
 	}
-
+	/**
+	 * @param obj a shrub
+	 * @return whether it's equal to this one
+	 */
+	private boolean equalsImpl(final Shrub obj) {
+		return description.equals(obj.description) && id == obj.getID();
+	}
 	/**
 	 * @return a hash value for the object
 	 */
