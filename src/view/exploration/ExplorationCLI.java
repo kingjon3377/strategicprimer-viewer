@@ -17,6 +17,9 @@ import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Village;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.Pair;
 import controller.map.misc.CLIHelper;
 
@@ -168,15 +171,24 @@ public class ExplorationCLI {
 			constants.add(allFixtures.get(0));
 		}
 		for (final TileFixture fix : constants) {
-			if (fix != null) {
-				SYS_OUT.println(fix);
-				for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
-					final IMap map = pair.first();
-					map.getTile(dPoint).addFixture(fix);
-				}
-			}
+			printAndTransferFixture(dPoint, fix);
 		}
 		return cost;
+	}
+
+	/**
+	 * @param dPoint the current location
+	 * @param fix the fixture to copy to subordinate maps. May be null, to simplify the caller.
+	 */
+	private void printAndTransferFixture(final Point dPoint,
+			@Nullable final TileFixture fix) {
+		if (fix != null) {
+			SYS_OUT.println(fix);
+			for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
+				final IMap map = pair.first();
+				map.getTile(dPoint).addFixture(fix);
+			}
+		}
 	}
 
 	/**
