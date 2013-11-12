@@ -171,12 +171,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	 */
 	private boolean matches(final String pattern, final int idNum,
 			final IFixture fix) {
-		if (!pattern.isEmpty()
-				&& (!(fix instanceof TileFixture) || ffl
-						.shouldDisplay((TileFixture) fix))
-				&& (fix.getID() == idNum || matchesName(pattern, fix)
-						|| matchesKind(pattern, fix) || matchesOwner(pattern,
-							idNum, fix))) {
+		if (matchesSimple(pattern, idNum, fix)) {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable<?>) {
 			for (final IFixture member : (FixtureIterable<?>) fix) {
@@ -186,6 +181,25 @@ public class FindDialog extends JDialog implements ActionListener {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param pattern a pattern
+	 * @param idNum either MIN_INT, or (if pattern is numeric) its numeric
+	 *        equivalent
+	 * @param fix a fixture.
+	 * @return whether the fixture has id as its ID or matches the pattern in
+	 *         any of the simple ways; if this fails the caller will go on to
+	 *         the recursive test.
+	 */
+	private boolean matchesSimple(final String pattern, final int idNum,
+			final IFixture fix) {
+		return !pattern.isEmpty()
+				&& (!(fix instanceof TileFixture) || ffl
+						.shouldDisplay((TileFixture) fix))
+				&& (fix.getID() == idNum || matchesName(pattern, fix)
+						|| matchesKind(pattern, fix) || matchesOwner(pattern,
+							idNum, fix));
 	}
 
 	/**
