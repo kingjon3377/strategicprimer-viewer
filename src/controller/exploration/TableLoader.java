@@ -224,68 +224,6 @@ public final class TableLoader { // NOPMD
 	}
 
 	/**
-	 * Try to load a table from file, but log the error and use the given backup
-	 * if it fails.
-	 *
-	 * @param filename the file to load from
-	 * @param defaultRows the number of rows to use if loading fails
-	 * @param defaultItems a list of items to use if loading fails
-	 *
-	 * @return a valid table, from file if that works, using the default data if
-	 *         not.
-	 */
-	public static EncounterTable tryLoading(final String filename,
-			final int defaultRows, final List<String> defaultItems) {
-		try {
-			return loadTable(filename); // NOPMD
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error loading the table from "
-					+ filename, e);
-			return new QuadrantTable(defaultRows,
-					new LinkedList<>(defaultItems));
-		}
-	}
-
-	/**
-	 * A list of tables to load.
-	 */
-	private final String[] defaultTableList = { "major_rock", "minor_rock",
-			"boreal_major_tree", "temperate_major_tree", "main" };
-
-	/**
-	 * Loads the default set of tables.
-	 *
-	 * @param runner the runner to add them to
-	 */
-	public void loadDefaultTables(final ExplorationRunner runner) {
-		for (final String table : defaultTableList) {
-			if (table != null) {
-				runner.loadTable(table,
-						tryLoading("tables/" + table, 2, createList(table, 4)));
-			}
-		}
-	}
-
-	/**
-	 * Create a list of strings, each beginning with a specified stem and ending
-	 * with a sequential number.
-	 *
-	 * @param stem the string to begin each item with
-	 * @param iterations how many items should be in the list
-	 *
-	 * @return such a list
-	 */
-	private List<String> createList(final String stem, final int iterations) {
-		if (iterations == 0) {
-			return new ArrayList<>(); // NOPMD
-		} else {
-			final List<String> list = createList(stem, iterations - 1);
-			list.add(stem + iterations);
-			return list;
-		}
-	}
-
-	/**
 	 * Load all tables in the specified path.
 	 *
 	 * @param path the directory to look in
