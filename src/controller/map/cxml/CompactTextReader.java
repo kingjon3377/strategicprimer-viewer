@@ -22,8 +22,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTextReader extends AbstractCompactReader implements
-		CompactReader<TextFixture> {
+public final class CompactTextReader extends AbstractCompactReader<TextFixture> {
 	/**
 	 * Singleton.
 	 */

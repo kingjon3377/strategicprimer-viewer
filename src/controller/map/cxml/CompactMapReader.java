@@ -6,8 +6,6 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IMap;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -17,6 +15,9 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
 import model.map.Tile;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
@@ -33,8 +34,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactMapReader extends AbstractCompactReader implements
-		CompactReader<IMap> {
+public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	/**
 	 * The 'map' tag.
 	 */

@@ -27,8 +27,7 @@ import controller.map.misc.IDFactory;
  *
  * @author Jonathan Lovelace
  */
-public final class CompactWorkerReader extends AbstractCompactReader implements
-		CompactReader<Worker> {
+public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	/**
 	 * Singleton.
 	 */

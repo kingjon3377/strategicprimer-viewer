@@ -2,17 +2,20 @@ package controller.map.cxml;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.map.IFixture;
 import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -26,8 +29,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactUnitReader extends AbstractCompactReader implements
-		CompactReader<Unit> {
+public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	/**
 	 * The tag used for a unit.
 	 */
@@ -37,12 +39,16 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
-		final List<AbstractCompactReader> temp = Arrays.asList(new AbstractCompactReader[] {
-				CompactMobileReader.READER, CompactResourceReader.READER,
-				CompactTerrainReader.READER, CompactTextReader.READER,
-				CompactTownReader.READER, CompactWorkerReader.READER });
-		assert temp != null;
-		readers = temp;
+		final List<AbstractCompactReader<? extends IFixture>> temp = new ArrayList<>();
+		temp.add(CompactMobileReader.READER);
+		temp.add(CompactResourceReader.READER);
+		temp.add(CompactTerrainReader.READER);
+		temp.add(CompactTextReader.READER);
+		temp.add(CompactTownReader.READER);
+		temp.add(CompactWorkerReader.READER);
+		final List<AbstractCompactReader<? extends IFixture>> unmod = Collections.unmodifiableList(temp);
+		assert unmod != null;
+		readers = unmod;
 	}
 
 	/**
@@ -96,7 +102,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<AbstractCompactReader> readers;
+	private final List<AbstractCompactReader<? extends IFixture>> readers;
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
@@ -115,7 +121,7 @@ public final class CompactUnitReader extends AbstractCompactReader implements
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
 		assert name != null;
-		for (final AbstractCompactReader item : readers) {
+		for (final AbstractCompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				final Object retval = ((CompactReader<?>) item).read(element,
 						stream, players, warner, idFactory);

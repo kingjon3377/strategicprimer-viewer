@@ -21,10 +21,12 @@ import controller.map.misc.IncludingIterator;
 /**
  * A superclass to provide helper methods.
  *
+ * @param <T> a type parameter, since we now "implement" the interface
+ *
  * @author Jonathan Lovelace
  *
  */
-public abstract class AbstractCompactReader {
+public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	/**
 	 * The string to use instead of the tag in exceptions when the tag is null.
 	 */

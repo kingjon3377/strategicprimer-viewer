@@ -37,8 +37,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTownReader extends AbstractCompactReader implements
-		CompactReader<ITownFixture> {
+public final class CompactTownReader extends AbstractCompactReader<ITownFixture> {
 	/**
 	 * The "owner" parameter.
 	 */

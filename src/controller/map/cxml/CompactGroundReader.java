@@ -21,8 +21,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactGroundReader extends AbstractCompactReader implements
-		CompactReader<Ground> {
+public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	/**
 	 * Singleton.
 	 */
