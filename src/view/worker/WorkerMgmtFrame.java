@@ -52,6 +52,13 @@ import controller.map.report.ReportGenerator;
  */
 public class WorkerMgmtFrame extends JFrame {
 	/**
+	 * The header to put above the report.
+	 */
+	private static final String RPT_HDR;
+	static {
+		RPT_HDR = "A report on everything except your units and fortresses, for reference:";
+	}
+	/**
 	 * A constant for when a split panel should be divided evenly in half.
 	 */
 	private static final double HALF_WAY = .5;
@@ -98,24 +105,18 @@ public class WorkerMgmtFrame extends JFrame {
 				reportModel);
 		pch.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
-		setContentPane(new SplitWithWeights(
-				JSplitPane.HORIZONTAL_SPLIT,
-				HALF_WAY,
-				HALF_WAY,
-				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, TWO_THIRDS,
-						TWO_THIRDS, new BorderedPanel(new JScrollPane(tree),
-								plabel, null, null, null),
+		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT,
+				HALF_WAY, HALF_WAY, new SplitWithWeights(
+						JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
+						new BorderedPanel(new JScrollPane(tree), plabel, null,
+								null, null),
 						new BorderedPanel(ordersPanel, new ListenedButton(
 								"Add New Unit", new WindowShower(newUnitFrame,
 										"Add New Unit")), new ListenedButton(
 								"Export a proto-strategy from units' orders",
 								new ExportButtonHandler(outer, smodel)), null,
-								null)),
-				new BorderedPanel(
-						new JScrollPane(report),
-						new JLabel(
-								"A report on everything except your units and fortresses, for reference:"),
-						null, null, null)));
+								null)), new BorderedPanel(new JScrollPane(
+						report), new JLabel(RPT_HDR), null, null, null)));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
