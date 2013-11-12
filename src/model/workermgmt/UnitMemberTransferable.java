@@ -47,7 +47,8 @@ public class UnitMemberTransferable implements Transferable {
 		public String toString() {
 			final String memberStr = member.toString();
 			final String unitStr = unit.toString();
-			final StringBuilder builder = new StringBuilder(22 + memberStr.length() + unitStr.length());
+			final StringBuilder builder = new StringBuilder(22
+					+ memberStr.length() + unitStr.length());
 			builder.append("UnitMemberPair: (");
 			builder.append(memberStr);
 			builder.append(", ");

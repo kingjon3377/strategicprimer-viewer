@@ -191,7 +191,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * A selection listener.
 	 * @author Jonathan Lovelace
 	 */
-	private class WorkerTreeSelectionListener implements TreeSelectionListener, UnitMemberSelectionSource, UnitSelectionSource {
+	private class WorkerTreeSelectionListener implements TreeSelectionListener,
+			UnitMemberSelectionSource, UnitSelectionSource {
 		/**
 		 * Constructor.
 		 */

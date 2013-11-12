@@ -22,7 +22,8 @@ import view.util.BorderedPanel;
  * @author Jonathan Lovelace
  *
  */
-public class DetailPanelNG extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
+public class DetailPanelNG extends JSplitPane implements VersionChangeListener,
+		SelectionChangeListener {
 	/**
 	 * The "weight" to give the divider. We want the 'key' to get very little of
 	 * any extra space, but to get some.

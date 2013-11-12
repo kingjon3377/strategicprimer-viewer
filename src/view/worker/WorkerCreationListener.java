@@ -34,7 +34,8 @@ public class WorkerCreationListener implements ActionListener,
 	/**
 	 * A typesafe equvalent of null, for when no unit is selected.
 	 */
-	private static final Unit NULL_UNIT = new Unit(new Player(-1,  NULL_STR), NULL_STR, NULL_STR, -1) {
+	private static final Unit NULL_UNIT = new Unit(new Player(-1, NULL_STR),
+			NULL_STR, NULL_STR, -1) {
 		// ESCA-JAVA0025:
 		@Override
 		public void addMember(final UnitMember member) {

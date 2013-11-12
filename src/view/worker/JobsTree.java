@@ -110,7 +110,8 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 	 * @param selected passed to tree model
 	 */
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old,
+			@Nullable final UnitMember selected) {
 		model.memberSelected(old, selected);
 	}
 }

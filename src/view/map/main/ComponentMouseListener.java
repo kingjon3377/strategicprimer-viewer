@@ -195,8 +195,10 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	public void addSelectionChangeListener(final SelectionChangeListener list) {
 		menu.addSelectionChangeListener(list);
 	}
+
 	/**
-	 * @param list something that no longer wants to listen for changes to the tile type of the selected tile
+	 * @param list something that no longer wants to listen for changes to the
+	 *        tile type of the selected tile
 	 */
 	@Override
 	public void removeSelectionChangeListener(final SelectionChangeListener list) {

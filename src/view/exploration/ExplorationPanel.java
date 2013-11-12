@@ -123,7 +123,8 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 */
 	private final JLabel locLabel = new JLabel(
 			"<html><body>Currently exploring (-1, -1); click a tile to explore it. "
-					+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
+					+ "Selected fixtures in its left-hand list will be 'discovered'."
+					+ "</body></html>");
 	/**
 	 * The text-field containing the running MP total.
 	 */

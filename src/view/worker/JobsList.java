@@ -95,7 +95,8 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	 * @param selected passed to list model
 	 */
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old,
+			@Nullable final UnitMember selected) {
 		lmodel.memberSelected(old, selected);
 	}
 	/**

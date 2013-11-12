@@ -69,11 +69,16 @@ public final class ExplorationListListener implements ListDataListener {
 	public void contentsChanged(@Nullable final ListDataEvent evt) {
 		randomizeSelection();
 	}
+
 	/**
-	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an int into Integer.
+	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an
+	 * int into Integer.
+	 *
+	 * TODO: If we start using Guava, use of this class should be replaced by
+	 * Multiset, or something?
+	 *
 	 * @param <T> the type in question.
 	 *
-	 * TODO: If we start using Guava, use of this class should be replaced by Multiset, or something?
 	 * @author Jonathan Lovelace
 	 */
 	private static class IntPair<T> {

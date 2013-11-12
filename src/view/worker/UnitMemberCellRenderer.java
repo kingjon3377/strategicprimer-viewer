@@ -92,9 +92,11 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		return component;
 	}
+
 	/**
 	 * @param iter something containing Jobs
-	 * @return a comma-separated list of them, in parentheses, prepended by a space, if there are any.
+	 * @return a comma-separated list of them, in parentheses, prepended by a
+	 *         space, if there are any.
 	 */
 	private static String jobCSL(final Iterable<Job> iter) {
 		if (iter.iterator().hasNext()) {

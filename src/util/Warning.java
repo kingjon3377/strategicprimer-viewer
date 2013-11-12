@@ -66,7 +66,8 @@ public class Warning {
 		case Die:
 			throw new FatalWarningException(warning); // NOPMD
 		case Warn:
-			final Class<? extends StackTraceElement> warnClass = warning.getStackTrace()[0].getClass();
+			final Class<? extends StackTraceElement> warnClass = warning
+					.getStackTrace()[0].getClass();
 			final Logger logger = TypesafeLogger
 					.getLogger(warnClass == null ? Warning.class : warnClass);
 			if (warning instanceof SPFormatException) {
