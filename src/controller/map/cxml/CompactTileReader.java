@@ -117,17 +117,15 @@ public final class CompactTileReader extends AbstractCompactReader<Tile> {
 	 * @return the parsed fixture.
 	 * @throws SPFormatException on SP format problem
 	 */
-	@SuppressWarnings("unchecked")
 	private TileFixture parseFixture(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
 		assert name != null;
-		for (final CompactReader<?> item : readers) {
+		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
-				return ((CompactReader<? extends TileFixture>) item).read(
-						element, stream, players, warner, idFactory);
+				return item.read(element, stream, players, warner, idFactory);
 			}
 		}
 		throw new UnwantedChildException("tile", name, element.getLocation()

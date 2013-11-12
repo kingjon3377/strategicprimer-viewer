@@ -123,8 +123,8 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		assert name != null;
 		for (final CompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
-				final Object retval = ((CompactReader<?>) item).read(element,
-						stream, players, warner, idFactory);
+				final IFixture retval = item.read(element, stream, players,
+						warner, idFactory);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
