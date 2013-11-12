@@ -147,7 +147,7 @@ public abstract class AbstractCompactReader {
 	 * @param reader the XML stream we're reading from
 	 * @throws SPFormatException on unwanted child
 	 */
-	public static void spinUntilEnd(final QName tag,
+	protected static void spinUntilEnd(final QName tag,
 			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
@@ -223,7 +223,7 @@ public abstract class AbstractCompactReader {
 	 *
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
-	public static String getParamWithDeprecatedForm(final StartElement element,
+	protected static String getParamWithDeprecatedForm(final StartElement element,
 			final String preferred, final String deprecated,
 			final Warning warner) throws SPFormatException {
 		final Attribute prefProp = element.getAttributeByName(new QName(
