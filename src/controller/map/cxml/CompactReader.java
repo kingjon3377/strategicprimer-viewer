@@ -7,6 +7,9 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.PlayerCollection;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -42,5 +45,13 @@ public interface CompactReader<T> {
 	 * @throws IOException on I/O problems.
 	 */
 	void write(Writer out, T obj, int indent) throws IOException;
+
+	/**
+	 * @param tag a tag. May be null, to simplify callers.
+	 * @return whether we support it. Should return false if null.
+	 */
+	boolean isSupportedTag(@Nullable final String tag);
+
+
 
 }

@@ -18,6 +18,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 
+// ESCA-JAVA0011: Doesn't contain an abstract method because we moved it up to the interface.
 /**
  * A superclass to provide helper methods.
  *
@@ -265,12 +266,6 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 			}
 		}
 	}
-
-	/**
-	 * @param tag a tag. May be null, to simplify callers.
-	 * @return whether we support it. Should return false if null.
-	 */
-	public abstract boolean isSupportedTag(@Nullable final String tag);
 
 	/**
 	 * @param tabs a nonnegative integer
