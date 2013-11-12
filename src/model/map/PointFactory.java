@@ -77,7 +77,7 @@ public final class PointFactory {
 	/**
 	 * Coordinate cache.
 	 */
-	private static final Map<Integer, Map<Integer, Coordinate>> COORD_CACHE = new ConcurrentHashMap<>();
+	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE = new ConcurrentHashMap<>();
 
 	/**
 	 * @param xCoord an X coordinate or extent
@@ -89,15 +89,15 @@ public final class PointFactory {
 		if (useCache) {
 			final Integer boxedX = Integer.valueOf(xCoord);
 			final Integer boxedY = Integer.valueOf(yCoord);
-			if (!COORD_CACHE.containsKey(boxedX)) {
-				COORD_CACHE.put(boxedX,
+			if (!C_CACHE.containsKey(boxedX)) {
+				C_CACHE.put(boxedX,
 						new ConcurrentHashMap<Integer, Coordinate>());
 			}
-			if (!COORD_CACHE.get(boxedX).containsKey(boxedY)) {
-				COORD_CACHE.get(boxedX).put(boxedY,
+			if (!C_CACHE.get(boxedX).containsKey(boxedY)) {
+				C_CACHE.get(boxedX).put(boxedY,
 						new Coordinate(xCoord, yCoord));
 			}
-			final Coordinate retval = COORD_CACHE.get(boxedX).get(boxedY);
+			final Coordinate retval = C_CACHE.get(boxedX).get(boxedY);
 			if (retval == null) {
 				throw new IllegalStateException("Cache produced null result");
 			}
