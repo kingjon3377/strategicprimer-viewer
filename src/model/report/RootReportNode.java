@@ -69,7 +69,7 @@ public class RootReportNode extends AbstractReportNode {
 	 * @return whether it equals this one
 	 */
 	@Override
-	protected boolean equalsImpl(final AbstractReportNode obj) {
+	protected boolean equalsImpl(final IReportNode obj) {
 		return obj instanceof RootReportNode && getText().equals(obj.getText())
 				&& children().equals(obj.children());
 	}

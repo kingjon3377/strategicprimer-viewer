@@ -12,7 +12,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
-		implements Comparable<AbstractReportNode> {
+		implements IReportNode {
 	/**
 	 * Constructor.
 	 *
@@ -27,18 +27,21 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * @return the HTML representation of the node.
 	 */
+	@Override
 	public abstract String produce();
 
 	/**
 	 * @param builder a string builder
 	 * @return that builder, with an HTML representation of the node added.
 	 */
+	@Override
 	public abstract StringBuilder produce(final StringBuilder builder);
 
 	/**
 	 * @return an approximation of how large the HTML produced by this node will
 	 *         be.
 	 */
+	@Override
 	public abstract int size();
 
 	/**
@@ -49,6 +52,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * @return the text of the node, usually the header.
 	 */
+	@Override
 	public final String getText() {
 		return text;
 	}
@@ -56,6 +60,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * @param txt the new text for the node
 	 */
+	@Override
 	public final void setText(final String txt) {
 		text = txt;
 		setUserObject(text);
@@ -66,7 +71,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final AbstractReportNode obj) {
+	public int compareTo(final IReportNode obj) {
 		return produce().compareTo(obj.produce());
 	}
 
@@ -77,14 +82,14 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof AbstractReportNode && equalsImpl((AbstractReportNode) obj));
+				|| (obj instanceof IReportNode && equalsImpl((IReportNode) obj));
 	}
 
 	/**
 	 * @param obj a node
 	 * @return whether it's equal to this one.
 	 */
-	protected abstract boolean equalsImpl(final AbstractReportNode obj);
+	protected abstract boolean equalsImpl(final IReportNode obj);
 
 	/**
 	 * @return a hash code for the object
