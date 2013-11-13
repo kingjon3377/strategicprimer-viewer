@@ -64,7 +64,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor in a direction.
 	 * @author Jonathan Lovelace
 	 */
-	private abstract static class AbstractDirListener extends AbstractAction {
+	private abstract static class AbstractDirListener extends AbstractAction { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.preferInterfacesToAbstractClasses
 		/**
 		 * Do the actual motion.
 		 */
