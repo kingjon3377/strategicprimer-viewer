@@ -50,7 +50,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 *
 	 * @return the color associated with that tile-type.
 	 */
-	public static Color getTileColor(final int version, final TileType type) {
+	protected static Color getTileColor(final int version, final TileType type) {
 		return COLORS.get(version, type);
 	}
 
