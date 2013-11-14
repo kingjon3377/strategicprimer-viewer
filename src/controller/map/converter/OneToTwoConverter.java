@@ -1,5 +1,7 @@
 package controller.map.converter; // NOPMD
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +10,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.xml.stream.XMLStreamException;
 
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
@@ -38,8 +42,12 @@ import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
 import util.Pair;
 import util.TypesafeLogger;
+import util.Warning;
 import controller.exploration.TableLoader;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import controller.map.misc.MapReaderAdapter;
 
 /**
  * A class to convert a version-1 map to a version-2 map with greater
@@ -557,5 +565,83 @@ public class OneToTwoConverter { // NOPMD
 	@Override
 	public String toString() {
 		return "OneToTwoConverter";
+	}
+	/**
+	 * @param args command-line arguments, main map first, then players' maps
+	 */
+	public static void main(final String[] args) {
+		if (args.length == 0) {
+			System.err.println("Usage: OneToTwoConverter mainmap.xml [playermap.xml ...]");
+			System.exit(1);
+		} else {
+			boolean first = true;
+			final OneToTwoConverter converter = new OneToTwoConverter();
+			final MapReaderAdapter reader = new MapReaderAdapter();
+			for (final String arg : args) {
+				if (arg == null) {
+					continue;
+				}
+				// ESCA-JAVA0177:
+				IMap old;
+				try {
+					old = reader.readMap(arg, Warning.INSTANCE);
+				} catch (IOException | XMLStreamException
+						| SPFormatException except) {
+					printReadError(except, arg);
+					if (first) {
+						System.exit(2);
+						break;
+					} else {
+						continue;
+					}
+				}
+				final IMap newMap = converter.convert(old, first);
+				try {
+					reader.write(arg + ".converted.xml", newMap);
+				} catch (IOException except) {
+					System.err.print("I/O error writing to ");
+					System.err.print(arg);
+					System.err.println(".converted.xml");
+					if (first) {
+						System.exit(4);
+					}
+				}
+				first = false;
+			}
+		}
+	}
+	/**
+	 * Print a suitable error message.
+	 * @param except the exception to handle
+	 * @param filename the file being read
+	 */
+	private static void printReadError(final Exception except, final String filename) {
+		if (except instanceof MapVersionException) {
+			System.err.print("Unsupported map version while reading ");
+			System.err.println(filename);
+		} else if (except instanceof XMLStreamException) {
+			System.err.println("Malformed XML in ");
+			System.err.println(filename);
+		} else if (except instanceof FileNotFoundException) {
+			System.err.println("File ");
+			System.err.print(filename);
+			System.err.print(" not found");
+		} else if (except instanceof IOException) {
+			System.err.println("I/O error reading ");
+			System.err.println(filename);
+		} else if (except instanceof SPFormatException) {
+			System.err.println("Bad SP XML in ");
+			System.err.print(filename);
+			System.err.print(" on line ");
+			System.err.print(((SPFormatException) except).getLine());
+			System.err.println(", as explained below:");
+			System.err.println(except.getLocalizedMessage());
+		} else {
+			System.err.print("Unexpected error while reading ");
+			System.err.print(filename);
+			System.err.println(':');
+			except.printStackTrace(System.err);
+			System.exit(3);
+		}
 	}
 }
