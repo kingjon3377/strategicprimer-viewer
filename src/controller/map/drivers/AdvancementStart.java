@@ -133,7 +133,7 @@ public final class AdvancementStart implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return usage().getShortDescription();
 	}
 
 	/**
