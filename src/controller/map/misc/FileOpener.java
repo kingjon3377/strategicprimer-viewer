@@ -15,11 +15,13 @@ import java.io.StringReader;
  * @author Jonathan Lovelace
  *
  */
-public class FileOpener {
+public final class FileOpener {
 	/**
-	 * Singleton instance.
+	 * Do not instantiate; only static methods.
 	 */
-	public static final FileOpener OPENER = new FileOpener();
+	private FileOpener() {
+		// Do nothing.
+	}
 
 	/**
 	 * If filename begins "string:", with the colon followed immediately by the
