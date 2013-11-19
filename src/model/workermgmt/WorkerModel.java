@@ -3,6 +3,7 @@ package model.workermgmt;
 import java.util.ArrayList;
 import java.util.List;
 
+import view.util.SystemOut;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
@@ -87,6 +88,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 				}
 			}
 		}
+		SystemOut.SYS_OUT.println("No suitable location found");
 	}
 	/**
 	 * @return a String representation of the object
