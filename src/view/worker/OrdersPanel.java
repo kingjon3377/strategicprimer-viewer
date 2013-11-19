@@ -6,6 +6,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import model.map.fixtures.mobile.Unit;
 
@@ -82,7 +83,11 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	@Override
 	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 		if (evt != null) {
-			sel = evt.getNewLeadSelectionPath().getLastPathComponent();
+			final TreePath selPath = evt.getNewLeadSelectionPath();
+			if (selPath == null) {
+				return;
+			}
+			sel = selPath.getLastPathComponent();
 			if (sel instanceof DefaultMutableTreeNode) {
 				sel = ((DefaultMutableTreeNode) sel).getUserObject();
 			}
