@@ -64,15 +64,15 @@ public class TestWorkerModel {
 				listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
-		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
-				"string");
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
-				model, false, true, true));
+				map.getDimensions(), null, true, true));
 		for (final Point point : iter) {
 			final TileFixture fix = fixtures.remove(0);
 			assert point != null && fix != null;
 			map.getTile(point).addFixture(fix);
 		}
+		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
+				"string");
 		final List<Unit> listOneA = model.getUnits(playerOne);
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
 		assertTrue("And didn't miss any for player 1",

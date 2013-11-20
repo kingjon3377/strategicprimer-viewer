@@ -145,7 +145,8 @@ public class FindDialog extends JDialog implements ActionListener {
 			idNum = Integer.parseInt(pattern);
 		}
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
-				map, true, !backwards.isSelected(), !vertically.isSelected()));
+				map.getMapDimensions(), map.getSelectedPoint(),
+				!backwards.isSelected(), !vertically.isSelected()));
 		for (final Point point : iter) {
 			if (point == null) {
 				continue;

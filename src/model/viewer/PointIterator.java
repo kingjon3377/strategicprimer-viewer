@@ -3,9 +3,11 @@ package model.viewer;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
-import model.misc.IDriverModel;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An view of locations on the map in order, starting at a given point.
@@ -93,24 +95,22 @@ public class PointIterator implements Iterator<Point> {
 	/**
 	 * Constructor.
 	 *
-	 * @param model the map we're helping to go through.
-	 * @param startFromSel If true, we start from (the tile after) the current
-	 *        selected tile; if false, we start from 0, 0.
+	 * @param dims the dimensions of the map we're helping to go through
+	 * @param sel the selected point; we start from 0, 0 if null
 	 * @param searchForwards Whether we should search forwards (if true) or
 	 *        backwards (if false)
 	 * @param searchHoriz Whether we should search horizontally (if true) or
 	 *        vertically (if false)
 	 */
-	public PointIterator(final IDriverModel model, final boolean startFromSel,
+	public PointIterator(final MapDimensions dims, @Nullable final Point sel,
 			final boolean searchForwards, final boolean searchHoriz) {
 		horiz = searchHoriz;
 		forwards = searchForwards;
-		maxRow = model.getMapDimensions().getRows() - 1;
-		maxCol = model.getMapDimensions().getColumns() - 1;
-		if (startFromSel && model instanceof IViewerModel) {
-			final Point selPoint = ((IViewerModel) model).getSelectedPoint();
-			startRow = wrap(selPoint.row, maxRow);
-			startCol = wrap(selPoint.col, maxCol);
+		maxRow = dims.getRows() - 1;
+		maxCol = dims.getColumns() - 1;
+		if (sel != null) {
+			startRow = wrap(sel.row, maxRow);
+			startCol = wrap(sel.col, maxCol);
 		} else if (forwards) {
 			startRow = maxRow;
 			startCol = maxCol;
