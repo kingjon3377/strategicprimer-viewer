@@ -3,7 +3,6 @@ package model.map;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,19 +45,6 @@ public final class Tile implements ITile {
 	 * The units, fortresses, and events on the tile.
 	 */
 	private final Set<TileFixture> contents;
-
-	/**
-	 * This is immediately needed for the MapNGAdapter to be even remotely
-	 * efficient.
-	 *
-	 * @return a read-only view of the contents of the tile.
-	 */
-	@Override
-	public Set<TileFixture> getContents() {
-		final Set<TileFixture> retval = Collections.unmodifiableSet(contents);
-		assert retval != null;
-		return retval;
-	}
 
 	/**
 	 * @param fix something new on the tile

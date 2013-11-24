@@ -1,7 +1,6 @@
 package model.map;
 
 import java.util.Iterator;
-import java.util.Set;
 
 import model.map.fixtures.RiverFixture;
 /**
@@ -10,13 +9,6 @@ import model.map.fixtures.RiverFixture;
  *
  */
 public interface ITile extends FixtureIterable<TileFixture>, Subsettable<ITile> {
-
-	/**
-	 * @return a read-only view of the contents of the tile.
-	 * @deprecated because it exposes an implementation detail that other implementations then have to work to emulate.
-	 */
-	@Deprecated
-	Set<TileFixture> getContents();
 
 	/**
 	 * @param fix something new on the tile
