@@ -2,7 +2,9 @@ package model.map;
 
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import model.map.fixtures.Ground;
@@ -103,10 +105,13 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 			out.print(point);
 			out.println(", may be representation error");
 		} else {
+			// TODO: Use Guava collection-from-iterable to improve/simplify this
+			final List<TileFixture> fixtures = new ArrayList<>();
+			for (final TileFixture fix : state.getTile(point)) {
+				fixtures.add(fix);
+			}
 			for (final TileFixture fix : obj.getOtherFixtures(point)) {
-				// TODO: Use Guava collection-from-iterable so we can remove the
-				// getContents method from Tile entirely.
-				if (fix != null && !state.getTile(point).getContents().contains(fix)
+				if (fix != null && !fixtures.contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
