@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -118,10 +119,19 @@ public final class Tile implements ITile {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		// TODO: Figure out some way of testing contents-equality without using getContents
-		return this == obj
-				|| ((obj instanceof ITile)
-						&& getTerrain().equals(((ITile) obj).getTerrain()) && contents
-							.equals(((ITile) obj).getContents()));
+		if (this == obj) {
+			return true;
+		} else if ((obj instanceof ITile)
+				&& getTerrain().equals(((ITile) obj).getTerrain())) {
+			final Set<TileFixture> ours = new HashSet<>(contents);
+			final Iterator<TileFixture> iter = ((ITile) obj).iterator();
+			while (iter.hasNext()) {
+				ours.remove(iter.next());
+			}
+			return ours.isEmpty() && !iter.hasNext();
+		} else {
+			return false;
+		}
 	}
 
 	/**
