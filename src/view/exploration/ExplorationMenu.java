@@ -16,7 +16,6 @@ import javax.swing.JMenuBar;
 import model.exploration.IExplorationModel;
 import model.map.IMap;
 import model.map.MapView;
-import model.map.SPMap;
 import model.viewer.ViewerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -129,7 +128,7 @@ public class ExplorationMenu extends JMenuBar {
 			if (map instanceof MapView) {
 				view = (MapView) map;
 			} else {
-				view = new MapView((SPMap) map, player, turn);
+				view = new MapView(map, player, turn);
 			}
 			filename = file;
 			ioHelper = ioHandler;

@@ -69,7 +69,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 				throw new UnwantedChildException(iLocal, oLocal, mapElement
 						.getLocation().getLineNumber());
 			}
-			final MapView retval = new MapView((SPMap) read(mapElement, stream,
+			final MapView retval = new MapView(read(mapElement, stream,
 					players, warner, idFactory), Integer.parseInt(getParameter(
 					element, "current_player")), Integer.parseInt(getParameter(
 					element, "current_turn")));

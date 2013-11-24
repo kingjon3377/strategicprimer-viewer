@@ -43,12 +43,10 @@ public class ResolutionDecreaseConverter {
 				newMap.addPlayer(player);
 			}
 		}
-		final MapView retval = new MapView(newMap, newMap.getPlayers()
-				.getCurrentPlayer().getPlayerId(), 0);
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
-				retval.getMap().addTile(
+				newMap.addTile(
 						point,
 						convertTile(old.getTile(PointFactory.point(row * 2,
 								col * 2)), old.getTile(PointFactory.point(
@@ -58,6 +56,8 @@ public class ResolutionDecreaseConverter {
 								.point(row * 2 + 1, col * 2 + 1))));
 			}
 		}
+		final MapView retval = new MapView(newMap, newMap.getPlayers()
+				.getCurrentPlayer().getPlayerId(), 0);
 		return retval;
 	}
 

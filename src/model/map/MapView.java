@@ -19,7 +19,7 @@ public class MapView implements IMap {
 	 * @param curPlayer the current player's number
 	 * @param curTurn the current turn
 	 */
-	public MapView(final SPMap wrapped, final int curPlayer, final int curTurn) {
+	public MapView(final IMap wrapped, final int curPlayer, final int curTurn) {
 		super();
 		map = wrapped;
 		map.getPlayers().getPlayer(curPlayer).setCurrent(true);
@@ -29,7 +29,7 @@ public class MapView implements IMap {
 	/**
 	 * The map we wrap.
 	 */
-	private final SPMap map;
+	private final IMap map;
 	/**
 	 * The current turn.
 	 */
@@ -155,7 +155,7 @@ public class MapView implements IMap {
 	 *
 	 * @return the map this wraps
 	 */
-	public SPMap getMap() {
+	public IMap getMap() {
 		return map;
 	}
 
