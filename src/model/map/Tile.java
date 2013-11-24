@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -246,20 +245,19 @@ public final class Tile implements ITile {
 	 * @param out the stream to write details of the differences to
 	 */
 	protected boolean isSubsetImpl(final ITile obj, final PrintWriter out) {
-		// TODO: Use Guava collection-from-iterable so we can remove getContents() entirely.
-		final Set<TileFixture> temp = new HashSet<>(obj.getContents());
-		temp.removeAll(contents);
-		final List<TileFixture> tempList = new ArrayList<>(temp);
+		final List<TileFixture> temp = new ArrayList<>();
 		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
+		for (final TileFixture fix : obj) {
+			if (fix != null && !contents.contains(fix) && !temp.contains(fix)
+					&& !shouldSkip(fix)) {
+				temp.add(fix);
+			}
+		}
 		boolean retval = true;
-		for (final TileFixture fix : tempList) {
-			if (fix == null) {
-				continue;
-			} else if (shouldSkip(fix)) {
-				temp.remove(fix);
-			} else if (fix instanceof Subsettable
+		for (final TileFixture fix : temp) {
+			assert fix != null;
+			if (fix instanceof Subsettable
 					&& mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {
-				temp.remove(fix);
 				final Subsettable<?> mine = mySubsettables.get(Integer
 						.valueOf(fix.getID()));
 				if (mine instanceof Fortress && fix instanceof Fortress) {
@@ -270,12 +268,11 @@ public final class Tile implements ITile {
 					throw new IllegalStateException(
 							"Unhandled Subsettable class");
 				}
+			} else {
+				retval = false;
+				out.print("Extra fixture:\t");
+				out.println(fix.toString());
 			}
-		}
-		for (final TileFixture fix : temp) {
-			retval = false;
-			out.print("Extra fixture:\t");
-			out.println(fix.toString());
 		}
 		return retval; // NOPMD
 	}
