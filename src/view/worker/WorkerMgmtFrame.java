@@ -320,6 +320,11 @@ public class WorkerMgmtFrame extends JFrame {
 			final Map<String, List<Unit>> unitsByKind = new HashMap<>();
 			for (final Unit unit : model.getUnits(model.getMap().getPlayers()
 					.getCurrentPlayer())) {
+				if (!unit.iterator().hasNext()) {
+					// FIXME: This should be exposed as a user option. Sometimes
+					// users *want* empty units printed.
+					continue;
+				}
 				// ESCA-JAVA0177:
 				final List<Unit> list; // NOPMD
 				if (unitsByKind.containsKey(unit.getKind())) {
