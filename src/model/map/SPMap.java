@@ -48,7 +48,7 @@ public class SPMap implements IMap {
 	 * @param tile the tile to add
 	 * @param point the point at which to add the tile
 	 */
-	public final void addTile(final Point point, final Tile tile) {
+	public final void addTile(final Point point, final ITile tile) {
 		tiles.addTile(point, tile);
 	}
 
@@ -67,7 +67,7 @@ public class SPMap implements IMap {
 	 * @return the tile at those coordinates
 	 */
 	@Override
-	public final Tile getTile(final Point point) {
+	public final ITile getTile(final Point point) {
 		return tiles.getTile(point);
 	}
 

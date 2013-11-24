@@ -4,10 +4,10 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import model.map.IFixture;
+import model.map.ITile;
 import model.map.Player;
 import model.map.Point;
 import model.map.River;
-import model.map.Tile;
 import model.map.TileCollection;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
@@ -95,7 +95,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 *        terrain fixtures from it
 	 * @return a String describing the terrain on it
 	 */
-	private static String getTerrain(final Tile tile,
+	private static String getTerrain(final ITile tile,
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
 		final StringBuilder builder = new StringBuilder(130).append(
 				"Surrounding terrain: ").append(
@@ -203,7 +203,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				.append(playerNameOrYou(item.getOwner())).append("</h5>\n")
 				.append(OPEN_LIST).append(OPEN_LIST_ITEM).append("Located at ")
 				.append(loc).append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
-		final Tile tile = tiles.getTile(loc);
+		final ITile tile = tiles.getTile(loc);
 		builder.append(getTerrain(tile, fixtures)).append(CLOSE_LIST_ITEM);
 		if (tile.hasRiver()) {
 			final Set<River> copy = EnumSet
@@ -249,7 +249,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				"Fortress ", item.getName(), " belonging to ",
 				playerNameOrYou(item.getOwner())));
 		retval.add(new SimpleReportNode("Located at ", loc.toString()));
-		final Tile tile = tiles.getTile(loc);
+		final ITile tile = tiles.getTile(loc);
 		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));
 		if (tile.hasRiver()) {
 			final Set<River> copy = EnumSet

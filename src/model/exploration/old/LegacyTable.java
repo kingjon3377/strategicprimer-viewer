@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.IEvent;
+import model.map.ITile;
 import model.map.Player;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.Cave;
@@ -79,7 +79,7 @@ public class LegacyTable implements EncounterTable {
 	 * @return the event on that tile
 	 */
 	@Override
-	public String generateEvent(final Point point, final Tile tile) {
+	public String generateEvent(final Point point, final ITile tile) {
 		for (final TileFixture fix : tile) {
 			if (fix instanceof IEvent) {
 				return ((IEvent) fix).getText(); // NOPMD

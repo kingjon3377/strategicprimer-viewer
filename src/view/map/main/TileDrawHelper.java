@@ -2,7 +2,7 @@ package view.map.main;
 
 import java.awt.Graphics;
 
-import model.map.Tile;
+import model.map.ITile;
 import view.util.Coordinate;
 
 /**
@@ -23,7 +23,7 @@ public interface TileDrawHelper {
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
-	void drawTileTranslated(final Graphics pen, final Tile tile, final int width,
+	void drawTileTranslated(final Graphics pen, final ITile tile, final int width,
 			final int height);
 
 	/**
@@ -34,6 +34,6 @@ public interface TileDrawHelper {
 	 * @param coordinates the coordinates of the tile's upper-left corner
 	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
-	void drawTile(final Graphics pen, final Tile tile,
+	void drawTile(final Graphics pen, final ITile tile,
 			final Coordinate coordinates, final Coordinate dimensions);
 }

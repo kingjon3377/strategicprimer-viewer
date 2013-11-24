@@ -15,10 +15,10 @@ import javax.swing.JComponent;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
@@ -186,7 +186,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param col which column this is
 	 * @param selected whether the tile is the selected tile
 	 */
-	private void paintTile(final Graphics pen, final Tile tile, final int row,
+	private void paintTile(final Graphics pen, final ITile tile, final int row,
 			final int col, final boolean selected) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
@@ -256,7 +256,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param newTile ignored
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		if (!isSelectionVisible()) {
 			fixVisibility();
 		}

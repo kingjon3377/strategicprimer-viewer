@@ -19,10 +19,10 @@ import java.util.logging.Logger;
 
 import model.map.HasImage;
 import model.map.IFixture;
+import model.map.ITile;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.TerrainFixture;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
 import model.viewer.FixtureComparator;
@@ -145,7 +145,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile,
+	public void drawTile(final Graphics pen, final ITile tile,
 			final Coordinate coordinates, final Coordinate dimensions) {
 		pen.setColor(needsFixtureColor(tile) ? getFixtureColor(tile)
 				: getTileColor(2, tile.getTerrain()));
@@ -168,7 +168,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTileTranslated(final Graphics pen, final Tile tile, final int width,
+	public void drawTileTranslated(final Graphics pen, final ITile tile, final int width,
 			final int height) {
 		drawTile(pen, tile, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
@@ -178,7 +178,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param tile a tile
 	 * @return whether that tile has any fixtures (or any river
 	 */
-	private boolean hasFixture(final Tile tile) {
+	private boolean hasFixture(final ITile tile) {
 		return new FilteredIterator(tile.iterator(), zof).hasNext();
 	}
 
@@ -191,7 +191,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param tile a tile
 	 * @return the top fixture on that tile.
 	 */
-	private TileFixture getTopFixture(final Tile tile) {
+	private TileFixture getTopFixture(final ITile tile) {
 		final Iterable<TileFixture> iter = new IteratorWrapper<>(
 				new FilteredIterator(tile.iterator(), zof), fixComp);
 		for (final TileFixture item : iter) {
@@ -210,7 +210,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether it needs a different color to show a non-top fixture
 	 *         (like a forest or mountain)
 	 */
-	private boolean needsFixtureColor(final Tile tile) {
+	private boolean needsFixtureColor(final ITile tile) {
 		if (hasTerrainFixture(tile)) {
 			return !(getTopFixture(tile) instanceof TerrainFixture); // NOPMD
 		} else {
@@ -222,7 +222,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param tile a tile
 	 * @return whether it has a TerrainFixture.
 	 */
-	private boolean hasTerrainFixture(final Tile tile) {
+	private boolean hasTerrainFixture(final ITile tile) {
 		for (final TileFixture fix : new IteratorWrapper<>(
 				new FilteredIterator(tile.iterator(), zof))) {
 			if (fix instanceof TerrainFixture) {
@@ -236,7 +236,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param tile a tile
 	 * @return a color to represent its not-on-top terrain feature.
 	 */
-	private Color getFixtureColor(final Tile tile) {
+	private Color getFixtureColor(final ITile tile) {
 		for (final TileFixture fix : new IteratorWrapper<>(
 				new FilteredIterator(tile.iterator(), zof))) {
 			if (fix instanceof TerrainFixture) {

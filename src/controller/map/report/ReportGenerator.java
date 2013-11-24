@@ -7,9 +7,9 @@ import model.map.FixtureIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.Player;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileCollection;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
@@ -229,7 +229,7 @@ public final class ReportGenerator {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		for (final Point point : map.getTiles()) {
 			if (point != null) {
-				final Tile tile = map.getTile(point);
+				final ITile tile = map.getTile(point);
 				for (final IFixture fix : getFixtures(tile)) {
 					if (fix.getID() >= 0) {
 						final Integer num = Integer.valueOf(fix.getID());

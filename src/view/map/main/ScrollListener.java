@@ -12,9 +12,9 @@ import javax.swing.JScrollBar;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Point;
-import model.map.Tile;
 import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
 
@@ -162,7 +162,7 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 	 * @param newTile the newly selected tile
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		// We only care about the point.
 	}
 

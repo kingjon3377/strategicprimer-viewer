@@ -20,8 +20,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
 
+import model.map.ITile;
 import model.map.River;
-import model.map.Tile;
 import model.map.TileType;
 import view.util.Coordinate;
 
@@ -116,7 +116,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTileTranslated(final Graphics pen, final Tile tile, final int width,
+	public void drawTileTranslated(final Graphics pen, final ITile tile, final int width,
 			final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
@@ -176,7 +176,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final Tile tile,
+	public void drawTile(final Graphics pen, final ITile tile,
 			final Coordinate coordinates, final Coordinate dimensions) {
 		final Graphics context = pen.create(coordinates.x, coordinates.y,
 				dimensions.x, dimensions.y);

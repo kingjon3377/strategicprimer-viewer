@@ -6,6 +6,7 @@ import java.util.List;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
@@ -74,7 +75,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final TileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point != null) {
-				final Tile tile = tiles.getTile(point);
+				final ITile tile = tiles.getTile(point);
 				retval.addAll(getUnits(tile, player));
 			}
 		}
@@ -125,7 +126,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
 		// ESCA-JAVA0177:
-		final Tile destTile = getMap().getTile(dest);
+		final ITile destTile = getMap().getTile(dest);
 		if (SimpleMovement.isLandMovementPossible(destTile)) {
 			final int retval = dest.equals(point) ? 1 : SimpleMovement
 					.getMovementCost(destTile);
@@ -133,7 +134,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			destTile.addFixture(unit);
 			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 				final TileCollection mapTiles = pair.first().getTiles();
-				final Tile stile = mapTiles.getTile(point);
+				final ITile stile = mapTiles.getTile(point);
 				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
@@ -188,7 +189,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param fix a fixture
 	 * @return whether the tile contains it
 	 */
-	private static boolean tileHasFixture(final Tile tile, final TileFixture fix) {
+	private static boolean tileHasFixture(final ITile tile, final TileFixture fix) {
 		for (final TileFixture fixture : tile) {
 			if (fixture.equals(fix)) {
 				return true; // NOPMD

@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileType;
 
 /**
@@ -26,7 +26,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String defaultResults(final Point point, final Tile tile)
+	public String defaultResults(final Point point, final ITile tile)
 			throws MissingTableException {
 		final StringBuilder sb = new StringBuilder(80)
 				.append("The primary rock type here is ");
@@ -65,7 +65,7 @@ public class ExplorationRunner { // NOPMD
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
 	 */
-	public String getPrimaryRock(final Point point, final Tile tile)
+	public String getPrimaryRock(final Point point, final ITile tile)
 			throws MissingTableException {
 		return getTable("major_rock").generateEvent(point, tile);
 	}
@@ -78,7 +78,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String getPrimaryTree(final Point point, final Tile tile)
+	public String getPrimaryTree(final Point point, final ITile tile)
 			throws MissingTableException {
 		if (TileType.BorealForest.equals(tile.getTerrain())) {
 			return getTable("boreal_major_tree").generateEvent(point, tile); // NOPMD
@@ -103,7 +103,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException if the table is missing
 	 */
 	public String consultTable(final String table, final Point point,
-			final Tile tile) throws MissingTableException {
+			final ITile tile) throws MissingTableException {
 		return getTable(table).generateEvent(point, tile);
 	}
 
@@ -144,7 +144,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException on missing table
 	 */
 	public String recursiveConsultTable(final String table, final Point point,
-			final Tile tile) throws MissingTableException {
+			final ITile tile) throws MissingTableException {
 		String result = consultTable(table, point, tile);
 		if (result.contains("#")) {
 			// TODO: Use a string builder here rather than concatenation

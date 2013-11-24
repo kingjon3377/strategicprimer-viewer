@@ -2,8 +2,8 @@ package model.viewer;
 
 import model.listeners.GraphicalParamsSource;
 import model.listeners.SelectionChangeSource;
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 import model.misc.IDriverModel;
 
 /**
@@ -33,7 +33,7 @@ public interface IViewerModel extends IDriverModel, SelectionChangeSource,
 	 *
 	 * @return the tile at that location
 	 */
-	Tile getTile(final Point point);
+	ITile getTile(final Point point);
 
 	/**
 	 * @param dim the new visible dimensions of the map

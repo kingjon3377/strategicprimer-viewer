@@ -26,7 +26,7 @@ public final class TileCollection implements Iterable<Point>,
 	/**
 	 * The Map this is a wrapper around.
 	 */
-	private final Map<Point, Tile> tiles = new HashMap<>();
+	private final Map<Point, ITile> tiles = new HashMap<>();
 
 	/**
 	 * Add a Tile to the map.
@@ -34,7 +34,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * @param tile the tile to add.
 	 * @param point the point at which to add it
 	 */
-	public void addTile(final Point point, final Tile tile) {
+	public void addTile(final Point point, final ITile tile) {
 		tiles.put(point, tile);
 	}
 
@@ -46,11 +46,11 @@ public final class TileCollection implements Iterable<Point>,
 	 *
 	 * @return the tile at that point, or a new "empty" tile at that point.
 	 */
-	public Tile getTile(final Point point) {
+	public ITile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
 			tiles.put(point, new Tile(TileType.NotVisible));
 		}
-		final Tile retval = tiles.get(point);
+		final ITile retval = tiles.get(point);
 		assert retval != null;
 		return retval;
 	}
@@ -82,11 +82,11 @@ public final class TileCollection implements Iterable<Point>,
 	 * @param mapping a point-tile mapping
 	 * @return an equivalent one without any empty tiles.
 	 */
-	private static Map<Point, Tile> withoutEmptyTiles(
-			final Map<Point, Tile> mapping) {
-		final Map<Point, Tile> retval = new HashMap<>();
-		for (final Entry<Point, Tile> entry : mapping.entrySet()) {
-			final Tile tile = entry.getValue();
+	private static Map<Point, ITile> withoutEmptyTiles(
+			final Map<Point, ITile> mapping) {
+		final Map<Point, ITile> retval = new HashMap<>();
+		for (final Entry<Point, ITile> entry : mapping.entrySet()) {
+			final ITile tile = entry.getValue();
 			if (!tile.isEmpty()) {
 				retval.put(entry.getKey(), tile);
 			}
@@ -114,7 +114,7 @@ public final class TileCollection implements Iterable<Point>,
 
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(Tile, PrintWriter)} has the side effect of printing
+	 * {@link Tile#isSubset(ITile, PrintWriter)} has the side effect of printing
 	 * what makes it *not* a subset; we want that done for *all* relevant tiles.
 	 *
 	 * @param obj another TileCollection

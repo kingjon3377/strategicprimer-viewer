@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import model.map.ITile;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 
 /**
  * A class for things where results are by quadrant rather than randomly.
@@ -81,7 +81,7 @@ public class QuadrantTable implements EncounterTable {
 	 * @return what the table has for that tile
 	 */
 	@Override
-	public String generateEvent(final Point point, final Tile tile) {
+	public String generateEvent(final Point point, final ITile tile) {
 		return getQuadrantValue(point.row, point.col);
 	}
 

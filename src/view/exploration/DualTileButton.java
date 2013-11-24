@@ -5,6 +5,7 @@ import java.awt.Polygon;
 
 import javax.swing.JButton;
 
+import model.map.ITile;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -24,17 +25,17 @@ public class DualTileButton extends JButton {
 	/**
 	 * The main-map tile to paint.
 	 */
-	private Tile one = new Tile(TileType.NotVisible);
+	private ITile one = new Tile(TileType.NotVisible);
 	/**
 	 * The secondary-map tile to paint.
 	 */
-	private Tile two = new Tile(TileType.NotVisible);
+	private ITile two = new Tile(TileType.NotVisible);
 
 	/**
 	 * @param first the main-map tile to draw
 	 * @param second the secondary-map tile to draw
 	 */
-	public void setTiles(final Tile first, final Tile second) {
+	public void setTiles(final ITile first, final ITile second) {
 		one = first;
 		two = second;
 	}

@@ -16,9 +16,9 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.HasName;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
 import util.TypesafeLogger;
@@ -203,7 +203,7 @@ public class TrapModelDriver implements ISPDriver {
 		final MapDimensions dims = map.getDimensions();
 		for (int i = row - 1; i < row + 2; i++) {
 			for (int j = col - 1; j < col + 2; j++) {
-				final Tile tile = map.getTile(PointFactory.point(
+				final ITile tile = map.getTile(PointFactory.point(
 						(i + dims.rows) % dims.rows, (j + dims.cols)
 								% dims.cols));
 				for (final TileFixture fix : tile) {

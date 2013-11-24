@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.ITile;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.Animal;
@@ -154,7 +154,7 @@ public final class QueryCLI implements ISPDriver {
 	 * @param tile the selected tile
 	 * @param ostream the stream to print results to
 	 */
-	private static void fortressInfo(final Tile tile, final PrintStream ostream) {
+	private static void fortressInfo(final ITile tile, final PrintStream ostream) {
 		ostream.print("Terrain is ");
 		ostream.println(tile.getTerrain());
 		final List<TileFixture> fixtures = CLIHelper.toList(tile);
@@ -186,7 +186,7 @@ public final class QueryCLI implements ISPDriver {
 	 * @return The tile the user specifies.
 	 * @throws IOException on I/O error
 	 */
-	private Tile selectTile(final IMap map) throws IOException {
+	private ITile selectTile(final IMap map) throws IOException {
 		return map.getTile(PointFactory.point(helper.inputNumber("Row: "),
 				helper.inputNumber("Column: ")));
 	}

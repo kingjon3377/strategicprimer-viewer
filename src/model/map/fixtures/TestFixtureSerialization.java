@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.Point;
@@ -285,7 +286,7 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Third test of Ground serialization", new Ground(
 				"three", false), Ground.class);
 		final Point point = PointFactory.point(0, 0);
-		final Tile tile = new Tile(TileType.Steppe);
+		final ITile tile = new Tile(TileType.Steppe);
 		tile.addFixture(new Ground("four", true));
 		final SPMap map = new SPMap(new MapDimensions(1, 1, 2));
 		map.addTile(point, tile);

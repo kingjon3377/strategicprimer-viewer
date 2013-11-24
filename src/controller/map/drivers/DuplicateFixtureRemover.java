@@ -11,8 +11,8 @@ import java.util.logging.Level;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
@@ -77,7 +77,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param tile the tile to filter
 	 * @param out the stream to report IDs of removed fixtures on.
 	 */
-	public static void filter(final Tile tile, final PrintStream out) {
+	public static void filter(final ITile tile, final PrintStream out) {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
 		for (final TileFixture fix : tile) {

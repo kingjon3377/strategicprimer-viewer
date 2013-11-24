@@ -20,9 +20,9 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import model.listeners.SelectionChangeListener;
+import model.map.ITile;
 import model.map.PlayerCollection;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
@@ -194,7 +194,7 @@ public class FixtureList extends JList<TileFixture> implements
 	 * @param newTile passed to the list model
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		flm.selectedTileChanged(old, newTile);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 
 import model.listeners.SelectionChangeListener;
+import model.map.ITile;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileFixture;
@@ -25,7 +26,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	/**
 	 * The current tile.
 	 */
-	private Tile tile = new Tile(TileType.NotVisible);
+	private ITile tile = new Tile(TileType.NotVisible);
 
 	/**
 	 * @param old the formerly selected location
@@ -42,7 +43,7 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @param newTile the newly selected tile
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		tile = newTile;
 		this.clear();
 		if (!TileType.NotVisible.equals(tile.getTerrain())) {

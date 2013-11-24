@@ -10,8 +10,8 @@ import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
 import model.listeners.VersionChangeListener;
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileType;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -29,7 +29,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * @param version the map version
 	 * @param initialTile the initial tile
 	 */
-	public TerrainChangingMenu(final int version, final Tile initialTile) {
+	public TerrainChangingMenu(final int version, final ITile initialTile) {
 		super();
 		tile = initialTile;
 		updateForVersion(version);
@@ -51,12 +51,12 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	/**
 	 * The tile whose terrain we might change.
 	 */
-	private Tile tile;
+	private ITile tile;
 
 	/**
 	 * @param newTile the tile whose terrain we might change
 	 */
-	public void setTile(final Tile newTile) {
+	public void setTile(final ITile newTile) {
 		tile = newTile;
 	}
 
@@ -123,7 +123,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * @param newTile the newly selected tile
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		tile = newTile;
 	}
 }

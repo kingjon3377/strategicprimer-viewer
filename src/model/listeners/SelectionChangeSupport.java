@@ -3,8 +3,8 @@ package model.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -49,8 +49,8 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	 *        notifications at all.
 	 */
 	public void fireChanges(@Nullable final Point oldPoint,
-			@Nullable final Point newPoint, @Nullable final Tile oldTile,
-			@Nullable final Tile newTile) {
+			@Nullable final Point newPoint, @Nullable final ITile oldTile,
+			@Nullable final ITile newTile) {
 		for (final SelectionChangeListener list : listeners) {
 			if (newPoint != null) {
 				list.selectedPointChanged(oldPoint, newPoint);

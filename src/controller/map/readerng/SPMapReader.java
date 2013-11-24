@@ -10,13 +10,13 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
-import model.map.Tile;
 import util.EqualsAny;
 import util.Pair;
 import util.Warning;
@@ -176,7 +176,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 					"row", Pair.of("index", idx));
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
-				final Tile tile = obj.getTile(point);
+				final ITile tile = obj.getTile(point);
 				if (!tile.isEmpty()) {
 					retval.addChild(row);
 					row.addChild(TileReader.writeTile(point, tile));

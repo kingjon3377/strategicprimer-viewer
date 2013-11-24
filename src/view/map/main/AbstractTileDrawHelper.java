@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import model.map.IEvent;
-import model.map.Tile;
+import model.map.ITile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.mobile.Unit;
@@ -59,7 +59,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 *
 	 * @return whether the tile has any forts.
 	 */
-	protected static boolean hasAnyForts(final Tile tile) {
+	protected static boolean hasAnyForts(final ITile tile) {
 		for (final TileFixture fix : tile) {
 			if (fix instanceof Fortress) {
 				return true; // NOPMD
@@ -73,7 +73,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 *
 	 * @return whether the tile has any units.
 	 */
-	protected static boolean hasAnyUnits(final Tile tile) {
+	protected static boolean hasAnyUnits(final ITile tile) {
 		for (final TileFixture fix : tile) {
 			if (fix instanceof Unit) {
 				return true; // NOPMD
@@ -87,7 +87,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 *
 	 * @return whether the tile has any events
 	 */
-	protected static boolean hasEvent(final Tile tile) {
+	protected static boolean hasEvent(final ITile tile) {
 		for (final TileFixture fix : tile) {
 			if (fix instanceof IEvent) {
 				return true; // NOPMD
@@ -123,7 +123,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public abstract void drawTileTranslated(final Graphics pen, final Tile tile,
+	public abstract void drawTileTranslated(final Graphics pen, final ITile tile,
 			final int width, final int height);
 
 	/**

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.IMap;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
@@ -81,13 +82,13 @@ public class ResolutionDecreaseConverter {
 	 * @param lowerRight the lower-right tile of a group of four.
 	 * @return a tile representing them on the lower-resolution map
 	 */
-	private static Tile convertTile(final Tile upperLeft,
-			final Tile upperRight, final Tile lowerLeft, final Tile lowerRight) {
+	private static ITile convertTile(final ITile upperLeft,
+			final ITile upperRight, final ITile lowerLeft, final ITile lowerRight) {
 		final RiverFixture upperLeftRivers = getRivers(upperLeft);
 		final RiverFixture upperRightRivers = getRivers(upperRight);
 		final RiverFixture lowerLeftRivers = getRivers(lowerLeft);
 		final RiverFixture lowerRightRivers = getRivers(lowerRight);
-		final Tile retval = new Tile(consensus(upperLeft.getTerrain(),
+		final ITile retval = new Tile(consensus(upperLeft.getTerrain(),
 				upperRight.getTerrain(), lowerLeft.getTerrain(),
 				lowerRight.getTerrain()));
 		addAllFixtures(upperLeft, retval);
@@ -111,7 +112,7 @@ public class ResolutionDecreaseConverter {
 	 * @param source a source tile
 	 * @param dest a destination tile
 	 */
-	private static void addAllFixtures(final Tile source, final Tile dest) {
+	private static void addAllFixtures(final ITile source, final ITile dest) {
 		for (final TileFixture fix : source) {
 			if (fix != null && !(fix instanceof RiverFixture)) {
 				dest.addFixture(fix);
@@ -123,7 +124,7 @@ public class ResolutionDecreaseConverter {
 	 * @param tile a tile
 	 * @return its RiverFixture, or an empty one if it doesn't have one
 	 */
-	private static RiverFixture getRivers(final Tile tile) {
+	private static RiverFixture getRivers(final ITile tile) {
 		if (tile.hasRiver()) {
 			return tile.getRivers(); // NOPMD
 		} else {

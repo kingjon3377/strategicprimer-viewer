@@ -15,8 +15,8 @@ import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 
@@ -85,7 +85,7 @@ public final class ExplorationClickListener implements ActionListener,
 			model.move(direction);
 			for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
 				final IMap map = pair.first();
-				final Tile tile = map.getTile(model.getSelectedUnitLocation());
+				final ITile tile = map.getTile(model.getSelectedUnitLocation());
 				for (final TileFixture fix : fixtures) {
 					if (fix != null) {
 						tile.addFixture(fix);

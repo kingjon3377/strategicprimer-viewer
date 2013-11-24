@@ -6,9 +6,9 @@ import javax.swing.JSplitPane;
 
 import model.listeners.SelectionChangeListener;
 import model.listeners.VersionChangeListener;
+import model.map.ITile;
 import model.map.PlayerCollection;
 import model.map.Point;
-import model.map.Tile;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -84,7 +84,7 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener,
 	 * @param newTile passed to fixture list
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		fixList.selectedTileChanged(old, newTile);
 	}
 }

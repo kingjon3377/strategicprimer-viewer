@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.ITile;
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.River;
@@ -30,7 +31,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class TileReader implements INodeHandler<Tile> {
+public class TileReader implements INodeHandler<ITile> {
 	/**
 	 * @param element the element to start with
 	 * @param stream the stream to get more elements from
@@ -42,11 +43,11 @@ public class TileReader implements INodeHandler<Tile> {
 	 * @throws SPFormatException on map format error
 	 */
 	@Override
-	public Tile parse(final StartElement element,
+	public ITile parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Tile tile = new Tile(
+		final ITile tile = new Tile(
 				TileType.getTileType(getAttributeWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
@@ -115,7 +116,7 @@ public class TileReader implements INodeHandler<Tile> {
 	 */
 	private static void perhapsAddFixture(final Iterable<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
-			final Tile tile, final StartElement event, final String tag,
+			final ITile tile, final StartElement event, final String tag,
 			final IDFactory idFactory) throws SPFormatException {
 		try {
 			tile.addFixture(checkedCast(ReaderAdapter.ADAPTER.parse(event,
@@ -163,7 +164,7 @@ public class TileReader implements INodeHandler<Tile> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public SPIntermediateRepresentation write(final Tile obj) {
+	public SPIntermediateRepresentation write(final ITile obj) {
 		throw new IllegalStateException(
 				"Never call this; call writeTile() instead");
 	}
@@ -176,7 +177,7 @@ public class TileReader implements INodeHandler<Tile> {
 	 * @return an intermediate representation
 	 */
 	public static SPIntermediateRepresentation writeTile(final Point point,
-			final Tile obj) {
+			final ITile obj) {
 		if (obj.isEmpty()) {
 			return new SPIntermediateRepresentation(""); // NOPMD
 		} else {
@@ -226,8 +227,8 @@ public class TileReader implements INodeHandler<Tile> {
 	 * @return the type of object we know how to write.
 	 */
 	@Override
-	public Class<Tile> writes() {
-		return Tile.class;
+	public Class<ITile> writes() {
+		return ITile.class;
 	}
 
 	/**

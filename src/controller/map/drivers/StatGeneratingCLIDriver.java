@@ -12,11 +12,11 @@ import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.map.TileCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -345,7 +345,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			if (point == null) {
 				continue;
 			}
-			final Tile tile = tiles.getTile(point);
+			final ITile tile = tiles.getTile(point);
 			final IFixture result = find(tile, idNum);
 			if (result != null) {
 				return result; // NOPMD
@@ -433,7 +433,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						helper.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMap, String> pair : model.getAllMaps()) {
 					final IMap map = pair.first();
-					final Tile tile = map.getTile(point);
+					final ITile tile = map.getTile(point);
 					final boolean empty = tile.isEmpty();
 					tile.addFixture(unit);
 					if (empty) {

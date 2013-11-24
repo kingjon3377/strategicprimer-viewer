@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 import util.ComparablePair;
 import util.Pair;
 import util.SingletonRandom;
@@ -27,7 +27,7 @@ public class RandomTable implements EncounterTable {
 	 *         the normal procedure fails.
 	 */
 	@Override
-	public String generateEvent(final Point point, final Tile tile) {
+	public String generateEvent(final Point point, final ITile tile) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		return getLowestMatch(roll);
 	}

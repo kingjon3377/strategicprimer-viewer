@@ -104,6 +104,8 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 			out.println(", may be representation error");
 		} else {
 			for (final TileFixture fix : obj.getOtherFixtures(point)) {
+				// TODO: Use Guava collection-from-iterable so we can remove the
+				// getContents method from Tile entirely.
 				if (fix != null && !state.getTile(point).getContents().contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;

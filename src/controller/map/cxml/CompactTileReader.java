@@ -10,6 +10,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.ITile;
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.River;
@@ -33,7 +34,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTileReader extends AbstractCompactReader<Tile> {
+public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
 	 * Singleton.
 	 */
@@ -66,11 +67,11 @@ public final class CompactTileReader extends AbstractCompactReader<Tile> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public Tile read(final StartElement element,
+	public ITile read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		final Tile retval = new Tile(
+		final ITile retval = new Tile(
 				TileType.getTileType(getParamWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
@@ -179,7 +180,7 @@ public final class CompactTileReader extends AbstractCompactReader<Tile> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Tile obj, final int indent)
+	public void write(final Writer out, final ITile obj, final int indent)
 			throws IOException {
 		throw new IllegalStateException(
 				"Don't call this; call writeTile() instead");
@@ -195,7 +196,7 @@ public final class CompactTileReader extends AbstractCompactReader<Tile> {
 	 * @throws IOException on I/O error
 	 */
 	public static void writeTile(final Writer out, final Point point,
-			final Tile obj, final int indent) throws IOException {
+			final ITile obj, final int indent) throws IOException {
 		if (!obj.isEmpty()) {
 			out.append(indent(indent));
 			out.append("<tile row=\"");

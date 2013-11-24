@@ -22,8 +22,8 @@ import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
@@ -151,7 +151,7 @@ public class FindDialog extends JDialog implements ActionListener {
 			if (point == null) {
 				continue;
 			}
-			final Tile tile = map.getMap().getTile(point);
+			final ITile tile = map.getMap().getTile(point);
 			for (final TileFixture fix : tile) {
 				if (fix != null && matches(pattern, idNum, fix)) {
 					SYS_OUT.print("Found in point");

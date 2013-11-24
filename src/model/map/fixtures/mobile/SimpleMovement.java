@@ -1,6 +1,6 @@
 package model.map.fixtures.mobile;
 
-import model.map.Tile;
+import model.map.ITile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
@@ -51,7 +51,7 @@ public final class SimpleMovement {
 	 * @param tile a tile
 	 * @return whether it's passable by land movement.
 	 */
-	public static boolean isLandMovementPossible(final Tile tile) {
+	public static boolean isLandMovementPossible(final ITile tile) {
 		return !TileType.Ocean.equals(tile.getTerrain());
 	}
 
@@ -59,7 +59,7 @@ public final class SimpleMovement {
 	 * @param tile a tile
 	 * @return the movement cost to traverse it.
 	 */
-	public static int getMovementCost(final Tile tile) {
+	public static int getMovementCost(final ITile tile) {
 		if (TileType.Ocean.equals(tile.getTerrain())) {
 			return Integer.MAX_VALUE; // NOPMD
 		} else if (isForest(tile) || isHill(tile)
@@ -80,7 +80,7 @@ public final class SimpleMovement {
 	 * @return whether it is or contains a forest
 	 */
 	@SuppressWarnings("deprecation")
-	private static boolean isForest(final Tile tile) {
+	private static boolean isForest(final ITile tile) {
 		if (EqualsAny.equalsAny(tile.getTerrain(), TileType.BorealForest,
 				TileType.TemperateForest)) {
 			return true; // NOPMD
@@ -99,7 +99,7 @@ public final class SimpleMovement {
 	 * @return whether it is mountainous or hilly
 	 */
 	@SuppressWarnings("deprecation")
-	private static boolean isHill(final Tile tile) {
+	private static boolean isHill(final ITile tile) {
 		if (TileType.Mountain.equals(tile.getTerrain())) {
 			return true; // NOPMD
 		} else {

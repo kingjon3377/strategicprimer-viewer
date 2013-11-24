@@ -3,16 +3,16 @@ package model.workermgmt;
 import java.util.ArrayList;
 import java.util.List;
 
-import view.util.SystemOut;
+import model.map.ITile;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
-import model.map.Tile;
 import model.map.TileCollection;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractDriverModel;
+import view.util.SystemOut;
 
 /**
  * A model to underlie the advancement GUI, etc.
@@ -42,7 +42,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 		final TileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point != null) {
-				final Tile tile = tiles.getTile(point);
+				final ITile tile = tiles.getTile(point);
 				retval.addAll(getUnits(tile, player));
 			}
 		}
@@ -78,7 +78,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 			if (point == null) {
 				continue;
 			}
-			final Tile tile = tiles.getTile(point);
+			final ITile tile = tiles.getTile(point);
 			for (final TileFixture fix : tile) {
 				if (fix instanceof Fortress
 						&& unit.getOwner().equals(((Fortress) fix).getOwner())

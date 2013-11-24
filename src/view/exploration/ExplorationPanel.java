@@ -24,6 +24,7 @@ import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.Point;
 import model.map.Tile;
 import model.map.TileType;
@@ -208,11 +209,11 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 				continue;
 			}
 			final Point point = model.getDestination(selPoint, dir);
-			final Tile tileOne = model.getMap().getTile(point);
+			final ITile tileOne = model.getMap().getTile(point);
 			final Iterator<Pair<IMap, String>> subs = model
 					.getSubordinateMaps().iterator();
 			// ESCA-JAVA0177:
-			final Tile tileTwo; // NOPMD
+			final ITile tileTwo; // NOPMD
 			if (subs.hasNext()) {
 				tileTwo = subs.next().first().getTile(point);
 			} else {
@@ -234,7 +235,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 * @param newTile the newly selected tile
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final Tile old, final Tile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		// Everything is handled in selectedPointChanged().
 	}
 

@@ -3,8 +3,8 @@ package model.exploration.old;
 import java.util.HashSet;
 import java.util.Set;
 
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 
 /**
  * An EncounterTable that always returns the same value.
@@ -40,7 +40,7 @@ public class ConstantTable implements EncounterTable {
 	 * @return our specified value.
 	 */
 	@Override
-	public String generateEvent(final Point point, final Tile tile) {
+	public String generateEvent(final Point point, final ITile tile) {
 		return value;
 	}
 

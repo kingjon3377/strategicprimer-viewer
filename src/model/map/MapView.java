@@ -75,7 +75,7 @@ public class MapView implements IMap {
 	 * @return the tile at those coordinates
 	 */
 	@Override
-	public Tile getTile(final Point point) {
+	public ITile getTile(final Point point) {
 		return map.getTile(point);
 	}
 

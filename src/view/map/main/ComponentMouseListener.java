@@ -7,11 +7,11 @@ import java.util.Set;
 
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TerrainFixture;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.viewer.FixtureComparator;
 import model.viewer.IViewerModel;
@@ -64,7 +64,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
 				+ dimensions.getMinimumCol());
 		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
-			final Tile tile = model.getTile(point);
+			final ITile tile = model.getTile(point);
 			return concat("<html><body>", point.toString(), ": ", tile
 					.getTerrain().toString(), "<br />",
 					getTerrainFixturesAndTop(tile), "</body></html>");
@@ -102,7 +102,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 *         the TerrainFixtures on it, and the fixture the user can see as
 	 *         its top fixture.
 	 */
-	private String getTerrainFixturesAndTop(final Tile tile) {
+	private String getTerrainFixturesAndTop(final ITile tile) {
 		final Set<TileFixture> fixes = new ArraySet<>();
 		final Iterable<TileFixture> iter = new IteratorWrapper<>(
 				tile.iterator(), fixComp);

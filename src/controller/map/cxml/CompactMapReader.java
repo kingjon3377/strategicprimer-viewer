@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
+import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
@@ -14,7 +15,6 @@ import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
-import model.map.Tile;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -232,7 +232,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dim.cols; j++) {
-				final Tile tile = obj.getTile(PointFactory.point(i, j));
+				final ITile tile = obj.getTile(PointFactory.point(i, j));
 				if (!tile.isEmpty() && rowEmpty) {
 					out.append(indent(indent + 1));
 					out.append("<row index=\"");

@@ -6,10 +6,10 @@ import java.util.List;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
+import model.map.ITile;
 import model.map.MapView;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.misc.AbstractDriverModel;
 
 /**
@@ -74,7 +74,7 @@ public final class ViewerModel extends AbstractDriverModel implements
 	 * @return the tile at that location
 	 */
 	@Override
-	public Tile getTile(final Point point) {
+	public ITile getTile(final Point point) {
 		return getMap().getTile(point);
 	}
 

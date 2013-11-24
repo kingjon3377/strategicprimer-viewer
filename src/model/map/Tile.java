@@ -28,8 +28,7 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public final class Tile implements FixtureIterable<TileFixture>,
-		Subsettable<Tile> {
+public final class Tile implements ITile {
 	/**
 	 * Constructor.
 	 *
@@ -54,6 +53,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 *
 	 * @return a read-only view of the contents of the tile.
 	 */
+	@Override
 	public Set<TileFixture> getContents() {
 		final Set<TileFixture> retval = Collections.unmodifiableSet(contents);
 		assert retval != null;
@@ -64,6 +64,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * @param fix something new on the tile
 	 * @return true iff it was not already in the set.
 	 */
+	@Override
 	public boolean addFixture(final TileFixture fix) {
 		if ((fix instanceof TextFixture)
 				&& ((TextFixture) fix).getText().isEmpty()) {
@@ -95,6 +96,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * @param fix something to remove from the tile
 	 * @return the result of the operation
 	 */
+	@Override
 	public boolean removeFixture(final TileFixture fix) {
 		return contents.remove(fix);
 	}
@@ -116,10 +118,11 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
+		// TODO: Figure out some way of testing contents-equality without using getContents
 		return this == obj
-				|| ((obj instanceof Tile)
-						&& getTerrain().equals(((Tile) obj).getTerrain()) && contents
-							.equals(((Tile) obj).contents));
+				|| ((obj instanceof ITile)
+						&& getTerrain().equals(((ITile) obj).getTerrain()) && contents
+							.equals(((ITile) obj).getContents()));
 	}
 
 	/**
@@ -155,6 +158,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	/**
 	 * @param river a river to add
 	 */
+	@Override
 	public void addRiver(final River river) {
 		if (hasRiver()) {
 			getRivers().addRiver(river);
@@ -166,6 +170,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	/**
 	 * @param river a river to remove
 	 */
+	@Override
 	public void removeRiver(final River river) {
 		if (hasRiver()) {
 			final RiverFixture rivers = getRivers();
@@ -181,6 +186,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 *
 	 * @return whether this tile is "empty".
 	 */
+	@Override
 	public boolean isEmpty() {
 		return TileType.NotVisible.equals(getTerrain())
 				&& !iterator().hasNext();
@@ -189,6 +195,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	/**
 	 * @return whether we contain a RiverFixture
 	 */
+	@Override
 	public boolean hasRiver() {
 		for (final TileFixture fix : contents) {
 			if (fix instanceof RiverFixture) {
@@ -204,6 +211,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 *
 	 * @return the RiverFixture that we contain
 	 */
+	@Override
 	public RiverFixture getRivers() {
 		for (final TileFixture fix : contents) {
 			if (fix instanceof RiverFixture) {
@@ -220,7 +228,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 * @param out the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final Tile obj, final PrintWriter out) {
+	public boolean isSubset(final ITile obj, final PrintWriter out) {
 		if (getTerrain().equals(obj.getTerrain())) {
 			return isSubsetImpl(obj, out); // NOPMD
 		} else {
@@ -237,8 +245,9 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	 *         one doesn't
 	 * @param out the stream to write details of the differences to
 	 */
-	protected boolean isSubsetImpl(final Tile obj, final PrintWriter out) {
-		final Set<TileFixture> temp = new HashSet<>(obj.contents);
+	protected boolean isSubsetImpl(final ITile obj, final PrintWriter out) {
+		// TODO: Use Guava collection-from-iterable so we can remove getContents() entirely.
+		final Set<TileFixture> temp = new HashSet<>(obj.getContents());
 		temp.removeAll(contents);
 		final List<TileFixture> tempList = new ArrayList<>(temp);
 		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
@@ -301,9 +310,9 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	private TileType type;
 
 	/**
-	 *
-	 * @return the kind of tile
+	 * @return the kind of tile this is
 	 */
+	@Override
 	public TileType getTerrain() {
 		return type;
 	}
@@ -311,6 +320,7 @@ public final class Tile implements FixtureIterable<TileFixture>,
 	/**
 	 * @param ttype the tile's new terrain type
 	 */
+	@Override
 	public void setTerrain(final TileType ttype) {
 		type = ttype;
 	}

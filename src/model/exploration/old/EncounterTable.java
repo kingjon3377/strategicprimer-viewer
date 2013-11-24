@@ -2,8 +2,8 @@ package model.exploration.old;
 
 import java.util.Set;
 
+import model.map.ITile;
 import model.map.Point;
-import model.map.Tile;
 
 /**
  * An interface for encounter tables, both quadrant and random-event tables. At
@@ -25,7 +25,7 @@ public interface EncounterTable {
 	 *
 	 * @return an appropriate event for that tile
 	 */
-	String generateEvent(final Point point, final Tile tile);
+	String generateEvent(final Point point, final ITile tile);
 
 	/**
 	 * For table-debugging purposes.

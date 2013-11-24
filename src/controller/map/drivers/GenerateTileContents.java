@@ -14,9 +14,9 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMap;
+import model.map.ITile;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import util.Warning;
@@ -109,7 +109,7 @@ public final class GenerateTileContents {
 	 * @param point the location of the tile
 	 * @throws MissingTableException if a missing table is referenced
 	 */
-	private void generateTileContents(final Point point, final Tile tile)
+	private void generateTileContents(final Point point, final ITile tile)
 			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
