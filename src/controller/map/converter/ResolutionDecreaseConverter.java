@@ -84,10 +84,10 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static ITile convertTile(final ITile upperLeft,
 			final ITile upperRight, final ITile lowerLeft, final ITile lowerRight) {
-		final RiverFixture upperLeftRivers = getRivers(upperLeft);
-		final RiverFixture upperRightRivers = getRivers(upperRight);
-		final RiverFixture lowerLeftRivers = getRivers(lowerLeft);
-		final RiverFixture lowerRightRivers = getRivers(lowerRight);
+		final Set<River> upperLeftRivers = getRivers(upperLeft);
+		final Set<River> upperRightRivers = getRivers(upperRight);
+		final Set<River> lowerLeftRivers = getRivers(lowerLeft);
+		final Set<River> lowerRightRivers = getRivers(lowerRight);
 		final ITile retval = new Tile(consensus(upperLeft.getTerrain(),
 				upperRight.getTerrain(), lowerLeft.getTerrain(),
 				lowerRight.getTerrain()));
@@ -124,21 +124,25 @@ public class ResolutionDecreaseConverter {
 	 * @param tile a tile
 	 * @return its RiverFixture, or an empty one if it doesn't have one
 	 */
-	private static RiverFixture getRivers(final ITile tile) {
+	private static Set<River> getRivers(final ITile tile) {
+		final Set<River> retval = EnumSet.noneOf(River.class);
+		assert retval != null;
 		if (tile.hasRiver()) {
-			return tile.getRivers(); // NOPMD
-		} else {
-			return new RiverFixture();
+			for (final River river : tile.getRivers()) {
+				retval.add(river);
+			}
 		}
+		return retval;
 	}
 
 	/**
 	 * @param fix a RiverFixture
 	 * @param rivers a series of rivers to add to it
 	 */
+	@SafeVarargs
 	private static void addRivers(final RiverFixture fix,
-			final RiverFixture... rivers) {
-		for (final RiverFixture riverFix : rivers) {
+			final Iterable<River>... rivers) {
+		for (final Iterable<River> riverFix : rivers) {
 			for (final River river : riverFix) {
 				if (river != null) {
 					fix.addRiver(river);
@@ -148,14 +152,14 @@ public class ResolutionDecreaseConverter {
 	}
 
 	/**
-	 * @param fix a RiverFixture
+	 * @param set a set of rivers
 	 * @param rivers a series of rivers to remove from it
 	 */
-	private static void removeRivers(final RiverFixture fix,
+	private static void removeRivers(final Set<River> set,
 			final River... rivers) {
 		for (final River river : rivers) {
 			if (river != null) {
-				fix.removeRiver(river);
+				set.remove(river);
 			}
 		}
 	}

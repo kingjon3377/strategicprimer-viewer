@@ -27,7 +27,6 @@ import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
-import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Grove;
@@ -220,7 +219,7 @@ public class OneToTwoConverter { // NOPMD
 			final List<Pair<Point, ITile>> initial,
 			final List<TileFixture> fixtures) {
 		if (tile.hasRiver()) {
-			final RiverFixture rivers = tile.getRivers();
+			final Iterable<River> rivers = tile.getRivers();
 			for (final River river : rivers) {
 				if (river != null) {
 					addRiver(river, initial);

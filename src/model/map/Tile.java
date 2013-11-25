@@ -61,7 +61,7 @@ public final class Tile implements ITile {
 			return !getTerrain().equals(old); // NOPMD
 		} else if (fix instanceof RiverFixture) {
 			if (hasRiver()) {
-				final RiverFixture rivers = getRivers();
+				final RiverFixture rivers = (RiverFixture) getRivers();
 				for (final River river : (RiverFixture) fix) {
 					if (river != null) {
 						rivers.addRiver(river);
@@ -156,7 +156,7 @@ public final class Tile implements ITile {
 	@Override
 	public void addRiver(final River river) {
 		if (hasRiver()) {
-			getRivers().addRiver(river);
+			((RiverFixture) getRivers()).addRiver(river);
 		} else {
 			addFixture(new RiverFixture(river));
 		}
@@ -168,7 +168,7 @@ public final class Tile implements ITile {
 	@Override
 	public void removeRiver(final River river) {
 		if (hasRiver()) {
-			final RiverFixture rivers = getRivers();
+			final RiverFixture rivers = (RiverFixture) getRivers();
 			rivers.removeRiver(river);
 			if (rivers.getRivers().isEmpty()) {
 				removeFixture(rivers);
@@ -207,7 +207,7 @@ public final class Tile implements ITile {
 	 * @return the RiverFixture that we contain
 	 */
 	@Override
-	public RiverFixture getRivers() {
+	public Iterable<River> getRivers() {
 		for (final TileFixture fix : contents) {
 			if (fix instanceof RiverFixture) {
 				return (RiverFixture) fix;

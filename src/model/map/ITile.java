@@ -58,7 +58,7 @@ public interface ITile extends FixtureIterable<TileFixture>, Subsettable<ITile> 
 	 *
 	 * @return the RiverFixture that we contain
 	 */
-	RiverFixture getRivers();
+	Iterable<River> getRivers();
 
 	/**
 	 * @return the kind of tile this is
