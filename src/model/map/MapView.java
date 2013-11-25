@@ -11,7 +11,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class MapView implements IMap {
+public class MapView implements IMutableMap {
 	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
 	 *
@@ -67,7 +67,7 @@ public class MapView implements IMap {
 	 */
 	@Override
 	public void addPlayer(final Player newPlayer) {
-		map.addPlayer(newPlayer);
+		map.getPlayers().add(newPlayer);
 	}
 
 	/**

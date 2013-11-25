@@ -11,7 +11,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class SPMap implements IMap {
+public class SPMap implements IMutableMap {
 	/**
 	 * Map max version.
 	 */

@@ -17,13 +17,6 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	MapDimensions getDimensions();
 
 	/**
-	 * Add a player to the game.
-	 *
-	 * @param player the player to add
-	 */
-	void addPlayer(@NotNull final Player player);
-
-	/**
 	 * @param point a point
 	 * @return the tile at those coordinates
 	 */
