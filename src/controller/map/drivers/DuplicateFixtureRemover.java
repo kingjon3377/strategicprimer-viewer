@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.Point;
 import model.map.TileFixture;
@@ -64,7 +65,14 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	public static void filter(final IMap map, final PrintStream out) {
 		for (final Point point : map.getTiles()) {
 			if (point != null) {
-				filter(map.getTile(point), out);
+				final ITile tile = map.getTile(point);
+				if (tile instanceof IMutableTile) {
+					filter((IMutableTile) tile, out);
+				} else {
+					out.print("Tile at ");
+					out.print(point);
+					out.println(" was not mutable, and so not filtered.");
+				}
 			}
 		}
 	}
@@ -77,7 +85,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param tile the tile to filter
 	 * @param out the stream to report IDs of removed fixtures on.
 	 */
-	public static void filter(final ITile tile, final PrintStream out) {
+	public static void filter(final IMutableTile tile, final PrintStream out) {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
 		for (final TileFixture fix : tile) {

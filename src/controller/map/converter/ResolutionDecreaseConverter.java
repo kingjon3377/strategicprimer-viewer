@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.IMap;
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -88,7 +89,7 @@ public class ResolutionDecreaseConverter {
 		final Set<River> upperRightRivers = getRivers(upperRight);
 		final Set<River> lowerLeftRivers = getRivers(lowerLeft);
 		final Set<River> lowerRightRivers = getRivers(lowerRight);
-		final ITile retval = new Tile(consensus(upperLeft.getTerrain(),
+		final IMutableTile retval = new Tile(consensus(upperLeft.getTerrain(),
 				upperRight.getTerrain(), lowerLeft.getTerrain(),
 				lowerRight.getTerrain()));
 		addAllFixtures(upperLeft, retval);
@@ -112,7 +113,7 @@ public class ResolutionDecreaseConverter {
 	 * @param source a source tile
 	 * @param dest a destination tile
 	 */
-	private static void addAllFixtures(final ITile source, final ITile dest) {
+	private static void addAllFixtures(final ITile source, final IMutableTile dest) {
 		for (final TileFixture fix : source) {
 			if (fix != null && !(fix instanceof RiverFixture)) {
 				dest.addFixture(fix);

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 
 import model.listeners.SelectionChangeListener;
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.Point;
 import model.map.Tile;
@@ -12,6 +13,8 @@ import model.map.TileFixture;
 import model.map.TileType;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import view.util.ErrorShower;
 
 /**
  * A model for a FixtureList.
@@ -60,13 +63,15 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @param fix the fixture to add.
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (fix instanceof TileTypeFixture) {
+		if (!(tile instanceof IMutableTile)) {
+			ErrorShower.showErrorDialog(null, "Could not add a fixture because selected tile is not mutable");
+		} else if (fix instanceof TileTypeFixture) {
 			if (!tile.getTerrain()
 					.equals(((TileTypeFixture) fix).getTileType())) {
-				tile.setTerrain(((TileTypeFixture) fix).getTileType());
+				((IMutableTile) tile).setTerrain(((TileTypeFixture) fix).getTileType());
 			}
 			addElement(fix);
-		} else if (tile.addFixture(fix)) {
+		} else if (((IMutableTile) tile).addFixture(fix)) {
 			// addFixture returns false if it wasn't actually added---e.g. it
 			// was already in the set---so we only want to add it to the display
 			// if it returns true.
@@ -77,17 +82,21 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	/**
 	 * Remove the specified items from the tile and the list.
 	 *
+	 * TODO: list should probably be declared as Iterable.
+	 *
 	 * @param list the list of items to remove. If null, none are removed.
 	 */
 	public void remove(@Nullable final List<TileFixture> list) {
-		if (list != null) {
+		if (!(tile instanceof IMutableTile)) {
+			ErrorShower.showErrorDialog(null, "Cannot remove item from list because selected tile is not mutable.");
+		} else if (list != null) {
 			for (final TileFixture fix : list) {
 				if (fix == null) {
 					continue;
 				} else if (fix instanceof TileTypeFixture) {
-					tile.setTerrain(TileType.NotVisible);
+					((IMutableTile) tile).setTerrain(TileType.NotVisible);
 					removeElement(fix);
-				} else if (tile.removeFixture(fix)) {
+				} else if (((IMutableTile) tile).removeFixture(fix)) {
 					removeElement(fix);
 				}
 			}

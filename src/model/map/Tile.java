@@ -27,9 +27,12 @@ import util.ArraySet;
  * @author Jonathan Lovelace
  *
  */
-public final class Tile implements ITile {
+public final class Tile implements IMutableTile {
 	/**
 	 * Constructor.
+	 *
+	 * TODO: Take fixtures as constructor parameters, so that callers don't have
+	 * to use the IMutableTile interface rather than ITile.
 	 *
 	 * @param tileType The tile type
 	 */

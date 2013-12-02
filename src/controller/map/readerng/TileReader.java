@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.PlayerCollection;
 import model.map.Point;
@@ -47,7 +48,7 @@ public class TileReader implements INodeHandler<ITile> {
 			final Iterable<XMLEvent> stream, final PlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final ITile tile = new Tile(
+		final IMutableTile tile = new Tile(
 				TileType.getTileType(getAttributeWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
@@ -116,7 +117,7 @@ public class TileReader implements INodeHandler<ITile> {
 	 */
 	private static void perhapsAddFixture(final Iterable<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
-			final ITile tile, final StartElement event, final String tag,
+			final IMutableTile tile, final StartElement event, final String tag,
 			final IDFactory idFactory) throws SPFormatException {
 		try {
 			tile.addFixture(checkedCast(ReaderAdapter.ADAPTER.parse(event,

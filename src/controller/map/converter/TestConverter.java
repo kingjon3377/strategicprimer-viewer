@@ -1,7 +1,7 @@
 package controller.map.converter;
 
 import static org.junit.Assert.assertTrue;
-import model.map.ITile;
+import model.map.IMutableTile;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
@@ -33,25 +33,25 @@ public class TestConverter {
 	public void testConversion() {
 		final SPMap start = new SPMap(new MapDimensions(2, 2, 2));
 		final Point pointOne = PointFactory.point(0, 0);
-		final ITile tileOne = new Tile(TileType.Steppe);
+		final IMutableTile tileOne = new Tile(TileType.Steppe);
 		final Animal fixture = new Animal("animal", false, true,
 				"domesticated", 1);
 		tileOne.addFixture(fixture);
 		start.addTile(pointOne, tileOne);
 		final Point pointTwo = PointFactory.point(0, 1);
-		final ITile tileTwo = new Tile(TileType.Ocean);
+		final IMutableTile tileTwo = new Tile(TileType.Ocean);
 		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
 				2);
 		tileTwo.addFixture(fixtureTwo);
 		start.addTile(pointTwo, tileTwo);
 		final Point pointThree = PointFactory.point(1, 0);
-		final ITile tileThree = new Tile(TileType.Plains);
+		final IMutableTile tileThree = new Tile(TileType.Plains);
 		final Unit fixtureThree = new Unit(new Player(0, "A. Player"),
 				"legion", "eagles", 3);
 		tileThree.addFixture(fixtureThree);
 		start.addTile(pointThree, tileThree);
 		final Point pointFour = PointFactory.point(1, 1);
-		final ITile tileFour = new Tile(TileType.Jungle);
+		final IMutableTile tileFour = new Tile(TileType.Jungle);
 		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"),
 				"HQ", 4);
 		tileFour.addFixture(fixtureFour);

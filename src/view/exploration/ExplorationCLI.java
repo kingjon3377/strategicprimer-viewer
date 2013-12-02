@@ -10,6 +10,8 @@ import java.util.List;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.IMap;
+import model.map.IMutableTile;
+import model.map.ITile;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
@@ -186,7 +188,14 @@ public class ExplorationCLI {
 			SYS_OUT.println(fix);
 			for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
 				final IMap map = pair.first();
-				map.getTile(dPoint).addFixture(fix);
+				final ITile tile = map.getTile(dPoint);
+				if (tile instanceof IMutableTile) {
+					((IMutableTile) tile).addFixture(fix);
+				} else {
+					SYS_OUT.print("Failed to copy fixture to ");
+					SYS_OUT.print(pair.second());
+					SYS_OUT.println(" because the tile there was not mutable.");
+				}
 			}
 		}
 	}

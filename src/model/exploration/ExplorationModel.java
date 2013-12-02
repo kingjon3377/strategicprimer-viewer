@@ -6,6 +6,7 @@ import java.util.List;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.IMap;
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -125,22 +126,27 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		}
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
+		final ITile sourceTile = getMap().getTile(point);
 		// ESCA-JAVA0177:
 		final ITile destTile = getMap().getTile(dest);
-		if (SimpleMovement.isLandMovementPossible(destTile)) {
+		if (sourceTile instanceof IMutableTile && destTile instanceof IMutableTile
+				&& SimpleMovement.isLandMovementPossible(destTile)) {
 			final int retval = dest.equals(point) ? 1 : SimpleMovement
 					.getMovementCost(destTile);
-			getMap().getTile(point).removeFixture(unit);
-			destTile.addFixture(unit);
+			((IMutableTile) sourceTile).removeFixture(unit);
+			((IMutableTile) destTile).addFixture(unit);
 			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 				final TileCollection mapTiles = pair.first().getTiles();
 				final ITile stile = mapTiles.getTile(point);
-				if (!tileHasFixture(stile, unit)) {
+				final ITile dtile = mapTiles.getTile(dest);
+				if (!tileHasFixture(stile, unit)
+						|| !(stile instanceof IMutableTile)
+						|| !(dtile instanceof IMutableTile)) {
 					continue;
 				}
 				ensureTerrain(mapTiles, dest, destTile.getTerrain());
-				stile.removeFixture(unit);
-				mapTiles.getTile(dest).addFixture(unit);
+				((IMutableTile) stile).removeFixture(unit);
+				((IMutableTile) dtile).addFixture(unit);
 			}
 			selUnitLoc = dest;
 			for (final SelectionChangeListener list : scListeners) {

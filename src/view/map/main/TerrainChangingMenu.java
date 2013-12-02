@@ -10,6 +10,7 @@ import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
 import model.listeners.VersionChangeListener;
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.Point;
 import model.map.TileType;
@@ -69,8 +70,8 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			final String command = event.getActionCommand();
-			if (command != null) {
-				tile.setTerrain(TileType.valueOf(command));
+			if (command != null && tile instanceof IMutableTile) {
+				((IMutableTile) tile).setTerrain(TileType.valueOf(command));
 				scs.fireChanges(null, null, null, tile);
 			}
 		}

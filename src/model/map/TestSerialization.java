@@ -70,7 +70,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @return a tile containing them.
 	 */
 	private static ITile encapsulateRivers(final River... rivers) {
-		final ITile tile = new Tile(TileType.Plains);
+		final IMutableTile tile = new Tile(TileType.Plains);
 		for (final River river : rivers) {
 			if (river != null) {
 				tile.addRiver(river);
@@ -152,9 +152,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Set<TileFixture> hsetTwo = new HashSet<>();
 		hsetTwo.add(fixTwo);
 		assertEquals("Check Set.equals()", fixOne, fixTwo);
-		final ITile tone = new Tile(TileType.Plains);
+		final IMutableTile tone = new Tile(TileType.Plains);
 		tone.addFixture(fixOne);
-		final ITile ttwo = new Tile(TileType.Plains);
+		final IMutableTile ttwo = new Tile(TileType.Plains);
 		ttwo.addFixture(fixTwo);
 		assertEquals("Tile.equals(), RiverFixtures built separately", tone,
 				ttwo);
@@ -176,7 +176,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @return a tile of that type containing them
 	 */
 	private static ITile encapsulateFixtures(final TileType type, final TileFixture... fixtures) {
-		final ITile tile = new Tile(type);
+		final IMutableTile tile = new Tile(type);
 		for (final TileFixture fix : fixtures) {
 			if (fix != null) {
 				tile.addFixture(fix);
@@ -208,7 +208,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						encapsulateFixtures(Steppe, new Unit(new Player(1, ""),
 								"unitOne", "firstUnit", 1), new Forest(
 								"forestKind", true))), SPMap.class);
-		final ITile four = new Tile(Jungle);
+		final IMutableTile four = new Tile(Jungle);
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
 		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
 		four.addFixture(fort);

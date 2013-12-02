@@ -10,6 +10,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.PlayerCollection;
 import model.map.Point;
@@ -71,7 +72,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 			final IteratorWrapper<XMLEvent> stream,
 			final PlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		final ITile retval = new Tile(
+		final IMutableTile retval = new Tile(
 				TileType.getTileType(getParamWithDeprecatedForm(element,
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {

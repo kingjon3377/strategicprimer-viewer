@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import model.map.IMutableTile;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
@@ -69,7 +70,7 @@ public class TestWorkerModel {
 		for (final Point point : iter) {
 			final TileFixture fix = fixtures.remove(0);
 			assert point != null && fix != null;
-			map.getTile(point).addFixture(fix);
+			((IMutableTile) map.getTile(point)).addFixture(fix);
 		}
 		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
 				"string");

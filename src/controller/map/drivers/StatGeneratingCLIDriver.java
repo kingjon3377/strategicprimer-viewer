@@ -1,5 +1,7 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMap;
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.MapView;
 import model.map.Player;
@@ -434,10 +437,16 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				for (final Pair<IMap, String> pair : model.getAllMaps()) {
 					final IMap map = pair.first();
 					final ITile tile = map.getTile(point);
-					final boolean empty = tile.isEmpty();
-					tile.addFixture(unit);
-					if (empty) {
-						map.getTiles().addTile(point, tile);
+					if (tile instanceof IMutableTile) {
+						final boolean empty = tile.isEmpty();
+						((IMutableTile) tile).addFixture(unit);
+						if (empty) {
+							map.getTiles().addTile(point, tile);
+						}
+					} else {
+						SYS_OUT.print("Couldn't add to ");
+						SYS_OUT.print(pair.second());
+						SYS_OUT.println(" because tile wasn't mutable");
 					}
 				}
 				createWorkers(model, idf, unit);

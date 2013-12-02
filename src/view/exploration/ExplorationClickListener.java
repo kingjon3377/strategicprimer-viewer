@@ -15,6 +15,7 @@ import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMap;
+import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.Point;
 import model.map.TileFixture;
@@ -24,6 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.Pair;
 import view.map.details.FixtureList;
+import view.util.ErrorShower;
 
 /**
  * The listener for clicks on tile buttons indicating movement.
@@ -86,9 +88,15 @@ public final class ExplorationClickListener implements ActionListener,
 			for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
 				final IMap map = pair.first();
 				final ITile tile = map.getTile(model.getSelectedUnitLocation());
+				if (!(tile instanceof IMutableTile)) {
+					ErrorShower.showErrorDialog(null, "Adding fixtures to "
+							+ pair.second()
+							+ " failed because the tile was not mutable.");
+					return;
+				}
 				for (final TileFixture fix : fixtures) {
 					if (fix != null) {
-						tile.addFixture(fix);
+						((IMutableTile) tile).addFixture(fix);
 					}
 				}
 			}
