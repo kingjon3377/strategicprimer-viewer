@@ -1,8 +1,6 @@
 package model.map;
 
 import java.util.Iterator;
-
-import model.map.fixtures.RiverFixture;
 /**
  * An interface for the contents of a tile.
  * @author Jonathan Lovelace
