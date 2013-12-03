@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -60,15 +59,73 @@ public class MapNGReverseAdapter implements IMap {
 	public ITile getTile(final Point point) {
 		return new TileAdapter(impl, point);
 	}
-
+	/**
+	 * @return the players in the map
+	 */
 	@Override
 	public IPlayerCollection getPlayers() {
 		return new PlayerCollectionAdapter(impl);
 	}
-
+	/**
+	 * @return the locations in the map
+	 */
 	@Override
-	public TileCollection getTiles() {
-		throw new IllegalStateException("Not yet implemented");
+	public ITileCollection getTiles() {
+		return new TileCollectionAdapter(impl);
+	}
+	/**
+	 * An adaptor to the ITileCollection interface.
+	 * @author Jonathan Lovelace
+	 */
+	private static final class TileCollectionAdapter implements ITileCollection {
+		/**
+		 * The map we're adapting.
+		 */
+		private final IMapNG outer;
+		/**
+		 * Constructor.
+		 * @param map the map we're adapting.
+		 */
+		protected TileCollectionAdapter(final IMapNG map) {
+			outer = map;
+		}
+		/**
+		 * @return an iterator over the points in the map
+		 */
+		@Override
+		public Iterator<Point> iterator() {
+			final Iterator<Point> retval = outer.locations().iterator();
+			assert retval != null;
+			return retval;
+		}
+		/**
+		 * @param obj another collection of tiles
+		 * @param out a stream to (TODO) write results on
+		 * @return whether the other collection is a subset of this one
+		 */
+		@Override
+		public boolean isSubset(final ITileCollection obj, final PrintWriter out) {
+			throw new IllegalStateException("FIXME: Not implemented yet");
+		}
+		/**
+		 * @param point a location on the map
+		 * @return the tile there
+		 */
+		@Override
+		public ITile getTile(final Point point) {
+			return new TileAdapter(outer, point);
+		}
+		/**
+		 * @param point a location
+		 * @return whether there is anything there
+		 */
+		@Override
+		public boolean hasTile(final Point point) {
+			return !NotVisible.equals(outer.getBaseTerrain(point))
+					&& !outer.getRivers(point).iterator().hasNext()
+					&& outer.getGround(point) == null && outer.getForest(point) == null
+					&& !outer.getOtherFixtures(point).iterator().hasNext();
+		}
 	}
 	/**
 	 * An adapter to the IPlayerCollection interface.
