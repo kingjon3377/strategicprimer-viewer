@@ -82,11 +82,9 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	/**
 	 * Remove the specified items from the tile and the list.
 	 *
-	 * TODO: list should probably be declared as Iterable.
-	 *
 	 * @param list the list of items to remove. If null, none are removed.
 	 */
-	public void remove(@Nullable final List<TileFixture> list) {
+	public void remove(@Nullable final Iterable<TileFixture> list) {
 		if (!(tile instanceof IMutableTile)) {
 			ErrorShower.showErrorDialog(null, "Cannot remove item from list because selected tile is not mutable.");
 		} else if (list != null) {
