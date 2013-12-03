@@ -19,7 +19,10 @@ public class ArraySet<T> implements Set<T> { /**
 	 * The backing array.
 	 */
 	private final List<T> impl = new ArrayList<>();
-
+	/**
+	 * The running total of the hash code.
+	 */
+	private int hash = 0;
 	/**
 	 * @return the size of the set
 	 */
@@ -87,6 +90,7 @@ public class ArraySet<T> implements Set<T> { /**
 			return false; // NOPMD
 		} else {
 			impl.add(elem);
+			hash += elem.hashCode();
 			return true;
 		}
 	}
@@ -97,7 +101,11 @@ public class ArraySet<T> implements Set<T> { /**
 	 */
 	@Override
 	public boolean remove(@Nullable final Object obj) {
-		return impl.remove(obj);
+		final boolean retval = impl.remove(obj);
+		if (retval && obj != null) {
+			hash -= obj.hashCode();
+		}
+		return retval;
 	}
 
 	/**
@@ -134,7 +142,15 @@ public class ArraySet<T> implements Set<T> { /**
 	 */
 	@Override
 	public boolean retainAll(@Nullable final Collection<?> coll) {
-		return impl.retainAll(coll);
+		final boolean retval = impl.retainAll(coll);
+		if (retval) {
+			int localHash = 0;
+			for (final T item : this) {
+				localHash += item.hashCode();
+			}
+			hash = localHash;
+		}
+		return retval;
 	}
 
 	/**
@@ -143,7 +159,17 @@ public class ArraySet<T> implements Set<T> { /**
 	 */
 	@Override
 	public boolean removeAll(@Nullable final Collection<?> coll) {
-		return impl.removeAll(coll);
+		final boolean retval = impl.removeAll(coll);
+		if (retval) {
+			int localHash = 0;
+			for (final T item : this) {
+				if (item != null) {
+					localHash += item.hashCode();
+				}
+			}
+			hash = localHash;
+		}
+		return retval;
 	}
 
 	/**
@@ -152,23 +178,22 @@ public class ArraySet<T> implements Set<T> { /**
 	@Override
 	public void clear() {
 		impl.clear();
+		hash = 0;
 	}
 
 	/**
-	 * TODO: Keep a running-total value for this, modified in add() and
-	 * remove(), rather than calculating it every time hashCode is called.
+	 * Note that since this is a cached value, computed by adding to the cached
+	 * value whenever something is added to the set and subtracting whenever
+	 * something is removed, and only recomputed on removeAll and retainAll
+	 * operations, if a member's hash value changes after it is added, this will
+	 * no longer be correct according to the Set contract. But having a hash
+	 * code that changes is usually going to cause bugs with a Set anyway.
 	 *
 	 * @return a hash-value for the set.
 	 */
 	@Override
 	public int hashCode() {
-		int retval = 0;
-		for (final T item : this) {
-			if (item != null) {
-				retval += item.hashCode();
-			}
-		}
-		return retval;
+		return hash;
 	}
 
 	/**
