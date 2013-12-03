@@ -62,13 +62,96 @@ public class MapNGReverseAdapter implements IMap {
 	}
 
 	@Override
-	public PlayerCollection getPlayers() {
-		throw new IllegalStateException("Not yet implemented");
+	public IPlayerCollection getPlayers() {
+		return new PlayerCollectionAdapter(impl);
 	}
 
 	@Override
 	public TileCollection getTiles() {
 		throw new IllegalStateException("Not yet implemented");
+	}
+	/**
+	 * An adapter to the IPlayerCollection interface.
+	 * @author Jonathan Lovelace
+	 */
+	private static final class PlayerCollectionAdapter implements
+			IPlayerCollection {
+		/**
+		 * The new-interface map we're adapting.
+		 */
+		private final IMapNG outer;
+		/**
+		 * @param map the map to get the players from
+		 */
+		protected PlayerCollectionAdapter(final IMapNG map) {
+			outer = map;
+		}
+		/**
+		 * TODO: Write extra players to the stream.
+		 * @param obj another collection
+		 * @param out a stream to write to---ignored for now
+		 * @return whether the collection is a subset of this.
+		 *
+		 * @see model.map.Subsettable#isSubset(java.lang.Object, java.io.PrintWriter)
+		 */
+		@Override
+		public boolean isSubset(final IPlayerCollection obj, final PrintWriter out) {
+			for (final Player player : obj) {
+				if (player != null && !contains(player)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		/**
+		 * @return an iterator over the players
+		 */
+		@Override
+		public Iterator<Player> iterator() {
+			final Iterator<Player> retval = outer.players().iterator();
+			assert retval != null;
+			return retval;
+		}
+		/**
+		 * @param player a player number
+		 * @return the corresponding player
+		 */
+		@Override
+		public Player getPlayer(final int player) {
+			for (final Player test : outer.players()) {
+				if (test.getPlayerId() == player) {
+					return test;
+				}
+			}
+			return new Player(-1, "");
+		}
+		/**
+		 * @return a player to own independent things
+		 */
+		@Override
+		public Player getIndependent() {
+			throw new IllegalStateException("Not implemented yet");
+		}
+		/**
+		 * @return the current player
+		 */
+		@Override
+		public Player getCurrentPlayer() {
+			return outer.getCurrentPlayer();
+		}
+		/**
+		 * @param obj a player
+		 * @return whether we contain it
+		 */
+		@Override
+		public boolean contains(final Player obj) {
+			for (final Player player : this) {
+				if (obj.equals(player)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 	/**
 	 * A "Tile" that looks to the IMapNG.
