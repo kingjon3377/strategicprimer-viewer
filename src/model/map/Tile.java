@@ -107,7 +107,6 @@ public final class Tile implements IMutableTile {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		// TODO: Figure out some way of testing contents-equality without using getContents
 		if (this == obj) {
 			return true;
 		} else if ((obj instanceof ITile)
