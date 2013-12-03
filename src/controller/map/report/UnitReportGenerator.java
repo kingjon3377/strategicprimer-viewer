@@ -2,9 +2,9 @@ package controller.map.report;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import model.map.IFixture;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
@@ -40,7 +40,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Unit of type ");
@@ -92,7 +92,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
 		final String simple = concat("Unit of type ", unit.getKind(),
 				", named ", unit.getName(),
@@ -251,7 +251,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder = new StringBuilder(8192)
 				.append("<h4>Units in the map</h4>\n");
@@ -285,7 +285,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Units in the map",
 				"(Any units reported above are not described again.)");

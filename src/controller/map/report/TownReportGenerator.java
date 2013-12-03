@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import model.map.IFixture;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.ITownFixture;
@@ -45,7 +45,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof AbstractTown) {
@@ -90,7 +90,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Cities, towns, and/or fortifications you know about:");
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
@@ -126,7 +126,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
 			return new VillageReportGenerator().produce(fixtures, tiles,
@@ -162,7 +162,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
 			return new VillageReportGenerator().produceRIR(fixtures, tiles,

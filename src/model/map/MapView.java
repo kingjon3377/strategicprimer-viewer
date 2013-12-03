@@ -100,7 +100,7 @@ public class MapView implements IMutableMap {
 	 * @return the collection of tiles that make up the map.
 	 */
 	@Override
-	public TileCollection getTiles() {
+	public ITileCollection getTiles() {
 		return map.getTiles();
 	}
 

@@ -1,9 +1,9 @@
 package controller.map.report;
 
 import model.map.IFixture;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.fixtures.towns.Village;
 import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
@@ -31,7 +31,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final HtmlList others = new HtmlList(
 				"<h4>Villages you know about:</h4>");
 		final HtmlList own = new HtmlList(
@@ -66,7 +66,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
 		final AbstractReportNode others = new SectionListReportNode(5,
 				"Villages you know about:");
@@ -103,7 +103,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return concat(atPoint(loc), item.getName(), ", a(n) ", item.getRace(),
@@ -125,7 +125,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return new SimpleReportNode(atPoint(loc), item.getName(), ", a(n) ",

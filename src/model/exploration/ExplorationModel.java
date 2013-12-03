@@ -7,14 +7,15 @@ import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.IMap;
 import model.map.IMutableTile;
+import model.map.IMutableTileCollection;
 import model.map.ITile;
+import model.map.ITileCollection;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.Tile;
-import model.map.TileCollection;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.mobile.SimpleMovement;
@@ -73,7 +74,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	@Override
 	public List<Unit> getUnits(final Player player) {
 		final List<Unit> retval = new ArrayList<>();
-		final TileCollection tiles = getMap().getTiles();
+		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point != null) {
 				final ITile tile = tiles.getTile(point);
@@ -136,7 +137,10 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			((IMutableTile) sourceTile).removeFixture(unit);
 			((IMutableTile) destTile).addFixture(unit);
 			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
-				final TileCollection mapTiles = pair.first().getTiles();
+				final ITileCollection mapTiles = pair.first().getTiles();
+				if (!(mapTiles instanceof IMutableTileCollection)) {
+					throw new IllegalStateException("Immutable collection of tiles");
+				}
 				final ITile stile = mapTiles.getTile(point);
 				final ITile dtile = mapTiles.getTile(dest);
 				if (!tileHasFixture(stile, unit)
@@ -144,7 +148,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 						|| !(dtile instanceof IMutableTile)) {
 					continue;
 				}
-				ensureTerrain(mapTiles, dest, destTile.getTerrain());
+				ensureTerrain((IMutableTileCollection) mapTiles, dest, destTile.getTerrain());
 				((IMutableTile) stile).removeFixture(unit);
 				((IMutableTile) dtile).addFixture(unit);
 			}
@@ -156,7 +160,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			return retval;
 		} else {
 			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
-				ensureTerrain(pair.first().getTiles(), dest,
+				final ITileCollection tiles = pair.first().getTiles();
+				if (!(tiles instanceof IMutableTileCollection)) {
+					throw new IllegalStateException("Immutable collection of tiles");
+				}
+				ensureTerrain((IMutableTileCollection) tiles, dest,
 						destTile.getTerrain());
 			}
 			fireMovementCost(1);
@@ -183,7 +191,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param point the location to look at
 	 * @param terrain the terrain type it should be
 	 */
-	private static void ensureTerrain(final TileCollection tiles,
+	private static void ensureTerrain(final IMutableTileCollection tiles,
 			final Point point, final TileType terrain) {
 		if (!tiles.hasTile(point)) {
 			tiles.addTile(point, new Tile(terrain));

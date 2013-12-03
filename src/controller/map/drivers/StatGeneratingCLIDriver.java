@@ -15,12 +15,13 @@ import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMap;
 import model.map.IMutableTile;
+import model.map.IMutableTileCollection;
 import model.map.ITile;
+import model.map.ITileCollection;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.TileCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
@@ -343,7 +344,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	@Nullable
 	private static IFixture find(final IMap map, final int idNum) {
-		final TileCollection tiles = map.getTiles();
+		final ITileCollection tiles = map.getTiles();
 		for (final Point point : tiles) {
 			if (point == null) {
 				continue;
@@ -435,18 +436,22 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						helper.inputString("Kind of unit: "),
 						helper.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMap, String> pair : model.getAllMaps()) {
-					final IMap map = pair.first();
-					final ITile tile = map.getTile(point);
-					if (tile instanceof IMutableTile) {
-						final boolean empty = tile.isEmpty();
-						((IMutableTile) tile).addFixture(unit);
-						if (empty) {
-							map.getTiles().addTile(point, tile);
-						}
-					} else {
+					final ITileCollection tiles = pair.first().getTiles();
+					final ITile tile = tiles.getTile(point);
+					if (!(tile instanceof IMutableTile)) {
 						SYS_OUT.print("Couldn't add to ");
 						SYS_OUT.print(pair.second());
 						SYS_OUT.println(" because tile wasn't mutable");
+					} else if (!(tiles instanceof IMutableTileCollection)) {
+						SYS_OUT.print("Couldn't add to ");
+						SYS_OUT.print(pair.second());
+						SYS_OUT.println(" because the map's tiles aren't mutable");
+					} else {
+						final boolean empty = tile.isEmpty();
+						((IMutableTile) tile).addFixture(unit);
+						if (empty) {
+							((IMutableTileCollection) tiles).addTile(point, tile);
+						}
 					}
 				}
 				createWorkers(model, idf, unit);

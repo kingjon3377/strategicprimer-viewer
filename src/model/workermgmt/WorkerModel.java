@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.map.ITile;
+import model.map.ITileCollection;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
@@ -39,7 +39,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	@Override
 	public List<Unit> getUnits(final Player player) {
 		final List<Unit> retval = new ArrayList<>();
-		final TileCollection tiles = getMap().getTiles();
+		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point != null) {
 				final ITile tile = tiles.getTile(point);
@@ -73,7 +73,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 */
 	@Override
 	public void addUnit(final Unit unit) {
-		final TileCollection tiles = getMap().getTiles();
+		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point == null) {
 				continue;

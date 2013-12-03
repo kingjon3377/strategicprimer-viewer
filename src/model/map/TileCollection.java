@@ -21,8 +21,7 @@ import util.PrefixingPrintWriter;
  * @author Jonathan Lovelace
  *
  */
-public final class TileCollection implements Iterable<Point>,
-		Subsettable<TileCollection> {
+public final class TileCollection implements IMutableTileCollection {
 	/**
 	 * The Map this is a wrapper around.
 	 */
@@ -34,6 +33,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * @param tile the tile to add.
 	 * @param point the point at which to add it
 	 */
+	@Override
 	public void addTile(final Point point, final ITile tile) {
 		tiles.put(point, tile);
 	}
@@ -46,6 +46,7 @@ public final class TileCollection implements Iterable<Point>,
 	 *
 	 * @return the tile at that point, or a new "empty" tile at that point.
 	 */
+	@Override
 	public ITile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
 			tiles.put(point, new Tile(TileType.NotVisible));
@@ -122,7 +123,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * @param out the stream to write details of differences to
 	 */
 	@Override
-	public boolean isSubset(final TileCollection obj, final PrintWriter out) {
+	public boolean isSubset(final ITileCollection obj, final PrintWriter out) {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
 			if (point == null) {
@@ -149,6 +150,7 @@ public final class TileCollection implements Iterable<Point>,
 	 * @param point a point
 	 * @return whether there's a non-empty tile at that point
 	 */
+	@Override
 	public boolean hasTile(final Point point) {
 		return tiles.containsKey(point) && !tiles.get(point).isEmpty();
 	}

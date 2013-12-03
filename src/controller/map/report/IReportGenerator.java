@@ -1,9 +1,9 @@
 package controller.map.report;
 
 import model.map.IFixture;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.report.AbstractReportNode;
 import util.DelayedRemovalMap;
 import util.Pair;
@@ -27,7 +27,7 @@ public interface IReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	String produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer);
+			ITileCollection tiles, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report
@@ -43,7 +43,7 @@ public interface IReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	String produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer, T item, Point loc);
+			ITileCollection tiles, Player currentPlayer, T item, Point loc);
 
 	/**
 	 * All fixtures that this report references should be removed from the set
@@ -58,7 +58,7 @@ public interface IReportGenerator<T> {
 	 */
 	AbstractReportNode produceRIR(
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer);
+			ITileCollection tiles, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report
@@ -75,6 +75,6 @@ public interface IReportGenerator<T> {
 	 */
 	AbstractReportNode produceRIR(
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			TileCollection tiles, Player currentPlayer, T item, Point loc);
+			ITileCollection tiles, Player currentPlayer, T item, Point loc);
 
 }

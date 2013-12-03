@@ -3,8 +3,8 @@ package controller.map.misc;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMap;
+import model.map.ITileCollection;
 import model.map.Point;
-import model.map.TileCollection;
 import model.misc.IMultiMapModel;
 import util.Pair;
 
@@ -28,7 +28,7 @@ public final class IDFactoryFiller {
 	 */
 	public static IDFactory createFactory(final IMap map) {
 		final IDFactory retval = new IDFactory();
-		final TileCollection tiles = map.getTiles();
+		final ITileCollection tiles = map.getTiles();
 		for (final Point point : tiles) {
 			if (point != null) {
 				recursiveRegister(retval, tiles.getTile(point));
@@ -45,7 +45,7 @@ public final class IDFactoryFiller {
 	public static IDFactory createFactory(final IMultiMapModel model) {
 		final IDFactory retval = new IDFactory();
 		for (final Pair<IMap, String> pair : model.getAllMaps()) {
-			final TileCollection tiles = pair.first().getTiles();
+			final ITileCollection tiles = pair.first().getTiles();
 			for (final Point point : tiles) {
 				if (point != null) {
 					recursiveRegister(retval, tiles.getTile(point));

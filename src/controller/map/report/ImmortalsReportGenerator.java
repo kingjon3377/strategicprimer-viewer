@@ -9,9 +9,9 @@ import java.util.Map.Entry;
 
 import model.map.HasKind;
 import model.map.IFixture;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.fixtures.mobile.Centaur;
 import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Dragon;
@@ -51,7 +51,7 @@ public class ImmortalsReportGenerator extends
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> dragons = new HashMap<>();
 		final Map<String, List<Point>> fairies = new HashMap<>();
 		final List<Point> trolls = new ArrayList<>();
@@ -139,7 +139,7 @@ public class ImmortalsReportGenerator extends
 	@Override
 	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Immortals");
 		final Map<String, List<Point>> dragons = new HashMap<>();
@@ -210,7 +210,7 @@ public class ImmortalsReportGenerator extends
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity TODO: Create Immortal marker interface
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
 		if (item instanceof Dragon || item instanceof Fairy
 				|| item instanceof Troll || item instanceof Djinn
@@ -237,7 +237,7 @@ public class ImmortalsReportGenerator extends
 	@Override
 	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity TODO: Create Immortal marker interface
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
 		if (item instanceof Dragon || item instanceof Fairy
 				|| item instanceof Troll || item instanceof Djinn

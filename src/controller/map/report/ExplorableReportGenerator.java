@@ -1,9 +1,9 @@
 package controller.map.report;
 
 import model.map.IFixture;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.HarvestableFixture;
@@ -38,7 +38,7 @@ public class ExplorableReportGenerator extends
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		// At only two (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
@@ -89,7 +89,7 @@ public class ExplorableReportGenerator extends
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Caves and Battlefields");
 		boolean anyCaves = false;
@@ -136,7 +136,7 @@ public class ExplorableReportGenerator extends
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -164,7 +164,7 @@ public class ExplorableReportGenerator extends
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));

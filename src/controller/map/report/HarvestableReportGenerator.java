@@ -11,9 +11,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
 import model.map.IFixture;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.HarvestableFixture;
@@ -54,7 +54,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity TODO: Use Guava Multimaps
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, // NOPMD
-			final TileCollection tiles, final Player player) {
+			final ITileCollection tiles, final Player player) {
 		final HtmlList caches = new HtmlList(
 				"<h5>Caches collected by your explorers and workers:</h5>");
 		final HtmlList groves = new HtmlList("<h5>Groves and orchards</h5>");
@@ -132,7 +132,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	@Override
 	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity TODO: Use Guava Multimaps
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player player) {
+			final ITileCollection tiles, final Player player) {
 		final AbstractReportNode retval = new SectionReportNode(4,
 				"Resource Sources");
 		final AbstractReportNode caches = new SortedSectionListReportNode(5,
@@ -221,7 +221,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -284,7 +284,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));

@@ -36,5 +36,5 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	 * @return the collection of tiles.
 	 */
 	@NotNull
-	TileCollection getTiles();
+	ITileCollection getTiles();
 }

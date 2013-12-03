@@ -5,10 +5,10 @@ import java.util.Set;
 
 import model.map.IFixture;
 import model.map.ITile;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
 import model.map.River;
-import model.map.TileCollection;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
@@ -47,7 +47,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384)
 				.append("<h4>Fortresses in the map:</h4>\n");
@@ -77,7 +77,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer) {
+			final ITileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionReportNode(4,
 				"Fortresses in the map:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -194,7 +194,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384)
@@ -246,7 +246,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final TileCollection tiles, final Player currentPlayer,
+			final ITileCollection tiles, final Player currentPlayer,
 			final Fortress item, final Point loc) {
 		final AbstractReportNode retval = new SectionListReportNode(5, concat(
 				"Fortress ", item.getName(), " belonging to ",

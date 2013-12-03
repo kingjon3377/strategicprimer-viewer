@@ -8,9 +8,9 @@ import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMap;
 import model.map.ITile;
+import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileCollection;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
@@ -47,7 +47,7 @@ public final class ReportGenerator {
 		builder.append("<head><title>Strategic Primer map summary report</title></head>\n");
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
-		final TileCollection tiles = map.getTiles();
+		final ITileCollection tiles = map.getTiles();
 		final Player player = map.getPlayers().getCurrentPlayer();
 		builder.append(new FortressReportGenerator().produce(fixtures, tiles,
 				player));
@@ -96,7 +96,7 @@ public final class ReportGenerator {
 		builder.append("<title>Strategic Primer map summary abridged report</title></head>\n");
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
-		final TileCollection tiles = map.getTiles();
+		final ITileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
 					&& player.equals(((HasOwner) pair.second()).getOwner())) {
@@ -142,7 +142,7 @@ public final class ReportGenerator {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
-		final TileCollection tiles = map.getTiles();
+		final ITileCollection tiles = map.getTiles();
 		final Player player = map.getPlayers().getCurrentPlayer();
 		retval.add(new FortressReportGenerator().produceRIR(fixtures, tiles,
 				player));
@@ -184,7 +184,7 @@ public final class ReportGenerator {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary abbreviated report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
-		final TileCollection tiles = map.getTiles();
+		final ITileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
 					&& player.equals(((HasOwner) pair.second()).getOwner())) {
