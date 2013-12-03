@@ -1,4 +1,4 @@
-package view.util;
+package util;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 
 /**
  * The streams equivalent of /dev/null.
- *
- * TODO: Now move this out of 'view'.
  *
  * @author Jonathan Lovelace
  *

@@ -1,6 +1,6 @@
 package model.map;
 
-import static view.util.NullStream.BIT_BUCKET;
+import static util.NullStream.BIT_BUCKET;
 
 import java.io.PrintWriter;
 import java.util.HashMap;

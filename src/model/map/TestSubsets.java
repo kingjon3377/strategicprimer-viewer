@@ -2,7 +2,7 @@ package model.map;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static view.util.NullStream.BIT_BUCKET;
+import static util.NullStream.BIT_BUCKET;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
