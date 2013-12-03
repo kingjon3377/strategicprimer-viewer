@@ -88,10 +88,10 @@ public class SPMap implements IMutableMap {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof SPMap
+				|| (obj instanceof IMap
 						&& getDimensions().equals(((IMap) obj).getDimensions())
 						&& players.equals(((IMap) obj).getPlayers()) && tiles
-							.equals(((SPMap) obj).tiles));
+							.equals(((IMap) obj).getTiles()));
 	}
 
 	/**
