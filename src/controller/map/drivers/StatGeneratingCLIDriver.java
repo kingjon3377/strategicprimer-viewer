@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import static util.SingletonRandom.RANDOM;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
@@ -490,7 +491,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * there are five 1-in-20 chances of starting with a level in some Job, and
 	 * the user will be prompted for what Job for each.
 	 *
-	 * TODO: extra HP for Job levels. TODO: racial adjustments to stats.
+	 * TODO: racial adjustments to stats.
 	 *
 	 * @param idf the ID factory
 	 * @throws IOException on I/O error interacting with the user
@@ -501,6 +502,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final String name = helper.inputString("Worker is a " + race
 				+ ". Worker name: ");
 		final Worker retval = new Worker(name, race, idf.createID());
+		int levels = 0;
 		for (int i = 0; i < 3; i++) {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
@@ -508,6 +510,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						// NOPMD
 						helper.inputString("Worker has a level in a Job, which Job? "),
 						1));
+				levels++;
 			}
 		}
 		final boolean pregenStats = helper
@@ -515,17 +518,31 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		if (pregenStats) {
 			retval.setStats(enterStats());
 		} else {
-			retval.setStats(new WorkerStats(8, 8, threeDeeSix(), threeDeeSix(),
-					threeDeeSix(), threeDeeSix(), threeDeeSix(), threeDeeSix()));
+			final int constitution = threeDeeSix();
+			final int conBonus = (constitution - 10) / 2;
+			final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
+			retval.setStats(new WorkerStats(hitp, hitp, threeDeeSix(), threeDeeSix(),
+					constitution, threeDeeSix(), threeDeeSix(), threeDeeSix()));
 		}
 		return retval;
 	}
-
+	/**
+	 * @param times how many times to roll
+	 * @param bonus the bonus to apply to each roll
+	 * @return the result of rolling
+	 */
+	private static int rollDeeEight(final int times, final int bonus) {
+		int total = 0;
+		for (int i = 0; i < times; i++) {
+			total += RANDOM.nextInt(8) + bonus + 1;
+		}
+		return total;
+	}
 	/**
 	 * @return the result of simulating a 3d6 roll.
 	 */
 	private static int threeDeeSix() {
-		final Random random = SingletonRandom.RANDOM;
+		final Random random = RANDOM;
 		return random.nextInt(6) + random.nextInt(6) + random.nextInt(6) + 3;
 	}
 	/**
