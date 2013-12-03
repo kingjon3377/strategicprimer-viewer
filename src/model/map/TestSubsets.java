@@ -2,10 +2,7 @@ package model.map;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-
+import static view.util.NullStream.BIT_BUCKET;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -15,8 +12,6 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
-
-import view.util.NullStream;
 
 /**
  * Tests for Subsettable functionality.
@@ -33,11 +28,6 @@ public class TestSubsets {
 	 * A commonly-used string.
 	 */
 	private static final String ONE_STR = "one";
-	/**
-	 * A bit-bucket to send subset output to.
-	 */
-	private static final PrintWriter BIT_BUCKET = new PrintWriter(
-			new OutputStreamWriter(new NullStream()));
 
 	/**
 	 * A test of PlayerCollection's subset feature.
