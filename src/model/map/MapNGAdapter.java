@@ -373,11 +373,15 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 		return first.containsAll(second) && second.containsAll(first);
 	}
 	/**
-	 * @return a hash value for the object
+	 * The hash code is based on the dimensions, the current turn, and the
+	 * current player; basing it on anything else would certainly break any code
+	 * that placed an IMapNG into a hash-table.
+	 *
+	 * @return a hash code for the object
 	 */
 	@Override
 	public int hashCode() {
-		return state.hashCode();
+		return dimensions().hashCode() + getCurrentTurn() << 3 + getCurrentPlayer().hashCode() << 5;
 	}
 
 	/**

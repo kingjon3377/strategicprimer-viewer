@@ -346,12 +346,16 @@ public class SPMapNG implements IMapNG {
 		}
 		return first.containsAll(second) && second.containsAll(first);
 	}
+
 	/**
-	 * FIXME: Implement.
+	 * The hash code is based on the dimensions, the current turn, and the
+	 * current player; basing it on anything else would certainly break any code
+	 * that placed an IMapNG into a hash-table.
+	 *
 	 * @return a hash code for the object
 	 */
 	@Override
 	public int hashCode() {
-		throw new IllegalStateException("FIXME: Not implemented yet");
+		return dimensions().hashCode() + getCurrentTurn() << 3 + getCurrentPlayer().hashCode() << 5;
 	}
 }
