@@ -9,7 +9,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -39,7 +39,7 @@ public class TextReader implements INodeHandler<TextFixture> {
 	 */
 	@Override
 	public TextFixture parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		// Of all our uses of StringBuilder, here we can't know how much size

@@ -10,10 +10,10 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IPlayerCollection;
 import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Player;
-import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
@@ -53,7 +53,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	 */
 	@Override
 	public SPMap parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final SPMap map = new SPMap(new MapDimensions(

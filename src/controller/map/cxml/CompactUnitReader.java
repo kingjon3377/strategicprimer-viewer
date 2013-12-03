@@ -10,7 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IFixture;
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 
@@ -69,7 +69,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	@Override
 	public Unit read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, UNIT_TAG);
 		requireNonEmptyParameter(element, "name", false, warner);
@@ -117,7 +117,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 */
 	private UnitMember parseChild(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final IDFactory idFactory,
+			final IPlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
 		assert name != null;

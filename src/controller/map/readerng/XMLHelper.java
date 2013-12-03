@@ -8,8 +8,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.HasImage;
+import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.PlayerCollection;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -193,7 +193,7 @@ public final class XMLHelper {
 	 * @throws SPFormatException on SP format problems reading the attribute.
 	 */
 	public static Player getPlayerOrIndependent(final StartElement element,
-			final Warning warner, final PlayerCollection players)
+			final Warning warner, final IPlayerCollection players)
 			throws SPFormatException {
 		// ESCA-JAVA0177:
 		final Player retval; // NOPMD

@@ -8,7 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.IteratorWrapper;
 import util.Warning;
@@ -57,7 +57,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	@Override
 	public TextFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we

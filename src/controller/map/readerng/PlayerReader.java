@@ -11,8 +11,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.PlayerCollection;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -40,7 +40,7 @@ public class PlayerReader implements INodeHandler<Player> {
 	 */
 	@Override
 	public Player parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(assertNonNullQName(element.getName()), stream);

@@ -12,7 +12,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.Warning;
@@ -48,7 +48,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	 */
 	@Override
 	public Unit parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);

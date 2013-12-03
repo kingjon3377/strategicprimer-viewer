@@ -10,6 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
+import model.map.IPlayerCollection;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
@@ -51,7 +52,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 		@SuppressWarnings("unchecked") // The interface isn't genericized ...
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, reader));
-		final PlayerCollection players = new PlayerCollection();
+		final IPlayerCollection players = new PlayerCollection();
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {

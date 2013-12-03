@@ -10,8 +10,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IPlayerCollection;
 import model.map.MapView;
-import model.map.PlayerCollection;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.SPFormatException;
@@ -61,7 +61,7 @@ public class ViewReader implements INodeHandler<MapView> {
 	 */
 	@Override
 	public MapView parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		MapView view = null;

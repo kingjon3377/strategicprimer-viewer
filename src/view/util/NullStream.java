@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 /**
  * The streams equivalent of /dev/null.
  *
+ * TODO: Now move this out of 'view'.
+ *
  * @author Jonathan Lovelace
  *
  */

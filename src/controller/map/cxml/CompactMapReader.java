@@ -7,11 +7,11 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
+import model.map.IPlayerCollection;
 import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
-import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
@@ -54,7 +54,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	@Override
 	public IMap read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, MAP_TAG, "view");
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {

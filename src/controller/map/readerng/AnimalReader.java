@@ -13,7 +13,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.Animal;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -39,7 +39,7 @@ public class AnimalReader implements INodeHandler<Animal> {
 	 */
 	@Override
 	public Animal parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(assertNonNullQName(element.getName()), stream);

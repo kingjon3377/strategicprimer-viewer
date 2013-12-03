@@ -10,8 +10,8 @@ import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
 import model.listeners.PlayerChangeListener;
+import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.PlayerCollection;
 import model.viewer.IViewerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -97,7 +97,7 @@ public class SPMenu extends JMenuBar {
 			@Override
 			public void playerChanged(@Nullable final Player old,
 					final Player newPlayer) {
-				final PlayerCollection pColl = model.getMap().getPlayers();
+				final IPlayerCollection pColl = model.getMap().getPlayers();
 				for (final Player player : pColl) {
 					if (player.equals(newPlayer)) {
 						player.setCurrent(true);

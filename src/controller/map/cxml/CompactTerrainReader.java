@@ -13,7 +13,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasImage;
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.TerrainFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
@@ -126,7 +126,7 @@ public final class CompactTerrainReader extends AbstractCompactReader<TerrainFix
 	@Override
 	public TerrainFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
 		// ESCA-JAVA0177:

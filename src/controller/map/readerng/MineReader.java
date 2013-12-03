@@ -13,7 +13,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.resources.Mine;
 import model.map.fixtures.towns.TownStatus;
 import util.Pair;
@@ -43,7 +43,7 @@ public class MineReader implements INodeHandler<Mine> {
 	 */
 	@Override
 	public Mine parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(assertNonNullQName(element.getName()), stream);

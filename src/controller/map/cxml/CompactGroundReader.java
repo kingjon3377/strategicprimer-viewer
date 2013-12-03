@@ -8,7 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.Ground;
 import util.IteratorWrapper;
 import util.Warning;
@@ -47,7 +47,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	@Override
 	public Ground read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "ground");
 		final String kind = getParamWithDeprecatedForm(element, "kind",

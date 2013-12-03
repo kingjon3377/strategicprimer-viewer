@@ -11,8 +11,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMutableTile;
+import model.map.IPlayerCollection;
 import model.map.ITile;
-import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.River;
 import model.map.Tile;
@@ -45,7 +45,7 @@ public class TileReader implements INodeHandler<ITile> {
 	 */
 	@Override
 	public ITile parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final IMutableTile tile = new Tile(
@@ -92,7 +92,7 @@ public class TileReader implements INodeHandler<ITile> {
 	 * @throws SPFormatException on SP format problems.
 	 */
 	private static RiverFixture parseRiver(final Iterable<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory, final StartElement event)
 			throws SPFormatException {
 		return new RiverFixture(READER.parse(event, stream, players, warner,
@@ -116,7 +116,7 @@ public class TileReader implements INodeHandler<ITile> {
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static void perhapsAddFixture(final Iterable<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IMutableTile tile, final StartElement event, final String tag,
 			final IDFactory idFactory) throws SPFormatException {
 		try {

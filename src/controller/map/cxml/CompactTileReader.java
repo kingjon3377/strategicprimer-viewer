@@ -11,8 +11,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMutableTile;
+import model.map.IPlayerCollection;
 import model.map.ITile;
-import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.River;
 import model.map.Tile;
@@ -70,7 +70,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	@Override
 	public ITile read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		final IMutableTile retval = new Tile(
 				TileType.getTileType(getParamWithDeprecatedForm(element,
@@ -121,7 +121,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 */
 	private TileFixture parseFixture(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final IDFactory idFactory,
+			final IPlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name = element.getName().getLocalPart();
 		assert name != null;

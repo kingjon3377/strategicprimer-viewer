@@ -1,5 +1,7 @@
 package model.map;
 
+import static view.util.NullStream.BIT_BUCKET;
+
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,8 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerCollection implements Iterable<Player>,
-		Subsettable<PlayerCollection> {
+public class PlayerCollection implements IPlayerCollection {
 	/**
 	 * The collection this class wraps.
 	 */
@@ -27,6 +28,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @return the player with that ID, or a new Player with that number if we
 	 *         don't have it.
 	 */
+	@Override
 	public Player getPlayer(final int player) {
 		final Integer pValue = Integer.valueOf(player);
 		if (players.containsKey(pValue)) {
@@ -56,8 +58,9 @@ public class PlayerCollection implements Iterable<Player>,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof PlayerCollection && ((PlayerCollection) obj).players
-						.equals(players));
+				|| (obj instanceof IPlayerCollection
+						&& isSubset((IPlayerCollection) obj, BIT_BUCKET) && ((IPlayerCollection) obj)
+							.isSubset(this, BIT_BUCKET));
 	}
 
 	/**
@@ -77,6 +80,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @return the current player, or a new player with a negative number and
 	 *         the empty string for a name.
 	 */
+	@Override
 	public Player getCurrentPlayer() {
 		for (final Player player : this) {
 			if (player.isCurrent()) {
@@ -101,7 +105,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @param out the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final PlayerCollection obj, final PrintWriter out) {
+	public boolean isSubset(final IPlayerCollection obj, final PrintWriter out) {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
 				out.print("Extra player ");
@@ -117,6 +121,7 @@ public class PlayerCollection implements Iterable<Player>,
 	 * @param obj an object
 	 * @return whether we contain it
 	 */
+	@Override
 	public boolean contains(final Player obj) {
 		return players.containsValue(obj);
 	}
@@ -164,6 +169,7 @@ public class PlayerCollection implements Iterable<Player>,
 	/**
 	 * @return a player for "independent" fixtures.
 	 */
+	@Override
 	public Player getIndependent() {
 		return independent;
 	}

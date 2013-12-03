@@ -10,8 +10,8 @@ import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IEvent;
+import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.PlayerCollection;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
@@ -82,7 +82,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	@Override
 	public ITownFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city",
 				"fortification");
@@ -111,7 +111,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 */
 	private static Village parseVillage(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(assertNotNullQName(element.getName()), stream);
@@ -139,7 +139,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 */
 	private static AbstractTown parseTown(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final String name = getParameter(element, NAME_PARAM, "");
@@ -174,7 +174,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @throws SPFormatException on SP format error reading the parameter.
 	 */
 	private static Player getOwnerOrIndependent(final StartElement element,
-			final Warning warner, final PlayerCollection players)
+			final Warning warner, final IPlayerCollection players)
 			throws SPFormatException {
 		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
@@ -204,7 +204,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 */
 	private static Fortress parseFortress(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final PlayerCollection players, final Warning warner,
+			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);

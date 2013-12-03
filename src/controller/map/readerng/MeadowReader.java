@@ -13,7 +13,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Meadow;
 import util.Pair;
@@ -49,7 +49,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public Meadow parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(assertNonNullQName(element.getName()), stream);

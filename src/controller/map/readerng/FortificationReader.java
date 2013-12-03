@@ -14,7 +14,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.PlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
@@ -44,7 +44,7 @@ public class FortificationReader implements INodeHandler<Fortification> {
 	 */
 	@Override
 	public Fortification parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final PlayerCollection players,
+			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
