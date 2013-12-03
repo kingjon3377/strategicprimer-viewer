@@ -104,13 +104,12 @@ public class SPMapNG implements IMapNG {
 		}
 	}
 	/**
-	 * FIXME: implement.
-	 * @param o another map
+	 * @param other another map
 	 * @return the result of a comparison between us and it.
 	 */
 	@Override
-	public int compareTo(final IMapNG o) {
-		throw new IllegalStateException("FIXME: Not implemented yet.");
+	public int compareTo(final IMapNG other) {
+		return equals(other) ? 0 : hashCode() - other.hashCode();
 	}
 	/**
 	 * Constructor.
