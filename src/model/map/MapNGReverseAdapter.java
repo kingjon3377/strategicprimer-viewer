@@ -42,6 +42,21 @@ public class MapNGReverseAdapter implements IMap {
 	 */
 	@Override
 	public int compareTo(final IMap obj) {
+		return equals(obj) ? 0 : hashCode() - obj.hashCode();
+	}
+	/**
+	 * @param obj an object
+	 * @return whether it's a map equal to this one
+	 */
+	@Override
+	public boolean equals(@Nullable final Object obj) {
+		throw new IllegalStateException("Not yet implemented");
+	}
+	/**
+	 * @return a hash value for the object
+	 */
+	@Override
+	public int hashCode() {
 		throw new IllegalStateException("Not yet implemented");
 	}
 	/**
