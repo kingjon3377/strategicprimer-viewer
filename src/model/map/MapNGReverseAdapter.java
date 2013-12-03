@@ -50,14 +50,18 @@ public class MapNGReverseAdapter implements IMap {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		throw new IllegalStateException("Not yet implemented");
+		return this == obj
+				|| (obj instanceof IMap
+						&& getDimensions().equals(((IMap) obj).getDimensions())
+						&& getPlayers().equals(((IMap) obj).getPlayers()) && getTiles()
+							.equals(((IMap) obj).getTiles()));
 	}
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
-		throw new IllegalStateException("Not yet implemented");
+		return impl.hashCode();
 	}
 	/**
 	 * @return the dimensions of the map
