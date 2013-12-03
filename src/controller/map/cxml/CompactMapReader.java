@@ -74,8 +74,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 					element, "current_player")), Integer.parseInt(getParameter(
 					element, "current_turn")));
 			spinUntilEnd(assertNotNullQName(element.getName()), stream);
-			return retval; // NOPMD: TODO: Perhaps split this into parseMap and
-							// parseView?
+			return retval; // NOPMD: TODO: Perhaps split this into parseMap/parseView?
 		} else {
 			final SPMap retval = new SPMap(new MapDimensions(
 					Integer.parseInt(getParameter(element, "rows")),
