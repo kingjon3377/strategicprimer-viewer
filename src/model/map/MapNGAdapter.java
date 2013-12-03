@@ -1,10 +1,11 @@
 package model.map;
 
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import model.map.fixtures.Ground;
@@ -12,8 +13,6 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import view.util.NullStream;
 
 /**
  * An implementation of IMapNG that is, under the hood, just a MapView.
@@ -304,15 +303,6 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	}
 
 	/**
-	 * A bit-bucket output stream.
-	 */
-	private static final PrintWriter DEVNULL = new PrintWriter(
-			new OutputStreamWriter(new NullStream()));
-
-	/**
-	 * FIXME: Subset calculation is slow; instead, check each method specified
-	 * by the interface.
-	 *
 	 * @param obj an object
 	 * @return whether it's the same as us---we're a subset of it and it's a
 	 *         subset of us
@@ -320,10 +310,68 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof IMapNG && isSubset((IMapNG) obj, DEVNULL) && ((IMapNG) obj)
-						.isSubset(this, DEVNULL));
+				|| (obj instanceof IMapNG && equalsImpl((IMapNG) obj));
 	}
-
+	/**
+	 * @param obj another map
+	 * @return whether it equals this one
+	 */
+	private boolean equalsImpl(final IMapNG obj) {
+		if (!dimensions().equals(obj.dimensions())
+				|| !iterablesEqual(players(), obj.players())
+				|| getCurrentTurn() != obj.getCurrentTurn()
+				|| !getCurrentPlayer().equals(obj.getCurrentPlayer())) {
+			return false; // NOPMD
+		} else {
+			for (final Point point : locations()) {
+				if (point == null) {
+					continue;
+				} else if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+						|| isMountainous(point) != obj.isMountainous(point)
+						|| !iterablesEqual(getRivers(point),
+								obj.getRivers(point))
+						|| !Objects.equals(getForest(point),
+								obj.getForest(point))
+						|| !Objects.equals(getGround(point),
+								obj.getGround(point))
+						|| !iterablesEqual(getOtherFixtures(point),
+								obj.getOtherFixtures(point))) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+	/**
+	 * FIXME: This is probably very slow ...
+	 * @param one one iterable
+	 * @param two another
+	 * @param <T> the type of thing they contain
+	 * @return whether they contain the same elements.
+	 */
+	private static <T> boolean iterablesEqual(final Iterable<T> one, final Iterable<T> two) {
+		// ESCA-JAVA0177:
+		final Collection<T> first;
+		if (one instanceof Collection) {
+			first = (Collection<T>) one;
+		} else {
+			first = new ArrayList<>();
+			for (final T item : one) {
+				first.add(item);
+			}
+		}
+		// ESCA-JAVA0177:
+		final Collection<T> second;
+		if (two instanceof Collection) {
+			second = (Collection<T>) two;
+		} else {
+			second = new ArrayList<>();
+			for (final T item : second) {
+				second.add(item);
+			}
+		}
+		return first.containsAll(second) && second.containsAll(first);
+	}
 	/**
 	 * @return a hash value for the object
 	 */
