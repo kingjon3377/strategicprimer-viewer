@@ -10,7 +10,10 @@ import javax.swing.JOptionPane;
 
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
+import model.map.IMutablePlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.misc.IDriverModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -83,8 +86,8 @@ public class PlayerChooserHandler implements ActionListener, PlayerChangeSource 
 		if (evt != null && MENU_ITEM.equals(evt.getActionCommand())) {
 			final Player retval = (Player) JOptionPane.showInputDialog(parent,
 					"Player to view:", "Choose New Player",
-					JOptionPane.PLAIN_MESSAGE, null, model.getMap()
-							.getPlayers().asArray(), player);
+					JOptionPane.PLAIN_MESSAGE, null, playersAsArray(model
+							.getMap().getPlayers()), player);
 			if (retval != null) {
 				for (final PlayerChangeListener list : listeners) {
 					list.playerChanged(player, retval);
@@ -93,7 +96,23 @@ public class PlayerChooserHandler implements ActionListener, PlayerChangeSource 
 			}
 		}
 	}
-
+	/**
+	 * @param players a collection of players
+	 * @return the players as an array
+	 */
+	private static Player[] playersAsArray(final IPlayerCollection players) {
+		if (players instanceof IMutablePlayerCollection) {
+			return ((PlayerCollection) players).asArray();
+		} else {
+			final List<Player> list = new ArrayList<>();
+			for (final Player player : players) {
+				list.add(player);
+			}
+			final Player[] retval = list.toArray(new Player[list.size()]);
+			assert retval != null;
+			return retval;
+		}
+	}
 	/**
 	 * Should only be called once per object lifetime. Notify all listeners, as
 	 * if the current player had changed from null to its current value.

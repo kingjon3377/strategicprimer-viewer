@@ -67,7 +67,14 @@ public class MapView implements IMutableMap {
 	 */
 	@Override
 	public void addPlayer(final Player newPlayer) {
-		map.getPlayers().add(newPlayer);
+		final IPlayerCollection pColl = map.getPlayers();
+		if (map instanceof IMutableMap) {
+			((IMutableMap) map).addPlayer(newPlayer);
+		} else if (pColl instanceof IMutablePlayerCollection) {
+			((IMutablePlayerCollection) pColl).add(newPlayer);
+		} else {
+			throw new IllegalStateException("addPlayer called on MapView backed by immutable IMap and IPlayerCollection");
+		}
 	}
 
 	/**
@@ -83,7 +90,7 @@ public class MapView implements IMutableMap {
 	 * @return the collection of players in the map
 	 */
 	@Override
-	public PlayerCollection getPlayers() {
+	public IPlayerCollection getPlayers() {
 		return map.getPlayers();
 	}
 

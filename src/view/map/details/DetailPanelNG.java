@@ -6,8 +6,8 @@ import javax.swing.JSplitPane;
 
 import model.listeners.SelectionChangeListener;
 import model.listeners.VersionChangeListener;
+import model.map.IPlayerCollection;
 import model.map.ITile;
-import model.map.PlayerCollection;
 import model.map.Point;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -48,7 +48,7 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener,
 	 * @param version the (initial) map version
 	 * @param players the players in the map
 	 */
-	public DetailPanelNG(final int version, final PlayerCollection players) {
+	public DetailPanelNG(final int version, final IPlayerCollection players) {
 		super(HORIZONTAL_SPLIT, true);
 
 		fixList = new FixtureList(this, players);

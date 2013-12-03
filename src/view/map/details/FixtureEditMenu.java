@@ -3,6 +3,8 @@ package view.map.details;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -13,6 +15,8 @@ import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
+import model.map.IMutablePlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.PlayerCollection;
 
@@ -80,7 +84,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	 * @param players the players in the map
 	 */
 	public FixtureEditMenu(final IFixture fixture,
-			final PlayerCollection players) {
+			final IPlayerCollection players) {
 		boolean mutable = false;
 		final FixtureEditMenu outer = this;
 		if (fixture instanceof HasName) {
@@ -117,7 +121,7 @@ public class FixtureEditMenu extends JPopupMenu {
 											"Fixture's new owner:",
 											"Change Fixture Owner",
 											JOptionPane.PLAIN_MESSAGE, null,
-											players.asArray(),
+											playersAsArray(players),
 											((HasOwner) fixture).getOwner());
 							if (result != null) {
 								((HasOwner) fixture).setOwner(result);
@@ -130,7 +134,23 @@ public class FixtureEditMenu extends JPopupMenu {
 			add(new JLabel("Fixture is not mutable"));
 		}
 	}
-
+	/**
+	 * @param players a collection of players
+	 * @return it as an array
+	 */
+	protected static Player[] playersAsArray(final IPlayerCollection players) {
+		if (players instanceof IMutablePlayerCollection) {
+			return ((PlayerCollection) players).asArray();
+		} else {
+			final List<Player> list = new ArrayList<>();
+			for (final Player player : players) {
+				list.add(player);
+			}
+			final Player[] retval = list.toArray(new Player[list.size()]);
+			assert retval != null;
+			return retval;
+		}
+	}
 	/**
 	 * Add a menu item, and attach a suitable listener to it.
 	 *

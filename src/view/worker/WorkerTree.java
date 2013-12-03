@@ -21,8 +21,8 @@ import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
 import model.listeners.UnitSelectionSource;
 import model.map.IFixture;
+import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
@@ -71,14 +71,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		/**
 		 * The collection of players in the map.
 		 */
-		private final PlayerCollection players;
+		private final IPlayerCollection players;
 
 		/**
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
 		 */
-		protected TreeMouseListener(final PlayerCollection playerColl) {
+		protected TreeMouseListener(final IPlayerCollection playerColl) {
 			players = playerColl;
 		}
 

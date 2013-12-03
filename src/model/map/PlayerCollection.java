@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerCollection implements IPlayerCollection {
+public class PlayerCollection implements IMutablePlayerCollection {
 	/**
 	 * The collection this class wraps.
 	 */
@@ -132,6 +132,7 @@ public class PlayerCollection implements IPlayerCollection {
 	 * @param player the player to add
 	 * @return whether the collection was changed by the operation.
 	 */
+	@Override
 	public boolean add(final Player player) {
 		if (player.isIndependent()) {
 			independent = player;
@@ -147,6 +148,7 @@ public class PlayerCollection implements IPlayerCollection {
 	 * @param obj an object
 	 * @return true if it was removed as a result of this call
 	 */
+	@Override
 	public boolean remove(final Object obj) {
 		if (obj instanceof Integer) {
 			final boolean retval = players.containsKey(obj);

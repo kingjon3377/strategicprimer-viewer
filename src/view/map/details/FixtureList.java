@@ -20,8 +20,8 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import model.listeners.SelectionChangeListener;
+import model.map.IPlayerCollection;
 import model.map.ITile;
-import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.TileFixture;
 import model.viewer.CurriedFixtureTransferable;
@@ -50,7 +50,7 @@ public class FixtureList extends JList<TileFixture> implements
 	 * @param players the players in the map
 	 * @author Jonathan Lovelace
 	 */
-	public FixtureList(final JComponent parent, final PlayerCollection players) {
+	public FixtureList(final JComponent parent, final IPlayerCollection players) {
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -123,14 +123,14 @@ public class FixtureList extends JList<TileFixture> implements
 		/**
 		 * The collection of players in the map.
 		 */
-		private final PlayerCollection players;
+		private final IPlayerCollection players;
 
 		/**
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
 		 */
-		protected FixtureMouseListener(final PlayerCollection playerColl) {
+		protected FixtureMouseListener(final IPlayerCollection playerColl) {
 			players = playerColl;
 		}
 
