@@ -18,6 +18,9 @@ import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.resources.Grove;
+import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.Shrub;
 
 /**
  * A class to facilitate a better hunting/fishing driver.
@@ -40,6 +43,10 @@ public class HuntingModel {
 	 * The aquatic animals in the map.
 	 */
 	private final Map<Point, List<String>> fish = new HashMap<>();
+	/**
+	 * The plants in the map.
+	 */
+	private final Map<Point, List<String>> plants = new HashMap<>();
 	/**
 	 * The size of the map.
 	 */
@@ -77,7 +84,33 @@ public class HuntingModel {
 					} else {
 						addToMap(animals, point, ((Animal) fix).getKind());
 					}
+				} else if (fix instanceof Grove || fix instanceof Meadow
+						|| fix instanceof Shrub) {
+					final String str = fix.toString();
+					assert str != null;
+					addToMap(plants, point, str);
 				}
+			}
+			addToMap(plants, point, NOTHING);
+			final List<String> plantList = plants.get(point);
+			assert plantList != null;
+			final int len = plantList.size() - 1;
+			// ESCA-JAVA0177:
+			final int nothings;
+			switch (tile.getTerrain()) {
+			case Desert:
+			case Tundra:
+				nothings = len * 3;
+				break;
+			case Jungle:
+				nothings = len / 2;
+				break;
+			default:
+				nothings = len;
+				break;
+			}
+			for (int i = 0; i < nothings; i++) {
+				plantList.add(NOTHING);
 			}
 		}
 	}
@@ -110,10 +143,42 @@ public class HuntingModel {
 	/**
 	 * @param point a point
 	 * @param items how many items to limit the list to
-	 * @return a list of hunting results from the surrounding area. About half will be "nothing"
+	 * @return a list of fishing results from the surrounding area. About half will be "nothing"
 	 */
 	public List<String> fish(final Point point, final int items) {
 		return chooseFromMap(point, items, fish);
+	}
+
+	/**
+	 * @param point a point
+	 * @param items how many items to limit the list to
+	 * @return a list of gathering results from the surrounding area. Many will
+	 *         be "nothing," especially from desert and tundra tiles and less
+	 *         from jungle tiles.
+	 */
+	public List<String> gather(final Point point, final int items) {
+		final List<String> choices = new ArrayList<>();
+		for (final Point local : new TwentyFivePointIterable(point)) {
+			if (plants.containsKey(local)) {
+				choices.addAll(plants.get(local));
+			}
+		}
+		for (final Point local : new NinePointIterable(point)) {
+			if (plants.containsKey(local)) {
+				choices.addAll(plants.get(local));
+			}
+		}
+		for (int i = 0; i < 14; i++) {
+			if (plants.containsKey(point)) {
+				choices.addAll(plants.get(point));
+			}
+		}
+		final List<String> retval = new ArrayList<>();
+		for (int i = 0; i < items; i++) {
+			Collections.shuffle(choices);
+			retval.add(choices.get(0));
+		}
+		return retval;
 	}
 	/**
 	 * A helper method for hunting or fishing.
@@ -212,7 +277,7 @@ public class HuntingModel {
 		}
 	}
 	/**
-	 * An iterator over the twenty-five points (including itself) surrounding a point.
+	 * An iterator over the nine points (including itself) surrounding a point.
 	 */
 	private class NinePointIterable extends AbstractMultiPointIterable {
 		/**

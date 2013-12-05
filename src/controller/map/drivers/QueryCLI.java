@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,9 +19,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
-import model.map.fixtures.resources.Grove;
-import model.map.fixtures.resources.Meadow;
-import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
 import util.TypesafeLogger;
 import util.Warning;
@@ -99,7 +95,7 @@ public final class QueryCLI implements ISPDriver {
 					* HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(CLIHelper.toList(selectTile(map)), ostream, HUNTER_HOURS
+			gather(hmodel, selectPoint(), ostream, HUNTER_HOURS
 					* HOURLY_ENCOUNTERS);
 			break;
 		default:
@@ -133,23 +129,15 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Run food-gathering.
 	 *
-	 * @param fixtures a list of the fixtures on the tile
+	 * @param hmodel the hunting model to get results from
+	 * @param point around where to gather
 	 * @param ostream the stream to write to
 	 * @param encounters how many encounters to show
 	 */
-	private static void gather(final List<TileFixture> fixtures,
+	private static void gather(final HuntingModel hmodel, final Point point,
 			final PrintStream ostream, final int encounters) {
-		for (int i = 0; i < encounters; i++) {
-			Collections.shuffle(fixtures);
-			final TileFixture fix = fixtures.get(0);
-			if (fix instanceof Grove || fix instanceof Meadow
-					|| fix instanceof Shrub) {
-				ostream.println(fix);
-			} else {
-				ostream.print("nothing ... (");
-				ostream.print(fix.shortDesc());
-				ostream.println(')');
-			}
+		for (final String item : hmodel.gather(point, encounters)) {
+			ostream.println(item);
 		}
 	}
 
