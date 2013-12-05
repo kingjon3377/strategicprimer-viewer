@@ -158,19 +158,9 @@ public class HuntingModel {
 	 */
 	public List<String> gather(final Point point, final int items) {
 		final List<String> choices = new ArrayList<>();
-		for (final Point local : new TwentyFivePointIterable(point)) {
+		for (final Point local : new SurroundingPointIterable(point, dims)) {
 			if (plants.containsKey(local)) {
 				choices.addAll(plants.get(local));
-			}
-		}
-		for (final Point local : new NinePointIterable(point)) {
-			if (plants.containsKey(local)) {
-				choices.addAll(plants.get(local));
-			}
-		}
-		for (int i = 0; i < 14; i++) {
-			if (plants.containsKey(point)) {
-				choices.addAll(plants.get(point));
 			}
 		}
 		final List<String> retval = new ArrayList<>();
@@ -190,19 +180,9 @@ public class HuntingModel {
 	private List<String> chooseFromMap(final Point point, final int items,
 			final Map<Point, List<String>> chosenMap) {
 		final List<String> choices = new ArrayList<>();
-		for (final Point local : new TwentyFivePointIterable(point)) {
+		for (final Point local : new SurroundingPointIterable(point, dims)) {
 			if (chosenMap.containsKey(local)) {
 				choices.addAll(chosenMap.get(local));
-			}
-		}
-		for (final Point local : new NinePointIterable(point)) {
-			if (chosenMap.containsKey(local)) {
-				choices.addAll(chosenMap.get(local));
-			}
-		}
-		for (int i = 0; i < 14; i++) {
-			if (chosenMap.containsKey(point)) {
-				choices.addAll(chosenMap.get(point));
 			}
 		}
 		int nothings = choices.size();
@@ -216,18 +196,51 @@ public class HuntingModel {
 		}
 		return retval;
 	}
-	// ESCA-JAVA0043:
-	// ESCA-JAVA0011:
 	/**
-	 * An iterator over the several points surrounding a point.
+	 * An iterator over the twenty-five points (including itself) surrounding a point.
 	 */
-	protected abstract class AbstractMultiPointIterable implements Iterable<Point> {
+	private static class SurroundingPointIterable implements Iterable<Point> {
+		/**
+		 * the list of points.
+		 */
+		private final List<Point> points = new ArrayList<>();
+		/**
+		 * @param starting the starting point.
+		 * @param dimensions the dimensions of the map
+		 */
+		protected SurroundingPointIterable(final Point starting, final MapDimensions dimensions) {
+			for (int row = -2; row < 3; row++) {
+				for (int col = -2; col < 3; col++) {
+					points.add(point(roundRow(starting.row + row, dimensions),
+							roundCol(starting.col + col, dimensions)));
+				}
+			}
+			for (int row = -1; row < 2; row++) {
+				for (int col = -1; col < 2; col++) {
+					points.add(point(roundRow(starting.row + row, dimensions),
+							roundCol(starting.col + col, dimensions)));
+				}
+			}
+			for (int i = 0; i < 14; i++) {
+				points.add(starting);
+			}
+		}
+		/**
+		 * @return an iterator over the points
+		 */
+		@Override
+		public Iterator<Point> iterator() {
+			final Iterator<Point> iter = points.iterator();
+			assert iter != null;
+			return iter;
+		}
 		/**
 		 * Round a column number to fit within the map.
 		 * @param col the column number
+		 * @param dims the dimensions of the map
 		 * @return its equivalent that's actually within the map
 		 */
-		protected int roundCol(final int col) {
+		protected static int roundCol(final int col, final MapDimensions dims) {
 			if (col < 0) {
 				return dims.cols + col;
 			} else {
@@ -237,72 +250,15 @@ public class HuntingModel {
 		/**
 		 * Round a row number to fit within the map.
 		 * @param row the row number
+		 * @param dims the dimensions of the map
 		 * @return its equivalent that's actually within the map
 		 */
-		protected int roundRow(final int row) {
+		protected static int roundRow(final int row, final MapDimensions dims) {
 			if (row < 0) {
 				return dims.rows + row;
 			} else {
 				return row % dims.rows;
 			}
-		}
-	}
-	/**
-	 * An iterator over the twenty-five points (including itself) surrounding a point.
-	 */
-	private class TwentyFivePointIterable extends AbstractMultiPointIterable {
-		/**
-		 * the list of points.
-		 */
-		private final List<Point> points = new ArrayList<>();
-		/**
-		 * @param starting the starting point.
-		 */
-		protected TwentyFivePointIterable(final Point starting) {
-			for (int row = -2; row < 3; row++) {
-				for (int col = -2; col < 3; col++) {
-					points.add(point(roundRow(starting.row + row),
-							roundCol(starting.col + col)));
-				}
-			}
-		}
-		/**
-		 * @return an iterator over the points
-		 */
-		@Override
-		public Iterator<Point> iterator() {
-			final Iterator<Point> iter = points.iterator();
-			assert iter != null;
-			return iter;
-		}
-	}
-	/**
-	 * An iterator over the nine points (including itself) surrounding a point.
-	 */
-	private class NinePointIterable extends AbstractMultiPointIterable {
-		/**
-		 * the list of points.
-		 */
-		private final List<Point> points = new ArrayList<>();
-		/**
-		 * @param starting the starting point.
-		 */
-		protected NinePointIterable(final Point starting) {
-			for (int row = -1; row < 2; row++) {
-				for (int col = -1; col < 2; col++) {
-					points.add(point(roundRow(starting.row + row),
-							roundCol(starting.col + col)));
-				}
-			}
-		}
-		/**
-		 * @return an iterator over the points
-		 */
-		@Override
-		public Iterator<Point> iterator() {
-			final Iterator<Point> iter = points.iterator();
-			assert iter != null;
-			return iter;
 		}
 	}
 }
