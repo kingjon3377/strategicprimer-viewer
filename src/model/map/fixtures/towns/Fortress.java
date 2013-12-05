@@ -301,4 +301,12 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	public String plural() {
 		return "Fortresses";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a fortress, " + getName() + ", owned by "
+				+ (owner.isCurrent() ? "you" : owner.getName());
+	}
 }

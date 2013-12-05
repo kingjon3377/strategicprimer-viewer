@@ -124,4 +124,11 @@ public class Oasis implements TerrainFixture, HasImage {
 	public String plural() {
 		return "Oases";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "an oasis";
+	}
 }

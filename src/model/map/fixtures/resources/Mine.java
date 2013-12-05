@@ -165,4 +165,11 @@ public class Mine implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Mines";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return getStatus().toString() + ' ' + getKind() + " mine";
+	}
 }

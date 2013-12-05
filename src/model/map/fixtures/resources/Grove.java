@@ -182,4 +182,11 @@ public class Grove implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Groves and orchards";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }

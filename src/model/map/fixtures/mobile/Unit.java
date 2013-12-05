@@ -320,4 +320,12 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	public String plural() {
 		return "Units";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a(n) " + getKind() + " unit belonging to "
+				+ (owner.isCurrent() ? "you" : owner.getName());
+	}
 }

@@ -251,4 +251,16 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		final String middle = size.toString() + ' ' + status.toString() + ' '
+				+ kind().toString()
+				+ (name.isEmpty() ? " with no name" : " named " + name);
+		return owner.isIndependent() ? "An independent " + middle : "A "
+				+ middle + ", owned by "
+				+ (owner.isCurrent() ? "you" : owner.getName());
+	}
 }

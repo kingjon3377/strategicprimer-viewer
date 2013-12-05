@@ -115,4 +115,11 @@ public class Mountain implements TerrainFixture, HasImage {
 	public String plural() {
 		return "Mountain";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a mountain";
+	}
 }

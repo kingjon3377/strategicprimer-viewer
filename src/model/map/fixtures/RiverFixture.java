@@ -175,4 +175,11 @@ public class RiverFixture implements TileFixture, Iterable<River>,
 	public String plural() {
 		return "Rivers";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a river";
+	}
 }

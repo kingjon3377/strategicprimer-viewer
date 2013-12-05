@@ -125,4 +125,11 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Sphinxes";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a sphinx";
+	}
 }

@@ -124,4 +124,11 @@ public class Sandbar implements TerrainFixture, HasImage {
 	public String plural() {
 		return "Sandbars";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a sandbar";
+	}
 }

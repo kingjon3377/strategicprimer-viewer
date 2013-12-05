@@ -123,4 +123,11 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Djinni";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a djinn";
+	}
 }

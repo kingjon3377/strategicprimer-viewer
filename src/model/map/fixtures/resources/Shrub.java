@@ -154,4 +154,11 @@ public class Shrub implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Shrubs";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }

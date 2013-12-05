@@ -155,4 +155,11 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	public String plural() {
 		return "Giants";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }

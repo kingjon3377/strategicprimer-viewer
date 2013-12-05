@@ -125,4 +125,11 @@ public class Hill implements TerrainFixture, HasImage {
 	public String plural() {
 		return "Hills";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a hill";
+	}
 }

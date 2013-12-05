@@ -123,4 +123,11 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Simurghs";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a simurgh";
+	}
 }

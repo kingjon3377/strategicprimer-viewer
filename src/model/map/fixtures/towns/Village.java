@@ -230,4 +230,11 @@ public class Village implements ITownFixture, HasImage {
 	public String plural() {
 		return "Villages";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }

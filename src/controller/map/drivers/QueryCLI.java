@@ -118,7 +118,7 @@ public final class QueryCLI implements ISPDriver {
 				ostream.println(fix);
 			} else {
 				ostream.print("nothing ... (");
-				ostream.print(fix.getClass().getName());
+				ostream.print(fix.shortDesc());
 				ostream.println(')');
 			}
 		}
@@ -141,7 +141,7 @@ public final class QueryCLI implements ISPDriver {
 				ostream.println(fix);
 			} else {
 				ostream.print("nothing ... (");
-				ostream.print(fix.getClass().getName());
+				ostream.print(fix.shortDesc());
 				ostream.println(')');
 			}
 		}

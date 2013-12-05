@@ -454,6 +454,14 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				throw new IllegalStateException(
 						"Leak of an all-but-null object");
 			}
+			/**
+			 * @return a short description of the fixture
+			 */
+			@Override
+			public String shortDesc() {
+				return "null";
+			}
+
 		};
 
 		/**

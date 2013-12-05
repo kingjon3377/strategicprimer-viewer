@@ -19,4 +19,11 @@ public interface TileFixture extends IFixture, Comparable<TileFixture> {
 	 * @return a String describing all members of a kind of fixture.
 	 */
 	String plural();
+
+	/**
+	 * @return a *short*, no more than one line and preferably no more than two
+	 *         dozen characters, description of the fixture, suitable for saying
+	 *         what it is when an explorer happens on it.
+	 */
+	String shortDesc();
 }

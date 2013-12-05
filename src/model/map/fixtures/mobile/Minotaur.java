@@ -124,4 +124,11 @@ public class Minotaur implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Minotaurs";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a minotaur";
+	}
 }

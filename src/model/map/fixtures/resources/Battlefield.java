@@ -153,4 +153,12 @@ public final class Battlefield implements IEvent, HarvestableFixture {
 	public String plural() {
 		return "Battlefields";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "signs of a long-ago battle";
+	}
+
 }

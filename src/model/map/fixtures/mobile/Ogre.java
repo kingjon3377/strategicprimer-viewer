@@ -123,4 +123,11 @@ public class Ogre implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Ogres";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "an ogre";
+	}
 }

@@ -168,4 +168,11 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public String plural() {
 		return "Forests";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }

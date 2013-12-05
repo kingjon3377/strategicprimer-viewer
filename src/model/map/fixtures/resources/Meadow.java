@@ -212,4 +212,11 @@ public class Meadow implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Fields and meadows";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }

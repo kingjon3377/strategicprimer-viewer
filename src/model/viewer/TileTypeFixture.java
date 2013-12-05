@@ -147,4 +147,11 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public String plural() {
 		return "You shouldn't see this text; report this";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "You shouldn't see this text; report this";
+	}
 }

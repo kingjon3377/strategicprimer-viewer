@@ -123,4 +123,11 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Griffins";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a griffin";
+	}
 }

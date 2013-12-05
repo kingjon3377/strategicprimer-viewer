@@ -123,4 +123,11 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Phoenixes";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return "a phoenix";
+	}
 }

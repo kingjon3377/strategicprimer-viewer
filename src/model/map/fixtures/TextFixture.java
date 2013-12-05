@@ -163,4 +163,11 @@ public class TextFixture implements TileFixture, HasImage {
 	public String plural() {
 		return "Arbitrary-text notes";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }

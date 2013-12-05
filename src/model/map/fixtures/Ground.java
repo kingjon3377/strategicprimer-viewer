@@ -167,4 +167,11 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public String plural() {
 		return "Ground";
 	}
+	/**
+	 * @return a short description of the fixture
+	 */
+	@Override
+	public String shortDesc() {
+		return toString();
+	}
 }
