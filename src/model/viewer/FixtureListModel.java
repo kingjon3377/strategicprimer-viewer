@@ -1,7 +1,5 @@
 package model.viewer;
 
-import java.util.List;
-
 import javax.swing.DefaultListModel;
 
 import model.listeners.SelectionChangeListener;
