@@ -13,12 +13,13 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.exploration.HuntingModel;
 import model.map.IMap;
 import model.map.ITile;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
-import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
@@ -60,10 +61,11 @@ public final class QueryCLI implements ISPDriver {
 	 * @param ostream the stream to write output to
 	 */
 	private void repl(final IMap map, final PrintStream ostream) {
+		final HuntingModel hmodel = new HuntingModel(map);
 		try {
 			String input = helper.inputString("Command: ");
 			while (input.length() > 0 && input.charAt(0) != 'q') {
-				handleCommand(map, ostream, input.charAt(0));
+				handleCommand(map, hmodel, ostream, input.charAt(0));
 				input = helper.inputString("Command: ");
 			}
 		} catch (final IOException except) {
@@ -73,12 +75,13 @@ public final class QueryCLI implements ISPDriver {
 
 	/**
 	 * @param map the map
+	 * @param hmodel the hunting model
 	 * @param ostream the stream to write to
 	 * @param input the command
 	 *
 	 * @throws IOException on I/O error
 	 */
-	public void handleCommand(final IMap map, final PrintStream ostream,
+	public void handleCommand(final IMap map, final HuntingModel hmodel, final PrintStream ostream,
 			final char input) throws IOException {
 		switch (input) {
 		case '?':
@@ -88,8 +91,11 @@ public final class QueryCLI implements ISPDriver {
 			fortressInfo(selectTile(map), ostream);
 			break;
 		case 'h':
+			hunt(hmodel, selectPoint(), true, ostream, HUNTER_HOURS
+					* HOURLY_ENCOUNTERS);
+			break;
 		case 'i':
-			hunt(CLIHelper.toList(selectTile(map)), ostream, HUNTER_HOURS
+			hunt(hmodel, selectPoint(), false, ostream, HUNTER_HOURS
 					* HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
@@ -105,21 +111,21 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Run hunting, fishing, or trapping.
 	 *
-	 * @param fixtures a list of the fixtures on the tile
+	 * @param hmodel the hunting model
+	 * @param point where to hunt or fish
+	 * @param land true if this is hunting, false if fishing
 	 * @param ostream the stream to write to
 	 * @param encounters how many encounters to show
 	 */
-	private static void hunt(final List<TileFixture> fixtures,
+	private static void hunt(final HuntingModel hmodel, final Point point, final boolean land,
 			final PrintStream ostream, final int encounters) {
-		for (int i = 0; i < encounters; i++) {
-			Collections.shuffle(fixtures);
-			final TileFixture fix = fixtures.get(0);
-			if (fix instanceof Animal) {
-				ostream.println(fix);
-			} else {
-				ostream.print("nothing ... (");
-				ostream.print(fix.shortDesc());
-				ostream.println(')');
+		if (land) {
+			for (final String item : hmodel.hunt(point, encounters)) {
+				ostream.println(item);
+			}
+		} else {
+			for (final String item : hmodel.fish(point, encounters)) {
+				ostream.println(item);
 			}
 		}
 	}
@@ -187,8 +193,16 @@ public final class QueryCLI implements ISPDriver {
 	 * @throws IOException on I/O error
 	 */
 	private ITile selectTile(final IMap map) throws IOException {
-		return map.getTile(PointFactory.point(helper.inputNumber("Row: "),
-				helper.inputNumber("Column: ")));
+		return map.getTile(selectPoint());
+	}
+
+	/**
+	 * @return the poin the user specifies.
+	 * @throws IOException on I/O error.
+	 */
+	private Point selectPoint() throws IOException {
+		return PointFactory.point(helper.inputNumber("Row: "),
+				helper.inputNumber("Column: "));
 	}
 
 	/**
