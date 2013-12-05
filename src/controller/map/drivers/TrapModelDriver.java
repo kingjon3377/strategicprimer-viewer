@@ -1,11 +1,11 @@
 package controller.map.drivers;
 
+import static model.map.PointFactory.point;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,13 +14,10 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.exploration.HuntingModel;
 import model.map.HasName;
 import model.map.IMap;
-import model.map.ITile;
-import model.map.MapDimensions;
-import model.map.PointFactory;
-import model.map.TileFixture;
-import model.map.fixtures.mobile.Animal;
+import model.map.Point;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -142,6 +139,7 @@ public class TrapModelDriver implements ISPDriver {
 	 */
 	private void repl(final IMap map, final PrintStream ostream) {
 		try {
+			final HuntingModel hmodel = new HuntingModel(map);
 			final boolean fishing = helper
 					.inputBoolean("Is this a fisherman trapping fish rather than a trapper? ");
 			final String name = fishing ? "fisherman" : "trapper";
@@ -151,7 +149,9 @@ public class TrapModelDriver implements ISPDriver {
 			final int row = helper.inputNumber("Row of the tile where the "
 					+ name + " is working: ");
 			final int col = helper.inputNumber("Column of that tile: ");
-			final List<TileFixture> fixtures = getChoices(map, row, col);
+			final Point point = point(row, col);
+			final List<String> fixtures = fishing ? hmodel.fish(point, minutes)
+					: hmodel.hunt(point, minutes);
 			int input = -1;
 			while (minutes > 0 && input < TrapperCommand.values().length) {
 				if (input >= 0) {
@@ -191,33 +191,9 @@ public class TrapModelDriver implements ISPDriver {
 	}
 
 	/**
-	 * @param map the map
-	 * @param row a row coordinate
-	 * @param col a column coordinate
-	 * @return the list of all fixtures in the map in that tile or an adjacent
-	 *         tile
-	 */
-	private static List<TileFixture> getChoices(final IMap map, final int row,
-			final int col) {
-		final List<TileFixture> retval = new ArrayList<>();
-		final MapDimensions dims = map.getDimensions();
-		for (int i = row - 1; i < row + 2; i++) {
-			for (int j = col - 1; j < col + 2; j++) {
-				final ITile tile = map.getTile(PointFactory.point(
-						(i + dims.rows) % dims.rows, (j + dims.cols)
-								% dims.cols));
-				for (final TileFixture fix : tile) {
-					retval.add(fix);
-				}
-			}
-		}
-		return retval;
-	}
-
-	/**
 	 * Handle a command.
 	 *
-	 * @param fixtures the fixtures to choose from
+	 * @param fixtures the animals generated from the tile and surrounding tiles.
 	 * @param ostream the output stream to write to
 	 * @param command the command to handle
 	 * @param fishing whether we're dealing with *fish* traps .. which take
@@ -225,23 +201,23 @@ public class TrapModelDriver implements ISPDriver {
 	 * @return how many minutes it took to execute the command
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private int handleCommand(final List<TileFixture> fixtures,
+	private int handleCommand(final List<String> fixtures,
 			final PrintStream ostream, final TrapperCommand command,
 			final boolean fishing) throws IOException {
 		switch (command) {
 		case Check:
-			Collections.shuffle(fixtures);
 			// ESCA-JAVA0177:
 			final int retval; // NOPMD
-			if (fixtures.get(0) instanceof Animal) {
+			final String top = fixtures.remove(0);
+			if (HuntingModel.NOTHING.equals(top)) {
+				ostream.println("Nothing in the trap");
+				retval = fishing ? 5 : 10;
+			} else {
 				ostream.print("Found either ");
-				ostream.print(fixtures.get(0).toString());
+				ostream.print(top);
 				ostream.println(" or evidence of it escaping.");
 				retval = helper
 						.inputNumber("How long to check and deal with animal? ");
-			} else {
-				ostream.println("Nothing in the trap");
-				retval = fishing ? 5 : 10;
 			}
 			return retval; // NOPMD
 		case EasyReset:

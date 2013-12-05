@@ -29,6 +29,10 @@ import model.map.fixtures.mobile.Animal;
  */
 public class HuntingModel {
 	/**
+	 * The "nothing" value we insert.
+	 */
+	public static final String NOTHING = "Nothing ...";
+	/**
 	 * The non-aquatic animals in the map.
 	 */
 	private final Map<Point, List<String>> animals = new HashMap<>();
@@ -138,7 +142,7 @@ public class HuntingModel {
 		}
 		int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
-			choices.add("Nothing ...");
+			choices.add(NOTHING);
 		}
 		final List<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
