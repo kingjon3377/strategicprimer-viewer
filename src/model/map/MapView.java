@@ -73,7 +73,8 @@ public class MapView implements IMutableMap {
 		} else if (pColl instanceof IMutablePlayerCollection) {
 			((IMutablePlayerCollection) pColl).add(newPlayer);
 		} else {
-			throw new IllegalStateException("addPlayer called on MapView backed by immutable IMap and IPlayerCollection");
+			throw new IllegalStateException(
+					"addPlayer called on MapView backed by immutable IMap and IPlayerCollection");
 		}
 	}
 

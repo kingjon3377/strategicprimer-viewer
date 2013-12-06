@@ -58,9 +58,9 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof IPlayerCollection
-						&& isSubset((IPlayerCollection) obj, BIT_BUCKET) && ((IPlayerCollection) obj)
-							.isSubset(this, BIT_BUCKET));
+				|| (obj instanceof IPlayerCollection && (isSubset(
+						(IPlayerCollection) obj, BIT_BUCKET) && ((IPlayerCollection) obj)
+						.isSubset(this, BIT_BUCKET)));
 	}
 
 	/**

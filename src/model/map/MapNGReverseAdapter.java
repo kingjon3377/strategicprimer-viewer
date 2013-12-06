@@ -307,7 +307,8 @@ public class MapNGReverseAdapter implements IMap {
 		 * @param list a list of fixtures
 		 * @param fix a fixture to add to it, or null.
 		 */
-		private static void maybeAdd(final List<TileFixture> list, @Nullable final TileFixture fix) {
+		private static void maybeAdd(final List<TileFixture> list,
+				@Nullable final TileFixture fix) {
 			if (fix != null) {
 				list.add(fix);
 			}

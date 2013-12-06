@@ -62,7 +62,9 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 */
 	public void addFixture(final TileFixture fix) {
 		if (!(tile instanceof IMutableTile)) {
-			ErrorShower.showErrorDialog(null, "Could not add a fixture because selected tile is not mutable");
+			ErrorShower
+					.showErrorDialog(null,
+							"Could not add a fixture because selected tile is not mutable");
 		} else if (fix instanceof TileTypeFixture) {
 			if (!tile.getTerrain()
 					.equals(((TileTypeFixture) fix).getTileType())) {
@@ -84,7 +86,9 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 */
 	public void remove(@Nullable final Iterable<TileFixture> list) {
 		if (!(tile instanceof IMutableTile)) {
-			ErrorShower.showErrorDialog(null, "Cannot remove item from list because selected tile is not mutable.");
+			ErrorShower
+					.showErrorDialog(null,
+							"Cannot remove item from list because selected tile is not mutable.");
 		} else if (list != null) {
 			for (final TileFixture fix : list) {
 				if (fix == null) {

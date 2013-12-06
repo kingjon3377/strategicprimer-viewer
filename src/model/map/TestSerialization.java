@@ -78,8 +78,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		}
 		return tile;
 	}
+
 	/**
-	 * @param tile a tile. Since a mutable tile collection can't contain immutable tiles, it must bee mutable.
+	 * @param tile a tile. Since a mutable tile collection can't contain
+	 *        immutable tiles, it must bee mutable.
 	 * @param point its location
 	 * @return a map containing the tile
 	 */
@@ -175,7 +177,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @param fixtures fixtures
 	 * @return a tile of that type containing them. Declared mutable for the sake of calling code.
 	 */
-	private static IMutableTile encapsulateFixtures(final TileType type, final TileFixture... fixtures) {
+	private static IMutableTile encapsulateFixtures(final TileType type,
+			final TileFixture... fixtures) {
 		final IMutableTile tile = new Tile(type);
 		for (final TileFixture fix : fixtures) {
 			if (fix != null) {

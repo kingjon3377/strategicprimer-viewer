@@ -117,7 +117,8 @@ public class SPMapNG implements IMapNG {
 	 * @param players the players in the map
 	 * @param currentTurn the current turn
 	 */
-	public SPMapNG(final MapDimensions dimensions, final PlayerCollection players, final int currentTurn) {
+	public SPMapNG(final MapDimensions dimensions,
+			final PlayerCollection players, final int currentTurn) {
 		dims = dimensions;
 		playerCollection = players;
 		turn = currentTurn;
