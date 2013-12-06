@@ -260,5 +260,19 @@ public class HuntingModel {
 				return row % dims.rows;
 			}
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "SurroundingPointIterable";
+		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "HuntingModel";
 	}
 }

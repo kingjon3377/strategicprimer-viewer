@@ -357,4 +357,12 @@ public class SPMapNG implements IMapNG {
 	public int hashCode() {
 		return dimensions().hashCode() + getCurrentTurn() << 3 + getCurrentPlayer().hashCode() << 5;
 	}
+	/**
+	 * FIXME: Implement properly.
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "SPMapNG: FIXME: Implement properly";
+	}
 }

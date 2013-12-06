@@ -148,6 +148,13 @@ public final class TestExplorationRunner {
 		protected boolean wasCalled() {
 			return called;
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			throw new IllegalStateException("Unexpected method called on mock object");
+		}
 	}
 	/**
 	 * Test the getPrimaryTree method.

@@ -145,6 +145,13 @@ public class MapNGReverseAdapter implements IMap {
 					&& outer.getGround(point) == null && outer.getForest(point) == null
 					&& !outer.getOtherFixtures(point).iterator().hasNext();
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "ITileCollection view of a MapNG.";
+		}
 	}
 	/**
 	 * An adapter to the IPlayerCollection interface.
@@ -227,6 +234,13 @@ public class MapNGReverseAdapter implements IMap {
 				}
 			}
 			return false;
+		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "A IPlayerCollection view of a MapNG.";
 		}
 	}
 	/**
@@ -329,5 +343,19 @@ public class MapNGReverseAdapter implements IMap {
 		public TileType getTerrain() {
 			return map.getBaseTerrain(loc);
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "Location " + loc + " in a MapNG.";
+		}
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "IMap adapter around the following MapNG instance:\n" + impl.toString();
 	}
 }
