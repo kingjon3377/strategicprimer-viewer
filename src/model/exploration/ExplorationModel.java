@@ -151,9 +151,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				dtile.addFixture(unit);
 			}
 			selUnitLoc = dest;
-			for (final SelectionChangeListener list : scListeners) {
-				list.selectedPointChanged(point, dest);
-			}
+			fireSelectionChange(point, dest);
 			fireMovementCost(retval);
 			return retval;
 		} else {
@@ -169,7 +167,16 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			throw new TraversalImpossibleException();
 		}
 	}
-
+	/**
+	 * Tell listeners that the selected point changed.
+	 * @param old the previous selection
+	 * @param newSel the new selection
+	 */
+	private void fireSelectionChange(final Point old, final Point newSel) {
+		for (final SelectionChangeListener list : scListeners) {
+			list.selectedPointChanged(old, newSel);
+		}
+	}
 	/**
 	 * Tell listeners of a movement cost.
 	 *
@@ -321,9 +328,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final Point oldLoc = selUnitLoc;
 		selUnit = unit;
 		selUnitLoc = find(unit);
-		for (final SelectionChangeListener list : scListeners) {
-			list.selectedPointChanged(oldLoc, selUnitLoc);
-		}
+		fireSelectionChange(oldLoc, selUnitLoc);
 	}
 
 	/**
