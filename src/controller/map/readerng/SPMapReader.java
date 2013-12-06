@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMutableTile;
 import model.map.IPlayerCollection;
 import model.map.ITile;
 import model.map.MapDimensions;
@@ -108,7 +109,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				final int row = parseInt(getAttribute(elem, "row"));
 				final int col = parseInt(getAttribute(elem, "column"));
 				final Point loc = PointFactory.point(row, col);
-				map.addTile(loc, TILE_READER.parse(elem, stream,
+				map.addTile(loc, (IMutableTile) TILE_READER.parse(elem, stream,
 						map.getPlayers(), warner, idFactory));
 			} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 				warner.warn(new UnsupportedTagException(type, elem // NOPMD

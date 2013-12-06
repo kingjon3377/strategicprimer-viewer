@@ -83,7 +83,7 @@ public class ResolutionDecreaseConverter {
 	 * @param lowerRight the lower-right tile of a group of four.
 	 * @return a tile representing them on the lower-resolution map
 	 */
-	private static ITile convertTile(final ITile upperLeft,
+	private static IMutableTile convertTile(final ITile upperLeft,
 			final ITile upperRight, final ITile lowerLeft, final ITile lowerRight) {
 		final Set<River> upperLeftRivers = getRivers(upperLeft);
 		final Set<River> upperRightRivers = getRivers(upperRight);

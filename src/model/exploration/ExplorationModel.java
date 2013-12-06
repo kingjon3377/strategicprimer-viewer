@@ -141,16 +141,14 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				if (!(mapTiles instanceof IMutableTileCollection)) {
 					throw new IllegalStateException("Immutable collection of tiles");
 				}
-				final ITile stile = mapTiles.getTile(point);
-				final ITile dtile = mapTiles.getTile(dest);
-				if (!tileHasFixture(stile, unit)
-						|| !(stile instanceof IMutableTile)
-						|| !(dtile instanceof IMutableTile)) {
+				final IMutableTile stile = ((IMutableTileCollection) mapTiles).getTile(point);
+				final IMutableTile dtile = ((IMutableTileCollection) mapTiles).getTile(dest);
+				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
 				ensureTerrain((IMutableTileCollection) mapTiles, dest, destTile.getTerrain());
-				((IMutableTile) stile).removeFixture(unit);
-				((IMutableTile) dtile).addFixture(unit);
+				stile.removeFixture(unit);
+				dtile.addFixture(unit);
 			}
 			selUnitLoc = dest;
 			for (final SelectionChangeListener list : scListeners) {

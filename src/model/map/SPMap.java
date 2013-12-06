@@ -43,12 +43,16 @@ public class SPMap implements IMutableMap {
 	private final PlayerCollection players; // NOPMD
 
 	/**
-	 * Add a tile to the map.
+	 * Add a tile to the map. Because we use a mutable collection of tiles, the
+	 * tile must be mutable.
+	 *
+	 * FIXME: There should be an immutable map implementation ... unless we can
+	 * finish MapNG and switch to it quickly enough.
 	 *
 	 * @param tile the tile to add
 	 * @param point the point at which to add the tile
 	 */
-	public final void addTile(final Point point, final ITile tile) {
+	public final void addTile(final Point point, final IMutableTile tile) {
 		tiles.addTile(point, tile);
 	}
 

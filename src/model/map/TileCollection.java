@@ -25,7 +25,7 @@ public final class TileCollection implements IMutableTileCollection {
 	/**
 	 * The Map this is a wrapper around.
 	 */
-	private final Map<Point, ITile> tiles = new HashMap<>();
+	private final Map<Point, IMutableTile> tiles = new HashMap<>();
 
 	/**
 	 * Add a Tile to the map.
@@ -34,7 +34,7 @@ public final class TileCollection implements IMutableTileCollection {
 	 * @param point the point at which to add it
 	 */
 	@Override
-	public void addTile(final Point point, final ITile tile) {
+	public void addTile(final Point point, final IMutableTile tile) {
 		tiles.put(point, tile);
 	}
 
@@ -47,11 +47,11 @@ public final class TileCollection implements IMutableTileCollection {
 	 * @return the tile at that point, or a new "empty" tile at that point.
 	 */
 	@Override
-	public ITile getTile(final Point point) {
+	public IMutableTile getTile(final Point point) {
 		if (!tiles.containsKey(point)) {
 			tiles.put(point, new Tile(TileType.NotVisible));
 		}
-		final ITile retval = tiles.get(point);
+		final IMutableTile retval = tiles.get(point);
 		assert retval != null;
 		return retval;
 	}
@@ -83,10 +83,10 @@ public final class TileCollection implements IMutableTileCollection {
 	 * @param mapping a point-tile mapping
 	 * @return an equivalent one without any empty tiles.
 	 */
-	private static Map<Point, ITile> withoutEmptyTiles(
-			final Map<Point, ITile> mapping) {
+	private static Map<Point, ? extends ITile> withoutEmptyTiles(
+			final Map<Point, ? extends ITile> mapping) {
 		final Map<Point, ITile> retval = new HashMap<>();
-		for (final Entry<Point, ITile> entry : mapping.entrySet()) {
+		for (final Entry<Point, ? extends ITile> entry : mapping.entrySet()) {
 			final ITile tile = entry.getValue();
 			if (!tile.isEmpty()) {
 				retval.put(entry.getKey(), tile);

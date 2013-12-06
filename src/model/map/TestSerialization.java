@@ -67,9 +67,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * A factory to encapsulate rivers in a tile.
 	 * @param rivers the rivers to put on a tile
-	 * @return a tile containing them.
+	 * @return a tile containing them. Declared mutable for the sake of calling code.
 	 */
-	private static ITile encapsulateRivers(final River... rivers) {
+	private static IMutableTile encapsulateRivers(final River... rivers) {
 		final IMutableTile tile = new Tile(TileType.Plains);
 		for (final River river : rivers) {
 			if (river != null) {
@@ -79,11 +79,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		return tile;
 	}
 	/**
-	 * @param tile a tile
+	 * @param tile a tile. Since a mutable tile collection can't contain immutable tiles, it must bee mutable.
 	 * @param point its location
 	 * @return a map containing the tile
 	 */
-	private static SPMap encapsulateTile(final Point point, final ITile tile) {
+	private static SPMap encapsulateTile(final Point point, final IMutableTile tile) {
 		final SPMap retval = new SPMap(new MapDimensions(point.row + 1,
 				point.col + 1, 2));
 		retval.addTile(point, tile);
@@ -173,9 +173,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * @param type a tile type
 	 * @param fixtures fixtures
-	 * @return a tile of that type containing them
+	 * @return a tile of that type containing them. Declared mutable for the sake of calling code.
 	 */
-	private static ITile encapsulateFixtures(final TileType type, final TileFixture... fixtures) {
+	private static IMutableTile encapsulateFixtures(final TileType type, final TileFixture... fixtures) {
 		final IMutableTile tile = new Tile(type);
 		for (final TileFixture fix : fixtures) {
 			if (fix != null) {
@@ -239,7 +239,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				encapsulateTileString("<tile row=\"2\" column=\"0\" kind=\"plains\" />"),
 				Tile.class, false);
-		final ITile six = encapsulateFixtures(TileType.Jungle, new Unit(
+		final IMutableTile six = encapsulateFixtures(TileType.Jungle, new Unit(
 				new Player(2, ""), "explorer", "name one", 1), new Unit(
 				new Player(2, ""), "explorer", "name two", 2));
 		assertEquals("Just checking ...", 2, iteratorSize(six));

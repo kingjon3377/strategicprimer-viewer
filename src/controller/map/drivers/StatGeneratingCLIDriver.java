@@ -451,7 +451,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						final boolean empty = tile.isEmpty();
 						((IMutableTile) tile).addFixture(unit);
 						if (empty) {
-							((IMutableTileCollection) tiles).addTile(point, tile);
+							((IMutableTileCollection) tiles).addTile(point, (IMutableTile) tile);
 						}
 					}
 				}
