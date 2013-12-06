@@ -286,7 +286,7 @@ public class SPMapNG implements IMapNG {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj instanceof IMapNG && equalsImpl((IMapNG) obj);
+		return obj == this || (obj instanceof IMapNG && equalsImpl((IMapNG) obj));
 	}
 	/**
 	 * @param obj another map
