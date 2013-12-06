@@ -198,6 +198,7 @@ public class HuntingModel {
 	}
 	/**
 	 * An iterator over the twenty-five points (including itself) surrounding a point.
+	 * @author Jonathan Lovelace
 	 */
 	private static class SurroundingPointIterable implements Iterable<Point> {
 		/**
