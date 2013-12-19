@@ -24,6 +24,7 @@ import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
 import model.map.IMap;
+import model.map.IPlayerCollection;
 import model.map.ITile;
 import model.map.Point;
 import model.map.Tile;
@@ -172,8 +173,15 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		mainList.getModel().addListDataListener(
 				new ExplorationListListener(model, mainList));
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
-		final FixtureList secList = new FixtureList(panel, model
-				.getSubordinateMaps().iterator().next().first().getPlayers());
+		final Iterator<Pair<IMap, String>> subMaps = model.getSubordinateMaps().iterator();
+		// ESCA-JAVA0177:
+		final IPlayerCollection players;
+		if (subMaps.hasNext()) {
+			players = subMaps.next().first().getPlayers();
+		} else {
+			players = model.getMap().getPlayers();
+		}
+		final FixtureList secList = new FixtureList(panel, players);
 		secPCS.addSelectionChangeListener(secList);
 		panel.add(new JScrollPane(secList));
 		mains.put(direction, mainPCS);
