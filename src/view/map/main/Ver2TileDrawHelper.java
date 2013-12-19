@@ -475,8 +475,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			wrapped = iter;
 			zof = zofilt;
 			hasCached = false;
-			hasNext();
 			cached = NULL_FIXT;
+			hasNext();
 		}
 
 		/**
