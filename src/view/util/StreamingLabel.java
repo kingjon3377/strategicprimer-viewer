@@ -52,6 +52,14 @@ public class StreamingLabel extends JLabel {
 			super.println(str);
 			updateText();
 		}
+		// ESCA-JAVA0025: This is deliberate.
+		/**
+		 * Don't close the writer after every line!
+		 */
+		@Override
+		public void close() {
+			// Do nothing.
+		};
 	};
 
 	/**
