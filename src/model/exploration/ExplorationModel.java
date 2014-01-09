@@ -5,6 +5,8 @@ import java.util.List;
 
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
+import model.map.FixtureIterable;
+import model.map.IFixture;
 import model.map.IMap;
 import model.map.IMutableTile;
 import model.map.IMutableTileCollection;
@@ -134,7 +136,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				&& SimpleMovement.isLandMovementPossible(destTile)) {
 			final int retval = dest.equals(point) ? 1 : SimpleMovement
 					.getMovementCost(destTile);
-			((IMutableTile) sourceTile).removeFixture(unit);
+			removeImpl((IMutableTile) sourceTile, unit);
 			((IMutableTile) destTile).addFixture(unit);
 			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 				final ITileCollection mapTiles = pair.first().getTiles();
@@ -147,7 +149,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 					continue;
 				}
 				ensureTerrain((IMutableTileCollection) mapTiles, dest, destTile.getTerrain());
-				stile.removeFixture(unit);
+				removeImpl(stile, unit);
 				dtile.addFixture(unit);
 			}
 			selUnitLoc = dest;
@@ -167,6 +169,25 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			throw new TraversalImpossibleException();
 		}
 	}
+	/**
+	 * @param sourceTile a tile
+	 * @param unit a unit to remove from that tile, even if it's in a fortress
+	 */
+	private static void removeImpl(final IMutableTile sourceTile, final Unit unit) {
+		for (final TileFixture fix : sourceTile) {
+			if (unit.equals(fix)) {
+				sourceTile.removeFixture(unit);
+			} else if (fix instanceof Fortress) {
+				for (final Unit item : (Fortress) fix) {
+					if (unit.equals(item)) {
+						((Fortress) fix).removeUnit(unit);
+						return;
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Tell listeners that the selected point changed.
 	 * @param old the previous selection
@@ -212,6 +233,12 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		for (final TileFixture fixture : tile) {
 			if (fixture.equals(fix)) {
 				return true; // NOPMD
+			} else if (fixture instanceof FixtureIterable) {
+				for (final IFixture inner : (FixtureIterable<?>) fixture) {
+					if (fix.equals(inner)) {
+						return true; // NOPMD
+					}
+				}
 			}
 		}
 		return false;
@@ -296,6 +323,12 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			for (final TileFixture item : source.getTile(point)) {
 				if (fix.equals(item)) {
 					return point; // NOPMD
+				} else if (item instanceof FixtureIterable) {
+					for (final IFixture inner : (FixtureIterable<?>) item) {
+						if (fix.equals(inner)) {
+							return point; // NOPMD
+						}
+					}
 				}
 			}
 		}
