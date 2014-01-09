@@ -222,6 +222,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			final Point point, final TileType terrain) {
 		if (!tiles.hasTile(point)) {
 			tiles.addTile(point, new Tile(terrain));
+		} else if (TileType.NotVisible.equals(tiles.getTile(point).getTerrain())) {
+			tiles.getTile(point).setTerrain(terrain);
 		}
 	}
 
