@@ -177,6 +177,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		for (final TileFixture fix : sourceTile) {
 			if (unit.equals(fix)) {
 				sourceTile.removeFixture(unit);
+				return;
 			} else if (fix instanceof Fortress) {
 				for (final Unit item : (Fortress) fix) {
 					if (unit.equals(item)) {
