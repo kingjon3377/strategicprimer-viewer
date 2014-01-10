@@ -2,6 +2,8 @@ package controller.map.misc;
 
 import java.util.BitSet;
 
+import util.Warning;
+
 /**
  * A class to register IDs with and produce not-yet-used IDs. Performance is
  * likely to be poor, but we don't want to go to random IDs because we want them
@@ -11,6 +13,17 @@ import java.util.BitSet;
  *
  */
 public final class IDFactory {
+	/**
+	 * An exception to warn about duplicate IDs.
+	 */
+	public static class DuplicateIDException extends Exception {
+		/**
+		 * @param id the duplicate ID.
+		 */
+		public DuplicateIDException(final int id) {
+			super("Duplicate ID #" + id);
+		}
+	}
 	/**
 	 * The set of IDs used already.
 	 */
@@ -24,6 +37,9 @@ public final class IDFactory {
 	 */
 	public int register(final int id) { // NOPMD
 		if (id >= 0) {
+			if (usedIDs.get(id)) {
+				Warning.INSTANCE.warn(new DuplicateIDException(id));
+			}
 			usedIDs.set(id);
 		}
 		return id;

@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 
 /**
  * A class to log warnings.
@@ -70,7 +71,7 @@ public class Warning {
 					.getStackTrace()[0].getClass();
 			final Logger logger = TypesafeLogger
 					.getLogger(warnClass == null ? Warning.class : warnClass);
-			if (warning instanceof SPFormatException) {
+			if (warning instanceof SPFormatException || warning instanceof IDFactory.DuplicateIDException) {
 				logger.warning("Warning: " + warning.getMessage());
 			} else {
 				logger.log(Level.WARNING, "Warning: ", warning);
