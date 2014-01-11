@@ -30,7 +30,7 @@ public final class IDFactory {
 	 * @return whether it's used.
 	 */
 	public boolean used(final int id) {
-		return usedIDs.get(id);
+		return id < 0 || usedIDs.get(id);
 	}
 	/**
 	 * The set of IDs used already.
