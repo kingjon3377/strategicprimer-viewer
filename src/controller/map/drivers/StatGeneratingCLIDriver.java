@@ -448,11 +448,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						SYS_OUT.print(pair.second());
 						SYS_OUT.println(" because the map's tiles aren't mutable");
 					} else {
-						final boolean empty = tile.isEmpty();
 						((IMutableTile) tile).addFixture(unit);
-						if (empty) {
-							((IMutableTileCollection) tiles).addTile(point, (IMutableTile) tile);
-						}
+						((IMutableTileCollection) tiles).addTile(point, (IMutableTile) tile);
 					}
 				}
 				createWorkers(model, idf, unit);
