@@ -25,6 +25,14 @@ public final class IDFactory {
 		}
 	}
 	/**
+	 * This should probably only be called from the IDFactoryFiller.
+	 * @param id an ID number.
+	 * @return whether it's used.
+	 */
+	public boolean used(final int id) {
+		return usedIDs.get(id);
+	}
+	/**
 	 * The set of IDs used already.
 	 */
 	private final BitSet usedIDs = new BitSet();
