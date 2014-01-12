@@ -45,13 +45,13 @@ public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 	/**
 	 * A reference to the tree we're drawing on.
 	 */
-	private final JTree tree;
+	private final JTree mTree;
 	/**
 	 * Constructor.
 	 * @param control the tree we're drawing on.
 	 */
 	public UnitMemberCellRenderer(final JTree control) {
-		tree = control;
+		mTree = control;
 	}
 	/**
 	 * @param x the new X coordinate of this component
@@ -61,7 +61,7 @@ public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 	 */
 	@Override
 	public void setBounds(final int x, final int y, final int width, final int height) {
-		super.setBounds(x, y, Math.min(tree.getWidth(), width), height);
+		super.setBounds(x, y, Math.min(mTree.getWidth(), width), height);
 	}
 	/**
 	 * @param tree the tree being rendered
