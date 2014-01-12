@@ -106,10 +106,10 @@ public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 			final Unit unit = (Unit) internal;
 			final String kind = unit.getKind();
 			final String name = unit.getName();
-			setText(new StringBuilder(48 + kind.length()
-					+ name.length()).append("<html><p>")
-					.append("Unit of type ").append(kind).append(", named ")
-					.append(name).append("</p></html>").toString());
+			setText(new StringBuilder(48 + kind.length() + name.length())
+					.append("<html><p>").append("Unit of type ").append(kind)
+					.append(", named ").append(name).append("</p></html>")
+					.toString());
 			final String orders = unit.getOrders().toLowerCase();
 			if (orders.contains("fixme")) {
 				setBackground(Color.PINK);
