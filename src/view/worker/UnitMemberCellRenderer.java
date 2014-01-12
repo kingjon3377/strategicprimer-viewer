@@ -2,7 +2,6 @@ package view.worker;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
@@ -12,9 +11,11 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 
 import model.map.HasImage;
 import model.map.fixtures.mobile.Unit;
@@ -29,65 +30,44 @@ import util.TypesafeLogger;
 /**
  * A cell renderer for the worker management tree.
  *
- * The technique for making the background color fill stretch comes from <http://explodingpixels.wordpress.com/2008/06/02/making-a-jtreecellrenderer-fill-the-jtree/#comment-312>.
- *
  * @author Jonathan Lovelace
  */
-public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
+public class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
-	 * @return the same value as our superclass except infinitely wide.
+	 * Default renderer, for cases we don't know how to handle.
 	 */
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(Integer.MAX_VALUE, super.getPreferredSize().height);
-	}
-	/**
-	 * A reference to the tree we're drawing on.
-	 */
-	private final JTree mTree;
-	/**
-	 * Constructor.
-	 * @param control the tree we're drawing on.
-	 */
-	public UnitMemberCellRenderer(final JTree control) {
-		mTree = control;
-	}
-	/**
-	 * @param x the new X coordinate of this component
-	 * @param y the new Y coordinate of this component
-	 * @param width the new width of this component
-	 * @param height the new height of this component
-	 */
-	@Override
-	public void setBounds(final int x, final int y, final int width, final int height) {
-		super.setBounds(x, y, Math.min(mTree.getWidth(), width), height);
-	}
+	private static final DefaultTreeCellRenderer DEFAULT = new DefaultTreeCellRenderer();
+
 	/**
 	 * @param tree the tree being rendered
 	 * @param value the object in the tree that's being rendered
-	 * @param sel whether it's selected
+	 * @param selected whether it's selected
 	 * @param expanded whether it's an expanded node
 	 * @param leaf whether it's a leaf node
 	 * @param row its row in the tree
-	 * @param focus whether the tree has the focus
+	 * @param hasFocus whether the tree has the focus
 	 * @return a component representing the cell
 	 */
 	// ESCA-JAVA0138: We have to have this many params to override the
 	// superclass method.
 	@Override
 	public Component getTreeCellRendererComponent(@Nullable final JTree tree,
-			@Nullable final Object value, final boolean sel,
+			@Nullable final Object value, final boolean selected,
 			final boolean expanded, final boolean leaf, final int row,
-			final boolean focus) {
+			final boolean hasFocus) {
 		if (tree == null || value == null) {
 			throw new IllegalStateException("Null tree or value");
 		}
-		super.getTreeCellRendererComponent(tree, value, sel, expanded,
-				leaf, row, focus);
-		setBackground(Color.WHITE);
+		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
+				value, selected, expanded, leaf, row, hasFocus);
+		if (component == null) {
+			throw new IllegalStateException(
+					"Default produced null component somehow");
+		}
+		component.setBackground(Color.WHITE);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
-			setIcon(getIcon((HasImage) internal));
+			((JLabel) component).setIcon(getIcon((HasImage) internal));
 		}
 		if (internal instanceof Worker) {
 			final Worker worker = (Worker) internal;
@@ -100,25 +80,25 @@ public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 			}
 			builder.append(jobCSL(worker));
 			builder.append("</p></html>");
-			setText(builder.toString());
+			((JLabel) component).setText(builder.toString());
 		} else if (internal instanceof Unit) {
 			final Unit unit = (Unit) internal;
 			final String kind = unit.getKind();
 			final String name = unit.getName();
-			setText(new StringBuilder(48 + kind.length() + name.length())
-					.append("<html><p>").append("Unit of type ").append(kind)
-					.append(", named ").append(name).append("</p></html>")
-					.toString());
+			((JLabel) component).setText(new StringBuilder(48 + kind.length()
+					+ name.length()).append("<html><p>")
+					.append("Unit of type ").append(kind).append(", named ")
+					.append(name).append("</p></html>").toString());
 			final String orders = unit.getOrders().toLowerCase();
 			if (orders.contains("fixme")) {
-				setBackground(Color.PINK);
-				setOpaque(true);
+				component.setBackground(Color.PINK);
+				((JLabel) component).setOpaque(true);
 			} else if (orders.contains("todo")) {
-				setBackground(Color.YELLOW);
-				setOpaque(true);
+				component.setBackground(Color.YELLOW);
+				((JLabel) component).setOpaque(true);
 			}
 		}
-		return this;
+		return component;
 	}
 
 	/**
