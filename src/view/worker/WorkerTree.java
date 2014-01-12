@@ -46,8 +46,10 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
+	 * @param orderCheck whether we should visually warn if orders contain
+	 *        "todo" or "fixme" or if a unit named "unassigned" is nonempty
 	 */
-	public WorkerTree(final Player player, final IWorkerModel model) {
+	public WorkerTree(final Player player, final IWorkerModel model, final boolean orderCheck) {
 		tmodel = new WorkerTreeModelAlt(player, model);
 		setModel(tmodel);
 		setRootVisible(false);
@@ -57,7 +59,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		assert smodel != null;
 		setTransferHandler(new WorkerTreeTransferHandler(smodel,
 				tmodel));
-		setCellRenderer(new UnitMemberCellRenderer());
+		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 		ToolTipManager.sharedInstance().registerComponent(this);
 		addTreeSelectionListener(tsl);

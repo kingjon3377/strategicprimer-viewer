@@ -37,7 +37,16 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * Default renderer, for cases we don't know how to handle.
 	 */
 	private static final DefaultTreeCellRenderer DEFAULT = new DefaultTreeCellRenderer();
-
+	/**
+	 * Whether we warn on certain ominous conditions.
+	 */
+	private final boolean warn;
+	/**
+	 * @param check whether to visually warn on certain ominous conditions
+	 */
+	public UnitMemberCellRenderer(final boolean check) {
+		warn = check;
+	}
 	/**
 	 * @param tree the tree being rendered
 	 * @param value the object in the tree that's being rendered
@@ -90,10 +99,10 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					.append("Unit of type ").append(kind).append(", named ")
 					.append(name).append("</p></html>").toString());
 			final String orders = unit.getOrders().toLowerCase();
-			if (orders.contains("fixme") && unit.iterator().hasNext()) {
+			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
 				component.setBackground(Color.PINK);
 				((JLabel) component).setOpaque(true);
-			} else if (orders.contains("todo") && unit.iterator().hasNext()) {
+			} else if (warn && orders.contains("todo") && unit.iterator().hasNext()) {
 				component.setBackground(Color.YELLOW);
 				((JLabel) component).setOpaque(true);
 			}

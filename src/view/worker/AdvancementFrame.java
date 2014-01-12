@@ -60,7 +60,7 @@ public class AdvancementFrame extends JFrame {
 		final Player player = source.getMap().getPlayers().getCurrentPlayer();
 		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
 		pch.addPlayerChangeListener(plabel);
-		final WorkerTree tree = new WorkerTree(player, source);
+		final WorkerTree tree = new WorkerTree(player, source, false);
 		pch.addPlayerChangeListener(tree);
 		@Nullable
 		final IWorkerTreeModel wtmodel = (IWorkerTreeModel) tree.getModel();
