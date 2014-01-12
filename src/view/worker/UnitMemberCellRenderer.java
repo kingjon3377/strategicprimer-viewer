@@ -64,6 +64,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			throw new IllegalStateException(
 					"Default produced null component somehow");
 		}
+		component.setBackground(Color.WHITE);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
@@ -88,6 +89,14 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					+ name.length()).append("<html><p>")
 					.append("Unit of type ").append(kind).append(", named ")
 					.append(name).append("</p></html>").toString());
+			final String orders = unit.getOrders().toLowerCase();
+			if (orders.contains("fixme")) {
+				component.setBackground(Color.PINK);
+				((JLabel) component).setOpaque(true);
+			} else if (orders.contains("todo")) {
+				component.setBackground(Color.YELLOW);
+				((JLabel) component).setOpaque(true);
+			}
 		}
 		return component;
 	}
