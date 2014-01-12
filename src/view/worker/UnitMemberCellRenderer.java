@@ -2,6 +2,7 @@ package view.worker;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
@@ -15,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeCellRenderer;
 
 import model.map.HasImage;
 import model.map.fixtures.mobile.Unit;
@@ -30,14 +30,39 @@ import util.TypesafeLogger;
 /**
  * A cell renderer for the worker management tree.
  *
+ * The technique for making the background color fill stretch comes from <http://explodingpixels.wordpress.com/2008/06/02/making-a-jtreecellrenderer-fill-the-jtree/#comment-312>.
+ *
  * @author Jonathan Lovelace
  */
-public class UnitMemberCellRenderer implements TreeCellRenderer {
+public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 	/**
-	 * Default renderer, for cases we don't know how to handle.
+	 * @return the same value as our superclass except infinitely wide.
 	 */
-	private static final DefaultTreeCellRenderer DEFAULT = new DefaultTreeCellRenderer();
-
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(Integer.MAX_VALUE, super.getPreferredSize().height);
+	}
+	/**
+	 * A reference to the tree we're drawing on.
+	 */
+	private final JTree tree;
+	/**
+	 * Constructor.
+	 * @param control the tree we're drawing on.
+	 */
+	public UnitMemberCellRenderer(final JTree control) {
+		tree = control;
+	}
+	/**
+	 * @param x the new X coordinate of this component
+	 * @param y the new Y coordinate of this component
+	 * @param width the new width of this component
+	 * @param height the new height of this component
+	 */
+	@Override
+	public void setBounds(final int x, final int y, final int width, final int height) {
+		super.setBounds(x, y, Math.min(tree.getWidth(), width), height);
+	}
 	/**
 	 * @param tree the tree being rendered
 	 * @param value the object in the tree that's being rendered
@@ -58,7 +83,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		if (tree == null || value == null) {
 			throw new IllegalStateException("Null tree or value");
 		}
-		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
+		final Component component = super.getTreeCellRendererComponent(tree,
 				value, selected, expanded, leaf, row, hasFocus);
 		if (component == null) {
 			throw new IllegalStateException(

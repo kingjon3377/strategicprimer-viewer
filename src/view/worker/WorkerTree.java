@@ -57,7 +57,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		assert smodel != null;
 		setTransferHandler(new WorkerTreeTransferHandler(smodel,
 				tmodel));
-		setCellRenderer(new UnitMemberCellRenderer());
+		setCellRenderer(new UnitMemberCellRenderer(this));
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 		ToolTipManager.sharedInstance().registerComponent(this);
 		addTreeSelectionListener(tsl);
