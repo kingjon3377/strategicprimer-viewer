@@ -59,7 +59,7 @@ public class StreamingLabel extends JLabel {
 		@Override
 		public void close() {
 			// Do nothing.
-		};
+		}
 	};
 
 	/**
