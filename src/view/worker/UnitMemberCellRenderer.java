@@ -83,16 +83,12 @@ public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 		if (tree == null || value == null) {
 			throw new IllegalStateException("Null tree or value");
 		}
-		final Component component = super.getTreeCellRendererComponent(tree,
-				value, selected, expanded, leaf, row, hasFocus);
-		if (component == null) {
-			throw new IllegalStateException(
-					"Default produced null component somehow");
-		}
-		component.setBackground(Color.WHITE);
+		super.getTreeCellRendererComponent(tree, value, selected, expanded,
+				leaf, row, hasFocus);
+		setBackground(Color.WHITE);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
-			((JLabel) component).setIcon(getIcon((HasImage) internal));
+			setIcon(getIcon((HasImage) internal));
 		}
 		if (internal instanceof Worker) {
 			final Worker worker = (Worker) internal;
@@ -105,25 +101,25 @@ public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 			}
 			builder.append(jobCSL(worker));
 			builder.append("</p></html>");
-			((JLabel) component).setText(builder.toString());
+			setText(builder.toString());
 		} else if (internal instanceof Unit) {
 			final Unit unit = (Unit) internal;
 			final String kind = unit.getKind();
 			final String name = unit.getName();
-			((JLabel) component).setText(new StringBuilder(48 + kind.length()
+			setText(new StringBuilder(48 + kind.length()
 					+ name.length()).append("<html><p>")
 					.append("Unit of type ").append(kind).append(", named ")
 					.append(name).append("</p></html>").toString());
 			final String orders = unit.getOrders().toLowerCase();
 			if (orders.contains("fixme")) {
-				component.setBackground(Color.PINK);
-				((JLabel) component).setOpaque(true);
+				setBackground(Color.PINK);
+				setOpaque(true);
 			} else if (orders.contains("todo")) {
-				component.setBackground(Color.YELLOW);
-				((JLabel) component).setOpaque(true);
+				setBackground(Color.YELLOW);
+				setOpaque(true);
 			}
 		}
-		return component;
+		return this;
 	}
 
 	/**
