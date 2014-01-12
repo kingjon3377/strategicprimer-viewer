@@ -90,10 +90,10 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					.append("Unit of type ").append(kind).append(", named ")
 					.append(name).append("</p></html>").toString());
 			final String orders = unit.getOrders().toLowerCase();
-			if (orders.contains("fixme")) {
+			if (orders.contains("fixme") && unit.iterator().hasNext()) {
 				component.setBackground(Color.PINK);
 				((JLabel) component).setOpaque(true);
-			} else if (orders.contains("todo")) {
+			} else if (orders.contains("todo") && unit.iterator().hasNext()) {
 				component.setBackground(Color.YELLOW);
 				((JLabel) component).setOpaque(true);
 			}
