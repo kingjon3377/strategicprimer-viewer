@@ -61,6 +61,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			final String text = area.getText().trim();
 			assert text != null;
 			selection.setOrders(text);
+			getParent().getParent().repaint();
 		}
 	}
 
