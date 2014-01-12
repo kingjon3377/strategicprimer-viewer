@@ -66,25 +66,25 @@ public class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 	/**
 	 * @param tree the tree being rendered
 	 * @param value the object in the tree that's being rendered
-	 * @param selected whether it's selected
+	 * @param sel whether it's selected
 	 * @param expanded whether it's an expanded node
 	 * @param leaf whether it's a leaf node
 	 * @param row its row in the tree
-	 * @param hasFocus whether the tree has the focus
+	 * @param focus whether the tree has the focus
 	 * @return a component representing the cell
 	 */
 	// ESCA-JAVA0138: We have to have this many params to override the
 	// superclass method.
 	@Override
 	public Component getTreeCellRendererComponent(@Nullable final JTree tree,
-			@Nullable final Object value, final boolean selected,
+			@Nullable final Object value, final boolean sel,
 			final boolean expanded, final boolean leaf, final int row,
-			final boolean hasFocus) {
+			final boolean focus) {
 		if (tree == null || value == null) {
 			throw new IllegalStateException("Null tree or value");
 		}
-		super.getTreeCellRendererComponent(tree, value, selected, expanded,
-				leaf, row, hasFocus);
+		super.getTreeCellRendererComponent(tree, value, sel, expanded,
+				leaf, row, focus);
 		setBackground(Color.WHITE);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
