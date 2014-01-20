@@ -72,9 +72,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			@Nullable final Object value, final boolean selected,
 			final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
-		if (tree == null || value == null) {
-			throw new IllegalStateException("Null tree or value");
-		}
+		assert tree != null && value != null;
 		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
 				value, selected, expanded, leaf, row, hasFocus);
 		assert component != null;
