@@ -77,10 +77,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
 				value, selected, expanded, leaf, row, hasFocus);
-		if (component == null) {
-			throw new IllegalStateException(
-					"Default produced null component somehow");
-		}
+		assert component != null;
 		((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(DEF_BKGD_SELECTED);
 		((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(DEF_BKGD_NON_SEL);
 		final Object internal = getNodeValue(value);
