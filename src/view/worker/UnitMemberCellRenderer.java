@@ -38,6 +38,14 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 */
 	private static final DefaultTreeCellRenderer DEFAULT = new DefaultTreeCellRenderer();
 	/**
+	 * The default background color when selected.
+	 */
+	private static final Color DEF_BKGD_SELECTED = DEFAULT.getBackgroundSelectionColor();
+	/**
+	 * The default background when not selected.
+	 */
+	private static final Color DEF_BKGD_NON_SEL = DEFAULT.getBackgroundNonSelectionColor();
+	/**
 	 * Whether we warn on certain ominous conditions.
 	 */
 	private final boolean warn;
@@ -73,7 +81,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			throw new IllegalStateException(
 					"Default produced null component somehow");
 		}
-		component.setBackground(Color.WHITE);
+		((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(DEF_BKGD_SELECTED);
+		((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(DEF_BKGD_NON_SEL);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
@@ -100,11 +109,11 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					.append(name).append("</p></html>").toString());
 			final String orders = unit.getOrders().toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
-				component.setBackground(Color.PINK);
-				((JLabel) component).setOpaque(true);
+				((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(Color.PINK);
+				((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(Color.PINK);
 			} else if (warn && orders.contains("todo") && unit.iterator().hasNext()) {
-				component.setBackground(Color.YELLOW);
-				((JLabel) component).setOpaque(true);
+				((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(Color.YELLOW);
+				((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(Color.YELLOW);
 			}
 		}
 		return component;
