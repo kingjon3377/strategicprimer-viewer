@@ -62,6 +62,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
 		ToolTipManager.sharedInstance().registerComponent(this);
+		tsl = new WorkerTreeSelectionListener(tmodel);
 		addTreeSelectionListener(tsl);
 	}
 
@@ -193,13 +194,18 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * A selection listener.
 	 * @author Jonathan Lovelace
 	 */
-	private class WorkerTreeSelectionListener implements TreeSelectionListener,
+	private static class WorkerTreeSelectionListener implements TreeSelectionListener,
 			UnitMemberSelectionSource, UnitSelectionSource {
 		/**
-		 * Constructor.
+		 * The tree model to refer to.
 		 */
-		protected WorkerTreeSelectionListener() {
-			// Needed to change visibility.
+		final IWorkerTreeModel model;
+		/**
+		 * Constructor.
+		 * @param tmodel the tree model to refer to
+		 */
+		protected WorkerTreeSelectionListener(final IWorkerTreeModel tmodel) {
+			model = tmodel;
 		}
 
 		/**
@@ -215,8 +221,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				final Object pathLast = path
 						.getLastPathComponent();
 				if (pathLast != null) {
-					handleSelection(((IWorkerTreeModel) getModel())
-							.getModelObject(pathLast));
+					handleSelection(model.getModelObject(pathLast));
 				}
 			}
 		}
@@ -294,7 +299,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	/**
 	 * The listener to tell other listeners when a new worker has been selected.
 	 */
-	private final WorkerTreeSelectionListener tsl = new WorkerTreeSelectionListener();
+	private final WorkerTreeSelectionListener tsl;
 
 	/**
 	 * @param unit passed to the tree model
