@@ -60,7 +60,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		setTransferHandler(new WorkerTreeTransferHandler(smodel,
 				tmodel));
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
-		addMouseListener(new TreeMouseListener(model.getMap().getPlayers()));
+		addMouseListener(new TreeMouseListener(model.getMap().getPlayers(), tmodel, this));
 		ToolTipManager.sharedInstance().registerComponent(this);
 		tsl = new WorkerTreeSelectionListener(tmodel);
 		addTreeSelectionListener(tsl);
@@ -70,19 +70,31 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * A listener to set up pop-up menus.
 	 * @author Jonathan Lovelace
 	 */
-	private class TreeMouseListener extends MouseAdapter {
+	private static class TreeMouseListener extends MouseAdapter {
 		/**
 		 * The collection of players in the map.
 		 */
 		private final IPlayerCollection players;
-
+		/**
+		 * The tree model backing the tree.
+		 */
+		private final IWorkerTreeModel model;
+		/**
+		 * The tree we're watching.
+		 */
+		private final JTree tree;
 		/**
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
+		 * @param tmodel the tree model backing the tree
+		 * @param jtree the tree we're watching
 		 */
-		protected TreeMouseListener(final IPlayerCollection playerColl) {
+		protected TreeMouseListener(final IPlayerCollection playerColl,
+				final IWorkerTreeModel tmodel, final JTree jtree) {
 			players = playerColl;
+			model = tmodel;
+			tree = jtree;
 		}
 
 		/**
@@ -116,13 +128,12 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
 					&& event.getClickCount() == 1) {
-				final Object path = getClosestPathForLocation(event.getX(),
+				final Object path = tree.getClosestPathForLocation(event.getX(),
 								event.getY()).getLastPathComponent();
 				if (path ==  null) {
 					return;
 				}
-				final Object obj = ((IWorkerTreeModel) getModel())
-						.getModelObject(path);
+				final Object obj = model.getModelObject(path);
 				if (obj instanceof IFixture) {
 					new FixtureEditMenu((IFixture) obj, players).show(
 							event.getComponent(), event.getX(), event.getY());
