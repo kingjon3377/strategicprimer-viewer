@@ -28,9 +28,26 @@ public class StreamingLabel extends JLabel {
 	 */
 	private final StringWriter string = new StringWriter();
 	/**
-	 * The writer that can be printed to.
+	 * A PrintWriter that wraps a StringWriter and updates a JLabel with the writer's text.
 	 */
-	private final PrintWriter writer = new PrintWriter(string) {
+	private static class StreamingLabelWriter extends PrintWriter {
+		/**
+		 * The writer to write to.
+		 */
+		private final StringWriter swriter;
+		/**
+		 * The label to update when we're written to.
+		 */
+		private final JLabel control;
+		/**
+		 * @param wrapped the writer we wrap
+		 * @param label the label to update when written to
+		 */
+		protected StreamingLabelWriter(final StringWriter wrapped, final JLabel label) {
+			super(wrapped);
+			swriter = wrapped;
+			control = label;
+		}
 		/**
 		 * Print a string and update the label.
 		 *
@@ -41,7 +58,6 @@ public class StreamingLabel extends JLabel {
 			super.print(str);
 			updateText();
 		}
-
 		/**
 		 * Print a line and update the label.
 		 *
@@ -60,19 +76,22 @@ public class StreamingLabel extends JLabel {
 		public void close() {
 			// Do nothing.
 		}
-	};
+		/**
+		 * Update the label's text.
+		 */
+		private void updateText() {
+			control.setText("<html>" + swriter.toString() + "</html>");
+		}
+	}
+	/**
+	 * The writer that can be printed to.
+	 */
+	private final PrintWriter writer = new StreamingLabelWriter(string, this);
 
 	/**
 	 * @return the writer to "print" to.
 	 */
 	public PrintWriter getWriter() {
 		return writer;
-	}
-
-	/**
-	 * Update the label's text.
-	 */
-	public void updateText() {
-		setText("<html>" + string.toString() + "</html>");
 	}
 }
