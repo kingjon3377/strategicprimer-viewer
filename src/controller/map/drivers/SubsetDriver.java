@@ -147,6 +147,7 @@ public final class SubsetDriver implements ISPDriver {
 			return Returns.Fail; // NOPMD
 		}
 		try (final OutputStreamWriter osw = new OutputStreamWriter(SYS_OUT);
+				@SuppressWarnings("resource") // "Resource 'out' should be managed by try-with-resource", when it *is*!
 				final PrintWriter out = new PrintWriter(osw)) {
 			if (mainMap.isSubset(map, out)) {
 				return Returns.OK; // NOPMD
