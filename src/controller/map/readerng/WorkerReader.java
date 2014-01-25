@@ -104,17 +104,24 @@ public class WorkerReader implements INodeHandler<Worker> {
 		retval.addIdAttribute(obj.getID());
 		final WorkerStats stats = obj.getStats();
 		if (stats != null) {
-			retval.addChild(ReaderAdapter.ADAPTER.write(stats));
+			retval.addChild(STATS_READER.write(stats));
 		}
 		retval.addImageAttribute(obj);
 		for (final Job job : obj) {
 			if (job != null) {
-				retval.addChild(ReaderAdapter.ADAPTER.write(job));
+				retval.addChild(JOB_READER.write(job));
 			}
 		}
 		return retval;
 	}
-
+	/**
+	 * A reader to write stats.
+	 */
+	private static final StatsReader STATS_READER = new StatsReader();
+	/**
+	 * A reader to write jobs.
+	 */
+	private static final JobReader JOB_READER = new JobReader();
 	/**
 	 * @return a String representation of the object
 	 */
