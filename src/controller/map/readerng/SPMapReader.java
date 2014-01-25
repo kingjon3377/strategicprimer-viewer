@@ -166,7 +166,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		}
 		for (final Player player : obj.getPlayers()) {
 			if (player != null) {
-				retval.addChild(ReaderAdapter.ADAPTER.write(player));
+				retval.addChild(PLAYER_READER.write(player));
 			}
 		}
 		final MapDimensions dim = obj.getDimensions();

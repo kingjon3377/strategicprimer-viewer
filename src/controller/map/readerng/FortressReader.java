@@ -111,7 +111,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 		retval.addIdAttribute(obj.getID());
 		for (final Unit unit : obj) {
 			if (unit != null) {
-				retval.addChild(ReaderAdapter.ADAPTER.write(unit));
+				retval.addChild(UNIT_READER.write(unit));
 			}
 		}
 		retval.addImageAttribute(obj);
