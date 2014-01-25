@@ -40,11 +40,18 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * The default background color when selected.
 	 */
-	private static final Color DEF_BKGD_SELECTED = DEFAULT.getBackgroundSelectionColor();
+	private static final Color DEF_BKGD_SELECTED;
 	/**
 	 * The default background when not selected.
 	 */
-	private static final Color DEF_BKGD_NON_SEL = DEFAULT.getBackgroundNonSelectionColor();
+	private static final Color DEF_BKGD_NON_SEL;
+	static {
+		final Color sel = DEFAULT.getBackgroundSelectionColor();
+		final Color nonSel = DEFAULT.getBackgroundNonSelectionColor();
+		assert sel != null && nonSel != null;
+		DEF_BKGD_SELECTED = sel;
+		DEF_BKGD_NON_SEL = nonSel;
+	}
 	/**
 	 * Whether we warn on certain ominous conditions.
 	 */
