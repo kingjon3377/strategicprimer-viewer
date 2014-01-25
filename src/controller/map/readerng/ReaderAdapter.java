@@ -71,7 +71,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 *
 	 * @param reader the reader to add
 	 */
-	private static void factory(final INodeHandler<?> reader) {
+	static void factory(final INodeHandler<?> reader) {
 		for (final String tag : reader.understands()) {
 			READ_CACHE.put(tag, reader);
 		}
@@ -118,8 +118,9 @@ public class ReaderAdapter implements INodeHandler<Object> {
 				new FortificationReader(), new TownReader());
 		factoryFour(new MineralReader(), new StoneReader(), new RiverReader(),
 				new ViewReader());
-		factoryFour(new WorkerReader(), new JobReader(), new SkillReader(),
-				new StatsReader());
+		factory(new WorkerReader());
+		factory(new SkillReader());
+		factory(new StatsReader());
 	}
 
 	/**

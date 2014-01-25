@@ -26,6 +26,9 @@ import controller.map.misc.IDFactory;
  */
 @Deprecated
 public class JobReader implements INodeHandler<Job> {
+	static {
+		ReaderAdapter.factory(new JobReader());
+	}
 	/**
 	 * @return the class this knows how to write
 	 */
