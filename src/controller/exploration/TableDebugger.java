@@ -25,6 +25,11 @@ public class TableDebugger {
 	 */
 	private static final Logger LOGGER = TypesafeLogger.getLogger(TableDebugger.class);
 	/**
+	 * The exploration runner.
+	 */
+	private final ExplorationRunner runner;
+
+	/**
 	 * A utility driver method that loads all files in tables/ under the current
 	 * directory, then checks to see whether any references a nonexistent table,
 	 * then does further tests for debugging purposes.
@@ -43,11 +48,6 @@ public class TableDebugger {
 			System.exit(1);
 		}
 	}
-
-	/**
-	 * The exploration runner.
-	 */
-	private final ExplorationRunner runner;
 
 	/**
 	 * Constructor.
