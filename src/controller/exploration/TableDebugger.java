@@ -62,14 +62,14 @@ public class TableDebugger {
 	/**
 	 * Print all possible results from the tables.
 	 *
-	 * @param out the stream to print to.
+	 * @param ostream the stream to print to.
 	 * @throws MissingTableException if a referenced table isn't there
 	 */
-	public void debugTables(@NotNull final PrintStream out)
+	public void debugTables(@NotNull final PrintStream ostream)
 			throws MissingTableException {
-		runner.verboseRecursiveCheck(out);
+		runner.verboseRecursiveCheck(ostream);
 		final EncounterTable mainTable = runner.getTable("main");
-		debugTable("", "", mainTable, "main", out,
+		debugTable("", "", mainTable, "main", ostream,
 				new HashSet<EncounterTable>());
 	}
 
@@ -82,26 +82,26 @@ public class TableDebugger {
 	 *        table)
 	 * @param table the table to debug
 	 * @param tableName the name of the table
-	 * @param out the stream to print to
+	 * @param ostream the stream to print to
 	 * @param set the set of tables already on the stack, to prevent infinite
 	 *        recursion
 	 * @throws MissingTableException if a table is missing
 	 */
 	private void debugTable(@NotNull final String before,
 			@NotNull final String after, @NotNull final EncounterTable table,
-			@NotNull final String tableName, @NotNull final PrintStream out,
+			@NotNull final String tableName, @NotNull final PrintStream ostream,
 			@NotNull final Set<EncounterTable> set)
 			throws MissingTableException {
 		if (set.contains(table)) {
-			out.print("table ");
-			out.print(tableName);
-			out.println(" is already on the stack, skipping ...");
-			out.print("The cause was: ");
-			out.print(before);
-			out.print('#');
-			out.print(tableName);
-			out.print('#');
-			out.println(after);
+			ostream.print("table ");
+			ostream.print(tableName);
+			ostream.println(" is already on the stack, skipping ...");
+			ostream.print("The cause was: ");
+			ostream.print(before);
+			ostream.print('#');
+			ostream.print(tableName);
+			ostream.print('#');
+			ostream.println(after);
 			return;
 		} else {
 			set.add(table);
@@ -112,11 +112,11 @@ public class TableDebugger {
 				final String callee = parsed[1];
 				assert callee != null;
 				debugTable(before + parsed[0], parsed[2] + after,
-						runner.getTable(callee), callee, out, set);
+						runner.getTable(callee), callee, ostream, set);
 			} else {
-				out.print(before);
-				out.print(value);
-				out.println(after);
+				ostream.print(before);
+				ostream.print(value);
+				ostream.println(after);
 			}
 		}
 		set.remove(table);
