@@ -8,6 +8,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * An abstract superclass for towns etc.
  *
@@ -90,12 +92,16 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	public String getText() {
 		final StringBuilder builder = new StringBuilder(56)
 				.append("There is a ");
-		builder.append(TownSize.Medium.equals(size) ? "medium-size" : size
-				.toString());
-		if (!TownStatus.Active.equals(status)) {
+		if (TownSize.Medium.equals(size)) {
+			builder.append("medium-size");
+		} else {
+			builder.append(size.toString());
+		}
+		if (TownStatus.Burned.equals(status)) {
+			builder.append(" burned-out");
+		} else if (!TownStatus.Active.equals(status)) {
 			builder.append(' ');
-			builder.append(TownStatus.Burned.equals(status) ? "burned-out"
-					: status.toString());
+			builder.append(status.toString());
 		}
 		builder.append(' ');
 		builder.append(kind().toString());
@@ -134,7 +140,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| (fix instanceof AbstractTown && equalsContents((AbstractTown) fix));
+				|| fix instanceof AbstractTown && equalsContents((AbstractTown) fix);
 	}
 
 	/**
@@ -162,12 +168,32 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	@Override
 	public String toString() {
-		final String middle = size.toString() + ' ' + status.toString() + ' '
-				+ kind().toString() + " of DC " + getDC()
-				+ (name.isEmpty() ? " with no name" : " with name " + name);
-		return owner.isIndependent() ? "An independent " + middle : "A "
-				+ middle + ", owned by "
-				+ (owner.isCurrent() ? "you" : owner.getName());
+		final StringBuilder builder = new StringBuilder(80 + name.length() + owner.getName().length());
+		if (owner.isIndependent()) {
+			builder.append("An independent ");
+		} else {
+			builder.append("A ");
+		}
+		builder.append(size);
+		builder.append(' ');
+		builder.append(status);
+		builder.append(' ');
+		builder.append(kind());
+		builder.append(" of DC ");
+		builder.append(getDC());
+		if (name.isEmpty()) {
+			builder.append(" with no name");
+		} else {
+			builder.append(" with name ");
+			builder.append(name);
+		}
+		builder.append(", owned by ");
+		if (owner.isCurrent()) {
+			builder.append("you");
+		} else {
+			builder.append(owner.getName());
+		}
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -256,11 +282,29 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	@Override
 	public String shortDesc() {
-		final String middle = size.toString() + ' ' + status.toString() + ' '
-				+ kind().toString()
-				+ (name.isEmpty() ? " with no name" : " named " + name);
-		return owner.isIndependent() ? "An independent " + middle : "A "
-				+ middle + ", owned by "
-				+ (owner.isCurrent() ? "you" : owner.getName());
+		final StringBuilder builder = new StringBuilder(78 + name.length() + owner.getName().length());
+		if (owner.isIndependent()) {
+			builder.append("An independent ");
+		} else {
+			builder.append("A ");
+		}
+		builder.append(size);
+		builder.append(' ');
+		builder.append(status);
+		builder.append(' ');
+		builder.append(kind);
+		if (name.isEmpty()) {
+			builder.append(" with no name");
+		} else {
+			builder.append(" named ");
+			builder.append(name);
+		}
+		builder.append(", owned by ");
+		if (owner.isCurrent()) {
+			builder.append("you");
+		} else {
+			builder.append(owner.getName());
+		}
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

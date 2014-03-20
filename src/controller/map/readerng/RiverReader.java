@@ -44,9 +44,12 @@ public class RiverReader implements INodeHandler<River> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(assertNonNullQName(element.getName()), stream);
-		final River fix = "lake".equalsIgnoreCase(element.getName()
-				.getLocalPart()) ? River.Lake : River.getRiver(getAttribute(
-				element, "direction"));
+		final River fix;
+		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
+			fix = River.Lake;
+		} else {
+			fix = River.getRiver(getAttribute(element, "direction"));
+		}
 		return fix;
 	}
 
@@ -74,9 +77,12 @@ public class RiverReader implements INodeHandler<River> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final River obj) {
-		return River.Lake.equals(obj) ? new SPIntermediateRepresentation("lake")
-				: new SPIntermediateRepresentation("river", Pair.of(
-						"direction", obj.getDescription()));
+		if (River.Lake.equals(obj)) {
+			return new SPIntermediateRepresentation("lake");
+		} else {
+			return new SPIntermediateRepresentation("river", Pair.of(
+					"direction", obj.getDescription()));
+		}
 	}
 
 	/**

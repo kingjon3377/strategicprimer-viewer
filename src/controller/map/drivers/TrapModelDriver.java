@@ -142,7 +142,12 @@ public class TrapModelDriver implements ISPDriver {
 			final HuntingModel hmodel = new HuntingModel(map);
 			final boolean fishing = helper
 					.inputBoolean("Is this a fisherman trapping fish rather than a trapper? ");
-			final String name = fishing ? "fisherman" : "trapper";
+			final String name;
+			if (fishing) {
+				name = "fisherman";
+			} else {
+				name = "trapper";
+			}
 			int minutes = helper.inputNumber("How many hours will the " + name
 					+ " work? ")
 					* MINS_PER_HOUR;
@@ -150,8 +155,12 @@ public class TrapModelDriver implements ISPDriver {
 					+ name + " is working: ");
 			final int col = helper.inputNumber("Column of that tile: ");
 			final Point point = point(row, col);
-			final List<String> fixtures = fishing ? hmodel.fish(point, minutes)
-					: hmodel.hunt(point, minutes);
+			final List<String> fixtures;
+			if (fishing) {
+				fixtures = hmodel.fish(point, minutes);
+			} else {
+				fixtures = hmodel.hunt(point, minutes);
+			}
 			int input = -1;
 			while (minutes > 0 && input < TrapperCommand.values().length) {
 				if (input >= 0) {
@@ -184,10 +193,13 @@ public class TrapModelDriver implements ISPDriver {
 	 * @return a String representation, including the number of hours
 	 */
 	private static String inHours(final int minutes) {
-		return minutes < MINS_PER_HOUR ? Integer.toString(minutes) + " minutes"
-				: Integer.toString(minutes / MINS_PER_HOUR) + " hours, "
-						+ Integer.toString(minutes % MINS_PER_HOUR)
-						+ " minutes";
+		if (minutes < MINS_PER_HOUR) {
+			return Integer.toString(minutes) + " minutes";
+		} else {
+			return Integer.toString(minutes / MINS_PER_HOUR) + " hours, "
+					+ Integer.toString(minutes % MINS_PER_HOUR)
+					+ " minutes";
+		}
 	}
 
 	/**
@@ -211,7 +223,11 @@ public class TrapModelDriver implements ISPDriver {
 			final String top = fixtures.remove(0);
 			if (HuntingModel.NOTHING.equals(top)) {
 				ostream.println("Nothing in the trap");
-				retval = fishing ? 5 : 10;
+				if (fishing) {
+					retval = 5;
+				} else {
+					retval = 10;
+				}
 			} else {
 				ostream.print("Found either ");
 				ostream.print(top);
@@ -221,13 +237,21 @@ public class TrapModelDriver implements ISPDriver {
 			}
 			return retval; // NOPMD
 		case EasyReset:
-			return fishing ? 20 : 5; // NOPMD
+			if (fishing) {
+				return 20;
+			} else {
+				return 5;
+			}
 		case Move:
 			return 2; // NOPMD
 		case Quit:
 			return 0; // NOPMD
 		case Set:
-			return fishing ? 30 : 45; // NOPMD
+			if (fishing) {
+				return 30;
+			} else {
+				return 45;
+			}
 		default:
 			throw new IllegalArgumentException("Unhandled case");
 		}

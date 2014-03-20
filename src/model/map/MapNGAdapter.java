@@ -136,7 +136,11 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 */
 	private static <T> boolean safeEquals(@Nullable final T one,
 			@Nullable final T two) {
-		return one == null ? two == null : one.equals(two);
+		if (one == null) {
+			return two == null;
+		} else {
+			return one.equals(two);
+		}
 	}
 
 	/**
@@ -165,7 +169,11 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 */
 	@Override
 	public int compareTo(final IMapNG other) {
-		return equals(other) ? 0 : hashCode() - other.hashCode();
+		if (equals(other)) {
+			return 0;
+		} else {
+			return hashCode() - other.hashCode();
+		}
 	}
 
 	/**

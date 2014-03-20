@@ -67,9 +67,6 @@ public class JobsListModel extends DefaultListModel<Job> implements
 				for (final Job job : worker) {
 					addElement(job);
 				}
-				final Object retval = isEmpty() ? Integer.valueOf(-1) : Integer
-						.valueOf(0);
-				assert retval != null;
 				for (final CompletionListener list : cListeners) {
 					list.stopWaitingOn(false);
 				}

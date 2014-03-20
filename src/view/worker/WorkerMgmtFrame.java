@@ -346,7 +346,11 @@ public class WorkerMgmtFrame extends JFrame {
 					builder.append(unitMembers(unit));
 					builder.append(":\n\n");
 					final String orders = unit.getOrders().trim();
-					builder.append(orders.isEmpty() ? "TODO" : orders);
+					if (orders.isEmpty()) {
+						builder.append("TODO");
+					} else {
+						builder.append(orders);
+					}
 					builder.append("\n\n");
 				}
 			}

@@ -67,8 +67,16 @@ public class PointIterator implements Iterator<Point> {
 		builder.append(", ");
 		builder.append(col);
 		builder.append("), searching ");
-		builder.append(horiz ? "horizontally " : "vertically ");
-		builder.append(forwards ? "forwards " : "backwards ");
+		if (horiz) {
+			builder.append("horizontally ");
+		} else {
+			builder.append("vertically ");
+		}
+		if (forwards) {
+			builder.append("forwards ");
+		} else {
+			builder.append("backwards ");
+		}
 		builder.append("and no farther than (");
 		builder.append(maxRow);
 		builder.append(", ");

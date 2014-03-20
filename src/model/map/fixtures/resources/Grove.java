@@ -6,6 +6,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
  *
@@ -71,7 +73,11 @@ public class Grove implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String getDefaultImage() {
-		return orchard ? "orchard.png" : "tree.png";
+		if (orchard) {
+			return "orchard.png";
+		} else {
+			return "tree.png";
+		}
 	}
 
 	/**
@@ -79,8 +85,19 @@ public class Grove implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String toString() {
-		return (isCultivated() ? "Cultivated " : "Wild ") + getKind()
-				+ (isOrchard() ? " orchard" : " grove");
+		final StringBuilder builder = new StringBuilder(19 + kind.length());
+		if (cultivated) {
+			builder.append("Cultivated ");
+		} else {
+			builder.append("Wild ");
+		}
+		builder.append(kind);
+		if (orchard) {
+			builder.append(" orchard");
+		} else {
+			builder.append(" grove");
+		}
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**

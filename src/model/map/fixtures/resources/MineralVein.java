@@ -127,8 +127,11 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 */
 	@Override
 	public String toString() {
-		return "A " + mineral + " deposit, "
-				+ (exposed ? "exposed" : "not exposed") + ", DC " + dc;
+		if (exposed) {
+			return "A " + mineral + " deposit, exposed, DC " + dc;
+		} else {
+			return "A " + mineral + " deposit, not exposed, DC " + dc;
+		}
 	}
 
 	/**

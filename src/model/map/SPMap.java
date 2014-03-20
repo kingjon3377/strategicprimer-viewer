@@ -166,7 +166,11 @@ public class SPMap implements IMutableMap {
 	 */
 	@Override
 	public int compareTo(final IMap other) {
-		return equals(other) ? 0 : hashCode() - other.hashCode();
+		if (equals(other)) {
+			return 0;
+		} else {
+			return hashCode() - other.hashCode();
+		}
 	}
 
 	/**

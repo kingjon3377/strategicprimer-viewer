@@ -15,6 +15,7 @@ import model.workermgmt.IWorkerTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.ErrorShower;
 import controller.map.misc.IDFactory;
@@ -102,7 +103,7 @@ public class WorkerCreationListener implements ActionListener,
 	 */
 	@Override
 	public void selectUnit(@Nullable final Unit unit) {
-		selUnit = unit == null ? NULL_UNIT : unit;
+		selUnit = NullCleaner.valueOrDefault(unit, NULL_UNIT);
 	}
 	/**
 	 * Handle button press.

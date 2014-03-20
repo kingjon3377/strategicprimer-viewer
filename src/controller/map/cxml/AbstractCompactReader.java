@@ -1,5 +1,7 @@
 package controller.map.cxml;
 
+import java.util.Iterator;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
@@ -81,14 +83,12 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		final String local = element.getName().getLocalPart();
 		if (attr == null) {
-			throw new MissingPropertyException(
-					local == null ? NULL_TAG : local, param, element
-							.getLocation().getLineNumber());
+			throw new MissingPropertyException(tagOrNull(local), param, element
+					.getLocation().getLineNumber());
 		} else {
 			final String value = attr.getValue();
 			if (value == null) {
-				throw new MissingPropertyException(
-						local == null ? NULL_TAG : local, param,
+				throw new MissingPropertyException(tagOrNull(local), param,
 						element.getLocation().getLineNumber());
 			} else {
 				return value;
@@ -111,8 +111,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 		if (attr == null) {
 			return defaultValue; // NOPMD
 		} else {
-			final String value = attr.getValue();
-			return value == null ? defaultValue : value;
+			return valueOrDefault(attr.getValue(), defaultValue);
 		}
 	}
 
@@ -130,10 +129,9 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 			final String param, final boolean mandatory, final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
-			final String local = element.getName().getLocalPart();
+			final String local = tagOrNull(element.getName().getLocalPart());
 			final SPFormatException except = new MissingPropertyException(
-					local == null ? NULL_TAG : local, param, element
-							.getLocation().getLineNumber());
+					local, param, element.getLocation().getLineNumber());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -154,11 +152,11 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				final String outerName = tag.getLocalPart();
-				final String innerName = event.asStartElement().getName().getLocalPart();
-				throw new UnwantedChildException(outerName == null ? NULL_TAG
-						: outerName, innerName == null ? NULL_TAG : innerName,
-						event.getLocation().getLineNumber());
+				final String outerName = tagOrNull(tag.getLocalPart());
+				final String innerName = tagOrNull(event.asStartElement()
+						.getName().getLocalPart());
+				throw new UnwantedChildException(outerName, innerName, event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& tag.equals(event.asEndElement().getName())) {
 				break;
@@ -188,8 +186,8 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 					"id")));
 		} else {
 			final String tag = element.getName().getLocalPart();
-			warner.warn(new MissingPropertyException(tag == null ? NULL_TAG
-					: tag, "id", element.getLocation().getLineNumber()));
+			warner.warn(new MissingPropertyException(tagOrNull(tag), "id",
+					element.getLocation().getLineNumber()));
 			retval = idFactory.createID();
 		}
 		return retval;
@@ -211,8 +209,12 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 *         {@link IncludingIterator}, or the empty string otherwise.
 	 */
 	protected static String getFile(final Iterable<XMLEvent> stream) {
-		return stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-				.iterator()).getFile() : "";
+		final Iterator<?> iter = stream.iterator();
+		if (iter instanceof IncludingIterator) {
+			return ((IncludingIterator) iter).getFile();
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -233,15 +235,13 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 				preferred));
 		final Attribute deprProp = element.getAttributeByName(new QName(
 				deprecated));
-		final String local = element.getName().getLocalPart();
+		final String local = tagOrNull(element.getName().getLocalPart());
 		final MissingPropertyException exception = new MissingPropertyException(
-				local == null ? NULL_TAG : local, preferred,
-				element.getLocation().getLineNumber());
+				local, preferred, element.getLocation().getLineNumber());
 		if (prefProp == null && deprProp == null) {
 			throw exception;
 		} else if (prefProp == null) {
-			warner.warn(new DeprecatedPropertyException(
-					local == null ? NULL_TAG : local, deprecated,
+			warner.warn(new DeprecatedPropertyException(local, deprecated,
 					preferred, element.getLocation().getLineNumber()));
 			final String value = deprProp.getValue();
 			if (value == null) {
@@ -287,8 +287,11 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 */
 	protected static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
-		return image.isEmpty() || image.equals(obj.getDefaultImage()) ? ""
-				: " image=\"" + image + "\"";
+		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
+			return "";
+		} else {
+			return " image=\"" + image + "\"";
+		}
 	}
 
 	/**
@@ -311,5 +314,25 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static StartElement assertNotNullStartElement(@Nullable final StartElement element) {
 		assert element != null;
 		return element;
+	}
+	/**
+	 * @param tag the name of a tag, which may be null
+	 * @return "a null tag" if null, or the tag name if not 
+	 */
+	private static String tagOrNull(@Nullable final String tag) {
+		return valueOrDefault(tag, NULL_TAG);
+	}
+	/**
+	 * @param <T> the type of thing we're talking about here
+	 * @param value a value
+	 * @param def a default value
+	 * @return value if it isn't null, or default if it is
+	 */
+	private static <T> T valueOrDefault(@Nullable final T value, final T def) {
+		if (value == null) {
+			return def;
+		} else {
+			return value;
+		}
 	}
 }

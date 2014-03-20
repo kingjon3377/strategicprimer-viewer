@@ -153,8 +153,12 @@ public class WorkerTreeModel implements IWorkerTreeModel {
 	public int getIndexOfChild(@Nullable final Object parent,
 			@Nullable final Object child) {
 		if (parent instanceof Player && parent.equals(root)) {
-			return model.getUnits(root).contains(child) ? model.getUnits(root)// NOPMD
-					.indexOf(child) : -1;
+			if (model.getUnits(root).contains(child)) {
+				return model.getUnits(root)// NOPMD
+						.indexOf(child);
+			} else {
+				return -1;
+			}
 		} else if (parent instanceof Unit) {
 			int index = 0;
 			for (final UnitMember member : (Unit) parent) {

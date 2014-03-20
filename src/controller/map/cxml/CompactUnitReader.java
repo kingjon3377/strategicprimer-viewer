@@ -170,7 +170,11 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * @return it, or "-1" if it's empty.
 	 */
 	private static String ensureNumeric(final String string) {
-		return string.isEmpty() ? "-1" : string;
+		if (string.isEmpty()) {
+			return "-1";
+		} else {
+			return string;
+		}
 	}
 
 	/**

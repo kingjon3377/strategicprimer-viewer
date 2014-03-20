@@ -246,8 +246,11 @@ public final class XMLHelper {
 	 *         {@link IncludingIterator}, or the empty string otherwise.
 	 */
 	public static String getFile(final Iterable<XMLEvent> stream) {
-		return stream.iterator() instanceof IncludingIterator ? ((IncludingIterator) stream
-				.iterator()).getFile() : "";
+		if (stream.iterator() instanceof IncludingIterator) {
+			return ((IncludingIterator) stream.iterator()).getFile();
+		} else {
+			return "";
+		}
 	}
 
 	/**

@@ -11,6 +11,8 @@ import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A listener to print a line when a worker gains a level.
  *
@@ -63,7 +65,7 @@ public final class LevelListener implements LevelGainListener,
 	 */
 	@Override
 	public void selectSkill(@Nullable final Skill nSkill) {
-		skill = nSkill == null ? NULL_SKILL : skill;
+		skill = NullCleaner.valueOrDefault(nSkill, NULL_SKILL);
 	}
 	/**
 	 * Handle level gain notification.
@@ -89,7 +91,7 @@ public final class LevelListener implements LevelGainListener,
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
 			@Nullable final UnitMember selected) {
-		worker = selected == null ? NULL_UM : selected;
+		worker = NullCleaner.valueOrDefault(selected, NULL_UM);
 	}
 
 	/**
@@ -101,8 +103,7 @@ public final class LevelListener implements LevelGainListener,
 		if (named instanceof HasName) {
 			return ((HasName) named).getName(); // NOPMD
 		} else {
-			final String retval = named.toString();
-			return retval == null ? "" : retval;
+			return NullCleaner.valueOrDefault(named.toString(), "");
 		}
 	}
 	/**

@@ -113,14 +113,8 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof Worker && ((Worker) obj).name.equals(name)
-						&& ((Worker) obj).id == id && ((Worker) obj).jobSet
-							.equals(jobSet))
-				&& ((Worker) obj).race.equals(race)
-				&& (stats != null ? stats.equals(((Worker) obj).stats)
-						: ((Worker) obj).stats == null);
+				|| (obj instanceof Worker && ((Worker) obj).id == id && equalsIgIDImpl((Worker) obj));
 	}
-
 	/**
 	 * @return a hash code for the object
 	 */
@@ -151,10 +145,16 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	 * @return whether it equals this one except for ID.
 	 */
 	private boolean equalsIgIDImpl(final Worker fix) {
-		return (fix.name.equals(name) && fix.jobSet.equals(jobSet))
-				&& fix.race.equals(race)
-				&& (stats != null ? stats.equals(fix.stats) : fix.stats == null);
+		final WorkerStats locStats = stats;
+		if (locStats == null) {
+			return fix.name.equals(name) && fix.jobSet.equals(jobSet)
+					&& fix.race.equals(race) && fix.stats == null;
+		} else {
+			return fix.name.equals(name) && fix.jobSet.equals(jobSet)
+					&& fix.race.equals(race) && locStats.equals(fix.stats);
 		}
+	}
+
 	/**
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
 	 */

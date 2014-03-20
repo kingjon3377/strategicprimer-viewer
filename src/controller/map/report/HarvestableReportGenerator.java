@@ -105,9 +105,13 @@ public class HarvestableReportGenerator extends // NOPMD
 				caches.toString(), groves.toString(), meadows.toString(),
 				mines.toString(), minerals.toString(), stone.toString(),
 				shrubsText.toString());
-		return caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
+		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
 				&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
-				&& shrubs.isEmpty() ? "" : retval;
+				&& shrubs.isEmpty()) {
+			return "";
+		} else {
+			return retval;
+		}
 	}
 	/**
 	 * @param collections a series of lists to be sorted
@@ -188,8 +192,12 @@ public class HarvestableReportGenerator extends // NOPMD
 			shrubsNode.add(new SimpleReportNode(entry.getKey(), ": at ",
 					pointCSL(entry.getValue())));
 		}
-		return maybeAdd(retval, caches, groves, meadows, mines, minerals,
-				stone, shrubsNode) ? retval : EmptyReportNode.NULL_NODE;
+		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
+				shrubsNode)) {
+			return retval;
+		} else {
+			return EmptyReportNode.NULL_NODE;
+		}
 	}
 
 	/**
@@ -337,7 +345,11 @@ public class HarvestableReportGenerator extends // NOPMD
 	 */
 	private static String ternary(final boolean bool, final String first,
 			final String second) {
-		return bool ? first : second;
+		if (bool) {
+			return first;
+		} else {
+			return second;
+		}
 	}
 	/**
 	 * @return a String representation of the object

@@ -86,7 +86,11 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String getDefaultImage() {
-		return field ? "field.png" : "meadow.png";
+		if (field) {
+			return "field.png";
+		} else {
+			return "meadow.png";
+		}
 	}
 
 	/**

@@ -2,6 +2,8 @@ package model.map.fixtures.mobile.worker;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A class representing a worker's core statistical attributes.
  *
@@ -212,9 +214,12 @@ public class WorkerStats {
 	 */
 	public static String getModifierString(final int stat) {
 		final int modifier = (stat - 10) / 2;
-		final String modStr = Integer.toString(modifier);
-		assert modStr != null;
-		return modifier >= 0 ? '+' + modStr : modStr;
+		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
+		if (modifier >= 0) {
+			return '+' + modStr;
+		} else {
+			return modStr;
+		}
 	}
 	/**
 	 * @return a String representation of the object

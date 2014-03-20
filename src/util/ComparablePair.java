@@ -32,7 +32,11 @@ public class ComparablePair<FIRST extends Comparable<FIRST>, SECOND extends Comp
 	@Override
 	public int compareTo(final ComparablePair<FIRST, SECOND> other) {
 		final int cmp = first().compareTo(other.first());
-		return (cmp == 0) ? second().compareTo(other.second()) : cmp;
+		if (cmp == 0) {
+			return second().compareTo(other.second());
+		} else {
+			return cmp;
+		}
 	}
 
 	/**

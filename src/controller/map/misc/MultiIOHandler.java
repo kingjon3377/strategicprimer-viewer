@@ -59,8 +59,12 @@ public class MultiIOHandler extends IOHandler {
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
-			final Component source = event.getSource() instanceof Component ? (Component) event
-					.getSource() : null; // NOPMD
+			final Component source; // NOPMD
+			if (event.getSource() instanceof Component) {
+				source = (Component) event.getSource();
+			} else {
+				source = null;
+			}
 			if ("Load secondary".equalsIgnoreCase(event.getActionCommand())) {
 				handleSecondaryLoadMenu(source);
 			} else if ("Save All".equalsIgnoreCase(event.getActionCommand())) {

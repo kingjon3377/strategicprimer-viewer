@@ -69,9 +69,10 @@ public class Warning {
 		case Warn:
 			final Class<? extends StackTraceElement> warnClass = warning
 					.getStackTrace()[0].getClass();
-			final Logger logger = TypesafeLogger
-					.getLogger(warnClass == null ? Warning.class : warnClass);
-			if (warning instanceof SPFormatException || warning instanceof IDFactory.DuplicateIDException) {
+			final Logger logger = TypesafeLogger.getLogger(NullCleaner
+					.valueOrDefault(warnClass, Warning.class));
+			if (warning instanceof SPFormatException
+					|| warning instanceof IDFactory.DuplicateIDException) {
 				logger.warning("Warning: " + warning.getMessage());
 			} else {
 				logger.log(Level.WARNING, "Warning: ", warning);

@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -77,8 +78,12 @@ public class WorkerStart implements ISPDriver {
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD
 		try {
-			final String file = args.length == 0 ? "" : args[0];
-			assert file != null;
+			final String file;
+			if (args.length == 0) {
+				file = "";
+			} else {
+				file = NullCleaner.assertNotNull(args[0]);
+			}
 			filename = new FileChooser(file).getFilename();
 		} catch (final ChoiceInterruptedException except) {
 			LOGGER.log(

@@ -32,7 +32,11 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return turn == -1 ? text : text + "(turn " + turn + ')';
+		if (turn == -1) {
+			return text;
+		} else {
+			return text + "(turn " + turn + ')';
+		}
 	}
 
 	/**

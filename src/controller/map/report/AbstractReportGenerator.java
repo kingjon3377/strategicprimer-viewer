@@ -60,7 +60,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 							.append(CLOSE_LIST_ITEM);
 				}
 				final String retval = builder.append(CLOSE_LIST).toString();
-				return retval == null ? "" : retval;
+				return valueOrDefault(retval, "");
 			}
 		}
 	}
@@ -114,7 +114,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				builder.append(points.get(i));
 			}
 			final String retval = builder.toString();
-			return retval == null ? "" : retval;
+			return valueOrDefault(retval, "");
 		}
 	}
 
@@ -123,7 +123,11 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * @return the player's name, or "you" if the player is the current player
 	 */
 	protected static String playerNameOrYou(final Player player) {
-		return player.isCurrent() ? "you" : player.toString();
+		if (player.isCurrent()) {
+			return "you";
+		} else {
+			return player.toString();
+		}
 	}
 
 	/**
@@ -140,6 +144,19 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 			buf.append(string);
 		}
 		final String retval = buf.toString();
-		return retval == null ? "" : retval;
+		return valueOrDefault(retval, "");
+	}
+	/**
+	 * @param <T> the type of thing we're talking about here
+	 * @param value a value
+	 * @param def a default value
+	 * @return value if it isn't null, or default if it is
+	 */
+	protected static <T> T valueOrDefault(@Nullable final T value, final T def) {
+		if (value == null) {
+			return def;
+		} else {
+			return value;
+		}
 	}
 }

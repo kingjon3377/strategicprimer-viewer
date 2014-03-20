@@ -119,9 +119,14 @@ public class GroveReader implements INodeHandler<Grove> {
 	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
 		final String cult = Boolean.toString(obj.isCultivated());
 		assert cult != null;
+		final String tag;
+		if (obj.isOrchard()) {
+			tag = "orchard";
+		} else {
+			tag = "grove";
+		}
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				obj.isOrchard() ? "orchard" : "grove", Pair.of(CULTIVATED_ATTR,
-						cult), Pair.of("kind",
+				tag, Pair.of(CULTIVATED_ATTR, cult), Pair.of("kind",
 						obj.getKind()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);

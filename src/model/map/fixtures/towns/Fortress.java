@@ -306,7 +306,10 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 */
 	@Override
 	public String shortDesc() {
-		return "a fortress, " + getName() + ", owned by "
-				+ (owner.isCurrent() ? "you" : owner.getName());
+		if (owner.isCurrent()) {
+			return "a fortress, " + getName() + ", owned by you";
+		} else {
+			return "a fortress, " + getName() + ", owned by " + owner.getName();
+		}
 	}
 }

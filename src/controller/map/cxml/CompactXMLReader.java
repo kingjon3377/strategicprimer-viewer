@@ -96,9 +96,12 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	public MapView readMap(final String file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
 		final IMap retval = readXML(file, istream, MapView.class, warner);
-		return retval instanceof SPMap ? new MapView(retval, retval
-				.getPlayers().getCurrentPlayer().getPlayerId(), 0)
-				: (MapView) retval;
+		if (retval instanceof SPMap) {
+			return new MapView(retval, retval
+					.getPlayers().getCurrentPlayer().getPlayerId(), 0);
+		} else {
+			return (MapView) retval;
+		}
 	}
 
 	/**

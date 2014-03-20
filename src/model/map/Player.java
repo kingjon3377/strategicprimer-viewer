@@ -87,7 +87,11 @@ public class Player implements Comparable<Player>, HasName {
 	 */
 	@Override
 	public String toString() {
-		return playerName.isEmpty() ? "player #" + playerID : playerName;
+		if (playerName.isEmpty()) {
+			return "player #" + playerID;
+		} else {
+			return playerName;
+		}
 	}
 
 	/**

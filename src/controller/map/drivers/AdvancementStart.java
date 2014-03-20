@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -54,7 +55,7 @@ public final class AdvancementStart implements ISPDriver {
 			new AdvancementStart().startDriver(args);
 		} catch (final DriverFailedException except) {
 			final String msg = except.getMessage();
-			final String message = msg == null ? "" : msg;
+			final String message = NullCleaner.valueOrDefault(msg, "");
 			LOGGER.log(Level.SEVERE, message, except.getCause());
 			ErrorShower.showErrorDialog(null, message);
 		}
@@ -90,8 +91,12 @@ public final class AdvancementStart implements ISPDriver {
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD
 		try {
-			final String firstArg = args.length == 0 ? "" : args[0];
-			assert firstArg != null;
+			final String firstArg;
+			if (args.length == 0) {
+				firstArg = "";
+			} else {
+				firstArg = NullCleaner.valueOrDefault(args[0], "");
+			}
 			filename = new FileChooser(firstArg).getFilename();
 		} catch (final ChoiceInterruptedException except) {
 			LOGGER.log(

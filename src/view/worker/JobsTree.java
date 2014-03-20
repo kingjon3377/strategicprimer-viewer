@@ -59,7 +59,12 @@ public class JobsTree extends JTree implements TreeSelectionListener,
 			} else {
 				component = selPath.getLastPathComponent();
 			}
-			final Skill retval = component instanceof Skill ? (Skill) component : null;
+			final Skill retval;
+			if (component instanceof Skill) {
+				retval = (Skill) component;
+			} else {
+				retval = null;
+			}
 			for (final SkillSelectionListener list : ssListeners) {
 				list.selectSkill(retval);
 			}

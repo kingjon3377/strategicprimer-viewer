@@ -8,6 +8,8 @@ import model.map.fixtures.UnitMember;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * An animal or group of animals.
  *
@@ -103,8 +105,15 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public String toString() {
-		return (isTraces() ? "traces of " : "") + status
-				+ (isTalking() ? " talking " : " ") + getKind();
+		final StringBuilder builder = new StringBuilder(18 + kind.length());
+		if (traces) {
+			builder.append("traces of ");
+		}
+		if (talking) {
+			builder.append("talking ");
+		}
+		builder.append(kind);
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**

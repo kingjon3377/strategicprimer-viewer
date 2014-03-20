@@ -381,7 +381,11 @@ public final class CompactResourceReader extends
 	 * @return the proper tag for it
 	 */
 	private static String getMeadowTag(final Meadow meadow) {
-		return meadow.isField() ? "field" : "meadow";
+		if (meadow.isField()) {
+			return "field";
+		} else {
+			return "meadow";
+		}
 	}
 
 	/**
@@ -389,7 +393,11 @@ public final class CompactResourceReader extends
 	 * @return the proper tag for it
 	 */
 	private static String getGroveTag(final Grove grove) {
-		return grove.isOrchard() ? "orchard" : "grove";
+		if (grove.isOrchard()) {
+			return "orchard";
+		} else {
+			return "grove";
+		}
 	}
 
 	/**

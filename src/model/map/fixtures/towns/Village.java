@@ -7,6 +7,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A village on the map.
  *
@@ -52,10 +54,23 @@ public class Village implements ITownFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		final String middle = status.toString() + " village"
-				+ (name.isEmpty() ? name : " named " + name);
-		return owner.isIndependent() ? "Independent " + middle : middle
-				+ ", owned by " + (owner.isCurrent() ? "you" : owner.getName());
+		final StringBuilder builder = new StringBuilder(52 + name.length() + owner.getName().length());
+		if (owner.isIndependent()) {
+			builder.append("Independent ");
+		}
+		builder.append(status);
+		builder.append(" village");
+		if (!name.isEmpty()) {
+			builder.append(" named ");
+			builder.append(name);
+		}
+		if (owner.isCurrent()) {
+			builder.append(", owned by you");
+		} else if (!owner.isIndependent()) {
+			builder.append(", owned by ");
+			builder.append(owner.getName());
+		}
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**

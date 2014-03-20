@@ -124,9 +124,10 @@ public class AppStarter implements ISPDriver {
 		}
 		if (drivers == null) {
 			startChooser(gui, others);
+		} else if (gui) {
+			startChosenDriver(drivers.second(), others);
 		} else {
-			final ISPDriver driver = gui ? drivers.second() : drivers.first();
-			startChosenDriver(driver, others);
+			startChosenDriver(drivers.first(), others);
 		}
 	}
 

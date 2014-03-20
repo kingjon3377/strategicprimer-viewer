@@ -42,7 +42,11 @@ public class MapNGReverseAdapter implements IMap {
 	 */
 	@Override
 	public int compareTo(final IMap obj) {
-		return equals(obj) ? 0 : hashCode() - obj.hashCode();
+		if (equals(obj)) {
+			return 0;
+		} else {
+			return hashCode() - obj.hashCode();
+		}
 	}
 	/**
 	 * @param obj an object

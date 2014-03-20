@@ -7,8 +7,6 @@ import java.util.Random;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IEvent;
 import model.map.IPlayerCollection;
 import model.map.Player;
@@ -23,8 +21,12 @@ import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.EqualsAny;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -65,8 +67,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 */
 	@Override
 	public boolean isSupportedTag(@Nullable final String tag) {
-		return EqualsAny.equalsAny(tag == null ? "" : tag, "village",
-				"fortress", "town", "city", "fortification");
+		return EqualsAny.equalsAny(NullCleaner.valueOrDefault(tag, ""),
+				"village", "fortress", "town", "city", "fortification");
 	}
 
 	/**

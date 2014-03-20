@@ -45,7 +45,11 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public String toString() {
-		return kind + (kind.isEmpty() ? "giant" : " giant");
+		if (kind.isEmpty()) {
+			return "giant";
+		} else {
+			return kind + " giant";
+		}
 	}
 
 	/**

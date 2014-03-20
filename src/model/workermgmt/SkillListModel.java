@@ -15,6 +15,8 @@ import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A list model for a list of the skills associated with a Job.
  *
@@ -84,7 +86,7 @@ public class SkillListModel extends DefaultListModel<Skill> implements
 	private void handleNewJob(@Nullable final Job newValue) {
 		if (!job.equals(newValue)) {
 			clear();
-			job = newValue == null ? NULL_JOB : newValue;
+			job = NullCleaner.valueOrDefault(newValue, NULL_JOB);
 			for (final Skill skill : job) {
 				addElement(skill);
 			}

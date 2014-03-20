@@ -30,6 +30,7 @@ import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -112,9 +113,12 @@ public class ImmortalsReportGenerator extends
 		optionallyPrintList(phoenixes, "Phoenix(es) at ", builder);
 		optionallyPrintList(simurghs, "Simurgh(s) at ", builder);
 		optionallyPrintList(griffins, "Griffin(s) at ", builder);
-		final String retval = builder.append(CLOSE_LIST).toString();
-		assert retval != null;
-		return totalSize == 0 ? "" : retval;
+		builder.append(CLOSE_LIST);
+		if (totalSize == 0) {
+			return "";
+		} else {
+			return NullCleaner.assertNotNull(builder.toString());
+		}
 	}
 
 	/**
@@ -195,7 +199,11 @@ public class ImmortalsReportGenerator extends
 		optionallyAdd(phoenixes, "Phoenix(es) at ", retval);
 		optionallyAdd(simurghs, "Simurgh(s) at ", retval);
 		optionallyAdd(griffins, "Griffin(s) at ", retval);
-		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
+		if (retval.getChildCount() == 0) {
+			return EmptyReportNode.NULL_NODE;
+		} else {
+			return retval;
+		}
 	}
 
 	/**

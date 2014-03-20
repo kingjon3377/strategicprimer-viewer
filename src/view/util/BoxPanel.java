@@ -22,8 +22,11 @@ public class BoxPanel extends JPanel {
 	public BoxPanel(final boolean horiz) {
 		super();
 		horizontal = horiz;
-		setLayout(new BoxLayout(this, horiz ? BoxLayout.LINE_AXIS
-				: BoxLayout.PAGE_AXIS));
+		if (horizontal) {
+			setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		} else {
+			setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		}
 	}
 
 	/**

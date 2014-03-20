@@ -18,6 +18,7 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -94,22 +95,31 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
-		final String simple = concat("Unit of type ", unit.getKind(),
-				", named ", unit.getName(),
-				unit.getOwner().isIndependent() ? ", independent"
-						: ", owned by " + playerNameOrYou(unit.getOwner()));
-		final AbstractReportNode retval = unit.iterator().hasNext() ? new ListReportNode(
-				concat(simple, ". Members of the unit:"))
-				: new SimpleReportNode(simple);
-		for (final UnitMember member : unit) {
-			if (member instanceof Worker) {
-				retval.add(produceWorkerRIR((Worker) member,
-						currentPlayer.equals(unit.getOwner())));
-			} else {
-				// TODO: what about others?
-				retval.add(new SimpleReportNode(member.toString())); // NOPMD
+		final String simple;
+		if (unit.getOwner().isIndependent()) {
+			simple = concat("Unit of type ", unit.getKind(), ", named ",
+					unit.getName(), ", independent");
+		} else {
+			simple = concat("Unit of type ", unit.getKind(), ", named ",
+					unit.getName(),
+					", owned by " + playerNameOrYou(unit.getOwner()));
+		}
+		final AbstractReportNode retval;
+		if (unit.iterator().hasNext()) {
+			retval = new ListReportNode(
+					concat(simple, ". Members of the unit:"));
+			for (final UnitMember member : unit) {
+				if (member instanceof Worker) {
+					retval.add(produceWorkerRIR((Worker) member,
+							currentPlayer.equals(unit.getOwner())));
+				} else {
+					// TODO: what about others?
+					retval.add(new SimpleReportNode(member.toString())); // NOPMD
+				}
+				fixtures.remove(Integer.valueOf(member.getID()));
 			}
-			fixtures.remove(Integer.valueOf(member.getID()));
+		} else {
+			retval = new SimpleReportNode(simple);
 		}
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		return retval;
@@ -269,9 +279,11 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 		}
 		builder.append(CLOSE_LIST);
-		final String retval = builder.toString();
-		assert retval != null;
-		return anyUnits ? retval : "";
+		if (anyUnits) {
+			return NullCleaner.assertNotNull(builder.toString());
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -297,7 +309,11 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				retval.add(unit);
 			}
 		}
-		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
+		if (retval.getChildCount() == 0) {
+			return EmptyReportNode.NULL_NODE;
+		} else {
+			return retval;
+		}
 	}
 
 	/**

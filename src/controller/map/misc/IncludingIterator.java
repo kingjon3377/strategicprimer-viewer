@@ -16,6 +16,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.Pair;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -206,18 +207,16 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
-		final String local = startElement.getName()
-				.getLocalPart();
+		final String local = NullCleaner.valueOrDefault(startElement.getName()
+				.getLocalPart(), "a null tag");
 		if (attr == null) {
-			throw new MissingPropertyException(local == null ? "a null tag"
-					: local, attribute, startElement.getLocation()
-					.getLineNumber());
+			throw new MissingPropertyException(local, attribute, startElement
+					.getLocation().getLineNumber());
 		}
 		final String value = attr.getValue();
 		if (value == null) {
-			throw new MissingPropertyException(local == null ? "a null tag"
-					: local, attribute, startElement.getLocation()
-					.getLineNumber());
+			throw new MissingPropertyException(local, attribute, startElement
+					.getLocation().getLineNumber());
 		} else {
 			return value;
 		}

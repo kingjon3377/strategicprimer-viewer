@@ -134,21 +134,28 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final ITile destTile = getMap().getTile(dest);
 		if (sourceTile instanceof IMutableTile && destTile instanceof IMutableTile
 				&& SimpleMovement.isLandMovementPossible(destTile)) {
-			final int retval = dest.equals(point) ? 1 : SimpleMovement
-					.getMovementCost(destTile);
+			final int retval;
+			if (dest.equals(point)) {
+				retval = 1;
+			} else {
+				retval = SimpleMovement.getMovementCost(destTile);
+			}
 			removeImpl((IMutableTile) sourceTile, unit);
 			((IMutableTile) destTile).addFixture(unit);
 			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
 				final ITileCollection mapTiles = pair.first().getTiles();
 				if (!(mapTiles instanceof IMutableTileCollection)) {
-					throw new IllegalStateException("Immutable collection of tiles");
+					throw new IllegalStateException("Immutable tile collection");
 				}
-				final IMutableTile stile = ((IMutableTileCollection) mapTiles).getTile(point);
-				final IMutableTile dtile = ((IMutableTileCollection) mapTiles).getTile(dest);
+				final IMutableTile stile = ((IMutableTileCollection) mapTiles)
+						.getTile(point);
+				final IMutableTile dtile = ((IMutableTileCollection) mapTiles)
+						.getTile(dest);
 				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
-				ensureTerrain((IMutableTileCollection) mapTiles, dest, destTile.getTerrain());
+				ensureTerrain((IMutableTileCollection) mapTiles, dest,
+						destTile.getTerrain());
 				removeImpl(stile, unit);
 				dtile.addFixture(unit);
 			}
@@ -295,7 +302,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return either num + 1, if max or lower, or 0.
 	 */
 	public static int increment(final int num, final int max) {
-		return num >= max - 1 ? 0 : num + 1;
+		if (num >= max - 1) {
+			return 0;
+		} else {
+			return num + 1;
+		}
 	}
 
 	/**
@@ -307,7 +318,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return either num - 1, if 1 or higher, or max.
 	 */
 	public static int decrement(final int num, final int max) {
-		return num == 0 ? max : num - 1;
+		if (num == 0) {
+			return max;
+		} else {
+			return num - 1;
+		}
 	}
 
 	/**

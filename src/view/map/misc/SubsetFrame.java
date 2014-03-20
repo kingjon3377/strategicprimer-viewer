@@ -20,6 +20,7 @@ import model.map.SPMap;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -65,7 +66,7 @@ public class SubsetFrame extends JFrame {
 		@Override
 		public void print(@Nullable final String str) {
 			@NonNull
-			final String local = str == null ? "null" : str;
+			final String local = NullCleaner.valueOrDefault(str, "null");
 			if (!middle) {
 				super.print("<p style=\"color:white\">");
 			}
@@ -81,7 +82,7 @@ public class SubsetFrame extends JFrame {
 		@Override
 		public void println(@Nullable final String line) {
 			@NonNull
-			final String local = line == null ? "null" : line;
+			final String local = NullCleaner.valueOrDefault(line, "null");
 			if (!middle) {
 				super.print("<p style=\"color:white\">");
 			}

@@ -1,6 +1,5 @@
 package view.map.details;
 
-import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -30,6 +29,8 @@ import model.viewer.FixtureListModel;
 import model.viewer.FixtureTransferable;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import util.NullCleaner;
 
 /**
  * A visual list-based representation of the contents of a tile.
@@ -83,12 +84,13 @@ public class FixtureList extends JList<TileFixture> implements
 			if (selection.isEmpty()) {
 				return;
 			}
-			final TileFixture firstElement = selection.get(0);
-			assert firstElement != null;
-			final Transferable trans = selection.size() == 1 ? new FixtureTransferable(
-					firstElement) : new CurriedFixtureTransferable(
-					selection);
-			dge.startDrag(null, trans);
+			final TileFixture firstElement = NullCleaner
+					.assertNotNull(selection.get(0));
+			if (selection.size() == 1) {
+				dge.startDrag(null, new FixtureTransferable(firstElement));
+			} else {
+				dge.startDrag(null, new CurriedFixtureTransferable(selection));
+			}
 		}
 	}
 

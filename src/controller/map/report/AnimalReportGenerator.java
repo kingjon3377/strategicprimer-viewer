@@ -142,8 +142,15 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Animal item, final Point loc) {
-		return concat(atPoint(loc), item.isTraces() ? "tracks or traces of "
-				: (item.isTalking() ? "talking " : ""), item.getKind());
+		final String tracesOrTalking;
+		if (item.isTraces()) {
+			tracesOrTalking = "tracks or traces of ";
+		} else if (item.isTalking()) {
+			tracesOrTalking = "talking ";
+		} else {
+			tracesOrTalking = "";
+		}
+		return concat(atPoint(loc), tracesOrTalking, item.getKind());
 	}
 
 	/**
@@ -159,9 +166,16 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Animal item, final Point loc) {
-		return new SimpleReportNode(atPoint(loc),
-				item.isTraces() ? "tracks or traces of "
-						: (item.isTalking() ? "talking " : ""), item.getKind());
+		final String tracesOrTalking;
+		if (item.isTraces()) {
+			tracesOrTalking = "tracks or traces of ";
+		} else if (item.isTalking()) {
+			tracesOrTalking = "talking ";
+		} else {
+			tracesOrTalking = "";
+		}
+		return new SimpleReportNode(atPoint(loc), tracesOrTalking,
+				item.getKind());
 	}
 
 	/**

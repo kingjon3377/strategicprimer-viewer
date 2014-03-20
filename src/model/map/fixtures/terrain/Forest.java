@@ -50,8 +50,11 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 */
 	@Override
 	public String toString() {
-		return rows ? "Rows of " + trees + " trees." : "A " + trees
-				+ " forest.";
+		if (rows) {
+			return "Rows of " + trees + " trees.";
+		} else {
+			return "A " + trees + " forest.";
+		}
 	}
 
 	/**
@@ -100,7 +103,11 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 */
 	@Override
 	public int hashCode() {
-		return trees.hashCode() << (rows ? 1 : 0);
+		if (rows) {
+			return trees.hashCode() << 1;
+		} else {
+			return trees.hashCode();
+		}
 	}
 
 	/**

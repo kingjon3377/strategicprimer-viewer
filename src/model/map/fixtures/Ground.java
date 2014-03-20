@@ -56,7 +56,11 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 */
 	@Override
 	public String getDefaultImage() {
-		return exposed ? "expground.png" : "blank.png";
+		if (exposed) {
+			return "expground.png";
+		} else {
+			return "blank.png";
+		}
 	}
 
 	/**
@@ -91,7 +95,11 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 */
 	@Override
 	public int hashCode() {
-		return kind.hashCode() << (exposed ? 1 : 0);
+		if (exposed) {
+			return kind.hashCode() << 1;
+		} else {
+			return kind.hashCode();
+		}
 	}
 
 	/**
@@ -109,7 +117,11 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 */
 	@Override
 	public String toString() {
-		return (exposed ? "Exposed " : "Unexposed ") + "ground of kind " + kind;
+		if (exposed) {
+			return "Exposed ground of kind " + kind;
+		} else {
+			return "Unexposed ground of kind " + kind;
+		}
 	}
 
 	/**

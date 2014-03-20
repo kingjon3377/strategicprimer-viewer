@@ -16,6 +16,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Meadow;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -95,12 +96,18 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
-		final String cult = Boolean.toString(obj.isCultivated());
-		assert cult != null;
+		final String cult = NullCleaner.assertNotNull(Boolean.toString(obj
+				.isCultivated()));
+		final String tag;
+		if (obj.isField()) {
+			tag = "field";
+		} else {
+			tag = "meadow";
+		}
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				obj.isField() ? "field" : "meadow", Pair.of("kind",
-						obj.getKind()), Pair.of("cultivated", cult), Pair.of(
-						STATUS_ATTR, obj.getStatus().toString()));
+				tag, Pair.of("kind", obj.getKind()),
+				Pair.of("cultivated", cult), Pair.of(STATUS_ATTR, obj
+						.getStatus().toString()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

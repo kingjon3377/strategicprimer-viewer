@@ -12,6 +12,7 @@ import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -72,9 +73,11 @@ public class ExplorableReportGenerator extends
 					.replace(COLON_COMMA, ": "));
 		}
 		builder.append(CLOSE_LIST);
-		final String retval = anyCaves || anyBattles ? builder.toString() : "";
-		assert retval != null;
-		return retval;
+		if (anyCaves || anyBattles) {
+			return NullCleaner.assertNotNull(builder.toString());
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -119,7 +122,11 @@ public class ExplorableReportGenerator extends
 			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
 					COLON_COMMA, ": ")));
 		}
-		return anyCaves || anyBattles ? retval : EmptyReportNode.NULL_NODE;
+		if (anyCaves || anyBattles) {
+			return retval;
+		} else {
+			return EmptyReportNode.NULL_NODE;
+		}
 	}
 
 	/**

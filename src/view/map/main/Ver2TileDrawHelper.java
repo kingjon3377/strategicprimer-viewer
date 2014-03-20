@@ -128,10 +128,16 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private static void logLoadingError(final IOException except,
 			final String filename, final boolean fallback) {
 		if (except instanceof FileNotFoundException) {
-			LOGGER.log(fallback ? Level.SEVERE : Level.INFO, "Image "
-					+ filename + " not found", except);
+			final Level level;
+			if (fallback) {
+				level = Level.SEVERE;
+			} else {
+				level = Level.INFO;
+			}
+			LOGGER.log(level, "Image " + filename + " not found", except);
 		} else {
-			LOGGER.log(Level.SEVERE, "I/O eror while loading image " + filename, except);
+			LOGGER.log(Level.SEVERE,
+					"I/O eror while loading image " + filename, except);
 		}
 	}
 	/**
@@ -147,8 +153,11 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final ITile tile,
 			final Coordinate coordinates, final Coordinate dimensions) {
-		pen.setColor(needsFixtureColor(tile) ? getFixtureColor(tile)
-				: getTileColor(2, tile.getTerrain()));
+		if (needsFixtureColor(tile)) {
+			pen.setColor(getFixtureColor(tile));
+		} else {
+			pen.setColor(getTileColor(2, tile.getTerrain()));
+		}
 		pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 		if (hasFixture(tile)) {
 			pen.drawImage(getImageForFixture(getTopFixture(tile)),

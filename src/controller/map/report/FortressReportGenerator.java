@@ -23,6 +23,7 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -61,9 +62,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 						pair.first()));
 			}
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return anyforts ? retval : "";
+		if (anyforts) {
+			return NullCleaner.assertNotNull(builder.toString());
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -86,7 +89,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 						(Fortress) pair.second(), pair.first()));
 			}
 		}
-		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
+		if (retval.getChildCount() == 0) {
+			return EmptyReportNode.NULL_NODE;
+		} else {
+			return retval;
+		}
 	}
 
 	/**

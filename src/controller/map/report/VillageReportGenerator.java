@@ -74,8 +74,12 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				"Villages pledged to your service:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
-				final AbstractReportNode node = ((Village) pair.second())
-						.getOwner().isCurrent() ? own : others;
+				final AbstractReportNode node;
+				if (((Village) pair.second()).getOwner().isCurrent()) {
+					node = own;
+				} else {
+					node = others;
+				}
 				node.add(produceRIR(fixtures, tiles, currentPlayer,
 						(Village) pair.second(), pair.first()));
 			}
@@ -86,7 +90,11 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		if (others.getChildCount() != 0) {
 			retval.add(others);
 		}
-		return retval.getChildCount() == 0 ? EmptyReportNode.NULL_NODE : retval;
+		if (retval.getChildCount() == 0) {
+			return EmptyReportNode.NULL_NODE;
+		} else {
+			return retval;
+		}
 	}
 
 	/**
@@ -106,9 +114,14 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			final ITileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return concat(atPoint(loc), item.getName(), ", a(n) ", item.getRace(),
-				" village", item.getOwner().isIndependent() ? ", independent"
-						: ", sworn to " + playerNameOrYou(item.getOwner()));
+		if (item.getOwner().isIndependent()) {
+			return concat(atPoint(loc), item.getName(), ", a(n) ",
+					item.getRace(), " village", ", independent");
+		} else {
+			return concat(atPoint(loc), item.getName(), ", a(n) ",
+					item.getRace(), " village", ", sworn to "
+							+ playerNameOrYou(item.getOwner()));
+		}
 	}
 
 	/**
@@ -128,10 +141,14 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			final ITileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
-		return new SimpleReportNode(atPoint(loc), item.getName(), ", a(n) ",
-				item.getRace(), " village",
-				item.getOwner().isIndependent() ? ", independent"
-						: ", sworn to " + playerNameOrYou(item.getOwner()));
+		if (item.getOwner().isIndependent()) {
+			return new SimpleReportNode(atPoint(loc), item.getName(),
+					", a(n) ", item.getRace(), " village", ", independent");
+		} else {
+			return new SimpleReportNode(atPoint(loc), item.getName(),
+					", a(n) ", item.getRace(), " village", ", sworn to "
+							+ playerNameOrYou(item.getOwner()));
+		}
 	}
 
 	/**

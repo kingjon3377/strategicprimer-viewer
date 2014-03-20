@@ -6,6 +6,8 @@ import javax.swing.filechooser.FileFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * Filter out extraneous files when we're opening a map.
  *
@@ -44,9 +46,12 @@ public final class MapFileFilter extends FileFilter {
 		}
 		final int dotPos = name.lastIndexOf('.');
 
-		final String retval = name.substring(dotPos + 1).toLowerCase();
-		assert retval != null;
-		return (dotPos > 0 && dotPos < name.length() - 1) ? retval : "";
+		if (dotPos > 0 && dotPos < name.length() - 1) {
+			return NullCleaner.assertNotNull(name.substring(dotPos + 1)
+					.toLowerCase());
+		} else {
+			return "";
+		}
 	}
 
 	/**

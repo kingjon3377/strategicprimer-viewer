@@ -19,6 +19,7 @@ import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 import controller.map.misc.TownComparator;
 
@@ -68,9 +69,11 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			}
 		}
 		builder.append(CLOSE_LIST);
-		final String retval = builder.toString();
-		assert retval != null;
-		return sorted.isEmpty() ? "" : retval;
+		if (sorted.isEmpty()) {
+			return NullCleaner.assertNotNull(builder.toString());
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -109,7 +112,11 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 						loc));
 			}
 		}
-		return sorted.isEmpty() ? EmptyReportNode.NULL_NODE : retval;
+		if (sorted.isEmpty()) {
+			return EmptyReportNode.NULL_NODE;
+		} else {
+			return retval;
+		}
 	}
 
 	/**
@@ -136,12 +143,17 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 					currentPlayer, (Fortress) item, loc); // NOPMD
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), item.getName(), item.getOwner()
-					.isIndependent() ? ", an independent " : ", a ", item
-					.size().toString(), " ", item.status().toString(), " ",
-					((AbstractTown) item).kind().toString(), item.getOwner()
-							.isIndependent() ? "" : " allied with "
-							+ playerNameOrYou(item.getOwner()));
+			if (item.getOwner().isIndependent()) {
+				return concat(atPoint(loc), item.getName(),
+						", an independent ", item.size().toString(), " ", item
+								.status().toString(), " ",
+						((AbstractTown) item).kind().toString());
+			} else {
+				return concat(atPoint(loc), item.getName(), ", a ", item.size()
+						.toString(), " ", item.status().toString(), " ",
+						((AbstractTown) item).kind().toString(),
+						" allied with ", playerNameOrYou(item.getOwner()));
+			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
 		}
@@ -172,12 +184,18 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 					currentPlayer, (Fortress) item, loc); // NOPMD
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), item.getName(), item
-					.getOwner().isIndependent() ? ", an independent " : ", a ",
-					item.size().toString(), " ", item.status().toString(), " ",
-					((AbstractTown) item).kind().toString(), item.getOwner()
-							.isIndependent() ? "" : " allied with "
-							+ playerNameOrYou(item.getOwner()));
+			if (item.getOwner().isIndependent()) {
+				return new SimpleReportNode(atPoint(loc), item.getName(),
+						", an independent ", item.size().toString(), " ", item
+								.status().toString(), " ",
+						((AbstractTown) item).kind().toString());
+			} else {
+				return new SimpleReportNode(atPoint(loc), item.getName(),
+						", a ", item.size().toString(), " ", item.status()
+								.toString(), " ", ((AbstractTown) item).kind()
+								.toString(), " allied with "
+								+ playerNameOrYou(item.getOwner()));
+			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
 		}

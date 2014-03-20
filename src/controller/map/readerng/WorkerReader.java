@@ -12,6 +12,7 @@ import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -73,13 +74,12 @@ public class WorkerReader implements INodeHandler<Worker> {
 				} else if (result instanceof WorkerStats) {
 					retval.setStats((WorkerStats) result);
 				} else {
-					final String outerName = element.getName()
-							.getLocalPart();
-					final String innerName = selem.getName().getLocalPart();
-					throw new UnwantedChildException(
-							outerName == null ? "a null tag" : outerName,
-							innerName == null ? "a null tag" : innerName, event
-									.getLocation().getLineNumber());
+					final String outerName = NullCleaner.valueOrDefault(element
+							.getName().getLocalPart(), "a null tag");
+					final String innerName = NullCleaner.valueOrDefault(selem
+							.getName().getLocalPart(), "a null tag");
+					throw new UnwantedChildException(outerName, innerName,
+							event.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

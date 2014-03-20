@@ -9,6 +9,7 @@ import java.util.Set;
 import model.map.ITile;
 import model.map.Point;
 import model.map.PointFactory;
+import util.NullCleaner;
 
 /**
  * A class for things where results are by quadrant rather than randomly.
@@ -71,8 +72,7 @@ public class QuadrantTable implements EncounterTable {
 				bestKey = iter;
 			}
 		}
-		final String retval = quadrants.get(bestKey);
-		return retval == null ? "" : retval;
+		return NullCleaner.valueOrDefault(quadrants.get(bestKey), "");
 	}
 
 	/**

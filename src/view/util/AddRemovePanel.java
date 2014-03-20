@@ -14,6 +14,8 @@ import model.listeners.AddRemoveListener;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A panel to be the GUI to add or remove items from a list.
  *
@@ -97,7 +99,7 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 		} else if ("OK".equals(evt.getActionCommand())) {
 			final String text = field.getText();
 			for (final AddRemoveListener list : arListeners) {
-				list.add(category, text == null ? "null" : text);
+				list.add(category, NullCleaner.valueOrDefault(text, "null"));
 			}
 			layout.first(this);
 			field.setText("");

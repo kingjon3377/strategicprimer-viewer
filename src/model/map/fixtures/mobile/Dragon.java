@@ -45,7 +45,11 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public String toString() {
-		return kind + (kind.isEmpty() ? "dragon" : " dragon");
+		if (kind.isEmpty()) {
+			return "dragon";
+		} else {
+			return kind + " dragon";
+		}
 	}
 
 	/**

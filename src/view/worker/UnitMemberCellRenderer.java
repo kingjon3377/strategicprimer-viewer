@@ -127,8 +127,11 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 *         the associated user object
 	 */
 	@Nullable private static Object getNodeValue(final Object value) {
-		return value instanceof DefaultMutableTreeNode ? ((DefaultMutableTreeNode) value)
-				.getUserObject() : value;
+		if (value instanceof DefaultMutableTreeNode) {
+			return ((DefaultMutableTreeNode) value).getUserObject();
+		} else {
+			return value;
+		}
 	}
 
 	/**

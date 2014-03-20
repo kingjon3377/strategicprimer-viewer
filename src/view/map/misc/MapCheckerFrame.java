@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
@@ -137,17 +138,18 @@ public class MapCheckerFrame extends JFrame {
 			printParagraph(
 					"ERROR: Malformed XML in the file; see following error message for details",
 					ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			printParagraph(message == null ? "(message was null)" : message, ERROR_COLOR);
+			final String message = NullCleaner.valueOrDefault(
+					except.getLocalizedMessage(), "(message was null)");
+			printParagraph(message, ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + filename,
 					except);
 		} else if (except instanceof SPFormatException) {
-			printParagraph(
-					"ERROR: SP map format error at line " + ((SPFormatException) except).getLine()
-							+ "; see following error message for details",
-					ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			printParagraph(message == null ? "(message was null)" : message, ERROR_COLOR);
+			printParagraph("ERROR: SP map format error at line "
+					+ ((SPFormatException) except).getLine()
+					+ "; see following error message for details", ERROR_COLOR);
+			final String message = NullCleaner.valueOrDefault(
+					except.getLocalizedMessage(), "(message was null)");
+			printParagraph(message, ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, "SP map format eror reading " + filename,
 					except);
 		} else {

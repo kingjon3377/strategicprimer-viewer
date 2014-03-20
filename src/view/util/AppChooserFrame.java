@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import controller.map.drivers.AdvancementStart;
 import controller.map.drivers.ISPDriver;
@@ -117,8 +118,8 @@ public class AppChooserFrame extends JFrame {
 			} catch (InstantiationException | IllegalAccessException
 					| DriverFailedException except) {
 				final String msg = except.getMessage();
-				final String message = msg == null ? "Exception with null message"
-						: msg;
+				final String message = NullCleaner.valueOrDefault(msg,
+						"Exception with null message");
 				LOGGER.log(Level.SEVERE, message, except.getCause());
 				ErrorShower.showErrorDialog(outer, message);
 			}

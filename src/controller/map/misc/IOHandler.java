@@ -87,8 +87,12 @@ public class IOHandler implements ActionListener {
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) { // it wouldn't be @Nullable except that the JDK
 								// isn't annotated
-			final Component source = event.getSource() instanceof Component ? (Component) event
-					.getSource() : null; // NOPMD
+			final Component source; // NOPMD
+			if (event.getSource() instanceof Component) {
+				source = (Component) event.getSource();
+			} else {
+				source = null;
+			}
 			if ("Load".equals(event.getActionCommand())) {
 				handleLoadMenu(source);
 			} else if ("Save".equals(event.getActionCommand())) {

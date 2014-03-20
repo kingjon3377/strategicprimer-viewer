@@ -151,22 +151,31 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	@Override
 	public String toString() {
-		return owner.isIndependent() ? "Independent unit of type " + kind
-				+ ", named " + name : "Unit of type " + kind
-				+ ", belonging to " + owner + ", named " + name;
+		if (owner.isIndependent()) {
+			return "Independent unit of type " + kind + ", named " + name;
+		} else {
+			return "Unit of type " + kind + ", belonging to " + owner
+					+ ", named " + name;
+		}
 	}
 
 	/**
 	 * TODO: Use a StringBuilder, specifying the size.
+	 * 
+	 * FIXME: Should almost certainly be private
 	 *
 	 * @param player the container's player
 	 * @return a briefer String representation of the Unit, only naming the
 	 *         owner if different
 	 */
 	public String toStringInner(final Player player) {
-		return owner.equals(player) ? name + " (" + kind + ')' : (owner
-				.isIndependent() ? name + ", an independent " + kind : name
-				+ " (" + kind + "), belonging to " + owner);
+		if (owner.equals(player)) {
+			return name + " (" + kind + ')';
+		} else if (owner.isIndependent()) {
+			return name + ", an independent " + kind;
+		} else {
+			return name + " (" + kind + "), belonging to " + owner;
+		}
 	}
 
 	/**
@@ -325,7 +334,11 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	@Override
 	public String shortDesc() {
-		return "a(n) " + getKind() + " unit belonging to "
-				+ (owner.isCurrent() ? "you" : owner.getName());
+		if (owner.isCurrent()) {
+			return "a(n) " + getKind() + " unit belonging to you";
+		} else {
+			return "a(n) " + getKind() + " unit belonging to "
+					+ owner.getName();
+		}
 	}
 }

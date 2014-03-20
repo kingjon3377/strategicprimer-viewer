@@ -26,6 +26,8 @@ import model.viewer.ZOrderFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A component to display the map, even a large one, without the performance
  * problems the previous solutions had. (I hope.)
@@ -98,7 +100,11 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Override
 	@Nullable
 	public String getToolTipText(@Nullable final MouseEvent event) {
-		return event == null ? null : cml.getToolTipText(event);
+		if (event == null) {
+			return null;
+		} else {
+			return cml.getToolTipText(event);
+		}
 	}
 
 	/**
@@ -172,9 +178,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
 		final VisibleDimensions dim = getMapModel().getDimensions();
-		return (rect == null) ? new Rectangle(0, 0,
+		return NullCleaner.valueOrDefault(rect, new Rectangle(0, 0,
 				(dim.getMaximumCol() - dim.getMinimumCol()) * tsize,
-				(dim.getMaximumRow() - dim.getMinimumRow()) * tsize) : rect;
+				(dim.getMaximumRow() - dim.getMinimumRow()) * tsize));
 	}
 
 	/**

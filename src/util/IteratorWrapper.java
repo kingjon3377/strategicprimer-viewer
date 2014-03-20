@@ -73,7 +73,6 @@ public class IteratorWrapper<T> implements Iterable<T> {
 	 */
 	@Override
 	public String toString() {
-		final String retval = iter.toString();
-		return retval == null ? "IteratorWrapper" : retval;
+		return NullCleaner.valueOrDefault(iter.toString(), "IteratorWrapper");
 	}
 }

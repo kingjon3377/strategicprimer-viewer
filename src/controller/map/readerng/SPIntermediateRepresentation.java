@@ -12,6 +12,7 @@ import model.map.HasImage;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.EqualsAny;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -111,8 +112,7 @@ public class SPIntermediateRepresentation {
 		if (attrs.contains(name)) {
 			final int index = attrs.indexOf(name);
 			attrs.remove(index);
-			final String retval = vals.remove(index);
-			return retval == null ? "" : retval; // NOPMD
+			return NullCleaner.valueOrDefault(vals.remove(index), "");
 		} else {
 			return "";
 		}
