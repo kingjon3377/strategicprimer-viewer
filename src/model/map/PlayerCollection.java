@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerCollection implements IMutablePlayerCollection {
+public final class PlayerCollection implements IMutablePlayerCollection {
 	/**
 	 * The collection this class wraps.
 	 */

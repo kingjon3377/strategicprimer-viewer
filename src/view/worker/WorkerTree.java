@@ -49,7 +49,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * @param orderCheck whether we should visually warn if orders contain
 	 *        "todo" or "fixme" or if a unit named "unassigned" is nonempty
 	 */
-	public WorkerTree(final Player player, final IWorkerModel model, final boolean orderCheck) {
+	public WorkerTree(final Player player, final IWorkerModel model,
+			final boolean orderCheck) {
 		tmodel = new WorkerTreeModelAlt(player, model);
 		setModel(tmodel);
 		setRootVisible(false);
@@ -60,7 +61,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		setTransferHandler(new WorkerTreeTransferHandler(smodel,
 				tmodel));
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
-		addMouseListener(new TreeMouseListener(model.getMap().getPlayers(), tmodel, this));
+		addMouseListener(new TreeMouseListener(model.getMap().getPlayers(),
+				tmodel, this));
 		ToolTipManager.sharedInstance().registerComponent(this);
 		tsl = new WorkerTreeSelectionListener(tmodel);
 		addTreeSelectionListener(tsl);
@@ -155,7 +157,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 */
 	@Override
 	@Nullable
-	public String getToolTipText(@Nullable final MouseEvent evt) {
+	public final String getToolTipText(@Nullable final MouseEvent evt) {
 		if (evt == null || getRowForLocation(evt.getX(), evt.getY()) == -1) {
 			return null; // NOPMD
 		}
@@ -205,8 +207,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * A selection listener.
 	 * @author Jonathan Lovelace
 	 */
-	private static class WorkerTreeSelectionListener implements TreeSelectionListener,
-			UnitMemberSelectionSource, UnitSelectionSource {
+	private static class WorkerTreeSelectionListener implements
+			TreeSelectionListener, UnitMemberSelectionSource,
+			UnitSelectionSource {
 		/**
 		 * The tree model to refer to.
 		 */
@@ -316,7 +319,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * @param unit passed to the tree model
 	 */
 	@Override
-	public void addNewUnit(final Unit unit) {
+	public final void addNewUnit(final Unit unit) {
 		tmodel.addNewUnit(unit);
 	}
 	/**
@@ -324,35 +327,35 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * @param newPlayer passed to tree model
 	 */
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public final void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		tmodel.playerChanged(old, newPlayer);
 	}
 	/**
 	 * @param list the listener to add
 	 */
 	@Override
-	public void addUnitSelectionListener(final UnitSelectionListener list) {
+	public final void addUnitSelectionListener(final UnitSelectionListener list) {
 		tsl.addUnitSelectionListener(list);
 	}
 	/**
 	 * @param list the listener to remove
 	 */
 	@Override
-	public void removeUnitSelectionListener(final UnitSelectionListener list) {
+	public final void removeUnitSelectionListener(final UnitSelectionListener list) {
 		tsl.removeUnitSelectionListener(list);
 	}
 	/**
 	 * @param list the listener to add
 	 */
 	@Override
-	public void addUnitMemberListener(final UnitMemberListener list) {
+	public final void addUnitMemberListener(final UnitMemberListener list) {
 		tsl.addUnitMemberListener(list);
 	}
 	/**
 	 * @param list the listener to remove
 	 */
 	@Override
-	public void removeUnitMemberListener(final UnitMemberListener list) {
+	public final void removeUnitMemberListener(final UnitMemberListener list) {
 		tsl.removeUnitMemberListener(list);
 	}
 }

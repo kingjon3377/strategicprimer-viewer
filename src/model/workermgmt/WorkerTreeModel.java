@@ -23,7 +23,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerTreeModel implements IWorkerTreeModel {
+public final class WorkerTreeModel implements IWorkerTreeModel {
 	/**
 	 * Logger.
 	 */

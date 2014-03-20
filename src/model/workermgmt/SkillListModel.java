@@ -22,7 +22,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class SkillListModel extends DefaultListModel<Skill> implements
+public final class SkillListModel extends DefaultListModel<Skill> implements
 		CompletionSource, AddRemoveListener, JobSelectionListener,
 		LevelGainListener {
 	/**

@@ -35,7 +35,7 @@ import view.util.SplitWithWeights;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorerSelectingPanel extends BorderedPanel implements
+public final class ExplorerSelectingPanel extends BorderedPanel implements
 		ListSelectionListener, PlayerChangeSource, ActionListener,
 		CompletionSource {
 	/**
@@ -62,7 +62,8 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 		emodel.addMapChangeListener(plmodel);
 		playerList = new JList<>(plmodel);
 		playerList.addListSelectionListener(this);
-		final ExplorationUnitListModel unitListModel = new ExplorationUnitListModel(emodel);
+		final ExplorationUnitListModel unitListModel = new ExplorationUnitListModel(
+				emodel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
 		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,
@@ -83,15 +84,23 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	private static JLabel label(final String string) {
 		return new JLabel(string);
 	}
-
+	/**
+	 * The minimum length of the HTML wrapper.
+	 */
+	private static final int MIN_HTML_LEN = "<html><body></body></html>"
+			.length();
+	/**
+	 * The length of the additional HTML tags for each paragraph.
+	 */
+	private static final int HTML_PAR_LEN = "<p></p>".length();
 	/**
 	 * @param paras Strings, each of which should be put in its own paragraph.
 	 * @return them wrapped in HTML.
 	 */
 	private static String html(final String... paras) {
-		int len = 30;
+		int len = MIN_HTML_LEN;
 		for (final String para : paras) {
-			len += para.length() + 8;
+			len += para.length() + HTML_PAR_LEN;
 		}
 		final StringBuilder builder = new StringBuilder(len)
 				.append("<html><body>");
@@ -168,7 +177,7 @@ public class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @param list the listener to add
 	 */
 	@Override
-	public final void addPlayerChangeListener(final PlayerChangeListener list) {
+	public void addPlayerChangeListener(final PlayerChangeListener list) {
 		listeners.add(list);
 	}
 

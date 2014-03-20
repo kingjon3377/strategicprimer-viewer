@@ -32,7 +32,7 @@ public class ApplyButtonHandler implements ActionListener {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
+	public final void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt != null) {
 			if ("Apply".equals(evt.getActionCommand())) {
 				obj.apply();

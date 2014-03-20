@@ -37,7 +37,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * @return a list of that player's units
 	 */
 	@Override
-	public List<Unit> getUnits(final Player player) {
+	public final List<Unit> getUnits(final Player player) {
 		final List<Unit> retval = new ArrayList<>();
 		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
@@ -72,7 +72,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * @param unit the unit to add
 	 */
 	@Override
-	public void addUnit(final Unit unit) {
+	public final void addUnit(final Unit unit) {
 		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point == null) {

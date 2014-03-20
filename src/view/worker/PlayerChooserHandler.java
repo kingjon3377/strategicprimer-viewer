@@ -25,7 +25,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerChooserHandler implements ActionListener, PlayerChangeSource {
+public final class PlayerChooserHandler implements ActionListener,
+		PlayerChangeSource {
 	/**
 	 * The frame to attach the dialog to.
 	 */

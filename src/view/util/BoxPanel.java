@@ -38,7 +38,7 @@ public class BoxPanel extends JPanel {
 	/**
 	 * Add "glue" between components.
 	 */
-	public void addGlue() {
+	public final void addGlue() {
 		if (horizontal) {
 			add(Box.createHorizontalGlue());
 		} else {
@@ -51,7 +51,7 @@ public class BoxPanel extends JPanel {
 	 *
 	 * @param dim how big to make it in the dimension that counts.
 	 */
-	public void addRigidArea(final int dim) {
+	public final void addRigidArea(final int dim) {
 		if (horizontal) {
 			add(Box.createRigidArea(new Dimension(dim, 0)));
 		} else {

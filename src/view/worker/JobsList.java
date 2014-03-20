@@ -26,8 +26,9 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class JobsList extends JList<Job> implements ListSelectionListener,
-		JobSelectionSource, AddRemoveListener, UnitMemberListener, CompletionListener {
+public final class JobsList extends JList<Job> implements
+		ListSelectionListener, JobSelectionSource, AddRemoveListener,
+		UnitMemberListener, CompletionListener {
 	/**
 	 * Constructor.
 	 */
@@ -104,10 +105,10 @@ public class JobsList extends JList<Job> implements ListSelectionListener,
 	 */
 	@Override
 	public void stopWaitingOn(final boolean end) {
-		if (!end) {
-			setSelectedIndex(0);
-		} else {
+		if (end) {
 			setSelectedIndex(lmodel.size() - 1);
+		} else {
+			setSelectedIndex(0);
 		}
 	}
 }

@@ -399,7 +399,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addSelectionChangeListener(final SelectionChangeListener list) {
+	public final void addSelectionChangeListener(final SelectionChangeListener list) {
 		scListeners.add(list);
 	}
 
@@ -407,7 +407,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removeSelectionChangeListener(final SelectionChangeListener list) {
+	public final void removeSelectionChangeListener(final SelectionChangeListener list) {
 		scListeners.remove(list);
 	}
 
@@ -420,7 +420,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param listener the listener to add
 	 */
 	@Override
-	public void addMovementCostListener(final MovementCostListener listener) {
+	public final void addMovementCostListener(final MovementCostListener listener) {
 		mcListeners.add(listener);
 	}
 
@@ -428,7 +428,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param listener the listener to remove
 	 */
 	@Override
-	public void removeMovementCostListener(final MovementCostListener listener) {
+	public final void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
 	/**

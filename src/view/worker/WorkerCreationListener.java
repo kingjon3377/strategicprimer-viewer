@@ -26,7 +26,7 @@ import controller.map.misc.IDFactory;
  *
  * @author Jonathan Lovelace
  */
-public class WorkerCreationListener implements ActionListener,
+public final class WorkerCreationListener implements ActionListener,
 		UnitSelectionListener, NewWorkerListener {
 	/**
 	 * The string "null".
@@ -133,7 +133,7 @@ public class WorkerCreationListener implements ActionListener,
 			LOGGER.warning("New worker created when no unit selected");
 			ErrorShower
 					.showErrorDialog(null,
-							"The new worker was not added to a unit because no unit was selected.");
+							"As no unit was selected, the new worker was not added to a unit.");
 		} else {
 			tmodel.addUnitMember(selUnit, worker);
 		}

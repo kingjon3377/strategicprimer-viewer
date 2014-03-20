@@ -24,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class JobsTree extends JTree implements TreeSelectionListener,
+public final class JobsTree extends JTree implements TreeSelectionListener,
 		SkillSelectionSource, AddRemoveListener, UnitMemberListener {
 	/**
 	 * Constructor.

@@ -22,8 +22,8 @@ import view.util.ErrorShower;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureListModel extends DefaultListModel<TileFixture> implements
-		SelectionChangeListener {
+public final class FixtureListModel extends DefaultListModel<TileFixture>
+		implements SelectionChangeListener {
 	/**
 	 * The current tile.
 	 */
@@ -44,7 +44,8 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 * @param newTile the newly selected tile
 	 */
 	@Override
-	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
+	public void selectedTileChanged(@Nullable final ITile old,
+			final ITile newTile) {
 		tile = newTile;
 		this.clear();
 		if (!TileType.NotVisible.equals(tile.getTerrain())) {
@@ -112,9 +113,8 @@ public class FixtureListModel extends DefaultListModel<TileFixture> implements
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof FixtureListModel && ((FixtureListModel) obj).tile
-						.equals(tile));
+		return this == obj || obj instanceof FixtureListModel
+				&& ((FixtureListModel) obj).tile.equals(tile);
 	}
 
 	/**

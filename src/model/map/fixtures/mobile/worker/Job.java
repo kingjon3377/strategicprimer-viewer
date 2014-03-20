@@ -74,7 +74,7 @@ public class Job implements Iterable<Skill>, HasName {
 	 *         associated with the job
 	 */
 	@Override
-	public Iterator<Skill> iterator() {
+	public final Iterator<Skill> iterator() {
 		final Iterator<Skill> iter = skillSet.iterator();
 		assert iter != null;
 		return iter;

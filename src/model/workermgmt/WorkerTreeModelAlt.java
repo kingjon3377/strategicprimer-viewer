@@ -50,7 +50,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param newOwner the new owner
 	 */
 	@Override
-	public void moveMember(final UnitMember member, final Unit old,
+	public final void moveMember(final UnitMember member, final Unit old,
 			final Unit newOwner) {
 		final PlayerNode pnode = (PlayerNode) root;
 		final Player player = (Player) pnode.getUserObject();
@@ -146,7 +146,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param <T> the type parameter
 	 * @author Jonathan Lovelace
 	 */
-	public static class EnumerationWrapper<T> implements Iterator<T> {
+	public static final class EnumerationWrapper<T> implements Iterator<T> {
 		/**
 		 * @param enumer the object we're wrapping.
 		 */
@@ -161,7 +161,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 					@Override
 					public T nextElement() {
 						throw new NoSuchElementException(
-								"Empty enumeration, replacing a null argument, has no elements");
+								"No elements in empty enumeration (replacing a null argument)");
 					}
 				};
 			} else {
@@ -191,7 +191,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		@Nullable
 		@Override
 		public T next() throws NoSuchElementException { // NOPMD: throws clause
-														// required by superclass
+														// required by 
+														// superclass
 			return wrapped.nextElement();
 		}
 
@@ -218,7 +219,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param unit the unit to add
 	 */
 	@Override
-	public void addUnit(final Unit unit) {
+	public final void addUnit(final Unit unit) {
 		model.addUnit(unit);
 		final UnitNode node = new UnitNode(unit);
 		((DefaultMutableTreeNode) getRoot()).add(node);
@@ -233,7 +234,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param unit the unit to add
 	 */
 	@Override
-	public void addNewUnit(final Unit unit) {
+	public final void addNewUnit(final Unit unit) {
 		addUnit(unit);
 	}
 
@@ -241,7 +242,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * Handle notification that a new map was loaded.
 	 */
 	@Override
-	public void mapChanged() {
+	public final void mapChanged() {
 		setRoot(new PlayerNode(model.getMap().getPlayers().getCurrentPlayer(),
 				model));
 	}
@@ -251,7 +252,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param newPlayer the new current player
 	 */
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public final void playerChanged(@Nullable final Player old,
+			final Player newPlayer) {
 		setRoot(new PlayerNode(newPlayer, model));
 	}
 
@@ -261,7 +263,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *         itself
 	 */
 	@Override
-	public Object getModelObject(final Object obj) {
+	public final Object getModelObject(final Object obj) {
 		if (obj instanceof DefaultMutableTreeNode) {
 			Object retval = ((DefaultMutableTreeNode) obj).getUserObject();
 			assert retval != null;
@@ -278,7 +280,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param member the member to add to it
 	 */
 	@Override
-	public void addUnitMember(final Unit unit, final UnitMember member) {
+	public final void addUnitMember(final Unit unit, final UnitMember member) {
 		final PlayerNode pnode = (PlayerNode) root;
 		final IteratorWrapper<UnitNode> units = new IteratorWrapper<>(
 				new EnumerationWrapper<UnitNode>(pnode.children()));
@@ -304,7 +306,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return a String representation of the object
 	 */
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "WorkerTreeModelAlt";
 	}
 }

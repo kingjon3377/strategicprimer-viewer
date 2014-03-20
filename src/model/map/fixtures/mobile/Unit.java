@@ -104,7 +104,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 *
 	 * @param member the member to remove
 	 */
-	public void removeMember(final UnitMember member) {
+	public final void removeMember(final UnitMember member) {
 		members.remove(member);
 	}
 
@@ -112,7 +112,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 * @return an iterator over the unit's members
 	 */
 	@Override
-	public Iterator<UnitMember> iterator() {
+	public final Iterator<UnitMember> iterator() {
 		final Iterator<UnitMember> iter = members.iterator();
 		assert iter != null;
 		return iter;
@@ -238,7 +238,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 * @return a UID for the fixture.
 	 */
 	@Override
-	public int getID() {
+	public final int getID() {
 		return id;
 	}
 
@@ -290,7 +290,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	/**
 	 * @param newOrders the unit's new orders
 	 */
-	public void setOrders(final String newOrders) {
+	public final void setOrders(final String newOrders) {
 		orders = newOrders;
 	}
 
@@ -310,7 +310,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
-	public void setImage(final String img) {
+	public final void setImage(final String img) {
 		image = img;
 	}
 

@@ -112,7 +112,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 * @param evt the event to handle.
 	 */
 	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
+	public final void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt != null && BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);
@@ -256,7 +256,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addCompletionListener(final CompletionListener list) {
+	public final void addCompletionListener(final CompletionListener list) {
 		cListeners.add(list);
 	}
 
@@ -264,7 +264,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removeCompletionListener(final CompletionListener list) {
+	public final void removeCompletionListener(final CompletionListener list) {
 		cListeners.remove(list);
 	}
 }

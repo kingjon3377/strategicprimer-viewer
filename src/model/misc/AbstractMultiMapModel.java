@@ -29,7 +29,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @param filename the name of the file it was loaded from
 	 */
 	@Override
-	public void addSubordinateMap(final IMap map, final String filename) {
+	public final void addSubordinateMap(final IMap map, final String filename) {
 		subordinateMaps.put(map, filename);
 	}
 
@@ -37,7 +37,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @param map the subordinate map to remove
 	 */
 	@Override
-	public void removeSubordinateMap(final IMap map) {
+	public final void removeSubordinateMap(final IMap map) {
 		subordinateMaps.remove(map);
 	}
 
@@ -45,7 +45,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @return an iterator over the subordinate maps
 	 */
 	@Override
-	public Iterable<Pair<IMap, String>> getSubordinateMaps() {
+	public final Iterable<Pair<IMap, String>> getSubordinateMaps() {
 		return new SetPairConverter<>(subordinateMaps);
 	}
 
@@ -54,7 +54,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 */
 	// @SuppressWarnings("unchecked")
 	@Override
-	public Iterable<Pair<IMap, String>> getAllMaps() {
+	public final Iterable<Pair<IMap, String>> getAllMaps() {
 		final List<Pair<IMap, String>> retval = new ArrayList<>();
 		retval.add(Pair.of((IMap) getMap(), getMapFilename()));
 		for (final Pair<IMap, String> pair : getSubordinateMaps()) {

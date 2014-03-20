@@ -28,7 +28,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class JobTreeModel implements TreeModel, UnitMemberListener,
+public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		AddRemoveListener {
 	/**
 	 * Constructor.

@@ -86,7 +86,7 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
+	public final void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt == null) {
 			return;
 		} else if ("+".equals(evt.getActionCommand())) {
@@ -117,14 +117,14 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 	/**
 	 * @param list a listener to add
 	 */
-	public void addAddRemoveListener(final AddRemoveListener list) {
+	public final void addAddRemoveListener(final AddRemoveListener list) {
 		arListeners.add(list);
 	}
 
 	/**
 	 * @param list a list to remove
 	 */
-	public void removeAddRemoveListener(final AddRemoveListener list) {
+	public final void removeAddRemoveListener(final AddRemoveListener list) {
 		arListeners.remove(list);
 	}
 }

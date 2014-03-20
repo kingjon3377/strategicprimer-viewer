@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class JobsListModel extends DefaultListModel<Job> implements
+public final class JobsListModel extends DefaultListModel<Job> implements
 		UnitMemberListener, CompletionSource, AddRemoveListener {
 	/**
 	 * A non-null "null" worker. Adjusted to prevent modification.

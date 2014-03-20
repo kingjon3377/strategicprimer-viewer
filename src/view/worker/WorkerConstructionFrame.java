@@ -125,7 +125,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, /
 	 * @param evt the action to handle.
 	 */
 	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
+	public final void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt == null) {
 			return;
 		} else if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
@@ -275,7 +275,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, /
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addNewWorkerListener(final NewWorkerListener list) {
+	public final void addNewWorkerListener(final NewWorkerListener list) {
 		nwListeners.add(list);
 	}
 
@@ -283,7 +283,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, /
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removeNewWorkerListener(final NewWorkerListener list) {
+	public final void removeNewWorkerListener(final NewWorkerListener list) {
 		nwListeners.remove(list);
 	}
 }

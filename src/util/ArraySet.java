@@ -15,7 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> the type of thing stored in the set
  */
-public class ArraySet<T> implements Set<T> { /**
+public final class ArraySet<T> implements Set<T> { /**
 	 * The backing array.
 	 */
 	private final List<T> impl = new ArrayList<>();
@@ -119,7 +119,7 @@ public class ArraySet<T> implements Set<T> { /**
 
 	/**
 	 * @param coll a collection
-	 * @return the result of addin gall of them
+	 * @return the result of adding all of them
 	 *
 	 * @see java.util.Set#addAll(java.util.Collection)
 	 */

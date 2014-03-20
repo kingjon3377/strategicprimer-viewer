@@ -57,7 +57,7 @@ public class MultiIOHandler extends IOHandler {
 	 * @param event the event to handle
 	 */
 	@Override
-	public void actionPerformed(@Nullable final ActionEvent event) {
+	public final void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			final Component source; // NOPMD
 			if (event.getSource() instanceof Component) {

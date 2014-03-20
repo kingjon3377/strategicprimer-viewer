@@ -56,7 +56,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @return the main map
 	 */
 	@Override
-	public MapView getMap() {
+	public final MapView getMap() {
 		return map;
 	}
 
@@ -64,7 +64,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @return the dimensions and version of the map
 	 */
 	@Override
-	public MapDimensions getMapDimensions() {
+	public final MapDimensions getMapDimensions() {
 		return mapDim;
 	}
 
@@ -73,7 +73,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 *         be saved
 	 */
 	@Override
-	public String getMapFilename() {
+	public final String getMapFilename() {
 		return filename;
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @param list the listener to add
 	 */
 	@Override
-	public void addMapChangeListener(final MapChangeListener list) {
+	public final void addMapChangeListener(final MapChangeListener list) {
 		mcListeners.add(list);
 	}
 
@@ -93,7 +93,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @param list the listener to remove
 	 */
 	@Override
-	public void removeMapChangeListener(final MapChangeListener list) {
+	public final void removeMapChangeListener(final MapChangeListener list) {
 		mcListeners.remove(list);
 	}
 
@@ -108,7 +108,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @param list the listener to add
 	 */
 	@Override
-	public void addVersionChangeListener(final VersionChangeListener list) {
+	public final void addVersionChangeListener(final VersionChangeListener list) {
 		vcListeners.add(list);
 	}
 
@@ -118,7 +118,8 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @param list the listener to remove
 	 */
 	@Override
-	public void removeVersionChangeListener(final VersionChangeListener list) {
+	public final void removeVersionChangeListener(
+			final VersionChangeListener list) {
 		vcListeners.remove(list);
 	}
 }

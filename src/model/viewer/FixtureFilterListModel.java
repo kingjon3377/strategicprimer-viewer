@@ -13,7 +13,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureFilterListModel extends
+public final class FixtureFilterListModel extends
 		AbstractListModel<Class<? extends TileFixture>> {
 	/**
 	 * The list backing this model.

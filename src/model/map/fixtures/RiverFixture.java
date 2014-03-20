@@ -19,7 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class RiverFixture implements TileFixture, Iterable<River>,
+public final class RiverFixture implements TileFixture, Iterable<River>,
 		Subsettable<RiverFixture> {
 	/**
 	 * Constructor.

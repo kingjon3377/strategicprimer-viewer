@@ -24,7 +24,7 @@ import util.Pair;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class SPIntermediateRepresentation {
+public final class SPIntermediateRepresentation {
 	/**
 	 * Constructor.
 	 *
@@ -72,7 +72,7 @@ public class SPIntermediateRepresentation {
 	 * @param name the name of the attribute
 	 * @param value its value
 	 */
-	public final void addAttribute(final String name, final String value) {
+	public void addAttribute(final String name, final String value) {
 		// attrs.put(name, value);
 		// attrs.add(Pair.of(name, value));
 		if (attrs.contains(name)) {
