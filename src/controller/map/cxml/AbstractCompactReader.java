@@ -40,7 +40,13 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected AbstractCompactReader() {
 		// Nothing to do
 	}
-
+	
+	/**
+	 * The amount of buffer memory to allocate for the name of each tag. We're
+	 * aiming to err on the side of overestimation, to avoid resizing the
+	 * buffer.
+	 */
+	private static final int MAX_TAG_LEN = 10; 
 	/**
 	 * Require that an element be one of the specified tags.
 	 *
@@ -50,18 +56,17 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static void requireTag(final StartElement element,
 			final String... tags) {
 		final String localName = element.getName().getLocalPart();
-		// FIXME: This gives a pass to nul tags. Not that one should be possible ...
+		// FIXME: This gives a pass to null tags. Not that one should be
+		// possible ...
 		if (localName != null && !(EqualsAny.equalsAny(localName, tags))) {
-			final String line = Integer.toString(element.getLocation()
-					.getLineNumber());
-			final int len = 60 + localName.length() + line.length() + tags.length
-					* 10; // Overestimate just in case
+			final int line = element.getLocation().getLineNumber();
+			final String base = String
+					.format("Unexpected tag %s on line %d, expected one of the following: ",
+							localName, Integer.valueOf(line));
+			final int len = base.length() + tags.length
+					* MAX_TAG_LEN; // Overestimate just in case
 			final StringBuilder sbuild = new StringBuilder(len)
-					.append("Unexpected tag ");
-			sbuild.append(localName);
-			sbuild.append(" on line ");
-			sbuild.append(line);
-			sbuild.append(", expected one of the following: ");
+					.append(base);
 			for (final String tag : tags) {
 				sbuild.append(tag);
 				sbuild.append(", ");

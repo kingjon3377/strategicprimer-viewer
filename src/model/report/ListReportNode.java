@@ -9,20 +9,35 @@ import javax.swing.tree.TreeNode;
  */
 public class ListReportNode extends AbstractReportNode {
 	/**
+	 * The length of the boilerplate even if we have no text and no children.
+	 */
+	private static final int BOILERPLATE_LEN = "\n<ul>\n</ul>\n".length();
+	
+	/**
+	 * The estimated size of a child: half a kilobyte, which is absurdly high,
+	 * but we *really* don't want to resize the buffer!
+	 */
+	private static final int CHILD_BUF_SIZE = 512;
+	/**
+	 * The length of the boilerplate per child.
+	 */
+	private static final int PER_CHILD_BOILERPLATE = "<li></li>\n".length();
+	/**
 	 * @param text the header text
 	 */
 	public ListReportNode(final String text) {
 		super(text);
 	}
-
+	
 	/**
 	 * @return the HTML representation of the node.
 	 */
 	@Override
 	public String produce() {
 		// Assume each child is half a K.
-		final StringBuilder builder = new StringBuilder(getText().length() + 10
-				+ getChildCount() * 512).append(getText());
+		final StringBuilder builder = new StringBuilder(getText().length()
+				+ BOILERPLATE_LEN + getChildCount() * CHILD_BUF_SIZE)
+				.append(getText());
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -64,12 +79,13 @@ public class ListReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public int size() {
-		int retval = 16 + getText().length();
+		int retval = BOILERPLATE_LEN + getText().length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof AbstractReportNode) {
 				// ESCA-JAVA0076:
-				retval += ((AbstractReportNode) child).size() + 10;
+				retval += ((AbstractReportNode) child).size()
+						+ PER_CHILD_BOILERPLATE;
 			}
 		}
 		return retval;

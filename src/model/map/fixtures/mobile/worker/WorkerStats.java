@@ -13,6 +13,11 @@ import util.NullCleaner;
  *
  */
 public class WorkerStats {
+	/**
+	 * The basis of stats: every two points more than this is worth +1, and
+	 * every two points less is worth -1.
+	 */
+	private static final int STAT_BASIS = 10;
 	// ESCA-JAVA0138:
 	/**
 	 * Constructor.
@@ -191,13 +196,16 @@ public class WorkerStats {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this
-				|| (obj instanceof WorkerStats && hp == ((WorkerStats) obj).hp
-						&& maxHP == ((WorkerStats) obj).maxHP
-						&& str == ((WorkerStats) obj).str
-						&& dex == ((WorkerStats) obj).dex
-						&& con == ((WorkerStats) obj).con
-						&& intel == ((WorkerStats) obj).intel
-						&& wis == ((WorkerStats) obj).wis && cha == ((WorkerStats) obj).cha);
+				|| (obj instanceof WorkerStats && equalsImpl((WorkerStats) obj));
+	}
+	/**
+	 * @param obj another stats object
+	 * @return whether it's equal to this.
+	 */
+	private boolean equalsImpl(final WorkerStats obj) {
+		return hp == obj.hp && maxHP == obj.maxHP && str == obj.str
+				&& dex == obj.dex && con == obj.con && intel == obj.intel
+				&& wis == obj.wis && cha == obj.cha;
 	}
 
 	/**
@@ -205,7 +213,8 @@ public class WorkerStats {
 	 */
 	@Override
 	public int hashCode() {
-		return str + dex << 3 + con << 6 + intel << 9 + wis << 12 + cha << 15 + hp << 18 + maxHP << 22;
+		return (str + dex << 3 + con << 6 + intel << 9)
+				+ (wis << 12 + cha << 15 + hp << 18 + maxHP << 22);
 	}
 
 	/**
@@ -213,10 +222,11 @@ public class WorkerStats {
 	 * @return a String representing the modifier it conveys.
 	 */
 	public static String getModifierString(final int stat) {
-		final int modifier = (stat - 10) / 2;
-		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
+		final int modifier = (stat - STAT_BASIS) / 2;
+		final String modStr = NullCleaner.assertNotNull(Integer
+				.toString(modifier));
 		if (modifier >= 0) {
-			return '+' + modStr;
+			return '+' + modStr; // NOPMD
 		} else {
 			return modStr;
 		}
@@ -244,8 +254,6 @@ public class WorkerStats {
 		builder.append("\nCha: ");
 		builder.append(cha);
 		builder.append('\n');
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

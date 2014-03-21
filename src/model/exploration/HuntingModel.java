@@ -132,18 +132,26 @@ public class HuntingModel {
 		}
 		list.add(string);
 	}
+	
 	/**
-	 * @param point a point
-	 * @param items how many items to limit the list to
-	 * @return a list of hunting results from the surrounding area. About half will be "nothing"
+	 * @param point
+	 *            a point
+	 * @param items
+	 *            how many items to limit the list to
+	 * @return a list of hunting results from the surrounding area. About half
+	 *         will be "nothing"
 	 */
 	public List<String> hunt(final Point point, final int items) {
 		return chooseFromMap(point, items, animals);
 	}
+	
 	/**
-	 * @param point a point
-	 * @param items how many items to limit the list to
-	 * @return a list of fishing results from the surrounding area. About half will be "nothing"
+	 * @param point
+	 *            a point
+	 * @param items
+	 *            how many items to limit the list to
+	 * @return a list of fishing results from the surrounding area. About half
+	 *         will be "nothing"
 	 */
 	public List<String> fish(final Point point, final int items) {
 		return chooseFromMap(point, items, fish);
@@ -158,7 +166,8 @@ public class HuntingModel {
 	 */
 	public List<String> gather(final Point point, final int items) {
 		final List<String> choices = new ArrayList<>();
-		for (final Point local : new SurroundingPointIterable(point, dims)) {
+		final Iterable<Point> iter = new SurroundingPointIterable(point, dims);
+		for (final Point local : iter) {
 			if (plants.containsKey(local)) {
 				choices.addAll(plants.get(local));
 			}
@@ -180,12 +189,13 @@ public class HuntingModel {
 	private List<String> chooseFromMap(final Point point, final int items,
 			final Map<Point, List<String>> chosenMap) {
 		final List<String> choices = new ArrayList<>();
-		for (final Point local : new SurroundingPointIterable(point, dims)) {
+		final Iterable<Point> iter = new SurroundingPointIterable(point, dims);
+		for (final Point local : iter) {
 			if (chosenMap.containsKey(local)) {
 				choices.addAll(chosenMap.get(local));
 			}
 		}
-		int nothings = choices.size();
+		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);
 		}
@@ -196,11 +206,32 @@ public class HuntingModel {
 		}
 		return retval;
 	}
+	
 	/**
-	 * An iterator over the twenty-five points (including itself) surrounding a point.
+	 * An iterator over the twenty-five points (including itself) surrounding a
+	 * point.
+	 * 
 	 * @author Jonathan Lovelace
 	 */
 	private static class SurroundingPointIterable implements Iterable<Point> {
+		/**
+		 * Two below the point.
+		 */
+		private static final int TWO_BELOW = -2;
+		/**
+		 * Two above the point. (Since we loop to an exclusive bound, using
+		 * less-than not less-than-or-equals)
+		 */
+		private static final int TWO_ABOVE = 3;
+		/**
+		 * How many times the current point needs to be added to make it come up
+		 * half the time.
+		 * 
+		 * (TODO: is that really what's going on? And should we perhaps just add
+		 * the current tile in one of the other loops instead of giving it its
+		 * own?)
+		 */
+		private static final int HALF_COUNT = 14;
 		/**
 		 * the list of points.
 		 */
@@ -209,9 +240,10 @@ public class HuntingModel {
 		 * @param starting the starting point.
 		 * @param dimensions the dimensions of the map
 		 */
-		protected SurroundingPointIterable(final Point starting, final MapDimensions dimensions) {
-			for (int row = -2; row < 3; row++) {
-				for (int col = -2; col < 3; col++) {
+		protected SurroundingPointIterable(final Point starting,
+				final MapDimensions dimensions) {
+			for (int row = TWO_BELOW; row < TWO_ABOVE; row++) {
+				for (int col = TWO_BELOW; col < TWO_ABOVE; col++) {
 					points.add(point(roundRow(starting.row + row, dimensions),
 							roundCol(starting.col + col, dimensions)));
 				}
@@ -222,7 +254,7 @@ public class HuntingModel {
 							roundCol(starting.col + col, dimensions)));
 				}
 			}
-			for (int i = 0; i < 14; i++) {
+			for (int i = 0; i < HALF_COUNT; i++) {
 				points.add(starting);
 			}
 		}
@@ -243,7 +275,7 @@ public class HuntingModel {
 		 */
 		protected static int roundCol(final int col, final MapDimensions dims) {
 			if (col < 0) {
-				return dims.cols + col;
+				return dims.cols + col; // NOPMD
 			} else {
 				return col % dims.cols;
 			}
@@ -256,7 +288,7 @@ public class HuntingModel {
 		 */
 		protected static int roundRow(final int row, final MapDimensions dims) {
 			if (row < 0) {
-				return dims.rows + row;
+				return dims.rows + row; // NOPMD
 			} else {
 				return row % dims.rows;
 			}

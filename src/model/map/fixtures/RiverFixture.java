@@ -105,14 +105,21 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	public int getZValue() {
 		return 30;
 	}
-
+	/**
+	 * The maximum size of a river's equivalent string, plus a space.
+	 */
+	private static final int MAX_RIVER_SIZE = 6;
+	/**
+	 * The base string we use in toString before listing the rivers.
+	 */
+	private static final String BASE_STRING = "RiverFixture with rivers: ";
 	/**
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuild = new StringBuilder(32 + 10 * rivers.size())
-				.append("RiverFixture with rivers: ");
+		final StringBuilder sbuild = new StringBuilder(BASE_STRING.length()
+				+ MAX_RIVER_SIZE * rivers.size()).append(BASE_STRING);
 		for (final River river : rivers) {
 			sbuild.append(river.toString());
 			sbuild.append(' ');

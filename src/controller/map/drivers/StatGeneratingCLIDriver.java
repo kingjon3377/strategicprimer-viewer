@@ -51,6 +51,11 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class StatGeneratingCLIDriver implements ISPDriver {
 	/**
+	 * The basis on which stat modifiers are calculated. Every two points above
+	 * this gives +1, and every two points below this gives -1.
+	 */
+	private static final int STAT_BASIS = 10;
+	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(
@@ -504,8 +509,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		for (int i = 0; i < 3; i++) {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
-				retval.addJob(new Job(
-						// NOPMD
+				retval.addJob(new Job(// NOPMD
 						helper.inputString("Worker has a level in a Job, which Job? "),
 						1));
 				levels++;
@@ -517,7 +521,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			retval.setStats(enterStats());
 		} else {
 			final int constitution = threeDeeSix();
-			final int conBonus = (constitution - 10) / 2;
+			final int conBonus = (constitution - STAT_BASIS) / 2;
 			final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
 			retval.setStats(new WorkerStats(hitp, hitp, threeDeeSix(), threeDeeSix(),
 					constitution, threeDeeSix(), threeDeeSix(), threeDeeSix()));

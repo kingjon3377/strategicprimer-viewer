@@ -77,7 +77,10 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
-
+	/**
+	 * The "die" we "roll" to see whether skill advancement happens.
+	 */
+	private static final int SKILL_DIE = 100;
 	/**
 	 * Handle a button press.
 	 *
@@ -90,7 +93,7 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 				final Skill skl = skill;
 				final int level = skl.getLevel();
 				skl.addHours(Integer.parseInt(hours.getText()),
-						SingletonRandom.RANDOM.nextInt(100));
+						SingletonRandom.RANDOM.nextInt(SKILL_DIE));
 				final int newLevel = skl.getLevel();
 				if (newLevel != level) {
 					for (final LevelGainListener list : listeners) {

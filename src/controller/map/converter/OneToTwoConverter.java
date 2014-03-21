@@ -315,7 +315,10 @@ public class OneToTwoConverter { // NOPMD
 			}
 		}
 	}
-
+	/**
+	 * The probability of adding a forest to a tile.
+	 */
+	private static final double ADD_FOREST_PROB = .1;
 	/**
 	 * Possibly make a random change to a tile.
 	 *
@@ -338,12 +341,15 @@ public class OneToTwoConverter { // NOPMD
 			} else if (TileType.Desert.equals(tile.getTerrain())) {
 				final boolean watered = isAdjacentToWater(point, map);
 				waterDesert(tile, random, watered);
-			} else if (random.nextDouble() < .1) {
+			} else if (random.nextDouble() < ADD_FOREST_PROB) {
 				addForest(point, tile, main);
 			}
 		}
 	}
-
+	/**
+	 * The probability of turning a watered desert to plains.
+	 */
+	private static final double DESERT_TO_PLAINS = .4;
 	/**
 	 * Make changes to a desert tile based on water.
 	 *
@@ -353,7 +359,7 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static void waterDesert(final IMutableTile tile, final Random random,
 			final boolean watered) {
-		if (watered && random.nextDouble() < .4) {
+		if (watered && random.nextDouble() < DESERT_TO_PLAINS) {
 			tile.setTerrain(TileType.Plains);
 		} else if (!tile.hasRiver() && random.nextDouble() < SIXTY_PERCENT) {
 			tile.setTerrain(TileType.Plains);

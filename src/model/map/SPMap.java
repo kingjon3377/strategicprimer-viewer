@@ -97,15 +97,25 @@ public class SPMap implements IMutableMap {
 						&& players.equals(((IMap) obj).getPlayers()) && tiles
 							.equals(((IMap) obj).getTiles()));
 	}
-
+	
+	/**
+	 * What to shift the hash-code of the players collection by in calculating
+	 * ours.
+	 */
+	private static final int PLAYERS_HASH_SHIFT = 4;
+	/**
+	 * What to shift the hash-code of the tiles collection by in calculating
+	 * ours.
+	 */
+	private static final int TILES_HASH_SHIFT = 10;
 	/**
 	 *
 	 * @return a hash value for the map
 	 */
 	@Override
 	public int hashCode() {
-		return getDimensions().hashCode() + players.hashCode() << 4 + tiles
-				.hashCode() << 10;
+		return getDimensions().hashCode() + players.hashCode() << PLAYERS_HASH_SHIFT
+				+ tiles.hashCode() << TILES_HASH_SHIFT;
 	}
 
 	/**

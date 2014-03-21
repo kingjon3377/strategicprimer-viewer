@@ -160,7 +160,12 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		assert retval != null;
 		return retval;
 	}
-
+	/**
+	 * The longest a river report could be.
+	 */
+	private static final int RIVER_RPT_LEN = ("There is a river on the tile, "
+			+ "flowing through the following borders: "
+			+ "north, south, east, west").length();  
 	/**
 	 * @param parent the node to add nodes describing rivers to
 	 * @param rivers the collection of rivers
@@ -172,7 +177,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			final StringBuilder builder = new StringBuilder(100)
+			final StringBuilder builder = new StringBuilder(RIVER_RPT_LEN)
 					.append("There is a river on the tile, ");
 			builder.append("flowing through the following borders: ");
 			boolean first = true;

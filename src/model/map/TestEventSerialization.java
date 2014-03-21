@@ -43,6 +43,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 
 	/**
 	 * Test serialization of CaveEvents.
+	 * 
+	 * TODO: Randomly generate ID numbers, to avoid 'magic number' warnings.
 	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems

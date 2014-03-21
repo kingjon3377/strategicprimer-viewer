@@ -45,7 +45,10 @@ public class AdvancementFrame extends JFrame {
 	 * Dividers start at half-way.
 	 */
 	private static final double HALF_WAY = .5;
-
+	/**
+	 * The resize weight for the main division.
+	 */
+	private static final double RES_WEIGHT = .3;
 	/**
 	 * Constructor.
 	 *
@@ -109,7 +112,7 @@ public class AdvancementFrame extends JFrame {
 		setContentPane(new SplitWithWeights(HORIZONTAL_SPLIT, HALF_WAY,
 				HALF_WAY, new BorderedPanel(new JScrollPane(tree), plabel,
 						new ListenedButton(NEW_WORKER, nwl), null, null),
-				new SplitWithWeights(VERTICAL_SPLIT, HALF_WAY, .3,
+				new SplitWithWeights(VERTICAL_SPLIT, HALF_WAY, RES_WEIGHT,
 						new BorderedPanel(new JScrollPane(jobsTree),
 								htmlize("Worker's Jobs and Skills:"), null,
 								null, null), new BorderedPanel(

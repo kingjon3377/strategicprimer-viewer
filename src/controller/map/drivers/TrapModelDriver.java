@@ -201,17 +201,30 @@ public class TrapModelDriver implements ISPDriver {
 					+ " minutes";
 		}
 	}
-
+	/**
+	 * How many minutes a fruitless check of a fishing trap takes.
+	 */
+	private static final int FRUITLESS_FISH_TRAP = 5;
+	/**
+	 * How many minutes a fruitless check of a trap takes.
+	 */
+	private static final int FRUITLESS_TRAP = 10;
+	
 	/**
 	 * Handle a command.
-	 *
-	 * @param fixtures the animals generated from the tile and surrounding tiles.
-	 * @param ostream the output stream to write to
-	 * @param command the command to handle
-	 * @param fishing whether we're dealing with *fish* traps .. which take
-	 *        different amounts of time
+	 * 
+	 * @param fixtures
+	 *            the animals generated from the tile and surrounding tiles.
+	 * @param ostream
+	 *            the output stream to write to
+	 * @param command
+	 *            the command to handle
+	 * @param fishing
+	 *            whether we're dealing with *fish* traps .. which take
+	 *            different amounts of time
 	 * @return how many minutes it took to execute the command
-	 * @throws IOException on I/O error interacting with user
+	 * @throws IOException
+	 *             on I/O error interacting with user
 	 */
 	private int handleCommand(final List<String> fixtures,
 			final PrintStream ostream, final TrapperCommand command,
@@ -219,23 +232,21 @@ public class TrapModelDriver implements ISPDriver {
 		switch (command) {
 		case Check:
 			// ESCA-JAVA0177:
-			final int retval; // NOPMD
 			final String top = fixtures.remove(0);
 			if (HuntingModel.NOTHING.equals(top)) {
 				ostream.println("Nothing in the trap");
 				if (fishing) {
-					retval = 5;
+					return FRUITLESS_FISH_TRAP; // NOPMD
 				} else {
-					retval = 10;
+					return FRUITLESS_TRAP; // NOPMD
 				}
 			} else {
 				ostream.print("Found either ");
 				ostream.print(top);
 				ostream.println(" or evidence of it escaping.");
-				retval = helper
+				return helper
 						.inputNumber("How long to check and deal with animal? ");
 			}
-			return retval; // NOPMD
 		case EasyReset:
 			if (fishing) {
 				return 20;

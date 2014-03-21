@@ -49,6 +49,17 @@ public class SectionListReportNode extends AbstractReportNode {
 		assert retval != null;
 		return retval;
 	}
+	
+	/**
+	 * The size of the boilerplate text we have even before we add the size of
+	 * the children and the header.
+	 */
+	private static final int MIN_BOILERPLATE = "<h1></h1>\n<p></p>\n<ul>\n</ul>\n"
+			.length();
+	/**
+	 * The size of the boilerplate text we have to add for each child.
+	 */
+	private static final int PER_CHILD_BPLATE = "<li></li>\n".length();
 
 	/**
 	 * @param builder a StringBuilder
@@ -82,11 +93,12 @@ public class SectionListReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public int size() {
-		int retval = 32 + getText().length() + subheader.length();
+		int retval = MIN_BOILERPLATE + getText().length() + subheader.length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof AbstractReportNode) {
-				retval += ((AbstractReportNode) child).size() + 10;
+				retval += ((AbstractReportNode) child).size()
+						+ PER_CHILD_BPLATE;
 			}
 		}
 		return retval;
