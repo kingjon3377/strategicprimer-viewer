@@ -3,8 +3,6 @@ package controller.map.cxml;
 import java.io.IOException;
 import java.io.Reader;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -22,6 +20,7 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.FileOpener;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
+import controller.map.misc.TypesafeXMLEventReader;
 
 /**
  * Fourth-generation SP XML reader.
@@ -44,12 +43,8 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	public <T> T readXML(final String file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		final XMLEventReader reader = XMLInputFactory.newInstance()
-				.createXMLEventReader(istream);
-		if (reader == null) {
-			throw new IllegalStateException("Given a null XMLEvventReader");
-		}
-		@SuppressWarnings("unchecked") // The interface isn't genericized ...
+		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
+				istream);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, reader));
 		final IPlayerCollection players = new PlayerCollection();
