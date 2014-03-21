@@ -81,7 +81,8 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 					retval.addFixture(new RiverFixture(parseRiver(// NOPMD
 							assertNotNullStartElement(event.asStartElement()),
 							warner)));
-					spinUntilEnd(assertNotNullQName(event.asStartElement().getName()), stream);
+					spinUntilEnd(assertNotNullQName(event.asStartElement()
+							.getName()), stream);
 				} else {
 					retval.addFixture(parseFixture(
 							assertNotNullStartElement(event.asStartElement()),

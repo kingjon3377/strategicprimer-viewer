@@ -146,7 +146,8 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 				throw new IllegalStateException(
 						"Given a null XMLEventReader for " + file);
 			}
-			@SuppressWarnings("unchecked") // XMLEventReader is declared as non-generic Iterator.
+			@SuppressWarnings("unchecked") // XMLEventReader is declared as non-generic
+										   // Iterator.
 			final ComparableIterator<XMLEvent> iter = new ComparableIterator<>(
 					reader);
 			stack.addFirst(Pair.of(file, iter));

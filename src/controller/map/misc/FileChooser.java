@@ -1,5 +1,7 @@
 package controller.map.misc;
 
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFileChooser;
@@ -70,8 +72,9 @@ public class FileChooser {
 				invoke(new Runnable() {
 					@Override
 					public void run() {
-						if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-							final String selFile = fileChooser.getSelectedFile().getPath();
+						if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
+							final String selFile = fileChooser
+									.getSelectedFile().getPath();
 							assert selFile != null;
 							setFilename(selFile);
 						}
