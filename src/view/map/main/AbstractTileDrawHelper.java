@@ -45,13 +45,13 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	protected static final Color MTN_COLOR = new Color(249, 137, 28);
 
 	/**
-	 * @param version the map version
+	 * @param ver the map version
 	 * @param type a tile type
 	 *
 	 * @return the color associated with that tile-type.
 	 */
-	protected static Color getTileColor(final int version, final TileType type) {
-		return COLORS.get(version, type);
+	protected static Color getTileColor(final int ver, final TileType type) {
+		return COLORS.get(ver, type);
 	}
 
 	/**
@@ -123,8 +123,8 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public abstract void drawTileTranslated(final Graphics pen, final ITile tile,
-			final int width, final int height);
+	public abstract void drawTileTranslated(final Graphics pen,
+			final ITile tile, final int width, final int height);
 
 	/**
 	 * @return the UI helper.

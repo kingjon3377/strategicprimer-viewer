@@ -274,9 +274,9 @@ public final class TestExplorationRunner {
 				runner.defaultResults(point, mockOne));
 		assertTrue("Default results checks tile type", mockOne.wasCalled());
 		final MockTile mockTwo = new MockTile(TileType.BorealForest);
-		assertEquals(
-				"defaultResults in boreal forest",
-				"The primary rock type here is test_rock.\nThe main kind of tree is boreal_tree.\n",
+		assertEquals("defaultResults in boreal forest",
+				"The primary rock type here is test_rock.\n"
+						+ "The main kind of tree is boreal_tree.\n",
 				runner.defaultResults(point, mockTwo));
 		assertTrue("Default results checks tile type", mockTwo.wasCalled());
 		final MockTile mockThree = new MockTile(TileType.TemperateForest);

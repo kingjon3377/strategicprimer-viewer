@@ -36,7 +36,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
-		final Map<String, List<Point>> sightings = new HashMap<>();
+		final Map<String, List<Point>> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
@@ -51,24 +51,24 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 				}
 				// ESCA-JAVA0177:
 				final List<Point> points; // NOPMD
-				if (sightings.containsKey(string)) {
-					points = sightings.get(string);
+				if (items.containsKey(string)) {
+					points = items.get(string);
 				} else {
 					points = new ArrayList<>(); // NOPMD
-					sightings.put(string, points);
+					items.put(string, points);
 				}
 				points.add(pair.first());
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}
-		if (sightings.isEmpty()) {
+		if (items.isEmpty()) {
 			return ""; // NOPMD
 		} else {
 			// We doubt this list will ever be over 16K.
 			final StringBuilder builder = new StringBuilder(16384).append(
 					"<h4>Animal sightings or encounters</h4>\n").append(
 					OPEN_LIST);
-			for (final Entry<String, List<Point>> entry : sightings.entrySet()) {
+			for (final Entry<String, List<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
 						.append(": at ").append(pointCSL(entry.getValue()))
 						.append(CLOSE_LIST_ITEM);
@@ -91,7 +91,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
-		final Map<String, List<Point>> sightings = new HashMap<>();
+		final Map<String, List<Point>> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
@@ -106,22 +106,22 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 				}
 				// ESCA-JAVA0177:
 				final List<Point> points; // NOPMD
-				if (sightings.containsKey(string)) {
-					points = sightings.get(string);
+				if (items.containsKey(string)) {
+					points = items.get(string);
 				} else {
 					points = new ArrayList<>(); // NOPMD
-					sightings.put(string, points);
+					items.put(string, points);
 				}
 				points.add(pair.first());
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}
-		if (sightings.isEmpty()) {
+		if (items.isEmpty()) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			final AbstractReportNode retval = new SectionListReportNode(4,
 					"Animal sightings or encounters");
-			for (final Entry<String, List<Point>> entry : sightings.entrySet()) {
+			for (final Entry<String, List<Point>> entry : items.entrySet()) {
 				retval.add(new SimpleReportNode(entry.getKey(), ": at ",
 						pointCSL(entry.getValue())));
 			}

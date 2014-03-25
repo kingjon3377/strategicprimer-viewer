@@ -156,19 +156,19 @@ public class HarvestableReportGenerator extends // NOPMD
 			if (pair.second() instanceof HarvestableFixture) {
 				final HarvestableFixture item = (HarvestableFixture) pair
 						.second();
-				final Point point = pair.first();
+				final Point loc = pair.first();
 				if (item instanceof CacheFixture) {
-					caches.add(produceRIR(fixtures, tiles, player, item, point));
+					caches.add(produceRIR(fixtures, tiles, player, item, loc));
 				} else if (item instanceof Grove) {
-					groves.add(produceRIR(fixtures, tiles, player, item, point));
+					groves.add(produceRIR(fixtures, tiles, player, item, loc));
 				} else if (item instanceof Meadow) {
-					meadows.add(produceRIR(fixtures, tiles, player, item, point));
+					meadows.add(produceRIR(fixtures, tiles, player, item, loc));
 				} else if (item instanceof Mine) {
-					mines.add(produceRIR(fixtures, tiles, player, item, point));
+					mines.add(produceRIR(fixtures, tiles, player, item, loc));
 				} else if (item instanceof MineralVein) {
 					// TODO: Handle these like shrubs.
 					minerals.add(produceRIR(fixtures, tiles, player, item,
-							point));
+							loc));
 				} else if (item instanceof Shrub) {
 					// ESCA-JAVA0177:
 					final List<Point> shrubPoints; // NOPMD
@@ -178,11 +178,11 @@ public class HarvestableReportGenerator extends // NOPMD
 						shrubPoints = new ArrayList<>(); // NOPMD
 						shrubs.put(((Shrub) item).getKind(), shrubPoints);
 					}
-					shrubPoints.add(point);
+					shrubPoints.add(loc);
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
 					// TODO: Handle these like shrubs.
-					stone.add(produceRIR(fixtures, tiles, player, item, point));
+					stone.add(produceRIR(fixtures, tiles, player, item, loc));
 				}
 			}
 		}

@@ -1,5 +1,7 @@
 package controller.map.misc;
 
+import static controller.map.misc.FileOpener.createReader;
+
 import java.io.FileNotFoundException;
 import java.util.Deque;
 import java.util.Iterator;
@@ -139,7 +141,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		try {
 			final String file = getAttribute(tag, "file");
 			stack.addFirst(Pair.of(file, new ComparableIterator<>(
-					new TypesafeXMLEventReader(FileOpener.createReader(file)))));
+					new TypesafeXMLEventReader(createReader(file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
 					"File referenced by <include> not found", e);

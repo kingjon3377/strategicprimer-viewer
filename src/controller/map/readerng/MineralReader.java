@@ -49,7 +49,7 @@ public class MineralReader implements INodeHandler<MineralVein> {
 		final MineralVein fix = new MineralVein(
 				getAttributeWithDeprecatedForm(element, "kind", "mineral",
 						warner),
-				Boolean.parseBoolean(XMLHelper.getAttribute(element, "exposed")),
+				Boolean.parseBoolean(getAttribute(element, "exposed")),
 				Integer.parseInt(getAttribute(element, "dc")), getOrGenerateID(
 						element, warner, idFactory));
 		XMLHelper.addImage(element, fix);

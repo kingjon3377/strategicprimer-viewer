@@ -432,9 +432,10 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected <T> void assertMissingPropertyDeserialization(final String message,
-			final T expected, final String xml, final Class<T> type,
-			final String property) throws XMLStreamException, SPFormatException {
+	protected <T> void assertMissingPropertyDeserialization(
+			final String message, final T expected, final String xml,
+			final Class<T> type, final String property)
+			throws XMLStreamException, SPFormatException {
 		assertEquals(message, expected,
 				oldReader.readXML(FAKE_FILENAME, new StringReader(xml), type,
 						new Warning(Action.Ignore)));

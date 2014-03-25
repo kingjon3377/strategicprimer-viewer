@@ -102,15 +102,16 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	/**
 	 * @param obj another PlayerCollection
 	 * @return whether it's a strict subset of this one
-	 * @param out the stream to write details of the differences to
+	 * @param ostream the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final IPlayerCollection obj, final PrintWriter out) {
+	public boolean isSubset(final IPlayerCollection obj,
+			final PrintWriter ostream) {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
-				out.print("Extra player ");
-				out.print(player.getName());
-				out.print(' ');
+				ostream.print("Extra player ");
+				ostream.print(player.getName());
+				ostream.print(' ');
 				return false; // NOPMD
 			}
 		}

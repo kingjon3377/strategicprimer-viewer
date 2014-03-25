@@ -329,17 +329,17 @@ public class OneToTwoConverter { // NOPMD
 	 *        players' maps)
 	 * @param main whether we should actually add the fixtures (i.e. is this the
 	 *        main map)
-	 * @param idFactory the factory to use to create ID numbers
+	 * @param idFac the factory to use to create ID numbers
 	 */
 	private void perturb(final Point point, final IMutableTile tile, final IMap map,
-			final Random random, final boolean main, final IDFactory idFactory) {
+			final Random random, final boolean main, final IDFactory idFac) {
 		if (!TileType.Ocean.equals(tile.getTerrain())) {
 			if (isAdjacentToTown(point, map)
 					&& random.nextDouble() < SIXTY_PERCENT) {
 				addFieldOrOrchard(random.nextBoolean(), point, tile, main,
-						idFactory);
+						idFac);
 			} else if (TileType.Desert.equals(tile.getTerrain())) {
-				final boolean watered = isAdjacentToWater(point, map);
+				final boolean watered = hasAdjacentWater(point, map);
 				waterDesert(tile, random, watered);
 			} else if (random.nextDouble() < ADD_FOREST_PROB) {
 				addForest(point, tile, main);
@@ -357,8 +357,8 @@ public class OneToTwoConverter { // NOPMD
 	 * @param random the source of randomness
 	 * @param watered whether the tile is adjacent to water
 	 */
-	private static void waterDesert(final IMutableTile tile, final Random random,
-			final boolean watered) {
+	private static void waterDesert(final IMutableTile tile,
+			final Random random, final boolean watered) {
 		if (watered && random.nextDouble() < DESERT_TO_PLAINS) {
 			tile.setTerrain(TileType.Plains);
 		} else if (!tile.hasRiver() && random.nextDouble() < SIXTY_PERCENT) {
@@ -481,7 +481,7 @@ public class OneToTwoConverter { // NOPMD
 	 * @param map the map it's in
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
-	private static boolean isAdjacentToWater(final Point point, final IMap map) {
+	private static boolean hasAdjacentWater(final Point point, final IMap map) {
 		for (final Point npoint : getNeighbors(point)) {
 			if (npoint == null) {
 				continue;

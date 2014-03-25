@@ -168,7 +168,8 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(80 + name.length() + owner.getName().length());
+		final StringBuilder builder = new StringBuilder(80 + name.length()
+				+ owner.getName().length());
 		if (owner.isIndependent()) {
 			builder.append("An independent ");
 		} else {
@@ -282,7 +283,8 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	@Override
 	public String shortDesc() {
-		final StringBuilder builder = new StringBuilder(78 + name.length() + owner.getName().length());
+		final StringBuilder builder = new StringBuilder(78 + name.length()
+				+ owner.getName().length());
 		if (owner.isIndependent()) {
 			builder.append("An independent ");
 		} else {

@@ -54,7 +54,8 @@ public class Village implements ITownFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(52 + name.length() + owner.getName().length());
+		final StringBuilder builder = new StringBuilder(52 + name.length()
+				+ owner.getName().length());
 		if (owner.isIndependent()) {
 			builder.append("Independent ");
 		}

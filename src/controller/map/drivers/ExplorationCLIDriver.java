@@ -91,7 +91,8 @@ public class ExplorationCLIDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			SYS_OUT.println("Usage: ExplorationCLI master-map [player-map ...]");
+			SYS_OUT.println("Usage: " + getClass().getSimpleName()
+					+ " master-map [player-map ...]");
 			System.exit(1);
 		}
 		// ESCA-JAVA0177:

@@ -119,7 +119,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			throw new IllegalArgumentException("We want a node producing "
 					+ type.getSimpleName() + ", not "
 					+ obj.getClass().getSimpleName() + ", as the top-level tag");
-		}
+	}
 	}
 
 	/**

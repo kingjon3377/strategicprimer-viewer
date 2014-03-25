@@ -194,8 +194,6 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 	 * Handle scroll-bar events.
 	 *
 	 * @param evt the event to handle
-	 *
-	 * @see java.awt.event.AdjustmentListener#adjustmentValueChanged(java.awt.event.AdjustmentEvent)
 	 */
 	@Override
 	public void adjustmentValueChanged(@Nullable final AdjustmentEvent evt) {

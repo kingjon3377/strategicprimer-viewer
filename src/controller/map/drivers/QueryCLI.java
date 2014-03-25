@@ -53,6 +53,15 @@ public final class QueryCLI implements ISPDriver {
 	private final CLIHelper helper = new CLIHelper();
 
 	/**
+	 * How many hours we assume a working day is for a hunter or such.
+	 */
+	private static final int HUNTER_HOURS = 10;
+	/**
+	 * How many encounters per hour for a hunter or such.
+	 */
+	private static final int HOURLY_ENCOUNTERS = 4;
+
+	/**
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
@@ -194,15 +203,6 @@ public final class QueryCLI implements ISPDriver {
 	}
 
 	/**
-	 * How many hours we assume a working day is for a hunter or such.
-	 */
-	private static final int HUNTER_HOURS = 10;
-	/**
-	 * How many encounters per hour for a hunter or such.
-	 */
-	private static final int HOURLY_ENCOUNTERS = 4;
-
-	/**
 	 * @param args command-line arguments
 	 */
 	public static void main(final String[] args) {
@@ -225,19 +225,21 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Prints a usage message.
 	 *
-	 * @param out the stream to write it to.
+	 * @param ostream the stream to write it to.
 	 */
-	public static void usage(final PrintStream out) {
-		out.println("The following commands are supported:");
-		out.println("Fortress: Print what a player automatically knows about his fortress's tile.");
+	public static void usage(final PrintStream ostream) {
+		ostream.println("The following commands are supported:");
+		ostream.print("Fortress: Print what a player automatically knows ");
+		ostream.println("about his fortress's tile.");
 		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;
-		out.print("Hunt/fIsh: Generates up to ");
-		out.print(encounters);
-		out.println(" encounters with animals.");
-		out.print("Gather: Generates up to ");
-		out.print(encounters);
-		out.println(" encounters with fields, meadows, groves, orchards, or shrubs.");
-		out.println("Quit: Exit the program.");
+		ostream.print("Hunt/fIsh: Generates up to ");
+		ostream.print(encounters);
+		ostream.println(" encounters with animals.");
+		ostream.print("Gather: Generates up to ");
+		ostream.print(encounters);
+		ostream.print(" encounters with fields, meadows, groves, ");
+		ostream.println("orchards, or shrubs.");
+		ostream.println("Quit: Exit the program.");
 	}
 
 	/**

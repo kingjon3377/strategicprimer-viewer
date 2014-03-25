@@ -144,7 +144,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		}
 		if (!rivers.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM);
-			builder.append("There is a river on the tile, flowing through the following borders: ");
+			builder.append("There is a river on the tile, ");
+			builder.append("flowing through the following borders: ");
 			boolean first = true;
 			for (final River river : rivers) {
 				if (first) {

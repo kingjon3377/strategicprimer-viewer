@@ -384,11 +384,11 @@ public final class TestMoreFixtureSerialization extends
 		// ESCA-JAVA0076:
 		assertDeprecatedDeserialization(
 				"'miscellaneous' skill with level should be warned about",
-				new Worker("fourth", DEFAULT_RACE, 6, new Job("fifth", 0,
+				new Worker("4th", DEFAULT_RACE, 6, new Job("5th", 0,
 						new Skill("miscellaneous", 1, 0))),
-				"<worker name=\"fourth\" id=\"6\"><job name=\"fifth\" level=\"0\">"
-						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\" /></job></worker>",
-				Worker.class, "miscellaneous");
+				"<worker name=\"4th\" id=\"6\"><job name=\"5th\" level=\"0\">"
+						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\"/>"
+						+ "</job></worker>", Worker.class, "miscellaneous");
 		assertSerialization(
 				"but 'miscellaneous' skill without levels causes no warnings",
 				new Worker("sixth", DEFAULT_RACE, 7, new Job("seventh", 0,

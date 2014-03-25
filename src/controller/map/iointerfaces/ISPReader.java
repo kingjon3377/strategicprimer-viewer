@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 
@@ -21,11 +22,10 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and we'll
 	 * warn if they're used.
 	 */
-	@SuppressWarnings("null") // We know this isn't null, but there's no way to assert that in an interface
-	List<String> FUTURE = Collections.unmodifiableList(Arrays
-			.asList(new String[] { "future", "explorer", "building",
-					"resource", "changeset", "change", "move", "work",
-					"discover", "submap" }));
+	List<String> FUTURE = NullCleaner.assertNotNull(Collections
+			.unmodifiableList(Arrays.asList(new String[] { "future",
+					"explorer", "building", "resource", "changeset", "change",
+					"move", "work", "discover", "submap" })));
 
 	/**
 	 * @param <T> A supertype of the object the XML represents

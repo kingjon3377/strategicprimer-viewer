@@ -47,7 +47,8 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 		temp.add(CompactTextReader.READER);
 		temp.add(CompactTownReader.READER);
 		temp.add(CompactGroundReader.READER);
-		final List<CompactReader<? extends TileFixture>> unmod = Collections.unmodifiableList(temp);
+		final List<CompactReader<? extends TileFixture>> unmod = Collections
+				.unmodifiableList(temp);
 		assert unmod != null;
 		readers = unmod;
 	}
