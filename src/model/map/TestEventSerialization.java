@@ -207,8 +207,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Deserialization of deprecated Mineral idiom", two,
 				testDataTwo, MineralVein.class, oldKindProperty);
 		assertUnwantedChild(
-				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\"><troll /></mineral>",
-				MineralVein.class, false);
+				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\">"
+						+ "<troll /></mineral>", MineralVein.class, false);
 		assertMissingProperty("<mineral dc=\"0\" exposed=\"false\" />",
 				MineralVein.class, KIND_PROPERTY, false);
 		assertMissingProperty("<mineral kind=\"gold\" exposed=\"false\" />",

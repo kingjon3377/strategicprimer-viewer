@@ -96,7 +96,7 @@ public final class ViewerStart implements ISPDriver {
 			} catch (final ChoiceInterruptedException except) {
 				LOGGER.log(
 						Level.INFO,
-						"Choice was interrupted or user declined to choose); aborting.",
+						"Choice was interrupted or user declined to choose; aborting",
 						except);
 				return;
 			}

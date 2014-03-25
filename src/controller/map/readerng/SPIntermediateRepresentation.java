@@ -213,13 +213,17 @@ public final class SPIntermediateRepresentation {
 
 	/**
 	 * Write only if the tag isn't the empty string.
-	 *
-	 * @param writer the Writer to write to
-	 * @param string the string to write. May be null, in which case nothing is written.
-	 * @throws IOException if I/O error in writing
+	 * 
+	 * @param writer
+	 *            the Writer to write to
+	 * @param string
+	 *            the string to write. May be null, in which case nothing is
+	 *            written.
+	 * @throws IOException
+	 *             if I/O error in writing
 	 */
-	private void writeIfTagNotEmpty(final Writer writer, @Nullable final String string)
-			throws IOException {
+	private void writeIfTagNotEmpty(final Writer writer,
+			@Nullable final String string) throws IOException {
 		if (!tag.isEmpty() && string != null) {
 			writer.write(string);
 		}

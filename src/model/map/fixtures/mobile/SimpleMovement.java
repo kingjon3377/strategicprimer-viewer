@@ -126,9 +126,12 @@ public final class SimpleMovement {
 	}
 
 	/**
-	 * @param unit a unit
-	 * @param fix a fixture
-	 * @return whether the unit should always notice it. A null fixture is never noticed
+	 * @param unit
+	 *            a unit
+	 * @param fix
+	 *            a fixture
+	 * @return whether the unit should always notice it. A null fixture is never
+	 *         noticed
 	 */
 	public static boolean shouldAlwaysNotice(final Unit unit,
 			@Nullable final TileFixture fix) {

@@ -154,7 +154,8 @@ public class SPMapNG implements IMapNG {
 	 */
 	@Override
 	public Iterable<Point> locations() {
-		return new IteratorWrapper<>(new PointIterator(dimensions(), null, true, true));
+		return new IteratorWrapper<>(new PointIterator(dimensions(), null,
+				true, true));
 	}
 	/**
 	 * The base terrain at points in the map.

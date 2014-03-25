@@ -43,7 +43,8 @@ public class StreamingLabel extends JLabel {
 		 * @param wrapped the writer we wrap
 		 * @param label the label to update when written to
 		 */
-		protected StreamingLabelWriter(final StringWriter wrapped, final JLabel label) {
+		protected StreamingLabelWriter(final StringWriter wrapped,
+				final JLabel label) {
 			super(wrapped);
 			swriter = wrapped;
 			control = label;
