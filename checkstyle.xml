@@ -106,19 +106,19 @@
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
-    <module name="AvoidNotShortCircuitOperatorsForBoolean"/>
-    <module name="ReturnNullInsteadOfBoolean"/>
-    <module name="ReturnBooleanFromTernary"/>
-    <module name="MultipleVariableDeclarationsExtended"/>
+<!--    <module name="AvoidNotShortCircuitOperatorsForBoolean"/> -->
+<!--    <module name="ReturnNullInsteadOfBoolean"/> -->
+<!--    <module name="ReturnBooleanFromTernary"/> -->
+<!--    <module name="MultipleVariableDeclarationsExtended"/> -->
     <module name="MultipleStringLiteralsExtended">
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
-    <module name="OverridableMethodInConstructor">
+<!--    <module name="OverridableMethodInConstructor">
       <property name="checkCloneMethod" value="true"/>
       <property name="checkReadObjectMethod" value="true"/>
-    </module>
-    <module name="UnnecessaryParenthesesExtended"/>
+    </module> -->
+<!--    <module name="UnnecessaryParenthesesExtended"/> -->
     <module name="MissingDeprecated"/>
     <module name="GenericWhitespace"/>
     <module name="CovariantEquals"/>

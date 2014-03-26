@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<project default="all" name="SP viewer">
+<project default="all" name="SP viewer" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
   <target name="all" depends="clean,release" />
   <property file="build.properties" />
   <tstamp />
@@ -107,6 +107,15 @@
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
+  </target>
+
+  <!-- Targets to run static analysis. -->
+  <target name="check" depends="build">
+    <echo message='If Ant fails to find static-analysis tasks on a Gentoo system, run with ANT_TASKS="checkstyle" in the environment.' />
+    <cs:checkstyle config="checkstyle.xml">
+      <fileset dir="src" includes="**/*.java" />
+      <formatter type="plain" />
+    </cs:checkstyle>
   </target>
 
   <!-- Release-related tasks. -->
