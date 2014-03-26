@@ -32,7 +32,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 	 * @param stream the stream to read more elements from
 	 * @param players the collection of players
 	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate
+	 * @param idFac the factory to use to register ID numbers and generate
 	 *        new ones as needed
 	 * @return the djinn represented by the element
 	 * @throws SPFormatException on SP format error
@@ -40,10 +40,10 @@ public class DjinnReader implements INodeHandler<Djinn> {
 	@Override
 	public Djinn parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
-			final Warning warner, final IDFactory idFactory)
+			final Warning warner, final IDFactory idFac)
 			throws SPFormatException {
 		spinUntilEnd(assertNonNullQName(element.getName()), stream);
-		final Djinn fix = new Djinn(getOrGenerateID(element, warner, idFactory));
+		final Djinn fix = new Djinn(getOrGenerateID(element, warner, idFac));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

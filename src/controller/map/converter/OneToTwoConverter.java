@@ -444,7 +444,8 @@ public class OneToTwoConverter { // NOPMD
 	private static Iterable<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		final Iterable<Point> retval = Arrays.asList(PointFactory.point(row - 1, col - 1),
+		final Iterable<Point> retval = Arrays.asList(
+				PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),
 				PointFactory.point(row, col - 1),

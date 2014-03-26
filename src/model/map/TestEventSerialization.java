@@ -141,12 +141,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 					continue;
 				}
 				assertSerialization(
-						"First FortificationEvent serialization test, reflection, status "
-								+ status + ", size " + size, new Fortification(// NOPMD
+						"First FortificationEvent serialization test, status "
+								+ status + ", size " + size, new Fortification(
 								status, size, 10, "one", 1, owner),
 						Fortification.class);
 				assertSerialization(
-						"Second FortificationEvent serialization test, reflection, status "
+						"Second FortificationEvent serialization test, status "
 								+ status + " and size " + size,
 						new Fortification(status, size, 40, "two", 2, owner), // NOPMD
 						Fortification.class);
@@ -194,14 +194,14 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"Second MineralEvent serialization test, reflection", two,
 				MineralVein.class);
 		final String oldKindProperty = "mineral"; // NOPMD
-		final String testDataOne = createSerializedForm(two, true).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataOne = createSerializedForm(two, true).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataOne != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,
 				testDataOne, MineralVein.class, oldKindProperty);
-		final String testDataTwo = createSerializedForm(two, false).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataTwo = createSerializedForm(two, false).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataTwo != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,

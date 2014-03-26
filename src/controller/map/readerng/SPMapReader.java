@@ -159,8 +159,8 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		assert cols != null;
 		retval.addAttribute("columns", cols);
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
-			final String currPlayer = Integer.toString(obj.getPlayers().getCurrentPlayer()
-					.getPlayerId());
+			final String currPlayer = Integer.toString(obj.getPlayers()
+					.getCurrentPlayer().getPlayerId());
 			assert currPlayer != null;
 			retval.addAttribute("current_player", currPlayer);
 		}

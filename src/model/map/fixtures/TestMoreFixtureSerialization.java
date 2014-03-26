@@ -315,15 +315,15 @@ public final class TestMoreFixtureSerialization extends
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
 		final Unit one = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		final String oldKindProperty = "type"; // NOPMD
-		final String testDataOld = createSerializedForm(one, true).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataOld = createSerializedForm(one, true).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataOld != null;
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
 				one,
 				testDataOld, Unit.class, oldKindProperty);
-		final String testDataNew = createSerializedForm(one, false).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataNew = createSerializedForm(one, false).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataNew != null;
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",

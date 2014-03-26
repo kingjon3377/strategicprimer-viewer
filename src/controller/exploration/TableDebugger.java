@@ -23,7 +23,8 @@ public class TableDebugger {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger.getLogger(TableDebugger.class);
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(TableDebugger.class);
 	/**
 	 * The exploration runner.
 	 */

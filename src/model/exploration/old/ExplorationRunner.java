@@ -199,7 +199,8 @@ public class ExplorationRunner { // NOPMD
 					for (final String value : getTable(table).allEvents()) {
 						if (value.contains("#")) {
 							final String splitVal = value.split("#", 3)[1];
-							if (splitVal != null && recursiveCheck(splitVal, state)) {
+							if (splitVal != null
+									&& recursiveCheck(splitVal, state)) {
 								return true; // NOPMD
 							}
 						}

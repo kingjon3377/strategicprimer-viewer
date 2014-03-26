@@ -121,7 +121,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException(
-					"CachingTileDrawHelper requires Graphics2D, not an old Graphics");
+					"CachingTileDrawHelper requires Graphics2D");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
 		pen2d.setColor(getTileColor(1, tile.getTerrain()));

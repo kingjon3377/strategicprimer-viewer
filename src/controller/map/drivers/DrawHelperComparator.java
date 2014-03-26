@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
-import static util.Warning.Action;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -27,6 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.TypesafeLogger;
 import util.Warning;
+import util.Warning.Action;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
@@ -488,7 +488,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param reps how many times the test ran
 	 * @return that total
 	 */
-	public static long printStats(final String prefix, final long total, final int reps) {
+	public static long printStats(final String prefix, final long total,
+			final int reps) {
 		SYS_OUT.print(prefix);
 		SYS_OUT.print('\t');
 		SYS_OUT.print(total);

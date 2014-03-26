@@ -256,7 +256,8 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param outer the surrounding frame.
 		 * @param smodel the driver model.
 		 */
-		protected ExportButtonHandler(final Component outer, final IWorkerModel smodel) {
+		protected ExportButtonHandler(final Component outer,
+				final IWorkerModel smodel) {
 			parent = outer;
 			exp = new StrategyExporter(smodel);
 		}

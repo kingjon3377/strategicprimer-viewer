@@ -4,7 +4,6 @@ import static javax.swing.JFileChooser.APPROVE_OPTION;
 
 import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
 import view.map.main.MapFileFilter;
@@ -63,7 +62,7 @@ public class FileChooser {
 		final FilteredFileChooser fileChooser = chooser;
 		if (!shouldReturn) {
 			if (SwingUtilities.isEventDispatchThread()) {
-				if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
 					final String selFile = fileChooser.getSelectedFile().getPath();
 					assert selFile != null;
 					setFilename(selFile);

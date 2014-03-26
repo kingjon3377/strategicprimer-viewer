@@ -399,7 +399,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addSelectionChangeListener(final SelectionChangeListener list) {
+	public final void addSelectionChangeListener(
+			final SelectionChangeListener list) {
 		scListeners.add(list);
 	}
 

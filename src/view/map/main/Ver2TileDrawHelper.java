@@ -177,8 +177,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTileTranslated(final Graphics pen, final ITile tile, final int width,
-			final int height) {
+	public void drawTileTranslated(final Graphics pen, final ITile tile,
+			final int width, final int height) {
 		drawTile(pen, tile, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
@@ -298,10 +298,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImage(final String filename) {
 		try {
 			return loader.loadImage(filename); // NOPMD
-		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
+		} catch (final FileNotFoundException e) {
 			if (!missingFiles.contains(filename)) {
-				// LOGGER.log(Level.SEVERE, filename + " not found", e);
 				LOGGER.log(Level.SEVERE, "images/" + filename + " not found");
+				LOGGER.log(Level.FINEST, "with stack trace", e);
 				missingFiles.add(filename);
 			}
 			return fallbackImage; // NOPMD

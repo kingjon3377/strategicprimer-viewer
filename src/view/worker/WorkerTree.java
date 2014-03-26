@@ -327,7 +327,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * @param newPlayer passed to tree model
 	 */
 	@Override
-	public final void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public final void playerChanged(@Nullable final Player old,
+			final Player newPlayer) {
 		tmodel.playerChanged(old, newPlayer);
 	}
 	/**

@@ -330,11 +330,17 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild("<sphinx><troll /></sphinx>", Sphinx.class, false);
 		assertUnwantedChild("<troll><troll /></troll>", Troll.class, false);
 	}
+	
 	/**
-	 * Test that serialization of simple (no-parameter) fixtures preserves image property.
-	 * @throws SPFormatException on XML format error
-	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * Test that serialization of simple (no-parameter) fixtures preserves image
+	 * property.
+	 * 
+	 * @throws SPFormatException
+	 *             on XML format error
+	 * @throws XMLStreamException
+	 *             on XML reader error
+	 * @throws IOException
+	 *             on I/O error creating serialized form
 	 */
 	@Test
 	public void testSimpleImageSerialization() throws XMLStreamException,

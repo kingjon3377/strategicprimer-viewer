@@ -260,12 +260,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return the part of the report dealing with units
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder = new StringBuilder(8192)
 				.append("<h4>Units in the map</h4>\n");
-		builder.append("<p>(Any units reported above are not described again.)</p>\n");
+		builder.append("<p>(Any units listed above are not described again.)</p>\n");
 		builder.append(OPEN_LIST);
 		boolean anyUnits = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {

@@ -40,7 +40,7 @@ public class AdvancementFrame extends JFrame {
 	 * The text of the relevant button. Can't be private without causing
 	 * warnings, since it's used in an inner class.
 	 */
-	protected static final String NEW_WORKER = "Add worker to selected unit ..."; // NOPMD
+	protected static final String NEW_WORKER = "Add worker to selected unit ...";
 	/**
 	 * Dividers start at half-way.
 	 */

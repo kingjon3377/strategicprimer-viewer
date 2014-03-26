@@ -46,7 +46,8 @@ public class SPMapNG implements IMapNG {
 			for (final Point point : locations()) {
 				if (point == null) {
 					continue;
-				} else if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))) {
+				} else if (!getBaseTerrain(point).equals(
+						obj.getBaseTerrain(point))) {
 					out.print("Base terrain differs at ");
 					out.println(point);
 					retval = false;

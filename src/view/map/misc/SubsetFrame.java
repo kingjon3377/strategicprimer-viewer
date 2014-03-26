@@ -202,10 +202,10 @@ public class SubsetFrame extends JFrame {
 		}
 		printParagraph(
 				"<span style=\"color:green\">OK</span> if strict subset, "
-						+ "<span style=\"color:yellow\">WARN</span> if apparently not "
-						+ "(but check by hand), "
-						+ "<span style=\"color:red\">FAIL</span> if error in reading",
-				"");
+						+ "<span style=\"color:yellow\">WARN</span> if apparently "
+						+ "not (but check by hand), "
+						+ "<span style=\"color:red\">FAIL</span> if "
+						+ "error in reading", "");
 	}
 
 	/**

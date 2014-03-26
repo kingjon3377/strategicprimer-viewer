@@ -1,6 +1,6 @@
 package model.map;
 
-import static util.NullStream.BIT_BUCKET;
+import static util.NullStream.DEV_NULL;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -59,8 +59,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof IPlayerCollection && (isSubset(
-						(IPlayerCollection) obj, BIT_BUCKET) && ((IPlayerCollection) obj)
-						.isSubset(this, BIT_BUCKET)));
+						(IPlayerCollection) obj, DEV_NULL) && ((IPlayerCollection) obj)
+						.isSubset(this, DEV_NULL)));
 	}
 
 	/**

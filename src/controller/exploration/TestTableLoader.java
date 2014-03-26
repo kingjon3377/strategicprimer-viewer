@@ -62,8 +62,9 @@ public final class TestTableLoader {
 	 * Test method for
 	 * {@link controller.exploration.TableLoader#loadRandomTable(java.io.BufferedReader)}
 	 * .
-	 *
-	 * @throws IOException on I/O error in the test or in cleaning up after it.
+	 * 
+	 * @throws IOException
+	 *             on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test

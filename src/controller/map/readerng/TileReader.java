@@ -181,27 +181,26 @@ public class TileReader implements INodeHandler<ITile> {
 			final ITile obj) {
 		if (obj.isEmpty()) {
 			return new SPIntermediateRepresentation(""); // NOPMD
-		} else {
-			final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-					"tile");
-			final String row = Integer.toString(point.row);
-			assert row != null;
-			retval.addAttribute("row", row);
-			final String col = Integer.toString(point.col);
-			assert col != null;
-			retval.addAttribute("column", col);
-			if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
-				retval.addAttribute("kind", obj.getTerrain().toXML());
-			}
-			if (obj.iterator().hasNext()) {
-				for (final TileFixture fix : obj) {
-					if (fix != null) {
-						writeFixture(fix, retval);
-					}
+		} 
+		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
+				"tile");
+		final String row = Integer.toString(point.row);
+		assert row != null;
+		retval.addAttribute("row", row);
+		final String col = Integer.toString(point.col);
+		assert col != null;
+		retval.addAttribute("column", col);
+		if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
+			retval.addAttribute("kind", obj.getTerrain().toXML());
+		}
+		if (obj.iterator().hasNext()) {
+			for (final TileFixture fix : obj) {
+				if (fix != null) {
+					writeFixture(fix, retval);
 				}
 			}
-			return retval;
 		}
+		return retval;
 	}
 
 	/**
