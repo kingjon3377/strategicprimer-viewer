@@ -137,10 +137,10 @@ public enum TileType {
 	 * The mapping from descriptive strings to tile types. Used to make
 	 * multiple-return-points warnings go away.
 	 */
-	private static final Map<String, TileType> TILE_TYPE_MAP = new HashMap<>(); // NOPMD
+	private static final Map<String, TileType> CACHE = new HashMap<>(); // NOPMD
 	static {
 		for (final TileType type : values()) {
-			TILE_TYPE_MAP.put(type.toXML(), type);
+			CACHE.put(type.toXML(), type);
 		}
 	}
 
@@ -152,8 +152,8 @@ public enum TileType {
 	 * @return the terrain type
 	 */
 	public static TileType getTileType(final String string) {
-		if (TILE_TYPE_MAP.containsKey(string)) {
-			final TileType retval = TILE_TYPE_MAP.get(string);
+		if (CACHE.containsKey(string)) {
+			final TileType retval = CACHE.get(string);
 			assert retval != null;
 			return retval;
 		} // else

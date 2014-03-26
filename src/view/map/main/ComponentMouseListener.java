@@ -188,8 +188,11 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	public String toString() {
 		return "ComponentMouseListener";
 	}
+	
 	/**
-	 * @param list Something to listen for changes to the tile type of the selected tile
+	 * @param list
+	 *            Something to listen for changes to the tile type of the
+	 *            selected tile
 	 */
 	@Override
 	public void addSelectionChangeListener(final SelectionChangeListener list) {

@@ -144,8 +144,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					final String oLocal = element.getName()
 							.getLocalPart();
 					assert oLocal != null;
-					throw new UnwantedChildException(oLocal, iLocal, event.getLocation()
-							.getLineNumber());
+					throw new UnwantedChildException(oLocal, iLocal, event
+							.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

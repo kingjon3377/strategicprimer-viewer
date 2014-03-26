@@ -120,7 +120,8 @@ public final class SimpleMovement {
 	 * @return whether the unit might notice it. Units do not notice themselves,
 	 *         and do not notice unexposed ground, and do not notice null fixtures.
 	 */
-	public static boolean mightNotice(final Unit unit, @Nullable final TileFixture fix) {
+	public static boolean mightNotice(final Unit unit,
+			@Nullable final TileFixture fix) {
 		return (fix instanceof Ground && ((Ground) fix).isExposed())
 				|| !(fix instanceof Ground || unit.equals(fix));
 	}

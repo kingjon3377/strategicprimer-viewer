@@ -100,7 +100,8 @@ public class AppChooserFrame extends JFrame {
 			app = frame;
 			final String[] array = parameters.toArray(new String[parameters.size()]);
 			if (array == null) {
-				throw new IllegalStateException("Array created for parameters is null");
+				throw new IllegalStateException(
+						"Array created for parameters is null");
 			}
 			params = array;
 			outer = acf;

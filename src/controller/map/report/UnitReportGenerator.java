@@ -241,7 +241,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		if (worker.iterator().hasNext() && details) {
 			final AbstractReportNode jobs = new ListReportNode(
-					"He or she has training or experience in the following Jobs (Skills):");
+					"(S)he has training or experience in the following Jobs (Skills):");
 			for (final Job job : worker) {
 				jobs.add(new SimpleReportNode(Integer.toString(job.getLevel()), // NOPMD
 						" levels in ", job.getName(), getSkills(job)));

@@ -69,7 +69,8 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 		} else if (fix instanceof TileTypeFixture) {
 			if (!tile.getTerrain()
 					.equals(((TileTypeFixture) fix).getTileType())) {
-				((IMutableTile) tile).setTerrain(((TileTypeFixture) fix).getTileType());
+				((IMutableTile) tile).setTerrain(((TileTypeFixture) fix)
+						.getTileType());
 			}
 			addElement(fix);
 		} else if (((IMutableTile) tile).addFixture(fix)) {

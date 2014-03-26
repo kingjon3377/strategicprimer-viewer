@@ -76,7 +76,8 @@ public class HarvestableReportGenerator extends // NOPMD
 						point));
 			} else if (item instanceof Mine) {
 				mines.add(produce(fixtures, tiles, player, (Mine) item, point));
-			} else if (item instanceof MineralVein) { // TODO: Handle these like shrubs.
+			} else if (item instanceof MineralVein) {
+				// TODO: Handle these like shrubs.
 				minerals.add(produce(fixtures, tiles, player,
 						(MineralVein) item, point));
 			} else if (item instanceof Shrub) { // ESCA-JAVA0177: TODO: Use a Guava Multimap

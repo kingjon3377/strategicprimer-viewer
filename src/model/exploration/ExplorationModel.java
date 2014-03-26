@@ -260,7 +260,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return the point one tile in that direction.
 	 */
 	@Override
-	public Point getDestination(final Point point, final Direction direction) { // NOPMD
+	public Point getDestination(final Point point, final Direction direction) {
 		final MapDimensions dims = getMapDimensions();
 		switch (direction) {
 		case East:
