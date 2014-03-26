@@ -79,9 +79,10 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		}
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
-		} catch (final FileNotFoundException e) { // $codepro.audit.disable logExceptions
+		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "image file images/" + image
 					+ " not found");
+			LOGGER.log(Level.FINEST, "With stack trace", e);
 			retval = defaultFixtIcon;
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image", e);

@@ -116,8 +116,8 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTileTranslated(final Graphics pen, final ITile tile, final int width,
-			final int height) {
+	public void drawTileTranslated(final Graphics pen, final ITile tile,
+			final int width, final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException(

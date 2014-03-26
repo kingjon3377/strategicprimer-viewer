@@ -89,7 +89,8 @@ public class HarvestableReportGenerator extends // NOPMD
 				}
 				shrubPoints.add(point);
 				fixtures.remove(Integer.valueOf(item.getID()));
-			} else if (item instanceof StoneDeposit) { // TODO: Handle these like shrubs.
+			} else if (item instanceof StoneDeposit) {
+				// TODO: Handle these like shrubs.
 				stone.add(produce(fixtures, tiles, player, (StoneDeposit) item,
 						point));
 			}

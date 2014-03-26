@@ -132,7 +132,8 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	 * @param newPlayer the new current player
 	 */
 	@Override
-	public final void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public final void playerChanged(@Nullable final Player old,
+			final Player newPlayer) {
 		owner = newPlayer;
 	}
 

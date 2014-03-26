@@ -407,7 +407,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeSelectionChangeListener(final SelectionChangeListener list) {
+	public final void removeSelectionChangeListener(
+			final SelectionChangeListener list) {
 		scListeners.remove(list);
 	}
 
