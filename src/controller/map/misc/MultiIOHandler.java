@@ -14,6 +14,7 @@ import model.misc.IMultiMapModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
@@ -28,6 +29,11 @@ import controller.map.formatexceptions.SPFormatException;
  *
  */
 public class MultiIOHandler extends IOHandler {
+	/**
+	 * The multi-map model.
+	 */
+	private final IMultiMapModel model;
+
 	/**
 	 * Logger.
 	 */
@@ -46,11 +52,6 @@ public class MultiIOHandler extends IOHandler {
 	}
 
 	/**
-	 * The multi-map model.
-	 */
-	private final IMultiMapModel model;
-
-	/**
 	 * Handle menu selections. Anything not handled here is passed to the
 	 * superclass's implementation.
 	 *
@@ -59,12 +60,7 @@ public class MultiIOHandler extends IOHandler {
 	@Override
 	public final void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
-			final Component source; // NOPMD
-			if (event.getSource() instanceof Component) {
-				source = (Component) event.getSource();
-			} else {
-				source = null;
-			}
+			final Component source = componentOrNull(event.getSource());
 			if ("Load secondary".equalsIgnoreCase(event.getActionCommand())) {
 				handleSecondaryLoadMenu(source);
 			} else if ("Save All".equalsIgnoreCase(event.getActionCommand())) {
@@ -74,7 +70,18 @@ public class MultiIOHandler extends IOHandler {
 			}
 		}
 	}
-
+	/**
+	 * @param obj an object which may be a Component
+	 * @return it if it is, or null
+	 */
+	@Nullable
+	private static Component componentOrNull(@Nullable final Object obj) {
+		if (obj instanceof Component) {
+			return (Component) obj; // NOPMD
+		} else {
+			return null;
+		}
+	}
 	/**
 	 * Save all maps to the filenames they were loaded from.
 	 *
@@ -101,8 +108,9 @@ public class MultiIOHandler extends IOHandler {
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final String filename = chooser.getSelectedFile().getPath();
-			assert filename != null;
+			final String filename =
+					NullCleaner.assertNotNull(chooser.getSelectedFile()
+							.getPath());
 			try {
 				model.addSubordinateMap(readMap(filename, Warning.INSTANCE),
 						filename);

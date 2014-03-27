@@ -29,16 +29,16 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactWorkerReader READER = new CompactWorkerReader();
+
+	/**
 	 * Singleton.
 	 */
 	private CompactWorkerReader() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactWorkerReader READER = new CompactWorkerReader();
 
 	/**
 	 * @param element the XML element to parse
@@ -180,121 +180,121 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Worker obj, final int indent)
+	public void write(final Writer ostream, final Worker obj, final int indent)
 			throws IOException {
-		out.append(indent(indent));
-		out.append("<worker name=\"");
-		out.append(obj.getName());
+		ostream.append(indent(indent));
+		ostream.append("<worker name=\"");
+		ostream.append(obj.getName());
 		if (!"human".equals(obj.getRace())) {
-			out.append("\" race=\"");
-			out.append(obj.getRace());
+			ostream.append("\" race=\"");
+			ostream.append(obj.getRace());
 		}
-		out.append("\" id=\"");
-		out.append(Integer.toString(obj.getID()));
-		out.append('"');
-		out.append(imageXML(obj));
+		ostream.append("\" id=\"");
+		ostream.append(Integer.toString(obj.getID()));
+		ostream.append('"');
+		ostream.append(imageXML(obj));
 		if (obj.iterator().hasNext() || obj.getStats() != null) {
-			out.append(">\n");
-			writeStats(out, obj.getStats(), indent + 1);
+			ostream.append(">\n");
+			writeStats(ostream, obj.getStats(), indent + 1);
 			for (final Job job : obj) {
 				if (job != null) {
-					writeJob(out, job, indent + 1);
+					writeJob(ostream, job, indent + 1);
 				}
 			}
-			out.append(indent(indent));
-			out.append("</worker>\n");
+			ostream.append(indent(indent));
+			ostream.append("</worker>\n");
 		} else {
-			out.append(" />\n");
+			ostream.append(" />\n");
 		}
 	}
 
 	/**
 	 * Write the worker's stats.
 	 *
-	 * @param out the writer to write to
+	 * @param ostream the writer to write to
 	 * @param stats the object to write
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private static void writeStats(final Writer out,
+	private static void writeStats(final Writer ostream,
 			@Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
-			out.append(indent(indent));
-			out.append("<stats hp=\"");
-			out.append(Integer.toString(stats.getHitPoints()));
-			out.append("\" max=\"");
-			out.append(Integer.toString(stats.getMaxHitPoints()));
-			out.append("\" str=\"");
-			out.append(Integer.toString(stats.getStrength()));
-			out.append("\" dex=\"");
-			out.append(Integer.toString(stats.getDexterity()));
-			out.append("\" con=\"");
-			out.append(Integer.toString(stats.getConstitution()));
-			out.append("\" int=\"");
-			out.append(Integer.toString(stats.getIntelligence()));
-			out.append("\" wis=\"");
-			out.append(Integer.toString(stats.getWisdom()));
-			out.append("\" cha=\"");
-			out.append(Integer.toString(stats.getCharisma()));
-			out.append("\" />\n");
+			ostream.append(indent(indent));
+			ostream.append("<stats hp=\"");
+			ostream.append(Integer.toString(stats.getHitPoints()));
+			ostream.append("\" max=\"");
+			ostream.append(Integer.toString(stats.getMaxHitPoints()));
+			ostream.append("\" str=\"");
+			ostream.append(Integer.toString(stats.getStrength()));
+			ostream.append("\" dex=\"");
+			ostream.append(Integer.toString(stats.getDexterity()));
+			ostream.append("\" con=\"");
+			ostream.append(Integer.toString(stats.getConstitution()));
+			ostream.append("\" int=\"");
+			ostream.append(Integer.toString(stats.getIntelligence()));
+			ostream.append("\" wis=\"");
+			ostream.append(Integer.toString(stats.getWisdom()));
+			ostream.append("\" cha=\"");
+			ostream.append(Integer.toString(stats.getCharisma()));
+			ostream.append("\" />\n");
 		}
 	}
 
 	/**
 	 * Write a Job to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeJob(final Writer out, final Job obj,
+	public static void writeJob(final Writer ostream, final Job obj,
 			final int indent) throws IOException {
-		out.append(indent(indent));
-		out.append("<job name=\"");
-		out.append(obj.getName());
-		out.append("\" level=\"");
-		out.append(Integer.toString(obj.getLevel()));
-		out.append('"');
+		ostream.append(indent(indent));
+		ostream.append("<job name=\"");
+		ostream.append(obj.getName());
+		ostream.append("\" level=\"");
+		ostream.append(Integer.toString(obj.getLevel()));
+		ostream.append('"');
 		if (obj.iterator().hasNext()) {
-			out.append(">\n");
+			ostream.append(">\n");
 			for (final Skill skill : obj) {
 				if (skill != null) {
-					writeSkill(out, skill, indent + 1);
+					writeSkill(ostream, skill, indent + 1);
 				}
 			}
-			out.append(indent(indent));
-			out.append("</job>\n");
+			ostream.append(indent(indent));
+			ostream.append("</job>\n");
 		} else {
-			out.append(" />\n");
+			ostream.append(" />\n");
 		}
 	}
 
 	/**
 	 * Write a Skill to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeSkill(final Writer out, final Skill obj,
+	public static void writeSkill(final Writer ostream, final Skill obj,
 			final int indent) throws IOException {
-		out.append(indent(indent));
-		out.append("<skill name=\"");
-		out.append(obj.getName());
-		out.append("\" level=\"");
-		out.append(Integer.toString(obj.getLevel()));
-		out.append("\" hours=\"");
-		out.append(Integer.toString(obj.getHours()));
-		out.append("\" />\n");
+		ostream.append(indent(indent));
+		ostream.append("<skill name=\"");
+		ostream.append(obj.getName());
+		ostream.append("\" level=\"");
+		ostream.append(Integer.toString(obj.getLevel()));
+		ostream.append("\" hours=\"");
+		ostream.append(Integer.toString(obj.getHours()));
+		ostream.append("\" />\n");
 	}
 
 	/**

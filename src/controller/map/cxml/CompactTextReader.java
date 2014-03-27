@@ -6,10 +6,11 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IPlayerCollection;
 import model.map.fixtures.TextFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -24,16 +25,16 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactTextReader extends AbstractCompactReader<TextFixture> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactTextReader READER = new CompactTextReader();
+
+	/**
 	 * Singleton.
 	 */
 	private CompactTextReader() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactTextReader READER = new CompactTextReader();
 
 	/**
 	 * @param tag a tag
@@ -88,26 +89,26 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TextFixture obj, final int indent)
+	public void write(final Writer ostream, final TextFixture obj, final int indent)
 			throws IOException {
-		out.append(indent(indent));
+		ostream.append(indent(indent));
 		if (obj.getTurn() == -1) {
-			out.append("<text");
+			ostream.append("<text");
 		} else {
-			out.append("<text turn=\"");
-			out.append(Integer.toString(obj.getTurn()));
-			out.append('"');
+			ostream.append("<text turn=\"");
+			ostream.append(Integer.toString(obj.getTurn()));
+			ostream.append('"');
 		}
-		out.append(imageXML(obj));
-		out.append('>');
-		out.append(obj.getText().trim());
-		out.append("</text>\n");
+		ostream.append(imageXML(obj));
+		ostream.append('>');
+		ostream.append(obj.getText().trim());
+		ostream.append("</text>\n");
 	}
 	/**
 	 * @return a String representation of the object

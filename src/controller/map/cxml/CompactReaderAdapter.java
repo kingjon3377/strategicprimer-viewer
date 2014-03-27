@@ -3,7 +3,6 @@ package controller.map.cxml;
 import java.io.IOException;
 import java.io.Writer;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -27,6 +26,7 @@ import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.ITownFixture;
 import model.viewer.TileTypeFixture;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -36,16 +36,16 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactReaderAdapter {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactReaderAdapter ADAPTER = new CompactReaderAdapter();
+
+	/**
 	 * Singleton constructor.
 	 */
 	private CompactReaderAdapter() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactReaderAdapter ADAPTER = new CompactReaderAdapter();
 
 	/**
 	 * Parse an object from XML.
@@ -69,9 +69,8 @@ public final class CompactReaderAdapter {
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
 			final T river = (T) CompactTileReader.parseRiver(element, warner);
-			final QName name = element.getName();
-			assert name != null;
-			AbstractCompactReader.spinUntilEnd(name, stream);
+			AbstractCompactReader.spinUntilEnd(
+					NullCleaner.assertNotNull(element.getName()), stream);
 			return river; // NOPMD
 		} else {
 			reader = getReader(type);
@@ -141,13 +140,13 @@ public final class CompactReaderAdapter {
 	/**
 	 * Write an object to XML.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
 	@SuppressWarnings("unchecked")
-	public static void write(final Writer out, final Object obj,
+	public static void write(final Writer ostream, final Object obj,
 			final int indent) throws IOException {
 		@SuppressWarnings("rawtypes") // NOPMD
 		final CompactReader reader; // NOPMD
@@ -156,16 +155,16 @@ public final class CompactReaderAdapter {
 		} else if (obj instanceof ITile) {
 			reader = CompactTileReader.READER;
 		} else if (obj instanceof River) {
-			CompactTileReader.writeRiver(out, (River) obj, indent);
+			CompactTileReader.writeRiver(ostream, (River) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof RiverFixture) {
-			CompactTileReader.writeRivers(out, (RiverFixture) obj, indent);
+			CompactTileReader.writeRivers(ostream, (RiverFixture) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof Job) {
-			CompactWorkerReader.writeJob(out, (Job) obj, indent);
+			CompactWorkerReader.writeJob(ostream, (Job) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof Skill) {
-			CompactWorkerReader.writeSkill(out, (Skill) obj, indent);
+			CompactWorkerReader.writeSkill(ostream, (Skill) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof Player) {
 			reader = CompactPlayerReader.READER;
@@ -173,13 +172,13 @@ public final class CompactReaderAdapter {
 			// Skip it.
 			return;
 		} else if (obj instanceof IFixture) {
-			final Class<? extends IFixture> cls = ((IFixture) obj).getClass();
-			assert cls != null;
-			reader = getFixtureReader(cls);
+			reader =
+					getFixtureReader(NullCleaner.assertNotNull(((IFixture) obj)
+							.getClass()));
 		} else {
 			throw new IllegalStateException("Don't know how to write this type");
 		}
-		reader.write(out, obj, indent);
+		reader.write(ostream, obj, indent);
 	}
 	/**
 	 * @return a String representation of the object

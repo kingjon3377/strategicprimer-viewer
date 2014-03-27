@@ -1,6 +1,7 @@
 package controller.map.misc;
 
 import static javax.swing.JFileChooser.APPROVE_OPTION;
+import static util.NullCleaner.assertNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -59,23 +60,20 @@ public class FileChooser {
 	 *         user declines to choose a file.
 	 */
 	public String getFilename() throws ChoiceInterruptedException {
-		final FilteredFileChooser fileChooser = chooser;
 		if (!shouldReturn) {
 			if (SwingUtilities.isEventDispatchThread()) {
-				if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
-					final String selFile = fileChooser.getSelectedFile().getPath();
-					assert selFile != null;
-					setFilename(selFile);
+				if (chooser.showOpenDialog(null) == APPROVE_OPTION) {
+					setFilename(assertNotNull(chooser.getSelectedFile()
+							.getPath()));
 				}
 			} else {
+				final FilteredFileChooser fileChooser = chooser;
 				invoke(new Runnable() {
 					@Override
 					public void run() {
 						if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
-							final String selFile = fileChooser
-									.getSelectedFile().getPath();
-							assert selFile != null;
-							setFilename(selFile);
+							setFilename(assertNotNull(fileChooser
+									.getSelectedFile().getPath()));
 						}
 					}
 

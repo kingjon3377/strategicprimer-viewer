@@ -74,11 +74,11 @@ public final class IDFactoryFiller {
 	private static void recursiveRegister(final IDFactory idf,
 			final FixtureIterable<?> iter) {
 		for (final IFixture fix : iter) {
-			final int id = fix.getID();
-			if (!idf.used(id)) {
+			final int idNum = fix.getID();
+			if (!idf.used(idNum)) {
 				// We don't want to set off duplicate-ID warnings for the same
 				// fixture in multiple maps. Or for Mountains and the like.
-				idf.register(id);
+				idf.register(idNum);
 			}
 			if (fix instanceof FixtureIterable<?>) {
 				recursiveRegister(idf, (FixtureIterable<?>) fix);

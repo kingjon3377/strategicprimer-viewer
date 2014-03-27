@@ -1,5 +1,7 @@
 package controller.map.cxml;
 
+import static java.lang.Boolean.parseBoolean;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
@@ -30,6 +32,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -45,6 +48,11 @@ import controller.map.misc.IDFactory;
 public final class CompactResourceReader extends
 		AbstractCompactReader<HarvestableFixture> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactResourceReader READER = new CompactResourceReader();
+
+	/**
 	 * The parameter giving the status of a fixture.
 	 */
 	private static final String STATUS_PAR = "status";
@@ -59,16 +67,20 @@ public final class CompactResourceReader extends
 	private static final String CULTIVATED_PARAM = "cultivated";
 
 	/**
+	 * Mapping from tags to enum-tags.
+	 */
+	private static final Map<String, HarvestableType> MAP = new HashMap<>(
+			HarvestableType.values().length);
+	/**
+	 * List of supported tags.
+	 */
+	private static final Set<String> SUPP_TAGS;
+	/**
 	 * Singleton.
 	 */
 	private CompactResourceReader() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactResourceReader READER = new CompactResourceReader();
 
 	/**
 	 * Enumeration of the types we know how to handle.
@@ -133,24 +145,15 @@ public final class CompactResourceReader extends
 		}
 	}
 
-	/**
-	 * Mapping from tags to enum-tags.
-	 */
-	private static final Map<String, HarvestableType> MAP = new HashMap<>(
-			HarvestableType.values().length);
-	/**
-	 * List of supported tags.
-	 */
-	private static final Set<String> SUPP_TAGS;
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (final HarvestableType mt : HarvestableType.values()) {
-			MAP.put(mt.tag, mt);
-			suppTagsTemp.add(mt.tag);
+		for (final HarvestableType type : HarvestableType.values()) {
+			MAP.put(type.tag, type);
+			suppTagsTemp.add(type.tag);
 		}
-		final Set<String> temp = Collections.unmodifiableSet(suppTagsTemp);
-		assert temp != null;
-		SUPP_TAGS = temp;
+		SUPP_TAGS =
+				NullCleaner.assertNotNull(Collections
+						.unmodifiableSet(suppTagsTemp));
 	}
 
 	/**
@@ -257,10 +260,9 @@ public final class CompactResourceReader extends
 			final boolean field, final int idNum, final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PAR)) {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
-			warner.warn(new MissingPropertyException(local, STATUS_PAR,
-					element.getLocation().getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner
+					.assertNotNull(element.getName().getLocalPart()),
+					STATUS_PAR, element.getLocation().getLineNumber()));
 		}
 		return new Meadow(getParameter(element, KIND_PAR), field,
 				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)),
@@ -297,15 +299,13 @@ public final class CompactResourceReader extends
 	private static boolean isCultivated(final StartElement element,
 			final Warning warner) throws SPFormatException {
 		if (hasParameter(element, CULTIVATED_PARAM)) {
-			return Boolean
-					.parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
+			return parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
+			final String local = NullCleaner.assertNotNull(element.getName().getLocalPart());
 			if (hasParameter(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(local, "wild",
 						CULTIVATED_PARAM, element.getLocation().getLineNumber()));
-				return !Boolean.parseBoolean(getParameter(element, "wild"));
+				return !parseBoolean(getParameter(element, "wild"));
 			} else {
 				throw new MissingPropertyException(local, CULTIVATED_PARAM,
 						element.getLocation().getLineNumber());
@@ -316,64 +316,64 @@ public final class CompactResourceReader extends
 	/**
 	 * Write an object to a stream. TODO: Some way of simplifying this?
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final HarvestableFixture obj,
+	public void write(final Writer ostream, final HarvestableFixture obj,
 			final int indent) throws IOException {
-		out.append(indent(indent));
+		ostream.append(indent(indent));
 		if (obj instanceof CacheFixture) {
-			out.append("<cache kind=\"");
-			out.append(((CacheFixture) obj).getKind());
-			out.append("\" contents=\"");
-			out.append(((CacheFixture) obj).getContents());
+			ostream.append("<cache kind=\"");
+			ostream.append(((CacheFixture) obj).getKind());
+			ostream.append("\" contents=\"");
+			ostream.append(((CacheFixture) obj).getContents());
 		} else if (obj instanceof Meadow) {
-			out.append('<');
-			out.append(getMeadowTag((Meadow) obj));
-			out.append(" kind=\"");
-			out.append(((Meadow) obj).getKind());
-			out.append("\" cultivated=\"");
-			out.append(Boolean.toString(((Meadow) obj).isCultivated()));
-			out.append("\" status=\"");
-			out.append(((Meadow) obj).getStatus().toString());
+			ostream.append('<');
+			ostream.append(getMeadowTag((Meadow) obj));
+			ostream.append(" kind=\"");
+			ostream.append(((Meadow) obj).getKind());
+			ostream.append("\" cultivated=\"");
+			ostream.append(Boolean.toString(((Meadow) obj).isCultivated()));
+			ostream.append("\" status=\"");
+			ostream.append(((Meadow) obj).getStatus().toString());
 		} else if (obj instanceof Grove) {
-			out.append('<');
-			out.append(getGroveTag((Grove) obj));
-			out.append(" cultivated=\"");
-			out.append(Boolean.toString(((Grove) obj).isCultivated()));
-			out.append("\" kind=\"");
-			out.append(((Grove) obj).getKind());
+			ostream.append('<');
+			ostream.append(getGroveTag((Grove) obj));
+			ostream.append(" cultivated=\"");
+			ostream.append(Boolean.toString(((Grove) obj).isCultivated()));
+			ostream.append("\" kind=\"");
+			ostream.append(((Grove) obj).getKind());
 		} else if (obj instanceof Mine) {
-			out.append("<mine kind=\"");
-			out.append(((Mine) obj).getKind());
-			out.append("\" status=\"");
-			out.append(((Mine) obj).getStatus().toString());
+			ostream.append("<mine kind=\"");
+			ostream.append(((Mine) obj).getKind());
+			ostream.append("\" status=\"");
+			ostream.append(((Mine) obj).getStatus().toString());
 		} else if (obj instanceof MineralVein) {
-			out.append("<mineral kind=\"");
-			out.append(((MineralVein) obj).getKind());
-			out.append("\" exposed=\"");
-			out.append(Boolean.toString(((MineralVein) obj).isExposed()));
-			out.append("\" dc=\"");
-			out.append(Integer.toString(((IEvent) obj).getDC()));
+			ostream.append("<mineral kind=\"");
+			ostream.append(((MineralVein) obj).getKind());
+			ostream.append("\" exposed=\"");
+			ostream.append(Boolean.toString(((MineralVein) obj).isExposed()));
+			ostream.append("\" dc=\"");
+			ostream.append(Integer.toString(((IEvent) obj).getDC()));
 		} else if (obj instanceof Shrub) {
-			out.append("<shrub kind=\"");
-			out.append(((Shrub) obj).getKind());
+			ostream.append("<shrub kind=\"");
+			ostream.append(((Shrub) obj).getKind());
 		} else if (obj instanceof StoneDeposit) {
-			out.append("<stone kind=\"");
-			out.append(((StoneDeposit) obj).stone().toString());
-			out.append("\" dc=\"");
-			out.append(Integer.toString(((StoneDeposit) obj).getDC()));
+			ostream.append("<stone kind=\"");
+			ostream.append(((StoneDeposit) obj).stone().toString());
+			ostream.append("\" dc=\"");
+			ostream.append(Integer.toString(((StoneDeposit) obj).getDC()));
 		} else if (obj instanceof IEvent) {
-			writeSimpleEvent(out, (IEvent) obj);
+			writeSimpleEvent(ostream, (IEvent) obj);
 		}
-		out.append("\" id=\"");
-		out.append(Integer.toString(obj.getID()));
-		out.append('"');
-		out.append(imageXML(obj));
-		out.append(" />\n");
+		ostream.append("\" id=\"");
+		ostream.append(Integer.toString(obj.getID()));
+		ostream.append('"');
+		ostream.append(imageXML(obj));
+		ostream.append(" />\n");
 	}
 
 	/**
@@ -382,7 +382,7 @@ public final class CompactResourceReader extends
 	 */
 	private static String getMeadowTag(final Meadow meadow) {
 		if (meadow.isField()) {
-			return "field";
+			return "field"; // NOPMD
 		} else {
 			return "meadow";
 		}
@@ -394,7 +394,7 @@ public final class CompactResourceReader extends
 	 */
 	private static String getGroveTag(final Grove grove) {
 		if (grove.isOrchard()) {
-			return "orchard";
+			return "orchard"; // NOPMD
 		} else {
 			return "grove";
 		}
@@ -403,21 +403,21 @@ public final class CompactResourceReader extends
 	/**
 	 * Serialize a very simple Event.
 	 *
-	 * @param out the stream to write (most of) it to
+	 * @param ostream the stream to write (most of) it to
 	 * @param event a simple (DC- and ID-only) IEvent
 	 * @throws IOException on I/O error
 	 */
-	private static void writeSimpleEvent(final Writer out, final IEvent event)
+	private static void writeSimpleEvent(final Writer ostream, final IEvent event)
 			throws IOException {
 		if (event instanceof Battlefield) {
-			out.append("<battlefield ");
+			ostream.append("<battlefield ");
 		} else if (event instanceof Cave) {
-			out.append("<cave ");
+			ostream.append("<cave ");
 		} else {
 			throw new IllegalStateException("Unhandled IEvent subtype");
 		}
-		out.append("dc=\"");
-		out.append(Integer.toString(event.getDC()));
+		ostream.append("dc=\"");
+		ostream.append(Integer.toString(event.getDC()));
 	}
 	/**
 	 * @return a String representation of the object

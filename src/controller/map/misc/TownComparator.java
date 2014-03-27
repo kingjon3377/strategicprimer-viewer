@@ -100,36 +100,36 @@ public final class TownComparator implements Comparator<AbstractTown> {
 		public int compare(final ITownFixture one, final ITownFixture two) {
 			if (one instanceof Fortress) {
 				if (two instanceof Fortress) {
-					return 0;
+					return 0; // NOPMD
 				} else {
-					return -1;
+					return -1; // NOPMD
 				}
 			} else if (two instanceof Fortress) {
-				return 1;
+				return 1; // NOPMD
 			} else if (one instanceof City) {
 				if (two instanceof City) {
-					return 0;
+					return 0; // NOPMD
 				} else {
-					return -1;
+					return -1; // NOPMD
 				}
 			} else if (two instanceof City) {
-				return 1;
+				return 1; // NOPMD
 			} else if (one instanceof Town) {
 				if (two instanceof Town) {
-					return 0;
+					return 0; // NOPMD
 				} else {
-					return -1;
+					return -1; // NOPMD
 				}
 			} else if (two instanceof Town) {
-				return 1;
+				return 1; // NOPMD
 			} else if (one instanceof Fortification) {
 				if (two instanceof Fortification) {
-					return 0;
+					return 0; // NOPMD
 				} else {
-					return -1;
+					return -1; // NOPMD
 				}
 			} else if (two instanceof Fortification) {
-				return 1;
+				return 1; // NOPMD
 			} else {
 				// They should be both villages ...
 				return 0;

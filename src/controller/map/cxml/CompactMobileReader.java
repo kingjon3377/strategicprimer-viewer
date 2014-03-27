@@ -46,6 +46,26 @@ import controller.map.misc.IDFactory;
 public final class CompactMobileReader extends
 		AbstractCompactReader<MobileFixture> {
 	/**
+	 * Mapping from tags to enum-tags.
+	 */
+	private static final Map<String, MobileType> MAP = new HashMap<>(
+			MobileType.values().length);
+	/**
+	 * List of supported tags.
+	 */
+	private static final Set<String> SUPP_TAGS;
+	/**
+	 * Map from types to tags.
+	 *
+	 * FIXME: This is brittle and doesn't work well with extensible classes.
+	 */
+	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
+	/**
+	 * Singleton object.
+	 */
+	public static final CompactMobileReader READER = new CompactMobileReader();
+
+	/**
 	 * Singleton.
 	 */
 	private CompactMobileReader() {
@@ -128,26 +148,11 @@ public final class CompactMobileReader extends
 		}
 	}
 
-	/**
-	 * Mapping from tags to enum-tags.
-	 */
-	private static final Map<String, MobileType> MAP = new HashMap<>(
-			MobileType.values().length);
-	/**
-	 * List of supported tags.
-	 */
-	private static final Set<String> SUPP_TAGS;
-	/**
-	 * Map from types to tags.
-	 *
-	 * FIXME: This is brittle and doesn't work well with extensible classes.
-	 */
-	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (final MobileType mt : MobileType.values()) {
-			MAP.put(mt.tag, mt);
-			suppTagsTemp.add(mt.tag);
+		for (final MobileType mtype : MobileType.values()) {
+			MAP.put(mtype.tag, mtype);
+			suppTagsTemp.add(mtype.tag);
 		}
 		final Set<String> tempOne = Collections.unmodifiableSet(suppTagsTemp);
 		assert tempOne != null;
@@ -177,11 +182,6 @@ public final class CompactMobileReader extends
 	public boolean isSupportedTag(@Nullable final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactMobileReader READER = new CompactMobileReader();
 
 	/**
 	 *
@@ -274,49 +274,49 @@ public final class CompactMobileReader extends
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final MobileFixture obj,
+	public void write(final Writer ostream, final MobileFixture obj,
 			final int indent) throws IOException {
 		if (obj instanceof Unit) {
-			CompactUnitReader.READER.write(out, (Unit) obj, indent);
+			CompactUnitReader.READER.write(ostream, (Unit) obj, indent);
 		} else if (obj instanceof Animal) {
-			out.append(indent(indent));
-			out.append("<animal kind=\"");
-			out.append(((Animal) obj).getKind());
+			ostream.append(indent(indent));
+			ostream.append("<animal kind=\"");
+			ostream.append(((Animal) obj).getKind());
 			if (((Animal) obj).isTraces()) {
-				out.append("\" traces=\"");
+				ostream.append("\" traces=\"");
 			}
 			if (((Animal) obj).isTalking()) {
-				out.append("\" talking=\"true");
+				ostream.append("\" talking=\"true");
 			}
 			if (!"wild".equals(((Animal) obj).getStatus())) {
-				out.append("\" status=\"");
-				out.append(((Animal) obj).getStatus());
+				ostream.append("\" status=\"");
+				ostream.append(((Animal) obj).getStatus());
 			}
-			out.append("\" id=\"");
-			out.append(Integer.toString(obj.getID()));
-			out.append('"').append(imageXML((Animal) obj)).append(" />\n");
+			ostream.append("\" id=\"");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append('"').append(imageXML((Animal) obj)).append(" />\n");
 		} else {
-			out.append(indent(indent));
-			out.append('<');
-			out.append(TAG_MAP.get(obj.getClass()));
+			ostream.append(indent(indent));
+			ostream.append('<');
+			ostream.append(TAG_MAP.get(obj.getClass()));
 			if (obj instanceof HasKind) {
-				out.append(" kind=\"");
-				out.append(((HasKind) obj).getKind());
-				out.append('"');
+				ostream.append(" kind=\"");
+				ostream.append(((HasKind) obj).getKind());
+				ostream.append('"');
 			}
-			out.append(" id=\"");
-			out.append(Integer.toString(obj.getID()));
-			out.append('"');
+			ostream.append(" id=\"");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append('"');
 			if (obj instanceof HasImage) {
-				out.append(imageXML((HasImage) obj));
+				ostream.append(imageXML((HasImage) obj));
 			}
-			out.append(" />\n");
+			ostream.append(" />\n");
 		}
 	}
 
@@ -325,35 +325,35 @@ public final class CompactMobileReader extends
 	 * calculated complexity.
 	 *
 	 * @param type the type being read
-	 * @param id the ID # to give it.
+	 * @param idNum the ID # to give it.
 	 * @return the thing being read.
 	 */
-	private static MobileFixture readSimple(final MobileType type, final int id) {
+	private static MobileFixture readSimple(final MobileType type, final int idNum) {
 		final MobileFixture retval; // NOPMD
 		switch (type) {
 		case DjinnType:
-			retval = new Djinn(id);
+			retval = new Djinn(idNum);
 			break;
 		case GriffinType:
-			retval = new Griffin(id);
+			retval = new Griffin(idNum);
 			break;
 		case MinotaurType:
-			retval = new Minotaur(id);
+			retval = new Minotaur(idNum);
 			break;
 		case OgreType:
-			retval = new Ogre(id);
+			retval = new Ogre(idNum);
 			break;
 		case PhoenixType:
-			retval = new Phoenix(id);
+			retval = new Phoenix(idNum);
 			break;
 		case SimurghType:
-			retval = new Simurgh(id);
+			retval = new Simurgh(idNum);
 			break;
 		case SphinxType:
-			retval = new Sphinx(id);
+			retval = new Sphinx(idNum);
 			break;
 		case TrollType:
-			retval = new Troll(id);
+			retval = new Troll(idNum);
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Reader;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
@@ -13,6 +12,7 @@ import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
@@ -51,12 +51,9 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final StartElement evt = event.asStartElement();
-				assert evt != null;
-				final T retval = CompactReaderAdapter.parse(type,
-						evt, eventReader, players, warner,
-						idFactory);
-				return retval;
+				return CompactReaderAdapter.parse(type,
+						NullCleaner.assertNotNull(event.asStartElement()),
+						eventReader, players, warner, idFactory);
 			}
 		}
 		throw new XMLStreamException(
@@ -92,7 +89,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 			final Warning warner) throws XMLStreamException, SPFormatException {
 		final IMap retval = readXML(file, istream, MapView.class, warner);
 		if (retval instanceof SPMap) {
-			return new MapView(retval, retval
+			return new MapView(retval, retval//NOPMD
 					.getPlayers().getCurrentPlayer().getPlayerId(), 0);
 		} else {
 			return (MapView) retval;

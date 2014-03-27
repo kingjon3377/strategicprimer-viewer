@@ -18,6 +18,7 @@ import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -37,6 +38,16 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	private static final String UNIT_TAG = "unit";
 
 	/**
+	 * List of readers we'll try subtags on.
+	 */
+	private final List<CompactReader<? extends IFixture>> readers;
+
+	/**
+	 * Singleton object.
+	 */
+	public static final CompactUnitReader READER = new CompactUnitReader();
+
+	/**
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
@@ -51,11 +62,6 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		assert unmod != null;
 		readers = unmod;
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactUnitReader READER = new CompactUnitReader();
 
 	/**
 	 *
@@ -94,16 +100,9 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 				break;
 			}
 		}
-		final String ordersText = orders.toString().trim();
-		assert ordersText != null;
-		retval.setOrders(ordersText);
+		retval.setOrders(NullCleaner.assertNotNull(orders.toString().trim()));
 		return retval;
 	}
-
-	/**
-	 * List of readers we'll try subtags on.
-	 */
-	private final List<CompactReader<? extends IFixture>> readers;
 
 	/**
 	 * Parse what should be a TileFixture from the XML.
@@ -120,8 +119,8 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			final IteratorWrapper<XMLEvent> stream,
 			final IPlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
-		final String name = element.getName().getLocalPart();
-		assert name != null;
+		final String name =
+				NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				final IFixture retval = item.read(element, stream, players,
@@ -172,7 +171,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 */
 	private static String ensureNumeric(final String string) {
 		if (string.isEmpty()) {
-			return "-1";
+			return "-1"; // NOPMD
 		} else {
 			return string;
 		}
@@ -190,40 +189,40 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Unit obj, final int indent)
+	public void write(final Writer ostream, final Unit obj, final int indent)
 			throws IOException {
-		out.append(indent(indent));
-		out.append("<unit owner=\"");
-		out.append(Integer.toString(obj.getOwner().getPlayerId()));
+		ostream.append(indent(indent));
+		ostream.append("<unit owner=\"");
+		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 		if (!obj.getKind().isEmpty()) {
-			out.append("\" kind=\"");
-			out.append(obj.getKind());
+			ostream.append("\" kind=\"");
+			ostream.append(obj.getKind());
 		}
 		if (!obj.getName().isEmpty()) {
-			out.append("\" name=\"");
-			out.append(obj.getName());
+			ostream.append("\" name=\"");
+			ostream.append(obj.getName());
 		}
-		out.append("\" id=\"");
-		out.append(Integer.toString(obj.getID()));
-		out.append('"');
-		out.append(imageXML(obj));
+		ostream.append("\" id=\"");
+		ostream.append(Integer.toString(obj.getID()));
+		ostream.append('"');
+		ostream.append(imageXML(obj));
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
-			out.append('>').append(obj.getOrders().trim()).append('\n');
+			ostream.append('>').append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
 				if (member != null) {
-					CompactReaderAdapter.write(out, member, indent + 1);
+					CompactReaderAdapter.write(ostream, member, indent + 1);
 				}
 			}
-			out.append(indent(indent));
-			out.append("</unit>\n");
+			ostream.append(indent(indent));
+			ostream.append("</unit>\n");
 		} else {
-			out.append(" />\n");
+			ostream.append(" />\n");
 		}
 	}
 	/**

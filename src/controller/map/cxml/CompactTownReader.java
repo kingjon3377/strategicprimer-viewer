@@ -41,6 +41,11 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactTownReader extends AbstractCompactReader<ITownFixture> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactTownReader READER = new CompactTownReader();
+
+	/**
 	 * The "owner" parameter.
 	 */
 	private static final String OWNER_PARAM = "owner";
@@ -55,11 +60,6 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	private CompactTownReader() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactTownReader READER = new CompactTownReader();
 
 	/**
 	 * @param tag a tag
@@ -240,87 +240,87 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final ITownFixture obj, final int indent)
+	public void write(final Writer ostream, final ITownFixture obj, final int indent)
 			throws IOException {
-		out.append(indent(indent));
+		ostream.append(indent(indent));
 		if (obj instanceof AbstractTown) {
-			writeAbstractTown(out, (AbstractTown) obj);
+			writeAbstractTown(ostream, (AbstractTown) obj);
 		} else if (obj instanceof Village) {
-			out.append("<village status=\"");
-			out.append(((Village) obj).status().toString());
+			ostream.append("<village status=\"");
+			ostream.append(((Village) obj).status().toString());
 			if (!obj.getName().isEmpty()) {
-				out.append("\" name=\"");
-				out.append(obj.getName());
+				ostream.append("\" name=\"");
+				ostream.append(obj.getName());
 			}
-			out.append("\" id=\"");
-			out.append(Integer.toString(obj.getID()));
-			out.append("\" owner=\"");
-			out.append(Integer.toString(obj.getOwner().getPlayerId()));
-			out.append("\" race=\"");
-			out.append(((Village) obj).getRace());
-			out.append("\" ").append(imageXML((Village) obj)).append("/>\n");
+			ostream.append("\" id=\"");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append("\" owner=\"");
+			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
+			ostream.append("\" race=\"");
+			ostream.append(((Village) obj).getRace());
+			ostream.append("\" ").append(imageXML((Village) obj)).append("/>\n");
 		} else if (obj instanceof Fortress) {
-			out.append("<fortress owner=\"");
-			out.append(Integer.toString(obj.getOwner().getPlayerId()));
+			ostream.append("<fortress owner=\"");
+			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 			if (!obj.getName().isEmpty()) {
-				out.append("\" name=\"");
-				out.append(obj.getName());
+				ostream.append("\" name=\"");
+				ostream.append(obj.getName());
 			}
-			out.append("\" id=\"");
-			out.append(Integer.toString(obj.getID()));
-			out.append('"').append(imageXML((Fortress) obj)).append('>');
+			ostream.append("\" id=\"");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append('"').append(imageXML((Fortress) obj)).append('>');
 			if (((Fortress) obj).iterator().hasNext()) {
-				out.append('\n');
+				ostream.append('\n');
 				for (final Unit unit : (Fortress) obj) {
 					if (unit != null) {
-						CompactUnitReader.READER.write(out, unit, indent + 1);
+						CompactUnitReader.READER.write(ostream, unit, indent + 1);
 					}
 				}
-				out.append(indent(indent));
+				ostream.append(indent(indent));
 			}
-			out.append("</fortress>\n");
+			ostream.append("</fortress>\n");
 		} else {
 			throw new IllegalStateException("Unexpected TownFixture type");
 		}
 	}
 
 	/**
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @param obj the AbstractTownEvent to write
 	 * @throws IOException on I/O error
 	 */
-	private static void writeAbstractTown(final Writer out,
+	private static void writeAbstractTown(final Writer ostream,
 			final AbstractTown obj) throws IOException {
 		if (obj instanceof Fortification) {
-			out.append("<fortification ");
+			ostream.append("<fortification ");
 		} else if (obj instanceof Town) {
-			out.append("<town ");
+			ostream.append("<town ");
 		} else if (obj instanceof City) {
-			out.append("<city ");
+			ostream.append("<city ");
 		} else {
 			throw new IllegalStateException("Unknown AbstractTownEvent type");
 		}
-		out.append("status=\"");
-		out.append(obj.status().toString());
-		out.append("\" size=\"");
-		out.append(obj.size().toString());
-		out.append("\" dc=\"");
-		out.append(Integer.toString(((IEvent) obj).getDC()));
+		ostream.append("status=\"");
+		ostream.append(obj.status().toString());
+		ostream.append("\" size=\"");
+		ostream.append(obj.size().toString());
+		ostream.append("\" dc=\"");
+		ostream.append(Integer.toString(((IEvent) obj).getDC()));
 		if (!obj.getName().isEmpty()) {
-			out.append("\" name=\"");
-			out.append(obj.getName());
+			ostream.append("\" name=\"");
+			ostream.append(obj.getName());
 		}
-		out.append("\" id=\"");
-		out.append(Integer.toString(obj.getID()));
-		out.append("\" owner=\"");
-		out.append(Integer.toString(obj.getOwner().getPlayerId()));
-		out.append('"').append(imageXML(obj)).append(" />\n");
+		ostream.append("\" id=\"");
+		ostream.append(Integer.toString(obj.getID()));
+		ostream.append("\" owner=\"");
+		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
+		ostream.append('"').append(imageXML(obj)).append(" />\n");
 	}
 	/**
 	 * @return a String representation of the object

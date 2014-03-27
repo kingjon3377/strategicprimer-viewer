@@ -30,6 +30,11 @@ import controller.map.formatexceptions.SPFormatException;
  */
 public class IncludingIterator implements Iterator<XMLEvent> {
 	/**
+	 * The stack of iterators we're working with.
+	 */
+	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param file the name of the file we're reading
@@ -39,11 +44,6 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		stack = new LinkedList<>();
 		stack.addFirst(Pair.of(file, new ComparableIterator<>(iter)));
 	}
-
-	/**
-	 * The stack of iterators we're working with.
-	 */
-	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
 
 	/**
 	 * Note that this method removes any empty iterators from the top of the
@@ -87,9 +87,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		while (retval != null && retval.isStartElement()
 				&& "include".equals(retval.asStartElement().getName()
 						.getLocalPart())) {
-			final StartElement selem = retval.asStartElement();
-			assert selem != null;
-			handleInclude(selem);
+			handleInclude(NullCleaner.assertNotNull(retval.asStartElement()));
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
 				throw new NoSuchElementException();

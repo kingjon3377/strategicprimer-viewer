@@ -39,12 +39,12 @@ public interface CompactReader<T> {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems.
 	 */
-	void write(Writer out, T obj, int indent) throws IOException;
+	void write(Writer ostream, T obj, int indent) throws IOException;
 
 	/**
 	 * @param tag a tag. May be null, to simplify callers.

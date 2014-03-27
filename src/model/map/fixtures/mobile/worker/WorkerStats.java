@@ -18,32 +18,6 @@ public class WorkerStats {
 	 * every two points less is worth -1.
 	 */
 	private static final int STAT_BASIS = 10;
-	// ESCA-JAVA0138:
-	/**
-	 * Constructor.
-	 *
-	 * @param hitPoints the worker's health
-	 * @param maxHitPoints the worker's max health
-	 * @param strength the worker's strength
-	 * @param dexterity the worker's dexterity
-	 * @param constitution the worker's constitution
-	 * @param intelligence the worker's intelligence
-	 * @param wisdom the worker's wisdom
-	 * @param charisma th worker's charisma
-	 */
-	public WorkerStats(final int hitPoints, final int maxHitPoints,
-			final int strength, final int dexterity, final int constitution,
-			final int intelligence, final int wisdom, final int charisma) {
-		hp = hitPoints;
-		maxHP = maxHitPoints;
-		str = strength;
-		dex = dexterity;
-		con = constitution;
-		intel = intelligence;
-		wis = wisdom;
-		cha = charisma;
-	}
-
 	/**
 	 * The worker's health.
 	 */
@@ -76,6 +50,32 @@ public class WorkerStats {
 	 * The worker's charisma.
 	 */
 	private int cha;
+
+	// ESCA-JAVA0138:
+	/**
+	 * Constructor.
+	 *
+	 * @param hitPoints the worker's health
+	 * @param maxHitPoints the worker's max health
+	 * @param strength the worker's strength
+	 * @param dexterity the worker's dexterity
+	 * @param constitution the worker's constitution
+	 * @param intelligence the worker's intelligence
+	 * @param wisdom the worker's wisdom
+	 * @param charisma th worker's charisma
+	 */
+	public WorkerStats(final int hitPoints, final int maxHitPoints,
+			final int strength, final int dexterity, final int constitution,
+			final int intelligence, final int wisdom, final int charisma) {
+		hp = hitPoints;
+		maxHP = maxHitPoints;
+		str = strength;
+		dex = dexterity;
+		con = constitution;
+		intel = intelligence;
+		wis = wisdom;
+		cha = charisma;
+	}
 
 	/**
 	 * @return the worker's health
@@ -195,8 +195,8 @@ public class WorkerStats {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj == this
-				|| (obj instanceof WorkerStats && equalsImpl((WorkerStats) obj));
+		return obj == this || obj instanceof WorkerStats
+				&& equalsImpl((WorkerStats) obj);
 	}
 	/**
 	 * @param obj another stats object

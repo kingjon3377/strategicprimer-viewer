@@ -9,6 +9,11 @@ import javax.swing.JFrame;
  */
 public class WindowThread implements Runnable {
 	/**
+	 * The window to start.
+	 */
+	private final JFrame window;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param frame the window to start
@@ -16,11 +21,6 @@ public class WindowThread implements Runnable {
 	public WindowThread(final JFrame frame) {
 		window = frame;
 	}
-
-	/**
-	 * The window to start.
-	 */
-	private final JFrame window;
 
 	/**
 	 * Start the window.

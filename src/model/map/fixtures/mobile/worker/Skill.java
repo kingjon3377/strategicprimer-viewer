@@ -12,6 +12,19 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Skill implements HasName {
 	/**
+	 * The name of the skill.
+	 */
+	private String name;
+	/**
+	 * How many levels the worker has in the skill.
+	 */
+	private int level;
+	/**
+	 * How many hours the worker has gained since leveling up last.
+	 */
+	private int hours;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param skillName the name of the skill
@@ -25,19 +38,6 @@ public class Skill implements HasName {
 		level = skillLevel;
 		hours = time;
 	}
-
-	/**
-	 * The name of the skill.
-	 */
-	private String name;
-	/**
-	 * How many levels the worker has in the skill.
-	 */
-	private int level;
-	/**
-	 * How many hours the worker has gained since leveling up last.
-	 */
-	private int hours;
 
 	/**
 	 * @return the name of the skill
@@ -67,9 +67,9 @@ public class Skill implements HasName {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Skill && name.equals(((Skill) obj).name)
-						&& level == ((Skill) obj).level && hours == ((Skill) obj).hours);
+		return this == obj || obj instanceof Skill
+				&& name.equals(((Skill) obj).name)
+				&& level == ((Skill) obj).level && hours == ((Skill) obj).hours;
 	}
 
 	/**

@@ -29,13 +29,13 @@ public class CompactXMLWriter implements SPWriter {
 	/**
 	 * Write a map to a stream.
 	 *
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @param map the map to write
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final IMap map) throws IOException {
-		writeObject(out, map);
+	public void write(final Writer ostream, final IMap map) throws IOException {
+		writeObject(ostream, map);
 	}
 
 	/**
@@ -56,13 +56,13 @@ public class CompactXMLWriter implements SPWriter {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	public static void writeObject(final Writer out, final Object obj)
+	public static void writeObject(final Writer ostream, final Object obj)
 			throws IOException {
-		CompactReaderAdapter.write(out, obj, 0);
+		CompactReaderAdapter.write(ostream, obj, 0);
 	}
 	/**
 	 * @return a String representation of the object

@@ -6,10 +6,11 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IPlayerCollection;
 import model.map.fixtures.Ground;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -23,16 +24,16 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactGroundReader READER = new CompactGroundReader();
+
+	/**
 	 * Singleton.
 	 */
 	private CompactGroundReader() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactGroundReader READER = new CompactGroundReader();
 
 	/**
 	 *
@@ -72,22 +73,22 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Ground obj, final int indent)
+	public void write(final Writer ostream, final Ground obj, final int indent)
 			throws IOException {
 		for (int i = 0; i < indent; i++) {
-			out.append('\t');
+			ostream.append('\t');
 		}
-		out.append("<ground kind=\"");
-		out.append(obj.getKind());
-		out.append("\" exposed=\"");
-		out.append(Boolean.toString(obj.isExposed()));
-		out.append('"').append(imageXML(obj)).append(" />\n");
+		ostream.append("<ground kind=\"");
+		ostream.append(obj.getKind());
+		ostream.append("\" exposed=\"");
+		ostream.append(Boolean.toString(obj.isExposed()));
+		ostream.append('"').append(imageXML(obj)).append(" />\n");
 	}
 	/**
 	 * @return a String representation of the object

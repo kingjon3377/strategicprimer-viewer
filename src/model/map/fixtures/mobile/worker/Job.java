@@ -9,13 +9,27 @@ import model.map.HasName;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
+import util.NullCleaner;
 
 /**
  * A Job a worker can work at.
  *
  * @author Jonathan Lovelace
  */
-public class Job implements Iterable<Skill>, HasName {
+public class Job implements Iterable<Skill>, HasName { // NOPMD
+	/**
+	 * The name of the job.
+	 */
+	private String name;
+	/**
+	 * How many levels the worker has in the job.
+	 */
+	private final int level;
+	/**
+	 * The worker's level in various skills associated with the job.
+	 */
+	private final Set<Skill> skillSet = new ArraySet<>();
+
 	/**
 	 * Constructor.
 	 *
@@ -30,19 +44,6 @@ public class Job implements Iterable<Skill>, HasName {
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));
 	}
-
-	/**
-	 * The name of the job.
-	 */
-	private String name;
-	/**
-	 * How many levels the worker has in the job.
-	 */
-	private final int level;
-	/**
-	 * The worker's level in various skills associated with the job.
-	 */
-	private final Set<Skill> skillSet = new ArraySet<>();
 
 	/**
 	 * Add a skill.
@@ -75,9 +76,7 @@ public class Job implements Iterable<Skill>, HasName {
 	 */
 	@Override
 	public final Iterator<Skill> iterator() {
-		final Iterator<Skill> iter = skillSet.iterator();
-		assert iter != null;
-		return iter;
+		return NullCleaner.assertNotNull(skillSet.iterator());
 	}
 
 	/**
@@ -86,10 +85,9 @@ public class Job implements Iterable<Skill>, HasName {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Job && name.equals(((Job) obj).name)
-						&& level == ((Job) obj).level && skillSet
-							.equals(((Job) obj).skillSet));
+		return this == obj || obj instanceof Job
+				&& name.equals(((Job) obj).name) && level == ((Job) obj).level
+				&& skillSet.equals(((Job) obj).skillSet);
 	}
 
 	/**

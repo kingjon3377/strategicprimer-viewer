@@ -96,10 +96,6 @@
             <ruleset>Basic</ruleset>
         </rule>
         <rule>
-            <name>AssignmentInOperand</name>
-            <ruleset>Basic Ecmascript</ruleset>
-        </rule>
-        <rule>
             <name>ForLoopsMustUseBraces</name>
             <ruleset>Braces</ruleset>
         </rule>
@@ -174,6 +170,10 @@
         <rule>
             <name>CommentRequired</name>
             <ruleset>Comments</ruleset>
+        </rule>
+        <rule>
+            <name>AssignmentInOperand</name>
+            <ruleset>Controversial</ruleset>
         </rule>
         <rule>
             <name>AtLeastOneConstructor</name>
@@ -261,10 +261,6 @@
         </rule>
         <rule>
             <name>ExcessiveImports</name>
-            <ruleset>Coupling</ruleset>
-        </rule>
-        <rule>
-            <name>LawOfDemeter</name>
             <ruleset>Coupling</ruleset>
         </rule>
         <rule>

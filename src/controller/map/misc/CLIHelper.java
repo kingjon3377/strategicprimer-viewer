@@ -14,6 +14,7 @@ import java.util.Locale;
 import model.map.HasName;
 import util.EqualsAny;
 import util.IsNumeric;
+import util.NullCleaner;
 
 /**
  * A helper class to let help CLIs interact with the user.
@@ -49,15 +50,15 @@ public class CLIHelper implements ICLIHelper {
 	/**
 	 * Print a list of things by name and number.
 	 *
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @param list the list to print.
 	 */
-	private static void printList(final PrintStream out,
+	private static void printList(final PrintStream ostream,
 			final List<? extends HasName> list) {
 		for (int i = 0; i < list.size(); i++) {
-			out.print(i);
-			out.print(": ");
-			out.println(list.get(i).getName());
+			ostream.print(i);
+			ostream.print(": ");
+			ostream.println(list.get(i).getName());
 		}
 	}
 
@@ -151,9 +152,7 @@ public class CLIHelper implements ICLIHelper {
 		if (line == null) {
 			return ""; // NOPMD
 		} else {
-			final String retval = line.trim();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(line.trim());
 		}
 	}
 
@@ -167,8 +166,9 @@ public class CLIHelper implements ICLIHelper {
 	@Override
 	public boolean inputBoolean(final String prompt) throws IOException {
 		while (true) {
-			final String input = inputString(prompt).toLowerCase(Locale.US);
-			assert input != null;
+			final String input =
+					NullCleaner.assertNotNull(inputString(prompt).toLowerCase(
+							Locale.US));
 			if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
 				return true; // NOPMD
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {

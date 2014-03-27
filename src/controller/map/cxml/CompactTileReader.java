@@ -1,9 +1,11 @@
 package controller.map.cxml;
 
+import static java.util.Collections.unmodifiableList;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -24,6 +26,7 @@ import model.map.fixtures.TextFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -37,26 +40,29 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
-	 * Singleton.
+	 * List of readers we'll try subtags on.
 	 */
-	private CompactTileReader() {
-		final List<CompactReader<? extends TileFixture>> temp = new ArrayList<>();
-		temp.add(CompactMobileReader.READER);
-		temp.add(CompactResourceReader.READER);
-		temp.add(CompactTerrainReader.READER);
-		temp.add(CompactTextReader.READER);
-		temp.add(CompactTownReader.READER);
-		temp.add(CompactGroundReader.READER);
-		final List<CompactReader<? extends TileFixture>> unmod = Collections
-				.unmodifiableList(temp);
-		assert unmod != null;
-		readers = unmod;
-	}
+	private final List<CompactReader<? extends TileFixture>> readers;
 
 	/**
 	 * Singleton object.
 	 */
 	public static final CompactTileReader READER = new CompactTileReader();
+
+	/**
+	 * Singleton.
+	 */
+	private CompactTileReader() {
+		readers =
+				NullCleaner
+						.assertNotNull(unmodifiableList(new ArrayList<CompactReader<? extends TileFixture>>(
+								Arrays.asList(CompactMobileReader.READER,
+										CompactResourceReader.READER,
+										CompactTerrainReader.READER,
+										CompactTextReader.READER,
+										CompactTownReader.READER,
+										CompactGroundReader.READER))));
+	}
 
 	/**
 	 *
@@ -106,11 +112,6 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	}
 
 	/**
-	 * List of readers we'll try subtags on.
-	 */
-	private final List<CompactReader<? extends TileFixture>> readers;
-
-	/**
 	 * Parse what should be a TileFixture from the XML.
 	 *
 	 * @param element the XML element to parse
@@ -125,8 +126,8 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 			final IteratorWrapper<XMLEvent> stream,
 			final IPlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
-		final String name = element.getName().getLocalPart();
-		assert name != null;
+		final String name =
+				NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				return item.read(element, stream, players, warner, idFactory);
@@ -177,13 +178,13 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final ITile obj, final int indent)
+	public void write(final Writer ostream, final ITile obj, final int indent)
 			throws IOException {
 		throw new IllegalStateException(
 				"Don't call this; call writeTile() instead");
@@ -192,74 +193,74 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
 	 * Write a tile to a stream.
 	 *
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @param obj the tile to write
 	 * @param point the location of the tile
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static void writeTile(final Writer out, final Point point,
+	public static void writeTile(final Writer ostream, final Point point,
 			final ITile obj, final int indent) throws IOException {
 		if (!obj.isEmpty()) {
-			out.append(indent(indent));
-			out.append("<tile row=\"");
-			out.append(Integer.toString(point.row));
-			out.append("\" column=\"");
-			out.append(Integer.toString(point.col));
+			ostream.append(indent(indent));
+			ostream.append("<tile row=\"");
+			ostream.append(Integer.toString(point.row));
+			ostream.append("\" column=\"");
+			ostream.append(Integer.toString(point.col));
 			if (!TileType.NotVisible.equals(obj.getTerrain())) {
-				out.append("\" kind=\"");
-				out.append(obj.getTerrain().toXML());
+				ostream.append("\" kind=\"");
+				ostream.append(obj.getTerrain().toXML());
 			}
-			out.append("\">");
+			ostream.append("\">");
 			if (obj.iterator().hasNext()) {
-				out.append('\n');
+				ostream.append('\n');
 				for (final TileFixture fix : obj) {
 					if (fix != null) {
-						CompactReaderAdapter.write(out, fix, indent + 1);
+						CompactReaderAdapter.write(ostream, fix, indent + 1);
 					}
 				}
-				out.append(indent(indent));
+				ostream.append(indent(indent));
 			}
-			out.append("</tile>\n");
+			ostream.append("</tile>\n");
 		}
 	}
 
 	/**
 	 * Write a river.
 	 *
-	 * @param out the stream we're writing to
+	 * @param ostream the stream we're writing to
 	 * @param obj the river to write
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static void writeRiver(final Writer out, final River obj,
+	public static void writeRiver(final Writer ostream, final River obj,
 			final int indent) throws IOException {
 		for (int i = 0; i < indent; i++) {
-			out.append('\t');
+			ostream.append('\t');
 		}
 		if (River.Lake.equals(obj)) {
-			out.append("<lake />");
+			ostream.append("<lake />");
 		} else {
-			out.append("<river direction=\"");
-			out.append(obj.getDescription());
-			out.append("\" />");
+			ostream.append("<river direction=\"");
+			ostream.append(obj.getDescription());
+			ostream.append("\" />");
 		}
-		out.append('\n');
+		ostream.append('\n');
 	}
 
 	/**
 	 * Write a series of rivers.
 	 *
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @param iter a series of rivers to write
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static void writeRivers(final Writer out,
+	public static void writeRivers(final Writer ostream,
 			final Iterable<River> iter, final int indent) throws IOException {
 		for (final River river : iter) {
 			if (river != null) {
-				writeRiver(out, river, indent);
+				writeRiver(ostream, river, indent);
 			}
 		}
 	}

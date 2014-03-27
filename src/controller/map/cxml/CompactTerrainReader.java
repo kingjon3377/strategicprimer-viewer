@@ -36,16 +36,25 @@ import controller.map.misc.IDFactory;
 public final class CompactTerrainReader extends
 		AbstractCompactReader<TerrainFixture> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactTerrainReader READER = new CompactTerrainReader();
+
+	/**
+	 * Mapping from tags to enum-tags.
+	 */
+	private static final Map<String, TerrainFixtureType> MAP = new HashMap<>(
+			TerrainFixtureType.values().length);
+	/**
+	 * List of supported tags.
+	 */
+	private static final Set<String> SUPP_TAGS;
+	/**
 	 * Singleton.
 	 */
 	private CompactTerrainReader() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactTerrainReader READER = new CompactTerrainReader();
 
 	/**
 	 * Enumeration of the types we know how to handle.
@@ -93,20 +102,11 @@ public final class CompactTerrainReader extends
 		}
 	}
 
-	/**
-	 * Mapping from tags to enum-tags.
-	 */
-	private static final Map<String, TerrainFixtureType> MAP = new HashMap<>(
-			TerrainFixtureType.values().length);
-	/**
-	 * List of supported tags.
-	 */
-	private static final Set<String> SUPP_TAGS;
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (final TerrainFixtureType mt : TerrainFixtureType.values()) {
-			MAP.put(mt.getTag(), mt);
-			suppTagsTemp.add(mt.getTag());
+		for (final TerrainFixtureType type : TerrainFixtureType.values()) {
+			MAP.put(type.getTag(), type);
+			suppTagsTemp.add(type.getTag());
 		}
 		final Set<String> temp = Collections.unmodifiableSet(suppTagsTemp);
 		assert temp != null;
@@ -170,42 +170,42 @@ public final class CompactTerrainReader extends
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final TerrainFixture obj,
+	public void write(final Writer ostream, final TerrainFixture obj,
 			final int indent) throws IOException {
-		out.append(indent(indent));
+		ostream.append(indent(indent));
 		if (obj instanceof Mountain) {
-			out.append("<mountain").append(imageXML((Mountain) obj))
+			ostream.append("<mountain").append(imageXML((Mountain) obj))
 					.append(" />\n");
 			return; // NOPMD Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
-			out.append("<forest kind=\"");
-			out.append(((Forest) obj).getKind());
+			ostream.append("<forest kind=\"");
+			ostream.append(((Forest) obj).getKind());
 			if (((Forest) obj).isRows()) {
-				out.append("\" rows=\"true");
+				ostream.append("\" rows=\"true");
 			}
-			out.append('"').append(imageXML((Forest) obj)).append(" />\n");
+			ostream.append('"').append(imageXML((Forest) obj)).append(" />\n");
 			return; // NOPMD Neither do Forests.
 		} else if (obj instanceof Hill) {
-			out.append("<hill");
-			out.append(imageXML((Hill) obj));
+			ostream.append("<hill");
+			ostream.append(imageXML((Hill) obj));
 		} else if (obj instanceof Oasis) {
-			out.append("<oasis");
-			out.append(imageXML((Oasis) obj));
+			ostream.append("<oasis");
+			ostream.append(imageXML((Oasis) obj));
 		} else if (obj instanceof Sandbar) {
-			out.append("<sandbar");
-			out.append(imageXML((Sandbar) obj));
+			ostream.append("<sandbar");
+			ostream.append(imageXML((Sandbar) obj));
 		} else {
 			throw new IllegalStateException("Unexpected TerrainFixture type.");
 		}
-		out.append(" id=\"");
-		out.append(Integer.toString(obj.getID()));
-		out.append("\" />\n");
+		ostream.append(" id=\"");
+		ostream.append(Integer.toString(obj.getID()));
+		ostream.append("\" />\n");
 	}
 	/**
 	 * @return a String representation of the object

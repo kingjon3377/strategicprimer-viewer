@@ -1,5 +1,7 @@
 package controller.map.cxml;
 
+import static util.NullCleaner.assertNotNull;
+
 import java.io.IOException;
 import java.io.Writer;
 
@@ -36,6 +38,11 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	/**
+	 * Singleton instance.
+	 */
+	public static final CompactMapReader READER = new CompactMapReader();
+
+	/**
 	 * The 'map' tag.
 	 */
 	private static final String MAP_TAG = "map";
@@ -61,19 +68,17 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			final StartElement mapElement = getFirstStartElement(stream,
 					element.getLocation().getLineNumber());
 			if (!MAP_TAG.equalsIgnoreCase(mapElement.getName().getLocalPart())) {
-				final String iLocal = assertNotNullQName(element.getName())
-						.getLocalPart();
-				final String oLocal = assertNotNullQName(mapElement.getName())
-						.getLocalPart();
-				assert oLocal != null && iLocal != null;
-				throw new UnwantedChildException(iLocal, oLocal, mapElement
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException(assertNotNull(assertNotNull(
+						element.getName()).getLocalPart()),
+						assertNotNull(assertNotNull(mapElement.getName())
+								.getLocalPart()), mapElement.getLocation()
+								.getLineNumber());
 			}
 			final MapView retval = new MapView(read(mapElement, stream,
 					players, warner, idFactory), Integer.parseInt(getParameter(
 					element, "current_player")), Integer.parseInt(getParameter(
 					element, "current_turn")));
-			spinUntilEnd(assertNotNullQName(element.getName()), stream);
+			spinUntilEnd(assertNotNull(element.getName()), stream);
 			return retval; // NOPMD:
 			// TODO: Perhaps split this into parseMap/parseView?
 		} else {
@@ -163,11 +168,6 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	}
 
 	/**
-	 * Singleton instance.
-	 */
-	public static final CompactMapReader READER = new CompactMapReader();
-
-	/**
 	 * @param tag a tag
 	 * @return whether it's one we support
 	 */
@@ -179,54 +179,54 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final IMap obj, final int indent)
+	public void write(final Writer ostream, final IMap obj, final int indent)
 			throws IOException {
-		out.append(indent(indent));
+		ostream.append(indent(indent));
 		if (obj instanceof MapView) {
-			out.append("<view current_player=\"");
-			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
+			ostream.append("<view current_player=\"");
+			ostream.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
 					.getPlayerId()));
-			out.append("\" current_turn=\"");
-			out.append(Integer.toString(((MapView) obj).getCurrentTurn()));
-			out.append("\">\n");
-			write(out, ((MapView) obj).getMap(), indent + 1);
-			out.append(indent(indent));
-			out.append("</view>\n");
+			ostream.append("\" current_turn=\"");
+			ostream.append(Integer.toString(((MapView) obj).getCurrentTurn()));
+			ostream.append("\">\n");
+			write(ostream, ((MapView) obj).getMap(), indent + 1);
+			ostream.append(indent(indent));
+			ostream.append("</view>\n");
 		} else if (obj instanceof SPMap) {
-			writeMap(out, (SPMap) obj, indent);
+			writeMap(ostream, (SPMap) obj, indent);
 		}
 	}
 
 	/**
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @param obj the map to write
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private static void writeMap(final Writer out, final SPMap obj,
+	private static void writeMap(final Writer ostream, final SPMap obj,
 			final int indent) throws IOException {
 		final MapDimensions dim = obj.getDimensions();
-		out.append("<map version=\"");
-		out.append(Integer.toString(dim.version));
-		out.append("\" rows=\"");
-		out.append(Integer.toString(dim.rows));
-		out.append("\" columns=\"");
-		out.append(Integer.toString(dim.cols));
+		ostream.append("<map version=\"");
+		ostream.append(Integer.toString(dim.version));
+		ostream.append("\" rows=\"");
+		ostream.append(Integer.toString(dim.rows));
+		ostream.append("\" columns=\"");
+		ostream.append(Integer.toString(dim.cols));
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
-			out.append("\" current_player=\"");
-			out.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
+			ostream.append("\" current_player=\"");
+			ostream.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
 					.getPlayerId()));
 		}
-		out.append("\">\n");
+		ostream.append("\">\n");
 		for (final Player player : obj.getPlayers()) {
 			if (player != null) {
-				CompactPlayerReader.READER.write(out, player, indent + 1);
+				CompactPlayerReader.READER.write(ostream, player, indent + 1);
 			}
 		}
 		for (int i = 0; i < dim.rows; i++) {
@@ -234,23 +234,23 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			for (int j = 0; j < dim.cols; j++) {
 				final ITile tile = obj.getTile(PointFactory.point(i, j));
 				if (!tile.isEmpty() && rowEmpty) {
-					out.append(indent(indent + 1));
-					out.append("<row index=\"");
-					out.append(Integer.toString(i));
-					out.append("\">\n");
+					ostream.append(indent(indent + 1));
+					ostream.append("<row index=\"");
+					ostream.append(Integer.toString(i));
+					ostream.append("\">\n");
 					rowEmpty = false;
 				}
 				final Point point = PointFactory.point(i, j);
-				CompactTileReader.writeTile(out, point, obj.getTile(point),
+				CompactTileReader.writeTile(ostream, point, obj.getTile(point),
 						indent + 2);
 			}
 			if (!rowEmpty) {
-				out.append(indent(indent + 1));
-				out.append("</row>\n");
+				ostream.append(indent(indent + 1));
+				ostream.append("</row>\n");
 			}
 		}
-		out.append(indent(indent));
-		out.append("</map>\n");
+		ostream.append(indent(indent));
+		ostream.append("</map>\n");
 	}
 	/**
 	 * @return a String representation of the object

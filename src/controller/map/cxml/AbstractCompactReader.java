@@ -14,6 +14,7 @@ import model.map.HasImage;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.EqualsAny;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -38,18 +39,18 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 */
 	private static final String NULL_TAG = "a null tag";
 	/**
+	 * The amount of buffer memory to allocate for the name of each tag. We're
+	 * aiming to err on the side of overestimation, to avoid resizing the
+	 * buffer.
+	 */
+	private static final int MAX_TAG_LEN = 10; 
+	/**
 	 * Do not instantiate directly.
 	 */
 	protected AbstractCompactReader() {
 		// Nothing to do
 	}
 	
-	/**
-	 * The amount of buffer memory to allocate for the name of each tag. We're
-	 * aiming to err on the side of overestimation, to avoid resizing the
-	 * buffer.
-	 */
-	private static final int MAX_TAG_LEN = 10; 
 	/**
 	 * Require that an element be one of the specified tags.
 	 *
@@ -160,11 +161,10 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				final String outerName = tagOrNull(tag.getLocalPart());
-				final String innerName = tagOrNull(event.asStartElement()
-						.getName().getLocalPart());
-				throw new UnwantedChildException(outerName, innerName, event
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException(tagOrNull(tag.getLocalPart()),
+						tagOrNull(event.asStartElement().getName()
+								.getLocalPart()), event.getLocation()
+								.getLineNumber());
 			} else if (event.isEndElement()
 					&& tag.equals(event.asEndElement().getName())) {
 				break;
@@ -208,7 +208,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 */
 	protected static boolean hasParameter(final StartElement element,
 			final String param) {
-		return !(element.getAttributeByName(new QName(param)) == null);
+		return element.getAttributeByName(new QName(param)) != null;
 	}
 
 	/**
@@ -219,7 +219,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static String getFile(final Iterable<XMLEvent> stream) {
 		final Iterator<?> iter = stream.iterator();
 		if (iter instanceof IncludingIterator) {
-			return ((IncludingIterator) iter).getFile();
+			return ((IncludingIterator) iter).getFile(); // NOPMD
 		} else {
 			return "";
 		}
@@ -284,9 +284,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 		for (int i = 0; i < tabs; i++) {
 			buf.append('\t');
 		}
-		final String retval = buf.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(buf.toString());
 	}
 
 	/**
@@ -296,7 +294,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
 		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
-			return "";
+			return ""; // NOPMD
 		} else {
 			return " image=\"" + image + "\"";
 		}
@@ -311,8 +309,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 * @return it, after asserting it is not null
 	 */
 	protected static QName assertNotNullQName(@Nullable final QName qname) {
-		assert qname != null;
-		return qname;
+		return NullCleaner.assertNotNull(qname);
 	}
 	
 	/**
@@ -324,8 +321,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 */
 	protected static StartElement assertNotNullStartElement(
 			@Nullable final StartElement element) {
-		assert element != null;
-		return element;
+		return NullCleaner.assertNotNull(element);
 	}
 	/**
 	 * @param tag the name of a tag, which may be null
@@ -342,7 +338,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 */
 	private static <T> T valueOrDefault(@Nullable final T value, final T def) {
 		if (value == null) {
-			return def;
+			return def; // NOPMD
 		} else {
 			return value;
 		}

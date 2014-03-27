@@ -20,6 +20,7 @@ import model.viewer.ViewerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.ViewerFrame;
@@ -56,6 +57,12 @@ public class IOHandler implements ActionListener {
 	protected final JFileChooser chooser;
 
 	/**
+	 * The map model, which needs to be told about newly loaded maps and holds
+	 * maps to be saved.
+	 */
+	private final IDriverModel model;
+
+	/**
 	 * Handle the "load" menu item.
 	 *
 	 * @param source the source of the event. May be null, since JFileChooser
@@ -63,16 +70,13 @@ public class IOHandler implements ActionListener {
 	 */
 	private void handleLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final String filename = chooser.getSelectedFile().getPath();
-			assert filename != null;
+			final String filename =
+					NullCleaner.assertNotNull(chooser.getSelectedFile()
+							.getPath());
 			// ESCA-JAVA0166:
 			try {
 				model.setMap(readMap(filename, Warning.INSTANCE), filename);
-			} catch (final IOException e) {
-				handleError(e, filename, source);
-			} catch (final SPFormatException e) {
-				handleError(e, filename, source);
-			} catch (final XMLStreamException e) {
+			} catch (IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, filename, source);
 			}
 		}
@@ -87,12 +91,7 @@ public class IOHandler implements ActionListener {
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) { // it wouldn't be @Nullable except that the JDK
 								// isn't annotated
-			final Component source; // NOPMD
-			if (event.getSource() instanceof Component) {
-				source = (Component) event.getSource();
-			} else {
-				source = null;
-			}
+			final Component source = eventSource(event.getSource());
 			if ("Load".equals(event.getActionCommand())) {
 				handleLoadMenu(source);
 			} else if ("Save".equals(event.getActionCommand())) {
@@ -104,7 +103,18 @@ public class IOHandler implements ActionListener {
 			}
 		}
 	}
-
+	/**
+	 * @param obj an object
+	 * @return it if it's a component, or null
+	 */
+	@Nullable
+	private static Component eventSource(@Nullable final Object obj) {
+		if (obj instanceof Component) {
+			return (Component) obj; // NOPMD
+		} else {
+			return null;
+		}
+	}
 	/**
 	 * Start a new viewer window with a blank map of the same size as the
 	 * model's current map.
@@ -115,12 +125,6 @@ public class IOHandler implements ActionListener {
 						new SPMap(model.getMapDimensions()), 0, model.getMap()
 								.getCurrentTurn()), ""), this)));
 	}
-
-	/**
-	 * The map model, which needs to be told about newly loaded maps and holds
-	 * maps to be saved.
-	 */
-	private final IDriverModel model;
 
 	/**
 	 * Constructor.
@@ -186,9 +190,9 @@ public class IOHandler implements ActionListener {
 	 */
 	private void saveMapAs(final IMap map, @Nullable final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final String filename = chooser.getSelectedFile()
-					.getPath();
-			assert filename != null;
+			final String filename =
+					NullCleaner.assertNotNull(chooser.getSelectedFile()
+							.getPath());
 			try {
 				new MapReaderAdapter().write(filename, map);
 			} catch (final IOException e) {

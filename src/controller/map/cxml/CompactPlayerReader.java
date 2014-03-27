@@ -6,10 +6,11 @@ import java.io.Writer;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IPlayerCollection;
 import model.map.Player;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -23,16 +24,16 @@ import controller.map.misc.IDFactory;
  */
 public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	/**
+	 * Singleton object.
+	 */
+	public static final CompactPlayerReader READER = new CompactPlayerReader();
+
+	/**
 	 * Singleton.
 	 */
 	private CompactPlayerReader() {
 		// Singleton.
 	}
-
-	/**
-	 * Singleton object.
-	 */
-	public static final CompactPlayerReader READER = new CompactPlayerReader();
 
 	/**
 	 *
@@ -69,20 +70,20 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	/**
 	 * Write an object to a stream.
 	 *
-	 * @param out The stream to write to.
+	 * @param ostream The stream to write to.
 	 * @param obj The object to write.
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer out, final Player obj, final int indent)
+	public void write(final Writer ostream, final Player obj, final int indent)
 			throws IOException {
-		out.append(indent(indent));
-		out.append("<player number=\"");
-		out.append(Integer.toString(obj.getPlayerId()));
-		out.append("\" code_name=\"");
-		out.append(obj.getName());
-		out.append("\" />\n");
+		ostream.append(indent(indent));
+		ostream.append("<player number=\"");
+		ostream.append(Integer.toString(obj.getPlayerId()));
+		ostream.append("\" code_name=\"");
+		ostream.append(obj.getName());
+		ostream.append("\" />\n");
 	}
 	/**
 	 * @return a String representation of the object
