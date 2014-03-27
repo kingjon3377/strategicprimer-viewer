@@ -125,12 +125,12 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof AbstractTown
-						&& ((AbstractTown) obj).kind().equals(kind())
-						&& ((AbstractTown) obj).size.equals(size)
-						&& ((AbstractTown) obj).name.equals(name)
-						&& ((AbstractTown) obj).status.equals(status)
-						&& ((AbstractTown) obj).owner.equals(owner) && ((TileFixture) obj)
-						.getID() == getID());
+						&& getID() == ((TileFixture) obj).getID()
+						&& kind().equals(((AbstractTown) obj).kind())
+						&& size.equals(((AbstractTown) obj).size)
+						&& name.equals(((AbstractTown) obj).name)
+						&& status.equals(((AbstractTown) obj).status) && owner
+							.equals(((AbstractTown) obj).owner));
 	}
 
 	/**

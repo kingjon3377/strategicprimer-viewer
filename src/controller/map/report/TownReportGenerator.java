@@ -45,7 +45,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 *         is helpful.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -57,8 +58,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		Collections.sort(sorted, new TownComparator());
 		final int len = 80 + sorted.size() * 512;
 		final StringBuilder builder = new StringBuilder(len)
-				.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n")
-				.append(OPEN_LIST);
+				.append("<h4>Cities, towns, and/or fortifications ")
+				.append("you know about:</h4>\n").append(OPEN_LIST);
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
 				final Point loc = townLocs.get(town);
@@ -132,7 +133,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {

@@ -173,7 +173,7 @@ public class ExplorationRunner { // NOPMD
 	 * @return whether that table, or any table it calls, calls a table that
 	 *         doesn't exist.
 	 */
-	public boolean recursiveCheck(final String table) { // $codepro.audit.disable booleanMethodNamingConvention
+	public boolean recursiveCheck(final String table) {
 		return recursiveCheck(table, new HashSet<String>());
 	}
 
@@ -223,7 +223,7 @@ public class ExplorationRunner { // NOPMD
 	 * @return whether any table contains recursive calls to a nonexistent
 	 *         table.
 	 */
-	public boolean recursiveCheck() { // $codepro.audit.disable booleanMethodNamingConvention
+	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			if (table != null && recursiveCheck(table, state)) {

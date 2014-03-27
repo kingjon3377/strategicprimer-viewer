@@ -48,7 +48,8 @@ public class TerrainTable implements EncounterTable {
 			assert retval != null;
 			return retval;
 		} else {
-			throw new IllegalArgumentException("Table does not account for that terrain type");
+			throw new IllegalArgumentException(
+					"Table does not account for that terrain type");
 		}
 	}
 

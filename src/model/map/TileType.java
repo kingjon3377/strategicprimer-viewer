@@ -1,7 +1,8 @@
 package model.map;
 
+import static java.util.Collections.unmodifiableSet;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +103,7 @@ public enum TileType {
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}
-		final Set<TileType> retval = Collections.unmodifiableSet(VALS_BY_VER.get(boxedVer));
+		final Set<TileType> retval = unmodifiableSet(VALS_BY_VER.get(boxedVer));
 		assert retval != null;
 		return retval;
 	}

@@ -24,6 +24,7 @@ import model.viewer.ZOrderFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -43,11 +44,6 @@ import controller.map.misc.MapReaderAdapter;
  *
  */
 public class DrawHelperComparator implements ISPDriver { // NOPMD
-	/**
-	 * The error message to use when a null Graphics is passed in.
-	 */
-	private static final String NULL_GRAPHICS_ERR = "image.createGraphics() created null Graphics";
-
 	/**
 	 * An object indicating how to use and invoke this driver. We say that this
 	 * is graphical, even though it's not, so we can share an option with the
@@ -113,12 +109,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 				if (point == null) {
 					continue;
 				}
-				final Graphics pen = image.createGraphics();
-				if (pen == null) {
-					throw new IllegalStateException(
-							NULL_GRAPHICS_ERR);
-				}
-				helper.drawTileTranslated(pen, spmap.getTile(point), tsize, tsize);
+				helper.drawTileTranslated(
+						NullCleaner.assertNotNull(image.createGraphics()),
+						spmap.getTile(point), tsize, tsize);
 			}
 		}
 	}
@@ -164,13 +157,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 				if (point == null) {
 					continue;
 				}
-				final Graphics pen = image.createGraphics();
-				if (pen == null) {
-					throw new IllegalStateException(
-							NULL_GRAPHICS_ERR);
-				}
 				helper.drawTile(
-						pen,
+						NullCleaner.assertNotNull(image.createGraphics()),
 						spmap.getTile(point),
 						PointFactory.coordinate(point.row * tsize, point.col
 								* tsize), dimensions);
@@ -195,12 +183,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics();
-			if (pen == null) {
-				throw new IllegalStateException(
-						NULL_GRAPHICS_ERR);
-			}
-			thirdBody(helper, pen, spmap, tsize);
+			thirdBody(helper,
+					NullCleaner.assertNotNull(image.createGraphics()), spmap,
+					tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -241,12 +226,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics();
-			if (pen == null) {
-				throw new IllegalStateException(
-						NULL_GRAPHICS_ERR);
-			}
-			fourthBody(helper, pen, spmap, tsize);
+			fourthBody(helper,
+					NullCleaner.assertNotNull(image.createGraphics()), spmap,
+					tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -309,12 +291,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics();
-			if (pen == null) {
-				throw new IllegalStateException(
-						NULL_GRAPHICS_ERR);
-			}
-			fifthOneBody(spmap, helper, pen, tsize);
+			fifthOneBody(spmap, helper,
+					NullCleaner.assertNotNull(image.createGraphics()), tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;
@@ -359,12 +337,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			final Graphics pen = image.createGraphics();
-			if (pen == null) {
-				throw new IllegalStateException(
-						NULL_GRAPHICS_ERR);
-			}
-			fifthTwoBody(helper, pen, spmap, tsize);
+			fifthTwoBody(helper,
+					NullCleaner.assertNotNull(image.createGraphics()), spmap,
+					tsize);
 		}
 		final long end = System.nanoTime();
 		return end - start;

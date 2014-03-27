@@ -203,13 +203,19 @@ public final class ArraySet<T> implements Set<T> { /**
 	 * @param obj another object
 	 * @return whether it's equal to this
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof Set && ((Set) obj).containsAll(this) && containsAll((Set) obj));
+				|| (obj instanceof Set && equalSets(this, (Set<?>) obj));
 	}
-
+	/**
+	 * @param one one set
+	 * @param two another set
+	 * @return whether they are equal according to the Set contract.
+	 */
+	private static boolean equalSets(final Set<?> one, final Set<?> two) {
+		return one.containsAll(two) && two.containsAll(one);
+	}
 	/**
 	 * @return a String representation of the object
 	 */

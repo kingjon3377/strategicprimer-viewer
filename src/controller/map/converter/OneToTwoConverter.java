@@ -284,15 +284,25 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isSubtileSuitable(final ITile tile) {
 		for (final TileFixture fix : tile) {
-			if (!(fix instanceof Forest || fix instanceof Mountain
-					|| fix instanceof Ground || fix instanceof Sandbar
-					|| fix instanceof Shrub || fix instanceof Meadow || fix instanceof Hill)) {
+			if (fix == null || !isBackground(fix)) {
 				return false; // NOPMD
 			}
 		}
 		return true;
 	}
-
+	
+	/**
+	 * @param fix
+	 *            a fixture
+	 * @return true if it's "background", not making a subtile unsuitable for
+	 *         more fixtures, false otherwise.
+	 */
+	private static boolean isBackground(final TileFixture fix) {
+		return fix instanceof Forest || fix instanceof Mountain
+				|| fix instanceof Ground || fix instanceof Sandbar
+				|| fix instanceof Shrub || fix instanceof Meadow
+				|| fix instanceof Hill;
+	}
 	/**
 	 * Prepare a subtile for a specified new fixture. At present, the only
 	 * change this involves is removing any forests if there's a village or

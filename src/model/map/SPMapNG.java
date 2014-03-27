@@ -365,8 +365,10 @@ public class SPMapNG implements IMapNG {
 	 */
 	@Override
 	public int hashCode() {
-		return dimensions().hashCode() + getCurrentTurn() << 3 + getCurrentPlayer().hashCode() << 5;
+		return dimensions().hashCode() + getCurrentTurn() << 3 + getCurrentPlayer()
+				.hashCode() << 5;
 	}
+
 	/**
 	 * FIXME: Implement properly.
 	 * @return a String representation of the object

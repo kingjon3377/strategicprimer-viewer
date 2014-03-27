@@ -131,12 +131,16 @@ public class Meadow implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof Meadow && kind.equals(((Meadow) obj).kind)
-						&& field == ((Meadow) obj).field
-						&& cultivated == ((Meadow) obj).cultivated && id == ((TileFixture) obj)
-						.getID());
+				|| (obj instanceof Meadow && equalsImpl((Meadow) obj));
 	}
-
+	/**
+	 * @param obj a Meadow
+	 * @return whether it equals this one
+	 */
+	private boolean equalsImpl(final Meadow obj) {
+		return kind.equals(obj.kind) && field == obj.field
+				&& cultivated == obj.cultivated && id == obj.id;
+	}
 	/**
 	 * @return a hash value for the object
 	 */

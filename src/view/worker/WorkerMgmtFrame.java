@@ -36,6 +36,7 @@ import model.workermgmt.IWorkerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
@@ -54,10 +55,10 @@ public class WorkerMgmtFrame extends JFrame {
 	/**
 	 * The header to put above the report.
 	 */
-	private static final String RPT_HDR;
-	static {
-		RPT_HDR = "A report on everything except your units and fortresses, for reference:";
-	}
+	private static final String RPT_HDR = NullCleaner
+			.assertNotNull(new StringBuilder("A report on everything")
+					.append(" except your units and fortresses,")
+					.append("for reference:").toString());
 	/**
 	 * A constant for when a split panel should be divided evenly in half.
 	 */

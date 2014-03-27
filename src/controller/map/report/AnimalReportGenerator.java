@@ -34,7 +34,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 * @return the report
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {

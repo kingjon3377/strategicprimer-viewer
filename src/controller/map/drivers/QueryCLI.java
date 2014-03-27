@@ -86,8 +86,8 @@ public final class QueryCLI implements ISPDriver {
 	 *
 	 * @throws IOException on I/O error
 	 */
-	public void handleCommand(final IMap map, final HuntingModel hmodel, final PrintStream ostream,
-			final char input) throws IOException {
+	public void handleCommand(final IMap map, final HuntingModel hmodel,
+			final PrintStream ostream, final char input) throws IOException {
 		switch (input) {
 		case '?':
 			usage(ostream);
@@ -122,8 +122,8 @@ public final class QueryCLI implements ISPDriver {
 	 * @param ostream the stream to write to
 	 * @param encounters how many encounters to show
 	 */
-	private static void hunt(final HuntingModel hmodel, final Point point, final boolean land,
-			final PrintStream ostream, final int encounters) {
+	private static void hunt(final HuntingModel hmodel, final Point point,
+			final boolean land, final PrintStream ostream, final int encounters) {
 		if (land) {
 			for (final String item : hmodel.hunt(point, encounters)) {
 				ostream.println(item);

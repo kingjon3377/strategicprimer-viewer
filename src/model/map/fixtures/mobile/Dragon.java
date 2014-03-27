@@ -75,8 +75,7 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof Dragon && ((Dragon) obj).kind.equals(kind) && ((TileFixture) obj)
-						.getID() == id);
+				|| (obj instanceof Dragon && kind.equals(((Dragon) obj).kind) && id == ((Dragon) obj).id);
 	}
 
 	/**

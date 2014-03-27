@@ -1,6 +1,8 @@
 // $codepro.audit.disable lineLength
 package util;
 
+import java.util.Objects;
+
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -87,9 +89,8 @@ public class Pair<FIRST, SECOND> {
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj)
 				|| ((obj instanceof Pair)
-						&& ((first == ((Pair) obj).first || first
-								.equals(((Pair) obj).first))) && ((second == ((Pair) obj).second || second
-						.equals(((Pair) obj).second))));
+						&& Objects.equals(first, ((Pair) obj).first) && Objects
+							.equals(second, ((Pair) obj).second));
 	}
 
 	/**

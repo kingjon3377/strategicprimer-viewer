@@ -21,6 +21,7 @@ import model.exploration.old.RandomTable;
 import model.exploration.old.TerrainTable;
 import model.map.TileType;
 import util.ComparablePair;
+import util.NullCleaner;
 import util.Pair;
 import util.ResourceInputStream;
 import util.TypesafeLogger;
@@ -39,8 +40,10 @@ public final class TableLoader { // NOPMD
 	/**
 	 * An error-message string. Pulled out because it's so long.
 	 */
-	private static final String IO_ERR_STRING = "I/O error while reading table from file, "
-			+ "continuing with what we've got so far ...";
+	private static final String IO_ERR_STRING = NullCleaner
+			.assertNotNull(new StringBuilder(
+					"I/O error while reading table from file, ").append(
+					"continuing with what we've got so far ...").toString());
 	/**
 	 * Extracted constant for clarity: If we split() a string "once", we tell
 	 * split() to give us at most two pieces, and then test whether it gave us
@@ -59,12 +62,10 @@ public final class TableLoader { // NOPMD
 	 *
 	 * @param filename the file containing the table.
 	 * @return the table
-	 * @throws FileNotFoundException when file not found
-	 * @throws IOException on I/O error
+	 * @throws IOException when file not found or on other I/O error
 	 */
-	// ESCA-JAVA0160: it does too throw a FileNotFoundException.
 	public static EncounterTable loadTable(final String filename)
-			throws FileNotFoundException, IOException { // NOPMD
+			throws IOException {
 		try (final BufferedReader reader = new BufferedReader(
 				new InputStreamReader(new ResourceInputStream(filename)))) {
 			return loadTableFromStream(reader);
@@ -252,7 +253,7 @@ public final class TableLoader { // NOPMD
 							Level.SEVERE,
 							"Illegal argument while parsing "
 									+ table
-									+ ", probably a malformed file, possibly a Vim swap file",
+									+ ", probably a malformed file",
 							e);
 				}
 			}

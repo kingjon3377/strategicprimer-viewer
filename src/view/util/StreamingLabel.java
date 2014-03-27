@@ -27,8 +27,10 @@ public class StreamingLabel extends JLabel {
 	 * The source for the string.
 	 */
 	private final StringWriter string = new StringWriter();
+	
 	/**
-	 * A PrintWriter that wraps a StringWriter and updates a JLabel with the writer's text.
+	 * A PrintWriter that wraps a StringWriter and updates a JLabel with the
+	 * writer's text.
 	 */
 	private static class StreamingLabelWriter extends PrintWriter {
 		/**

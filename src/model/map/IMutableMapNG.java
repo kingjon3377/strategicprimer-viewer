@@ -35,9 +35,13 @@ public interface IMutableMapNG extends IMapNG {
 	 * @param rivers rivers to remove there
 	 */
 	void removeRivers(final Point location, final River... rivers);
+	
 	/**
-	 * @param location a location
-	 * @param forest the forest (if any) at that location; null to remove any that is there
+	 * @param location
+	 *            a location
+	 * @param forest
+	 *            the forest (if any) at that location; null to remove any that
+	 *            is there
 	 */
 	void setForest(final Point location, @Nullable final Forest forest);
 	/**

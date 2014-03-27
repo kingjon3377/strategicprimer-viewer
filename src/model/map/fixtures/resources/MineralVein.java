@@ -107,9 +107,8 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof MineralVein
-						&& ((MineralVein) obj).mineral.equals(mineral)
-						&& ((MineralVein) obj).exposed == exposed && ((TileFixture) obj)
-						.getID() == id);
+						&& mineral.equals(((MineralVein) obj).mineral)
+						&& exposed == ((MineralVein) obj).exposed && id == ((MineralVein) obj).id);
 	}
 
 	/**

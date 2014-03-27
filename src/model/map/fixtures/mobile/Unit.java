@@ -131,8 +131,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 								.getPlayerId()
 						&& (((Unit) obj).kind.equals(kind))
 						&& (((Unit) obj).name.equals(name))
-						&& (((Unit) obj).members.equals(members)) && ((TileFixture) obj)
-						.getID() == id);
+						&& (((Unit) obj).members.equals(members)) && ((Unit) obj).id == id);
 	}
 
 	/**

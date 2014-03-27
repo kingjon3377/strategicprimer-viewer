@@ -76,8 +76,8 @@ public class ComparableIterator<T> implements Iterator<T>,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| (obj instanceof ComparableIterator && ((ComparableIterator) obj).wrapped
-						.equals(wrapped));
+				|| (obj instanceof ComparableIterator && wrapped
+						.equals(((ComparableIterator) obj).wrapped));
 	}
 
 	/**

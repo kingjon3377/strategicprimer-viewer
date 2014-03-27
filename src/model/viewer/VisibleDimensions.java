@@ -13,34 +13,34 @@ public class VisibleDimensions {
 	/**
 	 * The lowest row we draw.
 	 */
-	private final int minimumRow;
+	private final int minRow;
 	/**
 	 * The highest row we draw.
 	 */
-	private final int maximumRow;
+	private final int maxRow;
 	/**
 	 * The lowest column we draw.
 	 */
-	private final int minimumCol;
+	private final int minCol;
 	/**
 	 * The highest column we draw.
 	 */
-	private final int maximumCol;
+	private final int maxCol;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param minRow the minimum row
-	 * @param maxRow the maximum row
-	 * @param minCol the minimum column
-	 * @param maxCol the maximum column
+	 * @param minimumRow the minimum row
+	 * @param maximumRow the maximum row
+	 * @param minimumCol the minimum column
+	 * @param maximumCol the maximum column
 	 */
-	public VisibleDimensions(final int minRow, final int maxRow,
-			final int minCol, final int maxCol) {
-		minimumRow = minRow;
-		maximumRow = maxRow;
-		minimumCol = minCol;
-		maximumCol = maxCol;
+	public VisibleDimensions(final int minimumRow, final int maximumRow,
+			final int minimumCol, final int maximumCol) {
+		minRow = minimumRow;
+		maxRow = maximumRow;
+		minCol = minimumCol;
+		maxCol = maximumCol;
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class VisibleDimensions {
 	 * @return the minimum visible row
 	 */
 	public int getMinimumRow() {
-		return minimumRow;
+		return minRow;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class VisibleDimensions {
 	 * @return the maximum visible row
 	 */
 	public int getMaximumRow() {
-		return maximumRow;
+		return maxRow;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class VisibleDimensions {
 	 * @return the minimum visible column
 	 */
 	public int getMinimumCol() {
-		return minimumCol;
+		return minCol;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class VisibleDimensions {
 	 * @return the maximum visible column
 	 */
 	public int getMaximumCol() {
-		return maximumCol;
+		return maxCol;
 	}
 
 	/**
@@ -82,9 +82,9 @@ public class VisibleDimensions {
 	@Override
 	public String toString() {
 		final String retval = new StringBuilder(256).append("VisibleDimensions: (")
-				.append(minimumRow).append(", ").append(minimumCol)
-				.append(") to (").append(maximumRow).append(", ")
-				.append(maximumCol).append(')').toString();
+				.append(minRow).append(", ").append(minCol)
+				.append(") to (").append(maxRow).append(", ")
+				.append(maxCol).append(')').toString();
 		assert retval != null;
 		return retval;
 	}
@@ -94,21 +94,21 @@ public class VisibleDimensions {
 	 * @return whether it's the same size as this one.
 	 */
 	public boolean isSameSize(final VisibleDimensions other) {
-		return (maximumCol - minimumCol) == (other.maximumCol - other.minimumCol)
-				&& (maximumRow - minimumRow) == (other.maximumRow - other.minimumRow);
+		return (maxCol - minCol) == (other.maxCol - other.minCol)
+				&& (maxRow - minRow) == (other.maxRow - other.minRow);
 	}
 
 	/**
 	 * @return the width (in columns) visible.
 	 */
 	public int getWidth() {
-		return maximumCol - minimumCol;
+		return maxCol - minCol;
 	}
 
 	/**
 	 * @return the height (in rows) visible.
 	 */
 	public int getHeight() {
-		return maximumRow - minimumRow;
+		return maxRow - minRow;
 	}
 }

@@ -173,7 +173,8 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		mainList.getModel().addListDataListener(
 				new ExplorationListListener(model, mainList));
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
-		final Iterator<Pair<IMap, String>> subMaps = model.getSubordinateMaps().iterator();
+		final Iterator<Pair<IMap, String>> subMaps = model.getSubordinateMaps()
+				.iterator();
 		// ESCA-JAVA0177:
 		final IPlayerCollection players;
 		if (subMaps.hasNext()) {
@@ -235,7 +236,8 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		locLabel.setText("<html><body>Currently exploring "
 				+ model.getSelectedUnitLocation()
 				+ "; click a tile to explore it. "
-				+ "Selected fixtures in its left-hand list will be 'discovered'.</body></html>");
+				+ "Selected fixtures in its left-hand list "
+				+ "will be 'discovered'.</body></html>");
 	}
 
 	/**

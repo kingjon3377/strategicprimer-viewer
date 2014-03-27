@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IPlayerCollection;
@@ -30,6 +28,9 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.Warning;
@@ -327,7 +328,7 @@ public final class CompactMobileReader extends
 	 * @param id the ID # to give it.
 	 * @return the thing being read.
 	 */
-	private static MobileFixture readSimple(final MobileType type, final int id) { // NOPMD
+	private static MobileFixture readSimple(final MobileType type, final int id) {
 		final MobileFixture retval; // NOPMD
 		switch (type) {
 		case DjinnType:

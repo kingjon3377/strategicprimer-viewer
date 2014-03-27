@@ -42,7 +42,8 @@ public class ExplorationFrame extends JFrame {
 		 */
 		private final List<Component> compList = new ArrayList<>();
 		/**
-		 * Whether we're *on* the first panel. If we are, we go 'next'; if not, we go 'first'.
+		 * Whether we're *on* the first panel. If we are, we go 'next'; if not,
+		 * we go 'first'.
 		 */
 		private boolean first = true;
 		/**

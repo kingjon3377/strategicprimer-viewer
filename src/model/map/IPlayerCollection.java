@@ -3,7 +3,8 @@ package model.map;
  * An interface for collections of players.
  * @author Jonathan Lovelace
  */
-public interface IPlayerCollection extends Iterable<Player>, Subsettable<IPlayerCollection> {
+public interface IPlayerCollection extends Iterable<Player>,
+		Subsettable<IPlayerCollection> {
 
 	/**
 	 * @param player a player-id

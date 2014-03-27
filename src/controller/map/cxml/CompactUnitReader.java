@@ -1,9 +1,10 @@
 package controller.map.cxml;
 
+import static java.util.Collections.unmodifiableList;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.stream.events.StartElement;
@@ -46,7 +47,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		temp.add(CompactTextReader.READER);
 		temp.add(CompactTownReader.READER);
 		temp.add(CompactWorkerReader.READER);
-		final List<CompactReader<? extends IFixture>> unmod = Collections.unmodifiableList(temp);
+		final List<CompactReader<? extends IFixture>> unmod = unmodifiableList(temp);
 		assert unmod != null;
 		readers = unmod;
 	}
