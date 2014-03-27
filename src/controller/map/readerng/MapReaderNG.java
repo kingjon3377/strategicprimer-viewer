@@ -12,7 +12,6 @@ import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.IteratorWrapper;
 import util.Warning;
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
@@ -32,18 +31,21 @@ import controller.map.misc.TypesafeXMLEventReader;
 @Deprecated
 public class MapReaderNG implements IMapReader, ISPReader {
 	/**
-	 * @param file the name of a file
-	 * @param warner the Warning instance to use for warnings.
+	 * @param file
+	 *            the name of a file
+	 * @param warner
+	 *            the Warning instance to use for warnings.
 	 * @return the map contained in that file
-	 * @throws IOException on I/O error
-	 * @throws XMLStreamException if the XML isn't well-formed
-	 * @throws SPFormatException if the data is invalid
-	 * @throws MapVersionException if the format isn't one we support
+	 * @throws IOException
+	 *             on I/O error
+	 * @throws XMLStreamException
+	 *             if the XML isn't well-formed
+	 * @throws SPFormatException
+	 *             if the format isn't one we support or if the data is invalid
 	 */
 	@Override
 	public MapView readMap(final String file, final Warning warner)
-			throws IOException, XMLStreamException, SPFormatException,
-			MapVersionException {
+			throws IOException, XMLStreamException, SPFormatException {
 		try (final Reader istream = FileOpener.createReader(file)) {
 			return readMap(file, istream, warner);
 		}

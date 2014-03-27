@@ -84,8 +84,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
 				|| (obj instanceof Mine && kind.equals(((Mine) obj).kind)
-						&& status.equals(((Mine) obj).status) && id == ((TileFixture) obj)
-						.getID());
+						&& status.equals(((Mine) obj).status) && id == ((Mine) obj).id);
 	}
 
 	/**

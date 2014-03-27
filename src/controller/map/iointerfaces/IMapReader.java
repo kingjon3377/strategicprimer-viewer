@@ -8,7 +8,6 @@ import javax.xml.stream.XMLStreamException;
 import model.map.IMap;
 import model.map.MapView;
 import util.Warning;
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 
 /**
@@ -20,30 +19,39 @@ import controller.map.formatexceptions.SPFormatException;
 public interface IMapReader {
 	/**
 	 * Read the map view contained in a file.
-	 *
-	 * @param file the name of the file to read
-	 * @param warner the Warning instance to use for warnings.
+	 * 
+	 * @param file
+	 *            the name of the file to read
+	 * @param warner
+	 *            the Warning instance to use for warnings.
 	 * @return the map view it contains
-	 * @throws IOException if there are other I/O errors, i.e. opening the file
-	 * @throws XMLStreamException if there are XML errors
-	 * @throws SPFormatException if the reader doesn't recognize the map format
-	 * @throws MapVersionException if the reader can't handle this map version
+	 * @throws IOException
+	 *             if there are other I/O errors, i.e. opening the file
+	 * @throws XMLStreamException
+	 *             if there are XML errors
+	 * @throws SPFormatException
+	 *             if the reader can't handle this map version or doesn't
+	 *             recognize the map format
 	 */
 	MapView readMap(final String file, final Warning warner)
-			throws IOException, XMLStreamException, SPFormatException,
-			MapVersionException;
+			throws IOException, XMLStreamException, SPFormatException;
 
 	/**
 	 * Read the map contained in a reader.
-	 *
-	 * @param file the name of the file the stream represents
-	 * @param istream the reader to read from
-	 * @param warner the Warning instance to use for warnings.
+	 * 
+	 * @param file
+	 *            the name of the file the stream represents
+	 * @param istream
+	 *            the reader to read from
+	 * @param warner
+	 *            the Warning instance to use for warnings.
 	 * @return the map it contains
-	 * @throws XMLStreamException if there are XML errors
-	 * @throws SPFormatException if the reader doesn't recognize the map format
-	 * @throws MapVersionException if the reader can't handle this map version
+	 * @throws XMLStreamException
+	 *             if there are XML errors
+	 * @throws SPFormatException
+	 *             if the reader can't handle this map version or doesn't
+	 *             recognize the map format
 	 */
 	IMap readMap(final String file, final Reader istream, final Warning warner)
-			throws XMLStreamException, SPFormatException, MapVersionException;
+			throws XMLStreamException, SPFormatException;
 }

@@ -49,17 +49,19 @@ public final class GenerateTileContents {
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
 
 	/**
-	 * @param filename the name of a map
+	 * @param filename
+	 *            the name of a map
 	 * @return an instance to generate the contents of a tile on it
-	 * @throws SPFormatException on SP format error in the map file
-	 * @throws XMLStreamException on XML error in the map file
-	 * @throws IOException on I/O error reading the file
-	 * @throws MapVersionException if the reader doesn't support that map
-	 *         version
+	 * @throws SPFormatException
+	 *             if the reader doesn't support the specified map version or on
+	 *             other SP format error in the map file
+	 * @throws XMLStreamException
+	 *             on XML error in the map file
+	 * @throws IOException
+	 *             on I/O error reading the file
 	 */
 	public static GenerateTileContents getInstance(final String filename)
-			throws MapVersionException, IOException, XMLStreamException,
-			SPFormatException {
+			throws IOException, XMLStreamException, SPFormatException {
 		if (!INSTANCES.containsKey(filename)) {
 			INSTANCES.put(
 					filename,

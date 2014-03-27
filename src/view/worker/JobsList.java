@@ -65,7 +65,7 @@ public final class JobsList extends JList<Job> implements
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addJobSelectionListener(final JobSelectionListener list) {
+	public void addJobSelectionListener(final JobSelectionListener list) {
 		jsListeners.add(list);
 	}
 
@@ -73,7 +73,7 @@ public final class JobsList extends JList<Job> implements
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeJobSelectionListener(final JobSelectionListener list) {
+	public void removeJobSelectionListener(final JobSelectionListener list) {
 		jsListeners.remove(list);
 	}
 	/**

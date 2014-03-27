@@ -9,7 +9,6 @@ import model.map.MapView;
 import util.Warning;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
-import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
@@ -40,17 +39,21 @@ public class MapReaderAdapter {
 	}
 
 	/**
-	 * @param filename the file to open
-	 * @param warner the Warning instance to use for warnings.
+	 * @param filename
+	 *            the file to open
+	 * @param warner
+	 *            the Warning instance to use for warnings.
 	 * @return the map it contains
-	 * @throws IOException on I/O error opening the file
-	 * @throws XMLStreamException if the XML is badly formed
-	 * @throws SPFormatException if there are map format errors
-	 * @throws MapVersionException if the reader can't handle this map version
+	 * @throws IOException
+	 *             on I/O error opening the file
+	 * @throws XMLStreamException
+	 *             if the XML is badly formed
+	 * @throws SPFormatException
+	 *             if the reader can't handle this map version or there are map
+	 *             format errors
 	 */
 	public MapView readMap(final String filename, final Warning warner)
-			throws IOException, XMLStreamException, SPFormatException,
-			MapVersionException {
+			throws IOException, XMLStreamException, SPFormatException {
 		return reader.readMap(filename, warner);
 	}
 

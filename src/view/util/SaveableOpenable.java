@@ -1,6 +1,5 @@
 package view.util;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -15,10 +14,9 @@ public interface SaveableOpenable {
 	 *
 	 * @param file the filename to load from
 	 *
-	 * @throws FileNotFoundException if the file doesn't exist
-	 * @throws IOException on I/O error loading
+	 * @throws IOException if the file doesn't exist or on other I/O error while loading
 	 */
-	void open(final String file) throws FileNotFoundException, IOException;
+	void open(final String file) throws IOException;
 
 	/**
 	 * Save to file.

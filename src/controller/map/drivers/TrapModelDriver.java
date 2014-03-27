@@ -18,6 +18,7 @@ import model.exploration.HuntingModel;
 import model.map.HasName;
 import model.map.IMap;
 import model.map.Point;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -40,6 +41,13 @@ public class TrapModelDriver implements ISPDriver {
 			"--trap", ParamCount.One, "Run a player's trapping",
 			"Determine the results a player's trapper finds.",
 			TrapModelDriver.class);
+	/**
+	 * A somewhat lengthy prompt.
+	 */
+	private static final String FISH_OR_TRAP = NullCleaner
+			.assertNotNull(new StringBuilder(
+					"Is this a fisherman trapping fish").append(
+					" rather than a trapper?").toString());
 	/**
 	 * Logger.
 	 */
@@ -140,8 +148,7 @@ public class TrapModelDriver implements ISPDriver {
 	private void repl(final IMap map, final PrintStream ostream) {
 		try {
 			final HuntingModel hmodel = new HuntingModel(map);
-			final boolean fishing = helper
-					.inputBoolean("Is this a fisherman trapping fish rather than a trapper? ");
+			final boolean fishing = helper.inputBoolean(FISH_OR_TRAP);
 			final String name;
 			if (fishing) {
 				name = "fisherman";

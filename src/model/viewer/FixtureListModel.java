@@ -88,9 +88,8 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	 */
 	public void remove(@Nullable final Iterable<TileFixture> list) {
 		if (!(tile instanceof IMutableTile)) {
-			ErrorShower
-					.showErrorDialog(null,
-							"Cannot remove item from list: selected tile is not mutable");
+			ErrorShower.showErrorDialog(null, "Cannot remove item from list: "
+					+ "selected tile is not mutable");
 		} else if (list != null) {
 			for (final TileFixture fix : list) {
 				if (fix == null) {

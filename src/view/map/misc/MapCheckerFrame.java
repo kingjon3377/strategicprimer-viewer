@@ -135,9 +135,8 @@ public class MapCheckerFrame extends JFrame {
 			printParagraph("ERROR: I/O error reading file", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
 		} else if (except instanceof XMLStreamException) {
-			printParagraph(
-					"ERROR: Malformed XML in the file; see following error message for details",
-					ERROR_COLOR);
+			printParagraph("ERROR: Malformed XML in the file"
+					+ "; see following error message for details", ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
 			printParagraph(message, ERROR_COLOR);
