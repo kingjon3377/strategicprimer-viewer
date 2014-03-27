@@ -36,7 +36,8 @@ public class ExplorationCLI {
 	/**
 	 * The prompt to use when the user tells the unit to go nowhere.
 	 */
-	private static final String FEALTY_PROMPT = "Should any village here swear to the player?  ";
+	private static final String FEALTY_PROMPT =
+			"Should any village here swear to the player?  ";
 	/**
 	 * The exploration model we use.
 	 */
@@ -45,7 +46,6 @@ public class ExplorationCLI {
 	 * The helper to handle user I/O.
 	 */
 	private final CLIHelper helper;
-
 	/**
 	 * @param emodel the exploration model to use
 	 * @param mhelper the helper to handle user I/O

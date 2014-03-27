@@ -172,8 +172,9 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		for (int i = 0; i < dim.rows; i++) {
 			final String idx = Integer.toString(i);
 			assert idx != null;
-			final SPIntermediateRepresentation row = new SPIntermediateRepresentation(// NOPMD
-					"row", Pair.of("index", idx));
+			final SPIntermediateRepresentation row =
+					new SPIntermediateRepresentation(// NOPMD
+							"row", Pair.of("index", idx));
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final ITile tile = obj.getTile(point);

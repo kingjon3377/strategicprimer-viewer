@@ -50,5 +50,6 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	/**
 	 * Map from fixture classes to menu-items representing them.
 	 */
-	private final Map<Class<? extends TileFixture>, JCheckBoxMenuItem> mapping = new HashMap<>();
+	private final Map<Class<? extends TileFixture>, JCheckBoxMenuItem> mapping =
+			new HashMap<>();
 }

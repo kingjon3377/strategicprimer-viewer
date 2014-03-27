@@ -37,7 +37,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * Default renderer, for cases we don't know how to handle.
 	 */
-	private static final DefaultTreeCellRenderer DFLT = new DefaultTreeCellRenderer();
+	private static final DefaultTreeCellRenderer DFLT =
+			new DefaultTreeCellRenderer();
 	/**
 	 * The default background color when selected.
 	 */

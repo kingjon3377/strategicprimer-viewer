@@ -34,7 +34,8 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	/**
 	 * Default list renderer, for cases we don't know how to handle.
 	 */
-	private static final DefaultListCellRenderer LIST_DEFAULT = new DefaultListCellRenderer();
+	private static final DefaultListCellRenderer LIST_DEFAULT =
+			new DefaultListCellRenderer();
 
 	/**
 	 * @param list the list being rendered

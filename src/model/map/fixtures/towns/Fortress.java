@@ -108,8 +108,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 						&& ((Fortress) obj).owner.getPlayerId() == owner
 								.getPlayerId()
 						&& ((Fortress) obj).units.containsAll(units)
-						&& units.containsAll(((Fortress) obj).units) && ((TileFixture) obj)
-						.getID() == id);
+						&& units.containsAll(((Fortress) obj).units) && ((Fortress) obj).id == id);
 	}
 
 	/**

@@ -39,7 +39,8 @@ public class AppStarter implements ISPDriver {
 	/**
 	 * A map from options to the drivers they represent.
 	 */
-	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE = new HashMap<>();
+	private static final Map<String, Pair<ISPDriver, ISPDriver>> CACHE =
+			new HashMap<>();
 
 	/**
 	 * @param driver a driver to add twice.

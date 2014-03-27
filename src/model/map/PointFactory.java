@@ -40,7 +40,8 @@ public final class PointFactory {
 	/**
 	 * The point cache.
 	 */
-	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE = new ConcurrentHashMap<>();
+	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE =
+			new ConcurrentHashMap<>();
 
 	/**
 	 * Factory method. I considered replacing the cache with simply a
@@ -77,7 +78,8 @@ public final class PointFactory {
 	/**
 	 * Coordinate cache.
 	 */
-	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE = new ConcurrentHashMap<>();
+	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE =
+			new ConcurrentHashMap<>();
 
 	/**
 	 * @param xCoord an X coordinate or extent

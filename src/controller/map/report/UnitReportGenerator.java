@@ -31,7 +31,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * A string to indicate a worker has training or experience.
 	 */
-	private static final String HAS_TRAINING = "(S)he has training or experience in the following Jobs (Skills):";
+	private static final String HAS_TRAINING =
+			"(S)he has training or experience in the following Jobs (Skills):";
 
 	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.

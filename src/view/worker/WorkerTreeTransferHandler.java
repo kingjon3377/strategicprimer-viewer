@@ -141,8 +141,9 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 			final Object tempTarget = model.getModelObject(pathLast);
 			if (tempTarget instanceof Unit) {
 				try {
-					final UnitMemberTransferable.UnitMemberPair pair = (UnitMemberPair) trans
-							.getTransferData(UnitMemberTransferable.FLAVOR);
+					final UnitMemberTransferable.UnitMemberPair pair =
+							(UnitMemberPair) trans
+									.getTransferData(UnitMemberTransferable.FLAVOR);
 					model.moveMember(pair.member, pair.unit, (Unit) tempTarget);
 					return true; // NOPMD
 				} catch (final UnsupportedFlavorException except) {

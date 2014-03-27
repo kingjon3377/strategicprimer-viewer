@@ -23,7 +23,8 @@ public class PointIteratorTest {
 	/**
 	 * The expectation for each test.
 	 */
-	private static final String EXPECTATION = "Iterator produced points in expected order";
+	private static final String EXPECTATION =
+			"Iterator produced points in expected order";
 
 	/**
 	 * Test without startFromSel, horizontally, forwards.

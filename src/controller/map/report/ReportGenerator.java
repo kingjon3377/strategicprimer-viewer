@@ -47,7 +47,8 @@ public final class ReportGenerator {
 		builder.append("<head><title>Strategic Primer map ").append(
 				"summary report</title></head>\n");
 		builder.append("<body>");
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+				getFixtures(map);
 		final ITileCollection tiles = map.getTiles();
 		final Player player = map.getPlayers().getCurrentPlayer();
 		builder.append(new FortressReportGenerator().produce(fixtures, tiles,
@@ -97,7 +98,8 @@ public final class ReportGenerator {
 		builder.append("<title>Strategic Primer map summary ").append(
 				"abridged report</title></head>\n");
 		builder.append("<body>");
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+				getFixtures(map);
 		final ITileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
@@ -143,7 +145,8 @@ public final class ReportGenerator {
 	public static AbstractReportNode createReportIR(final IMap map) {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary report");
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+				getFixtures(map);
 		final ITileCollection tiles = map.getTiles();
 		final Player player = map.getPlayers().getCurrentPlayer();
 		retval.add(new FortressReportGenerator().produceRIR(fixtures, tiles,
@@ -185,7 +188,8 @@ public final class ReportGenerator {
 			final Player player) {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary abbreviated report");
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+				getFixtures(map);
 		final ITileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
@@ -228,7 +232,8 @@ public final class ReportGenerator {
 	 */
 	private static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(
 			final IMap map) {
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval =
+				new IntMap<>();
 		for (final Point point : map.getTiles()) {
 			if (point != null) {
 				final ITile tile = map.getTile(point);

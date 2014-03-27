@@ -77,7 +77,8 @@ public class SPMapNG implements IMapNG {
 					retval = false;
 					// return false;
 				}
-				final Collection<TileFixture> ourFixtures = (Collection<TileFixture>) getOtherFixtures(point);
+				final Collection<TileFixture> ourFixtures =
+						(Collection<TileFixture>) getOtherFixtures(point);
 				final Iterable<TileFixture> theirFixtures = obj
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {

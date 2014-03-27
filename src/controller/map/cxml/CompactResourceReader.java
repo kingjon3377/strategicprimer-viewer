@@ -172,8 +172,8 @@ public final class CompactResourceReader extends
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public HarvestableFixture read(final StartElement elem, // $codepro.audit.disable cyclomaticComplexity
-			final IteratorWrapper<XMLEvent> stream,
+	public HarvestableFixture read(// $codepro.audit.disable cyclomaticComplexity
+			final StartElement elem, final IteratorWrapper<XMLEvent> stream,
 			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(elem, "battlefield", "cache", "cave", "grove", "orchard",

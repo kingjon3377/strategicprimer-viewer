@@ -192,7 +192,8 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param wmodel The driver model to get the map from
 		 * @param tmodel the tree model we update
 		 */
-		protected ReportUpdater(final IWorkerModel wmodel, final DefaultTreeModel tmodel) {
+		protected ReportUpdater(final IWorkerModel wmodel,
+				final DefaultTreeModel tmodel) {
 			model = wmodel;
 			reportModel = tmodel;
 		}

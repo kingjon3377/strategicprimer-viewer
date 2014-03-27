@@ -99,8 +99,8 @@ public class Village implements ITownFixture, HasImage {
 		return this == obj
 				|| (obj instanceof Village
 						&& status.equals(((Village) obj).status)
-						&& name.equals(((Village) obj).name) && id == ((TileFixture) obj)
-						.getID()) && owner.equals(((Village) obj).owner)
+						&& name.equals(((Village) obj).name) && id == ((Village) obj).id)
+				&& owner.equals(((Village) obj).owner)
 				&& race.equals(((Village) obj).race);
 	}
 

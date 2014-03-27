@@ -54,7 +54,8 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * A comparator for town-statuses, to put active towns before abandoned ones
 	 * before ruined ones before burned-out ones.
 	 */
-	private static final Comparator<TownStatus> ST_CMP = new Comparator<TownStatus>() {
+	private static final Comparator<TownStatus> ST_CMP =
+			new Comparator<TownStatus>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -86,7 +87,8 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * A comparator for towns, sorting them *only* on the basis of kind, putting
 	 * fortresses before cities before towns before fortifications before villages.
 	 */
-	private static final Comparator<ITownFixture> KIND_CMP = new Comparator<ITownFixture>() {
+	private static final Comparator<ITownFixture> KIND_CMP =
+			new Comparator<ITownFixture>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind

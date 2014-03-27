@@ -117,8 +117,7 @@ public class Grove implements HarvestableFixture, HasKind {
 		return this == obj
 				|| (obj instanceof Grove && kind.equals(((Grove) obj).kind)
 						&& orchard == ((Grove) obj).orchard
-						&& cultivated == ((Grove) obj).cultivated && id == ((TileFixture) obj)
-						.getID());
+						&& cultivated == ((Grove) obj).cultivated && id == ((Grove) obj).id);
 	}
 
 	/**
