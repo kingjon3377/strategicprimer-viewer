@@ -95,7 +95,7 @@ public class MultiIOHandler extends IOHandler {
 				adapter.write(pair.second(), pair.first());
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
-						"I/O error writing to file " + model.getMapFilename());
+						"I/O error writing to file " + pair.second());
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
 		}
