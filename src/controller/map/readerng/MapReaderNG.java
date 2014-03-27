@@ -92,7 +92,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 				final Object retval = ReaderAdapter.ADAPTER.parse(selem,
 						eventReader, new PlayerCollection(), warner, // NOPMD
 						new IDFactory()); // NOPMD
-				// This is a hack to make it compile under the new twoparameter
+				// This is a hack to make it compile under the new two-parameter
 				// system ...
 				return checkType(retval, type);
 			}
@@ -121,7 +121,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 			throw new IllegalArgumentException("We want a node producing "
 					+ type.getSimpleName() + ", not "
 					+ obj.getClass().getSimpleName() + ", as the top-level tag");
-	}
+		}
 	}
 
 	/**

@@ -69,7 +69,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
-	public ITile read(final StartElement element,
+	public IMutableTile read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
 			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {

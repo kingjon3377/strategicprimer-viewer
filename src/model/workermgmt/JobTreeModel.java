@@ -13,6 +13,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import model.listeners.AddRemoveListener;
 import model.listeners.UnitMemberListener;
+import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
@@ -55,7 +56,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	@Nullable
-	public Object getRoot() {
+	public Worker getRoot() {
 		return root;
 	}
 
@@ -65,7 +66,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * @return the specified child
 	 */
 	@Override
-	public Object getChild(@Nullable final Object parent, final int index) {
+	public HasName getChild(@Nullable final Object parent, final int index) {
 		final Worker currRoot = root;
 		if (index >= 0 && currRoot != null && parent instanceof Worker
 				&& parent.equals(currRoot)) {

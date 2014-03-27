@@ -111,7 +111,7 @@ public class UnitMemberTransferable implements Transferable {
 	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
-	public Object getTransferData(@Nullable final DataFlavor dflavor)
+	public UnitMemberPair getTransferData(@Nullable final DataFlavor dflavor)
 			throws UnsupportedFlavorException, IOException {
 		if (FLAVOR.equals(dflavor)) {
 			return data; // NOPMD

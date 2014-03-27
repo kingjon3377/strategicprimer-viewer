@@ -44,7 +44,7 @@ public class TileReader implements INodeHandler<ITile> {
 	 * @throws SPFormatException on map format error
 	 */
 	@Override
-	public ITile parse(final StartElement element,
+	public IMutableTile parse(final StartElement element,
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {

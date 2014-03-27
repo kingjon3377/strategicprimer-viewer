@@ -163,7 +163,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 * @return a sub-report on the animal
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Animal item, final Point loc) {

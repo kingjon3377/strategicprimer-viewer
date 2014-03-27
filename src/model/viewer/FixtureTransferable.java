@@ -65,7 +65,7 @@ public class FixtureTransferable implements Transferable {
 	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
-	public Object getTransferData(@Nullable final DataFlavor dflavor)
+	public TileFixture getTransferData(@Nullable final DataFlavor dflavor)
 			throws UnsupportedFlavorException, IOException {
 		if (FLAVOR.equals(dflavor)) {
 			return data; // NOPMD

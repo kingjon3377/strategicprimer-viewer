@@ -300,7 +300,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return a sub-report dealing with the fixture
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {

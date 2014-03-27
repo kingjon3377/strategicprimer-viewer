@@ -75,7 +75,7 @@ public class CurriedFixtureTransferable implements Transferable {
 	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
-	public Object getTransferData(@Nullable final DataFlavor dFlavor)
+	public List<Transferable> getTransferData(@Nullable final DataFlavor dFlavor)
 			throws UnsupportedFlavorException, IOException {
 		if (isDataFlavorSupported(dFlavor)) {
 			// ESCA-JAVA0259: The collection is unmodifiable.

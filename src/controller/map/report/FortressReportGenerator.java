@@ -257,11 +257,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @return the part of the report dealing with the fortress
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public SectionListReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Fortress item, final Point loc) {
-		final AbstractReportNode retval = new SectionListReportNode(5, concat(
+		final SectionListReportNode retval = new SectionListReportNode(5, concat(
 				"Fortress ", item.getName(), " belonging to ",
 				playerNameOrYou(item.getOwner())));
 		retval.add(new SimpleReportNode("Located at ", loc.toString()));

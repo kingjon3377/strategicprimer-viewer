@@ -9,6 +9,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
+import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -55,7 +56,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @return the root of the tree, the player.
 	 */
 	@Override
-	public Object getRoot() {
+	public Player getRoot() {
 		return root;
 	}
 
@@ -65,7 +66,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @return the specified child
 	 */
 	@Override
-	public Object getChild(@Nullable final Object parent, final int index) {
+	public IFixture getChild(@Nullable final Object parent, final int index) {
 		if (index < 0) {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else if (parent instanceof Player && parent.equals(root)

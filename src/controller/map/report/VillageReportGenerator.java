@@ -138,7 +138,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @return the report on the village (its location and name, nothing more)
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {

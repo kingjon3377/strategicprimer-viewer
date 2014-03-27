@@ -7,7 +7,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
-import model.map.IMutableTile;
 import model.map.IPlayerCollection;
 import model.map.ITile;
 import model.map.MapDimensions;
@@ -128,7 +127,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			final Point loc = PointFactory.point(row, col);
 			map.addTile(
 					loc,
-					(IMutableTile) CompactTileReader.READER.read(elem, stream,
+					CompactTileReader.READER.read(elem, stream,
 							map.getPlayers(), warner, idFactory));
 		} else if (EqualsAny.equalsAny(tag, ISPReader.FUTURE)) {
 			warner.warn(new UnsupportedTagException(tag, elem.getLocation()

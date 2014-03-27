@@ -169,7 +169,7 @@ public class ExplorableReportGenerator extends
 	 *         on the item
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {

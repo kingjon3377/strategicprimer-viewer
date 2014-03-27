@@ -76,7 +76,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	@Nullable
-	protected Transferable createTransferable(
+	protected UnitMemberTransferable createTransferable(
 			@Nullable final JComponent component) {
 		final TreePath path = smodel.getSelectionPath();
 		final Object last = path
