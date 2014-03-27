@@ -22,7 +22,7 @@ public final class City extends AbstractTown {
 	public City(final TownStatus tStatus, final TownSize tSize,
 			final int discdc, final String tName, final int idNum,
 			final Player player) {
-		super(TownKind.City, tStatus, tSize, tName, player);
+		super(tStatus, tSize, tName, player);
 		dc = discdc;
 		id = idNum;
 	}
@@ -60,5 +60,12 @@ public final class City extends AbstractTown {
 	@Override
 	public String plural() {
 		return "Cities";
+	}
+	/**
+	 * @return that this is a city
+	 */
+	@Override
+	public String kind() {
+		return "city";
 	}
 }

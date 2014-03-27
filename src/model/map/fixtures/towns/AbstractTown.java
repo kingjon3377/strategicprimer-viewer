@@ -20,16 +20,14 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	/**
 	 * Constructor.
 	 *
-	 * @param eKind what kind of event this is
 	 * @param tSize the size of the town, fortress, or city
 	 * @param tStatus the status of the town, fortress, or city
 	 * @param tName the name of the town, fortress, or city
 	 * @param player the owner of the town, fortress, or city
 	 */
-	protected AbstractTown(final TownKind eKind, final TownStatus tStatus,
-			final TownSize tSize, final String tName, final Player player) {
+	protected AbstractTown(final TownStatus tStatus, final TownSize tSize,
+			final String tName, final Player player) {
 		super();
-		kind = eKind;
 		status = tStatus;
 		size = tSize;
 		name = tName;
@@ -72,11 +70,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	private final TownSize size;
 	/**
-	 * What kind of event this is.
-	 */
-	private final TownKind kind;
-
-	/**
 	 *
 	 * @return the size of the town, fortress, or city
 	 */
@@ -104,7 +97,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 			builder.append(status.toString());
 		}
 		builder.append(' ');
-		builder.append(kind().toString());
+		builder.append(kind());
 		if (!name.isEmpty()) {
 			builder.append(", ");
 			builder.append(name);
@@ -126,11 +119,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 		return this == obj
 				|| (obj instanceof AbstractTown
 						&& getID() == ((TileFixture) obj).getID()
-						&& kind().equals(((AbstractTown) obj).kind())
-						&& size.equals(((AbstractTown) obj).size)
-						&& name.equals(((AbstractTown) obj).name)
-						&& status.equals(((AbstractTown) obj).status) && owner
-							.equals(((AbstractTown) obj).owner));
+						&& equalsContents(((AbstractTown) obj)));
 	}
 
 	/**
@@ -144,13 +133,16 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	}
 
 	/**
-	 * @param fix a town-event
+	 * This should be used in subclasses' equals() and equalsIgnoringID(), where
+	 * all that is needed is a check of the type of the object in question.
+	 * 
+	 * @param fix
+	 *            a town-event
 	 * @return whether it's equal to this one ignoring ID.
 	 */
-	private boolean equalsContents(final AbstractTown fix) {
-		return fix.kind().equals(kind) && fix.size().equals(size)
-				&& fix.getName().equals(name) && fix.status().equals(status)
-				&& fix.owner.equals(owner);
+	protected final boolean equalsContents(final AbstractTown fix) {
+		return fix.size().equals(size) && fix.getName().equals(name)
+				&& fix.status().equals(status) && fix.owner.equals(owner);
 	}
 
 	/**
@@ -199,11 +191,9 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 
 	/**
 	 *
-	 * @return what kind of event this is
+	 * @return a description of what kind of 'town' this is.
 	 */
-	public TownKind kind() {
-		return kind;
-	}
+	public abstract String kind();
 
 	/**
 	 * TODO: Should be more granular.
@@ -294,7 +284,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 		builder.append(' ');
 		builder.append(status);
 		builder.append(' ');
-		builder.append(kind);
+		builder.append(kind());
 		if (name.isEmpty()) {
 			builder.append(" with no name");
 		} else {

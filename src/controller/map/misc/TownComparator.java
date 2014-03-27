@@ -3,7 +3,11 @@ package controller.map.misc;
 import java.util.Comparator;
 
 import model.map.fixtures.towns.AbstractTown;
-import model.map.fixtures.towns.TownKind;
+import model.map.fixtures.towns.City;
+import model.map.fixtures.towns.Fortification;
+import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.ITownFixture;
+import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 
@@ -79,10 +83,10 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	};
 
 	/**
-	 * A comparator for town-kinds, to put cities before towns before
-	 * fortifications.
+	 * A comparator for towns, sorting them *only* on the basis of kind, putting
+	 * fortresses before cities before towns before fortifications before villages.
 	 */
-	private static final Comparator<TownKind> KIND_CMP = new Comparator<TownKind>() {
+	private static final Comparator<ITownFixture> KIND_CMP = new Comparator<ITownFixture>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -91,17 +95,42 @@ public final class TownComparator implements Comparator<AbstractTown> {
 		 *         is "greater" than the second.
 		 */
 		@Override
-		public int compare(final TownKind one, final TownKind two) {
-			if (one.equals(two)) {
-				return 0; // NOPMD
-			} else if (TownKind.City.equals(one)) {
-				return -1; // NOPMD
-			} else if (TownKind.City.equals(two)) {
-				return 1; // NOPMD
-			} else if (TownKind.Town.equals(one)) {
-				return -1; // NOPMD
-			} else {
+		public int compare(final ITownFixture one, final ITownFixture two) {
+			if (one instanceof Fortress) {
+				if (two instanceof Fortress) {
+					return 0;
+				} else {
+					return -1;
+				}
+			} else if (two instanceof Fortress) {
 				return 1;
+			} else if (one instanceof City) {
+				if (two instanceof City) {
+					return 0;
+				} else {
+					return -1;
+				}
+			} else if (two instanceof City) {
+				return 1;
+			} else if (one instanceof Town) {
+				if (two instanceof Town) {
+					return 0;
+				} else {
+					return -1;
+				}
+			} else if (two instanceof Town) {
+				return 1;
+			} else if (one instanceof Fortification) {
+				if (two instanceof Fortification) {
+					return 0;
+				} else {
+					return -1;
+				}
+			} else if (two instanceof Fortification) {
+				return 1;
+			} else {
+				// They should be both villages ...
+				return 0;
 			}
 		}
 	};
@@ -120,10 +149,10 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	public int compare(final AbstractTown one, final AbstractTown two) {
 		if (one.status().equals(two.status())) {
 			if (one.size().equals(two.size())) {
-				if (one.kind().equals(two.kind())) {
+				if (one.getClass().equals(two.getClass())) {
 					return one.getName().compareTo(two.getName()); // NOPMD
 				} else {
-					return KIND_CMP.compare(one.kind(), two.kind()); // NOPMD
+					return KIND_CMP.compare(one, two); // NOPMD
 				}
 			} else {
 				return SIZE_CMP.compare(one.size(), two.size()); // NOPMD

@@ -149,7 +149,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 				return concat(atPoint(loc), item.getName(),
 						", an independent ", item.size().toString(), " ", item
 								.status().toString(), " ",
-						((AbstractTown) item).kind().toString());
+						((AbstractTown) item).kind());
 			} else {
 				return concat(atPoint(loc), item.getName(), ", a ", item.size()
 						.toString(), " ", item.status().toString(), " ",
@@ -190,7 +190,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 				return new SimpleReportNode(atPoint(loc), item.getName(),
 						", an independent ", item.size().toString(), " ", item
 								.status().toString(), " ",
-						((AbstractTown) item).kind().toString());
+						((AbstractTown) item).kind());
 			} else {
 				return new SimpleReportNode(atPoint(loc), item.getName(),
 						", a ", item.size().toString(), " ", item.status()

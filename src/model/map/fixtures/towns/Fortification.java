@@ -24,7 +24,7 @@ public final class Fortification extends AbstractTown {
 	public Fortification(final TownStatus tStatus, final TownSize tSize,
 			final int discdc, final String tName, final int idNum,
 			final Player player) {
-		super(TownKind.Fortification, tStatus, tSize, tName, player);
+		super(tStatus, tSize, tName, player);
 		dc = discdc;
 		id = idNum;
 	}
@@ -70,5 +70,12 @@ public final class Fortification extends AbstractTown {
 	@Override
 	public String plural() {
 		return "Fortifications";
+	}
+	/**
+	 * @return that this is a fortification
+	 */
+	@Override
+	public String kind() {
+		return "fortification";
 	}
 }
