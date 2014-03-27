@@ -114,7 +114,7 @@ public class FixtureList extends JList<TileFixture> implements
 	 */
 	@Override
 	public int hashCode() {
-		return getModel().hashCode();
+		return flm.hashCode();
 	}
 
 	/**
@@ -188,7 +188,8 @@ public class FixtureList extends JList<TileFixture> implements
 	 * @param newPoint passed to the list model
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old,
+			final Point newPoint) {
 		flm.selectedPointChanged(old, newPoint);
 	}
 	/**

@@ -218,7 +218,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					.chooseFromList(
 							units,
 							"Which unit contains the worker in question?",
-							"No units owned by that player that are not already fully statted",
+							"All that player's units are already fully statted",
 							"Unit selection: ", false);
 			if (unitNum < 0 || unitNum >= units.size() || units.isEmpty()) {
 				break;
@@ -455,7 +455,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					} else {
 						final IMutableTile mtile = (IMutableTile) tile;
 						mtile.addFixture(unit);
-						((IMutableTileCollection) tiles).addTile(point, (IMutableTile) tile);
+						((IMutableTileCollection) tiles).addTile(point,
+								(IMutableTile) tile);
 					}
 				}
 				createWorkers(model, idf, unit);
@@ -510,7 +511,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
 				retval.addJob(new Job(// NOPMD
-						helper.inputString("Worker has a level in a Job, which Job? "),
+						helper.inputString("Which Job does worker has a level in? "),
 						1));
 				levels++;
 			}

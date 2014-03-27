@@ -30,9 +30,7 @@ public final class TestTableLoader {
 	private static final String ST_MET = "static-method";
 
 	/**
-	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadQuadrantTable(java.io.BufferedReader)}
-	 * . .
+	 * Test method for loading quadrant tables.
 	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */
@@ -59,9 +57,7 @@ public final class TestTableLoader {
 	}
 
 	/**
-	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadRandomTable(java.io.BufferedReader)}
-	 * .
+	 * Test method for loading random tables.
 	 * 
 	 * @throws IOException
 	 *             on I/O error in the test or in cleaning up after it.
@@ -80,11 +76,10 @@ public final class TestTableLoader {
 	}
 
 	/**
-	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadTerrainTable(java.io.BufferedReader)}
-	 * .
-	 *
-	 * @throws IOException on I/O error in the test or in cleaning up after it.
+	 * Test method for loading terrain tables. .
+	 * 
+	 * @throws IOException
+	 *             on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
@@ -104,11 +99,10 @@ public final class TestTableLoader {
 	}
 
 	/**
-	 * Test method for
-	 * {@link controller.exploration.TableLoader#loadConstantTable(java.io.BufferedReader)}
-	 * .
-	 *
-	 * @throws IOException on I/O error in the test or in cleaning up after it.
+	 * Test method for loading constant tables. .
+	 * 
+	 * @throws IOException
+	 *             on I/O error in the test or in cleaning up after it.
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
@@ -123,9 +117,7 @@ public final class TestTableLoader {
 	}
 
 	/**
-	 * Test the bad-input logic in
-	 * {@link controller.exploration.TableLoader#loadTableFromStream(java.io.BufferedReader)}
-	 * .
+	 * Test the bad-input logic in loading tables from streams.
 	 *
 	 * @throws IOException on I/O error in the test or in cleaning up after it.
 	 */

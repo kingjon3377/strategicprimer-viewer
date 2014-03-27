@@ -113,7 +113,8 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 				return false; // NOPMD
 			} else {
 				final Object pathLast = path.getLastPathComponent();
-				return pathLast != null && model.getModelObject(pathLast) instanceof Unit; // NOPMD
+				return pathLast != null // NOPMD
+						&& model.getModelObject(pathLast) instanceof Unit;
 			}
 		} else {
 			return false;
@@ -151,7 +152,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 				} catch (final IOException except) {
 					LOGGER.log(
 							Level.SEVERE,
-							"I/O error in transfer after we checked ... shouldn't happen",
+							"I/O error in transfer after we checked",
 							except);
 					return false; // NOPMD
 				}

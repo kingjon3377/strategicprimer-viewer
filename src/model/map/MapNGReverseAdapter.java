@@ -58,7 +58,7 @@ public class MapNGReverseAdapter implements IMap {
 				|| (obj instanceof IMap
 						&& getDimensions().equals(((IMap) obj).getDimensions())
 						&& getPlayers().equals(((IMap) obj).getPlayers()) && getTiles()
-							.equals(((IMap) obj).getTiles()));
+						.equals(((IMap) obj).getTiles()));
 	}
 	/**
 	 * @return a hash value for the object
@@ -146,7 +146,8 @@ public class MapNGReverseAdapter implements IMap {
 		public boolean hasTile(final Point point) {
 			return !NotVisible.equals(outer.getBaseTerrain(point))
 					&& !outer.getRivers(point).iterator().hasNext()
-					&& outer.getGround(point) == null && outer.getForest(point) == null
+					&& outer.getGround(point) == null
+					&& outer.getForest(point) == null
 					&& !outer.getOtherFixtures(point).iterator().hasNext();
 		}
 		/**
@@ -361,6 +362,7 @@ public class MapNGReverseAdapter implements IMap {
 	 */
 	@Override
 	public String toString() {
-		return "IMap adapter around the following MapNG instance:\n" + impl.toString();
+		return "IMap adapter around the following MapNG instance:\n"
+				+ impl.toString();
 	}
 }

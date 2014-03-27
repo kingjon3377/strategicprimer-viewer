@@ -144,7 +144,7 @@ public class OneToTwoConverter { // NOPMD
 					final int row = point.row * RES_JUMP + i;
 					final int col = point.col * RES_JUMP + j;
 					final Point subpoint = PointFactory.point(row, col);
-					final IMutableTile subtile = new Tile(tile.getTerrain()); // NOPMD
+					final IMutableTile subtile = new Tile(tile.getTerrain()); //NOPMD
 					initial.add(Pair.of(subpoint, subtile));
 					convertSubtile(subpoint, subtile, main);
 				}
@@ -169,8 +169,9 @@ public class OneToTwoConverter { // NOPMD
 		if (!tile.isEmpty()) {
 			final int id = idFactory.createID();
 			if (tile instanceof IMutableTile) {
-				((IMutableTile) tile).addFixture(new Village(TownStatus.Active, "", id,
-					independentPlayer, RaceFactory.getRace(new Random(id))));
+				((IMutableTile) tile).addFixture(new Village(TownStatus.Active,
+						"", id, independentPlayer, RaceFactory
+								.getRace(new Random(id))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
 			for (final TileFixture fixture : tile) {
@@ -581,7 +582,9 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	public static void main(final String[] args) {
 		if (args.length == 0) {
-			System.err.println("Usage: OneToTwoConverter mainmap.xml [playermap.xml ...]");
+			System.err.println("Usage: "
+					+ OneToTwoConverter.class.getSimpleName()
+					+ " mainmap.xml [playermap.xml ...]");
 			System.exit(1);
 		} else {
 			boolean first = true;
@@ -625,7 +628,8 @@ public class OneToTwoConverter { // NOPMD
 	 * @param except the exception to handle
 	 * @param filename the file being read
 	 */
-	private static void printReadError(final Exception except, final String filename) {
+	private static void printReadError(final Exception except,
+			final String filename) {
 		if (except instanceof MapVersionException) {
 			System.err.print("Unsupported map version while reading ");
 			System.err.println(filename);

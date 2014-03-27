@@ -27,7 +27,8 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class SkillList extends JList<Skill> implements ListSelectionListener,
-		SkillSelectionSource, LevelGainListener, JobSelectionListener, CompletionListener {
+		SkillSelectionSource, LevelGainListener, JobSelectionListener,
+		CompletionListener {
 	/**
 	 * Constructor.
 	 */
@@ -72,7 +73,8 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeSkillSelectionListener(final SkillSelectionListener list) {
+	public final void removeSkillSelectionListener(
+			final SkillSelectionListener list) {
 		ssListeners.remove(list);
 	}
 

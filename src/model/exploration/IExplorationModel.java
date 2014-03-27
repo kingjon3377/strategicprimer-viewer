@@ -24,7 +24,7 @@ public interface IExplorationModel extends IMultiMapModel,
 	/**
 	 * An enumeration of directions.
 	 */
-	enum Direction { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.avoidPackageScopeAuditRule
+	public enum Direction {
 		/**
 		 * North.
 		 */

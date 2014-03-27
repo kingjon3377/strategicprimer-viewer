@@ -151,7 +151,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				"size"));
 		final int dc = Integer.parseInt(getParameter(element, "dc")); // NOPMD
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
-		final Player owner = getOwnerOrIndependent(element, warner, players); // NOPMD
+		final Player owner = getOwnerOrIndependent(element, warner, players); //NOPMD
 		final AbstractTown retval; // NOPMD
 		if ("town".equals(element.getName().getLocalPart())) {
 			retval = new Town(status, size, dc, name, id, owner);
@@ -218,8 +218,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
 				retval.addUnit(CompactUnitReader.READER.read(
-						assertNotNullStartElement(event.asStartElement()), stream, players, warner,
-						idFactory));
+						assertNotNullStartElement(event.asStartElement()),
+						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;

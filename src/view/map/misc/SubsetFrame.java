@@ -237,9 +237,8 @@ public class SubsetFrame extends JFrame {
 			return; // NOPMD
 		} catch (final XMLStreamException except) {
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg, except);
-			printParagraph(
-					"FAIL: Malformed XML in the file; see following error message for details",
-					ERROR_COLOR);
+			printParagraph("FAIL: Malformed XML in the file; "
+					+ "see following error message for details", ERROR_COLOR);
 			final String message = except.getLocalizedMessage();
 			assert message != null;
 			printParagraph(message, ERROR_COLOR);

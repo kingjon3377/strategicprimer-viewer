@@ -25,6 +25,7 @@ import model.map.fixtures.mobile.worker.Job;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ImageLoader;
+import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -36,22 +37,17 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * Default renderer, for cases we don't know how to handle.
 	 */
-	private static final DefaultTreeCellRenderer DEFAULT = new DefaultTreeCellRenderer();
+	private static final DefaultTreeCellRenderer DFLT = new DefaultTreeCellRenderer();
 	/**
 	 * The default background color when selected.
 	 */
-	private static final Color DEF_BKGD_SELECTED;
+	private static final Color DEF_BKGD_SELECTED = NullCleaner
+			.assertNotNull(DFLT.getBackgroundSelectionColor());
 	/**
 	 * The default background when not selected.
 	 */
-	private static final Color DEF_BKGD_NON_SEL;
-	static {
-		final Color sel = DEFAULT.getBackgroundSelectionColor();
-		final Color nonSel = DEFAULT.getBackgroundNonSelectionColor();
-		assert sel != null && nonSel != null;
-		DEF_BKGD_SELECTED = sel;
-		DEF_BKGD_NON_SEL = nonSel;
-	}
+	private static final Color DEF_BKGD_NON_SEL = NullCleaner
+			.assertNotNull(DFLT.getBackgroundNonSelectionColor());
 	/**
 	 * Whether we warn on certain ominous conditions.
 	 */
@@ -80,11 +76,13 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
 		assert tree != null && value != null;
-		final Component component = DEFAULT.getTreeCellRendererComponent(tree,
+		final Component component = DFLT.getTreeCellRendererComponent(tree,
 				value, selected, expanded, leaf, row, hasFocus);
 		assert component != null;
-		((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(DEF_BKGD_SELECTED);
-		((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(DEF_BKGD_NON_SEL);
+		((DefaultTreeCellRenderer) component)
+				.setBackgroundSelectionColor(DEF_BKGD_SELECTED);
+		((DefaultTreeCellRenderer) component)
+				.setBackgroundNonSelectionColor(DEF_BKGD_NON_SEL);
 		final Object internal = getNodeValue(value);
 		if (internal instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
@@ -111,11 +109,16 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 					.append(name).append("</p></html>").toString());
 			final String orders = unit.getOrders().toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
-				((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(Color.PINK);
-				((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(Color.PINK);
-			} else if (warn && orders.contains("todo") && unit.iterator().hasNext()) {
-				((DefaultTreeCellRenderer) component).setBackgroundSelectionColor(Color.YELLOW);
-				((DefaultTreeCellRenderer) component).setBackgroundNonSelectionColor(Color.YELLOW);
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundSelectionColor(Color.PINK);
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundNonSelectionColor(Color.PINK);
+			} else if (warn && orders.contains("todo")
+					&& unit.iterator().hasNext()) {
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundSelectionColor(Color.YELLOW);
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundNonSelectionColor(Color.YELLOW);
 			}
 		}
 		return component;

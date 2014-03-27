@@ -96,13 +96,12 @@ public class TileUIHelper {
 				assert retval != null;
 				return retval;
 			} else {
-				throw new IllegalArgumentException(
-						type
-								+ "is not a terrain type we know how to handle in version "
-								+ version);
+				throw new IllegalArgumentException(type
+						+ "is not a terrain type version " + version
+						+ " can handle");
 			}
 		} else {
-			throw new IllegalArgumentException("Not a version we know how to handle");
+			throw new IllegalArgumentException("Not a version we can handle");
 		}
 	}
 
@@ -154,7 +153,8 @@ public class TileUIHelper {
 			assert retval != null;
 			return retval;
 		} else {
-			throw new IllegalArgumentException("Not a kind of fixture we know how to handle");
+			throw new IllegalArgumentException(
+					"Not a kind of fixture we can handle");
 		}
 	}
 }

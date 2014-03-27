@@ -76,7 +76,8 @@ public final class TestExplorationRunner {
 		final MockTile mock = new MockTile(TileType.Tundra);
 		assertEquals("primary rock test", runner.getPrimaryRock(point, mock),
 				"primary_rock_test");
-		assertFalse("Checking primary rock doesn't involve checking tile type", mock.wasCalled());
+		assertFalse("Checking primary rock doesn't involve checking tile type",
+				mock.wasCalled());
 	}
 	/**
 	 * A mock-object for a Tile that only allows its terrain type to be queried.

@@ -63,14 +63,16 @@ public class SPMapNG implements IMapNG {
 				if (!Objects.equals(getForest(point), obj.getForest(point))
 						&& obj.getForest(point) != null) {
 					// TODO: Shouldn't do getForest call twice
-					out.print("Has forest we don't, or different primary forest, at ");
+					out.print("Has forest we don't, or ");
+					out.print("different primary forest, at ");
 					out.println(point);
 					retval = false;
 					// return false;
 				}
 				if (!Objects.equals(getGround(point), obj.getGround(point))
 						&& obj.getGround(point) != null) {
-					out.print("Has different primary ground, or ground we don't, at ");
+					out.print("Has different primary ground, ");
+					out.print("or ground we don't, at ");
 					out.println(point);
 					retval = false;
 					// return false;
@@ -331,7 +333,8 @@ public class SPMapNG implements IMapNG {
 	 * @param <T> the type of thing they contain
 	 * @return whether they contain the same elements.
 	 */
-	private static <T> boolean iterablesEqual(final Iterable<T> one, final Iterable<T> two) {
+	private static <T> boolean iterablesEqual(final Iterable<T> one,
+			final Iterable<T> two) {
 		final Collection<T> first;
 		if (one instanceof Collection) {
 			first = (Collection<T>) one;

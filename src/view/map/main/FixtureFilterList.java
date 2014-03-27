@@ -25,7 +25,7 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	/**
 	 * A mapping from classes of fixtures to their plurals.
 	 */
-	private final Map<Class<? extends TileFixture>, String> plurals = new HashMap<>();
+	private final Map<Class<? extends TileFixture>, String> plurals;
 	/**
 	 * The selection model.
 	 */
@@ -40,6 +40,7 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 */
 	public FixtureFilterList() {
 		super();
+		plurals = new HashMap<>();
 		model = new FixtureFilterListModel();
 		setModel(model);
 		final ListSelectionModel temp = getSelectionModel();

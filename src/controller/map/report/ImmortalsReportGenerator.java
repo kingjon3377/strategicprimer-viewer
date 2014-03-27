@@ -243,11 +243,11 @@ public class ImmortalsReportGenerator extends
 	 *         handle here.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity
-			// TODO: Create Immortal marker interface
+	public AbstractReportNode produceRIR(//$codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
+		// TODO: Create Immortal marker interface
 		if (item instanceof Dragon || item instanceof Fairy
 				|| item instanceof Troll || item instanceof Djinn
 				|| item instanceof Sphinx || item instanceof Giant

@@ -74,7 +74,8 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener,
 	 * @param newPoint passed to fixture list and shown on the header
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old,
+			final Point newPoint) {
 		fixList.selectedPointChanged(old, newPoint);
 		header.setText("<html><body><p>Contents of the tile at "
 				+ newPoint.toString() + ":</p></body></html>");

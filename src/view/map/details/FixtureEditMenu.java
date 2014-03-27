@@ -1,5 +1,7 @@
 package view.map.details;
 
+import static javax.swing.JOptionPane.showInputDialog;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -99,7 +101,7 @@ public class FixtureEditMenu extends JPopupMenu {
 						@Override
 						public void actionPerformed(
 								@Nullable final ActionEvent event) {
-							final String result = (String) JOptionPane.showInputDialog(
+							final String result = (String) showInputDialog(
 									outer, "Fixture's new kind:",
 									"Change Fixture Kind",
 									JOptionPane.PLAIN_MESSAGE, null, null,

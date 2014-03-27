@@ -85,7 +85,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @param point its location
 	 * @return a map containing the tile
 	 */
-	private static SPMap encapsulateTile(final Point point, final IMutableTile tile) {
+	private static SPMap encapsulateTile(final Point point,
+			final IMutableTile tile) {
 		final SPMap retval = new SPMap(new MapDimensions(point.row + 1,
 				point.col + 1, 2));
 		retval.addTile(point, tile);
@@ -172,10 +173,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						encapsulateRivers(River.North, River.South)),
 				SPMap.class);
 	}
+	
 	/**
-	 * @param type a tile type
-	 * @param fixtures fixtures
-	 * @return a tile of that type containing them. Declared mutable for the sake of calling code.
+	 * @param type
+	 *            a tile type
+	 * @param fixtures
+	 *            fixtures
+	 * @return a tile of that type containing them. Declared mutable for the
+	 *         sake of calling code.
 	 */
 	private static IMutableTile encapsulateFixtures(final TileType type,
 			final TileFixture... fixtures) {
@@ -240,8 +245,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<tile row=\"0\" column=\"0\" />", Tile.class,
 				KIND_PROPERTY, false);
 		assertUnwantedChild(
-				encapsulateTileString("<tile row=\"2\" column=\"0\" kind=\"plains\" />"),
-				Tile.class, false);
+				encapsulateTileString("<tile row=\"2\" column=\"0\" "
+						+ "kind=\"plains\" />"), Tile.class, false);
 		final IMutableTile six = encapsulateFixtures(TileType.Jungle, new Unit(
 				new Player(2, ""), "explorer", "name one", 1), new Unit(
 				new Player(2, ""), "explorer", "name two", 2));
@@ -252,8 +257,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				.append("<map version=\"2\" rows=\"3\" columns=\"4\">\n")
 				.append("\t<row index=\"2\">\n")
 				.append("\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />\n")
+				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" ")
+				.append("name=\"name one\" id=\"1\" />\n")
+				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" ")
+				.append("name=\"name two\" id=\"2\" />\n")
 				.append("\t\t</tile>\n").append("\t</row>\n</map>\n")
 				.toString();
 		assertEquals("Multiple units", xmlTwo,
@@ -340,11 +347,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		mOne.addTile(point, new Tile(TileType.Steppe));
 		final MapView one = new MapView(mOne, 1, 0);
 		assertSerialization("MapView serialization", one, MapView.class);
-		assertMissingProperty(
-				"<view current_turn=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+		assertMissingProperty("<view current_turn=\"0\">"
+				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
 				MapView.class, "current_player", false);
-		assertMissingProperty(
-				"<view current_player=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+		assertMissingProperty("<view current_player=\"0\">"
+				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
 				MapView.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				MapView.class, false);
@@ -359,7 +366,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
 				MapView.class, false);
 		final String viewTwo = new StringBuilder(200)
-				.append("<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">")
+				.append("<map version=\"2\" rows=\"1\" ")
+				.append("columns=\"1\" current_player=\"1\">")
 				.append("<player number=\"1\" code_name=\"playerOne\" />")
 				.append("<row index=\"0\">")
 				.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")

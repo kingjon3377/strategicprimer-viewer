@@ -179,8 +179,11 @@ public class ExplorationCLI {
 	}
 
 	/**
-	 * @param dPoint the current location
-	 * @param fix the fixture to copy to subordinate maps. May be null, to simplify the caller.
+	 * @param dPoint
+	 *            the current location
+	 * @param fix
+	 *            the fixture to copy to subordinate maps. May be null, to
+	 *            simplify the caller.
 	 */
 	private void printAndTransferFixture(final Point dPoint,
 			@Nullable final TileFixture fix) {

@@ -80,11 +80,14 @@ public final class ViewerStart implements ISPDriver {
 	}
 
 	/**
-	 * Run the driver. TODO: Somehow unify similar code between this and other similar drivers.
-	 *
-	 * @param args Command-line arguments.
-	 * @throws DriverFailedException if the driver failed to run.
-	 *
+	 * Run the driver. TODO: Somehow unify similar code between this and other
+	 * similar drivers.
+	 * 
+	 * @param args
+	 *            Command-line arguments.
+	 * @throws DriverFailedException
+	 *             if the driver failed to run.
+	 * 
 	 * @see controller.map.drivers.ISPDriver#startDriver(java.lang.String[])
 	 */
 	@Override
@@ -96,7 +99,7 @@ public final class ViewerStart implements ISPDriver {
 			} catch (final ChoiceInterruptedException except) {
 				LOGGER.log(
 						Level.INFO,
-						"Choice was interrupted or user declined to choose; aborting",
+						"Choice was interrupted or user didn't choose; aborting",
 						except);
 				return;
 			}

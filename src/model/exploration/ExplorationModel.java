@@ -430,7 +430,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param listener the listener to remove
 	 */
 	@Override
-	public final void removeMovementCostListener(final MovementCostListener listener) {
+	public final void removeMovementCostListener(
+			final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
 	/**

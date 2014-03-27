@@ -310,7 +310,8 @@ public final class TestFixtureSerialization extends
 	 * @throws XMLStreamException on XML reader error
 	 */
 	@Test
-	public void testSimpleSerializationNoChildren() throws XMLStreamException, SPFormatException {
+	public void testSimpleSerializationNoChildren() throws XMLStreamException,
+			SPFormatException {
 		assertUnwantedChild("<djinn><troll /></djinn>", Djinn.class, false);
 		assertUnwantedChild("<griffin><djinn /></griffin>", Griffin.class,
 				false);

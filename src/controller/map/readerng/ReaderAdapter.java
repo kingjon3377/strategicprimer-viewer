@@ -64,7 +64,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	/**
 	 * Map from writable objects to writers. Initializer in static block below.
 	 */
-	private static final Map<Class<?>, INodeHandler<?>> WRITE_CACHE = new HashMap<>();
+	private static final Map<Class<?>, INodeHandler<?>> WRITERS = new HashMap<>();
 
 	/**
 	 * Add a reader to the cache.
@@ -75,7 +75,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 		for (final String tag : reader.understands()) {
 			READ_CACHE.put(tag, reader);
 		}
-		WRITE_CACHE.put(reader.writes(), reader);
+		WRITERS.put(reader.writes(), reader);
 	}
 
 	/**
@@ -161,8 +161,8 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 */
 	@Override
 	public <S> SPIntermediateRepresentation write(final S obj) {
-		if (WRITE_CACHE.containsKey(obj.getClass())) {
-			return ((INodeHandler<S>) WRITE_CACHE.get(obj.getClass()))
+		if (WRITERS.containsKey(obj.getClass())) {
+			return ((INodeHandler<S>) WRITERS.get(obj.getClass()))
 					.write(obj);
 		} else {
 			throw new IllegalArgumentException(

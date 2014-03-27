@@ -158,13 +158,13 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Fourth test of Mine serialization, reflection",
 				four, Mine.class);
 		final String oldKindProperty = "product"; // NOPMD
-		final String testDataFourA = createSerializedForm(four, true).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataFourA = createSerializedForm(four, true).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataFourA != null;
 		assertDeprecatedDeserialization("Deprecated Mine idiom", four,
 				testDataFourA, Mine.class, oldKindProperty);
-		final String testDataFour = createSerializedForm(four, false).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataFour = createSerializedForm(four, false).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataFour != null;
 		assertDeprecatedDeserialization("Deprecated Mine idiom", four,
 				testDataFour, Mine.class, oldKindProperty);
@@ -197,14 +197,14 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Second test of Shrub serialization, reflection",
 				two, Shrub.class);
 		final String oldKindProperty = "shrub"; // NOPMD
-		final String testDataTwoRefl = createSerializedForm(two, true).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataTwoRefl = createSerializedForm(two, true).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataTwoRefl != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of mangled shrub, reflection", two,
 				testDataTwoRefl, Shrub.class, oldKindProperty);
-		final String testDataTwoNon = createSerializedForm(two, false).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataTwoNon = createSerializedForm(two, false).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataTwoNon != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of mangled shrub, reflection", two,
@@ -273,11 +273,11 @@ public final class TestMoreFixtureSerialization extends
 		final Village three = new Village(TownStatus.Abandoned, "", 3, owner,
 				"elf");
 		assertMissingPropertyDeserialization(
-				"Serialization of village with no or empty name does The Right Thing",
+				"Village serialization with no or empty name does The Right Thing",
 				three, createSerializedForm(three, true), Village.class,
 				NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
-				"Serialization of village with no or empty name does The Right Thing",
+				"Village serialization with no or empty name does The Right Thing",
 				three, createSerializedForm(three, false), Village.class,
 				NAME_PROPERTY);
 		assertUnwantedChild("<village status=\"active\"><village /></village>",

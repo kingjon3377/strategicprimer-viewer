@@ -62,10 +62,10 @@ public class AppStarter implements ISPDriver {
 		final DriverUsage oneUsage = one.usage();
 		final DriverUsage twoUsage = two.usage();
 		if (oneUsage.isGraphical() || !twoUsage.isGraphical()) {
-			LOGGER.warning("Two-arg addChoice didn't match non-graphical / graphical pair");
+			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
 		} else if (!oneUsage.getShortOption().equals(twoUsage.getShortOption())
 				|| !oneUsage.getLongOption().equals(twoUsage.getLongOption())) {
-			LOGGER.warning("Two-arg addChoice called but options of args don't match");
+			LOGGER.warning("In two-arg addChoice, args' options should match");
 		}
 		final Pair<ISPDriver, ISPDriver> pair = Pair.of(one, two);
 		CACHE.put(oneUsage.getShortOption(), pair);

@@ -1,5 +1,7 @@
 package controller.map.cxml;
 
+import static java.lang.String.format;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -20,7 +22,8 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 
-// ESCA-JAVA0011: Doesn't contain an abstract method because we moved it up to the interface.
+// ESCA-JAVA0011: Doesn't contain an abstract method 
+// because we moved it up to the interface.
 /**
  * A superclass to provide helper methods.
  *
@@ -60,9 +63,9 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 		// possible ...
 		if (localName != null && !(EqualsAny.equalsAny(localName, tags))) {
 			final int line = element.getLocation().getLineNumber();
-			final String base = String
-					.format("Unexpected tag %s on line %d, expected one of the following: ",
-							localName, Integer.valueOf(line));
+			final String base = format(
+					"Unexpected tag %s on line %d, expected one of the following: ",
+					localName, Integer.valueOf(line));
 			final int len = base.length() + tags.length
 					* MAX_TAG_LEN; // Overestimate just in case
 			final StringBuilder sbuild = new StringBuilder(len)
@@ -311,12 +314,16 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 		assert qname != null;
 		return qname;
 	}
+	
 	/**
-	 * @param element a StartElement, known from the guarantees of the documentation of
-	 *        the API to not be null, but which Eclipse is convinced might be
+	 * @param element
+	 *            a StartElement, known from the guarantees of the documentation
+	 *            of the API to not be null, but which Eclipse is convinced
+	 *            might be
 	 * @return it, after asserting it is not null
 	 */
-	protected static StartElement assertNotNullStartElement(@Nullable final StartElement element) {
+	protected static StartElement assertNotNullStartElement(
+			@Nullable final StartElement element) {
 		assert element != null;
 		return element;
 	}

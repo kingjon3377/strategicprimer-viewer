@@ -44,7 +44,8 @@ public final class ReportGenerator {
 		// make a 10 meg buffer.
 		final StringBuilder builder = new StringBuilder(10485760)
 				.append("<html>\n");
-		builder.append("<head><title>Strategic Primer map summary report</title></head>\n");
+		builder.append("<head><title>Strategic Primer map ").append(
+				"summary report</title></head>\n");
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final ITileCollection tiles = map.getTiles();
@@ -93,7 +94,8 @@ public final class ReportGenerator {
 		// make a 10 meg buffer.
 		final StringBuilder builder = new StringBuilder(10485760)
 				.append("<html>\n<head>");
-		builder.append("<title>Strategic Primer map summary abridged report</title></head>\n");
+		builder.append("<title>Strategic Primer map summary ").append(
+				"abridged report</title></head>\n");
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures = getFixtures(map);
 		final ITileCollection tiles = map.getTiles();

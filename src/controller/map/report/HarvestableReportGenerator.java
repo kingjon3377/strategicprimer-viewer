@@ -52,17 +52,22 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public String produce(// $codepro.audit.disable cyclomaticComplexity TODO: Use Guava Multimaps
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, // NOPMD
+	public String produce(// $codepro.audit.disable cyclomaticComplexity
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, //NOPMD
 			final ITileCollection tiles, final Player player) {
-		final HtmlList caches = new HtmlList(
+		// TODO: Use Guava Multimaps to reduce cyclomatic complexity
+		final HeadedList<String> caches = new HtmlList(
 				"<h5>Caches collected by your explorers and workers:</h5>");
-		final HtmlList groves = new HtmlList("<h5>Groves and orchards</h5>");
-		final HtmlList meadows = new HtmlList("<h5>Meadows and fields</h5>");
-		final HtmlList mines = new HtmlList("<h5>Mines</h5>");
-		final HtmlList minerals = new HtmlList("<h5>Mineral deposits</h5>");
+		final HeadedList<String> groves = new HtmlList(
+				"<h5>Groves and orchards</h5>");
+		final HeadedList<String> meadows = new HtmlList(
+				"<h5>Meadows and fields</h5>");
+		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
+		final HeadedList<String> minerals = new HtmlList(
+				"<h5>Mineral deposits</h5>");
 		final Map<String, List<Point>> shrubs = new HashMap<>();
-		final HtmlList stone = new HtmlList("<h5>Exposed stone deposits</h5>");
+		final HeadedList<String> stone = new HtmlList(
+				"<h5>Exposed stone deposits</h5>");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture item = pair.second();
 			final Point point = pair.first();
@@ -80,7 +85,8 @@ public class HarvestableReportGenerator extends // NOPMD
 				// TODO: Handle these like shrubs.
 				minerals.add(produce(fixtures, tiles, player,
 						(MineralVein) item, point));
-			} else if (item instanceof Shrub) { // ESCA-JAVA0177: TODO: Use a Guava Multimap
+			} else if (item instanceof Shrub) { // ESCA-JAVA0177:
+				// TODO: Use a Guava Multimap
 				final List<Point> shrubPoints; // NOPMD
 				if (shrubs.containsKey(((Shrub) item).getKind())) {
 					shrubPoints = shrubs.get(((Shrub) item).getKind());
@@ -96,7 +102,7 @@ public class HarvestableReportGenerator extends // NOPMD
 						point));
 			}
 		}
-		final HtmlList shrubsText = new HtmlList(
+		final HeadedList<String> shrubsText = new HtmlList(
 				"<h5>Shrubs, small trees, and such</h5>");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
 			shrubsText.add(concat(entry.getKey(), ": at ",
@@ -136,9 +142,10 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity TODO: Use Guava Multimaps
+	public AbstractReportNode produceRIR(//$codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player player) {
+		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final AbstractReportNode retval = new SectionReportNode(4,
 				"Resource Sources");
 		final AbstractReportNode caches = new SortedSectionListReportNode(5,
@@ -230,7 +237,8 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return a sub-report dealing with the fixture
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {

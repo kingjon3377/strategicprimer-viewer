@@ -48,7 +48,7 @@ public class ComparablePair<FIRST extends Comparable<FIRST>, SECOND extends Comp
 	 * @param second The second element in the pair.
 	 * @return a pair containing the two elements
 	 */
-	public static <FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>> ComparablePair<FIRST, SECOND> of(// NOPMD // $codepro.audit.disable lineLength
+	public static <FIRST extends Comparable<FIRST>, SECOND extends Comparable<SECOND>> ComparablePair<FIRST, SECOND> of(
 			final FIRST first, final SECOND second) {
 		return new ComparablePair<>(first, second);
 	}

@@ -70,9 +70,9 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String toString() {
-		final String retval = new StringBuilder(24 + kind.length() + contents.length())
-				.append("a cache of ").append(kind).append(" containing ")
-				.append(contents).toString();
+		final String retval = new StringBuilder(24 + kind.length()
+				+ contents.length()).append("a cache of ").append(kind)
+				.append(" containing ").append(contents).toString();
 		assert retval != null;
 		return retval;
 	}

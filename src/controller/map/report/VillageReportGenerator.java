@@ -30,17 +30,18 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @param tiles ignored
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
-		final HtmlList others = new HtmlList(
+		final HeadedList<String> others = new HtmlList(
 				"<h4>Villages you know about:</h4>");
-		final HtmlList own = new HtmlList(
+		final HeadedList<String> own = new HtmlList(
 				"<h4>Villages pledged to your service:</h4>");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
 				// ESCA-JAVA0177:
-				final HtmlList appropriateList; // NOPMD // $codepro.audit.disable declareAsInterface
+				final HeadedList<String> appropriateList;
 				if (village.getOwner().isCurrent()) {
 					appropriateList = own;
 				} else {
@@ -110,7 +111,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @return the report on the village (its location and name, nothing more)
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));

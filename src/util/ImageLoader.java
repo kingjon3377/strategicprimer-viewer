@@ -3,7 +3,6 @@ package util;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +41,7 @@ public final class ImageLoader {
 		final TileUIHelper colors = new TileUIHelper();
 		for (final TileType type : TileType.values()) {
 			assert type != null;
-			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, // NOPMD
+			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, //NOPMD
 					BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = buf.createGraphics();
 			if (colors.supportsType(2, type)) {
@@ -68,14 +67,15 @@ public final class ImageLoader {
 
 	/**
 	 * Load an image from the cache, or if not in it, from file.
-	 *
-	 * @param file the name of the file to load
+	 * 
+	 * @param file
+	 *            the name of the file to load
 	 * @return the image contained in the file.
-	 * @throws FileNotFoundException if the file isn't found.
-	 * @throws IOException on I/O error reading the file
+	 * @throws IOException
+	 *             if the file isn't found, or on other I/O error reading the
+	 *             file
 	 */
-	public Image loadImage(final String file) throws FileNotFoundException,
-			IOException {
+	public Image loadImage(final String file) throws IOException {
 		if (!cache.containsKey(file)) {
 			try (final ResourceInputStream res = new ResourceInputStream(
 					"images/" + file)) {
@@ -94,14 +94,15 @@ public final class ImageLoader {
 
 	/**
 	 * Load an icon from the cache, or if not in it, from file.
-	 *
-	 * @param file the name of the file to load
+	 * 
+	 * @param file
+	 *            the name of the file to load
 	 * @return an icon of image contained in the file.
-	 * @throws FileNotFoundException if the file isn't found.
-	 * @throws IOException on I/O error reading the file
+	 * @throws IOException
+	 *             if the file isn't found, or on other I/O error reading the
+	 *             file
 	 */
-	public Icon loadIcon(final String file) throws FileNotFoundException,
-			IOException {
+	public Icon loadIcon(final String file) throws IOException {
 		if (!iconCache.containsKey(file)) {
 			iconCache.put(file, new ImageIcon(loadImage(file)
 					.getScaledInstance(ICON_SIZE, -1, Image.SCALE_DEFAULT)));

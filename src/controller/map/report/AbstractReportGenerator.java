@@ -18,10 +18,20 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> {
 	/**
+	 * A list that prints a header in its toString().
+	 */
+	protected interface HeadedList<T> extends List<T> {
+		/**
+		 * @return the header text
+		 */
+		String getHeader();
+	}
+	/**
 	 * A list that produces HTML in its toString().
 	 * @author Jonathan Lovelace
 	 */
-	protected static class HtmlList extends ArrayList<String> {
+	protected static class HtmlList extends ArrayList<String> implements
+			HeadedList<String> {
 		/**
 		 * Version UID for serialization.
 		 */
@@ -30,7 +40,13 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		 * The header: what to print before opening the list.
 		 */
 		private final String header;
-
+		/**
+		 * @return the header
+		 */
+		@Override
+		public String getHeader() {
+			return header;
+		}
 		/**
 		 * Constructor.
 		 *

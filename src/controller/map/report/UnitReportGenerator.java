@@ -29,6 +29,11 @@ import util.Pair;
  */
 public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
+	 * A string to indicate a worker has training or experience.
+	 */
+	private static final String HAS_TRAINING = "(S)he has training or experience in the following Jobs (Skills):";
+
+	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.
 	 *
 	 * @param fixtures the set of fixtures, so we can remove the unit and its
@@ -40,7 +45,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on the unit
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	public String produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
 		final StringBuilder builder = new StringBuilder();
@@ -166,9 +172,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			builder.append(CLOSE_LIST);
 		}
 		if (worker.iterator().hasNext() && details) {
-			builder.append(
-					"He or she has training or experience in the following Jobs (Skills):\n")
-					.append(OPEN_LIST);
+			builder.append(HAS_TRAINING).append('\n').append(OPEN_LIST);
 			for (final Job job : worker) {
 				builder.append(OPEN_LIST_ITEM);
 				builder.append(job.getLevel());
@@ -240,10 +244,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			retval.add(statsNode);
 		}
 		if (worker.iterator().hasNext() && details) {
-			final AbstractReportNode jobs = new ListReportNode(
-					"(S)he has training or experience in the following Jobs (Skills):");
+			final AbstractReportNode jobs = new ListReportNode(HAS_TRAINING);
 			for (final Job job : worker) {
-				jobs.add(new SimpleReportNode(Integer.toString(job.getLevel()), // NOPMD
+				jobs.add(new SimpleReportNode(Integer.toString(job.getLevel()), //NOPMD
 						" levels in ", job.getName(), getSkills(job)));
 			}
 			retval.add(jobs);

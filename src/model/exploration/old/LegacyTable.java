@@ -52,11 +52,12 @@ public class LegacyTable implements EncounterTable {
 		addData(new Cave(0, -1));
 		for (final TownStatus status : TownStatus.values()) {
 			for (final TownSize size : TownSize.values()) {
-				if (status != null && size != null) {
-					addData(new City(status, size, 0, "", 0, player)); // NOPMD
-					addData(new Fortification(status, size, 0, "", 0, player)); // NOPMD
-					addData(new Town(status, size, 0, "", 0, player)); // NOPMD
-				}
+				if (status == null || size == null) {
+					continue;
+				} 
+				addData(new City(status, size, 0, "", 0, player)); // NOPMD
+				addData(new Fortification(status, size, 0, "", 0, player)); // NOPMD
+				addData(new Town(status, size, 0, "", 0, player)); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {

@@ -112,11 +112,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
 				City.class, "id", true);
 		assertUnwantedChild(
-				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></city>",
-				City.class, false);
-		assertMissingProperty(
-				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
-				City.class, "owner", true);
+				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
+						+ "<troll /></city>", City.class, false);
+		assertMissingProperty("<city status=\"active\" size=\"small\" "
+				+ "name=\"name\" dc=\"0\" id=\"0\" />", City.class, "owner",
+				true);
 		assertImageSerialization("City image property is preserved", three,
 				City.class);
 	}
@@ -148,7 +148,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				assertSerialization(
 						"Second FortificationEvent serialization test, status "
 								+ status + " and size " + size,
-						new Fortification(status, size, 40, "two", 2, owner), // NOPMD
+						new Fortification(status, size, 40, "two", 2, owner), //NOPMD
 						Fortification.class);
 			}
 		}
@@ -161,13 +161,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				Fortification.class, NAME_PROPERTY, true);
 		assertMissingProperty(createSerializedForm(three, false),
 				Fortification.class, NAME_PROPERTY, true);
-		assertMissingProperty(
-				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
+		assertMissingProperty("<fortification status=\"active\" "
+				+ "size=\"small\" name=\"name\" dc=\"0\" />",
 				Fortification.class, "id", true);
-		assertUnwantedChild(
-				"<fortification status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
-						+ "<troll /></fortification>", Fortification.class,
-				false);
+		assertUnwantedChild("<fortification status=\"active\" "
+				+ "size=\"small\" name=\"name\" dc=\"0\">"
+				+ "<troll /></fortification>", Fortification.class, false);
 		assertMissingProperty(
 				"<fortification status=\"active\" size=\"small\" name=\"name\""
 						+ " dc=\"0\" id=\"0\"/>", Fortification.class, "owner",
@@ -236,21 +235,21 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			if (kind == null) {
 				continue;
 			}
-			assertSerialization("First StoneEvent test, reflection, kind: "
-					+ kind, new StoneDeposit(kind, 8, 1), StoneDeposit.class); // NOPMD
-			assertSerialization("Second StoneEvent test, reflection, kind: "
-					+ kind, new StoneDeposit(kind, 15, 2), StoneDeposit.class); // NOPMD
+			assertSerialization("First StoneEvent test, kind: " + kind,
+					new StoneDeposit(kind, 8, 1), StoneDeposit.class); // NOPMD
+			assertSerialization("Second StoneEvent test, kind: " + kind,
+					new StoneDeposit(kind, 15, 2), StoneDeposit.class); // NOPMD
 		}
 		final StoneDeposit three = new StoneDeposit(StoneKind.Marble, 10, 3);
 		final String oldKindProperty = "stone"; // NOPMD
-		final String testDataOne = createSerializedForm(three, true).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataOne = createSerializedForm(three, true).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataOne != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
 				testDataOne, StoneDeposit.class, oldKindProperty);
-		final String testDataTwo = createSerializedForm(three, false).replace(KIND_PROPERTY,
-				oldKindProperty);
+		final String testDataTwo = createSerializedForm(three, false).replace(
+				KIND_PROPERTY, oldKindProperty);
 		assert testDataTwo != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
@@ -316,11 +315,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				"<town dc=\"0\" size=\"small\" status=\"active\" name=\"name\" />",
 				Town.class, "id", true);
 		assertUnwantedChild(
-				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\"><troll /></town>",
-				Town.class, false);
-		assertMissingProperty(
-				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\" id=\"0\" />",
-				Town.class, "owner", true);
+				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
+						+ "<troll /></town>", Town.class, false);
+		assertMissingProperty("<town status=\"active\" size=\"small\" "
+				+ "name=\"name\" dc=\"0\" id=\"0\" />", Town.class, "owner",
+				true);
 		assertImageSerialization("Town image property is preserved", three,
 				Town.class);
 	}

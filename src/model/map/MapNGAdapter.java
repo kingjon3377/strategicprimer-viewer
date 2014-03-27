@@ -71,45 +71,45 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	/**
 	 * @param obj the map that might be a subset of us
 	 * @param out the stream to write detailed results to
-	 * @param point the current location
+	 * @param loc the current location
 	 * @return whether that location fits the "subset" hypothesis.
 	 */
 	private boolean isTileSubset(final IMapNG obj, final PrintWriter out,
-			final Point point) {
+			final Point loc) {
 		boolean retval = true;
-		if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))) { // NOPMD
+		if (!getBaseTerrain(loc).equals(obj.getBaseTerrain(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			out.print("Tile types differ at ");
-			out.println(point);
-		} else if (isMountainous(point) != obj.isMountainous(point)) { // NOPMD
+			out.println(loc);
+		} else if (isMountainous(loc) != obj.isMountainous(loc)) { // NOPMD
 			// return false;
 			retval = false;
 			out.print("Reports of mountains differ at ");
-			out.println(point);
-		} else if (!areRiversSubset(getRivers(point), obj.getRivers(point))) { // NOPMD
+			out.println(loc);
+		} else if (!areRiversSubset(getRivers(loc), obj.getRivers(loc))) { //NOPMD
 			retval = false;
 			out.print("Extra rivers at ");
-			out.println(point);
-		} else if (!safeEquals(getForest(point), obj.getForest(point))) { // NOPMD
+			out.println(loc);
+		} else if (!safeEquals(getForest(loc), obj.getForest(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			out.print("Primary forests differ at ");
-			out.print(point);
+			out.print(loc);
 			out.println(", may be representation error");
-		} else if (!safeEquals(getGround(point), obj.getGround(point))) { // NOPMD
+		} else if (!safeEquals(getGround(loc), obj.getGround(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			out.print("Primary Ground differs at ");
-			out.print(point);
+			out.print(loc);
 			out.println(", may be representation error");
 		} else {
 			// TODO: Use Guava collection-from-iterable to improve/simplify this
 			final List<TileFixture> fixtures = new ArrayList<>();
-			for (final TileFixture fix : state.getTile(point)) {
+			for (final TileFixture fix : state.getTile(loc)) {
 				fixtures.add(fix);
 			}
-			for (final TileFixture fix : obj.getOtherFixtures(point)) {
+			for (final TileFixture fix : obj.getOtherFixtures(loc)) {
 				if (fix != null && !fixtures.contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
@@ -117,7 +117,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 					out.print("Extra fixture ");
 					out.print(fix);
 					out.print(" at ");
-					out.println(point);
+					out.println(loc);
 				}
 			}
 		}
@@ -357,7 +357,8 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 * @param <T> the type of thing they contain
 	 * @return whether they contain the same elements.
 	 */
-	private static <T> boolean iterablesEqual(final Iterable<T> one, final Iterable<T> two) {
+	private static <T> boolean iterablesEqual(final Iterable<T> one,
+			final Iterable<T> two) {
 		// ESCA-JAVA0177:
 		final Collection<T> first;
 		if (one instanceof Collection) {

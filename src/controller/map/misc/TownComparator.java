@@ -22,7 +22,7 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	/**
 	 * A comparator for town-sizes.
 	 */
-	private static final Comparator<TownSize> SIZE_COMP = new Comparator<TownSize>() {
+	private static final Comparator<TownSize> SIZE_CMP = new Comparator<TownSize>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -50,7 +50,7 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * A comparator for town-statuses, to put active towns before abandoned ones
 	 * before ruined ones before burned-out ones.
 	 */
-	private static final Comparator<TownStatus> STAT_COMP = new Comparator<TownStatus>() {
+	private static final Comparator<TownStatus> ST_CMP = new Comparator<TownStatus>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -82,7 +82,7 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * A comparator for town-kinds, to put cities before towns before
 	 * fortifications.
 	 */
-	private static final Comparator<TownKind> KIND_COMP = new Comparator<TownKind>() {
+	private static final Comparator<TownKind> KIND_CMP = new Comparator<TownKind>() {
 		/**
 		 * @param one the first kind
 		 * @param two the second kind
@@ -123,13 +123,13 @@ public final class TownComparator implements Comparator<AbstractTown> {
 				if (one.kind().equals(two.kind())) {
 					return one.getName().compareTo(two.getName()); // NOPMD
 				} else {
-					return KIND_COMP.compare(one.kind(), two.kind()); // NOPMD
+					return KIND_CMP.compare(one.kind(), two.kind()); // NOPMD
 				}
 			} else {
-				return SIZE_COMP.compare(one.size(), two.size()); // NOPMD
+				return SIZE_CMP.compare(one.size(), two.size()); // NOPMD
 			}
 		} else {
-			return STAT_COMP.compare(one.status(), two.status());
+			return ST_CMP.compare(one.status(), two.status());
 		}
 	}
 

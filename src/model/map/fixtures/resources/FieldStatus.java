@@ -79,7 +79,8 @@ public enum FieldStatus {
 	 * @return a random status
 	 */
 	public static FieldStatus random(final int seed) {
-		final FieldStatus retval = values()[new Random(seed).nextInt(values().length)];
+		final FieldStatus retval = values()[new Random(seed)
+				.nextInt(values().length)];
 		assert retval != null;
 		return retval;
 	}

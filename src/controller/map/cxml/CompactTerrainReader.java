@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IPlayerCollection;
 import model.map.TerrainFixture;
@@ -20,6 +18,9 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.Warning;
@@ -32,7 +33,8 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public final class CompactTerrainReader extends AbstractCompactReader<TerrainFixture> {
+public final class CompactTerrainReader extends
+		AbstractCompactReader<TerrainFixture> {
 	/**
 	 * Singleton.
 	 */
@@ -72,7 +74,7 @@ public final class CompactTerrainReader extends AbstractCompactReader<TerrainFix
 		/**
 		 * The tag.
 		 */
-		public final String tag;
+		private final String tag;
 
 		/**
 		 * Constructor.
@@ -81,6 +83,13 @@ public final class CompactTerrainReader extends AbstractCompactReader<TerrainFix
 		 */
 		private TerrainFixtureType(final String tagString) {
 			tag = tagString;
+		}
+
+		/**
+		 * @return the tag used to represent the fixture type.
+		 */
+		public String getTag() {
+			return tag;
 		}
 	}
 
@@ -96,8 +105,8 @@ public final class CompactTerrainReader extends AbstractCompactReader<TerrainFix
 	static {
 		final Set<String> suppTagsTemp = new ArraySet<>();
 		for (final TerrainFixtureType mt : TerrainFixtureType.values()) {
-			MAP.put(mt.tag, mt);
-			suppTagsTemp.add(mt.tag);
+			MAP.put(mt.getTag(), mt);
+			suppTagsTemp.add(mt.getTag());
 		}
 		final Set<String> temp = Collections.unmodifiableSet(suppTagsTemp);
 		assert temp != null;
